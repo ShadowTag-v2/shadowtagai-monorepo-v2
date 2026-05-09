@@ -259,6 +259,9 @@ class ExitPlanModeController:
         Raises:
             TransitionError: If not in SPECULATING state.
         """
+        if self.state != PlanState.SPECULATING:
+            msg = f"needs_revision requires SPECULATING state, currently in {self.state}"
+            raise TransitionError(msg)
         self._transition(PlanState.PLANNING)
 
     def user_confirm(self) -> None:

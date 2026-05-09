@@ -14,11 +14,26 @@ import pytest
 
 PNKLN_ROOT = Path(__file__).resolve().parents[2] / "apps" / "aiyou_stack" / "aiyou-fastapi-services" / "apps"
 
+# The workspace root contains a top-level pnkln/ directory with only pipeline
+# files (Claude_Code_6_pipeline.py, judge_six_pipeline.py). This shadows the
+# real pnkln.core package under apps/aiyou_stack/ during import resolution.
+# We must ensure the aiyou path takes priority and block root-level shadowing.
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+
 
 @pytest.fixture(autouse=True)
 def patch_sys_path():
-    """Add the pnkln apps directory to sys.path for import resolution."""
+    """Add the pnkln apps directory to sys.path and block root-level shadowing."""
     path_str = str(PNKLN_ROOT)
+    repo_root_str = str(_REPO_ROOT)
+
+    # Remove repo root from sys.path to prevent root-level pnkln/ from
+    # being resolved before the aiyou_stack pnkln/ package.
+    removed_root = False
+    if repo_root_str in sys.path:
+        sys.path.remove(repo_root_str)
+        removed_root = True
+
     if path_str not in sys.path:
         sys.path.insert(0, path_str)
     if "numpy" not in sys.modules:
@@ -26,6 +41,8 @@ def patch_sys_path():
     yield
     if path_str in sys.path:
         sys.path.remove(path_str)
+    if removed_root and repo_root_str not in sys.path:
+        sys.path.append(repo_root_str)
 
 
 def _clear_pnkln_cache():

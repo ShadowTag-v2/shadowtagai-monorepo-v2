@@ -129,6 +129,110 @@ class SpanContext:
             self._span.set_attribute(key, str(value))
 
 
+def record_speculation_result(
+    *,
+    session_id: str,
+    step_count: int,
+    plan_state: str,
+    duration_ms: float = 0.0,
+    metadata: dict[str, Any] | None = None,
+) -> None:
+    """Record a detailed speculation lifecycle event to .beads/ evidence trail.
+
+    Called at speculation start and completion to capture step count,
+    session metadata, and timing data for quality benchmarking.
+
+    Args:
+        session_id: The orchestrator session identifier.
+        step_count: Number of plan steps being speculated.
+        plan_state: Current PlanState value.
+        duration_ms: Time elapsed in speculation phase.
+        metadata: Additional session metadata.
+    """
+    payload: dict[str, Any] = {
+        "session_id": session_id,
+        "step_count": step_count,
+        "plan_state": plan_state,
+        "duration_ms": round(duration_ms, 1),
+    }
+    if metadata:
+        payload["metadata"] = metadata
+    _write_event("speculation_result", payload)
+
+
+def compute_quality_accuracy(*, limit: int = 500) -> dict[str, Any]:
+    """Benchmark quality_score predictions against actual acceptance rates.
+
+    Reads suggestion outcome events from .beads/speculation_telemetry.jsonl
+    and correlates quality_score values with was_accepted outcomes.
+
+    Args:
+        limit: Maximum events to analyze.
+
+    Returns:
+        Dict with accuracy metrics:
+          - total_outcomes: Number of outcomes analyzed.
+          - acceptance_rate: Overall acceptance rate (0.0-1.0).
+          - high_quality_acceptance: Acceptance rate for quality > 0.7.
+          - low_quality_acceptance: Acceptance rate for quality <= 0.7.
+          - correlation: Simple correlation between quality and acceptance.
+    """
+    events = read_telemetry_events(event_type_prefix="suggestion_outcome", limit=limit)
+
+    if not events:
+        return {
+            "total_outcomes": 0,
+            "acceptance_rate": 0.0,
+            "high_quality_acceptance": 0.0,
+            "low_quality_acceptance": 0.0,
+            "correlation": 0.0,
+        }
+
+    total = len(events)
+
+    # Handle dual field schemas: was_accepted vs accepted, quality_score vs similarity
+    def _is_accepted(e: dict) -> bool:
+        return bool(e.get("was_accepted") or e.get("accepted"))
+
+    def _quality(e: dict) -> float:
+        return float(e.get("quality_score") or e.get("similarity") or 0.0)
+
+    accepted = sum(1 for e in events if _is_accepted(e))
+    acceptance_rate = accepted / total if total else 0.0
+
+    high_quality = [e for e in events if _quality(e) > 0.7]
+    low_quality = [e for e in events if _quality(e) <= 0.7]
+
+    hq_accepted = sum(1 for e in high_quality if _is_accepted(e))
+    lq_accepted = sum(1 for e in low_quality if _is_accepted(e))
+
+    hq_rate = hq_accepted / len(high_quality) if high_quality else 0.0
+    lq_rate = lq_accepted / len(low_quality) if low_quality else 0.0
+
+    # Simple Pearson-like correlation between quality and acceptance
+    # (0=no correlation, 1=perfect positive, -1=perfect negative)
+    correlation = 0.0
+    quality_scores = [_quality(e) for e in events]
+    acceptances = [1.0 if _is_accepted(e) else 0.0 for e in events]
+    if total > 1:
+        q_mean = sum(quality_scores) / total
+        a_mean = sum(acceptances) / total
+        numerator = sum((q - q_mean) * (a - a_mean) for q, a in zip(quality_scores, acceptances, strict=True))
+        q_var = sum((q - q_mean) ** 2 for q in quality_scores)
+        a_var = sum((a - a_mean) ** 2 for a in acceptances)
+        denominator = (q_var * a_var) ** 0.5
+        if denominator > 0:
+            correlation = numerator / denominator
+
+    return {
+        "total_outcomes": total,
+        "acceptance_rate": round(acceptance_rate, 3),
+        "high_quality_acceptance": round(hq_rate, 3),
+        "low_quality_acceptance": round(lq_rate, 3),
+        "correlation": round(correlation, 3),
+    }
+
+
 def log_bridge_call(
     *,
     operation: str,

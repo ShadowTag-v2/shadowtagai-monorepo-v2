@@ -1,10 +1,10 @@
 {
-  "score": "B",
-  "total_findings": 18,
+  "score": "C",
+  "total_findings": 17,
   "critical": 0,
-  "errors": 0,
-  "warnings": 10,
-  "info": 8,
+  "errors": 1,
+  "warnings": 9,
+  "info": 7,
   "findings": [
     {
       "gate": "dirty",
@@ -17,20 +17,6 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/repo_doctor_latest.json",
-      "fix": "git checkout -- .beads/repo_doctor_latest.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".clinerules",
-      "fix": "git checkout -- .clinerules"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
       "path": ".reports/skills/guardrail_annotation_audit.md",
       "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
     },
@@ -38,43 +24,50 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "cline_mcp_settings.json",
-      "fix": "git checkout -- cline_mcp_settings.json"
+      "path": "apps/headfade/pwa/out/404.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/404.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "docs/SYSTEM_OVERRIDE.md",
-      "fix": "git checkout -- docs/SYSTEM_OVERRIDE.md"
+      "path": "apps/headfade/pwa/out/embed/demo.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/embed/demo.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "monorepo_manifest.yaml",
-      "fix": "git checkout -- monorepo_manifest.yaml"
+      "path": "apps/headfade/pwa/out/embed/demo.txt",
+      "fix": "git checkout -- apps/headfade/pwa/out/embed/demo.txt"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": ".github/workflows/jules-ci.yml",
-      "fix": "git add .github/workflows/jules-ci.yml"
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/out/index.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/index.html"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "apps/kovelai/src/GavelHero.tsx",
-      "fix": "git add apps/kovelai/src/GavelHero.tsx"
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/out/index.txt",
+      "fix": "git checkout -- apps/headfade/pwa/out/index.txt"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": "tools/workspace-listener/",
-      "fix": "git add tools/workspace-listener/"
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/out/marketplace.html",
+      "fix": "git checkout -- apps/headfade/pwa/out/marketplace.html"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/headfade/pwa/out/marketplace.txt",
+      "fix": "git checkout -- apps/headfade/pwa/out/marketplace.txt"
     },
     {
       "gate": "conflicts",
@@ -85,10 +78,10 @@
     },
     {
       "gate": "secrets",
-      "severity": "info",
-      "message": "No secrets detected",
+      "severity": "error",
+      "message": "Betterleaks found 3 potential secrets",
       "path": "",
-      "fix": ""
+      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
     {
       "gate": "large_files",
@@ -121,14 +114,14 @@
     {
       "gate": "manifest",
       "severity": "info",
-      "message": "Manifest v17.0 valid",
+      "message": "Manifest v22.0 valid",
       "path": "",
       "fix": ""
     },
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3666 tests collected in 2.20s =========================",
+      "message": "Tests: ======================== 3666 tests collected in 2.85s =========================",
       "path": "",
       "fix": ""
     }
