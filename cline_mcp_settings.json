@@ -1,158 +1,99 @@
 {
   "mcpServers": {
-    "uphill-design-mcp": {
-      "url": "https://design.googleapis.com/mcp",
-      "transport": "streamable-http",
-      "headers": {
-        "Accept": "text/event-stream, application/json",
-        "Content-Type": "application/json"
-      },
-      "disabled": false,
-      "autoApprove": [
-        "generate_color_scheme",
-        "search_icons",
-        "icons_instructions",
-        "search_fonts",
-        "describe_font"
-      ],
-      "note": "Google Design MCP — Material Design headless engine. No API key required. V17: unchanged (remote HTTP, not runtime-dependent)."
-    },
-    "uphill-gcloud-infra": {
-      "command": "bunx",
-      "args": ["--bun", "@google-cloud/gcloud-mcp@latest"],
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
-      "transport": "stdio",
-      "disabled": false,
-      "autoApprove": ["run_gcloud_command"],
-      "note": "V17: Migrated npx→bunx. Unified GCP control plane — Resource Manager, Spanner DDL/DML, Pub/Sub, Cloud Run, Billing, Datastream."
-    },
-    "uphill-observability": {
-      "command": "bunx",
-      "args": ["--bun", "@google-cloud/observability-mcp@latest"],
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
-      "transport": "stdio",
-      "disabled": false,
-      "autoApprove": [
-        "list_log_entries",
-        "list_log_names",
-        "list_sinks",
-        "list_log_scopes",
-        "list_metric_descriptors",
-        "list_time_series",
-        "list_alert_policies",
-        "list_traces",
-        "get_trace",
-        "list_group_stats"
-      ],
-      "note": "V17: Migrated npx→bunx. Cloud Logging + Monitoring + Tracing."
-    },
-    "uphill-cloud-run": {
-      "command": "bunx",
-      "args": ["--bun", "@google-cloud/cloud-run-mcp@latest"],
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
-      "transport": "stdio",
-      "disabled": false,
-      "autoApprove": [
-        "list-services",
-        "get-service",
-        "get-service-log",
-        "list-projects"
-      ],
-      "note": "V17: Migrated npx→bunx. Cloud Run compute plane."
-    },
-    "uphill-storage-cdn": {
-      "command": "bunx",
-      "args": ["--bun", "@google-cloud/storage-mcp@latest"],
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
-      "transport": "stdio",
-      "disabled": false,
-      "autoApprove": [
-        "list_buckets",
-        "list_objects",
-        "read_object_metadata",
-        "read_object_content",
-        "get_bucket_metadata",
-        "get_bucket_location"
-      ],
-      "note": "V17: Migrated npx→bunx. Edge Delivery — Cloud Storage + CDN asset management."
-    },
-    "uphill-epistemic-memory": {
+    "jules-mcp-server": {
       "command": "bun",
-      "args": ["./tools/mcp-gemini-memory/index.js"],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
+      "args": ["run", "external_repos/jules-sdk/packages/mcp/dist/cli.mjs"],
       "transport": "stdio",
-      "disabled": false,
-      "autoApprove": [
-        "list_memory_stores",
-        "list_memory_documents",
-        "search_memory"
-      ],
-      "note": "V17: Migrated node→bun. Prefrontal Cortex — Gemini API File Search for internal docs."
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
     },
-    "uphill-cognitive-telemetry": {
-      "command": "bunx",
-      "args": ["--bun", "genkitx-mcp@latest"],
-      "env": {
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
+    "stitch-mcp-server": {
+      "command": "bun",
+      "args": ["run", "external_repos/stitch-sdk/packages/sdk/dist/src/index.js"],
       "transport": "stdio",
-      "disabled": true,
-      "autoApprove": [],
-      "note": "V17: Migrated npx→bunx. Genkit OpenTelemetry. Disabled until Genkit flows are authored."
+      "env": {
+        "STITCH_API_KEY": "${STITCH_API_KEY}"
+      }
     },
-    "uphill-economic-engine": {
-      "command": "bunx",
-      "args": ["--bun", "@stripe/agent-toolkit@latest"],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
+    "firebase-mcp-server": {
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "experimental:mcp"],
       "transport": "stdio",
-      "disabled": true,
-      "autoApprove": [],
-      "note": "V17: Migrated npx→bunx. Stripe Agent Toolkit — Payment processing. Secrets via GCP Secret Manager only."
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
     },
-    "uphill-notebooklm": {
-      "command": "bunx",
-      "args": ["--bun", "notebooklm-mcp@latest"],
-      "env": {
-        "HEADLESS": "true",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
+    "chrome-devtools-mcp": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/chrome-devtools-mcp@latest"],
       "transport": "stdio",
-      "disabled": false,
-      "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"],
-      "note": "V17: Migrated npx→bunx. IPI Quarantine — NotebookLM zero-trust data ingestion."
+      "env": {
+        "CHROME_DEBUG_PORT": "9222"
+      }
+    },
+    "google-developer-knowledge": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/google-developer-knowledge-mcp@latest"],
+      "transport": "stdio",
+      "env": {
+        "GOOGLE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/sequential-thinking-mcp@latest"],
+      "transport": "stdio"
+    },
+    "jules-fleet": {
+      "command": "bun",
+      "args": ["run", "external_repos/jules-sdk/packages/fleet/dist/cli/index.mjs"],
+      "transport": "stdio",
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
+    },
+    "gcloud-mcp": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/gcloud-mcp@latest"],
+      "transport": "stdio",
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
+    },
+    "observability": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/observability-mcp@latest"],
+      "transport": "stdio",
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
+    },
+    "cloud-run": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/cloud-run-mcp@latest"],
+      "transport": "stdio",
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
+    },
+    "storage": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/storage-mcp@latest"],
+      "transport": "stdio",
+      "env": {
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
+    },
+    "stripe-mcp": {
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp@latest", "--tools=all", "--api-key=${STRIPE_SECRET_KEY}"],
+      "transport": "stdio"
+    },
+    "os-dart-compiler": {
+      "command": "dart",
+      "args": ["language-server", "--protocol=lsp"],
+      "transport": "stdio"
     }
   }
 }
