@@ -44,13 +44,13 @@
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 2.1 | Install `ibazel` | 🔲 Pending | Hot-reload |
+| 2.1 | Install `ibazel` | ✅ Done | v0.29.0 via brew |
 | 2.2 | Run `pip_generate_requirements_txt` | 🔲 Pending | Python lock |
 | 2.3 | Set up Go module support | ✅ Done | `go.mod` scaffold |
-| 2.4 | Verify Rust toolchain | 🔲 Pending | `cargo check` |
+| 2.4 | Verify Rust toolchain | ✅ Done | `cargo check` passed (95 crates, 13.14s) |
 | 2.5 | Create Docker/OCI targets | ✅ Done | `infra/docker/` |
 | 2.6 | Wire Helm chart templates | ✅ Done | `infra/helm/` |
-| 2.7 | Verify MODULE.bazel integrity | 🔲 Pending | `bazel build //...` |
+| 2.7 | Verify MODULE.bazel integrity | ✅ Done | `bazel build //...` — 279 targets, 252 actions OK |
 
 ## Phase 3: CI/CD & Tooling
 
@@ -68,7 +68,7 @@
 |---|------|--------|-------|
 | 4.1 | Run `repo_doctor.py` on old monorepo | 🔲 Pending | |
 | 4.2 | Run Lighthouse on HeadFade production | 🔲 Pending | Pre-migration baseline |
-| 4.3 | Push to origin via SSH | 🔲 Pending | |
+| 4.3 | Push to origin via SSH | ✅ Done | `529200a..f1ffbb8` via App token |
 | 4.4 | Push `a358f2e` to old repo via GitHub App JWT | 🔲 Pending | |
 | 4.5 | Generate IaC repos (`generate-three-repos.sh`) | 🔲 Pending | |
 

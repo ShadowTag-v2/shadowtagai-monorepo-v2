@@ -6,7 +6,7 @@
 # It declares the API surface as a py_library with deps on middleware/ and services/.
 
 load("@rules_python//python:defs.bzl", "py_library")
-load("@pip_deps//:requirements.bzl", "requirement")
+load("@pypi//:requirements.bzl", "requirement")
 
 package(default_visibility = ["//apps/counselconduit:__subpackages__"])
 
@@ -17,10 +17,10 @@ py_library(
         "agui_stream.py",
         "app_error.py",
         "auth.py",
-        "blast_radius.py",
         "byok.py",
         "cloud_tasks_gdpr.py",
         "cloud_tasks_gdpr_handler.py",
+        "Cor_Claude_Code_6.py",
         "deprecation_middleware.py",
         "dispatch_router.py",
         "email_service.py",
@@ -32,9 +32,9 @@ py_library(
         "gemini_rag.py",
         "human_gate.py",
         "intake_summarizer.py",
-        "Cor.Claude_Code_6.py",
         "kovel_attestation.py",
         "magic_link.py",
+        "middleware_ant.py",
         "model_router.py",
         "monitoring.py",
         "null_model_validator.py",
@@ -55,7 +55,6 @@ py_library(
         "subscription_notifications.py",
         "telemetry.py",
         "token_meter.py",
-        "ucmj_discipline.py",
         "uuid7.py",
         "vector_db.py",
         "vent_mode.py",

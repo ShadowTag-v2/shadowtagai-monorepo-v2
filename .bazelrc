@@ -30,10 +30,12 @@ build --disk_cache=.cache/bazel
 
 # ----------------------------------------------
 # RBE (Remote Bazel Execution): Setup
+# DISABLED: Anonymous BuildBuddy access is deprecated (2026-05).
+# Uncomment and configure API key when ready.
 # ----------------------------------------------
-build --bes_results_url=https://app.buildbuddy.io/invocation/
-build --bes_backend=grpcs://remote.buildbuddy.io
-build --remote_cache=grpcs://remote.buildbuddy.io
+# build --bes_results_url=https://app.buildbuddy.io/invocation/
+# build --bes_backend=grpcs://remote.buildbuddy.io
+# build --remote_cache=grpcs://remote.buildbuddy.io
 # build --remote_executor=grpcs://remote.buildbuddy.io
 
 # RBE: configure hidden api key
@@ -43,16 +45,11 @@ build --remote_cache=grpcs://remote.buildbuddy.io
 # To create your BUILD_BUDDY API KEY simply create your free personal account.
 try-import %workspace%/.bazelrc.local
 
-# RBE:
-build --remote_download_minimal
-# RBE: timeout
-build --remote_timeout=3600
-# RBE: improve remote cache throughput.
-build --remote_cache_compression
-# RBE: significantly reduce the payload size of the uploaded build event stream by eliminating duplicate file references.
-build --nolegacy_important_outputs
-# RBE: for a more detailed timing profile
-build --noslim_profile --experimental_profile_include_target_label --experimental_profile_include_primary_output
-# RBE: to avoid inflating blobs smaller than 100 bytes with ZSTD compression.
-build --experimental_remote_cache_compression_threshold=100
+# RBE: (requires remote_cache to be active)
+# build --remote_download_minimal
+# build --remote_timeout=3600
+# build --remote_cache_compression
+# build --nolegacy_important_outputs
+# build --noslim_profile --experimental_profile_include_target_label --experimental_profile_include_primary_output
+# build --experimental_remote_cache_compression_threshold=100
 # ----------------------------------------------
