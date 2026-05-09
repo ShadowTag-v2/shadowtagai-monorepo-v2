@@ -1,0 +1,53 @@
+name: Jules + GCA Sovereign PR Review (Official Action)
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  jules-review-swarm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Review Tools
+        run: |
+          pip install ruff
+          npm install -g @biomejs/biome
+
+      - name: GCP Auth (Workload Identity)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: antigravity-stitch-bot@shadowtag-omega-v4.iam.gserviceaccount.com
+
+      - name: Run Jules + GCA Swarm
+        run: |
+          python3 tools/scripts/run_swarm.py \
+            --pr-number ${{ github.event.pull_request.number }} \
+            --branch ${{ github.head_ref }} \
+            --mode="full-review"
+
+      - name: Run AST Surgery (auto-fix on sync)
+        if: github.event.action == 'synchronize'
+        run: |
+          bun run scripts/ast_surgery.ts --auto-fix
+
+      - name: Post Verified Findings
+        run: |
+          python3 tools/scripts/post_pr_findings.py \
+            --pr ${{ github.event.pull_request.number }}

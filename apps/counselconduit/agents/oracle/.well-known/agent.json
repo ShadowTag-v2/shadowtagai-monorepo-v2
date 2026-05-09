@@ -1,0 +1,38 @@
+{
+  "name": "Oracle Studio Agent",
+  "description": "7-stage legal research analysis pipeline. Produces immutable Oracle Memos with citations, privilege-preserving transcripts, and multi-model reasoning chains.",
+  "url": "https://counselconduit-767252945109.us-central1.run.app/agents/oracle",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "ShadowTagAI",
+    "url": "https://shadowtagai.com"
+  },
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": ["bearer"],
+    "credentials": "Firebase ID Token (tenant-scoped)"
+  },
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "skills": [
+    {
+      "id": "legal-research-memo",
+      "name": "Legal Research Memo",
+      "description": "Analyze legal questions, research precedent, and generate a structured Oracle Memo with citations."
+    },
+    {
+      "id": "transcript-audit",
+      "name": "Transcript Audit",
+      "description": "Generate immutable, timestamped transcripts of AI-assisted legal research sessions."
+    },
+    {
+      "id": "citation-extraction",
+      "name": "Citation Extraction",
+      "description": "Extract and validate legal citations from research queries using multi-model consensus."
+    }
+  ]
+}
