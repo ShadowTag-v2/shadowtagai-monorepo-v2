@@ -1,236 +1,211 @@
 /**
- * ═══════════════════════════════════════════════════════════════
- * apps/api/server.ts — V18 Isomorphic GraphQL Gateway
- * ═══════════════════════════════════════════════════════════════
+ * V18 Zenith — Unified Kriasoft Bun Backend
+ * Isomorphic GraphQL Gateway running on Hono v4 + Bun.serve()
  *
- * Unified Hono + GraphQL Yoga backend running on Bun.serve().
- * Handles all API traffic through a single, high-performance entry point.
+ * Routes:
+ *   /graphql       — Unified GraphQL API (Kriasoft graphql-starter-kit pattern)
+ *   /webhook/stripe — Stripe webhook with raw body signature verification
+ *   /intake/tabular — SheetJS spreadsheet ingestion + Gemini RAG embedding
+ *   /health        — Cloud Run health probe
  *
- * Architecture:
- *   - POST /graphql       → GraphQL Yoga (schema-first)
- *   - POST /webhooks/stripe → Stripe webhook handler (raw body verification)
- *   - POST /intake/tabular → SheetJS Excel/CSV ingestion → Firestore
- *   - GET  /health        → JSON healthcheck for Cloud Run + Lighthouse
- *
- * Runtime: Bun.serve() native HTTP (NOT Node http module)
- * Framework: Hono v4 (ultralight, Edge-compatible)
- * GraphQL: graphql-yoga (Envelop plugin system)
- *
- * Design: Kriasoft graphql-starter-kit isomorphic pattern
- * Identity: Firebase Auth ID token verification
- * Secrets: GCP Secret Manager (no .env files)
+ * Runtime: Bun 1.3.11 (Zig-backed)
+ * Pattern: Kriasoft Isomorphic Monorepo (graphql-starter-kit + react-firebase-starter)
  */
 
-import { Hono } from "hono";
-import { cors } from "hono/cors";
-import { logger } from "hono/logger";
-import { createYoga, createSchema } from "graphql-yoga";
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { logger } from 'hono/logger';
 
-// ─── Types ──────────────────────────────────────────────────────
-interface Env {
-  GCP_PROJECT: string;
-  STRIPE_WEBHOOK_SECRET: string;
-}
-
-// ─── GraphQL Schema (Kriasoft isomorphic pattern) ───────────────
-const typeDefs = /* GraphQL */ `
-  type Query {
-    health: HealthStatus!
-    version: String!
-  }
-
-  type HealthStatus {
-    status: String!
-    runtime: String!
-    uptime: Float!
-    timestamp: String!
-  }
-
-  type Mutation {
-    ingestDocument(input: IngestInput!): IngestResult!
-  }
-
-  input IngestInput {
-    filename: String!
-    contentBase64: String!
-    mimeType: String!
-  }
-
-  type IngestResult {
-    documentId: String!
-    rowCount: Int
-    status: String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    health: () => ({
-      status: "operational",
-      runtime: `Bun ${Bun.version}`,
-      uptime: process.uptime(),
-      timestamp: new Date().toISOString(),
-    }),
-    version: () => "18.0.0",
-  },
-  Mutation: {
-    ingestDocument: async (
-      _parent: unknown,
-      { input }: { input: { filename: string; contentBase64: string; mimeType: string } },
-    ) => {
-      // SheetJS tabular ingestion pipeline
-      // Decodes base64 → parses with SheetJS → writes to Firestore
-      const documentId = crypto.randomUUID();
-
-      // Lazy-load SheetJS only when needed (tree-shaking friendly)
-      try {
-        const XLSX = await import("xlsx");
-        const buffer = Buffer.from(input.contentBase64, "base64");
-        const workbook = XLSX.read(buffer, { type: "buffer" });
-        const firstSheet = workbook.SheetNames[0];
-        const data = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
-
-        return {
-          documentId,
-          rowCount: data.length,
-          status: "ingested",
-        };
-      } catch {
-        return {
-          documentId,
-          rowCount: 0,
-          status: "parse_error",
-        };
-      }
-    },
-  },
-};
-
-// ─── GraphQL Yoga Instance ──────────────────────────────────────
-const yoga = createYoga({
-  schema: createSchema({ typeDefs, resolvers }),
-  graphqlEndpoint: "/graphql",
-  landingPage: false,
-  maskedErrors: process.env.NODE_ENV === "production",
-});
-
-// ─── Hono App ───────────────────────────────────────────────────
 const app = new Hono();
 
 // Middleware
-app.use("*", logger());
-app.use(
-  "*",
-  cors({
-    origin: [
-      "https://counselconduit-767252945109.us-central1.run.app",
-      "https://headfade.com",
-      "http://localhost:3000",
-    ],
-    allowMethods: ["GET", "POST", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
-    maxAge: 86400,
-  }),
-);
+app.use('*', logger());
+app.use('*', cors({
+  origin: [
+    'https://counselconduit-767252945109.us-central1.run.app',
+    'https://headfade.com',
+    'http://localhost:3000',
+  ],
+  allowMethods: ['GET', 'POST', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization', 'stripe-signature'],
+}));
 
-// ─── Routes ─────────────────────────────────────────────────────
+// ─── Health Probe (Cloud Run) ─────────────────────────────────────
+app.get('/health', (c) => c.json({
+  status: 'OK',
+  version: 'V18-Zenith',
+  runtime: 'Bun ' + Bun.version,
+  timestamp: new Date().toISOString(),
+}));
 
-// Health check (Cloud Run + Lighthouse)
-app.get("/health", (c) =>
-  c.json({
-    status: "operational",
-    version: "18.0.0",
-    runtime: `Bun ${Bun.version}`,
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString(),
-    architecture: "V18 Archon-Bun Hyper-Core",
-  }),
-);
+// ─── GraphQL Endpoint (Kriasoft Pattern) ──────────────────────────
+// Dynamic import to avoid blocking server start if graphql isn't installed yet
+app.post('/graphql', async (c) => {
+  try {
+    const { buildSchema, graphql } = await import('graphql');
 
-// GraphQL endpoint (Yoga handles both GET and POST)
-app.on(["GET", "POST"], "/graphql", async (c) => {
-  const response = await yoga.handle(c.req.raw, {});
-  return new Response(response.body, {
-    status: response.status,
-    headers: Object.fromEntries(response.headers.entries()),
-  });
+    const schema = buildSchema(`
+      type Query {
+        systemStatus: String!
+        userAccess(firebaseUid: String!): Boolean!
+        serviceHealth: ServiceHealth!
+      }
+
+      type ServiceHealth {
+        api: Boolean!
+        graphql: Boolean!
+        stripe: Boolean!
+        spanner: Boolean!
+      }
+    `);
+
+    const rootValue = {
+      systemStatus: () => 'V18 Federated GraphQL Gateway Online — Bun ' + Bun.version,
+      userAccess: async ({ firebaseUid }: { firebaseUid: string }) => {
+        // TODO: Wire to Spanner when core-cluster is provisioned
+        // const { Spanner } = await import('@google-cloud/spanner');
+        // const db = new Spanner().instance('core-cluster').database('shadowtag-omega-v4');
+        // const [rows] = await db.run({ sql: `SELECT status FROM transactions WHERE user_id = @uid AND status = 'PAID'`, params: { uid: firebaseUid } });
+        // return rows.length > 0;
+        console.log(`[GraphQL] Access check for UID: ${firebaseUid}`);
+        return true; // Default allow until Spanner is live
+      },
+      serviceHealth: () => ({
+        api: true,
+        graphql: true,
+        stripe: !!process.env.STRIPE_SECRET_KEY,
+        spanner: false, // Will be true when core-cluster is provisioned
+      }),
+    };
+
+    const body = await c.req.json();
+    const result = await graphql({ schema, source: body.query, rootValue, variableValues: body.variables });
+    return c.json(result);
+  } catch (err) {
+    console.error('[GraphQL] Schema error:', err);
+    return c.json({ errors: [{ message: 'GraphQL engine not available' }] }, 500);
+  }
 });
 
-// Stripe webhook (raw body for signature verification)
-app.post("/webhooks/stripe", async (c) => {
-  const rawBody = await c.req.text();
-  const signature = c.req.header("stripe-signature");
-
+// ─── Stripe Webhook (Raw Body Signature Verification) ─────────────
+app.post('/webhook/stripe', async (c) => {
+  const signature = c.req.header('stripe-signature');
   if (!signature) {
-    return c.json({ error: "Missing stripe-signature header" }, 400);
+    return c.json({ error: 'Missing stripe-signature header' }, 400);
   }
 
-  // Stripe webhook verification would use the STRIPE_WEBHOOK_SECRET
-  // from GCP Secret Manager (injected via Cloud Run env)
+  const payload = await c.req.text();
+
   try {
-    // Process webhook event
-    const event = JSON.parse(rawBody);
-    const eventType = event?.type ?? "unknown";
+    const Stripe = (await import('stripe')).default;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+      apiVersion: '2024-12-18.acacia',
+    });
 
-    console.log(`[Stripe] Received webhook: ${eventType}`);
+    const event = stripe.webhooks.constructEvent(
+      payload,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!,
+    );
 
-    return c.json({ received: true, type: eventType });
-  } catch {
-    return c.json({ error: "Invalid webhook payload" }, 400);
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as Record<string, unknown>;
+        console.log(`⚡ [Stripe] Payment completed: ${session.client_reference_id} → ${session.customer}`);
+        // TODO: Insert into Spanner when provisioned
+        // await database.table('transactions').insert({
+        //   user_id: session.client_reference_id,
+        //   stripe_customer_id: session.customer,
+        //   status: 'PAID',
+        //   timestamp: Spanner.commitTimestamp()
+        // });
+        break;
+      }
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted': {
+        console.log(`⚡ [Stripe] Subscription event: ${event.type}`);
+        break;
+      }
+      default:
+        console.log(`[Stripe] Unhandled event type: ${event.type}`);
+    }
+
+    return c.text('OK');
+  } catch (err) {
+    console.error('[Stripe] Webhook verification failed:', err);
+    return c.json({ error: 'Webhook verification failed' }, 400);
   }
 });
 
-// SheetJS tabular intake (direct file upload)
-app.post("/intake/tabular", async (c) => {
-  const formData = await c.req.formData();
-  const file = formData.get("file");
-
-  if (!file || !(file instanceof File)) {
-    return c.json({ error: "No file provided" }, 400);
-  }
-
+// ─── SheetJS Tabular Intake + Epistemic RAG ───────────────────────
+app.post('/intake/tabular', async (c) => {
   try {
-    const XLSX = await import("xlsx");
-    const buffer = await file.arrayBuffer();
-    const workbook = XLSX.read(buffer, { type: "array" });
-    const firstSheet = workbook.SheetNames[0];
-    const data = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
+    const body = await c.req.json();
+    const docName = body.document_title || body.message?.attributes?.document_title || 'Unknown_Payload';
+    const rawData = body.data || body.message?.data;
+
+    if (!rawData) {
+      return c.json({ error: 'Missing data field' }, 400);
+    }
+
+    const { read, utils } = await import('xlsx');
+
+    let processableText: string;
+
+    if (docName.endsWith('.xlsx') || docName.endsWith('.xls')) {
+      const workbook = read(Buffer.from(rawData, 'base64'), { type: 'buffer' });
+      const firstSheetName = workbook.SheetNames[0];
+      processableText = utils.sheet_to_csv(workbook.Sheets[firstSheetName]);
+    } else {
+      processableText = Buffer.from(rawData, 'base64').toString('utf-8');
+    }
+
+    const tmpPath = `/tmp/${docName}.txt`;
+    await Bun.write(tmpPath, processableText);
+
+    // Gemini File API for RAG embedding
+    try {
+      const { GoogleGenAI } = await import('@google/genai');
+      const ai = new GoogleGenAI({});
+      await ai.files.upload({
+        file: tmpPath,
+        config: { displayName: docName, customMetadata: { type: 'epistemic_rag' } },
+      });
+      console.log(`⚡ [SheetJS] Embedded ${docName} via Gemini File API`);
+    } catch (aiErr) {
+      console.warn(`[SheetJS] Gemini upload skipped (not configured):`, aiErr);
+    }
 
     return c.json({
-      filename: file.name,
-      sheets: workbook.SheetNames.length,
-      rows: data.length,
-      status: "ingested",
-      documentId: crypto.randomUUID(),
+      status: 'ingested',
+      document: docName,
+      rows: processableText.split('\n').length,
+      runtime: 'Bun ' + Bun.version,
     });
-  } catch {
-    return c.json({ error: "Failed to parse file" }, 400);
+  } catch (err) {
+    console.error('[SheetJS] Intake error:', err);
+    return c.json({ error: 'Tabular intake failed' }, 500);
   }
 });
 
-// Catch-all 404
-app.notFound((c) =>
-  c.json(
-    {
-      error: "Not Found",
-      message: "Use /graphql for API queries or /health for status",
-    },
-    404,
-  ),
-);
+// ─── Catch-all 404 ────────────────────────────────────────────────
+app.notFound((c) => c.json({
+  error: 'Not Found',
+  availableRoutes: ['/health', '/graphql', '/webhook/stripe', '/intake/tabular'],
+}, 404));
 
-// ─── Bun.serve() Entry Point ────────────────────────────────────
-const port = Number(process.env.PORT) || 8080;
+// ─── Error Handler ────────────────────────────────────────────────
+app.onError((err, c) => {
+  console.error('[Server] Unhandled error:', err);
+  return c.json({ error: 'Internal Server Error' }, 500);
+});
 
-console.log(`
-═══════════════════════════════════════════════════════════════
-  V18 Archon-Bun Hyper-Core Gateway
-  Runtime: Bun ${Bun.version}
-  Port:    ${port}
-  GraphQL: http://localhost:${port}/graphql
-  Health:  http://localhost:${port}/health
-═══════════════════════════════════════════════════════════════
-`);
+// ─── Bun.serve() ─────────────────────────────────────────────────
+const port = parseInt(process.env.PORT || '8080', 10);
+
+console.log(`⚡ V18 Zenith — Kriasoft Bun API + GraphQL Gateway`);
+console.log(`⚡ Runtime: Bun ${Bun.version} | Port: ${port}`);
+console.log(`⚡ Routes: /health /graphql /webhook/stripe /intake/tabular`);
 
 export default {
   port,

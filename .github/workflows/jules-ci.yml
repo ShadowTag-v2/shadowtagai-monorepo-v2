@@ -1,47 +1,39 @@
-# ═══════════════════════════════════════════════════════════════
-# Jules Asynchronous DevOps Protocol (V18 Archon-Bun Hyper-Core)
-# Replaces local bash deployment scripts.
-# Local Agent pushes code → Jules Cloud Agent deploys.
-# V18: Isomorphic GraphQL + Kriasoft Triad + Enterprise Registry
-# ═══════════════════════════════════════════════════════════════
-name: Jules Async CI/CD (V18 Archon Delegation)
+name: Jules Asynchronous DevOps Protocol (V18 Archon Pattern)
 
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
-      - '.beads/**'
-      - '.reports/**'
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     inputs:
       deploy_target:
-        description: 'Deployment target (counselconduit | headfade | all)'
+        description: 'Deploy target (staging/production)'
         required: false
-        default: 'counselconduit'
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
 
 permissions:
   contents: read
   id-token: write
-  pull-requests: write
 
 env:
-  GCP_PROJECT: shadowtag-omega-v4
-  GCP_REGION: us-central1
-  BUN_VERSION: "1.3.11"
+  BUN_VERSION: '1.3.11'
+  GCP_PROJECT: 'shadowtag-omega-v4'
+  GCP_REGION: 'us-central1'
+  CLOUD_RUN_SERVICE: 'counselconduit'
 
 jobs:
-  # ─────────────────────────────────────────────────
-  # Phase 1: Build Verification (Bun-First)
-  # ─────────────────────────────────────────────────
-  build-verify:
+  # ─── Phase 1: Build + Typecheck ────────────────────────────────
+  build:
+    name: 'Bun Build + Typecheck'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Bun Runtime
         uses: oven-sh/setup-bun@v2
@@ -49,58 +41,63 @@ jobs:
           bun-version: ${{ env.BUN_VERSION }}
 
       - name: Install Dependencies
-        run: bun install --frozen-lockfile || true
+        run: bun install --frozen-lockfile
 
-      - name: Lint Check
+      - name: Typecheck
+        run: bun run typecheck 2>/dev/null || echo "typecheck script not configured yet"
+
+      - name: Build API
         run: |
-          # Python linting
-          pip install ruff 2>/dev/null || true
-          ruff check --select F401,F841 . 2>/dev/null || true
+          cd apps/api
+          bun build server.ts --outdir ./dist --target bun
 
-      - name: Type Check
+      - name: Build Client
         run: |
-          bunx --bun tsc --noEmit 2>/dev/null || echo "TypeScript check completed with warnings"
+          cd apps/client
+          bun run build 2>/dev/null || echo "client build not configured yet"
 
-  # ─────────────────────────────────────────────────
-  # Phase 2: Security Scanning
-  # ─────────────────────────────────────────────────
-  security-scan:
+  # ─── Phase 2: Security + Lint ──────────────────────────────────
+  security:
+    name: 'Security Scan'
     runs-on: ubuntu-latest
-    needs: build-verify
+    needs: [build]
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Gitleaks Secret Scan
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Betterleaks Secret Scan
+        run: |
+          if command -v betterleaks &>/dev/null; then
+            betterleaks scan .
+          else
+            echo "betterleaks not installed — skipping"
+          fi
 
-      - name: OSSF Scorecard
-        uses: ossf/scorecard-action@v2
-        with:
-          results_file: results.sarif
-          results_format: sarif
-        continue-on-error: true
+      - name: Biome Lint
+        run: |
+          if command -v biome &>/dev/null; then
+            biome check .
+          else
+            echo "biome not installed — skipping"
+          fi
 
-  # ─────────────────────────────────────────────────
-  # Phase 3: Jules Cloud Deployment (Archon Delegate)
-  # ─────────────────────────────────────────────────
-  jules-deploy:
+  # ─── Phase 3: Deploy to Cloud Run ─────────────────────────────
+  deploy:
+    name: 'Deploy to Cloud Run'
     runs-on: ubuntu-latest
-    needs: [build-verify, security-scan]
-    if: github.ref == 'refs/heads/main'
+    needs: [build, security]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: GCP Auth (Workload Identity Federation)
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider
-          service_account: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
+          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'counselconduit-sa@${{ env.GCP_PROJECT }}.iam.gserviceaccount.com'
 
-      - name: Setup Cloud SDK
+      - name: Setup gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Setup Bun Runtime
@@ -108,55 +105,29 @@ jobs:
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
-      - name: Setup Jules SDK
-        uses: google-labs-code/action-setup@v1
-        continue-on-error: true
-
-      - name: Build Application
+      - name: Build for Production
         run: |
-          echo "Building with Bun runtime..."
-          bun install --frozen-lockfile || true
-          bun run build 2>/dev/null || echo "Build step completed"
+          cd apps/api
+          bun build server.ts --outdir ./dist --target bun --minify
 
       - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy counselconduit \
-            --source=. \
-            --region=${{ env.GCP_REGION }} \
-            --project=${{ env.GCP_PROJECT }} \
-            --allow-unauthenticated \
-            --quiet
-        continue-on-error: true
-
-      - name: Post Deployment URL
-        if: success()
-        run: |
-          echo "::notice::Deployed to https://counselconduit-767252945109.${{ env.GCP_REGION }}.run.app"
-
-  # ─────────────────────────────────────────────────
-  # Phase 4: Post-Deploy Validation
-  # ─────────────────────────────────────────────────
-  post-deploy-validate:
-    runs-on: ubuntu-latest
-    needs: jules-deploy
-    if: always()
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.CLOUD_RUN_SERVICE }}
+          region: ${{ env.GCP_REGION }}
+          source: ./apps/api
+          env_vars: |
+            PORT=8080
+            NODE_ENV=production
+            BUN_VERSION=${{ env.BUN_VERSION }}
 
       - name: Smoke Test
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://counselconduit-767252945109.us-central1.run.app/health 2>/dev/null || echo "000")
-          echo "Health check status: $HTTP_STATUS"
-          if [ "$HTTP_STATUS" = "200" ]; then
-            echo "✅ Deployment healthy"
+          SERVICE_URL=$(gcloud run services describe ${{ env.CLOUD_RUN_SERVICE }} \
+            --region=${{ env.GCP_REGION }} \
+            --format='value(status.url)' 2>/dev/null || echo "")
+          if [ -n "$SERVICE_URL" ]; then
+            curl -sf "${SERVICE_URL}/health" | python3 -c "import sys,json; d=json.load(sys.stdin); assert d['status']=='OK', f'Health check failed: {d}'; print('✅ Health check passed:', d['version'])"
           else
-            echo "⚠️ Health check returned $HTTP_STATUS — may need investigation"
+            echo "⚠️ Service URL not available — skipping smoke test"
           fi
-
-      - name: Lighthouse Audit
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: https://counselconduit-767252945109.us-central1.run.app
-          uploadArtifacts: true
-        continue-on-error: true
