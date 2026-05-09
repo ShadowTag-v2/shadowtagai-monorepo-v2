@@ -5,10 +5,10 @@ mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
 # Version & Phase Tracking
-version: "19.0"
+version: "22.0"
 phase: 5
-milestone: 14
-milestone_name: "V19 Archon-Bun Hyper-Core — Cognitive Router + FinOps Governor"
+milestone: 15
+milestone_name: "V22 Phosphor-Shift — Dynamic Import Ascension + Branch Zero"
 milestone_status: "MERGED"
 phase_started: "2026-05-09"
 last_updated: "2026-05-09"
@@ -94,6 +94,16 @@ v19_additions:
   bigquery_client: "@google-cloud/bigquery"
   pr_merged: "#88"
   head_commit: "aec15aeb9"
+
+# V22 Architecture Additions (Phosphor-Shift — Dynamic Import Ascension)
+v22_additions:
+  dynamic_import_pattern: "src/lib/firebase.ts"
+  pr_merged: "#90, #91"
+  head_commit: "5744baeab"
+  lighthouse_headfade: "P100/A100/BP100/SEO100"
+  branch_state: "main-only (Branch Zero)"
+  security_pipeline: "35-check BashSecurityClassifier"
+  omni_boot: "docs/OMNI_BOOT_V22.md"
 
 # External Repo Groups (V19 — 21 repos cloned)
 external_repos:

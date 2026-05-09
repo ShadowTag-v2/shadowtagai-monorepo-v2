@@ -4,7 +4,7 @@
 **Runtime:** Bun 1.3.11 (Zig-backed)  
 **Codename:** Phosphor-Shift (Third-Party Cookie Extinction + Branch Zero)  
 **Date:** 2026-05-09  
-**HEAD:** `d58d0215e` (PR #90 — V21 dynamic import() BP100 merged)
+**HEAD:** `5744baeab` (PR #91 — V22 Phosphor-Shift milestone + branch hygiene)
 
 ---
 
@@ -156,7 +156,7 @@ The `useStitchTheme()` hook is provided by the **facade** at `apps/client/src/co
 | Antigravity MCP Servers | 5 |
 | GitHub PRs Merged (V16→V22) | 6 |
 | Bun Test Suite | 52/52 PASS |
-| Security Pipeline | 30-check (94% pass) |
+| Security Pipeline | 35-check (26 blocked, 9 safe = ✅) |
 | Lighthouse (headfade.com) | **P100/A100/BP100/SEO100** |
 | Lighthouse (shadowtagai.web.app) | P94/A100/BP100/SEO100 |
 
@@ -202,7 +202,7 @@ import { getAuth } from 'firebase/auth'; // ← NEVER do this at module level
 
 | Version | Codename | HEAD Commit | PR | Date |
 |---------|----------|-------------|-----|------|
-| V22 | Phosphor-Shift (Dynamic Import Ascension) | `d58d0215e` | #90 (merged) | 2026-05-09 |
+| V22 | Phosphor-Shift (Dynamic Import Ascension) | `5744baeab` | #91 (merged) | 2026-05-09 |
 | V20.1 | Sentinel-Reaper (Octal Fix) | `357ace6e9` | — | 2026-05-09 |
 | V20 | Sentinel-Reaper | `e828b6abf` | — | 2026-05-09 |
 | V19.1 | Fix Branch Consolidation | `8023e9925` | — (direct merge) | 2026-05-09 |
