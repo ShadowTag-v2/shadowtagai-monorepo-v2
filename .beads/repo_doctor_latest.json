@@ -1,52 +1,122 @@
 {
-  "score": "B",
-  "total_findings": 16,
-  "critical": 0,
-  "errors": 0,
-  "warnings": 10,
-  "info": 6,
+  "score": "F",
+  "total_findings": 26,
+  "critical": 10,
+  "errors": 2,
+  "warnings": 11,
+  "info": 3,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/repo_doctor_latest.json",
-      "fix": "git checkout -- beads/repo_doctor_latest.json"
+      "path": "ntigravity-jules-orchestration",
+      "fix": "git checkout -- ntigravity-jules-orchestration"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".betterleaks.toml",
-      "fix": "git checkout -- .betterleaks.toml"
+      "message": "Dirty file (??)",
+      "path": "archive/build_output/",
+      "fix": "git add archive/build_output/"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "antigravity-jules-orchestration",
-      "fix": "git checkout -- antigravity-jules-orchestration"
+      "message": "Dirty file (??)",
+      "path": "archive/product_pitch_site/",
+      "fix": "git add archive/product_pitch_site/"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "scripts/repo_doctor.py",
-      "fix": "git checkout -- scripts/repo_doctor.py"
+      "message": "Dirty file (??)",
+      "path": "archive/scratch_2026/",
+      "fix": "git add archive/scratch_2026/"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": "scripts/batch_drift_migration.py",
+      "fix": "git add scripts/batch_drift_migration.py"
     },
     {
       "gate": "conflicts",
-      "severity": "info",
-      "message": "No conflict markers found",
-      "path": "",
-      "fix": ""
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/.claude/hooks/SessionStart",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/.env.example",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/.gcloudignore",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/libraries/RoyaltyMath.sol",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Identity.sol",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Reputation.sol",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/contracts/mocks/MockERC8004Validation.sol",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/clone-and-flatten.sh",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/deploy-all.sh",
+      "fix": "Resolve merge conflicts manually"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "critical",
+      "message": "Merge conflict marker found",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/scripts/fork-all-antigravity.sh",
+      "fix": "Resolve merge conflicts manually"
     },
     {
       "gate": "secrets",
-      "severity": "info",
-      "message": "No secrets detected",
+      "severity": "error",
+      "message": "Betterleaks found 84 potential secrets",
       "path": "",
-      "fix": ""
+      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
     {
       "gate": "large_files",
@@ -93,7 +163,7 @@
     {
       "gate": "drift",
       "severity": "warn",
-      "message": "... and 11762 more drift files",
+      "message": "... and 11746 more drift files",
       "path": "",
       "fix": ""
     },
@@ -113,10 +183,10 @@
     },
     {
       "gate": "tests",
-      "severity": "info",
-      "message": "Tests: ======================== 3666 tests collected in 2.13s =========================",
+      "severity": "error",
+      "message": "Test collection failed",
       "path": "",
-      "fix": ""
+      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest --co -q 2>&1 | tail -10"
     }
   ]
 }

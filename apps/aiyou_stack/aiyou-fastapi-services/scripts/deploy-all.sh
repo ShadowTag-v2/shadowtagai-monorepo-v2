@@ -69,24 +69,16 @@ get_configuration() {
     fi
 
     # Anthropic removed - no longer needed
-    export PROJECT_ID
-    export REGION
+    # if [ -z "$ANTHROPIC_PROJECT_ID" ]; then
+    #     read -p "Enter Anthropic Vertex Project ID: " ANTHROPIC_PROJECT_ID
+    # fi
 
-    log_success "Configuration loaded"
-}
+||||||| f285896f1
+    # Anthropic Project ID
+    if [ -z "$ANTHROPIC_PROJECT_ID" ]; then
+        read -p "Enter Anthropic Vertex Project ID: " ANTHROPIC_PROJECT_ID
+    fi
 
-# Deploy infrastructure
-deploy_infrastructure() {
-    log_info "Deploying infrastructure with Terraform..."
-
-    cd terraform
-
-    # Create tfvars if it doesn't exist
-    if [ ! -f terraform.tfvars ]; then
-        cat > terraform.tfvars <<EOF
-project_id  = "$PROJECT_ID"
-region      = "$REGION"
-environment = "production"
 EOF
         log_info "Created terraform.tfvars"
     fi

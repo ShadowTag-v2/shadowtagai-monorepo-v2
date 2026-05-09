@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/build",
+  "command": "/usr/bin/clang++ -I/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/include -g -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -O2 -o CMakeFiles/midas_montecarlo.dir/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/main.cpp.o -c /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/main.cpp",
+  "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/main.cpp",
+  "output": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/build/CMakeFiles/midas_montecarlo.dir/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/main.cpp.o"
+},
+{
+  "directory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/build",
+  "command": "/usr/bin/clang++ -I/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/include -g -std=gnu++20 -arch arm64 -Wall -Wextra -Wpedantic -O2 -o CMakeFiles/midas_montecarlo.dir/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/midas_engine.cpp.o -c /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/midas_engine.cpp",
+  "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/midas_engine.cpp",
+  "output": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/build/CMakeFiles/midas_montecarlo.dir/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/midas_engine.cpp.o"
+}
+]

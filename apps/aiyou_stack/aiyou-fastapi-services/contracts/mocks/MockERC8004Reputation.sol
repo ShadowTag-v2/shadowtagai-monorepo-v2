@@ -12,6 +12,11 @@ contract MockERC8004Reputation is IERC8004Reputation {
         string calldata /* context */,
         string calldata /* proofURI */
     ) external {
+||||||| f285896f1
+        uint256 score,
+        string calldata domain,
+        bytes calldata evidence
+    ) external returns (uint256) {
         scores[agentId] = score;
     }
 

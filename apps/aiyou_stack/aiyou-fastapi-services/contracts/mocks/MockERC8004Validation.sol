@@ -9,6 +9,9 @@ contract MockERC8004Validation is IERC8004Validation {
     function validateTask(bytes calldata /* proof */, string calldata taskURI) external returns (bool) {
         bytes32 taskHash = keccak256(bytes(taskURI));
         verified[taskHash] = true;
+||||||| f285896f1
+    function validateTask(uint256 agentId, bytes calldata proof) external {}
+    function verifyProof(uint256 agentId, bytes calldata proof) external view returns (bool) {
         return true;
     }
 

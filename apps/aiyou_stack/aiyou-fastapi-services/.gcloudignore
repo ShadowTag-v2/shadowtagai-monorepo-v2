@@ -2,30 +2,8 @@
 # Similar to .gitignore but for Cloud Build
 
 # Git
-.git/
-.gitignore
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+||||||| merged common ancestors
+# Exclude large files and directories not needed for build
 venv/
 env/
 ENV/
@@ -58,3 +36,30 @@ docs/
 # Node modules
 node_modules/
 package-lock.json
+||||||| merged common ancestors
+node_modules/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+*.log
+logs/
+transcripts/
+*.md
+!README.md
+.claude/
+monitoring/
+docs/
+tests/
+*.tar.gz
+*.zip
+*.whl
+erik-hancock-llm-memory/
+voice_consensus/
+fast-api/
+services/
+infrastructure/
+nightly_intel_pipeline/
+deployment/

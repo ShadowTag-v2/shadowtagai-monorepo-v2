@@ -1,0 +1,4 @@
+# ninja log v7
+0	937	1777352461886189028	CMakeFiles/midas_montecarlo.dir/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/main.cpp.o	47f954d4f5a8a448
+2	1134	1777352461887756655	CMakeFiles/midas_montecarlo.dir/labs/uphillsnowball/gideon_os/midas_montecarlo_cpp/src/midas_engine.cpp.o	e0cd14739bb76185
+1134	1307	1777352463019849761	midas_montecarlo	9294c93aff43173f
