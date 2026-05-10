@@ -246,7 +246,7 @@ def _load_rate_state() -> dict[str, Any]:
     try:
         if RATELIMIT_FILE.exists():
             return json.loads(RATELIMIT_FILE.read_text())
-    except (json.JSONDecodeError, OSError):
+    except json.JSONDecodeError, OSError:
         pass
     return {"timestamps": []}
 

@@ -247,14 +247,34 @@ class SpeculativeResearchOrchestrator:
 
         # Factor 2: Research intent signals (0-0.3)
         research_verbs = {
-            "research", "analyze", "compare", "survey", "audit",
-            "investigate", "benchmark", "evaluate", "assess", "review",
-            "examine", "explore", "study", "profile", "diagnose",
+            "research",
+            "analyze",
+            "compare",
+            "survey",
+            "audit",
+            "investigate",
+            "benchmark",
+            "evaluate",
+            "assess",
+            "review",
+            "examine",
+            "explore",
+            "study",
+            "profile",
+            "diagnose",
         }
         domain_markers = {
-            "landscape", "trend", "ecosystem", "architecture",
-            "tradeoff", "trade-off", "alternatives", "options",
-            "competitors", "state of the art", "best practices",
+            "landscape",
+            "trend",
+            "ecosystem",
+            "architecture",
+            "tradeoff",
+            "trade-off",
+            "alternatives",
+            "options",
+            "competitors",
+            "state of the art",
+            "best practices",
         }
         verb_hits = sum(1 for v in research_verbs if v in query_lower)
         domain_hits = sum(1 for d in domain_markers if d in query_lower)
@@ -263,9 +283,17 @@ class SpeculativeResearchOrchestrator:
 
         # Factor 3: Multi-hop reasoning indicators (0-0.2)
         multi_hop_markers = {
-            "and then", "followed by", "after that", "in order to",
-            "step by step", "first", "second", "third",
-            "how does", "why does", "what are the",
+            "and then",
+            "followed by",
+            "after that",
+            "in order to",
+            "step by step",
+            "first",
+            "second",
+            "third",
+            "how does",
+            "why does",
+            "what are the",
         }
         hop_hits = sum(1 for m in multi_hop_markers if m in query_lower)
         score += min(hop_hits * 0.1, 0.2)
@@ -688,10 +716,7 @@ class SpeculativeResearchOrchestrator:
             session = self._plan_controller.session
             plan_id = session.session_id if session else self._session_id
             plan_data = {
-                "steps": [
-                    {"id": s.step_id, "description": s.description}
-                    for s in (session.steps if session else [])
-                ],
+                "steps": [{"id": s.step_id, "description": s.description} for s in (session.steps if session else [])],
                 "session_id": self._session_id,
             }
             # Submit to mailbox — if no required agents, auto-approves.
