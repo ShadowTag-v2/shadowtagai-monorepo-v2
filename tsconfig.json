@@ -28,10 +28,12 @@
     "paths": {
       "@/*": ["./src/*"],
       "@agents/*": ["./src/agents/*"],
-      "@tools/*": ["./src/tools/*"],
-      "@skills/*": ["./src/skills/*"]
+      "@tools/*": ["./tools/*"],
+      "@skills/*": ["./src/skills/*"],
+      "@config/*": ["./config/*"],
+      "@apps/*": ["./apps/*"]
     }
   },
-  "include": ["src/**/*", "examples/**/*", "tests/**/*"],
+  "include": ["src/**/*", "examples/**/*", "tests/**/*", "apps/**/*", "config/**/*", "tools/**/*"],
   "exclude": ["node_modules", "dist"]
 }
