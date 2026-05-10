@@ -61,7 +61,7 @@ def _telemetry_state_change_handler(
         breaker = default_registry.get(service_name)
         snap = breaker.snapshot()
         failure_count = snap.get("consecutive_failures", 0)
-      except KeyError, Exception:
+      except (KeyError, Exception):
         pass  # Fallback to 0 if breaker not yet accessible
 
       event = EventCatalog.circuit_breaker_open(

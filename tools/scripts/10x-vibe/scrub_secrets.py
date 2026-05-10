@@ -4,9 +4,7 @@ Scrub Secrets & PII — 10X Vibe Edition
 Adapted for shadowtagai-monorepo-v2 structure (apps/, libs/, packages/, tools/, infra/)
 """
 
-import os
 import re
-import sys
 from pathlib import Path
 from typing import List, Tuple
 

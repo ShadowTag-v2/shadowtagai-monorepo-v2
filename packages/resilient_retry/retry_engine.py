@@ -302,7 +302,7 @@ def parse_context_overflow(
     input_tokens = int(match.group(1))
     max_tokens = int(match.group(2))
     context_limit = int(match.group(3))
-  except ValueError, TypeError:
+  except (ValueError, TypeError):
     return None
 
   return {

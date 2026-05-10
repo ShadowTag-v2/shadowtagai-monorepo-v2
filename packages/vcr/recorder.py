@@ -111,7 +111,7 @@ class VCRRecorder:
         from config.feature_flags import flags
 
         self._mode = VCRMode(flags.get_string("vcr_mode", default="off").lower())
-      except ImportError, ModuleNotFoundError:
+      except (ImportError, ModuleNotFoundError):
         self._mode = VCRMode(os.environ.get("AGNT_VCR_MODE", "off").lower())
 
     default_dir = Path(

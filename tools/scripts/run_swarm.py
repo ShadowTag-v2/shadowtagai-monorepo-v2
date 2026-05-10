@@ -164,7 +164,7 @@ def _verify_finding(finding: dict) -> bool:
       timeout=30,
     )
     return "VERIFIED" in result.stdout
-  except subprocess.TimeoutExpired, FileNotFoundError:
+  except (subprocess.TimeoutExpired, FileNotFoundError):
     return True  # Trust rule engine if hardware unavailable
 
 

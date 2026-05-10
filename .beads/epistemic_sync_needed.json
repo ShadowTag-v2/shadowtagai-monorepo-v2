@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-10T06:21:39Z",
-  "commit": "b8b6f76fc507729cd5c4f2ce99ea4f3bece5f0ab",
-  "changed_docs": ["docs/SYSTEM_OVERRIDE.md"],
+  "timestamp": "2026-05-10T06:29:28Z",
+  "commit": "ab7e6b5d28bdbeb724eab2d2791673803544325d",
+  "changed_docs": ["docs/ANE-Capabilities.md"],
   "action": "re-upload_to_epistemic_engine",
   "store": "fileSearchStores/uphillsnowballarchitecture-r0dt6v412dh1"
 }

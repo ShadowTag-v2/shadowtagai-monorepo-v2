@@ -79,7 +79,7 @@ def scan_for_failures(
             error=data.get("error"),
           ),
         )
-    except json.JSONDecodeError, KeyError:
+    except (json.JSONDecodeError, KeyError):
       continue
 
   return events

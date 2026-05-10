@@ -150,7 +150,7 @@ def build_index() -> list[dict]:
           },
         )
 
-      except OSError, UnicodeDecodeError:
+      except (OSError, UnicodeDecodeError):
         pass
 
   # Write index

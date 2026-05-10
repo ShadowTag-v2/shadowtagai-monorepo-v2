@@ -10,7 +10,6 @@ import sys
 import time
 import subprocess
 import argparse
-from datetime import datetime, timedelta
 import jwt  # PyJWT
 import requests
 

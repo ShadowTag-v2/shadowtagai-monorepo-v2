@@ -120,7 +120,7 @@ class IdleReturnDialog:
         summary.idle_duration_minutes = (
           datetime.now(UTC) - dep_dt
         ).total_seconds() / 60
-      except ValueError, TypeError:
+      except (ValueError, TypeError):
         pass
 
     summary.cycles_executed = len(cycles)
@@ -140,7 +140,7 @@ class IdleReturnDialog:
       try:
         cap_data = json.loads(cap_state_file.read_text())
         summary.capacity_suspensions = cap_data.get("suspend_count", 0)
-      except json.JSONDecodeError, OSError:
+      except (json.JSONDecodeError, OSError):
         pass
 
     # Format
@@ -182,6 +182,6 @@ class IdleReturnDialog:
     if self._state_file.exists():
       try:
         return json.loads(self._state_file.read_text())
-      except json.JSONDecodeError, OSError:
+      except (json.JSONDecodeError, OSError):
         return {}
     return {}
