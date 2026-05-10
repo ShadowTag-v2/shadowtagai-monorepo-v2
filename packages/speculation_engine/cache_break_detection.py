@@ -468,7 +468,7 @@ class CacheBreakDetector:
               last_assistant_ts = dt.timestamp()
             elif isinstance(ts, (int, float)):
               last_assistant_ts = float(ts)
-          except ValueError, TypeError:
+          except (ValueError, TypeError):
             pass
         break
 

@@ -199,7 +199,7 @@ class ScheduleCronTool:
         capture_output=True,
         timeout=10,
       )
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
       pass
 
     # Remove plist
@@ -282,7 +282,7 @@ class ScheduleCronTool:
         capture_output=True,
         timeout=10,
       )
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
       pass
 
     # Load
@@ -316,7 +316,7 @@ class ScheduleCronTool:
         timeout=5,
       )
       return result.returncode == 0
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
       return False
 
   def _load_registry(self) -> dict:
@@ -324,7 +324,7 @@ class ScheduleCronTool:
     if self._registry_path.exists():
       try:
         return json.loads(self._registry_path.read_text())
-      except json.JSONDecodeError, OSError:
+      except (json.JSONDecodeError, OSError):
         return {}
     return {}
 

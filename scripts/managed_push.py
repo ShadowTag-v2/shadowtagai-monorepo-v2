@@ -132,7 +132,7 @@ def load_checkpoint() -> int:
   try:
     with open(CHECKPOINT_FILE) as f:
       return json.load(f).get("next_batch", 0)
-  except FileNotFoundError, json.JSONDecodeError:
+  except (FileNotFoundError, json.JSONDecodeError):
     return 0
 
 

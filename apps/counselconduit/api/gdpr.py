@@ -179,7 +179,7 @@ async def _cancel_cloud_task(receipt_id: str, firm_id: str) -> bool:
               "Cloud Task cancelled: %s for receipt=%s", task.name, receipt_id
             )
             return True
-        except json.JSONDecodeError, UnicodeDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError):
           continue
     logger.warning("No Cloud Task found for receipt=%s", receipt_id)
     return False

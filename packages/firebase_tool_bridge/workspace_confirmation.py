@@ -210,7 +210,7 @@ class WorkspaceCLIConfirmationProvider(ConfirmationProvider):
               )
               return False
 
-      except subprocess.TimeoutExpired, json.JSONDecodeError, OSError:
+      except (subprocess.TimeoutExpired, json.JSONDecodeError, OSError):
         logger.debug("Poll error on thread %s", thread_name)
 
       time.sleep(self._poll_interval)

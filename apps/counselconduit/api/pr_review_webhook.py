@@ -236,7 +236,7 @@ def _run_logic_verification(changed_files: list[str]) -> list[dict]:
             else "Test crashed",
           }
         )
-    except subprocess.TimeoutExpired, FileNotFoundError:
+    except (subprocess.TimeoutExpired, FileNotFoundError):
       pass  # Skip if test file doesn't exist
 
   return findings

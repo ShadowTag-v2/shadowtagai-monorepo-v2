@@ -255,5 +255,5 @@ def _safe_json_stringify(obj: Any) -> str:
   """
   try:
     return json.dumps(obj, separators=(",", ":"), default=str)
-  except TypeError, ValueError, OverflowError:
+  except (TypeError, ValueError, OverflowError):
     return str(obj)

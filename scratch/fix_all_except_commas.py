@@ -37,7 +37,7 @@ def fix_line(m: re.Match) -> str:
 def process_file(path: Path) -> int:
   try:
     text = path.read_text(encoding="utf-8")
-  except UnicodeDecodeError, OSError:
+  except (UnicodeDecodeError, OSError):
     return 0
 
   new_text, count = PATTERN.subn(fix_line, text)

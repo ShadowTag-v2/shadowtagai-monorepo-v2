@@ -282,7 +282,7 @@ def check_git_status() -> list[Action]:
           risk_level="low",
         ),
       )
-  except subprocess.TimeoutExpired, FileNotFoundError:
+  except (subprocess.TimeoutExpired, FileNotFoundError):
     pass
 
   return actions

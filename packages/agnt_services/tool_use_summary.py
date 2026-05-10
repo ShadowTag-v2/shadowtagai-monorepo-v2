@@ -49,7 +49,7 @@ def truncate_json(value: Any, max_length: int = 300) -> str:
     if len(s) <= max_length:
       return s
     return s[: max_length - 3] + "..."
-  except TypeError, ValueError:
+  except (TypeError, ValueError):
     return "[unable to serialize]"
 
 

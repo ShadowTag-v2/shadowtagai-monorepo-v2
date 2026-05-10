@@ -6,9 +6,7 @@ Adapted for shadowtagai-monorepo-v2 (apps/, libs/, packages/, tools/, infra/)
 """
 
 import sys
-import os
 from pathlib import Path
-from collections import defaultdict
 from typing import List, Tuple
 
 EXCLUDE_DIRS = {".git", "node_modules", "dist", "build", ".next", ".venv", "__pycache__", "coverage"}

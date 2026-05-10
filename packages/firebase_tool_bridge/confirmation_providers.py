@@ -132,7 +132,7 @@ class SlackConfirmationProvider(ConfirmationProvider):
         self._timeout,
       )
 
-    except urllib.error.URLError, OSError:
+    except (urllib.error.URLError, OSError):
       logger.exception("Failed to post Slack approval for '%s'", function_name)
       # If we can't reach Slack, deny the call for safety
       return False

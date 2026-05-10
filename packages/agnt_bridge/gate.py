@@ -33,7 +33,7 @@ def _load_overrides() -> dict[str, Any]:
       logger.warning("AGNT_FC_OVERRIDES is not a JSON object, ignoring")
       return {}
     return parsed
-  except json.JSONDecodeError, TypeError:
+  except (json.JSONDecodeError, TypeError):
     logger.warning("AGNT_FC_OVERRIDES contains invalid JSON, ignoring")
     return {}
 
