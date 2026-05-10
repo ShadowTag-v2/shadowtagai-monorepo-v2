@@ -1,0 +1,10 @@
+{
+  "sender": "dream_test",
+  "recipient": "steward_test",
+  "subject": "Alert",
+  "body": "Dream cycle complete",
+  "priority": 0,
+  "created_at": "2026-05-10T06:17:40.070693+00:00",
+  "read": false,
+  "msg_id": "dream_test_1778393860070"
+}

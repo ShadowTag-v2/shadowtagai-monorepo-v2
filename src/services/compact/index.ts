@@ -113,3 +113,12 @@ export function resetCompactionCircuitBreaker(): void {
 
 export type { CompactionBudget };
 export { allocateTokenBudget, apiMicrocompact, contextCollapse, historySnip };
+
+// Sovereign Cache — cache-aware pipeline wrapper
+export {
+  runCachedCompactionPipeline,
+  computeFingerprint,
+  getSovereignCacheStats,
+  invalidateSovereignCache,
+  resetSovereignCacheStats,
+} from './sovereignCache.js';
