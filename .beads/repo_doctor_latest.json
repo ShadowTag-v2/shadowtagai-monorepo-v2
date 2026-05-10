@@ -1,17 +1,24 @@
 {
   "score": "C",
-  "total_findings": 18,
+  "total_findings": 23,
   "critical": 0,
   "errors": 1,
-  "warnings": 12,
+  "warnings": 17,
   "info": 5,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/epistemic_sync_needed.json",
-      "fix": "git checkout -- beads/epistemic_sync_needed.json"
+      "path": "beads/heartbeat.json",
+      "fix": "git checkout -- beads/heartbeat.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/issues.jsonl",
+      "fix": "git checkout -- .beads/issues.jsonl"
     },
     {
       "gate": "dirty",
@@ -19,6 +26,20 @@
       "message": "Dirty file (M)",
       "path": ".beads/repo_doctor_latest.json",
       "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs"
     },
     {
       "gate": "dirty",
@@ -33,6 +54,20 @@
       "message": "Dirty file (M)",
       "path": "archive/scratch_2026/repos/everything-claude-code",
       "fix": "git checkout -- archive/scratch_2026/repos/everything-claude-code"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "experimental/simple_js_binary_test/src/index.js",
+      "fix": "git checkout -- experimental/simple_js_binary_test/src/index.js"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "renovate.json",
+      "fix": "git checkout -- renovate.json"
     },
     {
       "gate": "conflicts",
@@ -128,7 +163,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3778 tests collected in 1.75s =========================",
+      "message": "Tests: ======================== 3778 tests collected in 2.60s =========================",
       "path": "",
       "fix": ""
     }

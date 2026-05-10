@@ -83,14 +83,6 @@
     "Change": "{{{displayFrom}}} → {{{displayTo}}}"
   },
   "postUpdateOptions": ["npmDedupe"],
-  "ignorePaths": [
-    "archive/**",
-    "_archive_*/**",
-    "external_repos/**",
-    "third_party/**",
-    "labs/**"
-  ],
-  "ignoreDeps": [
-    "python"
-  ]
+  "ignorePaths": ["archive/**", "_archive_*/**", "external_repos/**", "third_party/**", "labs/**"],
+  "ignoreDeps": ["python"]
 }
