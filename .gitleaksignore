@@ -1205,6 +1205,8 @@ tests/unit/lib/secrets.test.ts:github-pat
 # Restricted by Security Rules + App Check. Safe for client code.
 # ════════════════════════════════════════════════════════
 apps/headfade/pwa/src/lib/firebase.ts:gcp-api-key:5
+apps/headfade/pwa/src/lib/firebase.ts:generic-api-key:5
 
 # Lighthouse HTML reports capture the live page's Firebase config
 lighthouse-headfade.html:gcp-api-key
+lighthouse-headfade.html:generic-api-key
