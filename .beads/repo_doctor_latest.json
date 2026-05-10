@@ -1,155 +1,155 @@
 {
   "score": "C",
-  "total_findings": 29,
+  "total_findings": 35,
   "critical": 0,
-  "errors": 2,
-  "warnings": 22,
+  "errors": 1,
+  "warnings": 29,
   "info": 5,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "agent/hybrid_scraper.py",
+      "fix": "git checkout -- agent/hybrid_scraper.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/issues.jsonl",
-      "fix": "git checkout -- .beads/issues.jsonl"
+      "path": ".agent/scripts/auth_orchestrate_batch_foldin.py",
+      "fix": "git checkout -- .agent/scripts/auth_orchestrate_batch_foldin.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/repo_doctor_latest.json",
-      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+      "path": ".agent/scripts/orchestrate_batch_foldin.py",
+      "fix": "git checkout -- .agent/scripts/orchestrate_batch_foldin.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "antigravity-mcp-config.json",
-      "fix": "git checkout -- antigravity-mcp-config.json"
+      "path": ".agent/singularity_daemon.py",
+      "fix": "git checkout -- .agent/singularity_daemon.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/api/server.ts",
-      "fix": "git checkout -- apps/api/server.ts"
+      "path": ".agent/skills-recovered/Claude_Code_6-compliance/scripts/assess_risk.py",
+      "fix": "git checkout -- .agent/skills-recovered/Claude_Code_6-compliance/scripts/assess_risk.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/backend/graphql_server.ts",
-      "fix": "git checkout -- apps/backend/graphql_server.ts"
+      "path": ".agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py",
+      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/backend/kairos_daemon.ts",
-      "fix": "git checkout -- apps/backend/kairos_daemon.ts"
+      "path": ".agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py",
+      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/backend/stripe_webhook.ts",
-      "fix": "git checkout -- apps/backend/stripe_webhook.ts"
+      "path": ".agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py",
+      "fix": "git checkout -- .agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/client/src/GavelHero.tsx",
-      "fix": "git checkout -- apps/client/src/GavelHero.tsx"
+      "path": ".agent/skills-recovered/database-schema-validator/scripts/validate_schema.py",
+      "fix": "git checkout -- .agent/skills-recovered/database-schema-validator/scripts/validate_schema.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/client/src/core/stitch-bridge.tsx",
-      "fix": "git checkout -- apps/client/src/core/stitch-bridge.tsx"
+      "path": ".agent/skills-recovered/json-to-pydantic/examples/output_model.py",
+      "fix": "git checkout -- .agent/skills-recovered/json-to-pydantic/examples/output_model.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/next.config.ts",
-      "fix": "git checkout -- apps/headfade/pwa/next.config.ts"
+      "path": ".agent/skills-recovered/judge6-compliance/scripts/assess_risk.py",
+      "fix": "git checkout -- .agent/skills-recovered/judge6-compliance/scripts/assess_risk.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/app/globals.css",
-      "fix": "git checkout -- apps/headfade/pwa/src/app/globals.css"
+      "path": ".agent/skills-recovered/omni_search.py",
+      "fix": "git checkout -- .agent/skills-recovered/omni_search.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/app/marketplace/page.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/app/marketplace/page.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_bigquery.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_bigquery.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/app/page.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/app/page.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_firebase.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_firebase.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/app/sw-register.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/app/sw-register.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_gcloud.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_gcloud.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/app/trust/page.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/app/trust/page.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_github.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_github.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/components/AuthWallModal.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/components/AuthWallModal.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_linear.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_linear.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/components/FeaturedCarousel.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/components/FeaturedCarousel.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_memory.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_memory.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/components/HeadFadePlayer.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/components/HeadFadePlayer.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_nanobanana2.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_nanobanana2.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "apps/headfade/pwa/src/components/Tile.tsx",
-      "fix": "git checkout -- apps/headfade/pwa/src/components/Tile.tsx"
+      "path": ".agent/skills-recovered/secure-infra/scripts/my_postgres.py",
+      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_postgres.py"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "... and 39 more dirty files",
+      "message": "... and 1672 more dirty files",
       "path": "",
       "fix": ""
     },
@@ -169,10 +169,52 @@
     },
     {
       "gate": "large_files",
+      "severity": "info",
+      "message": "No large files in staging",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "drift",
       "severity": "warn",
-      "message": "Large file (678 KB > 500 KB)",
-      "path": "lighthouse-headfade.html",
-      "fix": "Add lighthouse-headfade.html to .gitignore or compress"
+      "message": "File outside canonical layout",
+      "path": "experimental/random/.gitignore",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/random/BUILD.bazel",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/BUILD.bazel",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/README.MD",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/go.mod",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "... and 194 more drift files",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "drift",
@@ -182,18 +224,18 @@
       "fix": ""
     },
     {
-      "gate": "drift",
-      "severity": "info",
-      "message": "No unknown drift \u2014 only known legacy dirs",
+      "gate": "lint",
+      "severity": "warn",
+      "message": "Ruff: 2\t\tinvalid-syntax",
       "path": "",
-      "fix": ""
+      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m ruff check --select F401,F841 --fix"
     },
     {
       "gate": "lint",
-      "severity": "info",
-      "message": "Ruff lint clean",
+      "severity": "warn",
+      "message": "Ruff: Found 2 errors.",
       "path": "",
-      "fix": ""
+      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m ruff check --select F401,F841 --fix"
     },
     {
       "gate": "manifest",
@@ -204,10 +246,10 @@
     },
     {
       "gate": "tests",
-      "severity": "error",
-      "message": "Test collection failed",
+      "severity": "info",
+      "message": "Tests: ======================== 3778 tests collected in 4.27s =========================",
       "path": "",
-      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest --co -q 2>&1 | tail -10"
+      "fix": ""
     }
   ]
 }

@@ -24,75 +24,77 @@ from circuit_breaker.breaker import CircuitBreakerState
 from circuit_breaker.registry import CircuitBreakerRegistry
 
 if TYPE_CHECKING:
-    pass
+  pass
 
 logger = logging.getLogger(__name__)
 
 
 def _telemetry_state_change_handler(
-    old_state: CircuitBreakerState,
-    new_state: CircuitBreakerState,
-    service_name: str,
+  old_state: CircuitBreakerState,
+  new_state: CircuitBreakerState,
+  service_name: str,
 ) -> None:
-    """Global callback that emits telemetry events on circuit breaker transitions.
+  """Global callback that emits telemetry events on circuit breaker transitions.
 
-    Only emits for transitions TO open state (matching EventCatalog.circuit_breaker_open).
-    All other transitions are logged at INFO level for observability.
-    """
-    # Always log the transition for structured observability
-    logger.info(
-        "Circuit breaker '%s' transition: %s → %s",
+  Only emits for transitions TO open state (matching EventCatalog.circuit_breaker_open).
+  All other transitions are logged at INFO level for observability.
+  """
+  # Always log the transition for structured observability
+  logger.info(
+    "Circuit breaker '%s' transition: %s → %s",
+    service_name,
+    old_state.value,
+    new_state.value,
+  )
+
+  # Only emit telemetry event when breaker OPENS (error condition)
+  if new_state == CircuitBreakerState.OPEN:
+    try:
+      from telemetry.catalog import EventCatalog
+      from telemetry.sink import TelemetrySink
+
+      sink = TelemetrySink()
+
+      # Enrich with live breaker snapshot metadata
+      failure_count = 0
+      try:
+        breaker = default_registry.get(service_name)
+        snap = breaker.snapshot()
+        failure_count = snap.get("consecutive_failures", 0)
+      except KeyError, Exception:
+        pass  # Fallback to 0 if breaker not yet accessible
+
+      event = EventCatalog.circuit_breaker_open(
+        subsystem=service_name,
+        failure_count=failure_count,
+      )
+      sink.emit(event)
+      sink.flush()
+
+      logger.warning(
+        "Telemetry emitted: agnt_circuit_breaker_open (subsystem=%s)",
         service_name,
-        old_state.value,
-        new_state.value,
-    )
-
-    # Only emit telemetry event when breaker OPENS (error condition)
-    if new_state == CircuitBreakerState.OPEN:
-        try:
-            from telemetry.catalog import EventCatalog
-            from telemetry.sink import TelemetrySink
-
-            sink = TelemetrySink()
-
-            # Enrich with live breaker snapshot metadata
-            failure_count = 0
-            try:
-                breaker = default_registry.get(service_name)
-                snap = breaker.snapshot()
-                failure_count = snap.get("consecutive_failures", 0)
-            except KeyError, Exception:
-                pass  # Fallback to 0 if breaker not yet accessible
-
-            event = EventCatalog.circuit_breaker_open(
-                subsystem=service_name,
-                failure_count=failure_count,
-            )
-            sink.emit(event)
-            sink.flush()
-
-            logger.warning(
-                "Telemetry emitted: agnt_circuit_breaker_open (subsystem=%s)",
-                service_name,
-            )
-        except ImportError:
-            logger.debug("Telemetry package not available — circuit breaker event not emitted")
-        except Exception:
-            logger.exception(
-                "Failed to emit circuit breaker telemetry for '%s'",
-                service_name,
-            )
+      )
+    except ImportError:
+      logger.debug(
+        "Telemetry package not available — circuit breaker event not emitted"
+      )
+    except Exception:
+      logger.exception(
+        "Failed to emit circuit breaker telemetry for '%s'",
+        service_name,
+      )
 
 
 def create_telemetry_registry() -> CircuitBreakerRegistry:
-    """Create a CircuitBreakerRegistry wired to the telemetry pipeline.
+  """Create a CircuitBreakerRegistry wired to the telemetry pipeline.
 
-    Returns a registry whose global_on_state_change callback emits
-    EventCatalog.circuit_breaker_open events to TelemetrySink.
-    """
-    return CircuitBreakerRegistry(
-        global_on_state_change=_telemetry_state_change_handler,
-    )
+  Returns a registry whose global_on_state_change callback emits
+  EventCatalog.circuit_breaker_open events to TelemetrySink.
+  """
+  return CircuitBreakerRegistry(
+    global_on_state_change=_telemetry_state_change_handler,
+  )
 
 
 # Singleton registry for the application — import this to share breakers

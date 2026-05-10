@@ -2,5 +2,5 @@
 
 
 class User:
-    def save(self):
-        return True
+  def save(self):
+    return True

@@ -10,10 +10,10 @@ from dataclasses import dataclass
 
 @dataclass
 class MigrationState:
-    """State for a repository migration workflow."""
+  """State for a repository migration workflow."""
 
-    source_repo: str
-    target_path: str
-    phase: str = "pending"
-    files_processed: int = 0
-    total_files: int = 0
+  source_repo: str
+  target_path: str
+  phase: str = "pending"
+  files_processed: int = 0
+  total_files: int = 0

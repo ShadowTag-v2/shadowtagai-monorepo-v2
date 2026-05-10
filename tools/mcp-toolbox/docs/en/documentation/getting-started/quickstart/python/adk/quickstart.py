@@ -21,39 +21,43 @@ Don't ask for confirmations from the user.
 
 # TODO(developer): update the TOOLBOX_URL to your toolbox endpoint
 toolset = ToolboxToolset(
-    server_url="http://127.0.0.1:5000",
+  server_url="http://127.0.0.1:5000",
 )
 
 root_agent = Agent(
-    name="hotel_assistant",
-    model="gemini-2.5-flash",
-    instruction=prompt,
-    tools=[toolset],
+  name="hotel_assistant",
+  model="gemini-2.5-flash",
+  instruction=prompt,
+  tools=[toolset],
 )
 
 app = App(root_agent=root_agent, name="my_agent")
 # [END quickstart]
 
 queries = [
-    "Find hotels in Basel with Basel in its name.",
-    "Can you book the Hilton Basel for me?",
-    "Oh wait, this is too expensive. Please cancel it and book the Hyatt Regency instead.",
-    "My check in dates would be from April 10, 2024 to April 19, 2024.",
+  "Find hotels in Basel with Basel in its name.",
+  "Can you book the Hilton Basel for me?",
+  "Oh wait, this is too expensive. Please cancel it and book the Hyatt Regency instead.",
+  "My check in dates would be from April 10, 2024 to April 19, 2024.",
 ]
 
 
 async def main():
-    runner = InMemoryRunner(app=app)
-    session = await runner.session_service.create_session(app_name=app.name, user_id="test_user")
+  runner = InMemoryRunner(app=app)
+  session = await runner.session_service.create_session(
+    app_name=app.name, user_id="test_user"
+  )
 
-    for query in queries:
-        print(f"\nUser: {query}")
-        user_message = Content(parts=[Part.from_text(text=query)])
+  for query in queries:
+    print(f"\nUser: {query}")
+    user_message = Content(parts=[Part.from_text(text=query)])
 
-        async for event in runner.run_async(user_id="test_user", session_id=session.id, new_message=user_message):
-            if event.is_final_response() and event.content and event.content.parts:
-                print(f"Agent: {event.content.parts[0].text}")
+    async for event in runner.run_async(
+      user_id="test_user", session_id=session.id, new_message=user_message
+    ):
+      if event.is_final_response() and event.content and event.content.parts:
+        print(f"Agent: {event.content.parts[0].text}")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+  asyncio.run(main())

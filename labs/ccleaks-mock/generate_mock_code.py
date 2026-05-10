@@ -3,7 +3,7 @@
 import os
 
 files = {
-    "src/utils/undercover.ts": """// src/utils/undercover.ts
+  "src/utils/undercover.ts": """// src/utils/undercover.ts
 import { getRepoDetails } from './git';
 import { getEnvironment } from '../constants/system';
 
@@ -36,7 +36,7 @@ export function stripAIEvidence(text: string): string {
   return cleaned;
 }
 """,
-    "src/buddy/types.ts": """// src/buddy/types.ts
+  "src/buddy/types.ts": """// src/buddy/types.ts
 
 // One species name collides with a model-codename canary in excluded-strings.txt.
 // All species names hex-encoded to dodge leak detector
@@ -60,7 +60,7 @@ export interface BuddyStats {
   hatId?: string;
 }
 """,
-    "src/utils/permissions/yoloClassifier.ts": """// src/utils/permissions/yoloClassifier.ts
+  "src/utils/permissions/yoloClassifier.ts": """// src/utils/permissions/yoloClassifier.ts
 import { getUserType } from '../constants/system';
 import { llmCall } from '../services/api/llm';
 
@@ -82,7 +82,7 @@ export async function classifyYoloAction(toolName: string, args: any, transcript
   return RiskLevel.LOW;
 }
 """,
-    "src/utils/computerUse/gates.ts": """// src/utils/computerUse/gates.ts
+  "src/utils/computerUse/gates.ts": """// src/utils/computerUse/gates.ts
 import { evalFeature } from '../services/analytics/growthbook';
 
 export function isComputerUseAllowed(): boolean {
@@ -94,7 +94,7 @@ export function isComputerUseAllowed(): boolean {
   return evalFeature('tengu_malort_pedway', false);
 }
 """,
-    "src/utils/commitAttribution.ts": """// src/utils/commitAttribution.ts
+  "src/utils/commitAttribution.ts": """// src/utils/commitAttribution.ts
 
 export const INTERNAL_REPOS = [
   'anthropics/casino',
@@ -115,7 +115,7 @@ export function generateCommitDescription(stats: any, isUndercover: boolean): st
   return `\n\nAI Attribution: ${aiPercentageMsg}`;
 }
 """,
-    "src/voice/voiceModeEnabled.ts": """// src/voice/voiceModeEnabled.ts
+  "src/voice/voiceModeEnabled.ts": """// src/voice/voiceModeEnabled.ts
 import { evalFeature } from '../services/analytics/growthbook';
 
 export function isVoiceModeEnabled(): boolean {
@@ -130,7 +130,7 @@ export function isVoiceModeEnabled(): boolean {
   return true;
 }
 """,
-    "src/utils/context.ts": """// src/utils/context.ts
+  "src/utils/context.ts": """// src/utils/context.ts
 
 export function getMaxContextTokens(): number {
   if (process.env.CLAUDE_CODE_MAX_CONTEXT_TOKENS) {
@@ -145,7 +145,7 @@ export function getMaxContextTokens(): number {
   return 1000000; // 1M context window
 }
 """,
-    "src/utils/modelCost.ts": """// src/utils/modelCost.ts
+  "src/utils/modelCost.ts": """// src/utils/modelCost.ts
 
 export const WEB_SEARCH_COST_USD = 0.01;
 
@@ -158,7 +158,7 @@ export function calculateCost(tokens: number, model: string, webSearchQueries: n
   return cost;
 }
 """,
-    "src/utils/planModeV2.ts": """// src/utils/planModeV2.ts
+  "src/utils/planModeV2.ts": """// src/utils/planModeV2.ts
 import { getSubscriptionTier } from '../services/api/user';
 
 export function getPlanModeAgentCount(): number {
@@ -173,19 +173,19 @@ export function getPlanModeAgentCount(): number {
   return 1;
 }
 """,
-    "src/utils/attribution.ts": """// src/utils/attribution.ts
+  "src/utils/attribution.ts": """// src/utils/attribution.ts
 
 export function updateModelLaunchTags() {
   // padding to reach line 70
 """
-    + "\n".join(["  // padding"] * 65)
-    + """
+  + "\n".join(["  // padding"] * 65)
+  + """
   // @[MODEL LAUNCH] Update these values when shipping new models
   const latestSonnet = 'claude-3-7-sonnet-20250219';
   const latestOpus = 'claude-3-opus-20240229'; // Update when Opus 3.5/3.7 launches
 }
 """,
-    "src/constants/betas.ts": """// src/constants/betas.ts
+  "src/constants/betas.ts": """// src/constants/betas.ts
 
 export const ANTHROPIC_BETA_HEADERS = {
   INTERLEAVED_THINKING: '2025-05-14',
@@ -200,7 +200,7 @@ export const ANTHROPIC_BETA_HEADERS = {
   CLI_INTERNAL: '2026-02-09', // ANT-ONLY
 };
 """,
-    "src/services/api/antiDistillation.ts": """// src/services/api/antiDistillation.ts
+  "src/services/api/antiDistillation.ts": """// src/services/api/antiDistillation.ts
 import { evalFeature } from '../analytics/growthbook';
 
 export function injectFakeTools(tools: any[]): any[] {
@@ -216,7 +216,7 @@ export function injectFakeTools(tools: any[]): any[] {
   return tools;
 }
 """,
-    "src/utils/fingerprint.ts": """// src/utils/fingerprint.ts
+  "src/utils/fingerprint.ts": """// src/utils/fingerprint.ts
 import crypto from 'crypto';
 
 const SALT = '59cf53e54c78';
@@ -234,13 +234,13 @@ export function generateRequestFingerprint(msg: string, version: string): string
   return hash.substring(0, 3);
 }
 """,
-    "src/entrypoints/cli.tsx": """// src/entrypoints/cli.tsx
+  "src/entrypoints/cli.tsx": """// src/entrypoints/cli.tsx
 import { runCLI } from './runner';
 
 // padding to line 21
 """
-    + "\n".join(["// padding"] * 16)
-    + """
+  + "\n".join(["// padding"] * 16)
+  + """
 // line 21
 if (process.env.CLAUDE_CODE_ABLATION_BASELINE === '1') {
   process.env.CLAUDE_CODE_SIMPLE = '1';
@@ -252,16 +252,16 @@ if (process.env.CLAUDE_CODE_ABLATION_BASELINE === '1') {
 
 runCLI();
 """,
-    "src/services/api/errors.ts": """// src/services/api/errors.ts
+  "src/services/api/errors.ts": """// src/services/api/errors.ts
 
 // padding to line 167
 """
-    + "\n".join(["// padding"] * 162)
-    + """
+  + "\n".join(["// padding"] * 162)
+  + """
 // line 167
 export const CUSTOM_OFF_SWITCH_MESSAGE = 'Opus is experiencing high load, please use /model to switch to Sonnet'; // categorized as 'capacity_off_switch'
 """,
-    "src/constants/system.ts": """// src/constants/system.ts
+  "src/constants/system.ts": """// src/constants/system.ts
 
 export function getUserType(): string {
   return process.env.USER_TYPE || 'external';
@@ -269,8 +269,8 @@ export function getUserType(): string {
 
 // padding to line 64
 """
-    + "\n".join(["// padding"] * 56)
-    + """
+  + "\n".join(["// padding"] * 56)
+  + """
 // line 64
 export const NATIVE_CLIENT_ATTESTATION = {
   // Bun's native HTTP stack (Zig) overwrites this with a computed hash
@@ -291,16 +291,16 @@ export const NATIVE_CLIENT_ATTESTATION = {
 // padding
 // line 82
 """,
-    "src/services/teamMemorySync/secretScanner.ts": """// src/services/teamMemorySync/secretScanner.ts
+  "src/services/teamMemorySync/secretScanner.ts": """// src/services/teamMemorySync/secretScanner.ts
 
 // padding to line 46
 """
-    + "\n".join(["// padding"] * 42)
-    + """
+  + "\n".join(["// padding"] * 42)
+  + """
 // line 46
 export const ANT_API_KEY_PREFIX = ['sk','ant','api'].join('-');
 """,
-    "src/services/api/dumpPrompts.ts": """// src/services/api/dumpPrompts.ts
+  "src/services/api/dumpPrompts.ts": """// src/services/api/dumpPrompts.ts
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
@@ -324,12 +324,12 @@ export function createDumpPromptsFetch(originalFetch: typeof fetch) {
   };
 }
 """,
-    "src/services/analytics/growthbook.ts": """// src/services/analytics/growthbook.ts
+  "src/services/analytics/growthbook.ts": """// src/services/analytics/growthbook.ts
 
 // padding to line 330
 """
-    + "\n".join(["// padding"] * 326)
-    + """
+  + "\n".join(["// padding"] * 326)
+  + """
 // line 330
 // WORKAROUND: GrowthBook's evalFeature() ignores pre-evaluated values from remote eval.
 export function evalFeature(key: string, fallback: any): any {
@@ -346,25 +346,25 @@ function getFromCustomCache(key: string) {
 }
 // padding to 383
 """
-    + "\n".join(["// padding"] * 42)
-    + """
+  + "\n".join(["// padding"] * 42)
+  + """
 // line 383
 """,
-    "src/services/analytics/metadata.ts": """// src/services/analytics/metadata.ts
+  "src/services/analytics/metadata.ts": """// src/services/analytics/metadata.ts
 
 // padding to line 94
 """
-    + "\n".join(["// padding"] * 90)
-    + """
+  + "\n".join(["// padding"] * 90)
+  + """
 // line 94
 // See go/cc-logging, go/taxonomy, go/ccshare, and anthropics/anthropic#274559 for telemetry schema
 """,
 }
 
 for filepath, content in files.items():
-    full_path = os.path.join("labs/ccleaks-mock", filepath)
-    os.makedirs(os.path.dirname(full_path), exist_ok=True)
-    with open(full_path, "w") as f:
-        f.write(content)
+  full_path = os.path.join("labs/ccleaks-mock", filepath)
+  os.makedirs(os.path.dirname(full_path), exist_ok=True)
+  with open(full_path, "w") as f:
+    f.write(content)
 
 print("Mock files generated successfully.")

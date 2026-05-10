@@ -40,26 +40,26 @@ COLLECTION = "brief_exports"
 
 
 class DeletionRecord(BaseModel):
-    """Record of a GDPR deletion action."""
+  """Record of a GDPR deletion action."""
 
-    document_id: str
-    firm_id: str
-    deleted_at: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
-    reason: str = "GDPR Article 17 — 30-day TTL expiry"
-    ttl_days: int = TTL_DAYS
+  document_id: str
+  firm_id: str
+  deleted_at: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
+  reason: str = "GDPR Article 17 — 30-day TTL expiry"
+  ttl_days: int = TTL_DAYS
 
 
 class DeletionReport(BaseModel):
-    """Summary of a GDPR cleanup run."""
+  """Summary of a GDPR cleanup run."""
 
-    run_id: str
-    started_at: str
-    completed_at: str | None = None
-    documents_scanned: int = 0
-    documents_deleted: int = 0
-    documents_retained: int = 0
-    errors: list[str] = Field(default_factory=list)
-    deletion_records: list[DeletionRecord] = Field(default_factory=list)
+  run_id: str
+  started_at: str
+  completed_at: str | None = None
+  documents_scanned: int = 0
+  documents_deleted: int = 0
+  documents_retained: int = 0
+  errors: list[str] = Field(default_factory=list)
+  deletion_records: list[DeletionRecord] = Field(default_factory=list)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -68,106 +68,108 @@ class DeletionReport(BaseModel):
 
 
 async def enforce_brief_ttl(
-    db,  # google.cloud.firestore_v1.AsyncClient
-    dry_run: bool = False,
+  db,  # google.cloud.firestore_v1.AsyncClient
+  dry_run: bool = False,
 ) -> DeletionReport:
-    """
-    Scan brief_exports for expired documents and delete them.
+  """
+  Scan brief_exports for expired documents and delete them.
 
-    This runs as a Cloud Tasks handler, triggered daily by Cloud Scheduler.
+  This runs as a Cloud Tasks handler, triggered daily by Cloud Scheduler.
 
-    Args:
-        db: Firestore async client
-        dry_run: If True, report but don't delete
+  Args:
+      db: Firestore async client
+      dry_run: If True, report but don't delete
 
-    Returns:
-        DeletionReport with scan/delete summary
-    """
-    run_id = f"gdpr-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}"
-    report = DeletionReport(
-        run_id=run_id,
-        started_at=datetime.now(UTC).isoformat(),
+  Returns:
+      DeletionReport with scan/delete summary
+  """
+  run_id = f"gdpr-{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}"
+  report = DeletionReport(
+    run_id=run_id,
+    started_at=datetime.now(UTC).isoformat(),
+  )
+
+  cutoff = datetime.now(UTC) - timedelta(days=TTL_DAYS)
+  logger.info(
+    "GDPR TTL enforcement run %s — scanning for docs older than %s",
+    run_id,
+    cutoff.isoformat(),
+  )
+
+  try:
+    # Query expired documents
+    query = (
+      db.collection(COLLECTION).where("expires_at", "<=", cutoff).limit(BATCH_SIZE)
     )
 
-    cutoff = datetime.now(UTC) - timedelta(days=TTL_DAYS)
-    logger.info(
-        "GDPR TTL enforcement run %s — scanning for docs older than %s",
-        run_id,
-        cutoff.isoformat(),
-    )
+    docs = query.stream()
+    batch = db.batch()
+    batch_count = 0
 
-    try:
-        # Query expired documents
-        query = db.collection(COLLECTION).where("expires_at", "<=", cutoff).limit(BATCH_SIZE)
+    async for doc in docs:
+      report.documents_scanned += 1
+      data = doc.to_dict()
 
-        docs = query.stream()
-        batch = db.batch()
+      # Safety check: never delete docs from active sessions
+      if data.get("session_active", False):
+        report.documents_retained += 1
+        logger.warning(
+          "Skipping active session doc: %s (firm: %s)",
+          doc.id,
+          data.get("firm_id", "unknown"),
+        )
+        continue
+
+      if dry_run:
+        logger.info("[DRY RUN] Would delete: %s", doc.id)
+        report.documents_deleted += 1
+        report.deletion_records.append(
+          DeletionRecord(
+            document_id=doc.id,
+            firm_id=data.get("firm_id", "unknown"),
+          )
+        )
+        continue
+
+      # Batch delete
+      batch.delete(doc.reference)
+      batch_count += 1
+      report.deletion_records.append(
+        DeletionRecord(
+          document_id=doc.id,
+          firm_id=data.get("firm_id", "unknown"),
+        )
+      )
+
+      # Commit in batches of BATCH_SIZE
+      if batch_count >= BATCH_SIZE:
+        await batch.commit()
+        report.documents_deleted += batch_count
         batch_count = 0
+        batch = db.batch()
 
-        async for doc in docs:
-            report.documents_scanned += 1
-            data = doc.to_dict()
+    # Commit remaining
+    if batch_count > 0 and not dry_run:
+      await batch.commit()
+      report.documents_deleted += batch_count
 
-            # Safety check: never delete docs from active sessions
-            if data.get("session_active", False):
-                report.documents_retained += 1
-                logger.warning(
-                    "Skipping active session doc: %s (firm: %s)",
-                    doc.id,
-                    data.get("firm_id", "unknown"),
-                )
-                continue
+  except Exception as exc:
+    error_msg = f"GDPR enforcement error: {exc}"
+    logger.error(error_msg)
+    report.errors.append(error_msg)
 
-            if dry_run:
-                logger.info("[DRY RUN] Would delete: %s", doc.id)
-                report.documents_deleted += 1
-                report.deletion_records.append(
-                    DeletionRecord(
-                        document_id=doc.id,
-                        firm_id=data.get("firm_id", "unknown"),
-                    )
-                )
-                continue
+  report.completed_at = datetime.now(UTC).isoformat()
 
-            # Batch delete
-            batch.delete(doc.reference)
-            batch_count += 1
-            report.deletion_records.append(
-                DeletionRecord(
-                    document_id=doc.id,
-                    firm_id=data.get("firm_id", "unknown"),
-                )
-            )
+  logger.info(
+    "GDPR TTL run %s complete: scanned=%d, deleted=%d, retained=%d, errors=%d",
+    run_id,
+    report.documents_scanned,
+    report.documents_deleted,
+    report.documents_retained,
+    len(report.errors),
+  )
 
-            # Commit in batches of BATCH_SIZE
-            if batch_count >= BATCH_SIZE:
-                await batch.commit()
-                report.documents_deleted += batch_count
-                batch_count = 0
-                batch = db.batch()
-
-        # Commit remaining
-        if batch_count > 0 and not dry_run:
-            await batch.commit()
-            report.documents_deleted += batch_count
-
-    except Exception as exc:
-        error_msg = f"GDPR enforcement error: {exc}"
-        logger.error(error_msg)
-        report.errors.append(error_msg)
-
-    report.completed_at = datetime.now(UTC).isoformat()
-
-    logger.info(
-        "GDPR TTL run %s complete: scanned=%d, deleted=%d, retained=%d, errors=%d",
-        run_id,
-        report.documents_scanned,
-        report.documents_deleted,
-        report.documents_retained,
-        len(report.errors),
-    )
-
-    return report
+  return report
 
 
 # ═══════════════════════════════════════════════════════════
@@ -175,18 +177,18 @@ async def enforce_brief_ttl(
 # ═══════════════════════════════════════════════════════════
 
 CLOUD_SCHEDULER_CONFIG = {
-    "name": "gdpr-brief-ttl-enforcement",
-    "schedule": "0 3 * * *",  # Daily at 3:00 AM UTC
-    "time_zone": "UTC",
-    "http_target": {
-        "uri": "https://counselconduit-767252945109.us-central1.run.app/api/gdpr/enforce-ttl",
-        "http_method": "POST",
-        "oidc_token": {
-            "service_account_email": "counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com",
-        },
+  "name": "gdpr-brief-ttl-enforcement",
+  "schedule": "0 3 * * *",  # Daily at 3:00 AM UTC
+  "time_zone": "UTC",
+  "http_target": {
+    "uri": "https://counselconduit-767252945109.us-central1.run.app/api/gdpr/enforce-ttl",
+    "http_method": "POST",
+    "oidc_token": {
+      "service_account_email": "counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com",
     },
-    "retry_config": {
-        "retry_count": 3,
-        "max_retry_duration": "600s",
-    },
+  },
+  "retry_config": {
+    "retry_count": 3,
+    "max_retry_duration": "600s",
+  },
 }

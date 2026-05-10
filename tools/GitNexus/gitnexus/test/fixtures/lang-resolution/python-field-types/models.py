@@ -2,15 +2,15 @@
 
 
 class Address:
-    city: str
+  city: str
 
-    def save(self):
-        pass
+  def save(self):
+    pass
 
 
 class User:
-    name: str
-    address: Address
+  name: str
+  address: Address
 
-    def greet(self) -> str:
-        return self.name
+  def greet(self) -> str:
+    return self.name

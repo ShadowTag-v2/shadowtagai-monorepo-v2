@@ -2,5 +2,5 @@
 
 
 class Handler:
-    def process(self):
-        pass
+  def process(self):
+    pass

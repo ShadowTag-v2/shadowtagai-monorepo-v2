@@ -6,4 +6,4 @@ _core = import_module("packages.aiyou-core")
 
 
 def test_ping():
-    assert _core.ping() == "pong"
+  assert _core.ping() == "pong"

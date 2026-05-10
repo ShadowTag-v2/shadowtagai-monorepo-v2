@@ -24,53 +24,55 @@ _FROM_NAME = os.getenv("FROM_NAME", "KovelAI")
 
 
 async def send_email(
-    to: str,
-    subject: str,
-    html: str,
-    reply_to: str | None = None,
-    _tags: list[dict[str, str]] | None = None,  # noqa: ARG001 — caller-facing API, not consumed by Gmail backend
+  to: str,
+  subject: str,
+  html: str,
+  reply_to: str | None = None,
+  _tags: list[dict[str, str]] | None = None,  # noqa: ARG001 — caller-facing API, not consumed by Gmail backend
 ) -> dict[str, Any]:
-    """Send an email via Gmail API (Google Workspace).
+  """Send an email via Gmail API (Google Workspace).
 
-    Returns {"id": "email_id"} on success, {"error": "..."} on failure.
-    Delegates to workspace_alerts.send_email() which uses ADC + Gmail API.
-    """
+  Returns {"id": "email_id"} on success, {"error": "..."} on failure.
+  Delegates to workspace_alerts.send_email() which uses ADC + Gmail API.
+  """
+  try:
     try:
-        try:
-            from apps.counselconduit.api.workspace_alerts import send_email as _gws_send
-        except ImportError:
-            from api.workspace_alerts import send_email as _gws_send  # type: ignore[no-redef]
+      from apps.counselconduit.api.workspace_alerts import send_email as _gws_send
+    except ImportError:
+      from api.workspace_alerts import send_email as _gws_send  # type: ignore[no-redef]
 
-        success = await _gws_send(
-            to=to,
-            subject=subject,
-            body_html=html,
-            reply_to=reply_to,
-        )
-        if success:
-            logger.info("Email sent via Gmail: to=%s subject=%s", to, subject)
-            return {"id": "gmail-sent", "to": to, "subject": subject}
-        else:
-            logger.warning("Gmail send returned False: to=%s subject=%s", to, subject)
-            return {"error": "gmail_send_failed", "to": to}
+    success = await _gws_send(
+      to=to,
+      subject=subject,
+      body_html=html,
+      reply_to=reply_to,
+    )
+    if success:
+      logger.info("Email sent via Gmail: to=%s subject=%s", to, subject)
+      return {"id": "gmail-sent", "to": to, "subject": subject}
+    else:
+      logger.warning("Gmail send returned False: to=%s subject=%s", to, subject)
+      return {"error": "gmail_send_failed", "to": to}
 
-    except Exception as e:
-        logger.info("DEV_MODE: email to=%s subject=%s (Gmail not configured: %s)", to, subject, e)
-        return {"id": "dev-mode-no-send", "to": to, "subject": subject}
+  except Exception as e:
+    logger.info(
+      "DEV_MODE: email to=%s subject=%s (Gmail not configured: %s)", to, subject, e
+    )
+    return {"id": "dev-mode-no-send", "to": to, "subject": subject}
 
 
 # ── Pre-built Email Templates ─────────────────────────────────────────────
 
 
 async def send_magic_link_email(
-    to: str,
-    attorney_name: str,
-    firm_name: str,
-    magic_link: str,
-    matter_description: str = "",
+  to: str,
+  attorney_name: str,
+  firm_name: str,
+  magic_link: str,
+  matter_description: str = "",
 ) -> dict[str, Any]:
-    """Send a magic link invitation email to a client."""
-    html = f"""
+  """Send a magic link invitation email to a client."""
+  html = f"""
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 580px; margin: 0 auto; padding: 40px 20px;">
       <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 40px; color: #e2e8f0;">
         <div style="text-align: center; margin-bottom: 32px;">
@@ -101,22 +103,22 @@ async def send_magic_link_email(
       </div>
     </div>
     """
-    return await send_email(
-        to=to,
-        subject=f"{attorney_name} has invited you to a secure research session",
-        html=html,
-        _tags=[{"name": "type", "value": "magic_link"}],
-    )
+  return await send_email(
+    to=to,
+    subject=f"{attorney_name} has invited you to a secure research session",
+    html=html,
+    _tags=[{"name": "type", "value": "magic_link"}],
+  )
 
 
 async def send_vent_receipt(
-    to: str,
-    amount_display: str,
-    session_id: str,
-    firm_name: str,
+  to: str,
+  amount_display: str,
+  session_id: str,
+  firm_name: str,
 ) -> dict[str, Any]:
-    """Send a Vent Mode payment receipt."""
-    html = f"""
+  """Send a Vent Mode payment receipt."""
+  html = f"""
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 580px; margin: 0 auto; padding: 40px 20px;">
       <div style="background: #0f172a; border-radius: 16px; padding: 40px; color: #e2e8f0;">
         <h1 style="font-size: 20px; font-weight: 700; color: #34d399; margin: 0 0 24px;">✓ Payment Confirmed</h1>
@@ -136,21 +138,21 @@ async def send_vent_receipt(
       </div>
     </div>
     """
-    return await send_email(
-        to=to,
-        subject=f"Payment confirmed — {amount_display} intake session",
-        html=html,
-        _tags=[{"name": "type", "value": "vent_receipt"}],
-    )
+  return await send_email(
+    to=to,
+    subject=f"Payment confirmed — {amount_display} intake session",
+    html=html,
+    _tags=[{"name": "type", "value": "vent_receipt"}],
+  )
 
 
 async def send_gdpr_confirmation(
-    to: str,
-    request_id: str,
-    deletion_date: str,
+  to: str,
+  request_id: str,
+  deletion_date: str,
 ) -> dict[str, Any]:
-    """Send GDPR deletion request confirmation."""
-    html = f"""
+  """Send GDPR deletion request confirmation."""
+  html = f"""
     <div style="font-family: 'Inter', -apple-system, sans-serif; max-width: 580px; margin: 0 auto; padding: 40px 20px;">
       <div style="background: #0f172a; border-radius: 16px; padding: 40px; color: #e2e8f0;">
         <h1 style="font-size: 20px; font-weight: 700; margin: 0 0 24px;">Account Deletion Request</h1>
@@ -169,9 +171,9 @@ async def send_gdpr_confirmation(
       </div>
     </div>
     """
-    return await send_email(
-        to=to,
-        subject="Your account deletion request has been received",
-        html=html,
-        _tags=[{"name": "type", "value": "gdpr_confirmation"}],
-    )
+  return await send_email(
+    to=to,
+    subject="Your account deletion request has been received",
+    html=html,
+    _tags=[{"name": "type", "value": "gdpr_confirmation"}],
+  )

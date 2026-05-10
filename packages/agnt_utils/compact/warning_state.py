@@ -21,23 +21,23 @@ _suppressed: bool = False
 
 
 def suppress_compact_warning() -> None:
-    """Suppress the compact warning.  Call after successful compaction."""
-    global _suppressed
-    with _lock:
-        _suppressed = True
+  """Suppress the compact warning.  Call after successful compaction."""
+  global _suppressed
+  with _lock:
+    _suppressed = True
 
 
 def clear_compact_warning_suppression() -> None:
-    """Clear the compact warning suppression.
+  """Clear the compact warning suppression.
 
-    Called at start of new compact attempt.
-    """
-    global _suppressed
-    with _lock:
-        _suppressed = False
+  Called at start of new compact attempt.
+  """
+  global _suppressed
+  with _lock:
+    _suppressed = False
 
 
 def get_compact_warning_suppressed() -> bool:
-    """Return whether the compact warning is currently suppressed."""
-    with _lock:
-        return _suppressed
+  """Return whether the compact warning is currently suppressed."""
+  with _lock:
+    return _suppressed

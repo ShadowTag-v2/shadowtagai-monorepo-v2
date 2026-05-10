@@ -30,49 +30,49 @@ R = TypeVar("R")
 
 
 def sequential[R](
-    fn: Callable[..., Awaitable[R]],
+  fn: Callable[..., Awaitable[R]],
 ) -> Callable[..., Awaitable[R]]:
-    """Wrap an async function so concurrent invocations execute sequentially.
+  """Wrap an async function so concurrent invocations execute sequentially.
 
-    Each call receives its own return value (or exception).  Order is FIFO.
-    The wrapper is reentrant-safe: items enqueued while the processor is
-    running are drained in the same loop iteration, avoiding a second
-    ``processQueue`` coroutine.
-    """
-    queue: deque[tuple[tuple[Any, ...], dict[str, Any], asyncio.Future[R]]] = deque()
-    processing = False
+  Each call receives its own return value (or exception).  Order is FIFO.
+  The wrapper is reentrant-safe: items enqueued while the processor is
+  running are drained in the same loop iteration, avoiding a second
+  ``processQueue`` coroutine.
+  """
+  queue: deque[tuple[tuple[Any, ...], dict[str, Any], asyncio.Future[R]]] = deque()
+  processing = False
 
-    async def _process() -> None:
-        nonlocal processing
-        if processing:
-            return
-        processing = True
+  async def _process() -> None:
+    nonlocal processing
+    if processing:
+      return
+    processing = True
+    try:
+      while queue:
+        args, kwargs, future = queue.popleft()
+        if future.cancelled():
+          continue
         try:
-            while queue:
-                args, kwargs, future = queue.popleft()
-                if future.cancelled():
-                    continue
-                try:
-                    result = await fn(*args, **kwargs)
-                    if not future.done():
-                        future.set_result(result)
-                except BaseException as exc:
-                    if not future.done():
-                        future.set_exception(exc)
-        finally:
-            processing = False
-            # Drain any items added while we were in the finally block.
-            if queue:
-                asyncio.ensure_future(_process())
-
-    @functools.wraps(fn)
-    async def wrapper(*args: Any, **kwargs: Any) -> R:
-        loop = asyncio.get_running_loop()
-        future: asyncio.Future[R] = loop.create_future()
-        queue.append((args, kwargs, future))
+          result = await fn(*args, **kwargs)
+          if not future.done():
+            future.set_result(result)
+        except BaseException as exc:
+          if not future.done():
+            future.set_exception(exc)
+    finally:
+      processing = False
+      # Drain any items added while we were in the finally block.
+      if queue:
         asyncio.ensure_future(_process())
-        return await future
 
-    # Expose queue length for diagnostics.
-    wrapper.pending = lambda: len(queue)  # type: ignore[attr-defined]
-    return wrapper
+  @functools.wraps(fn)
+  async def wrapper(*args: Any, **kwargs: Any) -> R:
+    loop = asyncio.get_running_loop()
+    future: asyncio.Future[R] = loop.create_future()
+    queue.append((args, kwargs, future))
+    asyncio.ensure_future(_process())
+    return await future
+
+  # Expose queue length for diagnostics.
+  wrapper.pending = lambda: len(queue)  # type: ignore[attr-defined]
+  return wrapper

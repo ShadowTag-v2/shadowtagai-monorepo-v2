@@ -23,61 +23,61 @@ logger = logging.getLogger("counselconduit.intake_summarizer")
 
 
 class Urgency(StrEnum):
-    LOW = "low"
-    MODERATE = "moderate"
-    HIGH = "high"
-    CRITICAL = "critical"
+  LOW = "low"
+  MODERATE = "moderate"
+  HIGH = "high"
+  CRITICAL = "critical"
 
 
 class EmotionalState(StrEnum):
-    CALM = "calm"
-    ANXIOUS = "anxious"
-    FRUSTRATED = "frustrated"
-    DISTRESSED = "distressed"
-    ANGRY = "angry"
+  CALM = "calm"
+  ANXIOUS = "anxious"
+  FRUSTRATED = "frustrated"
+  DISTRESSED = "distressed"
+  ANGRY = "angry"
 
 
 @dataclass
 class IntakeSummary:
-    """Structured legal intake summary extracted from Vent Mode transcript."""
+  """Structured legal intake summary extracted from Vent Mode transcript."""
 
-    session_id: str
-    client_name: str = ""
-    key_facts: list[str] = field(default_factory=list)
-    legal_issues: list[str] = field(default_factory=list)
-    opposing_parties: list[str] = field(default_factory=list)
-    emotional_state: EmotionalState = EmotionalState.CALM
-    urgency: Urgency = Urgency.MODERATE
-    suggested_actions: list[str] = field(default_factory=list)
-    potential_claims: list[str] = field(default_factory=list)
-    jurisdiction_hints: list[str] = field(default_factory=list)
-    raw_summary: str = ""
-    confidence: float = 0.0
-    # S.E.U. additions
-    layman_summary: str = ""  # Jargon-free plain-language version
-    warm_handoff_triggered: bool = False  # True if θ threshold exceeded
-    legal_domain_count: int = 0  # Number of distinct legal domains detected
-    session_recap: str = ""  # "Here's what you now understand" framing
+  session_id: str
+  client_name: str = ""
+  key_facts: list[str] = field(default_factory=list)
+  legal_issues: list[str] = field(default_factory=list)
+  opposing_parties: list[str] = field(default_factory=list)
+  emotional_state: EmotionalState = EmotionalState.CALM
+  urgency: Urgency = Urgency.MODERATE
+  suggested_actions: list[str] = field(default_factory=list)
+  potential_claims: list[str] = field(default_factory=list)
+  jurisdiction_hints: list[str] = field(default_factory=list)
+  raw_summary: str = ""
+  confidence: float = 0.0
+  # S.E.U. additions
+  layman_summary: str = ""  # Jargon-free plain-language version
+  warm_handoff_triggered: bool = False  # True if θ threshold exceeded
+  legal_domain_count: int = 0  # Number of distinct legal domains detected
+  session_recap: str = ""  # "Here's what you now understand" framing
 
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "session_id": self.session_id,
-            "client_name": self.client_name,
-            "key_facts": self.key_facts,
-            "legal_issues": self.legal_issues,
-            "opposing_parties": self.opposing_parties,
-            "emotional_state": self.emotional_state.value,
-            "urgency": self.urgency.value,
-            "suggested_actions": self.suggested_actions,
-            "potential_claims": self.potential_claims,
-            "jurisdiction_hints": self.jurisdiction_hints,
-            "raw_summary": self.raw_summary,
-            "confidence": self.confidence,
-            "layman_summary": self.layman_summary,
-            "warm_handoff_triggered": self.warm_handoff_triggered,
-            "legal_domain_count": self.legal_domain_count,
-            "session_recap": self.session_recap,
-        }
+  def to_dict(self) -> dict[str, Any]:
+    return {
+      "session_id": self.session_id,
+      "client_name": self.client_name,
+      "key_facts": self.key_facts,
+      "legal_issues": self.legal_issues,
+      "opposing_parties": self.opposing_parties,
+      "emotional_state": self.emotional_state.value,
+      "urgency": self.urgency.value,
+      "suggested_actions": self.suggested_actions,
+      "potential_claims": self.potential_claims,
+      "jurisdiction_hints": self.jurisdiction_hints,
+      "raw_summary": self.raw_summary,
+      "confidence": self.confidence,
+      "layman_summary": self.layman_summary,
+      "warm_handoff_triggered": self.warm_handoff_triggered,
+      "legal_domain_count": self.legal_domain_count,
+      "session_recap": self.session_recap,
+    }
 
 
 # ── System Prompts (structurally isolated from user input — OWASP LLM01) ──
@@ -118,26 +118,28 @@ _WARM_HANDOFF_THETA = 3
 
 
 async def extract_intake_summary(
-    session_id: str,
-    transcript: list[dict[str, str]],
-    model_override: str | None = None,
+  session_id: str,
+  transcript: list[dict[str, str]],
+  model_override: str | None = None,
 ) -> IntakeSummary:
-    """Extract a structured intake summary from a Vent Mode transcript.
+  """Extract a structured intake summary from a Vent Mode transcript.
 
-    Args:
-        session_id: The Vent Mode session ID.
-        transcript: List of {"role": "client"|"ai", "content": "..."} messages.
-        model_override: Optional model ID. Defaults to gemini-3.1-flash-lite-preview.
+  Args:
+      session_id: The Vent Mode session ID.
+      transcript: List of {"role": "client"|"ai", "content": "..."} messages.
+      model_override: Optional model ID. Defaults to gemini-3.1-flash-lite-preview.
 
-    Returns:
-        IntakeSummary dataclass with extracted fields.
-    """
-    model = model_override or "gemini/gemini-3.1-flash-lite-preview"
+  Returns:
+      IntakeSummary dataclass with extracted fields.
+  """
+  model = model_override or "gemini/gemini-3.1-flash-lite-preview"
 
-    # Format transcript for analysis
-    formatted = "\n".join(f"[{msg['role'].upper()}]: {msg['content']}" for msg in transcript)
+  # Format transcript for analysis
+  formatted = "\n".join(
+    f"[{msg['role'].upper()}]: {msg['content']}" for msg in transcript
+  )
 
-    user_prompt = f"""Analyze this confidential client intake session and extract a structured summary.
+  user_prompt = f"""Analyze this confidential client intake session and extract a structured summary.
 
 TRANSCRIPT:
 ---
@@ -146,83 +148,85 @@ TRANSCRIPT:
 
 Extract the intake summary as valid JSON."""
 
-    # Apply prompt repetition for non-reasoning models (arXiv 2512.14982)
-    is_non_reasoning = not any(kw in model.lower() for kw in ["thinking", "r1", "reasoning"])
-    if is_non_reasoning:
-        user_prompt = f"{user_prompt}\n\nREPEAT INSTRUCTION: Extract the intake summary as valid JSON matching the specified schema."
+  # Apply prompt repetition for non-reasoning models (arXiv 2512.14982)
+  is_non_reasoning = not any(
+    kw in model.lower() for kw in ["thinking", "r1", "reasoning"]
+  )
+  if is_non_reasoning:
+    user_prompt = f"{user_prompt}\n\nREPEAT INSTRUCTION: Extract the intake summary as valid JSON matching the specified schema."
 
-    try:
-        import litellm
+  try:
+    import litellm
 
-        response = await litellm.acompletion(
-            model=model,
-            messages=[
-                {"role": "system", "content": _EXTRACTION_SYSTEM_PROMPT},
-                {"role": "user", "content": user_prompt},
-            ],
-            temperature=0.1,  # Low temp for structured extraction
-            response_format={"type": "json_object"},
-        )
+    response = await litellm.acompletion(
+      model=model,
+      messages=[
+        {"role": "system", "content": _EXTRACTION_SYSTEM_PROMPT},
+        {"role": "user", "content": user_prompt},
+      ],
+      temperature=0.1,  # Low temp for structured extraction
+      response_format={"type": "json_object"},
+    )
 
-        raw = response.choices[0].message.content
-        data = json.loads(raw)
+    raw = response.choices[0].message.content
+    data = json.loads(raw)
 
-        summary = IntakeSummary(
-            session_id=session_id,
-            client_name=data.get("client_name", ""),
-            key_facts=data.get("key_facts", []),
-            legal_issues=data.get("legal_issues", []),
-            opposing_parties=data.get("opposing_parties", []),
-            emotional_state=EmotionalState(data.get("emotional_state", "calm")),
-            urgency=Urgency(data.get("urgency", "moderate")),
-            suggested_actions=data.get("suggested_actions", []),
-            potential_claims=data.get("potential_claims", []),
-            jurisdiction_hints=data.get("jurisdiction_hints", []),
-            raw_summary=data.get("raw_summary", ""),
-            confidence=float(data.get("confidence", 0.0)),
-            layman_summary=data.get("layman_summary", ""),
-            legal_domain_count=int(data.get("legal_domain_count", 0)),
-            session_recap=data.get("session_recap", ""),
-        )
+    summary = IntakeSummary(
+      session_id=session_id,
+      client_name=data.get("client_name", ""),
+      key_facts=data.get("key_facts", []),
+      legal_issues=data.get("legal_issues", []),
+      opposing_parties=data.get("opposing_parties", []),
+      emotional_state=EmotionalState(data.get("emotional_state", "calm")),
+      urgency=Urgency(data.get("urgency", "moderate")),
+      suggested_actions=data.get("suggested_actions", []),
+      potential_claims=data.get("potential_claims", []),
+      jurisdiction_hints=data.get("jurisdiction_hints", []),
+      raw_summary=data.get("raw_summary", ""),
+      confidence=float(data.get("confidence", 0.0)),
+      layman_summary=data.get("layman_summary", ""),
+      legal_domain_count=int(data.get("legal_domain_count", 0)),
+      session_recap=data.get("session_recap", ""),
+    )
 
-        # Warm handoff trigger: θ > 3 legal domains
-        if summary.legal_domain_count > _WARM_HANDOFF_THETA:
-            summary.warm_handoff_triggered = True
-            logger.info(
-                "Warm handoff triggered: session=%s domains=%d (threshold=%d)",
-                session_id,
-                summary.legal_domain_count,
-                _WARM_HANDOFF_THETA,
-            )
+    # Warm handoff trigger: θ > 3 legal domains
+    if summary.legal_domain_count > _WARM_HANDOFF_THETA:
+      summary.warm_handoff_triggered = True
+      logger.info(
+        "Warm handoff triggered: session=%s domains=%d (threshold=%d)",
+        session_id,
+        summary.legal_domain_count,
+        _WARM_HANDOFF_THETA,
+      )
 
-        logger.info(
-            "Intake summary extracted: session=%s issues=%d urgency=%s confidence=%.2f handoff=%s",
-            session_id,
-            len(summary.legal_issues),
-            summary.urgency.value,
-            summary.confidence,
-            summary.warm_handoff_triggered,
-        )
-        return summary
+    logger.info(
+      "Intake summary extracted: session=%s issues=%d urgency=%s confidence=%.2f handoff=%s",
+      session_id,
+      len(summary.legal_issues),
+      summary.urgency.value,
+      summary.confidence,
+      summary.warm_handoff_triggered,
+    )
+    return summary
 
-    except ImportError:
-        logger.warning("litellm not installed — returning placeholder summary")
-        return IntakeSummary(
-            session_id=session_id,
-            raw_summary="Intake summary pending — litellm not installed.",
-            confidence=0.0,
-        )
-    except json.JSONDecodeError as e:
-        logger.error("Failed to parse intake JSON: %s", e)
-        return IntakeSummary(
-            session_id=session_id,
-            raw_summary="Intake extraction failed — invalid JSON response.",
-            confidence=0.0,
-        )
-    except Exception as e:
-        logger.error("Intake extraction failed: %s", e)
-        return IntakeSummary(
-            session_id=session_id,
-            raw_summary=f"Intake extraction error: {e}",
-            confidence=0.0,
-        )
+  except ImportError:
+    logger.warning("litellm not installed — returning placeholder summary")
+    return IntakeSummary(
+      session_id=session_id,
+      raw_summary="Intake summary pending — litellm not installed.",
+      confidence=0.0,
+    )
+  except json.JSONDecodeError as e:
+    logger.error("Failed to parse intake JSON: %s", e)
+    return IntakeSummary(
+      session_id=session_id,
+      raw_summary="Intake extraction failed — invalid JSON response.",
+      confidence=0.0,
+    )
+  except Exception as e:
+    logger.error("Intake extraction failed: %s", e)
+    return IntakeSummary(
+      session_id=session_id,
+      raw_summary=f"Intake extraction error: {e}",
+      confidence=0.0,
+    )

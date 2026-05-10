@@ -10,17 +10,17 @@ Integrates with prompt_sections for memoized/volatile resolution.
 """
 
 from packages.prompt_assembler.assembler import (
-    CYBER_RISK_INSTRUCTION,
-    SYSTEM_PROMPT_DYNAMIC_BOUNDARY,
-    PromptAssembler,
-    PromptConfig,
-    assemble_system_prompt,
+  CYBER_RISK_INSTRUCTION,
+  SYSTEM_PROMPT_DYNAMIC_BOUNDARY,
+  PromptAssembler,
+  PromptConfig,
+  assemble_system_prompt,
 )
 
 __all__ = [
-    "CYBER_RISK_INSTRUCTION",
-    "SYSTEM_PROMPT_DYNAMIC_BOUNDARY",
-    "PromptAssembler",
-    "PromptConfig",
-    "assemble_system_prompt",
+  "CYBER_RISK_INSTRUCTION",
+  "SYSTEM_PROMPT_DYNAMIC_BOUNDARY",
+  "PromptAssembler",
+  "PromptConfig",
+  "assemble_system_prompt",
 ]

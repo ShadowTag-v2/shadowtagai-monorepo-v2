@@ -7,15 +7,15 @@ cost, diff, doctor, dream, effort.
 """
 
 from packages.agnt_commands.commands import (
-    COMMAND_REGISTRY,
-    CommandContext,
-    CommandResult,
-    dispatch_command,
+  COMMAND_REGISTRY,
+  CommandContext,
+  CommandResult,
+  dispatch_command,
 )
 
 __all__ = [
-    "COMMAND_REGISTRY",
-    "CommandContext",
-    "CommandResult",
-    "dispatch_command",
+  "COMMAND_REGISTRY",
+  "CommandContext",
+  "CommandResult",
+  "dispatch_command",
 ]

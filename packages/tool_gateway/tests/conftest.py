@@ -14,4 +14,4 @@ from pathlib import Path
 # Add packages/ to sys.path for standalone pytest discovery
 _packages_dir = str(Path(__file__).resolve().parent.parent.parent)
 if _packages_dir not in sys.path:
-    sys.path.insert(0, _packages_dir)
+  sys.path.insert(0, _packages_dir)

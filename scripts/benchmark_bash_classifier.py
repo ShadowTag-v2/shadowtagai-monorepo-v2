@@ -22,86 +22,86 @@ from packages.agnt_bash_classifier.classifier import BashSecurityClassifier
 
 
 def benchmark_pipeline(iterations: int = 10_000) -> dict[str, dict[str, float]]:
-    """Benchmark PASS and BLOCK paths at the given iteration count.
+  """Benchmark PASS and BLOCK paths at the given iteration count.
 
-    Returns:
-        Dict with 'pass_path' and 'block_path' keys, each containing
-        mean, median, p95, p99, min, max latency in milliseconds.
-    """
-    classifier = BashSecurityClassifier(telemetry=None)
+  Returns:
+      Dict with 'pass_path' and 'block_path' keys, each containing
+      mean, median, p95, p99, min, max latency in milliseconds.
+  """
+  classifier = BashSecurityClassifier(telemetry=None)
 
-    # Representative PASS command (benign)
-    pass_cmd = "git log --oneline -10"
+  # Representative PASS command (benign)
+  pass_cmd = "git log --oneline -10"
 
-    # Representative BLOCK command (hits check 5 — backtick substitution)
-    block_cmd = "echo `whoami`"
+  # Representative BLOCK command (hits check 5 — backtick substitution)
+  block_cmd = "echo `whoami`"
 
-    # Mixed-complexity PASS command (longer, more tokens)
-    complex_pass_cmd = "PAGER=cat git diff --stat HEAD~3 HEAD -- packages/agnt_bash_classifier/classifier.py"
+  # Mixed-complexity PASS command (longer, more tokens)
+  complex_pass_cmd = "PAGER=cat git diff --stat HEAD~3 HEAD -- packages/agnt_bash_classifier/classifier.py"
 
-    results: dict[str, dict[str, float]] = {}
+  results: dict[str, dict[str, float]] = {}
 
-    for label, cmd in [
-        ("pass_path_simple", pass_cmd),
-        ("pass_path_complex", complex_pass_cmd),
-        ("block_path_early", block_cmd),
-    ]:
-        timings: list[float] = []
-        for _ in range(iterations):
-            t0 = time.perf_counter_ns()
-            classifier.classify(cmd)
-            elapsed_ms = (time.perf_counter_ns() - t0) / 1_000_000
-            timings.append(elapsed_ms)
+  for label, cmd in [
+    ("pass_path_simple", pass_cmd),
+    ("pass_path_complex", complex_pass_cmd),
+    ("block_path_early", block_cmd),
+  ]:
+    timings: list[float] = []
+    for _ in range(iterations):
+      t0 = time.perf_counter_ns()
+      classifier.classify(cmd)
+      elapsed_ms = (time.perf_counter_ns() - t0) / 1_000_000
+      timings.append(elapsed_ms)
 
-        timings.sort()
-        results[label] = {
-            "mean_ms": statistics.mean(timings),
-            "median_ms": statistics.median(timings),
-            "p95_ms": timings[int(len(timings) * 0.95)],
-            "p99_ms": timings[int(len(timings) * 0.99)],
-            "min_ms": timings[0],
-            "max_ms": timings[-1],
-            "iterations": iterations,
-        }
+    timings.sort()
+    results[label] = {
+      "mean_ms": statistics.mean(timings),
+      "median_ms": statistics.median(timings),
+      "p95_ms": timings[int(len(timings) * 0.95)],
+      "p99_ms": timings[int(len(timings) * 0.99)],
+      "min_ms": timings[0],
+      "max_ms": timings[-1],
+      "iterations": iterations,
+    }
 
-    return results
+  return results
 
 
 def main() -> None:
-    """Run the benchmark and print results."""
-    print("=" * 70)
-    print("  Bash Security Classifier — 10K Iteration Benchmark")
-    print("=" * 70)
+  """Run the benchmark and print results."""
+  print("=" * 70)
+  print("  Bash Security Classifier — 10K Iteration Benchmark")
+  print("=" * 70)
+  print()
+
+  results = benchmark_pipeline(10_000)
+
+  target_ms = 5.0
+  all_pass = True
+
+  for label, stats in results.items():
+    p99 = stats["p99_ms"]
+    status = "✅ PASS" if p99 < target_ms else "❌ FAIL"
+    if p99 >= target_ms:
+      all_pass = False
+
+    print(f"  [{label}]")
+    print(f"    Mean:   {stats['mean_ms']:.3f} ms")
+    print(f"    Median: {stats['median_ms']:.3f} ms")
+    print(f"    P95:    {stats['p95_ms']:.3f} ms")
+    print(f"    P99:    {stats['p99_ms']:.3f} ms  {status} (target <{target_ms}ms)")
+    print(f"    Min:    {stats['min_ms']:.3f} ms")
+    print(f"    Max:    {stats['max_ms']:.3f} ms")
+    print(f"    Iters:  {int(stats['iterations'])}")
     print()
 
-    results = benchmark_pipeline(10_000)
-
-    target_ms = 5.0
-    all_pass = True
-
-    for label, stats in results.items():
-        p99 = stats["p99_ms"]
-        status = "✅ PASS" if p99 < target_ms else "❌ FAIL"
-        if p99 >= target_ms:
-            all_pass = False
-
-        print(f"  [{label}]")
-        print(f"    Mean:   {stats['mean_ms']:.3f} ms")
-        print(f"    Median: {stats['median_ms']:.3f} ms")
-        print(f"    P95:    {stats['p95_ms']:.3f} ms")
-        print(f"    P99:    {stats['p99_ms']:.3f} ms  {status} (target <{target_ms}ms)")
-        print(f"    Min:    {stats['min_ms']:.3f} ms")
-        print(f"    Max:    {stats['max_ms']:.3f} ms")
-        print(f"    Iters:  {int(stats['iterations'])}")
-        print()
-
-    print("=" * 70)
-    if all_pass:
-        print("  OVERALL: ✅ ALL PATHS UNDER 5ms P99 TARGET")
-    else:
-        print("  OVERALL: ❌ LATENCY TARGET EXCEEDED — INVESTIGATE")
-    print("=" * 70)
+  print("=" * 70)
+  if all_pass:
+    print("  OVERALL: ✅ ALL PATHS UNDER 5ms P99 TARGET")
+  else:
+    print("  OVERALL: ❌ LATENCY TARGET EXCEEDED — INVESTIGATE")
+  print("=" * 70)
 
 
 if __name__ == "__main__":
-    main()
+  main()

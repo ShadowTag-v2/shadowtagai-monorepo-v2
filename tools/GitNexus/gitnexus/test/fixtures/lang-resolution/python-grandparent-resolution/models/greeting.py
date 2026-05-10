@@ -2,5 +2,5 @@
 
 
 class Greeting:
-    def save(self) -> None:
-        pass
+  def save(self) -> None:
+    pass

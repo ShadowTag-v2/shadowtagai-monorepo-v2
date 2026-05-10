@@ -29,70 +29,74 @@ import sys
 
 
 def deploy_confidential_proxy(
-    region: str = "us-central1",
-    staging: bool = False,
-    source: str = ".",
+  region: str = "us-central1",
+  staging: bool = False,
+  source: str = ".",
 ) -> None:
-    """Deploy KovelAI edge proxy to Cloud Run with Confidential Computing.
+  """Deploy KovelAI edge proxy to Cloud Run with Confidential Computing.
 
-    Args:
-        region: GCP region for deployment.
-        staging: If True, deploy to staging service name.
-        source: Source directory for the build.
-    """
-    service_name = "kovelai-edge-proxy-staging" if staging else "kovelai-edge-proxy"
-    project = "shadowtag-omega-v4"
-    sa = f"counselconduit-{'staging-' if staging else ''}sa@{project}.iam.gserviceaccount.com"
+  Args:
+      region: GCP region for deployment.
+      staging: If True, deploy to staging service name.
+      source: Source directory for the build.
+  """
+  service_name = "kovelai-edge-proxy-staging" if staging else "kovelai-edge-proxy"
+  project = "shadowtag-omega-v4"
+  sa = f"counselconduit-{'staging-' if staging else ''}sa@{project}.iam.gserviceaccount.com"
 
-    print("🔪 Scalpel initiating headless GCP Confidential Computing deployment...")
-    print(f"   Service: {service_name}")
-    print(f"   Region:  {region}")
-    print(f"   SA:      {sa}")
-    print(f"   Staging: {staging}")
+  print("🔪 Scalpel initiating headless GCP Confidential Computing deployment...")
+  print(f"   Service: {service_name}")
+  print(f"   Region:  {region}")
+  print(f"   SA:      {sa}")
+  print(f"   Staging: {staging}")
 
-    cmd = [
-        "gcloud",
-        "run",
-        "deploy",
-        service_name,
-        "--source",
-        source,
-        "--region",
-        region,
-        "--project",
-        project,
-        "--allow-unauthenticated",
-        "--execution-environment",
-        "gen2",
-        "--service-account",
-        sa,
-        "--set-env-vars",
-        "DISABLE_TELEMETRY=1,DISABLE_ERROR_REPORTING=1",
-        "--quiet",
-    ]
+  cmd = [
+    "gcloud",
+    "run",
+    "deploy",
+    service_name,
+    "--source",
+    source,
+    "--region",
+    region,
+    "--project",
+    project,
+    "--allow-unauthenticated",
+    "--execution-environment",
+    "gen2",
+    "--service-account",
+    sa,
+    "--set-env-vars",
+    "DISABLE_TELEMETRY=1,DISABLE_ERROR_REPORTING=1",
+    "--quiet",
+  ]
 
-    result = subprocess.run(cmd, check=False)
-    if result.returncode == 0:
-        print("✅ Confidential Proxy deployed. Stateless edge live. RAM is hardware-encrypted.")
-    else:
-        print("❌ Deployment failed. Check gcloud output above.")
-        sys.exit(1)
+  result = subprocess.run(cmd, check=False)
+  if result.returncode == 0:
+    print(
+      "✅ Confidential Proxy deployed. Stateless edge live. RAM is hardware-encrypted."
+    )
+  else:
+    print("❌ Deployment failed. Check gcloud output above.")
+    sys.exit(1)
 
 
 def main() -> None:
-    """CLI entry point."""
-    parser = argparse.ArgumentParser(description="GCP Scalpel — Zero-Knowledge Deployment")
-    parser.add_argument("--region", default="us-central1", help="GCP region")
-    parser.add_argument("--staging", action="store_true", help="Deploy to staging")
-    parser.add_argument("--source", default=".", help="Source directory")
-    args = parser.parse_args()
+  """CLI entry point."""
+  parser = argparse.ArgumentParser(
+    description="GCP Scalpel — Zero-Knowledge Deployment"
+  )
+  parser.add_argument("--region", default="us-central1", help="GCP region")
+  parser.add_argument("--staging", action="store_true", help="Deploy to staging")
+  parser.add_argument("--source", default=".", help="Source directory")
+  args = parser.parse_args()
 
-    deploy_confidential_proxy(
-        region=args.region,
-        staging=args.staging,
-        source=args.source,
-    )
+  deploy_confidential_proxy(
+    region=args.region,
+    staging=args.staging,
+    source=args.source,
+  )
 
 
 if __name__ == "__main__":
-    main()
+  main()

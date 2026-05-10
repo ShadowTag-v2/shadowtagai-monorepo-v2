@@ -12,10 +12,7 @@ function walk(dir: string, fileList: string[] = []): string[] {
   const files = fs.readdirSync(dir);
   for (const file of files) {
     const fullPath = path.join(dir, file);
-    if (
-      fs.statSync(fullPath).isDirectory() &&
-      !fullPath.includes('node_modules/')
-    ) {
+    if (fs.statSync(fullPath).isDirectory() && !fullPath.includes('node_modules/')) {
       walk(fullPath, fileList);
     } else {
       fileList.push(fullPath);

@@ -50,7 +50,9 @@ logger = logging.getLogger(__name__)
 # Register the Firestore circuit breaker with production-tuned thresholds:
 #   - 3 consecutive failures → OPEN (Firestore is usually fast, 3 failures = real outage)
 #   - 120s reset timeout (GCP control plane recovery window)
-_firestore_breaker = _cb_registry.get_or_create("firestore", failure_threshold=3, reset_timeout_s=120.0)
+_firestore_breaker = _cb_registry.get_or_create(
+  "firestore", failure_threshold=3, reset_timeout_s=120.0
+)
 
 # Rate limiting constants
 RATELIMIT_FILE = Path(os.environ.get("BEADS_DIR", ".beads")) / "sweep_ratelimit.json"
@@ -62,178 +64,180 @@ COLLECTION = "sweep_results"
 
 
 def _get_firestore_client() -> Any:
-    """Lazy-load Firestore client via ADC.
+  """Lazy-load Firestore client via ADC.
 
-    Returns None if google-cloud-firestore is not installed or auth fails.
-    """
-    try:
-        from google.cloud import firestore  # type: ignore[import-untyped]
+  Returns None if google-cloud-firestore is not installed or auth fails.
+  """
+  try:
+    from google.cloud import firestore  # type: ignore[import-untyped]
 
-        project = os.environ.get("GCP_PROJECT", "shadowtag-omega-v4")
-        return firestore.Client(project=project)
-    except ImportError:
-        logger.debug("google-cloud-firestore not installed — Firestore persistence disabled")
-        return None
-    except Exception as exc:
-        logger.warning("Firestore client init failed: %s", exc)
-        return None
+    project = os.environ.get("GCP_PROJECT", "shadowtag-omega-v4")
+    return firestore.Client(project=project)
+  except ImportError:
+    logger.debug(
+      "google-cloud-firestore not installed — Firestore persistence disabled"
+    )
+    return None
+  except Exception as exc:
+    logger.warning("Firestore client init failed: %s", exc)
+    return None
 
 
 def sweep_result_to_doc(
-    result: Any,
-    *,
-    session_id: str = "",
-    pipeline_mode: str = "research_sweep",
-    status: str = "completed",
+  result: Any,
+  *,
+  session_id: str = "",
+  pipeline_mode: str = "research_sweep",
+  status: str = "completed",
 ) -> dict[str, Any]:
-    """Convert a SweepResult dataclass into a Firestore document dict.
+  """Convert a SweepResult dataclass into a Firestore document dict.
 
-    Args:
-        result: A ``SweepResult`` from ``gemini_bridge``.
-        session_id: KAIROS daemon session identifier.
-        pipeline_mode: Pipeline mode string.
-        status: Completion status.
+  Args:
+      result: A ``SweepResult`` from ``gemini_bridge``.
+      session_id: KAIROS daemon session identifier.
+      pipeline_mode: Pipeline mode string.
+      status: Completion status.
 
-    Returns:
-        Dict suitable for Firestore ``set()`` / ``add()``.
-    """
-    return {
-        "query": getattr(result, "query", ""),
-        "report_text": getattr(result, "report_text", ""),
-        "duration_seconds": getattr(result, "duration_seconds", 0.0),
-        "interaction_id": getattr(result, "interaction_id", ""),
-        "agent": getattr(result, "agent", ""),
-        "image_count": len(getattr(result, "images", [])),
-        "pipeline_mode": pipeline_mode,
-        "created_at_epoch": time.time(),
-        "session_id": session_id,
-        "daemon_pid": os.getpid(),
-        "status": status,
-    }
+  Returns:
+      Dict suitable for Firestore ``set()`` / ``add()``.
+  """
+  return {
+    "query": getattr(result, "query", ""),
+    "report_text": getattr(result, "report_text", ""),
+    "duration_seconds": getattr(result, "duration_seconds", 0.0),
+    "interaction_id": getattr(result, "interaction_id", ""),
+    "agent": getattr(result, "agent", ""),
+    "image_count": len(getattr(result, "images", [])),
+    "pipeline_mode": pipeline_mode,
+    "created_at_epoch": time.time(),
+    "session_id": session_id,
+    "daemon_pid": os.getpid(),
+    "status": status,
+  }
 
 
 def persist_sweep_result(
-    result: Any,
-    *,
-    session_id: str = "",
-    pipeline_mode: str = "research_sweep",
-    status: str = "completed",
+  result: Any,
+  *,
+  session_id: str = "",
+  pipeline_mode: str = "research_sweep",
+  status: str = "completed",
 ) -> str | None:
-    """Persist a SweepResult to Firestore.
+  """Persist a SweepResult to Firestore.
 
-    Args:
-        result: A ``SweepResult`` from ``gemini_bridge``.
-        session_id: KAIROS daemon session identifier.
-        pipeline_mode: Pipeline mode.
-        status: Completion status.
+  Args:
+      result: A ``SweepResult`` from ``gemini_bridge``.
+      session_id: KAIROS daemon session identifier.
+      pipeline_mode: Pipeline mode.
+      status: Completion status.
 
-    Returns:
-        The Firestore document ID, or None if persistence failed/disabled.
-    """
-    # Circuit breaker gate — fail fast if Firestore is known-down
-    if not _firestore_breaker.allow_request():
-        logger.warning("Circuit breaker OPEN for firestore — SweepResult not persisted")
-        return None
+  Returns:
+      The Firestore document ID, or None if persistence failed/disabled.
+  """
+  # Circuit breaker gate — fail fast if Firestore is known-down
+  if not _firestore_breaker.allow_request():
+    logger.warning("Circuit breaker OPEN for firestore — SweepResult not persisted")
+    return None
 
-    client = _get_firestore_client()
-    if client is None:
-        logger.info("Firestore persistence disabled — SweepResult not persisted")
-        return None
+  client = _get_firestore_client()
+  if client is None:
+    logger.info("Firestore persistence disabled — SweepResult not persisted")
+    return None
 
-    doc_data = sweep_result_to_doc(
-        result,
-        session_id=session_id,
-        pipeline_mode=pipeline_mode,
-        status=status,
-    )
+  doc_data = sweep_result_to_doc(
+    result,
+    session_id=session_id,
+    pipeline_mode=pipeline_mode,
+    status=status,
+  )
 
-    try:
-        # Server-side timestamp
-        from google.cloud import firestore as fs  # type: ignore[import-untyped]
+  try:
+    # Server-side timestamp
+    from google.cloud import firestore as fs  # type: ignore[import-untyped]
 
-        doc_data["created_at"] = fs.SERVER_TIMESTAMP
+    doc_data["created_at"] = fs.SERVER_TIMESTAMP
 
-        _, doc_ref = client.collection(COLLECTION).add(doc_data)
-        doc_id = doc_ref.id
-        _firestore_breaker.record_success()
-        logger.info("SweepResult persisted to Firestore: %s/%s", COLLECTION, doc_id)
-        return doc_id
-    except Exception as exc:
-        _firestore_breaker.record_failure()
-        logger.error("Firestore persist failed: %s", exc)
-        return None
+    _, doc_ref = client.collection(COLLECTION).add(doc_data)
+    doc_id = doc_ref.id
+    _firestore_breaker.record_success()
+    logger.info("SweepResult persisted to Firestore: %s/%s", COLLECTION, doc_id)
+    return doc_id
+  except Exception as exc:
+    _firestore_breaker.record_failure()
+    logger.error("Firestore persist failed: %s", exc)
+    return None
 
 
 def query_recent_sweeps(
-    *,
-    limit: int = 10,
-    pipeline_mode: str | None = None,
-    status: str | None = None,
+  *,
+  limit: int = 10,
+  pipeline_mode: str | None = None,
+  status: str | None = None,
 ) -> list[dict[str, Any]]:
-    """Query recent sweep results from Firestore.
+  """Query recent sweep results from Firestore.
 
-    Args:
-        limit: Maximum number of results.
-        pipeline_mode: Optional filter by pipeline mode.
-        status: Optional filter by status.
+  Args:
+      limit: Maximum number of results.
+      pipeline_mode: Optional filter by pipeline mode.
+      status: Optional filter by status.
 
-    Returns:
-        List of sweep result dicts, most recent first.
-    """
-    if not _firestore_breaker.allow_request():
-        logger.warning("Circuit breaker OPEN for firestore — query_recent_sweeps skipped")
-        return []
+  Returns:
+      List of sweep result dicts, most recent first.
+  """
+  if not _firestore_breaker.allow_request():
+    logger.warning("Circuit breaker OPEN for firestore — query_recent_sweeps skipped")
+    return []
 
-    client = _get_firestore_client()
-    if client is None:
-        return []
+  client = _get_firestore_client()
+  if client is None:
+    return []
 
-    try:
-        query = client.collection(COLLECTION)
+  try:
+    query = client.collection(COLLECTION)
 
-        if pipeline_mode:
-            query = query.where("pipeline_mode", "==", pipeline_mode)
-        if status:
-            query = query.where("status", "==", status)
+    if pipeline_mode:
+      query = query.where("pipeline_mode", "==", pipeline_mode)
+    if status:
+      query = query.where("status", "==", status)
 
-        query = query.order_by("created_at_epoch", direction="DESCENDING").limit(limit)
+    query = query.order_by("created_at_epoch", direction="DESCENDING").limit(limit)
 
-        results: list[dict[str, Any]] = []
-        for doc in query.stream():
-            data = doc.to_dict()
-            data["doc_id"] = doc.id
-            results.append(data)
-        _firestore_breaker.record_success()
-        return results
-    except Exception as exc:
-        _firestore_breaker.record_failure()
-        logger.error("Firestore query failed: %s", exc)
-        return []
+    results: list[dict[str, Any]] = []
+    for doc in query.stream():
+      data = doc.to_dict()
+      data["doc_id"] = doc.id
+      results.append(data)
+    _firestore_breaker.record_success()
+    return results
+  except Exception as exc:
+    _firestore_breaker.record_failure()
+    logger.error("Firestore query failed: %s", exc)
+    return []
 
 
 def get_sweep_by_id(doc_id: str) -> dict[str, Any] | None:
-    """Retrieve a single sweep result by its document ID."""
-    if not _firestore_breaker.allow_request():
-        logger.warning("Circuit breaker OPEN for firestore — get_sweep_by_id skipped")
-        return None
+  """Retrieve a single sweep result by its document ID."""
+  if not _firestore_breaker.allow_request():
+    logger.warning("Circuit breaker OPEN for firestore — get_sweep_by_id skipped")
+    return None
 
-    client = _get_firestore_client()
-    if client is None:
-        return None
+  client = _get_firestore_client()
+  if client is None:
+    return None
 
-    try:
-        doc = client.collection(COLLECTION).document(doc_id).get()
-        if doc.exists:
-            data = doc.to_dict()
-            data["doc_id"] = doc.id
-            _firestore_breaker.record_success()
-            return data
-        _firestore_breaker.record_success()
-        return None
-    except Exception as exc:
-        _firestore_breaker.record_failure()
-        logger.error("Firestore get failed: %s", exc)
-        return None
+  try:
+    doc = client.collection(COLLECTION).document(doc_id).get()
+    if doc.exists:
+      data = doc.to_dict()
+      data["doc_id"] = doc.id
+      _firestore_breaker.record_success()
+      return data
+    _firestore_breaker.record_success()
+    return None
+  except Exception as exc:
+    _firestore_breaker.record_failure()
+    logger.error("Firestore get failed: %s", exc)
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -242,60 +246,60 @@ def get_sweep_by_id(doc_id: str) -> dict[str, Any] | None:
 
 
 def _load_rate_state() -> dict[str, Any]:
-    """Load the rate limit state from disk."""
-    try:
-        if RATELIMIT_FILE.exists():
-            return json.loads(RATELIMIT_FILE.read_text())
-    except json.JSONDecodeError, OSError:
-        pass
-    return {"timestamps": []}
+  """Load the rate limit state from disk."""
+  try:
+    if RATELIMIT_FILE.exists():
+      return json.loads(RATELIMIT_FILE.read_text())
+  except json.JSONDecodeError, OSError:
+    pass
+  return {"timestamps": []}
 
 
 def _save_rate_state(state: dict[str, Any]) -> None:
-    """Persist rate limit state to disk."""
-    try:
-        RATELIMIT_FILE.parent.mkdir(parents=True, exist_ok=True)
-        RATELIMIT_FILE.write_text(json.dumps(state, default=str))
-    except OSError:
-        pass  # Fail-open
+  """Persist rate limit state to disk."""
+  try:
+    RATELIMIT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    RATELIMIT_FILE.write_text(json.dumps(state, default=str))
+  except OSError:
+    pass  # Fail-open
 
 
 def check_sweep_rate_limit() -> bool:
-    """Check if a new research sweep is allowed under rate limiting.
+  """Check if a new research sweep is allowed under rate limiting.
 
-    Uses a sliding window of MAX_SWEEPS_PER_HOUR (default 4).
+  Uses a sliding window of MAX_SWEEPS_PER_HOUR (default 4).
 
-    Returns:
-        True if the sweep is allowed, False if rate-limited.
-    """
-    state = _load_rate_state()
-    now = time.time()
-    one_hour_ago = now - 3600.0
+  Returns:
+      True if the sweep is allowed, False if rate-limited.
+  """
+  state = _load_rate_state()
+  now = time.time()
+  one_hour_ago = now - 3600.0
 
-    # Prune timestamps older than 1 hour
-    recent = [ts for ts in state.get("timestamps", []) if ts > one_hour_ago]
+  # Prune timestamps older than 1 hour
+  recent = [ts for ts in state.get("timestamps", []) if ts > one_hour_ago]
 
-    if len(recent) >= MAX_SWEEPS_PER_HOUR:
-        logger.warning(
-            "Research sweep rate-limited: %d/%d sweeps in the last hour",
-            len(recent),
-            MAX_SWEEPS_PER_HOUR,
-        )
-        return False
+  if len(recent) >= MAX_SWEEPS_PER_HOUR:
+    logger.warning(
+      "Research sweep rate-limited: %d/%d sweeps in the last hour",
+      len(recent),
+      MAX_SWEEPS_PER_HOUR,
+    )
+    return False
 
-    return True
+  return True
 
 
 def record_sweep_invocation() -> None:
-    """Record that a sweep was just invoked (for rate limiting)."""
-    state = _load_rate_state()
-    now = time.time()
-    one_hour_ago = now - 3600.0
+  """Record that a sweep was just invoked (for rate limiting)."""
+  state = _load_rate_state()
+  now = time.time()
+  one_hour_ago = now - 3600.0
 
-    recent = [ts for ts in state.get("timestamps", []) if ts > one_hour_ago]
-    recent.append(now)
-    state["timestamps"] = recent
-    _save_rate_state(state)
+  recent = [ts for ts in state.get("timestamps", []) if ts > one_hour_ago]
+  recent.append(now)
+  state["timestamps"] = recent
+  _save_rate_state(state)
 
 
 # ---------------------------------------------------------------------------
@@ -304,45 +308,47 @@ def record_sweep_invocation() -> None:
 
 
 def enforce_ttl(*, ttl_days: int | None = None) -> int:
-    """Delete sweep_results documents older than TTL_DAYS.
+  """Delete sweep_results documents older than TTL_DAYS.
 
-    Args:
-        ttl_days: Override the default TTL_DAYS (30).
+  Args:
+      ttl_days: Override the default TTL_DAYS (30).
 
-    Returns:
-        Number of documents deleted.
-    """
-    if not _firestore_breaker.allow_request():
-        logger.warning("Circuit breaker OPEN for firestore — TTL enforcement skipped")
-        return 0
+  Returns:
+      Number of documents deleted.
+  """
+  if not _firestore_breaker.allow_request():
+    logger.warning("Circuit breaker OPEN for firestore — TTL enforcement skipped")
+    return 0
 
-    client = _get_firestore_client()
-    if client is None:
-        return 0
+  client = _get_firestore_client()
+  if client is None:
+    return 0
 
-    cutoff_days = ttl_days if ttl_days is not None else TTL_DAYS
-    cutoff_epoch = time.time() - (cutoff_days * 86400)
+  cutoff_days = ttl_days if ttl_days is not None else TTL_DAYS
+  cutoff_epoch = time.time() - (cutoff_days * 86400)
 
-    deleted = 0
-    try:
-        # Query documents older than the cutoff using the epoch timestamp
-        old_docs = (
-            client.collection(COLLECTION)
-            .where("created_at_epoch", "<", cutoff_epoch)
-            .limit(500)  # Batch size to avoid memory issues
-            .stream()
-        )
+  deleted = 0
+  try:
+    # Query documents older than the cutoff using the epoch timestamp
+    old_docs = (
+      client.collection(COLLECTION)
+      .where("created_at_epoch", "<", cutoff_epoch)
+      .limit(500)  # Batch size to avoid memory issues
+      .stream()
+    )
 
-        for doc in old_docs:
-            doc.reference.delete()
-            deleted += 1
+    for doc in old_docs:
+      doc.reference.delete()
+      deleted += 1
 
-        if deleted > 0:
-            logger.info("TTL enforcement: deleted %d documents older than %d days", deleted, cutoff_days)
-    except Exception as exc:
-        logger.error("TTL enforcement failed: %s", exc)
+    if deleted > 0:
+      logger.info(
+        "TTL enforcement: deleted %d documents older than %d days", deleted, cutoff_days
+      )
+  except Exception as exc:
+    logger.error("TTL enforcement failed: %s", exc)
 
-    return deleted
+  return deleted
 
 
 # ---------------------------------------------------------------------------
@@ -353,98 +359,100 @@ PAIR_SESSION_COLLECTION = "pair_sessions"
 
 
 def persist_pair_session(
-    session: Any,
-    *,
-    messages: list[dict[str, str]] | None = None,
-    status: str = "completed",
+  session: Any,
+  *,
+  messages: list[dict[str, str]] | None = None,
+  status: str = "completed",
 ) -> str | None:
-    """Persist a GeminiPairProgrammer PairSession to Firestore.
+  """Persist a GeminiPairProgrammer PairSession to Firestore.
 
-    Args:
-        session: A ``PairSession`` from ``gemini_bridge``.
-        messages: Optional conversation messages for audit trail.
-        status: Completion status.
+  Args:
+      session: A ``PairSession`` from ``gemini_bridge``.
+      messages: Optional conversation messages for audit trail.
+      status: Completion status.
 
-    Returns:
-        The Firestore document ID, or None if persistence failed/disabled.
-    """
-    if not _firestore_breaker.allow_request():
-        logger.warning("Circuit breaker OPEN for firestore — PairSession not persisted")
-        return None
+  Returns:
+      The Firestore document ID, or None if persistence failed/disabled.
+  """
+  if not _firestore_breaker.allow_request():
+    logger.warning("Circuit breaker OPEN for firestore — PairSession not persisted")
+    return None
 
-    client = _get_firestore_client()
-    if client is None:
-        logger.info("Firestore persistence disabled — PairSession not persisted")
-        return None
+  client = _get_firestore_client()
+  if client is None:
+    logger.info("Firestore persistence disabled — PairSession not persisted")
+    return None
 
-    doc_data = {
-        "session_id": getattr(session, "session_id", ""),
-        "model": getattr(session, "model", ""),
-        "turn_count": getattr(session, "turn_count", 0),
-        "total_tokens": getattr(session, "total_tokens", 0),
-        "duration_seconds": getattr(session, "duration_seconds", 0.0),
-        "interaction_chain": getattr(session, "interaction_chain", []),
-        "message_count": len(messages) if messages else 0,
-        "status": status,
-        "created_at_epoch": time.time(),
-        "daemon_pid": os.getpid(),
-    }
+  doc_data = {
+    "session_id": getattr(session, "session_id", ""),
+    "model": getattr(session, "model", ""),
+    "turn_count": getattr(session, "turn_count", 0),
+    "total_tokens": getattr(session, "total_tokens", 0),
+    "duration_seconds": getattr(session, "duration_seconds", 0.0),
+    "interaction_chain": getattr(session, "interaction_chain", []),
+    "message_count": len(messages) if messages else 0,
+    "status": status,
+    "created_at_epoch": time.time(),
+    "daemon_pid": os.getpid(),
+  }
 
-    # Store message summaries (not full content, for security)
-    if messages:
-        doc_data["message_roles"] = [m.get("role", "unknown") for m in messages[:50]]
+  # Store message summaries (not full content, for security)
+  if messages:
+    doc_data["message_roles"] = [m.get("role", "unknown") for m in messages[:50]]
 
-    try:
-        from google.cloud import firestore as fs  # type: ignore[import-untyped]
+  try:
+    from google.cloud import firestore as fs  # type: ignore[import-untyped]
 
-        doc_data["created_at"] = fs.SERVER_TIMESTAMP
-        _, doc_ref = client.collection(PAIR_SESSION_COLLECTION).add(doc_data)
-        doc_id = doc_ref.id
-        _firestore_breaker.record_success()
-        logger.info("PairSession persisted to Firestore: %s/%s", PAIR_SESSION_COLLECTION, doc_id)
-        return doc_id
-    except Exception as exc:
-        _firestore_breaker.record_failure()
-        logger.error("PairSession persist failed: %s", exc)
-        return None
+    doc_data["created_at"] = fs.SERVER_TIMESTAMP
+    _, doc_ref = client.collection(PAIR_SESSION_COLLECTION).add(doc_data)
+    doc_id = doc_ref.id
+    _firestore_breaker.record_success()
+    logger.info(
+      "PairSession persisted to Firestore: %s/%s", PAIR_SESSION_COLLECTION, doc_id
+    )
+    return doc_id
+  except Exception as exc:
+    _firestore_breaker.record_failure()
+    logger.error("PairSession persist failed: %s", exc)
+    return None
 
 
 def query_recent_sessions(
-    *,
-    limit: int = 10,
-    status: str | None = None,
+  *,
+  limit: int = 10,
+  status: str | None = None,
 ) -> list[dict[str, Any]]:
-    """Query recent pair programming sessions from Firestore.
+  """Query recent pair programming sessions from Firestore.
 
-    Args:
-        limit: Maximum number of results.
-        status: Optional filter by status.
+  Args:
+      limit: Maximum number of results.
+      status: Optional filter by status.
 
-    Returns:
-        List of session dicts, most recent first.
-    """
-    if not _firestore_breaker.allow_request():
-        logger.warning("Circuit breaker OPEN for firestore — query_recent_sessions skipped")
-        return []
+  Returns:
+      List of session dicts, most recent first.
+  """
+  if not _firestore_breaker.allow_request():
+    logger.warning("Circuit breaker OPEN for firestore — query_recent_sessions skipped")
+    return []
 
-    client = _get_firestore_client()
-    if client is None:
-        return []
+  client = _get_firestore_client()
+  if client is None:
+    return []
 
-    try:
-        query = client.collection(PAIR_SESSION_COLLECTION)
-        if status:
-            query = query.where("status", "==", status)
-        query = query.order_by("created_at_epoch", direction="DESCENDING").limit(limit)
+  try:
+    query = client.collection(PAIR_SESSION_COLLECTION)
+    if status:
+      query = query.where("status", "==", status)
+    query = query.order_by("created_at_epoch", direction="DESCENDING").limit(limit)
 
-        results: list[dict[str, Any]] = []
-        for doc in query.stream():
-            data = doc.to_dict()
-            data["doc_id"] = doc.id
-            results.append(data)
-        _firestore_breaker.record_success()
-        return results
-    except Exception as exc:
-        _firestore_breaker.record_failure()
-        logger.error("Firestore session query failed: %s", exc)
-        return []
+    results: list[dict[str, Any]] = []
+    for doc in query.stream():
+      data = doc.to_dict()
+      data["doc_id"] = doc.id
+      results.append(data)
+    _firestore_breaker.record_success()
+    return results
+  except Exception as exc:
+    _firestore_breaker.record_failure()
+    logger.error("Firestore session query failed: %s", exc)
+    return []

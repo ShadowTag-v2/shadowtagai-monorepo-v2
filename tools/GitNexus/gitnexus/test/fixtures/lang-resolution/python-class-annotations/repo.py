@@ -2,7 +2,7 @@
 
 
 class Repo:
-    name: str = ""
+  name: str = ""
 
-    def save(self):
-        return False
+  def save(self):
+    return False

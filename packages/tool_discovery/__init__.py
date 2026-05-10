@@ -27,15 +27,15 @@ Usage:
 """
 
 from tool_discovery.core import (
-    DeferredToolEntry,
-    ToolDiscovery,
-    ToolSearchConfig,
-    ToolSearchMode,
+  DeferredToolEntry,
+  ToolDiscovery,
+  ToolSearchConfig,
+  ToolSearchMode,
 )
 
 __all__ = [
-    "DeferredToolEntry",
-    "ToolDiscovery",
-    "ToolSearchConfig",
-    "ToolSearchMode",
+  "DeferredToolEntry",
+  "ToolDiscovery",
+  "ToolSearchConfig",
+  "ToolSearchMode",
 ]

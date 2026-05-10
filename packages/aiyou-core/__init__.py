@@ -3,5 +3,5 @@
 
 
 def ping() -> str:
-    """Health check sentinel. Returns 'pong'."""
-    return "pong"
+  """Health check sentinel. Returns 'pong'."""
+  return "pong"

@@ -1,4 +1,3 @@
-import pytest
 import json
 
 from foo import add

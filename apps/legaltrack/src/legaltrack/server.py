@@ -27,4 +27,4 @@ app.include_router(prodding_engine.router, prefix="/api/v1/ceotrack", tags=["CEO
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "environment": settings.ENVIRONMENT, "systems_active": 12}
+  return {"status": "ok", "environment": settings.ENVIRONMENT, "systems_active": 12}

@@ -10,5 +10,5 @@ root?.render(
       <h1>Hello, Webpack with TypeScript and React!</h1>
       <h2>service_test_ts_webpack_react</h2>
     </div>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -40,172 +40,172 @@ IS_MACOS = platform.system() == "Darwin"
 
 
 class PreventSleepService:
-    """macOS sleep prevention with reference counting and self-healing.
+  """macOS sleep prevention with reference counting and self-healing.
 
-    Usage:
-        # Context manager (preferred)
-        with prevent_sleep():
-            long_running_operation()
+  Usage:
+      # Context manager (preferred)
+      with prevent_sleep():
+          long_running_operation()
 
-        # Manual control
-        service = PreventSleepService.get_instance()
-        service.start()
-        try:
-            long_running_operation()
-        finally:
-            service.stop()
-    """
+      # Manual control
+      service = PreventSleepService.get_instance()
+      service.start()
+      try:
+          long_running_operation()
+      finally:
+          service.stop()
+  """
 
-    _instance: PreventSleepService | None = None
-    _lock = threading.Lock()
+  _instance: PreventSleepService | None = None
+  _lock = threading.Lock()
 
-    def __init__(self) -> None:
-        self._ref_count = 0
-        self._process: subprocess.Popen[bytes] | None = None
-        self._restart_timer: threading.Timer | None = None
-        self._cleanup_registered = False
-        self._mutex = threading.Lock()
+  def __init__(self) -> None:
+    self._ref_count = 0
+    self._process: subprocess.Popen[bytes] | None = None
+    self._restart_timer: threading.Timer | None = None
+    self._cleanup_registered = False
+    self._mutex = threading.Lock()
 
-    @classmethod
-    def get_instance(cls) -> PreventSleepService:
-        """Singleton accessor."""
+  @classmethod
+  def get_instance(cls) -> PreventSleepService:
+    """Singleton accessor."""
+    if cls._instance is None:
+      with cls._lock:
         if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = cls()
-        return cls._instance
+          cls._instance = cls()
+    return cls._instance
 
-    @classmethod
-    def reset_for_testing(cls) -> None:
-        """Test-only reset."""
-        with cls._lock:
-            if cls._instance is not None:
-                cls._instance.force_stop()
-            cls._instance = None
+  @classmethod
+  def reset_for_testing(cls) -> None:
+    """Test-only reset."""
+    with cls._lock:
+      if cls._instance is not None:
+        cls._instance.force_stop()
+      cls._instance = None
 
-    def start(self) -> None:
-        """Increment ref count and start preventing sleep if needed."""
-        with self._mutex:
-            self._ref_count += 1
-            if self._ref_count == 1:
-                self._spawn_caffeinate()
-                self._start_restart_timer()
+  def start(self) -> None:
+    """Increment ref count and start preventing sleep if needed."""
+    with self._mutex:
+      self._ref_count += 1
+      if self._ref_count == 1:
+        self._spawn_caffeinate()
+        self._start_restart_timer()
 
-    def stop(self) -> None:
-        """Decrement ref count and allow sleep if no more work pending."""
-        with self._mutex:
-            if self._ref_count > 0:
-                self._ref_count -= 1
+  def stop(self) -> None:
+    """Decrement ref count and allow sleep if no more work pending."""
+    with self._mutex:
+      if self._ref_count > 0:
+        self._ref_count -= 1
 
-            if self._ref_count == 0:
-                self._stop_restart_timer()
-                self._kill_caffeinate()
+      if self._ref_count == 0:
+        self._stop_restart_timer()
+        self._kill_caffeinate()
 
-    def force_stop(self) -> None:
-        """Force stop regardless of ref count. Used for cleanup."""
-        with self._mutex:
-            self._ref_count = 0
-            self._stop_restart_timer()
-            self._kill_caffeinate()
+  def force_stop(self) -> None:
+    """Force stop regardless of ref count. Used for cleanup."""
+    with self._mutex:
+      self._ref_count = 0
+      self._stop_restart_timer()
+      self._kill_caffeinate()
 
-    @property
-    def is_active(self) -> bool:
-        """Whether sleep prevention is currently active."""
-        return self._ref_count > 0 and self._process is not None
+  @property
+  def is_active(self) -> bool:
+    """Whether sleep prevention is currently active."""
+    return self._ref_count > 0 and self._process is not None
 
-    @property
-    def ref_count(self) -> int:
-        """Current reference count."""
-        return self._ref_count
+  @property
+  def ref_count(self) -> int:
+    """Current reference count."""
+    return self._ref_count
 
-    # --- Internal ---
+  # --- Internal ---
 
-    def _spawn_caffeinate(self) -> None:
-        """Spawn caffeinate process."""
-        if not IS_MACOS:
-            return
+  def _spawn_caffeinate(self) -> None:
+    """Spawn caffeinate process."""
+    if not IS_MACOS:
+      return
 
-        if self._process is not None:
-            return
+    if self._process is not None:
+      return
 
-        # Register cleanup on first use
-        if not self._cleanup_registered:
-            self._cleanup_registered = True
-            atexit.register(self.force_stop)
+    # Register cleanup on first use
+    if not self._cleanup_registered:
+      self._cleanup_registered = True
+      atexit.register(self.force_stop)
 
-        try:
-            # -i: Create assertion to prevent idle sleep (least aggressive)
-            # -t: Timeout — caffeinate exits automatically after this
-            #     Provides self-healing if Python is killed with SIGKILL
-            self._process = subprocess.Popen(
-                [
-                    "caffeinate",
-                    "-i",
-                    "-t",
-                    str(CAFFEINATE_TIMEOUT_SECONDS),
-                ],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            logger.debug("Started caffeinate (PID %d) to prevent sleep", self._process.pid)
-        except OSError, FileNotFoundError:
-            # caffeinate not available or spawn failed
-            self._process = None
+    try:
+      # -i: Create assertion to prevent idle sleep (least aggressive)
+      # -t: Timeout — caffeinate exits automatically after this
+      #     Provides self-healing if Python is killed with SIGKILL
+      self._process = subprocess.Popen(
+        [
+          "caffeinate",
+          "-i",
+          "-t",
+          str(CAFFEINATE_TIMEOUT_SECONDS),
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+      )
+      logger.debug("Started caffeinate (PID %d) to prevent sleep", self._process.pid)
+    except OSError, FileNotFoundError:
+      # caffeinate not available or spawn failed
+      self._process = None
 
-    def _kill_caffeinate(self) -> None:
-        """Kill caffeinate process."""
-        if self._process is not None:
-            proc = self._process
-            self._process = None
-            try:
-                proc.kill()  # SIGKILL for immediate termination
-                proc.wait(timeout=5)
-                logger.debug("Stopped caffeinate, allowing sleep")
-            except OSError, subprocess.TimeoutExpired:
-                pass  # Process may have already exited
+  def _kill_caffeinate(self) -> None:
+    """Kill caffeinate process."""
+    if self._process is not None:
+      proc = self._process
+      self._process = None
+      try:
+        proc.kill()  # SIGKILL for immediate termination
+        proc.wait(timeout=5)
+        logger.debug("Stopped caffeinate, allowing sleep")
+      except OSError, subprocess.TimeoutExpired:
+        pass  # Process may have already exited
 
-    def _start_restart_timer(self) -> None:
-        """Start periodic restart timer."""
-        if not IS_MACOS:
-            return
+  def _start_restart_timer(self) -> None:
+    """Start periodic restart timer."""
+    if not IS_MACOS:
+      return
 
-        if self._restart_timer is not None:
-            return
+    if self._restart_timer is not None:
+      return
 
-        def _restart() -> None:
-            with self._mutex:
-                if self._ref_count > 0:
-                    logger.debug("Restarting caffeinate to maintain sleep prevention")
-                    self._kill_caffeinate()
-                    self._spawn_caffeinate()
+    def _restart() -> None:
+      with self._mutex:
+        if self._ref_count > 0:
+          logger.debug("Restarting caffeinate to maintain sleep prevention")
+          self._kill_caffeinate()
+          self._spawn_caffeinate()
 
-                    # Schedule next restart
-                    self._restart_timer = threading.Timer(RESTART_INTERVAL_SECONDS, _restart)
-                    self._restart_timer.daemon = True
-                    self._restart_timer.start()
+          # Schedule next restart
+          self._restart_timer = threading.Timer(RESTART_INTERVAL_SECONDS, _restart)
+          self._restart_timer.daemon = True
+          self._restart_timer.start()
 
-        self._restart_timer = threading.Timer(RESTART_INTERVAL_SECONDS, _restart)
-        self._restart_timer.daemon = True
-        self._restart_timer.start()
+    self._restart_timer = threading.Timer(RESTART_INTERVAL_SECONDS, _restart)
+    self._restart_timer.daemon = True
+    self._restart_timer.start()
 
-    def _stop_restart_timer(self) -> None:
-        """Stop periodic restart timer."""
-        if self._restart_timer is not None:
-            self._restart_timer.cancel()
-            self._restart_timer = None
+  def _stop_restart_timer(self) -> None:
+    """Stop periodic restart timer."""
+    if self._restart_timer is not None:
+      self._restart_timer.cancel()
+      self._restart_timer = None
 
 
 @contextmanager
 def prevent_sleep() -> Generator[None]:
-    """Context manager for sleep prevention during tool execution.
+  """Context manager for sleep prevention during tool execution.
 
-    Usage:
-        with prevent_sleep():
-            execute_long_running_tool()
-    """
-    service = PreventSleepService.get_instance()
-    service.start()
-    try:
-        yield
-    finally:
-        service.stop()
+  Usage:
+      with prevent_sleep():
+          execute_long_running_tool()
+  """
+  service = PreventSleepService.get_instance()
+  service.start()
+  try:
+    yield
+  finally:
+    service.stop()

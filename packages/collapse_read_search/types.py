@@ -15,189 +15,189 @@ from typing import Any
 
 
 class MessageType(Enum):
-    """Discriminator for the top-level message union."""
+  """Discriminator for the top-level message union."""
 
-    ASSISTANT = auto()
-    USER = auto()
-    SYSTEM = auto()
-    ATTACHMENT = auto()
-    GROUPED_TOOL_USE = auto()
+  ASSISTANT = auto()
+  USER = auto()
+  SYSTEM = auto()
+  ATTACHMENT = auto()
+  GROUPED_TOOL_USE = auto()
 
 
 class ContentType(Enum):
-    """Discriminator for message content blocks."""
+  """Discriminator for message content blocks."""
 
-    TEXT = auto()
-    TOOL_USE = auto()
-    TOOL_RESULT = auto()
-    THINKING = auto()
-    REDACTED_THINKING = auto()
+  TEXT = auto()
+  TOOL_USE = auto()
+  TOOL_RESULT = auto()
+  THINKING = auto()
+  REDACTED_THINKING = auto()
 
 
 class CommitKind(Enum):
-    """How the commit was created (amend, merge, regular)."""
+  """How the commit was created (amend, merge, regular)."""
 
-    REGULAR = "regular"
-    AMEND = "amend"
-    MERGE = "merge"
+  REGULAR = "regular"
+  AMEND = "amend"
+  MERGE = "merge"
 
 
 class BranchAction(Enum):
-    """What happened to a branch."""
+  """What happened to a branch."""
 
-    CREATE = "create"
-    DELETE = "delete"
-    CHECKOUT = "checkout"
+  CREATE = "create"
+  DELETE = "delete"
+  CHECKOUT = "checkout"
 
 
 class PrAction(Enum):
-    """What happened to a pull request."""
+  """What happened to a pull request."""
 
-    CREATE = "create"
-    UPDATE = "update"
+  CREATE = "create"
+  UPDATE = "update"
 
 
 @dataclass
 class ContentBlock:
-    """A single content block inside a message.
+  """A single content block inside a message.
 
-    This is intentionally loose — the collapse engine only inspects
-    ``type``, ``name``, ``input``, ``id``, ``text``, and ``tool_use_id``.
-    """
+  This is intentionally loose — the collapse engine only inspects
+  ``type``, ``name``, ``input``, ``id``, ``text``, and ``tool_use_id``.
+  """
 
-    type: ContentType
-    name: str = ""
-    input: Any = None
-    id: str = ""
-    text: str = ""
-    tool_use_id: str = ""
+  type: ContentType
+  name: str = ""
+  input: Any = None
+  id: str = ""
+  text: str = ""
+  tool_use_id: str = ""
 
 
 @dataclass
 class NormalizedMessage:
-    """Flat representation of a single API-level message."""
+  """Flat representation of a single API-level message."""
 
-    content: list[ContentBlock] = field(default_factory=list)
+  content: list[ContentBlock] = field(default_factory=list)
 
 
 @dataclass
 class AttachmentPayload:
-    """Payload for attachment messages."""
+  """Payload for attachment messages."""
 
-    type: str = ""
-    memories: list[dict[str, Any]] = field(default_factory=list)
+  type: str = ""
+  memories: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
 class RenderableMessage:
-    """Union type for all messages the renderer processes.
+  """Union type for all messages the renderer processes.
 
-    The ``type`` field discriminates the variant.  Additional fields are
-    populated depending on the variant:
+  The ``type`` field discriminates the variant.  Additional fields are
+  populated depending on the variant:
 
-    * ``assistant`` / ``user`` — ``message`` holds the :class:`NormalizedMessage`.
-    * ``grouped_tool_use`` — ``tool_name`` + ``messages`` (list of sub-messages).
-    * ``attachment`` — ``attachment`` holds the :class:`AttachmentPayload`.
-    * ``system`` — ``subtype`` / ``hook_label`` / etc.
-    """
+  * ``assistant`` / ``user`` — ``message`` holds the :class:`NormalizedMessage`.
+  * ``grouped_tool_use`` — ``tool_name`` + ``messages`` (list of sub-messages).
+  * ``attachment`` — ``attachment`` holds the :class:`AttachmentPayload`.
+  * ``system`` — ``subtype`` / ``hook_label`` / etc.
+  """
 
-    type: MessageType
-    message: NormalizedMessage = field(default_factory=NormalizedMessage)
-    uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
-    timestamp: float = 0.0
+  type: MessageType
+  message: NormalizedMessage = field(default_factory=NormalizedMessage)
+  uuid: str = field(default_factory=lambda: str(uuid.uuid4()))
+  timestamp: float = 0.0
 
-    # --- grouped_tool_use fields ---
-    tool_name: str = ""
-    messages: list[RenderableMessage] = field(default_factory=list)
-    display_message: RenderableMessage | None = None
+  # --- grouped_tool_use fields ---
+  tool_name: str = ""
+  messages: list[RenderableMessage] = field(default_factory=list)
+  display_message: RenderableMessage | None = None
 
-    # --- attachment fields ---
-    attachment: AttachmentPayload = field(default_factory=AttachmentPayload)
+  # --- attachment fields ---
+  attachment: AttachmentPayload = field(default_factory=AttachmentPayload)
 
-    # --- system fields ---
-    subtype: str = ""
-    hook_label: str = ""
-    hook_count: int = 0
-    total_duration_ms: float | None = None
-    hook_infos: list[StopHookInfo] = field(default_factory=list)
+  # --- system fields ---
+  subtype: str = ""
+  hook_label: str = ""
+  hook_count: int = 0
+  total_duration_ms: float | None = None
+  hook_infos: list[StopHookInfo] = field(default_factory=list)
 
-    # --- tool_result extras ---
-    tool_use_result: dict[str, Any] | None = None
+  # --- tool_result extras ---
+  tool_use_result: dict[str, Any] | None = None
 
 
 @dataclass
 class StopHookInfo:
-    """Timing and label info for a PreToolUse stop hook."""
+  """Timing and label info for a PreToolUse stop hook."""
 
-    name: str = ""
-    duration_ms: float | None = None
+  name: str = ""
+  duration_ms: float | None = None
 
 
 @dataclass
 class SearchOrReadResult:
-    """Result of checking if a tool use is a search or read operation."""
+  """Result of checking if a tool use is a search or read operation."""
 
-    is_collapsible: bool = False
-    is_search: bool = False
-    is_read: bool = False
-    is_list: bool = False
-    is_repl: bool = False
-    is_memory_write: bool = False
-    is_absorbed_silently: bool = False
-    mcp_server_name: str | None = None
-    is_bash: bool | None = None
+  is_collapsible: bool = False
+  is_search: bool = False
+  is_read: bool = False
+  is_list: bool = False
+  is_repl: bool = False
+  is_memory_write: bool = False
+  is_absorbed_silently: bool = False
+  mcp_server_name: str | None = None
+  is_bash: bool | None = None
 
 
 @dataclass
 class CollapsedReadSearchGroup:
-    """Summary object produced when consecutive search/read ops are collapsed.
+  """Summary object produced when consecutive search/read ops are collapsed.
 
-    This replaces the run of individual messages in the output list and
-    provides pre-computed counts for the summary renderer.
-    """
+  This replaces the run of individual messages in the output list and
+  provides pre-computed counts for the summary renderer.
+  """
 
-    type: str = "collapsed_read_search"
+  type: str = "collapsed_read_search"
 
-    search_count: int = 0
-    read_count: int = 0
-    list_count: int = 0
-    repl_count: int = 0
+  search_count: int = 0
+  read_count: int = 0
+  list_count: int = 0
+  repl_count: int = 0
 
-    memory_search_count: int = 0
-    memory_read_count: int = 0
-    memory_write_count: int = 0
+  memory_search_count: int = 0
+  memory_read_count: int = 0
+  memory_write_count: int = 0
 
-    read_file_paths: list[str] = field(default_factory=list)
-    search_args: list[str] = field(default_factory=list)
-    latest_display_hint: str | None = None
+  read_file_paths: list[str] = field(default_factory=list)
+  search_args: list[str] = field(default_factory=list)
+  latest_display_hint: str | None = None
 
-    # The original messages that were collapsed into this group.
-    group_messages: list[RenderableMessage] = field(default_factory=list)
-    display_message: RenderableMessage | None = None
-    group_uuid: str = ""
-    timestamp: float = 0.0
+  # The original messages that were collapsed into this group.
+  group_messages: list[RenderableMessage] = field(default_factory=list)
+  display_message: RenderableMessage | None = None
+  group_uuid: str = ""
+  timestamp: float = 0.0
 
-    # Optional MCP counts
-    mcp_call_count: int | None = None
-    mcp_server_names: list[str] | None = None
+  # Optional MCP counts
+  mcp_call_count: int | None = None
+  mcp_server_names: list[str] | None = None
 
-    # Optional bash counts (fullscreen mode)
-    bash_count: int | None = None
-    git_op_bash_count: int | None = None
-    commits: list[dict[str, Any]] | None = None
-    pushes: list[dict[str, Any]] | None = None
-    branches: list[dict[str, Any]] | None = None
-    prs: list[dict[str, Any]] | None = None
+  # Optional bash counts (fullscreen mode)
+  bash_count: int | None = None
+  git_op_bash_count: int | None = None
+  commits: list[dict[str, Any]] | None = None
+  pushes: list[dict[str, Any]] | None = None
+  branches: list[dict[str, Any]] | None = None
+  prs: list[dict[str, Any]] | None = None
 
-    # Hook timing
-    hook_total_ms: float = 0.0
-    hook_count: int = 0
-    hook_infos: list[StopHookInfo] = field(default_factory=list)
+  # Hook timing
+  hook_total_ms: float = 0.0
+  hook_count: int = 0
+  hook_infos: list[StopHookInfo] = field(default_factory=list)
 
-    # Absorbed memory attachments
-    relevant_memories: list[dict[str, Any]] | None = None
+  # Absorbed memory attachments
+  relevant_memories: list[dict[str, Any]] | None = None
 
-    # Team memory (optional)
-    team_memory_search_count: int | None = None
-    team_memory_read_count: int | None = None
-    team_memory_write_count: int | None = None
+  # Team memory (optional)
+  team_memory_search_count: int | None = None
+  team_memory_read_count: int | None = None
+  team_memory_write_count: int | None = None

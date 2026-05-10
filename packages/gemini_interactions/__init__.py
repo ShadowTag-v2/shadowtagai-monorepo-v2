@@ -23,40 +23,40 @@ Public API:
 """
 
 from gemini_interactions.client import (
-    EventType,
-    InteractionsClient,
-    InteractionResult,
-    StreamAccumulator,
-    StreamEvent,
+  EventType,
+  InteractionsClient,
+  InteractionResult,
+  StreamAccumulator,
+  StreamEvent,
 )
 from gemini_interactions.session import ConversationSession
 from gemini_interactions.tools import (
-    ToolDefinition,
-    computer_use_tool,
-    code_execution_tool,
-    file_search_tool,
-    function_tool,
-    google_search_tool,
-    mcp_server_tool,
-    url_context_tool,
+  ToolDefinition,
+  computer_use_tool,
+  code_execution_tool,
+  file_search_tool,
+  function_tool,
+  google_search_tool,
+  mcp_server_tool,
+  url_context_tool,
 )
 
 __all__ = [
-    # Client
-    "EventType",
-    "InteractionsClient",
-    "InteractionResult",
-    "StreamAccumulator",
-    "StreamEvent",
-    # Session management (best practices)
-    "ConversationSession",
-    # Tool builders
-    "ToolDefinition",
-    "computer_use_tool",
-    "code_execution_tool",
-    "file_search_tool",
-    "function_tool",
-    "google_search_tool",
-    "mcp_server_tool",
-    "url_context_tool",
+  # Client
+  "EventType",
+  "InteractionsClient",
+  "InteractionResult",
+  "StreamAccumulator",
+  "StreamEvent",
+  # Session management (best practices)
+  "ConversationSession",
+  # Tool builders
+  "ToolDefinition",
+  "computer_use_tool",
+  "code_execution_tool",
+  "file_search_tool",
+  "function_tool",
+  "google_search_tool",
+  "mcp_server_tool",
+  "url_context_tool",
 ]

@@ -20,17 +20,17 @@ _lab_root_str = str(_LAB_ROOT)
 
 # Remove the existing `src` module from cache so we can replace it
 if "src" in sys.modules:
-    del sys.modules["src"]
+  del sys.modules["src"]
 # Also remove all src.* submodules
 for key in list(sys.modules.keys()):
-    if key.startswith("src."):
-        del sys.modules[key]
+  if key.startswith("src."):
+    del sys.modules[key]
 
 # Insert lab root at front so `src` resolves to the lab's package
 if _lab_root_str in sys.path:
-    sys.path.remove(_lab_root_str)
+  sys.path.remove(_lab_root_str)
 sys.path.insert(0, _lab_root_str)
 
 # Force re-import src from the lab root
 if "src" in sys.modules:
-    importlib.reload(sys.modules["src"])
+  importlib.reload(sys.modules["src"])

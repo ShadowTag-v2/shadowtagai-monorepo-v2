@@ -8,7 +8,7 @@ module.exports = {
   //   path: path.resolve(__dirname, 'dist')
   // },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   // mode: 'production', // Set Webpack mode to production for optimization
   mode: 'development', // Set mode to development for faster builds during dev
@@ -16,8 +16,8 @@ module.exports = {
     open: true, // Open browser automatically
     hot: true, // Enable Hot Module Replacement (HMR)
     static: {
-      directory: path.resolve(__dirname, '..', 'service_producer')
+      directory: path.resolve(__dirname, '..', 'service_producer'),
     },
-    port: 8080
-  }
+    port: 8080,
+  },
 };

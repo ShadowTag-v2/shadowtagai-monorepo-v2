@@ -6,17 +6,17 @@ sections to optimize prompt caching efficiency.
 """
 
 from packages.prompt_sections.registry import (
-    SystemPromptSection,
-    clear_system_prompt_sections,
-    dangerous_uncached_section,
-    resolve_system_prompt_sections,
-    system_prompt_section,
+  SystemPromptSection,
+  clear_system_prompt_sections,
+  dangerous_uncached_section,
+  resolve_system_prompt_sections,
+  system_prompt_section,
 )
 
 __all__ = [
-    "SystemPromptSection",
-    "clear_system_prompt_sections",
-    "dangerous_uncached_section",
-    "resolve_system_prompt_sections",
-    "system_prompt_section",
+  "SystemPromptSection",
+  "clear_system_prompt_sections",
+  "dangerous_uncached_section",
+  "resolve_system_prompt_sections",
+  "system_prompt_section",
 ]

@@ -21,42 +21,42 @@ from packages.agnt_utils.compact.types import Message
 
 
 def group_messages_by_api_round(messages: list[Message]) -> list[list[Message]]:
-    """Partition *messages* into groups at API-round boundaries.
+  """Partition *messages* into groups at API-round boundaries.
 
-    A boundary fires when:
-      1. The message is ``type == "assistant"``, AND
-      2. Its ``message.id`` differs from the previous assistant's id, AND
-      3. The current group is non-empty.
+  A boundary fires when:
+    1. The message is ``type == "assistant"``, AND
+    2. Its ``message.id`` differs from the previous assistant's id, AND
+    3. The current group is non-empty.
 
-    Streaming chunks from the same API response share an id, so
-    boundaries only fire at the start of a genuinely new round.
+  Streaming chunks from the same API response share an id, so
+  boundaries only fire at the start of a genuinely new round.
 
-    Args:
-        messages: Ordered list of Message dicts.
+  Args:
+      messages: Ordered list of Message dicts.
 
-    Returns:
-        List of groups, each a list of Message dicts.
-    """
-    groups: list[list[Message]] = []
-    current: list[Message] = []
-    last_assistant_id: str | None = None
+  Returns:
+      List of groups, each a list of Message dicts.
+  """
+  groups: list[list[Message]] = []
+  current: list[Message] = []
+  last_assistant_id: str | None = None
 
-    for msg in messages:
-        msg_type = msg.get("type", "")
-        inner = msg.get("message", {})
-        msg_id = inner.get("id") if isinstance(inner, dict) else None
+  for msg in messages:
+    msg_type = msg.get("type", "")
+    inner = msg.get("message", {})
+    msg_id = inner.get("id") if isinstance(inner, dict) else None
 
-        # New API round boundary
-        if msg_type == "assistant" and msg_id != last_assistant_id and current:
-            groups.append(current)
-            current = [msg]
-        else:
-            current.append(msg)
+    # New API round boundary
+    if msg_type == "assistant" and msg_id != last_assistant_id and current:
+      groups.append(current)
+      current = [msg]
+    else:
+      current.append(msg)
 
-        if msg_type == "assistant":
-            last_assistant_id = msg_id
+    if msg_type == "assistant":
+      last_assistant_id = msg_id
 
-    if current:
-        groups.append(current)
+  if current:
+    groups.append(current)
 
-    return groups
+  return groups

@@ -5,17 +5,17 @@ bytes NEVER enter the LLM context window.
 """
 
 from ._types import (
-    FinalizeSource,
-    RecordingAvailability,
-    VoiceDependencyCheck,
-    VoiceStreamCallbacks,
+  FinalizeSource,
+  RecordingAvailability,
+  VoiceDependencyCheck,
+  VoiceStreamCallbacks,
 )
 from .gate import is_voice_enabled
 
 __all__ = [
-    "FinalizeSource",
-    "RecordingAvailability",
-    "VoiceDependencyCheck",
-    "VoiceStreamCallbacks",
-    "is_voice_enabled",
+  "FinalizeSource",
+  "RecordingAvailability",
+  "VoiceDependencyCheck",
+  "VoiceStreamCallbacks",
+  "is_voice_enabled",
 ]

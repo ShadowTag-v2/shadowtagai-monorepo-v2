@@ -10,5 +10,5 @@ import logging
 from jules_mcp_server.server import mcp
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    mcp.run(transport="stdio")
+  logging.basicConfig(level=logging.INFO)
+  mcp.run(transport="stdio")

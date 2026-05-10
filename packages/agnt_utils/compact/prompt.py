@@ -23,9 +23,9 @@ _NO_TOOLS_PREAMBLE = """CRITICAL: Respond with TEXT ONLY. Do NOT call any tools.
 """
 
 _NO_TOOLS_TRAILER = (
-    "\n\nREMINDER: Do NOT call any tools. Respond with plain text only — "
-    "an <analysis> block followed by a <summary> block. "
-    "Tool calls will be rejected and you will fail the task."
+  "\n\nREMINDER: Do NOT call any tools. Respond with plain text only — "
+  "an <analysis> block followed by a <summary> block. "
+  "Tool calls will be rejected and you will fail the task."
 )
 
 # ── Analysis instructions ─────────────────────────────────────────────────────
@@ -127,75 +127,79 @@ Please provide your summary following this structure, ensuring precision and tho
 
 
 def get_compact_prompt(custom_instructions: str | None = None) -> str:
-    """Build the full-conversation compact prompt."""
-    prompt = _NO_TOOLS_PREAMBLE + _BASE_COMPACT_PROMPT
-    if custom_instructions and custom_instructions.strip():
-        prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
-    prompt += _NO_TOOLS_TRAILER
-    return prompt
+  """Build the full-conversation compact prompt."""
+  prompt = _NO_TOOLS_PREAMBLE + _BASE_COMPACT_PROMPT
+  if custom_instructions and custom_instructions.strip():
+    prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
+  prompt += _NO_TOOLS_TRAILER
+  return prompt
 
 
 def get_partial_compact_prompt(
-    custom_instructions: str | None = None,
-    direction: str = "from",
+  custom_instructions: str | None = None,
+  direction: str = "from",
 ) -> str:
-    """Build a partial-compact prompt.
+  """Build a partial-compact prompt.
 
-    Args:
-        custom_instructions: Optional user-supplied summarization guidance.
-        direction: ``"from"`` (summarize recent) or ``"up_to"`` (summarize prefix).
-    """
-    template = _PARTIAL_COMPACT_UP_TO_PROMPT if direction == "up_to" else _PARTIAL_COMPACT_PROMPT
-    prompt = _NO_TOOLS_PREAMBLE + template
-    if custom_instructions and custom_instructions.strip():
-        prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
-    prompt += _NO_TOOLS_TRAILER
-    return prompt
+  Args:
+      custom_instructions: Optional user-supplied summarization guidance.
+      direction: ``"from"`` (summarize recent) or ``"up_to"`` (summarize prefix).
+  """
+  template = (
+    _PARTIAL_COMPACT_UP_TO_PROMPT if direction == "up_to" else _PARTIAL_COMPACT_PROMPT
+  )
+  prompt = _NO_TOOLS_PREAMBLE + template
+  if custom_instructions and custom_instructions.strip():
+    prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
+  prompt += _NO_TOOLS_TRAILER
+  return prompt
 
 
 def format_compact_summary(summary: str) -> str:
-    """Strip the <analysis> drafting scratchpad and format <summary> tags.
+  """Strip the <analysis> drafting scratchpad and format <summary> tags.
 
-    The analysis block improves summary quality but has no informational
-    value once the summary is written — strip it before the summary
-    reaches context.
-    """
-    formatted = re.sub(r"<analysis>[\s\S]*?</analysis>", "", summary)
-    match = re.search(r"<summary>([\s\S]*?)</summary>", formatted)
-    if match:
-        content = match.group(1).strip()
-        formatted = re.sub(r"<summary>[\s\S]*?</summary>", f"Summary:\n{content}", formatted)
-    formatted = re.sub(r"\n\n+", "\n\n", formatted)
-    return formatted.strip()
+  The analysis block improves summary quality but has no informational
+  value once the summary is written — strip it before the summary
+  reaches context.
+  """
+  formatted = re.sub(r"<analysis>[\s\S]*?</analysis>", "", summary)
+  match = re.search(r"<summary>([\s\S]*?)</summary>", formatted)
+  if match:
+    content = match.group(1).strip()
+    formatted = re.sub(
+      r"<summary>[\s\S]*?</summary>", f"Summary:\n{content}", formatted
+    )
+  formatted = re.sub(r"\n\n+", "\n\n", formatted)
+  return formatted.strip()
 
 
 def get_compact_user_summary_message(
-    summary: str,
-    suppress_follow_up_questions: bool = False,
-    transcript_path: str | None = None,
-    recent_messages_preserved: bool = False,
+  summary: str,
+  suppress_follow_up_questions: bool = False,
+  transcript_path: str | None = None,
+  recent_messages_preserved: bool = False,
 ) -> str:
-    """Build the user-facing summary message injected post-compaction."""
-    formatted = format_compact_summary(summary)
-    base = (
-        "This session is being continued from a previous conversation "
-        "that ran out of context. The summary below covers the earlier "
-        f"portion of the conversation.\n\n{formatted}"
+  """Build the user-facing summary message injected post-compaction."""
+  formatted = format_compact_summary(summary)
+  base = (
+    "This session is being continued from a previous conversation "
+    "that ran out of context. The summary below covers the earlier "
+    f"portion of the conversation.\n\n{formatted}"
+  )
+  if transcript_path:
+    base += (
+      f"\n\nIf you need specific details from before compaction "
+      f"(like exact code snippets, error messages, or content you "
+      f"generated), read the full transcript at: {transcript_path}"
     )
-    if transcript_path:
-        base += (
-            f"\n\nIf you need specific details from before compaction "
-            f"(like exact code snippets, error messages, or content you "
-            f"generated), read the full transcript at: {transcript_path}"
-        )
-    if recent_messages_preserved:
-        base += "\n\nRecent messages are preserved verbatim."
-    if suppress_follow_up_questions:
-        base += (
-            "\nContinue the conversation from where it left off without "
-            "asking the user any further questions. Resume directly — "
-            "do not acknowledge the summary, do not recap what was "
-            'happening, do not preface with "I\'ll continue" or similar. '
-            "Pick up the last task as if the break never happened."
-        )
-    return base
+  if recent_messages_preserved:
+    base += "\n\nRecent messages are preserved verbatim."
+  if suppress_follow_up_questions:
+    base += (
+      "\nContinue the conversation from where it left off without "
+      "asking the user any further questions. Resume directly — "
+      "do not acknowledge the summary, do not recap what was "
+      'happening, do not preface with "I\'ll continue" or similar. '
+      "Pick up the last task as if the break never happened."
+    )
+  return base

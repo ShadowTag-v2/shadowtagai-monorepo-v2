@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 
 import react from '@vitejs/plugin-react-swc';
+import type { PluginOption } from 'vite';
 import { defineConfig } from 'vitest/config';
-import { PluginOption } from 'vite';
 
 // https://vitejs.dev/config/
 
@@ -11,13 +11,13 @@ export default defineConfig({
   root: '.',
   build: {
     rollupOptions: {
-      input: './src/index.html'
+      input: './src/index.html',
     },
-    outDir: 'dist'
+    outDir: 'dist',
   },
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/vitest-setup.ts'
-  }
+    setupFiles: './src/vitest-setup.ts',
+  },
 });

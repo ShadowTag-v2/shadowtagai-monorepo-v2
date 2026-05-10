@@ -25,175 +25,184 @@ REPORT_DIR = REPO_ROOT / "data" / "intelligence_pipeline" / "reports"
 GITHUB_APP_ID = "3018200"
 GITHUB_REPO = "ShadowTag-v2/Monorepo-Uphillsnowball"
 PEM_PATH = os.environ.get(
-    "SHADOWTAG_PEM",
-    os.path.expanduser("~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"),
+  "SHADOWTAG_PEM",
+  os.path.expanduser(
+    "~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+  ),
 )
 
 
 def get_installation_token() -> str:
-    """Get GitHub App installation token using PEM."""
-    try:
-        # Use the auth script if available
-        auth_script = REPO_ROOT / "scripts" / "auth_github_app.py"
-        if auth_script.exists():
-            result = subprocess.run(
-                [sys.executable, str(auth_script), "--token-only"],
-                capture_output=True,
-                text=True,
-                cwd=str(REPO_ROOT),
-            )
-            if result.returncode == 0:
-                return result.stdout.strip()
+  """Get GitHub App installation token using PEM."""
+  try:
+    # Use the auth script if available
+    auth_script = REPO_ROOT / "scripts" / "auth_github_app.py"
+    if auth_script.exists():
+      result = subprocess.run(
+        [sys.executable, str(auth_script), "--token-only"],
+        capture_output=True,
+        text=True,
+        cwd=str(REPO_ROOT),
+      )
+      if result.returncode == 0:
+        return result.stdout.strip()
 
-        # Fallback: manual JWT generation
-        import jwt
+    # Fallback: manual JWT generation
+    import jwt
 
-        with open(PEM_PATH) as f:
-            pem = f.read()
+    with open(PEM_PATH) as f:
+      pem = f.read()
 
-        now = int(time.time())
-        payload = {"iat": now - 60, "exp": now + 600, "iss": GITHUB_APP_ID}
-        token = jwt.encode(payload, pem, algorithm="RS256")
+    now = int(time.time())
+    payload = {"iat": now - 60, "exp": now + 600, "iss": GITHUB_APP_ID}
+    token = jwt.encode(payload, pem, algorithm="RS256")
 
-        # Get installation ID
-        headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}
-        resp = requests.get(
-            f"https://api.github.com/repos/{GITHUB_REPO}/installation",
-            headers=headers,
-        )
-        resp.raise_for_status()
-        install_id = resp.json()["id"]
+    # Get installation ID
+    headers = {
+      "Authorization": f"Bearer {token}",
+      "Accept": "application/vnd.github+json",
+    }
+    resp = requests.get(
+      f"https://api.github.com/repos/{GITHUB_REPO}/installation",
+      headers=headers,
+    )
+    resp.raise_for_status()
+    install_id = resp.json()["id"]
 
-        # Get installation token
-        resp = requests.post(
-            f"https://api.github.com/app/installations/{install_id}/access_tokens",
-            headers=headers,
-        )
-        resp.raise_for_status()
-        return resp.json()["token"]
+    # Get installation token
+    resp = requests.post(
+      f"https://api.github.com/app/installations/{install_id}/access_tokens",
+      headers=headers,
+    )
+    resp.raise_for_status()
+    return resp.json()["token"]
 
-    except Exception as e:
-        logger.exception(f"Failed to get installation token: {e}")
-        raise
+  except Exception as e:
+    logger.exception(f"Failed to get installation token: {e}")
+    raise
 
 
 def push_feature_branch(branch_name: str) -> bool:
-    """Push current branch to remote."""
-    try:
-        result = subprocess.run(
-            ["git", "push", "origin", branch_name],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-        )
-        if result.returncode == 0:
-            logger.info(f"Pushed branch: {branch_name}")
-            return True
-        logger.warning(f"Push failed: {result.stderr}")
-        return False
-    except Exception as e:
-        logger.exception(f"Push error: {e}")
-        return False
+  """Push current branch to remote."""
+  try:
+    result = subprocess.run(
+      ["git", "push", "origin", branch_name],
+      capture_output=True,
+      text=True,
+      cwd=str(REPO_ROOT),
+    )
+    if result.returncode == 0:
+      logger.info(f"Pushed branch: {branch_name}")
+      return True
+    logger.warning(f"Push failed: {result.stderr}")
+    return False
+  except Exception as e:
+    logger.exception(f"Push error: {e}")
+    return False
 
 
 def load_latest_report() -> dict | None:
-    """Load the most recent synthesis report."""
-    reports = sorted(REPORT_DIR.glob("synthesis_*.json"), reverse=True)
-    if not reports:
-        return None
-    with open(reports[0]) as f:
-        return json.load(f)
+  """Load the most recent synthesis report."""
+  reports = sorted(REPORT_DIR.glob("synthesis_*.json"), reverse=True)
+  if not reports:
+    return None
+  with open(reports[0]) as f:
+    return json.load(f)
 
 
 def slugify(text: str) -> str:
-    """Convert text to URL-safe slug."""
-    slug = re.sub(r"[^\w\s-]", "", text.lower())
-    return re.sub(r"[-\s]+", "-", slug).strip("-")[:50]
+  """Convert text to URL-safe slug."""
+  slug = re.sub(r"[^\w\s-]", "", text.lower())
+  return re.sub(r"[-\s]+", "-", slug).strip("-")[:50]
 
 
 def create_gap_stub(action: dict, token: str) -> dict | None:
-    """Create a GitHub issue for a gap action item."""
-    title = f"[{action['type']}] {action['action'][:80]}"
-    body = (
-        f"**Type:** {action['type']}\n"
-        f"**Priority:** {action['priority']}\n"
-        f"**Domain:** {action['domain']}\n\n"
-        f"Auto-generated by Intelligence Pipeline Step 7.\n"
-    )
+  """Create a GitHub issue for a gap action item."""
+  title = f"[{action['type']}] {action['action'][:80]}"
+  body = (
+    f"**Type:** {action['type']}\n"
+    f"**Priority:** {action['priority']}\n"
+    f"**Domain:** {action['domain']}\n\n"
+    f"Auto-generated by Intelligence Pipeline Step 7.\n"
+  )
 
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github+json",
-    }
-    resp = requests.post(
-        f"https://api.github.com/repos/{GITHUB_REPO}/issues",
-        json={"title": title, "body": body, "labels": ["intelligence-pipeline", action["priority"]]},
-        headers=headers,
-    )
-    if resp.status_code == 201:
-        issue = resp.json()
-        logger.info(f"Created issue #{issue['number']}: {title}")
-        return issue
-    logger.warning(f"Issue creation failed: {resp.status_code} {resp.text[:200]}")
-    return None
+  headers = {
+    "Authorization": f"token {token}",
+    "Accept": "application/vnd.github+json",
+  }
+  resp = requests.post(
+    f"https://api.github.com/repos/{GITHUB_REPO}/issues",
+    json={
+      "title": title,
+      "body": body,
+      "labels": ["intelligence-pipeline", action["priority"]],
+    },
+    headers=headers,
+  )
+  if resp.status_code == 201:
+    issue = resp.json()
+    logger.info(f"Created issue #{issue['number']}: {title}")
+    return issue
+  logger.warning(f"Issue creation failed: {resp.status_code} {resp.text[:200]}")
+  return None
 
 
 def update_repo_description(token: str, status: str) -> None:
-    """Update repo description with pipeline status."""
-    headers = {
-        "Authorization": f"token {token}",
-        "Accept": "application/vnd.github+json",
-    }
-    resp = requests.patch(
-        f"https://api.github.com/repos/{GITHUB_REPO}",
-        json={"description": status},
-        headers=headers,
-    )
-    if resp.status_code == 200:
-        logger.info("Updated repo description")
+  """Update repo description with pipeline status."""
+  headers = {
+    "Authorization": f"token {token}",
+    "Accept": "application/vnd.github+json",
+  }
+  resp = requests.patch(
+    f"https://api.github.com/repos/{GITHUB_REPO}",
+    json={"description": status},
+    headers=headers,
+  )
+  if resp.status_code == 200:
+    logger.info("Updated repo description")
 
 
 def run_github_sync(cfg=None) -> dict:
-    """Execute Step 7: GitHub Sync."""
-    logger.info("GitHub Sync — Step 7")
+  """Execute Step 7: GitHub Sync."""
+  logger.info("GitHub Sync — Step 7")
 
-    report = load_latest_report()
-    if not report:
-        logger.warning("No synthesis report found")
-        return {"status": "no_report"}
+  report = load_latest_report()
+  if not report:
+    logger.warning("No synthesis report found")
+    return {"status": "no_report"}
 
-    if cfg and cfg.dry_run:
-        return {"status": "dry_run", "actions": len(report.get("actions", []))}
+  if cfg and cfg.dry_run:
+    return {"status": "dry_run", "actions": len(report.get("actions", []))}
 
-    try:
-        token = get_installation_token()
-    except Exception:
-        logger.exception("Cannot authenticate to GitHub — skipping sync")
-        return {"status": "auth_failed"}
+  try:
+    token = get_installation_token()
+  except Exception:
+    logger.exception("Cannot authenticate to GitHub — skipping sync")
+    return {"status": "auth_failed"}
 
-    # Create issues for high-priority actions
-    created = 0
-    for action in report.get("actions", []):
-        if action.get("priority") == "high":
-            issue = create_gap_stub(action, token)
-            if issue:
-                created += 1
-            time.sleep(1)  # Rate limit
+  # Create issues for high-priority actions
+  created = 0
+  for action in report.get("actions", []):
+    if action.get("priority") == "high":
+      issue = create_gap_stub(action, token)
+      if issue:
+        created += 1
+      time.sleep(1)  # Rate limit
 
-    stats = {"issues_created": created, "total_actions": len(report.get("actions", []))}
-    logger.info(f"GitHub Sync complete: {stats}")
-    return stats
+  stats = {"issues_created": created, "total_actions": len(report.get("actions", []))}
+  logger.info(f"GitHub Sync complete: {stats}")
+  return stats
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="GitHub Sync — Step 7")
-    parser.add_argument("--dry-run", action="store_true")
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(description="GitHub Sync — Step 7")
+  parser.add_argument("--dry-run", action="store_true")
+  args = parser.parse_args()
 
-    from dataclasses import dataclass
+  from dataclasses import dataclass
 
-    @dataclass
-    class Cfg:
-        dry_run: bool = False
+  @dataclass
+  class Cfg:
+    dry_run: bool = False
 
-    run_github_sync(Cfg(dry_run=args.dry_run))
+  run_github_sync(Cfg(dry_run=args.dry_run))

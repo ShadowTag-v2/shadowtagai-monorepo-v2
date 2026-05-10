@@ -40,120 +40,129 @@ RAW_PATHS = """
 
 
 def generate_installation_token():
-    if not os.path.exists(KEY_PATH):
-        return None
+  if not os.path.exists(KEY_PATH):
+    return None
 
-    with open(KEY_PATH) as f:
-        private_key = f.read()
+  with open(KEY_PATH) as f:
+    private_key = f.read()
 
-    # Create JWT
-    payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
-    encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
-    headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
+  # Create JWT
+  payload = {
+    "iat": int(time.time()),
+    "exp": int(time.time()) + (10 * 60),
+    "iss": APP_ID,
+  }
+  encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
+  headers = {
+    "Authorization": f"Bearer {encoded_jwt}",
+    "Accept": "application/vnd.github.v3+json",
+  }
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
-    if resp.status_code != 200:
-        return None
+  resp = requests.get(
+    "https://api.github.com/app/installations", headers=headers, timeout=30
+  )
+  if resp.status_code != 200:
+    return None
 
-    installations = resp.json()
-    if not installations:
-        return None
+  installations = resp.json()
+  if not installations:
+    return None
 
-    inst_id = installations[0]["id"]
-    url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    res = requests.post(url, headers=headers, timeout=30)
+  inst_id = installations[0]["id"]
+  url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
+  res = requests.post(url, headers=headers, timeout=30)
 
-    if res.status_code != 201:
-        return None
+  if res.status_code != 201:
+    return None
 
-    return res.json()["token"]
+  return res.json()["token"]
 
 
 def extract_repo_path(remote_url: str):
-    """Converts generic gh remote to owner/repo format."""
-    url = remote_url.strip()
-    if "github.com/" in url:
-        return url.split("github.com/")[-1]
-    if "github.com:" in url:
-        return url.split("github.com:")[-1]
-    return None
+  """Converts generic gh remote to owner/repo format."""
+  url = remote_url.strip()
+  if "github.com/" in url:
+    return url.split("github.com/")[-1]
+  if "github.com:" in url:
+    return url.split("github.com:")[-1]
+  return None
 
 
 def process_git_directory(repo_path: str, token: str) -> None:
-    if repo_path in {"/Users/pikeymickey", "/Users/Deleted Users/pikeymickey"}:
-        return
+  if repo_path in {"/Users/pikeymickey", "/Users/Deleted Users/pikeymickey"}:
+    return
 
-    if not os.path.isdir(os.path.join(repo_path, ".git")):
-        return
+  if not os.path.isdir(os.path.join(repo_path, ".git")):
+    return
 
-    try:
-        # 1. Add all changes
-        subprocess.run(["git", "add", "-A"], cwd=repo_path, check=False)
+  try:
+    # 1. Add all changes
+    subprocess.run(["git", "add", "-A"], cwd=repo_path, check=False)
 
-        # 2. Check if there are changes to commit
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=repo_path,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        status = result.stdout
-        if status.strip():
-            subprocess.run(
-                ["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"],
-                cwd=repo_path,
-                check=False,
-            )
-        else:
-            pass
+    # 2. Check if there are changes to commit
+    result = subprocess.run(
+      ["git", "status", "--porcelain"],
+      cwd=repo_path,
+      capture_output=True,
+      text=True,
+      check=False,
+    )
+    status = result.stdout
+    if status.strip():
+      subprocess.run(
+        ["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"],
+        cwd=repo_path,
+        check=False,
+      )
+    else:
+      pass
 
-        # 3. Pull Current Remote
-        remote_result = subprocess.run(
-            ["git", "remote", "get-url", "origin"],
-            cwd=repo_path,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        remote_out = remote_result.stdout.strip()
-        if "fatal: No such remote" in remote_out or not remote_out:
-            return
+    # 3. Pull Current Remote
+    remote_result = subprocess.run(
+      ["git", "remote", "get-url", "origin"],
+      cwd=repo_path,
+      capture_output=True,
+      text=True,
+      check=False,
+    )
+    remote_out = remote_result.stdout.strip()
+    if "fatal: No such remote" in remote_out or not remote_out:
+      return
 
-        relative_repo = extract_repo_path(remote_out)
-        if not relative_repo:
-            return
+    relative_repo = extract_repo_path(remote_out)
+    if not relative_repo:
+      return
 
-        # 4. Push aggressively using ephemeral App Token via direct HTTPS injection
-        push_cmd = f"https://x-access-token:{token}@github.com/{relative_repo}"
-        # Using check_call to let failure propagate cleanly to logs without exposing token in stdout by default
-        os.environ.copy()
+    # 4. Push aggressively using ephemeral App Token via direct HTTPS injection
+    push_cmd = f"https://x-access-token:{token}@github.com/{relative_repo}"
+    # Using check_call to let failure propagate cleanly to logs without exposing token in stdout by default
+    os.environ.copy()
 
-        subprocess.run(["git", "push", push_cmd, "HEAD"], cwd=repo_path, check=True)
+    subprocess.run(["git", "push", push_cmd, "HEAD"], cwd=repo_path, check=True)
 
-    except Exception:
-        pass
+  except Exception:
+    pass
 
 
 def main() -> None:
-    token = generate_installation_token()
-    if not token:
-        return
+  token = generate_installation_token()
+  if not token:
+    return
 
-    # Parse provided raw blob, trimming commas and cleaning paths
-    lines = RAW_PATHS.splitlines()
-    targets = []
-    for line in lines:
-        cleaned = line.strip().rstrip(",")
-        if cleaned:
-            targets.append(cleaned)
+  # Parse provided raw blob, trimming commas and cleaning paths
+  lines = RAW_PATHS.splitlines()
+  targets = []
+  for line in lines:
+    cleaned = line.strip().rstrip(",")
+    if cleaned:
+      targets.append(cleaned)
 
-    # Deduplicate via Set
-    targets = list(set(targets))
+  # Deduplicate via Set
+  targets = list(set(targets))
 
-    for t in targets:
-        process_git_directory(t, token)
+  for t in targets:
+    process_git_directory(t, token)
 
 
 if __name__ == "__main__":
-    main()
+  main()

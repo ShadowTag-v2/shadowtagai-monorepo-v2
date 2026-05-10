@@ -20,42 +20,42 @@ from starlette.responses import Response
 # Map of deprecated route prefixes → sunset date (ISO 8601)
 # Add entries here when deprecating endpoints
 _DEPRECATED_ROUTES: dict[str, dict[str, Any]] = {
-    # Example: when /enclave/v1 is superseded by /enclave/v2
-    # "/enclave/v1": {
-    #     "sunset": "2027-01-01T00:00:00Z",
-    #     "link": "https://docs.kovelai.com/api/migration-v2",
-    #     "alternative": "/enclave/v2",
-    # },
+  # Example: when /enclave/v1 is superseded by /enclave/v2
+  # "/enclave/v1": {
+  #     "sunset": "2027-01-01T00:00:00Z",
+  #     "link": "https://docs.kovelai.com/api/migration-v2",
+  #     "alternative": "/enclave/v2",
+  # },
 }
 
 
 class DeprecationMiddleware(BaseHTTPMiddleware):
-    """Inject RFC 8594 Deprecation + Sunset headers on deprecated routes."""
+  """Inject RFC 8594 Deprecation + Sunset headers on deprecated routes."""
 
-    async def dispatch(self, request: Request, call_next: Any) -> Response:
-        response: Response = await call_next(request)
-        path = request.url.path
+  async def dispatch(self, request: Request, call_next: Any) -> Response:
+    response: Response = await call_next(request)
+    path = request.url.path
 
-        for prefix, meta in _DEPRECATED_ROUTES.items():
-            if path.startswith(prefix):
-                # RFC 8594: Deprecation header
-                response.headers["Deprecation"] = "true"
+    for prefix, meta in _DEPRECATED_ROUTES.items():
+      if path.startswith(prefix):
+        # RFC 8594: Deprecation header
+        response.headers["Deprecation"] = "true"
 
-                # Sunset header (RFC 8594 §3)
-                if sunset := meta.get("sunset"):
-                    response.headers["Sunset"] = sunset
+        # Sunset header (RFC 8594 §3)
+        if sunset := meta.get("sunset"):
+          response.headers["Sunset"] = sunset
 
-                # Link to migration docs
-                if link := meta.get("link"):
-                    response.headers["Link"] = f'<{link}>; rel="deprecation"'
+        # Link to migration docs
+        if link := meta.get("link"):
+          response.headers["Link"] = f'<{link}>; rel="deprecation"'
 
-                # Custom header for the replacement endpoint
-                if alt := meta.get("alternative"):
-                    response.headers["X-API-Alternative"] = alt
+        # Custom header for the replacement endpoint
+        if alt := meta.get("alternative"):
+          response.headers["X-API-Alternative"] = alt
 
-                break
+        break
 
-        # Always include API version header
-        response.headers["X-API-Version"] = "v1"
+    # Always include API version header
+    response.headers["X-API-Version"] = "v1"
 
-        return response
+    return response

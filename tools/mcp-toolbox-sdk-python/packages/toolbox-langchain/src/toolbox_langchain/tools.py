@@ -25,124 +25,132 @@ from toolbox_core.utils import params_to_pydantic_model
 
 
 class ToolboxTool(BaseTool):
+  """
+  A subclass of LangChain's BaseTool that supports features specific to
+  Toolbox, like bound parameters and authenticated tools.
+  """
+
+  def __init__(
+    self,
+    core_tool: ToolboxCoreSyncTool,
+  ) -> None:
     """
-    A subclass of LangChain's BaseTool that supports features specific to
-    Toolbox, like bound parameters and authenticated tools.
+    Initializes a ToolboxTool instance.
+
+    Args:
+        core_tool: The underlying core sync ToolboxTool instance.
     """
 
-    def __init__(
-        self,
-        core_tool: ToolboxCoreSyncTool,
-    ) -> None:
-        """
-        Initializes a ToolboxTool instance.
+    # Due to how pydantic works, we must initialize the underlying
+    # BaseTool class before assigning values to member variables.
+    super().__init__(
+      name=core_tool.__name__,
+      description=core_tool.__doc__,
+      args_schema=params_to_pydantic_model(core_tool._name, core_tool._params),
+    )
+    self.__core_tool = core_tool
 
-        Args:
-            core_tool: The underlying core sync ToolboxTool instance.
-        """
+  def _run(self, **kwargs: Any) -> str:
+    return self.__core_tool(**kwargs)
 
-        # Due to how pydantic works, we must initialize the underlying
-        # BaseTool class before assigning values to member variables.
-        super().__init__(
-            name=core_tool.__name__,
-            description=core_tool.__doc__,
-            args_schema=params_to_pydantic_model(core_tool._name, core_tool._params),
-        )
-        self.__core_tool = core_tool
+  async def _arun(self, **kwargs: Any) -> str:
+    return await to_thread(self.__core_tool, **kwargs)
 
-    def _run(self, **kwargs: Any) -> str:
-        return self.__core_tool(**kwargs)
+  def add_auth_token_getters(
+    self, auth_token_getters: dict[str, Callable[[], str]]
+  ) -> "ToolboxTool":
+    """
+    Registers functions to retrieve ID tokens for the corresponding
+    authentication sources.
 
-    async def _arun(self, **kwargs: Any) -> str:
-        return await to_thread(self.__core_tool, **kwargs)
+    Args:
+        auth_token_getters: A dictionary of authentication source names to
+            the functions that return corresponding ID token.
 
-    def add_auth_token_getters(self, auth_token_getters: dict[str, Callable[[], str]]) -> "ToolboxTool":
-        """
-        Registers functions to retrieve ID tokens for the corresponding
-        authentication sources.
+    Returns:
+        A new ToolboxTool instance that is a deep copy of the current
+        instance, with added auth token getters.
 
-        Args:
-            auth_token_getters: A dictionary of authentication source names to
-                the functions that return corresponding ID token.
+    Raises:
+        ValueError: If any of the provided auth parameters is already
+            registered.
+    """
+    new_core_tool = self.__core_tool.add_auth_token_getters(auth_token_getters)
+    return ToolboxTool(core_tool=new_core_tool)
 
-        Returns:
-            A new ToolboxTool instance that is a deep copy of the current
-            instance, with added auth token getters.
+  def add_auth_token_getter(
+    self, auth_source: str, get_id_token: Callable[[], str]
+  ) -> "ToolboxTool":
+    """
+    Registers a function to retrieve an ID token for a given authentication
+    source.
 
-        Raises:
-            ValueError: If any of the provided auth parameters is already
-                registered.
-        """
-        new_core_tool = self.__core_tool.add_auth_token_getters(auth_token_getters)
-        return ToolboxTool(core_tool=new_core_tool)
+    Args:
+        auth_source: The name of the authentication source.
+        get_id_token: A function that returns the ID token.
 
-    def add_auth_token_getter(self, auth_source: str, get_id_token: Callable[[], str]) -> "ToolboxTool":
-        """
-        Registers a function to retrieve an ID token for a given authentication
-        source.
+    Returns:
+        A new ToolboxTool instance that is a deep copy of the current
+        instance, with added auth token getter.
 
-        Args:
-            auth_source: The name of the authentication source.
-            get_id_token: A function that returns the ID token.
+    Raises:
+        ValueError: If the provided auth parameter is already registered.
+    """
+    return self.add_auth_token_getters({auth_source: get_id_token})
 
-        Returns:
-            A new ToolboxTool instance that is a deep copy of the current
-            instance, with added auth token getter.
+  @deprecated("Please use `add_auth_token_getters` instead.")
+  def add_auth_tokens(
+    self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True
+  ) -> "ToolboxTool":
+    return self.add_auth_token_getters(auth_tokens)
 
-        Raises:
-            ValueError: If the provided auth parameter is already registered.
-        """
-        return self.add_auth_token_getters({auth_source: get_id_token})
+  @deprecated("Please use `add_auth_token_getter` instead.")
+  def add_auth_token(
+    self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True
+  ) -> "ToolboxTool":
+    return self.add_auth_token_getter(auth_source, get_id_token)
 
-    @deprecated("Please use `add_auth_token_getters` instead.")
-    def add_auth_tokens(self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True) -> "ToolboxTool":
-        return self.add_auth_token_getters(auth_tokens)
+  def bind_params(
+    self,
+    bound_params: dict[str, Any | Callable[[], Any]],
+  ) -> "ToolboxTool":
+    """
+    Registers values or functions to retrieve the value for the
+    corresponding bound parameters.
 
-    @deprecated("Please use `add_auth_token_getter` instead.")
-    def add_auth_token(self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True) -> "ToolboxTool":
-        return self.add_auth_token_getter(auth_source, get_id_token)
+    Args:
+        bound_params: A dictionary of the bound parameter name to the
+            value or function of the bound value.
 
-    def bind_params(
-        self,
-        bound_params: dict[str, Any | Callable[[], Any]],
-    ) -> "ToolboxTool":
-        """
-        Registers values or functions to retrieve the value for the
-        corresponding bound parameters.
+    Returns:
+        A new ToolboxTool instance that is a deep copy of the current
+        instance, with added bound params.
 
-        Args:
-            bound_params: A dictionary of the bound parameter name to the
-                value or function of the bound value.
+    Raises:
+        ValueError: If any of the provided bound params is already bound.
+    """
+    new_core_tool = self.__core_tool.bind_params(bound_params)
+    return ToolboxTool(core_tool=new_core_tool)
 
-        Returns:
-            A new ToolboxTool instance that is a deep copy of the current
-            instance, with added bound params.
+  def bind_param(
+    self,
+    param_name: str,
+    param_value: Any | Callable[[], Any],
+  ) -> "ToolboxTool":
+    """
+    Registers a value or a function to retrieve the value for a given bound
+    parameter.
 
-        Raises:
-            ValueError: If any of the provided bound params is already bound.
-        """
-        new_core_tool = self.__core_tool.bind_params(bound_params)
-        return ToolboxTool(core_tool=new_core_tool)
+    Args:
+        param_name: The name of the bound parameter.
+        param_value: The value of the bound parameter, or a callable that
+            returns the value.
 
-    def bind_param(
-        self,
-        param_name: str,
-        param_value: Any | Callable[[], Any],
-    ) -> "ToolboxTool":
-        """
-        Registers a value or a function to retrieve the value for a given bound
-        parameter.
+    Returns:
+        A new ToolboxTool instance that is a deep copy of the current
+        instance, with added bound param.
 
-        Args:
-            param_name: The name of the bound parameter.
-            param_value: The value of the bound parameter, or a callable that
-                returns the value.
-
-        Returns:
-            A new ToolboxTool instance that is a deep copy of the current
-            instance, with added bound param.
-
-        Raises:
-            ValueError: If the provided bound param is already bound.
-        """
-        return self.bind_params({param_name: param_value})
+    Raises:
+        ValueError: If the provided bound param is already bound.
+    """
+    return self.bind_params({param_name: param_value})

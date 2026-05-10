@@ -21,22 +21,22 @@ Usage:
 from __future__ import annotations
 
 try:
-    from context_compactor.compactor import ContextCompactor
-    from context_compactor.conversation_compact import (
-        CompactionConfig,
-        CompactionResult,
-        compact_conversation,
-    )
+  from context_compactor.compactor import ContextCompactor
+  from context_compactor.conversation_compact import (
+    CompactionConfig,
+    CompactionResult,
+    compact_conversation,
+  )
 except ImportError:
-    # Graceful degradation if context_compactor not importable
-    ContextCompactor = None  # type: ignore[assignment, misc]
-    CompactionConfig = None  # type: ignore[assignment, misc]
-    CompactionResult = None  # type: ignore[assignment, misc]
-    compact_conversation = None  # type: ignore[assignment]
+  # Graceful degradation if context_compactor not importable
+  ContextCompactor = None  # type: ignore[assignment, misc]
+  CompactionConfig = None  # type: ignore[assignment, misc]
+  CompactionResult = None  # type: ignore[assignment, misc]
+  compact_conversation = None  # type: ignore[assignment]
 
 __all__ = [
-    "CompactionConfig",
-    "CompactionResult",
-    "ContextCompactor",
-    "compact_conversation",
+  "CompactionConfig",
+  "CompactionResult",
+  "ContextCompactor",
+  "compact_conversation",
 ]

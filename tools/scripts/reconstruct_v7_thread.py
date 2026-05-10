@@ -4,10 +4,10 @@ import os
 
 
 def create_file(filepath, content):
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, "w") as f:
-        f.write(content.strip() + "\n")
-    print(f"✅ Reconstructed: {filepath}")
+  os.makedirs(os.path.dirname(filepath), exist_ok=True)
+  with open(filepath, "w") as f:
+    f.write(content.strip() + "\n")
+  print(f"✅ Reconstructed: {filepath}")
 
 
 # --- ARCHITECTURE FILES TO RECONSTRUCT ---

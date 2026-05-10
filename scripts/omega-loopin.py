@@ -11,31 +11,37 @@ import subprocess
 
 
 def verify_invariants():
-    print("\n>>> 🛡️ [OMEGA LOOP] INITIATING REPO-DRIFT AUDIT...")
+  print("\n>>> 🛡️ [OMEGA LOOP] INITIATING REPO-DRIFT AUDIT...")
 
-    # Check CPython version
-    py_version = subprocess.run(["python3", "--version"], capture_output=True, text=True).stdout.strip()
-    print(f"  [PYTHON] {py_version}")
-    if "3.14" not in py_version:
-        print("  ⚠️ WARNING: CPython drift detected. Run /pickle egress to sanitize.")
+  # Check CPython version
+  py_version = subprocess.run(
+    ["python3", "--version"], capture_output=True, text=True
+  ).stdout.strip()
+  print(f"  [PYTHON] {py_version}")
+  if "3.14" not in py_version:
+    print("  ⚠️ WARNING: CPython drift detected. Run /pickle egress to sanitize.")
 
-    # Check Git Drift
-    status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout
-    if status:
-        print("  ⚠️ WARNING: Uncommitted files present. Run /pickle egress to sanitize.")
-    else:
-        print("  ✅ [GIT] Tree is mathematically clean. Zero drift.")
+  # Check Git Drift
+  status = subprocess.run(
+    ["git", "status", "--porcelain"], capture_output=True, text=True
+  ).stdout
+  if status:
+    print("  ⚠️ WARNING: Uncommitted files present. Run /pickle egress to sanitize.")
+  else:
+    print("  ✅ [GIT] Tree is mathematically clean. Zero drift.")
 
 
 def ignite_temporal_swarm():
-    print(">>> 🌐 [TEMPORAL] Connecting to Temporal.io Serverless Backend...")
-    print(">>> 🟢 [OMEGA LOOP] The Swarm is breathing. Awaiting CallOfQuestion hashes from Cor.Go...")
+  print(">>> 🌐 [TEMPORAL] Connecting to Temporal.io Serverless Backend...")
+  print(
+    ">>> 🟢 [OMEGA LOOP] The Swarm is breathing. Awaiting CallOfQuestion hashes from Cor.Go..."
+  )
 
 
 def main():
-    verify_invariants()
-    ignite_temporal_swarm()
+  verify_invariants()
+  ignite_temporal_swarm()
 
 
 if __name__ == "__main__":
-    main()
+  main()

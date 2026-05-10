@@ -35,13 +35,13 @@ preserve_copyright_year = php._merge
 _tracked_paths.add(src)
 
 php.owlbot_main(
-    src=src,
-    dest=dest,
-    copy_excludes=[
-        src / "*/src/V1/FirestoreClient.php",
-        src / "*/src/Admin/V1/FirestoreAdminClient.php",
-        src / "*/proto/src/Google/Cloud/Firestore/V1/TransactionOptions/ReadOnly.php",
-    ],
+  src=src,
+  dest=dest,
+  copy_excludes=[
+    src / "*/src/V1/FirestoreClient.php",
+    src / "*/src/Admin/V1/FirestoreAdminClient.php",
+    src / "*/proto/src/Google/Cloud/Firestore/V1/TransactionOptions/ReadOnly.php",
+  ],
 )
 
 # Firestore Admin also lives here
@@ -49,95 +49,116 @@ admin_library = Path(f"../{php.STAGING_DIR}/Firestore/v1/Admin").resolve()
 
 # copy all src
 s.move(
-    admin_library / "src",
-    "src/Admin",
-    merge=preserve_copyright_year,
-    excludes=[
-        admin_library / "src/V1/FirestoreAdminClient.php",
-    ],
+  admin_library / "src",
+  "src/Admin",
+  merge=preserve_copyright_year,
+  excludes=[
+    admin_library / "src/V1/FirestoreAdminClient.php",
+  ],
 )
 
 # copy proto files to src also
-s.move(admin_library / "proto/src/Google/Cloud/Firestore", "src/", merge=preserve_copyright_year)
+s.move(
+  admin_library / "proto/src/Google/Cloud/Firestore",
+  "src/",
+  merge=preserve_copyright_year,
+)
 s.move(admin_library / "tests/Unit", "tests/Unit/Admin", merge=preserve_copyright_year)
 
 # copy GPBMetadata file to metadata
-s.move(admin_library / "proto/src/GPBMetadata/Google/Firestore", "metadata/", merge=preserve_copyright_year)
+s.move(
+  admin_library / "proto/src/GPBMetadata/Google/Firestore",
+  "metadata/",
+  merge=preserve_copyright_year,
+)
 
 
 yearFixes = [
-    {"year": "2017", "files": ["src/V1beta1/Gapic/*GapicClient.php", "src/V1beta1/*Client.php", "tests/**/V1beta1/*Test.php"]},
-    {
-        "year": "2019",
-        "files": [
-            "src/V1/Gapic/*GapicClient.php",
-            "src/V1/*Client.php",
-            "tests/**/V1/*Test.php",
-            "src/Admin/V1/*Client.php",
-            "src/Admin/V1/Gapic/*GapicClient.php",
-        ],
-    },
+  {
+    "year": "2017",
+    "files": [
+      "src/V1beta1/Gapic/*GapicClient.php",
+      "src/V1beta1/*Client.php",
+      "tests/**/V1beta1/*Test.php",
+    ],
+  },
+  {
+    "year": "2019",
+    "files": [
+      "src/V1/Gapic/*GapicClient.php",
+      "src/V1/*Client.php",
+      "tests/**/V1/*Test.php",
+      "src/Admin/V1/*Client.php",
+      "src/Admin/V1/Gapic/*GapicClient.php",
+    ],
+  },
 ]
 
 for fix in yearFixes:
-    year = fix.get("year")
-    for path in fix.get("files"):
-        s.replace(path, r"Copyright \d{4}", f"Copyright {year}")
+  year = fix.get("year")
+  for path in fix.get("files"):
+    s.replace(path, r"Copyright \d{4}", f"Copyright {year}")
 
 # fix test group
 s.replace("tests/**/Admin/V1/*Test.php", r"@group admin", "@group firestore-admin")
 
 # remove ReadOnly class_alias code
 s.replace(
-    "src/V*/**/PBReadOnly.php",
-    r"^// Adding a class alias for backwards compatibility with the \"readonly\" keyword.$"
-    + "\n"
-    + r"^class_alias\(PBReadOnly::class, __NAMESPACE__ . '\\ReadOnly'\);$"
-    + "\n",
-    "",
+  "src/V*/**/PBReadOnly.php",
+  r"^// Adding a class alias for backwards compatibility with the \"readonly\" keyword.$"
+  + "\n"
+  + r"^class_alias\(PBReadOnly::class, __NAMESPACE__ . '\\ReadOnly'\);$"
+  + "\n",
+  "",
 )
 
 ### [START] protoc backwards compatibility fixes
 
 # roll back to private properties.
 s.replace(
-    "src/**/V*/**/*.php",
-    r"Generated from protobuf field ([^\n]{0,})\n\s{5}\*/\n\s{4}protected \$",
-    r"""Generated from protobuf field \1
+  "src/**/V*/**/*.php",
+  r"Generated from protobuf field ([^\n]{0,})\n\s{5}\*/\n\s{4}protected \$",
+  r"""Generated from protobuf field \1
      */
     private $""",
 )
 
 # Replace "Unwrapped" with "Value" for method names.
-s.replace("src/**/V*/**/*.php", r"public function ([s|g]\w{3,})Unwrapped", r"public function \1Value")
+s.replace(
+  "src/**/V*/**/*.php",
+  r"public function ([s|g]\w{3,})Unwrapped",
+  r"public function \1Value",
+)
 
 ### [END] protoc backwards compatibility fixes
 
 # fix relative cloud.google.com links
-s.replace("src/**/V*/**/*.php", r"(.{0,})\]\((/.{0,})\)", r"\1](https://cloud.google.com\2)")
+s.replace(
+  "src/**/V*/**/*.php", r"(.{0,})\]\((/.{0,})\)", r"\1](https://cloud.google.com\2)"
+)
 
 # fix backwards-compatibility issues with LRO methods
 lro_methods = ["createIndex", "exportDocuments", "importDocuments", "updateField"]
 for lro_method in lro_methods:
-    s.replace(
-        "src/Admin/V1/Gapic/FirestoreAdminGapicClient.php",
-        rf"{lro_method}\(",
-        rf"{lro_method}LRO(",
-    )
-    s.replace(
-        "tests/Unit/Admin/V1/FirestoreAdminClientTest.php",
-        rf"{lro_method}\(",
-        rf"{lro_method}LRO(",
-    )
+  s.replace(
+    "src/Admin/V1/Gapic/FirestoreAdminGapicClient.php",
+    rf"{lro_method}\(",
+    rf"{lro_method}LRO(",
+  )
+  s.replace(
+    "tests/Unit/Admin/V1/FirestoreAdminClientTest.php",
+    rf"{lro_method}\(",
+    rf"{lro_method}LRO(",
+  )
 # fix backwards-compatibility issues with paginated methods
 paginated_method = "partitionQuery"
 s.replace(
-    "src/V1/Gapic/FirestoreGapicClient.php",
-    rf"{paginated_method}\(",
-    rf"{paginated_method}Paginated(",
+  "src/V1/Gapic/FirestoreGapicClient.php",
+  rf"{paginated_method}\(",
+  rf"{paginated_method}Paginated(",
 )
 s.replace(
-    "tests/Unit/V1/FirestoreClientTest.php",
-    rf"{paginated_method}\(",
-    rf"{paginated_method}Paginated(",
+  "tests/Unit/V1/FirestoreClientTest.php",
+  rf"{paginated_method}\(",
+  rf"{paginated_method}Paginated(",
 )

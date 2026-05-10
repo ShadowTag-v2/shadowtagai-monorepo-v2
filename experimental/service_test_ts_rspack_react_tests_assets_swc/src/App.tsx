@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 const App = (): React.ReactElement => {
   const imageURL = new URL('../assets/images/image1.png', import.meta.url).href;

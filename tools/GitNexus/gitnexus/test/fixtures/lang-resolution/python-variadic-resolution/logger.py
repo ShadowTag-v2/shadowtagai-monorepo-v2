@@ -2,4 +2,4 @@
 
 
 def log_entry(*messages):
-    print(" ".join(messages))
+  print(" ".join(messages))

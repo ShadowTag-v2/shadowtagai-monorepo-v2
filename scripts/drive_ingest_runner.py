@@ -30,65 +30,65 @@ LANCE_PATH = ROOT / "data/drive_ingest/lancedb"
 
 
 def ensure_ane_bridge() -> None:
-    if DYLIB.exists():
-        return
-    r = subprocess.run(["make"], cwd=BRIDGE_DIR, capture_output=True, text=True)
-    if r.returncode != 0:
-        msg = f"make failed:\n{r.stderr}"
-        raise RuntimeError(msg)
-    if not DYLIB.exists():
-        msg = f"make succeeded but dylib still missing: {DYLIB}"
-        raise FileNotFoundError(msg)
+  if DYLIB.exists():
+    return
+  r = subprocess.run(["make"], cwd=BRIDGE_DIR, capture_output=True, text=True)
+  if r.returncode != 0:
+    msg = f"make failed:\n{r.stderr}"
+    raise RuntimeError(msg)
+  if not DYLIB.exists():
+    msg = f"make succeeded but dylib still missing: {DYLIB}"
+    raise FileNotFoundError(msg)
 
 
 # ── Step 2: Probe ANE stack ────────────────────────────────────────────────────
 
 
 def probe_ane_stack() -> None:
-    sys.path.insert(0, str(ANE_SVC))
-    try:
-        from zero_cpu_router import dispatch_compute  # noqa: F401
+  sys.path.insert(0, str(ANE_SVC))
+  try:
+    from zero_cpu_router import dispatch_compute  # noqa: F401
 
-    except Exception as e:
-        msg = f"zero_cpu_router import failed: {e}"
-        raise RuntimeError(msg) from e
+  except Exception as e:
+    msg = f"zero_cpu_router import failed: {e}"
+    raise RuntimeError(msg) from e
 
 
 # ── Step 3: Run daemon (streaming) ────────────────────────────────────────────
 
 
 def run_daemon() -> None:
-    env = {**os.environ, "PYTHONUNBUFFERED": "1"}
-    proc = subprocess.run(
-        [str(VENV_PY), str(DAEMON)],
-        env=env,
-        cwd=str(ROOT),
-    )
-    if proc.returncode != 0:
-        msg = f"drive_ingest_daemon exited {proc.returncode}"
-        raise RuntimeError(msg)
+  env = {**os.environ, "PYTHONUNBUFFERED": "1"}
+  proc = subprocess.run(
+    [str(VENV_PY), str(DAEMON)],
+    env=env,
+    cwd=str(ROOT),
+  )
+  if proc.returncode != 0:
+    msg = f"drive_ingest_daemon exited {proc.returncode}"
+    raise RuntimeError(msg)
 
 
 # ── Step 4: Report local output ────────────────────────────────────────────────
 
 
 def report_local() -> None:
-    ingest = ROOT / "data/drive_ingest"
-    jsonl = ingest / "extractions.jsonl"
-    docs = ingest / "docs"
-    if jsonl.exists():
-        sum(1 for _ in open(jsonl))  # noqa: SIM115
-    if docs.exists():
-        sum(1 for _ in docs.iterdir())
+  ingest = ROOT / "data/drive_ingest"
+  jsonl = ingest / "extractions.jsonl"
+  docs = ingest / "docs"
+  if jsonl.exists():
+    sum(1 for _ in open(jsonl))  # noqa: SIM115
+  if docs.exists():
+    sum(1 for _ in docs.iterdir())
 
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    try:
-        ensure_ane_bridge()
-        probe_ane_stack()
-        run_daemon()
-        report_local()
-    except Exception:
-        sys.exit(1)
+  try:
+    ensure_ane_bridge()
+    probe_ane_stack()
+    run_daemon()
+    report_local()
+  except Exception:
+    sys.exit(1)

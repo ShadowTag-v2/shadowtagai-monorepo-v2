@@ -9,7 +9,7 @@ from .dump import PromptDumper
 from .proxy import EgressProxy
 
 __all__ = [
-    "EgressAllowlist",
-    "EgressProxy",
-    "PromptDumper",
+  "EgressAllowlist",
+  "EgressProxy",
+  "PromptDumper",
 ]

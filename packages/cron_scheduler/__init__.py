@@ -25,19 +25,19 @@ Usage:
 """
 
 from cron_scheduler.core import (
-    CronScheduler,
-    CronTask,
-    JitterConfig,
-    SchedulerLock,
-    TaskState,
-    is_recurring_task_aged,
+  CronScheduler,
+  CronTask,
+  JitterConfig,
+  SchedulerLock,
+  TaskState,
+  is_recurring_task_aged,
 )
 
 __all__ = [
-    "CronScheduler",
-    "CronTask",
-    "JitterConfig",
-    "SchedulerLock",
-    "TaskState",
-    "is_recurring_task_aged",
+  "CronScheduler",
+  "CronTask",
+  "JitterConfig",
+  "SchedulerLock",
+  "TaskState",
+  "is_recurring_task_aged",
 ]

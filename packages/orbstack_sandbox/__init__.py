@@ -19,25 +19,25 @@ Public API:
 """
 
 from orbstack_sandbox.engine import (
-    ContainerLifecycle,
-    SandboxConfig,
-    SandboxEngine,
-    SandboxResult,
-    create_sandbox,
+  ContainerLifecycle,
+  SandboxConfig,
+  SandboxEngine,
+  SandboxResult,
+  create_sandbox,
 )
 from orbstack_sandbox.overlay import (
-    OverlayDiff,
-    OverlayManager,
+  OverlayDiff,
+  OverlayManager,
 )
 
 __all__ = [
-    # Core engine
-    "SandboxEngine",
-    "SandboxConfig",
-    "SandboxResult",
-    "ContainerLifecycle",
-    "create_sandbox",
-    # Overlay management
-    "OverlayManager",
-    "OverlayDiff",
+  # Core engine
+  "SandboxEngine",
+  "SandboxConfig",
+  "SandboxResult",
+  "ContainerLifecycle",
+  "create_sandbox",
+  # Overlay management
+  "OverlayManager",
+  "OverlayDiff",
 ]

@@ -19,43 +19,43 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from tools.orchestrator.memory_indexer import (  # noqa: E402
-    clear_hot_context,
-    get_hot_context,
-    index_file_context,
+  clear_hot_context,
+  get_hot_context,
+  index_file_context,
 )
 
 
 def main() -> None:
-    """CLI entrypoint."""
-    if len(sys.argv) < 2:
-        sys.exit(1)
+  """CLI entrypoint."""
+  if len(sys.argv) < 2:
+    sys.exit(1)
 
-    command = sys.argv[1]
+  command = sys.argv[1]
 
-    if command == "add":
-        if len(sys.argv) < 6:
-            sys.exit(1)
-        file_path = sys.argv[2]
-        start_line = int(sys.argv[3])
-        end_line = int(sys.argv[4])
-        summary = sys.argv[5]
-        tags = sys.argv[6:] if len(sys.argv) > 6 else None
+  if command == "add":
+    if len(sys.argv) < 6:
+      sys.exit(1)
+    file_path = sys.argv[2]
+    start_line = int(sys.argv[3])
+    end_line = int(sys.argv[4])
+    summary = sys.argv[5]
+    tags = sys.argv[6:] if len(sys.argv) > 6 else None
 
-        index_file_context(file_path, start_line, end_line, summary, tags)
+    index_file_context(file_path, start_line, end_line, summary, tags)
 
-    elif command == "show":
-        content = get_hot_context()
-        if content:
-            pass
-        else:
-            pass
-
-    elif command == "clear":
-        clear_hot_context()
-
+  elif command == "show":
+    content = get_hot_context()
+    if content:
+      pass
     else:
-        sys.exit(1)
+      pass
+
+  elif command == "clear":
+    clear_hot_context()
+
+  else:
+    sys.exit(1)
 
 
 if __name__ == "__main__":
-    main()
+  main()

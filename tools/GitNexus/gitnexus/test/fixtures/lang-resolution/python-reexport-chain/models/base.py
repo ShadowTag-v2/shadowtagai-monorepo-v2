@@ -2,10 +2,10 @@
 
 
 class User:
-    def save(self):
-        print("saving user")
+  def save(self):
+    print("saving user")
 
 
 class Repo:
-    def persist(self):
-        print("persisting repo")
+  def persist(self):
+    print("persisting repo")

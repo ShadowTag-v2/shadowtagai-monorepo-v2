@@ -30,65 +30,69 @@ RAW_PATHS = """
 """
 
 DANGER_ZONES = [
-    "/Users/pikeymickey",
-    "/Users/Deleted Users/pikeymickey",
-    "/Users/pikeymickey/Library/Application Support/Claude",
-    "/Users/pikeymickey/.gemini/history",
-    "",
+  "/Users/pikeymickey",
+  "/Users/Deleted Users/pikeymickey",
+  "/Users/pikeymickey/Library/Application Support/Claude",
+  "/Users/pikeymickey/.gemini/history",
+  "",
 ]
 
 
 def frame_git_repo(path_str) -> None:
-    if path_str in DANGER_ZONES:
-        return
+  if path_str in DANGER_ZONES:
+    return
 
-    if not os.path.exists(path_str):
-        return
+  if not os.path.exists(path_str):
+    return
 
-    if not os.path.isdir(path_str):
-        return
+  if not os.path.isdir(path_str):
+    return
 
-    git_dir = os.path.join(path_str, ".git")
+  git_dir = os.path.join(path_str, ".git")
 
-    try:
-        if not os.path.exists(git_dir):
-            subprocess.run(["git", "init"], cwd=path_str, check=True)
+  try:
+    if not os.path.exists(git_dir):
+      subprocess.run(["git", "init"], cwd=path_str, check=True)
 
-        subprocess.run(["git", "add", "-A"], cwd=path_str, check=False)
+    subprocess.run(["git", "add", "-A"], cwd=path_str, check=False)
 
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=path_str,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        status = result.stdout
-        if status.strip():
-            subprocess.run(
-                ["git", "commit", "-m", "chore: autonomous local repository framing"],
-                cwd=path_str,
-                check=False,
-            )
-        else:
-            pass
+    result = subprocess.run(
+      ["git", "status", "--porcelain"],
+      cwd=path_str,
+      capture_output=True,
+      text=True,
+      check=False,
+    )
+    status = result.stdout
+    if status.strip():
+      subprocess.run(
+        ["git", "commit", "-m", "chore: autonomous local repository framing"],
+        cwd=path_str,
+        check=False,
+      )
+    else:
+      pass
 
-    except Exception:
-        pass
+  except Exception:
+    pass
 
 
 def main() -> None:
-    # Parse and dedup
-    lines = RAW_PATHS.splitlines()
-    targets = list({line.strip().rstrip(",") for line in lines if line.strip()})
+  # Parse and dedup
+  lines = RAW_PATHS.splitlines()
+  targets = list({line.strip().rstrip(",") for line in lines if line.strip()})
 
-    for t in targets:
-        # Resolve 'ast-grep-mcp' typo organically if present
-        if t.endswith("ast-grep-mcp/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"):
-            t = "/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"
+  for t in targets:
+    # Resolve 'ast-grep-mcp' typo organically if present
+    if t.endswith(
+      "ast-grep-mcp/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"
+    ):
+      t = (
+        "/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"
+      )
 
-        frame_git_repo(t)
+    frame_git_repo(t)
 
 
 if __name__ == "__main__":
-    main()
+  main()

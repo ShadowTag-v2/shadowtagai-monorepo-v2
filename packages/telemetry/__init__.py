@@ -13,7 +13,7 @@ from telemetry.catalog import TelemetryEvent, EventCatalog
 from telemetry.sink import TelemetrySink
 
 __all__ = [
-    "TelemetryEvent",
-    "EventCatalog",
-    "TelemetrySink",
+  "TelemetryEvent",
+  "EventCatalog",
+  "TelemetrySink",
 ]
