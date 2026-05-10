@@ -79,7 +79,7 @@ class TeammateMailbox:
         if mark_read:
           data["read"] = True
           f.write_text(json.dumps(data, indent=2))
-      except json.JSONDecodeError, KeyError, OSError:
+      except (json.JSONDecodeError, KeyError, OSError):
         continue
     return sorted(msgs, key=lambda m: m.priority, reverse=True)
 
@@ -97,6 +97,6 @@ class TeammateMailbox:
         data = json.loads(f.read_text())
         if not data.get("read"):
           count += 1
-      except json.JSONDecodeError, OSError:
+      except (json.JSONDecodeError, OSError):
         continue
     return count

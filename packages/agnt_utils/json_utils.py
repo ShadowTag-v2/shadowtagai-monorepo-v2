@@ -72,7 +72,7 @@ def _cached_parse(text: str) -> Any:
   """
   try:
     return json.loads(strip_bom(text))
-  except json.JSONDecodeError, ValueError:
+  except (json.JSONDecodeError, ValueError):
     return _SENTINEL_PARSE_ERROR
 
 
@@ -155,7 +155,7 @@ def parse_jsonl(data: str | bytes) -> list[Any]:
       continue
     try:
       results.append(json.loads(line))
-    except json.JSONDecodeError, ValueError:
+    except (json.JSONDecodeError, ValueError):
       pass  # Skip malformed lines — matches upstream behavior
   return results
 

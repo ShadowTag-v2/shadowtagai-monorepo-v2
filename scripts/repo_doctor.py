@@ -278,7 +278,7 @@ def check_secrets(report: HealthReport) -> None:
       )
     else:
       report.findings.append(Finding("secrets", Severity.INFO, "No secrets detected"))
-  except FileNotFoundError, json.JSONDecodeError:
+  except (FileNotFoundError, json.JSONDecodeError):
     report.findings.append(
       Finding("secrets", Severity.WARN, "Secret scan output unavailable")
     )

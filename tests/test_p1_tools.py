@@ -46,7 +46,7 @@ class TestSleepTool:
     if hasattr(tool, "execute"):
       try:
         tool.execute(duration_seconds=-1)
-      except ValueError, TypeError:
+      except (ValueError, TypeError):
         pass  # Either behavior is acceptable
 
 

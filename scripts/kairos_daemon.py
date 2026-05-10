@@ -251,7 +251,7 @@ def health_check() -> dict:
       timeout=15,
     )
     checks["gcp_adc"] = "ok" if result.returncode == 0 else "expired"
-  except subprocess.TimeoutExpired, FileNotFoundError:
+  except (subprocess.TimeoutExpired, FileNotFoundError):
     checks["gcp_adc"] = "missing"
 
   # 2. ANE dylib
@@ -313,7 +313,7 @@ def health_check() -> dict:
       "untracked_new": untracked_new,
       "status": "clean" if source_tracked == 0 else f"{source_tracked} source-dirty",
     }
-  except subprocess.TimeoutExpired, FileNotFoundError:
+  except (subprocess.TimeoutExpired, FileNotFoundError):
     checks["git_dirty"] = {"total": -1, "status": "unknown"}
 
   # 6. Git fetch --prune (GitHub-first context: keep remote refs fresh)
@@ -326,7 +326,7 @@ def health_check() -> dict:
       cwd=str(REPO_ROOT),
     )
     checks["git_fetch"] = "ok" if fetch_result.returncode == 0 else "failed"
-  except subprocess.TimeoutExpired, FileNotFoundError:
+  except (subprocess.TimeoutExpired, FileNotFoundError):
     checks["git_fetch"] = "timeout"
 
   logger.info("Health: %s", json.dumps(checks))
@@ -435,7 +435,7 @@ def run_disk_skill_dream() -> bool:
     if check.returncode != 0:
       logger.warning("ast-grep not available, skipping disk-skill phase 1")
       return run_dream_consolidation(tier="disk-skill")
-  except FileNotFoundError, subprocess.TimeoutExpired:
+  except (FileNotFoundError, subprocess.TimeoutExpired):
     logger.warning("ast-grep binary not found")
     return run_dream_consolidation(tier="disk-skill")
 
@@ -774,7 +774,7 @@ def run_research_sweep() -> bool:
   BEADS_DIR.mkdir(parents=True, exist_ok=True)
   try:
     idx = int(topic_index_file.read_text().strip()) if topic_index_file.exists() else 0
-  except ValueError, OSError:
+  except (ValueError, OSError):
     idx = 0
   topic = _RESEARCH_TOPICS[idx % len(_RESEARCH_TOPICS)]
   topic_index_file.write_text(str((idx + 1) % len(_RESEARCH_TOPICS)))
@@ -1314,7 +1314,7 @@ def _is_ide_running() -> bool:
       timeout=5,
     )
     return result.returncode == 0
-  except subprocess.TimeoutExpired, FileNotFoundError:
+  except (subprocess.TimeoutExpired, FileNotFoundError):
     return True  # Assume running if we can't check (safe fallback)
 
 

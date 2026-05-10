@@ -158,7 +158,7 @@ class RepoOracle:
       )
       if result.returncode == 0:
         return result.stdout.strip().splitlines()[:max_results]
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
       logger.warning("ripgrep not available or timed out")
 
     return []

@@ -60,7 +60,7 @@ def estimate_block_tokens(block: dict[str, Any]) -> int:
     input_data = block.get("input", {})
     try:
       serialized = name + json.dumps(input_data, separators=(",", ":"))
-    except TypeError, ValueError:
+    except (TypeError, ValueError):
       serialized = name + str(input_data)
     return rough_token_estimate(serialized)
 
@@ -80,7 +80,7 @@ def estimate_block_tokens(block: dict[str, Any]) -> int:
 
   try:
     return rough_token_estimate(json.dumps(block, separators=(",", ":")))
-  except TypeError, ValueError:
+  except (TypeError, ValueError):
     return rough_token_estimate(str(block))
 
 
@@ -105,6 +105,6 @@ def estimate_tools_tokens(tools: list[dict[str, Any]]) -> int:
   """Estimate token count for tool definitions."""
   try:
     serialized = json.dumps(tools, separators=(",", ":"))
-  except TypeError, ValueError:
+  except (TypeError, ValueError):
     serialized = str(tools)
   return rough_token_estimate(serialized)

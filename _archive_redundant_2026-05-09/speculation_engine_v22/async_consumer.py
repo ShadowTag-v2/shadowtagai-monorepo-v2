@@ -112,7 +112,7 @@ class AsyncSuggestionConsumer:
           entry = self._queue.get_nowait()
         else:
           entry = await asyncio.wait_for(self._queue.get(), timeout=remaining)
-      except TimeoutError, asyncio.QueueEmpty:
+      except (TimeoutError, asyncio.QueueEmpty):
         return None
 
       # Skip stale entries

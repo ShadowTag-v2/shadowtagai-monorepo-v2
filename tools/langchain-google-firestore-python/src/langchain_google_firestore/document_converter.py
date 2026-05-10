@@ -88,7 +88,7 @@ def convert_langchain_document(document: Document, client: Client) -> dict:
   if document.page_content:
     try:
       content_dict = json.loads(document.page_content)
-    except ValueError, SyntaxError:
+    except (ValueError, SyntaxError):
       content_dict = {"page_content": document.page_content}
     converted_page = _convert_from_langchain(content_dict, client)
     data.update(converted_page)

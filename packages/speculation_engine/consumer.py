@@ -260,7 +260,7 @@ class SuggestionConsumer:
 
     try:
       data = json.loads(self._cache_file.read_text())
-    except json.JSONDecodeError, OSError:
+    except (json.JSONDecodeError, OSError):
       return {"state": "corrupt", "suggestion": None, "age_s": None, "quality": None}
 
     suggestion_text = data.get("suggestion")
