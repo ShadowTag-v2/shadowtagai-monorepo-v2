@@ -1,157 +1,73 @@
 {
   "score": "C",
-  "total_findings": 35,
+  "total_findings": 23,
   "critical": 0,
   "errors": 1,
-  "warnings": 29,
+  "warnings": 17,
   "info": 5,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "agent/hybrid_scraper.py",
-      "fix": "git checkout -- agent/hybrid_scraper.py"
+      "path": "beads/heartbeat.json",
+      "fix": "git checkout -- beads/heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scripts/auth_orchestrate_batch_foldin.py",
-      "fix": "git checkout -- .agent/scripts/auth_orchestrate_batch_foldin.py"
+      "path": ".beads/issues.jsonl",
+      "fix": "git checkout -- .beads/issues.jsonl"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/scripts/orchestrate_batch_foldin.py",
-      "fix": "git checkout -- .agent/scripts/orchestrate_batch_foldin.py"
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/singularity_daemon.py",
-      "fix": "git checkout -- .agent/singularity_daemon.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/Claude_Code_6-compliance/scripts/assess_risk.py",
-      "fix": "git checkout -- .agent/skills-recovered/Claude_Code_6-compliance/scripts/assess_risk.py"
+      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs",
+      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py",
-      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/examples/WeatherTool.py"
+      "path": "archive/scratch_2026/repos/claude-code-system-prompts",
+      "fix": "git checkout -- archive/scratch_2026/repos/claude-code-system-prompts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py",
-      "fix": "git checkout -- .agent/skills-recovered/adk-tool-scaffold/scripts/scaffold_tool.py"
+      "path": "archive/scratch_2026/repos/everything-claude-code",
+      "fix": "git checkout -- archive/scratch_2026/repos/everything-claude-code"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py",
-      "fix": "git checkout -- .agent/skills-recovered/antigravity-safe-scrapling-runner/scripts/run_scrapling.py"
+      "path": "experimental/simple_js_binary_test/src/index.js",
+      "fix": "git checkout -- experimental/simple_js_binary_test/src/index.js"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/database-schema-validator/scripts/validate_schema.py",
-      "fix": "git checkout -- .agent/skills-recovered/database-schema-validator/scripts/validate_schema.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/json-to-pydantic/examples/output_model.py",
-      "fix": "git checkout -- .agent/skills-recovered/json-to-pydantic/examples/output_model.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/judge6-compliance/scripts/assess_risk.py",
-      "fix": "git checkout -- .agent/skills-recovered/judge6-compliance/scripts/assess_risk.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/omni_search.py",
-      "fix": "git checkout -- .agent/skills-recovered/omni_search.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_bigquery.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_bigquery.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_firebase.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_firebase.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_gcloud.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_gcloud.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_github.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_github.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_linear.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_linear.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_memory.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_memory.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_nanobanana2.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_nanobanana2.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".agent/skills-recovered/secure-infra/scripts/my_postgres.py",
-      "fix": "git checkout -- .agent/skills-recovered/secure-infra/scripts/my_postgres.py"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "... and 1672 more dirty files",
-      "path": "",
-      "fix": ""
+      "path": "renovate.json",
+      "fix": "git checkout -- renovate.json"
     },
     {
       "gate": "conflicts",
@@ -219,7 +135,7 @@
     {
       "gate": "drift",
       "severity": "info",
-      "message": "11153 files in known legacy directories (scheduled for archival)",
+      "message": "10831 files in known legacy directories (scheduled for archival)",
       "path": "",
       "fix": ""
     },
@@ -247,7 +163,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3778 tests collected in 4.27s =========================",
+      "message": "Tests: ======================== 3778 tests collected in 2.60s =========================",
       "path": "",
       "fix": ""
     }
