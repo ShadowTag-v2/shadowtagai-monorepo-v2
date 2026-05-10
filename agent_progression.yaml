@@ -1,0 +1,117 @@
+# agent_progression.yaml — Permission Ladder for Agent Operations
+#
+# Replaces the "bar exam" / "whiteboard" pattern with a measurable
+# progression model. Agents earn capabilities through evidence.
+#
+# Truth surface: tracked in Git. Evaluated by ToolGateway.
+
+levels:
+  0:
+    name: observer
+    description: >
+      Read-only analysis. No mutations, no patches, no external calls.
+    allowed:
+      - repo_oracle
+      - index_status
+      - read_only_search
+      - beads_show
+      - memory_read
+      - contract_drift_check
+    forbidden:
+      - any_write_operation
+      - any_external_call
+
+  1:
+    name: patch_proposer
+    description: >
+      Can propose patches and create Beads issues. Cannot commit or push.
+    requires:
+      - 5_successful_evidence_packets
+      - 0_blocked_secret_or_bloat_events
+    allowed:
+      - propose_patch
+      - create_beads_issue
+      - update_beads_issue
+      - write_memory_atom
+      - run_formatters_check_mode
+    forbidden:
+      - git_commit
+      - git_push
+      - deploy
+
+  2:
+    name: branch_worker
+    description: >
+      Can commit to feature branches. Cannot push or deploy.
+    requires:
+      - tests_passed_on_3_prs
+      - toolgateway_compliance_streak_10
+    allowed:
+      - commit_to_feature_branch
+      - run_formatters_fix_mode
+      - run_tests
+      - update_evidence
+    forbidden:
+      - push_any_branch
+      - deploy
+      - merge_to_main
+
+  3:
+    name: gated_operator
+    description: >
+      Can push branches and open PRs through governed gates.
+    requires:
+      - toolgateway_compliance
+      - push_gate_success
+      - clean_betterleaks_history_5_commits
+    allowed:
+      - push_branch
+      - open_pr
+      - close_beads_issue
+      - run_security_scans
+    forbidden:
+      - deploy_production
+      - merge_without_review
+      - force_push
+
+  4:
+    name: release_candidate
+    description: >
+      Can trigger staging deploys via Cloud Build with approval gates.
+    requires:
+      - human_approval_for_promotion
+      - clean_security_history
+      - all_tests_green
+    allowed:
+      - trigger_cloud_build
+      - deploy_staging
+      - run_lighthouse_audit
+      - create_release_notes
+    forbidden:
+      - deploy_production
+      - modify_iam_roles
+      - create_secrets
+
+  5:
+    name: production_operator
+    description: >
+      Can deploy to production. Requires explicit human approval per action.
+    requires:
+      - explicit_human_approval_per_action
+      - staging_verified
+      - rollback_plan_documented
+    allowed:
+      - deploy_production
+      - rollback_production
+      - update_dns
+    forbidden:
+      - delete_database
+      - modify_billing
+      - create_new_gcp_project
+
+# Evaluation contract
+evaluation:
+  evidence_source: .agent/evidence/
+  beads_source: .beads/issues.jsonl
+  check_interval: per_action
+  escalation_on_violation: stop_and_report

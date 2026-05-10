@@ -1,0 +1,42 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push")
+
+package(default_visibility = ["//visibility:public"])
+
+# OCI base image for Python services
+oci_image(
+    name = "python_base",
+    base = "@python3_14_slim",
+    labels = {
+        "org.opencontainers.image.source": "https://github.com/ShadowTag-v2/shadowtagai-monorepo-v2",
+        "org.opencontainers.image.vendor": "ShadowTagAI",
+    },
+)
+
+# CounselConduit OCI image
+oci_image(
+    name = "counselconduit_image",
+    base = ":python_base",
+    entrypoint = ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"],
+    workdir = "/app",
+)
+
+# AiYou Stack OCI image
+oci_image(
+    name = "aiyou_stack_image",
+    base = ":python_base",
+    entrypoint = ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"],
+    workdir = "/app",
+)
+
+# Push targets (configured via .bazelrc for registry)
+oci_push(
+    name = "push_counselconduit",
+    image = ":counselconduit_image",
+    repository = "us-central1-docker.pkg.dev/shadowtag-omega-v4/shadowtagai/counselconduit",
+)
+
+oci_push(
+    name = "push_aiyou_stack",
+    image = ":aiyou_stack_image",
+    repository = "us-central1-docker.pkg.dev/shadowtag-omega-v4/shadowtagai/aiyou-stack",
+)

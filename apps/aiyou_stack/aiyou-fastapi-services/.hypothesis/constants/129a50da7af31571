@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/utils/logger.py
+# hypothesis_version: 6.151.5
+
+['%(message)s', '***REDACTED***', 'access_token', 'api_key', 'authorization', 'hashed_password', 'iso', 'json', 'password', 'refresh_token', 'secret', 'token']

@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion
+  namespace: default
+  labels:
+    app: shadowtagai
+    component: ingestion
+spec:
+  # Run every hour at minute 0
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: shadowtagai
+            job: ingestion
+        spec:
+          containers:
+          - name: ingestion
+            image: us-central1-docker.pkg.dev/acquired-jet-478701-b3/shadowtagai-core/engine:latest
+            command:
+              - python3
+              - scripts/gemini_scheduler.py
+              - --run-once
+            env:
+              - name: GEMINI_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: gemini-secrets
+                    key: api-key
+              - name: GCP_PROJECT_ID
+                value: "acquired-jet-478701-b3"
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "100m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+          restartPolicy: OnFailure
+---
+# Secret for Gemini API key (create with kubectl)
+# kubectl create secret generic gemini-secrets --from-literal=api-key=YOUR_API_KEY
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gemini-secrets
+  namespace: default
+type: Opaque
+stringData:
+  api-key = "REDACTED_API_KEY"

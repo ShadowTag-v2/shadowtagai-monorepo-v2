@@ -1,0 +1,6 @@
+[project]
+name = "shadowtag-omega-v2"
+version = "2026.01.14"
+dependencies = ["fastapi", "uvicorn", "google-genai", "google-cloud-firestore", "pydantic"]
+[tool.uv.workspace]
+members = ["apps/*", "libs/*"]

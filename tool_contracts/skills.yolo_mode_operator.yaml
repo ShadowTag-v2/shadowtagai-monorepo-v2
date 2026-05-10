@@ -1,0 +1,43 @@
+# tool_contracts/skills.yolo_mode_operator.yaml — ISSUE-019
+# Gates the yolo-mode-operator skill behind STATE B authentication.
+# agentYoloMode bypass and rm -rf operations require Clutch engagement.
+version: 1
+
+description: >
+  Contract governing the yolo-mode-operator skill. This skill enables
+  unrestricted agent execution mode which bypasses normal safety gates.
+  The YOLO envelope in GEMINI.md already defines safe operations;
+  this contract prevents the skill from expanding that envelope
+  beyond its documented boundaries.
+
+trigger: manual_only
+
+preconditions:
+  - state_b_active: true
+    reason: "Expanding the YOLO envelope requires STATE B Clutch engagement"
+  - human_authorization: required
+    reason: "agentYoloMode cannot be self-escalated by the agent"
+  - audit_trail: required
+    reason: "All YOLO mode expansions must be logged"
+
+invariants:
+  - id: 140
+    name: "Boot Probes Read-Only"
+  - id: 141
+    name: "SkillOps Hazard Triage Gate"
+
+prohibited_without_approval:
+  - "agentYoloMode"
+  - "rm -rf"
+  - "sudo"
+  - "disable safety"
+
+evidence:
+  format: yaml
+  destination: ".agent/evidence/yolo_expansions/"
+  fields:
+    - timestamp
+    - operator
+    - scope_change
+    - rollback_procedure
+    - expiration

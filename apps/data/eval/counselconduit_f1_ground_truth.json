@@ -1,0 +1,142 @@
+{
+  "dataset_name": "counselconduit_legal_citation_f1",
+  "description": "Ground truth dataset for measuring CounselConduit legal citation accuracy using F1 scoring.",
+  "version": "1.0.0",
+  "metric": "F1 (precision × recall harmonic mean)",
+  "domain": "Legal AI / Privileged Client Intelligence",
+  "product": "CounselConduit (shadowtagai.com)",
+  "evaluation_dimensions": [
+    {
+      "dimension": "citation_accuracy",
+      "description": "Does the system cite real, verifiable legal authorities?",
+      "weight": 0.3,
+      "scoring": "binary per citation — real case law = 1, hallucinated = 0"
+    },
+    {
+      "dimension": "citation_relevance",
+      "description": "Is the cited authority relevant to the legal question asked?",
+      "weight": 0.25,
+      "scoring": "0-1 scale — irrelevant = 0, tangential = 0.5, directly on-point = 1"
+    },
+    {
+      "dimension": "citation_completeness",
+      "description": "Did the system find all key authorities a competent attorney would cite?",
+      "weight": 0.25,
+      "scoring": "recall — predicted ∩ ground_truth / ground_truth"
+    },
+    {
+      "dimension": "shepardization_status",
+      "description": "Are cited cases still good law? (not overruled, distinguished, or superseded)",
+      "weight": 0.2,
+      "scoring": "binary — good law = 1, bad law = 0"
+    }
+  ],
+  "ground_truth_examples": [
+    {
+      "id": "GT-001",
+      "query": "What is the Kovel doctrine and when does it apply?",
+      "expected_citations": [
+        "United States v. Kovel, 296 F.2d 918 (2d Cir. 1961)",
+        "United States v. Ackert, 169 F.3d 136 (2d Cir. 1999)",
+        "In re Grand Jury Subpoena, 599 F.3d 52 (2d Cir. 2010)"
+      ],
+      "expected_summary": "The Kovel doctrine extends attorney-client privilege to communications with non-attorney agents (e.g., accountants) when their services are necessary for the attorney to provide legal advice.",
+      "key_legal_principles": [
+        "communication must be for purpose of obtaining legal advice",
+        "agent must be necessary for attorney to understand client situation",
+        "privilege belongs to client, not agent",
+        "agent must be under attorney's supervision"
+      ],
+      "jurisdiction": "Federal / Second Circuit",
+      "difficulty": "medium"
+    },
+    {
+      "id": "GT-002",
+      "query": "What sanctions can a court impose for discovery abuse under FRCP Rule 37?",
+      "expected_citations": [
+        "Fed. R. Civ. P. 37(b)(2)(A)",
+        "Fed. R. Civ. P. 37(e)",
+        "Zubulake v. UBS Warburg LLC, 229 F.R.D. 422 (S.D.N.Y. 2004)",
+        "Pension Committee v. Banc of America, 685 F. Supp. 2d 456 (S.D.N.Y. 2010)",
+        "GN Netcom, Inc. v. Plantronics, Inc., 930 F.3d 76 (3d Cir. 2019)"
+      ],
+      "expected_summary": "Rule 37 authorizes a graduated range of sanctions from costs/fees through adverse inference instructions to default judgment or dismissal for discovery abuse.",
+      "key_legal_principles": [
+        "duty to preserve relevant evidence once litigation is reasonably anticipated",
+        "proportionality of sanctions to the offense",
+        "distinction between negligent and intentional spoliation",
+        "safe harbor for routine good-faith ESI operations"
+      ],
+      "jurisdiction": "Federal",
+      "difficulty": "hard"
+    },
+    {
+      "id": "GT-003",
+      "query": "What are the Heppner sanctions risks for AI-generated legal filings?",
+      "expected_citations": [
+        "Mata v. Avianca, Inc., No. 22-cv-1461 (S.D.N.Y. 2023)",
+        "Fed. R. Civ. P. 11(b)",
+        "28 U.S.C. § 1927",
+        "Park v. Kim, No. 22-2057 (3d Cir. 2024)"
+      ],
+      "expected_summary": "Courts have imposed sanctions on attorneys who filed AI-generated briefs containing fabricated case citations, establishing that Rule 11 obligations require verification of all AI-generated content.",
+      "key_legal_principles": [
+        "attorney remains personally responsible for all filed content",
+        "AI tools do not reduce Rule 11 obligations",
+        "fabricated citations constitute fraud on the court",
+        "disclosure of AI use may be required by local rules"
+      ],
+      "jurisdiction": "Federal",
+      "difficulty": "medium"
+    },
+    {
+      "id": "GT-004",
+      "query": "When can a company claim work product protection for internal investigation documents?",
+      "expected_citations": [
+        "Hickman v. Taylor, 329 U.S. 495 (1947)",
+        "Upjohn Co. v. United States, 449 U.S. 383 (1981)",
+        "In re Kellogg Brown & Root, Inc., 756 F.3d 754 (D.C. Cir. 2014)",
+        "Sandra T.E. v. South Berwyn Sch. Dist. 100, 600 F.3d 612 (7th Cir. 2010)"
+      ],
+      "expected_summary": "Work product doctrine protects documents prepared in anticipation of litigation, including internal investigation materials, but the dual-purpose doctrine creates complexity when investigations serve both business and legal purposes.",
+      "key_legal_principles": [
+        "'because of' test vs 'primary motivating purpose' test",
+        "opinion work product receives heightened protection",
+        "substantial need and undue hardship exception for fact work product",
+        "waiver risks from disclosure to third parties"
+      ],
+      "jurisdiction": "Federal",
+      "difficulty": "hard"
+    },
+    {
+      "id": "GT-005",
+      "query": "What are the requirements for valid electronic service under FRCP 5?",
+      "expected_citations": [
+        "Fed. R. Civ. P. 5(b)(2)(E)",
+        "Fed. R. Civ. P. 5(b)(3)",
+        "Local rules for specific districts",
+        "CM/ECF system requirements"
+      ],
+      "expected_summary": "Electronic service through the court's ECF system constitutes valid service on registered users; non-ECF electronic service requires prior written consent.",
+      "key_legal_principles": [
+        "ECF registration constitutes consent to electronic service",
+        "non-ECF email service requires written consent",
+        "service complete upon transmission unless sender learns it didn't reach recipient",
+        "certificate of service requirements"
+      ],
+      "jurisdiction": "Federal",
+      "difficulty": "easy"
+    }
+  ],
+  "scoring_formula": {
+    "per_query_f1": "2 * (precision * recall) / (precision + recall)",
+    "precision": "correct_citations / total_predicted_citations",
+    "recall": "correct_citations / total_expected_citations",
+    "aggregate_f1": "mean(per_query_f1) across all queries",
+    "weighted_f1": "sum(dimension_weight * dimension_f1) for all dimensions"
+  },
+  "evaluation_script": "scripts/eval_counselconduit_f1.py",
+  "minimum_acceptable_f1": 0.7,
+  "target_f1": 0.85,
+  "production_threshold_f1": 0.9
+}

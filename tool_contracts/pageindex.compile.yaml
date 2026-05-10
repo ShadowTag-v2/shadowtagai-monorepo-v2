@@ -1,0 +1,9 @@
+# tool_contracts/pageindex.compile.yaml
+tool_id: "pageindex.compile"
+description: "Governs the pageindex.compile operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/pageindex_compile.jsonl"
+reuse_queries: []

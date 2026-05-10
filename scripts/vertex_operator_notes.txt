@@ -1,0 +1,8 @@
+Google-native operator direction:
+- one canonical MCP config
+- one canonical monorepo manifest
+- all secrets in .env
+- gemini-3.1-flash-lite-preview everywhere
+- counselconduit is the product
+- uphillsnowball is the lab
+- operationalize recovered code before drafting more doctrine

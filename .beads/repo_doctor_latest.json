@@ -1,0 +1,136 @@
+{
+  "score": "C",
+  "total_findings": 18,
+  "critical": 0,
+  "errors": 1,
+  "warnings": 12,
+  "info": 5,
+  "findings": [
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "beads/epistemic_sync_needed.json",
+      "fix": "git checkout -- beads/epistemic_sync_needed.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "archive/scratch_2026/repos/claude-code-system-prompts",
+      "fix": "git checkout -- archive/scratch_2026/repos/claude-code-system-prompts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "archive/scratch_2026/repos/everything-claude-code",
+      "fix": "git checkout -- archive/scratch_2026/repos/everything-claude-code"
+    },
+    {
+      "gate": "conflicts",
+      "severity": "info",
+      "message": "No conflict markers found",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "secrets",
+      "severity": "error",
+      "message": "Betterleaks found 39 potential secrets",
+      "path": "",
+      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
+    },
+    {
+      "gate": "large_files",
+      "severity": "info",
+      "message": "No large files in staging",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/random/.gitignore",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/random/BUILD.bazel",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/BUILD.bazel",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/README.MD",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/go.mod",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "... and 194 more drift files",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "drift",
+      "severity": "info",
+      "message": "10831 files in known legacy directories (scheduled for archival)",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "lint",
+      "severity": "warn",
+      "message": "Ruff: 2\t\tinvalid-syntax",
+      "path": "",
+      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m ruff check --select F401,F841 --fix"
+    },
+    {
+      "gate": "lint",
+      "severity": "warn",
+      "message": "Ruff: Found 2 errors.",
+      "path": "",
+      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m ruff check --select F401,F841 --fix"
+    },
+    {
+      "gate": "manifest",
+      "severity": "info",
+      "message": "Manifest v23.0 valid",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "tests",
+      "severity": "info",
+      "message": "Tests: ======================== 3778 tests collected in 1.75s =========================",
+      "path": "",
+      "fix": ""
+    }
+  ]
+}

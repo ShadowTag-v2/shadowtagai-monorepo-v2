@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════
+# truth_surfaces.yaml — Monorepo OS Canonical Truth Map
+# Version: 2.0.0
+# Rule: Track truth. Ignore cache. Manifest artifacts.
+#        Record evidence. Never confuse them.
+# ═══════════════════════════════════════════════════════════
+version: 2
+
+truth:
+  work:
+    canonical: .beads/issues.jsonl
+    tool: bd
+    role: task_graph
+    cache_ignored:
+      - .beads/*.db
+      - .beads/*.db-wal
+      - .beads/*.db-shm
+      - .beads/daemon.*
+      - .beads/*.sock
+      - .beads/*.lock
+
+  operational_knowledge:
+    canonical:
+      - .memory/events.ndjson
+      - .memory/atoms/**/*.md
+    generated_views:
+      - .memory/views/HANDOFF.md
+      - .memory/views/DECISIONS.md
+      - .memory/views/CONSTRAINTS.md
+      - .memory/views/OPEN_QUESTIONS.md
+    role: durable_decisions_facts_procedures_constraints
+    cache_ignored:
+      - .memory/.memory-index.db
+      - .memory/cache/
+      - .memory/tmp/
+      - .memory/secrets/
+
+  research_knowledge_base:
+    canonical:
+      - knowledge/vault/**/*.md
+      - knowledge/vault/**/*.canvas
+      - knowledge/vault/**/*.svg
+      - knowledge/raw_manifest.yaml
+    ignored_local:
+      - data/knowledge_raw/**
+      - knowledge/vault/.obsidian/workspace*
+      - knowledge/vault/.obsidian/cache/**
+      - knowledge/vault/.trash/**
+    role: research_synthesis_not_source_truth
+
+  agent_doctrine:
+    canonical:
+      - AGENTS.md
+      - .ruler/**
+
+  code_index:
+    policy: index_policy.yaml
+    generated_ignored:
+      - .gitnexus/
+      - .index/scip/
+      - .index/zoekt/
+
+  build:
+    canonical:
+      - MODULE.bazel
+      - BUILD.bazel
+      - .bazelrc
+      - .bazelignore
+      - "**/BUILD.bazel"
+    reports:
+      - .reports/bazel/
+
+  design:
+    canonical:
+      - design.md
+      - tokens.css
+      - biome.json
+      - design/taste_profile.yaml
+
+  action_evidence:
+    canonical:
+      - .agent/evidence/index.ndjson
+    raw_ignored:
+      - .agent/evidence/raw/
+      - .agent/evidence/**/*.log
+      - .agent/evidence/**/*.trace
+
+  push:
+    policy:
+      - upload_policy.yaml
+      - tool_contracts/github.push.yaml
+      - scripts/push-with-app-gates.sh

@@ -1,0 +1,11 @@
+# Development dependencies for the monorepo venv
+# Install: PIP_USER=0 .venv/bin/pip install -r requirements-dev.txt
+pytest>=9.0
+pytest-asyncio>=0.25
+ruff>=0.11
+# vulture removed — V22 Pruned Singularity (ruff F401/F841 replaces it)
+bandit>=1.8
+pyyaml>=6.0
+pyjwt[crypto]>=2.10
+requests>=2.32
+cryptography>=44.0

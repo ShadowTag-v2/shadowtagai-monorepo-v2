@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KovelAI | Setup Your Practice</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0d14;--surface:#12161f;--surface-2:#1a1f2e;--border:#2a3042;--text:#e4e8f7;--muted:#8b92a8;--primary:#c9a14a;--green:#34d399;--font:'Inter',sans-serif;--radius:12px}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+    .wizard{max-width:520px;width:100%}
+    .wizard-header{text-align:center;margin-bottom:2rem}
+    .wizard-header h1{font-size:1.6rem;margin-bottom:0.5rem}
+    .wizard-header p{color:var(--muted);font-size:0.9rem}
+    .steps{display:flex;gap:0.5rem;justify-content:center;margin-bottom:2rem}
+    .step-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all 0.3s}
+    .step-dot.active{background:var(--primary);transform:scale(1.3)}
+    .step-dot.done{background:var(--green)}
+    .wizard-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;min-height:320px;display:flex;flex-direction:column}
+    .wizard-card h2{font-size:1.1rem;margin-bottom:0.5rem}
+    .wizard-card p{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem;line-height:1.5}
+    .field{margin-bottom:1rem}
+    .field label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.5px}
+    .field input,.field select{width:100%;padding:0.7rem 1rem;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:0.9rem;outline:none;transition:border-color 0.2s}
+    .field input:focus,.field select:focus{border-color:var(--primary)}
+    .field select{cursor:pointer}
+    .wizard-nav{display:flex;justify-content:space-between;margin-top:auto;padding-top:1.5rem}
+    .btn{padding:0.65rem 1.5rem;border-radius:var(--radius);border:none;font-weight:600;cursor:pointer;font-size:0.85rem;transition:all 0.2s}
+    .btn-primary{background:var(--primary);color:var(--bg)}
+    .btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+    .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+    .btn-ghost:hover{color:var(--text);border-color:var(--muted)}
+    .hidden{display:none}
+    .success{text-align:center;padding:2rem}
+    .success .checkmark{font-size:3rem;margin-bottom:1rem}
+    .practice-sizes{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+    .practice-size{padding:1rem;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);text-align:center;cursor:pointer;transition:all 0.2s;font-size:0.85rem}
+    .practice-size:hover,.practice-size.selected{border-color:var(--primary);background:rgba(201,161,74,0.08)}
+    .practice-size .count{font-size:1.2rem;font-weight:700;display:block;margin-bottom:0.25rem}
+  </style>
+</head>
+<body>
+  <div class="wizard">
+    <div class="wizard-header">
+      <h1>🛡️ Welcome to KovelAI</h1>
+      <p>Set up your practice in under 2 minutes.</p>
+    </div>
+    <div class="steps">
+      <div class="step-dot active" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+      <div class="step-dot" data-step="3"></div>
+      <div class="step-dot" data-step="4"></div>
+    </div>
+
+    <!-- Step 1: Attorney Info -->
+    <div class="wizard-card" id="step-1">
+      <h2>Your Information</h2>
+      <p>We'll use this to set up your privileged computing environment.</p>
+      <div class="field"><label>Full Name</label><input type="text" id="attorney-name" placeholder="Jane Attorney"/></div>
+      <div class="field"><label>Email</label><input type="email" id="attorney-email" placeholder="jane@lawfirm.com"/></div>
+      <div class="field"><label>Bar Number</label><input type="text" id="bar-number" placeholder="CA-123456"/></div>
+      <div class="wizard-nav"><div></div><button class="btn btn-primary" onclick="nextStep(2)">Continue →</button></div>
+    </div>
+
+    <!-- Step 2: Firm Info -->
+    <div class="wizard-card hidden" id="step-2">
+      <h2>Your Practice</h2>
+      <p>This helps us configure your workspace and billing.</p>
+      <div class="field"><label>Firm Name</label><input type="text" id="firm-name" placeholder="Smith & Associates LLP"/></div>
+      <div class="field"><label>Practice Size</label></div>
+      <div class="practice-sizes">
+        <div class="practice-size" onclick="selectSize(this,'solo')"><span class="count">1</span>Solo</div>
+        <div class="practice-size" onclick="selectSize(this,'small')"><span class="count">2-10</span>Small Firm</div>
+        <div class="practice-size" onclick="selectSize(this,'mid')"><span class="count">11-50</span>Mid-Size</div>
+        <div class="practice-size" onclick="selectSize(this,'large')"><span class="count">50+</span>Enterprise</div>
+      </div>
+      <div class="wizard-nav"><button class="btn btn-ghost" onclick="prevStep(1)">← Back</button><button class="btn btn-primary" onclick="nextStep(3)">Continue →</button></div>
+    </div>
+
+    <!-- Step 3: Practice Area -->
+    <div class="wizard-card hidden" id="step-3">
+      <h2>Practice Area</h2>
+      <p>We'll optimize your AI assistant for your area of law.</p>
+      <div class="field"><label>Primary Practice Area</label>
+        <select id="practice-area">
+          <option value="">Select...</option>
+          <option>Corporate / M&A</option>
+          <option>Criminal Defense</option>
+          <option>Family Law</option>
+          <option>Intellectual Property</option>
+          <option>Immigration</option>
+          <option>Employment Law</option>
+          <option>Personal Injury</option>
+          <option>Real Estate</option>
+          <option>Tax Law</option>
+          <option>Litigation (General)</option>
+          <option>Healthcare / HIPAA</option>
+          <option>Environmental</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Jurisdiction</label>
+        <select id="jurisdiction">
+          <option value="">Select...</option>
+          <option>Federal</option>
+          <option>California</option>
+          <option>New York</option>
+          <option>Texas</option>
+          <option>Florida</option>
+          <option>Illinois</option>
+          <option>Other State</option>
+        </select>
+      </div>
+      <div class="wizard-nav"><button class="btn btn-ghost" onclick="prevStep(2)">← Back</button><button class="btn btn-primary" onclick="nextStep(4)">Continue →</button></div>
+    </div>
+
+    <!-- Step 4: Done -->
+    <div class="wizard-card hidden" id="step-4">
+      <div class="success">
+        <div class="checkmark">✅</div>
+        <h2>You're All Set!</h2>
+        <p style="color:var(--muted);margin:1rem 0;line-height:1.6">Your privileged computing environment is ready. All queries will be processed under the Kovel Doctrine with zero-retention architecture.</p>
+        <button class="btn btn-primary" onclick="window.location.href='/chat.html'" style="margin-top:1rem;padding:0.85rem 2.5rem">Launch Privileged Chat →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    let _practiceSize = '';
+    function _nextStep(n) {
+      document.getElementById(`step-${currentStep}`).classList.add('hidden');
+      document.getElementById(`step-${n}`).classList.remove('hidden');
+      document.querySelector(`.step-dot[data-step="${currentStep}"]`).classList.remove('active');
+      document.querySelector(`.step-dot[data-step="${currentStep}"]`).classList.add('done');
+      document.querySelector(`.step-dot[data-step="${n}"]`).classList.add('active');
+      currentStep = n;
+    }
+    function _prevStep(n) {
+      document.getElementById(`step-${currentStep}`).classList.add('hidden');
+      document.getElementById(`step-${n}`).classList.remove('hidden');
+      document.querySelector(`.step-dot[data-step="${currentStep}"]`).classList.remove('active');
+      document.querySelector(`.step-dot[data-step="${n}"]`).classList.add('active');
+      document.querySelector(`.step-dot[data-step="${n}"]`).classList.remove('done');
+      currentStep = n;
+    }
+    function _selectSize(el, size) {
+      document.querySelectorAll('.practice-size').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+      _practiceSize = size;
+    }
+  </script>
+</body>
+</html>

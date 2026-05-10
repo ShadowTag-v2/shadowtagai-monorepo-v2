@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""
+OMEGA AUTH DAEMON (The "Heartbeat")
+====================================
+Role: Runs the gcloud_auth_solver every 10 minutes to prevent token expiry.
+Project: shadowtag-omega-v4
+"""
+
+import os
+import subprocess
+import sys
+import time
+
+INTERVAL_SECONDS = 1500  # 25 minutes
+SOLVER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gcloud_auth_solver.py")
+
+
+def main():
+    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Starting Omega Auth Daemon (PID: {os.getpid()})")
+    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Solving interval set to {INTERVAL_SECONDS} seconds.")
+
+    if not os.path.exists(SOLVER_PATH):
+        print(f"[FATAL] Solver script not found at {SOLVER_PATH}", file=sys.stderr)
+        sys.exit(1)
+
+    while True:
+        try:
+            print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Triggering Keymaster (gcloud_auth_solver.py)")
+
+            # We use subprocess.run, capturing output to avoid flooding the daemon's host terminal
+            # if running in the foreground, but still keeping it available if it crashes.
+            result = subprocess.run([sys.executable, SOLVER_PATH], capture_output=True, text=True)
+
+            if result.returncode == 0:
+                print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Solver execution SUCCESS.")
+            else:
+                print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Solver execution FAILED with code {result.returncode}.")
+                print(f"[Solver Error Output]\n{result.stderr}")
+                print(f"[Solver Standard Output]\n{result.stdout}")
+
+        except Exception as e:
+            print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] UNEXPECTED ERROR: {e}")
+
+        # Sleep for the configured interval length
+        time.sleep(INTERVAL_SECONDS)
+
+
+if __name__ == "__main__":
+    main()

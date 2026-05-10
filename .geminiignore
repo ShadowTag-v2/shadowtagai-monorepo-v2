@@ -1,0 +1,60 @@
+# .geminiignore — UphillSnowball Epistemic Engine Filter
+# Files matching these patterns are NEVER ingested into the Gemini File Search store.
+# This prevents vector space pollution from minified code, transient noise, and secrets.
+
+# Dependencies
+node_modules/
+.dart_tool/
+.pub-cache/
+vendor/
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+*.min.js
+*.min.css
+*.map
+*.wasm
+*.o
+*.pyc
+__pycache__/
+
+# Version control
+.git/
+
+# Lock files
+*.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs and temp
+*.log
+.beads/
+.tempmediaStorage/
+coverage/
+.nyc_output/
+
+# Secrets and keys (NEVER ingest)
+.env
+.env.*
+keys/
+*.pem
+*.p12
+*.key
+
+# Audit and external (already indexed separately)
+_audit_claude_code/
+external_repos/
+
+# Binary and media (use multimodal upload for specific images only)
+*.woff
+*.woff2
+*.ttf
+*.eot
+*.ico
+*.mp4
+*.webm
+*.webp

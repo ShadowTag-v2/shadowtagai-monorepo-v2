@@ -1,0 +1,13 @@
+Navigate to the project: cd ~/aiyou-fastapi-services
+
+
+export GEMINI_[CREDENTIAL_REDACTED] && node scripts/hyperagent-stealth-test.js
+Navigate to the project: 
+
+git gc --prune=now --aggressive
+
+git rm -r --cached .
+git add .
+git commit -m "Fix: Remove ignored files from git cache"
+
+git rev-list --objects --all | grep "$(git verify-pack -v .git/objects/pack/*.idx | sort -k 3 -n | tail -5 | awk '{print$1}')"

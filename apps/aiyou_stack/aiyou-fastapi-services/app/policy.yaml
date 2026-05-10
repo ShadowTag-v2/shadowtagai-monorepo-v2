@@ -1,0 +1,10 @@
+forbidden_content:
+  - "hate speech"
+  - "violence"
+  - "explicit sexual content"
+  - "self-harm"
+
+pii_patterns:
+  - "ssn"
+  - "credit card"
+  - "phone number"

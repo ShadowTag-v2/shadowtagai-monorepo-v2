@@ -1,0 +1,213 @@
+Cor. possible operating procedure template
+
+“R-T-F
+Act as a TROLE]
+Create a (TASKI
+Prompt Example
+Facebook Ad Marketer.
+Design a compelling Facebook ad campaign to promote a new line of fitness apparel for a sports brand.
+Create a storyboard outlining the sequence of ad creatives, Including ad copy, visuals, and targeting strategy.
+T-A-G
+Define
+ITASK
+State the
+TACTION
+Prompt Example
+The task is to evaluate the performance of team members
+Act as a Direct manager and assess the strengths and weaknesses of team members.
+Goal is to improve team performance so that the average user satisfaction score moves from 6 to 7.5 in the next quarter.
+Show as
+[FORMAT)
+Clarify the
+[GOALI
+B-A-B
+Explain Problem
+[BEFORE|
+Prompt Example
+State Outcome
+AFTER
+We're nowhere to be seen on SEO rankings
+We want to be in top 10 SEO ranking in our niche in 90 days.
+Develop a detailed plan for mentioning all the measures we should take also include list of top 20 keywords.
+Ask fo the
+[BRIDGE)
+C-A-R-E
+Give the
+CONTEXT
+Describe
+TACTION
+Prompt Example
+We are launching a new line of sustainable clothing
+Can you assist us in creating o torgeted advertising campaign that emphasizes our environmental commitment?
+Our desired outcome is to drive product awareness and soles
+A good example of a similar successtul initiative is Patagonia's
+"Dont Buy This Jacket' compoign, which highlighted their commitment to sustainability while enhancing their brand image.
+Clarify the [RESULT)
+R-I-S-E
+Specify the [ROLE)
+Describe
+[INPUTI
+Prompt Example
+imagine you are a content strategist.
+Ive gathered detailed information about our target audience, including their interests &common questions related to our industry.
+Provide a Step by Step content strategy plan identifying key topicsbased on our audience insights, creating an editorial calendar, and drafting engoging content that aligns with our brand message.
+Alm is to increase our blog's monthly visitors by 40% and Enhance our brand's position as a thought leader in our industry.
+Ask for
+[STEPS]
+  ROLE
+ TASK
+ FORM
++ BEFC
+ AFTE
+  BRID
+Give the [EXAMPLE]
+ CONTE
+  ACTIO
+  RESULT
+  EXAMP
+Describe the EXPECTATION]
+  ROLE
+  INPUT
+ STEPS
+  EXPECTATIO
+
+
+<next>
+
+
+D
+E
+1. Describe the Problem
+IS
+S
+C
+IS NOT
+WHAT
+WHEN
+R
+WHERE
+E
+EXTENT
+Is/ls Not Diagram
+2/96
+7/98
+8/98
+Time Line
+4/99
+2b. Collect, Organize, an Analyze Existing Data:
+...
+Change Point
+Analysis
+Box Plots
+Pareto Analysis
+Process
+Control Chart
+4. Collect Additional Data to Identify Root Cause(s):
+Scatter
+Diagram
+S
+magn
+Characterization
+Experiments
+LUCA
+ ANOVA
+  Contingency
+Tables
+- Comparison
+Tests
+Statistical
+Comparisons
+Response
+Surfaces
+L
+V
+E
+Component
+Swapping Study
+Structured Problem Solving Process
+2a. Identify Potential Causes:
+те серо
+nut Outpu
+Jianrat
+Definition
+SPFEC
+N
+F
+Cause & Effect
+Diagram (6M)
+Process or
+Usage Flow
+W Th F
+A
+X
+X
+Capability
+Study
+C
+D
+Checksheet
+Multi-Vari
+Chart
+5. Determine Corrective Actions:
+Corrective Action Plan
+  Elimination
+  Facilitation
+  Mitigation
+  Flagging Enror Proofing
+E
+V
+C
+0
+N
+R
+Failure Modes & Effects Analysis
+Distinctions & Changes
+3. Compare Causes to the Facts
+Facts From Step f
+Causes from Step 2
+Contradiction Matrix
+6. Validate, Implement, and Standardize Solution: i
+TASK
+SCHEDULE
+Capability
+Study
+Implementation Plan
+Process
+SONINE
+Sampling
+Plan
+
+<next>
+
+1. Relationships
+  Focus on the five people who inspire and energise you.
+  Step back from connections that drain your energy.
+8. Mental
+Clarity
+  Start your day with journaling or a quiet moment
+  Keep your workspace simple and organized to minimize distractions.
+2. Personal Goals
+  Choose one or two goals that truly matter.
+  Break them into small, actionable steps.
+3. Health & Fitness
+  Consistency beats intensity.
+  Aim for 3 x 30-minute sessions a week.
+  Focus on activities you enjoy for long-term success.
+Doing Less
+Better Results
+4. Learning
+  Commit to learning one skill that aligns with your biggest goal.
+  Decide the outcome you want and stick with it until you see results.
+7. Money
+• Track your spending and cut three
+unnecessary expenses.
+• Redirect savings to investments or experiences with long-term value.
+6. Energy
+Protect your time & energy by saying "no" to things you don't want to do.
+• Channel your energy into high impact tasks.
+5. Work Tasks
+  Prioritize the three tasks that create the most value
+  Delegate or eliminate what doesn't move the needle.
+delegate eliminate”
+
+<next>

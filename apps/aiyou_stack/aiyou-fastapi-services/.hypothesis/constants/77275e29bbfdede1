@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/webhooks/stripe_handler.py
+# hypothesis_version: 6.151.5
+
+[100, 300, 400, 14900, 86400, 500000, 2000000, 2830000, ',', '/api/webhooks', '/stripe', '=', 'Invalid JSON payload', 'Stripe-Signature', 'action', 'active', 'amount', 'amount_cents', 'amount_paid', 'attempt_count', 'cancel_at_period_end', 'cancelled', 'cancelled_at', 'checkout_completed', 'customer', 'customer_id', 'data', 'duplicate', 'eu26_gdpr', 'event_id', 'event_type', 'foundation_base', 'id', 'ignored', 'invoice.paid', 'invoice_id', 'invoice_paid', 'message', 'mode', 'next_attempt', 'next_payment_attempt', 'object', 'payment_failed', 'payment_status', 'plan', 'plan_id', 'processed', 'result', 'status', 'subscription_created', 'subscription_deleted', 'subscription_updated', 't', 'tier', 'type', 'unknown', 'utf-8', 'v1', 'webhooks']

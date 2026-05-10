@@ -1,0 +1,30 @@
+{
+  "displayName": "CounselConduit Fallback Saturation — >30% Degraded Routing",
+  "documentation": {
+    "content": "More than 30% of dispatch requests are routing to fallback (flash-lite) model.\n\nRunbook:\n1. Check /admin/metrics for fallback_count vs total\n2. Review /admin/circuit-breaker status\n3. Check upstream model provider status\n4. If primary model is down, verify firm policies allow fallback\n5. Monitor cost impact — flash-lite is cheaper but lower quality",
+    "mimeType": "text/markdown"
+  },
+  "conditions": [
+    {
+      "displayName": "High fallback rate on counselconduit",
+      "conditionThreshold": {
+        "filter": "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"counselconduit\" AND metric.type = \"logging.googleapis.com/user/counselconduit_fallback_rate\"",
+        "aggregations": [
+          {
+            "alignmentPeriod": "600s",
+            "perSeriesAligner": "ALIGN_MEAN"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0.3,
+        "duration": "600s",
+        "trigger": {
+          "count": 1
+        }
+      }
+    }
+  ],
+  "notificationChannels": ["projects/shadowtag-omega-v4/notificationChannels/4615832086798366980"],
+  "combiner": "OR",
+  "enabled": true
+}

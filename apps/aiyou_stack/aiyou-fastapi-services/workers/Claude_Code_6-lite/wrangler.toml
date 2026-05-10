@@ -1,0 +1,28 @@
+name = "pnkln-Cor.Claude_Code_6-lite"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# KV namespace for rate limiting and caching
+kv_namespaces = [
+  { binding = "JUDGE_KV", id = "your-kv-namespace-id", preview_id = "your-preview-kv-id" }
+]
+
+# Environment variables (secrets should be added via `wrangler secret put`)
+[vars]
+GOOGLE_CLOUD_PROJECT = "pnkln-core-stack"
+GOOGLE_CLOUD_LOCATION = "us-central1"
+
+# Production environment
+[env.production]
+name = "pnkln-Cor.Claude_Code_6-lite-prod"
+routes = [
+  { pattern = "judge.pnkln.io/*", zone_name = "pnkln.io" }
+]
+
+# Staging environment
+[env.staging]
+name = "pnkln-Cor.Claude_Code_6-lite-staging"
+
+# Observability
+[observability]
+enabled = true

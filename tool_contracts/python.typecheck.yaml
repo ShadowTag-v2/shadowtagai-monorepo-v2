@@ -1,0 +1,9 @@
+# tool_contracts/python.typecheck.yaml
+tool_id: "python.typecheck"
+description: "Governs the python.typecheck operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/python_typecheck.jsonl"
+reuse_queries: []

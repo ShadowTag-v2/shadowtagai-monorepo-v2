@@ -1,0 +1,5 @@
+{"ts":"2026-04-27T17:52:00Z","type":"memory.initialized","version":"1.0","agent":"antigravity","description":"Memory subsystem initialized as part of Monorepo OS integration"}
+{"ts":"2026-04-27T17:52:00Z","type":"atom.created","atom_id":"doctrine-monorepo-os-v1","category":"doctrine","title":"Monorepo OS — Files Are Truth","agent":"antigravity"}
+{"ts":"2026-04-27T17:52:00Z","type":"atom.created","atom_id":"doctrine-index-fabric-v1","category":"doctrine","title":"Multi-Index Routing Fabric","agent":"antigravity"}
+{"ts":"2026-04-27T17:52:00Z","type":"atom.created","atom_id":"architecture-upload-policy-v1","category":"architecture","title":"Two-Lane Upload Doctrine","agent":"antigravity"}
+{"ts":"2026-04-27T17:52:00Z","type":"atom.created","atom_id":"architecture-tool-gateway-v1","category":"architecture","title":"ToolGateway Contract Architecture","agent":"antigravity"}

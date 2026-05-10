@@ -1,0 +1,14 @@
+{
+  "// NOTE": "This file configures MCP servers for VS Code Copilot Chat.",
+  "// IMPORTANT": "Antigravity MCP servers are platform-injected, NOT configured here.",
+  "// SEE": "antigravity-mcp-config.json (repo root) for canonical reference.",
+  "servers": {
+    "sequential-thinking": {
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
+      "args": [
+        "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@anthropic-ai/claude-code/vendor/@anthropic-ai/mcp-server-sequential-thinking/dist/index.js"
+      ],
+      "type": "stdio"
+    }
+  }
+}

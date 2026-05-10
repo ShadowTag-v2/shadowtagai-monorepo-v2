@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShadowTagAI | Sovereign AI Infrastructure</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#141936",
+                        "on-secondary-container": "#fffbff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#0d1c2f",
+                        "surface-dim": "#d9dade",
+                        "surface-container": "#edeef2",
+                        "on-background": "#191c1f",
+                        "tertiary-container": "#0d1c2f",
+                        "on-primary-container": "#7d82a5",
+                        "on-surface": "#191c1f",
+                        "surface": "#f8f9fd",
+                        "on-surface-variant": "#46464d",
+                        "background": "#f8f9fd",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#5a00c6",
+                        "secondary": "#712ae2",
+                        "on-tertiary-fixed-variant": "#3a485c",
+                        "tertiary-fixed-dim": "#b9c7e0",
+                        "inverse-primary": "#c0c4ea",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "on-primary-fixed": "#141936",
+                        "surface-variant": "#e1e2e6",
+                        "primary-fixed": "#dee0ff",
+                        "inverse-on-surface": "#eff1f5",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#8a4cfc",
+                        "surface-bright": "#f8f9fd",
+                        "tertiary": "#000000",
+                        "on-tertiary-container": "#76859b",
+                        "primary-fixed-dim": "#c0c4ea",
+                        "surface-tint": "#585c7d",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c7c5ce",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#d5e3fd",
+                        "on-primary-fixed-variant": "#404564",
+                        "surface-container-low": "#f2f3f7",
+                        "surface-container-high": "#e7e8ec",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#eaddff",
+                        "on-secondary-fixed": "#25005a",
+                        "surface-container-highest": "#e1e2e6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#000000",
+                        "outline": "#77767e",
+                        "inverse-surface": "#2e3134",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .cliff-shadow { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.04); }
+        .gradient-mesh {
+            background-image: radial-gradient(at 0% 0%, #141936 0, transparent 50%),
+                              radial-gradient(at 100% 0%, #141936 0, transparent 50%),
+                              radial-gradient(at 50% 50%, #141936 0, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar (The Anchor) -->
+<header class="flex flex-col w-full max-w-full docked full-width top-0 sticky z-50 transition-all duration-200 ease-in-out">
+<!-- Utility Strip -->
+<div class="bg-[#141936] px-12 py-2 flex justify-end items-center space-x-6 border-b border-white/5">
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-slate-300 hover:text-white transition-colors" href="#">Accessibility</a>
+<button class="font-inter tracking-tight leading-relaxed font-bold text-xs text-white border border-[#712AE2] px-4 py-1.5 rounded hover:bg-[#712AE2] transition-colors">CONTACT SALES</button>
+</div>
+<!-- Main Navigation -->
+<nav class="bg-[#141936] px-12 py-5 flex items-center justify-between">
+<div class="flex items-center space-x-12">
+<span class="text-2xl font-black tracking-tighter text-white">ShadowTagAI</span>
+<div class="hidden md:flex items-center space-x-8">
+<div class="group relative">
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-white border-b-2 border-[#712AE2] pb-1 cursor-default" href="#">Products</a>
+</div>
+<div class="group relative">
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-slate-300 hover:text-white transition-colors" href="#">Media &amp; Events</a>
+</div>
+<!-- Investors with Mega Menu -->
+<div class="group relative">
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-slate-300 hover:text-white transition-colors flex items-center" href="#">
+                            Investors <span class="material-symbols-outlined text-[16px] ml-1">expand_more</span>
+</a>
+<div class="absolute top-full left-0 mt-5 w-[600px] bg-white text-on-primary-fixed shadow-2xl rounded-sm p-8 grid grid-cols-3 gap-8 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+<div>
+<h4 class="font-bold text-xs uppercase tracking-widest text-secondary mb-4">Market Data</h4>
+<ul class="space-y-3 text-sm font-medium text-on-surface-variant">
+<li class="hover:text-secondary cursor-pointer">Stock Quote</li>
+<li class="hover:text-secondary cursor-pointer">Dividend History</li>
+<li class="hover:text-secondary cursor-pointer">Institutional Ownership</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-xs uppercase tracking-widest text-secondary mb-4">Filings &amp; Governance</h4>
+<ul class="space-y-3 text-sm font-medium text-on-surface-variant">
+<li class="hover:text-secondary cursor-pointer">SEC Filings</li>
+<li class="hover:text-secondary cursor-pointer">Annual Reports</li>
+<li class="hover:text-secondary cursor-pointer">Board of Directors</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-xs uppercase tracking-widest text-secondary mb-4">Analyst Coverage</h4>
+<ul class="space-y-3 text-sm font-medium text-on-surface-variant">
+<li class="hover:text-secondary cursor-pointer">Equity Research</li>
+<li class="hover:text-secondary cursor-pointer">Financial Estimates</li>
+<li class="hover:text-secondary cursor-pointer">Quarterly Earnings</li>
+</ul>
+</div>
+</div>
+</div>
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-slate-300 hover:text-white transition-colors" href="#">Contact</a>
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-slate-300 hover:text-white transition-colors" href="#">Careers</a>
+<a class="font-inter tracking-tight leading-relaxed font-medium text-sm text-slate-300 hover:text-white transition-colors" href="#">About Us</a>
+</div>
+</div>
+<div class="flex items-center text-white">
+<span class="material-symbols-outlined hover:bg-white/5 p-2 rounded cursor-pointer">search</span>
+</div>
+</nav>
+</header>
+<!-- Hero Section: The Architectural Ledger -->
+<main>
+<section class="relative bg-primary-container min-h-[716px] flex items-center px-12 overflow-hidden">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#712ae2 1px, transparent 1px); background-size: 40px 40px;"></div>
+<div class="relative z-10 grid md:grid-cols-12 gap-12 w-full items-center">
+<div class="md:col-span-7">
+<h1 class="text-white text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-8">
+                        BUILDING THE INFRASTRUCTURE FOR <span class="text-secondary">SOVEREIGN AI.</span>
+</h1>
+<p class="text-on-primary-container text-xl max-w-xl leading-relaxed font-medium">
+                        Architecting a decentralized compute layer for nation-states and institutions that demand total data autonomy.
+                    </p>
+</div>
+<!-- Stock Ticker Widget -->
+<div class="md:col-span-5 bg-on-primary-fixed-variant/20 backdrop-blur-xl border border-white/10 p-8 rounded-lg shadow-2xl">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-xs font-bold text-secondary tracking-widest uppercase mb-1 block">Ticker: SHDW</span>
+<h3 class="text-white text-3xl font-black tracking-tighter">ShadowTag Pre-IPO</h3>
+</div>
+<div class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded text-xs font-bold flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> +12.4%
+                        </div>
+</div>
+<div class="space-y-6">
+<div class="flex justify-between border-b border-white/5 pb-4">
+<span class="text-slate-400 text-sm">Target Valuation</span>
+<span class="text-white font-bold">$12.8B</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-4">
+<span class="text-slate-400 text-sm">Series D Closure</span>
+<span class="text-white font-bold">Oct 2024</span>
+</div>
+<div class="flex justify-between border-b border-white/5 pb-4">
+<span class="text-slate-400 text-sm">Anchor Investors</span>
+<span class="text-white font-bold">14 Institutional</span>
+</div>
+</div>
+<button class="w-full mt-8 bg-[#712AE2] text-white py-4 font-bold tracking-tight rounded hover:bg-[#8a4cfc] transition-all transform active:scale-95">REQUEST INVESTOR DECK</button>
+</div>
+</div>
+</section>
+<!-- Recent News -->
+<section class="py-24 bg-surface-container-low px-12">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<h2 class="text-on-primary-fixed text-4xl font-black tracking-tighter">Recent News</h2>
+<a class="text-secondary font-bold text-sm tracking-tight flex items-center hover:underline" href="#">VIEW ALL NEWS <span class="material-symbols-outlined ml-1">arrow_forward</span></a>
+</div>
+<div class="space-y-1">
+<!-- News Row 1 -->
+<div class="group bg-surface-container-lowest hover:bg-white p-8 flex items-center justify-between cursor-pointer transition-all border-l-4 border-transparent hover:border-secondary shadow-sm">
+<div class="flex-1">
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-widest mb-2 block">Sept 18, 2024</span>
+<h3 class="text-xl font-bold tracking-tight text-on-primary-fixed group-hover:text-secondary transition-colors">ShadowTagAI Announces Strategic Partnership with G7 Sovereign Data Taskforce</h3>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary group-hover:translate-x-2 transition-all">chevron_right</span>
+</div>
+<!-- News Row 2 -->
+<div class="group bg-surface-container-lowest hover:bg-white p-8 flex items-center justify-between cursor-pointer transition-all border-l-4 border-transparent hover:border-secondary shadow-sm">
+<div class="flex-1">
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-widest mb-2 block">Sept 12, 2024</span>
+<h3 class="text-xl font-bold tracking-tight text-on-primary-fixed group-hover:text-secondary transition-colors">Q3 Fiscal Forecast: Sovereign AI Compute Demand Exceeds Tier 1 Capacity</h3>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary group-hover:translate-x-2 transition-all">chevron_right</span>
+</div>
+<!-- News Row 3 -->
+<div class="group bg-surface-container-lowest hover:bg-white p-8 flex items-center justify-between cursor-pointer transition-all border-l-4 border-transparent hover:border-secondary shadow-sm">
+<div class="flex-1">
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-widest mb-2 block">Aug 29, 2024</span>
+<h3 class="text-xl font-bold tracking-tight text-on-primary-fixed group-hover:text-secondary transition-colors">Technical Brief: Kinetic Action Parser achieves 99.9% latency reduction in High-Freq Environments</h3>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary group-hover:translate-x-2 transition-all">chevron_right</span>
+</div>
+<!-- News Row 4 -->
+<div class="group bg-surface-container-lowest hover:bg-white p-8 flex items-center justify-between cursor-pointer transition-all border-l-4 border-transparent hover:border-secondary shadow-sm">
+<div class="flex-1">
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-widest mb-2 block">Aug 15, 2024</span>
+<h3 class="text-xl font-bold tracking-tight text-on-primary-fixed group-hover:text-secondary transition-colors">ShadowTag CTO Dr. Elena Vance to Keynote at World AI Governance Summit</h3>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary group-hover:translate-x-2 transition-all">chevron_right</span>
+</div>
+<!-- News Row 5 -->
+<div class="group bg-surface-container-lowest hover:bg-white p-8 flex items-center justify-between cursor-pointer transition-all border-l-4 border-transparent hover:border-secondary shadow-sm">
+<div class="flex-1">
+<span class="text-on-surface-variant font-bold text-xs uppercase tracking-widest mb-2 block">Aug 02, 2024</span>
+<h3 class="text-xl font-bold tracking-tight text-on-primary-fixed group-hover:text-secondary transition-colors">Annual Security Audit Completion: ISO/IEC 42001 Certification Achieved</h3>
+</div>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-secondary group-hover:translate-x-2 transition-all">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Links Bar -->
+<section class="bg-secondary px-12 py-10">
+<div class="max-w-7xl mx-auto flex items-center">
+<div class="flex-shrink-0 mr-12">
+<h2 class="text-white text-3xl font-black tracking-tighter">Quick Links</h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 flex-grow">
+<a class="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-4 flex items-center space-x-4 rounded transition-all group" href="#">
+<span class="material-symbols-outlined text-white" data-weight="fill">query_stats</span>
+<span class="text-white font-bold tracking-tight">Stock Quotes</span>
+</a>
+<a class="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-4 flex items-center space-x-4 rounded transition-all group" href="#">
+<span class="material-symbols-outlined text-white" data-weight="fill">present_to_all</span>
+<span class="text-white font-bold tracking-tight">Presentations</span>
+</a>
+<a class="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-4 flex items-center space-x-4 rounded transition-all group" href="#">
+<span class="material-symbols-outlined text-white" data-weight="fill">mail</span>
+<span class="text-white font-bold tracking-tight">Email Alerts</span>
+</a>
+<a class="bg-white/10 hover:bg-white/20 backdrop-blur-sm p-4 flex items-center space-x-4 rounded transition-all group" href="#">
+<span class="material-symbols-outlined text-white" data-weight="fill">headset_mic</span>
+<span class="text-white font-bold tracking-tight">IR Contact</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Upcoming Events -->
+<section class="py-24 bg-surface px-12">
+<div class="max-w-7xl mx-auto">
+<h2 class="text-on-primary-fixed text-4xl font-black tracking-tighter mb-12">Upcoming Events</h2>
+<div class="bg-surface-container-low border-2 border-dashed border-outline-variant/30 rounded-lg py-20 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-5xl text-outline mb-4">event_busy</span>
+<h3 class="text-xl font-bold text-on-surface-variant">No scheduled events at this time.</h3>
+<p class="text-on-surface-variant/60 max-w-sm mt-2">Check back soon for upcoming investor webcasts and media briefings.</p>
+<button class="mt-8 text-secondary font-bold text-sm underline underline-offset-4">SUBSCRIBE FOR NOTIFICATIONS</button>
+</div>
+</div>
+</section>
+<!-- About Section: Asymmetric Ledger -->
+<section class="py-32 bg-primary-container px-12 relative overflow-hidden">
+<div class="absolute right-0 top-0 w-1/3 h-full opacity-10">
+<img class="w-full h-full object-cover" data-alt="abstract digital connection network with flowing glowing data points in deep blue space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXb4cwxToJk5c2lhOa-eIQi-WCzPJ5VdK2of6zn15Lx1Zvc49Evix8sA6I1A1fTO-E0QJST2ZLK_mPpO7C2ca-qdDFoygPPHHJ2yhTP5uepI4XrCQ4arfEYXgOVZJmxPJYCHA9TPsMRhGiEDqqmgt1ryN1NTgPz3W1bbQwxXbrD-ge_3ZyLK4Znwu3oRgLIBFSSW9pYl6tGoz3-fPQDb8ef748UXzjj7rNY00jNBbqmH-QbuKo0GYsflVOSXQP_iQaTMMC6UKZiztS"/>
+</div>
+<div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-24 relative z-10">
+<div>
+<h2 class="text-secondary text-xs font-bold tracking-widest uppercase mb-4">Company Overview</h2>
+<h3 class="text-white text-5xl font-black tracking-tighter leading-none mb-8">Engineering Institutional Trust.</h3>
+<p class="text-on-primary-container text-lg leading-relaxed mb-6">
+                        ShadowTagAI was founded on the principle that artificial intelligence should be as secure and sovereign as a nation's borders. We build the physical and logical stacks that allow sensitive industries to deploy LLMs and autonomous agents without ever exposing data to the public internet.
+                    </p>
+<p class="text-on-primary-container text-lg leading-relaxed mb-12">
+                        Our proprietary Ledger-Core architecture is the first "black-box" AI system capable of multi-trillion parameter inference in air-gapped environments.
+                    </p>
+<button class="flex items-center text-white font-bold tracking-tight hover:text-secondary transition-colors group">
+                        LEARN MORE ABOUT OUR MISSION <span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">east</span>
+</button>
+</div>
+<div class="grid grid-cols-1 gap-8">
+<!-- Metrics Card -->
+<div class="bg-white/5 border border-white/10 p-10 rounded-lg">
+<div class="grid grid-cols-2 gap-8">
+<div>
+<span class="text-3xl font-black text-white block">1.2 EB</span>
+<span class="text-xs text-on-primary-container font-bold uppercase tracking-widest">Sovereign Data Managed</span>
+</div>
+<div>
+<span class="text-3xl font-black text-white block">99.99%</span>
+<span class="text-xs text-on-primary-container font-bold uppercase tracking-widest">Inference Uptime</span>
+</div>
+<div>
+<span class="text-3xl font-black text-white block">08</span>
+<span class="text-xs text-on-primary-container font-bold uppercase tracking-widest">Strategic Markets</span>
+</div>
+<div>
+<span class="text-3xl font-black text-white block">140+</span>
+<span class="text-xs text-on-primary-container font-bold uppercase tracking-widest">Technical Patents</span>
+</div>
+</div>
+</div>
+<!-- Target Markets Card -->
+<div class="bg-secondary/20 border border-secondary/30 p-10 rounded-lg">
+<h4 class="text-white font-black text-xl mb-6">Core Industry Verticals</h4>
+<div class="flex flex-wrap gap-3">
+<span class="px-4 py-2 bg-white/10 text-white text-xs font-bold rounded">GOVERNMENT &amp; DEFENSE</span>
+<span class="px-4 py-2 bg-white/10 text-white text-xs font-bold rounded">CENTRAL BANKING</span>
+<span class="px-4 py-2 bg-white/10 text-white text-xs font-bold rounded">PRECISION HEALTH</span>
+<span class="px-4 py-2 bg-white/10 text-white text-xs font-bold rounded">GLOBAL LOGISTICS</span>
+<span class="px-4 py-2 bg-white/10 text-white text-xs font-bold rounded">ENERGY GRIDS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Products Grid: Bento Style -->
+<section class="py-32 bg-primary-container px-12 border-t border-white/5">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20">
+<h2 class="text-secondary text-xs font-bold tracking-widest uppercase mb-4">Our Ecosystem</h2>
+<h3 class="text-white text-5xl font-black tracking-tighter">The Sovereign Tech Stack</h3>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<!-- Product 1 -->
+<div class="bg-white/5 p-8 rounded-lg group hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">psychology</span>
+<h4 class="text-white text-2xl font-black tracking-tight mb-4">KovelAI</h4>
+<p class="text-on-primary-container text-sm leading-relaxed">The flagship sovereign LLM engine, optimized for secure strategic forecasting.</p>
+</div>
+<!-- Product 2 -->
+<div class="bg-white/5 p-8 rounded-lg group hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">auto_awesome_motion</span>
+<h4 class="text-white text-2xl font-black tracking-tight mb-4">Oracle Studio</h4>
+<p class="text-on-primary-container text-sm leading-relaxed">Visual environment for building and deploying air-gapped autonomous agents.</p>
+</div>
+<!-- Product 3 -->
+<div class="bg-white/5 p-8 rounded-lg group hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">rebase_edit</span>
+<h4 class="text-white text-2xl font-black tracking-tight mb-4">Kinetic Parser</h4>
+<p class="text-on-primary-container text-sm leading-relaxed">High-frequency semantic engine for massive real-time data ingestion.</p>
+</div>
+<!-- Product 4 -->
+<div class="bg-white/5 p-8 rounded-lg group hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">hub</span>
+<h4 class="text-white text-2xl font-black tracking-tight mb-4">CounselConduit</h4>
+<p class="text-on-primary-container text-sm leading-relaxed">Regulatory-first AI gateway ensuring cross-border policy compliance.</p>
+</div>
+<!-- Product 5 -->
+<div class="bg-white/5 p-8 rounded-lg group hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">dns</span>
+<h4 class="text-white text-2xl font-black tracking-tight mb-4">Compute Engine</h4>
+<p class="text-on-primary-container text-sm leading-relaxed">Physical rack-integrated AI infrastructure for extreme data localization.</p>
+</div>
+<!-- Product 6 -->
+<div class="bg-white/5 p-8 rounded-lg group hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">groups</span>
+<h4 class="text-white text-2xl font-black tracking-tight mb-4">Agent Swarm</h4>
+<p class="text-on-primary-container text-sm leading-relaxed">Orchestration layer for fleet management of specialized AI workers.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Management Section -->
+<section class="py-32 bg-surface px-12">
+<div class="max-w-7xl mx-auto">
+<h2 class="text-on-primary-fixed text-4xl font-black tracking-tighter mb-16">Executive Leadership</h2>
+<div class="grid md:grid-cols-3 gap-12">
+<!-- Leader 1 -->
+<div class="group">
+<div class="relative overflow-hidden mb-6 aspect-[4/5] bg-surface-container-high rounded-sm">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="professional portrait of an executive man in a modern office setting with neutral lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXbt3ADjbMdFpiTCHtWWmA_fLf0G1Q0a7BEWe2Rvv58lE9Q23TkVm4vwgvZfSmJv3Te-U3N8sVNzUZLHaGx48iaSQcAViQmyS6KdkT16gpKQNbBBP6eYQOKDcyqZppz1QokuWjjSn0t_hZ47x1mW0N29Yp1_23sUJURDa8xH7TEnmAQEKZWonC-ufPR6n1etLvS_zJpRt-KdwmeW6GQdedXiZz9C2ZGWjOpXPiFcziuU3zA9bNmwcTaNhkP89cWZdIj3PO2o6UqIZx"/>
+</div>
+<h4 class="text-on-primary-fixed text-2xl font-black tracking-tight">Marcus Thorne</h4>
+<span class="text-secondary text-sm font-bold uppercase tracking-widest mb-4 block">Chief Executive Officer</span>
+<p class="text-on-surface-variant text-sm leading-relaxed">Former Director of Global Systems at InterSecure. 20 years in sovereign infrastructure.</p>
+</div>
+<!-- Leader 2 -->
+<div class="group">
+<div class="relative overflow-hidden mb-6 aspect-[4/5] bg-surface-container-high rounded-sm">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="professional portrait of an executive woman in a sleek modern boardroom with soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCi2P7tUZPRoxUqWiIHU_mI3S86WxOGCbXlAlLhMss4nOYflHvLZ48lNRoegb53ugh64oFumHUurNeZK79q1yjmzopeYj3-kS5MxgpUQVHybkyZMgUCk17FVelAADQEm4dTPeyIaCiITGuL3JnfLmLAT5MPdz_D8fFm5JJAEi0grc6-CJsnbgSlJ4OblXBNTBqd7p0KyIOqrBTup62ryHHuf2E74DnwCSpEvuZHQa8AakU-5my0Kgt5iyfRUqZfo97c0n7u-hnDIb4"/>
+</div>
+<h4 class="text-on-primary-fixed text-2xl font-black tracking-tight">Dr. Elena Vance</h4>
+<span class="text-secondary text-sm font-bold uppercase tracking-widest mb-4 block">Chief Technology Officer</span>
+<p class="text-on-surface-variant text-sm leading-relaxed">PhD in Quantum Neural Networks. Lead Architect of the Ledger-Core protocol.</p>
+</div>
+<!-- Leader 3 -->
+<div class="group">
+<div class="relative overflow-hidden mb-6 aspect-[4/5] bg-surface-container-high rounded-sm">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="professional portrait of an executive man with glasses looking confident in a high-end corporate setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7QIIrR6KySJsGMjI4_pRQSJ6IhsXt4ODxfhPurnf0fqUbKdhMt-7pOHXuLaDO_Kw2-kQMAu6gZwzkXctWoCiG5E_OL8BGbAPIsC93zwFPHd0YoxAOliAmqGMYmaXT4-XWqHPnDac954FRZIBA9oZtbuZEQeQ36-_VtcHXwgYQtw5TQBMBXMMKxx7YY6YsRFcAV7K7oNwf9RLYt8lDGyVjQDzrkaTuVvaDxOV3iaLQaMsLYvNRgTe2hfmZfOvxnXtfKihO8m28WKyO"/>
+</div>
+<h4 class="text-on-primary-fixed text-2xl font-black tracking-tight">Simon Kincaid</h4>
+<span class="text-secondary text-sm font-bold uppercase tracking-widest mb-4 block">Chief Financial Officer</span>
+<p class="text-on-surface-variant text-sm leading-relaxed">Ex-Goldman VP of Emerging Tech. Architect of ShadowTag's $12B valuation path.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Careers CTA -->
+<section class="mx-12 mb-32">
+<div class="max-w-7xl mx-auto bg-gradient-to-r from-primary-container via-secondary to-primary-container p-16 rounded-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between text-center md:text-left">
+<div class="relative z-10">
+<h2 class="text-white text-4xl md:text-5xl font-black tracking-tighter mb-4">Join the ShadowTag Team</h2>
+<p class="text-white/80 text-lg font-medium max-w-xl">We are looking for cryptographers, AI researchers, and hardware engineers to build the next era of sovereign tech.</p>
+</div>
+<button class="relative z-10 mt-8 md:mt-0 bg-white text-primary-container px-10 py-4 font-black tracking-tight rounded hover:bg-slate-100 transition-colors">VIEW OPEN ROLES</button>
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 30px 30px;"></div>
+</div>
+</section>
+</main>
+<!-- Footer (The Blueprint) -->
+<footer class="bg-surface-container-low dark:bg-[#141936] full-width border-t-0 cliff-shadow">
+<div class="grid grid-cols-2 gap-12 px-12 py-20 max-w-7xl mx-auto">
+<div class="space-y-12">
+<div>
+<span class="text-xl font-bold text-[#141936] dark:text-white block mb-6">ShadowTagAI</span>
+<p class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 max-w-sm">
+                        Defining the architecture of sovereign intelligence. A ledger of innovation for global institutional trust.
+                    </p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<h5 class="text-xs font-black uppercase tracking-widest text-[#141936] dark:text-white mb-4">Investor Contact</h5>
+<p class="text-sm font-inter text-[#46464D] dark:text-slate-400">investors@shadowtag.ai<br/>+1 (800) SHDW-TAG</p>
+</div>
+<div>
+<h5 class="text-xs font-black uppercase tracking-widest text-[#141936] dark:text-white mb-4">Media Inquiries</h5>
+<p class="text-sm font-inter text-[#46464D] dark:text-slate-400">press@shadowtag.ai<br/>Global Media Desk</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<h5 class="text-xs font-black uppercase tracking-widest text-[#141936] dark:text-white mb-6">Information</h5>
+<ul class="space-y-4">
+<li><a class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 hover:underline decoration-[#712AE2] decoration-2 opacity-80 hover:opacity-100 transition-opacity" href="#">Investor Contact</a></li>
+<li><a class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 hover:underline decoration-[#712AE2] decoration-2 opacity-80 hover:opacity-100 transition-opacity" href="#">Media Inquiries</a></li>
+<li><a class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 hover:underline decoration-[#712AE2] decoration-2 opacity-80 hover:opacity-100 transition-opacity" href="#">SEC Filings</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-black uppercase tracking-widest text-[#141936] dark:text-white mb-6">Legal</h5>
+<ul class="space-y-4">
+<li><a class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 hover:underline decoration-[#712AE2] decoration-2 opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a></li>
+<li><a class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 hover:underline decoration-[#712AE2] decoration-2 opacity-80 hover:opacity-100 transition-opacity" href="#">Terms of Service</a></li>
+<li><a class="font-inter text-base leading-7 text-[#46464D] dark:text-slate-400 hover:underline decoration-[#712AE2] decoration-2 opacity-80 hover:opacity-100 transition-opacity" href="#">Governance</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="px-12 py-8 bg-surface-container border-t border-outline-variant/10">
+<div class="max-w-7xl mx-auto flex justify-between items-center text-xs font-bold text-[#46464D] dark:text-slate-500 tracking-tight">
+<span>© 2024 ShadowTagAI. The Architectural Ledger Precision.</span>
+<div class="flex space-x-6">
+<span>X.COM</span>
+<span>LINKEDIN</span>
+<span>BLOOMBERG TERMINAL</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

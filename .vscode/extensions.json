@@ -1,0 +1,4 @@
+{
+  "recommendations": ["charliermarsh.ruff", "biomejs.biome", "google.geminicodeassist"],
+  "unwantedRecommendations": ["dsznajder.es7-react-js-snippets", "ritwickdey.liveserver"]
+}

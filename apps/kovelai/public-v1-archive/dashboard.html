@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Dashboard | KovelAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container { max-width: 1200px; margin: 120px auto 4rem; padding: 0 2rem; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 2rem; background: var(--surface-container); border-radius: 8px; overflow: hidden; }
+        .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--outline-variant); }
+        .data-table th { background: var(--surface-highest); font-weight: 600; color: var(--on-surface-variant); }
+        .badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: rgba(0, 255, 136, 0.1); color: var(--primary); }
+
+        #toast-notification {
+            position: fixed; bottom: -100px; right: 2rem; background: var(--surface-highest);
+            border: 1px solid var(--primary); padding: 1rem 1.5rem; border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 1rem; z-index: 1000;
+        }
+        #toast-notification.show { bottom: 2rem; }
+    </style>
+</head>
+<body>
+    <header class="nav-header">
+        <a href="index.html" class="logo-group">
+            <span class="material-symbols-outlined nav-icon" style="color: var(--primary);">admin_panel_settings</span>
+            KovelAI
+        </a>
+        <div class="nav-links">
+            <button id="logoutBtn" class="btn btn-ghost">Sign Out</button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <h1 class="section-title gradient-sweep">Lead Intake CRM</h1>
+        <p class="section-subtitle">Real-time WebSocket feed of incoming contact requests.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Name / Org</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="leads-table-body">
+                <tr><td colspan="5" style="text-align:center;">Loading secure feed...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-notification">
+        <span class="material-symbols-outlined" style="color:var(--primary);">notifications_active</span>
+        <div id="toast-message">New inbound lead received.</div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script defer src="/__/firebase/10.8.0/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/10.8.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/10.8.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableBody = document.getElementById('leads-table-body');
+            const toast = document.getElementById('toast-notification');
+            let initialLoad = true;
+            let loadedCount = 0;
+
+            function showToast(name) {
+                document.getElementById('toast-message').innerText = `New inbound lead from ${name}`;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 5000);
+            }
+
+            // Wait for Firebase to instantiate
+            setTimeout(() => {
+                const db = window.firebase.firestore();
+
+                // Realtime Listener
+                db.collection("contact_requests").orderBy("created_at", "desc").limit(50)
+                .onSnapshot((snapshot) => {
+                    if (snapshot.empty) {
+                        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No leads found.</td></tr>';
+                        return;
+                    }
+
+                    // We clear table instead of appending for simplicity on update
+                    tableBody.innerHTML = '';
+
+                    const _isNewData = false;
+
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const timeStr = data.created_at ? data.created_at.toDate().toLocaleString() : "Just now";
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${timeStr}</td>
+                            <td><strong>${data.name || 'Unknown'}</strong><br><small>${data.company || ''}</small></td>
+                            <td><a href="mailto:${data.email || ''}" style="color:var(--primary);">${data.email || ''}</a></td>
+                            <td style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${data.message || ''}">${data.message || ''}</td>
+                            <td><span class="badge">NEW</span></td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+
+                    if (!initialLoad && snapshot.docs.length > loadedCount) {
+                        // Brand new doc arrived via WS
+                        const newestDoc = snapshot.docs[0].data();
+                        showToast(newestDoc.name || 'Unknown');
+                    }
+
+                    initialLoad = false;
+                    loadedCount = snapshot.docs.length;
+
+                }, (_error) => {
+                    tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Access Denied. Admin authentication required.</td></tr>`;
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+# Unified Cloud Build - n-autoresearch/Kosmos/BioAgentss + CodePMCS
+# Both services share the same codebase and can be updated simultaneously
+#
+# Usage:
+#   # Build both services
+#   gcloud builds submit --config=cloudbuild_unified.yaml --substitutions=SHORT_SHA=v1
+#
+#   # Build only n-autoresearch/Kosmos/BioAgentss
+#   gcloud builds submit --config=cloudbuild_unified.yaml --substitutions=SHORT_SHA=v1,_BUILD_FM=true,_BUILD_PMCS=false
+#
+#   # Build only CodePMCS
+#   gcloud builds submit --config=cloudbuild_unified.yaml --substitutions=SHORT_SHA=v1,_BUILD_FM=false,_BUILD_PMCS=true
+
+substitutions:
+  _BUILD_FM: 'true'
+  _BUILD_PMCS: 'true'
+  _DEPLOY_DEV: 'true'
+  _DEPLOY_PROD: 'false'
+
+steps:
+  # ============================================================================
+  # n-autoresearch/Kosmos/BioAgentss Build
+  # ============================================================================
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-n-autoresearch/Kosmos/BioAgentss'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_FM}" = "true" ]; then
+          docker build \
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server:$SHORT_SHA \
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server:latest \
+            -f n-autoresearch/Kosmos/BioAgentss-server.Dockerfile \
+            .
+        else
+          echo "Skipping n-autoresearch/Kosmos/BioAgentss build"
+        fi
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-n-autoresearch/Kosmos/BioAgentss'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_FM}" = "true" ]; then
+          docker push --all-tags us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server
+        else
+          echo "Skipping n-autoresearch/Kosmos/BioAgentss push"
+        fi
+    waitFor: ['build-n-autoresearch/Kosmos/BioAgentss']
+
+  # ============================================================================
+  # CodePMCS Build
+  # ============================================================================
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-codepmcs'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_PMCS}" = "true" ]; then
+          docker build \
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server:$SHORT_SHA \
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server:latest \
+            -f codepmcs-server.Dockerfile \
+            .
+        else
+          echo "Skipping CodePMCS build"
+        fi
+    waitFor: ['-']  # Can run in parallel with n-autoresearch/Kosmos/BioAgentss
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-codepmcs'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_PMCS}" = "true" ]; then
+          docker push --all-tags us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server
+        else
+          echo "Skipping CodePMCS push"
+        fi
+    waitFor: ['build-codepmcs']
+
+  # ============================================================================
+  # Deploy to Dev (Both Services)
+  # ============================================================================
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'deploy-n-autoresearch/Kosmos/BioAgentss-dev'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_FM}" = "true" ] && [ "${_DEPLOY_DEV}" = "true" ]; then
+          gcloud run deploy n-autoresearch/Kosmos/BioAgentss-server-dev \
+            --image=us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server:$SHORT_SHA \
+            --region=us-central1 \
+            --platform=managed \
+            --memory=2Gi \
+            --cpu=2 \
+            --set-env-vars=PYTHONPATH=/app,GCP_PROJECT_ID=$PROJECT_ID
+        else
+          echo "Skipping n-autoresearch/Kosmos/BioAgentss dev deploy"
+        fi
+    waitFor: ['push-n-autoresearch/Kosmos/BioAgentss']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'deploy-codepmcs-dev'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_PMCS}" = "true" ] && [ "${_DEPLOY_DEV}" = "true" ]; then
+          gcloud run deploy codepmcs-server-dev \
+            --image=us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server:$SHORT_SHA \
+            --region=us-central1 \
+            --platform=managed \
+            --memory=2Gi \
+            --cpu=2 \
+            --set-env-vars=PYTHONPATH=/app,GCP_PROJECT_ID=$PROJECT_ID,PORT=8080
+        else
+          echo "Skipping CodePMCS dev deploy"
+        fi
+    waitFor: ['push-codepmcs']
+
+  # ============================================================================
+  # Deploy to Prod (Manual Gate)
+  # ============================================================================
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'deploy-n-autoresearch/Kosmos/BioAgentss-prod'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_FM}" = "true" ] && [ "${_DEPLOY_PROD}" = "true" ]; then
+          gcloud run deploy n-autoresearch/Kosmos/BioAgentss-server \
+            --image=us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server:$SHORT_SHA \
+            --region=us-central1 \
+            --platform=managed \
+            --memory=4Gi \
+            --cpu=4 \
+            --min-instances=1 \
+            --max-instances=10 \
+            --set-env-vars=PYTHONPATH=/app,GCP_PROJECT_ID=$PROJECT_ID
+        else
+          echo "Skipping n-autoresearch/Kosmos/BioAgentss prod deploy"
+        fi
+    waitFor: ['deploy-n-autoresearch/Kosmos/BioAgentss-dev']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'deploy-codepmcs-prod'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_BUILD_PMCS}" = "true" ] && [ "${_DEPLOY_PROD}" = "true" ]; then
+          gcloud run deploy codepmcs-server \
+            --image=us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server:$SHORT_SHA \
+            --region=us-central1 \
+            --platform=managed \
+            --memory=4Gi \
+            --cpu=4 \
+            --min-instances=1 \
+            --max-instances=10 \
+            --set-env-vars=PYTHONPATH=/app,GCP_PROJECT_ID=$PROJECT_ID,PORT=8080
+        else
+          echo "Skipping CodePMCS prod deploy"
+        fi
+    waitFor: ['deploy-codepmcs-dev']
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/n-autoresearch/Kosmos/BioAgentss/server:latest'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/codepmcs/server:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+
+timeout: '2400s'  # 40 minutes for both services
+
+tags:
+  - 'unified-build'
+  - 'n-autoresearch/Kosmos/BioAgentss'
+  - 'codepmcs'
+  - 'vertex-ai'

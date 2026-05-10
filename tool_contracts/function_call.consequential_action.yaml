@@ -1,0 +1,9 @@
+# tool_contracts/function_call.consequential_action.yaml
+tool_id: "function_call.consequential_action"
+description: "Governs the function_call.consequential_action operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/function_call_consequential_action.jsonl"
+reuse_queries: []

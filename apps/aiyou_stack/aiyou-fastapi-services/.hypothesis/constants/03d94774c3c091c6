@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/shadowtag_v4/middleware/security.py
+# hypothesis_version: 6.151.5
+
+[100, 413, 429, 1024, ',', '1; mode=block', 'DENY', 'Permissions-Policy', 'Rate limit exceeded', 'RateLimitMiddleware', 'Referrer-Policy', 'X-Forwarded-For', 'X-Frame-Options', 'X-XSS-Protection', 'content-length', 'detail', 'nosniff', 'unknown']

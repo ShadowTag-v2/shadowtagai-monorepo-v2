@@ -1,0 +1,5 @@
+# OWNERS — infra/
+# Infrastructure-as-Code, monitoring, and deployment configs.
+# Security-critical — all changes require explicit review.
+
+ehanc69@gmail.com

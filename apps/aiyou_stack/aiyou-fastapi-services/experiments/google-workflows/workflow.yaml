@@ -1,0 +1,41 @@
+# experiments/google-workflows/workflow.yaml
+# ShadowTag Omega v2 - Native Orchestration
+# Replaces Temporal with Serverless Global State
+
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - location: "us-central1"
+
+    - logStart:
+        call: sys.log
+        args:
+          text: "🚀 Starting ShadowTag Native Workflow..."
+          severity: "INFO"
+
+    - mockDataIngestion:
+        call: sys.log
+        args:
+          text: "📥 Ingesting Data from Pub/Sub (Mock)..."
+          severity: "INFO"
+
+    - parallelProcessing:
+        parallel:
+          branches:
+            - visionBranch:
+                steps:
+                  - callVision:
+                      call: sys.log
+                      args:
+                        text: "👁️  Calling Vertex AI Vision Refinery..."
+            - inventoryBranch:
+                steps:
+                  - callRuby:
+                      call: sys.log
+                      args:
+                        text: "💎 Calling Ruby Inventory MCP..."
+
+    - finish:
+        return: "✅ Workflow Completed Successfully."

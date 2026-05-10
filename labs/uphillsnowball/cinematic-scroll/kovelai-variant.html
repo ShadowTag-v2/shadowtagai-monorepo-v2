@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-variant="kovelai">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KovelAI — Privilege-Preserving Legal AI</title>
+  <meta name="description" content="KovelAI: The first Kovel-attested AI platform for law firms. Privileged research with multi-model routing under attorney-client protection.">
+  <meta name="keywords" content="legal AI, Kovel attestation, privilege-preserving, law firm AI, cinematic scroll">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="KovelAI — Privilege-Preserving Legal AI">
+  <meta property="og:description" content="Cinematic AI platform for law firms with cryptographic privilege attestation.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kovelai.web.app">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Same CSS architecture, KovelAI color override below -->
+  <link rel="stylesheet" href="css/design-tokens.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    /* ===== KOVELAI VARIANT — Cyan+Gold Legal Theme ===== */
+    :root {
+      --color-primary: hsl(185, 100%, 50%);
+      --color-secondary: hsl(45, 90%, 55%);
+      --color-accent: hsl(340, 80%, 55%);
+
+      --gradient-primary: linear-gradient(135deg, hsl(185, 100%, 50%), hsl(45, 90%, 55%));
+      --gradient-hero: linear-gradient(180deg,
+        hsla(185, 100%, 50%, 0.15) 0%,
+        transparent 40%,
+        transparent 60%,
+        hsla(45, 90%, 55%, 0.1) 100%
+      );
+
+      --shadow-glow-primary: 0 0 20px rgba(0, 230, 230, 0.3);
+      --shadow-glow-accent: 0 0 20px rgba(255, 200, 50, 0.3);
+    }
+
+    [data-theme="light"][data-variant="kovelai"] {
+      --color-primary: hsl(185, 80%, 35%);
+      --color-secondary: hsl(45, 80%, 40%);
+      --shadow-glow-primary: 0 0 20px rgba(0, 180, 180, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="main-nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" id="nav-logo">Kovel<span style="color: var(--color-primary)">AI</span></a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="#story" class="nav__link">How It Works</a></li>
+        <li><a href="#features" class="nav__link">Features</a></li>
+        <li><a href="#reviews" class="nav__link">Testimonials</a></li>
+      </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
+        <span class="theme-toggle__knob" id="theme-knob">🌙</span>
+      </button>
+      <a href="#contact" class="nav__cta" id="nav-cta">Schedule Demo</a>
+    </div>
+    <div class="nav__progress" id="scroll-progress"></div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero-section" style="height: 100vh;">
+    <div class="hero__loading" id="hero-loading">
+      <div style="text-align: center;">
+        <div class="hero__loading-spinner"></div>
+        <p class="hero__loading-text">Establishing secure connection…</p>
+      </div>
+    </div>
+    <div class="hero__overlay">
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__title-line">Privilege-Preserving</span>
+        <span class="hero__title-line" style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Legal AI</span>
+      </h1>
+      <p class="hero__subtitle" id="hero-subtitle">
+        Kovel-attested research with multi-model routing under attorney-client protection.
+        Every session cryptographically sealed.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== STORY ===== -->
+  <section class="story" id="story">
+    <h2 class="section-title">How <span style="color: var(--color-primary)">Kovel Attestation</span> Works</h2>
+    <div class="story__scroll">
+      <article class="story__card fade-in" id="story-1">
+        <span class="story__card-number">01</span>
+        <h3 class="story__card-title">Engage Attorney Session</h3>
+        <p class="story__card-desc">
+          Attorney creates a privileged research session. Client accesses through
+          ephemeral portal with dead-man&rsquo;s switch. No export, no copy.
+        </p>
+      </article>
+      <article class="story__card fade-in" id="story-2">
+        <span class="story__card-number">02</span>
+        <h3 class="story__card-title">Multi-Model Research</h3>
+        <p class="story__card-desc">
+          Query routed through Judge&nbsp;#6 gate to optimal LLM
+          (Gemini, Claude, GPT). All responses filtered for privilege compliance.
+        </p>
+      </article>
+      <article class="story__card fade-in" id="story-3">
+        <span class="story__card-number">03</span>
+        <h3 class="story__card-title">Cryptographic Attestation</h3>
+        <p class="story__card-desc">
+          Every session sealed with HMAC-SHA256 Kovel attestation receipt.
+          Immutable transcript stored with Oracle Memo and citation chain.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <h2 class="section-title">Enterprise Legal <span style="color: var(--color-primary)">Features</span></h2>
+    <div class="features__grid">
+      <div class="feature-card fade-in" id="feature-1">
+        <span class="feature-card__icon">🔐</span>
+        <h3 class="feature-card__title">Kovel Attestation</h3>
+        <p class="feature-card__desc">HMAC-SHA256 cryptographic receipt per session proving privileged communication under Heppner protection.</p>
+      </div>
+      <div class="feature-card fade-in" id="feature-2">
+        <span class="feature-card__icon">⚖️</span>
+        <h3 class="feature-card__title">Judge 6 Gate</h3>
+        <p class="feature-card__desc">Mandatory policy enforcement on model routing, export controls, and regulated-domain compliance.</p>
+      </div>
+      <div class="feature-card fade-in" id="feature-3">
+        <span class="feature-card__icon">🏛️</span>
+        <h3 class="feature-card__title">Oracle Memo</h3>
+        <p class="feature-card__desc">7-stage pipeline generating legal research summaries with citation chains and confidence scoring.</p>
+      </div>
+      <div class="feature-card fade-in" id="feature-4">
+        <span class="feature-card__icon">🔄</span>
+        <h3 class="feature-card__title">Multi-Model Routing</h3>
+        <p class="feature-card__desc">LiteLLM proxy with tenant-scoped tokens. Route to Gemini, Claude, GPT, Grok, or Perplexity per query.</p>
+      </div>
+      <div class="feature-card fade-in" id="feature-5">
+        <span class="feature-card__icon">📜</span>
+        <h3 class="feature-card__title">Immutable Transcripts</h3>
+        <p class="feature-card__desc">Firestore-backed session persistence with PITR, tenant isolation, and 30-day GDPR deletion via Cloud Tasks.</p>
+      </div>
+      <div class="feature-card fade-in" id="feature-6">
+        <span class="feature-card__icon">💰</span>
+        <h3 class="feature-card__title">Dual-Billing Engine</h3>
+        <p class="feature-card__desc">Stripe Connect: clients pay lawyers directly, lawyers pay auto-scaling tiers to us. 85%+ margin built in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="contact">
+    <h2 class="section-title" style="margin-bottom: 2rem;">Schedule a <span style="color: var(--color-primary)">Demo</span></h2>
+    <p style="color: var(--color-text-secondary); max-width: 600px; margin: 0 auto 2rem;">
+      See how KovelAI can transform your firm's AI research workflow with
+      privilege-preserving, multi-model routing under cryptographic attestation.
+    </p>
+    <div class="footer__links">
+      <a href="https://kovelai.web.app" class="nav__link">Product</a>
+      <a href="mailto:legal@kovelai.com" class="nav__link">legal@kovelai.com</a>
+      <a href="#" class="nav__link">Privacy Policy</a>
+      <a href="#" class="nav__link">Terms of Service</a>
+    </div>
+    <p class="footer__copy">&copy; 2026 KovelAI. Privileged by design.</p>
+  </footer>
+
+  <script src="js/scroll-engine.js"></script>
+  <script>
+    // IntersectionObserver for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeKnob = document.getElementById('theme-knob');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        themeKnob.textContent = next === 'dark' ? '🌙' : '☀️';
+      });
+    }
+
+    // Loading placeholder dismiss
+    setTimeout(() => {
+      const loading = document.getElementById('hero-loading');
+      if (loading) loading.classList.add('loaded');
+    }, 1500);
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+google-cloud-aiplatform
+google-genai
+langchain
+langgraph
+pydantic
+pyjwt
+mcp
+colorama
+lancedb
+sentence-transformers
+pyarrow

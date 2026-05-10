@@ -1,0 +1,26 @@
+model
+  schema 1.1
+
+type user
+
+type agent
+  relations
+    define owner: [user]
+    define operator: [user]
+
+type tool
+  relations
+    define can_execute: [agent, user]
+    define requires_gate: [tool]
+
+type repository
+  relations
+    define admin: [user]
+    define pusher: [agent, user]
+    define reader: [agent, user]
+
+type truth_surface
+  relations
+    define writer: [agent, user]
+    define reader: [agent, user]
+    define owner: [user]

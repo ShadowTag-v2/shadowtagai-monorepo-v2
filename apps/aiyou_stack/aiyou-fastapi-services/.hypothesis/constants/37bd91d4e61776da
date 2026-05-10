@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/security/circuit_breaker.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.05, 0.5, 1.0, 5000, 'closed', 'confidence_score', 'consecutive_failures', 'error_rate', 'failed_calls', 'half_open', 'last_failure_time', 'last_state_change', 'latency_ms', 'name', 'open', 'state', 'success_rate', 'successful_calls', 'total_calls']

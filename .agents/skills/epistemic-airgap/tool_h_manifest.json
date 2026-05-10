@@ -1,0 +1,33 @@
+{
+  "name": "search_corporate_ip",
+  "version": "1.0.0",
+  "description": "Proprietary IP Scanner — searches the isolated corporate monorepo for internal APIs, shared components, and corporate architectures. MUST be used instead of web searches for internal code.",
+  "search_path": "./external_repos/corp-monorepo",
+  "tools": [
+    {
+      "name": "ripgrep_corporate",
+      "command": "rg --type-add 'corp:*.py' --type-add 'corp:*.ts' --type-add 'corp:*.tsx' --type-add 'corp:*.jsx' --type corp -n",
+      "description": "Fast text search across corporate monorepo. Use for string/regex pattern matching.",
+      "target_dir": "./external_repos/corp-monorepo"
+    },
+    {
+      "name": "ast_grep_corporate",
+      "command": "sg scan --pattern",
+      "description": "Structural AST code parsing across corporate monorepo. Use for semantic code pattern detection.",
+      "target_dir": "./external_repos/corp-monorepo"
+    }
+  ],
+  "dlp_rules": {
+    "prohibited_in_public_search": [
+      "proprietary_variable_names",
+      "corporate_database_schemas",
+      "internal_ip_addresses",
+      "corporate_api_keys",
+      "internal_error_traces",
+      "internal_package_names"
+    ],
+    "sanitization_required": true,
+    "override_rule": "proprietary_corporate_code_overrides_public_patterns"
+  },
+  "system_instruction": "Execute search strictly against './external_repos/corp-monorepo'. Do not search the global workspace. If the directory is empty, prompt the user to clone their corporate monorepo securely via their local authorized GitHub CLI (SSH transport only)."
+}

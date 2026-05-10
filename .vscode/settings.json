@@ -1,0 +1,51 @@
+{
+  "telemetry.telemetryLevel": "off",
+  "security.workspace.trust.enabled": true,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/build/**": true,
+    "**/.venv/**": true,
+    "**/bin/**": true,
+    "**/obj/**": true,
+    "**/.next/**": true,
+    "**/target/**": true,
+    "**/__pycache__/**": true,
+    "**/dist/**": true,
+    "**/external_repos/**": true,
+    "**/archive/**": true,
+    "**/tools/**": true,
+    "**/labs/**": true,
+    "**/terraform/**": true,
+    "**/third_party/**": true,
+    "**/.lancedb/**": true,
+    "**/reference_architectures/**": true,
+    "**/google-cloud-sdk/**": true,
+    "**/.pixi/**": true,
+    "**/.hypothesis/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/.venv": true,
+    "**/.next": true,
+    "**/target": true,
+    "**/__pycache__": true,
+    "**/dist": true,
+    "**/external_repos": true,
+    "**/archive": true,
+    "**/tools": true,
+    "**/labs": true,
+    "**/terraform": true,
+    "**/third_party": true,
+    "**/reference_architectures": true,
+    "**/google-cloud-sdk": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "omnisharp.projectLoadTimeout": 300
+}

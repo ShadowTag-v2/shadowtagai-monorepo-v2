@@ -1,0 +1,12 @@
+external_payloads/**
+external_repos/**
+node_modules/**
+.venv/**
+labs/uphillsnowball/**
+vendor/**
+third_party/**
+bazel-*/**
+archive/**
+_PRE_OMEGA_BACKUP_*/**
+ShadowTagAI-Omega/**
+arsenal_recovered/**

@@ -1,0 +1,3 @@
+CORS_ORIGINS: "https://counselconduit-767252945109.us-central1.run.app,https://shadowtagai.com,https://www.shadowtagai.com,http://localhost:3000,http://localhost:8000"
+CORS_METHODS: "GET,POST,PUT,DELETE,OPTIONS,PATCH"
+CORS_HEADERS: "Content-Type,Authorization,X-Requested-With"

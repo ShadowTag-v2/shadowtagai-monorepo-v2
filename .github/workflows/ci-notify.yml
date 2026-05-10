@@ -1,0 +1,51 @@
+name: "CI Failure Notification"
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Quality Gate"
+      - "Security — Bandit SAST"
+      - "Backend CI (shadowtag-omega-v4-fastapi-services)"
+      - "Code Quality Gate — Ruff + Biome"
+    types:
+      - completed
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ci-notify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  notify-failure:
+    name: Notify on Failure
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Send notification
+        env:
+          WEBHOOK_URL: ${{ secrets.CI_NOTIFICATION_WEBHOOK }}
+        run: |
+          WORKFLOW="${{ github.event.workflow_run.name }}"
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          RUN_URL="${{ github.event.workflow_run.html_url }}"
+          COMMIT="${{ github.event.workflow_run.head_sha }}"
+
+          echo "::error::CI FAILURE: $WORKFLOW on $BRANCH"
+          echo "  Run: $RUN_URL"
+          echo "  Commit: $COMMIT"
+
+          # Send webhook notification if configured
+          if [ -n "$WEBHOOK_URL" ]; then
+            curl -s -X POST "$WEBHOOK_URL" \
+              -H 'Content-Type: application/json' \
+              -d "{
+                \"text\": \"🔴 CI Failure: **${WORKFLOW}** on \`${BRANCH}\`\n[View Run](${RUN_URL})\nCommit: \`${COMMIT:0:8}\`\"
+              }" || echo "Webhook notification failed"
+          else
+            echo "::notice::No CI_NOTIFICATION_WEBHOOK secret configured — skipping webhook"
+          fi

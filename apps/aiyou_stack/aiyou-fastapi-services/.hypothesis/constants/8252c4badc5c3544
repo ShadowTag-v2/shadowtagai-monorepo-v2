@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/glicko.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1e-06, 0.055, 0.06, 0.5, 1.0, 2.0, 3.0, 120.0, 173.7178, 350.0, 1500.0, 1650.0, 'Rating (skill level)', 'Volatility', 'example', 'games_played', 'inf', 'mu', 'name', 'phi', 'player_id', 'sigma', 'strategy_001', 'tau', 'tol']

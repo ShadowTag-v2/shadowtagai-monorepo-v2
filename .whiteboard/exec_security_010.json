@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_security_010",
+  "level": 3,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "security",
+  "tier": "execution",
+  "shift": "shift_5",
+  "knowledge_graph": {
+    "specialization": "security",
+    "domain": "security"
+  },
+  "task_history": [],
+  "preferred_llm": "grok-beta"
+}

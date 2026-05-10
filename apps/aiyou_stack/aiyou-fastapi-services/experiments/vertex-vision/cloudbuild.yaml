@@ -1,0 +1,29 @@
+steps:
+  # 1. Build Container (Buildpacks - No Dockerfile needed for Python generic)
+  - name: 'gcr.io/k8s-skaffold/pack'
+    args:
+      - 'build'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/vertex-vision:latest'
+      - '--builder=gcr.io/buildpacks/builder:v1'
+      - '--path=.'
+
+  # 2. Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'vertex-vision'
+      - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/vertex-vision:latest'
+      - '--region=$_REGION'
+      - '--platform=managed'
+      - '--no-allow-unauthenticated'
+      - '--memory=1Gi'
+      - '--cpu=1'
+      - '--set-env-vars=PROJECT_ID=$PROJECT_ID,LOCATION=$_REGION'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/shadowtagai-core/vertex-vision:latest'
+
+substitutions:
+  _REGION: us-central1

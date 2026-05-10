@@ -1,0 +1,6 @@
+# finops-governor dependencies
+# Cloud Run function for autonomous cost monitoring
+functions-framework==3.*
+google-cloud-bigquery==3.*
+google-cloud-pubsub==2.*
+google-cloud-monitoring==2.*

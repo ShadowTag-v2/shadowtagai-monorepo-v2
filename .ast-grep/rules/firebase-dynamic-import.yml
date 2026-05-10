@@ -1,0 +1,25 @@
+id: enforce-firebase-dynamic-import
+message: "V25 Invariant Violation: Static Firebase imports damage Lighthouse P100 scores. Use dynamic imports via getAuthInstance() pattern."
+severity: error
+language: typescript
+rule:
+  any:
+    - pattern: "import { $FUNC } from 'firebase/auth'"
+    - pattern: "import { $FUNC } from 'firebase/firestore'"
+    - pattern: "import { $FUNC } from 'firebase/storage'"
+    - pattern: "import { $FUNC } from 'firebase/analytics'"
+    - pattern: 'import { $FUNC } from "firebase/auth"'
+    - pattern: 'import { $FUNC } from "firebase/firestore"'
+    - pattern: 'import { $FUNC } from "firebase/storage"'
+    - pattern: 'import { $FUNC } from "firebase/analytics"'
+ignores:
+  - "node_modules/**"
+  - "external_repos/**"
+  - "external_sdks/**"
+  - "archive/**"
+  - "_archive*/**"
+  - "packages/shared/auth_manager.ts"
+note: |
+  Firebase SDK tree-shaking requires dynamic imports for P100 Lighthouse.
+  Use the singleton pattern in packages/shared/auth_manager.ts instead.
+  See: apps/headfade/pwa/src/lib/firebase.ts for canonical implementation.

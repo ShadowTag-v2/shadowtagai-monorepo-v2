@@ -1,0 +1,65 @@
+# Google Cloud Build ignore file
+# Similar to .gitignore but for Cloud Build
+
+# Git
+||||||| merged common ancestors
+# Exclude large files and directories not needed for build
+venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks (development only)
+notebooks/
+*.ipynb_checkpoints
+
+# Documentation
+docs/
+*.md
+
+# Node modules
+node_modules/
+package-lock.json
+||||||| merged common ancestors
+node_modules/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+*.log
+logs/
+transcripts/
+*.md
+!README.md
+.claude/
+monitoring/
+docs/
+tests/
+*.tar.gz
+*.zip
+*.whl
+erik-hancock-llm-memory/
+voice_consensus/
+fast-api/
+services/
+infrastructure/
+nightly_intel_pipeline/
+deployment/

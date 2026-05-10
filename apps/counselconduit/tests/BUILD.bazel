@@ -1,0 +1,47 @@
+# BUILD.bazel — apps/counselconduit/tests
+# Phase 7: Hermetic test deps via pip.parse — pytest available in sandbox
+# Owner: quality
+
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("@pip_deps//:requirements.bzl", "requirement")
+
+package(default_visibility = ["//apps/counselconduit:__subpackages__"])
+
+# Shared test utilities (conftest, fixtures)
+py_library(
+    name = "test_lib",
+    srcs = glob(
+        ["conftest.py", "fixtures/**/*.py"],
+        allow_empty = True,
+    ),
+    deps = [
+        "//apps/counselconduit",
+        "//apps/counselconduit/api",
+        "//apps/counselconduit/services",
+        "//apps/counselconduit/models",
+        requirement("pytest"),
+        requirement("pytest-asyncio"),
+    ],
+)
+
+# Unit tests — each test file is an independent target
+[py_test(
+    name = src.replace(".py", "").replace("/", "_"),
+    srcs = [src],
+    deps = [
+        ":test_lib",
+        "//apps/counselconduit",
+        "//apps/counselconduit/agents",
+        "//apps/counselconduit/api",
+        "//apps/counselconduit/services",
+        "//apps/counselconduit/models",
+        requirement("pytest"),
+        requirement("pytest-asyncio"),
+        requirement("httpx"),
+    ],
+    size = "small",
+    timeout = "short",
+) for src in glob(
+    ["test_*.py"],
+    exclude = ["conftest.py"],
+)]

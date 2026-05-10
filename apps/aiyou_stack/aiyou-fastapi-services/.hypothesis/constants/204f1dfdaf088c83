@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/cor_orchestrator.py
+# hypothesis_version: 6.151.5
+
+[0.0005, 0.02, 0.05, 0.3, 0.5, 0.6, 0.9, 0.95, 5.0, 25.0, 60.0, 90.0, 100.0, 'APPROVED', 'ConcurrentExecutor', 'ConcurrentResult', 'CorOrchestrator', 'ExecutionContext', 'LOW', 'OrchestratorMemory', 'PipelineStage', 'SequentialPipeline', 'Tool', 'ToolRegistry', '__main__', 'cor_orchestrator', 'decision', 'example request', 'example_usage', 'executors', 'jr_engine_scan', 'judge_six', 'judge_six_validation', 'memory', 'name', 'pipelines', 'req_001', 'request', 'risk_level', 'semantic_score', 'tools', 'user_query']

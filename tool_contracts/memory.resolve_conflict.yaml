@@ -1,0 +1,9 @@
+# tool_contracts/memory.resolve_conflict.yaml
+tool_id: "memory.resolve_conflict"
+description: "Governs the memory.resolve_conflict operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/memory_resolve_conflict.jsonl"
+reuse_queries: []

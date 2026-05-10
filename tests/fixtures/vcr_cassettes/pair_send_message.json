@@ -1,0 +1,30 @@
+[
+  {
+    "request": {
+      "method": "create",
+      "input": "Session started. Ready to collaborate."
+    },
+    "response": {
+      "id": "interaction-vcr-start",
+      "text": "Ready!",
+      "usage": {
+        "total_tokens": 20
+      }
+    },
+    "timestamp": 1777900000.0
+  },
+  {
+    "request": {
+      "method": "create",
+      "input": "Refactor this function for clarity."
+    },
+    "response": {
+      "id": "interaction-vcr-002",
+      "text": "Here's the refactored version:\n```python\ndef clean_fn():\n    pass\n```",
+      "usage": {
+        "total_tokens": 85
+      }
+    },
+    "timestamp": 1777900001.0
+  }
+]

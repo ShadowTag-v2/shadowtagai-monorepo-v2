@@ -1,0 +1,5 @@
+filegroup(
+    name = "helm_charts",
+    srcs = glob(["**/*"]),
+    visibility = ["//visibility:public"],
+)

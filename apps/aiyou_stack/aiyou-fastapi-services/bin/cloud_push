@@ -1,0 +1,34 @@
+#!/bin/bash
+# CLOUD PUSH: Sovereign Auto-Sync
+# Usage: ./bin/cloud_push
+set -e
+
+echo "☁️  Initiating Cloud Push..."
+
+# 1. State Guard (Prevent committing active Terraform locks)
+# The .gitignore should handle this, but we double-check.
+if [ -f "infra/landing_pad/.terraform.lock.hcl" ]; then
+    echo "🔒 Terraform Lock detected. Proceeding (State is ignored via .gitignore)..."
+fi
+
+# 2. Add All Changes
+echo "⚙️  Tuning Git HTTP Buffer (Anti-Timeout)..."
+git config http.postBuffer 524288000
+git config http.lowSpeedLimit 0
+git config http.lowSpeedTime 999999
+
+git add .
+
+# 3. Commit with Timestamp
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+git commit -m "Cloud Push: Auto-Sync @ $TIMESTAMP" || echo "⚠️  Nothing to commit, proceeding to push."
+
+# 4. Pull Rebase (Harmonize with Remote)
+echo "⬇️  Pulling latest from Origin..."
+git pull origin main --rebase
+
+# 5. Push to Sovereign Cloud
+echo "⬆️  Pushing to Origin..."
+git push origin main
+
+echo "✅ Cloud Push Complete. Repository is synced."

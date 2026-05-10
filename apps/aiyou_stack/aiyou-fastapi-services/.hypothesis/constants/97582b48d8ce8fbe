@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/api/eventarc.py
+# hypothesis_version: 6.151.5
+
+['/', '/api/v1/eventarc', '/webhook', 'CLEARED_FOR_SWARM', 'TEMPORAL_HOST', 'error', 'eventarc', 'fieldPaths', 'fields', 'localhost:7233', 'message', 'name', 'omega-swarm-queue', 'received', 'status', 'stringValue', 'updateMask', 'value']

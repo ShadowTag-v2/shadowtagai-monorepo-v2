@@ -1,0 +1,57 @@
+name: WebPageTest Performance CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/kovelai/**'
+      - 'apps/counselconduit/static/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+
+concurrency:
+  group: webpagetest-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  webpagetest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        site:
+          - url: https://kovelai.web.app
+            name: kovelai
+          - url: https://shadowtagai.web.app
+            name: shadowtagai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run WebPageTest
+        id: wpt
+        uses: nicholasrobinson/webpagetest-github-action@v2
+        with:
+          url: ${{ matrix.site.url }}
+          budget: '{"median":{"firstView":{"SpeedIndex":4000,"LCP":2500,"TBT":300,"CLS":0.1}}}'
+          wptOptions: '{"location":"Dulles:Chrome","connectivity":"4G","firstViewOnly":true,"runs":3}'
+        env:
+          WEBPAGETEST_API_KEY: ${{ secrets.WEBPAGETEST_API_KEY }}
+        continue-on-error: true
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const result = `${{ steps.wpt.outputs.result }}`;
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## WebPageTest Results — ${{ matrix.site.name }}\n\n${result}`
+            });

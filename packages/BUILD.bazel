@@ -1,0 +1,4 @@
+# BUILD.bazel — packages/
+# Intermediate package boundary — prevents leaking visibility upward.
+
+package(default_visibility = ["//visibility:private"])

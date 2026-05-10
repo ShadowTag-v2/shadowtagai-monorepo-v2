@@ -1,0 +1,429 @@
+#!/usr/bin/env python3
+"""
+Antigravity Orchestrator - Cloud Run Service (ATP 3-20.96 Aligned)
+
+The Central Brain that orchestrates all LLMs with Kosmos Cavalry Squadron.
+
+Pipeline (5,590 agents total):
+    Gemini 3 Pro + Kosmos (430) → Perplexity + Kosmos (430)
+    → SuperGrok + Kosmos (430) → 10× Gemini Code Assist + Kosmos (4,300)
+    → CodePMCS → GitHub → Cloud Run
+
+ATP 3-20.96 Cavalry Squadron per Kosmos (430 agents):
+    - HHT (115): Command(10) + S-1(10) + S-2(20) + S-3(20) + S-4(10) + S-6(15) + Medical(10) + FSE(15) + TACP(5)
+    - RECON A/B/C (180): Zone(60) + Area(60) + Route/Force(60)
+    - SURV (60): UAS(30) + LRAS3(30)
+    - MFRC (60): Screen(20) + Guard(20) + Cover(20)
+    - Mortar (15): Indirect fires
+
+Endpoints:
+    POST /pipeline     - Run full pipeline
+    POST /intake       - Gemini 3 Pro atomization only
+    POST /research     - Perplexity + SuperGrok research
+    POST /execute      - 10× Gemini Code Assist generation
+    POST /validate     - CodePMCS scan
+    POST /deploy       - GitHub + Cloud Build
+    GET  /health       - Health check
+    GET  /status       - Pipeline status
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# Add project root to path
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
+import asyncio
+import uvicorn
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Optional, List, Dict, Any
+from datetime import datetime
+import uuid
+
+# Import Antigravity modules
+from antigravity import (
+    AntigravityPipeline,
+    GeminiIntake,
+    ResearchChain,
+    GeminiCodeAssistPool,
+    create_execution_pool,
+    CodePMCSClient,
+    DeployManager
+)
+
+# ============================================================================
+# App Configuration
+# ============================================================================
+
+app = FastAPI(
+    title="Antigravity Orchestrator",
+    description="The Central Brain - Orchestrates all LLMs with ATP 3-20.96 Kosmos Cavalry Squadron (5,590 agents)",
+    version="2.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ============================================================================
+# Request/Response Models
+# ============================================================================
+
+class PipelineRequest(BaseModel):
+    """Full pipeline request"""
+    task: str
+    auto_deploy: bool = False
+    jura_tier: str = "FLASH"  # FREE, FLASH, PRO
+
+class IntakeRequest(BaseModel):
+    """Gemini intake request"""
+    input: str
+
+class ResearchRequest(BaseModel):
+    """Research chain request"""
+    atoms: List[Dict[str, Any]]
+
+class ExecuteRequest(BaseModel):
+    """Gemini Code Assist execution request"""
+    atoms: List[Dict[str, Any]]
+
+class ValidateRequest(BaseModel):
+    """CodePMCS validation request"""
+    code: str
+    language: str = "python"
+
+class DeployRequest(BaseModel):
+    """Deploy request"""
+    code_items: List[Dict[str, Any]]
+    session_id: str
+    auto_merge: bool = False
+
+class StatusResponse(BaseModel):
+    """Status response"""
+    status: str
+    agents: int
+    services: Dict[str, bool]
+    version: str
+
+# ============================================================================
+# Service Initialization
+# ============================================================================
+
+def get_pipeline() -> AntigravityPipeline:
+    """Create pipeline with environment variables"""
+    return AntigravityPipeline(
+        gemini_api_key=os.getenv("GEMINI_API_KEY", ""),
+        perplexity_api_key=os.getenv("PERPLEXITY_API_KEY", ""),
+        grok_api_key=os.getenv("GROK_API_KEY", ""),
+        anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+        github_token=os.getenv("GITHUB_TOKEN", ""),
+        n-autoresearch/Kosmos/BioAgentss_url=os.getenv(
+            "n-autoresearch/Kosmos/BioAgentsS_URL",
+            "https://n-autoresearch/Kosmos/BioAgentss-server-215390634092.us-central1.run.app"
+        ),
+        codepmcs_url=os.getenv("CODEPMCS_URL")
+    )
+
+# Track running sessions
+active_sessions: Dict[str, Dict[str, Any]] = {}
+
+# ============================================================================
+# Endpoints
+# ============================================================================
+
+@app.get("/health")
+async def health():
+    """Health check endpoint"""
+    return {
+        "status": "ok",
+        "service": "antigravity-orchestrator",
+        "timestamp": datetime.utcnow().isoformat(),
+        "agents": 5590,  # Total: 430 × 13 Kosmos Cavalry (ATP 3-20.96)
+        "pipeline": "Gemini+Kosmos→Perplexity+Kosmos→Grok+Kosmos→10×GeminiCode+Kosmos→CodePMCS→Deploy",
+        "atp_reference": "ATP 3-20.96 Cavalry Squadron"
+    }
+
+@app.get("/status", response_model=StatusResponse)
+async def status():
+    """Get detailed service status (ATP 3-20.96 aligned)"""
+    # All Kosmos consensus is embedded - no separate service check needed
+    gemini_ok = bool(os.getenv("GEMINI_API_KEY"))
+
+    return StatusResponse(
+        status="operational" if gemini_ok else "degraded",
+        agents=5590,  # 430 × 13 Kosmos Cavalry
+        services={
+            "gemini": gemini_ok,
+            "perplexity": bool(os.getenv("PERPLEXITY_API_KEY")),
+            "grok": bool(os.getenv("GROK_API_KEY")),
+            "github": bool(os.getenv("GITHUB_TOKEN")),
+            "codepmcs": bool(os.getenv("CODEPMCS_URL")),
+            "kosmos_cavalry": True  # Embedded consensus per stage
+        },
+        version="2.0.0"
+    )
+
+@app.post("/pipeline")
+async def run_pipeline(request: PipelineRequest, background_tasks: BackgroundTasks):
+    """
+    Run the full Antigravity pipeline with ATP 3-20.96 Kosmos Cavalry.
+
+    Flow (5,590 agents total):
+    1. Gemini 3 Pro + Kosmos (430 agents) atomizes
+    2. Perplexity + Kosmos (430 agents) research
+    3. SuperGrok + Kosmos (430 agents) research
+    4. 10× Gemini Code Assist + Kosmos (4,300 agents) generates
+    5. CodePMCS validates
+    6. Deploy to GitHub → Cloud Run
+
+    Consensus is EMBEDDED per stage - no separate voting step.
+    """
+    session_id = str(uuid.uuid4())
+
+    try:
+        pipeline = get_pipeline()
+        pipeline.session_id = session_id
+
+        # Track session
+        active_sessions[session_id] = {
+            "status": "running",
+            "started": datetime.utcnow().isoformat(),
+            "task": request.task[:100]
+        }
+
+        # Run pipeline
+        result = await pipeline.run(
+            task=request.task,
+            auto_deploy=request.auto_deploy
+        )
+
+        # Update session
+        active_sessions[session_id]["status"] = "completed" if result.success else "failed"
+        active_sessions[session_id]["completed"] = datetime.utcnow().isoformat()
+
+        return {
+            "session_id": session_id,
+            "success": result.success,
+            "atoms_processed": result.atoms_processed,
+            "code_generated": len(result.code_generated),
+            "consensus_approved": sum(1 for r in result.consensus_results if r.get("approved")),
+            "deployment": result.deployment,
+            "errors": result.errors
+        }
+
+    except Exception as e:
+        active_sessions[session_id]["status"] = "error"
+        active_sessions[session_id]["error"] = str(e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/intake")
+async def intake(request: IntakeRequest):
+    """
+    Step 1: Gemini 3 Pro atomization (2M context).
+
+    Breaks input into atomic tasks with:
+    - Tests for each atom
+    - Risk classification
+    - JURA tier assignment
+    """
+    try:
+        intake_service = GeminiIntake(os.getenv("GEMINI_API_KEY"))
+        atoms = await intake_service.atomize(request.input)
+
+        return {
+            "success": True,
+            "atoms": [
+                {
+                    "id": a.id,
+                    "content": a.content,
+                    "risk_level": a.risk_level.value,
+                    "jura_tier": a.jura_tier.value,
+                    "tests": a.tests
+                }
+                for a in atoms
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/research")
+async def research(request: ResearchRequest):
+    """
+    Step 2: Perplexity → SuperGrok research chain.
+
+    Each LLM explains reasoning to the next.
+    """
+    try:
+        from antigravity.intake import Atom, RiskLevel, JuraTier
+
+        # Convert dicts to Atom objects
+        atoms = [
+            Atom(
+                id=a["id"],
+                content=a["content"],
+                risk_level=RiskLevel[a.get("risk_level", "MED")],
+                jura_tier=JuraTier[a.get("jura_tier", "FLASH")],
+                tests=a.get("tests", []),
+                reasoning_chain=a.get("reasoning_chain", [])
+            )
+            for a in request.atoms
+        ]
+
+        chain = ResearchChain(
+            os.getenv("PERPLEXITY_API_KEY"),
+            os.getenv("GROK_API_KEY")
+        )
+        enriched = await chain.enrich(atoms)
+
+        return {
+            "success": True,
+            "enriched_atoms": [
+                {
+                    "id": a.id,
+                    "content": a.content,
+                    "reasoning_chain": a.reasoning_chain
+                }
+                for a in enriched
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/execute")
+async def execute(request: ExecuteRequest):
+    """
+    Supercharge your workflow with AI-powered chat, code completion, code generation, and more.
+
+    Generates code for all atoms using 10 parallel instances.
+    Each instance has embedded Kosmos Cavalry for consensus.
+    """
+    try:
+        from antigravity.intake import Atom, RiskLevel, JuraTier
+
+        atoms = [
+            Atom(
+                id=a["id"],
+                content=a["content"],
+                risk_level=RiskLevel[a.get("risk_level", "MED")],
+                jura_tier=JuraTier[a.get("jura_tier", "FLASH")],
+                tests=a.get("tests", []),
+                reasoning_chain=a.get("reasoning_chain", [])
+            )
+            for a in request.atoms
+        ]
+
+        pool = create_execution_pool(pool_size=10)
+        results = await pool.generate_batch(atoms)
+
+        return {
+            "success": True,
+            "generated": results,
+            "kosmos_agents": 4300  # 430 × 10 instances
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/validate")
+async def validate(request: ValidateRequest):
+    """
+    Step 5: CodePMCS validation.
+
+    Scans code for issues and auto-fixes.
+    """
+    try:
+        client = CodePMCSClient(os.getenv("CODEPMCS_URL"))
+        result = await client.scan(request.code, request.language)
+
+        return {
+            "success": True,
+            "passed": result.get("passed", False),
+            "score": result.get("score", 0),
+            "issues": result.get("issues", []),
+            "fixes": result.get("fixes", [])
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/deploy")
+async def deploy(request: DeployRequest):
+    """
+    Step 6: Deploy to GitHub → Cloud Build → Cloud Run.
+
+    Creates PR, merges, triggers deployment.
+    """
+    try:
+        manager = DeployManager(os.getenv("GITHUB_TOKEN"))
+        result = await manager.deploy(
+            code_items=request.code_items,
+            session_id=request.session_id,
+            auto_merge=request.auto_merge
+        )
+
+        return {
+            "success": result.get("success", False),
+            "branch": result.get("branch"),
+            "pr_url": result.get("pr_url"),
+            "merged": result.get("merged", False),
+            "chat_log_url": result.get("chat_log_url")
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/sessions")
+async def list_sessions():
+    """List active and recent sessions"""
+    return {
+        "sessions": active_sessions
+    }
+
+@app.get("/sessions/{session_id}")
+async def get_session(session_id: str):
+    """Get session details"""
+    if session_id not in active_sessions:
+        raise HTTPException(status_code=404, detail="Session not found")
+    return active_sessions[session_id]
+
+# ============================================================================
+# Main Entry Point
+# ============================================================================
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", "8080"))
+
+    print(f"""
+╔══════════════════════════════════════════════════════════════════════════╗
+║         ANTIGRAVITY ORCHESTRATOR v2.0 - ATP 3-20.96 Cavalry Squadron      ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║  Pipeline: Gemini+Kosmos → Perplexity+Kosmos → Grok+Kosmos → 10×GeminiCode║
+║  Agents: 5,590 (430 × 13 Kosmos Cavalry - full doctrinal alignment)       ║
+║  Structure: HHT(115) + RECON(180) + SURV(60) + MFRC(60) + Mortar(15)     ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║  Endpoints:                                                              ║
+║    POST /pipeline   - Full pipeline (5,590 agents)                       ║
+║    POST /intake     - Gemini 3 Pro + Kosmos (430 agents)               ║
+║    POST /research   - Perplexity + Grok + Kosmos (860 agents)            ║
+║    POST /execute    - 10× Gemini Code Assist + Kosmos (4,300 agents)     ║
+║    POST /validate   - CodePMCS scan                                      ║
+║    POST /deploy     - GitHub → Cloud Run                                 ║
+║    GET  /health     - Health check                                       ║
+╚══════════════════════════════════════════════════════════════════════════╝
+    Starting on port {port}...
+    """)
+
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=port,
+        log_level="info"
+    )

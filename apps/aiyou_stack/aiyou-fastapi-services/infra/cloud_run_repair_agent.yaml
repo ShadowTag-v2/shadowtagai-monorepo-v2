@@ -1,0 +1,28 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: sovereign-repair-agent
+  annotations:
+    run.googleapis.com/ingress: internal-and-cloud-load-balancing
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "5"
+    spec:
+      serviceAccountName: sovereign-agent-sa
+      containers:
+      - image: us-central1-docker.pkg.dev/shadowtag-omega-v2/repository/n-autoresearch/Kosmos/BioAgents-server:latest
+        env:
+        - name: MODE
+          value: "REPAIR_AGENT" # Activate only repair loop logic
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github-pat
+              key: latest
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "2Gi"

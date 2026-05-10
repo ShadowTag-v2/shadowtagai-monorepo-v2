@@ -1,0 +1,26 @@
+# .memory/config.yaml — Memory System Configuration
+version: 1
+
+retention:
+  events_max_age_days: 365
+  atom_review_interval_days: 30
+
+categories:
+  - decisions
+  - constraints
+  - procedures
+  - facts
+  - conflicts
+  - open_questions
+
+views:
+  handoff: views/HANDOFF.md
+  decisions: views/DECISIONS.md
+  constraints: views/CONSTRAINTS.md
+  open_questions: views/OPEN_QUESTIONS.md
+
+promotion:
+  from_research: knowledge/vault → .memory/atoms
+  from_evidence: .agent/evidence → .memory/atoms
+  requires_human: false
+  requires_review: true

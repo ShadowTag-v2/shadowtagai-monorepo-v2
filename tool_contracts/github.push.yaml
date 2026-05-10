@@ -1,0 +1,45 @@
+name: github.push
+risk: high
+
+description: Push commits to GitHub using short-lived GitHub App installation tokens only. Implements Two-Lane Upload Doctrine and preflight gates.
+
+auth:
+  required_method: github_app_installation_token
+  local_command: python tools/scripts/auth_github_app.py --push
+  token_ttl_seconds: 3600
+  note: Token renewal prevents expiration failures; it does not bypass file-size, repository-health, or LFS budget limits.
+
+requires:
+  - clean_or_intentionally_dirty_git_status
+  - remote_head_verified
+  - branch_confirmed
+  - secret_scan_passed
+  - large_file_scan_passed
+  - lfs_status_checked
+  - buildifier_check_passed_if_bazel_files_changed
+  - lint_or_typecheck_passed_for_changed_zones
+
+blocks:
+  - tracked_file_over_95mb
+  - raw_secret_file
+  - client_secret_json
+  - pem_key
+  - env_file
+  - lfs_budget_exceeded
+  - unreviewed_history_rewrite
+  - force_push_without_explicit_human_approval
+
+evidence:
+  - git_status_before
+  - git_log_origin_delta_before
+  - changed_files
+  - secret_scan_report
+  - large_file_report
+  - lfs_report
+  - remote_head_before
+  - push_result
+  - remote_head_after
+
+rollback:
+  - revert_commit
+  - reset_branch_to_previous_remote_head

@@ -1,0 +1,20 @@
+MEMORY STATUS
+MEMORY LOCKED
+
+CANONICAL ROOT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
+
+CANONICAL PROJECT
+shadowtag-omega-v4
+
+CANONICAL MODEL FAMILY
+gemini-3.1-flash-lite-preview
+
+PRODUCT PATH
+apps/counselconduit
+
+LAB PATH
+labs/uphillsnowball
+
+CANONICAL MCP
+antigravity-mcp-config.json

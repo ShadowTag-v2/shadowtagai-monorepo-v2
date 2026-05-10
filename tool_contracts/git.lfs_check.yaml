@@ -1,0 +1,9 @@
+# tool_contracts/git.lfs_check.yaml
+tool_id: "git.lfs_check"
+description: "Governs the git.lfs_check operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/git_lfs_check.jsonl"
+reuse_queries: []

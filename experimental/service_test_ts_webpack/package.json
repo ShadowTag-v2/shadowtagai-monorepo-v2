@@ -1,0 +1,22 @@
+{
+  "name": "service_test_ts_webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf ./dist tsconfig.tsbuildinfo",
+    "tsc": "tsc",
+    "webpack": "webpack",
+    "build": "npm run clean && tsc && webpack",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.0"
+  }
+}

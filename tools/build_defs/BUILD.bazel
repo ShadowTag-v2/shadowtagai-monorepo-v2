@@ -1,0 +1,37 @@
+# BUILD.bazel — tools/build_defs/
+# Bazel wrapper scripts for existing linting and validation commands.
+# Phase 2: Wrap existing tools before making them hermetic.
+
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+
+package(default_visibility = ["//visibility:public"])
+
+sh_test(
+    name = "ruff_check",
+    srcs = ["ruff_check.sh"],
+    tags = ["lint"],
+)
+
+sh_test(
+    name = "biome_check",
+    srcs = ["biome_check.sh"],
+    tags = ["lint"],
+)
+
+sh_test(
+    name = "dead_code_audit",
+    srcs = ["dead_code_audit.sh"],
+    tags = ["lint"],
+)
+
+sh_test(
+    name = "buildifier_check",
+    srcs = ["buildifier_check.sh"],
+    tags = ["lint"],
+)
+
+sh_test(
+    name = "bloat_gate",
+    srcs = ["bloat_gate.sh"],
+    tags = ["lint"],
+)

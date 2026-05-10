@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+google-genai
+google-cloud-firestore
+google-cloud-bigquery
+mcp
+python-multipart

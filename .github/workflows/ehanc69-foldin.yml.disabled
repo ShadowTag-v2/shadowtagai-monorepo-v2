@@ -1,0 +1,139 @@
+# ehanc69 → Monorepo-Uphillsnowball fold-in pipeline
+# Runs entirely on GitHub infrastructure. Zero local Mac involvement.
+# Uses two GitHub App tokens: ehanc69 (read source) + ShadowTag-v2 (write target).
+#
+# One-time secret setup (run on Mac once):
+#   gh secret set SHADOWTAG_APP_PRIVATE_KEY --repo ShadowTag-v2/Monorepo-Uphillsnowball \
+#     < ~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem
+#   gh secret set EHANC69_APP_PRIVATE_KEY --repo ShadowTag-v2/Monorepo-Uphillsnowball \
+#     < ~/Downloads/antigravity-manager.2026-03-13.private-key.pem
+#   gh variable set SHADOWTAG_APP_ID --body "3018200" --repo ShadowTag-v2/Monorepo-Uphillsnowball
+#   gh variable set EHANC69_APP_ID --body "3018080" --repo ShadowTag-v2/Monorepo-Uphillsnowball
+#
+# Trigger:
+#   gh workflow run ehanc69-foldin.yml --repo ShadowTag-v2/Monorepo-Uphillsnowball -f dry_run=true
+#   gh workflow run ehanc69-foldin.yml --repo ShadowTag-v2/Monorepo-Uphillsnowball -f dry_run=false
+
+name: ehanc69 Fold-In
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run — clone and list but do NOT merge or push"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ehanc69-foldin
+  cancel-in-progress: false
+
+jobs:
+  fold-in:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # ── 1. Generate ehanc69 App token (read source repos) ──
+      - name: Generate ehanc69 token
+        id: ehanc69-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.EHANC69_APP_ID }}
+          private-key: ${{ secrets.EHANC69_APP_PRIVATE_KEY }}
+
+      # ── 2. Generate ShadowTag-v2 App token (push to monorepo) ──
+      - name: Generate ShadowTag-v2 token
+        id: shadowtag-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.SHADOWTAG_APP_ID }}
+          private-key: ${{ secrets.SHADOWTAG_APP_PRIVATE_KEY }}
+
+      # ── 3. Checkout monorepo with push token ──
+      - name: Checkout monorepo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.shadowtag-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "antigravity-shadowtag-manager[bot]"
+          git config user.email "antigravity-shadowtag-manager[bot]@users.noreply.github.com"
+
+      # ── 4. Discover all non-archived ehanc69 repos via API ──
+      - name: Discover ehanc69 repos
+        id: discover
+        env:
+          GH_TOKEN: ${{ steps.ehanc69-token.outputs.token }}
+        run: |
+          echo "Fetching all non-archived repos from ehanc69..."
+          REPOS=$(gh api --paginate "/installation/repositories" \
+            -q '.repositories[] | select(.archived == false) | .name' \
+            | sort)
+          COUNT=$(echo "$REPOS" | wc -l | tr -d ' ')
+          echo "Found $COUNT repos"
+          echo "$REPOS"
+          # Save to file for next step
+          echo "$REPOS" > /tmp/ehanc69_repos.txt
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      # ── 5. Clone all ehanc69 repos into staging dir ──
+      - name: Clone ehanc69 repos
+        env:
+          EHANC69_TOKEN: ${{ steps.ehanc69-token.outputs.token }}
+        run: |
+          mkdir -p third_party/ehanc69-fold-staging
+          SUCCESS=0
+          FAIL=0
+          while IFS= read -r repo; do
+            [ -z "$repo" ] && continue
+            echo -n "Cloning ehanc69/$repo... "
+            if git clone --depth 1 --single-branch \
+              "https://x-access-token:${EHANC69_TOKEN}@github.com/ehanc69/${repo}.git" \
+              "third_party/ehanc69-fold-staging/${repo}" 2>/dev/null; then
+              echo "OK"
+              SUCCESS=$((SUCCESS + 1))
+            else
+              echo "FAIL"
+              FAIL=$((FAIL + 1))
+            fi
+          done < /tmp/ehanc69_repos.txt
+          echo "=== Clone complete: $SUCCESS ok, $FAIL fail ==="
+
+      # ── 6. Run mass subtree merge ──
+      - name: Run mass subtree merge
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          python3 scripts/mass_subtree_merge.py
+
+      # ── 7. Push if not dry run ──
+      - name: Push merged result
+        if: inputs.dry_run == 'false'
+        env:
+          GITHUB_TOKEN: ${{ steps.shadowtag-token.outputs.token }}
+        run: |
+          # Remove cloned staging dirs before push (they are NOT committed)
+          rm -rf third_party/ehanc69-fold-staging
+          git push origin main
+
+      # ── 8. Summary ──
+      - name: Generate summary
+        run: |
+          echo "## ehanc69 Fold-In Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Repos discovered**: ${{ steps.discover.outputs.count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry run**: ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: $(git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> ⚠️ **DRY RUN** — no changes were pushed. Re-run with dry_run=false to apply." >> $GITHUB_STEP_SUMMARY
+          fi

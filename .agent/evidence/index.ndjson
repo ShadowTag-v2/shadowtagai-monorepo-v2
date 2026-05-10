@@ -1,0 +1,5 @@
+{"event": "repo.oracle.query", "query": "ToolGateway", "matches": 14, "timestamp": "2026-04-27T23:15:46.191884+00:00"}
+{"event":"skills.registry.refresh","timestamp":"2026-04-28T23:04:37.957160+00:00","total_active":273,"total_archived":37,"overlaps":2}
+{"event":"skills.registry.refresh","timestamp":"2026-04-28T23:04:56.358136+00:00","total_active":273,"total_archived":39,"overlaps":0}
+{"event":"skills.registry.refresh","timestamp":"2026-04-28T23:06:00.300868+00:00","total_active":273,"total_archived":39,"overlaps":0}
+{"event":"skills.registry.refresh","timestamp":"2026-04-28T23:39:50.889120+00:00","total_active":273,"total_archived":39,"overlaps":0}

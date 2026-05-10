@@ -1,0 +1,77 @@
+{
+  "name": "research-agent",
+  "version": "1.0.0",
+  "description": "Research agent for comprehensive information gathering and synthesis",
+  "archetype": "research",
+  "capabilities": {
+    "search": {
+      "enabled": true,
+      "sources": ["web", "academic", "technical"],
+      "maxDepth": 3
+    },
+    "synthesis": {
+      "enabled": true,
+      "mode": "comprehensive",
+      "citationStyle": "APA"
+    },
+    "analysis": {
+      "enabled": true,
+      "depth": "deep"
+    }
+  },
+  "tools": [
+    {
+      "name": "search",
+      "path": "./tools/search.js",
+      "config": {
+        "timeout": 30000,
+        "maxResults": 20
+      }
+    },
+    {
+      "name": "synthesis",
+      "path": "./tools/synthesis.js",
+      "config": {
+        "mode": "comprehensive"
+      }
+    },
+    {
+      "name": "citation",
+      "path": "./tools/citation.js",
+      "config": {
+        "style": "APA"
+      }
+    }
+  ],
+  "personas": {
+    "academic": {
+      "path": "./personas/academic.md",
+      "systemPrompt": "You are an academic research specialist focused on rigorous analysis and citation.",
+      "temperature": 0.3
+    },
+    "business": {
+      "path": "./personas/business.md",
+      "systemPrompt": "You are a business research analyst focused on actionable insights and ROI.",
+      "temperature": 0.5
+    },
+    "technical": {
+      "path": "./personas/technical.md",
+      "systemPrompt": "You are a technical research specialist focused on deep technical understanding.",
+      "temperature": 0.4
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "validation",
+        "command": "validate-sources.sh",
+        "enabled": true
+      }
+    ]
+  },
+  "environment": {
+    "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/research",
+    "RESEARCH_MODE": "comprehensive",
+    "MAX_DEPTH": "3"
+  }
+}

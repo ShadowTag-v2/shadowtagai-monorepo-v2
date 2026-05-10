@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/core/multi_provider.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.075, 0.3, 0.7, 0.8, 3.0, 4.0, 15.0, 75.0, 1000, 4096, 8192, 1000000, 'ANTHROPIC_API_KEY', 'Anthropic', 'GOOGLE_API_KEY', 'Gemini', 'anthropic', 'auto', 'complete', 'content', 'function_calling', 'gemini', 'general', 'input', 'max_output_tokens', 'output', 'reasoning', 'role', 'temperature', 'usage_metadata', 'user']

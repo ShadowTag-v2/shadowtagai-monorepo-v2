@@ -1,0 +1,9 @@
+# tool_contracts/git.history_rewrite.yaml
+tool_id: "git.history_rewrite"
+description: "Governs the git.history_rewrite operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/git_history_rewrite.jsonl"
+reuse_queries: []

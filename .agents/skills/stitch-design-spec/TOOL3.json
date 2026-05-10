@@ -1,0 +1,15 @@
+{
+  "name": "reverse_engineer_design_spec",
+  "description": "Scans an existing Next.js/React repository, extracts hardcoded Tailwind classes, CSS variables, and colors, and synthesizes a master design.md file.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "source_directories": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Directories to scan (e.g., ['src/app', 'src/components'])."
+      }
+    },
+    "required": ["source_directories"]
+  }
+}

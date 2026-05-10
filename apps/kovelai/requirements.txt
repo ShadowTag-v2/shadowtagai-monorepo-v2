@@ -1,0 +1,25 @@
+# KovelAI — Production Dependencies
+# Pinned for reproducible builds. Audit before upgrading.
+
+# Core Framework
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+pydantic==2.11.3
+
+# Stripe Connect (payment routing)
+stripe==12.1.0
+
+# HTTP client (LLM API calls, webhook delivery)
+httpx==0.28.1
+
+# File upload / form parsing
+python-multipart==0.0.20
+
+# Cryptographic signing (KovelShield, session tokens)
+cryptography==44.0.3
+
+# Google AI SDK (Gemini model calls)
+google-genai==1.14.0
+
+# Structured logging
+python-json-logger==3.3.0

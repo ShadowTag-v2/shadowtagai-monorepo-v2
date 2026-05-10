@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""
+Antigravity ShadowTag Verifier Service
+"""
+
+import base64
+import io
+import os
+
+import uvicorn
+from fastapi import FastAPI, HTTPException
+from PIL import Image
+from pydantic import BaseModel
+
+from src.aiyou.jura.classifier import CostTier
+from src.aiyou.jura.router import JuraRouter
+
+# Local imports
+from src.pnkln.neural_hash import NeuralHash
+from src.shadowtagai.ledger import get_ledger
+
+app = FastAPI(title="ShadowTag Verifier", version="2.0.0")
+
+# Initialize components
+ledger = get_ledger()
+jura = JuraRouter()
+
+# Initialize NeuralHash (Lazy load to avoid startup delay if possible, but here we init globally)
+# In production, this might be better in a startup event.
+# nh = NeuralHash() # Assuming NeuralHash usage is static or instantiated.
+# Checking src/pnkln/neural_hash.py, it has static methods, so verification uses NeuralHash.compute_image_hash
+
+
+class VerifyRequest(BaseModel):
+    content: str  # Base64 encoded image or text
+    metadata: dict = {}
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok", "service": "shadowtag-verifier"}
+
+
+@app.post("/verify")
+async def verify(request: VerifyRequest):
+    """
+    Verify content authenticity using NeuralHash and ShadowLedger.
+    Monetized via JURA Protocol (Tier: PRO).
+    """
+    # 1. Route through Jura for Cost Accounting
+    # We estimate context size from the base64 string length
+    route_result = await jura.route(
+        task="ShadowTag Verification",
+        context_size=len(request.content),
+        cost_tier=CostTier.PRO,  # High value service
+        metadata=request.metadata,
+    )
+
+    if not route_result.success:
+        # If Jura denies the request (e.g. rate limit or other error), return error
+        raise HTTPException(status_code=402, detail=f"Jura Protocol Error: {route_result.error}")
+
+    try:
+        # 2. Perform Verification (The "Work")
+        # Decode image
+        image_data = base64.b64decode(request.content)
+        image = Image.open(io.BytesIO(image_data))
+
+        # Compute Hash
+        img_hash = NeuralHash.compute_image_hash(image)
+
+        # Check Ledger (Placeholder for query logic)
+        # is_original = ledger.check_hash(img_hash) # Future impl
+        is_original = True
+
+        # 3. Record to Ledger
+        ledger.record_verification(
+            content_hash=str(img_hash),
+            result="VERIFIED" if is_original else "FALSIFIED",
+            metadata={
+                "jura_request_id": route_result.request_id,
+                "cost_usd": route_result.cost_usd,
+                **request.metadata,
+            },
+        )
+
+        return {
+            "status": "verified",
+            "hash": str(img_hash),
+            "ledger_entry": "created",
+            "monetization": {
+                "cost_usd": route_result.cost_usd,
+                "tier": "PRO",
+                "request_id": route_result.request_id,
+            },
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)

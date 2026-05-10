@@ -1,0 +1,51 @@
+name: Antigravity Proxy CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+concurrency:
+  group: antigravity_ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-proxy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Skip on Dependabot PRs — GEMINI_API_KEY unavailable to fork-like actors.
+    if: github.actor != 'dependabot[bot]'
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build antigravity-proxy image
+        run: |
+          docker build -t antigravity-proxy:test ./antigravity-proxy
+
+      - name: Start services (including proxy)
+        run: |
+          docker-compose up -d ShadowTagAI-governance postgres redis antigravity-proxy
+          # Wait for proxy to be ready
+          for i in {1..10}; do
+            if curl -s -o /dev/null http://localhost:8080; then break; fi
+            sleep 3
+          done
+
+      - name: Run proxy integration test
+        run: |
+          chmod +x ./antigravity-proxy/scripts/test_proxy_ci.sh
+          ./antigravity-proxy/scripts/test_proxy_ci.sh
+
+      - name: Tear down services
+        if: always()
+        run: |
+          docker-compose down

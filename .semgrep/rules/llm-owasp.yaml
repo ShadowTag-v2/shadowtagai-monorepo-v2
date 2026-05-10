@@ -1,0 +1,159 @@
+rules:
+
+  # ── OWASP LLM01: Prompt Injection ─────────────────────────────────────────
+  - id: llm01-prompt-injection-f-string
+    patterns:
+      - pattern: |
+          f"...{$USER_INPUT}..."
+      - pattern-either:
+          - pattern-inside: |
+              def $FN(..., $USER_INPUT, ...):
+                  ...
+          - pattern-inside: |
+              async def $FN(..., $USER_INPUT, ...):
+                  ...
+    message: >
+      LLM01 Prompt Injection: user input '$USER_INPUT' interpolated directly
+      into an f-string prompt. Use shared.security.llm_guard.sanitize_for_prompt()
+      before including user content in any LLM prompt.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      owasp: LLM01
+      cor_rule: "Cor.Rule OWASP-LLM01"
+
+  - id: llm01-prompt-injection-format
+    pattern: |
+      "...".format(..., $USER_INPUT, ...)
+    message: >
+      LLM01: .format() with user input in prompt string. Use sanitize_for_prompt() first.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      owasp: LLM01
+
+  # ── OWASP LLM04: Model Denial of Service ──────────────────────────────────
+  - id: llm04-unbounded-llm-call
+    patterns:
+      - pattern-either:
+          - pattern: $CLIENT.generate_content(...)
+          - pattern: $CLIENT.chat(...)
+          - pattern: openai.ChatCompletion.create(...)
+          - pattern: anthropic.Anthropic().messages.create(...)
+      - pattern-not: |
+          await asyncio.wait_for($CLIENT.$METHOD(...), timeout=...)
+      - pattern-not-inside: |
+          async with asyncio.timeout(...):
+              ...
+    message: >
+      LLM04 Model DoS: LLM call without timeout. Wrap with
+      shared.security.llm_guard.llm_call() which enforces LLM_TIMEOUT_SECONDS
+      and daily token budget. Prevents dead spinners and runaway billing.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      owasp: LLM04
+      cor_rule: "Sinking Ship +1"
+
+  # ── OWASP LLM08: Excessive Agency ─────────────────────────────────────────
+  - id: llm08-subprocess-from-llm
+    patterns:
+      - pattern: subprocess.$FN($LLM_OUTPUT, ...)
+      - pattern-not: |
+          # human_approval
+          ...
+    message: >
+      LLM08 Excessive Agency: subprocess call with LLM-derived content.
+      LLM output must never be passed directly to subprocess without
+      validation and human_approval gate. Use swarm_router with human_approval=True.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      owasp: LLM08
+
+  - id: llm08-git-push-from-agent
+    patterns:
+      - pattern: subprocess.run(["git", "push", ...], ...)
+      - pattern-not-inside: |
+          if $HUMAN_APPROVAL:
+              ...
+    message: >
+      LLM08: git push inside agent code without human_approval guard.
+      This is an irreversible action. Require explicit human_approval=True
+      per swarm_router contract. (OWASP LLM08 / Sinking Ship Excessive Agency)
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      owasp: LLM08
+
+  # ── Cor.Rule: No hardcoded API keys ───────────────────────────────────────
+  - id: cor-no-hardcoded-secrets
+    patterns:
+      - pattern-either:
+          - pattern: $KEY = "sk-..."
+          - pattern: $KEY = "AIza..."
+          - pattern: $KEY = "ghp_..."
+          - pattern: api_key = "..."
+          - pattern: secret_key = "..."
+    message: >
+      Cor.Rule 3/4: Hardcoded secret detected. Use os.environ or
+      shared.config.settings.get_settings(). Secrets in code will be
+      found within 48 hours of push to any public repo.
+    languages: [python, javascript, typescript]
+    severity: ERROR
+    metadata:
+      category: security
+      cor_rule: "Cor.Rule 3 + 4"
+
+  # ── Cor.Rule: No wildcard CORS (Python) ───────────────────────────────────
+  - id: cor-no-wildcard-cors-fastapi
+    pattern: |
+      CORSMiddleware(..., allow_origins=["*"], ...)
+    message: >
+      Cor.Rule 12: CORS wildcard detected on FastAPI app.
+      Use settings.cors_allowed_origins from shared.config.settings.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cor_rule: "Cor.Rule 12"
+
+  # ── Cor.Rule: console.log in production client code ───────────────────────
+  - id: cor-no-console-log-client
+    patterns:
+      - pattern: console.log(...)
+      - pattern-not-inside: |
+          // SEC-DEBT: ...
+    message: >
+      Cor.Rule 11: console.log leaks internal logic and potentially PII to
+      devtools. Remove before shipping or use structured logger. If intentional:
+      add // SEC-DEBT: <reason> comment.
+    languages: [javascript, typescript]
+    severity: WARNING
+    metadata:
+      category: security
+      cor_rule: "Cor.Rule 11"
+
+  # ── ANE bridge: no unchecked malloc ───────────────────────────────────────
+  - id: ane-unchecked-malloc
+    pattern: |
+      $PTR = malloc(...);
+      ...
+      *$PTR = ...;
+    pattern-not: |
+      $PTR = malloc(...);
+      if ($PTR == NULL) { ... }
+      ...
+    message: >
+      ANE bridge: malloc return not checked before dereference.
+      M1 Max L2 constraint means OOM is real under load. Check for NULL.
+    languages: [c]
+    severity: ERROR
+    metadata:
+      category: security
+      cor_rule: "ANE Zero-CPU Doctrine"

@@ -1,0 +1,41 @@
+# Set the maximum line length to 100 characters
+line-length = 100
+
+# Assume Python 3.11+
+target-version = "py311"
+
+# Ignore these directories
+exclude = [
+    ".venv",
+    ".git",
+    "__pycache__",
+    "node_modules",
+    "alembic",
+]
+
+[lint]
+# -- Core Rules for AI Agents --
+select = ["E", "W", "F", "I", "UP", "B", "SIM"]
+
+# Ignore pedantic rules so agents can prototype smoothly
+# Aligned with root ruff.toml conventions — see ruff-debt-eradication SKILL.md
+ignore = [
+    "E501",  # Line too long
+    "E402",  # Module import not at top (intentional sys.path, conditional imports)
+    "E722",  # Bare except (intentional in many agent catch-all patterns)
+    "E741",  # Ambiguous variable name (math/ML variable conventions)
+    "B008",  # FastAPI Depends() issue
+    "F401",  # Unused imports
+    "F403",  # Wildcard imports (__init__.py re-exports)
+    "F405",  # Undefined from wildcard (paired with F403)
+    "F841",  # Unused variables
+    "SIM108", # If-else ternary style preference
+    "SIM112", # Uncapitalized environment variables (intentional naming)
+]
+
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

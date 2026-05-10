@@ -1,0 +1,35 @@
+# GCP IAM Service Account (create via gcloud, not kubectl)
+# This file documents the required IAM setup
+
+# Create service account:
+# gcloud iam service-accounts create gemini-ingestion-sa \
+#   --display-name="Gemini Ingestion Layer SA" \
+#   --project=pnkln-prod
+
+# Grant permissions:
+# gcloud projects add-iam-policy-binding pnkln-prod \
+#   --member="serviceAccount:gemini-ingestion-sa@pnkln-prod.iam.gserviceaccount.com" \
+#   --role="roles/storage.objectAdmin"  # For gs://pnkln-ingestion-daily/
+#
+# gcloud projects add-iam-policy-binding pnkln-prod \
+#   --member="serviceAccount:gemini-ingestion-sa@pnkln-prod.iam.gserviceaccount.com" \
+#   --role="roles/pubsub.publisher"  # For ingestion-complete topic
+#
+# gcloud projects add-iam-policy-binding pnkln-prod \
+#   --member="serviceAccount:gemini-ingestion-sa@pnkln-prod.iam.gserviceaccount.com" \
+#   --role="roles/aiplatform.user"  # For Vertex AI model access
+
+# Bind Kubernetes SA to GCP SA (Workload Identity):
+# gcloud iam service-accounts add-iam-policy-binding \
+#   gemini-ingestion-sa@pnkln-prod.iam.gserviceaccount.com \
+#   --role roles/iam.workloadIdentityUser \
+#   --member "serviceAccount:pnkln-prod.svc.id.goog[gke-training-system/gemini-ingestion-sa]"
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gemini-ingestion-sa
+  namespace: gke-training-system
+  annotations:
+    iam.gke.io/gcp-service-account: gemini-ingestion-sa@pnkln-prod.iam.gserviceaccount.com

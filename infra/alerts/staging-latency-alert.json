@@ -1,0 +1,27 @@
+{
+  "displayName": "CC-Staging: High Latency (p95 > 2s)",
+  "documentation": {
+    "content": "Staging p95 latency exceeds 2 seconds. Check Cloud Run metrics and instance count.",
+    "mimeType": "text/markdown"
+  },
+  "conditions": [
+    {
+      "displayName": "p95 latency > 2s on staging",
+      "conditionThreshold": {
+        "filter": "resource.type = \"cloud_run_revision\" AND resource.labels.service_name = \"counselconduit-staging\" AND metric.type = \"run.googleapis.com/request_latencies\"",
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 2000,
+        "duration": "300s",
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "perSeriesAligner": "ALIGN_PERCENTILE_95"
+          }
+        ]
+      }
+    }
+  ],
+  "combiner": "OR",
+  "notificationChannels": ["projects/shadowtag-omega-v4/notificationChannels/11292559663830648124"],
+  "enabled": true
+}

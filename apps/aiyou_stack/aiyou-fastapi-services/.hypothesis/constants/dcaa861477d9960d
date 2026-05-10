@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/base.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.1, 0.3, 0.4, 0.5, 0.6, 0.9, 1.0, 1.25, 2.5, 10.0, 300, 1000, 1500, 1000000, 'APPROVED', 'DENIED', 'EH', 'ERROR', 'ESCALATED', 'H', 'L', 'M', 'action', 'agent_id', 'cache_hit', 'cached_savings_usd', 'cached_tokens', 'cost_usd', 'input_tokens', 'iso8601', 'latency_ms', 'model', 'output_tokens', 'resource', 'ttft_ms']

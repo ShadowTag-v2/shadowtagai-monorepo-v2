@@ -1,0 +1,294 @@
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/ink/termio/osc.ts:454:  return process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands.ts:49:  process.env.USER_TYPE === 'ant' ? require('./commands/agents-platform/index.js').default : null;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands.ts:308:  ...(process.env.USER_TYPE === 'ant' && !process.env.IS_DEMO ? INTERNAL_ONLY_COMMANDS : []),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/WebFetchTool/utils.ts:387:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/EnterPlanModeTool/prompt.ts:163:  return process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/REPLTool/constants.ts:26:  return process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_ENTRYPOINT === 'cli';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/TaskStopTool/TaskStopTool.ts:40:  userFacingName: () => (process.env.USER_TYPE === 'ant' ? '' : 'Stop Task'),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/AgentTool/prompt.ts:268:    process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/AgentTool/runAgent.ts:342:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/AgentTool/built-in/exploreAgent.ts:78:  model: process.env.USER_TYPE === 'ant' ? 'inherit' : 'haiku',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/AgentTool/loadAgentsDir.ts:74:    isolation: (process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/AgentTool/loadAgentsDir.ts:532:      process.env.USER_TYPE === 'ant' ? ['worktree', 'remote'] : ['worktree'];
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/ToolSearchTool/prompt.ts:34:    process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/FileEditTool/prompt.ts:17:    process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/SkillTool.ts:151:    ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/SkillTool.ts:335:    if (feature('EXPERIMENTAL_SKILL_SEARCH') && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/SkillTool.ts:436:    if (feature('EXPERIMENTAL_SKILL_SEARCH') && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/SkillTool.ts:539:    if (feature('EXPERIMENTAL_SKILL_SEARCH') && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/SkillTool.ts:619:      ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/SkillTool.ts:945:    ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/prompt.ts:109:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/SkillTool/prompt.ts:130:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/ConfigTool/supportedSettings.ts:133:  ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/prompt.ts:43:    process.env.USER_TYPE === 'ant' && isUndercover() ? `${getUndercoverInstructions()}\n` : '';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/prompt.ts:48:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/shouldUseSandbox.ts:23:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/bashPermissions.ts:169:    const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/bashPermissions.ts:244:    const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/bashPermissions.ts:322:    const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/bashPermissions.ts:423: * These are only enabled when USER_TYPE === 'ant'.
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/bashPermissions.ts:579:      const isAntOnlySafe = process.env.USER_TYPE === 'ant' && ANT_ONLY_SAFE_ENV_VARS.has(varName);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools/BashTool/readOnlyValidation.ts:1183:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bootstrap/state.ts:391:    ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/keybindings/loadUserBindings.ts:8: * Anthropic employees (USER_TYPE === 'ant'). External users always
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeConfig.ts:19:  return (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_BRIDGE_OAUTH_TOKEN) || undefined;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeConfig.ts:24:  return (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_BRIDGE_BASE_URL) || undefined;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeUI.ts:216:    if (process.env.USER_TYPE === 'ant' && debugLogPath) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/sessionRunner.ts:255:      } else if (deps.verbose || process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeDebug.ts:78: * Only called when USER_TYPE === 'ant' — zero overhead in external builds.
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/replBridge.ts:311:  const api = process.env.USER_TYPE === 'ant' ? wrapApiForFaultInjection(rawApi) : rawApi;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/replBridge.ts:916:  if (process.env.USER_TYPE === 'ant' && process.platform !== 'win32') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/replBridge.ts:929:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/replBridge.ts:1488:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/initReplBridge.ts:433:    process.env.USER_TYPE === 'ant' && process.env.CLAUDE_BRIDGE_SESSION_INGRESS_URL
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeMain.ts:329:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeMain.ts:1049:          } else if (config.verbose || process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeMain.ts:2035:    process.env.USER_TYPE === 'ant' && process.env.CLAUDE_BRIDGE_SESSION_INGRESS_URL
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/bridge/bridgeMain.ts:2660:    process.env.USER_TYPE === 'ant' && process.env.CLAUDE_BRIDGE_SESSION_INGRESS_URL
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/oauth.ts:7:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/oauth.ts:114:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/betas.ts:25:  process.env.USER_TYPE === 'ant' ? 'cli-internal-2026-02-09' : '';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:176:    ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:196:    ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:209:    ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:214:    ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:367:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:396:    process.env.USER_TYPE === 'ant' ? null : `Your responses should be short and concise.`,
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:473:    ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:557:  // DCE: `process.env.USER_TYPE === 'ant'` is build-time --define. It MUST be
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:561:  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:598:  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:630:    process.env.USER_TYPE === 'ant' && isUndercover()
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:633:    process.env.USER_TYPE === 'ant' && isUndercover()
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/prompts.ts:636:    process.env.USER_TYPE === 'ant' && isUndercover()
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/keys.ts:6:  return process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/constants/tools.ts:41:  ...(process.env.USER_TYPE === 'ant' ? [] : [AGENT_TOOL_NAME]),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/setup.ts:321:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/setup.ts:390:      process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/slowOperations.ts:33:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/planModeV2.ts:46:  if (process.env.USER_TYPE === 'ant') return true;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/mdm/constants.ts:66:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/settings.ts:885:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/types.ts:652:          process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/types.ts:762:      ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/types.ts:913:                ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/applySettingsChange.ts:48:    if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_ENTRYPOINT !== 'local-agent') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/settings/managedPath.ts:10:  if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_MANAGED_SETTINGS_PATH) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/swarm/inProcessRunner.ts:872:          ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/toolSearch.ts:613:    process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/releaseNotes.ts:285:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/releaseNotes.ts:329:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/undercover.ts:18: * All code paths are gated on process.env.USER_TYPE === 'ant'. Since USER_TYPE is
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/undercover.ts:29:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/undercover.ts:40:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/undercover.ts:81:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/fastMode.ts:373:  const isAnt = process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/fastMode.ts:400:    const isAnt = process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/fastMode.ts:481:      const isAnt = process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/worktree.ts:1306:  const isAnt = process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/shell/bashProvider.ts:208:      if (process.env.USER_TYPE === 'ant' && (hasTmuxToolBeenUsed() || commandUsesTmux)) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/shell/shellToolUtils.ts:19:  return process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/messages.ts:2514:            if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/analyzeContext.ts:395:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/analyzeContext.ts:960:      name: process.env.USER_TYPE === 'ant' ? '[ANT-ONLY] System tools' : 'System tools',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/analyzeContext.ts:1263:    deferredBuiltinTools: process.env.USER_TYPE === 'ant' ? deferredBuiltinDetails : undefined,
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/analyzeContext.ts:1264:    systemTools: process.env.USER_TYPE === 'ant' ? systemToolDetails : undefined,
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/analyzeContext.ts:1265:    systemPromptSections: process.env.USER_TYPE === 'ant' ? systemPromptSections : undefined,
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/systemPrompt.ts:88:      ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/fullscreen.ts:127:  return process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/debug.ts:61:  const wasActive = isDebugMode() || process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/agentSwarmsEnabled.ts:26:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/context.ts:56:  if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_MAX_CONTEXT_TOKENS) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/context.ts:82:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/context.ts:145:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/immediateCommand.ts:12:    process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/betas.ts:175:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/betas.ts:233:    if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_ENTRYPOINT === 'cli') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/betas.ts:276:    process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/betas.ts:287:    isEnvTruthy(process.env.USE_API_CONTEXT_MANAGEMENT) && process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/betas.ts:315:  if (process.env.USER_TYPE === 'ant' && includeFirstPartyOnlyBetas && tokenEfficientToolsEnabled) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/betas.ts:380:      process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/attribution.ts:49:  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/attribution.ts:279:  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/ide.ts:805:  process.env.USER_TYPE === 'ant' ? 'anthropic.claude-code-internal' : 'anthropic.claude-code';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/ide.ts:833:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/autoUpdater.ts:103:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/autoUpdater.ts:115:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/claudeInChrome/mcpServer.ts:49:    process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/claudeInChrome/mcpServer.ts:157:    ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/claudeInChrome/chromeNativeHost.ts:22:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/claudeInChrome/setup.ts:76:    (process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/claudeInChrome/setup.ts:190:      ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/claudeInChrome/setupPortable.ts:15:  return process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/effort.ts:61:  if (process.env.USER_TYPE === 'ant' && resolveAntModel(model)) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/effort.ts:99:  if (value === 'max' && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/effort.ts:202:  if (process.env.USER_TYPE === 'ant' && typeof value === 'number') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/effort.ts:237:  if (process.env.USER_TYPE === 'ant' && typeof value === 'number') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/effort.ts:273:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/thinking.ts:92:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/getNextPermissionMode.ts:41:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/permissionSetup.ts:258:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/permissionSetup.ts:892:    process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/permissionSetup.ts:990:  return process.env.USER_TYPE === 'ant' ? `${base} · #claude-code-feedback` : base;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/permissionSetup.ts:1037:    (!!fastMode || (process.env.USER_TYPE === 'ant' && mainModel.toLowerCase().includes('-fast')));
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/yoloClassifier.ts:57:  feature('TRANSCRIPT_CLASSIFIER') && process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/yoloClassifier.ts:636:  if (process.env.USER_TYPE === 'ant' && resolveAntModel(model)?.alwaysOnThinking) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/yoloClassifier.ts:1242:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/yoloClassifier.ts:1261:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/yoloClassifier.ts:1283:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/classifierDecision.ts:38:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/permissions.ts:656:        process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/permissions/dangerousPatterns.ts:58:  ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/attachments.ts:3120:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/logoV2Utils.ts:292:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/cleanup.ts:569:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/nativeInstaller/download.ts:133:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/nativeInstaller/download.ts:471:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/mcpInstructionsDelta.ts:38:    process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/computerUse/gates.ts:40:  if (process.env.USER_TYPE === 'ant') return true;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/computerUse/gates.ts:51:    process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/Shell.ts:309:        ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/backgroundHousekeeping.ts:70:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/hooks/hooksConfigManager.ts:331:        } else if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/modelOptions.ts:37:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/modelOptions.ts:254:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/providers.ts:33:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/model.ts:5: * literals with process.env.USER_TYPE === 'ant' for Bun to remove the codenames
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/model.ts:176:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/model.ts:384:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/model.ts:465:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/model/model.ts:535:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/advisor.ts:82:  return m.includes('opus-4-6') || m.includes('sonnet-4-6') || process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/advisor.ts:88:  return m.includes('opus-4-6') || m.includes('sonnet-4-6') || process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/headlessProfiler.ts:34:  process.env.USER_TYPE === 'ant' || Math.random() < STATSIG_SAMPLE_RATE;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/log.ts:333:  setLastAPIRequestMessages(process.env.USER_TYPE === 'ant' ? messages : null);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/telemetry/sessionTracing.ts:137:      process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/telemetry/bigqueryExporter.ts:49:    if (process.env.USER_TYPE === 'ant' && process.env.ANT_CLAUDE_CODE_METRICS_ENDPOINT) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/telemetry/instrumentation.ts:84:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/telemetry/betaSessionTracing.ts:409:  if (process.env.USER_TYPE === 'ant' && metadata.thinkingOutput !== undefined) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/warningHandler.ts:97:        ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/startupProfiler.ts:33:  process.env.USER_TYPE === 'ant' || Math.random() < STATSIG_SAMPLE_RATE;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/tasks.ts:305:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/envUtils.ts:110:  return process.env.USER_TYPE === 'ant' && isEnvTruthy(process.env.COO_RUNNING_ON_HOMESPACE);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/utils/envUtils.ts:127:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/cli/print.ts:445:    process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/cli/update.ts:263:      (process.env.USER_TYPE === 'ant' ? '@anthropic-ai/claude-cli' : '@anthropic-ai/claude-code');
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/state/onChangeAppState.ts:132:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/components/permissions/hooks.ts:133:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/components/permissions/hooks.ts:158:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/hooks/usePromptSuggestion.ts:135:        ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/hooks/useManagePlugins.ts:206:          process.env.USER_TYPE === 'ant' && enabled.length > 0
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/hooks/useAfterFirstRender.ts:7:      process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools.ts:17:  process.env.USER_TYPE === 'ant' ? require('./tools/REPLTool/REPLTool.js').REPLTool : null;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools.ts:19:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools.ts:202:    ...(process.env.USER_TYPE === 'ant' ? [ConfigTool] : []),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools.ts:203:    ...(process.env.USER_TYPE === 'ant' ? [TungstenTool] : []),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/tools.ts:216:    ...(process.env.USER_TYPE === 'ant' && REPLTool ? [REPLTool] : []),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:58:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:77:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:93:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:181:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:1409:  ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:2144:    process.env.USER_TYPE === 'ant' ? insights.cc_team_improvements?.improvements || [] : [];
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:2146:    process.env.USER_TYPE === 'ant' ? insights.model_behavior_improvements?.improvements || [] : [];
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:2750:  if (process.env.USER_TYPE === 'ant' && options?.collectRemote) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:2989:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:3011:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/insights.ts:3052:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/context/context-noninteractive.ts:178:  if (systemTools && systemTools.length > 0 && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/context/context-noninteractive.ts:189:  if (systemPromptSections && systemPromptSections.length > 0 && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/context/context-noninteractive.ts:259:  if (messageBreakdown && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/init.ts:231:      (process.env.USER_TYPE === 'ant' || isEnvTruthy(process.env.CLAUDE_CODE_NEW_INIT))
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/init.ts:246:          (process.env.USER_TYPE === 'ant' || isEnvTruthy(process.env.CLAUDE_CODE_NEW_INIT))
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/bridge-kick.ts:191:  isEnabled: () => process.env.USER_TYPE === 'ant',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/cost/cost.ts:17:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/cost/index.ts:14:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/feedback/index.ts:20:      process.env.USER_TYPE === 'ant' ||
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/clear/conversation.ts:197:  if (process.env.USER_TYPE === 'ant' && process.env.CLAUDE_CODE_SESSION_ID) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/clear/caches.ts:90:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/commit.ts:12:  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/files/index.ts:7:  isEnabled: () => process.env.USER_TYPE === 'ant',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/thinkback-play/thinkback-play.ts:12:    process.env.USER_TYPE === 'ant' ? INTERNAL_MARKETPLACE_NAME : OFFICIAL_MARKETPLACE_NAME;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/version.ts:14:  isEnabled: () => process.env.USER_TYPE === 'ant',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/tag/index.ts:7:  isEnabled: () => process.env.USER_TYPE === 'ant',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/createMovedToPluginCommand.ts:41:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/commands/commit-push-pr.ts:42:  if (process.env.USER_TYPE === 'ant' && isUndercover()) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/skills/bundled/debug.ts:16:      process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/query.ts:866:            if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/query/config.ts:37:      isAnt: process.env.USER_TYPE === 'ant',
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/compact/sessionMemoryCompact.ts:401:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/compact/sessionMemoryCompact.ts:585:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tools/toolExecution.ts:810:  if (process.env.USER_TYPE === 'ant' && preToolHookInfos.length > 0) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tools/toolExecution.ts:1420:    if (process.env.USER_TYPE === 'ant' && postToolHookInfos.length > 0) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/rateLimitMessages.ts:307:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/extractMemories/extractMemories.ts:482:      if (process.env.USER_TYPE === 'ant' && !hasLoggedGateFailure) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/vcr.ts:28:  if (process.env.USER_TYPE === 'ant' && isEnvTruthy(process.env.FORCE_VCR)) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/SessionMemory/sessionMemory.ts:259:    if (process.env.USER_TYPE === 'ant' && !hasLoggedGateFailure) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/SessionMemory/sessionMemory.ts:331:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/mcp/useManageMCPConnections.ts:883:          process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/mcp/useManageMCPConnections.ts:893:        ...(process.env.USER_TYPE === 'ant' && stdioCommands.length > 0
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/PromptSuggestion/promptSuggestion.ts:470:    ...(process.env.USER_TYPE === 'ant' && {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/PromptSuggestion/promptSuggestion.ts:491:    ...(process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/PromptSuggestion/speculation.ts:311:  const enabled = process.env.USER_TYPE === 'ant' && (getGlobalConfig().speculationEnabled ?? true);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/mockRateLimits.ts:779:  return mockEnabled && mockSubscriptionType !== null && process.env.USER_TYPE === 'ant';
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tips/tipRegistry.ts:100:      if (process.env.USER_TYPE === 'ant') return false;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tips/tipRegistry.ts:379:      process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tips/tipRegistry.ts:451:      if (process.env.USER_TYPE === 'ant') return false;
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tips/tipRegistry.ts:602:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/tips/tipRegistry.ts:611:  process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/errors.ts:624:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/errors.ts:691:    process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/withRetry.ts:187:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/withRetry.ts:675:    if (!(process.env.USER_TYPE === 'ant' && is5xxError)) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/dumpPrompts.ts:158:    if (timestamp && response.ok && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/client.ts:288:    ...(process.env.USER_TYPE === 'ant' && isEnvTruthy(process.env.USE_STAGING_OAUTH)
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:381:      process.env.USER_TYPE === 'ant' || (isClaudeAISubscriber() && !currentLimits.isUsingOverage);
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:428:  } else if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:1860:              process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:2026:            if (process.env.USER_TYPE === 'ant' && 'research' in part) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:2063:              ...(process.env.USER_TYPE === 'ant' && research !== undefined && { research }),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:2077:              process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:2409:        ...(process.env.USER_TYPE === 'ant' &&
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/claude.ts:2497:          ...(process.env.USER_TYPE === 'ant' && research !== undefined && { research }),
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/api/logging.ts:715:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/MagicDocs/magicDocs.ts:231:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:234:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:241:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:247:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:260:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:337:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:357:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:378:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:422:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:443:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:458:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:478:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:511:    if (process.env.USER_TYPE === 'ant' && !hasTrust) {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:524:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:536:    if (!useAuth && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:552:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:568:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:621:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:684:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLoggingExporter.ts:691:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLogger.ts:110:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLogger.ts:175:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLogger.ts:188:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLogger.ts:272:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLogger.ts:301:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/firstPartyEventLogger.ts:401:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/index.ts:102:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:162:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:437:  if (!email && process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:475:    if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:481:      process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:511:      ...(process.env.USER_TYPE === 'ant'
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:532:          if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:538:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:564:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:575:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:608:        if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:674:  if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:997:      if (process.env.USER_TYPE === 'ant') {
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scratch/claude_code_src/src/services/analytics/growthbook.ts:1011:    if (process.env.USER_TYPE === 'ant') {

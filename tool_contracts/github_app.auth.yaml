@@ -1,0 +1,9 @@
+# tool_contracts/github_app.auth.yaml
+tool_id: "github_app.auth"
+description: "Governs the github_app.auth operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/github_app_auth.jsonl"
+reuse_queries: []

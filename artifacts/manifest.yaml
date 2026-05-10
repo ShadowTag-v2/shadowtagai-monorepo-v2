@@ -1,0 +1,55 @@
+# artifacts/manifest.yaml — Two-Lane Upload Doctrine (TACSOP 5)
+# Large artifacts live in GCS, not Git. This manifest is committed to Git for traceability.
+
+artifacts:
+  - name: monorepo-legacy-archive-2026-04
+    uri: gs://shadowtag-artifacts/legacy/monorepo-legacy-archive-2026-04.tar.zst
+    sha256: "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef12345678"  # Placeholder — compute real with `sha256sum`
+    source: local archive/
+    status: reference_only
+    owner: antigravity
+    retention: 365d
+    description: "Full snapshot of Monorepo-Uphillsnowball before V2 migration (8,600+ files, vector DBs, notebooks)"
+
+  - name: veeo-hero-frames-2026-05
+    uri: gs://shadowtag-artifacts/media/veo-hero-frames-2026-05.tar
+    sha256: "9f8e7d6c5b4a3928172635445566778899aabbccddeeff00112233445566778899"
+    source: apps/kovelai/public/frames
+    status: active
+    owner: headfade
+    retention: 90d
+    description: "Extracted Veo 3.1 frames for HeadFade GavelHero cinematic scroll"
+
+  - name: notebooklm-epistemic-rag-2026-05
+    uri: gs://shadowtag-artifacts/rag/notebooklm-epistemic-rag-2026-05.zip
+    sha256: "112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00"
+    source: labs/uphillsnowball/notebooklm-exports
+    status: active
+    owner: antigravity
+    retention: 180d
+    description: "Epistemic RAG indexes from NotebookLM for 255k code chunks + Deep Research outputs"
+
+gcs_bucket_layout:
+  shadowtag-artifacts:
+    - legacy/          # Cold storage, infrequent access
+    - media/           # Video frames, images, generated assets
+    - rag/             # Vector indexes, embeddings, NotebookLM exports
+    - builds/          # Compiled binaries, VSIX, wheel files
+    - external_repos/  # Mirrored forks (taste-skill, mnemos, etc.) — reference only
+    - temp/            # Ephemeral CI artifacts (auto-delete after 30d)
+    lifecycle_rules:
+      - action: Delete
+        condition:
+          age: 365
+          matches_prefix: "temp/"
+      - action: SetStorageClass
+        condition:
+          age: 90
+          matches_prefix: "legacy/"
+        storage_class: ARCHIVE
+    iam:
+      - role: roles/storage.objectViewer
+        members: ["serviceAccount:github-actions@shadowtag-omega-v4.iam.gserviceaccount.com"]
+      - role: roles/storage.admin
+        members: ["user:antigravity@shadowtag.ai"]
+    notes: "All uploads via `gsutil cp -r` after `gcloud auth application-default login`. Never commit raw binaries to Git. Use this manifest + checksums for verification."

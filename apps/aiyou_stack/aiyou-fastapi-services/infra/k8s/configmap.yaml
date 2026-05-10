@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestion-config
+  namespace: ingestion-layer
+  labels:
+    app: gemini-ingestion
+    component: configuration
+data:
+  # Environment
+  environment: "production"
+  log-level: "INFO"
+
+  # GCP Configuration
+  gcp-project-id: "your-gcp-project-id"
+  gcp-region: "us-central1"
+  pubsub-topic: "ingestion-events"
+
+  # Ingestion Runtime
+  ingestion-timeout-minutes: "60"
+  ingestion-alert-threshold-minutes: "45"
+  ingestion-schedule: "0 0 * * *"
+
+  # Daily items target
+  daily-items-target: "10000"
+  daily-items-min: "8000"
+
+  # Source diversity
+  min-source-diversity: "5"
+
+  # Cost targets
+  cost-per-item-target: "0.001"
+  monthly-budget: "77.0"
+
+  # Quality gates (60% for pre-prod)
+  min-relevance-score: "0.60"
+  min-timeliness-hours: "24"
+  min-completeness-pct: "0.85"
+
+  # Tier distribution targets
+  tier-1-target-pct: "0.30"
+  tier-2-target-pct: "0.50"
+  tier-3-max-pct: "0.20"
+
+  # Enabled sources
+  enabled-sources: "youtube,twitter,news,reddit,rss_feeds"
+
+  # Gemini model (cost-effective)
+  gemini-model: "gemini-3.1-flash-lite-preview"
+
+  # AM Briefing recipients (comma-separated)
+  briefing-recipients: "redacted@shadowtag-v4.local,redacted@shadowtag-v4.local,redacted@shadowtag-v4.local"
+
+  # Ethical crawling
+  respect-robots-txt: "true"
+  default-rate-limit-rpm: "60"
+  user-agent: "SHADOWTAGAI-Gemini-Ingestion/0.1.0 (+https://shadowtagai.ai/bot)"

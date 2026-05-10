@@ -1,0 +1,32 @@
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+
+package(default_visibility = ["//visibility:private"])
+
+# HeadFade PWA is built via Next.js, not Bazel directly.
+# This BUILD file provides package boundary and filegroups.
+
+filegroup(
+    name = "pwa_sources",
+    srcs = glob(
+        ["pwa/src/**/*.ts", "pwa/src/**/*.tsx", "pwa/src/**/*.css"],
+        exclude = ["pwa/node_modules/**"],
+    ),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "pwa_config",
+    srcs = [
+        "pwa/next.config.ts",
+        "pwa/package.json",
+        "pwa/tsconfig.json",
+        "pwa/postcss.config.mjs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "pwa_tests",
+    srcs = glob(["pwa/tests/**/*"]),
+    visibility = ["//visibility:public"],
+)

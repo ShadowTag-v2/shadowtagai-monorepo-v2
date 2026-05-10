@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/scientific/skills_registry.py
+# hypothesis_version: 6.151.5
+
+[2.1, 85.5, 350.4, 450, 'AlphaFold DB', 'PMID:123456', 'PMID:789012', 'PubChem', 'PubMed', 'chem_analysis', 'citations', 'data', 'general_search', 'logP', 'mw', 'pLDDT', 'protein_analysis', 'residues', 'result', 'skill']

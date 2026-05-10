@@ -1,0 +1,151 @@
+# Gitleaks Configuration
+# Ref: https://github.com/gitleaks/gitleaks
+# Applied globally to the monorepo
+
+title = "Monorepo-Uphillsnowball Gitleaks Config"
+
+[allowlist]
+  description = "Global allowlist"
+  # Paths that are third-party or archived
+  paths = [
+    '''node_modules/''',
+    '''\.git/''',
+    '''reference_architectures/''',
+    '''external_repos/''',
+    '''\.claude_legacy_plans/''',
+    '''data/sovereign_mlx/''',
+    '''\.venv/''',
+    '''venv/''',
+    '''__pycache__/''',
+    '''\.pytest_cache/''',
+    # Third-party tools and snippets (not our code)
+    '''tools/firebase-snippets-web/''',
+    '''tools/GitNexus/''',
+    '''tools/firebase-snippets/''',
+    # Test fixtures and examples
+    '''tests?/fixtures?/''',
+    '''tests?/e2e/''',
+    # Archived memory
+    '''memory/erik-hancock-llm-memory/''',
+    # Recovered architecture docs (archived references)
+    '''docs/atlantis/''',
+    '''docs/Cor\.Atlantis/''',
+    # Lock files
+    '''pnpm-lock\.yaml''',
+    '''package-lock\.json''',
+    '''yarn\.lock''',
+    '''poetry\.lock''',
+    # Claude legacy plans
+    '''\.claude/''',
+    '''\.agents/''',
+    # ── Third-party incorporated work product (1,631 assets) ──
+    # Reference architectures, archived assets, and third-party
+    # libraries leveraged as incorporated work product.
+    '''archive/''',
+    '''\.gitnexus/''',
+    '''libs/cyberpunk_stack/''',
+    '''labs/''',
+    '''control/legacy_workspaces/''',
+    '''data/lancedb/''',
+    '''data/drive_ingest/''',
+    '''docs/canonicalization/''',
+    '''docs/legacy_shadowtag_v2/''',
+    '''\.agent/incoming_repos/''',
+    '''\.env\.backup''',
+    '''.next/''',
+    # ── Vendored / cached / archived paths (audited 2026-05-08) ──
+    '''.venv-3\.14-bak/''',
+    '''_archive_redundant_''',
+    '''turbopack/''',
+    '''\.sst$''',
+    '''scratch/repos/''',
+    '''apps/.*/out/''',
+    '''apps/.*/public/dev/cache/''',
+    # Documentation (contains referenced API keys in audit reports)
+    '''docs/AUDIT_REPORT\.md''',
+    '''docs/overview\.txt''',
+    # Legacy server session logs (archived terminal captures, contain rotated PATs)
+    '''apps/aiyou_stack/.*/server_log_.*\.txt''',
+    # Conflict resolution utility scripts (contain marker patterns as regex strings)
+    '''resolve_json\.py''',
+    '''resolve_validate\.py''',
+    '''resolve_yaml\.py''',
+    '''scripts/resolve_conflicts\.py''',
+    # Firebase client config (publishable keys, safe to commit)
+    '''apps/.*/\.env\.local''',
+    '''apps/.*/src/lib/firebase\.ts''',
+    # Test files with mock/fixture secrets
+    '''tests/test_block_allow_engine\.py''',
+    '''tests/test_secret_scanner\.py''',
+    '''tests/test_vcr_fixtures\.py''',
+    '''tests/unit/''',
+    # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
+    # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
+    # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
+    # OpenClaw Discord: bundled SDK dist (NOT our Discord app)
+    '''libs/cyberpunk_stack/openclaw/dist/''',
+  ]
+
+  # Specific third-party test secrets (confirmed false positives)
+  regexes = [
+    # Odoo payment_stripe test key — NOT acct_1Syh9JEHnWpykeMi
+    '''sk_test_KJtHgNwt2KS3xM7QJPr4O5E8''',
+    # OpenTofu doc example vault token
+    '''s\.Fg8wA4nDrP08TirpjE''',
+    # ── VCR scrubbed token placeholders (migrated from .gitleaksignore 2026-05-03) ──
+    # Bearer [SCRUBBED] and key=[SCRUBBED] patterns in test cassettes
+    '''\[SCRUBBED\]''',
+    '''sk-abc123xyz456''',
+    '''AIzaSyAbc123''',
+    '''secret-key-value''',
+    '''ya29\.abc''',
+    '''hunter2''',
+    '''GOCSPX-abc123xyz456''',
+    '''my-secret-api-key-value''',
+    '''real-api-key-123''',
+  ]
+
+# Allow Stripe publishable keys (public by design)
+[[rules]]
+  id = "stripe-publishable-key"
+  description = "Stripe publishable key (public, safe to commit)"
+  regex = '''pk_(test|live)_[a-zA-Z0-9]{24,}'''
+  [rules.allowlist]
+    regexTarget = "match"
+    regexes = ['''pk_(test|live)_''']
+
+# Detect Stripe secret keys
+[[rules]]
+  id = "stripe-secret-key"
+  description = "Stripe secret key (NEVER commit)"
+  regex = '''sk_(test|live)_[a-zA-Z0-9]{24,}'''
+
+# Detect Google API keys
+[[rules]]
+  id = "google-api-key"
+  description = "Google API Key"
+  regex = '''AIza[0-9A-Za-z_-]{35}'''
+
+# Detect GitHub tokens
+[[rules]]
+  id = "github-token"
+  description = "GitHub Personal Access Token or App Token"
+  regex = '''(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,}'''
+
+# Detect GitHub classic PATs (github_pat_ prefix)
+[[rules]]
+  id = "github-classic-pat"
+  description = "GitHub Classic Personal Access Token (NEVER commit)"
+  regex = '''github_pat_[A-Za-z0-9_]{36,}'''
+
+# Detect generic high-entropy secrets
+[[rules]]
+  id = "generic-api-key-inline"
+  description = "Inline API key assignment"
+  regex = '''(?i)(api[_-]?key|apikey|secret[_-]?key)\s*[:=]\s*['"][a-zA-Z0-9_\-]{20,}['"]'''
+  [rules.allowlist]
+    paths = [
+      '''\.env\.example''',
+      '''README''',
+      '''docs/''',
+    ]

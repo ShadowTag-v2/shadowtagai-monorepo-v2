@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_testing_023",
+  "level": 2,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "testing",
+  "tier": "execution",
+  "shift": "shift_6",
+  "knowledge_graph": {
+    "specialization": "testing",
+    "domain": "testing"
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

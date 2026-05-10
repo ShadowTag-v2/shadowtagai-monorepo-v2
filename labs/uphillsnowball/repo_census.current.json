@@ -1,0 +1,1457 @@
+{
+  "pyrefly": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pyrefly",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pyrefly",
+    "status": "queued_for_fold_in"
+  },
+  "mlx-engine": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/mlx-engine",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/mlx-engine",
+    "status": "queued_for_fold_in"
+  },
+  "playwright-mcp": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/playwright-mcp",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/playwright-mcp",
+    "status": "queued_for_fold_in"
+  },
+  "turboquant-pytorch": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/turboquant-pytorch",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/turboquant-pytorch",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-icons": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-icons",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-icons",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-debugadapter-node": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-debugadapter-node",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-debugadapter-node",
+    "status": "queued_for_fold_in"
+  },
+  "ruff": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ruff",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ruff",
+    "status": "queued_for_fold_in"
+  },
+  "terraform": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraform",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraform",
+    "status": "queued_for_fold_in"
+  },
+  "quarkus": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/quarkus",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/quarkus",
+    "status": "queued_for_fold_in"
+  },
+  "vectordb-recipes": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vectordb-recipes",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vectordb-recipes",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-eslint": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-eslint",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-eslint",
+    "status": "queued_for_fold_in"
+  },
+  "ladybug": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ladybug",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ladybug",
+    "status": "queued_for_fold_in"
+  },
+  "deno": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/deno",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/deno",
+    "status": "queued_for_fold_in"
+  },
+  "terraform-google-vertex-ai": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraform-google-vertex-ai",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraform-google-vertex-ai",
+    "status": "queued_for_fold_in"
+  },
+  "autoresearch": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/autoresearch",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/autoresearch",
+    "status": "queued_for_fold_in"
+  },
+  "click-to-deploy-solutions": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/click-to-deploy-solutions",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/click-to-deploy-solutions",
+    "status": "queued_for_fold_in"
+  },
+  "basedpyright": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/basedpyright",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/basedpyright",
+    "status": "queued_for_fold_in"
+  },
+  "documentation": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/documentation",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/documentation",
+    "status": "queued_for_fold_in"
+  },
+  "buildtools": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/buildtools",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/buildtools",
+    "status": "queued_for_fold_in"
+  },
+  "ast-grep": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ast-grep",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ast-grep",
+    "status": "queued_for_fold_in"
+  },
+  "AliFullStack": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/AliFullStack",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/AliFullStack",
+    "status": "queued_for_fold_in"
+  },
+  "netdata": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/netdata",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/netdata",
+    "status": "queued_for_fold_in"
+  },
+  "docker": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/docker",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/docker",
+    "status": "queued_for_fold_in"
+  },
+  "BioAgents": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/BioAgents",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/agents/BioAgents",
+    "status": "queued_for_fold_in"
+  },
+  "ipex-llm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ipex-llm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ipex-llm",
+    "status": "queued_for_fold_in"
+  },
+  "install": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/install",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/install",
+    "status": "queued_for_fold_in"
+  },
+  "huggingface_hub": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/huggingface_hub",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/huggingface_hub",
+    "status": "queued_for_fold_in"
+  },
+  "pipelines-workflows": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pipelines-workflows",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pipelines-workflows",
+    "status": "queued_for_fold_in"
+  },
+  "leaked-system-prompts": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/leaked-system-prompts",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/leaked-system-prompts",
+    "status": "queued_for_fold_in"
+  },
+  "elements-of-python-style": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/elements-of-python-style",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/elements-of-python-style",
+    "status": "queued_for_fold_in"
+  },
+  "prettier-plugin-tailwindcss": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/prettier-plugin-tailwindcss",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/prettier-plugin-tailwindcss",
+    "status": "queued_for_fold_in"
+  },
+  "git-worktree-runner": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/git-worktree-runner",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/git-worktree-runner",
+    "status": "queued_for_fold_in"
+  },
+  "claude-code-system-prompts": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/claude-code-system-prompts",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/claude-code-system-prompts",
+    "status": "queued_for_fold_in"
+  },
+  "antigravity-pkg": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/antigravity-pkg",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/antigravity-pkg",
+    "status": "queued_for_fold_in"
+  },
+  "magic-modules": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/magic-modules",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/magic-modules",
+    "status": "queued_for_fold_in"
+  },
+  "dotfiles": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/dotfiles",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/dotfiles",
+    "status": "queued_for_fold_in"
+  },
+  "rustdesk": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/rustdesk",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/rustdesk",
+    "status": "queued_for_fold_in"
+  },
+  "gemini": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gemini",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gemini",
+    "status": "queued_for_fold_in"
+  },
+  "vite-plugin-devtools-json": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vite-plugin-devtools-json",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vite-plugin-devtools-json",
+    "status": "queued_for_fold_in"
+  },
+  "FirebaseUI-Android": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/FirebaseUI-Android",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/FirebaseUI-Android",
+    "status": "queued_for_fold_in"
+  },
+  "Antigravity-Manager": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Antigravity-Manager",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Antigravity-Manager",
+    "status": "queued_for_fold_in"
+  },
+  "wemake-python-styleguide": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/wemake-python-styleguide",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/wemake-python-styleguide",
+    "status": "queued_for_fold_in"
+  },
+  "redisson": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/redisson",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/redisson",
+    "status": "queued_for_fold_in"
+  },
+  "LlamaFactory": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/LlamaFactory",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/LlamaFactory",
+    "status": "queued_for_fold_in"
+  },
+  "pinchtab": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pinchtab",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pinchtab",
+    "status": "queued_for_fold_in"
+  },
+  "devtools-frontend": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/devtools-frontend",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/devtools-frontend",
+    "status": "queued_for_fold_in"
+  },
+  "Threadwork": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Threadwork",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Threadwork",
+    "status": "queued_for_fold_in"
+  },
+  "gemini-skills": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gemini-skills",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gemini-skills",
+    "status": "queued_for_fold_in"
+  },
+  "Gemini-CLI-UI": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Gemini-CLI-UI",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Gemini-CLI-UI",
+    "status": "queued_for_fold_in"
+  },
+  "react-native": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/react-native",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/react-native",
+    "status": "queued_for_fold_in"
+  },
+  "ollama-python": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ollama-python",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ollama-python",
+    "status": "queued_for_fold_in"
+  },
+  "devrel-demos": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/devrel-demos",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/devrel-demos",
+    "status": "queued_for_fold_in"
+  },
+  "microservices-demo": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/microservices-demo",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/microservices-demo",
+    "status": "queued_for_fold_in"
+  },
+  "ComfyUI": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ComfyUI",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ComfyUI",
+    "status": "queued_for_fold_in"
+  },
+  "flake8": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/flake8",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/flake8",
+    "status": "queued_for_fold_in"
+  },
+  "flake8-bugbear": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/flake8-bugbear",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/flake8-bugbear",
+    "status": "queued_for_fold_in"
+  },
+  "playwright-python": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/playwright-python",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/playwright-python",
+    "status": "queued_for_fold_in"
+  },
+  "terragrunt-infrastructure-live-example": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terragrunt-infrastructure-live-example",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terragrunt-infrastructure-live-example",
+    "status": "queued_for_fold_in"
+  },
+  "ast-grep-mcp": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ast-grep-mcp",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ast-grep-mcp",
+    "status": "queued_for_fold_in"
+  },
+  "express": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/express",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/express",
+    "status": "queued_for_fold_in"
+  },
+  "micropython-stubs": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/micropython-stubs",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/micropython-stubs",
+    "status": "queued_for_fold_in"
+  },
+  "antigravity2api-nodejs": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/antigravity2api-nodejs",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/antigravity2api-nodejs",
+    "status": "queued_for_fold_in"
+  },
+  "generative-ai": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/generative-ai",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/generative-ai",
+    "status": "queued_for_fold_in"
+  },
+  "prettier": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/prettier",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/prettier",
+    "status": "queued_for_fold_in"
+  },
+  "adk-python": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/adk-python",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/adk-python",
+    "status": "queued_for_fold_in"
+  },
+  "eslint-plugin-prettier": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/eslint-plugin-prettier",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/eslint-plugin-prettier",
+    "status": "queued_for_fold_in"
+  },
+  "OpenViking": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/OpenViking",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/OpenViking",
+    "status": "queued_for_fold_in"
+  },
+  "orbstack": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/orbstack",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/orbstack",
+    "status": "queued_for_fold_in"
+  },
+  "aicommits": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/aicommits",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/aicommits",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-node-debug": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-node-debug",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-node-debug",
+    "status": "queued_for_fold_in"
+  },
+  "terragrunt-infrastructure-catalog-example": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terragrunt-infrastructure-catalog-example",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terragrunt-infrastructure-catalog-example",
+    "status": "queued_for_fold_in"
+  },
+  "bas-remote-node": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/bas-remote-node",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/bas-remote-node",
+    "status": "queued_for_fold_in"
+  },
+  "ast-grep.github.io": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ast-grep.github.io",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ast-grep.github.io",
+    "status": "queued_for_fold_in"
+  },
+  "terragrunt": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terragrunt",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terragrunt",
+    "status": "queued_for_fold_in"
+  },
+  "CortexLTM": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/CortexLTM",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/CortexLTM",
+    "status": "queued_for_fold_in"
+  },
+  "firecrawl": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/firecrawl",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/firecrawl",
+    "status": "queued_for_fold_in"
+  },
+  "debugger-protocol-viewer": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/debugger-protocol-viewer",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/debugger-protocol-viewer",
+    "status": "queued_for_fold_in"
+  },
+  "ionic-framework": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ionic-framework",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ionic-framework",
+    "status": "queued_for_fold_in"
+  },
+  "ruby-ladybug": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ruby-ladybug",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ruby-ladybug",
+    "status": "queued_for_fold_in"
+  },
+  "awesome-generative-ai-guide": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/awesome-generative-ai-guide",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/awesome-generative-ai-guide",
+    "status": "queued_for_fold_in"
+  },
+  "pgvector": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pgvector",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pgvector",
+    "status": "queued_for_fold_in"
+  },
+  "unity-ide-antigravity": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/unity-ide-antigravity",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/unity-ide-antigravity",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-gradle": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-gradle",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-gradle",
+    "status": "queued_for_fold_in"
+  },
+  "JamAIBase": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/JamAIBase",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/JamAIBase",
+    "status": "queued_for_fold_in"
+  },
+  "terraform-google-three-tier-web-app": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraform-google-three-tier-web-app",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraform-google-three-tier-web-app",
+    "status": "queued_for_fold_in"
+  },
+  "markdownlint": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/markdownlint",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/markdownlint",
+    "status": "queued_for_fold_in"
+  },
+  "starlette": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/starlette",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/starlette",
+    "status": "queued_for_fold_in"
+  },
+  "clauADA": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/clauADA",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/clauADA",
+    "status": "queued_for_fold_in"
+  },
+  "tauri": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/tauri",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/tauri",
+    "status": "queued_for_fold_in"
+  },
+  "vue": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vue",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vue",
+    "status": "queued_for_fold_in"
+  },
+  "memory-lancedb-pro": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/memory-lancedb-pro",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/memory-lancedb-pro",
+    "status": "queued_for_fold_in"
+  },
+  "Rust": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Rust",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Rust",
+    "status": "queued_for_fold_in"
+  },
+  "grep-ast": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/grep-ast",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/grep-ast",
+    "status": "queued_for_fold_in"
+  },
+  "ripgrep-all": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ripgrep-all",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ripgrep-all",
+    "status": "queued_for_fold_in"
+  },
+  "google_style_guide_agent_skills": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/google_style_guide_agent_skills",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/agents/google_style_guide_agent_skills",
+    "status": "queued_for_fold_in"
+  },
+  "comfy-aimdo": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/comfy-aimdo",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/comfy-aimdo",
+    "status": "queued_for_fold_in"
+  },
+  "homebrew-tap": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/homebrew-tap",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/homebrew-tap",
+    "status": "queued_for_fold_in"
+  },
+  "homebrew-core": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/homebrew-core",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/homebrew-core",
+    "status": "queued_for_fold_in"
+  },
+  "agent-skills": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/agent-skills",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/agents/agent-skills",
+    "status": "queued_for_fold_in"
+  },
+  "terraform-google-cloud-run": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraform-google-cloud-run",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraform-google-cloud-run",
+    "status": "queued_for_fold_in"
+  },
+  "90DaysOfDevOps": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/90DaysOfDevOps",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/90DaysOfDevOps",
+    "status": "queued_for_fold_in"
+  },
+  "Next-js-Boilerplate": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Next-js-Boilerplate",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Next-js-Boilerplate",
+    "status": "queued_for_fold_in"
+  },
+  "payload": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/payload",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/payload",
+    "status": "queued_for_fold_in"
+  },
+  "devops-exercises": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/devops-exercises",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/devops-exercises",
+    "status": "queued_for_fold_in"
+  },
+  "rules_gcs": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/rules_gcs",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/rules_gcs",
+    "status": "queued_for_fold_in"
+  },
+  "open-location-code": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/open-location-code",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/open-location-code",
+    "status": "queued_for_fold_in"
+  },
+  "notebooklm-skill": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/notebooklm-skill",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/notebooklm-skill",
+    "status": "queued_for_fold_in"
+  },
+  "cloud-foundation-fabric": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cloud-foundation-fabric",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cloud-foundation-fabric",
+    "status": "queued_for_fold_in"
+  },
+  "Awesome-Vibecoding-and-Speccoding-Resources": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Awesome-Vibecoding-and-Speccoding-Resources",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Awesome-Vibecoding-and-Speccoding-Resources",
+    "status": "queued_for_fold_in"
+  },
+  "awesome-python": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/awesome-python",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/awesome-python",
+    "status": "queued_for_fold_in"
+  },
+  "devtools-protocol": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/devtools-protocol",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/devtools-protocol",
+    "status": "queued_for_fold_in"
+  },
+  "terraform-google-github-actions-runners": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraform-google-github-actions-runners",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraform-google-github-actions-runners",
+    "status": "queued_for_fold_in"
+  },
+  "vllm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vllm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vllm",
+    "status": "queued_for_fold_in"
+  },
+  "ralph": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ralph",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ralph",
+    "status": "queued_for_fold_in"
+  },
+  "grafana": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/grafana",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/grafana",
+    "status": "queued_for_fold_in"
+  },
+  "SiliceProtocol": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/SiliceProtocol",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/SiliceProtocol",
+    "status": "queued_for_fold_in"
+  },
+  "Agentic-AI-Pipeline": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Agentic-AI-Pipeline",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/agents/Agentic-AI-Pipeline",
+    "status": "queued_for_fold_in"
+  },
+  "python-uv": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/python-uv",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/python-uv",
+    "status": "queued_for_fold_in"
+  },
+  "cloudscraper": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cloudscraper",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cloudscraper",
+    "status": "queued_for_fold_in"
+  },
+  "turboquant_plus": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/turboquant_plus",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/turboquant_plus",
+    "status": "queued_for_fold_in"
+  },
+  "essentials-claude-code": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/essentials-claude-code",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/essentials-claude-code",
+    "status": "queued_for_fold_in"
+  },
+  "chrome-devtools-mcp": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/chrome-devtools-mcp",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/chrome-devtools-mcp",
+    "status": "queued_for_fold_in"
+  },
+  "cacache": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cacache",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cacache",
+    "status": "queued_for_fold_in"
+  },
+  "cli": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cli",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cli",
+    "status": "queued_for_fold_in"
+  },
+  "bun": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/bun",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/bun",
+    "status": "queued_for_fold_in"
+  },
+  "playwright": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/playwright",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/playwright",
+    "status": "queued_for_fold_in"
+  },
+  "CortexUI": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/CortexUI",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/CortexUI",
+    "status": "queued_for_fold_in"
+  },
+  "expo": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/expo",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/expo",
+    "status": "queued_for_fold_in"
+  },
+  "windsurf-antigravity-rules": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/windsurf-antigravity-rules",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/windsurf-antigravity-rules",
+    "status": "queued_for_fold_in"
+  },
+  "noVNC": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/noVNC",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/noVNC",
+    "status": "queued_for_fold_in"
+  },
+  "node-semver": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/node-semver",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/node-semver",
+    "status": "queued_for_fold_in"
+  },
+  "jupyterhub": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/jupyterhub",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/jupyterhub",
+    "status": "queued_for_fold_in"
+  },
+  "docker-stacks": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/docker-stacks",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/docker-stacks",
+    "status": "queued_for_fold_in"
+  },
+  "gitleaks-ci": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gitleaks-ci",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gitleaks-ci",
+    "status": "queued_for_fold_in"
+  },
+  "supabase": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/supabase",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/supabase",
+    "status": "queued_for_fold_in"
+  },
+  "recursive-llm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/recursive-llm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/recursive-llm",
+    "status": "queued_for_fold_in"
+  },
+  "micropython-stubber": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/micropython-stubber",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/micropython-stubber",
+    "status": "queued_for_fold_in"
+  },
+  "buildpacks": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/buildpacks",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/buildpacks",
+    "status": "queued_for_fold_in"
+  },
+  "continuous-thought-machines": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/continuous-thought-machines",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/continuous-thought-machines",
+    "status": "queued_for_fold_in"
+  },
+  "PyStrict-strict-python": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/PyStrict-strict-python",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/PyStrict-strict-python",
+    "status": "queued_for_fold_in"
+  },
+  "pyrefly-pre-commit": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pyrefly-pre-commit",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pyrefly-pre-commit",
+    "status": "queued_for_fold_in"
+  },
+  "beads-templates": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/beads-templates",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/beads-templates",
+    "status": "queued_for_fold_in"
+  },
+  "terraformer": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraformer",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraformer",
+    "status": "queued_for_fold_in"
+  },
+  "cloud-run-pubsub-pull": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cloud-run-pubsub-pull",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cloud-run-pubsub-pull",
+    "status": "queued_for_fold_in"
+  },
+  "webpack": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/webpack",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/webpack",
+    "status": "queued_for_fold_in"
+  },
+  "pyrefly-for-pycharm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pyrefly-for-pycharm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pyrefly-for-pycharm",
+    "status": "queued_for_fold_in"
+  },
+  "knowledge-work-plugins": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/knowledge-work-plugins",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/knowledge-work-plugins",
+    "status": "queued_for_fold_in"
+  },
+  "GitNexus": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/GitNexus",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/GitNexus",
+    "status": "queued_for_fold_in"
+  },
+  "browser": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/browser",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/browser",
+    "status": "queued_for_fold_in"
+  },
+  "ast-grep-vscode": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ast-grep-vscode",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ast-grep-vscode",
+    "status": "queued_for_fold_in"
+  },
+  "nanochat": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/nanochat",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/nanochat",
+    "status": "queued_for_fold_in"
+  },
+  "postgres": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/postgres",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/postgres",
+    "status": "queued_for_fold_in"
+  },
+  "AntigravityQuotaWatcher": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/AntigravityQuotaWatcher",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/AntigravityQuotaWatcher",
+    "status": "queued_for_fold_in"
+  },
+  "LSP-basedpyright": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/LSP-basedpyright",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/LSP-basedpyright",
+    "status": "queued_for_fold_in"
+  },
+  "ruff-vscode": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ruff-vscode",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ruff-vscode",
+    "status": "queued_for_fold_in"
+  },
+  "styleguide": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/styleguide",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/styleguide",
+    "status": "queued_for_fold_in"
+  },
+  "numpy-100": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/numpy-100",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/numpy-100",
+    "status": "queued_for_fold_in"
+  },
+  "StealthIt": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/StealthIt",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/StealthIt",
+    "status": "queued_for_fold_in"
+  },
+  "gemini-cli": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gemini-cli",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gemini-cli",
+    "status": "queued_for_fold_in"
+  },
+  "deep-learning-with-python-notebooks": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/deep-learning-with-python-notebooks",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/deep-learning-with-python-notebooks",
+    "status": "queued_for_fold_in"
+  },
+  "awesome-coderabbit": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/awesome-coderabbit",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/awesome-coderabbit",
+    "status": "queued_for_fold_in"
+  },
+  "rlm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/rlm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/rlm",
+    "status": "queued_for_fold_in"
+  },
+  "uvicorn-gunicorn-fastapi-docker": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/uvicorn-gunicorn-fastapi-docker",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/uvicorn-gunicorn-fastapi-docker",
+    "status": "queued_for_fold_in"
+  },
+  "antigravity-switcher": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/antigravity-switcher",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/antigravity-switcher",
+    "status": "queued_for_fold_in"
+  },
+  "Transformers-Tutorials": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Transformers-Tutorials",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Transformers-Tutorials",
+    "status": "queued_for_fold_in"
+  },
+  "com.unity.ides": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/com.unity.ides",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/com.unity.ides",
+    "status": "queued_for_fold_in"
+  },
+  "ohmyzsh": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ohmyzsh",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ohmyzsh",
+    "status": "queued_for_fold_in"
+  },
+  "tqdm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/tqdm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/tqdm",
+    "status": "queued_for_fold_in"
+  },
+  "beads": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/beads",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/beads",
+    "status": "queued_for_fold_in"
+  },
+  "gemini-code-assist-proxy": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gemini-code-assist-proxy",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gemini-code-assist-proxy",
+    "status": "queued_for_fold_in"
+  },
+  "Aegaeon": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Aegaeon",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Aegaeon",
+    "status": "queued_for_fold_in"
+  },
+  "awesome-chrome-devtools": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/awesome-chrome-devtools",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/awesome-chrome-devtools",
+    "status": "queued_for_fold_in"
+  },
+  "next.js": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/next.js",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/next.js",
+    "status": "queued_for_fold_in"
+  },
+  "ruflo": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ruflo",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ruflo",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-gitlens": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-gitlens",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-gitlens",
+    "status": "queued_for_fold_in"
+  },
+  "gemini-cli.nvim": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gemini-cli.nvim",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gemini-cli.nvim",
+    "status": "queued_for_fold_in"
+  },
+  "antigravity-workspace-template": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/antigravity-workspace-template",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/antigravity-workspace-template",
+    "status": "queued_for_fold_in"
+  },
+  "nodejs-docs-samples": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/nodejs-docs-samples",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/nodejs-docs-samples",
+    "status": "queued_for_fold_in"
+  },
+  "reor": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/reor",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/reor",
+    "status": "queued_for_fold_in"
+  },
+  "LeaderF": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/LeaderF",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/LeaderF",
+    "status": "queued_for_fold_in"
+  },
+  "fastapi": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/fastapi",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/fastapi",
+    "status": "queued_for_fold_in"
+  },
+  "Scrapling": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Scrapling",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Scrapling",
+    "status": "queued_for_fold_in"
+  },
+  "ladybug-vlang": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ladybug-vlang",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ladybug-vlang",
+    "status": "queued_for_fold_in"
+  },
+  "spec-kit": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/spec-kit",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/spec-kit",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-python-environments": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-python-environments",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-python-environments",
+    "status": "queued_for_fold_in"
+  },
+  "cors": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cors",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cors",
+    "status": "queued_for_fold_in"
+  },
+  "basedpyright-zed": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/basedpyright-zed",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/basedpyright-zed",
+    "status": "queued_for_fold_in"
+  },
+  "EasyConnect": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/EasyConnect",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/EasyConnect",
+    "status": "queued_for_fold_in"
+  },
+  "genai-factory": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/genai-factory",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/genai-factory",
+    "status": "queued_for_fold_in"
+  },
+  "homebrew-cask": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/homebrew-cask",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/homebrew-cask",
+    "status": "queued_for_fold_in"
+  },
+  "agent-starter-pack": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/agent-starter-pack",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/agents/agent-starter-pack",
+    "status": "queued_for_fold_in"
+  },
+  "shellcheck": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/shellcheck",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/shellcheck",
+    "status": "queued_for_fold_in"
+  },
+  "grepai-beads-helpers": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/grepai-beads-helpers",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/grepai-beads-helpers",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-copilot-chat": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-copilot-chat",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-copilot-chat",
+    "status": "queued_for_fold_in"
+  },
+  "incubator-kie-kogito-examples": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/incubator-kie-kogito-examples",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/incubator-kie-kogito-examples",
+    "status": "queued_for_fold_in"
+  },
+  "python-docs-samples": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/python-docs-samples",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/python-docs-samples",
+    "status": "queued_for_fold_in"
+  },
+  "antigravity-kit": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/antigravity-kit",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/antigravity-kit",
+    "status": "queued_for_fold_in"
+  },
+  "sanic": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/sanic",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/sanic",
+    "status": "queued_for_fold_in"
+  },
+  "bugscope": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/bugscope",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/bugscope",
+    "status": "queued_for_fold_in"
+  },
+  "langextract-mcp": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/langextract-mcp",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/packages/langextract-mcp",
+    "status": "queued_for_fold_in"
+  },
+  "pylance-release": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pylance-release",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pylance-release",
+    "status": "queued_for_fold_in"
+  },
+  "Webhoxy": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Webhoxy",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Webhoxy",
+    "status": "queued_for_fold_in"
+  },
+  "Portfolio": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Portfolio",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Portfolio",
+    "status": "queued_for_fold_in"
+  },
+  "pubsub": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pubsub",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pubsub",
+    "status": "queued_for_fold_in"
+  },
+  "https-github.com-zszszszsz-.config": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/https-github.com-zszszszsz-.config",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/https-github.com-zszszszsz-.config",
+    "status": "queued_for_fold_in"
+  },
+  "ai-pr-reviewer": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ai-pr-reviewer",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ai-pr-reviewer",
+    "status": "queued_for_fold_in"
+  },
+  "LangExtract-RAG": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/LangExtract-RAG",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/LangExtract-RAG",
+    "status": "queued_for_fold_in"
+  },
+  "eslint-config-prettier": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/eslint-config-prettier",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/eslint-config-prettier",
+    "status": "queued_for_fold_in"
+  },
+  "ui-ux-pro-max-skill": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ui-ux-pro-max-skill",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ui-ux-pro-max-skill",
+    "status": "queued_for_fold_in"
+  },
+  "javascript-algorithms": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/javascript-algorithms",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/javascript-algorithms",
+    "status": "queued_for_fold_in"
+  },
+  "uvicorn": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/uvicorn",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/uvicorn",
+    "status": "queued_for_fold_in"
+  },
+  "agentskills": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/agentskills",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/agents/agentskills",
+    "status": "queued_for_fold_in"
+  },
+  "brave-core": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/brave-core",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/brave-core",
+    "status": "queued_for_fold_in"
+  },
+  "uvicorn-gunicorn-docker": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/uvicorn-gunicorn-docker",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/uvicorn-gunicorn-docker",
+    "status": "queued_for_fold_in"
+  },
+  "nbconvert": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/nbconvert",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/nbconvert",
+    "status": "queued_for_fold_in"
+  },
+  "terragrunt-infrastructure-live-stacks-example": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terragrunt-infrastructure-live-stacks-example",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terragrunt-infrastructure-live-stacks-example",
+    "status": "queued_for_fold_in"
+  },
+  "skills": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/skills",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/skills",
+    "status": "queued_for_fold_in"
+  },
+  "turboquant-mlx": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/turboquant-mlx",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/turboquant-mlx",
+    "status": "queued_for_fold_in"
+  },
+  "shotgun_code": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/shotgun_code",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/shotgun_code",
+    "status": "queued_for_fold_in"
+  },
+  "nanobrowser": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/nanobrowser",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/nanobrowser",
+    "status": "queued_for_fold_in"
+  },
+  "prettier-vscode": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/prettier-vscode",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/prettier-vscode",
+    "status": "queued_for_fold_in"
+  },
+  "system-prompts-and-models-of-ai-tools": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/system-prompts-and-models-of-ai-tools",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/system-prompts-and-models-of-ai-tools",
+    "status": "queued_for_fold_in"
+  },
+  "TrendRadar": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/TrendRadar",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/TrendRadar",
+    "status": "queued_for_fold_in"
+  },
+  "chat-ui": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/chat-ui",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/chat-ui",
+    "status": "queued_for_fold_in"
+  },
+  "terraform-zero-to-hero": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/terraform-zero-to-hero",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/terraform-zero-to-hero",
+    "status": "queued_for_fold_in"
+  },
+  "FawltyDeps": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/FawltyDeps",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/FawltyDeps",
+    "status": "queued_for_fold_in"
+  },
+  "claude-code-system-prompt": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/claude-code-system-prompt",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/claude-code-system-prompt",
+    "status": "queued_for_fold_in"
+  },
+  "Docker-Ubuntu-Desktop-NoMachine": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Docker-Ubuntu-Desktop-NoMachine",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Docker-Ubuntu-Desktop-NoMachine",
+    "status": "queued_for_fold_in"
+  },
+  "cloud-code-samples": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cloud-code-samples",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cloud-code-samples",
+    "status": "queued_for_fold_in"
+  },
+  "notebook": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/notebook",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/notebook",
+    "status": "queued_for_fold_in"
+  },
+  "javascript": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/javascript",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/javascript",
+    "status": "queued_for_fold_in"
+  },
+  "awesome-nano-banana-pro-prompts": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/awesome-nano-banana-pro-prompts",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/awesome-nano-banana-pro-prompts",
+    "status": "queued_for_fold_in"
+  },
+  "system_prompts_leaks": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/system_prompts_leaks",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/system_prompts_leaks",
+    "status": "queued_for_fold_in"
+  },
+  "datasette": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/datasette",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/datasette",
+    "status": "queued_for_fold_in"
+  },
+  "node": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/node",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/node",
+    "status": "queued_for_fold_in"
+  },
+  "Kosmos": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Kosmos",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Kosmos",
+    "status": "queued_for_fold_in"
+  },
+  "nowgrep": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/nowgrep",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/nowgrep",
+    "status": "queued_for_fold_in"
+  },
+  "stitch-skills": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/stitch-skills",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/stitch-skills",
+    "status": "queued_for_fold_in"
+  },
+  "google-api-nodejs-client": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/google-api-nodejs-client",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/google-api-nodejs-client",
+    "status": "queued_for_fold_in"
+  },
+  "ollama": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ollama",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ollama",
+    "status": "queued_for_fold_in"
+  },
+  "Prompt-Engineering-Guide": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Prompt-Engineering-Guide",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Prompt-Engineering-Guide",
+    "status": "queued_for_fold_in"
+  },
+  "Toolio": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/Toolio",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/Toolio",
+    "status": "queued_for_fold_in"
+  },
+  "gcp-hardening-toolkit": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gcp-hardening-toolkit",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gcp-hardening-toolkit",
+    "status": "queued_for_fold_in"
+  },
+  "browser-use": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/browser-use",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/browser-use",
+    "status": "queued_for_fold_in"
+  },
+  "claude-skills-automation": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/claude-skills-automation",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/claude-skills-automation",
+    "status": "queued_for_fold_in"
+  },
+  "eslint-plugin-react": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/eslint-plugin-react",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/eslint-plugin-react",
+    "status": "queued_for_fold_in"
+  },
+  "turborepo": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/turborepo",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/turborepo",
+    "status": "queued_for_fold_in"
+  },
+  "runbooks-infrastructure-live-example": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/runbooks-infrastructure-live-example",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/runbooks-infrastructure-live-example",
+    "status": "queued_for_fold_in"
+  },
+  "coc-markdownlint": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/coc-markdownlint",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/coc-markdownlint",
+    "status": "queued_for_fold_in"
+  },
+  "crawlee": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/crawlee",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/crawlee",
+    "status": "queued_for_fold_in"
+  },
+  "ast-grep-essentials": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ast-grep-essentials",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ast-grep-essentials",
+    "status": "queued_for_fold_in"
+  },
+  "ripgrep": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/ripgrep",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/ripgrep",
+    "status": "queued_for_fold_in"
+  },
+  "vscode": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode",
+    "status": "queued_for_fold_in"
+  },
+  "pyrefly-feedstock": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pyrefly-feedstock",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pyrefly-feedstock",
+    "status": "queued_for_fold_in"
+  },
+  "litellm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/litellm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/litellm",
+    "status": "queued_for_fold_in"
+  },
+  "langchain4j": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/langchain4j",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/langchain4j",
+    "status": "queued_for_fold_in"
+  },
+  "litestar": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/litestar",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/litestar",
+    "status": "queued_for_fold_in"
+  },
+  "github1s": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/github1s",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/github1s",
+    "status": "queued_for_fold_in"
+  },
+  "nodebestpractices": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/nodebestpractices",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/nodebestpractices",
+    "status": "queued_for_fold_in"
+  },
+  "superpowers": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/superpowers",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/superpowers",
+    "status": "queued_for_fold_in"
+  },
+  "prettier-eslint": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/prettier-eslint",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/prettier-eslint",
+    "status": "queued_for_fold_in"
+  },
+  "mlxtend": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/mlxtend",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/mlxtend",
+    "status": "queued_for_fold_in"
+  },
+  "react-slingshot": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/react-slingshot",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/react-slingshot",
+    "status": "queued_for_fold_in"
+  },
+  "smartCFL": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/smartCFL",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/smartCFL",
+    "status": "queued_for_fold_in"
+  },
+  "react": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/react",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/react",
+    "status": "queued_for_fold_in"
+  },
+  "langextract-typescript": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/langextract-typescript",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/packages/langextract-typescript",
+    "status": "queued_for_fold_in"
+  },
+  "deploy-cloudrun": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/deploy-cloudrun",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/deploy-cloudrun",
+    "status": "queued_for_fold_in"
+  },
+  "langextract-rs": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/langextract-rs",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/packages/langextract-rs",
+    "status": "queued_for_fold_in"
+  },
+  "google-cloud-node": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/google-cloud-node",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/google-cloud-node",
+    "status": "queued_for_fold_in"
+  },
+  "superpowers-optimized": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/superpowers-optimized",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/superpowers-optimized",
+    "status": "queued_for_fold_in"
+  },
+  "servers": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/servers",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/servers",
+    "status": "queued_for_fold_in"
+  },
+  "mlx-openai-server": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/mlx-openai-server",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/mlx-openai-server",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-markdownlint": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-markdownlint",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-markdownlint",
+    "status": "queued_for_fold_in"
+  },
+  "GeminiWatermarkTool": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/GeminiWatermarkTool",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/GeminiWatermarkTool",
+    "status": "queued_for_fold_in"
+  },
+  "pickle-rick-extension": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/pickle-rick-extension",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/pickle-rick-extension",
+    "status": "queued_for_fold_in"
+  },
+  "npm": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/npm",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/npm",
+    "status": "queued_for_fold_in"
+  },
+  "alpha-shadcn": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/alpha-shadcn",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/alpha-shadcn",
+    "status": "queued_for_fold_in"
+  },
+  "gitignore": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/gitignore",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/gitignore",
+    "status": "queued_for_fold_in"
+  },
+  "skyvern": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/skyvern",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/skyvern",
+    "status": "queued_for_fold_in"
+  },
+  "antigravity-nix": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/antigravity-nix",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/antigravity-nix",
+    "status": "queued_for_fold_in"
+  },
+  "brno-websites-occupancy-crawler": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/brno-websites-occupancy-crawler",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/brno-websites-occupancy-crawler",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-python": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-python",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-python",
+    "status": "queued_for_fold_in"
+  },
+  "unsloth": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/unsloth",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/unsloth",
+    "status": "queued_for_fold_in"
+  },
+  "tailwind-ecommerce-site": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/tailwind-ecommerce-site",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/tailwind-ecommerce-site",
+    "status": "queued_for_fold_in"
+  },
+  "codemod": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/codemod",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/codemod",
+    "status": "queued_for_fold_in"
+  },
+  "cluster-toolkit": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/cluster-toolkit",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/cluster-toolkit",
+    "status": "queued_for_fold_in"
+  },
+  "run-nix-shell": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/run-nix-shell",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/run-nix-shell",
+    "status": "queued_for_fold_in"
+  },
+  "google-auth-library-nodejs": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/google-auth-library-nodejs",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/google-auth-library-nodejs",
+    "status": "queued_for_fold_in"
+  },
+  "jupyenv": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/jupyenv",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/jupyenv",
+    "status": "queued_for_fold_in"
+  },
+  "angularfire": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/angularfire",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/angularfire",
+    "status": "queued_for_fold_in"
+  },
+  "vscode-extension-telemetry": {
+    "source": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/external_payloads/repos/vscode-extension-telemetry",
+    "destination": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/apps/vscode-extension-telemetry",
+    "status": "queued_for_fold_in"
+  }
+}

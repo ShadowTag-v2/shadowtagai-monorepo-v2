@@ -1,0 +1,38 @@
+Walkthrough: Connecting to Antigravity Cockpit via Chrome Remote Desktop
+Your Cloud Workstation (antigravity-cockpit) has been provisioned with a custom image containing XFCE and Chrome Remote Desktop (CRD).
+IMPORTANT
+The workstation is currently in a STOPPED state. You must start it and perform a one-time registration setup.
+1. Start the Workstation
+The workstation is stopped by default to save costs. Start it using the following command:
+gcloud workstations start antigravity-cockpit \
+    --cluster=antigravity-cluster-v2 \
+    --config=antigravity-cockpit-config \
+    --region=us-central1
+Wait until the state changes to RUNNING.
+2. Register Chrome Remote Desktop
+The CRD service needs to be linked to your Google Account.
+Open remotedesktop.google.com/headless on your local machine.
+Click Begin, then Next, then Authorize.
+Copy the command for Debian Linux. It will look like:DISPLAY= /opt/google/chrome-remote-desktop/start-host --code="4/..." --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname) 
+3. Configure via SSH
+SSH into your running workstation:
+gcloud workstations ssh antigravity-cockpit \
+    --cluster=antigravity-cluster-v2 \
+    --config=antigravity-cockpit-config \
+    --region=us-central1
+Paste the command you copied in Step 2. When prompted:
+Enter a PIN: Create a secure PIN (at least 6 digits).
+Re-enter PIN: Confirm.
+The service should start automatically.
+4. Connect
+Go to remotedesktop.google.com/access.
+You should see your workstation listed (e.g., antigravity-cockpit).
+Click it and enter the PIN you created.
+You will land on the XFCE desktop environment!
+Troubleshooting
+Black Screen? Ensure XFCE was started correctly. The custom image is configured to launch XFCE automatically.
+Service Not Running? Run sudo systemctl status chrome-remote-desktop@$USER.
+Artifacts Created
+￼
+ terraform/workstations.tf: Infrastructure definition.
+images/antigravity-crd/: Custom image build scripts.

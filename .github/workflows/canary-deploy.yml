@@ -1,0 +1,130 @@
+# Canary Deployment Pipeline
+# Deploys to staging → runs Playwright E2E → promotes to production via Cloud Deploy canary
+# Progressive: 25% → 50% → 75% → 100%
+
+name: Canary Deploy
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/counselconduit/**'
+
+env:
+  PROJECT_ID: shadowtag-omega-v4
+  REGION: us-central1
+  SERVICE: counselconduit
+  REGISTRY: us-central1-docker.pkg.dev/shadowtag-omega-v4/counselconduit/api
+
+concurrency:
+  group: canary-deploy-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      image_tag: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}
+          tags: |
+            type=sha,prefix=
+
+      - name: Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/counselconduit
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+
+      - name: Deploy to Staging
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}-staging
+          region: ${{ env.REGION }}
+          image: ${{ env.REGISTRY }}:${{ needs.build.outputs.image_tag }}
+
+  e2e-staging:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        run: |
+          cd apps/counselconduit
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Run E2E Smoke Tests
+        run: |
+          cd apps/counselconduit
+          npx playwright test --config=playwright.staging.config.ts --project=api-smoke
+        env:
+          STAGING_URL: https://${{ env.SERVICE }}-staging-767252945109.${{ env.REGION }}.run.app
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: apps/counselconduit/test-results/
+          retention-days: 7
+
+  canary-production:
+    needs: e2e-staging
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Auth to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+
+      - name: Create Cloud Deploy Release
+        run: |
+          gcloud deploy releases create "release-${{ github.sha }}" \
+            --delivery-pipeline="${{ env.SERVICE }}-canary" \
+            --region=${{ env.REGION }} \
+            --images="${{ env.SERVICE }}=${{ env.REGISTRY }}:${{ needs.build.outputs.image_tag }}" \
+            --project=${{ env.PROJECT_ID }}

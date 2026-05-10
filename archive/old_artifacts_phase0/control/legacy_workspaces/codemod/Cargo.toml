@@ -1,0 +1,111 @@
+[workspace]
+members = [
+    "crates/models",
+    "crates/core",
+    "crates/cli",
+    "crates/runners",
+    "crates/state",
+    "crates/codemod-sandbox",
+    "crates/codemod-sandbox/build",
+    "crates/telemetry",
+    "crates/mcp",
+    "crates/testing-utils",
+    "xtask",
+    "crates/llrt-capabilities",
+    "crates/language-core",
+    "crates/language-javascript",
+    "crates/language-python",
+    "crates/semantic-factory",
+    "crates/tree-sitter-loader",
+]
+resolver = "2"
+
+exclude = [
+  "submodules/rolldown/crates/rolldown",
+]
+
+[workspace.package]
+authors = ["Codemod.com"]
+description = "A self-hostable workflow engine for code transformations"
+documentation = "https://docs.rs/butterflow"
+repository = "https://github.com/codemod/codemod"
+homepage = "https://github.com/codemod/codemod"
+license = "Apache-2.0"
+rust-version = "1.76"
+version = "1.5.4"
+edition = "2021"
+
+[workspace.dependencies]
+butterflow-models = { path = "crates/models" }
+butterflow-core = { path = "crates/core" }
+butterflow-state = { path = "crates/state" }
+butterflow-runners = { path = "crates/runners" }
+butterflow-scheduler = { path = "crates/scheduler" }
+codemod-sandbox = { path = "crates/codemod-sandbox" }
+codemod-telemetry = { path = "crates/telemetry" }
+codemod-mcp = { path = "crates/mcp" }
+testing-utils = { path = "crates/testing-utils" }
+rmcp = { version = "0.8", features = ["server"] }
+codemod-llrt-capabilities = { path = "crates/llrt-capabilities" }
+language-core = { path = "crates/language-core" }
+language-javascript = { path = "crates/language-javascript" }
+language-python = { path = "crates/language-python" }
+semantic-factory = { path = "crates/semantic-factory" }
+tree-sitter-loader = { path = "crates/tree-sitter-loader" }
+
+# Ruff Python semantic analysis and ty_ide
+ruff_python_semantic = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ruff_python_parser = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ruff_python_ast = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ruff_text_size = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ruff_source_file = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ruff_db = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ty_ide = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+ty_project = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0", features = ["testing"] }
+ty_python_semantic = { git = "https://github.com/astral-sh/ruff.git", tag = "0.14.0" }
+
+anyhow = "1.0"
+ast-grep-core = "0.39.7"
+ast-grep-config = "0.39.7"
+ast-grep-dynamic = "0.39.7"
+ast-grep-language = "0.39.7"
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4.5", features = ["derive"] }
+dirs = "6.0"
+env_logger = "0.11"
+flate2 = "1.0"
+futures = "0.3"
+ignore = { version = "0.4.23" }
+log = "0.4"
+regex = "1.10"
+reqwest = { version = "0.12", default-features = false, features = [
+  "rustls-tls-native-roots",
+  "http2",
+  "json",
+  "gzip",
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_json_canonicalizer = "0.2"
+serde_yaml = "0.9"
+tar = "0.4"
+tempfile = "3.8"
+thiserror = "2.0"
+tokio = { version = "1.36", features = ["full"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
+vfs = "0.12"
+walkdir = "2.4"
+
+wasm-bindgen = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+wasm-bindgen-cli-support = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+wasm-bindgen-futures = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+js-sys = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+
+[patch.crates-io]
+wasm-bindgen = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+wasm-bindgen-futures = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+wasm-bindgen-macro = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+wasm-bindgen-shared = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+wasm-bindgen-macro-support = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }
+js-sys = { git = "https://github.com/mohebifar/wasm-bindgen.git", branch = "wasi" }

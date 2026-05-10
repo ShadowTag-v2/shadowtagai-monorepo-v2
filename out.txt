@@ -1,0 +1,103 @@
+Initializing connection to Jules MCP API via stdio...
+✅ Successfully connected to Jules MCP.
+🛠️  Available Tools:
+{
+  tools: [
+    {
+      name: 'jules_list_sources',
+      description: 'List available sources (repositories) on Jules.',
+      inputSchema: {
+        type: 'object',
+        properties: {},
+        title: 'jules_list_sourcesArguments'
+      },
+      outputSchema: {
+        type: 'object',
+        properties: {
+          result: {
+            items: { additionalProperties: true, type: 'object' },
+            title: 'Result',
+            type: 'array'
+          }
+        },
+        required: [ 'result' ],
+        title: 'jules_list_sourcesOutput'
+      }
+    },
+    {
+      name: 'jules_execute_task',
+      description: '\n' +
+        'Create a new Jules session within a source and poll until it reaches a terminal state.\n' +
+        '\n' +
+        'Args:\n' +
+        '    source_name: The name of the source (repository) to operate on.\n' +
+        '    task_description: The description of the task for Jules to execute.\n' +
+        '    automation_mode: The automation mode (default "AUTO_CREATE_PR").\n',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source_name: { title: 'Source Name', type: 'string' },
+          task_description: { title: 'Task Description', type: 'string' },
+          automation_mode: {
+            default: 'AUTO_CREATE_PR',
+            title: 'Automation Mode',
+            type: 'string'
+          }
+        },
+        required: [ 'source_name', 'task_description' ],
+        title: 'jules_execute_taskArguments'
+      },
+      outputSchema: {
+        type: 'object',
+        additionalProperties: true,
+        title: 'jules_execute_taskDictOutput'
+      }
+    },
+    {
+      name: 'jules_approve_plan',
+      description: '\n' +
+        'Approve a pending plan for a Jules session.\n' +
+        '\n' +
+        'Args:\n' +
+        '    session_name: The full resource name of the session.\n' +
+        '    message: Optional message to include with the approval.\n',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          session_name: { title: 'Session Name', type: 'string' },
+          message: { default: '', title: 'Message', type: 'string' }
+        },
+        required: [ 'session_name' ],
+        title: 'jules_approve_planArguments'
+      },
+      outputSchema: {
+        type: 'object',
+        additionalProperties: true,
+        title: 'jules_approve_planDictOutput'
+      }
+    },
+    {
+      name: 'jules_interact',
+      description: '\n' +
+        'Send an interaction to an active Jules session.\n' +
+        '\n' +
+        'Args:\n' +
+        '    session_name: The full resource name of the session.\n' +
+        '    text: The text interaction to send to the session.\n',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          session_name: { title: 'Session Name', type: 'string' },
+          text: { title: 'Text', type: 'string' }
+        },
+        required: [ 'session_name', 'text' ],
+        title: 'jules_interactArguments'
+      },
+      outputSchema: {
+        type: 'object',
+        additionalProperties: true,
+        title: 'jules_interactDictOutput'
+      }
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+# GKE Inference Gateway
+# Provides intelligent, model-aware load balancing with KV cache awareness
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: llm-inference-gateway
+  namespace: cognitive-stack-v5
+  annotations:
+    networking.gke.io/enable-inference-gateway: "true"
+    networking.gke.io/inference-gateway-type: "llm"
+spec:
+  gatewayClassName: gke-l7-global-inference
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces:
+        from: Same
+  - name: https
+    protocol: HTTPS
+    port: 443
+    allowedRoutes:
+      namespaces:
+        from: Same
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: inference-gateway-cert
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-router-route
+  namespace: cognitive-stack-v5
+  annotations:
+    # Enable prefix-aware load balancing for 96% TTFT improvement
+    networking.gke.io/prefix-aware-load-balancing: "true"
+spec:
+  parentRefs:
+  - name: llm-inference-gateway
+    namespace: cognitive-stack-v5
+
+  rules:
+  # Route to prefill deployment
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /v1/completions
+    - path:
+        type: PathPrefix
+        value: /v1/chat/completions
+    backendRefs:
+    - name: llm-prefill-service
+      port: 8000
+      weight: 100
+
+  # Route to decode deployment
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /v1/generate
+    backendRefs:
+    - name: llm-decode-service
+      port: 8000
+      weight: 100
+
+  # Health check route
+  - matches:
+    - path:
+        type: Exact
+        value: /health
+    backendRefs:
+    - name: llm-prefill-service
+      port: 8000
+
+---
+# BackendPolicy for advanced load balancing configuration
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: llm-backend-policy
+  namespace: cognitive-stack-v5
+spec:
+  default:
+    sessionAffinity:
+      type: GENERATED_COOKIE
+      cookieTtl:
+        seconds: 3600
+    timeoutSec: 300  # 5 minutes for long-running inference
+    connectionDraining:
+      drainingTimeoutSec: 60
+
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: llm-inference-gateway
+
+---
+# Health check policy
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: llm-health-check
+  namespace: cognitive-stack-v5
+spec:
+  default:
+    checkIntervalSec: 10
+    timeoutSec: 5
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+    logConfig:
+      enabled: true
+    config:
+      type: HTTP
+      httpHealthCheck:
+        port: 8000
+        requestPath: /health
+
+  targetRef:
+    group: ""
+    kind: Service
+    name: llm-prefill-service

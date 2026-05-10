@@ -1,0 +1,13 @@
+{
+  "name": "uphill-browser-subagent",
+  "version": "1.0.0",
+  "description": "App-Layer browser sensorium for visual generation tasks",
+  "main": "dispatcher.js",
+  "scripts": {
+    "start": "node dispatcher.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.0.0",
+    "@google-cloud/pubsub": "^4.0.0"
+  }
+}

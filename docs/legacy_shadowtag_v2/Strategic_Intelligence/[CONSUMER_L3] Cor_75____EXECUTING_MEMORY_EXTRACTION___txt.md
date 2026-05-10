@@ -1,0 +1,215 @@
+# Original Path: Cor.75 **”EXECUTING MEMORY EXTRACTION**/Cor.75 **”EXECUTING MEMORY EXTRACTION**.txt
+
+# Categories: CONSUMER_L3, CORE_L2, DEFENSE_L6, FINANCE_BIZ, LEGAL
+
+Cor.75 **”EXECUTING MEMORY EXTRACTION**
+
+**pnkln CORE STACK SPECIFICATION EXTRACTION**
+
+```json
+{
+  "extraction_source": "conversation_search + userMemories",
+  "extraction_date": "2025-11-09",
+  "specification_version": "Cor.53 + Cor.34 + Cor.35 + Cor.37",
+
+  "component_hierarchy": {
+    "jr_engine": {
+      "name": "JR Engine (Judgment Rule)",
+      "function": "Compliance Framework risk assessment",
+      "performance": {
+        "latency_target": "<500μs",
+        "assessment_method": "Risk Matrix: Prob(A-E) × Severity(I-IV) → Level(EH/H/M/L)"
+      },
+      "verticals": ["Sales", "RFP", "Call Intel", "Deal Intel", "Negotiation"],
+      "output": "ROI-optimized decision recommendations"
+    },
+
+    "cor_brain": {
+      "name": "Cor (Unified Execution Brain)",
+      "function": "Single-CPU coordinator",
+      "performance": {
+        "latency_target": "<1ms p99"
+      },
+      "architecture": "Event-driven microservices",
+      "verticals": ["Corporate AI", "Private LLM", "Strategic Planning"],
+      "scope": "Meta-orchestration across all agents"
+    },
+
+    "nervous_system": {
+      "name": "NS (Nervous System)",
+      "function": "Elastic distribution layer / Service mesh",
+      "performance": {
+        "routing_latency": "<100μs"
+      },
+      "technology": ["Istio", "Linkerd"],
+      "purpose": "Real-time message bus for component coordination"
+    },
+
+    "shadowtag_v2": {
+      "name": "ShadowTag 2.0",
+      "watermarking": {
+        "video": {
+          "method": "DCT (Discrete Cosine Transform)",
+          "block_size": "8×8",
+          "coefficient_range": "15-25",
+          "qim_delta": 10
+        },
+        "audio": {
+          "method": "Ultrasonic",
+          "frequency_range": "18-22kHz"
+        }
+      },
+      "robustness": {
+        "compression_survival": "75-85%"
+      },
+      "audit": ["C2PA cryptographic binding", "Blockchain notarization"]
+    },
+
+    "orchestrator": {
+      "name": "Orchestrator (Meta-Brain)",
+      "function": "Coordinates all autonomous agents",
+      "enforcement": {
+        "framework": "Judge 6 PRB (Purpose/Reasons/Brakes)",
+        "coverage_gate": "98%",
+        "rollback_trigger": "<95% coverage",
+        "validation": "Synchronous validation in critical path"
+      }
+    }
+  },
+
+  "cor_documents": {
+    "cor_34": {
+      "title": "90-Point Master Summary",
+      "scope": [
+        "ShadowTag/AiY unified platform design",
+        "18 core systems with 15-30× ROI targets",
+        "Bootstrap execution discipline ($0K→$275M ARR Y3)",
+        "Gate-based milestone validation"
+      ]
+    },
+
+    "cor_35": {
+      "title": "AiU Digital Mall Pitch",
+      "valuation": {
+        "target": "$62B by 2030",
+        "model": "Governed AI marketplace",
+        "verticals": ["defense", "healthcare", "finance"],
+        "moat": "Network effects (keystone positioning)"
+      }
+    },
+
+    "cor_37": {
+      "title": "ShadowTag-v2JR Runtime Doctrine",
+      "tech_stack": {
+        "python": "uv (deterministic environments)",
+        "nodejs": "pnpm (workspace management)",
+        "experimental": "bun (edge runtime)"
+      },
+      "automation_standard": "160-IQ board requirements"
+    }
+  },
+
+  "cognitive_stack_v5": {
+    "capabilities": {
+      "rot": {
+        "name": "Reasoning over Thoughts",
+        "benefit": "40% token reduction",
+        "method": "Thought graphs"
+      },
+      "moe_cl": {
+        "name": "Mixture-of-Experts Continual Learning",
+        "benefit": "Lifelong learning without catastrophic forgetting"
+      },
+      "coda_dlm": {
+        "name": "CoDA/DLM",
+        "benefit": "2-3× decode speed optimization"
+      },
+      "qwen3_vl": {
+        "name": "Qwen3-VL",
+        "capability": "Multimodal vision-language model"
+      }
+    }
+  },
+
+  "deployment_architecture": {
+    "platform": "GKE Native (NOT Vertex AI Workbench)",
+    "namespaces": [
+      {
+        "name": "ShadowTag-v2jr-governance",
+        "purpose": "Judge 6 enforcement"
+      },
+      {
+        "name": "autogen-orchestration",
+        "purpose": "Multi-agent coordination"
+      },
+      {
+        "name": "cognitive-stack-v5",
+        "purpose": "LangGraph state management"
+      },
+      {
+        "name": "shadowtag-v2",
+        "purpose": "Watermarking pipeline"
+      }
+    ],
+    "cost": {
+      "monthly_target": "$60-65K"
+    },
+    "sla": {
+      "latency_p99": "≤90ms E2E",
+      "enforcement": "Non-negotiable"
+    },
+    "llm_allocation": {
+      "gemini": "40%",
+      "claude": "35%",
+      "gpt5": "15%",
+      "grok": "5%",
+      "others": "5%",
+      "infrastructure": "Google Hypercomputer"
+    }
+  },
+
+  "judge_6_enforcement": {
+    "requirements": {
+      "coverage_gate": "98%",
+      "rollback_condition": "<95% coverage",
+      "validation_mode": "Synchronous in critical path",
+      "ci_gate": "2× green before deployment",
+      "specification_method": "Tests-first driven",
+      "metadata_requirement": "Purpose/Reasons/Brakes on every commit"
+    }
+  },
+
+  "deployment_priorities": [
+    "Generate GKE deployment scripts (Google Accelerated Platforms reference)",
+    "Audit existing infrastructure against Cor.53 specs",
+    "Create Judge 6 implementation plan with synchronous enforcement",
+    "Build AutoGen multi-agent orchestration for namespace coordination",
+    "Deploy ShadowTag v2 watermarking pipeline",
+    "Configure LangGraph state management for Cognitive Stack v5"
+  ]
+}
+```
+
+**EXTRACTION COMPLETE**
+
+All pnkln/Cor specifications consolidated from conversation history into indexless JSON format. Component hierarchy, deployment details, enforcement requirements captured.
+
+**NEXT ACTION**: Use this JSON as master reference for deployment, documentation, or API contract definitions
+
+**CRITIQUE**:
+
+- JSON doesn’t capture nuanced strategic context from longer Cor documents
+- Missing some tactical details (specific GKE configs, AutoGen setup patterns)
+- Assumes current specs are stable (no version conflict resolution)
+
+**ASSUMPTIONS**:
+
+- This JSON represents ground truth for current architecture
+- GKE deployment still pending (not Vertex AI Workbench)
+- Judge 6 enforcement not yet implemented (target state documented)
+
+**ALTERNATIVES**:
+
+1. Split into separate JSONs (architecture.json, deployment.json, enforcement.json)
+1. Add JSON Schema definitions for validation
+1. Include reference links to original Cor documents​​​​​​​​​​​​​​​​.”

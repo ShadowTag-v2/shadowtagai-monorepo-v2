@@ -1,0 +1,6 @@
+[
+  {
+    "name": "Bourne: Valuation Drill",
+    "prompt": "Compute operational uplift using throughput, safety, decision-speed, and defect-capture gains. Translate savings to ARR-equivalent and valuation uplift. Return assumptions and sensitivity bands."
+  }
+]

@@ -1,0 +1,73 @@
+---
+# Cor.Claude_Code_6 CPU-Only Deployment (for testing without GPU quota)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Cor.Claude_Code_6-inference-cpu
+  namespace: Cor.Claude_Code_6-system
+  labels:
+    app: Cor.Claude_Code_6
+    component: inference-cpu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Cor.Claude_Code_6
+      component: inference-cpu
+  template:
+    metadata:
+      labels:
+        app: Cor.Claude_Code_6
+        component: inference-cpu
+    spec:
+      serviceAccountName: Cor.Claude_Code_6-sa
+      containers:
+        - name: Cor.Claude_Code_6-gateway
+          image: us-central1-docker.pkg.dev/acquired-jet-478701-b3/shadowtagai-core/engine:latest
+          imagePullPolicy: Always
+          env:
+            - name: ENFORCEMENT_POLICY
+              value: "strict"
+            - name: GPU_MODE
+              value: "disabled"
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+      volumes:
+        - name: atp519-rules
+          configMap:
+            name: atp519-rules
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: Cor.Claude_Code_6-cpu-service
+  namespace: Cor.Claude_Code_6-system
+spec:
+  type: ClusterIP
+  selector:
+    app: Cor.Claude_Code_6
+    component: inference-cpu
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000

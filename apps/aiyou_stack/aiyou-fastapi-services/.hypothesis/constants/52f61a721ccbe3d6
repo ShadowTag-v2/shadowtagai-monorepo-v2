@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/prompts/templates.py
+# hypothesis_version: 6.151.5
+
+["'s", 'CAUSAL', 'COMPLEX', 'MULTIHOP', 'SIMPLE', 'character', 'compliance', 'directed by', 'general', 'how did', 'legal', 'legal_compliance', 'location of', 'multi_hop', 'narrative', 'nationality of', 'of the', 'performed by', 'plot', 'reason for', 'regulatory', 'scientific', 'story', 'summarization', 'summarize', 'summary of', 'technical', 'what caused', 'what led to', 'what made', 'when', 'where does', 'while', 'why did']

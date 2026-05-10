@@ -1,0 +1,32 @@
+name: Ruff Lint Gate
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/**/*.py'
+      - 'scripts/**/*.py'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/**/*.py'
+      - 'scripts/**/*.py'
+
+jobs:
+  ruff-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install ruff==0.15.11
+      - name: Ruff Check (apps + scripts)
+        run: ruff check apps/ scripts/ --output-format sarif > ruff-results.sarif || true
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ruff-results.sarif
+        if: always()
+      - name: Strict Ruff Gate
+        run: ruff check apps/ scripts/

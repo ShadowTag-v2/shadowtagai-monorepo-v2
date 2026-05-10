@@ -1,0 +1,10 @@
+/thread-recovery-2stage
+
+Stage 1 — Audit and recover only
+- build a complete ledger of explicit requests, implicit requirements, constraints, dependencies, unresolved issues, abandoned branches, and partially completed deliverables
+- identify omissions, contradictions, changed assumptions, weak reasoning, missing code paths, and overlooked implementation details
+
+Stage 2 — Replan and regenerate
+- rebuild the plan from first principles
+- correct broken assumptions
+- regenerate the answers and reprint all relevant code in full

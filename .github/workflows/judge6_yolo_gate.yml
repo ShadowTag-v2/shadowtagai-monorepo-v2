@@ -1,0 +1,30 @@
+name: Judge 6 Sovereign Code Review
+on:
+  workflow_dispatch:
+  pull_request: { types: [opened, synchronize] }
+
+concurrency:
+  group: judge6_yolo_gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  csrmc-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Dependabot PRs cannot access GEMINI_API_KEY — skip to avoid startup_failure noise.
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g @google/gemini-cli-beta
+      - name: Execute Judge 6 Gate
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          gemini --yolo <<EOF
+            You are Judge 6. Review PR #${{ github.event.pull_request.number }} via gh CLI.
+            1. Apply the Judge 6 CSRMC (+ATP 5-19 for physical) Risk Matrix.
+            2. Check for CA Minor AI Act / EU 26 violations.
+            3. Verify context against GIDEON.md constraints.
+            If ANY 🚨 Critical issues are found, return "CRITICAL_ISSUES_FOUND=true" and EXIT 1 (Block Merge).
+            If clean, output "VERDICT: APPROVED" and EXIT 0.
+          EOF

@@ -1,0 +1,114 @@
+# CodePMCS Configuration
+# AI-Powered Code Quality & Remediation Platform
+
+# Scanner settings
+scanner:
+  # File extensions to scan
+  extensions:
+    - .py
+    - .js
+    - .ts
+    - .tsx
+    - .jsx
+    - .go
+    - .java
+    - .rb
+    - .rs
+
+  # Directories to exclude
+  exclude_dirs:
+    - node_modules
+    - .git
+    - __pycache__
+    - venv
+    - .venv
+    - dist
+    - build
+    - .next
+    - coverage
+
+  # Maximum file size to scan (KB)
+  max_file_size_kb: 500
+
+  # Gemini model for AI analysis
+  gemini_model: gemini-3.1-flash-lite-preview-preview-06-05
+
+  # Enable/disable scan types
+  enable_security: true
+  enable_quality: true
+  enable_style: true
+  enable_ai_scan: true
+
+# Remediator settings
+remediator:
+  # Gemini model for fix generation
+  gemini_model: gemini-3.1-flash-lite-preview-preview-06-05
+
+  # Minimum severity to auto-fix
+  min_severity: medium
+
+  # Issue types that can be auto-fixed without review
+  auto_fix_types:
+    - style
+    - quality
+    - todo
+
+  # Issue types requiring human review
+  review_required_types:
+    - security
+    - bug
+
+  # Maximum fixes per run
+  max_fixes_per_run: 50
+
+  # Minimum confidence to apply fix
+  confidence_threshold: 0.7
+
+# PR Generator settings
+pr_generator:
+  # PR title prefix
+  title_prefix: "CodePMCS:"
+
+  # Labels to add to PRs
+  labels:
+    - automated
+    - code-quality
+    - codepmcs
+
+  # Reviewers to request (GitHub usernames)
+  reviewers: []
+
+  # Auto-merge if all checks pass
+  auto_merge: false
+
+# GitHub Action settings
+github_action:
+  # Fail CI if critical issues found
+  fail_on_critical: true
+
+  # Fail CI if high severity issues found
+  fail_on_high: false
+
+  # Create PR for fixes automatically
+  auto_create_pr: true
+
+  # SARIF upload for GitHub Security tab
+  upload_sarif: true
+
+# n-autoresearch/Kosmos/BioAgents integration
+n-autoresearch/Kosmos/BioAgents:
+  # Troop name in squadron
+  troop_name: CODEPMCS
+
+  # Number of agents
+  strength: 50
+
+  # Model to use
+  model: gemini-3.1-flash-lite-preview-preview-06-05
+
+  # Capabilities
+  capabilities:
+    - scan
+    - fix
+    - pr_create
+    - review

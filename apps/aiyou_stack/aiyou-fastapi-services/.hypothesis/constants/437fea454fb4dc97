@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/finjudge/rules/compliance.py
+# hypothesis_version: 6.151.5
+
+[2.0, 6.0, 250000, 'Basel III', 'Dodd-Frank', 'FINRA Rule 4210', 'General Compliance', 'Margin Requirements', 'MiFID II', 'Net Capital Rule', 'Regulation T', 'SEC Rule 15c3-1', 'applicable_types', 'best_execution', 'capital_ratio', 'counterparty', 'description', 'kyc_complete', 'leverage', 'margin', 'name', 'net_capital', 'posted', 'required', 'required_capital', 'tier1']

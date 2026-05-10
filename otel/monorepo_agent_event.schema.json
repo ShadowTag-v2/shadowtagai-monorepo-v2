@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Monorepo Agent Event",
+  "description": "Schema for agent action events recorded via OTel traces and evidence ledger.",
+  "type": "object",
+  "required": ["timestamp", "event_type", "agent", "action"],
+  "properties": {
+    "timestamp": { "type": "string", "format": "date-time" },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "code_write",
+        "code_delete",
+        "push",
+        "deploy",
+        "test",
+        "lint",
+        "build",
+        "research",
+        "decision",
+        "evidence"
+      ]
+    },
+    "agent": { "type": "string" },
+    "action": { "type": "string" },
+    "files_changed": { "type": "array", "items": { "type": "string" } },
+    "gate_results": {
+      "type": "object",
+      "properties": {
+        "secret_scan": { "type": "string", "enum": ["pass", "fail", "skip"] },
+        "bloat_gate": { "type": "string", "enum": ["pass", "fail", "skip"] },
+        "type_check": { "type": "string", "enum": ["pass", "fail", "skip"] },
+        "design_lint": { "type": "string", "enum": ["pass", "fail", "skip"] }
+      }
+    },
+    "evidence_id": { "type": "string" },
+    "bead_id": { "type": "string" },
+    "trace_id": { "type": "string" }
+  }
+}

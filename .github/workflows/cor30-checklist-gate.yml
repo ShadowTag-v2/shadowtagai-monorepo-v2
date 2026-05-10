@@ -1,0 +1,123 @@
+name: Cor.30 Security Checklist Gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/**'
+      - 'core/**'
+      - 'shared/**'
+
+permissions:
+  contents: read
+
+jobs:
+  cor30-checklist:
+    name: Cor.30 Six-Pillar Verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ─── Pillar 1: Identity & Session ───────────────
+      - name: "Pillar 1: Check for hardcoded token TTLs > 3600s"
+        run: |
+          echo "Scanning for suspiciously long token lifetimes..."
+          # Flag any numeric literal > 3600 near 'expires' or 'ttl' or 'maxAge'
+          if grep -rn --include='*.py' --include='*.ts' --include='*.js' \
+            -E '(expires_in|ttl|maxAge|max_age)\s*[:=]\s*[0-9]{5,}' \
+            apps/ core/ shared/ 2>/dev/null; then
+            echo "::warning::Found potential long-lived tokens (>99999s). Verify they comply with 15-60 min mandate."
+          fi
+          echo "✅ Pillar 1 scan complete"
+
+      # ─── Pillar 2: Secrets & Supply Chain ───────────
+      - name: "Pillar 2: Verify no .env files committed"
+        run: |
+          if find apps/ core/ shared/ -name '.env' -not -name '.env.template' -not -name '.env.example' | grep -q .; then
+            echo "::error::Found .env file in source tree. .env files are BANNED (GEMINI.md secrets_manager_doctrine)."
+            exit 1
+          fi
+          echo "✅ No .env files found"
+
+      - name: "Pillar 2: Verify no dotenv loader in production code"
+        run: |
+          if grep -rn --include='*.py' 'from dotenv import\|import dotenv\|load_dotenv' \
+            apps/counselconduit/ 2>/dev/null; then
+            echo "::error::python-dotenv is BANNED in production code (GEMINI.md secrets_manager_doctrine)."
+            exit 1
+          fi
+          echo "✅ No dotenv usage in production code"
+
+      # ─── Pillar 3: API Hardening ────────────────────
+      - name: "Pillar 3: Check for Pydantic/Zod validation imports"
+        run: |
+          echo "Verifying input validation is present..."
+          PY_ROUTES=$(find apps/counselconduit -name '*.py' -exec grep -l 'def.*route\|@app\.\|@router\.' {} \; 2>/dev/null | wc -l)
+          PY_PYDANTIC=$(find apps/counselconduit -name '*.py' -exec grep -l 'from pydantic\|BaseModel\|Field(' {} \; 2>/dev/null | wc -l)
+          echo "Route files: $PY_ROUTES, Pydantic files: $PY_PYDANTIC"
+          if [[ "$PY_ROUTES" -gt 0 && "$PY_PYDANTIC" -eq 0 ]]; then
+            echo "::error::API routes found but no Pydantic validation. All inputs MUST be validated (AGENTS.md rule 3)."
+            exit 1
+          fi
+          echo "✅ Pillar 3 validation check complete"
+
+      # ─── Pillar 4: Storage & Uploads ────────────────
+      - name: "Pillar 4: Check for signed URL usage in storage"
+        run: |
+          echo "Scanning for direct storage access patterns..."
+          if grep -rn --include='*.py' --include='*.ts' \
+            'blob\.public_url\|make_public\|publicRead' \
+            apps/ 2>/dev/null; then
+            echo "::warning::Found public storage access. Use signed URLs with TTL instead (Cor.30 R19-20)."
+          fi
+          echo "✅ Pillar 4 scan complete"
+
+      # ─── Pillar 5: Payments & Webhooks ──────────────
+      - name: "Pillar 5: Verify Stripe webhook HMAC verification"
+        run: |
+          STRIPE_WEBHOOK_FILES=$(grep -rln --include='*.py' --include='*.ts' \
+            'webhook\|stripe.*event' apps/ 2>/dev/null || true)
+          if [[ -n "$STRIPE_WEBHOOK_FILES" ]]; then
+            HMAC_CHECK=$(grep -l 'verify_header\|constructEvent\|Webhook.construct' $STRIPE_WEBHOOK_FILES 2>/dev/null || true)
+            if [[ -z "$HMAC_CHECK" ]]; then
+              echo "::error::Stripe webhook handlers found without HMAC verification (Cor.30 R21-22)."
+              exit 1
+            fi
+          fi
+          echo "✅ Pillar 5 scan complete"
+
+      # ─── Pillar 6: Ops & Audit ──────────────────────
+      - name: "Pillar 6: Verify no PII in log statements"
+        run: |
+          echo "Scanning for potential PII in log statements..."
+          if grep -rn --include='*.py' \
+            -E 'log(ging)?\.(info|warn|error|debug).*\b(email|password|ssn|credit_card|phone)\b' \
+            apps/counselconduit/ 2>/dev/null; then
+            echo "::warning::Potential PII in log statements. Structured logging must strip PII (Cor.30 R24-30)."
+          fi
+          echo "✅ Pillar 6 scan complete"
+
+      # ─── BullMQ Ban ────────────────────────────────
+      - name: "Queue Doctrine: Verify no BullMQ usage"
+        run: |
+          if grep -rn --include='*.ts' --include='*.js' --include='*.py' \
+            'bullmq\|BullMQ\|bull-mq' \
+            apps/ core/ shared/ 2>/dev/null; then
+            echo "::error::BullMQ is BANNED. Use Google Cloud Tasks exclusively (GEMINI.md rich_hickey_doctrine)."
+            exit 1
+          fi
+          echo "✅ No BullMQ usage found"
+
+      # ─── RFC 9457 Error Format ──────────────────────
+      - name: "API: Check error responses use RFC 9457 format"
+        run: |
+          echo "Scanning for raw exception returns..."
+          if grep -rn --include='*.py' \
+            -E 'raise HTTPException.*detail=.*traceback\b|return.*stack_trace|return.*str\(e\)' \
+            apps/counselconduit/ 2>/dev/null; then
+            echo "::warning::Potential raw stack trace in error response. Use RFC 9457 format (AGENTS.md rule 5)."
+          fi
+          echo "✅ RFC 9457 scan complete"
+
+      - name: "Summary"
+        run: echo "🛡️ Cor.30 Six-Pillar Security Gate — All checks passed"

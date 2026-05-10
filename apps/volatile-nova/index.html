@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega Protocol: Ingestion Control</title>
+    <!-- Modern Typography: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="hud-container">
+        <header class="hud-header">
+            <div class="logo-cluster">
+                <div class="orb"></div>
+                <h1>Omega Protocol <span class="badge">v2.0</span></h1>
+            </div>
+            <div class="status-indicator">
+                <div class="pulse-ring"></div>
+                <span id="connection-status">Scanning ASGI Port 8000...</span>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <section class="glass-panel metrics-panel">
+                <h2>API Health Telemetry</h2>
+                <div class="metrics-grid" id="health-metrics">
+                    <div class="metric-card skeleton"></div>
+                    <div class="metric-card skeleton"></div>
+                </div>
+                <button type="button" id="btn-ping" class="btn-primary">Force Heartbeat Ping</button>
+            </section>
+
+            <section class="glass-panel logs-panel">
+                <h2>Ingestion Job Status</h2>
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="terminal-title">GET /ingestion/status</span>
+                    </div>
+                    <pre id="api-response-window" class="code-output">// Awaiting ASGI server handshake...</pre>
+                </div>
+                <button type="button" id="btn-fetch-jobs" class="btn-secondary">Query Latest Job</button>
+            </section>
+        </main>
+    </div>
+    <script src="./api_client.js"></script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+{
+  "security-enforcement": {
+    "type": "guardrail",
+    "enforcement": "block",
+    "priority": "critical",
+    "promptTriggers": {
+      "keywords": [
+        "auth",
+        "authenticate",
+        "authorization",
+        "encrypt",
+        "encryption",
+        "decrypt",
+        "secret",
+        "password",
+        "token",
+        "apiKey",
+        "api",
+        "endpoint",
+        "deploy",
+        "production",
+        "database",
+        "db",
+        "prisma",
+        "query"
+      ],
+      "intentPatterns": [
+        "(create|add|implement|build).*(auth|security|api|endpoint)",
+        "(deploy|ship|release|production)",
+        "store.*(password|secret|key)",
+        "connect.*(database|db|api)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/*.ts",
+        "**/*.py",
+        "**/*.js",
+        "**/auth/**/*",
+        "**/api/**/*",
+        "**/.env*",
+        "**/config/**/*"
+      ],
+      "contentPatterns": [
+        "password",
+        "apiKey",
+        "SECRET",
+        "secret",
+        "token",
+        "encrypt",
+        "decrypt",
+        "http://",
+        "prisma",
+        "fetch\\(",
+        "axios"
+      ]
+    }
+  },
+
+  "ShadowTag-v2jr-judge": {
+    "type": "decision",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "feature",
+        "implement",
+        "build",
+        "create",
+        "architecture",
+        "design",
+        "plan",
+        "refactor",
+        "deploy",
+        "launch",
+        "release"
+      ],
+      "intentPatterns": [
+        "(plan|design|architect).*feature",
+        "(implement|build|create).*(feature|service|component)",
+        "refactor.*",
+        "deploy.*(production|staging)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/ARCHITECTURE.md", "**/PLAN.md", "**/dev/active/**/*", "**/CLAUDE.md"],
+      "contentPatterns": ["## Architecture", "## Plan", "Monte Carlo", "ROI", "LTV:CAC"]
+    }
+  },
+
+  "backend-dev-guidelines": {
+    "type": "domain",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "backend",
+        "api",
+        "endpoint",
+        "route",
+        "controller",
+        "service",
+        "repository",
+        "database",
+        "db",
+        "prisma",
+        "query",
+        "express"
+      ],
+      "intentPatterns": [
+        "(create|add|build).*(route|endpoint|controller|service)",
+        "(how to|best practice).*(backend|api)",
+        "database.*(query|operation|migration)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/backend/**/*.ts",
+        "**/api/**/*.ts",
+        "**/services/**/*.ts",
+        "**/controllers/**/*.ts",
+        "**/repositories/**/*.ts",
+        "**/routes/**/*.ts"
+      ],
+      "contentPatterns": [
+        "router\\.",
+        "export.*Controller",
+        "express",
+        "prisma",
+        "app\\.use",
+        "app\\.get",
+        "app\\.post"
+      ]
+    }
+  },
+
+  "frontend-dev-guidelines": {
+    "type": "domain",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "frontend",
+        "react",
+        "component",
+        "ui",
+        "tanstack",
+        "query",
+        "router",
+        "mui",
+        "form"
+      ],
+      "intentPatterns": [
+        "(create|add|build).*(component|page|layout)",
+        "(how to|best practice).*(react|frontend|ui)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/frontend/**/*.tsx",
+        "**/frontend/**/*.jsx",
+        "**/components/**/*.tsx",
+        "**/pages/**/*.tsx",
+        "**/src/**/*.tsx"
+      ],
+      "contentPatterns": [
+        "import.*React",
+        "export.*function.*Component",
+        "useState",
+        "useEffect",
+        "useQuery",
+        "useMutation"
+      ]
+    }
+  },
+
+  "universal-copilot-patterns": {
+    "type": "compliance",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "copilot",
+        "ai assist",
+        "code completion",
+        "llm routing",
+        "multi-llm",
+        "vendor api",
+        "spoofing",
+        "compliant",
+        "mitm"
+      ],
+      "intentPatterns": [
+        "(build|create|implement).*(ai assist|copilot|code completion)",
+        "(integrate|add).*(llm|openai|anthropic|claude)",
+        "(route|routing).*(llm|model|provider)",
+        "compliant.*(api|integration)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/ai-assist/**/*", "**/llm/**/*", "**/providers/**/*", "**/router/**/*"],
+      "contentPatterns": [
+        "OpenAI",
+        "Anthropic",
+        "import.*openai",
+        "import.*anthropic",
+        "routing.*llm",
+        "multi.*agent"
+      ]
+    }
+  },
+
+  "pnkln-component-analysis": {
+    "type": "analysis",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "analyze",
+        "review",
+        "audit",
+        "pnkln",
+        "component",
+        "architecture",
+        "performance",
+        "optimization",
+        "gemini",
+        "ingestion",
+        "judge",
+        "validator",
+        "pipeline",
+        "metrics",
+        "kpi"
+      ],
+      "intentPatterns": [
+        "(analyze|review|audit).*(component|architecture|system)",
+        "(optimize|improve).*(performance|cost|latency)",
+        "pnkln.*(stack|component|service)",
+        "(gemini|claude).*(analysis|prompt)",
+        "(ingestion|collection|validation).*(layer|service)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/ARCHITECTURE.md",
+        "**/ANALYSIS.md",
+        "**/REVIEW.md",
+        "**/docs/architecture/**/*",
+        "**/docs/analysis/**/*",
+        "**/pnkln/**/*"
+      ],
+      "contentPatterns": [
+        "## Component Analysis",
+        "## Architecture",
+        "Gemini.*Analysis",
+        "Judge #",
+        "Ingestion Layer",
+        "Performance Metrics",
+        "KPI",
+        "p99",
+        "throughput"
+      ]
+    }
+  },
+
+  "ultrathink-steve-jobs": {
+    "type": "agent",
+    "enforcement": "suggest",
+    "priority": "critical",
+    "model": "opus",
+    "promptTriggers": {
+      "keywords": [
+        "ultrathink",
+        "insanely great",
+        "design obsession",
+        "elegant",
+        "perfection",
+        "steve jobs",
+        "reality distortion",
+        "boy scout",
+        "wealth acceleration",
+        "da vinci"
+      ],
+      "intentPatterns": [
+        "(design|architect|plan).*(system|feature|product)",
+        "(make|create).*(elegant|perfect|insanely great)",
+        "think like.*jobs",
+        "ultrathink.*"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/ARCHITECTURE.md", "**/DESIGN.md", "**/PLAN.md"],
+      "contentPatterns": ["## Ultrathink", "Steve Jobs", "Reality Distortion", "Insanely Great"]
+    }
+  },
+
+  "action-verb-analysis": {
+    "type": "reasoning",
+    "enforcement": "suggest",
+    "priority": "critical",
+    "model": "opus",
+    "promptTriggers": {
+      "keywords": [
+        "decompose",
+        "verb analysis",
+        "bar exam",
+        "thoroughness",
+        "isolate verbs",
+        "action verbs",
+        "separate consideration",
+        "break down"
+      ],
+      "intentPatterns": [
+        "(decompose|break down|analyze).*(requirements|task|problem)",
+        "each.*(verb|action).*(separate|own)",
+        "(thorough|comprehensive).*(analysis|coverage)",
+        "verb.*analysis"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/requirements/**/*", "**/specs/**/*", "**/PLAN.md"],
+      "contentPatterns": ["## Verb Analysis", "Action Verbs", "RECEIVES", "VALIDATES", "TRANSFORMS"]
+    }
+  },
+
+  "chain-of-thought": {
+    "type": "reasoning",
+    "enforcement": "suggest",
+    "priority": "high",
+    "model": "sonnet",
+    "promptTriggers": {
+      "keywords": [
+        "step by step",
+        "reasoning",
+        "think through",
+        "logical",
+        "derive",
+        "cot",
+        "chain of thought"
+      ],
+      "intentPatterns": [
+        "(think|reason|work).*(step by step|through)",
+        "(solve|calculate|derive).*logically",
+        "let's think.*step"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [],
+      "contentPatterns": ["Step 1:", "Let's think step by step", "Therefore"]
+    }
+  },
+
+  "tree-of-thoughts": {
+    "type": "reasoning",
+    "enforcement": "suggest",
+    "priority": "high",
+    "model": "opus",
+    "promptTriggers": {
+      "keywords": [
+        "explore options",
+        "branches",
+        "alternatives",
+        "evaluate paths",
+        "tot",
+        "tree of thoughts",
+        "multiple approaches",
+        "bfs",
+        "dfs"
+      ],
+      "intentPatterns": [
+        "(explore|evaluate).*(options|approaches|paths)",
+        "multiple.*(valid|possible).*(approaches|solutions)",
+        "(complex|uncertain).*problem",
+        "tree.*thoughts"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [],
+      "contentPatterns": ["## Approach A", "## Option 1", "Pros:", "Cons:", "Selected:"]
+    }
+  },
+
+  "panel-gpt-debate": {
+    "type": "reasoning",
+    "enforcement": "suggest",
+    "priority": "high",
+    "model": "opus",
+    "promptTriggers": {
+      "keywords": [
+        "panel",
+        "experts discuss",
+        "multiple perspectives",
+        "consensus",
+        "panelgpt",
+        "alice bob charles",
+        "interdisciplinary"
+      ],
+      "intentPatterns": [
+        "(panel|experts).*(discuss|debate)",
+        "multiple.*(perspectives|viewpoints)",
+        "(reach|find).*consensus",
+        "interdisciplinary.*"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [],
+      "contentPatterns": ["Expert 1:", "Alice:", "Consensus:", "Panel Discussion"]
+    }
+  },
+
+  "multi-agent-debate": {
+    "type": "reasoning",
+    "enforcement": "suggest",
+    "priority": "critical",
+    "model": "opus",
+    "promptTriggers": {
+      "keywords": [
+        "mad",
+        "debate",
+        "rcr",
+        "reflect critique refine",
+        "robust reasoning",
+        "multi-agent",
+        "iterative debate",
+        "self-correct"
+      ],
+      "intentPatterns": [
+        "(multi-agent|mad).*debate",
+        "reflect.*critique.*refine",
+        "(robust|verified).*reasoning",
+        "(error-prone|high-accuracy).*"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [],
+      "contentPatterns": ["## REFLECT", "## CRITIQUE", "## REFINE", "Agent 1:", "\\\\boxed{"]
+    }
+  },
+
+  "prompt-frameworks": {
+    "type": "domain",
+    "enforcement": "suggest",
+    "priority": "high",
+    "model": "sonnet",
+    "promptTriggers": {
+      "keywords": [
+        "rtf",
+        "tag",
+        "bab",
+        "care",
+        "rise",
+        "prompt structure",
+        "prompt template",
+        "role task format"
+      ],
+      "intentPatterns": [
+        "(format|structure).*(prompt|request)",
+        "(rtf|tag|bab|care|rise).*",
+        "(clear|effective).*communication"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/prompts/**/*", "**/templates/**/*"],
+      "contentPatterns": ["Role:", "Task:", "Format:", "Before:", "After:", "Bridge:"]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+id: no-print-statement
+message: "Style: Use 'logging' module instead of 'print()' in production code."
+severity: warning
+language: python
+rule:
+  pattern: |
+    print($$$ARGS)
+files:
+  - "apps/counselconduit/**/*.py"
+  - "apps/kovelai/**/*.py"

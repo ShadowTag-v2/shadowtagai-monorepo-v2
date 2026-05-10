@@ -1,0 +1,8 @@
+
+# CounselConduit Dashboard
+A React-based Attorney Dashboard for the CounselConduit platform, focused on privileged-preserving AI research.
+It uses a sidebar-based navigation system and a main content area.
+
+## Links
+- [Dashboard](/)
+- [Application README](/llms.txt)
