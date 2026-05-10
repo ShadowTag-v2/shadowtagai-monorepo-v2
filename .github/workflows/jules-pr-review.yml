@@ -1,4 +1,4 @@
-name: Jules + GCA Sovereign PR Review (V24)
+name: Jules + GCA Sovereign PR Review (V25)
 
 on:
   pull_request:
@@ -13,8 +13,19 @@ jobs:
       id-token: write
 
     steps:
+      - name: Generate GitHub App Token (Short-Lived)
+        id: app_token
+        uses: peter-murray/workflow-application-token-action@v3
+        with:
+          application_id: ${{ secrets.APP_ID }}
+          application_private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          revoke_token: 'true'
+
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app_token.outputs.token }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
@@ -33,17 +44,14 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: antigravity-stitch-bot@shadowtag-omega-v4.iam.gserviceaccount.com
 
-      - name: Generate GitHub App Token
-        run: python3 scripts/auth_github_app.py --export
-        env:
-          SHADOWTAG_PEM: ${{ secrets.GITHUB_APP_PEM }}
-
       - name: Run Jules + GCA Swarm
         run: |
           python3 tools/scripts/run_swarm.py \
             --pr-number ${{ github.event.pull_request.number }} \
             --branch ${{ github.head_ref }} \
             --mode="full-review"
+        env:
+          GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
 
       - name: Run AST Surgery
         run: bun run scripts/ast_surgery.ts --auto-fix
@@ -53,3 +61,5 @@ jobs:
         run: |
           python3 tools/scripts/post_pr_findings.py \
             --pr ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ steps.app_token.outputs.token }}
