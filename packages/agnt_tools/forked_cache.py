@@ -69,7 +69,7 @@ class ForkedAgentCache:
             path.write_text(json.dumps(data))
             self._hits += 1
             return data["value"]
-        except json.JSONDecodeError, KeyError, OSError:
+        except (json.JSONDecodeError, KeyError, OSError):
             self._misses += 1
             return None
 
