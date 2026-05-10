@@ -1,0 +1,64 @@
+# Gemini Code Assist Configuration
+# https://cloud.google.com/gemini/docs/discover/code-assist-settings
+
+code_review:
+  enabled: true
+  comment_severity_threshold: MEDIUM
+  max_comments_per_review: 25
+  
+  # Review focus areas
+  review_criteria:
+    - security
+    - performance
+    - best_practices
+    - code_style
+    - documentation
+
+  # Language-specific settings
+  language_settings:
+    python:
+      style_guide: google
+      linter: ruff
+    typescript:
+      style_guide: google
+      linter: biome
+    go:
+      style_guide: google
+      linter: golangci-lint
+    rust:
+      style_guide: rust-2021
+      linter: clippy
+
+  # Files to exclude from review
+  exclude_patterns:
+    - "**/*.min.js"
+    - "**/*.min.css"
+    - "**/node_modules/**"
+    - "**/dist/**"
+    - "**/out/**"
+    - "**/.next/**"
+    - "**/third_party/**"
+    - "**/external_repos/**"
+    - "**/*.lock"
+    - "**/pnpm-lock.yaml"
+    - "**/*.generated.*"
+    - "**/bazel-*/**"
+
+code_customization:
+  enabled: true
+  style:
+    indentation: 2
+    max_line_length: 120
+    quote_style: double
+
+  # Monorepo-specific instructions
+  instructions: |
+    This is a Bazel-managed polyglot monorepo (TypeScript, Python, Go, Rust).
+    - All Python code must pass `ruff check` and `ruff format`.
+    - All TypeScript/JavaScript must pass `biome check`.
+    - No `.env` files — secrets come from GCP Secret Manager.
+    - Firebase Hosting targets: shadowtagai, kovelai, headfade, counselconduit-dashboard.
+    - Queue broker: Google Cloud Tasks ONLY (BullMQ is banned).
+    - GitHub auth: App PEM ONLY (no PATs, no deploy keys).
+    - All imports must be explicit (no wildcard imports).
+    - UUID generation: uuid7 with try/except ImportError fallback.
