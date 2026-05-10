@@ -80,10 +80,110 @@ ARTIFACT_MAX_KB = 10
 MAX_INDEX_ENTRIES = 200
 DRY_RUN = "--dry-run" in sys.argv
 NO_GUARD = "--no-guard" in sys.argv
+FORCE_RUN = "--force" in sys.argv
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BEADS_DIR = REPO_ROOT / ".beads"
 LOCK_FILE = BEADS_DIR / "dream_consolidation.lock"
+DREAM_STATE_FILE = BEADS_DIR / "dream_state.json"
+
+# --- Dynamic Cost-Balancing Gates (from autoDream.ts) ------------------------
+# These gates prevent premature consolidation runs. Ported from Claude Code's
+# autoDream.ts minHours/minSessions logic to replace fixed nightly scheduling.
+#
+# MIN_HOURS_SINCE_LAST: Minimum hours since last consolidation before allowing
+#   a new run. Prevents redundant scans when KI state hasn't changed.
+# MIN_SESSIONS_SINCE_LAST: Minimum number of new conversation sessions since
+#   last consolidation. Ensures enough new data exists to justify the cost.
+# FORCE_AFTER_HOURS: Hard ceiling — force a run regardless of session count
+#   after this many hours to prevent staleness.
+
+MIN_HOURS_SINCE_LAST = float(os.environ.get("DREAM_MIN_HOURS", "8"))
+MIN_SESSIONS_SINCE_LAST = int(os.environ.get("DREAM_MIN_SESSIONS", "3"))
+FORCE_AFTER_HOURS = float(os.environ.get("DREAM_FORCE_AFTER_HOURS", "48"))
+
+
+def _check_dream_gates(ki_dir: Path) -> tuple[bool, str]:
+    """Evaluate dynamic cost-balancing gates before running consolidation.
+
+    Returns (should_run, reason). If --force is set, gates are bypassed.
+
+    Gate logic (from autoDream.ts):
+      1. Time Gate: hours since lastConsolidatedAt >= MIN_HOURS_SINCE_LAST
+      2. Volume Gate: session count since last consolidation >= MIN_SESSIONS_SINCE_LAST
+      3. Force Gate: hours since lastConsolidatedAt >= FORCE_AFTER_HOURS (overrides #2)
+    """
+    if FORCE_RUN:
+        return True, "--force flag set — gates bypassed"
+
+    # Load dream state
+    state = _load_dream_state()
+    last_consolidated = state.get("last_consolidated_at", "")
+
+    if not last_consolidated:
+        return True, "No previous consolidation recorded — initial run"
+
+    try:
+        last_dt = datetime.fromisoformat(last_consolidated)
+    except ValueError, TypeError:
+        return True, "Invalid last_consolidated_at timestamp — running"
+
+    hours_since = (datetime.now(UTC) - last_dt).total_seconds() / 3600
+
+    # Gate 1: Time gate
+    if hours_since < MIN_HOURS_SINCE_LAST:
+        return False, f"Time gate: {hours_since:.1f}h < {MIN_HOURS_SINCE_LAST}h minimum"
+
+    # Gate 3: Force gate (overrides session count)
+    if hours_since >= FORCE_AFTER_HOURS:
+        return True, f"Force gate: {hours_since:.1f}h >= {FORCE_AFTER_HOURS}h ceiling"
+
+    # Gate 2: Volume gate — count sessions since last consolidation
+    sessions_since = _count_sessions_since(last_dt)
+    if sessions_since < MIN_SESSIONS_SINCE_LAST:
+        return False, (
+            f"Volume gate: {sessions_since} sessions < {MIN_SESSIONS_SINCE_LAST} minimum (next force in {FORCE_AFTER_HOURS - hours_since:.1f}h)"
+        )
+
+    return True, f"All gates passed: {hours_since:.1f}h, {sessions_since} sessions"
+
+
+def _load_dream_state() -> dict:
+    """Load persistent dream state from .beads/dream_state.json."""
+    if DREAM_STATE_FILE.exists():
+        try:
+            return json.loads(DREAM_STATE_FILE.read_text())
+        except json.JSONDecodeError, OSError:
+            return {}
+    return {}
+
+
+def _save_dream_state(state: dict) -> None:
+    """Save persistent dream state."""
+    BEADS_DIR.mkdir(parents=True, exist_ok=True)
+    DREAM_STATE_FILE.write_text(json.dumps(state, indent=2))
+
+
+def _count_sessions_since(since_dt: datetime) -> int:
+    """Count conversation sessions created since the given datetime."""
+    brain_dir = Path.home() / ".gemini" / "antigravity" / "brain"
+    if not brain_dir.exists():
+        return 0
+
+    count = 0
+    for session_dir in brain_dir.iterdir():
+        if not session_dir.is_dir():
+            continue
+        # Check overview.txt mtime as proxy for session activity
+        overview = session_dir / ".system_generated" / "logs" / "overview.txt"
+        if overview.exists():
+            try:
+                mtime = datetime.fromtimestamp(overview.stat().st_mtime, tz=UTC)
+                if mtime > since_dt:
+                    count += 1
+            except OSError:
+                continue
+    return count
 
 
 # --- Security: ReadOnlyBashGuard --------------------------------------------
@@ -648,8 +748,22 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
 
     This is the core orchestrator. When called from KAIROS or standalone,
     it runs all 8 phases inside the ReadOnlyBashGuard.
+
+    Dynamic gates (from autoDream.ts) are checked first:
+      - MIN_HOURS_SINCE_LAST: Minimum hours since last consolidation
+      - MIN_SESSIONS_SINCE_LAST: Minimum new sessions since last consolidation
+      - FORCE_AFTER_HOURS: Hard ceiling to prevent staleness
     """
     report = DreamReport()
+
+    # Check dynamic cost-balancing gates (P0 #2)
+    should_run, gate_reason = _check_dream_gates(ki_dir)
+    if not should_run:
+        logger.info("Dream gates BLOCKED: %s", gate_reason)
+        report.phase = "skipped_gates"
+        report.actions.append(f"GATE BLOCKED: {gate_reason}")
+        return report
+    logger.info("Dream gates PASSED: %s", gate_reason)
 
     # Acquire global lock
     lock = DreamLockFile()
@@ -715,6 +829,13 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
 
         # Report
         report.phase = "complete"
+
+        # Update dream state with completion timestamp
+        state = _load_dream_state()
+        state["last_consolidated_at"] = datetime.now(UTC).isoformat()
+        state["last_ki_count"] = report.ki_scanned
+        state["last_actions_count"] = len(report.actions)
+        _save_dream_state(state)
 
         if report.actions:
             for _i, _action in enumerate(report.actions, 1):

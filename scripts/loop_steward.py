@@ -35,6 +35,128 @@ REPO_ROOT = Path(
     ),
 )
 DRY_RUN = "--dry-run" in sys.argv
+BEADS_DIR = REPO_ROOT / ".beads"
+
+
+# --- CapacityWake Module (P0 #3, from Claude Code CapacityWake) ---------------
+# Instead of blind exponential backoff on 429 Too Many Requests, the steward
+# gracefully suspends and waits for a precise wake signal. This saves tokens
+# and prevents crash loops during Vertex AI rate limiting.
+
+
+class CapacityState(Enum):
+    """States for the CapacityWake finite state machine."""
+
+    ONLINE = "online"  # Normal operation
+    SUSPENDED = "suspended"  # Rate limited — waiting for wake
+    RECOVERING = "recovering"  # Testing capacity before full resume
+
+
+class CapacityWake:
+    """Graceful rate-limit suspension instead of blind backoff.
+
+    When a 429 is detected (via subprocess stderr or HTTP header),
+    the steward enters SUSPENDED state and sleeps for the Retry-After
+    duration (or a default of 60s). On wake, it enters RECOVERING
+    state and runs a single lightweight probe before resuming full
+    operation.
+
+    Usage::
+
+        cw = CapacityWake()
+        if cw.should_suspend():
+            cw.suspend()  # Blocks for Retry-After duration
+        # ... normal work
+        if error_is_rate_limit(e):
+            cw.signal_rate_limit(retry_after=60)
+    """
+
+    DEFAULT_SUSPEND_SECONDS = 60
+    MAX_SUSPEND_SECONDS = 600  # 10 min ceiling
+
+    def __init__(self) -> None:
+        self.state = CapacityState.ONLINE
+        self._retry_after: float = 0
+        self._suspended_at: str = ""
+        self._suspend_count: int = 0
+        self._state_file = BEADS_DIR / "capacity_wake_state.json"
+
+    def signal_rate_limit(self, retry_after: float | None = None) -> None:
+        """Signal that a rate limit was hit.
+
+        Args:
+            retry_after: Seconds to wait (from Retry-After header).
+                         Defaults to DEFAULT_SUSPEND_SECONDS.
+        """
+        self._retry_after = min(
+            retry_after or self.DEFAULT_SUSPEND_SECONDS,
+            self.MAX_SUSPEND_SECONDS,
+        )
+        self.state = CapacityState.SUSPENDED
+        self._suspended_at = datetime.now(UTC).isoformat()
+        self._suspend_count += 1
+        self._persist_state()
+
+    def should_suspend(self) -> bool:
+        """Check if the steward should suspend."""
+        return self.state == CapacityState.SUSPENDED
+
+    def suspend(self) -> None:
+        """Block for the rate-limit duration, then enter RECOVERING."""
+        if self.state != CapacityState.SUSPENDED:
+            return
+
+        wait = max(1, self._retry_after)
+        time.sleep(wait)
+        self.state = CapacityState.RECOVERING
+        self._persist_state()
+
+    def recover(self) -> bool:
+        """Attempt recovery with a lightweight probe.
+
+        Returns True if capacity is available (steward can resume).
+        In this implementation, we simply transition to ONLINE since
+        the probe would be an API-specific call.
+        """
+        # TODO: Add a lightweight Gemini API health check when available
+        self.state = CapacityState.ONLINE
+        self._persist_state()
+        return True
+
+    def extract_retry_after(self, stderr_output: str) -> float | None:
+        """Extract Retry-After from subprocess stderr output.
+
+        Looks for patterns like:
+          - 'Retry-After: 60'
+          - '429 Too Many Requests'
+          - 'RESOURCE_EXHAUSTED'
+        """
+        import re
+
+        # Direct header
+        match = re.search(r"Retry-After:\s*(\d+)", stderr_output)
+        if match:
+            return float(match.group(1))
+
+        # Generic 429 detection
+        if "429" in stderr_output or "RESOURCE_EXHAUSTED" in stderr_output:
+            return self.DEFAULT_SUSPEND_SECONDS
+
+        return None
+
+    def _persist_state(self) -> None:
+        """Write capacity state to .beads/ for monitoring."""
+        import json
+
+        BEADS_DIR.mkdir(parents=True, exist_ok=True)
+        state_data = {
+            "state": self.state.value,
+            "retry_after": self._retry_after,
+            "suspended_at": self._suspended_at,
+            "suspend_count": self._suspend_count,
+            "updated_at": datetime.now(UTC).isoformat(),
+        }
+        self._state_file.write_text(json.dumps(state_data, indent=2))
 
 
 # --- Enums -------------------------------------------------------------------
@@ -374,9 +496,10 @@ def run_cycle(cycle_number: int, consecutive_idles: int) -> CycleReport:
 
 
 def main() -> None:
-    """Main steward loop."""
+    """Main steward loop with CapacityWake integration."""
     consecutive_idles = 0
     cycle_number = 0
+    capacity = CapacityWake()
 
     # Single cycle mode for testing
     if "--once" in sys.argv:
@@ -388,9 +511,25 @@ def main() -> None:
     # Continuous mode
     try:
         while True:
+            # CapacityWake gate (P0 #3): Check if we need to suspend
+            if capacity.should_suspend():
+                capacity.suspend()
+                if not capacity.recover():
+                    # Still rate-limited — skip this cycle
+                    continue
+
             cycle_number += 1
 
-            report = run_cycle(cycle_number, consecutive_idles)
+            try:
+                report = run_cycle(cycle_number, consecutive_idles)
+            except Exception as e:
+                # Check if the error is a rate limit
+                error_str = str(e)
+                retry_after = capacity.extract_retry_after(error_str)
+                if retry_after is not None:
+                    capacity.signal_rate_limit(retry_after)
+                    continue
+                raise
 
             if report.actions_taken == 0:
                 consecutive_idles += 1
