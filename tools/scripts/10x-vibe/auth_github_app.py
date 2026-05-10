@@ -17,17 +17,37 @@ import requests
 # Config from TACSOP / operator invariants
 APP_ID = os.getenv("GITHUB_APP_ID", "3018200")
 CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "Iv23ctYqrxPQIt2ir8gY")
-PEM_PATH = os.getenv("GITHUB_APP_PEM_PATH", "/home/workdir/artifacts/antigravity-shadowtag-manager.2026-03-17.private-key.pem")  # Placeholder, replace with real
 REPO = os.getenv("GITHUB_REPO", "ShadowTag-v2/shadowtagai-monorepo-v2")
 DEFAULT_BRANCH = "main"
 
+# 5-tier PEM fallback chain (AGENTS.md doctrine):
+# 1. GITHUB_APP_PEM_PATH env var  2. $SHADOWTAG_PEM env var
+# 3. ~/Downloads/ canonical location  4. keys/ directory  5. ~/.ssh/
+_PEM_CANDIDATES = [
+    os.getenv("GITHUB_APP_PEM_PATH", ""),
+    os.getenv("SHADOWTAG_PEM", ""),
+    os.path.expanduser("~/Downloads/antigravity-shadowtag-manager.2026-03-17.pem"),
+    os.path.join(os.path.dirname(__file__), "..", "..", "..", "keys", "github-app.pem"),
+    os.path.expanduser("~/.ssh/github-app.pem"),
+]
+
+
+def _resolve_pem() -> str:
+    """Resolve PEM path using 5-tier fallback chain."""
+    for candidate in _PEM_CANDIDATES:
+        if candidate and os.path.exists(candidate):
+            return candidate
+    return ""
+
+
 def generate_jwt() -> str:
     """Generate JWT for GitHub App authentication (valid 10 min)."""
-    if not os.path.exists(PEM_PATH):
-        print(f"❌ PEM file not found at {PEM_PATH}. Please provide valid PEM or set GITHUB_APP_PEM_PATH.")
+    pem_path = _resolve_pem()
+    if not pem_path:
+        print("❌ PEM file not found. Set GITHUB_APP_PEM_PATH or SHADOWTAG_PEM env var.")
         sys.exit(1)
-    
-    with open(PEM_PATH, "r") as f:
+
+    with open(pem_path, "r") as f:
         private_key = f.read()
 
     now = int(time.time())
