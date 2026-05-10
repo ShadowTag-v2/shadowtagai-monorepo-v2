@@ -9,7 +9,7 @@ from .spinner import AgntSpinner
 from .status_bar import StatusBar
 
 __all__ = [
-    "AgntSpinner",
-    "StatusBar",
-    "TerminalRenderer",
+  "AgntSpinner",
+  "StatusBar",
+  "TerminalRenderer",
 ]

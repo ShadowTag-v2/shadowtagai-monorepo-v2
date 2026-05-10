@@ -8,8 +8,8 @@ export default tseslint.config(
     ignores: [
       '**/package.json', // Ignore all package.json files
       '**/dist/**', // Ignore all dist directories
-      '**/node_modules/**' // Ignore node_modules
-    ]
+      '**/node_modules/**', // Ignore node_modules
+    ],
   },
 
   eslint.configs.recommended,
@@ -19,8 +19,8 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         ecmaVersion: 'latest',
-        sourceType: 'module'
-      }
+        sourceType: 'module',
+      },
     },
     rules: {
       'no-undef': 'off',
@@ -30,22 +30,19 @@ export default tseslint.config(
       'comma-dangle': ['error', 'never'],
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
-      'object-curly-spacing': ['error', 'always']
-    }
+      'object-curly-spacing': ['error', 'always'],
+    },
   },
 
   {
     files: ['**/*.ts', '**/*.tsx'],
-    extends: [
-      ...tseslint.configs.recommendedTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked
-    ],
+    extends: [...tseslint.configs.recommendedTypeChecked, ...tseslint.configs.stylisticTypeChecked],
     languageOptions: {
       parserOptions: {
         // indicates to find the closest tsconfig.json for each source file
-        project: true
-      }
-    }
+        project: true,
+      },
+    },
   },
 
   // Demonstrate override for a subdirectory.
@@ -55,31 +52,28 @@ export default tseslint.config(
   // https://eslint.org/docs/latest/use/configure/migration-guide#glob-based-configs
   {
     files: ['experimental/**/*.ts', 'experimental/**/*.tsx'],
-    extends: [
-      ...tseslint.configs.recommendedTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked
-    ],
+    extends: [...tseslint.configs.recommendedTypeChecked, ...tseslint.configs.stylisticTypeChecked],
     languageOptions: {
       parserOptions: {
         // indicates to find the closest tsconfig.json for each source file
-        project: true
-      }
+        project: true,
+      },
     },
     rules: {
       '@typescript-eslint/no-redundant-type-constituents': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
       'sort-imports': 'off',
-      'no-debugger': 'off'
-    }
+      'no-debugger': 'off',
+    },
   },
 
   // Demonstrate an additional override after subdirectory files override.
   {
     files: ['**/*.mjs', '**/*.cjs', '**/*.js'],
     rules: {
-      'no-undef': 'off'
-    }
+      'no-undef': 'off',
+    },
   },
 
   {
@@ -88,16 +82,13 @@ export default tseslint.config(
       indent: ['error', 2],
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
-      'no-unused-vars': [
-        'error',
-        { vars: 'all', args: 'after-used', ignoreRestSiblings: false }
-      ],
+      'no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
       'no-console': ['off'],
       eqeqeq: ['error', 'always'],
       curly: ['error', 'all'],
       'max-len': ['error', { code: 120 }],
-      'comma-dangle': ['error', 'never']
-    }
+      'comma-dangle': ['error', 'never'],
+    },
   },
 
   // Demonstrate/ mimics multi-project (subdirectory) approach from
@@ -108,11 +99,11 @@ export default tseslint.config(
     files: [
       'experimental/service_test_ts_webpack_react_tests_assets/**',
       'experimental/service_test_ts_rspack_react_tests_assets_swc/**',
-      'experimental/service_test_ts_webpack_react_tests_assets_swc/**'
+      'experimental/service_test_ts_webpack_react_tests_assets_swc/**',
     ],
     rules: {
       '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off'
-    }
-  }
+      '@typescript-eslint/no-unused-expressions': 'off',
+    },
+  },
 );

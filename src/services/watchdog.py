@@ -11,36 +11,36 @@ from collections.abc import AsyncGenerator
 
 
 class StreamingWatchdog:
-    """Wraps an async generator to enforce timeout and stall detection."""
+  """Wraps an async generator to enforce timeout and stall detection."""
 
-    async def watch(
-        self,
-        stream: AsyncGenerator,
-        timeout: float = 30.0,
-        stall_threshold: float = 5.0,
-    ) -> AsyncGenerator:
-        """
-        Yields chunks from the stream while monitoring for stalls.
+  async def watch(
+    self,
+    stream: AsyncGenerator,
+    timeout: float = 30.0,
+    stall_threshold: float = 5.0,
+  ) -> AsyncGenerator:
+    """
+    Yields chunks from the stream while monitoring for stalls.
 
-        Args:
-            stream: The async generator to monitor.
-            timeout: Maximum total time allowed for the stream (seconds).
-            stall_threshold: Time between chunks that triggers a stall warning (seconds).
-                            Does NOT abort the stream — only the total timeout does.
+    Args:
+        stream: The async generator to monitor.
+        timeout: Maximum total time allowed for the stream (seconds).
+        stall_threshold: Time between chunks that triggers a stall warning (seconds).
+                        Does NOT abort the stream — only the total timeout does.
 
-        Yields:
-            Chunks from the underlying stream.
+    Yields:
+        Chunks from the underlying stream.
 
-        Raises:
-            TimeoutError: If total timeout is exceeded.
-        """
-        start_time = time.monotonic()
+    Raises:
+        TimeoutError: If total timeout is exceeded.
+    """
+    start_time = time.monotonic()
 
-        async for chunk in stream:
-            now = time.monotonic()
-            elapsed = now - start_time
+    async for chunk in stream:
+      now = time.monotonic()
+      elapsed = now - start_time
 
-            if elapsed > timeout:
-                raise TimeoutError(f"Stream exceeded total timeout of {timeout}s")
+      if elapsed > timeout:
+        raise TimeoutError(f"Stream exceeded total timeout of {timeout}s")
 
-            yield chunk
+      yield chunk

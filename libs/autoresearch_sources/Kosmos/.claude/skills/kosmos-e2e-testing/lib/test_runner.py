@@ -5,15 +5,12 @@
 Automated test execution with provider configuration.
 """
 
-import os
 import subprocess
 import time
 from pathlib import Path
-from typing import Optional
 
-from .config_manager import switch_provider, get_current_provider
-from .provider_detector import recommend_provider, detect_all
-
+from .config_manager import switch_provider
+from .provider_detector import recommend_provider
 
 # Project root (Kosmos directory)
 PROJECT_ROOT = Path(__file__).parent.parent.parent.parent.parent
@@ -58,7 +55,7 @@ TIER_CONFIG = {
 def run_tests(
     tier: str = "sanity",
     provider: str = "auto",
-    timeout: Optional[int] = None,
+    timeout: int | None = None,
     verbose: bool = True,
     coverage: bool = False,
 ) -> dict:
@@ -206,14 +203,16 @@ def run_single_test(
 def _extract_count(output: str, status: str) -> int:
     """Extract count from pytest output like '5 passed'"""
     import re
+
     pattern = rf"(\d+) {status}"
     match = re.search(pattern, output)
     return int(match.group(1)) if match else 0
 
 
-def _extract_coverage(output: str) -> Optional[float]:
+def _extract_coverage(output: str) -> float | None:
     """Extract coverage percentage from pytest output"""
     import re
+
     pattern = r"TOTAL\s+\d+\s+\d+\s+(\d+)%"
     match = re.search(pattern, output)
     return float(match.group(1)) if match else None

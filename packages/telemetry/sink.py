@@ -27,124 +27,124 @@ DEFAULT_MAX_BYTES = 10 * 1024 * 1024
 
 
 class TelemetrySink:
-    """JSONL writer for telemetry events.
+  """JSONL writer for telemetry events.
 
-    Args:
-        output_path: Path to the telemetry JSONL file.
-        max_bytes: Maximum file size before rotation.
-        buffer_size: Number of events to buffer before flushing.
-        enabled: Whether telemetry is active.
+  Args:
+      output_path: Path to the telemetry JSONL file.
+      max_bytes: Maximum file size before rotation.
+      buffer_size: Number of events to buffer before flushing.
+      enabled: Whether telemetry is active.
+  """
+
+  def __init__(
+    self,
+    output_path: Path | None = None,
+    max_bytes: int = DEFAULT_MAX_BYTES,
+    buffer_size: int = 10,
+    enabled: bool | None = None,
+  ) -> None:
+    default_path = Path(os.environ.get("AGNT_TELEMETRY_PATH", ".beads/telemetry.jsonl"))
+    self._path = output_path or default_path
+    self._max_bytes = max_bytes
+    self._buffer_size = buffer_size
+    self._buffer: list[dict[str, Any]] = []
+    self._total_emitted: int = 0
+
+    # Default: enabled unless AGNT_TELEMETRY=0
+    if enabled is not None:
+      self._enabled = enabled
+    else:
+      from config.feature_flags import flags
+
+      self._enabled = flags.is_enabled("telemetry_enabled")
+
+  @property
+  def enabled(self) -> bool:
+    """Whether telemetry is active."""
+    return self._enabled
+
+  @property
+  def total_emitted(self) -> int:
+    """Total events emitted this session."""
+    return self._total_emitted
+
+  def emit(self, event: TelemetryEvent) -> None:
+    """Emit a single telemetry event.
+
+    Events are buffered and flushed when buffer_size is reached.
     """
+    if not self._enabled:
+      return
 
-    def __init__(
-        self,
-        output_path: Path | None = None,
-        max_bytes: int = DEFAULT_MAX_BYTES,
-        buffer_size: int = 10,
-        enabled: bool | None = None,
-    ) -> None:
-        default_path = Path(os.environ.get("AGNT_TELEMETRY_PATH", ".beads/telemetry.jsonl"))
-        self._path = output_path or default_path
-        self._max_bytes = max_bytes
-        self._buffer_size = buffer_size
-        self._buffer: list[dict[str, Any]] = []
-        self._total_emitted: int = 0
+    self._buffer.append(event.to_dict())
+    self._total_emitted += 1
 
-        # Default: enabled unless AGNT_TELEMETRY=0
-        if enabled is not None:
-            self._enabled = enabled
-        else:
-            from config.feature_flags import flags
+    if len(self._buffer) >= self._buffer_size:
+      self.flush()
 
-            self._enabled = flags.is_enabled("telemetry_enabled")
+  def emit_raw(self, data: dict[str, Any]) -> None:
+    """Emit a raw event dictionary (for legacy integrations)."""
+    if not self._enabled:
+      return
 
-    @property
-    def enabled(self) -> bool:
-        """Whether telemetry is active."""
-        return self._enabled
+    if "timestamp" not in data:
+      data["timestamp"] = time.time()
 
-    @property
-    def total_emitted(self) -> int:
-        """Total events emitted this session."""
-        return self._total_emitted
+    self._buffer.append(data)
+    self._total_emitted += 1
 
-    def emit(self, event: TelemetryEvent) -> None:
-        """Emit a single telemetry event.
+    if len(self._buffer) >= self._buffer_size:
+      self.flush()
 
-        Events are buffered and flushed when buffer_size is reached.
-        """
-        if not self._enabled:
-            return
+  def flush(self) -> None:
+    """Flush buffered events to disk."""
+    if not self._buffer:
+      return
 
-        self._buffer.append(event.to_dict())
-        self._total_emitted += 1
+    try:
+      self._maybe_rotate()
+      self._path.parent.mkdir(parents=True, exist_ok=True)
 
-        if len(self._buffer) >= self._buffer_size:
-            self.flush()
+      with open(self._path, "a") as f:
+        for event_dict in self._buffer:
+          f.write(json.dumps(event_dict, default=str) + "\n")
 
-    def emit_raw(self, data: dict[str, Any]) -> None:
-        """Emit a raw event dictionary (for legacy integrations)."""
-        if not self._enabled:
-            return
+      flushed = len(self._buffer)
+      self._buffer.clear()
+      logger.debug("Telemetry flushed %d events to %s", flushed, self._path)
 
-        if "timestamp" not in data:
-            data["timestamp"] = time.time()
+    except OSError as e:
+      logger.warning("Telemetry flush failed: %s", e)
 
-        self._buffer.append(data)
-        self._total_emitted += 1
+  def _maybe_rotate(self) -> None:
+    """Rotate log file if it exceeds max_bytes."""
+    if not self._path.exists():
+      return
 
-        if len(self._buffer) >= self._buffer_size:
-            self.flush()
+    size = self._path.stat().st_size
+    if size < self._max_bytes:
+      return
 
-    def flush(self) -> None:
-        """Flush buffered events to disk."""
-        if not self._buffer:
-            return
+    # Rotate: rename current file with timestamp
+    ts = time.strftime("%Y%m%d_%H%M%S")
+    rotated = self._path.with_suffix(f".{ts}.jsonl")
+    self._path.rename(rotated)
+    logger.info("Telemetry rotated: %s → %s", self._path.name, rotated.name)
 
-        try:
-            self._maybe_rotate()
-            self._path.parent.mkdir(parents=True, exist_ok=True)
+  def close(self) -> None:
+    """Flush remaining buffer and close."""
+    self.flush()
+    logger.info(
+      "Telemetry sink closed: %d total events → %s",
+      self._total_emitted,
+      self._path,
+    )
 
-            with open(self._path, "a") as f:
-                for event_dict in self._buffer:
-                    f.write(json.dumps(event_dict, default=str) + "\n")
+  def __enter__(self) -> TelemetrySink:
+    return self
 
-            flushed = len(self._buffer)
-            self._buffer.clear()
-            logger.debug("Telemetry flushed %d events to %s", flushed, self._path)
+  def __exit__(self, *args: Any) -> None:
+    self.close()
 
-        except OSError as e:
-            logger.warning("Telemetry flush failed: %s", e)
-
-    def _maybe_rotate(self) -> None:
-        """Rotate log file if it exceeds max_bytes."""
-        if not self._path.exists():
-            return
-
-        size = self._path.stat().st_size
-        if size < self._max_bytes:
-            return
-
-        # Rotate: rename current file with timestamp
-        ts = time.strftime("%Y%m%d_%H%M%S")
-        rotated = self._path.with_suffix(f".{ts}.jsonl")
-        self._path.rename(rotated)
-        logger.info("Telemetry rotated: %s → %s", self._path.name, rotated.name)
-
-    def close(self) -> None:
-        """Flush remaining buffer and close."""
-        self.flush()
-        logger.info(
-            "Telemetry sink closed: %d total events → %s",
-            self._total_emitted,
-            self._path,
-        )
-
-    def __enter__(self) -> TelemetrySink:
-        return self
-
-    def __exit__(self, *args: Any) -> None:
-        self.close()
-
-    def __repr__(self) -> str:
-        return f"TelemetrySink(path={self._path}, enabled={self._enabled}, buffered={len(self._buffer)})"
+  def __repr__(self) -> str:
+    return f"TelemetrySink(path={self._path}, enabled={self._enabled}, buffered={len(self._buffer)})"

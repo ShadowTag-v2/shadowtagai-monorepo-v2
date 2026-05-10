@@ -35,7 +35,9 @@ sys.path.insert(0, str(REPO_ROOT))
 from core.aegaeon import SwarmRouter, SwarmTask, SwarmTier  # noqa: E402
 from core.rag_evolve import search_corpus  # type: ignore[import]  # noqa: E402
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+  level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger("gemini_agent_swarm")
 
 # ── Prompt Repetition (arXiv 2512.14982) ────────────────────────────────────
@@ -43,11 +45,11 @@ logger = logging.getLogger("gemini_agent_swarm")
 # Repeat the instruction at the end of the prompt to reduce drift.
 
 _NON_REASONING_MODELS = {
-    "gemini-3.1-flash-lite-preview",
-    "gpt-4.1",
-    "gpt-4o-mini",
-    "claude-3.5-haiku",
-    "pplx-api",
+  "gemini-3.1-flash-lite-preview",
+  "gpt-4.1",
+  "gpt-4o-mini",
+  "claude-3.5-haiku",
+  "pplx-api",
 }
 
 # Read from env — defaults to gemini-3.1-flash-lite-preview
@@ -55,19 +57,19 @@ _ACTIVE_MODEL = os.environ.get("SWARM_MODEL", "gemini-3.1-flash-lite-preview")
 
 
 def _apply_prompt_repetition(prompt: str, role: str) -> str:
-    """Apply prompt repetition if active model is non-reasoning.
+  """Apply prompt repetition if active model is non-reasoning.
 
-    Repeats the core instruction block at the end of the prompt,
-    separated by a delimiter, to reduce attention drift in flash/lite models.
-    """
-    if _ACTIVE_MODEL not in _NON_REASONING_MODELS:
-        return prompt
-    return (
-        f"{prompt}\n\n---\n\n"
-        f"[INSTRUCTION REPEAT — {role.upper()}]\n"
-        f"{prompt.split(chr(10), 1)[0]}\n"
-        f"Respond precisely and completely to the task above."
-    )
+  Repeats the core instruction block at the end of the prompt,
+  separated by a delimiter, to reduce attention drift in flash/lite models.
+  """
+  if _ACTIVE_MODEL not in _NON_REASONING_MODELS:
+    return prompt
+  return (
+    f"{prompt}\n\n---\n\n"
+    f"[INSTRUCTION REPEAT — {role.upper()}]\n"
+    f"{prompt.split(chr(10), 1)[0]}\n"
+    f"Respond precisely and completely to the task above."
+  )
 
 
 # ── Agent role prompts ──────────────────────────────────────────────────────
@@ -135,165 +137,178 @@ Output a JSON object with keys:
 
 
 async def run_swarm(query: str) -> dict:
-    router = SwarmRouter()
+  router = SwarmRouter()
 
-    # Phase 1 — Research (Fast Path): pull corpus hits
-    hits = search_corpus(query, top_k=8)
-    corpus_text = "\n".join(f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits)
+  # Phase 1 — Research (Fast Path): pull corpus hits
+  hits = search_corpus(query, top_k=8)
+  corpus_text = "\n".join(
+    f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}"
+    for h in hits
+  )
 
-    # Extract actual GitNexus localized structural intelligence
-    import subprocess
+  # Extract actual GitNexus localized structural intelligence
+  import subprocess
 
-    try:
-        ast_result = subprocess.check_output(
-            ["npx", "gitnexus", "query", query],
-            cwd="apps/gitnexus",
-            stderr=subprocess.DEVNULL,
-            timeout=10,
-        ).decode()
-    except Exception:
-        ast_result = "[AST Nexus: Local graph compilation unavailable or timed out.]"
+  try:
+    ast_result = subprocess.check_output(
+      ["npx", "gitnexus", "query", query],
+      cwd="apps/gitnexus",
+      stderr=subprocess.DEVNULL,
+      timeout=10,
+    ).decode()
+  except Exception:
+    ast_result = "[AST Nexus: Local graph compilation unavailable or timed out.]"
 
-    research_prompt = _apply_prompt_repetition(
-        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result),
-        "research",
-    )
-    research_task = SwarmTask(
-        "research",
-        research_prompt,
-        tier=SwarmTier.FAST,
-    )
-    [research_result] = await router.dispatch([research_task])
-    research_data = _safe_json(research_result.text)
-    evidence_str = json.dumps(research_data.get("evidence", []), indent=2)
+  research_prompt = _apply_prompt_repetition(
+    _RESEARCH_TMPL.format(
+      query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result
+    ),
+    "research",
+  )
+  research_task = SwarmTask(
+    "research",
+    research_prompt,
+    tier=SwarmTier.FAST,
+  )
+  [research_result] = await router.dispatch([research_task])
+  research_data = _safe_json(research_result.text)
+  evidence_str = json.dumps(research_data.get("evidence", []), indent=2)
 
-    # Phase 2 — Synthesize (Fast Path) + Critique (Heavy Lift): parallel
-    synth_prompt = _apply_prompt_repetition(
-        _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
-        "synthesize",
-    )
-    crit_prompt = _apply_prompt_repetition(
-        _CRITIQUE_TMPL.format(recommendation=evidence_str),
-        "critique",
-    )
-    synth_task = SwarmTask(
-        "synthesize",
-        synth_prompt,
-        tier=SwarmTier.FAST,
-    )
-    crit_task = SwarmTask(
-        "critique_preliminary",
-        crit_prompt,
-        tier=SwarmTier.HEAVY,
-    )
-    synth_result, _ = await router.dispatch([synth_task, crit_task])
-    synth_data = _safe_json(synth_result.text)
-    recommendation = synth_data.get("recommendation", synth_result.text[:500])
+  # Phase 2 — Synthesize (Fast Path) + Critique (Heavy Lift): parallel
+  synth_prompt = _apply_prompt_repetition(
+    _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
+    "synthesize",
+  )
+  crit_prompt = _apply_prompt_repetition(
+    _CRITIQUE_TMPL.format(recommendation=evidence_str),
+    "critique",
+  )
+  synth_task = SwarmTask(
+    "synthesize",
+    synth_prompt,
+    tier=SwarmTier.FAST,
+  )
+  crit_task = SwarmTask(
+    "critique_preliminary",
+    crit_prompt,
+    tier=SwarmTier.HEAVY,
+  )
+  synth_result, _ = await router.dispatch([synth_task, crit_task])
+  synth_data = _safe_json(synth_result.text)
+  recommendation = synth_data.get("recommendation", synth_result.text[:500])
 
-    # Phase 3 — Final critique + architect directive: parallel
-    final_crit_prompt = _apply_prompt_repetition(
-        _CRITIQUE_TMPL.format(recommendation=recommendation),
-        "critique",
-    )
-    final_crit_task = SwarmTask(
-        "critique_final",
-        final_crit_prompt,
-        tier=SwarmTier.HEAVY,
-    )
-    [crit_result] = await router.dispatch([final_crit_task])
-    crit_data = _safe_json(crit_result.text)
+  # Phase 3 — Final critique + architect directive: parallel
+  final_crit_prompt = _apply_prompt_repetition(
+    _CRITIQUE_TMPL.format(recommendation=recommendation),
+    "critique",
+  )
+  final_crit_task = SwarmTask(
+    "critique_final",
+    final_crit_prompt,
+    tier=SwarmTier.HEAVY,
+  )
+  [crit_result] = await router.dispatch([final_crit_task])
+  crit_data = _safe_json(crit_result.text)
 
-    arch_prompt = _apply_prompt_repetition(
-        _ARCHITECT_TMPL.format(
-            recommendation=recommendation,
-            verdict=crit_data.get("verdict", "unknown"),
-        ),
-        "architect",
-    )
-    arch_task = SwarmTask(
-        "architect",
-        arch_prompt,
-        tier=SwarmTier.HEAVY,
-    )
-    [arch_result] = await router.dispatch([arch_task])
-    arch_data = _safe_json(arch_result.text)
+  arch_prompt = _apply_prompt_repetition(
+    _ARCHITECT_TMPL.format(
+      recommendation=recommendation,
+      verdict=crit_data.get("verdict", "unknown"),
+    ),
+    "architect",
+  )
+  arch_task = SwarmTask(
+    "architect",
+    arch_prompt,
+    tier=SwarmTier.HEAVY,
+  )
+  [arch_result] = await router.dispatch([arch_task])
+  arch_data = _safe_json(arch_result.text)
 
-    output = {
-        "query": query,
-        "research": research_data,
-        "synthesis": synth_data,
-        "critique": crit_data,
-        "architect_directive": arch_data,
-    }
-    logger.info("Swarm complete. Judge6 gate: %s", arch_data.get("judge6_gate", "?"))
-    return output
+  output = {
+    "query": query,
+    "research": research_data,
+    "synthesis": synth_data,
+    "critique": crit_data,
+    "architect_directive": arch_data,
+  }
+  logger.info("Swarm complete. Judge6 gate: %s", arch_data.get("judge6_gate", "?"))
+  return output
 
 
 def _safe_json(text: str) -> dict:
-    try:
-        start = text.find("{")
-        end = text.rfind("}") + 1
-        if start >= 0 and end > start:
-            return json.loads(text[start:end])
-    except json.JSONDecodeError:
-        pass
-    return {"raw": text}
+  try:
+    start = text.find("{")
+    end = text.rfind("}") + 1
+    if start >= 0 and end > start:
+      return json.loads(text[start:end])
+  except json.JSONDecodeError:
+    pass
+  return {"raw": text}
 
 
 async def _loop(query: str, interval: int) -> None:
-    logger.info("Starting continuous swarm loop (interval=%ds)", interval)
+  logger.info("Starting continuous swarm loop (interval=%ds)", interval)
 
-    import subprocess
-    import sys
+  import subprocess
+  import sys
 
-    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+  sys.path.insert(0, str(REPO_ROOT / "scripts"))
+  try:
+    from omega_auto_dispatcher import dispatch_payload_by_id
+  except ImportError:
+
+    def dispatch_payload_by_id(pid: int) -> None:
+      logger.debug("omega_auto_dispatcher unavailable; skipping payload %s", pid)
+
+  while True:
     try:
-        from omega_auto_dispatcher import dispatch_payload_by_id
-    except ImportError:
+      git_status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        capture_output=True,
+        text=True,
+        check=False,
+      )
+      if git_status.stdout.strip():
+        logger.info(
+          "YOLO MODE: Swarm detected architectural drift. Firing Payload 4 (Boy Scout Sweep)."
+        )
+        dispatch_payload_by_id(4)
 
-        def dispatch_payload_by_id(pid: int) -> None:
-            logger.debug("omega_auto_dispatcher unavailable; skipping payload %s", pid)
+      result = await run_swarm(query)
+      directive = result.get("architect_directive", {}).get("summary", "")
+      logger.info("Loop result: %s", directive)
 
-    while True:
-        try:
-            git_status = subprocess.run(
-                ["git", "status", "--porcelain"],
-                capture_output=True,
-                text=True,
-                check=False,
-            )
-            if git_status.stdout.strip():
-                logger.info("YOLO MODE: Swarm detected architectural drift. Firing Payload 4 (Boy Scout Sweep).")
-                dispatch_payload_by_id(4)
+      if directive and ("vector" in directive.lower() or "ingest" in directive.lower()):
+        logger.info(
+          "YOLO MODE: Architecture blueprint requested ingest. Firing Payload 2 (Vector Sync)."
+        )
+        dispatch_payload_by_id(2)
 
-            result = await run_swarm(query)
-            directive = result.get("architect_directive", {}).get("summary", "")
-            logger.info("Loop result: %s", directive)
-
-            if directive and ("vector" in directive.lower() or "ingest" in directive.lower()):
-                logger.info("YOLO MODE: Architecture blueprint requested ingest. Firing Payload 2 (Vector Sync).")
-                dispatch_payload_by_id(2)
-
-        except Exception as exc:
-            logger.exception("Swarm iteration failed: %s", exc)
-        await asyncio.sleep(interval)
+    except Exception as exc:
+      logger.exception("Swarm iteration failed: %s", exc)
+    await asyncio.sleep(interval)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Gemini Agent Swarm")
-    parser.add_argument("--query", default="improve Antigravity tech stack and biz plan alignment")
-    parser.add_argument("--loop", action="store_true", help="Run continuously")
-    parser.add_argument("--interval", type=int, default=3600, help="Loop interval in seconds")
-    parser.add_argument("--out", help="Write JSON result to file")
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(description="Gemini Agent Swarm")
+  parser.add_argument(
+    "--query", default="improve Antigravity tech stack and biz plan alignment"
+  )
+  parser.add_argument("--loop", action="store_true", help="Run continuously")
+  parser.add_argument(
+    "--interval", type=int, default=3600, help="Loop interval in seconds"
+  )
+  parser.add_argument("--out", help="Write JSON result to file")
+  args = parser.parse_args()
 
-    if args.loop:
-        asyncio.run(_loop(args.query, args.interval))
+  if args.loop:
+    asyncio.run(_loop(args.query, args.interval))
+  else:
+    result = asyncio.run(run_swarm(args.query))
+    output = json.dumps(result, indent=2)
+    if args.out:
+      Path(args.out).write_text(output)
+      logger.info("Result written to %s", args.out)
     else:
-        result = asyncio.run(run_swarm(args.query))
-        output = json.dumps(result, indent=2)
-        if args.out:
-            Path(args.out).write_text(output)
-            logger.info("Result written to %s", args.out)
-        else:
-            pass
+      pass

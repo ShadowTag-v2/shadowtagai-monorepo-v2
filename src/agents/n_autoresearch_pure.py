@@ -13,15 +13,15 @@ import logging
 
 
 class NAutoresearchPure:
-    def __init__(self):
-        logging.info("Initializing N-Autoresearch background scraper.")
+  def __init__(self):
+    logging.info("Initializing N-Autoresearch background scraper.")
 
-    async def execute(self):
-        logging.info("Executing autoresearch scraping loops.")
-        while True:
-            await asyncio.sleep(1)
+  async def execute(self):
+    logging.info("Executing autoresearch scraping loops.")
+    while True:
+      await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
-    agent = NAutoresearchPure()
-    asyncio.run(agent.execute())
+  agent = NAutoresearchPure()
+  asyncio.run(agent.execute())

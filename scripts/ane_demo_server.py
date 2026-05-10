@@ -94,35 +94,35 @@ HTML_CONTENT = """
 
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
-    return HTML_CONTENT
+  return HTML_CONTENT
 
 
 @app.post("/api/infer")
 async def run_infer(request: Request):
-    await request.json()
-    # Simulate ANE local inference latency
-    await asyncio.sleep(2.5)
+  await request.json()
+  # Simulate ANE local inference latency
+  await asyncio.sleep(2.5)
 
-    return {
-        "hardware_target": "Apple Neural Engine (ANE)",
-        "model": "pnkln-logic-8b-Q4_0",
-        "tokens_per_second": 42.7,
-        "energy_consumption_mj": 104,
-        "extracted_deadlines": [
-            {
-                "trigger_event": "service of summons",
-                "exhibit_citation_id": "Page 1, ¶3",
-                "days_to_respond": 21,
-                "business_days_only": False,
-                "jurisdiction_rule": "FRCP 12(a)(1)(A)(i)",
-                "raw_date_text": "March 10, 2026",
-                "computed_date": "2026-03-31",
-            },
-        ],
-        "zero_cloud_drift": True,
-        "latency_ms": 2514,
-    }
+  return {
+    "hardware_target": "Apple Neural Engine (ANE)",
+    "model": "pnkln-logic-8b-Q4_0",
+    "tokens_per_second": 42.7,
+    "energy_consumption_mj": 104,
+    "extracted_deadlines": [
+      {
+        "trigger_event": "service of summons",
+        "exhibit_citation_id": "Page 1, ¶3",
+        "days_to_respond": 21,
+        "business_days_only": False,
+        "jurisdiction_rule": "FRCP 12(a)(1)(A)(i)",
+        "raw_date_text": "March 10, 2026",
+        "computed_date": "2026-03-31",
+      },
+    ],
+    "zero_cloud_drift": True,
+    "latency_ms": 2514,
+  }
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8993)
+  uvicorn.run(app, host="127.0.0.1", port=8993)

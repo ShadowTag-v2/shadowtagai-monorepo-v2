@@ -2,5 +2,5 @@
 
 
 class Handler:
-    def handle(self):
-        pass
+  def handle(self):
+    pass

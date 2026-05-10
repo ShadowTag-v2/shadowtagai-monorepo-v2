@@ -2,7 +2,7 @@
 
 
 class Address:
-    city: str
+  city: str
 
-    def save(self):
-        pass
+  def save(self):
+    pass

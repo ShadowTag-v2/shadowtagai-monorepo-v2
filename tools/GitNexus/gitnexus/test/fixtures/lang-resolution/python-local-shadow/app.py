@@ -4,8 +4,8 @@ from utils import save
 
 
 def save(x):
-    print("local save")
+  print("local save")
 
 
 def main():
-    save("test")
+  save("test")

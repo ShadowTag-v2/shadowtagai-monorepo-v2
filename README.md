@@ -1,94 +1,96 @@
-# Antigravity v11 Merged Control-Plane Bundle
+# AGNT_OS v15.0 — ShadowTagAI Monorepo
 
-[![Quality Gate](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/quality-gate.yml)
-[![Security — Bandit SAST](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/security-and-lighthouse.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/security-and-lighthouse.yml)
-[![Backend CI](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/backend-ci.yml)
-[![CodeQL](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/codeql-analysis.yml)
-[![PageSpeed Monitor](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/pagespeed-monitor.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/pagespeed-monitor.yml)
-[![KovelAI](https://img.shields.io/badge/KovelAI-Live-gold?logo=firebase)](https://kovelai.web.app)
-[![ShadowTagAI](https://img.shields.io/badge/ShadowTagAI-Live-00ff88?logo=firebase)](https://shadowtagai.web.app)
+**Google-style monorepo operating system** with agent-native architecture, living memory, and production-grade security.
 
-This bundle fuses:
-
-1. the repo-native pnkln / Monorepo-Uphillsnowball control-plane backbone
-2. the ANE Cortex Stack v10 memory/enforcement layer
-3. operator invariants for Git/GitHub behavior
-4. the fold-in checklist for the 56-repo monorepo program
-
-## What is included
-
-- `antigravity_final_ingest_bundle.tar.gz`
-- `ane_cortex_stack_v10_bundle.tar.gz`
-- `fold_in_checklist.yaml`
-- `operator_invariants.json`
-- `operator_invariants_atoms.json`
-- `INSTALL_ANTIGRAVITY_V10_LOCAL.md`
-- `setup_antigravity_v10_local.sh`
-- `INSTALL_ANTIGRAVITY_V11_MERGED.md`
-- `setup_antigravity_v11_merged.sh`
-
-## Canonical intent
-
-Use the existing monorepo control-plane files as workspace/root truth.
-Install v10 as the memory-first control and enforcement layer.
-Use operator invariants as startup law.
-Use the fold-in checklist as the 56-repo migration control file.
-
----
-
-## Maintenance
-
-### GCA State DB Pruner (`scripts/prune_gca_chat_threads.py`)
-
-Gemini Code Assist stores unbounded chat history in the IDE's SQLite state
-database (`state.vscdb`), which can balloon to 60+ MB and cause
-"Unresponsive Extension Host" crashes. This script surgically prunes only the
-`geminiCodeAssist.chatThreads` payload — all auth, project, and survey state
-is preserved byte-for-byte.
-
-**Usage:**
+## Quick Start
 
 ```bash
-# Inspect without touching anything
-python3 scripts/prune_gca_chat_threads.py --dry-run
+git clone git@github.com:ShadowTag-v2/shadowtagai-monorepo-v2.git
+cd shadowtagai-monorepo-v2
 
-# Prune + VACUUM (IDE MUST BE CLOSED)
-python3 scripts/prune_gca_chat_threads.py --write
+# Clone all reference repos (22 groups, 100+ repos)
+./scripts/clone-external-reference-repos.sh
 
-# Keep the 5 newest threads
-python3 scripts/prune_gca_chat_threads.py --write --keep 5
+# Generate infrastructure repos (OpenTofu + Terragrunt + Pulumi)
+./scripts/generate-three-repos.sh
 
-# Only reclaim SQLite dead space (no prune)
-python3 scripts/prune_gca_chat_threads.py --vacuum-only
-
-# Background watchdog (macOS notifications + speech)
-python3 scripts/prune_gca_chat_threads.py --monitor --threshold 20
+# Run health check
+python scripts/repo_doctor.py
 ```
 
-### Automation
+## Architecture
 
-| Method | Schedule | What |
-|--------|----------|------|
-| `launchd` | Login | `--monitor --threshold 20` (alerts if DB > 20MB) |
-| `cron` | Sunday 3AM | `--write` (prune + VACUUM) |
+- **Bazel** — Structural truth layer
+- **Nx** — Developer experience layer
+- **WanderEngine + Memory Kernel** — Living knowledge
+- **Ruler + OpenFGA** — Agent doctrine & safety
+- **repo_doctor.py** — Self-healing system (ripgrep + ast-grep + betterleaks + Buildifier)
+- **Pulumi + OpenTofu + Terragrunt** — Side-by-side IaC (run them together)
 
-**launchd plist:** `~/Library/LaunchAgents/com.shadowtag.gca-monitor.plist`
+## Key Infrastructure Repos (Side-by-Side)
 
-### Manual Escape Hatch
+| Repo | Purpose | IaC Tool |
+|------|---------|----------|
+| `infrastructure-catalog-gcp-cloud-run` | Reusable Cloud Run Gen2 modules | OpenTofu |
+| `infrastructure-live-gcp` | Live Terragrunt configuration | Terragrunt |
+| `infrastructure-pulumi` | Pulumi TypeScript monorepo | Pulumi |
 
-If the IDE is completely unresponsive and you can't run the script, use this
-raw SQLite one-liner from a standalone terminal:
+## Monorepo Structure
 
-```bash
-# 1. QUIT the IDE completely (Cmd+Q)
-# 2. Run this:
-DB="$HOME/Library/Application Support/Antigravity/User/globalStorage/state.vscdb"
-cp "$DB" "$DB.emergency-backup"
-sqlite3 "$DB" "UPDATE ItemTable SET value = json_set(value, '$.\"geminiCodeAssist.chatThreads\"', json('[]')) WHERE key = 'google.geminicodeassist';"
-sqlite3 "$DB" "VACUUM;"
-echo "Done. Reopen IDE."
+```
+shadowtagai-monorepo-v2/
+├── apps/                          # Application services
+│   ├── kovelai/                   # KovelAI agent platform
+│   ├── shadowtag-agent/           # Core agent runtime
+│   └── counselconduit/            # Legal AI SaaS
+├── libs/                          # Shared libraries
+├── packages/                      # Published packages
+├── infra/                         # Infrastructure-as-Code
+├── tools/                         # Developer tooling
+├── scripts/                       # Automation scripts
+├── docs/                          # Documentation
+│   ├── PLAYBOOK.md               # OpenTofu / Pulumi playbook
+│   ├── MIGRATION_PLAN.md         # Full migration plan
+│   ├── MIGRATION_CHECKLIST.md    # Detailed task checklist
+│   ├── RISK_REGISTER.md          # 12-risk register
+│   └── RISK_MITIGATION_PLAN.md   # Mitigation actions
+├── experimental/                  # Experimental features
+├── external_repos/                # Cloned reference repos (22 groups)
+├── MODULE.bazel                   # Bazel module definition
+├── BUILD.bazel                    # Root build file
+├── CONTRIBUTING.md                # How to contribute
+└── renovate.json                  # Automated dependency updates
 ```
 
-> **Warning:** This bypasses the script's safety checks. Use only as a
-> last resort. The script (`--write`) is always preferred because it
-> creates timestamped backups and validates JSON integrity first.
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [PLAYBOOK.md](docs/PLAYBOOK.md) | Comprehensive IaC workflow (OpenTofu + Pulumi + Crossplane comparison) |
+| [MIGRATION_PLAN.md](docs/MIGRATION_PLAN.md) | 6-phase migration from Monorepo-Uphillsnowball |
+| [MIGRATION_CHECKLIST.md](docs/MIGRATION_CHECKLIST.md) | 33-task checklist with owners and deadlines |
+| [RISK_REGISTER.md](docs/RISK_REGISTER.md) | 12-risk register with scoring matrix |
+| [RISK_MITIGATION_PLAN.md](docs/RISK_MITIGATION_PLAN.md) | Detailed mitigation for top 6 risks |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Development workflow and coding standards |
+
+## Migration Status
+
+Migrating from [`Monorepo-Uphillsnowball`](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball) (read-only archive after cutover).
+
+| Phase | Status | Target |
+|-------|--------|--------|
+| 0. Preparation | ✅ Complete | May 13 |
+| 1. Audit & Inventory | ⬜ Ready | May 14 |
+| 2. Rich Hickey Refactoring | ⬜ Ready | May 22 |
+| 3. Infrastructure Migration | ⬜ Ready | May 23 |
+| 4. Code Migration & Cutover | ⬜ Ready | May 30 |
+| 5. Final Verification | ⬜ Ready | June 3 |
+| 6. Post-Migration Cleanup | ⬜ Ready | June 5 |
+
+## Philosophy
+
+We build systems that enforce physics, safety, memory, and doctrine at the architectural level.
+
+**Simple Made Easy.** Unentangled > Familiar.
+
+**Version:** v15.0 (May 2026)

@@ -17,18 +17,20 @@
 
 from google.cloud import firestore  # type: ignore
 from google.cloud.firestore_v1.services.firestore.transports.base import (  # type: ignore
-    DEFAULT_CLIENT_INFO,
+  DEFAULT_CLIENT_INFO,
 )
 
 
-def client_with_user_agent(user_agent: str, client: firestore.Client | None = None) -> firestore.Client:
-    client_info = DEFAULT_CLIENT_INFO
-    client_info.user_agent = user_agent
-    if not client:
-        client = firestore.Client(client_info=client_info)
-    client_agent = client._client_info.user_agent
-    if not client_agent:
-        client._client_info.user_agent = user_agent
-    elif user_agent not in client_agent:
-        client._client_info.user_agent = " ".join([user_agent, client_agent])
-    return client
+def client_with_user_agent(
+  user_agent: str, client: firestore.Client | None = None
+) -> firestore.Client:
+  client_info = DEFAULT_CLIENT_INFO
+  client_info.user_agent = user_agent
+  if not client:
+    client = firestore.Client(client_info=client_info)
+  client_agent = client._client_info.user_agent
+  if not client_agent:
+    client._client_info.user_agent = user_agent
+  elif user_agent not in client_agent:
+    client._client_info.user_agent = " ".join([user_agent, client_agent])
+  return client

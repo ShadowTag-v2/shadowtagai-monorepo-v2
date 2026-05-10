@@ -21,13 +21,13 @@ installing from external repos, and refreshing the active skill registry.
 """
 
 from packages.plugin_manager.manager import (
-    MarketplaceStatus,
-    PluginInstallationManager,
-    ReconciliationResult,
+  MarketplaceStatus,
+  PluginInstallationManager,
+  ReconciliationResult,
 )
 
 __all__ = [
-    "MarketplaceStatus",
-    "PluginInstallationManager",
-    "ReconciliationResult",
+  "MarketplaceStatus",
+  "PluginInstallationManager",
+  "ReconciliationResult",
 ]

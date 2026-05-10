@@ -39,7 +39,7 @@ PYTHON = sys.executable
 
 # ── agent prompts (inlined — BUNDLE dir missing from remote repo) ─────────────
 AGENT_PROMPTS: dict[str, str] = {
-    "correctness": """\
+  "correctness": """\
 You are a correctness-focused code reviewer. Examine this pull request diff for:
 - Logic errors and incorrect assumptions
 - Edge cases that are not handled
@@ -55,7 +55,7 @@ COMMENT: <one-sentence explanation and fix>
 
 If no issues found, output: NO_FINDINGS
 """,
-    "security": """\
+  "security": """\
 You are a security-focused code reviewer specialising in cryptographic libraries. \
 Examine this pull request diff for:
 - CVEs addressed (or newly introduced) by the version bump
@@ -72,7 +72,7 @@ COMMENT: <one-sentence explanation referencing CVE number if applicable>
 
 If no issues found, output: NO_FINDINGS
 """,
-    "perf": """\
+  "perf": """\
 You are a performance-focused code reviewer. Examine this pull request diff for:
 - Algorithmic complexity regressions
 - Unnecessary memory allocations or copies
@@ -88,7 +88,7 @@ COMMENT: <one-sentence explanation of the perf concern>
 
 If no issues found, output: NO_FINDINGS
 """,
-    "arch": """\
+  "arch": """\
 You are an architecture-focused code reviewer. Examine this pull request diff for:
 - Tight coupling between components
 - Single-responsibility violations
@@ -110,194 +110,207 @@ If no issues found, output: NO_FINDINGS
 
 
 def _get_github_token() -> str:
-    """Return a valid GitHub App installation token, using auth_github_app.get_token()."""
-    sys.path.insert(0, str(SCRIPTS_DIR))
-    try:
-        from auth_github_app import get_token  # type: ignore[import]
+  """Return a valid GitHub App installation token, using auth_github_app.get_token()."""
+  sys.path.insert(0, str(SCRIPTS_DIR))
+  try:
+    from auth_github_app import get_token  # type: ignore[import]
 
-        return get_token()
-    except Exception:
-        # Fallback: check env
-        tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-        if tok:
-            return tok
-        sys.exit("ERROR: No GitHub token available. Run: python scripts/auth_github_app.py")
+    return get_token()
+  except Exception:
+    # Fallback: check env
+    tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if tok:
+      return tok
+    sys.exit("ERROR: No GitHub token available. Run: python scripts/auth_github_app.py")
 
 
 # ── GitHub API helpers ────────────────────────────────────────────────────────
 
 
-def _gh_get(path: str, token: str, accept: str = "application/vnd.github+json") -> bytes:
-    url = f"https://api.github.com{path}"
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Authorization": f"token {token}",
-            "Accept": accept,
-            "X-GitHub-Api-Version": "2022-11-28",
-        },
-    )
-    with urllib.request.urlopen(req) as resp:
-        return resp.read()
+def _gh_get(
+  path: str, token: str, accept: str = "application/vnd.github+json"
+) -> bytes:
+  url = f"https://api.github.com{path}"
+  req = urllib.request.Request(
+    url,
+    headers={
+      "Authorization": f"token {token}",
+      "Accept": accept,
+      "X-GitHub-Api-Version": "2022-11-28",
+    },
+  )
+  with urllib.request.urlopen(req) as resp:
+    return resp.read()
 
 
 def fetch_pr_metadata(pr_number: int, token: str) -> tuple[str, str]:
-    """Returns (base_ref, head_sha)."""
-    data = json.loads(_gh_get(f"/repos/{REPO}/pulls/{pr_number}", token))
-    base_ref = data["base"]["ref"]
-    head_sha = data["head"]["sha"]
-    return base_ref, head_sha
+  """Returns (base_ref, head_sha)."""
+  data = json.loads(_gh_get(f"/repos/{REPO}/pulls/{pr_number}", token))
+  base_ref = data["base"]["ref"]
+  head_sha = data["head"]["sha"]
+  return base_ref, head_sha
 
 
 def fetch_diff(base_ref: str, head_sha: str, token: str) -> str:
-    """Fetch unified diff for base...head via GitHub compare API."""
-    raw = _gh_get(
-        f"/repos/{REPO}/compare/{base_ref}...{head_sha}",
-        token,
-        accept="application/vnd.github.diff",
-    )
-    return raw.decode("utf-8", errors="replace")
+  """Fetch unified diff for base...head via GitHub compare API."""
+  raw = _gh_get(
+    f"/repos/{REPO}/compare/{base_ref}...{head_sha}",
+    token,
+    accept="application/vnd.github.diff",
+  )
+  return raw.decode("utf-8", errors="replace")
 
 
 # ── agent runner ──────────────────────────────────────────────────────────────
 
 
 def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, bool]:
-    """Run a single gemini agent. Returns (agent_name, success)."""
-    prompt = AGENT_PROMPTS[agent] + f"\n\n--- DIFF ---\n{diff_text}\n--- END DIFF ---"
-    t0 = time.time()
-    try:
-        result = subprocess.run(
-            [GEMINI_BIN, "--yolo", "-p", prompt],
-            capture_output=True,
-            text=True,
-            timeout=300,
-        )
-        time.time() - t0
-        output = result.stdout.strip() or result.stderr.strip()
-        out_path.write_text(output)
-        [l for l in output.splitlines() if l.startswith("FILE:")]  # noqa: E741
-        return agent, True
-    except subprocess.TimeoutExpired:
-        out_path.write_text("NO_FINDINGS\n# agent timed out after 300s")
-        return agent, False
-    except Exception as exc:
-        out_path.write_text(f"NO_FINDINGS\n# agent error: {exc}")
-        return agent, False
+  """Run a single gemini agent. Returns (agent_name, success)."""
+  prompt = AGENT_PROMPTS[agent] + f"\n\n--- DIFF ---\n{diff_text}\n--- END DIFF ---"
+  t0 = time.time()
+  try:
+    result = subprocess.run(
+      [GEMINI_BIN, "--yolo", "-p", prompt],
+      capture_output=True,
+      text=True,
+      timeout=300,
+    )
+    time.time() - t0
+    output = result.stdout.strip() or result.stderr.strip()
+    out_path.write_text(output)
+    [l for l in output.splitlines() if l.startswith("FILE:")]  # noqa: E741
+    return agent, True
+  except subprocess.TimeoutExpired:
+    out_path.write_text("NO_FINDINGS\n# agent timed out after 300s")
+    return agent, False
+  except Exception as exc:
+    out_path.write_text(f"NO_FINDINGS\n# agent error: {exc}")
+    return agent, False
 
 
 # ── ANE gate ──────────────────────────────────────────────────────────────────
 
 
 def run_ane_gate(diff_path: Path, ane_out_path: Path) -> dict:
-    """Run ane_budget.py and write JSON report. Returns report dict."""
-    try:
-        result = subprocess.run(
-            [PYTHON, str(ANE_BUDGET_SCRIPT), str(diff_path)],
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-        report = json.loads(result.stdout) if result.stdout.strip() else {"passed": True, "violations": []}
-        ane_out_path.write_text(json.dumps(report, indent=2))
-        "PASSED" if report.get("passed") else "FAILED"
-        return report
-    except Exception as exc:
-        report = {"passed": True, "violations": [], "error": str(exc)}
-        ane_out_path.write_text(json.dumps(report, indent=2))
-        return report
+  """Run ane_budget.py and write JSON report. Returns report dict."""
+  try:
+    result = subprocess.run(
+      [PYTHON, str(ANE_BUDGET_SCRIPT), str(diff_path)],
+      capture_output=True,
+      text=True,
+      timeout=30,
+    )
+    report = (
+      json.loads(result.stdout)
+      if result.stdout.strip()
+      else {"passed": True, "violations": []}
+    )
+    ane_out_path.write_text(json.dumps(report, indent=2))
+    "PASSED" if report.get("passed") else "FAILED"
+    return report
+  except Exception as exc:
+    report = {"passed": True, "violations": [], "error": str(exc)}
+    ane_out_path.write_text(json.dumps(report, indent=2))
+    return report
 
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run GCA multi-agent PR review locally (bypasses GitHub Actions)")
-    parser.add_argument("--pr", type=int, default=48, help="PR number to review (default: 48)")
-    parser.add_argument(
-        "--agents",
-        default="correctness,security,perf,arch",
-        help="Comma-separated list of agents to run (default: all four)",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Print findings but do not post to GitHub",
-    )
-    parser.add_argument(
-        "--repo",
-        default=REPO,
-        help=f"GitHub repo (default: {REPO})",
-    )
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(
+    description="Run GCA multi-agent PR review locally (bypasses GitHub Actions)"
+  )
+  parser.add_argument(
+    "--pr", type=int, default=48, help="PR number to review (default: 48)"
+  )
+  parser.add_argument(
+    "--agents",
+    default="correctness,security,perf,arch",
+    help="Comma-separated list of agents to run (default: all four)",
+  )
+  parser.add_argument(
+    "--dry-run",
+    action="store_true",
+    help="Print findings but do not post to GitHub",
+  )
+  parser.add_argument(
+    "--repo",
+    default=REPO,
+    help=f"GitHub repo (default: {REPO})",
+  )
+  args = parser.parse_args()
 
-    agents = [a.strip() for a in args.agents.split(",") if a.strip() in AGENT_PROMPTS]
-    if not agents:
-        return 1
+  agents = [a.strip() for a in args.agents.split(",") if a.strip() in AGENT_PROMPTS]
+  if not agents:
+    return 1
 
-    workdir = Path(f"/tmp/gca_local_pr{args.pr}")
-    workdir.mkdir(exist_ok=True)
+  workdir = Path(f"/tmp/gca_local_pr{args.pr}")
+  workdir.mkdir(exist_ok=True)
 
-    # ── 1. setup: get token + PR metadata + diff ──────────────────────────────
-    token = _get_github_token()
-    base_ref, head_sha = fetch_pr_metadata(args.pr, token)
-    diff_text = fetch_diff(base_ref, head_sha, token)
+  # ── 1. setup: get token + PR metadata + diff ──────────────────────────────
+  token = _get_github_token()
+  base_ref, head_sha = fetch_pr_metadata(args.pr, token)
+  diff_text = fetch_diff(base_ref, head_sha, token)
 
-    diff_path = workdir / "diff.txt"
-    diff_path.write_text(diff_text)
+  diff_path = workdir / "diff.txt"
+  diff_path.write_text(diff_text)
 
-    # ── 2 + 3. analyze (4 agents) + ane-gate in parallel ─────────────────────
-    ane_out_path = workdir / "ane_report.json"
-    agent_out_paths = {agent: workdir / f"review_{agent}.txt" for agent in agents}
+  # ── 2 + 3. analyze (4 agents) + ane-gate in parallel ─────────────────────
+  ane_out_path = workdir / "ane_report.json"
+  agent_out_paths = {agent: workdir / f"review_{agent}.txt" for agent in agents}
 
-    with ThreadPoolExecutor(max_workers=len(agents) + 1) as pool:
-        # Submit ANE gate
-        ane_future = pool.submit(run_ane_gate, diff_path, ane_out_path)
+  with ThreadPoolExecutor(max_workers=len(agents) + 1) as pool:
+    # Submit ANE gate
+    ane_future = pool.submit(run_ane_gate, diff_path, ane_out_path)
 
-        # Submit gemini agents
-        agent_futures = {pool.submit(run_gemini_agent, agent, diff_text, agent_out_paths[agent]): agent for agent in agents}
+    # Submit gemini agents
+    agent_futures = {
+      pool.submit(run_gemini_agent, agent, diff_text, agent_out_paths[agent]): agent
+      for agent in agents
+    }
 
-        # Collect results as they complete
-        for future in as_completed([*list(agent_futures.keys()), ane_future]):
-            if future in agent_futures:
-                _agent_name, _ok = future.result()
-            else:
-                # ANE gate future
-                future.result()
+    # Collect results as they complete
+    for future in as_completed([*list(agent_futures.keys()), ane_future]):
+      if future in agent_futures:
+        _agent_name, _ok = future.result()
+      else:
+        # ANE gate future
+        future.result()
 
-    # ── 4. verify-and-post ────────────────────────────────────────────────────
-    review_globs = [str(p) for p in agent_out_paths.values() if p.exists()]
-    if not review_globs:
-        return 1
+  # ── 4. verify-and-post ────────────────────────────────────────────────────
+  review_globs = [str(p) for p in agent_out_paths.values() if p.exists()]
+  if not review_globs:
+    return 1
 
-    cmd = [
-        PYTHON,
-        str(POST_REVIEW_SCRIPT),
-        "--repo",
-        args.repo,
-        "--pr",
-        str(args.pr),
-        "--commit",
-        head_sha,
-        "--reviews",
-        *review_globs,
-        "--ane-report",
-        str(ane_out_path),
-    ]
-    if args.dry_run:
-        cmd.append("--dry-run")
+  cmd = [
+    PYTHON,
+    str(POST_REVIEW_SCRIPT),
+    "--repo",
+    args.repo,
+    "--pr",
+    str(args.pr),
+    "--commit",
+    head_sha,
+    "--reviews",
+    *review_globs,
+    "--ane-report",
+    str(ane_out_path),
+  ]
+  if args.dry_run:
+    cmd.append("--dry-run")
 
-    env = os.environ.copy()
-    env["GITHUB_TOKEN"] = token
+  env = os.environ.copy()
+  env["GITHUB_TOKEN"] = token
 
-    result = subprocess.run(cmd, env=env)
+  result = subprocess.run(cmd, env=env)
 
-    if result.returncode == 0:
-        if not args.dry_run:
-            pass
-        return 0
-    return result.returncode
+  if result.returncode == 0:
+    if not args.dry_run:
+      pass
+    return 0
+  return result.returncode
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+  sys.exit(main())

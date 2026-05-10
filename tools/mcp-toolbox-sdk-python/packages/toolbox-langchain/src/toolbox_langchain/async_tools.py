@@ -27,136 +27,144 @@ from toolbox_core.utils import params_to_pydantic_model
 # end-user. It should not be used directly by external code. Changes to this
 # class will not be considered breaking changes to the public API.
 class AsyncToolboxTool(BaseTool):
+  """
+  A subclass of LangChain's BaseTool that supports features specific to
+  Toolbox, like bound parameters and authenticated tools.
+  """
+
+  def __init__(
+    self,
+    core_tool: ToolboxCoreTool,
+  ) -> None:
     """
-    A subclass of LangChain's BaseTool that supports features specific to
-    Toolbox, like bound parameters and authenticated tools.
+    Initializes an AsyncToolboxTool instance.
+
+    Args:
+        core_tool: The underlying core async ToolboxTool instance.
     """
 
-    def __init__(
-        self,
-        core_tool: ToolboxCoreTool,
-    ) -> None:
-        """
-        Initializes an AsyncToolboxTool instance.
+    # Due to how pydantic works, we must initialize the underlying
+    # BaseTool class before assigning values to member variables.
+    super().__init__(
+      name=core_tool.__name__,
+      description=core_tool.__doc__,
+      args_schema=params_to_pydantic_model(core_tool._name, core_tool._params),
+    )
+    self.__core_tool = core_tool
 
-        Args:
-            core_tool: The underlying core async ToolboxTool instance.
-        """
+  def _run(self, **kwargs: Any) -> str:
+    raise NotImplementedError("Synchronous methods not supported by async tools.")
 
-        # Due to how pydantic works, we must initialize the underlying
-        # BaseTool class before assigning values to member variables.
-        super().__init__(
-            name=core_tool.__name__,
-            description=core_tool.__doc__,
-            args_schema=params_to_pydantic_model(core_tool._name, core_tool._params),
-        )
-        self.__core_tool = core_tool
+  async def _arun(self, **kwargs: Any) -> str:
+    """
+    The coroutine that invokes the tool with the given arguments.
 
-    def _run(self, **kwargs: Any) -> str:
-        raise NotImplementedError("Synchronous methods not supported by async tools.")
+    Args:
+        **kwargs: The arguments to the tool.
 
-    async def _arun(self, **kwargs: Any) -> str:
-        """
-        The coroutine that invokes the tool with the given arguments.
+    Returns:
+        A dictionary containing the parsed JSON response from the tool
+        invocation.
+    """
+    return await self.__core_tool(**kwargs)
 
-        Args:
-            **kwargs: The arguments to the tool.
+  def add_auth_token_getters(
+    self, auth_token_getters: dict[str, Callable[[], str]]
+  ) -> "AsyncToolboxTool":
+    """
+    Registers functions to retrieve ID tokens for the corresponding
+    authentication sources.
 
-        Returns:
-            A dictionary containing the parsed JSON response from the tool
-            invocation.
-        """
-        return await self.__core_tool(**kwargs)
+    Args:
+        auth_token_getters: A dictionary of authentication source names to
+            the functions that return corresponding ID token getters.
 
-    def add_auth_token_getters(self, auth_token_getters: dict[str, Callable[[], str]]) -> "AsyncToolboxTool":
-        """
-        Registers functions to retrieve ID tokens for the corresponding
-        authentication sources.
+    Returns:
+        A new AsyncToolboxTool instance that is a deep copy of the current
+        instance, with added auth token getters.
 
-        Args:
-            auth_token_getters: A dictionary of authentication source names to
-                the functions that return corresponding ID token getters.
+    Raises:
+        ValueError: If any of the provided auth parameters is already
+            registered.
 
-        Returns:
-            A new AsyncToolboxTool instance that is a deep copy of the current
-            instance, with added auth token getters.
+    """
+    new_core_tool = self.__core_tool.add_auth_token_getters(auth_token_getters)
+    return AsyncToolboxTool(core_tool=new_core_tool)
 
-        Raises:
-            ValueError: If any of the provided auth parameters is already
-                registered.
+  def add_auth_token_getter(
+    self, auth_source: str, get_id_token: Callable[[], str]
+  ) -> "AsyncToolboxTool":
+    """
+    Registers a function to retrieve an ID token for a given authentication
+    source.
 
-        """
-        new_core_tool = self.__core_tool.add_auth_token_getters(auth_token_getters)
-        return AsyncToolboxTool(core_tool=new_core_tool)
+    Args:
+        auth_source: The name of the authentication source.
+        get_id_token: A function that returns the ID token.
 
-    def add_auth_token_getter(self, auth_source: str, get_id_token: Callable[[], str]) -> "AsyncToolboxTool":
-        """
-        Registers a function to retrieve an ID token for a given authentication
-        source.
+    Returns:
+        A new ToolboxTool instance that is a deep copy of the current
+        instance, with added auth token getter.
 
-        Args:
-            auth_source: The name of the authentication source.
-            get_id_token: A function that returns the ID token.
+    Raises:
+        ValueError: If the provided auth parameter is already registered.
 
-        Returns:
-            A new ToolboxTool instance that is a deep copy of the current
-            instance, with added auth token getter.
+    """
+    return self.add_auth_token_getters({auth_source: get_id_token})
 
-        Raises:
-            ValueError: If the provided auth parameter is already registered.
+  @deprecated("Please use `add_auth_token_getters` instead.")
+  def add_auth_tokens(
+    self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True
+  ) -> "AsyncToolboxTool":
+    return self.add_auth_token_getters(auth_tokens)
 
-        """
-        return self.add_auth_token_getters({auth_source: get_id_token})
+  @deprecated("Please use `add_auth_token_getter` instead.")
+  def add_auth_token(
+    self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True
+  ) -> "AsyncToolboxTool":
+    return self.add_auth_token_getter(auth_source, get_id_token)
 
-    @deprecated("Please use `add_auth_token_getters` instead.")
-    def add_auth_tokens(self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True) -> "AsyncToolboxTool":
-        return self.add_auth_token_getters(auth_tokens)
+  def bind_params(
+    self,
+    bound_params: dict[str, Any | Callable[[], Any]],
+  ) -> "AsyncToolboxTool":
+    """
+    Registers values or functions to retrieve the value for the
+    corresponding bound parameters.
 
-    @deprecated("Please use `add_auth_token_getter` instead.")
-    def add_auth_token(self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True) -> "AsyncToolboxTool":
-        return self.add_auth_token_getter(auth_source, get_id_token)
+    Args:
+        bound_params: A dictionary of the bound parameter name to the
+            value or function of the bound value.
 
-    def bind_params(
-        self,
-        bound_params: dict[str, Any | Callable[[], Any]],
-    ) -> "AsyncToolboxTool":
-        """
-        Registers values or functions to retrieve the value for the
-        corresponding bound parameters.
+    Returns:
+        A new AsyncToolboxTool instance that is a deep copy of the current
+        instance, with added bound params.
 
-        Args:
-            bound_params: A dictionary of the bound parameter name to the
-                value or function of the bound value.
+    Raises:
+        ValueError: If any of the provided bound params is already bound.
+    """
+    new_core_tool = self.__core_tool.bind_params(bound_params)
+    return AsyncToolboxTool(core_tool=new_core_tool)
 
-        Returns:
-            A new AsyncToolboxTool instance that is a deep copy of the current
-            instance, with added bound params.
+  def bind_param(
+    self,
+    param_name: str,
+    param_value: Any | Callable[[], Any],
+  ) -> "AsyncToolboxTool":
+    """
+    Registers a value or a function to retrieve the value for a given bound
+    parameter.
 
-        Raises:
-            ValueError: If any of the provided bound params is already bound.
-        """
-        new_core_tool = self.__core_tool.bind_params(bound_params)
-        return AsyncToolboxTool(core_tool=new_core_tool)
+    Args:
+        param_name: The name of the bound parameter.
+        param_value: The value of the bound parameter, or a callable that
+            returns the value.
 
-    def bind_param(
-        self,
-        param_name: str,
-        param_value: Any | Callable[[], Any],
-    ) -> "AsyncToolboxTool":
-        """
-        Registers a value or a function to retrieve the value for a given bound
-        parameter.
+    Returns:
+        A new ToolboxTool instance that is a deep copy of the current
+        instance, with added bound param.
 
-        Args:
-            param_name: The name of the bound parameter.
-            param_value: The value of the bound parameter, or a callable that
-                returns the value.
-
-        Returns:
-            A new ToolboxTool instance that is a deep copy of the current
-            instance, with added bound param.
-
-        Raises:
-            ValueError: If the provided bound param is already bound.
-        """
-        return self.bind_params({param_name: param_value})
+    Raises:
+        ValueError: If the provided bound param is already bound.
+    """
+    return self.bind_params({param_name: param_value})

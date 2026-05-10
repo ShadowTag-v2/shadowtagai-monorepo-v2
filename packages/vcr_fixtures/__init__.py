@@ -18,17 +18,17 @@ Reference: vcrpy (Python), nock (TypeScript)
 """
 
 from vcr_fixtures.manager import (
-    CassetteMode,
-    FixtureManager,
-    RecordedInteraction,
-    VCRContext,
-    fixture_manager,
+  CassetteMode,
+  FixtureManager,
+  RecordedInteraction,
+  VCRContext,
+  fixture_manager,
 )
 
 __all__ = [
-    "CassetteMode",
-    "FixtureManager",
-    "RecordedInteraction",
-    "VCRContext",
-    "fixture_manager",
+  "CassetteMode",
+  "FixtureManager",
+  "RecordedInteraction",
+  "VCRContext",
+  "fixture_manager",
 ]

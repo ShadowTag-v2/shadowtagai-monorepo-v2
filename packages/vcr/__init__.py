@@ -17,11 +17,11 @@ from vcr.cassette import Cassette, CassetteEntry, compute_request_hash
 from vcr.recorder import DiffMismatch, ReplayMiss, VCRMode, VCRRecorder
 
 __all__ = [
-    "Cassette",
-    "CassetteEntry",
-    "DiffMismatch",
-    "ReplayMiss",
-    "VCRMode",
-    "VCRRecorder",
-    "compute_request_hash",
+  "Cassette",
+  "CassetteEntry",
+  "DiffMismatch",
+  "ReplayMiss",
+  "VCRMode",
+  "VCRRecorder",
+  "compute_request_hash",
 ]

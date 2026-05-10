@@ -56,109 +56,111 @@ FMT_CMD = ["uv", "run", "ruff", "format", "."]
 
 
 class Error(NamedTuple):
-    file: str
-    line: int
-    col: int
-    code: str
-    message: str
-    source: str  # "ruff" | "mypy" | "pytest"
+  file: str
+  line: int
+  col: int
+  code: str
+  message: str
+  source: str  # "ruff" | "mypy" | "pytest"
 
 
 # ── Linter / test runners ─────────────────────────────────────────────────────
 
 
 def run_ruff() -> list[Error]:
-    r = subprocess.run(LINT_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
-    errors: list[Error] = []
-    try:
-        items = json.loads(r.stdout or "[]")
-        for item in items:
-            errors.append(
-                Error(
-                    file=item.get("filename", ""),
-                    line=item.get("location", {}).get("row", 0),
-                    col=item.get("location", {}).get("column", 0),
-                    code=item.get("code", ""),
-                    message=item.get("message", ""),
-                    source="ruff",
-                ),
-            )
-    except json.JSONDecodeError:
-        pass
-    return errors
+  r = subprocess.run(LINT_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
+  errors: list[Error] = []
+  try:
+    items = json.loads(r.stdout or "[]")
+    for item in items:
+      errors.append(
+        Error(
+          file=item.get("filename", ""),
+          line=item.get("location", {}).get("row", 0),
+          col=item.get("location", {}).get("column", 0),
+          code=item.get("code", ""),
+          message=item.get("message", ""),
+          source="ruff",
+        ),
+      )
+  except json.JSONDecodeError:
+    pass
+  return errors
 
 
 def run_mypy() -> list[Error]:
-    r = subprocess.run(TYPE_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
-    errors: list[Error] = []
-    # mypy --output=json emits one JSON object per line
-    for line in (r.stdout + r.stderr).splitlines():
-        try:
-            item = json.loads(line)
-            if item.get("severity") == "error":
-                errors.append(
-                    Error(
-                        file=item.get("file", ""),
-                        line=item.get("line", 0),
-                        col=item.get("column", 0),
-                        code=item.get("code", ""),
-                        message=item.get("message", ""),
-                        source="mypy",
-                    ),
-                )
-        except json.JSONDecodeError:
-            continue
-    return errors
+  r = subprocess.run(TYPE_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
+  errors: list[Error] = []
+  # mypy --output=json emits one JSON object per line
+  for line in (r.stdout + r.stderr).splitlines():
+    try:
+      item = json.loads(line)
+      if item.get("severity") == "error":
+        errors.append(
+          Error(
+            file=item.get("file", ""),
+            line=item.get("line", 0),
+            col=item.get("column", 0),
+            code=item.get("code", ""),
+            message=item.get("message", ""),
+            source="mypy",
+          ),
+        )
+    except json.JSONDecodeError:
+      continue
+  return errors
 
 
 def run_tests() -> list[Error]:
-    r = subprocess.run(TEST_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
-    errors: list[Error] = []
-    if r.returncode == 0:
-        return errors
-    # Parse pytest short tb: "FAILED tests/foo.py::test_bar - AssertionError: ..."
-    for line in r.stdout.splitlines():
-        m = re.match(r"FAILED (.+?)::(.+?) - (.+)", line)
-        if m:
-            errors.append(
-                Error(
-                    file=m.group(1),
-                    line=0,
-                    col=0,
-                    code="TEST_FAIL",
-                    message=f"{m.group(2)}: {m.group(3)}",
-                    source="pytest",
-                ),
-            )
+  r = subprocess.run(TEST_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
+  errors: list[Error] = []
+  if r.returncode == 0:
     return errors
+  # Parse pytest short tb: "FAILED tests/foo.py::test_bar - AssertionError: ..."
+  for line in r.stdout.splitlines():
+    m = re.match(r"FAILED (.+?)::(.+?) - (.+)", line)
+    if m:
+      errors.append(
+        Error(
+          file=m.group(1),
+          line=0,
+          col=0,
+          code="TEST_FAIL",
+          message=f"{m.group(2)}: {m.group(3)}",
+          source="pytest",
+        ),
+      )
+  return errors
 
 
 def collect_errors() -> list[Error]:
-    errs: list[Error] = []
-    errs += run_ruff()
-    errs += run_mypy()
-    errs += run_tests()
-    return errs
+  errs: list[Error] = []
+  errs += run_ruff()
+  errs += run_mypy()
+  errs += run_tests()
+  return errs
 
 
 # ── Provider: Gemini ──────────────────────────────────────────────────────────
 
 
 def _gemini_generate(prompt: str) -> str:
-    if not GEMINI_API_KEY:
-        msg = "GEMINI_API_KEY not set"
-        raise RuntimeError(msg)
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_GEN_MODEL}:generateContent?key={GEMINI_API_KEY}"
-    body = json.dumps(
-        {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
-        },
-    ).encode()
-    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        data = json.loads(resp.read())
-    return data["candidates"][0]["content"]["parts"][0]["text"]
+  if not GEMINI_API_KEY:
+    msg = "GEMINI_API_KEY not set"
+    raise RuntimeError(msg)
+  url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_GEN_MODEL}:generateContent?key={GEMINI_API_KEY}"
+  body = json.dumps(
+    {
+      "contents": [{"parts": [{"text": prompt}]}],
+      "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
+    },
+  ).encode()
+  req = urllib.request.Request(
+    url, data=body, headers={"Content-Type": "application/json"}, method="POST"
+  )
+  with urllib.request.urlopen(req, timeout=60) as resp:
+    data = json.loads(resp.read())
+  return data["candidates"][0]["content"]["parts"][0]["text"]
 
 
 # Future provider stubs:
@@ -182,41 +184,43 @@ def _gemini_generate(prompt: str) -> str:
 
 
 def generate(prompt: str) -> str:
-    if REPAIR_PROVIDER == "openai":
-        msg = "Set REPAIR_PROVIDER=gemini or stub _openai_generate"
-        raise NotImplementedError(msg)
-    if REPAIR_PROVIDER == "claude":
-        msg = "Set REPAIR_PROVIDER=gemini or stub _claude_generate"
-        raise NotImplementedError(msg)
-    return _gemini_generate(prompt)
+  if REPAIR_PROVIDER == "openai":
+    msg = "Set REPAIR_PROVIDER=gemini or stub _openai_generate"
+    raise NotImplementedError(msg)
+  if REPAIR_PROVIDER == "claude":
+    msg = "Set REPAIR_PROVIDER=gemini or stub _claude_generate"
+    raise NotImplementedError(msg)
+  return _gemini_generate(prompt)
 
 
 # ── Patch builder ─────────────────────────────────────────────────────────────
 
 
 def read_file_context(file_path: str, line: int, radius: int = 20) -> str:
-    p = REPO_ROOT / file_path
-    if not p.exists():
-        return ""
-    lines = p.read_text(errors="replace").splitlines()
-    start = max(0, line - radius - 1)
-    end = min(len(lines), line + radius)
-    numbered = [f"{i + 1}: {l}" for i, l in enumerate(lines[start:end], start=start)]  # noqa: E741
-    return "\n".join(numbered)
+  p = REPO_ROOT / file_path
+  if not p.exists():
+    return ""
+  lines = p.read_text(errors="replace").splitlines()
+  start = max(0, line - radius - 1)
+  end = min(len(lines), line + radius)
+  numbered = [f"{i + 1}: {l}" for i, l in enumerate(lines[start:end], start=start)]  # noqa: E741
+  return "\n".join(numbered)
 
 
 def build_repair_prompt(errors: list[Error]) -> str:
-    # Group by file
-    by_file: dict[str, list[Error]] = {}
-    for e in errors:
-        by_file.setdefault(e.file, []).append(e)
+  # Group by file
+  by_file: dict[str, list[Error]] = {}
+  for e in errors:
+    by_file.setdefault(e.file, []).append(e)
 
-    sections = []
-    for file, file_errors in list(by_file.items())[:5]:  # cap at 5 files per round
-        context = read_file_context(file, file_errors[0].line)
-        err_lines = "\n".join(f"  [{e.source}:{e.code}] line {e.line}: {e.message}" for e in file_errors[:10])
-        sections.append(
-            textwrap.dedent(f"""
+  sections = []
+  for file, file_errors in list(by_file.items())[:5]:  # cap at 5 files per round
+    context = read_file_context(file, file_errors[0].line)
+    err_lines = "\n".join(
+      f"  [{e.source}:{e.code}] line {e.line}: {e.message}" for e in file_errors[:10]
+    )
+    sections.append(
+      textwrap.dedent(f"""
             ### File: {file}
             Errors:
             {err_lines}
@@ -226,9 +230,9 @@ def build_repair_prompt(errors: list[Error]) -> str:
             {context}
             ```
         """),
-        )
+    )
 
-    return textwrap.dedent(f"""
+  return textwrap.dedent(f"""
         You are an expert Python/TypeScript developer performing automated error repair.
         Fix ALL errors listed below. Return ONLY a JSON object — no prose, no markdown fences.
 
@@ -255,92 +259,92 @@ def build_repair_prompt(errors: list[Error]) -> str:
 
 
 def apply_patches(llm_response: str, dry_run: bool = False) -> list[str]:
-    # Strip markdown fences if model adds them despite instructions
-    text = re.sub(r"^```[a-z]*\n?", "", llm_response.strip(), flags=re.MULTILINE)
-    text = re.sub(r"\n?```$", "", text.strip(), flags=re.MULTILINE)
+  # Strip markdown fences if model adds them despite instructions
+  text = re.sub(r"^```[a-z]*\n?", "", llm_response.strip(), flags=re.MULTILINE)
+  text = re.sub(r"\n?```$", "", text.strip(), flags=re.MULTILINE)
 
-    try:
-        data = json.loads(text)
-    except json.JSONDecodeError:
-        return []
+  try:
+    data = json.loads(text)
+  except json.JSONDecodeError:
+    return []
 
-    patched: list[str] = []
-    for item in data.get("files", []):
-        rel = item.get("path", "")
-        content = item.get("full_content", "")
-        if not rel or not content:
-            continue
-        target = REPO_ROOT / rel
-        if dry_run:
-            pass
-        else:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(content)
-        patched.append(rel)
-    return patched
+  patched: list[str] = []
+  for item in data.get("files", []):
+    rel = item.get("path", "")
+    content = item.get("full_content", "")
+    if not rel or not content:
+      continue
+    target = REPO_ROOT / rel
+    if dry_run:
+      pass
+    else:
+      target.parent.mkdir(parents=True, exist_ok=True)
+      target.write_text(content)
+    patched.append(rel)
+  return patched
 
 
 def auto_format() -> None:
-    subprocess.run(FMT_CMD, cwd=REPO_ROOT, capture_output=True)
+  subprocess.run(FMT_CMD, cwd=REPO_ROOT, capture_output=True)
 
 
 def auto_commit(patched_files: list[str], round_n: int) -> None:
-    if not patched_files or not AUTO_COMMIT:
-        return
-    subprocess.run(["git", "add", *patched_files], cwd=REPO_ROOT)
-    msg = f"fix(auto-repair): round {round_n} — {len(patched_files)} file(s) [provider={REPAIR_PROVIDER}]"
-    subprocess.run(["git", "commit", "-m", msg], cwd=REPO_ROOT)
+  if not patched_files or not AUTO_COMMIT:
+    return
+  subprocess.run(["git", "add", *patched_files], cwd=REPO_ROOT)
+  msg = f"fix(auto-repair): round {round_n} — {len(patched_files)} file(s) [provider={REPAIR_PROVIDER}]"
+  subprocess.run(["git", "commit", "-m", msg], cwd=REPO_ROOT)
 
 
 # ── Main repair loop ──────────────────────────────────────────────────────────
 
 
 def repair_loop(dry_run: bool = False, ci: bool = False) -> int:
-    for round_n in range(1, MAX_ROUNDS + 1):
-        errors = collect_errors()
-        if not errors:
-            return 0
+  for round_n in range(1, MAX_ROUNDS + 1):
+    errors = collect_errors()
+    if not errors:
+      return 0
 
-        prompt = build_repair_prompt(errors)
+    prompt = build_repair_prompt(errors)
 
-        try:
-            response = generate(prompt)
-        except Exception:
-            break
+    try:
+      response = generate(prompt)
+    except Exception:
+      break
 
-        patched = apply_patches(response, dry_run=dry_run)
-        if not dry_run:
-            auto_format()
-            auto_commit(patched, round_n)
+    patched = apply_patches(response, dry_run=dry_run)
+    if not dry_run:
+      auto_format()
+      auto_commit(patched, round_n)
 
-        if not patched:
-            break
+    if not patched:
+      break
 
-    remaining = collect_errors()
-    if remaining:
-        for _e in remaining[:20]:
-            pass
-        return 1 if ci else 0
-    return 0
+  remaining = collect_errors()
+  if remaining:
+    for _e in remaining[:20]:
+      pass
+    return 1 if ci else 0
+  return 0
 
 
 def watch_loop() -> None:
-    try:
-        while True:
-            repair_loop()
-            time.sleep(10)
-    except KeyboardInterrupt:
-        pass
+  try:
+    while True:
+      repair_loop()
+      time.sleep(10)
+  except KeyboardInterrupt:
+    pass
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="ShadowTag-v2 Autonomous Error Repair")
-    parser.add_argument("--watch", action="store_true", help="Re-run on interval")
-    parser.add_argument("--dry-run", action="store_true", help="Print patches only")
-    parser.add_argument("--ci", action="store_true", help="Exit non-zero if unresolved")
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(description="ShadowTag-v2 Autonomous Error Repair")
+  parser.add_argument("--watch", action="store_true", help="Re-run on interval")
+  parser.add_argument("--dry-run", action="store_true", help="Print patches only")
+  parser.add_argument("--ci", action="store_true", help="Exit non-zero if unresolved")
+  args = parser.parse_args()
 
-    if args.watch:
-        watch_loop()
-    else:
-        sys.exit(repair_loop(dry_run=args.dry_run, ci=args.ci))
+  if args.watch:
+    watch_loop()
+  else:
+    sys.exit(repair_loop(dry_run=args.dry_run, ci=args.ci))

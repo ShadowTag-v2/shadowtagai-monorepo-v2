@@ -7,8 +7,8 @@ Triggered by Stripe webhooks. Sent via Google Workspace / SendGrid.
 from __future__ import annotations
 
 WELCOME_EMAIL = {
-    "subject": "Welcome to KovelAI — Your Practice is Set Up",
-    "html": """
+  "subject": "Welcome to KovelAI — Your Practice is Set Up",
+  "html": """
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #0a0d14; color: #e4e8f7; padding: 2rem; border-radius: 12px;">
       <h1 style="color: #c9a14a; font-size: 1.4rem;">🛡️ Welcome to KovelAI</h1>
       <p style="color: #8b92a8; line-height: 1.6;">Your privileged computing environment is now active. All queries are processed under the Kovel Doctrine with zero-retention architecture.</p>
@@ -19,8 +19,8 @@ WELCOME_EMAIL = {
 }
 
 PAYMENT_SUCCESS_EMAIL = {
-    "subject": "KovelAI — Payment Confirmed",
-    "html": """
+  "subject": "KovelAI — Payment Confirmed",
+  "html": """
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #0a0d14; color: #e4e8f7; padding: 2rem; border-radius: 12px;">
       <h1 style="color: #34d399; font-size: 1.4rem;">✅ Payment Confirmed</h1>
       <p style="color: #8b92a8; line-height: 1.6;">Your {tier} plan payment of ${amount} has been processed successfully.</p>
@@ -36,8 +36,8 @@ PAYMENT_SUCCESS_EMAIL = {
 }
 
 PAYMENT_FAILED_EMAIL = {
-    "subject": "KovelAI — Payment Failed • Action Required",
-    "html": """
+  "subject": "KovelAI — Payment Failed • Action Required",
+  "html": """
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #0a0d14; color: #e4e8f7; padding: 2rem; border-radius: 12px;">
       <h1 style="color: #f87171; font-size: 1.4rem;">⚠️ Payment Failed</h1>
       <p style="color: #8b92a8; line-height: 1.6;">We were unable to process your payment. Your account will enter a grace period. Please update your payment method to avoid service interruption.</p>
@@ -48,8 +48,8 @@ PAYMENT_FAILED_EMAIL = {
 }
 
 TOKEN_LIMIT_WARNING_EMAIL = {
-    "subject": "KovelAI — 80% Token Usage Reached",
-    "html": """
+  "subject": "KovelAI — 80% Token Usage Reached",
+  "html": """
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 560px; margin: 0 auto; background: #0a0d14; color: #e4e8f7; padding: 2rem; border-radius: 12px;">
       <h1 style="color: #fbbf24; font-size: 1.4rem;">📊 Token Usage Alert</h1>
       <p style="color: #8b92a8; line-height: 1.6;">You've used {used} of your {limit} monthly token allocation ({pct}%). Consider upgrading your plan for uninterrupted service.</p>

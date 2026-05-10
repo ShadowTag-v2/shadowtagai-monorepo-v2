@@ -5,15 +5,15 @@ from repo import Repo
 
 
 def find_user() -> User | None:
-    return User()
+  return User()
 
 
 def find_repo() -> Repo | None:
-    return Repo()
+  return Repo()
 
 
 def process_entities():
-    user: User | None = find_user()
-    user.save()
-    repo: Repo | None = find_repo()
-    repo.save()
+  user: User | None = find_user()
+  user.save()
+  repo: Repo | None = find_repo()
+  repo.save()

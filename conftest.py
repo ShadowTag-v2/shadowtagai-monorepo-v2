@@ -11,4 +11,4 @@ from pathlib import Path
 # Add repo root to sys.path so `apps.counselconduit.*` imports resolve
 _root = str(Path(__file__).resolve().parent)
 if _root not in sys.path:
-    sys.path.insert(0, _root)
+  sys.path.insert(0, _root)

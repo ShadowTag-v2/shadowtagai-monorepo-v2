@@ -2,7 +2,7 @@
 
 
 class User:
-    name: str = ""
+  name: str = ""
 
-    def save(self):
-        return True
+  def save(self):
+    return True

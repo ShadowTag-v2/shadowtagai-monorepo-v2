@@ -27,15 +27,15 @@ Public API:
 """
 
 from gemini_deep_research.client import (
-    DeepResearchClient,
-    ResearchTask,
-    ResearchReport,
-    PlanResult,
+  DeepResearchClient,
+  ResearchTask,
+  ResearchReport,
+  PlanResult,
 )
 
 __all__ = [
-    "DeepResearchClient",
-    "ResearchTask",
-    "ResearchReport",
-    "PlanResult",
+  "DeepResearchClient",
+  "ResearchTask",
+  "ResearchReport",
+  "PlanResult",
 ]

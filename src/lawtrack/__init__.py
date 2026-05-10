@@ -19,29 +19,29 @@ Key Differences from LegalTrack:
 __version__ = "1.0.0"
 
 from .enforcement import (
-    ComplianceCheck,
-    EnforcementAction,
-    EnforcementEngine,
+  ComplianceCheck,
+  EnforcementAction,
+  EnforcementEngine,
 )
 from .rules_database import (
-    JurisdictionRule,
-    RulesDatabase,
-    RuleType,
+  JurisdictionRule,
+  RulesDatabase,
+  RuleType,
 )
 from .timeline_engine import (
-    Timeline,
-    TimelineEngine,
-    TimelineEvent,
+  Timeline,
+  TimelineEngine,
+  TimelineEvent,
 )
 
 __all__ = [
-    "RulesDatabase",
-    "JurisdictionRule",
-    "RuleType",
-    "TimelineEngine",
-    "TimelineEvent",
-    "Timeline",
-    "EnforcementEngine",
-    "ComplianceCheck",
-    "EnforcementAction",
+  "RulesDatabase",
+  "JurisdictionRule",
+  "RuleType",
+  "TimelineEngine",
+  "TimelineEvent",
+  "Timeline",
+  "EnforcementEngine",
+  "ComplianceCheck",
+  "EnforcementAction",
 ]

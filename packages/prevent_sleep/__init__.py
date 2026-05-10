@@ -35,19 +35,19 @@ Or as a context manager::
 """
 
 from packages.prevent_sleep.sleep_guard import (
-    PreventSleepContext as prevent_sleep,
-    force_stop_prevent_sleep,
-    get_ref_count,
-    is_preventing_sleep,
-    start_prevent_sleep,
-    stop_prevent_sleep,
+  PreventSleepContext as prevent_sleep,
+  force_stop_prevent_sleep,
+  get_ref_count,
+  is_preventing_sleep,
+  start_prevent_sleep,
+  stop_prevent_sleep,
 )
 
 __all__ = [
-    "force_stop_prevent_sleep",
-    "get_ref_count",
-    "is_preventing_sleep",
-    "prevent_sleep",
-    "start_prevent_sleep",
-    "stop_prevent_sleep",
+  "force_stop_prevent_sleep",
+  "get_ref_count",
+  "is_preventing_sleep",
+  "prevent_sleep",
+  "start_prevent_sleep",
+  "stop_prevent_sleep",
 ]

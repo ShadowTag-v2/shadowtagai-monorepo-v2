@@ -19,113 +19,113 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 try:
-    import aiofiles
+  import aiofiles
 
-    _HAS_AIOFILES = True
+  _HAS_AIOFILES = True
 except ImportError:
-    _HAS_AIOFILES = False
+  _HAS_AIOFILES = False
 
 if TYPE_CHECKING:
-    from tool_gateway.gateway import Decision
+  from tool_gateway.gateway import Decision
 
 logger = logging.getLogger(__name__)
 
 
 class AsyncEvidenceLogger:
-    """Non-blocking evidence logger for tool gateway decisions.
+  """Non-blocking evidence logger for tool gateway decisions.
 
-    Falls back to synchronous writes if aiofiles is not installed.
+  Falls back to synchronous writes if aiofiles is not installed.
+
+  Args:
+      beads_dir: Path to the .beads directory.
+  """
+
+  def __init__(self, beads_dir: Path) -> None:
+    self._beads_dir = beads_dir
+    self._issues_file = beads_dir / "issues.jsonl"
+
+  async def log_check(
+    self,
+    tool_id: str,
+    context: dict[str, Any],
+    decision: Decision,
+  ) -> None:
+    """Log a gateway decision to the evidence file (non-blocking).
 
     Args:
-        beads_dir: Path to the .beads directory.
+        tool_id: The tool identifier that was checked.
+        context: The runtime context provided to the check.
+        decision: The gateway's decision.
     """
+    self._beads_dir.mkdir(parents=True, exist_ok=True)
 
-    def __init__(self, beads_dir: Path) -> None:
-        self._beads_dir = beads_dir
-        self._issues_file = beads_dir / "issues.jsonl"
+    safe_context = {}
+    for k, v in context.items():
+      try:
+        json.dumps(v)
+        safe_context[k] = v
+      except TypeError, ValueError:
+        safe_context[k] = str(v)
 
-    async def log_check(
-        self,
-        tool_id: str,
-        context: dict[str, Any],
-        decision: Decision,
-    ) -> None:
-        """Log a gateway decision to the evidence file (non-blocking).
+    entry = {
+      "ts": datetime.now(UTC).isoformat(),
+      "type": "tool_gateway_check",
+      "tool_id": tool_id,
+      "allowed": decision.allowed,
+      "reason": decision.reason,
+      "contract_id": decision.contract_id,
+      "reuse_hints": decision.reuse_hints,
+      "preconditions_met": decision.preconditions_met,
+      "context_keys": list(safe_context.keys()),
+    }
 
-        Args:
-            tool_id: The tool identifier that was checked.
-            context: The runtime context provided to the check.
-            decision: The gateway's decision.
-        """
-        self._beads_dir.mkdir(parents=True, exist_ok=True)
+    await self._append_entry(entry, tool_id)
 
-        safe_context = {}
-        for k, v in context.items():
-            try:
-                json.dumps(v)
-                safe_context[k] = v
-            except TypeError, ValueError:
-                safe_context[k] = str(v)
+  async def log_execution(
+    self,
+    tool_id: str,
+    success: bool,
+    detail: str = "",
+  ) -> None:
+    """Log tool execution result (non-blocking).
 
-        entry = {
-            "ts": datetime.now(UTC).isoformat(),
-            "type": "tool_gateway_check",
-            "tool_id": tool_id,
-            "allowed": decision.allowed,
-            "reason": decision.reason,
-            "contract_id": decision.contract_id,
-            "reuse_hints": decision.reuse_hints,
-            "preconditions_met": decision.preconditions_met,
-            "context_keys": list(safe_context.keys()),
-        }
+    Args:
+        tool_id: The tool identifier that was executed.
+        success: Whether the execution succeeded.
+        detail: Optional detail string.
+    """
+    self._beads_dir.mkdir(parents=True, exist_ok=True)
 
-        await self._append_entry(entry, tool_id)
+    entry = {
+      "ts": datetime.now(UTC).isoformat(),
+      "type": "tool_gateway_execution",
+      "tool_id": tool_id,
+      "success": success,
+      "detail": detail[:500],
+    }
 
-    async def log_execution(
-        self,
-        tool_id: str,
-        success: bool,
-        detail: str = "",
-    ) -> None:
-        """Log tool execution result (non-blocking).
+    await self._append_entry(entry, tool_id)
 
-        Args:
-            tool_id: The tool identifier that was executed.
-            success: Whether the execution succeeded.
-            detail: Optional detail string.
-        """
-        self._beads_dir.mkdir(parents=True, exist_ok=True)
+  async def _append_entry(self, entry: dict[str, Any], tool_id: str) -> None:
+    """Append a JSON line to the issues file.
 
-        entry = {
-            "ts": datetime.now(UTC).isoformat(),
-            "type": "tool_gateway_execution",
-            "tool_id": tool_id,
-            "success": success,
-            "detail": detail[:500],
-        }
+    Uses aiofiles for non-blocking I/O when available,
+    falls back to synchronous writes otherwise.
+    """
+    line = json.dumps(entry) + "\n"
 
-        await self._append_entry(entry, tool_id)
-
-    async def _append_entry(self, entry: dict[str, Any], tool_id: str) -> None:
-        """Append a JSON line to the issues file.
-
-        Uses aiofiles for non-blocking I/O when available,
-        falls back to synchronous writes otherwise.
-        """
-        line = json.dumps(entry) + "\n"
-
-        if _HAS_AIOFILES:
-            try:
-                async with aiofiles.open(self._issues_file, mode="a") as f:
-                    await f.write(line)
-                logger.debug("Evidence logged (async) for %s", tool_id)
-            except OSError:
-                logger.exception("Failed to write evidence for %s", tool_id)
-        else:
-            # Synchronous fallback
-            try:
-                with self._issues_file.open("a") as f:
-                    f.write(line)
-                logger.debug("Evidence logged (sync fallback) for %s", tool_id)
-            except OSError:
-                logger.exception("Failed to write evidence for %s", tool_id)
+    if _HAS_AIOFILES:
+      try:
+        async with aiofiles.open(self._issues_file, mode="a") as f:
+          await f.write(line)
+        logger.debug("Evidence logged (async) for %s", tool_id)
+      except OSError:
+        logger.exception("Failed to write evidence for %s", tool_id)
+    else:
+      # Synchronous fallback
+      try:
+        with self._issues_file.open("a") as f:
+          f.write(line)
+        logger.debug("Evidence logged (sync fallback) for %s", tool_id)
+      except OSError:
+        logger.exception("Failed to write evidence for %s", tool_id)

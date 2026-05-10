@@ -41,10 +41,7 @@
       "automerge": true
     }
   ],
-  "ignorePaths": [
-    "external_repos/**",
-    "third_party/**"
-  ],
+  "ignorePaths": ["external_repos/**", "third_party/**"],
   "dependencyDashboard": true,
   "prCreation": "immediate",
   "prConcurrentLimit": 10,

@@ -119,39 +119,39 @@ API_MAX_MEDIA_PER_REQUEST: int = 100
 
 
 def is_result_over_limit(
-    result_chars: int,
-    *,
-    custom_limit: int | None = None,
+  result_chars: int,
+  *,
+  custom_limit: int | None = None,
 ) -> bool:
-    """Check if a single tool result exceeds the character limit.
+  """Check if a single tool result exceeds the character limit.
 
-    Args:
-        result_chars: Length of the tool result in characters.
-        custom_limit: Optional per-tool limit (must be <= system cap).
+  Args:
+      result_chars: Length of the tool result in characters.
+      custom_limit: Optional per-tool limit (must be <= system cap).
 
-    Returns:
-        True if the result should be persisted to disk.
-    """
-    effective_limit = min(
-        custom_limit or DEFAULT_MAX_RESULT_SIZE_CHARS,
-        DEFAULT_MAX_RESULT_SIZE_CHARS,
-    )
-    return result_chars > effective_limit
+  Returns:
+      True if the result should be persisted to disk.
+  """
+  effective_limit = min(
+    custom_limit or DEFAULT_MAX_RESULT_SIZE_CHARS,
+    DEFAULT_MAX_RESULT_SIZE_CHARS,
+  )
+  return result_chars > effective_limit
 
 
 def is_message_over_budget(
-    total_result_chars: int,
-    *,
-    budget_override: int | None = None,
+  total_result_chars: int,
+  *,
+  budget_override: int | None = None,
 ) -> bool:
-    """Check if aggregate tool results in a message exceed the per-message budget.
+  """Check if aggregate tool results in a message exceed the per-message budget.
 
-    Args:
-        total_result_chars: Total characters across all tool results in one message.
-        budget_override: Runtime override (e.g., from feature flags).
+  Args:
+      total_result_chars: Total characters across all tool results in one message.
+      budget_override: Runtime override (e.g., from feature flags).
 
-    Returns:
-        True if the message needs result trimming.
-    """
-    budget = budget_override or MAX_TOOL_RESULTS_PER_MESSAGE_CHARS
-    return total_result_chars > budget
+  Returns:
+      True if the message needs result trimming.
+  """
+  budget = budget_override or MAX_TOOL_RESULTS_PER_MESSAGE_CHARS
+  return total_result_chars > budget

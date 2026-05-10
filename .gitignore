@@ -498,3 +498,8 @@ venv/
 .pixi
 .hypothesis/
 Installation directory*
+
+# Archived binary artifacts (Two-Lane Doctrine: use GCS, not git)
+_archive_redundant_2026-05-02/nextjs_build_artifacts/
+playwright-report/trace/
+third_party/mlx-engine/demo-data/chameleon.webp

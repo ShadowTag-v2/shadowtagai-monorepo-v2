@@ -4,11 +4,11 @@ import subprocess
 
 
 def write_file(path, content) -> None:
-    dir_name = os.path.dirname(path)
-    if dir_name:
-        os.makedirs(dir_name, exist_ok=True)
-    with open(path, "w") as f:
-        f.write(content.strip() + "\n")
+  dir_name = os.path.dirname(path)
+  if dir_name:
+    os.makedirs(dir_name, exist_ok=True)
+  with open(path, "w") as f:
+    f.write(content.strip() + "\n")
 
 
 # 1. pnkln-antigravity-pack
@@ -16,8 +16,8 @@ pack_dir = "pnkln-antigravity-pack"
 os.makedirs(pack_dir, exist_ok=True)
 
 write_file(
-    f"{pack_dir}/.antigravity/rules/cor-antigravity.mdc",
-    """
+  f"{pack_dir}/.antigravity/rules/cor-antigravity.mdc",
+  """
 # Cor.Antigravity Skills — Unhinged Edition (pnkln Final)
 ## Mission Posture (Permanent 160-IQ Bourne Lock)
 - Board: 160-IQ baseline enforced.
@@ -90,8 +90,8 @@ Build → run → record UI video → Gemini multimodal critique → PASS/FAIL �
 )
 
 write_file(
-    f"{pack_dir}/Dockerfile",
-    """
+  f"{pack_dir}/Dockerfile",
+  """
 FROM mcr.microsoft.com/playwright:v1.58.2-noble
 
 RUN apt-get update && apt-get install -y curl gnupg && \
@@ -107,8 +107,8 @@ ENTRYPOINT ["./scripts/pnkln-test.sh"]
 )
 
 write_file(
-    f"{pack_dir}/playwright.config.ts",
-    """
+  f"{pack_dir}/playwright.config.ts",
+  """
 import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
@@ -134,8 +134,8 @@ export default defineConfig({
 )
 
 write_file(
-    f"{pack_dir}/scripts/judge6.sh",
-    """
+  f"{pack_dir}/scripts/judge6.sh",
+  """
 #!/usr/bin/env bash
 set -euo pipefail
 PROJECT_ROOT="${PWD}"
@@ -176,8 +176,8 @@ fi
 )
 
 write_file(
-    f"{pack_dir}/scripts/cleanup-cinematic-videos.sh",
-    """
+  f"{pack_dir}/scripts/cleanup-cinematic-videos.sh",
+  """
 #!/usr/bin/env bash
 set -euo pipefail
 BUCKET="gs://pnkln-cinematic-artifacts"
@@ -192,8 +192,8 @@ echo "=== Cleanup Complete ===" | tee -a "${LOG}"
 )
 
 write_file(
-    f"{pack_dir}/docker-compose.yml",
-    """
+  f"{pack_dir}/docker-compose.yml",
+  """
 version: '3.8'
 services:
   pnkln-judge6:
@@ -207,8 +207,8 @@ services:
 )
 
 write_file(
-    f"{pack_dir}/scripts/pnkln-test.sh",
-    """
+  f"{pack_dir}/scripts/pnkln-test.sh",
+  """
 #!/usr/bin/env bash
 rm -f latest-run.mp4
 npx playwright test --video=on --output=latest-run.mp4 "$@"
@@ -217,15 +217,19 @@ chmod +x scripts/judge6.sh
 """,
 )
 
-for f in ["scripts/judge6.sh", "scripts/cleanup-cinematic-videos.sh", "scripts/pnkln-test.sh"]:
-    os.chmod(f"{pack_dir}/{f}", 0o755)
+for f in [
+  "scripts/judge6.sh",
+  "scripts/cleanup-cinematic-videos.sh",
+  "scripts/pnkln-test.sh",
+]:
+  os.chmod(f"{pack_dir}/{f}", 0o755)
 
 shutil.make_archive(pack_dir, "zip", pack_dir)
 
 # 2. Setup the recursive meta-evolve layer
 write_file(
-    "program.md",
-    """
+  "program.md",
+  """
 # pnkln Meta-Evolution Program v2
 Goal: Maximize Judge-6 score while preserving 2× throughput and +90% safety.
 Allowed edits: core/pnkln-evolve.py AND program.md
@@ -238,8 +242,8 @@ Evolve: better prompts, faster video analysis, tighter ARM controls, new skills,
 )
 
 write_file(
-    "core/pnkln-evolve.py",
-    """
+  "core/pnkln-evolve.py",
+  """
 # pnkln-evolve.py — Agent-editable core
 import subprocess
 import time
@@ -273,8 +277,8 @@ if __name__ == "__main__":
 )
 
 write_file(
-    "core/meta-evolve.py",
-    """
+  "core/meta-evolve.py",
+  """
 # meta-evolve.py — Agent-editable meta-layer
 import subprocess
 import time
@@ -311,8 +315,8 @@ if __name__ == "__main__":
 )
 
 write_file(
-    "scripts/pnkln-update.sh",
-    """#!/usr/bin/env bash
+  "scripts/pnkln-update.sh",
+  """#!/usr/bin/env bash
 set -euo pipefail
 
 echo "🔄 pnkln Self-Update Daemon Starting..."
@@ -349,8 +353,8 @@ echo "✅ pnkln Control Plane Updated — Judge-6 remains fully armed."
 os.chmod("scripts/pnkln-update.sh", 0o755)
 
 write_file(
-    "scripts/pnkln-seed-monorepo.sh",
-    """#!/usr/bin/env bash
+  "scripts/pnkln-seed-monorepo.sh",
+  """#!/usr/bin/env bash
 set -euo pipefail
 
 echo "🌱 Seeding full pnkln monorepo..."
@@ -375,41 +379,41 @@ os.chmod("scripts/pnkln-seed-monorepo.sh", 0o755)
 
 # Also let's clone the repos
 repos = [
-    "https://github.com/REPOZY/superpowers-optimized",
-    "https://github.com/vercel-labs/agent-skills",
-    "https://github.com/agentskills/agentskills",
-    "https://github.com/PleasePrompto/notebooklm-skill",
-    "https://github.com/google-labs-code/stitch-skills",
-    "https://github.com/google-gemini/gemini-skills",
-    "https://github.com/rodydavis/skills",
-    "https://github.com/shawn-maybush/google_style_guide_agent_skills",
-    "https://github.com/coderabbitai/skills",
-    "https://github.com/payloadcms/payload",
-    "https://github.com/guanyang/antigravity-skills",
-    "https://github.com/patmakesapps/CortexLTM",
-    "https://github.com/prettier/prettier-vscode",
-    "https://github.com/steveyegge/beads",
-    "https://github.com/pgvector/pgvector",
-    "https://github.com/postgres/postgres",
-    "https://github.com/docker-library/postgres",
-    "https://github.com/grafana/grafana",
-    "https://github.com/patmakesapps/CortexUI",
-    "https://github.com/GantisStorm/essentials-claude-code",
-    "https://github.com/miqcie/grepai-beads-helpers",
-    "https://github.com/akng8/beads-templates",
-    "https://github.com/vllm-project/vllm",
-    "https://github.com/volcengine/OpenViking",
-    "https://github.com/CortexReach/memory-lancedb-pro",
-    "https://github.com/hoangsonww/Agentic-AI-Pipeline",
-    "https://github.com/Toowiredd/claude-skills-automation",
-    "https://github.com/JPM1118/Threadwork",
-    "https://github.com/github/spec-kit",
+  "https://github.com/REPOZY/superpowers-optimized",
+  "https://github.com/vercel-labs/agent-skills",
+  "https://github.com/agentskills/agentskills",
+  "https://github.com/PleasePrompto/notebooklm-skill",
+  "https://github.com/google-labs-code/stitch-skills",
+  "https://github.com/google-gemini/gemini-skills",
+  "https://github.com/rodydavis/skills",
+  "https://github.com/shawn-maybush/google_style_guide_agent_skills",
+  "https://github.com/coderabbitai/skills",
+  "https://github.com/payloadcms/payload",
+  "https://github.com/guanyang/antigravity-skills",
+  "https://github.com/patmakesapps/CortexLTM",
+  "https://github.com/prettier/prettier-vscode",
+  "https://github.com/steveyegge/beads",
+  "https://github.com/pgvector/pgvector",
+  "https://github.com/postgres/postgres",
+  "https://github.com/docker-library/postgres",
+  "https://github.com/grafana/grafana",
+  "https://github.com/patmakesapps/CortexUI",
+  "https://github.com/GantisStorm/essentials-claude-code",
+  "https://github.com/miqcie/grepai-beads-helpers",
+  "https://github.com/akng8/beads-templates",
+  "https://github.com/vllm-project/vllm",
+  "https://github.com/volcengine/OpenViking",
+  "https://github.com/CortexReach/memory-lancedb-pro",
+  "https://github.com/hoangsonww/Agentic-AI-Pipeline",
+  "https://github.com/Toowiredd/claude-skills-automation",
+  "https://github.com/JPM1118/Threadwork",
+  "https://github.com/github/spec-kit",
 ]
 
 out_dir = "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos"
 os.makedirs(out_dir, exist_ok=True)
 for repo in repos:
-    repo_name = repo.rstrip("/").split("/")[-1].replace(".git", "")
-    dest = os.path.join(out_dir, repo_name)
-    if not os.path.exists(dest):
-        subprocess.run(["git", "clone", "--depth", "1", repo, dest], check=False)
+  repo_name = repo.rstrip("/").split("/")[-1].replace(".git", "")
+  dest = os.path.join(out_dir, repo_name)
+  if not os.path.exists(dest):
+    subprocess.run(["git", "clone", "--depth", "1", repo, dest], check=False)

@@ -2,4 +2,4 @@
 
 
 def write_audit(message):
-    return message
+  return message

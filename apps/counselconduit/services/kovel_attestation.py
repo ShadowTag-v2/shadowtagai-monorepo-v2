@@ -31,144 +31,144 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class KovelAttestation:
-    """A Kovel attestation receipt proving privileged communication."""
+  """A Kovel attestation receipt proving privileged communication."""
 
-    attestation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    session_id: str = ""
-    tenant_id: str = ""
-    user_id: str = ""
-    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
-    content_hash: str = ""  # SHA-256 of session content
-    hmac_signature: str = ""  # HMAC-SHA256 of the receipt
-    privilege_basis: str = "Kovel (United States v. Heppner, S.D.N.Y. 2026)"
+  attestation_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+  session_id: str = ""
+  tenant_id: str = ""
+  user_id: str = ""
+  timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+  content_hash: str = ""  # SHA-256 of session content
+  hmac_signature: str = ""  # HMAC-SHA256 of the receipt
+  privilege_basis: str = "Kovel (United States v. Heppner, S.D.N.Y. 2026)"
 
-    def to_dict(self) -> dict[str, Any]:
-        """Serialize to dictionary for Firestore storage."""
-        return {
-            "attestation_id": self.attestation_id,
-            "session_id": self.session_id,
-            "tenant_id": self.tenant_id,
-            "user_id": self.user_id,
-            "timestamp": self.timestamp,
-            "content_hash": self.content_hash,
-            "hmac_signature": self.hmac_signature,
-            "privilege_basis": self.privilege_basis,
-        }
+  def to_dict(self) -> dict[str, Any]:
+    """Serialize to dictionary for Firestore storage."""
+    return {
+      "attestation_id": self.attestation_id,
+      "session_id": self.session_id,
+      "tenant_id": self.tenant_id,
+      "user_id": self.user_id,
+      "timestamp": self.timestamp,
+      "content_hash": self.content_hash,
+      "hmac_signature": self.hmac_signature,
+      "privilege_basis": self.privilege_basis,
+    }
 
 
 class KovelAttestationService:
-    """Generates and verifies Kovel attestation receipts.
+  """Generates and verifies Kovel attestation receipts.
 
-    Security:
-    - HMAC-SHA256 signatures using tenant-specific secrets
-    - SHA-256 content hashing for transcript integrity
-    - Immutable receipts stored in Firestore
+  Security:
+  - HMAC-SHA256 signatures using tenant-specific secrets
+  - SHA-256 content hashing for transcript integrity
+  - Immutable receipts stored in Firestore
+  """
+
+  def __init__(self, secret_key: bytes | None = None) -> None:
+    """Initialize with a signing key.
+
+    Args:
+        secret_key: The HMAC signing key. In production, fetched
+            from GCP Secret Manager per tenant.
     """
+    self._secret_key = secret_key or b"dev-only-key-replace-in-production"
 
-    def __init__(self, secret_key: bytes | None = None) -> None:
-        """Initialize with a signing key.
+  def generate_content_hash(self, content: str) -> str:
+    """Generate SHA-256 hash of session content.
 
-        Args:
-            secret_key: The HMAC signing key. In production, fetched
-                from GCP Secret Manager per tenant.
-        """
-        self._secret_key = secret_key or b"dev-only-key-replace-in-production"
+    Args:
+        content: The session transcript or content to hash.
 
-    def generate_content_hash(self, content: str) -> str:
-        """Generate SHA-256 hash of session content.
+    Returns:
+        Hex-encoded SHA-256 hash.
+    """
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
-        Args:
-            content: The session transcript or content to hash.
+  def generate_hmac(self, data: str) -> str:
+    """Generate HMAC-SHA256 signature.
 
-        Returns:
-            Hex-encoded SHA-256 hash.
-        """
-        return hashlib.sha256(content.encode("utf-8")).hexdigest()
+    Args:
+        data: The data to sign.
 
-    def generate_hmac(self, data: str) -> str:
-        """Generate HMAC-SHA256 signature.
+    Returns:
+        Hex-encoded HMAC-SHA256 signature.
+    """
+    return hmac.new(
+      self._secret_key,
+      data.encode("utf-8"),
+      hashlib.sha256,
+    ).hexdigest()
 
-        Args:
-            data: The data to sign.
+  def create_attestation(
+    self,
+    *,
+    session_id: str,
+    tenant_id: str,
+    user_id: str,
+    transcript_content: str,
+  ) -> KovelAttestation:
+    """Create a complete Kovel attestation receipt.
 
-        Returns:
-            Hex-encoded HMAC-SHA256 signature.
-        """
-        return hmac.new(
-            self._secret_key,
-            data.encode("utf-8"),
-            hashlib.sha256,
-        ).hexdigest()
+    Args:
+        session_id: The session this attestation covers.
+        tenant_id: The law firm tenant ID.
+        user_id: The authenticated user (attorney/client).
+        transcript_content: The session transcript to attest.
 
-    def create_attestation(
-        self,
-        *,
-        session_id: str,
-        tenant_id: str,
-        user_id: str,
-        transcript_content: str,
-    ) -> KovelAttestation:
-        """Create a complete Kovel attestation receipt.
+    Returns:
+        A fully signed KovelAttestation receipt.
+    """
+    content_hash = self.generate_content_hash(transcript_content)
 
-        Args:
-            session_id: The session this attestation covers.
-            tenant_id: The law firm tenant ID.
-            user_id: The authenticated user (attorney/client).
-            transcript_content: The session transcript to attest.
+    attestation = KovelAttestation(
+      session_id=session_id,
+      tenant_id=tenant_id,
+      user_id=user_id,
+      content_hash=content_hash,
+    )
 
-        Returns:
-            A fully signed KovelAttestation receipt.
-        """
-        content_hash = self.generate_content_hash(transcript_content)
+    # Sign the canonical receipt data
+    canonical = json.dumps(
+      {
+        "attestation_id": attestation.attestation_id,
+        "session_id": attestation.session_id,
+        "tenant_id": attestation.tenant_id,
+        "user_id": attestation.user_id,
+        "timestamp": attestation.timestamp,
+        "content_hash": attestation.content_hash,
+      },
+      sort_keys=True,
+    )
+    attestation.hmac_signature = self.generate_hmac(canonical)
 
-        attestation = KovelAttestation(
-            session_id=session_id,
-            tenant_id=tenant_id,
-            user_id=user_id,
-            content_hash=content_hash,
-        )
+    logger.info(
+      "Kovel attestation created: id=%s session=%s tenant=%s",
+      attestation.attestation_id,
+      session_id,
+      tenant_id,
+    )
+    return attestation
 
-        # Sign the canonical receipt data
-        canonical = json.dumps(
-            {
-                "attestation_id": attestation.attestation_id,
-                "session_id": attestation.session_id,
-                "tenant_id": attestation.tenant_id,
-                "user_id": attestation.user_id,
-                "timestamp": attestation.timestamp,
-                "content_hash": attestation.content_hash,
-            },
-            sort_keys=True,
-        )
-        attestation.hmac_signature = self.generate_hmac(canonical)
+  def verify_attestation(self, attestation: KovelAttestation) -> bool:
+    """Verify the HMAC signature of an attestation receipt.
 
-        logger.info(
-            "Kovel attestation created: id=%s session=%s tenant=%s",
-            attestation.attestation_id,
-            session_id,
-            tenant_id,
-        )
-        return attestation
+    Args:
+        attestation: The attestation to verify.
 
-    def verify_attestation(self, attestation: KovelAttestation) -> bool:
-        """Verify the HMAC signature of an attestation receipt.
-
-        Args:
-            attestation: The attestation to verify.
-
-        Returns:
-            True if the signature is valid.
-        """
-        canonical = json.dumps(
-            {
-                "attestation_id": attestation.attestation_id,
-                "session_id": attestation.session_id,
-                "tenant_id": attestation.tenant_id,
-                "user_id": attestation.user_id,
-                "timestamp": attestation.timestamp,
-                "content_hash": attestation.content_hash,
-            },
-            sort_keys=True,
-        )
-        expected = self.generate_hmac(canonical)
-        return hmac.compare_digest(attestation.hmac_signature, expected)
+    Returns:
+        True if the signature is valid.
+    """
+    canonical = json.dumps(
+      {
+        "attestation_id": attestation.attestation_id,
+        "session_id": attestation.session_id,
+        "tenant_id": attestation.tenant_id,
+        "user_id": attestation.user_id,
+        "timestamp": attestation.timestamp,
+        "content_hash": attestation.content_hash,
+      },
+      sort_keys=True,
+    )
+    expected = self.generate_hmac(canonical)
+    return hmac.compare_digest(attestation.hmac_signature, expected)

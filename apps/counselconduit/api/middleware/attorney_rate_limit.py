@@ -24,61 +24,61 @@ _windows: dict[str, list[float]] = defaultdict(list)
 
 # Limits per route prefix
 _LIMITS: dict[str, tuple[int, int]] = {
-    "/vent/message": (30, 3600),  # 30 per hour
-    "/vent/start": (10, 3600),  # 10 per hour
-    "/enclave/v1/query": (10, 3600),  # 10 per hour
-    "/onboarding/create-matter": (20, 3600),  # 20 per hour
+  "/vent/message": (30, 3600),  # 30 per hour
+  "/vent/start": (10, 3600),  # 10 per hour
+  "/enclave/v1/query": (10, 3600),  # 10 per hour
+  "/onboarding/create-matter": (20, 3600),  # 20 per hour
 }
 
 DEFAULT_LIMIT = (60, 3600)  # 60 per hour default
 
 
 def check_attorney_rate_limit(
-    attorney_id: str,
-    route: str,
+  attorney_id: str,
+  route: str,
 ) -> dict[str, Any]:
-    """Check if an attorney has exceeded their rate limit.
+  """Check if an attorney has exceeded their rate limit.
 
-    Returns {"allowed": bool, "remaining": int, "reset_in": int}.
-    """
-    # Find the matching limit
-    limit, window = DEFAULT_LIMIT
-    for prefix, (lim, win) in _LIMITS.items():
-        if route.startswith(prefix):
-            limit, window = lim, win
-            break
+  Returns {"allowed": bool, "remaining": int, "reset_in": int}.
+  """
+  # Find the matching limit
+  limit, window = DEFAULT_LIMIT
+  for prefix, (lim, win) in _LIMITS.items():
+    if route.startswith(prefix):
+      limit, window = lim, win
+      break
 
-    key = f"{attorney_id}:{route}"
-    now = time.time()
+  key = f"{attorney_id}:{route}"
+  now = time.time()
 
-    # Clean expired entries
-    _windows[key] = [t for t in _windows[key] if now - t < window]
+  # Clean expired entries
+  _windows[key] = [t for t in _windows[key] if now - t < window]
 
-    current = len(_windows[key])
+  current = len(_windows[key])
 
-    if current >= limit:
-        oldest = min(_windows[key]) if _windows[key] else now
-        reset_in = int(window - (now - oldest))
-        logger.warning(
-            "Rate limit exceeded: attorney=%s route=%s count=%d limit=%d",
-            attorney_id,
-            route,
-            current,
-            limit,
-        )
-        return {
-            "allowed": False,
-            "remaining": 0,
-            "reset_in": max(reset_in, 0),
-            "limit": limit,
-        }
-
-    # Record this request
-    _windows[key].append(now)
-
+  if current >= limit:
+    oldest = min(_windows[key]) if _windows[key] else now
+    reset_in = int(window - (now - oldest))
+    logger.warning(
+      "Rate limit exceeded: attorney=%s route=%s count=%d limit=%d",
+      attorney_id,
+      route,
+      current,
+      limit,
+    )
     return {
-        "allowed": True,
-        "remaining": limit - current - 1,
-        "reset_in": window,
-        "limit": limit,
+      "allowed": False,
+      "remaining": 0,
+      "reset_in": max(reset_in, 0),
+      "limit": limit,
     }
+
+  # Record this request
+  _windows[key].append(now)
+
+  return {
+    "allowed": True,
+    "remaining": limit - current - 1,
+    "reset_in": window,
+    "limit": limit,
+  }

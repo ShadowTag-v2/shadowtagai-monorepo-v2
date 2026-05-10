@@ -5,7 +5,7 @@ import re
 file_path = "labs/ccleaks-mock/src/utils/permissions/yoloClassifier.ts"
 
 with open(file_path) as f:
-    content = f.read()
+  content = f.read()
 
 # Replace the simplistic RiskLevel logic with a more nuanced one based on the leak document's details
 new_logic = """
@@ -24,10 +24,13 @@ new_logic = """
 """
 
 updated_content = re.sub(
-    r"  // Side-query LLM call that decides whether to auto-approve tool use.*?return RiskLevel\.LOW;", new_logic, content, flags=re.DOTALL
+  r"  // Side-query LLM call that decides whether to auto-approve tool use.*?return RiskLevel\.LOW;",
+  new_logic,
+  content,
+  flags=re.DOTALL,
 )
 
 with open(file_path, "w") as f:
-    f.write(updated_content)
+  f.write(updated_content)
 
 print("yoloClassifier.ts refined successfully.")

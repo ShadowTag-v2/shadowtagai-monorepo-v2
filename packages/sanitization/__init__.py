@@ -31,9 +31,9 @@ import unicodedata
 from typing import Any
 
 __all__ = [
-    "partially_sanitize_unicode",
-    "recursively_sanitize_unicode",
-    "SanitizationOverflowError",
+  "partially_sanitize_unicode",
+  "recursively_sanitize_unicode",
+  "SanitizationOverflowError",
 ]
 
 # Safety limit to prevent infinite loops during iterative normalization.
@@ -54,98 +54,105 @@ _DANGEROUS_CATEGORIES = frozenset({"Cf", "Co", "Cn"})
 
 
 def _strip_dangerous_categories(text: str) -> str:
-    """Remove characters in Unicode categories Cf, Co, and Cn.
+  """Remove characters in Unicode categories Cf, Co, and Cn.
 
-    Python's ``re`` module does not natively support ``\\p{Cf}`` property
-    classes, so we use ``unicodedata.category()`` per-character. This is
-    equivalent to the TypeScript ``/[\\p{Cf}\\p{Co}\\p{Cn}]/gu`` regex.
-    """
-    return "".join(ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES)
+  Python's ``re`` module does not natively support ``\\p{Cf}`` property
+  classes, so we use ``unicodedata.category()`` per-character. This is
+  equivalent to the TypeScript ``/[\\p{Cf}\\p{Co}\\p{Cn}]/gu`` regex.
+  """
+  return "".join(
+    ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES
+  )
 
 
 class SanitizationOverflowError(RuntimeError):
-    """Raised when iterative sanitization fails to converge.
+  """Raised when iterative sanitization fails to converge.
 
-    This should only ever happen if there is a bug or if someone purposefully
-    created a deeply nested Unicode string designed to evade sanitization.
-    """
+  This should only ever happen if there is a bug or if someone purposefully
+  created a deeply nested Unicode string designed to evade sanitization.
+  """
 
 
 def partially_sanitize_unicode(prompt: str) -> str:
-    """Sanitize a string by removing dangerous invisible Unicode characters.
+  """Sanitize a string by removing dangerous invisible Unicode characters.
 
-    Applies iterative NFKC normalization followed by stripping of dangerous
-    Unicode categories (Cf / Co / Cn) and explicit dangerous character ranges.
-    The iteration continues until the output stabilises or the safety cap of
-    ``MAX_ITERATIONS`` is reached.
+  Applies iterative NFKC normalization followed by stripping of dangerous
+  Unicode categories (Cf / Co / Cn) and explicit dangerous character ranges.
+  The iteration continues until the output stabilises or the safety cap of
+  ``MAX_ITERATIONS`` is reached.
 
-    Args:
-        prompt: The raw input string, potentially containing hidden Unicode
-            characters injected by an attacker.
+  Args:
+      prompt: The raw input string, potentially containing hidden Unicode
+          characters injected by an attacker.
 
-    Returns:
-        The sanitized string with all dangerous invisible characters removed.
+  Returns:
+      The sanitized string with all dangerous invisible characters removed.
 
-    Raises:
-        SanitizationOverflowError: If convergence is not reached within
-            ``MAX_ITERATIONS`` passes.
-    """
-    current = prompt
-    previous = ""
-    iterations = 0
+  Raises:
+      SanitizationOverflowError: If convergence is not reached within
+          ``MAX_ITERATIONS`` passes.
+  """
+  current = prompt
+  previous = ""
+  iterations = 0
 
-    while current != previous and iterations < MAX_ITERATIONS:
-        previous = current
+  while current != previous and iterations < MAX_ITERATIONS:
+    previous = current
 
-        # Step 1: NFKC normalization — collapses composed sequences.
-        current = unicodedata.normalize("NFKC", current)
+    # Step 1: NFKC normalization — collapses composed sequences.
+    current = unicodedata.normalize("NFKC", current)
 
-        # Step 2 (Method 1): Strip dangerous Unicode property categories.
-        current = _strip_dangerous_categories(current)
+    # Step 2 (Method 1): Strip dangerous Unicode property categories.
+    current = _strip_dangerous_categories(current)
 
-        # Step 3 (Method 2): Explicit character-range fallback.
-        current = _ZERO_WIDTH_RE.sub("", current)
-        current = _DIRECTIONAL_RE.sub("", current)
-        current = _ISOLATES_RE.sub("", current)
-        current = _BOM_RE.sub("", current)
-        current = _BMP_PRIVATE_USE_RE.sub("", current)
+    # Step 3 (Method 2): Explicit character-range fallback.
+    current = _ZERO_WIDTH_RE.sub("", current)
+    current = _DIRECTIONAL_RE.sub("", current)
+    current = _ISOLATES_RE.sub("", current)
+    current = _BOM_RE.sub("", current)
+    current = _BMP_PRIVATE_USE_RE.sub("", current)
 
-        iterations += 1
+    iterations += 1
 
-    if iterations >= MAX_ITERATIONS:
-        raise SanitizationOverflowError(f"Unicode sanitization reached maximum iterations ({MAX_ITERATIONS}) for input: {prompt[:100]!r}")
+  if iterations >= MAX_ITERATIONS:
+    raise SanitizationOverflowError(
+      f"Unicode sanitization reached maximum iterations ({MAX_ITERATIONS}) for input: {prompt[:100]!r}"
+    )
 
-    return current
+  return current
 
 
 def recursively_sanitize_unicode(value: Any) -> Any:
-    """Recursively sanitize Unicode in nested data structures.
+  """Recursively sanitize Unicode in nested data structures.
 
-    Walks dicts, lists, tuples, and sets, applying
-    :func:`partially_sanitize_unicode` to every string leaf (including dict
-    keys). Non-string primitives (int, float, bool, None) are returned
-    unchanged.
+  Walks dicts, lists, tuples, and sets, applying
+  :func:`partially_sanitize_unicode` to every string leaf (including dict
+  keys). Non-string primitives (int, float, bool, None) are returned
+  unchanged.
 
-    Args:
-        value: Any Python value — string, list, dict, set, tuple, or scalar.
+  Args:
+      value: Any Python value — string, list, dict, set, tuple, or scalar.
 
-    Returns:
-        A copy of *value* with all string leaves sanitized.
-    """
-    if isinstance(value, str):
-        return partially_sanitize_unicode(value)
+  Returns:
+      A copy of *value* with all string leaves sanitized.
+  """
+  if isinstance(value, str):
+    return partially_sanitize_unicode(value)
 
-    if isinstance(value, list):
-        return [recursively_sanitize_unicode(item) for item in value]
+  if isinstance(value, list):
+    return [recursively_sanitize_unicode(item) for item in value]
 
-    if isinstance(value, tuple):
-        return tuple(recursively_sanitize_unicode(item) for item in value)
+  if isinstance(value, tuple):
+    return tuple(recursively_sanitize_unicode(item) for item in value)
 
-    if isinstance(value, set):
-        return {recursively_sanitize_unicode(item) for item in value}
+  if isinstance(value, set):
+    return {recursively_sanitize_unicode(item) for item in value}
 
-    if isinstance(value, dict):
-        return {recursively_sanitize_unicode(k): recursively_sanitize_unicode(v) for k, v in value.items()}
+  if isinstance(value, dict):
+    return {
+      recursively_sanitize_unicode(k): recursively_sanitize_unicode(v)
+      for k, v in value.items()
+    }
 
-    # Primitives (int, float, bool, None, etc.) pass through unchanged.
-    return value
+  # Primitives (int, float, bool, None, etc.) pass through unchanged.
+  return value

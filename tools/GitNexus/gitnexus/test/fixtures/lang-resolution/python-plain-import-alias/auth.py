@@ -2,5 +2,5 @@
 
 
 class User:
-    def login(self):
-        pass
+  def login(self):
+    pass

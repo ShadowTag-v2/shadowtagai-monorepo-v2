@@ -35,87 +35,89 @@ import google.generativeai as genai
 
 
 def configure_client() -> None:
-    """Configure the Gemini API client."""
-    api_key = os.environ.get("GOOGLE_API_KEY")
-    if not api_key:
-        print("ERROR: GOOGLE_API_KEY environment variable is required.")
-        sys.exit(1)
-    genai.configure(api_key=api_key)
+  """Configure the Gemini API client."""
+  api_key = os.environ.get("GOOGLE_API_KEY")
+  if not api_key:
+    print("ERROR: GOOGLE_API_KEY environment variable is required.")
+    sys.exit(1)
+  genai.configure(api_key=api_key)
 
 
 def mount_case_file_to_vram(file_path: str, display_name: str) -> str:
-    """Upload a massive PDF case file once to Google's VRAM Context Cache.
+  """Upload a massive PDF case file once to Google's VRAM Context Cache.
 
-    Args:
-        file_path: Path to the case file (PDF, DOCX, etc.)
-        display_name: Human-readable name for the cache slab
+  Args:
+      file_path: Path to the case file (PDF, DOCX, etc.)
+      display_name: Human-readable name for the cache slab
 
-    Returns:
-        The cache resource name for use in subsequent queries.
-    """
-    print(f"[AEGAEON] Disaggregating VRAM. Uploading {file_path} to Context Cache...")
+  Returns:
+      The cache resource name for use in subsequent queries.
+  """
+  print(f"[AEGAEON] Disaggregating VRAM. Uploading {file_path} to Context Cache...")
 
-    document = genai.upload_file(path=file_path)
+  document = genai.upload_file(path=file_path)
 
-    # Create the cache slab (110GB grounding library capability)
-    cache = genai.caching.CachedContent.create(
-        model="models/gemini-3.1-flash-lite-preview",
-        display_name=display_name,
-        system_instruction=(
-            "You are a KovelAI Sovereign Agent. "
-            "Base analysis strictly on this corpus. "
-            "Do not hallucinate facts not present in the documents. "
-            "Cite page numbers when available."
-        ),
-        contents=[document],
-        ttl="PT24H",  # Ephemeral: Dies after 24 hours
-    )
+  # Create the cache slab (110GB grounding library capability)
+  cache = genai.caching.CachedContent.create(
+    model="models/gemini-3.1-flash-lite-preview",
+    display_name=display_name,
+    system_instruction=(
+      "You are a KovelAI Sovereign Agent. "
+      "Base analysis strictly on this corpus. "
+      "Do not hallucinate facts not present in the documents. "
+      "Cite page numbers when available."
+    ),
+    contents=[document],
+    ttl="PT24H",  # Ephemeral: Dies after 24 hours
+  )
 
-    print(f"✅ [AEGAEON] Slab locked. Compute dropped by 84%. Cache ID: {cache.name}")
-    return cache.name
+  print(f"✅ [AEGAEON] Slab locked. Compute dropped by 84%. Cache ID: {cache.name}")
+  return cache.name
 
 
 def list_active_slabs() -> list[dict]:
-    """List all active context cache slabs.
+  """List all active context cache slabs.
 
-    Returns:
-        List of active cache metadata dicts.
-    """
-    print("[AEGAEON] Listing active VRAM slabs...")
-    slabs = []
-    for cache in genai.caching.CachedContent.list():
-        slab = {
-            "name": cache.name,
-            "display_name": cache.display_name,
-            "model": cache.model,
-            "expire_time": str(cache.expire_time),
-        }
-        slabs.append(slab)
-        print(f"  📦 {slab['display_name']} → {slab['name']} (expires: {slab['expire_time']})")
+  Returns:
+      List of active cache metadata dicts.
+  """
+  print("[AEGAEON] Listing active VRAM slabs...")
+  slabs = []
+  for cache in genai.caching.CachedContent.list():
+    slab = {
+      "name": cache.name,
+      "display_name": cache.display_name,
+      "model": cache.model,
+      "expire_time": str(cache.expire_time),
+    }
+    slabs.append(slab)
+    print(
+      f"  📦 {slab['display_name']} → {slab['name']} (expires: {slab['expire_time']})"
+    )
 
-    if not slabs:
-        print("  (no active slabs)")
+  if not slabs:
+    print("  (no active slabs)")
 
-    return slabs
+  return slabs
 
 
 def main() -> None:
-    """CLI entry point."""
-    parser = argparse.ArgumentParser(description="Aegaeon VRAM Context Caching")
-    parser.add_argument("--file", help="Path to case file to upload")
-    parser.add_argument("--name", help="Display name for the cache slab")
-    parser.add_argument("--list", action="store_true", help="List active slabs")
-    args = parser.parse_args()
+  """CLI entry point."""
+  parser = argparse.ArgumentParser(description="Aegaeon VRAM Context Caching")
+  parser.add_argument("--file", help="Path to case file to upload")
+  parser.add_argument("--name", help="Display name for the cache slab")
+  parser.add_argument("--list", action="store_true", help="List active slabs")
+  args = parser.parse_args()
 
-    configure_client()
+  configure_client()
 
-    if args.list:
-        list_active_slabs()
-    elif args.file and args.name:
-        mount_case_file_to_vram(args.file, args.name)
-    else:
-        parser.print_help()
+  if args.list:
+    list_active_slabs()
+  elif args.file and args.name:
+    mount_case_file_to_vram(args.file, args.name)
+  else:
+    parser.print_help()
 
 
 if __name__ == "__main__":
-    main()
+  main()

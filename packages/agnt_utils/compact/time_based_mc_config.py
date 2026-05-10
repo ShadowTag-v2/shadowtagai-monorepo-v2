@@ -18,32 +18,32 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class TimeBasedMCConfig:
-    """Configuration for time-based microcompaction."""
+  """Configuration for time-based microcompaction."""
 
-    enabled: bool = False
-    gap_threshold_minutes: int = 60
-    keep_recent: int = 5
+  enabled: bool = False
+  gap_threshold_minutes: int = 60
+  keep_recent: int = 5
 
 
 _DEFAULTS = TimeBasedMCConfig()
 
 
 def get_time_based_mc_config() -> TimeBasedMCConfig:
-    """Resolve time-based MC config from env vars with safe defaults."""
-    env_enabled = os.environ.get("COMPACT_TIME_BASED_MC_ENABLED", "")
-    env_gap = os.environ.get("COMPACT_TIME_BASED_MC_GAP_MINUTES", "")
-    env_keep = os.environ.get("COMPACT_TIME_BASED_MC_KEEP_RECENT", "")
+  """Resolve time-based MC config from env vars with safe defaults."""
+  env_enabled = os.environ.get("COMPACT_TIME_BASED_MC_ENABLED", "")
+  env_gap = os.environ.get("COMPACT_TIME_BASED_MC_GAP_MINUTES", "")
+  env_keep = os.environ.get("COMPACT_TIME_BASED_MC_KEEP_RECENT", "")
 
-    enabled = env_enabled.lower() in ("1", "true") if env_enabled else _DEFAULTS.enabled
+  enabled = env_enabled.lower() in ("1", "true") if env_enabled else _DEFAULTS.enabled
 
-    try:
-        gap = int(env_gap) if env_gap else _DEFAULTS.gap_threshold_minutes
-    except ValueError:
-        gap = _DEFAULTS.gap_threshold_minutes
+  try:
+    gap = int(env_gap) if env_gap else _DEFAULTS.gap_threshold_minutes
+  except ValueError:
+    gap = _DEFAULTS.gap_threshold_minutes
 
-    try:
-        keep = int(env_keep) if env_keep else _DEFAULTS.keep_recent
-    except ValueError:
-        keep = _DEFAULTS.keep_recent
+  try:
+    keep = int(env_keep) if env_keep else _DEFAULTS.keep_recent
+  except ValueError:
+    keep = _DEFAULTS.keep_recent
 
-    return TimeBasedMCConfig(enabled=enabled, gap_threshold_minutes=gap, keep_recent=keep)
+  return TimeBasedMCConfig(enabled=enabled, gap_threshold_minutes=gap, keep_recent=keep)

@@ -6,22 +6,18 @@ Auto-detect available testing infrastructure including Ollama, Docker,
 external services, and Python package compatibility.
 """
 
-import os
-import sys
-import subprocess
-import urllib.request
 import json
+import os
 import socket
-from typing import Optional
+import subprocess
+import sys
+import urllib.request
 
 
 def check_ollama() -> bool:
     """Check if Ollama is running on localhost:11434"""
     try:
-        req = urllib.request.Request(
-            "http://localhost:11434/api/tags",
-            method="GET"
-        )
+        req = urllib.request.Request("http://localhost:11434/api/tags", method="GET")
         with urllib.request.urlopen(req, timeout=5) as response:
             return response.status == 200
     except Exception:
@@ -31,10 +27,7 @@ def check_ollama() -> bool:
 def list_ollama_models() -> list[str]:
     """Return list of installed Ollama models"""
     try:
-        req = urllib.request.Request(
-            "http://localhost:11434/api/tags",
-            method="GET"
-        )
+        req = urllib.request.Request("http://localhost:11434/api/tags", method="GET")
         with urllib.request.urlopen(req, timeout=5) as response:
             data = json.loads(response.read().decode())
             return [model["name"] for model in data.get("models", [])]
@@ -45,11 +38,7 @@ def list_ollama_models() -> list[str]:
 def check_docker() -> bool:
     """Check if Docker daemon is running"""
     try:
-        result = subprocess.run(
-            ["docker", "info"],
-            capture_output=True,
-            timeout=10
-        )
+        result = subprocess.run(["docker", "info"], capture_output=True, timeout=10)
         return result.returncode == 0
     except Exception:
         return False
@@ -59,9 +48,7 @@ def check_sandbox() -> bool:
     """Check if kosmos-sandbox:latest image exists"""
     try:
         result = subprocess.run(
-            ["docker", "images", "-q", "kosmos-sandbox:latest"],
-            capture_output=True,
-            timeout=10
+            ["docker", "images", "-q", "kosmos-sandbox:latest"], capture_output=True, timeout=10
         )
         return bool(result.stdout.strip())
     except Exception:
@@ -135,6 +122,7 @@ def check_chromadb() -> bool:
     # Check if chromadb package is installed
     try:
         import chromadb
+
         return True
     except ImportError:
         return False
@@ -152,15 +140,15 @@ def check_python_packages() -> dict:
         Dictionary with package names as keys and (available, error) tuples as values
     """
     packages_to_check = {
-        'arxiv': None,
-        'scipy': None,
-        'matplotlib': None,
-        'plotly': None,
-        'pandas': None,
-        'numpy': None,
-        'chromadb': None,
-        'neo4j': None,
-        'redis': None,
+        "arxiv": None,
+        "scipy": None,
+        "matplotlib": None,
+        "plotly": None,
+        "pandas": None,
+        "numpy": None,
+        "chromadb": None,
+        "neo4j": None,
+        "redis": None,
     }
 
     results = {}
@@ -181,16 +169,16 @@ def check_python_version() -> dict:
         Dictionary with version info and compatibility warnings
     """
     version_info = {
-        'version': f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
-        'major': sys.version_info.major,
-        'minor': sys.version_info.minor,
-        'warnings': []
+        "version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        "major": sys.version_info.major,
+        "minor": sys.version_info.minor,
+        "warnings": [],
     }
 
     # Check for known compatibility issues
     if sys.version_info >= (3, 11):
         # arxiv package depends on sgmllib3k which fails on Python 3.11+
-        version_info['warnings'].append(
+        version_info["warnings"].append(
             "Python 3.11+: arxiv package may fail due to sgmllib3k incompatibility"
         )
 
@@ -207,17 +195,17 @@ def get_package_issues() -> list[str]:
 
     # Check Python version issues
     py_version = check_python_version()
-    issues.extend(py_version['warnings'])
+    issues.extend(py_version["warnings"])
 
     # Check package availability
     packages = check_python_packages()
 
-    critical_packages = ['pandas', 'numpy']
+    critical_packages = ["pandas", "numpy"]
     for pkg in critical_packages:
         if pkg in packages and not packages[pkg][0]:
             issues.append(f"Critical package '{pkg}' not installed: {packages[pkg][1]}")
 
-    optional_packages = ['arxiv', 'scipy', 'matplotlib', 'plotly']
+    optional_packages = ["arxiv", "scipy", "matplotlib", "plotly"]
     for pkg in optional_packages:
         if pkg in packages and not packages[pkg][0]:
             issues.append(f"Optional package '{pkg}' not installed: {packages[pkg][1]}")
@@ -240,28 +228,24 @@ def detect_all() -> dict:
         "ollama_models": list_ollama_models() if ollama_running else [],
         "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
         "openai": bool(os.getenv("OPENAI_API_KEY")),
-
         # Execution Environment
         "docker": check_docker(),
         "docker_sandbox": check_sandbox(),
-
         # Databases
         "database": check_database(),
         "neo4j": check_neo4j(),
         "redis": check_redis(),
         "chromadb": check_chromadb(),
-
         # External APIs
         "semantic_scholar": check_semantic_scholar_api(),
-
         # Python Environment
-        "python_version": py_version['version'],
-        "python_warnings": py_version['warnings'],
+        "python_version": py_version["version"],
+        "python_warnings": py_version["warnings"],
         "package_issues": get_package_issues(),
     }
 
 
-def recommend_provider(detection: Optional[dict] = None) -> str:
+def recommend_provider(detection: dict | None = None) -> str:
     """Recommend best provider based on detection
 
     Priority: local-reasoning > local-fast > anthropic > openai > mock
@@ -295,7 +279,7 @@ def recommend_provider(detection: Optional[dict] = None) -> str:
     return "mock"
 
 
-def recommend_test_tier(detection: Optional[dict] = None) -> str:
+def recommend_test_tier(detection: dict | None = None) -> str:
     """Recommend test tier based on available infrastructure
 
     Args:
@@ -333,47 +317,47 @@ def get_service_matrix() -> dict:
             "docker": "No",
             "neo4j": "No",
             "redis": "No",
-            "chromadb": "No"
+            "chromadb": "No",
         },
         "unit_literature": {
             "anthropic": "Mock",
             "docker": "No",
             "neo4j": "No",
             "redis": "No",
-            "chromadb": "No"
+            "chromadb": "No",
         },
         "unit_knowledge": {
             "anthropic": "Mock",
             "docker": "No",
             "neo4j": "Yes",
             "redis": "No",
-            "chromadb": "Yes"
+            "chromadb": "Yes",
         },
         "unit_execution": {
             "anthropic": "No",
             "docker": "Yes",
             "neo4j": "No",
             "redis": "No",
-            "chromadb": "No"
+            "chromadb": "No",
         },
         "integration": {
             "anthropic": "Real/Mock",
             "docker": "No",
             "neo4j": "Mock",
             "redis": "Mock",
-            "chromadb": "Mock"
+            "chromadb": "Mock",
         },
         "e2e": {
             "anthropic": "Real",
             "docker": "Yes",
             "neo4j": "Optional",
             "redis": "Optional",
-            "chromadb": "Optional"
-        }
+            "chromadb": "Optional",
+        },
     }
 
 
-def print_status(detection: Optional[dict] = None) -> None:
+def print_status(detection: dict | None = None) -> None:
     """Print formatted status of all components"""
     if detection is None:
         detection = detect_all()

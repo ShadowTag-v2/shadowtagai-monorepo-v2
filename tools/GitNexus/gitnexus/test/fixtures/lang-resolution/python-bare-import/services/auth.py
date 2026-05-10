@@ -4,5 +4,5 @@ import user
 
 
 def authenticate():
-    svc = user.UserService()
-    svc.execute()
+  svc = user.UserService()
+  svc.execute()

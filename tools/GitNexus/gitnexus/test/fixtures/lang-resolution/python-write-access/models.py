@@ -2,9 +2,9 @@
 
 
 class Address:
-    city: str
+  city: str
 
 
 class User:
-    name: str
-    address: Address
+  name: str
+  address: Address

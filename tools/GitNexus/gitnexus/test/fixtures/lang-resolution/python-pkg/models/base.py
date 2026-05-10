@@ -2,8 +2,8 @@
 
 
 class BaseModel:
-    def save(self):
-        pass
+  def save(self):
+    pass
 
-    def validate(self):
-        pass
+  def validate(self):
+    pass

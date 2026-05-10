@@ -8,6 +8,4 @@ module paths (e.g. packages.agnt_tools.speculation_engine).
 Active replacement: tests/test_speculation_engine_v2.py
 """
 
-import pytest
-
 collect_ignore_glob = ["test_*.py"]

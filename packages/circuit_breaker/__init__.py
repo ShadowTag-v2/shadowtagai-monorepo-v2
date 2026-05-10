@@ -33,19 +33,19 @@ Usage:
 """
 
 from circuit_breaker.breaker import (
-    CircuitBreaker,
-    CircuitBreakerOpenError,
-    CircuitBreakerState,
-    FailureMode,
-    StateChangeCallback,
+  CircuitBreaker,
+  CircuitBreakerOpenError,
+  CircuitBreakerState,
+  FailureMode,
+  StateChangeCallback,
 )
 from circuit_breaker.registry import CircuitBreakerRegistry
 
 __all__ = [
-    "CircuitBreaker",
-    "CircuitBreakerOpenError",
-    "CircuitBreakerRegistry",
-    "CircuitBreakerState",
-    "FailureMode",
-    "StateChangeCallback",
+  "CircuitBreaker",
+  "CircuitBreakerOpenError",
+  "CircuitBreakerRegistry",
+  "CircuitBreakerState",
+  "FailureMode",
+  "StateChangeCallback",
 ]

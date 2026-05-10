@@ -21,29 +21,29 @@ Usage::
 """
 
 from packages.token_estimation.estimator import (
-    bytes_per_token_for_file_type,
-    rough_token_estimate,
-    rough_token_estimate_for_block,
-    rough_token_estimate_for_file_type,
-    rough_token_estimate_for_messages,
+  bytes_per_token_for_file_type,
+  rough_token_estimate,
+  rough_token_estimate_for_block,
+  rough_token_estimate_for_file_type,
+  rough_token_estimate_for_messages,
 )
 
 
 def estimate_tokens(content: str, *, model: str | None = None) -> int:
-    """High-level token estimation with optional model hint.
+  """High-level token estimation with optional model hint.
 
-    Delegates to ``rough_token_estimate`` for the actual counting.
-    The *model* parameter is accepted for API compatibility but does not
-    currently alter the heuristic (all models use 4-bytes-per-token).
-    """
-    return rough_token_estimate(content)
+  Delegates to ``rough_token_estimate`` for the actual counting.
+  The *model* parameter is accepted for API compatibility but does not
+  currently alter the heuristic (all models use 4-bytes-per-token).
+  """
+  return rough_token_estimate(content)
 
 
 __all__ = [
-    "bytes_per_token_for_file_type",
-    "estimate_tokens",
-    "rough_token_estimate",
-    "rough_token_estimate_for_block",
-    "rough_token_estimate_for_file_type",
-    "rough_token_estimate_for_messages",
+  "bytes_per_token_for_file_type",
+  "estimate_tokens",
+  "rough_token_estimate",
+  "rough_token_estimate_for_block",
+  "rough_token_estimate_for_file_type",
+  "rough_token_estimate_for_messages",
 ]

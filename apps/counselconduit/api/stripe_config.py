@@ -27,14 +27,14 @@ WEBHOOK_URL = "https://counselconduit-api.run.app/webhooks/stripe"
 
 # ── Tier → Price Mapping ──
 TIER_PRICES = {
-    "professional_monthly": PRICE_PRO_MONTHLY,
-    "professional_annual": PRICE_PRO_ANNUAL,
-    "enterprise_monthly": PRICE_ENT_MONTHLY,
+  "professional_monthly": PRICE_PRO_MONTHLY,
+  "professional_annual": PRICE_PRO_ANNUAL,
+  "enterprise_monthly": PRICE_ENT_MONTHLY,
 }
 
 # ── Tier → Token Limits ──
 TIER_TOKEN_LIMITS = {
-    "trial": 10_000,
-    "professional": 100_000,
-    "enterprise": 1_000_000,
+  "trial": 10_000,
+  "professional": 100_000,
+  "enterprise": 1_000_000,
 }

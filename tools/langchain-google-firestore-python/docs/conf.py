@@ -48,15 +48,15 @@ needs_sphinx = "1.5.5"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.coverage",
-    "sphinx.ext.doctest",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.todo",
-    "sphinx.ext.viewcode",
-    "recommonmark",
+  "sphinx.ext.autodoc",
+  "sphinx.ext.autosummary",
+  "sphinx.ext.intersphinx",
+  "sphinx.ext.coverage",
+  "sphinx.ext.doctest",
+  "sphinx.ext.napoleon",
+  "sphinx.ext.todo",
+  "sphinx.ext.viewcode",
+  "recommonmark",
 ]
 
 # autodoc/autosummary flags
@@ -109,11 +109,11 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = [
-    "_build",
-    "**/.nox/**/*",
-    "samples/AUTHORING_GUIDE.md",
-    "samples/CONTRIBUTING.md",
-    "samples/snippets/README.rst",
+  "_build",
+  "**/.nox/**/*",
+  "samples/AUTHORING_GUIDE.md",
+  "samples/CONTRIBUTING.md",
+  "samples/snippets/README.rst",
 ]
 
 # The reST default role (used for this markup: `text`) to use for all
@@ -154,13 +154,13 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for langchain-google-firestore",
-    "github_user": "googleapis",
-    "github_repo": "langchain-google-firestore-python",
-    "github_banner": True,
-    "font_family": "'Roboto', Georgia, sans",
-    "head_font_family": "'Roboto', Georgia, serif",
-    "code_font_family": "'Roboto Mono', 'Consolas', monospace",
+  "description": "Google Cloud Client Libraries for langchain-google-firestore",
+  "github_user": "googleapis",
+  "github_repo": "langchain-google-firestore-python",
+  "github_banner": True,
+  "font_family": "'Roboto', Georgia, sans",
+  "head_font_family": "'Roboto', Georgia, serif",
+  "code_font_family": "'Roboto Mono', 'Consolas', monospace",
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -254,38 +254,38 @@ htmlhelp_basename = "langchain-google-firestore-doc"
 
 
 suppress_warnings = [
-    # Temporarily suppress this to avoid "more than one target found for
-    # cross-reference" warning, which are intractable for us to avoid while in
-    # a mono-repo.
-    # See https://github.com/sphinx-doc/sphinx/blob
-    # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
-    "ref.python"
+  # Temporarily suppress this to avoid "more than one target found for
+  # cross-reference" warning, which are intractable for us to avoid while in
+  # a mono-repo.
+  # See https://github.com/sphinx-doc/sphinx/blob
+  # /2a65ffeef5c107c19084fabdd706cdff3f52d93c/sphinx/domains/python.py#L843
+  "ref.python"
 ]
 
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #'papersize': 'letterpaper',
-    # The font size ('10pt', '11pt' or '12pt').
-    #'pointsize': '10pt',
-    # Additional stuff for the LaTeX preamble.
-    #'preamble': '',
-    # Latex figure (float) alignment
-    #'figure_align': 'htbp',
+  # The paper size ('letterpaper' or 'a4paper').
+  #'papersize': 'letterpaper',
+  # The font size ('10pt', '11pt' or '12pt').
+  #'pointsize': '10pt',
+  # Additional stuff for the LaTeX preamble.
+  #'preamble': '',
+  # Latex figure (float) alignment
+  #'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (
-        root_doc,
-        "langchain-google-firestore.tex",
-        "langchain-google-firestore Documentation",
-        author,
-        "manual",
-    )
+  (
+    root_doc,
+    "langchain-google-firestore.tex",
+    "langchain-google-firestore Documentation",
+    author,
+    "manual",
+  )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -314,13 +314,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (
-        root_doc,
-        "langchain-google-firestore",
-        "langchain-google-firestore Documentation",
-        [author],
-        1,
-    )
+  (
+    root_doc,
+    "langchain-google-firestore",
+    "langchain-google-firestore Documentation",
+    [author],
+    1,
+  )
 ]
 
 # If true, show URL addresses after external links.
@@ -333,15 +333,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (
-        root_doc,
-        "langchain-google-firestore",
-        "langchain-google-firestore Documentation",
-        author,
-        "langchain-google-firestore",
-        "langchain-google-firestore Library",
-        "APIs",
-    )
+  (
+    root_doc,
+    "langchain-google-firestore",
+    "langchain-google-firestore Documentation",
+    author,
+    "langchain-google-firestore",
+    "langchain-google-firestore Library",
+    "APIs",
+  )
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -359,15 +359,15 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("https://python.readthedocs.org/en/latest/", None),
-    "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
-    "google.api_core": (
-        "https://googleapis.dev/python/google-api-core/latest/",
-        None,
-    ),
-    "grpc": ("https://grpc.github.io/grpc/python/", None),
-    "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
-    "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
+  "python": ("https://python.readthedocs.org/en/latest/", None),
+  "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
+  "google.api_core": (
+    "https://googleapis.dev/python/google-api-core/latest/",
+    None,
+  ),
+  "grpc": ("https://grpc.github.io/grpc/python/", None),
+  "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
+  "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
 }
 
 

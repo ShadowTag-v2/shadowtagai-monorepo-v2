@@ -25,42 +25,42 @@ prompt = """
 """
 
 queries = [
-    "Find hotels in Basel with Basel in its name.",
-    "Can you book the Hilton Basel for me?",
-    "Oh wait, this is too expensive. Please cancel it and book the Hyatt Regency instead.",
-    "My check in dates would be from April 10, 2024 to April 19, 2024.",
+  "Find hotels in Basel with Basel in its name.",
+  "Can you book the Hilton Basel for me?",
+  "Oh wait, this is too expensive. Please cancel it and book the Hyatt Regency instead.",
+  "My check in dates would be from April 10, 2024 to April 19, 2024.",
 ]
 
 
 async def main():
-    # TODO(developer): replace this with another model if needed
-    llm = GoogleGenAI(
-        model="gemini-2.5-flash",
-        vertexai_config={"project": project, "location": "us-central1"},
+  # TODO(developer): replace this with another model if needed
+  llm = GoogleGenAI(
+    model="gemini-2.5-flash",
+    vertexai_config={"project": project, "location": "us-central1"},
+  )
+  # llm = GoogleGenAI(
+  #     api_key=os.getenv("GOOGLE_API_KEY"),
+  #     model="gemini-2.5-flash",
+  # )
+  # llm = Anthropic(
+  #   model="claude-3-7-sonnet-latest",
+  #   api_key=os.getenv("ANTHROPIC_API_KEY")
+  # )
+
+  # Load the tools from the Toolbox server
+  async with ToolboxClient("http://127.0.0.1:5000") as client:
+    tools = await client.aload_toolset()
+
+    agent = AgentWorkflow.from_tools_or_functions(
+      tools,
+      llm=llm,
+      system_prompt=prompt,
     )
-    # llm = GoogleGenAI(
-    #     api_key=os.getenv("GOOGLE_API_KEY"),
-    #     model="gemini-2.5-flash",
-    # )
-    # llm = Anthropic(
-    #   model="claude-3-7-sonnet-latest",
-    #   api_key=os.getenv("ANTHROPIC_API_KEY")
-    # )
-
-    # Load the tools from the Toolbox server
-    async with ToolboxClient("http://127.0.0.1:5000") as client:
-        tools = await client.aload_toolset()
-
-        agent = AgentWorkflow.from_tools_or_functions(
-            tools,
-            llm=llm,
-            system_prompt=prompt,
-        )
-        ctx = Context(agent)
-        for query in queries:
-            response = await agent.run(user_msg=query, ctx=ctx)
-            print(f"---- {query} ----")
-            print(str(response))
+    ctx = Context(agent)
+    for query in queries:
+      response = await agent.run(user_msg=query, ctx=ctx)
+      print(f"---- {query} ----")
+      print(str(response))
 
 
 asyncio.run(main())

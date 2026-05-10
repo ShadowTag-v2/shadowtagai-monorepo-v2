@@ -4,6 +4,6 @@ export default {
   rules: {
     'at-rule-no-unknown': null,
     'block-no-empty': true,
-    'declaration-block-no-duplicate-properties': true
-  }
+    'declaration-block-no-duplicate-properties': true,
+  },
 };
