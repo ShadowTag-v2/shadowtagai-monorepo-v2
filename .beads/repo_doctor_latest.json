@@ -1,17 +1,31 @@
 {
   "score": "C",
-  "total_findings": 23,
+  "total_findings": 35,
   "critical": 0,
-  "errors": 1,
-  "warnings": 17,
+  "errors": 2,
+  "warnings": 28,
   "info": 5,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/archived_locks/index.lock.1778390526",
+      "fix": "git checkout -- .beads/archived_locks/index.lock.1778390526"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/cache_metrics.json",
+      "fix": "git checkout -- .beads/cache_metrics.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": ".beads/heartbeat.json",
+      "fix": "git checkout -- .beads/heartbeat.json"
     },
     {
       "gate": "dirty",
@@ -22,52 +36,122 @@
     },
     {
       "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/repo_doctor_latest.json",
-      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+      "severity": "error",
+      "message": "Dirty file (MM)",
+      "path": ".beads/kairos_heartbeat.json",
+      "fix": "git checkout -- .beads/kairos_heartbeat.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj"
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/dream_test/outbox/dream_test_1778387434315.json",
+      "fix": "git checkout -- .beads/mailbox/dream_test/outbox/dream_test_1778387434315.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs",
-      "fix": "git checkout -- apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/Process.cs"
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/dream_test/outbox/dream_test_1778391968033.json",
+      "fix": "git checkout -- .beads/mailbox/dream_test/outbox/dream_test_1778391968033.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "archive/scratch_2026/repos/claude-code-system-prompts",
-      "fix": "git checkout -- archive/scratch_2026/repos/claude-code-system-prompts"
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/dream_test/outbox/dream_test_1778392408064.json",
+      "fix": "git checkout -- .beads/mailbox/dream_test/outbox/dream_test_1778392408064.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "archive/scratch_2026/repos/everything-claude-code",
-      "fix": "git checkout -- archive/scratch_2026/repos/everything-claude-code"
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/dream_test/outbox/dream_test_1778393124031.json",
+      "fix": "git checkout -- .beads/mailbox/dream_test/outbox/dream_test_1778393124031.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "experimental/simple_js_binary_test/src/index.js",
-      "fix": "git checkout -- experimental/simple_js_binary_test/src/index.js"
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/jules/outbox/jules_1778387434311.json",
+      "fix": "git checkout -- .beads/mailbox/jules/outbox/jules_1778387434311.json"
     },
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "renovate.json",
-      "fix": "git checkout -- renovate.json"
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/jules/outbox/jules_1778391968030.json",
+      "fix": "git checkout -- .beads/mailbox/jules/outbox/jules_1778391968030.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/jules/outbox/jules_1778392408060.json",
+      "fix": "git checkout -- .beads/mailbox/jules/outbox/jules_1778392408060.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/jules/outbox/jules_1778393123987.json",
+      "fix": "git checkout -- .beads/mailbox/jules/outbox/jules_1778393123987.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/kairos/inbox/jules_1778387434311.json",
+      "fix": "git checkout -- .beads/mailbox/kairos/inbox/jules_1778387434311.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/kairos/inbox/jules_1778391968030.json",
+      "fix": "git checkout -- .beads/mailbox/kairos/inbox/jules_1778391968030.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/kairos/inbox/jules_1778392408060.json",
+      "fix": "git checkout -- .beads/mailbox/kairos/inbox/jules_1778392408060.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/kairos/inbox/jules_1778393123987.json",
+      "fix": "git checkout -- .beads/mailbox/kairos/inbox/jules_1778393123987.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/steward_test/inbox/dream_test_1778387434315.json",
+      "fix": "git checkout -- .beads/mailbox/steward_test/inbox/dream_test_1778387434315.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/steward_test/inbox/dream_test_1778391968033.json",
+      "fix": "git checkout -- .beads/mailbox/steward_test/inbox/dream_test_1778391968033.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (A)",
+      "path": ".beads/mailbox/steward_test/inbox/dream_test_1778392408064.json",
+      "fix": "git checkout -- .beads/mailbox/steward_test/inbox/dream_test_1778392408064.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 37 more dirty files",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "conflicts",
@@ -163,7 +247,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3778 tests collected in 2.60s =========================",
+      "message": "Tests: ======================== 3778 tests collected in 1.69s =========================",
       "path": "",
       "fix": ""
     }

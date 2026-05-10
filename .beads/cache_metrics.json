@@ -1,0 +1,13 @@
+{
+  "tier1_hits": 6,
+  "tier1_misses": 0,
+  "tier2_hits": 3,
+  "tier2_misses": 0,
+  "pipeline_cache_hits": 3,
+  "pipeline_cache_misses": 0,
+  "kairos_prefills": 3,
+  "total_time_saved_ms": 450.0,
+  "last_updated": "2026-05-10T05:16:42.870868+00:00",
+  "tier1_rate": 1.0,
+  "tier2_rate": 1.0
+}
