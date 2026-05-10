@@ -1,0 +1,87 @@
+###########################
+# BUILD AN IMAGE
+###########################
+# Example-1 (current): https://github.com/aspect-build/rules_js/blob/main/docs/js_image_layer.md
+# Example-2: https://github.com/aspect-build/rules_js/blob/main/e2e/js_image_oci/src/BUILD.bazel
+# Reference: https://github.com/bazel-contrib/rules_oci/blob/main/docs/javascript.md
+
+load("@aspect_rules_js//js:defs.bzl", "js_image_layer")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push")
+
+platform(
+    name = "amd64_linux",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+js_image_layer(
+    name = "tsc_binary_app_bin_layers",
+    binary = "//experimental/service_test_ts_infra:tsc_binary_app_bin",
+    platform = ":amd64_linux",
+    root = "/app",
+)
+
+oci_image(
+    name = "tsc_binary_app_bin_image",
+    architecture = "amd64",
+    cmd = ["/app/bin"],
+    entrypoint = ["bash"],
+    os = "linux",
+    tars = [
+        ":tsc_binary_app_bin_layers",
+    ],
+    workdir = select({
+        "@aspect_bazel_lib//lib:bzlmod": "/app/bin.runfiles/_main",
+        "//conditions:default": "/app/bin.runfiles/__main__",
+    }),
+)
+
+oci_push(
+    name = "push_image",
+    image = ":tsc_binary_app_bin_image",
+    repository = "docker.io/tomsoir/service_test_ts_infra",
+    tags = ["latest"],
+)
+
+# @TODO: Yeah, it works BUT —> NO.
+#
+# # $ bazel build //experimental/service_test_ts_infra/infra:generate_k8s_manifest
+# genrule(
+#     name = "generate_k8s_manifest",
+#     srcs = glob(["k8s_manifests/*.yaml"]),
+#     outs = ["final_k8s.yaml"],
+#     tools = [":tsc_binary_app_bin_image.digest"],
+#
+#     # concatenate all k8s manifests into one file
+#     cmd = """
+#     IMG=$$(tr -d '\\n' < $(location :tsc_binary_app_bin_image.digest))
+#     mkdir -p $$(dirname $@)
+#     for f in $(SRCS); do
+#         sed "s|__IMAGE_DIGEST__|$${IMG}|g" $$f >> $@
+#         echo -e "\\n---\\n" >> $@
+#     done
+#     """,
+# )
+
+# @TODO: Yeah, it works BUT —> NO.
+
+# genrule(
+#     name = "render_chart",
+#     srcs = glob(["helm_chart/**"]),
+#     outs = ["all.manifests.yaml"],
+#     # cmd = """$(HELM_BIN) --help""",
+#     cmd = """
+#       set -euo pipefail
+
+#       CHART_DIR=$$(dirname $(location helm_chart/Chart.yaml))
+
+#       $(HELM_BIN) template myrelease "$$CHART_DIR" \
+#         --namespace default \
+#         --values $(location helm_chart/values.yaml) \
+#         --include-crds \
+#         > "$@"
+#     """,
+#     toolchains = ["@rules_helm//helm:current_toolchain"],
+# )

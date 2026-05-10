@@ -1,0 +1,57 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@aspect_rules_webpack//webpack:defs.bzl", "webpack_bundle")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+package(default_visibility = ["//:__subpackages__"])
+
+ts_project(
+    name = "tsc",
+    srcs = glob([
+        "src/**/*.ts",
+    ]),
+    allow_js = False,
+    declaration = True,
+    declaration_map = True,
+    incremental = True,
+    out_dir = "dist",
+    resolve_json_module = True,
+    root_dir = "src",
+    source_map = True,
+    tsconfig = "tsconfig.json",
+)
+
+js_binary(
+    name = "tsc_app",
+    chdir = package_name(),
+    data = [
+        "package.json",
+        ":tsc",
+    ],
+    entry_point = "dist/index.js",
+)
+
+webpack_bundle(
+    name = "webpack_build",
+    srcs = [":tsc"],
+    chdir = package_name(),
+    entry_point = "dist/index.js",
+    node_modules = ":node_modules",
+    output_dir = False,
+    tags = ["webpack"],
+    webpack_config = "webpack.config.cjs",
+    deps = [
+        ":node_modules/webpack",
+    ],
+)
+
+js_binary(
+    name = "webpack_app",
+    chdir = package_name(),
+    data = [
+        ":webpack_build",
+    ],
+    entry_point = "webpack_build.js",
+)
