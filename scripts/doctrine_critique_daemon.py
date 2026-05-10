@@ -335,7 +335,7 @@ class DoctrineCritiqueEngine:
     """Check a single SKILL.md for structural compliance."""
     try:
       content = path.read_text(encoding="utf-8", errors="replace")
-    except OSError, PermissionError:
+    except (OSError, PermissionError):
       return
 
     skill_name = path.parent.name

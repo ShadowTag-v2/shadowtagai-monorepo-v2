@@ -125,7 +125,7 @@ def _check_dream_gates(ki_dir: Path) -> tuple[bool, str]:
 
   try:
     last_dt = datetime.fromisoformat(last_consolidated)
-  except ValueError, TypeError:
+  except (ValueError, TypeError):
     return True, "Invalid last_consolidated_at timestamp — running"
 
   hours_since = (datetime.now(UTC) - last_dt).total_seconds() / 3600
@@ -153,7 +153,7 @@ def _load_dream_state() -> dict:
   if DREAM_STATE_FILE.exists():
     try:
       return json.loads(DREAM_STATE_FILE.read_text())
-    except json.JSONDecodeError, OSError:
+    except (json.JSONDecodeError, OSError):
       return {}
   return {}
 
@@ -319,7 +319,7 @@ class DreamLockFile:
         except OSError:
           # Process is dead — break the stale lock
           logger.warning("Breaking orphaned lock (dead PID %d)", held_pid)
-      except json.JSONDecodeError, KeyError, ValueError:
+      except (json.JSONDecodeError, KeyError, ValueError):
         logger.warning("Corrupt lock file, replacing")
 
     # Write our lock
@@ -346,7 +346,7 @@ class DreamLockFile:
             lock_data.get("pid", -1),
             os.getpid(),
           )
-      except json.JSONDecodeError, OSError:
+      except (json.JSONDecodeError, OSError):
         pass
 
 
@@ -432,7 +432,7 @@ def orient(ki_dir: Path) -> list[KIEntry]:
       )
       entries.append(entry)
 
-    except json.JSONDecodeError, KeyError:
+    except (json.JSONDecodeError, KeyError):
       pass
 
   return entries
@@ -507,7 +507,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
               "updated_at": entry.updated_at,
             },
           )
-      except ValueError, TypeError:
+      except (ValueError, TypeError):
         pass
 
   report.ki_scanned = len(entries)

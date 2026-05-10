@@ -32,7 +32,7 @@ def _load_heartbeat() -> dict:
   if hb_path.exists():
     try:
       return json.loads(hb_path.read_text())
-    except json.JSONDecodeError, OSError:
+    except (json.JSONDecodeError, OSError):
       pass
   return {}
 
@@ -115,7 +115,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
     prompt_sections = assembler.assemble_sync()
     prompt_text = "\n\n".join(prompt_sections)
     prompt_tokens = estimate_tokens(prompt_text)
-  except ImportError, Exception:
+  except (ImportError, Exception):
     prompt_tokens = 0
 
   # Build budget breakdown
@@ -132,7 +132,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
       server_count = len(mcp_config.get("mcpServers", {}))
       tool_tokens_est = server_count * 800  # ~800 tokens per tool def
       budget_items.append(("MCP Tool Defs", tool_tokens_est, f"{server_count} servers"))
-  except json.JSONDecodeError, OSError:
+  except (json.JSONDecodeError, OSError):
     pass
 
   budget_items.append(("Autocompact Buffer", autocompact_buffer, "reserved"))
@@ -194,7 +194,7 @@ def render_dashboard(model: str = "gemini-3.1-flash-lite-preview-thinking") -> s
     if cached_count > 0:
       for name in list(_SECTION_CACHE.keys())[:10]:
         lines.append(f"      • {name}")
-  except ImportError, Exception:
+  except (ImportError, Exception):
     lines.append("    Cache inspection unavailable")
   lines.append("")
 

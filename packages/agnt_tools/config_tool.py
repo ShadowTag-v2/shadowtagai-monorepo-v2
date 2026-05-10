@@ -114,7 +114,7 @@ class ConfigTool:
     try:
       with open(self._config_path) as f:
         return json.load(f)
-    except json.JSONDecodeError, FileNotFoundError:
+    except (json.JSONDecodeError, FileNotFoundError):
       return {"growthBookOverrides": {}}
 
   def _write_config(self, config: dict[str, Any]) -> None:

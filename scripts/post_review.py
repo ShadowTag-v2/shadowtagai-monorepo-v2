@@ -291,7 +291,7 @@ def main() -> int:
           )
           review.add_comment(comment)
       continue
-    except json.JSONDecodeError, AttributeError:
+    except (json.JSONDecodeError, AttributeError):
       pass
 
     # Text parsing fallback

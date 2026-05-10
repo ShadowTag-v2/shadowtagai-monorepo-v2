@@ -96,7 +96,7 @@ def scan_file(filepath: str) -> list[dict]:
                 "snippet": line.strip()[:120],
               },
             )
-  except OSError, UnicodeDecodeError:
+  except (OSError, UnicodeDecodeError):
     pass
   return findings
 

@@ -372,7 +372,7 @@ class CostTracker:
       return False
     try:
       data = json.loads(path.read_text())
-    except json.JSONDecodeError, OSError:
+    except (json.JSONDecodeError, OSError):
       return False
 
     self._total_cost_usd = data.get("total_cost_usd", 0.0)

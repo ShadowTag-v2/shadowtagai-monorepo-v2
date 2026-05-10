@@ -32,7 +32,7 @@ def replace_in_file(filepath):
       with open(filepath, "w", encoding="utf-8") as f:
         f.write(new_content)
       print(f"Updated {filepath}")
-  except UnicodeDecodeError, FileNotFoundError, IsADirectoryError:
+  except (UnicodeDecodeError, FileNotFoundError, IsADirectoryError):
     pass
 
 

@@ -62,7 +62,7 @@ class ContextCompactor:
       from config.feature_flags import flags
 
       default_flags = flags.all_flags()
-    except ImportError, ModuleNotFoundError:
+    except (ImportError, ModuleNotFoundError):
       default_flags = {"context_compaction": True}
 
     self._layers = [
