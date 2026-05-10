@@ -8,15 +8,15 @@
  * instrumentation for cast_vote() tracing.
  */
 
-import { resolveFlag } from '../config/feature_flags';
-import { autoRoute } from '../tools/cognitive_router/dispatch';
+import { resolveFlag } from '../../config/feature_flags';
+import { autoRoute } from '../../tools/cognitive_router/dispatch';
 import {
   castVote,
   createEnvelope,
   type RiskLevel,
   type VoteRecord,
-} from '../tools/mailbox/policies';
-import { startTeleportationBridge, teleportPlanToBrowser } from '../tools/teleportation/bridge';
+} from '../../tools/mailbox/policies';
+import { startTeleportationBridge, teleportPlanToBrowser } from '../../tools/teleportation/bridge';
 
 /** Lightweight OTel-compatible span for cast_vote tracing (Task 11) */
 interface Span {
