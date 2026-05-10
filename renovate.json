@@ -2,55 +2,95 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":semanticCommits",
-    ":separateMajorReleases",
-    ":combinePatchMinorReleases",
+    "schedule:earlyMondays",
     ":automergeMinor",
-    ":automergePatch",
-    ":prConcurrentLimit10",
-    ":rebaseStalePrs"
+    ":automergeDigest",
+    ":label(dependencies)",
+    ":prConcurrentLimit10"
   ],
-  "timezone": "America/Los_Angeles",
-  "schedule": ["before 6am on Monday"],
+  "description": "ShadowTag Monorepo Renovate Configuration — Jules-Integrated",
+  "enabledManagers": [
+    "npm",
+    "pip_requirements",
+    "pip-compile",
+    "pyproject",
+    "nuget",
+    "dockerfile",
+    "docker-compose",
+    "github-actions",
+    "gomod",
+    "homebrew",
+    "bazel",
+    "terraform"
+  ],
   "packageRules": [
     {
-      "matchManagers": ["pnpm"],
-      "groupName": "pnpm dependencies",
+      "description": "Group all Python dependencies",
+      "matchManagers": ["pip_requirements", "pip-compile", "pyproject"],
+      "groupName": "python-deps",
+      "automerge": false
+    },
+    {
+      "description": "Group all npm dependencies",
+      "matchManagers": ["npm"],
+      "groupName": "npm-deps",
+      "automerge": false
+    },
+    {
+      "description": "Group all .NET/NuGet dependencies",
+      "matchManagers": ["nuget"],
+      "groupName": "dotnet-deps",
+      "automerge": false
+    },
+    {
+      "description": "Auto-merge GitHub Actions minor updates",
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Auto-merge Docker digest updates",
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchUpdateTypes": ["digest", "pin"],
       "automerge": true
     },
     {
-      "matchManagers": ["bazel"],
-      "groupName": "Bazel dependencies",
-      "automerge": true
+      "description": "Group Terraform providers",
+      "matchManagers": ["terraform"],
+      "groupName": "terraform-providers",
+      "automerge": false
     },
     {
-      "matchManagers": ["pip_requirements"],
-      "groupName": "Python dependencies",
-      "automerge": true
-    },
-    {
-      "matchPackagePatterns": ["^@types/"],
-      "groupName": "TypeScript types"
-    },
-    {
-      "matchPackagePatterns": ["^eslint", "^prettier", "^@typescript-eslint"],
-      "groupName": "Linting & Formatting"
-    },
-    {
-      "matchUpdateTypes": ["patch", "minor"],
-      "automerge": true
+      "description": "Require Jules review for major version bumps",
+      "matchUpdateTypes": ["major"],
+      "labels": ["major-upgrade", "jules-review"],
+      "automerge": false,
+      "prBodyNotes": ["⚠️ Major version bump — Jules swarm PR review required"]
     }
   ],
-  "ignorePaths": ["external_repos/**", "third_party/**"],
-  "dependencyDashboard": true,
-  "prCreation": "immediate",
-  "prConcurrentLimit": 10,
-  "prHourlyLimit": 0,
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["before 5am on Monday"]
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true,
+    "schedule": ["at any time"]
   },
-  "platformAutomerge": true,
-  "automergeStrategy": "squash",
-  "labels": ["deps", "renovate"]
+  "prBodyDefinitions": {
+    "Package": "{{{depName}}}",
+    "Type": "{{{depType}}}",
+    "Update": "{{{updateType}}}",
+    "Current value": "{{{currentValue}}}",
+    "New value": "{{{newValue}}}",
+    "Change": "{{{displayFrom}}} → {{{displayTo}}}"
+  },
+  "postUpdateOptions": ["npmDedupe"],
+  "ignorePaths": [
+    "archive/**",
+    "_archive_*/**",
+    "external_repos/**",
+    "third_party/**",
+    "labs/**"
+  ],
+  "ignoreDeps": [
+    "python"
+  ]
 }
