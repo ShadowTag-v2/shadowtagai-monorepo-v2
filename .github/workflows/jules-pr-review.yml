@@ -1,0 +1,55 @@
+name: Jules + GCA Sovereign PR Review (V24)
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  sovereign-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install Python deps
+        run: pip install PyJWT cryptography
+
+      - name: GCP Auth (Workload Identity)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: antigravity-stitch-bot@shadowtag-omega-v4.iam.gserviceaccount.com
+
+      - name: Generate GitHub App Token
+        run: python3 scripts/auth_github_app.py --export
+        env:
+          SHADOWTAG_PEM: ${{ secrets.GITHUB_APP_PEM }}
+
+      - name: Run Jules + GCA Swarm
+        run: |
+          python3 tools/scripts/run_swarm.py \
+            --pr-number ${{ github.event.pull_request.number }} \
+            --branch ${{ github.head_ref }} \
+            --mode="full-review"
+
+      - name: Run AST Surgery
+        run: bun run scripts/ast_surgery.ts --auto-fix
+        continue-on-error: true
+
+      - name: Post Findings
+        run: |
+          python3 tools/scripts/post_pr_findings.py \
+            --pr ${{ github.event.pull_request.number }}
