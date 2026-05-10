@@ -1,0 +1,279 @@
+# Horizontal Pod Autoscaling with Custom Metrics
+# Leverages GKE Inference Gateway metrics for intelligent scaling
+
+---
+# Custom Metrics Adapter ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: adapter-config
+  namespace: cognitive-stack-v5
+data:
+  config.yaml: |
+    rules:
+    - seriesQuery: 'vllm:num_requests_running'
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: "^(.*)"
+        as: "pending_request_count"
+      metricsQuery: 'avg_over_time(vllm:num_requests_running[1m])'
+
+    - seriesQuery: 'vllm:gpu_cache_usage_perc'
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: "^(.*)"
+        as: "kv_cache_usage_percent"
+      metricsQuery: 'avg_over_time(vllm:gpu_cache_usage_perc[1m])'
+
+    - seriesQuery: 'vllm:request_success_total'
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: "^(.*)"
+        as: "requests_per_second"
+      metricsQuery: 'rate(vllm:request_success_total[1m])'
+
+    - seriesQuery: 'vllm:e2e_request_latency_seconds'
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: "^(.*)"
+        as: "p99_latency_ms"
+      metricsQuery: 'histogram_quantile(0.99, rate(vllm:e2e_request_latency_seconds_bucket[5m])) * 1000'
+
+---
+# HPA for LLM Prefill (parallel processing phase)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: llm-prefill-hpa
+  namespace: cognitive-stack-v5
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: llm-prefill
+  minReplicas: 3
+  maxReplicas: 20
+
+  metrics:
+  # Scale based on GPU utilization
+  - type: Pods
+    pods:
+      metric:
+        name: DCGM_FI_DEV_GPU_UTIL
+      target:
+        type: AverageValue
+        averageValue: "70"
+
+  # Scale based on KV cache usage
+  - type: Pods
+    pods:
+      metric:
+        name: kv_cache_usage_percent
+      target:
+        type: AverageValue
+        averageValue: "80"
+
+  # Scale based on pending requests
+  - type: Pods
+    pods:
+      metric:
+        name: pending_request_count
+      target:
+        type: AverageValue
+        averageValue: "10"
+
+  # CPU as fallback
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+
+  # Memory as fallback
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70
+
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0  # Scale up immediately
+      policies:
+      - type: Percent
+        value: 100  # Double capacity
+        periodSeconds: 15
+      - type: Pods
+        value: 4  # Or add 4 pods
+        periodSeconds: 15
+      selectPolicy: Max
+
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5 minutes
+      policies:
+      - type: Percent
+        value: 10  # Reduce by 10%
+        periodSeconds: 60
+      selectPolicy: Min
+
+---
+# HPA for LLM Decode (generation phase)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: llm-decode-hpa
+  namespace: cognitive-stack-v5
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: llm-decode
+  minReplicas: 5
+  maxReplicas: 40
+
+  metrics:
+  # Scale based on GPU utilization
+  - type: Pods
+    pods:
+      metric:
+        name: DCGM_FI_DEV_GPU_UTIL
+      target:
+        type: AverageValue
+        averageValue: "75"
+
+  # Scale based on requests per second
+  - type: Pods
+    pods:
+      metric:
+        name: requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "50"
+
+  # Scale based on P99 latency
+  - type: Pods
+    pods:
+      metric:
+        name: p99_latency_ms
+      target:
+        type: AverageValue
+        averageValue: "70"  # Scale before hitting 90ms SLA
+
+  # KV cache usage
+  - type: Pods
+    pods:
+      metric:
+        name: kv_cache_usage_percent
+      target:
+        type: AverageValue
+        averageValue: "85"
+
+  # CPU fallback
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 65
+
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+      - type: Pods
+        value: 5
+        periodSeconds: 15
+      selectPolicy: Max
+
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+      selectPolicy: Min
+
+---
+# HPA for Judge 6 Hybrid
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: judge6-hpa
+  namespace: ShadowTag-v2jr-governance
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: judge6-hybrid
+  minReplicas: 3
+  maxReplicas: 10
+
+  metrics:
+  # P99 latency (most important for Judge)
+  - type: Pods
+    pods:
+      metric:
+        name: p99_latency_ms
+      target:
+        type: AverageValue
+        averageValue: "70"  # Scale before 90ms SLA
+
+  # GPU utilization
+  - type: Pods
+    pods:
+      metric:
+        name: DCGM_FI_DEV_GPU_UTIL
+      target:
+        type: AverageValue
+        averageValue: "65"
+
+  # Coverage rate (custom metric)
+  - type: Pods
+    pods:
+      metric:
+        name: coverage_rate
+      target:
+        type: AverageValue
+        averageValue: "0.98"
+
+  # CPU
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+
+  # Memory
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70
+
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30
+      selectPolicy: Max
+
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+      selectPolicy: Min

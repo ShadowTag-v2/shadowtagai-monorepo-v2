@@ -1,0 +1,505 @@
+# ═══════════════════════════════════════════════════════════
+# Canonical Root Ignore — ShadowTag-v2/Monorepo-Uphillsnowball
+# Per Invariant #55: Strict Workspace Isolation
+# Per Invariant #90: Chunked Push Protocol
+# ═══════════════════════════════════════════════════════════
+
+# --- Secrets & Credentials ---
+.env
+.env.*
+*.pem
+client_secret*.json
+service-account*.json
+storage_state.json
+**/credentials.json
+
+# --- Language Runtimes ---
+.venv/
+.venv*/
+__pycache__/
+**/__pycache__/
+node_modules/
+**/node_modules/
+**/obj/
+**/bin/
+dist/
+build/
+.timesfm_venv/
+**/*.pyc
+**/*.pyo
+
+# --- ROOT-LEVEL EXTERNAL REPOS (CRITICAL — Invariant #55) ---
+external_repos/
+.agent/incoming_repos/
+
+# --- Archive Subdirectories (keep on disk, never track) ---
+archive/recovered_assets/
+archive/root_debris/
+archive/labs_graveyard/
+archive/external_payloads/
+archive/claude-code-src-leak/
+archive/external_repos_root/
+archive/claude_code_audit_2026/
+archive/claude_code_src_extract/
+archive/redundant_2026-*/
+archive/redundant_venvs_2026-*/
+archive/scratch_2026/ant_gated_logic.txt
+archive/scratch_2026/ant_type_matches.txt
+archive/scratch_2026/claude_code_src/
+archive/scratch_2026/cprofile_benchmark.py
+archive/scratch_2026/fix_all_except_commas.py
+archive/scratch_2026/fix_except_commas.py
+archive/scratch_2026/repos/
+
+# --- Nested Git Repos ---
+**/.git/
+
+# --- Binary Artifacts ---
+**/*.dll
+**/*.so
+**/*.dylib
+**/*.exe
+**/*.jar
+**/*.whl
+**/*.node
+**/*.wasm
+**/*.pack
+**/*.idx
+**/*.pdb
+**/*.o
+**/*.a
+**/*.obj
+
+# --- Media & Large Data ---
+**/*.mp4
+**/*.mp3
+**/*.wav
+**/*.pdf
+**/*.csv
+**/*.heapsnapshot
+**/*.cpuprofile
+
+# --- Large Data Formats ---
+**/*.jsonl
+**/*.parquet
+**/*.arrow
+**/*.feather
+**/*.h5
+**/*.hdf5
+
+# --- Data & Caches ---
+.lancedb/
+data/lancedb/
+data/intelligence_pipeline/
+data/aegaeon/
+data/sovereign_mlx/
+data/drive_ingest/
+data/file_index/
+data/reports/
+output/
+tmp/
+**/*.sqlite3
+**/*.db
+**/*.cache
+
+# --- True Obsidian Vault (ephemeral data — never commit) ---
+vault/ingest/
+vault/quarantine/
+vault/embed/
+
+# --- Heavy Archive Payloads ---
+control/legacy_workspaces/
+
+# --- IDE & OS ---
+.DS_Store
+**/.DS_Store
+.gitnexus/
+CLAUDE.local.md
+第三party/mlx-vlm/
+
+# --- Build Artifacts ---
+*.log
+.!*
+*.coverage
+launchd-sync*
+
+# --- Root Debris Prevention ---
+/test_*.cmake
+/test_*.py
+/test2.py
+
+# --- Rust Build Artifacts ---
+**/target/debug/
+**/target/release/
+**/*.rlib
+**/*.rmeta
+
+# --- Next.js / Webpack Caches ---
+**/.next/
+**/.nuxt/
+**/public/_next/
+
+# --- Image/Animation Artifacts ---
+**/*.gif
+
+# --- Protobuf / Conversation Dumps ---
+**/*.pb
+
+# --- macOS/Linux compile caches ---
+**/*.dSYM/
+docs/harvested_from_deleted_user/
+docs/harvested_from_deleted_user_2/
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.ico
+**/.next/
+
+# Stitch-skills removed from tracking (skills live in ~/.gemini/antigravity/skills/)
+labs/uphillsnowball/stitch-skills/
+
+# Archive test debris (drift audit 2026-04-13)
+archive/agent_debris/agents/test_runner.py
+archive/agent_debris/antigravity-arch/tests/test_pkgbuild.py
+archive/broken/aiyou_fastapi_misc/test_autogen_migration.py
+archive/broken/aiyou_fastapi_misc/test_gold_master.py
+archive/scratch/test2.py
+archive/scratch/test_cmake_python.py
+
+# Nested repo directories (orphan gitlinks removed 2026-04-13, files retained on disk)
+labs/uphillsnowball/external_payloads/repos/
+labs/uphillsnowball/prompts/leaks/
+libs/autoresearch_sources/n-autoresearch/
+libs/cyberpunk_stack/
+libs/turboquant-pytorch/
+third_party/FawltyDeps/
+third_party/acme.sh/
+third_party/autocomplete/
+third_party/awesome-cheatsheets/
+third_party/bugscope/
+third_party/buildtools/
+third_party/dotfiles/
+third_party/html-agility-pack/
+third_party/jupyenv/
+third_party/ladybug/
+third_party/ladybug-vlang/
+third_party/learn-claude-code/
+third_party/nvm/
+third_party/pipedream/
+third_party/powerlevel10k/
+third_party/prezto/
+third_party/pure-bash-bible/
+third_party/pyreadstat/
+third_party/ruby-ladybug/
+third_party/rules_gcs/
+third_party/run-nix-shell/
+third_party/simpleini/
+third_party/the-art-of-command-line/
+.beads/temporal.db-journal
+apps/data/staging/
+apps/kovelai/public/hero-videos/legal-data-arch.mp4
+!apps/kovelai/public/images/hero-poster.jpg
+
+# Scripts cache and dumps
+scripts/.*
+.lancedb/
+
+# Live Server Plus Plus reference fork (external repo)
+tools/vscode-live-server-plus-plus/
+
+# Cloned macOS system tools (external repos)
+tools/Mole/
+tools/PureMac/
+
+# Reference architecture repos (shallow clones — not source)
+reference_architectures/
+infra/terraform/.terraform/
+.lighthouseci/
+
+# Gitleaks Guardian reports (may contain redacted findings)
+.beads/gitleaks_*.md
+.beads/gitleaks_*.csv
+.gitleaksignore.bak.*
+public/frames/
+labs/uphillsnowball/external_payloads/veo_output/
+tools/google-workspace-cli/.git/
+
+# Temporal server logs
+.beads/temporal-stderr.log
+
+# Quarantine Third-Party Envs
+libs/autoresearch_sources/Kosmos/**/.env*
+
+# Python build artifacts
+*.egg-info/
+
+# Linter / test caches
+.pytest_cache/
+.ruff_cache/
+third_party/security/
+
+# ZIP bundle staging dirs (TASK 4)
+rebuilt_antigravity_bundle/
+antigravity_gca_repo_bundle/
+antigravity_strict_final_foldin_apply/
+antigravity_manifest_bundle_v3/
+antigravity_memory_lock_pack/
+
+# Reference repos (cloned external repos)
+.reference_repos/
+
+# Cinematic scroll generated frames (large binaries)
+labs/uphillsnowball/cinematic-scroll/frames/
+# Product pitch site scraped reference assets
+labs/uphillsnowball/product-pitch-site/clone-base/
+
+# Quarantine Third-Party Envs
+libs/autoresearch_sources/Kosmos/.claude/skills/.env*
+labs/uphillsnowball/product-pitch-site/cloner-tool/
+.codesight/wiki/
+
+# Terraform / OpenTofu
+.terraform/
+*.terraform.lock.hcl
+.terragrunt-cache/
+*.tfstate
+*.tfstate.backup
+
+# Omni-Ingest cloned repos (reference only, not committed)
+external_repos/omni_ingest/
+external_repos/
+clone-base/
+product-pitch-site/
+clones/
+
+# >>> Switchboard managed exclusions >>>
+# Switchboard runtime state (per-session, not shareable)
+.switchboard/*
+!.switchboard/reviews/
+!.switchboard/plans/
+!.switchboard/sessions/
+!.switchboard/CLIENT_CONFIG.md
+!.switchboard/README.md
+!.switchboard/SWITCHBOARD_PROTOCOL.md
+
+# ClickUp integration config (workspace-specific IDs)
+.switchboard/clickup-config.json
+
+# Linear integration config (workspace-specific IDs and sync map)
+.switchboard/linear-config.json
+.switchboard/linear-sync.json
+
+# Notion integration config and page content cache
+.switchboard/notion-config.json
+.switchboard/notion-cache.md
+
+# kanban.db is already excluded by .switchboard/* above — explicit entry for documentation clarity.
+# Never commit the kanban database: it contains machine-local state that differs per developer.
+.switchboard/kanban.db
+.switchboard/*.db-shm
+.switchboard/*.db-wal
+# <<< Switchboard managed exclusions <<<
+
+# ── VSCode source stubs (never belongs in monorepo) ──
+src/vs/
+
+# ── Implementation plans (session artifacts, not canonical) ──
+IMPLEMENTATION_PLAN.md
+
+# ── External SDKs (cloned reference repos — never committed) ──
+tools/external_sdks/
+third_party/security/betterleaks/
+third_party/security/gitleaks/
+third_party/security/gitleaks-action/
+
+# ── Browser Artifacts (agent-generated, never committed) ──
+browser_artifacts/
+**/*.webm
+
+# ── Betterleaks / Gitleaks Guardian reports ──
+.beads/betterleaks_*.md
+.beads/betterleaks_*.csv
+
+# Invariant #102: Large binary exclusions (GitHub Push Chunking Protocol)
+**/*.onnx
+**/*.bin
+**/*.dmg
+**/*.iso
+**/*.tar.gz
+**/*.tgz
+**/*.tar
+**/*.7z
+**/*.zip
+**/*.rar
+**/*.sqlite
+**/*.sqlite3
+**/*.heapsnapshot
+external_repos/ai-website-cloner-template/
+
+# TACSOP 5 — Additional binary/data exclusions (2026-04-25)
+.lancedb_data/
+*.weights
+*.pt
+*.key
+*.heapsnapshot
+data/lancedb/
+labs/gemini-cookbook/**/*.ipynb
+# Binaries untracked
+apps/bennett/edge/bennett-edge
+tools/bazel
+
+
+# START Ruler Generated Files
+/.agent/rules/ruler.md
+/.agent/rules/ruler.md.bak
+/.aiassistant/rules/AGENTS.md
+/.aiassistant/rules/AGENTS.md.bak
+/.aider.conf.yml
+/.aider.conf.yml.bak
+/.amazonq/mcp.json
+/.amazonq/mcp.json.bak
+/.amazonq/rules/ruler_q_rules.md
+/.amazonq/rules/ruler_q_rules.md.bak
+/.augment/rules/ruler_augment_instructions.md
+/.augment/rules/ruler_augment_instructions.md.bak
+/.clinerules
+/.clinerules.bak
+/.codex/config.toml
+/.codex/config.toml.bak
+/.crush.json
+/.crush.json.bak
+/.goosehints
+/.goosehints.bak
+/.idx/airules.md
+/.idx/airules.md.bak
+/.junie/guidelines.md
+/.junie/guidelines.md.bak
+/.kiro/steering/ruler_kiro_instructions.md
+/.kiro/steering/ruler_kiro_instructions.md.bak
+/.openhands/microagents/repo.md
+/.openhands/microagents/repo.md.bak
+/.roo/mcp.json
+/.roo/mcp.json.bak
+/.trae/rules/project_rules.md
+/.trae/rules/project_rules.md.bak
+/.vibe/config.toml
+/.vibe/config.toml.bak
+/AGENTS.md
+/AGENTS.md.bak
+/CLAUDE.md
+/CLAUDE.md.bak
+/CRUSH.md
+/CRUSH.md.bak
+/WARP.md
+/WARP.md.bak
+/firebender.json
+/firebender.json.bak
+/opencode.json
+/opencode.json.bak
+# END Ruler Generated Files
+tools/cloner-engine/template
+
+# M2M Firebase SA key (NEVER COMMIT)
+.beads/firebase-sa.json
+external_repos/ai-website-cloner/
+# npx skills symlinked agent dirs
+.augment/
+.bob/
+.cline/
+.codebuff/
+.codex/
+.codespin/
+.comet/
+.copilot/
+.cursor/
+.deepagents/
+.github/agents/
+.guarden/
+.junie/
+.kiro/
+.melty/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+skills//
+pickle-rick-extension
+
+# Daemon heartbeat files (KAIROS, pipeline metrics — per-session state)
+.beads/kairos_heartbeat.json
+.beads/dream_report_*.md
+.beads/dream_consolidation.lock
+.beads/disk_skill_scan_*.json
+.beads/events/
+vault/monitor/pipeline_metrics.json
+
+# Scratch/temp files
+STEP_BY_STEP_GUIDE.md
+install_ext.py
+pickle_package.json
+.beads/firebase-sa.json
+.tmp.driveupload/
+--help/
+scratch/repos/
+data/
+external_sdks/
+memory/
+
+# Betterleaks / Security Reports (runtime scan output — never commit)
+.reports/secrets/
+.reports/
+
+# Turbopack SST caches (binary, triggers false positives in secret scans)
+**/.next-export/
+**/cache/turbopack/
+
+# KovelAI Turbopack dev server build artifacts (ephemeral, never commit)
+apps/kovelai/public/BUILD_ID
+apps/kovelai/public/app-path-routes-manifest.json
+apps/kovelai/public/build-manifest.json
+apps/kovelai/public/cache/
+apps/kovelai/public/dev/
+apps/kovelai/public/diagnostics/
+apps/kovelai/public/export-marker.json
+apps/kovelai/public/fallback-build-manifest.json
+apps/kovelai/public/images-manifest.json
+apps/kovelai/public/interception-route-rewrite-manifest.json
+apps/kovelai/public/next-font-manifest.json
+apps/kovelai/public/next-minimal-server.js.nft.json
+apps/kovelai/public/next-server.js.nft.json
+apps/kovelai/public/package.json
+apps/kovelai/public/pages-manifest.json
+apps/kovelai/public/prerender-manifest.json
+apps/kovelai/public/required-server-files.js
+apps/kovelai/public/required-server-files.json
+apps/kovelai/public/routes-manifest.json
+apps/kovelai/public/server/
+apps/kovelai/public/server-reference-manifest.json
+apps/kovelai/public/static/
+apps/kovelai/public/trace
+apps/kovelai/public/trace-build
+apps/kovelai/public/turbopack
+apps/kovelai/public/types/
+apps/kovelai/tsconfig.tsbuildinfo
+
+# Pixi package manager (FSEvents storm prevention)
+.pixi/
+
+# Backup venvs (FSEvents storm prevention)
+venv/
+
+.venv
+.pixi
+.hypothesis/
+Installation directory*
+
+# Archived binary artifacts (Two-Lane Doctrine: use GCS, not git)
+_archive_redundant_2026-05-02/nextjs_build_artifacts/
+playwright-report/trace/
+third_party/mlx-engine/demo-data/chameleon.webp

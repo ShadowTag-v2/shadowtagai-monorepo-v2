@@ -1,0 +1,33 @@
+{
+  "name": "Vent Mode Agent",
+  "description": "Ephemeral, privilege-preserving session agent for exploratory legal reasoning. Auto-logout with dead-man's switch after 45 minutes of inactivity. No export, no copy, no persistent storage beyond Kovel attestation receipts.",
+  "url": "https://counselconduit-767252945109.us-central1.run.app/agents/vent",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "ShadowTagAI",
+    "url": "https://shadowtagai.com"
+  },
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "authentication": {
+    "schemes": ["bearer"],
+    "credentials": "Firebase ID Token (tenant-scoped, session-bound)"
+  },
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "skills": [
+    {
+      "id": "ephemeral-research",
+      "name": "Ephemeral Legal Research",
+      "description": "Exploratory legal reasoning with automatic session expiry. No persistent transcripts."
+    },
+    {
+      "id": "multi-model-selector",
+      "name": "Multi-Model Selector",
+      "description": "Client selects from available LLMs (Gemini, Claude, ChatGPT, Grok, Perplexity) for research."
+    }
+  ]
+}

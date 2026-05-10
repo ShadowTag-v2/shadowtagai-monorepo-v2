@@ -1,0 +1,46 @@
+{
+  "name": "shadowtag_v4-web-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@ag-ui/client": "^0.0.48",
+    "@copilotkit/react-core": "^1.54.1",
+    "@copilotkit/react-ui": "^1.54.1",
+    "@copilotkit/runtime": "^1.54.1",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.7.0",
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "node": "file:../../external_sdks/npm/node",
+    "cli": "file:../../external_sdks/npm/cli",
+    "node-semver": "file:../../external_sdks/npm/node-semver"
+  },
+  "lint-staged": {
+    "*": {
+      "{ts,tsx,js,jsx}": "eslint --fix"
+    }
+  }
+}

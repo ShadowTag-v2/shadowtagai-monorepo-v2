@@ -1,0 +1,146 @@
+workspace: pnkln
+product: apps/counselconduit
+lab: labs/uphillsnowball
+mcp-truth: antigravity-mcp-config.json
+judge6-gate: active
+
+# Version & Phase Tracking
+version: "23.0"
+phase: 5
+milestone: 16
+milestone_name: "V23 Hyper-Core — Bun-Native Cascade + Pomelli Swarm"
+milestone_status: "ACTIVE"
+phase_started: "2026-05-09"
+last_updated: "2026-05-09"
+
+# Runtime
+bun_runtime: "1.3.11"
+node_runtime: "v25.9.0"
+runtime_preference: "bun-first"
+
+# Canonical Packages (batch-6 through batch-10)
+canonical_packages:
+  - packages/collapse_read_search
+  - packages/sanitization
+  - packages/undercover
+  - packages/prompt_assembler
+  - packages/token_estimation
+  - packages/prevent_sleep
+  # packages/speculation_engine — ARCHIVED to _archive_redundant_2026-05-09/
+  - packages/magic_docs
+  - packages/plugin_manager
+  - packages/terminal_notifier
+  - packages/auto_dream
+  - packages/context_compactor
+  - packages/agnt_termio
+  - packages/agnt_keybindings
+  - packages/agnt_bash_classifier
+  - packages/agnt_classifier
+  - packages/agnt_context_compactor
+  - packages/agnt_tools
+  - packages/agnt_ui
+  - packages/agnt_utils
+  - packages/agnt_vcr
+  - packages/feature_flags
+  - packages/xml_tags
+  - packages/tool_gateway
+  - packages/tool_limits
+  - packages/code_reasoning
+  - packages/plan_mode
+  - packages/vcr
+  - packages/vcr_fixtures
+  - packages/prompt_sections
+  - packages/repo_oracle
+  - packages/circuit_breaker
+  - packages/deep_research
+  - packages/evaluation_bridge
+  - packages/resilient_retry
+  - packages/telemetry
+  - packages/mcp_tools
+  - packages/agent_progression
+  - packages/agnt_agents
+  - packages/agnt_tmux
+  - packages/firebase_tool_bridge
+  - packages/gemini_deep_research
+  - packages/gemini_interactions
+  - packages/orbstack_sandbox
+  - packages/shadowtag
+
+# V17 Architecture Additions
+v17_additions:
+  archon_delegation: true
+  jules_ci_cd: ".github/workflows/jules-ci.yml"
+  sheetjs_intake: "tools/workspace-listener/webhook_handler.ts"
+  generative_ui: "apps/kovelai/src/GavelHero.tsx"
+  sovereign_mode: ".cline/custom_modes/sovereign.json"
+
+# V18 Architecture Additions (Isomorphic GraphQL Ascension)
+v18_additions:
+  bunfig_enterprise_registry: ".bunfig.toml"
+  isomorphic_graphql_gateway: "apps/api/server.ts"
+  kriasoft_triad:
+    react_starter_kit: "external_repos/react-starter-kit"
+    graphql_starter_kit: "external_repos/graphql-starter-kit"
+    react_firebase_starter: "external_repos/react-firebase-starter"
+  runtime_framework: "Hono v4 + GraphQL Yoga"
+  bun_native_serve: true
+  legacy_node_replaced: true
+
+# V19 Architecture Additions (Cognitive Router + FinOps Governor)
+v19_additions:
+  cognitive_router: "tools/cognitive_router/dispatch.ts"
+  finops_governor: "services/finops-governor/"
+  google_genai_sdk: "@google/genai"
+  bigquery_client: "@google-cloud/bigquery"
+  pr_merged: "#88"
+  head_commit: "aec15aeb9"
+
+# V22 Architecture Additions (Phosphor-Shift — Dynamic Import Ascension)
+v22_additions:
+  dynamic_import_pattern: "src/lib/firebase.ts"
+  pr_merged: "#90, #91"
+  head_commit: "5744baeab"
+  lighthouse_headfade: "P100/A100/BP100/SEO100"
+  branch_state: "main-only (Branch Zero)"
+  security_pipeline: "35-check BashSecurityClassifier"
+  omni_boot: "docs/OMNI_BOOT_V22.md"
+
+# V23 Architecture Additions (Hyper-Core — Bun-Native Cascade + Pomelli Swarm)
+v23_additions:
+  cascade_orchestrator: "tools/cascade/execute_12_point_cascade.ts"
+  pomelli_swarm: "tools/pomelli_swarm/execute.ts"
+  notebooklm_mcp: "mounted via uvx notebooklm-mcp-cli"
+  speculation_engine_archived: "_archive_redundant_2026-05-09/speculation_engine_v22"
+  omni_boot: "docs/OMNI_BOOT_V23.md"
+  head_commit: "pending"
+  branch_state: "main-only (Branch Zero enforced)"
+
+# External Repo Groups (V19 — 21 repos cloned)
+external_repos:
+  google_labs: ["stitch-skills", "stitch-sdk", "jules-skills", "jules-sdk", "jules-action", "jules-awesome-list", "action-setup"]
+  cline: ["prompts"]
+  bun_ecosystem: ["bun", "awesome-bun", "mimalloc", "zig", "libuv", "homebrew-bun"]
+  kriasoft_triad: ["react-starter-kit", "graphql-starter-kit", "react-firebase-starter"]
+  tools: ["sheetjs", "Archon"]
+
+# Deployment
+production_url: "https://counselconduit-767252945109.us-central1.run.app"
+firebase_project: shadowtag-omega-v4
+service_account: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
+
+# Test Health
+test_framework: pytest
+test_count: 2046
+test_count_phase3: 110
+test_count_phase4: 261
+collection_errors: 0
+collection_error_reason: "RESOLVED — conftest.py module stubbing active"
+vitest_count: 14
+vitest_status: "passing"
+
+# Branch Health
+stale_branches_cleaned:
+  - feat/cor-re-coding-vibe-completion
+  - feat/panopticon-telemetry
+  - feat/phase-3-milestone-2-3
+  - fix/test-alignment-auth-telemetry

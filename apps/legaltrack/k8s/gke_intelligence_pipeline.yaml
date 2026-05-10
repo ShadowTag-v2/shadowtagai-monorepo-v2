@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intelligence-pipeline-core
+  namespace: legaltrack-enterprise
+  labels:
+    app: intelligence-pipeline
+    tier: platinum-sla
+spec:
+  replicas: 5 # High availability for 99.99% Enterprise SLA
+  selector:
+    matchLabels:
+      app: intelligence-pipeline
+  template:
+    metadata:
+      labels:
+        app: intelligence-pipeline
+    spec:
+      containers:
+      - name: llm-router
+        image: gcr.io/shadowtag-omega-v4/intelligence-pipeline:latest
+        resources:
+          requests:
+            cpu: "4"
+            memory: "8Gi"
+          limits:
+            cpu: "8"
+            memory: "16Gi"
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ENV_MODE
+          value: "ENTERPRISE_OEM"
+        - name: KERNEL_CHAINING_ENABLED
+          value: "true"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: intelligence-pipeline-hpa
+  namespace: legaltrack-enterprise
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: intelligence-pipeline-core
+  minReplicas: 5
+  maxReplicas: 100 # Elastic scaling to prevent latency spikes during high-frequency API trading
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

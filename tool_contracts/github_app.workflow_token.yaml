@@ -1,0 +1,9 @@
+# tool_contracts/github_app.workflow_token.yaml
+tool_id: "github_app.workflow_token"
+description: "Governs the github_app.workflow_token operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/github_app_workflow_token.jsonl"
+reuse_queries: []

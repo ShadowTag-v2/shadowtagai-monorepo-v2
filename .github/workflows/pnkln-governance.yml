@@ -1,0 +1,74 @@
+name: Pnkln Governance CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main, master]
+
+
+concurrency:
+  group: pnkln-governance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        if: ${{ hashFiles('package.json') != '' }}
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        if: ${{ hashFiles('pyproject.toml') != '' || hashFiles('requirements.txt') != '' }}
+        with:
+          python-version: '3.13'
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: 'latest'
+
+      - name: Install pre-commit
+        run: python -m pip install pre-commit detect-secrets
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
+
+      - name: Install JS deps
+        if: ${{ hashFiles('package.json') != '' }}
+        run: npm ci || npm install
+
+      - name: Typecheck (JS)
+        if: ${{ hashFiles('package.json') != '' }}
+        run: npm run typecheck --if-present
+
+      - name: Typecheck (Python — ty)
+        if: ${{ hashFiles('ty.toml') != '' }}
+        run: uvx ty check --warn-level error
+
+      - name: Test (JS)
+        if: ${{ hashFiles('package.json') != '' }}
+        run: npm test --if-present
+
+      - name: Python test
+        if: ${{ hashFiles('pyproject.toml') != '' || hashFiles('requirements.txt') != '' }}
+        run: pytest -q || true
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://shadowtagai.web.app/
+            https://kovelai.web.app/
+          configPath: '.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true

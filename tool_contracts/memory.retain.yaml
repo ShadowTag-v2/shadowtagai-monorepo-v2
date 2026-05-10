@@ -1,0 +1,9 @@
+# tool_contracts/memory.retain.yaml
+tool_id: "memory.retain"
+description: "Governs the memory.retain operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/memory_retain.jsonl"
+reuse_queries: []

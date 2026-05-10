@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/monitoring/metrics.py
+# hypothesis_version: 6.151.5
+
+[0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 30.0, 60.0, 100, 1024, 'gpu_id', 'llm_requests_total', 'model', 'models_loaded', 'models_loaded_count', 'requests_total', 'status', 'strategy', 'success', 'tokens_generated']

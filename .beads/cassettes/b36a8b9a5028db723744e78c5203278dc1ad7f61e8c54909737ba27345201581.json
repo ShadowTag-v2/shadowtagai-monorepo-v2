@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "my_network_call",
+    "kwargs": {
+      "foo": "bar"
+    }
+  },
+  "response": {
+    "data": "from network"
+  }
+}

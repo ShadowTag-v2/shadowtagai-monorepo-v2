@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# ═══════════════════════════════════════════════════════════
+# scripts/daily-truth-report.sh — Daily Monorepo OS Truth Report
+# Generates a markdown report of current truth state into
+# .reports/monorepo-os/daily.md
+#
+# Usage: bash scripts/daily-truth-report.sh
+# ═══════════════════════════════════════════════════════════
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT"
+
+REPORT_DIR=".reports/monorepo-os"
+REPORT_FILE="$REPORT_DIR/daily.md"
+TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+DATE_HUMAN=$(date -u +"%B %d, %Y")
+
+mkdir -p "$REPORT_DIR"
+
+# ── Gather Metrics ──
+INVARIANT_COUNT=$(python3 -c "import json; print(len(json.load(open('operator_invariants.json'))))" 2>/dev/null || echo "0")
+ATOM_COUNT=$(python3 -c "import json; print(len(json.load(open('operator_invariants_atoms.json')).get('atoms',[])))" 2>/dev/null || echo "0")
+CONTRACT_COUNT=$(find tool_contracts -name '*.yaml' 2>/dev/null | wc -l | tr -d ' ')
+BEAD_COUNT=$(wc -l < .beads/issues.jsonl 2>/dev/null | tr -d ' ' || echo "0")
+EVENT_COUNT=$(wc -l < .memory/events.ndjson 2>/dev/null | tr -d ' ' || echo "0")
+MEMORY_ATOM_COUNT=$(find .memory/atoms -type f 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+SKILL_COUNT=$(find .agents/skills -name 'SKILL.md' -maxdepth 2 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+WORKFLOW_COUNT=$(find .github/workflows -name '*.yml' 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+UPSTREAM_REPO_COUNT=$(grep -c '^\s*-\s' external_repos/upstream_manifest.yaml 2>/dev/null || echo "0")
+
+# Git stats
+LAST_COMMIT_HASH=$(git log -1 --format='%h' 2>/dev/null || echo "unknown")
+LAST_COMMIT_MSG=$(git log -1 --format='%s' 2>/dev/null | head -c 80 || echo "unknown")
+DIRTY_FILES=$(git status --short 2>/dev/null | wc -l | tr -d ' ')
+
+# Dirty file classification
+_git_all=$(git status --short 2>/dev/null || true)
+_git_tracked=$(echo "$_git_all" | { grep -v '^\?\?' || true; })
+_git_untracked=$(echo "$_git_all" | { grep '^\?\?' || true; })
+
+# IDE/build transient patterns
+IDE_TRANSIENT_PAT='\.dart_tool|__pycache__|\.next/|node_modules/|\.swp$|\.swo$'
+SESSION_PAT='kairos_heartbeat|pipeline_metrics|\.beads/|\.reports/|\.memory/'
+
+TRACKED_DIRTY=$(echo "$_git_tracked" | { grep -Ev "$IDE_TRANSIENT_PAT|$SESSION_PAT" || true; } | { grep -c '.' || true; })
+SESSION_GENERATED=$(echo "$_git_all" | { grep -E "$SESSION_PAT" || true; } | { grep -c '.' || true; })
+IDE_TRANSIENT=$(echo "$_git_all" | { grep -E "$IDE_TRANSIENT_PAT" || true; } | { grep -c '.' || true; })
+UNTRACKED_NEW=$(echo "$_git_untracked" | { grep -Ev "$IDE_TRANSIENT_PAT|$SESSION_PAT" || true; } | { grep -c '.' || true; })
+
+# Oracle score
+ORACLE_JSON=$(bash scripts/repo-oracle-score.sh --json 2>/dev/null || echo '{"score":0,"max_score":100,"percentage":0}')
+ORACLE_SCORE=$(echo "$ORACLE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['percentage'])" 2>/dev/null || echo "0")
+ORACLE_GRADE="Unknown"
+if [ "$ORACLE_SCORE" -ge 95 ]; then ORACLE_GRADE="A+ — Self-Verifying OS"
+elif [ "$ORACLE_SCORE" -ge 85 ]; then ORACLE_GRADE="A — Governed"
+elif [ "$ORACLE_SCORE" -ge 70 ]; then ORACLE_GRADE="B — Structured"
+elif [ "$ORACLE_SCORE" -ge 50 ]; then ORACLE_GRADE="C — Partial"
+else ORACLE_GRADE="F — Ungoverned"
+fi
+
+# Triage status
+TRIAGE_STATUS="⚠️ No triage report"
+if [ -f ".reports/skills/unsafe_findings_triage.md" ]; then
+  ACTUAL_RISK=$(grep -c "ACTUAL RISK" .reports/skills/unsafe_findings_triage.md 2>/dev/null || echo "0")
+  TRIAGE_STATUS="✅ Triaged (${ACTUAL_RISK} actual-risk)"
+fi
+
+# ── Generate Report ──
+cat > "$REPORT_FILE" <<EOF
+# Monorepo OS — Daily Truth Report
+
+> **Generated:** $TIMESTAMP | **Date:** $DATE_HUMAN
+
+## Oracle Score
+
+| Metric | Value |
+|--------|-------|
+| Score | **${ORACLE_SCORE}%** |
+| Grade | **${ORACLE_GRADE}** |
+
+## Truth Surface Census
+
+| Surface | Count | Source |
+|---------|-------|--------|
+| Operator Invariants | $INVARIANT_COUNT | \`operator_invariants.json\` |
+| Invariant Atoms | $ATOM_COUNT | \`operator_invariants_atoms.json\` |
+| ToolGateway Contracts | $CONTRACT_COUNT | \`tool_contracts/*.yaml\` |
+| Beads (Issues) | $BEAD_COUNT | \`.beads/issues.jsonl\` |
+| Memory Events | $EVENT_COUNT | \`.memory/events.ndjson\` |
+| Memory Atoms | $MEMORY_ATOM_COUNT | \`.memory/atoms/\` |
+| Workspace Skills | $SKILL_COUNT | \`.agents/skills/\` |
+| CI Workflows | $WORKFLOW_COUNT | \`.github/workflows/\` |
+| Upstream Repos | $UPSTREAM_REPO_COUNT | \`external_repos/upstream_manifest.yaml\` |
+
+## Repository State
+
+| Property | Value |
+|----------|-------|
+| Last Commit | \`$LAST_COMMIT_HASH\` — $LAST_COMMIT_MSG |
+| Dirty Files (total) | $DIRTY_FILES |
+| — Source (tracked, non-transient) | $TRACKED_DIRTY |
+| — Session-generated | $SESSION_GENERATED |
+| — IDE transient | $IDE_TRANSIENT |
+| — Untracked new | $UNTRACKED_NEW |
+| Triage | $TRIAGE_STATUS |
+
+## Guardrails
+
+$(bash scripts/guardrail-annotation-audit.sh --summary 2>/dev/null || echo "⚠️ Guardrail audit script not available in --summary mode")
+
+---
+
+*Report generated by \`scripts/daily-truth-report.sh\`*
+EOF
+
+echo "═══ Daily Truth Report Generated ═══"
+echo "  File: $REPORT_FILE"
+echo "  Oracle Score: ${ORACLE_SCORE}% ($ORACLE_GRADE)"
+echo "  Invariants: $INVARIANT_COUNT | Atoms: $ATOM_COUNT | Contracts: $CONTRACT_COUNT"
+echo "  Beads: $BEAD_COUNT | Events: $EVENT_COUNT | Skills: $SKILL_COUNT"

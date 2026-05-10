@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Admin | The Books</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card: #141414;
+            --text: #ffffff;
+            --g-blue: #4285f4;
+            --accent: #34a853;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max_width: 800px;
+            margin: 0 auto;
+        }
+        h1 { font-weight: 300; letter-spacing: -1px; }
+        .card {
+            background: var(--card);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        .btn {
+            background: var(--text);
+            color: var(--bg);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+        }
+        .mono { font-family: 'Roboto Mono', monospace; color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sovereign Admin</h1>
+            <p style="color: #666;">Controller // Financials</p>
+        </header>
+
+        <div class="card">
+            <h2>📚 The Books</h2>
+            <p>Export your financial data for Quicken or Excel.</p>
+
+            <div style="margin-top: 20px; padding: 15px; background: #1a1a1a; border-radius: 6px;">
+                <div class="mono">CHART OF ACCOUNTS:</div>
+                <div class="mono">Inc:Mall Fees (12%)</div>
+                <div class="mono">Exp:Vendor Payouts (88%)</div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <a href="/store/ledger/export?format=qif" class="btn">Download .QIF (Quicken)</a>
+                <a href="/store/ledger/export?format=csv" class="btn btn-outline">Download .CSV</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Status: ACTIVE</h2>
+            <p>Monetization Gates are armed.</p>
+        </div>
+    </div>
+</body>
+</html>

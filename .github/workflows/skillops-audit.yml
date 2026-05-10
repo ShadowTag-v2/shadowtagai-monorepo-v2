@@ -1,0 +1,106 @@
+# .github/workflows/skillops-audit.yml — SkillOps Fleet Audit PR Gate
+# Runs skills-audit.sh on every PR to detect dangerous patterns in skill files.
+# Fails the build if ACTUAL RISK findings exceed the allowed threshold.
+name: SkillOps Audit
+
+on:
+  pull_request:
+    paths:
+      - '.agents/skills/**'
+      - 'skills/**'
+  push:
+    branches: [main]
+    paths:
+      - '.agents/skills/**'
+      - 'skills/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  skillops-audit:
+    name: SkillOps Fleet Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Run SkillOps Audit (JSON)
+        id: audit
+        run: |
+          chmod +x scripts/skills-audit.sh
+          # Run with overlap checking and JSON output
+          RESULT=$(bash scripts/skills-audit.sh --check-overlap --json 2>/dev/null || true)
+          echo "$RESULT" | tee .reports/skills/audit-result.json
+
+          # Extract unsafe findings count
+          UNSAFE=$(echo "$RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('unsafe_findings', 0))")
+          echo "unsafe_count=$UNSAFE" >> "$GITHUB_OUTPUT"
+
+          # Threshold: fail if more than 15 ACTUAL RISK findings
+          # (44 total, 5 actual risk + 12 moderate as of v1.9 triage)
+          # Tightened from 50 → 15 after full triage completion
+          if [ "$UNSAFE" -gt 15 ]; then
+            echo "::error::SkillOps unsafe findings ($UNSAFE) exceed threshold (15)"
+            exit 1
+          fi
+
+      - name: Verify Triage & Contracts
+        run: |
+          echo "═══ Verify Reports Exist ═══"
+          test -f .reports/skills/unsafe_findings_triage.md || (echo "::error::Missing unsafe_findings_triage.md"; exit 1)
+          test -f .reports/skills/guardrail_annotation_audit.md || (echo "::error::Missing guardrail_annotation_audit.md"; exit 1)
+
+          echo "═══ Verify Contracts & Guardrails ═══"
+          # Check for ToolGateway contracts for actual-risk skills and GUARDRAIL for moderate skills
+          # Since we are just asserting these conditions in CI, we'll just check if the guardrail script passes
+          bash -n scripts/guardrail-annotation-audit.sh
+          scripts/guardrail-annotation-audit.sh || (echo "::error::Guardrail and contract verification failed"; exit 1)
+
+      - name: Upload Audit Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skillops-audit-report
+          path: .reports/skills/
+          retention-days: 30
+
+      - name: Comment PR with findings
+        if: github.event_name == 'pull_request' && steps.audit.outputs.unsafe_count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const result = JSON.parse(fs.readFileSync('.reports/skills/audit-result.json', 'utf8'));
+            const body = `## 🛡 SkillOps Audit Results
+
+            | Metric | Count |
+            |--------|-------|
+            | Workspace Active | ${result.workspace_active} |
+            | Global Active | ${result.global_active} |
+            | Total Active | ${result.total_active} |
+            | Overlap | ${result.overlap} |
+            | **Unsafe Findings** | **${result.unsafe_findings}** |
+
+            <details><summary>Unsafe Details</summary>
+
+            ${(result.unsafe_details || []).map(d => `- \`${d.skill}\`: \`${d.pattern}\` (${d.hits} hits)`).join('\n')}
+
+            </details>
+
+            > Threshold: 15 findings (tightened from 50 in v1.9). See \`.reports/skills/unsafe_findings_triage.md\` for classification.`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });

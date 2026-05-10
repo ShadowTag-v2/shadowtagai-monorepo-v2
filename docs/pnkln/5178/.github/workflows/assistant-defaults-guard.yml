@@ -1,0 +1,12 @@
+name: Assistant Defaults Guard
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate .pnkln/assistant.defaults.json exists
+        shell: bash
+        run: |
+          test -f .pnkln/assistant.defaults.json || { echo "missing defaults"; exit 1; }
+          jq . .pnkln/assistant.defaults.json >/dev/null 2>&1 || { echo "invalid json"; exit 1; }

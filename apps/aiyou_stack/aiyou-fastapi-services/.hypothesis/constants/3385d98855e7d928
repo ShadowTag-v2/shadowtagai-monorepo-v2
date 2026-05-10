@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/compliance_engine.py
+# hypothesis_version: 6.151.5
+
+[0.0, 100, 199, 1000, 2499, 50000, 'Bearer token', 'Retrieve audit proof', 'addon_price', 'api_base_url', 'api_calls', 'assessment_id', 'assessments_per_day', 'authentication', 'base_price', 'content_hash', 'controls', 'controls_count', 'critical', 'enabled_modules', 'healthy', 'included_modules', 'initialized', 'low', 'medium', 'metadata', 'modules', 'overall_score', 'overall_status', 'rate_limits', 'registry', 'requests_per_minute', 'required_evidence', 'status', 'timestamp', 'total_controls', 'unlimited', 'violation_count', 'webhook_url']

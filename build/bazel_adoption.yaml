@@ -1,0 +1,212 @@
+# build/bazel_adoption.yaml — Bazel Coverage Manifest
+# This file is the SINGLE SOURCE OF TRUTH for which zones Bazel covers.
+#
+# Status values:
+#   required  — must have BUILD files, CI-enforced
+#   staged    — BUILD files being authored, not yet CI-gated
+#   optional  — Bazel coverage welcome but not required
+#   forbidden — agents MUST NOT create BUILD files here
+#
+# Phase: 3 (CI ladder, OWNERS, dep governance, expanded coverage)
+# Updated: 2026-04-27
+
+version: "2.0"
+bazel_version: "9.1.0"
+buildifier_check: true
+ci_level: 2  # See CI ladder below
+
+# =============================================================================
+# CI Ladder
+# =============================================================================
+# Level 1: buildifier -mode=check + bazel query //packages/...
+# Level 2: bazel test //packages/... + dep-governance gate
+# Level 3: bazel test //apps/counselconduit/...
+# Level 4: bazel test //... (full hermiticity)
+
+# =============================================================================
+# Canonical Zones — Bazel coverage authorized
+# =============================================================================
+zones:
+  packages/tool_gateway:
+    status: required
+    language: python
+    owner: platform
+    py_files: 4
+    targets:
+      - py_library
+      - py_test
+    notes: "Core routing abstraction. First Bazel package."
+
+  packages/repo_oracle:
+    status: required
+    language: python
+    owner: platform
+    py_files: 2
+    targets:
+      - py_library
+    notes: "Repo introspection tool."
+
+  packages/aiyou-core:
+    status: staged
+    language: python
+    owner: product
+    py_files: 2
+    notes: "Review before full coverage."
+
+  packages/aiyou-data-contracts:
+    status: optional
+    language: unknown
+    notes: "Empty or non-Python. Audit before Bazelizing."
+
+  packages/aiyou-policy:
+    status: optional
+    language: unknown
+    notes: "Empty or non-Python. Audit before Bazelizing."
+
+  packages/aiyou-rollup:
+    status: optional
+    language: unknown
+    notes: "Empty or non-Python. Audit before Bazelizing."
+
+  packages/aiyou:
+    status: optional
+    language: unknown
+    notes: "Empty or non-Python. Audit before Bazelizing."
+
+  packages/shadowtag:
+    status: optional
+    language: unknown
+    notes: "Empty or non-Python. Audit before Bazelizing."
+
+  libs/core:
+    status: staged
+    language: rust
+    owner: platform
+    notes: "Rust router_daemon crate. Needs rules_rust. Phase 4+."
+
+  libs/aiyou:
+    status: optional
+    language: python
+    notes: "Audit before coverage."
+
+  libs/ui:
+    status: optional
+    language: typescript
+    notes: "Needs rules_js. Phase 5+."
+
+  tools:
+    status: required
+    language: mixed
+    owner: platform
+    notes: "BUILD files in tools/build_defs/. Lint wrappers as sh_test."
+
+  scripts:
+    status: required
+    language: python/shell
+    owner: platform
+    notes: >
+      BUILD.bazel with filegroups and sh_test gates.
+      dep-governance.sh validates forbidden-zone isolation.
+
+  apps/counselconduit:
+    status: required
+    language: python/typescript
+    owner: product
+    notes: >
+      Revenue-critical app. Phase 3: package boundary + filegroups.
+      Phase 4: sub-package BUILD files for api/, services/, models/.
+
+  apps/kovelai:
+    status: staged
+    language: typescript
+    owner: product
+    notes: "Next.js frontend. Needs rules_js. Phase 5+."
+
+  apps/gitnexus:
+    status: staged
+    language: typescript
+    owner: platform
+    notes: "Repo nervous system. GitNexus CLI + MCP interface."
+
+  apps/gitnexus-api:
+    status: staged
+    language: python
+    owner: platform
+    notes: "FastAPI wrapper for GitNexus. Operator console backend."
+
+  infra:
+    status: staged
+    language: terraform/shell
+    owner: platform
+    notes: "IaC and deployment configs. Validate, don't build."
+
+# =============================================================================
+# Forbidden Zones — agents MUST NOT create BUILD files here
+# =============================================================================
+  archive:
+    status: forbidden
+    reason: "Legacy source mine (59 GiB), not canonical source."
+
+  external_repos:
+    status: forbidden
+    reason: "External forks are not live monorepo packages."
+
+  external_sdks:
+    status: forbidden
+    reason: "Vendored SDKs. Not monorepo packages."
+
+  venv:
+    status: forbidden
+    reason: "Python virtual environment. Not source."
+
+  ".venv":
+    status: forbidden
+    reason: "Python virtual environment. Not source."
+
+  ".venv-314":
+    status: forbidden
+    reason: "Stale backup virtual environment."
+
+  ".venv-3.14-bak":
+    status: forbidden
+    reason: "Stale backup virtual environment."
+
+  node_modules:
+    status: forbidden
+    reason: "Package manager output. Not source."
+
+  ".gitnexus":
+    status: forbidden
+    reason: "Generated analysis tool output."
+
+  apps/aiyou_stack:
+    status: forbidden
+    reason: >
+      209,972 files, 4.1 GiB. Legacy FastAPI monolith with embedded
+      venvs and build caches. Requires full audit before any coverage.
+
+  legacy_workspaces:
+    status: forbidden
+    reason: "Dead workspace debris."
+
+# =============================================================================
+# Bazel-Ready Checklist (a package must pass all to get BUILD files)
+# =============================================================================
+# 1. It is live canonical code
+# 2. It has an owner
+# 3. It has no hidden dependency on local venvs
+# 4. It has no generated artifacts checked in
+# 5. It has deterministic inputs
+# 6. It has at least one lint/type/test target
+# 7. It has no secret-bearing files
+# 8. It does not import from archive/external/raw zones
+
+# =============================================================================
+# Phase 3 Changelog (2026-04-27)
+# =============================================================================
+# - ci_level bumped from 1 → 2
+# - tools/, scripts/, apps/counselconduit promoted to required
+# - apps/gitnexus and apps/gitnexus-api added as staged
+# - CI workflow: .github/workflows/bazel-ci.yml (L1+L2 ladder)
+# - OWNERS files: packages/, apps/, libs/, tools/, infra/, scripts/
+# - Dep governance: scripts/dep-governance.sh

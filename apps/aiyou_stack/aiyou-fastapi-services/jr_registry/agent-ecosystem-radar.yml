@@ -1,0 +1,48 @@
+# jr_registry/agent-ecosystem-radar.yml
+id: "agent-ecosystem-radar"
+title: "Agent-Framework Ecosystem Radar (LangChain / AutoGen / CrewAI / SuperAGI + variants)"
+owner: "Platform Team"
+sponsor: "CTO"
+status: "Review"
+intake_date: "2025-11-29"
+last_review: "2025-11-29"
+next_review: "2026-04-29"
+links:
+  doc: "https://dev.to/pathak_prakarsh/the-best-llm-and-ai-orchestration-toolkits-for-your-stack-5hlk"
+  repo: null
+  ticket: null
+imperatives:
+  - Velocity and Adaptability
+  - Building Defensible Technology Moats
+roi_gate:
+  gate_name: "Ecosystem surveillance & tool-discovery index"
+  why_now: "Map full landscape of multi-agent & orchestration toolkits for future integration or threat analysis."
+  due: "2026-03-30"
+  blocked_if_missed: false
+governance:
+  timebox_hours: 6
+  kill_switch_date: "2026-03-31"
+  decision: "TBD"
+  objections_log: []
+scores:
+  defensibility: 2
+  alignment: 3
+  value_hierarchy: "Ease-of-Business"
+  risk: 1
+  confidence: 0.9
+economics:
+  capex_delta_usd: 0
+  opex_delta_usd_m: 0
+  perf_gain_x: 1.0
+  cost_per_inference_delta: 0.0
+deployment:
+  target_env: "N/A (reference material)"
+  onprem_viable: true
+  security_impact: "None"
+  pqc_impact: "N/A"
+deliverables:
+  - name: "Agent ecosystem landscape report"
+    due: "2026-03-15"
+    status: "Planned"
+notes: |
+  A broad radar entry tracking principal agent frameworks (LangChain, AutoGen, CrewAI, SuperAGI) and updates — good for proactive competitive intelligence.

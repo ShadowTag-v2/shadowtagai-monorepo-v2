@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-6-config
+  namespace: pnkln-core
+data:
+  # SLA Configuration
+  LATENCY_SLA_P99_MS: "90"
+  LATENCY_SLA_P95_MS: "60"
+  LATENCY_SLA_P50_MS: "30"
+
+  # Vertex AI Configuration
+  VERTEX_AI_ENDPOINT: "https://us-central1-aiplatform.googleapis.com"
+  VERTEX_AI_LOCATION: "us-central1"
+  GEMINI_MODEL_NAME: "gemini-3.1-flash-lite-preview"
+  GEMINI_TUNED_MODEL_NAME: "gemini-3.1-flash-lite-preview-tuned"
+
+  # Judge 6 Hybrid Architecture
+  ENABLE_LAYER_1_GEMINI: "true"
+  ENABLE_LAYER_2_PYTORCH: "true"
+  ENABLE_LAYER_3_RULES: "true"
+
+  # Circuit Breaker Settings
+  CIRCUIT_BREAKER_THRESHOLD_MS: "100"
+  CIRCUIT_BREAKER_FALLBACK_MODE: "rules-only"
+  CIRCUIT_BREAKER_RECOVERY_TIME_SEC: "60"
+
+  # Resource Limits
+  MAX_CONCURRENT_REQUESTS: "100"
+  REQUEST_TIMEOUT_MS: "150"
+  GPU_MEMORY_LIMIT_GB: "16"
+
+  # Monitoring
+  METRICS_PORT: "8080"
+  HEALTH_CHECK_PORT: "8081"
+  PROMETHEUS_ENABLED: "true"
+  TRACE_SAMPLING_RATE: "0.1"
+
+  # Feature Flags
+  ENABLE_REQUEST_LOGGING: "true"
+  ENABLE_DETAILED_METRICS: "true"
+  ENABLE_SHADOW_VALIDATION: "false"

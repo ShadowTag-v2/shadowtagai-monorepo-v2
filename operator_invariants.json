@@ -1,0 +1,63 @@
+{
+  "version": "5.0",
+  "last_updated": "2026-05-09",
+  "description": "Canonical operator invariants for shadowtagai-monorepo-v2. Enforced by all agents, daemons, and workflows.",
+  "invariants": [
+    {
+      "id": 1,
+      "name": "AGENTS.md is canonical contract",
+      "rule": "AGENTS.md is the canonical contract. antigravity-mcp-config.json is the canonical MCP truth."
+    },
+    {
+      "id": 2,
+      "name": "No second source of truth",
+      "rule": "No second source of truth. No committed secrets. No complecting orthogonal concerns."
+    },
+    {
+      "id": 3,
+      "name": "MCP servers mandatory",
+      "rule": "All MCP servers MUST be used (Firebase, Chrome DevTools, Stitch, Developer Knowledge, Sequential Thinking)."
+    },
+    {
+      "id": 4,
+      "name": "GEMINI.md defines invariants",
+      "rule": "GEMINI.md defines operator invariants, NOT capability ownership or routing."
+    },
+    {
+      "id": 5,
+      "name": "Capability ownership in config",
+      "rule": "Capability ownership lives ONLY in antigravity-mcp-config.json."
+    },
+    {
+      "id": 6,
+      "name": "Prompt repetition only for non-reasoning",
+      "rule": "Prompt repetition applies ONLY to non-reasoning tiers (Oracle Studio, model_router, Vent Mode, Autoresearch Triad)."
+    },
+    {
+      "id": 7,
+      "name": "Follow Custom Skills",
+      "rule": "Follow all Custom Skills. Esp: .agents/skills/mcp-fleet-vanguard/SKILL.md."
+    },
+    {
+      "id": 8,
+      "name": "Secrets only via Secret Manager",
+      "rule": "Secrets only via Secret Manager. No .env, no hardcoded keys in source or config."
+    },
+    {
+      "id": 111,
+      "name": "Two-Lane Upload Doctrine",
+      "rule": "Git is for canonical source, small docs, manifests, build files, scripts, tests, and policy. Large binaries, raw archives, external repo mirrors, generated indexes, vector DBs, notebook outputs, videos, model files, and build artifacts must go to artifact storage or ignored local mirrors. The repository stores manifests, checksums, owners, and retrieval instructions, not heavy payloads."
+    },
+    {
+      "id": 112,
+      "name": "GitHub App Push Gate",
+      "rule": "All automated pushes must use short-lived GitHub App installation tokens via scripts/auth_github_app.py. Token renewal handles expiration only; it must not be treated as a bypass for GitHub file-size limits, repository-health limits, branch protection, secret scanning, or LFS budget constraints. Tokens must never be printed, persisted in .git/config, or committed."
+    },
+    {
+      "id": 113,
+      "name": "Autolint Scope Boundary",
+      "rule": "Autolint daemons may perform deterministic formatting and lint autofixes only. They may not perform broad refactors, archive deletion, history rewrites, dependency migrations, IDE hot-swaps, or direct production-affecting changes. Non-lint architectural changes require a separate branch, GitNexus impact check, build/test evidence, and human review."
+    }
+  ],
+  "notes": "These invariants persist until MEMORY UNLOCK. All agents must print the full list on session start."
+}

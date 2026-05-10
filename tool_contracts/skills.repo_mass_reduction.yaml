@@ -1,0 +1,48 @@
+# tool_contracts/skills.repo_mass_reduction.yaml — ISSUE-018
+# Gates the repo-mass-reduction skill behind ToolGateway.
+# This skill contains destructive operations (git reset --hard, force push, rm -rf)
+# that require STATE B authentication before execution.
+version: 1
+
+description: >
+  Contract governing the repo-mass-reduction skill. This skill performs
+  destructive repository operations including git history rewrites,
+  force pushes, and recursive file deletion. All operations require
+  explicit human authorization via STATE B Clutch mode.
+
+trigger: manual_only
+
+preconditions:
+  - state_b_active: true
+    reason: "Destructive operations require STATE B Clutch engagement"
+  - human_authorization: required
+    reason: "RULE 00 — Immutable Infrastructure prohibits unattended deletion"
+  - branch_protection: verified
+    reason: "Force push targets must have recovery branches"
+  - evidence_logged: true
+    target: ".agent/evidence/mass_reduction/"
+
+invariants:
+  - id: 105
+    name: "History Bloat Requires History Tools"
+  - id: 113
+    name: "Autolint Scope Boundary"
+
+prohibited_without_approval:
+  - "git reset --hard"
+  - "git push --force"
+  - "git push -f"
+  - "rm -rf"
+  - "filter-branch"
+  - "filter-repo"
+  - "BFG"
+
+evidence:
+  format: yaml
+  destination: ".agent/evidence/mass_reduction/"
+  fields:
+    - timestamp
+    - operator
+    - files_affected
+    - bytes_reclaimed
+    - rollback_ref

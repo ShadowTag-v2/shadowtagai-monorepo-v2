@@ -1,0 +1,71 @@
+cat > .env << 'EOF'
+# Gemini Configuration
+GOOGLE_[CREDENTIAL_REDACTED]
+
+# Optional: LangSmith for tracing (you can leave these blank for now)
+LANGCHAIN_TRACING_V2=false
+LANGCHAIN_[CREDENTIAL_REDACTED]
+
+
+import os
+import vertexai
+from vertexai.generative_models import GenerativeModel, Tool
+
+# --- CONFIGURATION ---
+# ⚠️ REPLACE WITH YOUR PROJECT ID
+PROJECT_ID = "acquired-jet-478701-b3”
+LOCATION = "us-central1"
+
+# --- 1. PROXY CONNECTION ---
+# Force traffic through your local Mitmproxy Ultra
+os.environ["HTTP_PROXY"] = "http://127.0.0.1:8080"
+os.environ["HTTPS_PROXY"] = "http://127.0.0.1:8080"
+# Disable SSL verify for the local proxy certificate
+os.environ["PYTHONHTTPSVERIFY"] = "0"
+# (Optional) Direct Vertex AI to use insecure channel if needed for proxying
+os.environ["GRPC_PROXY_EXP"] = "localhost:8080"
+
+print(f"🚀 ANTIGRAVITY: Routing via {os.environ['HTTP_PROXY']}")
+
+# --- 2. INITIALIZE GOOGLE NATIVE STACK ---
+print("🛡️  Initializing Vertex AI...")
+vertexai.init(project=PROJECT_ID, location=LOCATION)
+
+# --- 3. ENABLE CODE EXECUTION SANDBOX ---
+# This is the "Easy Button". It tells Google to spin up the sandbox automatically.
+code_execution_tool = Tool(
+    code_execution=Tool.CodeExecution(
+        # Optional: Allow it to make HTTP calls if you want
+        # http_enabled=True
+    )
+)
+
+# --- 4. LOAD MODEL WITH TOOLS ---
+model = GenerativeModel(
+    "gemini-1.5-pro-002", # Use the latest Pro model
+    tools=[code_execution_tool],
+)
+
+# --- 5. START CHAT ---
+chat = model.start_chat()
+
+def run_mission(prompt):
+    print(f"\n⚡ MISSION: {prompt}")
+    # We don't need manual prompt engineering; the model knows how to use the tool.
+    response = chat.send_message(prompt)
+
+    # Print the code it executed (if any)
+    for part in response.candidates[0].content.parts:
+        if part.executable_code:
+            print(f"\n💻 EXECUTED CODE:\n{part.executable_code.code}")
+        if part.code_execution_result:
+            print(f"\n📉 OUTPUT:\n{part.code_execution_result.output}")
+
+    print(f"\n✅ ANSWER:\n{response.text}")
+
+if __name__ == "__main__":
+    # Test 1: Math (Forces code execution)
+    run_mission("Calculate the 50th Fibonacci number.")
+
+    # Test 2: Data Processing (Forces sandbox usage)
+    run_mission("Create a list of 20 random numbers, find the median, and tell me if it's prime.")

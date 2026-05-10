@@ -1,0 +1,29 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: shadowtag-judge-6-1
+  labels:
+    cloud.googleapis.com/location: us-central1
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      serviceAccountName: redacted@shadowtag-v4.local
+      containers:
+      - image: gcr.io/shadowtag-omega-v4/sentinel:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PERSONA_MODE
+          value: "judge_6_1"
+        - name: DOCTRINE_VERSION
+          value: "6.1"
+        - name: PROJECT_ID
+          value: "shadowtag-omega-v4"
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi

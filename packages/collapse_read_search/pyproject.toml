@@ -1,0 +1,9 @@
+[project]
+name = "collapse-read-search"
+version = "1.0.0"
+description = "Collapse consecutive read/search tool operations into summary groups for compact UI rendering"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"

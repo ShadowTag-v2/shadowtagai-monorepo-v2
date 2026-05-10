@@ -1,0 +1,18 @@
+# Invoked via: /lint:vulture
+description = "Run vulture dead-code scan only and report findings."
+
+prompt = """
+Run ONLY the vulture dead-code scanner against the entire monorepo:
+
+```
+uv run vulture . --min-confidence 90 --exclude "external_repos,node_modules,.venv" 2>&1
+```
+
+For each finding, report:
+| File | Line | Name | Confidence | Type |
+|------|------|------|------------|------|
+
+Group findings by directory (apps/, scripts/, libs/, etc.).
+Highlight any items with confidence >= 95% — these are almost certainly dead code.
+Do NOT delete anything. Only report.
+"""

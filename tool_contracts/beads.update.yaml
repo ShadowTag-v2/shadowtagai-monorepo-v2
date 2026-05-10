@@ -1,0 +1,9 @@
+# tool_contracts/beads.update.yaml
+tool_id: "beads.update"
+description: "Governs the beads.update operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/beads_update.jsonl"
+reuse_queries: []

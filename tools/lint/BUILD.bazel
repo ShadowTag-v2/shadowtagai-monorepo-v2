@@ -1,0 +1,71 @@
+load("@npm//:eslint/package_json.bzl", eslint_bin = "bin")
+load("@npm//:stylelint/package_json.bzl", stylelint_bin = "bin")
+load("@rules_python//python/entry_points:py_console_script_binary.bzl", "py_console_script_binary")
+load("//tools/lint:linters.bzl", "eslint_test")
+
+package(default_visibility = ["//:__subpackages__"])
+
+# ==========================================
+# ESlint / Bazel standard debug flow
+# ==========================================
+# Note-1: test it by running: `$ bazel run //tools/lint:eslint -- --help`)
+# Note-2: run individual target: `$ bazel lint experimental/service_test_ts_rspack_react_tests_assets_swc/...`
+# Note-3: run lint aspect directly: `$ bazel build --aspects=//tools/lint:linters.bzl%eslint //experimental/service_test_ts_rspack_react_tests_assets_swc/...`
+#   - This ^ will always be successful, because the aspect implementation has fail_on_violation set to False.
+#   - But you can still see the lint exit code (which is saved in the bazel-bin/../AspectRulesLintESLint.out.exit_code file
+#   - Run this: `$ cat bazel-bin/experimental/service_test_ts_rspack_react_tests_assets_swc/tsc.AspectRulesLintESLint.out.exit_code`
+#   - Run aquery to all details: `$ bazel aquery --aspects=//tools/lint:linters.bzl%eslint //experimental/service_test_ts_rspack_react_tests_assets_swc/... --sandbox_debug`
+# Note-4: determine where the lint error:
+#   - Run: `$ bazel lint experimental/service_test_ts_rspack_react_tests_assets_swc/...`
+#   - Open: `bazel-monorepo/bazel-bin/experimental/service_test_ts_rspack_react_tests_assets_swc` and watch all `.exit_code` which are not 0
+#       - e.g: bazel-monorepo/bazel-bin/experimental/service_test_ts_rspack_react_tests_assets_swc/rspack_dev_config.AspectRulesLintESLint.out.exit_code has lint exit code 2.
+# Note-5 run eslint directly to verify the problem with rspack_dev_config
+#    - Run this command to find what ESlint error bather you: $ npx eslint --config /Users/tomsoir/Sites/Tomsoir/bazel-monorepo/eslint.config.mjs  /Users/tomsoir/Sites/Tomsoir/bazel-monorepo/experimental/service_test_ts_rspack_react_tests_assets_swc/
+#    - After fixing the eslint error, bazel should work fine too.
+eslint_bin.eslint_binary(
+    name = "eslint",
+    env = {
+        "ESLINT_USE_FLAT_CONFIG": "true",
+        # "ESLINT_DEBUG": "true",
+        # "DEBUG": "eslint:*",
+        # "NODE_PATH": "./node_modules",
+    },
+    fixed_args = [
+        # "--debug",
+        # "--no-ignore",
+        # "--no-warn-ignored",
+        "--no-warn-ignored",
+        "--max-warnings=100000",
+    ],
+    log_level = "debug",
+)
+
+# Stylelint binary
+# Note: test it by running `$ bazel run //tools/lint:stylelint -- --help`)
+stylelint_bin.stylelint_binary(
+    name = "stylelint",
+)
+
+# Flake8 binary
+# Note: test it by running `$ bazel run //tools/lint:flake8 -- --help`)
+py_console_script_binary(
+    name = "flake8",
+    pkg = "@pypi//flake8:pkg",
+)
+
+# $ bazel lint //...
+eslint_test(
+    name = "lint",
+    srcs = [
+        "//experimental/service_test_ts:tsc",
+        "//experimental/service_test_ts_esbuild:tsc",
+        "//experimental/service_test_ts_infra:tsc",
+        "//experimental/service_test_ts_rspack_react_tests_assets_swc:tsc",
+        "//experimental/service_test_ts_webpack:tsc",
+        "//experimental/service_test_ts_webpack_react:tsc",
+        "//experimental/service_test_ts_webpack_react_tests:tsc",
+        "//experimental/service_test_ts_webpack_react_tests_assets:tsc",
+        "//experimental/service_test_ts_webpack_react_tests_assets_swc:tsc",
+    ],
+    # tags = ["manual"],
+)

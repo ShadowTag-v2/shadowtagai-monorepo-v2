@@ -1,0 +1,272 @@
+name: GCA PR Review — Multi-Agent
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to review'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  GEMINI_SANDBOX: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+
+
+concurrency:
+  group: gca-pr-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Stage 0: Resolve PR context (works for both pull_request and workflow_dispatch) ──
+  setup:
+    name: "Resolve PR context"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Dependabot PRs are fork-like: GEMINI_API_KEY is unavailable. Skip entirely.
+    if: github.actor != 'dependabot[bot]'
+    outputs:
+      pr_number: ${{ steps.ctx.outputs.pr_number }}
+      base_ref:  ${{ steps.ctx.outputs.base_ref }}
+      head_sha:  ${{ steps.ctx.outputs.head_sha }}
+    steps:
+      - name: Get PR metadata
+        id: ctx
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR="${{ github.event.number || inputs.pr_number }}"
+          META=$(gh api repos/${{ github.repository }}/pulls/$PR)
+          echo "pr_number=$PR"                             >> $GITHUB_OUTPUT
+          echo "base_ref=$(echo $META | jq -r .base.ref)" >> $GITHUB_OUTPUT
+          echo "head_sha=$(echo $META | jq -r .head.sha)" >> $GITHUB_OUTPUT
+
+  # ── Stage 1: 4 parallel specialized agents ─────────────────────────────
+  analyze:
+    name: "Agent: ${{ matrix.agent }}"
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        agent: [correctness, security, perf, arch]
+      fail-fast: false
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.setup.outputs.head_sha }}
+          fetch-depth: 0
+
+      - name: Build diff
+        run: git diff origin/${{ needs.setup.outputs.base_ref }}...HEAD > /tmp/diff.txt
+
+      - name: Run ${{ matrix.agent }} agent
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AGENT: ${{ matrix.agent }}
+        run: |
+          # Extract incoming-branch side of REVIEW.md merge conflict (the full contract)
+          # Falls back to minimal contract if REVIEW.md is clean or missing
+          if grep -q "^=======$" REVIEW.md 2>/dev/null; then
+            REVIEW_CONTRACT=$(awk '/^=======$/{f=1;next} /^>>>>>>> /{f=0} f' REVIEW.md)
+          else
+            REVIEW_CONTRACT=$(cat REVIEW.md 2>/dev/null || echo "Severity: 🔴 Normal | 🟡 Nit | 🟣 Pre-existing")
+          fi
+
+          DIFF=$(cat /tmp/diff.txt)
+
+          case "$AGENT" in
+            correctness)
+              EXTRA_PROMPT="Focus ONLY on logic errors, off-by-one bugs, wrong types, missing null checks, race conditions, and data corruption risks. Do not report security or performance issues."
+              ;;
+            security)
+              EXTRA_PROMPT="Focus ONLY on security vulnerabilities: missing server-side authorization, weak session handling, unsafe redirects, unsanitized inputs, non-parameterized queries (SQL injection), missing rate limits on sensitive endpoints, insecure file upload handling, storage access control problems, leaked secrets in code or logs, missing webhook signature verification. Classify findings by severity. State uncertainty explicitly. Recommend the smallest secure fix first."
+              ;;
+            perf)
+              EXTRA_PROMPT="Focus ONLY on performance issues: eliminate async waterfalls, reduce client bundle size, cut server-side waste, reduce unnecessary re-renders. Only then consider micro-optimizations. For each issue include: where it is, why it matters, likely impact, and the smallest fix."
+              ;;
+            arch)
+              EXTRA_PROMPT="Focus ONLY on architecture: circular dependencies, abstraction leaks, violated contracts, breaking API changes, missing migrations, config drift, and modularity violations (files > 400 lines, no separation of concerns)."
+              ;;
+          esac
+
+          gemini --yolo > /tmp/raw_output.txt 2>&1 <<GEMINI_EOF
+          ${REVIEW_CONTRACT}
+
+          ---
+
+          You are a specialized code review agent.
+          ${EXTRA_PROMPT}
+
+          Analyze the PR diff below and output your findings as a JSON array ONLY.
+          No prose before or after the JSON. Output must be valid JSON.
+
+          Output a JSON array. Each element must match this schema exactly:
+          {
+            "severity": "🔴" | "🟡" | "🟣",
+            "file": "<exact file path from diff header>",
+            "line": <integer line number in the new file version, 0 if file-level>,
+            "title": "<one-line summary under 80 chars>",
+            "body": "<detailed explanation. Quote the exact code snippet from the diff. Include reproduction path for 🔴.>",
+            "agent": "${AGENT}"
+          }
+
+          Severity rules:
+          - 🔴 Normal: ONLY if you have a concrete, deterministic reproduction path. No speculation ever.
+          - 🟡 Nit: Style, minor quality issues. Cannot block merge.
+          - 🟣 Pre-existing: Bug already in codebase before this PR.
+
+          If you find zero issues in your domain, output exactly: []
+
+          ## PR Diff
+
+          \`\`\`diff
+          ${DIFF}
+          \`\`\`
+          GEMINI_EOF
+
+          # Extract the JSON array from gemini output (handles prose wrapping)
+          python3 - > /tmp/findings-${AGENT}.json <<'PYEOF'
+          import re
+          raw = open('/tmp/raw_output.txt').read()
+          m = re.search(r'(\[.*?\])', raw, re.DOTALL)
+          print(m.group(1) if m else '[]')
+          PYEOF
+
+          echo "=== Agent ${AGENT} findings ==="
+          cat /tmp/findings-${AGENT}.json
+
+      - name: Upload findings
+        uses: actions/upload-artifact@v4
+        with:
+          name: findings-${{ matrix.agent }}
+          path: /tmp/findings-${{ matrix.agent }}.json
+          retention-days: 1
+
+  # ── Stage 1b: ANE L2 SRAM gate (parallel with analyze) ─────────────────
+  ane-gate:
+    name: "ANE L2 SRAM Gate"
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      overflow_risk: ${{ steps.check.outputs.overflow_risk }}
+      risk_detail: ${{ steps.check.outputs.risk_detail }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.setup.outputs.head_sha }}
+          fetch-depth: 0
+
+      - name: Build diff
+        run: git diff origin/${{ needs.setup.outputs.base_ref }}...HEAD > /tmp/diff.txt
+
+      - name: Check ANE budget
+        id: check
+        run: |
+          python3 scripts/ane_budget.py /tmp/diff.txt > /tmp/ane_result.json
+          OVERFLOW=$(python3 -c "import json; d=json.load(open('/tmp/ane_result.json')); print('true' if d['overflow_risk'] else 'false')")
+          DETAIL=$(python3 -c "import json; d=json.load(open('/tmp/ane_result.json')); print(d.get('detail',''))")
+          echo "overflow_risk=$OVERFLOW" >> $GITHUB_OUTPUT
+          echo "risk_detail=$DETAIL" >> $GITHUB_OUTPUT
+
+  # ── Stage 2: Dedup, verify, post inline comments ────────────────────────
+  verify-and-post:
+    name: "Verify + Post Inline Comments"
+    needs: [setup, analyze, ane-gate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python deps
+        run: pip install requests --quiet
+
+      - name: Download all findings artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/findings/
+          pattern: findings-*
+          merge-multiple: true
+
+      - name: Merge findings into single list
+        run: |
+          python3 - <<'PYEOF'
+          import json, glob
+          all_findings = []
+          for f in sorted(glob.glob('/tmp/findings/findings-*.json')):
+              try:
+                  data = json.load(open(f))
+                  all_findings.extend(data if isinstance(data, list) else [])
+              except Exception as e:
+                  print(f'Skipping {f}: {e}')
+          print(f'Total raw findings before verification: {len(all_findings)}')
+          json.dump(all_findings, open('/tmp/all_findings.json', 'w'), ensure_ascii=False, indent=2)
+          PYEOF
+
+      - name: Verification + deduplication pass
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          FINDINGS=$(cat /tmp/all_findings.json)
+          DIFF=$(git diff origin/${{ needs.setup.outputs.base_ref }}...HEAD)
+
+          gemini --yolo > /tmp/verified_raw.txt 2>&1 <<GEMINI_EOF
+          You are a verification agent receiving findings from 4 parallel code review agents.
+
+          Your job:
+          1. Remove exact duplicates (same file + line + issue reported by >1 agent — keep the best-written one).
+          2. Remove any 🔴 finding that lacks a concrete deterministic reproduction path. Downgrade to 🟡 if uncertain.
+          3. Merge closely overlapping findings on the same file/line into one superior finding.
+          4. Promote severity to 🔴 only if 2+ agents independently flagged the same issue as 🔴.
+          5. Keep all 🟡 nits as-is.
+
+          Output a JSON array ONLY. Same schema as input. No prose before or after.
+
+          ## Raw agent findings:
+          ${FINDINGS}
+
+          ## PR Diff (for cross-checking evidence):
+          \`\`\`diff
+          ${DIFF}
+          \`\`\`
+          GEMINI_EOF
+
+          python3 - > /tmp/verified_findings.json <<'PYEOF'
+          import re
+          raw = open('/tmp/verified_raw.txt').read()
+          m = re.search(r'(\[.*?\])', raw, re.DOTALL)
+          print(m.group(1) if m else '[]')
+          PYEOF
+
+          echo "=== Verified findings ==="
+          cat /tmp/verified_findings.json
+
+      - name: Post inline review comments
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANE_OVERFLOW: ${{ needs.ane-gate.outputs.overflow_risk }}
+          ANE_DETAIL: ${{ needs.ane-gate.outputs.risk_detail }}
+          PR_NUMBER: ${{ needs.setup.outputs.pr_number }}
+          REPO: ${{ github.repository }}
+          COMMIT_SHA: ${{ needs.setup.outputs.head_sha }}
+        run: |
+          python3 scripts/post_review.py \
+            --findings /tmp/verified_findings.json \
+            --pr "$PR_NUMBER" \
+            --repo "$REPO" \
+            --sha "$COMMIT_SHA" \
+            --ane-overflow "$ANE_OVERFLOW" \
+            --ane-detail "$ANE_DETAIL"

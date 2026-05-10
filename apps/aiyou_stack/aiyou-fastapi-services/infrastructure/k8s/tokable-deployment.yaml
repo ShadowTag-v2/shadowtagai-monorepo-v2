@@ -1,0 +1,491 @@
+---
+# Tokable Gesture Streaming Platform - GKE Deployment
+# Kubernetes deployment for production on Google Kubernetes Engine
+# Part of PNKLN Core Stack™
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tokable
+  labels:
+    app: tokable
+    environment: production
+
+---
+# ConfigMap for Tokable configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tokable-config
+  namespace: tokable
+data:
+  # API Configuration
+  API_HOST: "0.0.0.0"
+  API_PORT: "8001"
+  LOG_LEVEL: "info"
+
+  # Platform Configuration
+  PLATFORM_NAME: "Tokable"
+  PLATFORM_VERSION: "2.0.0"
+  TAGLINE: "Machines will never dance"
+
+  # Blockchain Configuration
+  DEFAULT_BLOCKCHAIN: "polygon"
+  POLYGON_RPC_URL: "https://polygon-rpc.com"
+  ETHEREUM_RPC_URL: "https://eth-mainnet.g.alchemy.com/v2/"
+  BASE_RPC_URL: "https://mainnet.base.org"
+
+  # IPFS Configuration
+  IPFS_GATEWAY: "https://ipfs.io/ipfs/"
+  IPFS_API_URL: "https://ipfs.infura.io:5001"
+
+  # AI Configuration
+  AI_MODEL_GESTURE: "mediapipe-holistic"
+  AI_MODEL_EMOTION: "vertex-ai-emotion-v1"
+  AI_MODEL_ART: "gemini-3.1-flash-lite-preview"
+  MAX_PROCESSING_TIME_MS: "100"
+
+  # Stream Configuration
+  MAX_STREAM_DURATION_FREE: "900"  # 15 minutes
+  MAX_STREAM_DURATION_PRO: "3600"  # 60 minutes
+  DEFAULT_FPS: "30"
+
+  # Revenue Configuration
+  PLATFORM_FEE_PERCENTAGE: "20"
+  PLATFORM_FEE_PRO_PERCENTAGE: "15"
+  NFT_ROYALTY_PERCENTAGE: "10"
+
+  # Database
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+  DB_NAME: "tokable"
+
+  # Redis
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+
+  # GCS
+  GCS_BUCKET_STREAMS: "tokable-streams"
+  GCS_BUCKET_NFT_MEDIA: "tokable-nft-media"
+  GCS_BUCKET_THUMBNAILS: "tokable-thumbnails"
+
+---
+# Secret for sensitive credentials
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tokable-secrets
+  namespace: tokable
+type: Opaque
+stringData:
+  # Database
+  DATABASE_URL: "postgresql://REDACTED_USER:REDACTED_PASS@postgres-service:5432/tokable"
+
+  # Blockchain Private Keys (use GCP Secret Manager in production)
+  POLYGON_PRIVATE_KEY: "CHANGEME"
+  ETHEREUM_PRIVATE_KEY: "CHANGEME"
+
+  # Smart Contract Addresses
+  POLYGON_CONTRACT_ADDRESS: "0xTOKABLE_POLYGON_CONTRACT"
+  ETHEREUM_CONTRACT_ADDRESS: "0xTOKABLE_ETH_CONTRACT"
+
+  # API Keys
+  VERTEX_AI_KEY: "CHANGEME"
+  GEMINI_API_KEY: "CHANGEME"
+  IPFS_PROJECT_ID: "CHANGEME"
+  IPFS_PROJECT_SECRET: "CHANGEME"
+  STRIPE_SECRET_KEY: "sk_live_CHANGEME"
+  STRIPE_WEBHOOK_SECRET: "whsec_CHANGEME"
+
+  # Redis
+  REDIS_PASSWORD: "[VAPORIZED_PWD]"
+
+---
+# Tokable API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tokable-api
+  namespace: tokable
+  labels:
+    app: tokable
+    component: api
+spec:
+  replicas: 3  # High availability
+  selector:
+    matchLabels:
+      app: tokable
+      component: api
+  template:
+    metadata:
+      labels:
+        app: tokable
+        component: api
+    spec:
+      serviceAccountName: tokable-sa
+      containers:
+      - name: tokable-api
+        image: gcr.io/PROJECT_ID/tokable-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
+          name: http
+          protocol: TCP
+
+        envFrom:
+        - configMapRef:
+            name: tokable-config
+        - secretRef:
+            name: tokable-secrets
+
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+
+---
+# Tokable AI Inference Worker Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tokable-ai-worker
+  namespace: tokable
+  labels:
+    app: tokable
+    component: ai-worker
+spec:
+  replicas: 5  # Scale based on load
+  selector:
+    matchLabels:
+      app: tokable
+      component: ai-worker
+  template:
+    metadata:
+      labels:
+        app: tokable
+        component: ai-worker
+    spec:
+      serviceAccountName: tokable-sa
+      containers:
+      - name: ai-worker
+        image: gcr.io/PROJECT_ID/tokable-ai-worker:latest
+        imagePullPolicy: Always
+
+        envFrom:
+        - configMapRef:
+            name: tokable-config
+        - secretRef:
+            name: tokable-secrets
+
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+            nvidia.com/gpu: "1"  # GPU for AI inference
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+            nvidia.com/gpu: "1"
+
+        volumeMounts:
+        - name: model-cache
+          mountPath: /models
+
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-t4  # Use T4 GPUs
+
+      volumes:
+      - name: model-cache
+        emptyDir: {}
+
+---
+# Tokable WebSocket Server Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tokable-websocket
+  namespace: tokable
+  labels:
+    app: tokable
+    component: websocket
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tokable
+      component: websocket
+  template:
+    metadata:
+      labels:
+        app: tokable
+        component: websocket
+    spec:
+      serviceAccountName: tokable-sa
+      containers:
+      - name: websocket-server
+        image: gcr.io/PROJECT_ID/tokable-websocket:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8002
+          name: websocket
+          protocol: TCP
+
+        envFrom:
+        - configMapRef:
+            name: tokable-config
+        - secretRef:
+            name: tokable-secrets
+
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+
+---
+# Tokable API Service (LoadBalancer)
+apiVersion: v1
+kind: Service
+metadata:
+  name: tokable-api-service
+  namespace: tokable
+  labels:
+    app: tokable
+    component: api
+spec:
+  type: LoadBalancer
+  selector:
+    app: tokable
+    component: api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8001
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8001
+    protocol: TCP
+  sessionAffinity: ClientIP
+
+---
+# Tokable WebSocket Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: tokable-websocket-service
+  namespace: tokable
+  labels:
+    app: tokable
+    component: websocket
+spec:
+  type: LoadBalancer
+  selector:
+    app: tokable
+    component: websocket
+  ports:
+  - name: websocket
+    port: 80
+    targetPort: 8002
+    protocol: TCP
+  sessionAffinity: ClientIP
+
+---
+# Horizontal Pod Autoscaler for API
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tokable-api-hpa
+  namespace: tokable
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tokable-api
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+# Horizontal Pod Autoscaler for AI Workers
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tokable-ai-worker-hpa
+  namespace: tokable
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tokable-ai-worker
+  minReplicas: 5
+  maxReplicas: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+
+---
+# Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tokable-sa
+  namespace: tokable
+  annotations:
+    iam.gke.io/gcp-service-account: tokable@PROJECT_ID.iam.gserviceaccount.com
+
+---
+# Ingress with SSL
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tokable-ingress
+  namespace: tokable
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "tokable-ip"
+    networking.gke.io/managed-certificates: "tokable-cert"
+    kubernetes.io/ingress.allow-http: "true"
+spec:
+  rules:
+  - host: api.tokable.ai
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tokable-api-service
+            port:
+              number: 80
+  - host: ws.tokable.ai
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tokable-websocket-service
+            port:
+              number: 80
+
+---
+# Managed Certificate
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: tokable-cert
+  namespace: tokable
+spec:
+  domains:
+  - api.tokable.ai
+  - ws.tokable.ai
+
+---
+# NetworkPolicy - Allow traffic from ingress and within namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: tokable-network-policy
+  namespace: tokable
+spec:
+  podSelector:
+    matchLabels:
+      app: tokable
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: tokable
+    - podSelector: {}
+  egress:
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 6379  # Redis
+
+---
+# PodDisruptionBudget for high availability
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: tokable-api-pdb
+  namespace: tokable
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: tokable
+      component: api
+
+---
+# Resource Quota for namespace
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: tokable-quota
+  namespace: tokable
+spec:
+  hard:
+    requests.cpu: "50"
+    requests.memory: "100Gi"
+    requests.nvidia.com/gpu: "10"
+    persistentvolumeclaims: "20"
+    services.loadbalancers: "3"

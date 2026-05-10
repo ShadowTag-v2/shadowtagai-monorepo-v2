@@ -1,0 +1,19 @@
+# Invoked via: /security-pass
+description = "Run the security pass for CVE audits and dependency upgrades."
+
+prompt = """
+Execute a security pass on the targeted component.
+
+Steps:
+1. Clone or access the required external repository / component
+2. Strip nested `.git` directories to prevent submodule drift
+3. Upgrade critical dependencies according to Trustify/CVE audits
+4. Run standard build/lint steps to ensure the upgrade did not break compilation
+5. Commit to the monorepo root
+
+For each CVE found, report:
+- CVE ID and severity (CRITICAL/HIGH/MEDIUM/LOW)
+- Affected package and version
+- Fixed version (if available)
+- Whether the upgrade introduces breaking changes
+"""

@@ -1,0 +1,25 @@
+[project]
+name = "n-autoresearch/Kosmos/BioAgentss_server" # sanitize name
+version = "0.1.0"
+description = "Auto-generated for n-autoresearch/Kosmos/BioAgentss-server"
+dependencies = [
+    "aiyou",
+    "arsenal",
+    "shadowtag_core",
+    "fastapi",
+    "uvicorn",
+    "requests",
+    "pydantic",
+    "google-genai"
+]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+shadowtag_core = { workspace = true }
+aiyou = { workspace = true }
+arsenal = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/n-autoresearch/Kosmos/BioAgentss_server"]

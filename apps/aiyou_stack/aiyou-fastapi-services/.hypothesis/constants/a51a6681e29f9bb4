@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/monitoring/alerts.py
+# hypothesis_version: 6.151.5
+
+[10.0, 100, 1000, 'Content-Type', 'Environment', 'Service', 'Severity', 'alert_name', 'application/json', 'attachments', 'color', 'critical', 'danger', 'details', 'environment', 'fields', 'footer', 'good', 'info', 'message', 'metric_value', 'name', 'service', 'severity', 'short', 'text', 'threshold', 'timestamp', 'title', 'ts', 'value', 'warning']

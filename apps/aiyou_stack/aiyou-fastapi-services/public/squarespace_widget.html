@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega Protocol - Interactive Agent Bridge</title>
+    <!-- Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Dark Luxury Aesthetics & Glassmorphism Design System */
+        :root {
+            --omega-dark: #0a0a0c;
+            --omega-panel: rgba(18, 18, 20, 0.7);
+            --omega-border: rgba(255, 255, 255, 0.08);
+            --omega-accent: #c9a75d;
+            --omega-accent-glow: rgba(201, 167, 93, 0.3);
+            --omega-text-primary: #f0f0f0;
+            --omega-text-secondary: #a0a0a5;
+            --omega-font-sans: 'Inter', sans-serif;
+            --omega-font-display: 'Outfit', sans-serif;
+            --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            font-family: var(--omega-font-sans);
+            color: var(--omega-text-primary);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .omega-widget-container {
+            width: 100%;
+            max-width: 440px;
+            height: 600px;
+            max-height: 90vh;
+            background: var(--omega-panel);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--omega-border);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transform: translateY(0);
+            transition: var(--transition-smooth);
+        }
+
+        .omega-widget-container:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), 0 0 40px var(--omega-accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .omega-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--omega-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .omega-header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .omega-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--omega-accent);
+            box-shadow: 0 0 12px var(--omega-accent);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px var(--omega-accent); }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .omega-title {
+            font-family: var(--omega-font-display);
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, #a0a0a5);
+            -webkit-background-clip: text;
+        background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .omega-subtitle {
+            font-size: 0.75rem;
+            color: var(--omega-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .omega-chat-area {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .omega-chat-area::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(10px);
+            word-wrap: break-word;
+        }
+
+        @keyframes slideInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-system {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--omega-border);
+            color: var(--omega-text-secondary);
+            align-self: center;
+            font-size: 0.8rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .message-ai {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--omega-border);
+            color: var(--omega-text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .message-ai strong {
+            color: var(--omega-accent);
+            font-weight: 500;
+        }
+
+        .message-user {
+            background: linear-gradient(135deg, rgba(201, 167, 93, 0.15), rgba(201, 167, 93, 0.05));
+            border: 1px solid rgba(201, 167, 93, 0.2);
+            color: var(--omega-text-primary);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .omega-input-area {
+            padding: 20px 24px;
+            border-top: 1px solid var(--omega-border);
+            background: rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .omega-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--omega-border);
+            border-radius: 100px;
+            padding: 4px 4px 4px 16px;
+            transition: var(--transition-smooth);
+        }
+
+        .omega-input-wrapper:focus-within {
+            border-color: rgba(201, 167, 93, 0.5);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 0 4px rgba(201, 167, 93, 0.1);
+        }
+
+        .omega-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--omega-text-primary);
+            font-family: var(--omega-font-sans);
+            font-size: 0.95rem;
+            padding: 12px 0;
+            outline: none;
+        }
+
+        .omega-input::placeholder {
+            color: var(--omega-text-secondary);
+        }
+
+        .omega-btn-send {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--omega-accent);
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .omega-btn-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--omega-accent-glow);
+            filter: brightness(1.1);
+        }
+
+        .omega-btn-send:active {
+            transform: scale(0.95);
+        }
+
+        .omega-btn-send svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transform: translateX(1px); /* optical alignment */
+        }
+
+        /* Loading indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--omega-border);
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .typing-indicator.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--omega-text-secondary);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-4px); opacity: 1; background-color: var(--omega-accent); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="omega-widget-container">
+    <div class="omega-header">
+        <div class="omega-header-brand">
+            <div class="omega-status-dot"></div>
+            <div>
+                <h2 class="omega-title">Omega Protocol</h2>
+                <span class="omega-subtitle">Agent Governance Systems</span>
+            </div>
+        </div>
+        <!-- Optional settings or close icon -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <title>Initialize Omega Governance System</title><path d="M12 20V10M18 20V4M6 20v-4"/>
+        </svg>
+    </div>
+
+    <div class="omega-chat-area" id="chatContainer">
+        <div class="message-bubble message-system">
+            Secure connection established. End-to-end encryption active.
+        </div>
+        <div class="message-bubble message-ai">
+            Greetings. I am the <strong>Primary Policy Enforcement Agent</strong> for this workspace. How may I assist you with your compliance protocols today?
+        </div>
+    </div>
+
+    <!-- Typing indicator (hidden by default) -->
+    <div style="padding: 0 24px;">
+        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+        </div>
+    </div>
+
+    <div class="omega-input-area">
+        <div class="omega-input-wrapper">
+            <input type="text" class="omega-input" id="messageInput" placeholder="Initiate inquiry..." autocomplete="off" />
+            <button type="submit" class="omega-btn-send" id="sendBtn" aria-label="Send message">
+                <svg viewBox="0 0 24 24">
+                    <title>Send</title>
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * OMEGA PROTOCOL - Vanilla JS Bridge for Squarespace
+     * Communicates with local LanceDB-backed FastAPI endpoints
+     */
+
+    // Configuration
+    // Update API_BASE_URL to point to your deployed FastAPI instance when putting configuring squarespace
+    const CONFIG = {
+        API_BASE_URL: 'http://127.0.0.1:8000/api/v1',
+        WORKSPACE_ID: 'test-ws-01',
+        AGENT_ID: 'policy-enforcer-01'
+    };
+
+    // DOM Elements
+    const chatContainer = document.getElementById('chatContainer');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    // UI Helpers
+    function appendMessage(content, type = 'user') {
+        const bubble = document.createElement('div');
+        bubble.className = `message-bubble message-${type}`;
+
+        if (type === 'ai') {
+            // Apply simple formatting (bold text wrapping)
+            const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            bubble.innerHTML = formattedContent;
+        } else {
+            bubble.textContent = content;
+        }
+
+        chatContainer.appendChild(bubble);
+        scrollToBottom();
+    }
+
+    function scrollToBottom() {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function setTyping(isTyping) {
+        if (isTyping) {
+            typingIndicator.style.display = 'flex';
+            // Slight delay to allow display change before applying class for transition
+            setTimeout(() => typingIndicator.classList.add('active'), 10);
+            scrollToBottom();
+        } else {
+            typingIndicator.classList.remove('active');
+            setTimeout(() => typingIndicator.style.display = 'none', 300);
+        }
+    }
+
+    // API Interaction
+    async function sendMessageToAgent(message) {
+        try {
+            const url = `${CONFIG.API_BASE_URL}/workspaces/${CONFIG.WORKSPACE_ID}/agents/${CONFIG.AGENT_ID}/chat`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Note: Auth tokens go here if implemented on FASTAPI endpoint
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Integration Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.reply || data.response || "No response generated.";
+        } catch (error) {
+            console.error('Omega Protocol Integration Error:', error);
+            throw error;
+        }
+    }
+
+    // Event Handlers
+    async function handleSubmission() {
+        const text = messageInput.value.trim();
+        if (!text) return;
+
+        // Optimistic UI update
+        appendMessage(text, 'user');
+        messageInput.value = '';
+        messageInput.disabled = true;
+
+        // Show indicator and request
+        setTyping(true);
+
+        try {
+            const reply = await sendMessageToAgent(text);
+            setTyping(false);
+
+            // Artificial delay for luxurious interaction feel
+            setTimeout(() => {
+                appendMessage(reply, 'ai');
+            }, 300);
+
+        } catch (err) {
+            console.error(err);
+            setTyping(false);
+            setTimeout(() => {
+                appendMessage("Neural link severed. Please verify endpoint connection and retry.", "system");
+            }, 300);
+        } finally {
+            messageInput.disabled = false;
+            messageInput.focus();
+        }
+    }
+
+    // Attach Listeners
+    sendBtn.addEventListener('click', handleSubmission);
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSubmission();
+    });
+
+    // Initial greeting focus logic (optional)
+    setTimeout(() => {
+        messageInput.focus();
+    }, 1000);
+</script>
+
+</body>
+</html>

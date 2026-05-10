@@ -1,0 +1,192 @@
+{
+  "dataset_name": "uphillsnowball_agent_task_f1",
+  "description": "Ground truth dataset for measuring UphillSnowball agent task completion accuracy using F1 scoring.",
+  "version": "1.0.0",
+  "metric": "F1 (precision × recall harmonic mean)",
+  "domain": "Agent Orchestration / Autonomous Task Execution",
+  "product": "UphillSnowball (kovelai.com)",
+  "evaluation_dimensions": [
+    {
+      "dimension": "task_completion",
+      "description": "Did the agent complete the requested task correctly?",
+      "weight": 0.35,
+      "scoring": "binary — completed correctly = 1, incorrect/incomplete = 0"
+    },
+    {
+      "dimension": "tool_selection",
+      "description": "Did the agent choose the correct tools for the task?",
+      "weight": 0.2,
+      "scoring": "precision — correct_tools / total_tools_used"
+    },
+    {
+      "dimension": "output_quality",
+      "description": "Is the output format, content, and structure correct?",
+      "weight": 0.25,
+      "scoring": "0-1 scale — wrong format = 0, partially correct = 0.5, fully correct = 1"
+    },
+    {
+      "dimension": "error_recovery",
+      "description": "Did the agent correctly handle errors and edge cases?",
+      "weight": 0.2,
+      "scoring": "binary per recovery attempt — correct recovery = 1, crash/loop = 0"
+    }
+  ],
+  "ground_truth_examples": [
+    {
+      "id": "GT-AT-001",
+      "task": "Create a new Python file with a FastAPI endpoint that returns current server health",
+      "expected_tools": ["write_to_file"],
+      "expected_output": {
+        "file_created": true,
+        "contains_fastapi_import": true,
+        "has_health_endpoint": true,
+        "returns_json": true,
+        "has_status_field": true
+      },
+      "expected_behavior": [
+        "creates file without prompting for path",
+        "includes proper imports",
+        "defines GET endpoint at /health or similar",
+        "returns JSON with status field"
+      ],
+      "difficulty": "easy",
+      "category": "code_generation"
+    },
+    {
+      "id": "GT-AT-002",
+      "task": "Find all Python files that import 'torch' and list them",
+      "expected_tools": ["grep_search"],
+      "expected_output": {
+        "search_executed": true,
+        "correct_pattern": "import torch",
+        "correct_file_filter": "*.py",
+        "results_formatted": true
+      },
+      "expected_behavior": [
+        "uses grep_search with correct query",
+        "filters to .py files",
+        "presents results in readable format",
+        "includes file paths and line numbers"
+      ],
+      "difficulty": "easy",
+      "category": "code_search"
+    },
+    {
+      "id": "GT-AT-003",
+      "task": "Fix the F821 ruff error in state.py where SwarmVoteState is undefined",
+      "expected_tools": ["view_file", "replace_file_content"],
+      "expected_output": {
+        "error_identified": true,
+        "root_cause_found": true,
+        "fix_applied": true,
+        "no_regression": true
+      },
+      "expected_behavior": [
+        "reads the file to understand the error",
+        "identifies forward reference issue",
+        "applies string annotation fix",
+        "verifies fix with ruff"
+      ],
+      "difficulty": "medium",
+      "category": "debugging"
+    },
+    {
+      "id": "GT-AT-004",
+      "task": "Deploy a Cloud Run service from source in the shadowtag-omega-v4 project",
+      "expected_tools": ["run_command"],
+      "expected_output": {
+        "correct_project": "shadowtag-omega-v4",
+        "uses_source_deploy": true,
+        "no_docker": true,
+        "region_specified": true
+      },
+      "expected_behavior": [
+        "uses gcloud run deploy --source",
+        "targets correct GCP project",
+        "does NOT use Docker (per saas-architecture-gate skill)",
+        "specifies region"
+      ],
+      "difficulty": "medium",
+      "category": "deployment"
+    },
+    {
+      "id": "GT-AT-005",
+      "task": "Refactor a 500-line Python file into modular components",
+      "expected_tools": ["view_file", "write_to_file", "replace_file_content", "run_command"],
+      "expected_output": {
+        "reads_full_file": true,
+        "identifies_components": true,
+        "creates_multiple_files": true,
+        "preserves_functionality": true,
+        "runs_tests": true
+      },
+      "expected_behavior": [
+        "reads entire file first",
+        "identifies logical boundaries",
+        "creates separate module files",
+        "updates imports in original",
+        "runs compiler guillotine (vulture + ruff)",
+        "verifies no regressions"
+      ],
+      "difficulty": "hard",
+      "category": "refactoring"
+    },
+    {
+      "id": "GT-AT-006",
+      "task": "Configure Stripe webhook endpoint for subscription lifecycle events",
+      "expected_tools": ["write_to_file", "run_command"],
+      "expected_output": {
+        "webhook_handler_created": true,
+        "signature_verification": true,
+        "event_types_handled": [
+          "customer.subscription.created",
+          "customer.subscription.updated",
+          "customer.subscription.deleted",
+          "invoice.paid",
+          "invoice.payment_failed"
+        ],
+        "idempotency_key": true
+      },
+      "expected_behavior": [
+        "creates webhook endpoint handler",
+        "implements Stripe signature verification",
+        "handles all subscription lifecycle events",
+        "stores webhook secret securely (env var)",
+        "implements idempotency"
+      ],
+      "difficulty": "hard",
+      "category": "integration"
+    },
+    {
+      "id": "GT-AT-007",
+      "task": "Run Lighthouse audit on the deployed site and report scores",
+      "expected_tools": ["browser_subagent", "run_command"],
+      "expected_output": {
+        "audit_executed": true,
+        "scores_reported": true,
+        "categories_covered": ["performance", "accessibility", "best-practices", "seo"],
+        "actionable_recommendations": true
+      },
+      "expected_behavior": [
+        "navigates to site",
+        "runs or simulates Lighthouse audit",
+        "reports all 4 category scores",
+        "identifies specific improvement areas",
+        "prioritizes issues by impact"
+      ],
+      "difficulty": "medium",
+      "category": "testing"
+    }
+  ],
+  "scoring_formula": {
+    "per_task_f1": "2 * (precision * recall) / (precision + recall)",
+    "precision": "correct_actions / total_actions_taken",
+    "recall": "correct_actions / total_expected_actions",
+    "aggregate_f1": "mean(per_task_f1) across all tasks",
+    "weighted_f1": "sum(dimension_weight * dimension_f1) for all dimensions"
+  },
+  "evaluation_script": "scripts/eval_uphillsnowball_f1.py",
+  "minimum_acceptable_f1": 0.65,
+  "target_f1": 0.8,
+  "production_threshold_f1": 0.9
+}

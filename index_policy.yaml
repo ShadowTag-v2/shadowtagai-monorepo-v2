@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════
+# index_policy.yaml — Code Index Configuration
+# Controls GitNexus, SCIP, Zoekt, and Repowise behavior.
+# ═══════════════════════════════════════════════════════════
+version: 1
+
+indexes:
+  gitnexus:
+    enabled: true
+    output: .gitnexus/
+    scope:
+      include:
+        - apps/
+        - packages/
+        - scripts/
+        - libs/
+        - tools/dagger/
+      exclude:
+        - external_repos/
+        - archive/
+        - node_modules/
+        - .venv/
+        - data/
+        - third_party/
+    triggers:
+      - on_commit
+      - on_demand
+
+  scip:
+    enabled: true
+    output: .index/scip/
+    languages:
+      - python
+      - typescript
+      - go
+    scope:
+      include:
+        - apps/
+        - packages/
+        - scripts/
+      exclude:
+        - external_repos/
+        - archive/
+
+  zoekt:
+    enabled: false
+    output: .index/zoekt/
+    note: Evaluate after GitNexus stabilizes
+
+  repowise:
+    enabled: false
+    mode: evaluation_only
+    note: AGPL license — evaluate before adopting
+
+gitignore_policy:
+  all_index_outputs_ignored: true
+  reason: Indexes are regenerable cache, not source truth.

@@ -1,0 +1,16 @@
+[
+  {
+    "request": {
+      "method": "create",
+      "input": "Session started. Ready to collaborate."
+    },
+    "response": {
+      "id": "interaction-vcr-001",
+      "text": "Ready! What would you like to work on?",
+      "usage": {
+        "total_tokens": 42
+      }
+    },
+    "timestamp": 1777900000.0
+  }
+]

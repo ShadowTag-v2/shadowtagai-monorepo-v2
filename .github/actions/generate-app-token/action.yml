@@ -1,0 +1,57 @@
+---
+# Reusable Composite Action: Generate GitHub App Short-Lived Token
+# Wraps peter-murray/workflow-application-token-action@v4
+# Single upgrade point for all 75+ workflows.
+#
+# Usage in calling workflow:
+#   - name: Generate App Token
+#     id: app_token
+#     uses: ./.github/actions/generate-app-token
+#     with:
+#       permissions: "contents:write,pull_requests:write"
+#
+# References:
+#   - Medium article: "Secure CI/CD with GitHub Apps & Short-Lived Tokens" (Yoge, 2025)
+#   - peter-murray/workflow-application-token-action README
+#   - Atlassian: Manually create a GitHub App for Enterprise Server
+#   - OctopusDeploy/login — reference for OIDC-like login actions
+
+name: Generate GitHub App Token
+description: |
+  Generates a scoped, time-limited GitHub App installation token.
+  Replaces PATs and raw GITHUB_TOKEN for write operations and
+  downstream workflow triggers.
+
+inputs:
+  organization:
+    description: GitHub organization name
+    required: false
+    default: ShadowTag-v2
+  permissions:
+    description: |
+      Comma-separated list of permissions to request.
+      Defaults to all permissions of the GitHub App if not specified.
+      Example: "contents:write,pull_requests:write,actions:write"
+    required: false
+  revoke_token:
+    description: Revoke the token after the job completes
+    required: false
+    default: "true"
+
+outputs:
+  token:
+    description: The short-lived installation access token
+    value: ${{ steps.generate.outputs.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Generate Short-Lived Token
+      id: generate
+      uses: peter-murray/workflow-application-token-action@v4
+      with:
+        application_id: ${{ env.GH_APP_ID || '3018200' }}
+        application_private_key: ${{ env.GH_APP_PRIVATE_KEY }}
+        organization: ${{ inputs.organization }}
+        permissions: ${{ inputs.permissions }}
+        revoke_token: ${{ inputs.revoke_token }}

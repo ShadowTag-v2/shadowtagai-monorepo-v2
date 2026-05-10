@@ -1,0 +1,232 @@
+# SWE-bench Benchmark Runner
+# Evaluates software engineering capabilities on real GitHub issues
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swe-bench-config
+  namespace: pinkln-system
+data:
+  config.yaml: |
+    benchmark:
+      name: swe-bench
+      version: "lite"  # or "full"
+      subset: "verified"
+      max_instances: 50
+
+    agents:
+      - code-crafter
+      - deep-reasoning
+
+    repositories:
+      - django/django
+      - pallets/flask
+      - psf/requests
+      - matplotlib/matplotlib
+      - scikit-learn/scikit-learn
+
+    execution:
+      max_attempts: 3
+      timeout_minutes: 30
+      docker_enabled: true
+
+    scoring:
+      metric: resolved_rate
+      requires_tests_pass: true
+
+    reporting:
+      glicko_update: true
+      bigquery_export: true
+      gcs_results_path: gs://omega-benchmarks/swe-bench/
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-creds
+  namespace: pinkln-system
+type: Opaque
+stringData:
+  token = "REDACTED_API_KEY"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: swe-bench-daily
+  namespace: pinkln-system
+  labels:
+    app: swe-bench
+    component: evaluation
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            app: swe-bench
+        spec:
+          serviceAccountName: training-sa
+          restartPolicy: Never
+
+          nodeSelector:
+            workload: fine-tuning
+            gpu: a100
+
+          tolerations:
+            - key: nvidia.com/gpu
+              operator: Exists
+              effect: NoSchedule
+
+          containers:
+            - name: swe-bench
+              image: gcr.io/omega-production/swe-bench-runner:latest
+              imagePullPolicy: Always
+
+              command:
+                - python
+                - /app/run_swe_bench.py
+
+              args:
+                - --agent=code-crafter
+                - --subset=verified
+                - --max-instances=50
+                - --output=gs://omega-benchmarks/swe-bench/
+                - --update-glicko=true
+
+              env:
+                - name: GITHUB_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: github-creds
+                      key: token
+                - name: GLICKO_SERVICE_URL
+                  value: "http://glicko-service:8080"
+                - name: REDIS_HOST
+                  value: "redis-master"
+                - name: BENCHMARK_NAME
+                  value: "swe-bench"
+                - name: PYTHONUNBUFFERED
+                  value: "1"
+
+              resources:
+                requests:
+                  nvidia.com/gpu: "2"
+                  memory: "64Gi"
+                  cpu: "16"
+                limits:
+                  nvidia.com/gpu: "2"
+                  memory: "128Gi"
+                  cpu: "32"
+
+              volumeMounts:
+                - name: config
+                  mountPath: /etc/swe-bench
+                  readOnly: true
+                - name: workspace
+                  mountPath: /workspace
+                - name: docker-sock
+                  mountPath: /var/run/docker.sock
+
+          volumes:
+            - name: config
+              configMap:
+                name: swe-bench-config
+            - name: workspace
+              emptyDir:
+                sizeLimit: "100Gi"
+            - name: docker-sock
+              hostPath:
+                path: /var/run/docker.sock
+                type: Socket
+
+---
+# Manual trigger job for specific repos
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: swe-bench-manual
+  namespace: pinkln-system
+  labels:
+    app: swe-bench
+    trigger: manual
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app: swe-bench
+    spec:
+      serviceAccountName: training-sa
+      restartPolicy: Never
+
+      nodeSelector:
+        workload: fine-tuning
+        gpu: a100
+
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+
+      containers:
+        - name: swe-bench
+          image: gcr.io/omega-production/swe-bench-runner:latest
+
+          command:
+            - python
+            - /app/run_swe_bench.py
+
+          args:
+            - --agent=code-crafter
+            - --repos=django,flask
+            - --max-instances=10
+            - --output=gs://omega-benchmarks/swe-bench/
+            - --update-glicko=true
+            - --verbose
+
+          env:
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-creds
+                  key: token
+            - name: GLICKO_SERVICE_URL
+              value: "http://glicko-service:8080"
+
+          resources:
+            requests:
+              nvidia.com/gpu: "2"
+              memory: "64Gi"
+              cpu: "16"
+            limits:
+              nvidia.com/gpu: "2"
+              memory: "128Gi"
+              cpu: "32"
+
+          volumeMounts:
+            - name: config
+              mountPath: /etc/swe-bench
+              readOnly: true
+            - name: workspace
+              mountPath: /workspace
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+
+      volumes:
+        - name: config
+          configMap:
+            name: swe-bench-config
+        - name: workspace
+          emptyDir:
+            sizeLimit: "100Gi"
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket

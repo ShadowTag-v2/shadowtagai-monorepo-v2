@@ -1,0 +1,16 @@
+CounselConduit is the business-facing MVP.
+
+Wedge:
+- stateless legal SaaS
+- premium pricing
+- BYOK routing
+- fast onboarding
+- high-trust retrieval and summaries
+
+Commercial role:
+- simplest product story
+- shortest path to revenue
+- cleaner buyer narrative than sprawling internal platform language
+
+Internal dependency:
+- pnkln / uphillsnowball supplies retrieval, eval, experimentation, security hardening, and local lab velocity

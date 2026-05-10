@@ -1,0 +1,41 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "uphillsnowball_intakes",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
+    },
+    {
+      "collectionGroup": "uphillsnowball_intakes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "matter_id", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "uphillsnowball_screenings",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
+    },
+    {
+      "collectionGroup": "uphillsnowball_analyses",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
+    },
+    {
+      "collectionGroup": "uphillsnowball_billing",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "matter_id", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "uphillsnowball_billing",
+      "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "timestamp", "order": "DESCENDING" }]
+    }
+  ],
+  "fieldOverrides": []
+}

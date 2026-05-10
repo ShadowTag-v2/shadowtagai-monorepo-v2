@@ -1,0 +1,19 @@
+# BUILD.bazel — apps/counselconduit/middleware
+# Phase 4: Top-level middleware (OpenTelemetry tracing)
+# Owner: product
+#
+# NOTE: This is the top-level middleware package, separate from api/middleware/.
+# api/middleware/ handles request-level concerns (rate limiting, security headers).
+# This package handles application-level concerns (OTel tracing).
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//apps/counselconduit:__subpackages__"])
+
+py_library(
+    name = "middleware",
+    srcs = [
+        "__init__.py",
+        "otel_tracing.py",
+    ],
+)

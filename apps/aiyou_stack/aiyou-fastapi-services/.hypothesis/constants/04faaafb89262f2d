@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtag_v2/receipt_chain.py
+# hypothesis_version: 6.151.5
+
+['BlockchainConfig', 'ChainType', 'chain_type', 'ethereum', 'internal', 'metadata', 'namespace', 'prompt_hash', 'receipt_hash', 'response_hash', 'sha256', 'shadowtag', 'solana', 'timestamp', 'utf-8']

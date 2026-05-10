@@ -1,0 +1,27 @@
+# Item 8: .dockerignore for counselconduit
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.git/
+.github/
+*.md
+*.log
+.env
+.env.*
+!.env.example
+nexus_serverless.log
+tests/
+spec/
+docs/
+shield/
+monitoring/
+cloud_armor_policy.yaml
+cloudbuild*.yaml
+Procfile
+*.code-workspace
+.vscode/
+.beads/
+node_modules/

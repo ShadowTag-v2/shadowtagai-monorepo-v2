@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Bourne: Master SOP",
+    "prompt": "Enforce full Bourne Mode SOP Pack across repo:\n1. Upload Triage\n2. Change & Release\n3. Decision Protocol\n4. Code Review\n5. Structured Frameworks\n6. Army RM\n7. Global Posture (160 IQ peg, AiYouJR+doctrine+Army RM, Cursor-only prompts, all-hands digest/streamline/optimize/roll-up)\nResult: Repo runs like a Bourne-trained unit — throughput 2×, safety 1.9×, decision velocity 2×, endurance 2.2× baseline."
+  },
+  {
+    "name": "Bourne: Autoresearch Loop",
+    "prompt": "Hi have a look at program.md and let's kick off a new experiment! Let's do the setup first.\nRun fully autonomously. Don't ask for confirmation between experiments. Keep going until I come back. Optimize val_bpb using a 5-minute training budget."
+  },
+  {
+    "name": "Cor: Tech Debt Elimination Loop",
+    "prompt": "Execute the Hickey/Karpathy Synergy Loop. Evaluate the current component. Apply 'Simple > Easy'. Extract logic to custom hooks. Run compiler guillotine. If complexity reduces and tests pass -> KEEP. If not -> DISCARD."
+  }
+]

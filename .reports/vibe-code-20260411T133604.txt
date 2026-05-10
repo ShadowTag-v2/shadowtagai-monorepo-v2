@@ -1,0 +1,557 @@
+=== VIBE CODE ANTI-PATTERN REPORT ===
+Timestamp: 20260411T133604
+
+--- 6a: Hardcoded Config (localhost:) ---
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/legaltrack/src/legaltrack/config.py:13:    DATABASE_URL: str = "postgresql+asyncpg://user:pass@localhost:5432/legaltrack"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou-web-dashboard/src/app/api/copilotkit/route.ts:12:    shadowtag_nexus_agent: new HttpAgent({ url: "http://localhost:8080/" }),
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou-web-dashboard/src/components/VectorRetrieval.tsx:22:      const response = await fetch(`http://localhost:8000/transcript/retrieval/${documentId}`);
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/agent/kovelai_agent.py:307:    print(f"   AG-UI endpoint: http://localhost:{port}/api/copilotkit")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/agent/kovelai_agent.py:308:    print(f"   Health check:   http://localhost:{port}/health")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/kovelai/api/main.py:37:    allow_origins=["https://kovelai.com", "http://localhost:3000"],
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/steel/native_jetski.py:21:    def __init__(self, cdp_url="http://localhost:9222"):
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/src_vertex_rag_demo_dual_llms_with_judge.py:50:DEFAULT_OLLAMA_URL = "http://localhost:11434/api/tags"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_src_vertex_rag_demo_dual_llms_with_judge.py:50:DEFAULT_OLLAMA_URL = "http://localhost:11434/api/tags"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/digital-freeway-api/utils/telemetry_generator.py:72:        await generator.run(api_url="http://localhost:8080")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/digital-freeway-api/utils/telemetry_generator.py:102:        api_url: str = "http://localhost:8080",
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/digital-freeway-api/utils/telemetry_generator.py:173:    parser.add_argument("--url", default="http://localhost:8080", help="API URL")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ingestion/sources/darkweb_adapter.py:4:Routes requests through Tor (localhost:9050 SOCKS5).
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/antigravity_status.py:40:            response = requests.get("http://localhost:8888/health", timeout=5)
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/antigravity_status.py:45:                root_response = requests.get("http://localhost:8888/", timeout=5)
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/antigravity_status.py:56:                "docs_url": "http://localhost:8888/docs",
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/config.py:79:    cors_origins: list[str] = Field(default=["http://localhost:3000", "http://localhost:8000"])
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/core/config.py:48:    ALLOWED_ORIGINS: str = Field(default="http://localhost:3000")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/core/secrets.py:211:        default_url = "redis://localhost:6379/0"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/models.py:109:    target_url: str = "http://localhost:8000"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/quality/sonar_client.py:25:        self.url = url or os.getenv("SONAR_HOST_URL", "http://localhost:9000")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/quality/sonar_connected_mode.py:13:    url = os.environ.get("SONAR_HOST_URL", "http://localhost:9000")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/config/settings.py:33:    DATABASE_URL: str = "postgresql+asyncpg://user:password@localhost:5432/shadowtag_v4"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/config/settings.py:34:    MONGO_URI: str = "mongodb://localhost:27017/shadowtag_v4"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/api/v1/ingestion.py:41:    curl -X POST "http://localhost:8000/api/v1/ingestion/jobs" \\
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/api/v1/ingestion.py:77:    curl "http://localhost:8000/api/v1/ingestion/jobs/job_20251117_123456/status"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/api/v1/ingestion.py:103:    curl "http://localhost:8000/api/v1/ingestion/jobs/job_20251117_123456"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/api/v1/ingestion.py:130:    curl "http://localhost:8000/api/v1/ingestion/jobs?page=1&page_size=10"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/api/v1/ingestion.py:151:    curl "http://localhost:8000/api/v1/ingestion/metrics"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/api/v1/ingestion.py:175:    curl "http://localhost:8000/api/v1/ingestion/health"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/infrastructure/gptram.py:83:        self.redis_url = redis_url or os.getenv("REDIS_URL", "redis://localhost:6379/0")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/routes/gemini_agents.py:58:    curl -X POST http://localhost:8080/api/v1/agents/classify-debate \
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/routes/gemini_agents.py:124:    curl -X POST http://localhost:8080/api/v1/agents/agent/skeptic/propose \
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/routes/gemini_agents.py:365:    curl -X POST http://localhost:8080/api/v1/agents/function-calling/atp-519 \
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/frontend/src/app/settings/page.tsx:130:              defaultValue="http://localhost:8000"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/frontend/src/app/settings/page.tsx:140:              defaultValue="http://localhost:8600"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/frontend/src/app/layout.tsx:26:            backendUrl="http://localhost:8080"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/frontend/src/components/analytics/IsolatedAnalytics.tsx:10:  backendUrl?: string; // e.g., "http://localhost:8080"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/frontend/src/components/analytics/IsolatedAnalytics.tsx:16:  backendUrl = "http://localhost:8080",
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/measure_p99.py:51:    target_url = os.getenv("API_URL", "http://localhost:8000")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/experiments/temporal-worker/worker.py:20:        os.getenv("TEMPORAL_ADDRESS", "localhost:7233"),
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/database.py:9:    "DATABASE_URL", "postgresql://REDACTED_USER:REDACTED_PASS@localhost:5432/ShadowTag-v2_db"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/fastvlm_client.py:81:        n-autoresearch/Kosmos/BioAgents_url: str = "http://localhost:8600",
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/colab_coop.py:96:        self.n-autoresearch/Kosmos/BioAgents_url = os.getenv("n-autoresearch/Kosmos/BioAgents_URL", "http://localhost:8600")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/agent0_poc.py:123:        n-autoresearch/Kosmos/BioAgents_url: str = "http://localhost:8600",
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/agent0_poc.py:469:    n-autoresearch/Kosmos/BioAgents_url: str = "http://localhost:8600", max_iterations: int = 100
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/hybrid_orchestrator.py:54:    n-autoresearch/Kosmos/BioAgents_URL = os.environ.get("n-autoresearch/Kosmos/BioAgents_URL", "http://localhost:8600")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/cloudcode_client.py:251:        n-autoresearch/Kosmos/BioAgents_url = os.getenv("n-autoresearch/Kosmos/BioAgents_URL", "http://localhost:8600")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/loop_agent.py:66:    n-autoresearch/Kosmos/BioAgents_URL = os.environ.get("n-autoresearch/Kosmos/BioAgents_URL", "http://localhost:8600")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/backend/app/config.py:22:    DATABASE_URL: str = "postgresql+asyncpg://user:password@localhost:5432/ShadowTag-v2_compliance"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/legal-swarm/agents/judge_human/worker.py:27:REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/ane-workbench/ane_cortex_stack_v9/service/app/config.py:10:    postgres_dsn: str = "postgresql://postgres:postgres@localhost:5432/ane_mem"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/ane-workbench/ane_cortex_stack_v9/service/app/providers/embeddings.py:27:        self.base_url = base_url or os.getenv("EMBED_BASE_URL", "http://localhost:11434/v1")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/tauri-agentic-workspace/cypress.config.ts:5:    baseUrl: 'http://localhost:1420',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/test-generator/templates.ts:171:  const baseUrl = process.env.API_URL || 'http://localhost:3000';
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/extensions/cxx_debugging/e2e/runner.py:475:                f'http://localhost:{options.port}/{os.path.relpath(test.output_file, test.output_directory)}'
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/extensions/cxx_debugging/e2e/runner.py:479:            pages = [f'http://localhost:{options.port}/']
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/extensions/cxx_debugging/e2e/cxx-debugging-extension-helpers.ts:55:  return `https://localhost:${getTestServerPort()}`;
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/host/InspectorFrontendHostStub.ts:55: *   - http://localhost:9222/devtools/inspector.html?ws=localhost:9222/devtools/page/xTARGET_IDx
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/host/InspectorFrontendHostStub.ts:181:  // InspectorFrontendHostStub is ONLY used in the uncommon case of devtools not being embedded. For example: trace.cafe or http://localhost:9222/devtools/inspector.html?ws=localhost:9222/devtools/page/xTARGET_IDx
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/host/InspectorFrontendHostStub.ts:492:   *  | tab URL: `devtools://…?ws=…`                | **NOT Hosted** | `devtools://devtools/bundled/devtools_app.html?ws=localhost:9228/...`         |
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/host/InspectorFrontendHostStub.ts:495:   *  | tab URL: `http://…?ws=` (connected)         | **Hosted**     | `http://localhost:9222/devtools/inspector.html?ws=localhost:9222/...`         |
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/common/VersionController.test.ts:157:        {url: 'http://localhost:3000', scrollLineNumber: 1},
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/common/VersionController.test.ts:165:      assert.propertyVal(previouslyViewedFiles[0], 'url', 'http://localhost:3000');
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/common/VersionController.test.ts:176:        {url: 'http://localhost:3000', scrollLineNumber: 1},
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/common/VersionController.test.ts:182:      assert.propertyVal(previouslyViewedFiles[0], 'url', 'http://localhost:3000');
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/common/ParsedURL.test.ts:724:    const baseUrl = urlString`http://localhost:8080/my%20folder/old%20path`;
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/common/ParsedURL.test.ts:727:    assert.strictEqual(convertedUrl, 'http://localhost:8080/my%20folder/new%20spaced%2520name');
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/NetworkManager.ts:1660:        // localhost:1234 parses as a valid pattern, do the right thing here instead
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/SourceMap.test.ts:800:      const sourceURL = urlString`http://localhost:12345/index.js`;
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/Connections.ts:239:    // eg., hosted mode (e.g. `http://localhost:9222/devtools/inspector.html`) without a WebSocket URL,
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:17:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:23:    url: 'http://localhost:8080/test.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:34:    origin: 'http://localhost:8080',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:36:    name: 'http://localhost:8080',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:48:    origin: 'http://localhost:8080',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:50:    name: 'http://localhost:8080',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:62:    origin: 'http://localhost:8080',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:64:    name: 'http://localhost:8080',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:99:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:102:    sourceMapURL: 'http://localhost:8080/source.map.json',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:124:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:149:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:174:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:177:    sourceMapURL: 'http://localhost:8080/source.map.json',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:197:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:200:    sourceMapURL: 'http://localhost:8080/source.map.json',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:220:    url: 'http://localhost:8080/index.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/EnhancedTracesParser.test.ts:223:    sourceMapURL: 'http://localhost:8080/source.map.json',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/NetworkManager.test.ts:1413:        'http://localhost:*/',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/NetworkManager.test.ts:1417:        'http://localhost:1234',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/core/sdk/NetworkManager.test.ts:1421:        'localhost:1234',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/network/NetworkLogView.test.ts:1216:                'http://localhost:*' as SDK.NetworkManager.URLPatternConstructorString) as
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/TimelineFlameChartView.test.ts:462:      return group.name === 'Main — http://localhost:8080/';
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/TimelineFlameChartView.test.ts:504:         return group.name === 'Main — http://localhost:8080/';
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/TimelineFlameChartView.test.ts:550:         return group.name === 'Main — http://localhost:8080/';
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/TimelineFlameChartView.test.ts:582:         return group.name === 'Main — http://localhost:8080/';
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/track_appenders/ThreadAppender.test.ts:87:    assert.strictEqual(flameChartData.groups[0].name, 'Main — http://localhost:5000/');
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/TimelinePanel.ts:1854:        // or when you let DevTools listen to both localhost:9229 & 127.0.0.1:9229.
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/TimelineFlameChartDataProvider.test.ts:165:      ['Main — http://localhost:3000/', undefined], ['Thread pool', undefined], ['Thread pool worker 1', undefined],
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/components/NetworkRequestDetails.test.ts:125:      return request.args.data.url === 'http://localhost:10200/redirects-final.html';
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/components/NetworkRequestDetails.test.ts:141:              'http://localhost:10200/online-only.html?delay=1000&redirect_count=3&redirect=%2Fredirects-final.html\n' +
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/components/NetworkRequestDetails.test.ts:142:              'http://localhost:10200/online-only.html?delay=1000&redirect_count=2&redirect=%2Fredirects-final.html\n' +
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/panels/timeline/components/NetworkRequestDetails.test.ts:143:              'http://localhost:10200/online-only.html?delay=1000&redirect_count=1&redirect=%2Fredirects-final.html',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/deploy_pnkln.py:122:    baseURL: 'http://localhost:3000',
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/ane_demo_server.py:63:            output.innerHTML = "Routing request through localhost:8080 bypassing network stack...\nMapping prompt to Apple M1 Max unified memory...";
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/legacy/antigravity_status.py:42:            response = requests.get("http://localhost:8888/health", timeout=5)
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/legacy/antigravity_status.py:47:                root_response = requests.get("http://localhost:8888/", timeout=5)
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/legacy/antigravity_status.py:58:                "docs_url": "http://localhost:8888/docs"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/test_watermark.py:8:    url = "http://localhost:8000/api/v1/content/watermark"
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/session_ingestor.py:19:  VITE_API_URL           ShadowTag-v2 API base (default: http://localhost:8000)
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/session_ingestor.py:39:API_BASE = os.getenv("VITE_API_URL", "http://localhost:8000")
+  HARDCODED: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/gate0_tesla_validation.py:7:     - Redirect URI: http://localhost:8080/callback
+  Total: 113
+
+--- 6b: Monolithic Files (>500 LOC) ---
+  MONOLITH [     525 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/memory/index.ts
+  MONOLITH [     820 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/everything/__tests__/tools.test.ts
+  MONOLITH [    1043 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/filesystem/__tests__/path-validation.test.ts
+  MONOLITH [     726 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/filesystem/__tests__/lib.test.ts
+  MONOLITH [     818 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/filesystem/index.ts
+  MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/thermal-ride/servers/src/time/test/time_server_test.py
+  MONOLITH [    1135 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/src_vertex_rag_demo_dual_llms_with_judge.py
+  MONOLITH [    1135 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered/arsenal_recovered_src_vertex_rag_demo_dual_llms_with_judge.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/judge6_enforcement.py
+  MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/quidditch_competition.py
+  MONOLITH [     504 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/glicko_rating.py
+  MONOLITH [     907 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/cor_orchestrator.py
+  MONOLITH [     615 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/verb_specification.py
+  MONOLITH [     603 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/agent_specialization.py
+  MONOLITH [     552 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/kernel_chaining.py
+  MONOLITH [     549 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/mad_orchestrator.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/agent_lifecycle.py
+  MONOLITH [     530 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/cheat_sheet_fusion.py
+  MONOLITH [     555 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/agent_wellness.py
+  MONOLITH [     649 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/wealth_planning.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/persistent_memory.py
+  MONOLITH [     760 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/ecosystem.py
+  MONOLITH [     582 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/grpo_trainer.py
+  MONOLITH [     683 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/gemini_ingestion_layer.py
+  MONOLITH [     596 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/legal_whiteboard.py
+  MONOLITH [     538 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/dte_engine.py
+  MONOLITH [     624 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/safety/training_data_indexer.py
+  MONOLITH [     693 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/frameworks/cheat_sheet_fusion.py
+  MONOLITH [     630 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/frameworks/wealth_optimizer.py
+  MONOLITH [     520 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/infrastructure/gptram.py
+  MONOLITH [     518 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/judge6_grounded.py
+  MONOLITH [     633 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/terraform_generator.py
+  MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/ns_detection_engine.py
+  MONOLITH [     657 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/thread_service.py
+  MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/services/gemini_agents.py
+  MONOLITH [     698 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apply_re_punch.py
+  MONOLITH [    1138 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/training/vertex_ai_pipeline.py
+  MONOLITH [    1487 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/training/dataset_generator.py
+  MONOLITH [     645 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/cor53_integration_guide.py
+  MONOLITH [     742 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/DEPLOYMENT_CHECKLIST.py
+  MONOLITH [     520 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/tests/test_dte_validation.py
+  MONOLITH [     536 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/tests/activeshield/test_core.py
+  MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/tests/finjudge/test_decision_engine.py
+  MONOLITH [     541 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/fastvlm_client.py
+  MONOLITH [     509 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/agent0_poc.py
+  MONOLITH [     548 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/swarm_boss.py
+  MONOLITH [     578 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/opord_generator.py
+  MONOLITH [     602 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/cavalry_squadron.py
+  MONOLITH [     506 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/vehicle_crews.py
+  MONOLITH [     653 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/tdd-red-phase/tdd-red-phase-agent.ts
+  MONOLITH [     570 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/thread_scraper.py
+  MONOLITH [     932 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/agents/rsta_squadron.py
+  MONOLITH [     574 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/corp_engine/adapters/ms365_adapter.py
+  MONOLITH [     803 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/corp_engine/adapters/salesforce_adapter.py
+  MONOLITH [     537 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/corp_engine/engines/economic_juggernaut.py
+  MONOLITH [     673 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/corp_engine/governance/jura_compliance.py
+  MONOLITH [     529 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/corp_engine/governance/regulations/california_ai_minor.py
+  MONOLITH [     813 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/corp_engine/governance/regulations/california_ai_comprehensive.py
+  MONOLITH [     512 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/backend/app/services/gemini_service.py
+  MONOLITH [     528 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ts-src/agents/promptEngineering.ts
+  MONOLITH [     947 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ts-src/agents/claudeCode.ts
+  MONOLITH [     542 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/config.py
+  MONOLITH [     656 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/training/gain_rl_loss.py
+  MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/storage/database.py
+  MONOLITH [     694 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/pipeline.py
+  MONOLITH [     552 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/engines/jr_engine.py
+  MONOLITH [     724 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/engines/token_router.py
+  MONOLITH [     630 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/engines/confidence_monitor.py
+  MONOLITH [     712 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/scrapers/industry_crawler.py
+  MONOLITH [     628 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/scrapers/federal_register_crawler.py
+  MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/quidditch_competition.py
+  MONOLITH [     904 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/cor_orchestrator 2.py
+  MONOLITH [     615 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/verb_specification.py
+  MONOLITH [     605 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/agent_specialization.py
+  MONOLITH [     555 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/agent_wellness 2.py
+  MONOLITH [     636 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/antigravity_agent_framework 2.py
+  MONOLITH [     605 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/agent_specialization 2.py
+  MONOLITH [     636 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/antigravity_agent_framework.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/agent_lifecycle.py
+  MONOLITH [     596 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/legal_whiteboard 2.py
+  MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/quidditch_competition 2.py
+  MONOLITH [     555 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/agent_wellness.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/persistent_memory 2.py
+  MONOLITH [     677 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/gemini_ingestion_layer 2.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/agent_lifecycle 2.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/persistent_memory.py
+  MONOLITH [     615 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/verb_specification 2.py
+  MONOLITH [     760 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/ecosystem.py
+  MONOLITH [     677 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/gemini_ingestion_layer.py
+  MONOLITH [     596 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/legal_whiteboard.py
+  MONOLITH [     760 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/ecosystem 2.py
+  MONOLITH [     503 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/agents/live_swarm.py
+  MONOLITH [     534 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/transformer_circuits/feature_interventions.py
+  MONOLITH [     503 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/transformer_circuits/attribution_graph.py
+  MONOLITH [     503 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/transformer_circuits/head_loadings.py
+  MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/transformer_circuits/visualization.py
+  MONOLITH [     587 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pinkln/agents/infrastructure_agent.py
+  MONOLITH [     579 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pinkln/skills/infrastructure_analysis.py
+  MONOLITH [     613 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/cost_tracker.py
+  MONOLITH [     582 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/transcript_archive.py
+  MONOLITH [     574 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/message_consensus.py
+  MONOLITH [     707 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/consensus_orchestrator.py
+  MONOLITH [     988 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/atomic_consensus_orchestrator.py
+  MONOLITH [     610 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/shadowtagai_load_tests_enhanced.py
+  MONOLITH [     610 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/load_testing/pnkln_load_tests_enhanced.py
+  MONOLITH [     862 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+  MONOLITH [     820 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/api/enterprise_compliance_api.py
+  MONOLITH [     615 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/ungpt_service.py
+  MONOLITH [     568 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/activeshield_medical/core/clinical_gateway.py
+  MONOLITH [     665 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/activeshield_medical/core/liability_shield.py
+  MONOLITH [     562 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/activeshield_medical/core/sb243_compliance.py
+  MONOLITH [     571 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln-framework/core/orchestrator.py
+  MONOLITH [     538 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/atomic_pipeline/orchestrator.py
+  MONOLITH [     508 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/atomic_pipeline/antigravity_runner.py
+  MONOLITH [     562 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/atomic_pipeline/deploy_flow.py
+  MONOLITH [     587 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pinkln_shadow_conflict/agents/infrastructure_agent.py
+  MONOLITH [     579 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pinkln_shadow_conflict/skills/infrastructure_analysis.py
+  MONOLITH [     664 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/gemini_ingestion_layer.py
+  MONOLITH [     632 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/quidditch_competition.py
+  MONOLITH [     922 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/cor_orchestrator.py
+  MONOLITH [     624 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/verb_specification.py
+  MONOLITH [     608 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/agent_specialization.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/agent_lifecycle.py
+  MONOLITH [     567 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/agent_wellness.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/persistent_memory.py
+  MONOLITH [     767 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/ecosystem.py
+  MONOLITH [     687 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/gemini_ingestion_layer.py
+  MONOLITH [     599 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/core/legal_whiteboard.py
+  MONOLITH [     626 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/safety/training_data_indexer.py
+  MONOLITH [    1191 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/governance/judge_architecture/layers.py
+  MONOLITH [     695 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/frameworks/cheat_sheet_fusion.py
+  MONOLITH [     638 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/pnkln/frameworks/wealth_optimizer.py
+  MONOLITH [     501 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/compliance/modules/iso_42001.py
+  MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/compliance/modules/hipaa.py
+  MONOLITH [     530 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/infrastructure/gptram.py
+  MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/judge6_grounded.py
+  MONOLITH [     539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/ns_detection_engine.py
+  MONOLITH [     519 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/app/services/gemini_agents.py
+  MONOLITH [     834 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/api/enterprise_compliance_api.py
+  MONOLITH [     604 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln/memory/agent_memory 2.py
+  MONOLITH [     604 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln/memory/agent_memory.py
+  MONOLITH [     595 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/fatigue/integration.py
+  MONOLITH [     513 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/serving/llm_router.py
+  MONOLITH [     572 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln_agents/core/gemini_ingestion.py
+  MONOLITH [     504 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/pnkln_agents/agents/compliance_sdr.py
+  MONOLITH [     683 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/integration/contractual_pinkln_adapter.py
+  MONOLITH [     642 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/verdict_systems/api 2/main.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/code_refactorer.py
+  MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/models/adaptive_shoppable_video.py
+  MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/models/swiper 2.py
+  MONOLITH [     907 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/judge6/nodes.py
+  MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/alerts/__init__.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__.py
+  MONOLITH [     554 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/dashboard/__init__ 2.py
+  MONOLITH [    1015 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/pinkln/ultrathink_framework.py
+  MONOLITH [     712 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/walt/mcp_server 2.py
+  MONOLITH [     832 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/walt/mcp_server.py
+  MONOLITH [     726 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/prefetch/pipeline.py
+  MONOLITH [     726 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/prefetch/pipeline 2.py
+  MONOLITH [     502 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/tokable/schemas.py
+  MONOLITH [     598 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/tokable/router.py
+  MONOLITH [     562 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/unified.py
+  MONOLITH [     554 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/fatigue.py
+  MONOLITH [     743 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/contractual.py
+  MONOLITH [     728 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/legal_deadlines.py
+  MONOLITH [    1044 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/api/adaptive_shoppable_video/router.py
+  MONOLITH [     623 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/kosmos/doctrine/fm_6_0.py
+  MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/kosmos/doctrine/battle_drills.py
+  MONOLITH [     699 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/monetization/landing_page.py
+  MONOLITH [     514 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/monetization/__init__.py
+  MONOLITH [     561 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/growth_tools.py
+  MONOLITH [     515 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/calendar_integration 2.py
+  MONOLITH [     561 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/growth_tools 2.py
+  MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/rule_engine 2.py
+  MONOLITH [     515 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/calendar_integration.py
+  MONOLITH [     522 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/ai_personalization.py
+  MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/services/rule_engine.py
+  MONOLITH [     559 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/aiyou/jura/tests/test_jura.py
+  MONOLITH [     568 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/aiyou/services/panel/gemini_debate.py
+  MONOLITH [     602 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/aiyou/services/gemini/client.py
+  MONOLITH [     502 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/apps/src/aiyou/services/glicko/rating.py
+  MONOLITH [     625 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/services/gemini-ingestion/ingestion_core.py
+  MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/services/platform-monitoring/stripe_billing.py
+  MONOLITH [     564 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/services/platform-monitoring/api.py
+  MONOLITH [     554 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/services/v2x-mesh/edge_reasoning.py
+  MONOLITH [     974 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/crates/tsp_types/protocol_generator/generate_protocol.py
+  MONOLITH [     538 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/test_module_stubs.py
+  MONOLITH [     530 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/runtime/nanogpt_future_annotations.py
+  MONOLITH [     532 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/runtime/nanogpt_int_type_var.py
+  MONOLITH [     532 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/runtime/gptfast_int_type_var_runnable.py
+  MONOLITH [     581 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/runtime/gptfast_int_type_var.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/runtime/gptfast_future_annotations_runnable.py
+  MONOLITH [     575 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/runtime/gptfast_future_annotations.py
+  MONOLITH [     528 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/nanogpt.py
+  MONOLITH [     532 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/speech_transformer.py
+  MONOLITH [     527 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/soft_actor_critic.py
+  MONOLITH [     612 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/demucs.py
+  MONOLITH [     570 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/models/gptfast.py
+  MONOLITH [     860 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/test_meta_shape_basic.py
+  MONOLITH [    1073 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/test_symbolic_dimensions.py
+  MONOLITH [     796 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/test_demos.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/test_phase2_extended.py
+  MONOLITH [     898 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/test/tensor_shapes/test_recursive_skip.py
+  MONOLITH [    1598 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/website/src/sandbox/Sandbox.tsx
+  MONOLITH [    1156 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/benchmark/typecheck_benchmark.py
+  MONOLITH [    1839 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/benchmark/lsp_benchmark.py
+  MONOLITH [    1474 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/issue_ranker/tests/test_issue_ranker.py
+  MONOLITH [     504 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/primer_classifier/test_cross_checker.py
+  MONOLITH [     883 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/primer_classifier/classifier.py
+  MONOLITH [     796 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/primer_classifier/llm_client.py
+  MONOLITH [     677 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/primer_classifier/test_helpers.py
+  MONOLITH [    1795 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/primer_classifier/test_classifier.py
+  MONOLITH [     904 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/compare_typecheckers.py
+  MONOLITH [    1474 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/pyrefly/scripts/projects.py
+  MONOLITH [     861 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/mlx-engine/tests/test_vision_models.py
+  MONOLITH [     568 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/mlx-engine/batched_demo.py
+  MONOLITH [     809 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/mlx-engine/mlx_engine/generate.py
+  MONOLITH [     645 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/mlx-engine/mlx_engine/external/models/lfm2_vl/processing_lfm2_vl.py
+  MONOLITH [     578 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/statement/function.py
+  MONOLITH [     670 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/statement/match.py
+  MONOLITH [    1350 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/docstring_code_examples.py
+  MONOLITH [     754 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/expression/fstring.py
+  MONOLITH [     841 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/expression/lambda.py
+  MONOLITH [     526 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/expression/join_implicit_concatenated_string_assignment.py
+  MONOLITH [     731 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/ruff/expression/tstring.py
+  MONOLITH [     562 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_formatter/resources/test/fixtures/black/cases/preview_long_strings__regression.py
+  MONOLITH [    1618 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_benchmark/resources/large/dataset.py
+  MONOLITH [     689 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_benchmark/resources/tomllib/_parser.py
+  MONOLITH [     580 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_benchmark/resources/numpy/ctypeslib.py
+  MONOLITH [     902 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_benchmark/resources/pydantic/types.py
+  MONOLITH [    1012 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_linter/resources/test/fixtures/pycodestyle/E30.py
+  MONOLITH [     632 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_linter/resources/test/fixtures/pydocstyle/sections.py
+  MONOLITH [     731 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_linter/resources/test/fixtures/pydocstyle/D.py
+  MONOLITH [     677 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_linter/resources/test/fixtures/flake8_commas/COM81.py
+  MONOLITH [    1237 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_server/resources/test/fixtures/pandas_html.py
+  MONOLITH [    1105 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/crates/ruff_python_ast/generate.py
+  MONOLITH [     649 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/playground/ty/src/Playground.tsx
+  MONOLITH [     975 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/playground/ty/src/Editor/Editor.tsx
+  MONOLITH [     948 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/playground/shared/src/setupMonaco.tsx
+  MONOLITH [     576 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/python/ruff-ecosystem/ruff_ecosystem/check.py
+  MONOLITH [    1115 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/scripts/conformance.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/scripts/memory_report.py
+  MONOLITH [     550 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/ruff/scripts/check_ecosystem.py
+  MONOLITH [     883 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/kv/01_db.ts
+  MONOLITH [    1109 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/http/00_serve.ts
+  MONOLITH [    1752 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/telemetry/telemetry.ts
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/update_node_stream.ts
+  MONOLITH [    1198 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/worker_threads.ts
+  MONOLITH [     808 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/_events.d.ts
+  MONOLITH [     977 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/_fs/_fs_glob.ts
+  MONOLITH [     675 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/testing.ts
+  MONOLITH [     934 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/_http_outgoing.ts
+  MONOLITH [    1422 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/process.ts
+  MONOLITH [    1380 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/_stream.d.ts
+  MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/_readline.d.ts
+  MONOLITH [     514 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/path/_posix.ts
+  MONOLITH [    1138 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/path/_win32.ts
+  MONOLITH [    2539 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/http.ts
+  MONOLITH [    3163 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/fs.ts
+  MONOLITH [    1110 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/crypto/keygen.ts
+  MONOLITH [     769 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/crypto/diffiehellman.ts
+  MONOLITH [     666 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/crypto/cipher.ts
+  MONOLITH [     916 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/crypto/keys.ts
+  MONOLITH [    1218 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/util/comparisons.ts
+  MONOLITH [    2045 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/buffer.d.ts
+  MONOLITH [    3039 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/errors.ts
+  MONOLITH [     956 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/http2/util.ts
+  MONOLITH [    1910 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/child_process.ts
+  MONOLITH [     513 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal/fs/handle.ts
+  MONOLITH [     598 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/crypto.ts
+  MONOLITH [    1525 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/url.ts
+  MONOLITH [     945 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/assert.ts
+  MONOLITH [     838 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/child_process.ts
+  MONOLITH [    3930 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/http2.ts
+  MONOLITH [    2573 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/net.ts
+  MONOLITH [    1599 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/dgram.ts
+  MONOLITH [    1037 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/dns.ts
+  MONOLITH [     623 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/udp_wrap.ts
+  MONOLITH [     737 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/tcp_wrap.ts
+  MONOLITH [     569 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/uv.ts
+  MONOLITH [     895 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/constants.ts
+  MONOLITH [     620 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/pipe_wrap.ts
+  MONOLITH [     602 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/cares_wrap.ts
+  MONOLITH [     502 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/ext/node/polyfills/internal_binding/stream_wrap.ts
+  MONOLITH [    8350 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/bench/testdata/db.ts
+  MONOLITH [     953 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/wpt/wpt.ts
+  MONOLITH [    1183 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/crypto/crypto_key_test.ts
+  MONOLITH [     849 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/crypto/crypto_cipher_test.ts
+  MONOLITH [    1219 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/sqlite_test.ts
+  MONOLITH [     567 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/tls_test.ts
+  MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/_fs/_fs_handle_test.ts
+  MONOLITH [     580 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/_fs/_fs_open_test.ts
+  MONOLITH [     730 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/buffer_test.ts
+  MONOLITH [    1265 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/child_process_test.ts
+  MONOLITH [     520 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/http2_test.ts
+  MONOLITH [    1637 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/process_test.ts
+  MONOLITH [     953 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/worker_threads_test.ts
+  MONOLITH [    2481 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/http_test.ts
+  MONOLITH [    1680 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/unit_node/fs_test.ts
+  MONOLITH [     848 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.dom.iterable.d.ts
+  MONOLITH [     617 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.es2015.core.d.ts
+  MONOLITH [     841 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno_url.d.ts
+  MONOLITH [    1710 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno_web.d.ts
+  MONOLITH [     584 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno.window.d.ts
+  MONOLITH [    4814 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno.unstable.d.ts
+  MONOLITH [     962 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno_net.d.ts
+  MONOLITH [     645 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.es2015.iterable.d.ts
+  MONOLITH [    6648 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno.ns.d.ts
+  MONOLITH [    5312 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.es5.d.ts
+  MONOLITH [     578 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.esnext.temporal.d.ts
+  MONOLITH [    1611 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno_webgpu.d.ts
+  MONOLITH [    1431 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.temporal.d.ts
+  MONOLITH [   39438 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.dom.d.ts
+  MONOLITH [     832 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.es2023.array.d.ts
+  MONOLITH [     619 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.webworker.iterable.d.ts
+  MONOLITH [     653 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno_crypto.d.ts
+  MONOLITH [     995 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.es2020.bigint.d.ts
+  MONOLITH [   14902 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.webworker.d.ts
+  MONOLITH [     920 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/lib.deno.shared_globals.d.ts
+  MONOLITH [   10823 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/cli/tsc/dts/typescript.d.ts
+  MONOLITH [    1772 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/.github/workflows/ci.generate.ts
+  MONOLITH [     544 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_xet_upload.py
+  MONOLITH [     930 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_hf_file_system.py
+  MONOLITH [    1290 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_inference_client.py
+  MONOLITH [     704 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_utils_http.py
+  MONOLITH [    1529 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_buckets_cli.py
+  MONOLITH [    4902 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_hf_api.py
+  MONOLITH [     893 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_utils_strict_dataclass.py
+  MONOLITH [     535 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_hub_mixin.py
+  MONOLITH [    2360 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_inference_providers.py
+  MONOLITH [     968 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_repocard.py
+  MONOLITH [    1340 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_file_download.py
+  MONOLITH [     756 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_utils_cache.py
+  MONOLITH [     830 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_serialization.py
+  MONOLITH [    3230 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/tests/test_cli.py
+  MONOLITH [     813 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/utils/check_task_parameters.py
+  MONOLITH [     770 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/repocard_data.py
+  MONOLITH [     831 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/hub_mixin.py
+  MONOLITH [    1015 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/serialization/_torch.py
+  MONOLITH [    1699 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/__init__.py
+  MONOLITH [    1094 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/utils/_http.py
+  MONOLITH [     841 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/utils/_cache_manager.py
+  MONOLITH [     593 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/cli/discussions.py
+  MONOLITH [     682 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/cli/_cli_utils.py
+  MONOLITH [     812 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/cli/cache.py
+  MONOLITH [    1056 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/cli/buckets.py
+  MONOLITH [    1138 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/cli/jobs.py
+  MONOLITH [     581 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/cli/extensions.py
+  MONOLITH [    1177 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/_buckets.py
+  MONOLITH [    1920 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/file_download.py
+  MONOLITH [   13082 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/hf_api.py
+  MONOLITH [    3397 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/inference/_client.py
+  MONOLITH [    3452 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/huggingface_hub/src/huggingface_hub/inference/_generated/_async_client.py
+  MONOLITH [     569 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/validation/judge6.py
+  MONOLITH [     669 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/notebooks/01_mcp_validation.py
+  MONOLITH [     637 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/mcp-validation/mcp_server.py
+  MONOLITH [     536 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/intelligence_api.py
+  MONOLITH [     629 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/quidditch_competition.py
+  MONOLITH [     907 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/cor_orchestrator.py
+  MONOLITH [     615 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/verb_specification.py
+  MONOLITH [     603 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/agent_specialization.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/agent_lifecycle.py
+  MONOLITH [     555 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/agent_wellness.py
+  MONOLITH [     533 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/persistent_memory.py
+  MONOLITH [     760 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/ecosystem.py
+  MONOLITH [     683 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/gemini_ingestion_layer.py
+  MONOLITH [     596 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/core/legal_whiteboard.py
+  MONOLITH [     601 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/memory/agent_memory 2.py
+  MONOLITH [     601 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/memory/agent_memory.py
+  MONOLITH [     624 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/safety/training_data_indexer.py
+  MONOLITH [     518 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/gemini_integration.py
+  MONOLITH [     571 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/pnkln-framework/core/orchestrator.py
+  MONOLITH [     693 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/frameworks/cheat_sheet_fusion.py
+  MONOLITH [     630 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/pnkln/frameworks/wealth_optimizer.py
+  MONOLITH [     541 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/fastvlm_client.py
+  MONOLITH [     506 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/agent0_poc.py
+  MONOLITH [     548 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/swarm_boss.py
+  MONOLITH [     578 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/opord_generator.py
+  MONOLITH [     602 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/cavalry_squadron.py
+  MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/vehicle_crews.py
+  MONOLITH [     932 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/autoresearch/agents/rsta_squadron.py
+  MONOLITH [     618 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/fatigue/integration.py
+  MONOLITH [     513 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/serving/llm_router.py
+  MONOLITH [     633 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/core/unified_orchestrator.py
+  MONOLITH [     522 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/config/verticals.py
+  MONOLITH [     673 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/integration/contractual_pinkln_adapter.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/code_refactorer.py
+  MONOLITH [     557 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/aiyou_neural_rank.py
+  MONOLITH [     535 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/prompt_engineering.py
+  MONOLITH [     954 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/agents/claude_code.py
+  MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/swiper.py
+  MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/models/swiper 2.py
+  MONOLITH [     613 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/orchestrator.py
+  MONOLITH [     903 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/judge6/nodes.py
+  MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/alerts/__init__.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/dashboard/__init__.py
+  MONOLITH [     554 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/dashboard/__init__ 2.py
+  MONOLITH [     681 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/walt/mcp_server 2.py
+  MONOLITH [     865 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/walt/mcp_server.py
+  MONOLITH [     723 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/prefetch/pipeline.py
+  MONOLITH [     723 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/prefetch/pipeline 2.py
+  MONOLITH [     550 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/api/fatigue.py
+  MONOLITH [     743 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/api/contractual.py
+  MONOLITH [     696 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/api/legal_deadlines.py
+  MONOLITH [     537 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/finjudge/core/decision_engine.py
+  MONOLITH [     615 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/kosmos/doctrine/fm_6_0.py
+  MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/kosmos/doctrine/battle_drills.py
+  MONOLITH [     511 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/antigravity/core_agent.py
+  MONOLITH [     699 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/monetization/landing_page.py
+  MONOLITH [     513 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/monetization/__init__.py
+  MONOLITH [     912 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/contractual/multi_agent_debate.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/growth_tools.py
+  MONOLITH [     504 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/calendar_integration 2.py
+  MONOLITH [     556 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/growth_tools 2.py
+  MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/rule_engine 2.py
+  MONOLITH [     504 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/calendar_integration.py
+  MONOLITH [     505 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/ai_personalization.py
+  MONOLITH [     521 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/rule_engine.py
+  MONOLITH [     567 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/shadowtag_watermark.py
+  MONOLITH [     524 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aiyou/routers/atomic_chat.py
+  MONOLITH [     559 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aiyou/jura/tests/test_jura.py
+  MONOLITH [     599 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/aiyou/services/gemini/client.py
+  MONOLITH [     595 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/ingestion-layer/ingestion_orchestrator.py
+  MONOLITH [     598 LOC]: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/orchestrator/vertex_ai_orchestrator.py
+  Total: 424
+
+--- 6c: console.log in Production ---
+  console.log calls in apps/: 3516
+
+--- 6d: Dead Links (href='#') ---
+  DEAD_LINK: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/external_repos/deno/tests/specs/run/jsx_import_source/jsx_precompile/skip.tsx:4:      <a href="#">foo</a>
+  DEAD_LINK: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/stitch-skills/skills/react-components/examples/gold-standard-card.tsx:54:          <a href="#" className="font-semibold text-primary hover:underline truncate">
+  DEAD_LINK: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/stitch-skills/skills/react-components/examples/gold-standard-card.tsx:68:          <a href="#" className="text-primary hover:underline truncate">
+  DEAD_LINK: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/stitch-skills/skills/react-components/examples/gold-standard-card.tsx:54:          <a href="#" className="font-semibold text-primary hover:underline truncate">
+  DEAD_LINK: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/labs/uphillsnowball/stitch-skills/skills/react-components/examples/gold-standard-card.tsx:65:          <a href="#" className="text-primary hover:underline truncate">
+  DEAD_LINK: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/devtools-frontend/front_end/third_party/codemirror/package/mode/rpm/changes/index.html:23:    <li><a class=active href="#">RPM changes</a>
+  Total: 6

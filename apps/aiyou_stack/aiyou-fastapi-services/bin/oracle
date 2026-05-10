@@ -1,0 +1,226 @@
+#!/usr/bin/env python3
+"""
+Oracle CLI - Gemini 1M+ context wrapper for Claude Code
+Based on claude-oracle pattern
+
+Usage:
+    oracle ask "prompt"                    - Full query with history
+    oracle ask --files src/main.py "msg"   - Include file context
+    oracle quick "prompt"                  - One-off, no history
+    oracle history                         - Show conversation
+    oracle history --clear                 - Reset history
+    oracle context                         - Show FULLAUTO_CONTEXT.md
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+from typing import List, Optional
+
+HISTORY_DIR = Path(".oracle_history")
+MAX_HISTORY = 5  # exchanges per project
+
+
+def load_history() -> list:
+    """Load last N exchanges from history file."""
+    history_file = HISTORY_DIR / "conversation.json"
+    if not history_file.exists():
+        return []
+
+    with open(history_file) as f:
+        history = json.load(f)
+
+    return history[-MAX_HISTORY:]
+
+
+def save_history(prompt: str, response: str, files: list[str] = None):
+    """Append exchange to history."""
+    HISTORY_DIR.mkdir(exist_ok=True)
+    history_file = HISTORY_DIR / "conversation.json"
+
+    history = []
+    if history_file.exists():
+        with open(history_file) as f:
+            history = json.load(f)
+
+    history.append(
+        {
+            "timestamp": datetime.now().isoformat(),
+            "prompt": prompt,
+            "files": files or [],
+            "response": response[:2000],  # Truncate for history
+        }
+    )
+
+    # Keep only last MAX_HISTORY * 2 (in case of long sessions)
+    history = history[-(MAX_HISTORY * 2) :]
+
+    with open(history_file, "w") as f:
+        json.dump(history, f, indent=2)
+
+
+def format_history(history: list) -> str:
+    """Format history for context."""
+    if not history:
+        return ""
+
+    lines = ["## Previous Conversation"]
+    for h in history:
+        prompt_preview = h["prompt"][:500]
+        response_preview = h["response"][:500]
+        lines.append(f"\n### User:\n{prompt_preview}...")
+        lines.append(f"\n### Oracle:\n{response_preview}...")
+
+    return "\n".join(lines)
+
+
+def oracle_ask(
+    prompt: str,
+    files: list[str] | None = None,
+    lines: str | None = None,
+) -> str:
+    """Query Gemini with conversation history."""
+    # Build @file syntax
+    file_refs = ""
+    if files:
+        for f in files:
+            if lines and ":" not in f:
+                f = f"{f}:{lines}"
+            file_refs += f"@{f} "
+
+    # Load history
+    history = load_history()
+    context = format_history(history)
+
+    # Build full prompt
+    full_prompt = f"{context}\n\n{file_refs}{prompt}"
+
+    # Call gemini CLI
+    try:
+        result = subprocess.run(
+            ["gemini", "-p", full_prompt], capture_output=True, text=True, timeout=120
+        )
+        response = result.stdout
+        if result.returncode != 0 and result.stderr:
+            response = f"Error: {result.stderr}"
+    except subprocess.TimeoutExpired:
+        response = "Error: Gemini CLI timed out after 120 seconds"
+    except FileNotFoundError:
+        response = "Error: Gemini CLI not found. Install with: pip install google-generativeai"
+
+    # Save to history
+    save_history(prompt, response, files)
+
+    return response
+
+
+def oracle_quick(prompt: str, files: list[str] | None = None) -> str:
+    """One-off query without history."""
+    file_refs = " ".join(f"@{f}" for f in (files or []))
+    full_prompt = f"{file_refs} {prompt}".strip()
+
+    try:
+        result = subprocess.run(
+            ["gemini", "-p", full_prompt], capture_output=True, text=True, timeout=120
+        )
+        return result.stdout if result.returncode == 0 else f"Error: {result.stderr}"
+    except subprocess.TimeoutExpired:
+        return "Error: Gemini CLI timed out after 120 seconds"
+    except FileNotFoundError:
+        return "Error: Gemini CLI not found. Install with: pip install google-generativeai"
+
+
+def show_history():
+    """Display conversation history."""
+    history = load_history()
+    if not history:
+        print("No conversation history.")
+        return
+
+    for i, h in enumerate(history, 1):
+        print(f"\n{'=' * 60}")
+        print(f"Exchange {i} - {h['timestamp']}")
+        if h.get("files"):
+            print(f"Files: {', '.join(h['files'])}")
+        print(f"\nUser: {h['prompt'][:200]}...")
+        print(f"\nOracle: {h['response'][:500]}...")
+
+
+def clear_history():
+    """Clear conversation history."""
+    history_file = HISTORY_DIR / "conversation.json"
+    if history_file.exists():
+        history_file.unlink()
+        print("History cleared.")
+    else:
+        print("No history to clear.")
+
+
+def show_context():
+    """Show FULLAUTO_CONTEXT.md if it exists."""
+    context_file = Path("FULLAUTO_CONTEXT.md")
+    if context_file.exists():
+        print(context_file.read_text())
+    else:
+        print("No FULLAUTO_CONTEXT.md found in current directory.")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Oracle CLI - Gemini 1M+ context wrapper for Claude Code"
+    )
+    subparsers = parser.add_subparsers(dest="command", help="Commands")
+
+    # ask command
+    ask_parser = subparsers.add_parser("ask", help="Query with conversation history")
+    ask_parser.add_argument("prompt", nargs="?", help="The prompt to send")
+    ask_parser.add_argument("--files", "-f", nargs="+", help="Files to include")
+    ask_parser.add_argument("--lines", "-l", help="Line range (e.g., '50-120')")
+
+    # quick command
+    quick_parser = subparsers.add_parser("quick", help="One-off query, no history")
+    quick_parser.add_argument("prompt", nargs="?", help="The prompt to send")
+    quick_parser.add_argument("--files", "-f", nargs="+", help="Files to include")
+
+    # history command
+    history_parser = subparsers.add_parser("history", help="Show/manage history")
+    history_parser.add_argument("--clear", action="store_true", help="Clear history")
+
+    # context command
+    subparsers.add_parser("context", help="Show FULLAUTO_CONTEXT.md")
+
+    args = parser.parse_args()
+
+    if args.command == "ask":
+        if not args.prompt:
+            print("Error: prompt required")
+            sys.exit(1)
+        result = oracle_ask(args.prompt, args.files, args.lines)
+        print(result)
+
+    elif args.command == "quick":
+        if not args.prompt:
+            print("Error: prompt required")
+            sys.exit(1)
+        result = oracle_quick(args.prompt, args.files)
+        print(result)
+
+    elif args.command == "history":
+        if args.clear:
+            clear_history()
+        else:
+            show_history()
+
+    elif args.command == "context":
+        show_context()
+
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

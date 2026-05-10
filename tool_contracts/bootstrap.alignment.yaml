@@ -1,0 +1,9 @@
+# tool_contracts/bootstrap.alignment.yaml
+tool_id: "bootstrap.alignment"
+description: "Governs the bootstrap.alignment operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/bootstrap_alignment.jsonl"
+reuse_queries: []

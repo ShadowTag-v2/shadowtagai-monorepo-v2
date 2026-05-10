@@ -1,0 +1,9 @@
+# Item 11: Pulumi gitignore
+node_modules/
+dist/
+.pulumi/
+Pulumi.*.yaml.bak
+*.js
+*.js.map
+*.d.ts
+!src/**/*.ts

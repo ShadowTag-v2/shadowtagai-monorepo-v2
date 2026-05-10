@@ -1,0 +1,78 @@
+# GCP Project Configuration
+project_id = "your-gcp-project-id"
+region     = "us-central1"
+zone       = "us-central1-a"
+
+# Cluster Configuration
+cluster_name = "pnkln-gke-cluster"
+cluster_type = "standard"  # or "autopilot"
+
+# Network
+network_name = "pnkln-network"
+
+# IMPORTANT: Must be globally unique
+model_bucket_name = "pnkln-models-your-unique-suffix"
+
+# GPU Node Pools
+# Customize based on your workload requirements
+gpu_node_pools = {
+  # L4 pool - optimized for Judge 6 with p99 ≤90ms target
+  "l4-inference" = {
+    machine_type    = "g2-standard-4"
+    gpu_type        = "nvidia-l4"
+    gpu_count       = 1
+    min_node_count  = 0  # Scale to zero when idle
+    max_node_count  = 3
+    disk_size_gb    = 100
+    disk_type       = "pd-balanced"
+    preemptible     = false
+    spot            = true  # 60-90% cost savings
+  }
+
+  # H100 pool - high performance production workload
+  "h100-production" = {
+    machine_type    = "a3-highgpu-1g"
+    gpu_type        = "nvidia-h100-80gb"
+    gpu_count       = 1
+    min_node_count  = 0  # Scale to zero when idle
+    max_node_count  = 2
+    disk_size_gb    = 200
+    disk_type       = "pd-balanced"
+    preemptible     = false
+    spot            = false  # On-demand for reliability
+  }
+}
+
+# CPU Node Pool
+cpu_node_pool = {
+  machine_type    = "n2-standard-4"
+  min_node_count  = 1  # Keep 1 running for system services
+  max_node_count  = 5
+  disk_size_gb    = 50
+}
+
+# Security Settings
+enable_private_nodes    = true
+enable_private_endpoint = false  # Set true for production, requires VPN/bastion
+
+# Master authorized networks (REPLACE with your Vertex AI Workbench IP ranges)
+master_authorized_networks = [
+  {
+    cidr_block   = "0.0.0.0/0"
+    display_name = "Temporary - replace with Vertex AI Workbench IPs"
+  }
+]
+
+# Monitoring
+enable_managed_prometheus = true
+enable_cloud_logging      = true
+enable_cloud_monitoring   = true
+
+# Labels for cost tracking
+labels = {
+  environment = "production"
+  managed-by  = "terraform"
+  project     = "pnkln"
+  cost-center = "ai-inference"
+  owner       = "your-team"
+}

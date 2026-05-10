@@ -1,0 +1,75 @@
+# ty.toml — Astral ty type checker configuration
+# https://docs.astral.sh/ty/
+# Canonical for: ShadowTag-v2/Monorepo-Uphillsnowball
+# Python: 3.14  |  Platform: darwin
+
+[environment]
+python-version = "3.14"
+python-platform = "darwin"
+python = "/opt/homebrew/bin/python3"
+
+[src]
+include = [
+    "apps/counselconduit",
+    "apps/aiyou_stack/aiyou-fastapi-services",
+    "apps/aiyou_stack/Pipeline",
+    "scripts",
+    "labs/uphillsnowball",
+]
+exclude = [
+    "archive/**",
+    "control/**",
+    "external_sdks/**",
+    "**/node_modules/**",
+    "**/.venv/**",
+    "**/uvicorn/**",
+    "**/*.proto",
+    "apps/aiyou_stack/cosmic-crab-payload/**",
+    "apps/aiyou_stack/nascent-apollo/**",
+]
+
+[rules]
+# Error-level: catch real bugs
+division-by-zero = "error"
+index-out-of-bounds = "error"
+invalid-assignment = "error"
+invalid-return-type = "error"
+invalid-type-form = "error"
+missing-argument = "error"
+no-matching-overload = "error"
+not-iterable = "error"
+undefined-reveal = "error"
+
+# Warn-level: gradual adoption
+possibly-unresolved-reference = "warn"
+unresolved-import = "warn"
+unresolved-reference = "warn"
+unused-ignore-comment = "warn"
+redundant-cast = "warn"
+
+[analysis]
+# Suppress unresolved imports for modules not in our venv
+allowed-unresolved-imports = [
+    "google.**",
+    "firebase_admin.**",
+    "mlx.**",
+    "mlx_lm.**",
+    "scrapling.**",
+    "lancedb.**",
+    "temporal.**",
+]
+
+# Relax rules for test files
+[[overrides]]
+include = ["**/tests/**", "**/test_*.py", "**/*_test.py"]
+
+[overrides.rules]
+possibly-unresolved-reference = "ignore"
+unresolved-import = "ignore"
+
+# Relax rules for scripts (quick-and-dirty utilities)
+[[overrides]]
+include = ["scripts/**"]
+
+[overrides.rules]
+possibly-unresolved-reference = "warn"

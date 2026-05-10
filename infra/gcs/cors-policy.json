@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://kovelai.web.app", "https://shadowtagai.web.app"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Content-Length"]
+  }
+]

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Privacy Policy | ShadowTagAI</title>
+<meta name="description" content="ShadowTagAI Privacy Policy - How we collect, use, and protect your data. Sovereign-first data governance with zero telemetry."/>
+<link rel="canonical" href="https://shadowtagai.com/privacy" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+body { background-color: #09090b; color: #e5e1e4; font-family: 'Space Grotesk', sans-serif; }
+.policy-table { border-collapse: collapse; width: 100%; }
+.policy-table th, .policy-table td { border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; text-align: left; font-size: 0.875rem; }
+.policy-table th { background: rgba(255,255,255,0.05); color: #fff; font-weight: 600; }
+.policy-table td { color: #958da1; }
+code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: #d2bbff; }
+</style>
+</head>
+<body class="bg-[#09090b] min-h-screen">
+<nav class="fixed top-0 w-full z-50 bg-[#09090b]/80 backdrop-blur-xl border-b border-white/5">
+<div class="flex justify-between items-center px-8 py-6 max-w-4xl mx-auto">
+<a href="/" class="text-xl font-bold tracking-tighter text-white hover:opacity-80 transition-opacity">ShadowTagAI</a>
+<a href="/" class="text-sm text-[#ccc3d8] hover:text-white transition-colors">← Back to Home</a>
+</div>
+</nav>
+<main class="max-w-4xl mx-auto px-8 pt-32 pb-20">
+<h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-4">Privacy Policy</h1>
+<p class="text-[#958da1] text-sm mb-12">Last updated: April 14, 2026 · Version 1.0</p>
+
+<div class="space-y-10 text-[#ccc3d8] leading-relaxed">
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">1. Introduction</h2>
+<p>ShadowTagAI ("we," "us," or "our") operates the <strong>shadowtagai.com</strong> and <strong>kovelai.com</strong> web properties, along with associated APIs, services, and open-source tooling (collectively, the "Services"). This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you interact with our Services.</p>
+<p class="mt-3">We are committed to a <strong class="text-white">Sovereign-First Data Governance</strong> posture. This means your data stays under your control, on your infrastructure, processed by models you select.</p>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">2. Information We Collect</h2>
+<h3 class="text-lg font-semibold text-white/80 mb-3">2.1 Information You Provide Directly</h3>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Contact Forms:</strong> Name, email address, and message content submitted through our website contact forms.</li>
+<li><strong class="text-white">Account Information:</strong> If you create an account, we collect your email, display name, and authentication credentials (managed via Firebase Authentication).</li>
+<li><strong class="text-white">Legal Intake (KovelAI):</strong> If you use KovelAI's intake system, we collect the information you voluntarily provide regarding your legal matter. This data is treated with the highest sensitivity.</li>
+</ul>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">2.2 Information Collected Automatically</h3>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Server Logs:</strong> Standard HTTP request logs including IP address, User-Agent, request path, and response status code. Retained for <strong>30 days</strong>, then purged.</li>
+<li><strong class="text-white">Firebase Analytics (Limited):</strong> IP anonymization enabled, advertising features disabled. Aggregate page view counts and performance metrics only. No individual tracking profiles.</li>
+</ul>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">2.3 Information We Do NOT Collect</h3>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li>Biometric Data — Never.</li>
+<li>Location Data — No GPS or fine-grained location tracking.</li>
+<li>Third-Party Tracking — No Facebook Pixel, Google Ads, or advertising trackers.</li>
+<li>Session Replay — No Hotjar, FullStory, or keystroke recording.</li>
+</ul>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">3. Telemetry Disclosure</h2>
+<h3 class="text-lg font-semibold text-white/80 mb-3">3.1 Open-Source Telemetry Posture</h3>
+<p>All ShadowTagAI open-source repositories enforce a strict <strong class="text-white">telemetry-disabled</strong> posture:</p>
+<div class="bg-white/5 rounded-lg p-4 mt-3 font-mono text-sm text-[#d2bbff]">
+DISABLE_TELEMETRY=1<br/>
+DISABLE_ERROR_REPORTING=1
+</div>
+<p class="mt-3">No telemetry data is transmitted to any external service from our open-source tooling.</p>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">3.2 Runtime Model Telemetry</h3>
+<p>AI-powered features use <strong class="text-white">Google Gemini models</strong> via the Vertex AI API. Google's data processing terms apply to model inference. We do not store prompts or completions beyond the active session unless you explicitly opt in.</p>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">4. How We Use Your Information</h2>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Service Delivery:</strong> Processing your requests, rendering pages, and executing AI inference.</li>
+<li><strong class="text-white">Security:</strong> Detecting and preventing abuse, unauthorized access, and DDoS attacks.</li>
+<li><strong class="text-white">Operational Monitoring:</strong> Cloud Monitoring alerting policies for uptime and error rate tracking.</li>
+<li><strong class="text-white">Legal Compliance:</strong> Responding to lawful requests from governmental authorities.</li>
+</ul>
+<p class="mt-4 font-semibold text-white">We never sell, rent, or trade your personal information to third parties.</p>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">5. Data Storage & Security</h2>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Primary Cloud:</strong> Google Cloud Platform (GCP), project <code>shadowtag-omega-v4</code>.</li>
+<li><strong class="text-white">Database:</strong> Google Firestore with zero-trust security rules (default deny-all).</li>
+<li><strong class="text-white">Hosting:</strong> Firebase Hosting with automatic SSL/TLS encryption.</li>
+<li><strong class="text-white">Encryption:</strong> TLS 1.3 in transit, AES-256 at rest (Google-managed keys).</li>
+<li><strong class="text-white">Access Controls:</strong> Workload Identity Federation (WIF) — no persistent service account keys.</li>
+</ul>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">6. Data Retention</h2>
+<table class="policy-table mt-4">
+<thead><tr><th>Data Type</th><th>Retention</th><th>Deletion</th></tr></thead>
+<tbody>
+<tr><td>Server Logs</td><td>30 days</td><td>Automatic rotation</td></tr>
+<tr><td>Contact Form Submissions</td><td>1 year</td><td>Manual purge on request</td></tr>
+<tr><td>Firebase Analytics</td><td>14 months</td><td>Automatic expiration</td></tr>
+<tr><td>Legal Intake Data (KovelAI)</td><td>Engagement + 7 years</td><td>Secure deletion per legal requirements</td></tr>
+<tr><td>Session Data</td><td>Duration of session</td><td>Automatic on session end</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">7. Your Rights</h2>
+<p>Regardless of your jurisdiction, we honor the following rights:</p>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Access:</strong> Request a copy of all personal data we hold about you.</li>
+<li><strong class="text-white">Rectification:</strong> Request correction of inaccurate data.</li>
+<li><strong class="text-white">Deletion:</strong> Request deletion of your data ("Right to be Forgotten").</li>
+<li><strong class="text-white">Portability:</strong> Request your data in a machine-readable format.</li>
+<li><strong class="text-white">Objection:</strong> Object to processing for specific purposes.</li>
+</ul>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">7.1 GDPR (European Economic Area)</h3>
+<p>Our lawful basis for processing is <strong class="text-white">legitimate interest</strong> (service delivery and security) and <strong class="text-white">consent</strong> (for optional features).</p>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">7.2 CCPA (California)</h3>
+<p>California residents have the right to know what personal information is collected, request deletion, and opt out of the sale of personal information. <strong class="text-white">We do not sell personal information.</strong></p>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">8. Children's Privacy</h2>
+<p>Our Services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children.</p>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">9. Third-Party Services</h2>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Google Cloud Platform / Firebase:</strong> Infrastructure and authentication.</li>
+<li><strong class="text-white">Stripe:</strong> Payment processing (PCI DSS Level 1 compliant). We never store credit card numbers.</li>
+<li><strong class="text-white">GitHub:</strong> Source code hosting and CI/CD (no user data is shared with GitHub).</li>
+<li><strong class="text-white">Google Fonts:</strong> Typography delivery.</li>
+</ul>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">10. Changes to This Policy</h2>
+<p>We may update this Privacy Policy from time to time. Material changes will be posted on this page with an updated "Last Updated" date. Continued use of our Services after changes constitutes acceptance of the revised policy.</p>
+</section>
+
+<section>
+<h2 class="text-xl font-bold text-white mb-4">11. Contact Us</h2>
+<p>For privacy inquiries, data requests, or concerns:</p>
+<p class="mt-3"><a href="mailto:privacy@shadowtagai.com" class="text-[#d2bbff] hover:text-white transition-colors underline">privacy@shadowtagai.com</a></p>
+<p class="mt-1"><a href="https://shadowtagai.com/contact" class="text-[#d2bbff] hover:text-white transition-colors underline">shadowtagai.com/contact</a></p>
+</section>
+
+<section id="open-source-policy" class="border-t border-white/10 pt-10">
+<h2 class="text-xl font-bold text-white mb-4">12. Open-Source Privacy Policy</h2>
+<p>ShadowTagAI maintains open-source repositories under the <code>ShadowTag-v2</code> GitHub organization. This section governs data handling within those repositories and any forks or derivatives.</p>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">12.1 Contributor Data</h3>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Git Metadata:</strong> Contributor names and email addresses are captured in Git commit history. This data is publicly visible and governed by GitHub's Privacy Statement.</li>
+<li><strong class="text-white">Issue & PR Content:</strong> Information in GitHub Issues and Pull Requests is public. Do not submit personal, client, or privileged information in public issues.</li>
+<li><strong class="text-white">CLA:</strong> We do not currently require a Contributor License Agreement. All contributions are accepted under the repository's stated license.</li>
+</ul>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">12.2 Telemetry Kill-Switch Doctrine</h3>
+<p>All ShadowTagAI open-source software ships with telemetry <strong class="text-white">disabled by default</strong>:</p>
+<div class="bg-white/5 rounded-lg p-4 mt-3 font-mono text-sm text-[#d2bbff]">
+DISABLE_TELEMETRY=1<br/>
+DISABLE_ERROR_REPORTING=1
+</div>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li>Set in all CI/CD pipelines, development environments, and production runtimes.</li>
+<li>Forks and derivatives are strongly encouraged to maintain this posture.</li>
+<li>No open-source package will ever phone home without explicit, opt-in user consent.</li>
+</ul>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">12.3 License Obligations</h3>
+<table class="policy-table mt-4">
+<thead><tr><th>Repository</th><th>License</th><th>Privacy Scope</th></tr></thead>
+<tbody>
+<tr><td>Core infrastructure (apps/shadowtagai, apps/kovelai)</td><td>Proprietary</td><td>Sections 1–11</td></tr>
+<tr><td>Open-source tooling (tools/*, labs/*)</td><td>Apache 2.0 / MIT</td><td>Section 12</td></tr>
+<tr><td>Third-party vendored code (external_repos/*)</td><td>Original upstream</td><td>Upstream policy</td></tr>
+</tbody>
+</table>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">12.4 Sovereign Execution Guarantee</h3>
+<p>When you deploy ShadowTagAI open-source tooling on your own infrastructure:</p>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Zero data egress:</strong> No data leaves your execution environment to ShadowTagAI servers.</li>
+<li><strong class="text-white">Zero phone-home:</strong> No license validation, update checks, or analytics callbacks.</li>
+<li><strong class="text-white">Full auditability:</strong> All source code is available for inspection.</li>
+</ul>
+
+<h3 class="text-lg font-semibold text-white/80 mt-6 mb-3">12.5 Vulnerability Disclosure</h3>
+<p>If you discover a privacy or security vulnerability:</p>
+<ul class="list-disc list-inside mt-3 space-y-2 text-[#958da1]">
+<li><strong class="text-white">Email:</strong> security@shadowtagai.com</li>
+<li><strong class="text-white">Response SLA:</strong> Acknowledgment within 48 hours, patch within 7 days for critical issues.</li>
+<li><strong class="text-white">No retaliation:</strong> We will never pursue legal action against good-faith security researchers.</li>
+</ul>
+</section>
+
+</div>
+</main>
+<footer class="border-t border-white/5 py-8 px-8">
+<div class="max-w-4xl mx-auto text-center text-[10px] uppercase tracking-widest text-[#958da1]">
+© 2026 ShadowTagAI. Sovereign Intelligence Infrastructure.
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,69 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app:443 was resolved.
+* IPv6: (none)
+* IPv4: 34.143.73.2, 34.143.78.2, 34.143.74.2, 34.143.77.2, 34.143.75.2, 34.143.76.2, 34.143.72.2, 34.143.79.2
+*   Trying 34.143.73.2:443...
+* Connected to n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app (34.143.73.2) port 443
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+} [349 bytes data]
+*  CAfile: /etc/ssl/cert.pem
+*  CApath: none
+* (304) (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* (304) (IN), TLS handshake, Unknown (8):
+{ [15 bytes data]
+* (304) (IN), TLS handshake, Certificate (11):
+{ [6492 bytes data]
+* (304) (IN), TLS handshake, CERT verify (15):
+{ [79 bytes data]
+* (304) (IN), TLS handshake, Finished (20):
+{ [36 bytes data]
+* (304) (OUT), TLS handshake, Finished (20):
+} [36 bytes data]
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=*.a.run.app
+*  start date: Oct 27 08:33:24 2025 GMT
+*  expire date: Jan 19 08:33:23 2026 GMT
+*  subjectAltName: host "n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app" matched cert's "*.a.run.app"
+*  issuer: C=US; O=Google Trust Services; CN=WR2
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app/health
+* [HTTP/2] [1] [:method: GET]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app]
+* [HTTP/2] [1] [:path: /health]
+* [HTTP/2] [1] [user-agent: curl/8.7.1]
+* [HTTP/2] [1] [accept: */*]
+> GET /health HTTP/2
+> Host: n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app
+> User-Agent: curl/8.7.1
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/2 403
+< date: Fri, 05 Dec 2025 04:49:33 GMT
+< content-type: text/html; charset=UTF-8
+< server: Google Frontend
+< content-length: 301
+< alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+<
+{ [301 bytes data]
+
+100   301  100   301    0     0    971      0 --:--:-- --:--:-- --:--:--   974
+* Connection #0 to host n-autoresearch/Kosmos/BioAgents-server-x6h2e7g3aa-uc.a.run.app left intact
+
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>403 Forbidden</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Forbidden</h1>
+<h2>Your client does not have permission to get URL <code>/health</code> from this server.</h2>
+<h2></h2>
+</body></html>

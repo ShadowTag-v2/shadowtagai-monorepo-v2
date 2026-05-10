@@ -1,0 +1,19 @@
+# Example Terraform Variables
+# Copy to terraform.tfvars and update with your values
+
+project_id = "pnkln-prod"
+region     = "us-central1"
+environment = "production"
+
+# Network configuration
+subnet_cidr   = "10.0.0.0/24"
+pods_cidr     = "10.1.0.0/16"
+services_cidr = "10.2.0.0/16"
+master_cidr   = "172.16.0.0/28"
+
+# GKE configuration
+release_channel = "REGULAR"
+k8s_namespace   = "judge-6"
+
+# Document AI
+document_ai_location = "us"

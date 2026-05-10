@@ -1,0 +1,987 @@
+version: 1
+workspace: ShadowTag-v2/Monorepo-Uphillsnowball
+policy:
+  goal: Every listed repo is canonically rooted, explicitly archived, or explicitly reference-only inside the monorepo.
+  current_declared_merge_truth:
+    - apps/pnkln-stack_stack/pnkln-stack-fastapi-services
+    - apps/pnkln-stack_stack/cosmic-crab-payload
+    - apps/pnkln-stack_stack/Pipeline
+    - apps/pnkln-stack_stack/nascent-apollo
+  required_statuses:
+    - canonical_in_monorepo
+    - queued_for_fold_in
+    - archived_after_fold_in
+    - reference_only
+    - deprecated
+repos:
+  - repo: ehanc69/pnkln-stack-fastapi-services
+    status: canonical_in_monorepo
+    destination: apps/pnkln-stack_stack/pnkln-stack-fastapi-services
+    duplicate_family: fastapi-services
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stackjr-template-2
+    status: queued_for_fold_in
+    destination: apps/templates/pnkln-stackjr-template-2
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-objections-decisions
+    status: queued_for_fold_in
+    destination: governance/pnkln-stack-objections-decisions
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-core
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-core
+    duplicate_family: core
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-clients
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-clients
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-mlops
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-mlops
+    duplicate_family: mlops
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-data-contracts
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-data-contracts
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-infra
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-infra
+    duplicate_family: infra
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-devops
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-devops
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-observability
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-observability
+    duplicate_family: observability
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-sre
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-sre
+    duplicate_family: sre
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-security
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-security
+    duplicate_family: security
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-sops
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-sops
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-docs
+    status: queued_for_fold_in
+    destination: docs/pnkln-stack
+    duplicate_family: docs
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-frontend
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-frontend
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-examples
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-examples
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/erik-hancock-llm-memory
+    status: queued_for_fold_in
+    destination: memory/erik-hancock-llm-memory
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-rollup
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-rollup
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-api
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-api
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln
+    status: queued_for_fold_in
+    destination: control/pnkln
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/ShadowTag-v2
+    status: reference_only
+    destination: reference/public-demos/ShadowTag-v2
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - public/demo repo unless explicitly promoted to active product root
+  - repo: ehanc69/security
+    status: queued_for_fold_in
+    destination: archive/legacy-security
+    duplicate_family: security
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/sre
+    status: queued_for_fold_in
+    destination: archive/legacy-sre
+    duplicate_family: sre
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/observability
+    status: queued_for_fold_in
+    destination: archive/legacy-observability
+    duplicate_family: observability
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/mlops
+    status: queued_for_fold_in
+    destination: archive/legacy-mlops
+    duplicate_family: mlops
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/docs
+    status: queued_for_fold_in
+    destination: archive/legacy-docs
+    duplicate_family: docs
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/prompts
+    status: queued_for_fold_in
+    destination: archive/legacy-prompts
+    duplicate_family: prompts
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/infra
+    status: queued_for_fold_in
+    destination: archive/legacy-infra
+    duplicate_family: infra
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/fastapi-services
+    status: queued_for_fold_in
+    destination: archive/legacy-fastapi-services
+    duplicate_family: fastapi-services
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/core
+    status: queued_for_fold_in
+    destination: archive/legacy-core
+    duplicate_family: core
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - legacy/plain-name duplicate family; verify superseded by pnkln-stack-* successor
+  - repo: ehanc69/shadowtag_v2
+    status: reference_only
+    destination: reference/public-demos/shadowtag_v2
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - public/demo repo unless explicitly promoted to active product root
+  - repo: ehanc69/kosmos
+    status: reference_only
+    destination: reference/public-demos/kosmos
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - public/demo repo unless explicitly promoted to active product root
+  - repo: ehanc69/judge6
+    status: reference_only
+    destination: reference/public-demos/judge6
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - public/demo repo unless explicitly promoted to active product root
+  - repo: ehanc69/codepmcs
+    status: reference_only
+    destination: reference/public-demos/codepmcs
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - public/demo repo unless explicitly promoted to active product root
+  - repo: ehanc69/antigravity-go
+    status: reference_only
+    destination: reference/public-demos/antigravity-go
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - public/demo repo unless explicitly promoted to active product root
+  - repo: ehanc69/pnkln-stack-policy
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-policy
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/Pipeline
+    status: canonical_in_monorepo
+    destination: apps/pnkln-stack_stack/Pipeline
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-backend
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-backend
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/cosmic-crab-payload
+    status: canonical_in_monorepo
+    destination: apps/pnkln-stack_stack/cosmic-crab-payload
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/nascent-apollo
+    status: canonical_in_monorepo
+    destination: apps/pnkln-stack_stack/nascent-apollo
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/chatgpt-archive
+    status: archived_after_fold_in
+    destination: archive/chatgpt-archive
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - historical/archive-oriented; fold in physically but keep out of active roots
+  - repo: ehanc69/shadowtagai-v1
+    status: archived_after_fold_in
+    destination: archive/shadowtagai-v1
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - historical/archive-oriented; fold in physically but keep out of active roots
+  - repo: ehanc69/pnkln-stack-evals
+    status: queued_for_fold_in
+    destination: evals/pnkln-stack-evals
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-governance
+    status: queued_for_fold_in
+    destination: governance/pnkln-stack-governance
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-ui-kit
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-ui-kit
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-offline-appliance
+    status: queued_for_fold_in
+    destination: apps/pnkln-stack_stack/pnkln-stack-offline-appliance
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-risk-engine
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-risk-engine
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-indexer
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-indexer
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-codesmith
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-codesmith
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-prompts
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-prompts
+    duplicate_family: prompts
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: false
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-exec
+    status: queued_for_fold_in
+    destination: packages/pnkln-stack-exec
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-ml
+    status: queued_for_fold_in
+    destination: staging/pnkln-stack-ml
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - destination needs confirmation
+  - repo: ehanc69/pnkln-stack-data
+    status: queued_for_fold_in
+    destination: data/pnkln-stack-data
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-risk
+    status: queued_for_fold_in
+    destination: infra/pnkln-stack-risk
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack-ci
+    status: queued_for_fold_in
+    destination: infra/ci/pnkln-stack-ci
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes: []
+  - repo: ehanc69/pnkln-stack
+    status: archived_after_fold_in
+    destination: archive/pnkln-stack
+    duplicate_family: null
+    checks:
+      classified: false
+      destination_assigned: true
+      duplicate_family_checked: true
+      folded_into_destination: false
+      old_live_copies_demoted: false
+      manifest_updated: false
+      merge_status_updated: false
+      tooling_updated: false
+      index_updated: false
+      build_sanity_checked: false
+      final_status_stamped: false
+    notes:
+      - historical/archive-oriented; fold in physically but keep out of active roots

@@ -1,0 +1,35 @@
+{
+  "name": "erik-interaction",
+  "version": "1.0.0",
+  "description": "Erik's communication patterns and validation framework",
+  "skills": [
+    "erik-response-formatter",
+    "context-auto-loader",
+    "jr-auto-validator",
+    "command-interpreter",
+    "technical-depth-defaulter",
+    "past-conversation-auto-search"
+  ],
+  "hooks": {
+    "UserPromptSubmit": ["hooks/UserPromptSubmit.sh"],
+    "PreToolUse": ["hooks/PreToolUse.sh"],
+    "PostToolUse": ["hooks/PostToolUse.sh"]
+  },
+  "permissions": {
+    "mode": "acceptEdits",
+    "rules": [
+      {
+        "tool": "Read",
+        "behavior": "allow"
+      },
+      {
+        "tool": "WebFetch",
+        "behavior": "allow"
+      },
+      {
+        "tool": "Bash",
+        "behavior": "allow"
+      }
+    ]
+  }
+}

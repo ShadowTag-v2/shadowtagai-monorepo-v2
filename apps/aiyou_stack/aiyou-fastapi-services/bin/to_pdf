@@ -1,0 +1,29 @@
+#!/bin/bash
+# PROTOCOL OMEGA: PDF GENERATOR
+# Converts Markdown -> HTML -> PDF using native macOS tools.
+
+SRC="$HOME/Desktop/ShadowTag_Exports/Business_Plan.md"
+DEST="$HOME/Desktop/ShadowTag_Exports/Business_Plan.pdf"
+TMP_HTML="/tmp/bp_temp.html"
+
+echo "📄 CONVERTING TO PDF..."
+
+# 1. Convert Markdown to Rich Text / HTML
+# textutil is great for this unique mac capability
+echo "   [1/2] Converting MD to HTML..."
+textutil -convert html "$SRC" -output "$TMP_HTML"
+
+# 2. Convert HTML to PDF via CUPS Filter
+echo "   [2/2] Printing to PDF..."
+cupsfilter -i text/html -m application/pdf "$TMP_HTML" > "$DEST" 2>/dev/null
+
+# Clean up
+rm "$TMP_HTML"
+
+# 3. Verify
+if [ -f "$DEST" ]; then
+    echo "✅ PDF GENERATED: $DEST"
+    ls -la "$DEST"
+else
+    echo "❌ PDF GENERATION FAILED."
+fi

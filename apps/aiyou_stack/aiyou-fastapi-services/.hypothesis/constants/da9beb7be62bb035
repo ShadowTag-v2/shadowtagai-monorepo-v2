@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtag_v2/video_stego.py
+# hypothesis_version: 6.151.5
+
+[0.02, 128, 255, 256, 'VideoWatermarkConfig', 'bits_to_bytes', 'bytes_to_bits', 'embed_frame', 'extract_frame', 'prompt_hash']

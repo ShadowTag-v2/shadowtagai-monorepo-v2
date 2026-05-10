@@ -1,0 +1,9 @@
+# tool_contracts/context.google_drive_fetch.yaml
+tool_id: "context.google_drive_fetch"
+description: "Governs the context.google_drive_fetch operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/context_google_drive_fetch.jsonl"
+reuse_queries: []

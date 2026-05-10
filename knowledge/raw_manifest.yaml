@@ -1,0 +1,14 @@
+# knowledge/raw_manifest.yaml — Raw Source Tracking
+# Track external documents ingested into the knowledge vault.
+# Raw files live in data/knowledge_raw/ (gitignored).
+# Only compiled Markdown is committed.
+version: 1
+
+sources: []
+# Example:
+# - id: src-001
+#   title: "Dagger Execution Model"
+#   url: "https://docs.dagger.io"
+#   ingested: 2026-04-27
+#   compiled_to: knowledge/vault/concepts/dagger-execution.md
+#   status: compiled

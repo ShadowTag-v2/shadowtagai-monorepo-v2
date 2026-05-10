@@ -1,0 +1,9 @@
+# tool_contracts/ruler.apply.yaml
+tool_id: "ruler.apply"
+description: "Governs the ruler.apply operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/ruler_apply.jsonl"
+reuse_queries: []

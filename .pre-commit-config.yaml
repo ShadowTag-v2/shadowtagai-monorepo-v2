@@ -1,0 +1,133 @@
+# Pre-commit hooks for CounselConduit / UphillSnowball
+# Install: pip install pre-commit && pre-commit install
+# Run all: pre-commit run --all-files
+
+repos:
+  # Betterleaks — secret detection (successor to Gitleaks by same authors, Cor.30 R3)
+  # Features: parallelized git scanning, CEL-based secret validation, token efficiency filter
+  - repo: local
+    hooks:
+      - id: betterleaks
+        name: Detect hardcoded secrets (Betterleaks)
+        entry: bash -c 'BETTERLEAKS=$(command -v betterleaks || echo "$HOME/go/bin/betterleaks"); "$BETTERLEAKS" git --pre-commit --redact --staged --verbose --config .betterleaks.toml'
+        language: system
+        pass_filenames: false
+
+  # Detect private keys
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key
+        exclude: '^(docs/canonicalization/|control/legacy_workspaces/|archive/)'
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: '^\.beads/kairos_heartbeat\.json$'
+      - id: trailing-whitespace
+
+  # Ruff — Python linting + formatting
+  # Source: https://github.com/astral-sh/ruff
+  # Pre-commit: https://github.com/astral-sh/ruff-pre-commit
+  # VSCode: https://github.com/astral-sh/ruff-vscode (charliermarsh.ruff)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.11
+    hooks:
+      - id: ruff
+        args: [--fix]
+        exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/|external_sdks/)'
+      - id: ruff-format
+        exclude: '^(tools/|third_party/|libs/|labs/|reference_architectures/|external_repos/|clones/|archive/|packages/|docs/bundles/|external_sdks/)'
+
+
+  # Bandit — Python security scanning
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        args: [-c, pyproject.toml, -r, apps/counselconduit/, --skip, 'B101', -ll]
+        additional_dependencies: ['bandit[toml]']
+        pass_filenames: false
+
+  # pip-audit — dependency vulnerability scanning (Cor.30 R34)
+  - repo: local
+    hooks:
+      - id: pip-audit
+        name: pip-audit (dependency vulnerabilities)
+        entry: bash -c 'python3 -m pip_audit -r apps/counselconduit/requirements.txt --desc --no-deps 2>&1 | tail -5'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]  # Only on push, not every commit (slow)
+
+  # Ruler — agent instruction drift detection
+  - repo: local
+    hooks:
+      - id: ruler-apply-check
+        name: ruler apply --dry-run
+        entry: "bash -c 'if command -v ruler &>/dev/null; then ruler apply --dry-run 2>&1 | grep -q \"No changes\" && echo \"OK Ruler no drift\" || echo \"WARN Ruler drift detected\"; else echo \"WARN Ruler not installed\"; fi'"
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  # Biome — JS/TS/JSON formatting and linting
+  - repo: local
+    hooks:
+      - id: biome-check
+        name: Biome Format & Lint
+        entry: bash -c 'export PATH=/opt/homebrew/bin:$PATH && node_modules/.bin/biome check --write --unsafe "$@"' --
+        language: system
+        files: '\.(js|jsx|ts|tsx|json)$'
+        exclude: '^(node_modules/|third_party/|external_repos/|archive/|\.venv/|\.beads/|playwright-report/|\.stitch-sdk/|\.claude/hooks/|apps/aiyou_stack/|apps/thermal-ride/|apps/cosmic-crab/|apps/aiyou-web-dashboard/|packages/aiyou/|labs/gemini-cookbook/|external_sdks/|control/|docs/atlantis/|docs/legacy_shadowtag_v2/|reference_architectures/|libs/autoresearch_sources/|tests/)'
+
+  # AST-Grep — structural pattern enforcement
+  - repo: local
+    hooks:
+      - id: ast-grep-scan
+        name: AST-Grep Structural Rules
+        entry: bash -c 'export PATH=/opt/homebrew/bin:$PATH && node_modules/.bin/ast-grep scan --format github'
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+
+  # Monorepo manifest drift guard — validates CI workflow existence
+  - repo: local
+    hooks:
+      - id: manifest-drift-guard
+        name: Monorepo Manifest Drift Guard
+        entry: bash scripts/manifest_drift_guard.sh
+        language: system
+        files: 'monorepo_manifest\.yaml$|\.github/workflows/.*\.yml$'
+        pass_filenames: false
+
+  # Weekly compliance copy scanner
+  - repo: local
+    hooks:
+      - id: compliance-copy-scan
+        name: Compliance Copy Scanner
+        entry: bash scripts/compliance_copy_scan_weekly.sh
+        language: system
+        files: '\.(html|tsx|ts|mdx|md)$'
+        pass_filenames: false
+
+  # RULE 00: Immutable Infrastructure — blocks rm/unlink on .agents/ .ruler/ SKILL.md
+  - repo: local
+    hooks:
+      - id: rule00-immutable-infrastructure
+        name: "RULE 00: Immutable Infrastructure Guard"
+        entry: bash scripts/rule00_compliance_test.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  # DLP Circuit Breaker — epistemic airgap enforcement (Cor.30 R3, GEMINI.md epistemic_airgap_doctrine)
+  - repo: local
+    hooks:
+      - id: dlp-circuit-breaker
+        name: DLP Circuit Breaker (Internal IP Leak Prevention)
+        entry: bash scripts/dlp_circuit_breaker.sh
+        language: system
+        pass_filenames: false
+        always_run: true

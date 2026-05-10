@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/finjudge/core/pure_judge.py
+# hypothesis_version: 6.151.5
+
+[1.0, 100, 500, 1000, '.', '>$10M potential loss', 'EXTREME risk', 'HIGH risk', 'LOW risk', 'MODERATE risk', 'WHERE UNCERTAIN:', 'WHY RISKY:', 'any adverse movement', 'capital_at_risk', 'concentration', 'credit_risk', 'drawdown exceeds 5%', 'exposure_pct_aum', 'flag_severity', 'general_risk', 'liquidity_heat', 'liquidity_stress', 'policy_violation', 'stressed', 'tail_risk', 'tail_severity', 'v0.2.0', 'var_95', 'var_budget_breach', 'var_to_budget', 'var_to_budget_ratio']

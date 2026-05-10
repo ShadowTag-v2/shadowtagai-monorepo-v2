@@ -1,0 +1,47 @@
+#!/bin/bash
+# NUKE CLUSTER: Recursive Deletion Tool (Dynamic)
+# Usage: ./bin/nuke_cluster <region> <cluster_name>
+set -e
+
+REGION="us-central1"
+CLUSTER="antigravity-cluster-v2"
+PROJECT="shadowtag-omega-v2"
+
+echo "☢️  INITIATING CONFIG DOM TRAVERSAL FOR: $CLUSTER"
+
+# 1. DELETE STATIONS & CONFIGS (Dynamic Discovery)
+# ------------------------------------------------
+echo "🔍 Scanning for Configurations in Cluster..."
+# Get list of configs associated with this cluster
+# Note: gcloud doesn't let you list configs BY cluster easily in all versions,
+# so we list ALL configs and filter, or we rely on the error message which implies we can't delete the cluster.
+# Strategy: List all configs in the region, filtered by cluster label if possible, or just force try the known ones + dynamic list.
+
+CONFIGS=$(gcloud workstations configs list --region=$REGION --project=$PROJECT --format="value(name)" --filter="clusterName:projects/$PROJECT/locations/$REGION/workstationClusters/$CLUSTER")
+
+if [ -z "$CONFIGS" ]; then
+    echo "   No configurations found linked to $CLUSTER (or filter failed). Trying known defaults..."
+    CONFIGS="antigravity-config antigravity-crd-config-v2"
+fi
+
+for CONFIG in $CONFIGS; do
+    echo "   Processing Config: $CONFIG"
+
+    # List and Delete Stations for this Config
+    STATIONS=$(gcloud workstations list --cluster=$CLUSTER --config=$CONFIG --region=$REGION --project=$PROJECT --format="value(name)" 2>/dev/null || true)
+    for STATION in $STATIONS; do
+        echo "      💣 Deleting Station: $STATION"
+        gcloud workstations delete $STATION --cluster=$CLUSTER --config=$CONFIG --region=$REGION --project=$PROJECT --quiet --async
+    done
+
+    # Delete the Config itself
+    echo "      💣 Deleting Config: $CONFIG"
+    gcloud workstations configs delete $CONFIG --cluster=$CLUSTER --region=$REGION --project=$PROJECT --quiet --async || echo "      (Config delete trigger failed or already gone)"
+done
+
+# 3. DELETE CLUSTER
+# -----------------
+echo "💥 DESTROYING CLUSTER: $CLUSTER"
+gcloud workstations clusters delete $CLUSTER --region=$REGION --project=$PROJECT --quiet --async
+
+echo "✅ Target Neutralized. Quota Freed."

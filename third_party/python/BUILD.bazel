@@ -1,0 +1,7 @@
+# BUILD.bazel — third_party/python
+# Exports lock files for Bazel pip.parse consumption
+
+exports_files([
+    "requirements_test_lock.txt",
+    "requirements_test.txt",
+])

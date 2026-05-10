@@ -1,0 +1,9 @@
+# tool_contracts/design_system.lint.yaml
+tool_id: "design_system.lint"
+description: "Governs the design_system.lint operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/design_system_lint.jsonl"
+reuse_queries: []

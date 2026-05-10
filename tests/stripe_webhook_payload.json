@@ -1,0 +1,28 @@
+{
+  "id": "evt_test_webhook",
+  "object": "event",
+  "api_version": "2024-04-10",
+  "created": 1715097600,
+  "data": {
+    "object": {
+      "id": "cs_test_a1b2c3d4e5f6",
+      "object": "checkout.session",
+      "amount_total": 14900,
+      "currency": "usd",
+      "customer": "cus_test_12345",
+      "metadata": {
+        "userId": "user_123",
+        "plan": "pro_monthly"
+      },
+      "payment_status": "paid",
+      "status": "complete"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": {
+    "id": "req_123",
+    "idempotency_key": "idemp_123"
+  },
+  "type": "checkout.session.completed"
+}

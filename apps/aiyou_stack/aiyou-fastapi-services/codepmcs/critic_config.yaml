@@ -1,0 +1,42 @@
+# Critic Agent Configuration
+# Enforces Cor.56 Standards during Code Review
+
+critic:
+  model: "gemini-3.1-flash-lite-preview"
+  temperature: 0.1
+  max_output_tokens: 8192
+
+  rules:
+    - name: "No Legacy Imports"
+      condition: "import openai|import anthropic|import pinecone|import langchain"
+      action: "reject"
+      message: "Absolute Ban: Maintain Pure Gemini architecture."
+
+    - name: "Torch Containment"
+      condition: "import torch"
+      scope: "exclude:src/pnkln/steel"
+      action: "reject"
+      message: "Torch is only allowed in the 'steel' (Ironwood) layer."
+
+    - name: "Type Hints"
+      condition: 'def .*\‍(.*\‍):'
+      regex_negative: "->"
+      action: "comment"
+      message: "Please add type hints to function signatures."
+
+    - name: "Docstrings"
+      condition: 'def .*\‍(.*\‍):'
+      regex_negative: "\"\"\"|'''"
+      action: "comment"
+      message: "Public functions require docstrings."
+
+    - name: "No Global Variables"
+      condition: "^[A-Z_]+ = .*"
+      scope: "src/agents"
+      action: "warning"
+      message: "Avoid global state in agents; use Context or Config objects."
+
+  severity_levels:
+    reject: "BLOCKING"
+    warning: "NON-BLOCKING"
+    comment: "INFO"

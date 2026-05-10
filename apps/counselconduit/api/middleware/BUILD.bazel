@@ -1,0 +1,19 @@
+# BUILD.bazel — apps/counselconduit/api/middleware
+# Phase 4: Request middleware (rate limiting, security headers, prompt guard)
+# Owner: product
+
+load("@rules_python//python:defs.bzl", "py_library")
+
+package(default_visibility = ["//apps/counselconduit/api:__pkg__"])
+
+py_library(
+    name = "middleware",
+    srcs = [
+        "__init__.py",
+        "attorney_rate_limit.py",
+        "prompt_guard.py",
+        "rate_limiter.py",
+        "security_headers.py",
+        "token_budget.py",
+    ],
+)

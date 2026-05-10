@@ -1,0 +1,95 @@
+name: Deploy Autoresearch to Cloud Run
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'agents/autoresearch.py'
+      - 'bin/autoresearch-server/**'
+      - 'autoresearch-server.Dockerfile'
+      - 'requirements.txt'
+      - 'src/shadowtag-omega-v4/**'
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
+
+env:
+  PROJECT_ID: shadowtag-omega-v4
+  REGION: us-central1
+  REPOSITORY: n-autoresearch
+  IMAGE: server
+
+
+concurrency:
+  group: deploy-autoresearch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-actions@shadowtag-omega-v4.iam.gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build and Push Image
+        run: |
+          docker build \
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
+            -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest \
+            -f autoresearch-server.Dockerfile .
+          docker push --all-tags us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE
+
+      - name: Deploy to Cloud Run (Dev)
+        if: github.event.inputs.environment != 'prod'
+        run: |
+          gcloud run deploy autoresearch-server-dev \
+            --image us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
+            --region $REGION \
+            --platform managed \
+            --memory 2Gi \
+            --cpu 2 \
+            --set-env-vars PYTHONPATH=/app
+
+      - name: Deploy to Cloud Run (Prod)
+        if: github.event.inputs.environment == 'prod'
+        run: |
+          gcloud run deploy autoresearch-server \
+            --image us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
+            --region $REGION \
+            --platform managed \
+            --memory 2Gi \
+            --cpu 2 \
+            --set-env-vars PYTHONPATH=/app
+
+      - name: Output Service URL
+        run: |
+          SERVICE_NAME=${{ github.event.inputs.environment == 'prod' && 'autoresearch-server' || 'autoresearch-server-dev' }}
+          URL=$(gcloud run services describe $SERVICE_NAME --region $REGION --format 'value(status.url)')
+          echo "## Deployed to Cloud Run" >> $GITHUB_STEP_SUMMARY
+          echo "Service URL: $URL" >> $GITHUB_STEP_SUMMARY

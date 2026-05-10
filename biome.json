@@ -1,0 +1,268 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error",
+        "useExhaustiveDependencies": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noDebugger": "error",
+        "noConsole": { "level": "warn", "options": { "allow": ["log"] } },
+        "useIterableCallbackReturn": "off",
+        "noArrayIndexKey": "warn"
+      },
+      "style": {
+        "noNonNullAssertion": "warn",
+        "useConst": "error",
+        "useTemplate": "error",
+        "noParameterAssign": "warn"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "error",
+        "noSecrets": "error"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": { "maxAllowedComplexity": 25 }
+        },
+        "noForEach": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "always"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "quoteStyle": "single"
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/build",
+      "!**/.next",
+      "!**/.beads",
+      "!**/*.min.js",
+      "!**/*.min.css",
+      "!**/coverage",
+      "!**/.git",
+      "!tools",
+      "!third_party",
+      "!external_repos",
+      "!archive",
+      "!docs/legacy_shadowtag_v2",
+      "!apps/aiyou_ecosystem/raw_ingest",
+      "!**/arsenal_recovered",
+      "!playwright-report",
+      "!.stitch-sdk",
+      "!.claude/hooks",
+      "!apps/aiyou_stack",
+      "!apps/thermal-ride",
+      "!apps/cosmic-crab",
+      "!apps/aiyou-web-dashboard",
+      "!packages/aiyou",
+      "!labs/gemini-cookbook",
+      "!external_sdks",
+      "!control",
+      "!docs/atlantis",
+      "!docs/legacy_shadowtag_v2",
+      "!reference_architectures",
+      "!libs/autoresearch_sources",
+      "!apps/kovelai/public/assets",
+      "!apps/shadowtagai/public/assets",
+      "!**/public/dev",
+      "!**/public-v1-archive",
+      "!**/public/static",
+      "!apps/unusual-machines-chassis",
+      "!apps/unusual-machines-clone",
+      "!apps/tacsop0-frontend-clone",
+      "!tests",
+      "!.agent",
+      "!src",
+      "!vault",
+      "!_archive*",
+      "!target",
+      "!bazel-*",
+      "!apps/molten-universe",
+      "!**/__pycache__",
+      "!scratch",
+      "!.antigravity",
+      "!scripts/ported_claude_controllers",
+      "!scripts/ide-companion",
+      "!_audit_claude_code",
+      "!labs",
+      "!apps/lead-capture-router/lib",
+      "!**/assets/*.js",
+      "!scripts/design-system-lint.mjs",
+      "!**/site/_archive_vanilla_html*",
+      "!docs/examples",
+      "!apps/kovelai/site/src/app/globals.css",
+      "!apps/kovelai/site/src/style.css",
+      "!apps/legaltrack/ui/src/index.css",
+      "!apps/prismic-meteorite/src/app/globals.css",
+      "!apps/shadowtagai/site/src/style.css",
+      "!apps/kovelai/firestore.indexes.json"
+    ],
+    "maxSize": 2097152
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAtRules": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/kovelai/site/**",
+        "**/kovelai/tests/**",
+        "**/shadowtag-web/**",
+        "**/thumbly/**",
+        "**/counselconduit-dashboard/src/**"
+      ],
+      "linter": {
+        "rules": {
+          "security": {
+            "noSecrets": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/public/**/*.html"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useMediaCaption": "off"
+          },
+          "suspicious": {
+            "noAssignInExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/src/architecture/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.js", "**/e2e/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": { "level": "off", "options": { "allow": ["log"] } }
+          },
+          "security": {
+            "noSecrets": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/components/ui/**"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noSecrets": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/thumbly/src/app/layout.tsx"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/public/**/*.html", "**/public/**/*.js", "**/site/_archive*/**"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noSecrets": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/billing/**", "**/lib/security/**", "**/lib/compliance/**"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noSecrets": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["scripts/**"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noSecrets": "off"
+          },
+          "suspicious": {
+            "noConsole": { "level": "off", "options": { "allow": ["log"] } }
+          }
+        }
+      }
+    }
+  ]
+}

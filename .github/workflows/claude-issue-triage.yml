@@ -1,0 +1,75 @@
+name: Claude Issue Triage
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: read
+  id-token: write
+
+concurrency:
+  group: claude-triage-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    name: "Auto-Triage Issue"
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.SHADOWTAG_APP_ID }}
+          private-key: ${{ secrets.SHADOWTAG_APP_PEM }}
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          use_vertex: "true"
+          github_token: ${{ steps.app-token.outputs.token }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            ISSUE NUMBER: ${{ github.event.issue.number }}
+            TITLE: ${{ github.event.issue.title }}
+            BODY: ${{ github.event.issue.body }}
+            AUTHOR: ${{ github.event.issue.user.login }}
+
+            Analyze this new issue and:
+
+            1. **Classify**: bug | feature-request | question | documentation | security
+            2. **Priority**: critical | high | medium | low
+            3. **Component**: Identify which monorepo component is affected:
+               - apps/kovelai (marketing site)
+               - apps/counselconduit (legal AI backend)
+               - apps/lawtrack-ui (case management)
+               - core/ (shared libraries)
+               - infra/ (infrastructure)
+               - labs/uphillsnowball (R&D)
+            4. **Duplicates**: Search existing issues for duplicates
+            5. **Actionability**: Can this be worked on now? What's missing?
+
+            Add appropriate labels using gh CLI:
+            `gh issue edit ${{ github.event.issue.number }} --add-label "type:bug"` etc.
+
+            Post a triage comment summarizing your analysis.
+            If it's a security issue, also add the "priority:critical" label.
+
+          claude_args: |
+            --model claude-sonnet-4-20250514
+            --max-turns 10
+            --allowedTools "Bash(gh issue:*),Bash(gh search:*),Read"

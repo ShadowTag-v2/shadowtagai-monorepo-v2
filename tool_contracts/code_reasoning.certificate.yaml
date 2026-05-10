@@ -1,0 +1,9 @@
+# tool_contracts/code_reasoning.certificate.yaml
+tool_id: "code_reasoning.certificate"
+description: "Governs the code_reasoning.certificate operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/code_reasoning_certificate.jsonl"
+reuse_queries: []

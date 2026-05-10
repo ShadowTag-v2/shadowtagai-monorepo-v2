@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/libs/steel/sentinel.py
+# hypothesis_version: 6.151.5
+
+['AKIA[A-Z0-9]{16}', 'JudgeSixSentinel', 'RiskTier', '__import__\\s*\\(', 'conftest', 'eval\\s*\\(', 'exec\\s*\\(', 'file', 'green', 'match', 'orange', 'pattern', 'red', 'sk-[a-zA-Z0-9]{20,}', 'test_', 'tests/', 'yellow']

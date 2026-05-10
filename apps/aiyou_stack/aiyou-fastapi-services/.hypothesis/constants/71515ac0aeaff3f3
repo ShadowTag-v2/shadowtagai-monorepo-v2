@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/config/settings.py
+# hypothesis_version: 6.151.5
+
+[300, 8000, 10080, '0', '1', 'HS256', 'INFO', 'SECRET_KEY', 'Settings', 'after', 'before', 'debug', 'dev', 'development', 'false', 'ignore', 'no', 'off', 'on', 'prod', 'production', 'release', 'true', 'us-central1', 'yes']

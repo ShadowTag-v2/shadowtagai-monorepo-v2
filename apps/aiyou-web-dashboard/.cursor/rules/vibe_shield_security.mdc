@@ -1,0 +1,42 @@
+---
+name: Vibe Shield OS 30 Security Rules
+description: Enforces the 30 non-negotiable OWASP/Vibe-Coding security rules during generation.
+globs: *
+---
+# The 30 Security Rules for AI Code Generation
+
+1. **Session Expiration:** Access tokens 15-60m. Refresh max 7 days + rotated + revocable.
+2. **Auth Generation:** NEVER build auth from scratch. Use Clerk, Supabase Auth, or Auth0.
+3. **API Keys:** NEVER put API keys in code. Use `process.env`.
+4. **.gitignore:** Create `.gitignore` first. Always include `.env` and `node_modules`.
+5. **Secret Rotation:** Auto-rotate secrets immediately on exposure or every 90 days.
+6. **Package Verification:** Verify every suggested npm/pip package before blindly installing.
+7. **Latest Secure Deps:** Ask for the latest stable secure package versions.
+8. **npm audit:** Run `npm audit` on PRs. Do not blindly `npm audit fix` on main.
+9. **Validation & SQLi:** Sanitize EVERY input with Zod/Pydantic. Always use parameterized DB queries.
+10. **RLS:** Enable Row-Level Security in the DB from day one.
+11. **Console Logs:** No secrets/PII in logs. Strip debug logs in production bundles.
+12. **CORS:** Only permit production domains. Never use wildcard `*`.
+13. **Redirects:** Validate all redirect URLs against a strict allow-list to prevent open redirects.
+14. **Universal Rate Limits:** Apply auth + rate limits to ALL endpoints (web and mobile).
+15. **Adaptive Rate Limits:** Rate limit by IP + user + endpoint (stricter for auth/write).
+16. **Password Reset Limits:** Lock password reset to max 3 requests/hour per email.
+17. **Cost Caps:** Hardcap AI/API costs in UI dashboards AND via code token-limits.
+18. **DDoS Protection:** Vercel Edge config or Cloudflare must be active.
+19. **Buckets:** Lock down storage buckets. Per-user access only.
+20. **File Uploads:** Validate uploads by signature (magic bytes) + size limits, NOT extension.
+21. **Webhooks:** Verify webhook signatures (Stripe/Payment) strictly.
+22. **Emails:** Configure SPF/DKIM for SendGrid/Resend.
+23. **Server AuthZ:** Permissions MUST be checked server-side. UI hiding is not security.
+24. **AI Sec Review:** Ask AI to act as a security engineer to review your code before merge.
+25. **AI Red Team:** Ask the AI to try and hack the application looking for open routes.
+26. **Audit Logs:** Log critical actions (deletions, role changes, exports, payments).
+27. **GDPR:** Build the account deletion flow from Day 1.
+28. **Backups:** Schedule automated DB backups and physically test restoration monthly.
+29. **Env Isolation:** Complete physical separation of test/staging/production databases.
+30. **No Test Webhooks:** Never point local/test webhooks to production endpoints.
+
+## Component Strategy & Line Counts
+- Follow **Locality of Behavior** over strict 150-line caps.
+- Break files by distinct concerns (Data layer, Sub-UI structure, standard logic split).
+- **CRITICAL:** Do NOT refactor existing massively 400+ line components blindly or unprompted. It will destroy the layout.

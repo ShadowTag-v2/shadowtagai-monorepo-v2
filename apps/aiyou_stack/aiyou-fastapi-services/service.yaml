@@ -1,0 +1,22 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: shadowtag-omega-v7
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      containers:
+      # 1. THE BRAIN (Agent + Judge + Titans)
+      - image: gcr.io/shadowtag-omega-v4/brain:latest
+        env:
+        - name: JETSKI_URL
+          value: "http://localhost:3000"
+
+      # 2. THE HANDS (Jetski Browser Sidecar)
+      - image: gcr.io/shadowtag-omega-v4/jetski:latest
+        name: sidecar
+        ports:
+          - containerPort: 3000

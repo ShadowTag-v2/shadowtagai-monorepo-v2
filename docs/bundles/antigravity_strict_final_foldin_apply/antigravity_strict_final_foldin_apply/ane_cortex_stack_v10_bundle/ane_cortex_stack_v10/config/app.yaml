@@ -1,0 +1,27 @@
+stack:
+  name: ane-cortex-stack-v9
+repo:
+  repo_id: ane
+  repo_root: ./external_repos/ANE
+paths:
+  sqlite_db: ./data/file_index/ane_files.db
+  lancedb_root: ./data/lancedb
+  json_memory_path: ./data/memory/memories.jsonl
+  authority_state_path: ./data/memory/authority-current.json
+  monorepo_manifest_path: ./manifests/monorepo_manifest.yaml
+  monorepo_merge_status_path: ./docs/MERGE_STATUS.md
+  monorepo_control_plane_path: ./docs/ANTIGRAVITY_CONTROL_PLANE.md
+hardware:
+  default_inference_backend: ane
+  ane:
+    enabled: true
+    mode: primary_runtime
+    fallback_policy:
+      enabled: true
+      fallback_backend: metal
+memory:
+  single_source_of_truth: authority_memory
+  startup_bootstrap_required: true
+  codebase_is_secondary_context: true
+  changed_file_embedding_only: true
+  jsonl_journal_enabled: true

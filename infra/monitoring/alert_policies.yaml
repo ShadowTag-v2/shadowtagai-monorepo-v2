@@ -1,0 +1,85 @@
+# infra/monitoring/alert_policies.yaml
+# GCP Cloud Monitoring Alert Policies for CounselConduit
+# Apply: gcloud monitoring policies create --policy-from-file=infra/monitoring/alert_policies.yaml --project=shadowtag-omega-v4
+
+alertPolicies:
+  - displayName: "CounselConduit — 5xx Error Rate > 5%"
+    combiner: OR
+    conditions:
+      - displayName: "Cloud Run 5xx responses"
+        conditionThreshold:
+          filter: >
+            resource.type = "cloud_run_revision"
+            AND resource.labels.service_name = "counselconduit"
+            AND metric.type = "run.googleapis.com/request_count"
+            AND metric.labels.response_code_class = "5xx"
+          comparison: COMPARISON_GT
+          thresholdValue: 5
+          duration: "300s"
+          aggregations:
+            - alignmentPeriod: "60s"
+              perSeriesAligner: ALIGN_RATE
+    notificationChannels: []  # Add Discord webhook or email channel
+    alertStrategy:
+      autoClose: "1800s"
+
+  - displayName: "CounselConduit — Latency p95 > 3s"
+    combiner: OR
+    conditions:
+      - displayName: "Request latency p95"
+        conditionThreshold:
+          filter: >
+            resource.type = "cloud_run_revision"
+            AND resource.labels.service_name = "counselconduit"
+            AND metric.type = "run.googleapis.com/request_latencies"
+          comparison: COMPARISON_GT
+          thresholdValue: 3000  # milliseconds
+          duration: "300s"
+          aggregations:
+            - alignmentPeriod: "300s"
+              perSeriesAligner: ALIGN_PERCENTILE_95
+    notificationChannels: []
+
+  - displayName: "CounselConduit — Instance Count > 8"
+    combiner: OR
+    conditions:
+      - displayName: "High instance count"
+        conditionThreshold:
+          filter: >
+            resource.type = "cloud_run_revision"
+            AND resource.labels.service_name = "counselconduit"
+            AND metric.type = "run.googleapis.com/container/instance_count"
+          comparison: COMPARISON_GT
+          thresholdValue: 8
+          duration: "120s"
+    notificationChannels: []
+
+  - displayName: "CounselConduit — Memory Utilization > 80%"
+    combiner: OR
+    conditions:
+      - displayName: "Memory pressure"
+        conditionThreshold:
+          filter: >
+            resource.type = "cloud_run_revision"
+            AND resource.labels.service_name = "counselconduit"
+            AND metric.type = "run.googleapis.com/container/memory/utilizations"
+          comparison: COMPARISON_GT
+          thresholdValue: 0.8
+          duration: "300s"
+    notificationChannels: []
+
+  - displayName: "Firestore — Read Rate > 1000/min"
+    combiner: OR
+    conditions:
+      - displayName: "High Firestore read rate"
+        conditionThreshold:
+          filter: >
+            resource.type = "firestore_database"
+            AND metric.type = "firestore.googleapis.com/document/read_count"
+          comparison: COMPARISON_GT
+          thresholdValue: 1000
+          duration: "60s"
+          aggregations:
+            - alignmentPeriod: "60s"
+              perSeriesAligner: ALIGN_RATE
+    notificationChannels: []

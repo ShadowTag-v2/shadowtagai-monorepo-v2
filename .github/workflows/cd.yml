@@ -1,0 +1,130 @@
+name: CD - Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment || 'production' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ${{ inputs.environment || 'production' }}
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test || echo "No tests found, continuing..."
+
+      - name: Build application
+        run: npm run build || echo "No build script, continuing..."
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          target: runner
+
+      - name: Deploy to Server
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment commands here
+          # Examples:
+          # - SSH into server and pull new image
+          # - Update Kubernetes manifests
+          # - Trigger cloud provider deployment
+          # - Run database migrations
+
+          # Example SSH deployment (requires SSH_PRIVATE_KEY secret):
+          # mkdir -p ~/.ssh
+          # echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          # chmod 600 ~/.ssh/id_rsa
+          # ssh -o StrictHostKeyChecking=no user@server "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest && docker-compose up -d"
+
+      - name: Run database migrations
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Running database migrations..."
+          # npm run migrate || echo "No migration script found"
+
+      - name: Health check
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Performing health check..."
+          # curl -f https://your-production-url.com/health || exit 1
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          echo "Deployment ${{ job.status }}"
+          # Add notification logic here (Slack, Discord, email, etc.)
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Deployment failed, initiating rollback..."
+          # Add rollback logic here

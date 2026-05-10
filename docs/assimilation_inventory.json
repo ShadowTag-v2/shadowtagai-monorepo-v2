@@ -1,0 +1,452 @@
+{
+  "repos": [
+    {
+      "repo_name": "pnkln-stack",
+      "source_url": "https://github.com/ehanc69/pnkln-stack.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-frontend",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-frontend.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-frontend",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-backend",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-backend.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-backend",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-infra",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-infra.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-infra",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-ci",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-ci.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-ci",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-security",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-security.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-security",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-risk",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-risk.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-risk",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-data",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-data.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-data",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-ml",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-ml.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-ml",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-sops",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-sops.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-sops",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-exec",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-exec.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-exec",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "core",
+      "source_url": "https://github.com/ehanc69/core.git",
+      "canonical_path": "apps/pnkln-stack_stack/core",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "fastapi-services",
+      "source_url": "https://github.com/ehanc69/fastapi-services.git",
+      "canonical_path": "apps/pnkln-stack_stack/fastapi-services",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "infra",
+      "source_url": "https://github.com/ehanc69/infra.git",
+      "canonical_path": "apps/pnkln-stack_stack/infra",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "prompts",
+      "source_url": "https://github.com/ehanc69/prompts.git",
+      "canonical_path": "apps/pnkln-stack_stack/prompts",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "docs",
+      "source_url": "https://github.com/ehanc69/docs.git",
+      "canonical_path": "apps/pnkln-stack_stack/docs",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "mlops",
+      "source_url": "https://github.com/ehanc69/mlops.git",
+      "canonical_path": "apps/pnkln-stack_stack/mlops",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "observability",
+      "source_url": "https://github.com/ehanc69/observability.git",
+      "canonical_path": "apps/pnkln-stack_stack/observability",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "sre",
+      "source_url": "https://github.com/ehanc69/sre.git",
+      "canonical_path": "apps/pnkln-stack_stack/sre",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "security",
+      "source_url": "https://github.com/ehanc69/security.git",
+      "canonical_path": "apps/pnkln-stack_stack/security",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-policy",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-policy.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-policy",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-core",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-core.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-core",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-fastapi-services",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-fastapi-services.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-fastapi-services",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-mlops",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-mlops.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-mlops",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-clients",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-clients.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-clients",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-prompts",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-prompts.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-prompts",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-docs",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-docs.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-docs",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-observability",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-observability.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-observability",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-sre",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-sre.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-sre",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-api",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-api.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-api",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-devops",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-devops.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-devops",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-objections-decisions",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-objections-decisions.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-objections-decisions",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-data-contracts",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-data-contracts.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-data-contracts",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-examples",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-examples.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-examples",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-codesmith",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-codesmith.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-codesmith",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-indexer",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-indexer.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-indexer",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-risk-engine",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-risk-engine.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-risk-engine",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-offline-appliance",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-offline-appliance.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-offline-appliance",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-ui-kit",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-ui-kit.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-ui-kit",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-governance",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-governance.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-governance",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-evals",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-evals.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-evals",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stackjr-template-2",
+      "source_url": "https://github.com/ehanc69/pnkln-stackjr-template-2.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stackjr-template-2",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln-stack-rollup",
+      "source_url": "https://github.com/ehanc69/pnkln-stack-rollup.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln-stack-rollup",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "ShadowTag-v2",
+      "source_url": "https://github.com/ehanc69/ShadowTag-v2.git",
+      "canonical_path": "apps/pnkln-stack_stack/ShadowTag-v2",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "Pipeline",
+      "source_url": "https://github.com/ehanc69/Pipeline.git",
+      "canonical_path": "apps/pnkln-stack_stack/Pipeline",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "erik-hancock-llm-memory",
+      "source_url": "https://github.com/ehanc69/erik-hancock-llm-memory.git",
+      "canonical_path": "apps/pnkln-stack_stack/erik-hancock-llm-memory",
+      "status": "absent",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "pnkln",
+      "source_url": "https://github.com/ehanc69/pnkln.git",
+      "canonical_path": "apps/pnkln-stack_stack/pnkln",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "antigravity-go",
+      "source_url": "https://github.com/ehanc69/antigravity-go.git",
+      "canonical_path": "apps/pnkln-stack_stack/antigravity-go",
+      "status": "absent",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "codepmcs",
+      "source_url": "https://github.com/ehanc69/codepmcs.git",
+      "canonical_path": "apps/pnkln-stack_stack/codepmcs",
+      "status": "absent",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "judge6",
+      "source_url": "https://github.com/ehanc69/judge6.git",
+      "canonical_path": "apps/pnkln-stack_stack/judge6",
+      "status": "absent",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "kosmos",
+      "source_url": "https://github.com/ehanc69/kosmos.git",
+      "canonical_path": "apps/pnkln-stack_stack/kosmos",
+      "status": "absent",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "shadowtag_v2",
+      "source_url": "https://github.com/ehanc69/shadowtag_v2.git",
+      "canonical_path": "apps/pnkln-stack_stack/shadowtag_v2",
+      "status": "absent",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "shadowtagai-v1",
+      "source_url": "https://github.com/ehanc69/shadowtagai-v1.git",
+      "canonical_path": "apps/pnkln-stack_stack/shadowtagai-v1",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "chatgpt-archive",
+      "source_url": "https://github.com/ehanc69/chatgpt-archive.git",
+      "canonical_path": "apps/pnkln-stack_stack/chatgpt-archive",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "nascent-apollo",
+      "source_url": "https://github.com/ehanc69/nascent-apollo.git",
+      "canonical_path": "apps/pnkln-stack_stack/nascent-apollo",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    },
+    {
+      "repo_name": "cosmic-crab-payload",
+      "source_url": "https://github.com/ehanc69/cosmic-crab-payload.git",
+      "canonical_path": "apps/pnkln-stack_stack/cosmic-crab-payload",
+      "status": "flat_copied",
+      "build_wired": false,
+      "ci_wired": false
+    }
+  ]
+}

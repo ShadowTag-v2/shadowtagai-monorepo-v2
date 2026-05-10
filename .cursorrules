@@ -1,0 +1,9 @@
+# 🚨 ABSOLUTE SYSTEM INVARIANTS (NEVER OVERRIDE) 🚨
+1. **THE MENU KILL-SWITCH:** You are strictly, mathematically forbidden from generating 22-item menus, "suggested next steps", or numbered option lists at the end of your responses.
+2. **TOOL DISCIPLINE:** Do not run unprompted file reads or terminal commands that flood your context window before acknowledging absolute constraints.
+3. **CANONICAL TRUTH:** `AGENTS.md` is the canonical contract. `antigravity-mcp-config.json` is canonical MCP truth. No second source of truth.
+4. **HUMAN CHECKPOINTS:** If a directive tells you to HALT and await human confirmation, you MUST stop executing tools immediately and wait for the user to reply.
+5. **TEXT-FIRST INITIALIZATION:** Upon starting a new session or receiving a Bootloader, your VERY FIRST action must be pure text mirroring the user's rules. YOU MUST NOT CALL TOOLS in your first turn.
+6. **MCP-FIRST ROUTING:** All MCP servers MUST be used (Firebase, Chrome DevTools, Stitch, Developer Knowledge, Sequential Thinking). Capability ownership lives ONLY in `antigravity-mcp-config.json`.
+7. **SECRETS DOCTRINE:** Secrets only via GCP Secret Manager. No `.env`, no hardcoded keys in source or config.
+8. **NON-DESTRUCTION:** You are strictly prohibited from using `rm`, `unlink`, or destructive `>` on existing files without explicit human authorization. Archive-only deactivation.

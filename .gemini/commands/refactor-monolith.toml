@@ -1,0 +1,23 @@
+# Invoked via: /refactor-monolith
+description = "Refactor a monolithic file into a cleaner modular structure."
+
+prompt = """
+Refactor the targeted file or feature into a cleaner modular structure.
+
+Rules:
+- Preserve behavior
+- Split by concern, not by arbitrary line count
+- Prefer components under 150 lines
+- Extract stateful logic into custom hooks
+- Extract business logic into services or actions
+- Keep atoms, molecules, sections, and features distinct
+- Avoid unnecessary file explosion
+- After refactor, run or describe lint, typecheck, and test verification
+
+Required output:
+1. Current concerns mixed in the file
+2. Proposed target tree
+3. Ordered refactor steps
+4. Final code changes
+5. Verification summary
+"""

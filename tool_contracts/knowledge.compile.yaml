@@ -1,0 +1,9 @@
+# tool_contracts/knowledge.compile.yaml
+tool_id: "knowledge.compile"
+description: "Governs the knowledge.compile operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/knowledge_compile.jsonl"
+reuse_queries: []

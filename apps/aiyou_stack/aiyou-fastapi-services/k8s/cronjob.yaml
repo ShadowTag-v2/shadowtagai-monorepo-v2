@@ -1,0 +1,190 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion
+  namespace: ingestion-layer
+  labels:
+    app: gemini-ingestion
+    component: cronjob
+    part-of: pnkln-core-stack
+spec:
+  # Schedule: Nightly at midnight (adjust timezone in container)
+  schedule: "0 0 * * *"
+
+  # Concurrency: Forbid overlapping runs
+  concurrencyPolicy: Forbid
+
+  # History: Keep last 3 successful and failed runs
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+  jobTemplate:
+    spec:
+      # Timeout: 1 hour (3600 seconds)
+      activeDeadlineSeconds: 3600
+
+      # Backoff: Don't retry failed jobs automatically
+      backoffLimit: 0
+
+      template:
+        metadata:
+          labels:
+            app: gemini-ingestion
+            component: cronjob
+        spec:
+          restartPolicy: Never
+
+          # Service Account for GCP permissions
+          serviceAccountName: gemini-ingestion-sa
+
+          containers:
+          # Main container: Ingestion orchestrator
+          - name: ingestion-app
+            image: gcr.io/PROJECT_ID/gemini-ingestion:latest
+            imagePullPolicy: Always
+
+            command: ["python", "-m", "app.ingestion.core.orchestrator"]
+
+            env:
+            # AI Integration
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-secrets
+                  key: anthropic-api-key
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-secrets
+                  key: google-api-key
+
+            # Multi-Source APIs
+            - name: YOUTUBE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-secrets
+                  key: youtube-api-key
+            - name: TWITTER_BEARER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-secrets
+                  key: twitter-bearer-token
+            - name: NEWS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-secrets
+                  key: news-api-key
+
+            # Database
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-secrets
+                  key: database-url
+
+            # Configuration from ConfigMap
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: environment
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: log-level
+            - name: INGESTION_TIMEOUT_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: ingestion-timeout-minutes
+            - name: BRIEFING_DELIVERY_TIME
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: briefing-delivery-time
+
+            # GCP Configuration
+            - name: GCP_PROJECT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: gcp-project-id
+            - name: GOOGLE_CLOUD_PUBSUB_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: pubsub-topic
+
+            resources:
+              requests:
+                cpu: "1500m"       # 1.5 cores
+                memory: "3Gi"      # 3 GB
+              limits:
+                cpu: "2000m"       # 2 cores
+                memory: "4Gi"      # 4 GB
+
+            volumeMounts:
+            - name: cache-volume
+              mountPath: /tmp/ingestion-cache
+            - name: log-volume
+              mountPath: /var/log/ingestion
+
+          # Sidecar: Cloud Logging agent
+          - name: logging-agent
+            image: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              # Stream logs to Cloud Logging
+              tail -f /var/log/ingestion/*.log | \
+              gcloud logging write gemini-ingestion --severity=INFO
+
+            resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "200m"
+                memory: "256Mi"
+
+            volumeMounts:
+            - name: log-volume
+              mountPath: /var/log/ingestion
+              readOnly: true
+
+          # Sidecar: Metrics exporter
+          - name: metrics-exporter
+            image: gcr.io/PROJECT_ID/metrics-exporter:latest
+            imagePullPolicy: Always
+
+            env:
+            - name: GCP_PROJECT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: gcp-project-id
+            - name: METRICS_EXPORT_INTERVAL_SECONDS
+              value: "60"
+
+            resources:
+              requests:
+                cpu: "100m"
+                memory: "64Mi"
+              limits:
+                cpu: "200m"
+                memory: "128Mi"
+
+            volumeMounts:
+            - name: cache-volume
+              mountPath: /tmp/ingestion-cache
+              readOnly: true
+
+          volumes:
+          - name: cache-volume
+            emptyDir:
+              sizeLimit: 10Gi
+          - name: log-volume
+            emptyDir:
+              sizeLimit: 1Gi>>>>>>> origin/claude/implement-all-011CUuHpYiYtpLV8oP1Ze3B6

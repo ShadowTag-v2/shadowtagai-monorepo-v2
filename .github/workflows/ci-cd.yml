@@ -1,0 +1,115 @@
+name: CI/CD Pipeline
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: '3.13'
+  NODE_VERSION: '22'
+  GOOGLE_CLOUD_PROJECT: shadowtag-omega-v4
+
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Lint & Type Check ──────────────────────────────────────────────
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install linters
+        run: pip install ruff
+      - name: Ruff lint
+        run: ruff check . --output-format=github
+      - name: Ruff format check
+        run: ruff format --check .
+      - name: Ruff dead code (F401/F841 — V22 replaces vulture)
+        run: ruff check apps/ labs/ --select F401,F841 --statistics || true
+
+  # ── CounselConduit Tests ───────────────────────────────────────────
+  test-counselconduit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: pip install -r apps/counselconduit/requirements.txt pytest pytest-asyncio
+      - name: Run tests
+        run: pytest apps/counselconduit/tests/ -v --tb=short
+        env:
+          APP_ENV: test
+          GOOGLE_CLOUD_PROJECT: shadowtag-omega-v4
+
+  # ── Lighthouse CI ──────────────────────────────────────────────────
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+      - name: Run Lighthouse
+        run: |
+          lhci autorun --collect.url=https://kovelai.web.app --collect.url=https://shadowtagai.web.app
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # ── Deploy Staging ─────────────────────────────────────────────────
+  deploy-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [lint, test-counselconduit]
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+      - name: Deploy to staging
+        run: |
+          firebase deploy --only hosting:kovelai-staging,hosting:shadowtagai-staging --project $GOOGLE_CLOUD_PROJECT
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+  # ── Deploy Production ──────────────────────────────────────────────
+  deploy-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [deploy-staging, lighthouse]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+      - name: Deploy KovelAI
+        run: firebase deploy --only hosting:kovelai --project $GOOGLE_CLOUD_PROJECT
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Deploy ShadowTagAI
+        run: firebase deploy --only hosting:shadowtagai --project $GOOGLE_CLOUD_PROJECT
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

@@ -1,0 +1,70 @@
+# Circuit Breaker — Per-Service Configuration Profiles
+# Loaded by circuit_breaker.config_loader at startup.
+#
+# Each profile defines:
+#   failure_threshold: Consecutive failures before OPEN
+#   reset_timeout_s: Seconds in OPEN before HALF_OPEN probe
+#   half_open_max_probes: Max concurrent probes in HALF_OPEN
+#
+# Tuning rationale documented inline.
+
+services:
+  # --- GCP Services ---
+  firestore:
+    failure_threshold: 3
+    reset_timeout_s: 120.0
+    half_open_max_probes: 1
+    # Firestore is low-latency; 3 failures in a row = real outage.
+    # 120s recovery = GCP control plane warm restart window.
+
+  # --- Gemini API Services ---
+  gemini_interactions:
+    failure_threshold: 5
+    reset_timeout_s: 180.0
+    half_open_max_probes: 1
+    # Interactions API has higher tail latency and transient 429s.
+    # 5 failures before trip gives time for quota refresh.
+    # 180s = conservative model warm-up + rate limit window.
+
+  gemini_deep_research:
+    failure_threshold: 3
+    reset_timeout_s: 300.0
+    half_open_max_probes: 1
+    # Deep Research is long-running (10-30min). Fewer failures needed
+    # because each failure wastes significant compute budget.
+    # 300s = 5min recovery to avoid re-triggering during quota burst.
+
+  # --- External APIs ---
+  stripe:
+    failure_threshold: 3
+    reset_timeout_s: 60.0
+    half_open_max_probes: 1
+    # Payment processing must fail fast. 60s recovery is plenty
+    # for Stripe's typical incident resolution.
+
+  github_api:
+    failure_threshold: 5
+    reset_timeout_s: 120.0
+    half_open_max_probes: 1
+    # GitHub App JWT API calls. Higher threshold because transient
+    # 502s from GitHub are common during deployments.
+
+  # --- Internal Services ---
+  cloud_tasks:
+    failure_threshold: 3
+    reset_timeout_s: 90.0
+    half_open_max_probes: 1
+    # Queue broker. Quick recovery matters for async task processing.
+
+  secret_manager:
+    failure_threshold: 3
+    reset_timeout_s: 60.0
+    half_open_max_probes: 1
+    # Critical path for secrets. Fail fast, recover fast.
+
+  cloud_run:
+    failure_threshold: 5
+    reset_timeout_s: 120.0
+    half_open_max_probes: 2
+    # Service-to-service calls. Allow 2 probes since autoscaling
+    # may cause transient cold-start failures.

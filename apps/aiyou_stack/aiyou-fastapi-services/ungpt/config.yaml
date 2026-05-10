@@ -1,0 +1,68 @@
+# UnGPT v2.0 Configuration
+# Static vs Dynamic Architecture
+
+models:
+  # Static Truth (SuperGrok) - Intent validation
+  l0_grok: grok-beta          # Intake & SPT.1
+  l3_grok: grok-beta          # Static Validation
+  l5_grok: grok-beta          # Repackage
+  l7_grok: grok-beta          # Voice TTS
+
+  # Dynamic Execution (Claude) - Code execution
+  l1_claude: claude-sonnet-4-20250514   # Frame & SPT.2
+  l4_claude: claude-opus-4-20250514     # Sandbox Execution
+  l6_claude: claude-sonnet-4-20250514   # PR Check (optional)
+
+  # Infinite Loop (Gemini + GPT)
+  l2_gemini: gemini-3.1-flash-lite-preview
+  l2_gpt: gpt-4o
+
+pipeline:
+  # Convergence settings
+  HARD_CAP_CYCLES: 10
+  convergence_signal: "NO_SIGNIFICANT_CHANGES"
+
+  # CRM Score thresholds
+  crm_abort_threshold: 3      # Score <= 3: ABORT
+  crm_reloop_min: 4           # Score 4-5: Re-loop with tools
+  crm_reloop_max: 5
+
+  # Cost controls
+  cost_alert_threshold: 0.25  # Alert if single run > $0.25
+
+  # Optional features
+  always_pr_check: false      # Force L6 on every run
+
+tools:
+  # L2b re-loop tools (when CRM 4-5)
+  l2b_default:
+    - google_search_retrieval
+    - code_execution
+
+  # Keywords that trigger internal search
+  internal_keywords:
+    - PNKLN
+    - AtomicGrok
+    - ShadowTag
+    - Cor.34
+    - YRM
+    - Judge
+    - JR Engine
+
+github:
+  repo_name: ShadowTag-v2/shadowtag_v4-fastapi-services
+  branch_prefix: research/
+
+analytics:
+  db_path: analytics/crm_db.sqlite
+
+forensic:
+  # Glass Box Elasticsearch settings
+  es_host: localhost
+  es_port: 9200
+  index_name: ungpt_forensic
+  retention_days: 2555  # 7 years
+
+  # Parquet buffer
+  gcs_bucket: pnkln-forensic-logs
+  parquet_batch_size: 1000

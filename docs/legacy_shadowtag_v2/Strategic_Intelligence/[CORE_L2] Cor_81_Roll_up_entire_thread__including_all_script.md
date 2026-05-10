@@ -1,0 +1,67 @@
+# Original Path: Cor.81 Roll up entire thread, including all scripts, for compressive…/Cor.81 Roll up entire thread, including all scripts, for compressive….txt
+
+# Categories: CORE_L2
+
+Cor.81 Roll up entire thread, including all scripts, for compressive transfer to new thread.
+
+Do in One long text file.
+
+Change all scripts to google vertex Ai studio native shell cells suitable for Vertex AI notebooks, and as prompt templates usable inside Studio’s chat-based interface.
+
+Change all naming conventions to pnkln
+
+pnkln meaning no more ShadowTag-v2 or ShadowTag.
+
+Include all suggested, or optional, but un-actioned scripts.
+
+<next>
+
+Compile all text-based strategy, positioning, and product spec documents from the previous application and report into the latest/greatest version.
+
+<next>
+
+Yes, every inline code or shell snippet rewritten into Google Vertex AI Studio shell cells.
+
+<next>
+
+Yes transformed into a single text file with Vertex AI Studio shell cell format and prompt templates? 2. yes. include OCR data and summaries from all uploaded images as well, even if they weren’t explicitly addressed or executed? 3. yes each section clearly separated and labeled (e.g., # ShadowTag v2 Scripts, # CoreWeave Pitch, etc.)? 4. Should the output be in plain text for pasting, yes
+
+<next>
+
+Output to Serve as infrastructure for a new pnkln platform.
+
+<next>
+
+Include only thread latest in roll. Omit all discussion.
+
+<next>
+
+shortened (compressed to relative comparisons for AI parsing
+
+<next>
+
+Skip git
+
+<next>
+
+Ultra-compact (≈ 20–30 KB) — stripped comments & docstrings, only functional code + one-line section headers.
+
+<next>
+
+keep Vertex AI shell cells as literal code-cell delimiters (```
+%%bash
+
+<next>
+
+Just cells, Yes to vertex. Re-write, chunked and compressed. One single file. Ultra-compact (≈ 20–30 KB) — stripped comments & docstrings, only functional code + one-line section headers. Binary-safe, bias even harder for compression (e.g., combine multiple tiny ops into one %%python cell per section),
+keep it code-only and minimal,
+
+keep minimal variable names so each cell still runs unmodified
+
+Section labeling — one-line headers should be collapsed to save bytes,
+
+omit all non-code prose except one-line section tags (e.g., #p-spec, #datafix),
+
+Target output: attachment
+
+each section output consecutively in one code-dense text block (no blank lines, minimal whitespace) — i.e. a “ready-to-paste” compressed artifact — rather than spaced for readability.

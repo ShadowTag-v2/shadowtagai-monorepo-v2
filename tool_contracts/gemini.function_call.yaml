@@ -1,0 +1,9 @@
+# tool_contracts/gemini.function_call.yaml
+tool_id: "gemini.function_call"
+description: "Governs the gemini.function_call operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/gemini_function_call.jsonl"
+reuse_queries: []

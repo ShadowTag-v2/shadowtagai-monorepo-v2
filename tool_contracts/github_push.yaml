@@ -1,0 +1,43 @@
+# Tool Contract: github.push
+# Governs all git push operations to the canonical repository.
+
+tool_id: github.push
+description: >
+  Push commits to the canonical ShadowTag-v2/Monorepo-Uphillsnowball repository.
+  This is a HIGH risk operation — pushes are permanent and visible to all agents.
+risk_level: high
+
+preconditions:
+  - name: auth_verified
+    type: context_key_present
+    key: auth_token
+    description: A valid GitHub App installation token must be present.
+
+  - name: branch_specified
+    type: context_key_present
+    key: branch
+    description: Target branch must be explicitly specified.
+
+  - name: betterleaks_clean
+    type: context_key_present
+    key: secrets_scan_passed
+    description: Betterleaks/Gitleaks must have scanned the diff with zero findings.
+
+  - name: lint_passed
+    type: context_key_present
+    key: lint_passed
+    description: Ruff + Biome must have passed without fatal errors.
+
+evidence_requirements:
+  - type: log_push_result
+    description: Log the push result (success/failure, branch, commit SHA) to .beads/issues.jsonl
+  - type: log_commit_count
+    description: Record the number of commits pushed
+
+reuse_queries:
+  - type: script_exists
+    value: auth_github_app
+    description: Check if the GitHub App auth script already exists before writing new auth logic.
+  - type: script_exists
+    value: gca_autolint_daemon
+    description: Check if the autolint daemon already handles lint+push.

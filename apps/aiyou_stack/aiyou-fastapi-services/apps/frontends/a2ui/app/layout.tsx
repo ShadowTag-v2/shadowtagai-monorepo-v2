@@ -1,0 +1,32 @@
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { CopilotKit } from '@copilotkit/react-core';
+import '@copilotkit/react-ui/styles.css';
+
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'ShadowTag Omega | AG-UI Console',
+  description: 'God Mode Agent Interface',
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <CopilotKit
+          publicLicenseKey={process.env.NEXT_PUBLIC_COPILOT_KEY || 'ck_pub_placeholder'}
+          runtimeUrl="/api/copilotkit"
+          agent="wing_commander"
+        >
+          {children}
+        </CopilotKit>
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,9 @@
+[project]
+name = "undercover"
+version = "1.0.0"
+description = "Undercover mode — safety utilities for contributing to public/open-source repos"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"

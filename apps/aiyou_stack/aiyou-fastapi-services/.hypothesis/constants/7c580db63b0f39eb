@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/tools.py
+# hypothesis_version: 6.151.5
+
+[8.0, 512, 1000000000, '3', '4', '5', '6', '7', '8', '9', 'CLIPTextEncode', 'EmptyLatentImage', 'KSampler', 'SaveImage', 'ShadowTag-v2_agent', 'VAEDecode', 'batch_size', 'cfg', 'ckpt_name', 'class_type', 'clip', 'denoise', 'description', 'euler', 'filename', 'filename_prefix', 'function', 'generate_local_image', 'height', 'images', 'inputs', 'latent_image', 'model', 'name', 'negative', 'normal', 'object', 'outputs', 'parameters', 'positive', 'prompt', 'prompt_id', 'properties', 'query', 'required', 'sampler_name', 'samples', 'scheduler', 'seed', 'steps', 'string', 'text', 'type', 'utf-8', 'vae', 'width']

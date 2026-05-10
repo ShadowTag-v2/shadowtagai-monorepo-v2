@@ -1,0 +1,53 @@
+.root :global .ql-editor {
+  @apply rounded-none border-0 min-h-56;
+}
+
+.root :global .ql-toolbar {
+  @apply rounded-md rounded-b-none text-main bg-soft block border border-border;
+}
+
+.root :global .ql-stroke,
+.root :global .ql-fill {
+  @apply stroke-main text-main;
+}
+
+.root :global .ql-snow.ql-toolbar button:hover,
+.root :global .ql-snow .ql-toolbar button:hover,
+.root :global .ql-snow.ql-toolbar button:focus,
+.root :global .ql-snow .ql-toolbar button:focus,
+.root :global .ql-snow.ql-toolbar button.ql-active,
+.root :global .ql-snow .ql-toolbar button.ql-active,
+.root :global .ql-snow.ql-toolbar .ql-picker-label:hover,
+.root :global .ql-snow .ql-toolbar .ql-picker-label:hover,
+.root :global .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.root :global .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.root :global .ql-snow.ql-toolbar .ql-picker-item:hover,
+.root :global .ql-snow .ql-toolbar .ql-picker-item:hover,
+.root :global .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.root :global .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  @apply text-primary;
+}
+
+.root :global .ql-toolbar button:hover .ql-stroke {
+  @apply stroke-primary;
+}
+
+.root :global .ql-container {
+  @apply rounded-md rounded-t-none bg-base border border-border;
+}
+
+.root :global .ql-container.ql-disabled {
+  @apply bg-soft opacity-100;
+}
+
+.root :global .ql-editor.ql-blank::before {
+  @apply text-muted;
+}
+
+.root :global .ql-picker {
+  @apply text-main;
+}
+
+.root :global .quill {
+  @apply rounded-md shadow-sm;
+}

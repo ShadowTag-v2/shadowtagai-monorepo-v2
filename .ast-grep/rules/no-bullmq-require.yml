@@ -1,0 +1,13 @@
+id: no-bullmq-require
+message: "Doctrine: BullMQ is BANNED. Use Google Cloud Tasks as the exclusive queue broker. See GEMINI.md rich_hickey_doctrine."
+severity: error
+language: javascript
+rule:
+  pattern: require('bullmq')
+ignores:
+  - "libs/autoresearch_sources/**"
+  - "external_repos/**"
+  - "external_sdks/**"
+  - "archive/**"
+  - "reference_architectures/**"
+  - "node_modules/**"

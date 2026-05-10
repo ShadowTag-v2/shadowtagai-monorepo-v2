@@ -1,0 +1,5 @@
+from google.adk.tools import BaseTool class
+{{tool_name}}Tool(BaseTool): """ TODO: Add tool description. """ def execute(self, arg1: str) ->
+dict: """ TODO: Implement logic. """ return {"status": "not implemented", "arg1": arg1} def
+get_schema(self) -> dict: return { "type": "object", "properties": { "arg1": { "type": "string",
+"description": "TODO: Description of argument" } }, "required": ["arg1"] }

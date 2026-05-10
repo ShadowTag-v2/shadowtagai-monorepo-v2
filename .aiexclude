@@ -1,0 +1,140 @@
+# Gemini Code Assist: Aggressive exclusions to prevent RAG indexing deadlock
+# Root cause: GCA Go language server indexes 465K+ files → 11-minute Mutex deadlock
+# → Extension host CPU starvation → MCP -32000 crash → UI "Signed Out" split-brain
+# Target: <2,000 indexable files → 3-second boot instead of 11 minutes
+
+# ============================================================
+# CRITICAL: Massive orphan directories (94K+ files each)
+# ============================================================
+.tmp.driveupload/
+**/.tmp.driveupload/**
+
+# ============================================================
+# Lint & tool caches (~50K+ files across versions)
+# ============================================================
+**/.ruff_cache/**
+**/.mypy_cache/**
+**/.pytest_cache/**
+**/.cache/**
+**/.gradle/**
+**/.turbo/**
+
+# ============================================================
+# Package managers & dependencies
+# ============================================================
+**/node_modules/**
+**/.pnpm-store/**
+**/bower_components/**
+
+# ============================================================
+# Python environments & bytecode
+# ============================================================
+**/.venv/**
+**/venv/**
+**/__pycache__/**
+**/.tox/**
+**/*.egg-info/**
+**/*.pyc
+**/*.pyo
+
+# ============================================================
+# Build artifacts & compiled output
+# ============================================================
+**/.next/**
+**/dist/**
+**/build/**
+**/out/**
+**/target/**
+
+# ============================================================
+# Version control internals
+# ============================================================
+**/.git/**
+
+# ============================================================
+# Large media & binaries
+# ============================================================
+**/*.mp4
+**/*.webm
+**/*.pdf
+**/*.zip
+**/*.tar.gz
+**/*.whl
+**/*.so
+**/*.dylib
+**/*.gguf
+**/*.heapsnapshot
+
+# ============================================================
+# Images (indexed by vision, not text RAG)
+# ============================================================
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.ico
+**/*.svg
+**/*.webp
+
+# ============================================================
+# Database & caches
+# ============================================================
+**/.firebase/**
+**/.lancedb/**
+**/*.sqlite3
+**/state.vscdb*
+**/*.lance/**
+
+# ============================================================
+# Minified / bundled JS (charset detection thrash)
+# ============================================================
+**/*.min.js
+**/*.bundle.js
+**/*.min.css
+**/DarkReaderScript.js
+
+# ============================================================
+# MONOREPO HEAVY ZONES — Entire directories excluded
+# These are massive backend microservices not needed for
+# frontline KovelAI/ShadowTagAI development work
+# ============================================================
+apps/aiyou_stack/**
+apps/thermal-ride/**
+apps/gitnexus/**
+apps/unusual-machines-clone/**
+apps/cobalt-planck/**
+apps/headfade/**
+apps/awesome-nano-banana-pro-prompts/
+apps/transcode-service/**
+
+# ============================================================
+# Infrastructure & control plane (not frontend code)
+# ============================================================
+control/**
+
+# ============================================================
+# External repos, archives, & data pipelines
+# ============================================================
+external_repos/
+legacy_workspaces/
+external_payloads/
+devrel-demos/
+deep-archive/
+archive/
+data/
+tools/
+clone-base/
+
+# ============================================================
+# Third party security tools
+# ============================================================
+third_party/security/
+
+# ============================================================
+# Secrets (NEVER index)
+# ============================================================
+.env
+**/.env.local
+**/.env.production
+**/keys/**
+**/*.pem

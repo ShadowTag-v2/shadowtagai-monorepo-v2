@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Page Not Found — KovelAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;overflow:hidden}
+.container{text-align:center;max-width:520px;padding:2rem;position:relative;z-index:2}
+.code{font-size:8rem;font-weight:700;background:linear-gradient(135deg,#c9a84c 0%,#f5e6a3 50%,#c9a84c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:.5rem;animation:pulse 3s ease-in-out infinite}
+h1{font-size:1.5rem;font-weight:600;margin-bottom:1rem;color:#94a3b8}
+p{font-size:1rem;color:#64748b;line-height:1.6;margin-bottom:2rem}
+a{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 2rem;border-radius:8px;background:linear-gradient(135deg,#c9a84c,#b8922f);color:#0a0e1a;font-weight:600;text-decoration:none;transition:all .3s ease;font-size:.95rem}
+a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.12;pointer-events:none}
+.orb-1{width:400px;height:400px;background:#c9a84c;top:-100px;right:-100px;animation:float 8s ease-in-out infinite}
+.orb-2{width:300px;height:300px;background:#1e3a5f;bottom:-80px;left:-80px;animation:float 10s ease-in-out infinite reverse}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="container">
+<div class="code">404</div>
+<h1>Page Not Found</h1>
+<p>The page you're looking for doesn't exist or has been moved. Let's get you back to privileged territory.</p>
+<a href="/">← Back to KovelAI</a>
+</div>
+</body>
+</html>

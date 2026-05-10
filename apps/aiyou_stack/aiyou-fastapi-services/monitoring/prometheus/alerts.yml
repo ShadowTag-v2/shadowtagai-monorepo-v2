@@ -1,0 +1,138 @@
+groups:
+  - name: ShadowTag-v2_fastapi_alerts
+    interval: 30s
+    rules:
+      # High Error Rate Alert
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+
+      # High Request Latency Alert
+      - alert: HighRequestLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le, endpoint)
+          ) > 2.0
+        for: 5m
+        labels:
+          severity: warning
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High request latency detected"
+          description: "95th percentile latency is {{ $value }}s on {{ $labels.endpoint }}"
+
+      # Service Down Alert
+      - alert: ServiceDown
+        expr: up{job="shadowtag_v4-fastapi-services"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "Service is down"
+          description: "The service has been down for more than 1 minute"
+
+      # High CPU Usage Alert
+      - alert: HighCPUUsage
+        expr: system_cpu_usage_percent > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is {{ $value }}% (threshold: 80%)"
+
+      # High Memory Usage Alert
+      - alert: HighMemoryUsage
+        expr: system_memory_usage_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value }}% (threshold: 85%)"
+
+      # High Disk Usage Alert
+      - alert: HighDiskUsage
+        expr: system_disk_usage_percent > 90
+        for: 5m
+        labels:
+          severity: critical
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High disk usage detected"
+          description: "Disk usage is {{ $value }}% on {{ $labels.mount_point }}"
+
+      # Unhealthy Service Alert
+      - alert: UnhealthyService
+        expr: health_check_status{check_name!=""} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "Health check failed"
+          description: "Health check '{{ $labels.check_name }}' is failing"
+
+      # Too Many Requests Alert
+      - alert: TooManyRequests
+        expr: |
+          sum(rate(http_requests_total[1m])) > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High request rate detected"
+          description: "Request rate is {{ $value }} req/s (threshold: 1000)"
+
+      # Slow Health Check Alert
+      - alert: SlowHealthCheck
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(health_check_duration_seconds_bucket[5m])) by (le, check_name)
+          ) > 3.0
+        for: 5m
+        labels:
+          severity: warning
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "Slow health check detected"
+          description: "Health check '{{ $labels.check_name }}' taking {{ $value }}s"
+
+      # Application Restart Alert
+      - alert: ApplicationRestart
+        expr: |
+          increase(app_uptime_seconds[5m]) < 0
+        for: 1m
+        labels:
+          severity: info
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "Application restarted"
+          description: "The application has restarted recently"
+
+      # High Exception Rate Alert
+      - alert: HighExceptionRate
+        expr: |
+          sum(rate(http_exceptions_total[5m])) > 10
+        for: 5m
+        labels:
+          severity: warning
+          service: shadowtag_v4-fastapi-services
+        annotations:
+          summary: "High exception rate detected"
+          description: "Exception rate is {{ $value }} exceptions/s"

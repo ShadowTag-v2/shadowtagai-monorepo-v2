@@ -1,0 +1,9 @@
+[project]
+name = "pnkln-compression"
+version = "0.1.0"
+description = "PNKLN Compression"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

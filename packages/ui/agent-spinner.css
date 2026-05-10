@@ -1,0 +1,271 @@
+/* ═══════════════════════════════════════════════════════════════
+   AgentSpinner — Ported from Claude Code Spinner.tsx
+   Source: src/components/Spinner.tsx + src/bridge/bridgeStatusUtil.ts
+   
+   Core patterns:
+   1. Shimmer sweep (3-char glimmer) across verb text
+   2. Verb cycling from the canonical 190-verb list
+   3. Trailing dots animation (1-3)
+   4. Stall intensity color shift (normal→amber→red)
+   5. 150ms shimmer tick interval
+   ═══════════════════════════════════════════════════════════════ */
+
+/* --- Agent Spinner Container --- */
+.agent-spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* --- Spinner Glyph (rotating character frames) --- */
+.agent-spinner__glyph {
+  display: inline-block;
+  width: 1.2em;
+  text-align: center;
+  animation: agent-spinner-rotate 1s steps(8, end) infinite;
+  will-change: contents;
+}
+
+@keyframes agent-spinner-rotate {
+  /* Claude Code uses: ⠋⠙⠹⠸⠼⠴⠦⠧ reversed = ⠧⠦⠴⠼⠸⠹⠙⠋ */
+  0% {
+    content: '⠋';
+  }
+  12.5% {
+    content: '⠙';
+  }
+  25% {
+    content: '⠹';
+  }
+  37.5% {
+    content: '⠸';
+  }
+  50% {
+    content: '⠼';
+  }
+  62.5% {
+    content: '⠴';
+  }
+  75% {
+    content: '⠦';
+  }
+  87.5% {
+    content: '⠧';
+  }
+}
+
+/* --- Verb Text with Shimmer Sweep --- */
+.agent-spinner__verb {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    var(--spinner-color-dim, rgba(255, 255, 255, 0.35)) 0%,
+    var(--spinner-color-dim, rgba(255, 255, 255, 0.35)) var(--shimmer-start, 0%),
+    var(--spinner-color-bright, rgba(255, 255, 255, 0.95)) var(--shimmer-mid, 50%),
+    var(--spinner-color-dim, rgba(255, 255, 255, 0.35)) var(--shimmer-end, 100%),
+    var(--spinner-color-dim, rgba(255, 255, 255, 0.35)) 100%
+  );
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: agent-shimmer-sweep var(--shimmer-duration, 2.4s) linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes agent-shimmer-sweep {
+  0% {
+    --shimmer-start: 100%;
+    --shimmer-mid: 105%;
+    --shimmer-end: 110%;
+  }
+  100% {
+    --shimmer-start: -10%;
+    --shimmer-mid: -5%;
+    --shimmer-end: 0%;
+  }
+}
+
+/* Fallback for browsers that don't support @property / CSS Houdini */
+@supports not (animation-timeline: auto) {
+  .agent-spinner__verb {
+    background: linear-gradient(
+      90deg,
+      var(--spinner-color-dim, rgba(255, 255, 255, 0.35)) 0%,
+      var(--spinner-color-bright, rgba(255, 255, 255, 0.95)) 50%,
+      var(--spinner-color-dim, rgba(255, 255, 255, 0.35)) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: agent-shimmer-fallback 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes agent-shimmer-fallback {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* --- Trailing Dots Animation --- */
+.agent-spinner__dots {
+  display: inline-block;
+  min-width: 1.5em;
+  color: var(--spinner-color-dim, rgba(255, 255, 255, 0.35));
+}
+
+.agent-spinner__dots::after {
+  content: '';
+  animation: agent-dots 1.5s steps(1) infinite;
+}
+
+@keyframes agent-dots {
+  0% {
+    content: '.';
+  }
+  33% {
+    content: '..';
+  }
+  66% {
+    content: '...';
+  }
+}
+
+/* --- Verb Fade Transition --- */
+.agent-spinner__verb-wrap {
+  position: relative;
+  overflow: hidden;
+  min-width: 10ch;
+  height: 1.4em;
+}
+
+.agent-spinner__verb-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  transition:
+    opacity 0.25s ease-out,
+    transform 0.25s ease-out;
+}
+
+.agent-spinner__verb-inner[data-state='entering'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.agent-spinner__verb-inner[data-state='exiting'] {
+  opacity: 0;
+  transform: translateY(-0.5em);
+}
+
+/* --- Stall Intensity Color Shifts --- */
+
+/* Phase 1: Normal (0-10s) */
+.agent-spinner[data-stall='normal'] {
+  --spinner-color-dim: rgba(255, 255, 255, 0.35);
+  --spinner-color-bright: rgba(255, 255, 255, 0.95);
+}
+
+/* Phase 2: Warm (10-30s) — amber shift */
+.agent-spinner[data-stall='warm'] {
+  --spinner-color-dim: rgba(255, 191, 0, 0.4);
+  --spinner-color-bright: rgba(255, 225, 120, 1);
+}
+
+/* Phase 3: Hot (30s+) — red shift */
+.agent-spinner[data-stall='hot'] {
+  --spinner-color-dim: rgba(255, 107, 107, 0.45);
+  --spinner-color-bright: rgba(255, 140, 140, 1);
+  animation: agent-stall-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes agent-stall-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+/* --- Full-Width Overlay Variant --- */
+.agent-spinner--overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 20;
+  border-radius: inherit;
+}
+
+.agent-spinner--overlay .agent-spinner__label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--spinner-color-bright, rgba(255, 255, 255, 0.95));
+  animation: agent-label-pulse 2s ease-in-out infinite;
+}
+
+@keyframes agent-label-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* --- Theme Overrides --- */
+
+/* ShadowTagAI — Kinetic Void (Magenta/Cyan) */
+.agent-spinner--shadowtag {
+  --spinner-color-dim: rgba(241, 131, 255, 0.35);
+  --spinner-color-bright: rgba(236, 106, 255, 0.95);
+}
+
+/* KovelAI — Gold Edition */
+.agent-spinner--kovelai {
+  --spinner-color-dim: rgba(230, 196, 135, 0.35);
+  --spinner-color-bright: rgba(230, 196, 135, 0.95);
+}
+
+/* HeadFade — Forensic Cyan */
+.agent-spinner--headfade {
+  --spinner-color-dim: rgba(0, 245, 160, 0.35);
+  --spinner-color-bright: rgba(0, 217, 245, 0.95);
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .agent-spinner__glyph,
+  .agent-spinner__verb,
+  .agent-spinner__dots::after,
+  .agent-spinner__verb-inner {
+    animation: none !important;
+    transition: none !important;
+  }
+  .agent-spinner__verb {
+    -webkit-text-fill-color: var(--spinner-color-bright, rgba(255, 255, 255, 0.95));
+    background: none;
+  }
+}

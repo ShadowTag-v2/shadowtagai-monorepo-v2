@@ -1,0 +1,236 @@
+"""GitHub Push Utility
+
+Handles the 4-file structure push for UnGPT outputs.
+"""
+
+import base64
+import json
+from datetime import datetime
+from typing import Any
+
+import httpx
+
+
+async def push_to_repo(
+    query: str,
+    answer: str,
+    ebp_content: str,
+    readme_summary: str,
+    crm_score: float,
+    cycles: int,
+    tools_used: list[str],
+    query_id: str,
+    repo_name: str,
+    branch_prefix: str,
+    token: str,
+) -> dict[str, Any]:
+    """Push research output to GitHub.
+
+    Creates a new branch with 4 files:
+    - README.md
+    - ANSWER.md
+    - EBP.md
+    - metadata.json
+
+    Args:
+        query: Original query
+        answer: Final answer
+        ebp_content: Explain Before Publish content
+        readme_summary: Summary for README
+        crm_score: Quality score
+        cycles: Number of loop cycles
+        tools_used: List of tools used
+        query_id: Unique query ID
+        repo_name: GitHub repo (owner/repo)
+        branch_prefix: Prefix for branch name
+        token: GitHub token
+
+    Returns:
+        {
+            'branch': str,
+            'url': str,
+            'files_pushed': list
+        }
+
+    """
+    branch = f"{branch_prefix}{query_id}"
+
+    # Prepare files
+    files = {
+        "README.md": _generate_readme(
+            query,
+            readme_summary,
+            crm_score,
+            cycles,
+            tools_used,
+            query_id,
+        ),
+        "ANSWER.md": _generate_answer(query, answer),
+        "EBP.md": _generate_ebp(ebp_content),
+        "metadata.json": json.dumps(
+            {
+                "query_id": query_id,
+                "query": query,
+                "crm_score": crm_score,
+                "cycles": cycles,
+                "tools_used": tools_used,
+                "generated_at": datetime.now().isoformat(),
+                "version": "UnGPT v2.0",
+            },
+            indent=2,
+        ),
+    }
+
+    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
+
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        # Get default branch SHA
+        base_sha = await _get_base_sha(client, repo_name, headers)
+
+        if not base_sha:
+            return {
+                "branch": branch,
+                "url": f"https://github.com/{repo_name}",
+                "files_pushed": [],
+                "error": "Could not get base SHA",
+            }
+
+        # Create new branch
+        await _create_branch(client, repo_name, branch, base_sha, headers)
+
+        # Push each file
+        files_pushed = []
+        for filename, content in files.items():
+            success = await _push_file(client, repo_name, branch, filename, content, headers)
+            if success:
+                files_pushed.append(filename)
+
+    return {
+        "branch": branch,
+        "url": f"https://github.com/{repo_name}/tree/{branch}",
+        "files_pushed": files_pushed,
+    }
+
+
+async def _get_base_sha(client: httpx.AsyncClient, repo_name: str, headers: dict) -> str | None:
+    """Get SHA of default branch"""
+    for branch in ["main", "master"]:
+        resp = await client.get(
+            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}",
+            headers=headers,
+        )
+        if resp.status_code == 200:
+            return resp.json()["object"]["sha"]
+    return None
+
+
+async def _create_branch(
+    client: httpx.AsyncClient,
+    repo_name: str,
+    branch: str,
+    base_sha: str,
+    headers: dict,
+) -> bool:
+    """Create a new branch"""
+    resp = await client.post(
+        f"https://api.github.com/repos/{repo_name}/git/refs",
+        headers=headers,
+        json={"ref": f"refs/heads/{branch}", "sha": base_sha},
+    )
+    return resp.status_code in [200, 201, 422]  # 422 = branch exists
+
+
+async def _push_file(
+    client: httpx.AsyncClient,
+    repo_name: str,
+    branch: str,
+    filename: str,
+    content: str,
+    headers: dict,
+) -> bool:
+    """Push a single file to the branch"""
+    resp = await client.put(
+        f"https://api.github.com/repos/{repo_name}/contents/{filename}",
+        headers=headers,
+        json={
+            "message": f"Add {filename}",
+            "content": base64.b64encode(content.encode()).decode(),
+            "branch": branch,
+        },
+    )
+    return resp.status_code in [200, 201]
+
+
+def _generate_readme(
+    query: str,
+    summary: str,
+    crm_score: float,
+    cycles: int,
+    tools: list[str],
+    query_id: str,
+) -> str:
+    """Generate README.md content"""
+    tools_str = ", ".join(tools) if tools else "None"
+
+    return f"""# Research: {query_id}
+
+## Query
+{query}
+
+## Summary
+{summary}
+
+## Metrics
+| Metric | Value |
+|--------|-------|
+| CRM Score | {crm_score}/10 |
+| Cycles | {cycles} |
+| Tools Used | {tools_str} |
+| Generated | {datetime.now().strftime("%Y-%m-%d %H:%M")} |
+
+## Files
+- `ANSWER.md` - Complete answer with code results
+- `EBP.md` - Explain Before Publish (methodology)
+- `metadata.json` - Machine-readable metadata
+
+---
+*Generated by UnGPT v2.0*
+"""
+
+
+def _generate_answer(query: str, answer: str) -> str:
+    """Generate ANSWER.md content"""
+    return f"""# Answer
+
+## Original Query
+{query}
+
+---
+
+{answer}
+"""
+
+
+def _generate_ebp(content: str) -> str:
+    """Generate EBP.md content"""
+    return f"""# Explain Before Publish
+
+{content}
+
+---
+
+## Methodology
+This answer was generated using the UnGPT v2.0 pipeline:
+1. **L0**: SuperGrok intake and baseline expectations
+2. **L1**: Claude framework and structure definition
+3. **L2**: Gemini ↔ GPT collaborative loop until convergence
+4. **L3**: SuperGrok static validation and code flagging
+5. **L4**: Claude code execution and synthesis
+6. **L5**: SuperGrok executive briefing
+7. **L7**: Voice script generation
+
+## Limitations
+- Code execution limited to Python
+- Results depend on available data at execution time
+- CRM score reflects quality assessment, not factual accuracy guarantee
+"""

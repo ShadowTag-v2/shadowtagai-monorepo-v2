@@ -1,0 +1,9 @@
+{
+  "domain_tagger": {
+    "status": "error",
+    "error": "Table 'workspace_knowledge' was not found",
+    "elapsed": 0.02
+  },
+  "elapsed_seconds": 0.02,
+  "finished_at": "2026-04-20T16:03:29.167165+00:00"
+}

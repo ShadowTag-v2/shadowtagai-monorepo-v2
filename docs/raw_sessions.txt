@@ -1,0 +1,233 @@
+# AiYou Session ID Master List
+# Source: User prompt dump 2026-03-28
+# Format: session_id [GROUP_LABEL]
+# Process with: python scripts/session_manifest_builder.py Docs/raw_sessions.txt
+
+# ── UNGROUPED (Block 1) ──────────────────────────────────────────────────────
+session_01PdWYkshpPcL3kaRYGXe76F
+session_0129TJDCPVXYzZgfyFoC55QD
+session_01YHYNS7A4rpDREHxcUkkooU
+session_014yp3WQ7GzFCnXssif6nQ5K
+session_01HRNnBjV9e89WEceYCYEYTT
+session_01KjE8SBRAVHwPdaMw4Bhe8s
+session_01AqhQk4mUiqYfbRxry3PjSr
+session_013QqaTcEibfTWdB2T6qVpjj
+session_01XS4vJCqs3LxH5ky7uoptTW
+session_015xd53J5X6eW4UnwLa1Zef3
+session_0141N95i2BZcMFLfrLEsza3e
+session_01Kp9nfGJe66xyzXFaWcNScV
+session_01QS9ZQBHLHgeyU2fGZVwEvx
+session_013Q4xLmAA7UpgDDcFAP2eUc
+session_01SiuL13caedf46a6DHdiyvD
+session_01EomMkEwRCXUzQyo15Kr46C
+session_011RMxxEuuwhxUyoS2gtizw6
+session_01SJ5oTaZduakzztvdtbSfSz
+session_01TePFHPYZKUUevdGi6PNW2j
+session_017bPGPFFNeGVVFiiTeiEjuB
+session_01HApJvgcJqCqGjTzPXc4hsH
+session_015noXjuN929ZXxkiZtGLts8
+session_01V4R2h4hKtsTmnbP6wuFv9p
+session_01BQvSod3H3AWwrYokkt6wCL
+session_01N8sd6WDo9ezvDXmNtP7eG3
+session_01CtqxzRtHRa54CbxEbZVC4h
+session_01SnJR7H4LdDMSVNRXmNj1uY
+session_01UC2apYgLs2CeihtLxfm8pT
+session_01LxqLjwSqagWVc7LxXfczSY
+session_014z5Wy7zHetN2Tdj1pvZeap
+session_01YWPx2N1svovPEduR2fcnaF
+session_01XDUiUicBarT9B7HFp4kLQe
+session_01WqEPxBFLf2fh6j4Gm5eRF6
+session_01MRQcG3xbZNirVvs2VSwfxY
+session_01YPqLtfb2muQnJBbPFbcJY1
+session_01MjjvPgcgaPsdjCKGKHFZTB
+session_011HjffkzypaspRcDZL1uXf1
+session_01D3Tsbo7Biz3jWhqR82u3YM
+session_019P6WfRDizQYJEyBKPgjouE
+session_01WeWvB8LhnA27fckYTF2myF
+session_01LnnDPRq1b5LKC2Yk8fUnwZ
+session_01DFQeDamVMJ6Y7MLoZmR23S
+session_01L7LKQ7QAm749JxA3dFe66d
+session_01NXaFPLRGQHwZYkMjWgTjYz
+session_01Shtau3Dwjn2qqypCAUQsgg
+session_01L5dkyEWB2HZnFpyiB4Qzcs
+session_01Xjiz4UaLoBTQGou8un81yg
+session_0124xZi4rK77nhegfzgRQbRK
+session_01T6FPuGzfnx3meGjPY5Hz8X
+session_012TMjqWKQfQeLyurA5QthhP
+session_01JHaeUUKNqT64smLaaB7q7U
+session_01GT3tb66B9CWyJ5o6PHNYZP
+
+# ── UNGROUPED (Block 2) ──────────────────────────────────────────────────────
+session_01Wz3vRoYMZKeU8Whpf5PHin
+session_012j1em5ogeXnbbtG5DDZuZg
+session_015XorWLBtpoJuHvKX9MC813
+session_01RVzFL6F91CVxsjZcooGS4C
+session_01RPHSGbgGdhcN7akW3sB1VZ
+session_01M1anzYZdJTDDeZQsiVTkKS
+session_01BPcqk71q9qmZ8JeFfzc84U
+session_01AAb3G3GGcMe1r2ZR83EjZF
+session_01Vsn6ARCuamYopRK1wxGSkz
+session_01EDAwZLBwQoAtbXq4bs5wTc
+session_01VynnKoNNFFxMTcuPtLiZdR
+
+# ── MERGE_BRANCHES (Block 3) ─────────────────────────────────────────────────
+# Instruction: Merge both branches, integrate skills framework, deploy to prod
+session_01AWJ5Mh9S1ybWxXjSNUebTf MERGE_BRANCHES
+session_01N6j7sbD1zocGRnN3HqJiKN MERGE_BRANCHES
+session_01FUUXC1zhcKYsL5ki4WG82p MERGE_BRANCHES
+
+# ── UNGROUPED (Block 4) ──────────────────────────────────────────────────────
+session_01VdvDGrcZ8N26yL2bX7ejFk
+session_01MQJ8CfXToph64WHQD2P7Zj
+
+# ── 011CUv_CLUSTER (Block 5 — 9 sessions) ───────────────────────────────────
+session_011CUvSXYqprmqP8aUNU4QbK 011CUv_CLUSTER
+session_011CUvRbMfMuw9j9AVUnoqVN 011CUv_CLUSTER
+session_011CUvSfckwmFDcagYDhXrQp 011CUv_CLUSTER
+session_011CUvSiPCSzf8mxsmYUHe4B 011CUv_CLUSTER
+session_011CUvSqvx6Xon2eLiftFQAS 011CUv_CLUSTER
+session_011CUvR5fZ3jVZkqpWXPACTw 011CUv_CLUSTER
+session_011CUvL58WBB556AvXdpHVEY 011CUv_CLUSTER
+session_011CUvJuWR9Lm2KsueHVXjhW 011CUv_CLUSTER
+session_011CUv1fuVMJzmGYGTM8LqkC 011CUv_CLUSTER
+
+# ── 011CUu_CLUSTER (Block 6 — 30 sessions) ──────────────────────────────────
+session_011CUuRu3LnJrN4kD6znPH4d 011CUu_CLUSTER
+session_011CUuRENNw8xPG832W6K34V 011CUu_CLUSTER
+session_011CUuQpFAw8RrquuDkRA8YE 011CUu_CLUSTER
+session_011CUuQfuy3ku8RBjxYBDN64 011CUu_CLUSTER
+session_011CUuPcBNmya7ajat5ZPu43 011CUu_CLUSTER
+session_011CUuPaNNWj9UmUH7aQuDcd 011CUu_CLUSTER
+session_011CUuPQ3LVUykcUQvxw9Etb 011CUu_CLUSTER
+session_011CUuNocbGzKdKwr3SfAzpb 011CUu_CLUSTER
+session_011CUuN9bmr41pQW1153vPNM 011CUu_CLUSTER
+session_011CUuM8huZ4qPWDosJ51BKN 011CUu_CLUSTER
+session_011CUuJLbdFsg2ykCjNpgMYM 011CUu_CLUSTER
+session_011CUuM2SB5hnNSF83EAMM4g 011CUu_CLUSTER
+session_011CUuJHAKfKnUyeA9JLuVwM 011CUu_CLUSTER
+session_011CUuHw3U6hZk6Emb52fUbv 011CUu_CLUSTER
+session_011CUuHtaoBZha9vR2h4UptV 011CUu_CLUSTER
+session_011CUuHs5ZzEXHGZ2PbVmWHs 011CUu_CLUSTER
+session_011CUuHpYiYtpLV8oP1Ze3B6 011CUu_CLUSTER
+session_011CUuHiEwojVC8PmhN2Vt83 011CUu_CLUSTER
+session_011CUuH5NYBC54NLvM9HYFcK 011CUu_CLUSTER
+session_011CUuDZ8shs8dsdiH8kETKm 011CUu_CLUSTER
+session_01LfvGHLyioSmenCeWnwqMKu 011CUu_CLUSTER
+session_01GC82SJLfmwFvAze3sjbBfw 011CUu_CLUSTER
+session_01BAv7RFRogW3dXU3s7U2T1k 011CUu_CLUSTER
+session_01QWpUxsLXyifGDftxappPLv 011CUu_CLUSTER
+session_01JPLQubyXaThFihhfbC1sFJ 011CUu_CLUSTER
+session_01UU6dTPXj6GUJMeWdDhVSnG 011CUu_CLUSTER
+session_011CUuNDctvvHsg1hrerub7v 011CUu_CLUSTER
+session_011CUuLouBw2TjNTbC342BMB 011CUu_CLUSTER
+session_011CUuLnhzCNrXYhosFmMAt9 011CUu_CLUSTER
+session_011CUuFDkKrGTKMYaaWJU4xU 011CUu_CLUSTER
+
+# ── 011CUu_CLUSTER continued (Block 7) ──────────────────────────────────────
+session_011CUuJ8iHmLc2zPL1mXxN93 011CUu_CLUSTER
+session_011CUuHy1VqufcfZiXVxZAUT 011CUu_CLUSTER
+
+# ── 011CUv_CLUSTER continued (Block 8) ──────────────────────────────────────
+session_011CUvZn4HaupdGe71hL4T21 011CUv_CLUSTER
+session_011CUvZjXkF1ugJQaHQk7ZDk 011CUv_CLUSTER
+session_011CUvYJcxhocxNDZ3qbj2eG 011CUv_CLUSTER
+session_011CUvTcfQTmEbLMuLtjRNHR 011CUv_CLUSTER
+session_011CUvTbTstkMmBhvZsxq5R3 011CUv_CLUSTER
+session_011CUvTRHGQKU318G3zAqxLq 011CUv_CLUSTER
+session_011CUvTQFf8xWB5QNCKxQznS 011CUv_CLUSTER
+session_011CUvTNfHtAKps6wbBA6crk 011CUv_CLUSTER
+session_011CUvTGp7HmkLMW64WPiEaN 011CUv_CLUSTER
+session_011CUvT6z3Yt6z2AFoVYY9nw 011CUv_CLUSTER
+session_011CUvSx1kFbXRGyJNffbchk 011CUv_CLUSTER
+session_011CUvStbGkcGHDMAkQGFH13 011CUv_CLUSTER
+session_011CUvSdiXtbs54emctnZ9XZ 011CUv_CLUSTER
+session_011CUvSZk73M3Zv5xRHb6Rx4 011CUv_CLUSTER
+session_011CUvSF1kbZKe9hXd4e8Und 011CUv_CLUSTER
+session_011CUvRFYMVGVdBYtutGzT4G 011CUv_CLUSTER
+session_011CUvR74Gp38y8mqbXVnyX2 011CUv_CLUSTER
+session_011CUuSLx6kABLySSEYaZmPP 011CUu_CLUSTER
+session_011CUuS4XmpMn88Q78QAEru5 011CUu_CLUSTER
+
+# ── 011CUv_CLUSTER continued (Block 9 — plan/exec block) ────────────────────
+session_011CUvsoRjY8napguSNzkDMj 011CUv_CLUSTER
+session_011CUvsnjqSTKVqgY9MeRxfa 011CUv_CLUSTER
+session_011CUvsjzEHhbLSQrZyXfMs4 011CUv_CLUSTER
+session_017yuuVUsuvU9ejJhnH3bKPf
+session_01CnFrcGW5YPbKJFoDVyLUeX
+session_018WeXbYXdcgCrSBqTc1XK4m
+session_01J66yDdMmjWPLScuq4RLxqo
+session_017h22kbUNsyvrGA1F5xRK74
+session_014LFJeLq4KwLaHUHrG9nWKw
+session_013rF4NrK3MPeh7cUCFHV3m1
+session_01NHGD2E8WZaomhymk85vTxH
+session_01QL7CD92JE9RzQ31h92g5yL
+session_01SzWRjaLvUiwPzpCQa2Cqsd
+session_012SHejgn7vm3rpJ5trdfWcT
+session_011CUvsQiQFz4RRkNYg2ufCD 011CUv_CLUSTER
+session_011CUvs9wKUQZnQe25xn9d7y 011CUv_CLUSTER
+session_011CUvc8DiA3g5iNfHmfbdFo 011CUv_CLUSTER
+session_011CUvbutWQzfqenzxZ4D82P 011CUv_CLUSTER
+session_011CUvajzkpEJ34ZVStqiv2q 011CUv_CLUSTER
+session_011CUvaJ8CotMEzhesYm2aKf 011CUv_CLUSTER
+
+# ── 011CUv_CLUSTER continued + INGESTION_PIPELINE + JUICY ───────────────────
+session_011CUvw6Jxaf31RfuxxVt4iM 011CUv_CLUSTER
+session_011CUvw3NVKuHZS4aegmKAdD 011CUv_CLUSTER
+session_011CUvtwiN1Ap7YhWxP4qgZ1 011CUv_CLUSTER
+session_011CUvtokiAiszyiyL5E4JZE 011CUv_CLUSTER
+session_01KUckmEQU8oHhDFzL6jZWuU
+session_011CUvtNTKUCU2fkwEcc3f6X 011CUv_CLUSTER
+session_011CUvt8nr4t1S5uHCumsx2Z 011CUv_CLUSTER
+session_011CUvtHaAb221SdJX3iaGE4 JUICY
+session_011CUvtCgc9QpgQX58GHkJPT 011CUv_CLUSTER
+session_011CUvt4nrDPzLQAyAzXdMkn 011CUv_CLUSTER
+session_011CUvsuEDuwJEAt6VWsLTpG INGESTION_PIPELINE
+
+# ── JUDGE_LEVEL (Block 13 first Judge: block) ─────────────────────────────────
+session_011CUvwBxnYT8QujGMHRutvC JUDGE_LEVEL
+session_01Fdo7s3HzwmT5BPicwxbQiC JUDGE_LEVEL
+session_01XixZTvXFtkwYEuMWcouokW JUDGE_LEVEL
+session_01Wbr6XFcsaqnqFE6fs6mAwQ JUDGE_LEVEL
+
+# ── JUDGE_EXTENDED (Block 13 second Judge: block) ─────────────────────────────
+session_01YNDZe1wTXMkuQpQnadGLTz JUDGE_EXTENDED
+session_019urnLtbFUZn7C1BizYz9pC JUDGE_EXTENDED
+session_01SUmR9isujbtwZWBWTTXE2M JUDGE_EXTENDED
+session_01R3jPRVciPQHsuwH5oPwmtG JUDGE_EXTENDED
+session_01WqvexfBLSTuEF6V43i3FEv JUDGE_EXTENDED
+session_01QS8keDjf5qkoZJ7kTZSM9Q JUDGE_EXTENDED
+session_01FXtGVmPrLLXkh4dWk4WRh8 JUDGE_EXTENDED
+session_016mBkH685ypiCFuHcuhAxx7 JUDGE_EXTENDED
+session_01Cz1PyDh7QDxMAYmH1rH8tz JUDGE_EXTENDED
+session_013MK8vgVRPu3pBbPzARUtij JUDGE_EXTENDED
+session_01D9kuzYgcUaCZzY5Dpu67hm JUDGE_EXTENDED
+session_01LizFWbMfFAZtib2nx5FkpJ JUDGE_EXTENDED
+session_01NVMea8Ff626AfFNHXHDBmx JUDGE_EXTENDED
+session_01SX9cmBe23YZ7WxueesKzw5 JUDGE_EXTENDED
+session_011CUvxDLrFPHFWuv5musAvW JUDGE_EXTENDED
+session_011CUvwXSfs4DMXSFuSrXg17 JUDGE_EXTENDED
+session_011CUvwRdqfim5Tp6HivzeMq JUDGE_EXTENDED
+session_011CUvwFd6EehwYx2V6KcP8k JUDGE_EXTENDED
+session_011CUvwDmhbxKBWMQGyXGkyj JUDGE_EXTENDED
+
+# ── UNGROUPED (Block 13 non-Judge sessions) ───────────────────────────────────
+session_018sq1r7PmDuTzRF5HHMcNkj
+session_01LBHK7ByAuit28x6fBhEkbL
+session_016mRkv6W6S8MUwuxhgqAk4w
+session_01JvfV1H2Kn4VAkRS44Wa7un
+session_01PtrKTyPJehixSi4Cvk6j8E
+session_014vnEeyvKNGRj4q4efxLQyD
+session_014NhhsgUSkUJkDTWDkA3qo8
+session_01QrHo9ECCgp7vT8V6BsMvPH
+session_013FdUT6yvkyTws4BJ6A1s7C
+session_01WZXhvEgNG3jVZr7GjzsCmu
+session_01K6sU7MCSZiWEJhKQ34jg9U
+session_014xNJFfo58uhvkUcT8a1eqp
+session_01H68gzv26893rqrchCFHTww
+session_016MqCR7jWaQn9ETdFfqaApd
+session_016ekupByAgC7XdiRoJBP2v1
+session_0194BjpSi6mUMk42gBtjDrYL
+session_019xgtUbZRuE6fMS1jEvVTcU
+
+# ── UNGROUPED (Block 14) ─────────────────────────────────────────────────────
+session_01B152KAvAjv3DkrALiz2iLf

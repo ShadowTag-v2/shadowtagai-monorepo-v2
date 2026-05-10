@@ -1,0 +1,281 @@
+# Judge 6 Layer 1: Gemini Fast Policy Validation
+# Target: p99 <30ms via Vertex AI Gemini 1.5 Pro (tuned on PRB corpus)
+# Allocation: 40% of inference requests
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-layer1-config
+  namespace: ShadowTag-v2jr-governance
+data:
+  config.yaml: |
+    layer: 1
+    model: "gemini-3.1-flash-lite-preview-tuned-prb"
+    endpoint: "us-central1-aiplatform.googleapis.com"
+    project_id: "${PROJECT_ID}"  # Replace with actual project ID
+    region: "us-central1"
+
+    # Performance targets
+    sla:
+      p99_latency_ms: 30
+      target_qps: 100
+      timeout_ms: 50
+
+    # Policy ruleset (PRB-derived)
+    policies:
+      - id: "atp-5-19-export-control"
+        description: "Export control compliance (ITAR, EAR)"
+        enabled: true
+        severity: "critical"
+
+      - id: "atp-5-19-dual-use"
+        description: "Dual-use technology screening"
+        enabled: true
+        severity: "critical"
+
+      - id: "pii-gdpr-ccpa"
+        description: "PII handling (GDPR, CCPA)"
+        enabled: true
+        severity: "high"
+
+      - id: "content-safety"
+        description: "Content safety (violence, hate speech)"
+        enabled: true
+        severity: "medium"
+
+      - id: "ip-protection"
+        description: "Intellectual property protection"
+        enabled: true
+        severity: "high"
+
+    # Fallback to Layer 2 conditions
+    fallback:
+      - condition: "latency_p99 > 30ms"
+        action: "escalate_to_layer2"
+      - condition: "confidence < 0.85"
+        action: "escalate_to_layer2"
+      - condition: "policy_id == 'atp-5-19-*'"
+        action: "parallel_layer2_validation"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: judge-layer1-sa
+  namespace: ShadowTag-v2jr-governance
+  annotations:
+    iam.gke.io/gcp-service-account: "judge-layer1@${PROJECT_ID}.iam.gserviceaccount.com"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge-layer1-gemini
+  namespace: ShadowTag-v2jr-governance
+  labels:
+    app: judge-layer1
+    component: judge-6
+    layer: "1"
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: judge-layer1
+      component: judge-6
+  template:
+    metadata:
+      labels:
+        app: judge-layer1
+        component: judge-6
+        layer: "1"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: judge-layer1-sa
+
+      # Node affinity for governance pool
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: pool
+                operator: In
+                values:
+                - governance
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - judge-layer1
+              topologyKey: kubernetes.io/hostname
+
+      tolerations:
+      - key: "workload"
+        operator: "Equal"
+        value: "governance"
+        effect: "NoSchedule"
+
+      containers:
+      - name: judge-gemini
+        image: gcr.io/${PROJECT_ID}/judge-gemini:latest
+        imagePullPolicy: Always
+
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+
+        env:
+        - name: LAYER
+          value: "1"
+        - name: MODEL_NAME
+          value: "gemini-3.1-flash-lite-preview-tuned-prb"
+        - name: PROJECT_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: GOOGLE_CLOUD_PROJECT
+          value: "${PROJECT_ID}"
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/var/secrets/google/key.json"
+        - name: P99_LATENCY_TARGET_MS
+          value: "30"
+        - name: LOG_LEVEL
+          value: "info"
+
+        resources:
+          requests:
+            cpu: "2"
+            memory: "4Gi"
+          limits:
+            cpu: "4"
+            memory: "8Gi"
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+        volumeMounts:
+        - name: config
+          mountPath: /etc/judge
+          readOnly: true
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+          readOnly: true
+
+      volumes:
+      - name: config
+        configMap:
+          name: judge-layer1-config
+      - name: google-cloud-key
+        secret:
+          secretName: judge-layer1-gcp-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-layer1
+  namespace: ShadowTag-v2jr-governance
+  labels:
+    app: judge-layer1
+    component: judge-6
+spec:
+  type: ClusterIP
+  selector:
+    app: judge-layer1
+    component: judge-6
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: judge-layer1-hpa
+  namespace: ShadowTag-v2jr-governance
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: judge-layer1-gemini
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: http_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge-layer1-pdb
+  namespace: ShadowTag-v2jr-governance
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: judge-layer1
+      component: judge-6

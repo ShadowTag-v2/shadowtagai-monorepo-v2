@@ -1,0 +1,67 @@
+version: 1
+
+workspace:
+  name: Unified-Workspace
+  root: /path/to/Unified-Workspace
+  policy: latest-only
+  source_of_truth: monorepo_manifest.yaml
+
+repo_roots:
+  service_backend:
+    status: canonical
+    canonical_path: apps/stack/service_backend
+    notes: Primary live backend root.
+
+  runtime_payload:
+    status: canonical
+    canonical_path: apps/stack/runtime_payload
+    notes: Canonical payload/runtime support root.
+
+  pipeline_core:
+    status: canonical
+    canonical_path: apps/stack/pipeline_core
+    notes: Live canonical root for pipeline.
+
+  research_module:
+    status: canonical
+    canonical_path: apps/stack/research_module
+    notes: Live canonical root for research module.
+
+control_plane:
+  canonical_mcp_config: /path/to/Unified-Workspace/workspace-mcp-config.json
+  deprecated_mcp_configs:
+    - /path/to/legacy/mcp_config.json
+    - /path/to/Unified-Workspace/.vscode/client_mcp_settings.json
+
+products:
+  product_app:
+    root: apps/product_app
+    runtime: cloud
+    model: primary-model
+    project: primary-project
+    business_role: mvp-commercial-wedge
+
+  research_lab:
+    root: labs/research_lab
+    runtime: local-workstation
+    model: primary-model
+    project: primary-project
+    business_role: internal-rd-lab
+
+security_modules:
+  agnt_bash_classifier:
+    status: production
+    root: packages/agnt_bash_classifier
+    pipeline_checks: 23
+    gateway_tier: 1.75
+    integration: packages/tool_gateway/classified_gateway.py
+    telemetry: packages/agnt_bash_classifier/telemetry.py
+    test_suite:
+      - tests/test_bash_classifier_hypothesis.py
+      - tests/test_bash_security_checks.py
+      - tests/test_bash_telemetry_roundtrip.py
+    notes: >-
+      Fail-fast 23-check regex pipeline for bash command validation.
+      Adversa AI Risk #34 50-subcommand cap enforced pre-pipeline.
+      Hypothesis stress-tested at 1000 examples, 0.40ms avg latency.
+      Wired into ClassifiedGateway at Tier 1.75.

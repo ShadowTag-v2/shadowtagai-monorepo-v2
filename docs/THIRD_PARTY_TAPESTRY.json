@@ -1,0 +1,165 @@
+{
+  "title": "Third-Party Incorporated Work Product Manifest",
+  "description": "Capabilities provided by incorporated third-party code, reference architectures, and archived assets. Work smarter, not harder.",
+  "generated": "2026-04-18",
+  "categories": {
+    "cyberpunk_stack": {
+      "description": "OpenClaw multi-agent runtime with browser automation, auth, and session management",
+      "file_count": 1452,
+      "capabilities": [
+        "Browser automation",
+        "Auth flows",
+        "Session management",
+        "Multi-agent coordination",
+        "Extension system"
+      ]
+    },
+    "gemini_cookbook": {
+      "description": "Google Gemini API reference implementations \u2014 audio, video, function calling, embeddings, RAG",
+      "file_count": 49,
+      "capabilities": [
+        "Asynchronous requests",
+        "Audio",
+        "Authentication",
+        "Authentication with OAuth",
+        "Batch mode",
+        "Caching",
+        "Code Execution",
+        "Counting Tokens",
+        "Embeddings",
+        "Enum",
+        "Error handling",
+        "File API",
+        "File Search",
+        "Function calling",
+        "Get Started Nano Banana",
+        "Get started",
+        "LearnLM",
+        "LiveAPI",
+        "LiveAPI",
+        "LiveAPI NativeAudio"
+      ]
+    },
+    "reference_architectures": {
+      "description": "29 cloned reference repos providing proven patterns",
+      "repos": [
+        {
+          "AdminLTE": "352 files"
+        },
+        {
+          "Best-README-Template": "42 files"
+        },
+        {
+          "CL4R1T4S": "96 files"
+        },
+        {
+          "FFmpeg": "10260 files"
+        },
+        {
+          "Templater": "132 files"
+        },
+        {
+          "awesome-notebookLM-prompts": "31 files"
+        },
+        {
+          "awesome-tf": "39 files"
+        },
+        {
+          "claude-code-src": "1902 files"
+        },
+        {
+          "claude-code-system-prompts": "306 files"
+        },
+        {
+          "claudian": "551 files"
+        },
+        {
+          "clear-code": "49 files"
+        },
+        {
+          "datacore": "179 files"
+        },
+        {
+          "design-resources-for-developers": "35 files"
+        },
+        {
+          "flagger": "825 files"
+        },
+        {
+          "gitignore": "342 files"
+        },
+        {
+          "lighthouse": "1510 files"
+        },
+        {
+          "lighthouse-ci": "498 files"
+        },
+        {
+          "llm-app": "165 files"
+        },
+        {
+          "notebooklm-mcp-cli": "205 files"
+        },
+        {
+          "notebooklm-py": "284 files"
+        },
+        {
+          "notebooklm-skill": "51 files"
+        },
+        {
+          "obsidian-day-planner": "298 files"
+        },
+        {
+          "obsidian-excalidraw-plugin": "564 files"
+        },
+        {
+          "obsidian-releases": "55 files"
+        },
+        {
+          "obsidian-sample-plugin": "47 files"
+        },
+        {
+          "opentofu": "5078 files"
+        },
+        {
+          "semaphore": "808 files"
+        },
+        {
+          "skillify-skill": "37 files"
+        },
+        {
+          "terraform": "84955 files"
+        }
+      ],
+      "capabilities": [
+        "Terraform/OpenTofu IaC",
+        "Claude Code internals",
+        "NotebookLM automation",
+        "Obsidian plugins",
+        "Lighthouse CI",
+        "RAG pipelines",
+        "README templates",
+        "Admin dashboards",
+        "Feature flags",
+        "GitOps"
+      ]
+    },
+    "recovered_assets": {
+      "description": "Recovered operational code from prior workspaces",
+      "file_count": 101,
+      "sample_files": [
+        "archive/recovered_assets/repos/aiyou-fastapi-services/package-lock.json",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/cloud-functions-source/kubernetes_engine/django_tutorial/polls/migrations/__init__.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/cloud-functions-source/kubernetes_engine/django_tutorial/polls/migrations/0001_initial.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/cloud-functions-source/people-and-planet-ai/weather-forecasting/serving/model/config.json",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/cloud-functions-source/batch/logs/read_job_logs.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/cloud-functions-source/run/django/polls/migrations/__init__.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/cloud-functions-source/run/django/polls/migrations/0001_initial.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/python-docs-samples/kubernetes_engine/django_tutorial/polls/migrations/__init__.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/python-docs-samples/kubernetes_engine/django_tutorial/polls/migrations/0001_initial.py",
+        "archive/recovered_assets/repos/aiyou-fastapi-services/repos/python-docs-samples/people-and-planet-ai/weather-forecasting/serving/model/config.json"
+      ]
+    }
+  },
+  "total_incorporated_assets": 1631
+}

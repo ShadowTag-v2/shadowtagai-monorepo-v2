@@ -1,0 +1,88 @@
+/**
+ * Copyright 2026 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import type React from 'react';
+
+/**
+ * Gold Standard: ActivityCard
+ * This file serves as the definitive reference for the agent.
+ */
+interface ActivityCardProps {
+  readonly id: string;
+  readonly username: string;
+  readonly action: 'MERGED' | 'COMMIT';
+  readonly timestamp: string;
+  readonly avatarUrl: string;
+  readonly repoName: string;
+  readonly userUrl?: string;
+  readonly repoUrl?: string;
+}
+
+export const ActivityCard: React.FC<ActivityCardProps> = ({
+  username,
+  action,
+  timestamp,
+  avatarUrl,
+  repoName,
+  userUrl,
+  repoUrl,
+}) => {
+  const isMerged = action === 'MERGED';
+
+  return (
+    <div className="flex items-center justify-between gap-4 rounded-lg bg-surface-dark p-4 min-h-14 shadow-sm ring-1 ring-white/10">
+      <div className="flex items-center gap-4 overflow-hidden">
+        <img
+          className="aspect-square h-10 w-10 flex-shrink-0 rounded-full object-cover"
+          src={avatarUrl}
+          alt={`Avatar for ${username}`}
+        />
+
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base">
+          <a
+            href={userUrl ?? `/users/${username}`}
+            className="font-semibold text-primary hover:underline truncate"
+          >
+            {username}
+          </a>
+
+          <span
+            className={`inline-block px-2 py-0.5 text-xs font-semibold rounded-full ${
+              isMerged ? 'bg-purple-500/30 text-purple-300' : 'bg-primary/30 text-primary'
+            }`}
+          >
+            {action}
+          </span>
+
+          <span className="text-white/60">in</span>
+
+          <a
+            href={repoUrl ?? `/repos/${repoName}`}
+            className="text-primary hover:underline truncate"
+          >
+            {repoName}
+          </a>
+        </div>
+      </div>
+
+      <div className="shrink-0">
+        <p className="text-sm font-normal leading-normal text-white/50">{timestamp}</p>
+      </div>
+    </div>
+  );
+};
+
+export default ActivityCard;
