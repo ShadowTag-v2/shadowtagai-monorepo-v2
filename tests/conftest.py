@@ -4,10 +4,14 @@ from collections.abc import Generator
 from pathlib import Path
 from unittest.mock import MagicMock
 
-# Ensure repo root and packages/ are on sys.path BEFORE importing local packages
+# Ensure repo root, src/, and packages/ are on sys.path BEFORE importing local packages
 _repo_root = str(Path(__file__).resolve().parent.parent)
 if _repo_root not in sys.path:
   sys.path.insert(0, _repo_root)
+
+_src_dir = str(Path(__file__).resolve().parent.parent / "src")
+if _src_dir not in sys.path:
+  sys.path.insert(0, _src_dir)
 
 _packages_dir = str(Path(__file__).resolve().parent.parent / "packages")
 if _packages_dir not in sys.path:
