@@ -24,8 +24,8 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/suggestion_cache.json",
-      "fix": "git checkout -- .beads/suggestion_cache.json"
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
     },
     {
       "gate": "dirty",
@@ -67,7 +67,7 @@
       "severity": "error",
       "message": "Betterleaks found 39 potential secrets",
       "path": "",
-      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
+      "fix": ""
     },
     {
       "gate": "large_files",

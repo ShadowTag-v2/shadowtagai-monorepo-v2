@@ -6,6 +6,14 @@ router = APIRouter()
 # Lazy-init Firestore client to prevent module-level crash on Cloud Run
 _db = None
 
+# OpenTelemetry tracer for HDI quality monitoring
+try:
+    from middleware.telemetry import get_tracer
+
+    _tracer = get_tracer("headfade-hdi")
+except ImportError:
+    _tracer = None
+
 
 def _get_db():
   global _db

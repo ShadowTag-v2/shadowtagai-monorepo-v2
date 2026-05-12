@@ -1,8 +1,33 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useForensicElo } from '@/hooks/useForensicElo';
 
-export default function MetricsDashboard() {
+/** Voter Skill Tier — describes detection ability, NOT video deception quality. */
+type VoterSkillTier = 'novice' | 'analyst' | 'expert' | 'osint-master';
+
+const VOTER_TIER_COLORS: Record<VoterSkillTier, string> = {
+  novice: 'text-zinc-400',
+  analyst: 'text-amber-400',
+  expert: 'text-purple-400',
+  'osint-master': 'text-rose-400',
+};
+
+const VOTER_TIER_LABELS: Record<VoterSkillTier, string> = {
+  novice: '🔍 Novice Spotter',
+  analyst: '🎯 Forensics Analyst',
+  expert: '🧠 Detection Expert',
+  'osint-master': '💎 OSINT Master',
+};
+
+interface MetricsDashboardProps {
+  /** Current authenticated user ID — null = anonymous mode. */
+  uid: string | null;
+}
+
+export default function MetricsDashboard({ uid }: MetricsDashboardProps) {
+  const { elo } = useForensicElo(uid);
+
   const [metrics, setMetrics] = useState({
     dailyActiveUsers: 1247,
     totalVideosAnalyzed: 89234,
@@ -26,6 +51,17 @@ export default function MetricsDashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  // Derive voter skill tier from detection accuracy (NOT creator deception tier)
+  const voterAccuracy = elo.accuracy / 100;
+  const currentTier: VoterSkillTier =
+    voterAccuracy > 0.75
+      ? 'osint-master'
+      : voterAccuracy > 0.5
+        ? 'expert'
+        : voterAccuracy > 0.25
+          ? 'analyst'
+          : 'novice';
+
   return (
     <div className="bg-zinc-950 text-white p-8 rounded-3xl max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-8">
@@ -39,6 +75,71 @@ export default function MetricsDashboard() {
         </div>
       </div>
 
+      {/* ─── Forensic Elo Voter Panel ─── */}
+      <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-zinc-200">⚡ Your Forensic Elo</h2>
+          <span className={`text-sm font-bold ${VOTER_TIER_COLORS[currentTier]}`}>
+            {VOTER_TIER_LABELS[currentTier]}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <div className="text-xs text-zinc-500 uppercase tracking-wider">Elo Rating</div>
+            <div className="text-3xl font-bold tabular-nums">{elo.eloRating.toLocaleString()}</div>
+          </div>
+          <div>
+            <div className="text-xs text-zinc-500 uppercase tracking-wider">Accuracy</div>
+            <div className="text-3xl font-bold tabular-nums">
+              {elo.accuracy}
+              <span className="text-lg text-zinc-400">%</span>
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-zinc-500 uppercase tracking-wider">Votes Cast</div>
+            <div className="text-3xl font-bold tabular-nums">{elo.totalVotes.toLocaleString()}</div>
+          </div>
+          <div>
+            <div className="text-xs text-zinc-500 uppercase tracking-wider">Correct</div>
+            <div className="text-3xl font-bold tabular-nums text-emerald-400">
+              {elo.correctVotes.toLocaleString()}
+            </div>
+          </div>
+        </div>
+
+        {/* Badge shelf */}
+        {elo.badges.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {elo.badges.map((badge) => (
+              <span
+                key={badge}
+                className="text-xs bg-zinc-800 border border-zinc-700 px-3 py-1 rounded-full"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Elo progress bar */}
+        <div className="mt-4">
+          <div className="flex justify-between text-xs text-zinc-500 mb-1">
+            <span>0</span>
+            <span>1200 (Analyst)</span>
+            <span>1500 (OSINT)</span>
+            <span>2000 (God-Tier)</span>
+          </div>
+          <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-purple-500 to-rose-500 transition-all duration-700"
+              style={{ width: `${Math.min((elo.eloRating / 2000) * 100, 100)}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Platform Metrics Grid ─── */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {[
           {

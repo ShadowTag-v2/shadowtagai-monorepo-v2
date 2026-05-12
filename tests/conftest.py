@@ -4,17 +4,23 @@ from collections.abc import Generator
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
-
-# Ensure repo root is on sys.path for monorepo imports (apps.counselconduit.*)
+# Ensure repo root and packages/ are on sys.path BEFORE importing local packages
 _repo_root = str(Path(__file__).resolve().parent.parent)
 if _repo_root not in sys.path:
   sys.path.insert(0, _repo_root)
 
-# Add packages/ to sys.path so real packages can be imported directly
 _packages_dir = str(Path(__file__).resolve().parent.parent / "packages")
 if _packages_dir not in sys.path:
   sys.path.insert(0, _packages_dir)
+
+_tests_dir = str(Path(__file__).resolve().parent)
+if _tests_dir not in sys.path:
+    sys.path.insert(0, _tests_dir)
+
+import pytest
+
+from gemini_interactions.client import InteractionsClient
+from gemini_interactions.telemetry import NullTelemetry
 
 # ──────────────────────────────────────────────────────────────
 # Module stubs for subsystems not present in this test context.

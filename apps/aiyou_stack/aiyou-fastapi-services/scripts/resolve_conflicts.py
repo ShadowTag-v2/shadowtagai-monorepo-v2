@@ -6,22 +6,12 @@ def resolve_file(filepath):
         content = f.read()
 
     # Pattern to match conflict blocks:
-    # <<<<<<< HEAD
-    # (content we want)
-    # ||||||| merged common ancestors
-    # (content we don't want)
-    # =======
-    # (content we don't want)
-    # >>>>>>> branch
-    #
+    #     # (content we want)
+    #     #
     # OR
     #
-    # <<<<<<< HEAD
-    # (content we want)
-    # =======
-    # (content we don't want)
-    # >>>>>>> branch
-
+    #     # (content we want)
+    #
     # We want to keep the HEAD content.
 
     # Regex to capture HEAD content.

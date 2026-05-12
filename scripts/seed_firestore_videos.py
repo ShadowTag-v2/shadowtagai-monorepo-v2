@@ -35,6 +35,7 @@ def seed_votes(i: int) -> dict:
   }
 
 
+
 SEED_VIDEOS = [
   {
     "title": "How AI Is Changing Music Creation Forever",

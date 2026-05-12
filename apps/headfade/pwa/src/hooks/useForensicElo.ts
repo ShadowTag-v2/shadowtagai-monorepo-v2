@@ -164,19 +164,33 @@ export function useForensicElo(uid: string | null) {
 
       if (!uid) return;
 
-      // Firestore write
+      // Firestore write — read-then-write to ensure 1000 base Elo for new users
       try {
         const userRef = doc(db, 'users', uid);
         await runTransaction(db, async (tx) => {
-          tx.set(
-            userRef,
-            {
-              eloRating: increment(delta),
-              totalVotes: increment(1),
-              correctVotes: increment(isCorrect ? 1 : 0),
-            },
-            { merge: true },
-          );
+          const snap = await tx.get(userRef);
+          if (!snap.exists() || snap.data()?.eloRating === undefined) {
+            // First vote ever — initialize with base 1000
+            tx.set(
+              userRef,
+              {
+                eloRating: 1000 + delta,
+                totalVotes: 1,
+                correctVotes: isCorrect ? 1 : 0,
+              },
+              { merge: true },
+            );
+          } else {
+            tx.set(
+              userRef,
+              {
+                eloRating: increment(delta),
+                totalVotes: increment(1),
+                correctVotes: increment(isCorrect ? 1 : 0),
+              },
+              { merge: true },
+            );
+          }
         });
 
         // Update video creator stats

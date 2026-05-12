@@ -1,11 +1,10 @@
 fastapi==0.110.0
 uvicorn==0.28.0
 google-genai
-google-cloud-storage
-google-cloud-spanner
-google-cloud-texttospeech
-google-cloud-video-transcoder
-google-cloud-bigquery
-pipeline-dp
-langextract
+google-cloud-firestore
 firebase-admin
+# OpenTelemetry for Cloud Trace integration
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation-fastapi
+opentelemetry-exporter-gcp-trace
