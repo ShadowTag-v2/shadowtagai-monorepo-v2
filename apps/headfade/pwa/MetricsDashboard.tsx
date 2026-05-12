@@ -1,21 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { type DeceptionTier, useForensicElo } from '@/hooks/useForensicElo';
+import { useForensicElo } from '@/hooks/useForensicElo';
 
-/** Badge → emoji mapping for voter achievement display. */
-const TIER_COLORS: Record<DeceptionTier, string> = {
-  transparent: 'text-zinc-400',
-  convincing: 'text-amber-400',
+/** Voter Skill Tier — describes detection ability, NOT video deception quality. */
+type VoterSkillTier = 'novice' | 'analyst' | 'expert' | 'osint-master';
+
+const VOTER_TIER_COLORS: Record<VoterSkillTier, string> = {
+  novice: 'text-zinc-400',
+  analyst: 'text-amber-400',
   expert: 'text-purple-400',
-  'god-tier': 'text-rose-400',
+  'osint-master': 'text-rose-400',
 };
 
-const TIER_LABELS: Record<DeceptionTier, string> = {
-  transparent: '🔍 Transparent',
-  convincing: '🎭 Convincing',
-  expert: '🧠 Expert',
-  'god-tier': '💀 God-Tier',
+const VOTER_TIER_LABELS: Record<VoterSkillTier, string> = {
+  novice: '🔍 Novice Spotter',
+  analyst: '🎯 Forensics Analyst',
+  expert: '🧠 Detection Expert',
+  'osint-master': '💎 OSINT Master',
 };
 
 interface MetricsDashboardProps {
@@ -49,16 +51,16 @@ export default function MetricsDashboard({ uid }: MetricsDashboardProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Derive voter tier from accuracy
+  // Derive voter skill tier from detection accuracy (NOT creator deception tier)
   const voterAccuracy = elo.accuracy / 100;
-  const currentTier: DeceptionTier =
+  const currentTier: VoterSkillTier =
     voterAccuracy > 0.75
-      ? 'god-tier'
+      ? 'osint-master'
       : voterAccuracy > 0.5
         ? 'expert'
         : voterAccuracy > 0.25
-          ? 'convincing'
-          : 'transparent';
+          ? 'analyst'
+          : 'novice';
 
   return (
     <div className="bg-zinc-950 text-white p-8 rounded-3xl max-w-5xl mx-auto">
@@ -77,8 +79,8 @@ export default function MetricsDashboard({ uid }: MetricsDashboardProps) {
       <div className="mb-8 p-6 rounded-2xl bg-gradient-to-r from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-zinc-200">⚡ Your Forensic Elo</h2>
-          <span className={`text-sm font-bold ${TIER_COLORS[currentTier]}`}>
-            {TIER_LABELS[currentTier]}
+          <span className={`text-sm font-bold ${VOTER_TIER_COLORS[currentTier]}`}>
+            {VOTER_TIER_LABELS[currentTier]}
           </span>
         </div>
 
