@@ -4,17 +4,23 @@ from collections.abc import Generator
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
-
-# Ensure repo root is on sys.path for monorepo imports (apps.counselconduit.*)
+# Ensure repo root and packages/ are on sys.path BEFORE importing local packages
 _repo_root = str(Path(__file__).resolve().parent.parent)
 if _repo_root not in sys.path:
     sys.path.insert(0, _repo_root)
 
-# Add packages/ to sys.path so real packages can be imported directly
 _packages_dir = str(Path(__file__).resolve().parent.parent / "packages")
 if _packages_dir not in sys.path:
     sys.path.insert(0, _packages_dir)
+
+_tests_dir = str(Path(__file__).resolve().parent)
+if _tests_dir not in sys.path:
+    sys.path.insert(0, _tests_dir)
+
+import pytest
+
+from gemini_interactions.client import InteractionsClient
+from gemini_interactions.telemetry import NullTelemetry
 
 # ──────────────────────────────────────────────────────────────
 # Module stubs for subsystems not present in this test context.
@@ -142,3 +148,32 @@ def sample_video_file(tmp_path):
     video_path.write_bytes(b"fake video data for testing")
 
     return video_path
+
+
+# ---------------------------------------------------------------------------
+# Centralized InteractionsClient mock factory
+# ---------------------------------------------------------------------------
+
+from _mock_helpers import (
+    make_mock_deep_research_client,
+    make_mock_interactions_client,
+    make_mock_vcr_replay,
+)
+
+
+@pytest.fixture
+def mock_interactions_client() -> InteractionsClient:
+    """Pytest fixture wrapping :func:`make_mock_interactions_client`."""
+    return make_mock_interactions_client()
+
+
+@pytest.fixture
+def mock_deep_research_client():
+    """Pytest fixture wrapping :func:`make_mock_deep_research_client`."""
+    return make_mock_deep_research_client()
+
+
+@pytest.fixture
+def mock_vcr_replay():
+    """Pytest fixture wrapping :func:`make_mock_vcr_replay`."""
+    return make_mock_vcr_replay()

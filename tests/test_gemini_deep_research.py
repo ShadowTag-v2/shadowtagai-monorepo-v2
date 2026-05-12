@@ -13,6 +13,8 @@ from typing import Any
 
 import pytest
 
+from _mock_helpers import make_mock_deep_research_client
+
 from gemini_deep_research.client import (
     AGENT_FAST,
     AGENT_MAX,
@@ -157,10 +159,7 @@ class TestResearchStatus:
 
 class TestClientInit:
     def test_default_agent(self):
-        client = DeepResearchClient.__new__(DeepResearchClient)
-        client._api_key = ""
-        client._agent = AGENT_FAST
-        client._client = None
+        client = make_mock_deep_research_client(agent=AGENT_FAST)
         assert client._agent == AGENT_FAST
 
     def test_max_depth_selects_max_agent(self):

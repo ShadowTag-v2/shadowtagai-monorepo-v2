@@ -26,6 +26,8 @@ from hypothesis import strategies as st
 from packages.agnt_vcr.vcr import VCRReplay
 from packages.agnt_vcr.async_vcr import AsyncVCR
 
+from _mock_helpers import make_mock_vcr_replay
+
 
 # ─── Fuzz Multiplier (env-driven) ─────────────────────────────────────
 # Set HYPOTHESIS_FUZZ_MULTIPLIER=10 to run 10x more examples.
@@ -93,10 +95,7 @@ class TestHashDeterminism:
     @settings(max_examples=200 * _FUZZ_MULT, suppress_health_check=[HealthCheck.too_slow])
     def test_same_input_same_hash(self, method, kwargs):
         """Identical method+kwargs always produce the same hash."""
-        vcr = VCRReplay.__new__(VCRReplay)
-        vcr.cassette_dir = "/dev/null"
-        vcr.recording = False
-        vcr.replaying = False
+        vcr = make_mock_vcr_replay()
         h1 = vcr._hash_request(method, kwargs)
         h2 = vcr._hash_request(method, kwargs)
         assert h1 == h2, "Hash must be deterministic"
@@ -110,10 +109,7 @@ class TestHashDeterminism:
     def test_different_kwargs_different_hash(self, method, kwargs_a, kwargs_b):
         """Different kwargs should (almost always) produce different hashes."""
         assume(kwargs_a != kwargs_b)
-        vcr = VCRReplay.__new__(VCRReplay)
-        vcr.cassette_dir = "/dev/null"
-        vcr.recording = False
-        vcr.replaying = False
+        vcr = make_mock_vcr_replay()
         h1 = vcr._hash_request(method, kwargs_a)
         h2 = vcr._hash_request(method, kwargs_b)
         # SHA-256 collision is astronomically unlikely

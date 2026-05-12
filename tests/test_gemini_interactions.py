@@ -29,6 +29,7 @@ from gemini_interactions.client import (
     StreamAccumulator,
     StreamEvent,
 )
+from _mock_helpers import make_mock_interactions_client
 
 
 # ---------------------------------------------------------------------------
@@ -437,16 +438,14 @@ class TestStreamAccumulator:
 
 class TestBuildKwargs:
     def test_minimal(self):
-        c = InteractionsClient.__new__(InteractionsClient)
-        c._default_model = "gemini-3-flash-preview"
+        c = make_mock_interactions_client()
         kwargs = c._build_kwargs(input="Hello")
         assert kwargs["model"] == "gemini-3-flash-preview"
         assert kwargs["store"] is True
         assert "tools" not in kwargs
 
     def test_full(self):
-        c = InteractionsClient.__new__(InteractionsClient)
-        c._default_model = "gemini-3-flash-preview"
+        c = make_mock_interactions_client()
         kwargs = c._build_kwargs(
             input="Hello",
             model="gemini-3-pro-preview",
@@ -543,9 +542,7 @@ class _MockInteractionsAPI:
 
 def _make_mock_client():
     """Create an InteractionsClient with mocked API."""
-    client = InteractionsClient.__new__(InteractionsClient)
-    client._api_key = "test-key"
-    client._default_model = "gemini-3-flash-preview"
+    client = make_mock_interactions_client()
     client._client = type("MockGenAI", (), {"interactions": _MockInteractionsAPI()})()
     return client
 
@@ -745,9 +742,7 @@ class TestListInteractions:
 def _make_stream_mock_client():
     """Create a client that mocks both create() and stream() at the InteractionsClient level."""
 
-    client = InteractionsClient.__new__(InteractionsClient)
-    client._api_key = "test-key"
-    client._default_model = "gemini-3-flash-preview"
+    client = make_mock_interactions_client()
 
     # Mock the underlying SDK client
     mock_api = _MockInteractionsAPI()
@@ -899,9 +894,7 @@ def _make_fc_mock_client():
 
             return _Result()
 
-    client = InteractionsClient.__new__(InteractionsClient)
-    client._api_key = "test-key"
-    client._default_model = "gemini-3-flash-preview"
+    client = make_mock_interactions_client()
     client._client = type("MockGenAI", (), {"interactions": _MockFCAPI()})()
     client._fc_call_log = call_log
     return client
@@ -986,9 +979,7 @@ class TestConversationSessionFunctionCallLoop:
 
                 return _R()
 
-        client = InteractionsClient.__new__(InteractionsClient)
-        client._api_key = "test-key"
-        client._default_model = "gemini-3-flash-preview"
+        client = make_mock_interactions_client()
         client._client = type("M", (), {"interactions": _MockNoFCAPI()})()
 
         session = ConversationSession(client)

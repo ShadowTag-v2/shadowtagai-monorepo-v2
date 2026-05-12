@@ -7,7 +7,14 @@ to verify correct risk level computation per ATP 5-19.
 
 from __future__ import annotations
 
-from apps.counselconduit.judge6_atp519_scoring import (
+import sys
+from pathlib import Path
+
+# Module was archived on 2026-05-05; adjust import path
+_archive_path = Path(__file__).resolve().parents[3] / "apps" / "counselconduit" / "_archive_judge6_2026-05-05"
+sys.path.insert(0, str(_archive_path))
+
+from judge6_atp519_scoring import (
     score_risk,
     RISK_MATRIX,
     SEVERITY_LEVELS,

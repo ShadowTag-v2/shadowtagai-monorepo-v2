@@ -165,56 +165,90 @@ class TestVerifyStripeSignature:
 class TestEventHandlers:
     """Test individual event type handlers."""
 
-    def test_checkout_completed(self):
+    @pytest.fixture(autouse=True)
+    def _mock_firestore(self, monkeypatch):
+        """Patch Firestore client with AsyncMock for all handler tests."""
+        from unittest.mock import AsyncMock, MagicMock
+
+        mock_db = MagicMock()
+        mock_doc = MagicMock()
+        mock_doc.set = AsyncMock(return_value=None)
+        mock_collection = MagicMock()
+        mock_collection.document.return_value = mock_doc
+
+        # Support nested collection (billing_events sub-collection)
+        mock_sub_collection = MagicMock()
+        mock_sub_doc = MagicMock()
+        mock_sub_doc.set = AsyncMock(return_value=None)
+        mock_sub_collection.document.return_value = mock_sub_doc
+        mock_doc.collection.return_value = mock_sub_collection
+
+        mock_db.collection.return_value = mock_collection
+
+        # Import the module object directly — avoids dotted-path traversal
+        # failures when monkeypatch can't resolve intermediate packages
+        from apps.counselconduit.api import firestore_client as fc_mod
+
+        monkeypatch.setattr(fc_mod, "_get_client", lambda: mock_db)
+        # Also reset the cached global client so _get_client is always called
+        monkeypatch.setattr(fc_mod, "_client", None)
+        self._mock_db = mock_db
+
+    @pytest.mark.asyncio
+    async def test_checkout_completed(self):
         handler = _import_handler()
         event = _make_event(
             "checkout.session.completed",
             customer_email="attorney@firm.com",
             subscription="sub_123",
         )
-        result = handler["checkout"](event)
+        result = await handler["checkout"](event)
         assert result["action"] == "provisioned"
         assert result["email"] == "attorney@firm.com"
 
-    def test_subscription_updated(self):
+    @pytest.mark.asyncio
+    async def test_subscription_updated(self):
         handler = _import_handler()
         event = _make_event(
             "customer.subscription.updated",
             id="sub_456",
             status="active",
         )
-        result = handler["sub_updated"](event)
+        result = await handler["sub_updated"](event)
         assert result["action"] == "tier_updated"
         assert result["subscription_id"] == "sub_456"
 
-    def test_subscription_deleted(self):
+    @pytest.mark.asyncio
+    async def test_subscription_deleted(self):
         handler = _import_handler()
         event = _make_event(
             "customer.subscription.deleted",
             id="sub_789",
         )
-        result = handler["sub_deleted"](event)
+        result = await handler["sub_deleted"](event)
         assert result["action"] == "access_revoked"
 
-    def test_invoice_payment_succeeded(self):
+    @pytest.mark.asyncio
+    async def test_invoice_payment_succeeded(self):
         handler = _import_handler()
         event = _make_event(
             "invoice.payment_succeeded",
             amount_paid=14900,
             customer="cus_abc",
         )
-        result = handler["payment_ok"](event)
+        result = await handler["payment_ok"](event)
         assert result["action"] == "payment_recorded"
         assert result["amount_cents"] == 14900
 
-    def test_invoice_payment_failed(self):
+    @pytest.mark.asyncio
+    async def test_invoice_payment_failed(self):
         handler = _import_handler()
         event = _make_event(
             "invoice.payment_failed",
             customer="cus_def",
             attempt_count=3,
         )
-        result = handler["payment_fail"](event)
+        result = await handler["payment_fail"](event)
         assert result["action"] == "payment_failed"
         assert result["attempt"] == 3
 
