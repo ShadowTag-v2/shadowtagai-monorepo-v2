@@ -6,6 +6,24 @@
       "disabled": false,
       "autoApprove": []
     },
+    "stripe": {
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp", "--tools=all"],
+      "env": {
+        "STRIPE_SECRET_KEY": "${STRIPE_SECRET_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_products",
+        "list_prices",
+        "list_customers",
+        "list_subscriptions",
+        "get_customer",
+        "get_subscription",
+        "get_product",
+        "get_balance"
+      ]
+    },
     "gcloud": {
       "command": "npx",
       "args": ["-y", "@google-cloud/gcloud-mcp"],
