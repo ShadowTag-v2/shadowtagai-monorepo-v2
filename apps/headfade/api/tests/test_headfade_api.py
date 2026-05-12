@@ -257,25 +257,26 @@ class TestEloGainBoundary:
         "fool_rate,is_correct,expected_delta",
         [
             # Exact boundary values (should fall into LOWER tier due to > not >=)
-            (0.2, True, 1),        # exactly 0.2 → NOT >0.25, NOT >0.2 → base +1
-            (0.25, True, 1),       # exactly 0.25 → NOT >0.25 → base +1
-            (0.5, True, 5),        # exactly 0.5 → NOT >0.5, IS >0.25 → +5
-            (0.75, True, 15),      # exactly 0.75 → NOT >0.75, IS >0.5 → +15
-            (0.9, True, 25),       # exactly 0.9 → NOT >0.9, IS >0.75 → +25
+            (0.2, True, 1),  # exactly 0.2 → NOT >0.25, NOT >0.2 → base +1
+            (0.25, True, 1),  # exactly 0.25 → NOT >0.25 → base +1
+            (0.5, True, 5),  # exactly 0.5 → NOT >0.5, IS >0.25 → +5
+            (0.75, True, 15),  # exactly 0.75 → NOT >0.75, IS >0.5 → +15
+            (0.9, True, 25),  # exactly 0.9 → NOT >0.9, IS >0.75 → +25
             # Just above boundaries
-            (0.251, True, 5),      # just above 0.25 → +5
-            (0.501, True, 15),     # just above 0.5 → +15
-            (0.751, True, 25),     # just above 0.75 → +25
-            (0.901, True, 50),     # just above 0.9 → +50
+            (0.251, True, 5),  # just above 0.25 → +5
+            (0.501, True, 15),  # just above 0.5 → +15
+            (0.751, True, 25),  # just above 0.75 → +25
+            (0.901, True, 50),  # just above 0.9 → +50
             # Incorrect votes at boundaries
-            (0.2, False, -2),      # exactly 0.2 → not <0.2 → -2
-            (0.19, False, -5),     # just below 0.2 → <0.2 → -5
-            (0.0, False, -5),      # minimum → -5
-            (1.0, True, 50),       # maximum → +50
+            (0.2, False, -2),  # exactly 0.2 → not <0.2 → -2
+            (0.19, False, -5),  # just below 0.2 → <0.2 → -5
+            (0.0, False, -5),  # minimum → -5
+            (1.0, True, 50),  # maximum → +50
         ],
     )
     def test_elo_gain_boundary(self, fool_rate, is_correct, expected_delta):
         """Verify eloGain returns correct delta at exact threshold boundaries."""
+
         # Import the function under test from the PWA hook's logic
         # (mirrored in test to avoid TS import — we test the Python equivalent)
         def elo_gain(fr: float, correct: bool) -> int:
@@ -330,4 +331,3 @@ class TestOTelSpanAttributes:
         assert span_calls.get("hdi.juked") is True
         assert span_calls.get("hdi.latency_ms") == 420
         assert span_calls.get("hdi.user_vote") == "HUMAN"
-
