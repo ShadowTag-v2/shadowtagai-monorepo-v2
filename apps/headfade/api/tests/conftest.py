@@ -6,10 +6,18 @@ to DRY up test setup across test modules. All sys.modules patches
 are applied ONCE at conftest-load time, before any test imports.
 """
 
+import os
 import sys
 from unittest.mock import MagicMock
 
 import pytest
+
+# ---------------------------------------------------------------------------
+# Ensure HeadFade API package root is importable from any pytest cwd.
+# ---------------------------------------------------------------------------
+_API_ROOT = os.path.join(os.path.dirname(__file__), "..")
+if _API_ROOT not in sys.path:
+    sys.path.insert(0, _API_ROOT)
 
 # ---------------------------------------------------------------------------
 # Module-level mock injection — executes once when pytest collects this file.

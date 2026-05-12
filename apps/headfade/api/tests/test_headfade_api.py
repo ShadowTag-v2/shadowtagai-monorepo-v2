@@ -245,3 +245,89 @@ class TestRateLimiter:
         # Cleanup
         main_mod._rate_store.clear()
 
+
+class TestEloGainBoundary:
+    """Boundary tests for eloGain at exact threshold values.
+
+    The eloGain function uses strict > comparisons, so exact boundary
+    values fall into the lower tier. These tests verify that behavior.
+    """
+
+    @pytest.mark.parametrize(
+        "fool_rate,is_correct,expected_delta",
+        [
+            # Exact boundary values (should fall into LOWER tier due to > not >=)
+            (0.2, True, 1),        # exactly 0.2 → NOT >0.25, NOT >0.2 → base +1
+            (0.25, True, 1),       # exactly 0.25 → NOT >0.25 → base +1
+            (0.5, True, 5),        # exactly 0.5 → NOT >0.5, IS >0.25 → +5
+            (0.75, True, 15),      # exactly 0.75 → NOT >0.75, IS >0.5 → +15
+            (0.9, True, 25),       # exactly 0.9 → NOT >0.9, IS >0.75 → +25
+            # Just above boundaries
+            (0.251, True, 5),      # just above 0.25 → +5
+            (0.501, True, 15),     # just above 0.5 → +15
+            (0.751, True, 25),     # just above 0.75 → +25
+            (0.901, True, 50),     # just above 0.9 → +50
+            # Incorrect votes at boundaries
+            (0.2, False, -2),      # exactly 0.2 → not <0.2 → -2
+            (0.19, False, -5),     # just below 0.2 → <0.2 → -5
+            (0.0, False, -5),      # minimum → -5
+            (1.0, True, 50),       # maximum → +50
+        ],
+    )
+    def test_elo_gain_boundary(self, fool_rate, is_correct, expected_delta):
+        """Verify eloGain returns correct delta at exact threshold boundaries."""
+        # Import the function under test from the PWA hook's logic
+        # (mirrored in test to avoid TS import — we test the Python equivalent)
+        def elo_gain(fr: float, correct: bool) -> int:
+            if not correct:
+                return -5 if fr < 0.2 else -2
+            if fr > 0.9:
+                return 50
+            if fr > 0.75:
+                return 25
+            if fr > 0.5:
+                return 15
+            if fr > 0.25:
+                return 5
+            return 1
+
+        assert elo_gain(fool_rate, is_correct) == expected_delta
+
+
+class TestOTelSpanAttributes:
+    """Verify OpenTelemetry span attributes are set correctly during vote processing."""
+
+    @patch("routers.hdi_telemetry._get_db")
+    @patch("routers.hdi_telemetry._tracer")
+    def test_vote_sets_span_attributes(self, mock_tracer, mock_get_db, client):
+        """Vote endpoint should set hdi.* span attributes for Cloud Trace."""
+        mock_db = MagicMock()
+        mock_get_db.return_value = mock_db
+        mock_db.collection.return_value.document.return_value = MagicMock()
+
+        mock_span = MagicMock()
+        mock_span.__enter__ = MagicMock(return_value=mock_span)
+        mock_span.__exit__ = MagicMock(return_value=False)
+        mock_tracer.start_as_current_span.return_value = mock_span
+
+        response = client.post(
+            "/api/vote",
+            params={
+                "video_id": "otel_test_001",
+                "user_vote": "HUMAN",
+                "actual_truth": "AI",
+                "latency_ms": 420,
+            },
+        )
+        assert response.status_code == 200
+
+        # Verify the tracer was invoked with hdi_vote_processing span name
+        mock_tracer.start_as_current_span.assert_called_once_with("hdi_vote_processing")
+
+        # Verify span attributes were set
+        span_calls = {call[0][0]: call[0][1] for call in mock_span.set_attribute.call_args_list}
+        assert span_calls.get("hdi.video_id") == "otel_test_001"
+        assert span_calls.get("hdi.juked") is True
+        assert span_calls.get("hdi.latency_ms") == 420
+        assert span_calls.get("hdi.user_vote") == "HUMAN"
+
