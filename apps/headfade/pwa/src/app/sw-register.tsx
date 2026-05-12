@@ -10,8 +10,7 @@ export function ServiceWorkerRegistrar() {
         .then((reg) => {
           console.log('[HeadFade] SW registered, scope:', reg.scope);
         })
-        .catch((_err) => {
-        });
+        .catch((_err) => {});
     }
   }, []);
 

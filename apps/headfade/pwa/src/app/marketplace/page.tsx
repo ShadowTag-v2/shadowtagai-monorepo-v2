@@ -96,7 +96,6 @@ export default function MarketplacePage() {
         throw new Error('No checkout URL returned');
       }
     } catch (_err: unknown) {
-
       alert('Stripe Connect checkout failed or is unavailable.');
     }
   }, []);
