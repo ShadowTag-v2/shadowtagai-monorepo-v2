@@ -1,0 +1,94 @@
+# HeadFade Test Isolation — CI Workflow
+# Ensures HeadFade API + PWA tests run in complete isolation from monorepo.
+# Triggered on any change to apps/headfade/ or its shared dependencies.
+
+name: HeadFade Test Isolation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/headfade/**'
+      - 'packages/shared/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/headfade/**'
+      - 'packages/shared/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: headfade-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-tests:
+    name: HeadFade API (Python)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/headfade/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+          cache-dependency-path: apps/headfade/api/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run ruff lint
+        run: ruff check tests/ --output-format=github
+
+      - name: Run ruff format check
+        run: ruff format --check tests/
+
+      - name: Run pytest (isolated)
+        run: python -m pytest tests/ -v --tb=short --strict-markers
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+
+  pwa-tests:
+    name: HeadFade PWA (TypeScript)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/headfade/pwa
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/headfade/pwa/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run biome check
+        run: npx @biomejs/biome check src/
+
+      - name: Run vitest
+        run: npx vitest run --reporter=verbose
+
+  isolation-gate:
+    name: Isolation Gate
+    needs: [api-tests, pwa-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Verify all tests passed
+        run: |
+          if [ "${{ needs.api-tests.result }}" != "success" ] || [ "${{ needs.pwa-tests.result }}" != "success" ]; then
+            echo "::error::HeadFade test isolation failed. API=${{ needs.api-tests.result }}, PWA=${{ needs.pwa-tests.result }}"
+            exit 1
+          fi
+          echo "✅ HeadFade test isolation gate passed"

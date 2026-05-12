@@ -190,8 +190,20 @@
   ],
   "fleet_manifest": {
     "total_servers": 11,
-    "platform_injected": ["firebase-mcp-server", "chrome-devtools-mcp", "StitchMCP", "google-developer-knowledge", "sequential-thinking"],
-    "cline_exclusive": ["gcloud", "observability", "cloud-run", "storage", "antigravity-notebooklm-mcp"],
+    "platform_injected": [
+      "firebase-mcp-server",
+      "chrome-devtools-mcp",
+      "StitchMCP",
+      "google-developer-knowledge",
+      "sequential-thinking"
+    ],
+    "cline_exclusive": [
+      "gcloud",
+      "observability",
+      "cloud-run",
+      "storage",
+      "antigravity-notebooklm-mcp"
+    ],
     "custom": ["jules-mcp-server"]
   }
 }

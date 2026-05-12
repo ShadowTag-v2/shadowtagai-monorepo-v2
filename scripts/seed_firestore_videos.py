@@ -7,6 +7,7 @@ matching the deterministic seedVotes() logic in useVotes.ts.
 Usage:
   GOOGLE_CLOUD_PROJECT=shadowtag-omega-v4 python3 scripts/seed_firestore_videos.py
 """
+
 import math
 import os
 import sys
@@ -20,6 +21,7 @@ except ImportError:
 
 PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
 
+
 # Mirror of useVotes.ts seedVotes(i)
 def seed_votes(i: int) -> dict:
     base = 1200 + i * 337 + math.floor(math.sin(i) * 800)
@@ -28,6 +30,7 @@ def seed_votes(i: int) -> dict:
         "voteAI": math.floor(base * p),
         "voteHuman": math.floor(base * (1 - p)),
     }
+
 
 SEED_VIDEOS = [
     {"title": "How AI Is Changing Music Creation Forever", "author": "TechVision", "views": "2.4M"},
@@ -51,6 +54,7 @@ SEED_VIDEOS = [
     {"title": "Gordon Ramsay Reacts to AI Recipes", "author": "Gordon Ramsay", "views": "15.8M"},
     {"title": "Why Japan Is 10 Years Ahead of Your City", "author": "Abroad in Japan", "views": "5.4M"},
 ]
+
 
 def main() -> None:
     # Initialize with ADC (gcloud auth application-default login)

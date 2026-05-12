@@ -1,0 +1,16 @@
+[
+  {
+    "request": {
+      "method": "create",
+      "input": "Generate suggestion"
+    },
+    "response": {
+      "id": "interaction-telem-001",
+      "text": "Run unit tests",
+      "usage": {
+        "total_tokens": 15
+      }
+    },
+    "timestamp": 1777900020.0
+  }
+]
