@@ -1,13 +1,31 @@
 {
   "mcpServers": {
     "antigravity-notebooklm-mcp": {
-      "command": "npx",
-      "args": ["-y", "notebooklm-mcp@latest"],
+      "command": "uvx",
+      "args": ["--from", "notebooklm-mcp-cli", "notebooklm-mcp"],
       "env": {
         "HEADLESS": "true"
       },
       "disabled": false,
       "autoApprove": ["setup_auth", "list_notebooks", "search_notebooks", "get_notebook"]
+    },
+    "stripe": {
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp", "--tools=all"],
+      "env": {
+        "STRIPE_SECRET_KEY": "${STRIPE_SECRET_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_products",
+        "list_prices",
+        "list_customers",
+        "list_subscriptions",
+        "get_customer",
+        "get_subscription",
+        "get_product",
+        "get_balance"
+      ]
     },
     "gcloud": {
       "command": "npx",
