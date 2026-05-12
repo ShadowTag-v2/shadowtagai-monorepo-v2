@@ -63,23 +63,22 @@ export function FeaturedCarousel({
   const [scrollDrivenIdx, setScrollDrivenIdx] = useState(0); // index from scroll position
 
   /* ── Turing Feed state machine ── */
-  const { autoScroll, revealState, setAutoScroll, handleVote, goToIndex } =
-    useTuringFeed({
-      count: items.length,
-      isAuthenticated,
-      onAuthRequired: onAuthRequired ?? (() => {}),
-      onVoteAccepted: (index, choice) => {
-        // Delegate to the item's own vote handler
-        items[index]?.onVote(choice);
-      },
-      onAdvance: (nextIdx) => {
-        // Programmatically scroll the outer container to the next card
-        const outer = outerRef.current;
-        if (!outer) return;
-        const outerTop = outer.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: outerTop + nextIdx * SCROLL_PER_CARD, behavior: 'smooth' });
-      },
-    });
+  const { autoScroll, revealState, setAutoScroll, handleVote, goToIndex } = useTuringFeed({
+    count: items.length,
+    isAuthenticated,
+    onAuthRequired: onAuthRequired ?? (() => {}),
+    onVoteAccepted: (index, choice) => {
+      // Delegate to the item's own vote handler
+      items[index]?.onVote(choice);
+    },
+    onAdvance: (nextIdx) => {
+      // Programmatically scroll the outer container to the next card
+      const outer = outerRef.current;
+      if (!outer) return;
+      const outerTop = outer.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: outerTop + nextIdx * SCROLL_PER_CARD, behavior: 'smooth' });
+    },
+  });
 
   /* ── Scroll listener — keeps scrollDrivenIdx in sync ── */
   useEffect(() => {
@@ -297,7 +296,14 @@ export function FeaturedCarousel({
               aria-label={`Featured video ${i + 1}`}
               onClick={() => jumpToCard(i)}
               className="flex items-center justify-center transition-all duration-300"
-              style={{ minWidth: 44, minHeight: 44, padding: 0, background: 'transparent', border: 'none', cursor: 'pointer' }}
+              style={{
+                minWidth: 44,
+                minHeight: 44,
+                padding: 0,
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
               <span
                 className="rounded-full transition-all duration-300"
@@ -331,7 +337,13 @@ export function FeaturedCarousel({
             animation: scrollProgress > 0.05 ? 'none' : 'bounce 1.5s infinite',
           }}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
             <title>Scroll down</title>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>

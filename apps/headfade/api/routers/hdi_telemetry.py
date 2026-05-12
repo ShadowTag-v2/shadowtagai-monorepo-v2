@@ -6,6 +6,14 @@ router = APIRouter()
 # Lazy-init Firestore client to prevent module-level crash on Cloud Run
 _db = None
 
+# OpenTelemetry tracer for HDI quality monitoring
+try:
+    from middleware.telemetry import get_tracer
+
+    _tracer = get_tracer("headfade-hdi")
+except ImportError:
+    _tracer = None
+
 
 def _get_db():
     global _db
@@ -29,16 +37,26 @@ async def record_human_deception_index(
 
     juked = user_vote.upper() != actual_truth.upper()
 
-    doc_ref.set(
-        {
-            "video_id": video_id,
-            "user_vote": user_vote.upper(),
-            "actual_truth": actual_truth.upper(),
-            "juked": juked,  # Did the AI fool them?
-            "hesitation_latency_ms": latency_ms,
-            "environment": "edge_node_chrome146",
-            "timestamp": firestore.SERVER_TIMESTAMP,
-        },
-    )
+    payload = {
+        "video_id": video_id,
+        "user_vote": user_vote.upper(),
+        "actual_truth": actual_truth.upper(),
+        "juked": juked,  # Did the AI fool them?
+        "hesitation_latency_ms": latency_ms,
+        "environment": "edge_node_chrome146",
+        "timestamp": firestore.SERVER_TIMESTAMP,
+    }
+
+    # Trace the vote for Cloud Trace latency + HDI quality dashboards
+    if _tracer:
+        with _tracer.start_as_current_span("hdi_vote_processing") as span:
+            span.set_attribute("hdi.video_id", video_id)
+            span.set_attribute("hdi.juked", juked)
+            span.set_attribute("hdi.latency_ms", latency_ms)
+            span.set_attribute("hdi.user_vote", user_vote.upper())
+            doc_ref.set(payload)
+    else:
+        doc_ref.set(payload)
 
     return {"status": "HDI Matrix Updated", "user_fooled": juked}
+

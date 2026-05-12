@@ -22,11 +22,7 @@
 // Types
 // ---------------------------------------------------------------------------
 
-export type SafetyVerdict =
-  | 'APPROVED'
-  | 'FLAGGED_FOR_REVIEW'
-  | 'BLOCKED'
-  | 'REPORTED_NCMEC';
+export type SafetyVerdict = 'APPROVED' | 'FLAGGED_FOR_REVIEW' | 'BLOCKED' | 'REPORTED_NCMEC';
 
 export type SafetyCategory =
   | 'CSAM'
@@ -101,14 +97,10 @@ const REVIEW_THRESHOLD = 0.5;
  * Requires: `GOOGLE_CLOUD_PROJECT_ID` env var and ADC credentials.
  * API: https://cloud.google.com/vision/docs/detecting-safe-search
  */
-export async function analyzeImageSafeSearch(
-  imageUri: string,
-): Promise<SafeSearchAnnotation> {
+export async function analyzeImageSafeSearch(imageUri: string): Promise<SafeSearchAnnotation> {
   const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
   if (!projectId) {
-    throw new Error(
-      'GOOGLE_CLOUD_PROJECT_ID is required for Vision API calls',
-    );
+    throw new Error('GOOGLE_CLOUD_PROJECT_ID is required for Vision API calls');
   }
 
   const endpoint = `https://vision.googleapis.com/v1/images:annotate`;
@@ -173,9 +165,7 @@ export async function analyzeImageSafeSearch(
  * Per 18 U.S.C. § 2258A, electronic service providers are REQUIRED
  * to report apparent CSAM to NCMEC.
  */
-export async function checkCSAM(
-  submission: ContentSubmission,
-): Promise<ModerationResult> {
+export async function checkCSAM(submission: ContentSubmission): Promise<ModerationResult> {
   // Step 1: Compute perceptual hash and check against PhotoDNA database
   const hashMatch = await checkPhotoHashDatabase(submission.mediaUrl);
 
@@ -262,9 +252,7 @@ export async function checkCSAM(
  * - Known victim hash databases (e.g., StopNCII.org)
  * - Explicit content + face detection co-occurrence
  */
-export async function checkNCII(
-  submission: ContentSubmission,
-): Promise<ModerationResult> {
+export async function checkNCII(submission: ContentSubmission): Promise<ModerationResult> {
   // Check against StopNCII.org hash database
   const stopNCIIResult = await checkStopNCIIHashes(submission.mediaUrl);
 
@@ -285,8 +273,7 @@ export async function checkNCII(
 
   // Check if explicit content contains identifiable faces (NCII signal)
   const safeSearch = await analyzeImageSafeSearch(submission.mediaUrl);
-  const isExplicit =
-    LIKELIHOOD_SCORES[safeSearch.adult] >= AUTO_BLOCK_THRESHOLD;
+  const isExplicit = LIKELIHOOD_SCORES[safeSearch.adult] >= AUTO_BLOCK_THRESHOLD;
 
   if (isExplicit && deepfakeScore >= REVIEW_THRESHOLD) {
     return {
@@ -294,8 +281,7 @@ export async function checkNCII(
       verdict: 'BLOCKED',
       category: 'NCII_DEEPFAKE',
       confidence: deepfakeScore,
-      details:
-        'Explicit content with deepfake indicators detected. Auto-blocked.',
+      details: 'Explicit content with deepfake indicators detected. Auto-blocked.',
       timestamp: new Date().toISOString(),
       reviewRequired: true,
     };
@@ -320,9 +306,7 @@ export async function checkNCII(
  * Filters pornographic content using Google Cloud Vision SafeSearch.
  * Blocks content classified as LIKELY or VERY_LIKELY adult.
  */
-export async function checkPornography(
-  submission: ContentSubmission,
-): Promise<ModerationResult> {
+export async function checkPornography(submission: ContentSubmission): Promise<ModerationResult> {
   const safeSearch = await analyzeImageSafeSearch(submission.mediaUrl);
 
   const adultScore = LIKELIHOOD_SCORES[safeSearch.adult];
@@ -446,16 +430,11 @@ export async function checkViolentExtremism(
  * - Duplicate content fingerprints
  * - Account age < threshold with high activity
  */
-export async function checkSpamBot(
-  submission: ContentSubmission,
-): Promise<ModerationResult> {
+export async function checkSpamBot(submission: ContentSubmission): Promise<ModerationResult> {
   const signals: { score: number; reason: string }[] = [];
 
   // Rate-limit check
-  const rateResult = await checkRateLimit(
-    submission.uploaderUserId,
-    submission.uploaderIp,
-  );
+  const rateResult = await checkRateLimit(submission.uploaderUserId, submission.uploaderIp);
   if (rateResult.exceeded) {
     signals.push({ score: 0.9, reason: 'Rate limit exceeded' });
   }
@@ -577,9 +556,7 @@ async function getAccessToken(): Promise<string> {
   // const client = await auth.getClient();
   // const { token } = await client.getAccessToken();
   // return token;
-  throw new Error(
-    'getAccessToken() requires google-auth-library with ADC configured',
-  );
+  throw new Error('getAccessToken() requires google-auth-library with ADC configured');
 }
 
 async function checkPhotoHashDatabase(
@@ -603,9 +580,7 @@ async function reportToNCMEC(report: NCMECReport): Promise<string> {
   return `NCMEC-${Date.now()}-${report.contentId}`;
 }
 
-async function runCSAMClassifier(
-  _mediaUrl: string,
-): Promise<{ score: number }> {
+async function runCSAMClassifier(_mediaUrl: string): Promise<{ score: number }> {
   // Integration point: Google Content Safety API or equivalent ML classifier
   return { score: 0 };
 }
@@ -618,26 +593,19 @@ async function checkStopNCIIHashes(
   return { isMatch: false, confidence: 0 };
 }
 
-async function analyzeDeepfakeIndicators(
-  _mediaUrl: string,
-): Promise<number> {
+async function analyzeDeepfakeIndicators(_mediaUrl: string): Promise<number> {
   // Integration point: Deepfake detection model
   // Analyze GAN artifacts, facial inconsistencies, temporal anomalies
   return 0;
 }
 
-async function analyzeTextForIncitement(
-  _text: string,
-): Promise<{ score: number; signal: string }> {
+async function analyzeTextForIncitement(_text: string): Promise<{ score: number; signal: string }> {
   // Integration point: NLP classifier for incitement to violence
   // Checks for direct calls to violence, not political opinions
   return { score: 0, signal: '' };
 }
 
-async function checkRateLimit(
-  _userId: string,
-  _ip: string,
-): Promise<{ exceeded: boolean }> {
+async function checkRateLimit(_userId: string, _ip: string): Promise<{ exceeded: boolean }> {
   // Integration point: Rate limiter (e.g., Redis sliding window)
   return { exceeded: false };
 }
@@ -654,18 +622,21 @@ function analyzeTextSpamSignals(text: string): number {
   const lowerText = text.toLowerCase();
 
   // Excessive caps
-  const capsRatio =
-    (text.match(/[A-Z]/g)?.length ?? 0) / Math.max(text.length, 1);
+  const capsRatio = (text.match(/[A-Z]/g)?.length ?? 0) / Math.max(text.length, 1);
   if (capsRatio > 0.6) score += 0.3;
 
   // Excessive exclamation/question marks
-  const punctuationCount = (text.match(/[!?]{2,}/g)?.length ?? 0);
+  const punctuationCount = text.match(/[!?]{2,}/g)?.length ?? 0;
   if (punctuationCount > 3) score += 0.2;
 
   // Known spam phrases
   const spamPhrases = [
-    'click here', 'free money', 'act now', 'limited time',
-    'congratulations you won', 'earn from home',
+    'click here',
+    'free money',
+    'act now',
+    'limited time',
+    'congratulations you won',
+    'earn from home',
   ];
   for (const phrase of spamPhrases) {
     if (lowerText.includes(phrase)) {
@@ -674,7 +645,7 @@ function analyzeTextSpamSignals(text: string): number {
   }
 
   // Excessive URLs
-  const urlCount = (text.match(/https?:\/\//g)?.length ?? 0);
+  const urlCount = text.match(/https?:\/\//g)?.length ?? 0;
   if (urlCount > 3) score += 0.3;
 
   return Math.min(score, 1);

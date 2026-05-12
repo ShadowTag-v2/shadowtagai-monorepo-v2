@@ -25,4 +25,8 @@ labs/gemini-cookbook/examples/Book_illustration.ipynb filter=lfs diff=lfs merge=
 *.heif filter=lfs diff=lfs merge=lfs -text
 *.avif filter=lfs diff=lfs merge=lfs -text
 *.flac filter=lfs diff=lfs merge=lfs -text
+*.woff2 !text !filter !merge !diff
+*.ttf !text !filter !merge !diff
+*.webp !text !filter !merge !diff
+*.avif !text !filter !merge !diff
 apps/headfade/pwa/public/media/genesis_clip_01.mp4 !text !filter !merge !diff
