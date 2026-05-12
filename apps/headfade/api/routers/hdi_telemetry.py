@@ -59,4 +59,3 @@ async def record_human_deception_index(
         doc_ref.set(payload)
 
     return {"status": "HDI Matrix Updated", "user_fooled": juked}
-
