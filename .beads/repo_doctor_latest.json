@@ -3,15 +3,22 @@
   "total_findings": 21,
   "critical": 0,
   "errors": 1,
-  "warnings": 15,
-  "info": 5,
+  "warnings": 14,
+  "info": 6,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/epistemic_sync_needed.json",
-      "fix": "git checkout -- beads/epistemic_sync_needed.json"
+      "path": "beads/heartbeat.json",
+      "fix": "git checkout -- beads/heartbeat.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/issues.jsonl",
+      "fix": "git checkout -- .beads/issues.jsonl"
     },
     {
       "gate": "dirty",
@@ -31,15 +38,8 @@
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".reports/skills/guardrail_annotation_audit.md",
-      "fix": "git checkout -- .reports/skills/guardrail_annotation_audit.md"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "archive/scratch_2026/repos/claude-code-system-prompts",
-      "fix": "git checkout -- archive/scratch_2026/repos/claude-code-system-prompts"
+      "path": ".beads/suggestion_cache.json",
+      "fix": "git checkout -- .beads/suggestion_cache.json"
     },
     {
       "gate": "dirty",
@@ -56,6 +56,13 @@
       "fix": "git checkout -- vault/monitor/pipeline_metrics.json"
     },
     {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (??)",
+      "path": ".beads/dream_state.json",
+      "fix": "git add .beads/dream_state.json"
+    },
+    {
       "gate": "conflicts",
       "severity": "info",
       "message": "No conflict markers found",
@@ -65,7 +72,7 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Betterleaks found 39 potential secrets",
+      "message": "Command '['/Users/pikeymickey/go/bin/betterleaks', 'dir', '-c', '.betterleaks.toml', '--report-format', 'json', '--report-path', '/tmp/repo_doctor_secrets.json', '.']' timed out after 120 seconds",
       "path": "",
       "fix": ""
     },
@@ -121,23 +128,16 @@
     {
       "gate": "drift",
       "severity": "info",
-      "message": "10831 files in known legacy directories (scheduled for archival)",
+      "message": "10871 files in known legacy directories (scheduled for archival)",
       "path": "",
       "fix": ""
     },
     {
       "gate": "lint",
-      "severity": "warn",
-      "message": "Ruff: 2\t\tinvalid-syntax",
+      "severity": "info",
+      "message": "Ruff lint clean",
       "path": "",
-      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m ruff check --select F401,F841 --fix"
-    },
-    {
-      "gate": "lint",
-      "severity": "warn",
-      "message": "Ruff: Found 2 errors.",
-      "path": "",
-      "fix": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m ruff check --select F401,F841 --fix"
+      "fix": ""
     },
     {
       "gate": "manifest",
@@ -149,7 +149,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3778 tests collected in 1.49s =========================",
+      "message": "Tests: ======================== 3825 tests collected in 40.06s ========================",
       "path": "",
       "fix": ""
     }
