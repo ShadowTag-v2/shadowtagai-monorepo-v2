@@ -26,7 +26,25 @@ from fastapi.responses import StreamingResponse
 from google import genai
 from google.genai import types
 
+from routers.agents import (
+  AudioVisualSyncAgent,
+  MetadataForensicsAgent,
+  PhysicsSimulationAgent,
+  TemporalCoherenceAgent,
+)
+
 router = APIRouter()
+
+# -------------------------------------------------------------------------------------
+# ADK Forensic Agent Fleet — instantiated once, reused across requests.
+# Each agent wraps a specialized Gemini call with domain-specific system prompts.
+# -------------------------------------------------------------------------------------
+_agent_fleet = {
+  "TemporalCoherenceAgent": TemporalCoherenceAgent(),
+  "PhysicsSimulationAgent": PhysicsSimulationAgent(),
+  "AudioVisualSyncAgent": AudioVisualSyncAgent(),
+  "MetadataForensicsAgent": MetadataForensicsAgent(),
+}
 
 # -------------------------------------------------------------------------------------
 # Vertex AI Client — uses ADC (Application Default Credentials), NOT API keys.
@@ -150,36 +168,62 @@ async def run_forensic_arbiter(video_id: str, vote: str):
       # Invoked when Gemini's confidence is below the juke threshold.
       # Each sub-agent is tracked with tool.call.started/finished events.
       if confidence_score < 0.85:
-        adk_agents = [
-          ("TemporalCoherenceAgent", "Frame-to-frame consistency analysis"),
-          ("PhysicsSimulationAgent", "Lighting/shadow geometry validation"),
-          ("AudioVisualSyncAgent", "Lip-sync drift detection"),
-          ("MetadataForensicsAgent", "EXIF/container forensics"),
-        ]
-        for agent_name, description in adk_agents:
+        # Emit tool.call.started for all agents
+        agent_calls = {}
+        for agent_name, agent_instance in _agent_fleet.items():
           tool_call_id = str(uuid.uuid4())
-
+          agent_calls[agent_name] = {
+            "tool_call_id": tool_call_id,
+            "instance": agent_instance,
+          }
           yield _a2ui_event(
             "tool.call.started",
             runId=run_id,
             toolCallId=tool_call_id,
             toolName=agent_name,
-            toolDescription=description,
+            toolDescription=agent_instance.description,
           )
 
-          # TODO(headfade): Replace with real ADK agent invocation via A2A protocol
-          # adk_result = await invoke_adk_agent(agent_name, video_id)
-          adk_result = f"{agent_name} CONFIRMS SHADOW GEOMETRY VIOLATION. USER JUKED."
+        # Execute all 4 agents concurrently
+        agent_tasks = {
+          name: info["instance"].analyze(
+            video_id, context=f"Primary arbiter confidence: {confidence_score}"
+          )
+          for name, info in agent_calls.items()
+        }
+        results = await asyncio.gather(*agent_tasks.values(), return_exceptions=True)
+        agent_results = dict(zip(agent_tasks.keys(), results))
+
+        # Stream results and fuse confidence
+        fused_confidences = []
+        for agent_name, result in agent_results.items():
+          tool_call_id = agent_calls[agent_name]["tool_call_id"]
+
+          if isinstance(result, Exception):
+            result = {
+              "agent": agent_name,
+              "confidence": 0.0,
+              "verdict": "ERROR",
+              "reasoning": str(result),
+            }
+
+          agent_confidence = result.get("confidence", 0.5)
+          fused_confidences.append(agent_confidence)
 
           yield _a2ui_event(
             "tool.call.finished",
             runId=run_id,
             toolCallId=tool_call_id,
             toolName=agent_name,
-            result=adk_result,
+            result=result,
           )
 
-          await asyncio.sleep(0.05)
+        # Weighted average fusion — all agents equally weighted for now
+        fused_confidence = (
+          sum(fused_confidences) / len(fused_confidences)
+          if fused_confidences
+          else confidence_score
+        )
 
         # ── A2UI: State Snapshot — Post-ADK ──────────────────────────
         yield _a2ui_event(
@@ -187,8 +231,17 @@ async def run_forensic_arbiter(video_id: str, vote: str):
           runId=run_id,
           state={
             "phase": "ADK_COMPLETE",
-            "confidence": confidence_score,
-            "agentsInvoked": 1 + len(adk_agents),
+            "confidence": fused_confidence,
+            "agentsInvoked": 1 + len(_agent_fleet),
+            "agentResults": {
+              name: {
+                "verdict": r.get("verdict", "UNKNOWN")
+                if isinstance(r, dict)
+                else "ERROR",
+                "confidence": r.get("confidence", 0.0) if isinstance(r, dict) else 0.0,
+              }
+              for name, r in agent_results.items()
+            },
           },
         )
 
