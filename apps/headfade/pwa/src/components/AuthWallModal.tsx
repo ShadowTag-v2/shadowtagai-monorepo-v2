@@ -77,22 +77,22 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
       <div
         className="relative w-full max-w-[420px] rounded-2xl overflow-hidden"
         style={{
-          background: 'linear-gradient(145deg,#0F0A1E 0%,#1A0A2E 60%,#0A1A2E 100%)',
-          border: '1px solid rgba(124,58,237,0.4)',
-          boxShadow: '0 24px 80px rgba(124,58,237,0.35), 0 0 0 1px rgba(124,58,237,0.1)',
+          background: 'linear-gradient(145deg,#0A1628 0%,#0C1E35 60%,#0A1A2E 100%)',
+          border: '1px solid rgba(8,145,178,0.4)',
+          boxShadow: '0 24px 80px rgba(8,145,178,0.35), 0 0 0 1px rgba(8,145,178,0.1)',
         }}
       >
-        {/* Purple glow accent top */}
+        {/* Cyan glow accent top */}
         <div
           className="absolute top-0 left-0 right-0 h-[3px]"
-          style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)' }}
+          style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4)' }}
         />
 
         <div className="p-8 flex flex-col items-center gap-5 text-center">
           {/* Icon */}
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
-            style={{ background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.4)' }}
+            style={{ background: 'rgba(8,145,178,0.2)', border: '1px solid rgba(8,145,178,0.4)' }}
           >
             🔒
           </div>
@@ -102,7 +102,7 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
             <h2 id="auth-wall-title" className="text-white text-[24px] font-black leading-tight">
               Your vote is locked.
             </h2>
-            <p className="text-[13px] font-bold" style={{ color: '#A78BFA' }}>
+            <p className="text-[13px] font-bold" style={{ color: '#67E8F9' }}>
               COGNITIVE GATE ACTIVE
             </p>
           </div>
@@ -122,8 +122,8 @@ export function AuthWallModal({ isOpen, onClose, onSignedIn }: AuthWallModalProp
           <div
             className="w-full rounded-xl px-4 py-3 text-left"
             style={{
-              background: 'rgba(124,58,237,0.12)',
-              border: '1px solid rgba(124,58,237,0.25)',
+              background: 'rgba(8,145,178,0.12)',
+              border: '1px solid rgba(8,145,178,0.25)',
             }}
           >
             <p className="text-[12px] font-bold text-white mb-1">Why sign in?</p>

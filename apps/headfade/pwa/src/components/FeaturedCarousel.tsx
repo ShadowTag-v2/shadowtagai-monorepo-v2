@@ -151,9 +151,9 @@ export function FeaturedCarousel({
             <div
               className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold"
               style={{
-                background: 'linear-gradient(90deg,#7C3AED,#0891B2)',
+                background: 'linear-gradient(90deg,#0891B2,#06B6D4)',
                 color: 'white',
-                boxShadow: '0 2px 10px rgba(124,58,237,0.3)',
+                boxShadow: '0 2px 10px rgba(8,145,178,0.3)',
               }}
             >
               ⚡ Elo {eloRating.toLocaleString()}
@@ -204,7 +204,7 @@ export function FeaturedCarousel({
                 {/* Player */}
                 <div
                   className="w-full max-w-[680px]"
-                  style={{ filter: 'drop-shadow(0 8px 32px rgba(124,58,237,0.12))' }}
+                  style={{ filter: 'drop-shadow(0 8px 32px rgba(8,145,178,0.12))' }}
                 >
                   <HeadFadePlayer
                     src={item.src}
@@ -228,7 +228,7 @@ export function FeaturedCarousel({
                     <span
                       className="px-2.5 py-1 rounded-full text-[11px] font-bold"
                       style={{
-                        background: 'linear-gradient(90deg,#7C3AED,#0891B2)',
+                        background: 'linear-gradient(90deg,#0891B2,#06B6D4)',
                         color: 'white',
                         animation: 'pulse 2s infinite',
                       }}
@@ -251,9 +251,9 @@ export function FeaturedCarousel({
                     <div
                       className="flex items-center gap-2 px-4 py-3 rounded-xl text-[13px] font-medium"
                       style={{
-                        background: 'rgba(124,58,237,0.08)',
-                        border: '1px solid rgba(124,58,237,0.2)',
-                        color: '#5B21B6',
+                        background: 'rgba(8,145,178,0.08)',
+                        border: '1px solid rgba(8,145,178,0.2)',
+                        color: '#0E7490',
                       }}
                     >
                       🔒 Vote to advance — the truth is locked until you decide.
@@ -311,8 +311,8 @@ export function FeaturedCarousel({
                   width: i === activeIdx ? 24 : 8,
                   height: 8,
                   display: 'block',
-                  backgroundColor: i === activeIdx ? '#7C3AED' : 'rgba(124,58,237,0.2)',
-                  boxShadow: i === activeIdx ? '0 0 8px rgba(124,58,237,0.4)' : 'none',
+                  backgroundColor: i === activeIdx ? '#0891B2' : 'rgba(8,145,178,0.2)',
+                  boxShadow: i === activeIdx ? '0 0 8px rgba(8,145,178,0.4)' : 'none',
                 }}
               />
             </button>
@@ -324,7 +324,7 @@ export function FeaturedCarousel({
           className="absolute top-0 left-0 h-[3px] transition-[width] duration-100"
           style={{
             width: `${scrollProgress * 100}%`,
-            background: 'linear-gradient(90deg,#7C3AED,#0891B2)',
+            background: 'linear-gradient(90deg,#164E63,#0891B2)',
             borderRadius: '0 2px 2px 0',
           }}
         />
