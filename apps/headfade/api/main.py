@@ -8,7 +8,16 @@ from fastapi.responses import JSONResponse
 
 from middleware.app_check import app_check_middleware
 from middleware.telemetry import instrument_app
-from routers import arbiter, crypto_shred, hdi_telemetry, ingestion, judge6
+from routers import (
+  arbiter,
+  arbiter_engine,
+  b2b_refinery,
+  crypto_shred,
+  hdi_telemetry,
+  ingestion,
+  judge6,
+  studio,
+)
 
 # ---------------------------------------------------------------------------
 # In-memory rate limiter — sliding window, per-IP.
@@ -65,9 +74,14 @@ app.add_middleware(
 app.middleware("http")(app_check_middleware)
 
 app.include_router(arbiter.router)
+app.include_router(
+  arbiter_engine.router, prefix="/api/arbiter-engine", tags=["arbiter-engine"]
+)
+app.include_router(b2b_refinery.router, prefix="/api/b2b", tags=["b2b-refinery"])
 app.include_router(hdi_telemetry.router, prefix="/api", tags=["telemetry"])
 app.include_router(judge6.router)
 app.include_router(ingestion.router)
+app.include_router(studio.router, prefix="/api/studio", tags=["studio"])
 app.include_router(crypto_shred.router)
 
 # OpenTelemetry — Cloud Trace export for latency and HDI quality monitoring

@@ -1,0 +1,144 @@
+# HeadFade API — Cloud Run CI/CD via Workload Identity Federation
+#
+# Triggers on pushes to main that touch apps/headfade/api/**
+# Uses Google Cloud Workload Identity Federation (no service account keys).
+# Builds via Cloud Build + deploys to Cloud Run in shadowtag-omega-v4.
+
+name: HeadFade API Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/headfade/api/**'
+      - '.github/workflows/headfade-api-deploy.yml'
+  workflow_dispatch: {}
+
+env:
+  PROJECT_ID: shadowtag-omega-v4
+  REGION: us-central1
+  SERVICE_NAME: headfade-api
+  IMAGE: us-central1-docker.pkg.dev/shadowtag-omega-v4/cloud-run-source-deploy/headfade-api
+
+permissions:
+  contents: read
+  id-token: write  # Required for Workload Identity Federation
+
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/headfade/api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Lint
+        run: ruff check --select F401,F841 .
+
+      - name: Format check
+        run: ruff format --check .
+
+  deploy:
+    name: Build & Deploy to Cloud Run
+    needs: lint
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: apps/headfade/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build Container Image
+        run: |
+          docker build \
+            -t ${{ env.IMAGE }}:${{ github.sha }} \
+            -t ${{ env.IMAGE }}:latest \
+            .
+
+      - name: Push to Artifact Registry
+        run: |
+          docker push ${{ env.IMAGE }}:${{ github.sha }}
+          docker push ${{ env.IMAGE }}:latest
+
+      - id: deploy
+        name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          image: ${{ env.IMAGE }}:${{ github.sha }}
+          flags: >-
+            --allow-unauthenticated
+            --cpu=1
+            --memory=512Mi
+            --min-instances=0
+            --max-instances=10
+            --concurrency=80
+            --timeout=300
+            --set-env-vars=GOOGLE_CLOUD_PROJECT=${{ env.PROJECT_ID }}
+
+      - name: Output Service URL
+        run: echo "Deployed to ${{ steps.deploy.outputs.url }}"
+
+  pwa-deploy:
+    name: PWA → Firebase Hosting
+    runs-on: ubuntu-latest
+    needs: deploy
+    defaults:
+      run:
+        working-directory: apps/headfade/pwa
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/headfade/pwa/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js (static export)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ needs.deploy.outputs.url || 'https://headfade-api-767252945109.us-central1.run.app' }}
+
+      - id: deploy-hosting
+        name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: ${{ env.PROJECT_ID }}
+          entryPoint: apps/headfade/pwa
