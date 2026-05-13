@@ -88,12 +88,37 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
     except Exception as e:
       print(f"[ARBITER WARNING] Failed to write human_telemetry metric: {e}")
 
-  # 2. Forensic Teardown Prompt
+  # 2. Forensic Teardown Prompt — Enhanced with Motion Lab Temporal Primitives
   prompt = f"""
     You are the HeadFade Forensic Arbiter. Watch this video frame-by-frame.
     The absolute ground truth is that this video is: {req.actual_truth.upper()}.
-    Identify the visual artifacts, physics glitches, deepfake seams, or real-world anomalies that ultimately prove this.
-    Be brutal, exacting, and highly analytical in your teardown. Produce an unflinching verdict.
+
+    Execute the following forensic analysis pipeline IN ORDER:
+
+    STAGE 1 — OPTICAL FLOW DISCONTINUITY:
+    Analyze consecutive frame pairs for motion vector inconsistencies.
+    Flag any regions where optical flow magnitude or direction changes
+    abruptly between frames (indicating frame splicing or temporal edits).
+
+    STAGE 2 — TEMPORAL FLICKER ANALYSIS:
+    Examine frame boundaries for luminance/chrominance oscillations.
+    Synthetic generation often introduces sub-pixel flicker at model
+    inference boundaries. Report any periodic brightness pulsing.
+
+    STAGE 3 — MOTION INTERPOLATION ARTIFACTS:
+    Identify "floaty" or "sliding" motion characteristic of AI-generated
+    frame interpolation. Real-world motion has micro-jitter from camera
+    sensor noise; synthetic motion is suspiciously smooth.
+
+    STAGE 4 — PHYSICS-BASED SHADOW TRAJECTORY:
+    Validate that shadow directions, lengths, and movements are consistent
+    with a single coherent light source across the entire clip duration.
+    AI generators frequently produce shadows that drift, rotate, or
+    change length independently of object movement.
+
+    STAGE 5 — FINAL VERDICT:
+    Synthesize findings from all 4 stages into an unflinching verdict.
+    Be brutal, exacting, and highly analytical. The user MUST be juked.
     """
 
   try:
