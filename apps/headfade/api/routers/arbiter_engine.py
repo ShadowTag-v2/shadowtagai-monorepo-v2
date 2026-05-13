@@ -1,6 +1,25 @@
+"""HeadFade Arbiter Engine — A2UI Protocol SSE Streaming.
+
+Implements the AG-UI (Agent-UI) lifecycle protocol for real-time
+forensic analysis streaming. The A2UI standard enables the PWA
+to render generative UI components (confidence meters, forensic
+heatmaps, remix tree visualizations) driven by the arbiter's output.
+
+A2UI Event Types:
+  lifecycle.run.started    → Run initialization with agent metadata
+  text.message.content     → Streaming text delta (thoughts + verdict)
+  tool.call.started        → ADK sub-agent invocation begin
+  tool.call.finished       → ADK sub-agent result
+  state.snapshot           → UI component state (confidence, phase)
+  lifecycle.run.finished   → Terminal event with final result
+"""
+
+from __future__ import annotations
+
 import asyncio
 import json
 import os
+import uuid
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
@@ -9,37 +28,88 @@ from google.genai import types
 
 router = APIRouter()
 
-# Initialize the Gemini GenAI Client
-client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+# -------------------------------------------------------------------------------------
+# Vertex AI Client — uses ADC (Application Default Credentials), NOT API keys.
+# API keys cannot access GCS URIs (gs://) and violate Secrets Manager Doctrine.
+# -------------------------------------------------------------------------------------
+_VERTEX_PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
+_VERTEX_LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "global")
+
+_client = None
+
+
+def _get_genai_client() -> genai.Client:
+  global _client
+  if _client is None:
+    _client = genai.Client(
+      vertexai=True,
+      project=_VERTEX_PROJECT,
+      location=_VERTEX_LOCATION,
+    )
+  return _client
+
+
+def _a2ui_event(event_type: str, **payload) -> str:
+  """Format an A2UI-compliant SSE event."""
+  data = {"type": event_type, **payload}
+  return f"data: {json.dumps(data)}\n\n"
 
 
 @router.post("/{video_id}")
 async def run_forensic_arbiter(video_id: str, vote: str):
-  """Run 1: Gemini 3 Flash Thinking. Streams via AG-UI Server-Sent Events.
-  Run 2: ADK Recursive sub-agents if confidence is low.
+  """A2UI-compliant forensic analysis pipeline.
+
+  Run 1: Gemini 3.1 Flash Lite Thinking — multimodal forensic teardown.
+  Run 2: ADK Recursive sub-agents if confidence is below threshold.
+
+  All events conform to the A2UI lifecycle protocol:
+    lifecycle.run.started → text.message.content → state.snapshot →
+    tool.call.started → tool.call.finished → lifecycle.run.finished
   """
+  run_id = str(uuid.uuid4())
 
   async def event_stream():
-    yield f"data: {json.dumps({'type': 'STEP_STARTED', 'name': 'GEMINI_FORENSICS'})}\n\n"
+    # ── A2UI: Run Start ──────────────────────────────────────────────
+    yield _a2ui_event(
+      "lifecycle.run.started",
+      runId=run_id,
+      agentName="forensic-arbiter",
+      metadata={"videoId": video_id, "userVote": vote},
+    )
 
-    prompt = f"Ground Truth is in metadata. User voted {vote}. Forensically break down this video's physics. Be arrogant."
+    # ── A2UI: State Snapshot — Initial Phase ─────────────────────────
+    yield _a2ui_event(
+      "state.snapshot",
+      runId=run_id,
+      state={
+        "phase": "GEMINI_FORENSICS",
+        "confidence": 0.0,
+        "agentsInvoked": 0,
+        "videoId": video_id,
+      },
+    )
+
+    prompt = (
+      f"Ground Truth is in metadata. User voted {vote}. "
+      "Forensically break down this video's physics. Be arrogant."
+    )
 
     try:
-      # We mock the video URI for the MVP scaffold, expecting Media CDN integration
+      # We mock the video URI for the MVP scaffold, expecting Media CDN integration.
       # Note: We omit the actual file part for this scaffolding code
       # since we do not have an active GCS bucket with the asset.
-      response_stream = client.models.generate_content_stream(
+      response_stream = _get_genai_client().models.generate_content_stream(
         model="gemini-3.1-flash-lite-preview",
         contents=[prompt],
         config=types.GenerateContentConfig(
           temperature=0.1,
-          thinking_config=types.ThinkingConfig(thinking_level=1, include_thoughts=True),  # type: ignore
+          thinking_config=types.ThinkingConfig(include_thoughts=True),
         ),
       )
 
       confidence_score = 1.0
       for chunk in response_stream:
-        # We yield the thoughts as AG-UI TEXT_MESSAGE_CONTENT
+        # A2UI: text.message.content — streaming thoughts as deltas
         candidates = getattr(chunk, "candidates", None)
         if candidates and len(candidates) > 0:
           content = getattr(candidates[0], "content", None)
@@ -47,21 +117,95 @@ async def run_forensic_arbiter(video_id: str, vote: str):
           if parts:
             for part in parts:
               if getattr(part, "thought", False) and getattr(part, "text", None):
-                yield f"data: {json.dumps({'type': 'TEXT_MESSAGE_CONTENT', 'delta': part.text})}\n\n"
+                yield _a2ui_event(
+                  "text.message.content",
+                  runId=run_id,
+                  delta=part.text,
+                  messageType="thought",
+                )
+              elif getattr(part, "text", None):
+                yield _a2ui_event(
+                  "text.message.content",
+                  runId=run_id,
+                  delta=part.text,
+                  messageType="verdict",
+                )
 
-        # We use a theoretical confidence flag mapping for ADK fallback
+        # Theoretical confidence flag mapping for ADK fallback
         confidence_score = getattr(chunk, "confidence", 1.0)
         await asyncio.sleep(0.01)
 
-      # RUN 2: The ADK Recursive Challenger (Mocked until ADK is natively imported)
-      if confidence_score < 0.85:
-        yield f"data: {json.dumps({'type': 'STEP_STARTED', 'name': 'ADK_DEEP_PHYSICS_ANALYSIS'})}\n\n"
-        deep_results = "ADK SUB-AGENTS CONFIRM SHADOW GEOMETRY VIOLATION. USER JUKED."
-        yield f"data: {json.dumps({'type': 'TEXT_MESSAGE_CONTENT', 'delta': deep_results})}\n\n"
+      # ── A2UI: State Snapshot — Post-Gemini ───────────────────────────
+      yield _a2ui_event(
+        "state.snapshot",
+        runId=run_id,
+        state={
+          "phase": "GEMINI_COMPLETE",
+          "confidence": confidence_score,
+          "agentsInvoked": 1,
+        },
+      )
 
-      yield f"data: {json.dumps({'type': 'RUN_FINISHED', 'result': 'YOU GOT JUKED.'})}\n\n"
+      # ── Run 2: ADK Recursive Challenger ────────────────────────────
+      # Invoked when Gemini's confidence is below the juke threshold.
+      # Each sub-agent is tracked with tool.call.started/finished events.
+      if confidence_score < 0.85:
+        adk_agents = [
+          ("TemporalCoherenceAgent", "Frame-to-frame consistency analysis"),
+          ("PhysicsSimulationAgent", "Lighting/shadow geometry validation"),
+          ("AudioVisualSyncAgent", "Lip-sync drift detection"),
+          ("MetadataForensicsAgent", "EXIF/container forensics"),
+        ]
+        for agent_name, description in adk_agents:
+          tool_call_id = str(uuid.uuid4())
+
+          yield _a2ui_event(
+            "tool.call.started",
+            runId=run_id,
+            toolCallId=tool_call_id,
+            toolName=agent_name,
+            toolDescription=description,
+          )
+
+          # TODO(headfade): Replace with real ADK agent invocation via A2A protocol
+          # adk_result = await invoke_adk_agent(agent_name, video_id)
+          adk_result = f"{agent_name} CONFIRMS SHADOW GEOMETRY VIOLATION. USER JUKED."
+
+          yield _a2ui_event(
+            "tool.call.finished",
+            runId=run_id,
+            toolCallId=tool_call_id,
+            toolName=agent_name,
+            result=adk_result,
+          )
+
+          await asyncio.sleep(0.05)
+
+        # ── A2UI: State Snapshot — Post-ADK ──────────────────────────
+        yield _a2ui_event(
+          "state.snapshot",
+          runId=run_id,
+          state={
+            "phase": "ADK_COMPLETE",
+            "confidence": confidence_score,
+            "agentsInvoked": 1 + len(adk_agents),
+          },
+        )
+
+      # ── A2UI: Run Finished ─────────────────────────────────────────
+      yield _a2ui_event(
+        "lifecycle.run.finished",
+        runId=run_id,
+        result="YOU GOT JUKED.",
+        finalConfidence=confidence_score,
+      )
 
     except Exception as e:
-      yield f"data: {json.dumps({'type': 'ERROR', 'message': str(e)})}\n\n"
+      yield _a2ui_event(
+        "lifecycle.run.finished",
+        runId=run_id,
+        result="ERROR",
+        error=str(e),
+      )
 
   return StreamingResponse(event_stream(), media_type="text/event-stream")

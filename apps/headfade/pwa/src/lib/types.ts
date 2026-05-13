@@ -9,7 +9,7 @@
 // User & Auth
 // ---------------------------------------------------------------------------
 
-export type UserRole = "CREATOR" | "PUBLISHER" | "USER" | "ADMIN";
+export type UserRole = 'CREATOR' | 'PUBLISHER' | 'USER' | 'ADMIN';
 
 export interface HFUser {
   uid: string;
@@ -26,14 +26,14 @@ export interface HFUser {
 // ---------------------------------------------------------------------------
 
 export type VideoStatus =
-  | "UPLOADING"
-  | "SCANNING"
-  | "ANALYZING"
-  | "PUBLISHED"
-  | "BLOCKED"
-  | "FLAGGED";
+  | 'UPLOADING'
+  | 'SCANNING'
+  | 'ANALYZING'
+  | 'PUBLISHED'
+  | 'BLOCKED'
+  | 'FLAGGED';
 
-export type GroundTruth = "AI" | "REAL" | "UNKNOWN";
+export type GroundTruth = 'AI' | 'REAL' | 'UNKNOWN';
 
 export interface HFVideo {
   id: string;
@@ -52,16 +52,16 @@ export interface HFVideo {
 // Judge6 Trust & Safety Gate
 // ---------------------------------------------------------------------------
 
-export type Judge6Decision = "PASS" | "BLOCK" | "REVIEW";
+export type Judge6Decision = 'PASS' | 'BLOCK' | 'REVIEW';
 
 export type Judge6Category =
-  | "CSAM"
-  | "VIOLENCE"
-  | "HATE_SPEECH"
-  | "SELF_HARM"
-  | "TERRORISM"
-  | "EXPLICIT_CONTENT"
-  | "CLEAN";
+  | 'CSAM'
+  | 'VIOLENCE'
+  | 'HATE_SPEECH'
+  | 'SELF_HARM'
+  | 'TERRORISM'
+  | 'EXPLICIT_CONTENT'
+  | 'CLEAN';
 
 export interface Judge6Verdict {
   decision: Judge6Decision;
@@ -96,7 +96,7 @@ export interface ForensicVerdict {
 // Human Deception Index (HDI)
 // ---------------------------------------------------------------------------
 
-export type UserVote = "AI" | "REAL";
+export type UserVote = 'AI' | 'REAL';
 
 export interface HDITelemetry {
   id: string;
@@ -113,7 +113,7 @@ export interface HDITelemetry {
 // Remix Tree — Provenance Tracking
 // ---------------------------------------------------------------------------
 
-export type RemixNodeType = "ORIGINAL" | "REMIX" | "DERIVATIVE" | "COMPILATION";
+export type RemixNodeType = 'ORIGINAL' | 'REMIX' | 'DERIVATIVE' | 'COMPILATION';
 
 export interface RemixNode {
   id: string;
@@ -137,7 +137,7 @@ export interface RemixNode {
 // Licensing
 // ---------------------------------------------------------------------------
 
-export type LicenseType = "STANDARD" | "EXCLUSIVE" | "EMBED_ONLY";
+export type LicenseType = 'STANDARD' | 'EXCLUSIVE' | 'EMBED_ONLY';
 
 export interface License {
   id: string;
@@ -170,14 +170,14 @@ export interface EmbedTelemetry {
 // ---------------------------------------------------------------------------
 
 export type IngestionStage =
-  | "RECEIVED"
-  | "UPLOADING_TO_GCS"
-  | "JUDGE6_SCANNING"
-  | "FORENSIC_ANALYSIS"
-  | "REMIX_TREE_INSERTION"
-  | "COMPLETE"
-  | "BLOCKED"
-  | "ERROR";
+  | 'RECEIVED'
+  | 'UPLOADING_TO_GCS'
+  | 'JUDGE6_SCANNING'
+  | 'FORENSIC_ANALYSIS'
+  | 'REMIX_TREE_INSERTION'
+  | 'COMPLETE'
+  | 'BLOCKED'
+  | 'ERROR';
 
 export interface IngestionJob {
   id: string;
