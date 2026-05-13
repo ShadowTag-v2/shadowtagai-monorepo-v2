@@ -26,8 +26,6 @@ from hypothesis import strategies as st
 from packages.agnt_vcr.vcr import VCRReplay
 from packages.agnt_vcr.async_vcr import AsyncVCR
 
-from _mock_helpers import make_mock_vcr_replay
-
 
 # ─── Fuzz Multiplier (env-driven) ─────────────────────────────────────
 # Set HYPOTHESIS_FUZZ_MULTIPLIER=10 to run 10x more examples.

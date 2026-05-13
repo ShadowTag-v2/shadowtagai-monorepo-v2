@@ -21,8 +21,7 @@ export const MicroLicensingMarketplace: React.FC<MarketplaceProps> = ({ videoId 
       if (res.ok) {
         setSuccess(true);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (_e) {
     } finally {
       setPurchasing(false);
     }

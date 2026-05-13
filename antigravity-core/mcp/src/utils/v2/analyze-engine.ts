@@ -1,4 +1,4 @@
-export async function executeAnalyzeVideo(input: any) {
+export async function executeAnalyzeVideo(_input: any) {
   // Mock analyze engine
   return {
     syntheticProbability: 0.85,

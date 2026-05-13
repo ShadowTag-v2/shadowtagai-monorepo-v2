@@ -19,12 +19,10 @@ if _packages_dir not in sys.path:
 
 _tests_dir = str(Path(__file__).resolve().parent)
 if _tests_dir not in sys.path:
-    sys.path.insert(0, _tests_dir)
+  sys.path.insert(0, _tests_dir)
 
 import pytest
 
-from gemini_interactions.client import InteractionsClient
-from gemini_interactions.telemetry import NullTelemetry
 
 # ──────────────────────────────────────────────────────────────
 # Module stubs for subsystems not present in this test context.

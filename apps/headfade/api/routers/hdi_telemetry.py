@@ -8,11 +8,11 @@ _db = None
 
 # OpenTelemetry tracer for HDI quality monitoring
 try:
-    from middleware.telemetry import get_tracer
+  from middleware.telemetry import get_tracer
 
-    _tracer = get_tracer("headfade-hdi")
+  _tracer = get_tracer("headfade-hdi")
 except ImportError:
-    _tracer = None
+  _tracer = None
 
 
 def _get_db():

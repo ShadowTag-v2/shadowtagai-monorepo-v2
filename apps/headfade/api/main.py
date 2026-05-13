@@ -28,21 +28,23 @@ app = FastAPI(
 
 @app.middleware("http")
 async def rate_limit_votes(request: Request, call_next):
-    """Rate-limit /api/vote to prevent HDI pollution from bot traffic."""
-    if request.url.path == "/api/vote" and request.method == "POST":
-        client_ip = request.client.host if request.client else "unknown"
-        now = time.monotonic()
-        # Prune expired entries
-        _rate_store[client_ip] = [t for t in _rate_store[client_ip] if now - t < _RATE_LIMIT_WINDOW]
-        if len(_rate_store[client_ip]) >= _RATE_LIMIT_MAX:
-            return JSONResponse(
-                status_code=429,
-                content={
-                    "detail": f"Rate limit exceeded. Max {_RATE_LIMIT_MAX} votes per {_RATE_LIMIT_WINDOW}s.",
-                },
-            )
-        _rate_store[client_ip].append(now)
-    return await call_next(request)
+  """Rate-limit /api/vote to prevent HDI pollution from bot traffic."""
+  if request.url.path == "/api/vote" and request.method == "POST":
+    client_ip = request.client.host if request.client else "unknown"
+    now = time.monotonic()
+    # Prune expired entries
+    _rate_store[client_ip] = [
+      t for t in _rate_store[client_ip] if now - t < _RATE_LIMIT_WINDOW
+    ]
+    if len(_rate_store[client_ip]) >= _RATE_LIMIT_MAX:
+      return JSONResponse(
+        status_code=429,
+        content={
+          "detail": f"Rate limit exceeded. Max {_RATE_LIMIT_MAX} votes per {_RATE_LIMIT_WINDOW}s.",
+        },
+      )
+    _rate_store[client_ip].append(now)
+  return await call_next(request)
 
 
 app.add_middleware(

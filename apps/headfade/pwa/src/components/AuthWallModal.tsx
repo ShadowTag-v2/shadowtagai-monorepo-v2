@@ -14,7 +14,6 @@
  * Apple Developer account configuration in Firebase console.
  */
 
-import { type AuthError, GoogleAuthProvider, OAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useState } from 'react';
 import { getAuthInstance } from '@/lib/firebase';
 

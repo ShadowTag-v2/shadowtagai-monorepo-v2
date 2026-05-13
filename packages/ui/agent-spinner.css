@@ -261,8 +261,8 @@
   .agent-spinner__verb,
   .agent-spinner__dots::after,
   .agent-spinner__verb-inner {
-    animation: none !important;
-    transition: none !important;
+    animation: none;
+    transition: none;
   }
   .agent-spinner__verb {
     -webkit-text-fill-color: var(--spinner-color-bright, rgba(255, 255, 255, 0.95));

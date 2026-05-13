@@ -162,11 +162,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function run() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('Antigravity Playwright MCP Server running on stdio');
 }
 
-run().catch((error) => {
-  console.error('Fatal error:', error);
+run().catch((_error) => {
   process.exit(1);
 });
 

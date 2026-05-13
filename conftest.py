@@ -26,30 +26,30 @@ _SRC = _ROOT / "src"
 # Packages under src/ that share names with test directories.
 # These MUST be pre-registered to prevent test-tree shadowing.
 _SRC_PACKAGES_TO_PIN = [
-    "governance",  # dep of gates.tengu_j6_bridge — load first
-    "gates",
+  "governance",  # dep of gates.tengu_j6_bridge — load first
+  "gates",
 ]
 
 
 def pytest_configure(config):  # noqa: ARG001
-    """Inject repo root and src/ into sys.path before collection.
+  """Inject repo root and src/ into sys.path before collection.
 
-    Also pre-import src/ packages that collide with test directory names
-    (e.g. src/gates vs tests/unit/gates) so that sys.modules pins the
-    correct module BEFORE pytest's assertion rewriter or importlib-mode
-    collector can shadow them.
-    """
-    root_str = str(_ROOT)
-    src_str = str(_SRC)
-    if root_str not in sys.path:
-        sys.path.insert(0, root_str)
-    if src_str not in sys.path:
-        sys.path.insert(0, src_str)
+  Also pre-import src/ packages that collide with test directory names
+  (e.g. src/gates vs tests/unit/gates) so that sys.modules pins the
+  correct module BEFORE pytest's assertion rewriter or importlib-mode
+  collector can shadow them.
+  """
+  root_str = str(_ROOT)
+  src_str = str(_SRC)
+  if root_str not in sys.path:
+    sys.path.insert(0, root_str)
+  if src_str not in sys.path:
+    sys.path.insert(0, src_str)
 
-    # Pre-register src packages to prevent namespace collision
-    for pkg_name in _SRC_PACKAGES_TO_PIN:
-        if pkg_name not in sys.modules:
-            try:
-                importlib.import_module(pkg_name)
-            except ImportError:
-                pass  # Package may not exist yet — fail gracefully
+  # Pre-register src packages to prevent namespace collision
+  for pkg_name in _SRC_PACKAGES_TO_PIN:
+    if pkg_name not in sys.modules:
+      try:
+        importlib.import_module(pkg_name)
+      except ImportError:
+        pass  # Package may not exist yet — fail gracefully
