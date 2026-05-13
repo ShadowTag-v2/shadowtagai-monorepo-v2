@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from middleware.app_check import app_check_middleware
 from middleware.telemetry import instrument_app
-from routers import arbiter, hdi_telemetry
+from routers import arbiter, crypto_shred, hdi_telemetry, ingestion, judge6
 
 # ---------------------------------------------------------------------------
 # In-memory rate limiter — sliding window, per-IP.
@@ -66,6 +66,9 @@ app.middleware("http")(app_check_middleware)
 
 app.include_router(arbiter.router)
 app.include_router(hdi_telemetry.router, prefix="/api", tags=["telemetry"])
+app.include_router(judge6.router)
+app.include_router(ingestion.router)
+app.include_router(crypto_shred.router)
 
 # OpenTelemetry — Cloud Trace export for latency and HDI quality monitoring
 instrument_app(app)

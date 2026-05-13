@@ -3,6 +3,9 @@ uvicorn==0.28.0
 google-genai
 google-cloud-firestore
 firebase-admin
+google-cloud-storage
+google-cloud-videointelligence
+google-cloud-vision
 # OpenTelemetry for Cloud Trace integration
 opentelemetry-api
 opentelemetry-sdk
