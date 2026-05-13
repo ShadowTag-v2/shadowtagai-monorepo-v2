@@ -127,7 +127,7 @@ export function Tile({
           >
             <div
               className="h-full transition-[width] duration-100"
-              style={{ width: `${progressPercent}%`, backgroundColor: '#7C3AED' }}
+              style={{ width: `${progressPercent}%`, backgroundColor: '#0891B2' }}
             />
           </div>
         )}
@@ -147,7 +147,7 @@ export function Tile({
           <span
             aria-hidden="true"
             className="absolute top-2 left-2 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm shadow-sm z-10"
-            style={{ backgroundColor: '#7C3AED' }}
+            style={{ backgroundColor: '#0891B2' }}
           >
             TRENDING
           </span>
@@ -157,7 +157,7 @@ export function Tile({
         <div
           aria-hidden="true"
           className="absolute top-2 right-2 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold text-white"
-          style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}
+          style={{ backgroundColor: 'rgba(8,145,178,0.85)' }}
         >
           <span>🤖</span> AI Presumed
         </div>
@@ -168,21 +168,21 @@ export function Tile({
         className="px-2 pt-2 pb-2.5 flex flex-col gap-1.5 rounded-b-xl"
         style={{
           backgroundColor: 'rgba(10,15,30,0.06)',
-          borderTop: '1px solid rgba(124,58,237,0.15)',
+          borderTop: '1px solid rgba(8,145,178,0.15)',
         }}
       >
         {/* Vote distribution bar — always shown */}
         <div className="flex flex-col gap-0.5">
           <div
             className="flex w-full h-[5px] rounded-full overflow-hidden"
-            style={{ backgroundColor: 'rgba(124,58,237,0.15)' }}
+            style={{ backgroundColor: 'rgba(8,145,178,0.15)' }}
             title={`${aiPct}% think AI · ${humanPct}% think Human`}
           >
             <div
               className="h-full transition-[width] duration-500 rounded-full"
               style={{
                 width: `${aiPct}%`,
-                backgroundColor: userVote ? '#A78BFA' : 'rgba(167,139,250,0.45)',
+                backgroundColor: userVote ? '#67E8F9' : 'rgba(103,232,249,0.45)',
               }}
             />
           </div>
@@ -209,9 +209,9 @@ export function Tile({
             }}
             className="flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[11px] font-bold transition-all active:scale-95"
             style={{
-              backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.12)',
-              color: userVote === 'ai' ? '#fff' : '#5B21B6',
-              border: `1.5px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.5)'}`,
+              backgroundColor: userVote === 'ai' ? '#0891B2' : 'rgba(8,145,178,0.12)',
+              color: userVote === 'ai' ? '#fff' : '#0E7490',
+              border: `1.5px solid ${userVote === 'ai' ? '#0891B2' : 'rgba(103,232,249,0.5)'}`,
             }}
           >
             🤖 AI-Made {userVote === 'ai' && '✓'}
@@ -252,7 +252,7 @@ export function Tile({
         ) : (
           <div
             className="w-8 h-8 rounded-full flex-shrink-0 mt-0.5 flex items-center justify-center text-xs font-bold uppercase"
-            style={{ backgroundColor: '#EDE9FF', color: '#7C3AED' }}
+            style={{ backgroundColor: '#E0F7FA', color: '#0891B2' }}
           >
             {author.charAt(0)}
           </div>

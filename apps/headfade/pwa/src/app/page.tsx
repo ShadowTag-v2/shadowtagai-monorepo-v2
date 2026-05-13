@@ -17,23 +17,23 @@ const brand = {
   bgSubtle: '#F7F9FC',
   textPrimary: '#0A2540',
   textMuted: '#3D5166',
-  accent: '#7C3AED',
+  accent: '#0891B2',
   border: '#E5E8ED',
-  chipDefault: '#F5F3FF',
+  chipDefault: '#F0FDFA',
 } as const;
 
 const categories = [
-  { label: 'All', color: '#7C3AED', glyph: '🌐' },
+  { label: 'All', color: '#0891B2', glyph: '🌐' },
   { label: 'Trending', color: '#B91C1C', glyph: '🔥' },
   { label: 'Music', color: '#9D174D', glyph: '🎵' },
   { label: 'Gaming', color: '#065F46', glyph: '🎮' },
   { label: 'News', color: '#0E7490', glyph: '📡' },
   { label: 'Comedy', color: '#92400E', glyph: '😂' },
   { label: 'Sports', color: '#1D4ED8', glyph: '⚡' },
-  { label: 'Science', color: '#7C3AED', glyph: '🔬' },
+  { label: 'Science', color: '#0891B2', glyph: '🔬' },
   { label: 'Fashion', color: '#9D174D', glyph: '✨' },
   { label: 'Cooking', color: '#9A3412', glyph: '🍳' },
-  { label: 'Film', color: '#6D28D9', glyph: '🎬' },
+  { label: 'Film', color: '#0E7490', glyph: '🎬' },
   { label: 'Education', color: '#0D9488', glyph: '📚' },
   { label: 'Saved', color: '#065F46', glyph: '🔖' },
 ];
@@ -371,7 +371,7 @@ export default function HeadfadeHomepage() {
                   role="img"
                 >
                   <title>HeadFade</title>
-                  <rect width="32" height="32" rx="8" fill="#7C3AED" />
+                  <rect width="32" height="32" rx="8" fill="#0891B2" />
                   <path
                     d="M6 22 Q10 10 16 16 Q22 22 26 10"
                     stroke="white"
@@ -427,7 +427,7 @@ export default function HeadfadeHomepage() {
               {isAuthenticated && (
                 <div
                   className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold"
-                  style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)', color: 'white' }}
+                  style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4)', color: 'white' }}
                 >
                   ⚡ Elo {elo.eloRating.toLocaleString()}
                 </div>
@@ -436,7 +436,7 @@ export default function HeadfadeHomepage() {
                 type="button"
                 aria-label="Upload & Fake Us Out"
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[13px] font-bold text-white transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)' }}
+                style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4)' }}
               >
                 <svg
                   className="w-4 h-4"
@@ -470,11 +470,11 @@ export default function HeadfadeHomepage() {
           {/* Vote campaign banner */}
           <div
             className="w-full px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2"
-            style={{ background: 'linear-gradient(90deg,#4C1D95 0%,#7C3AED 50%,#0891B2 100%)' }}
+            style={{ background: 'linear-gradient(90deg,#164E63 0%,#0891B2 50%,#06B6D4 100%)' }}
           >
             <div className="flex items-center gap-3 text-white">
               <span className="text-[20px] font-black tracking-tight">
-                Is it <span style={{ color: '#C4B5FD' }}>AI</span>, or is it?
+                Is it <span style={{ color: '#67E8F9' }}>AI</span>, or is it?
               </span>
               <span
                 className="hidden sm:block text-[16px] font-bold px-3 py-0.5 rounded-full animate-pulse"
@@ -538,7 +538,7 @@ export default function HeadfadeHomepage() {
                   aria-current={item.active ? 'page' : undefined}
                   className="flex items-center gap-6 px-3 py-2.5 rounded-[10px] text-[14px] font-medium transition-colors"
                   style={{
-                    backgroundColor: item.active ? '#EDE9FF' : 'transparent',
+                    backgroundColor: item.active ? '#E0F7FA' : 'transparent',
                     color: item.active ? brand.accent : brand.textPrimary,
                     fontWeight: item.active ? 700 : 400,
                   }}
@@ -568,8 +568,8 @@ export default function HeadfadeHomepage() {
               <div
                 className="mx-3 mb-3 p-3 rounded-xl"
                 style={{
-                  background: 'linear-gradient(135deg,#4C1D95,#1A0A2E)',
-                  border: '1px solid rgba(124,58,237,0.4)',
+                  background: 'linear-gradient(135deg,#164E63,#0A1628)',
+                  border: '1px solid rgba(8,145,178,0.4)',
                 }}
               >
                 <p className="text-[11px] font-bold text-white/50 mb-1">YOUR FORENSIC ELO</p>
@@ -615,8 +615,8 @@ export default function HeadfadeHomepage() {
                   onClick={() => setFilter(value)}
                   className="flex items-center gap-6 px-3 py-2 rounded-[10px] text-[14px] transition-colors"
                   style={{
-                    backgroundColor: filter === value ? '#EDE9FF' : 'transparent',
-                    color: filter === value ? '#7C3AED' : '#0A2540',
+                    backgroundColor: filter === value ? '#E0F7FA' : 'transparent',
+                    color: filter === value ? '#0891B2' : '#0A2540',
                     fontWeight: filter === value ? 700 : 400,
                   }}
                 >
@@ -675,7 +675,7 @@ export default function HeadfadeHomepage() {
                         setActiveCategory('All');
                       }}
                       className="mt-2 px-4 py-2 rounded-lg text-white text-[13px] font-bold"
-                      style={{ backgroundColor: '#7C3AED' }}
+                      style={{ backgroundColor: '#0891B2' }}
                     >
                       Show All
                     </button>
@@ -718,7 +718,7 @@ export default function HeadfadeHomepage() {
                 <div ref={ref} className="mt-12 flex justify-center py-8">
                   <div
                     className="w-8 h-8 border-[3px] rounded-full animate-spin"
-                    style={{ borderColor: '#EDE9FF', borderTopColor: brand.accent }}
+                    style={{ borderColor: '#E0F7FA', borderTopColor: brand.accent }}
                   />
                 </div>
               )}

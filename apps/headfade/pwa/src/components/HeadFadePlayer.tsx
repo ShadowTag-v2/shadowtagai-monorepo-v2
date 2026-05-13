@@ -287,7 +287,7 @@ export function HeadFadePlayer({
                 aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark video'}
                 onClick={onBookmark}
                 className="p-2.5 rounded-full transition-colors"
-                style={{ backgroundColor: isBookmarked ? '#7C3AED' : 'rgba(0,0,0,0.45)' }}
+                style={{ backgroundColor: isBookmarked ? '#0891B2' : 'rgba(0,0,0,0.45)' }}
               >
                 <svg
                   className="w-4 h-4 text-white"
@@ -319,7 +319,7 @@ export function HeadFadePlayer({
           {!playing && (
             <div
               className="w-14 h-14 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}
+              style={{ backgroundColor: 'rgba(8,145,178,0.85)' }}
             >
               <svg
                 className="w-7 h-7 text-white ml-1"
@@ -349,9 +349,9 @@ export function HeadFadePlayer({
               onClick={onVoteAI}
               className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold transition-all duration-200"
               style={{
-                backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.18)',
+                backgroundColor: userVote === 'ai' ? '#0891B2' : 'rgba(8,145,178,0.18)',
                 color: '#fff',
-                border: `1px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.45)'}`,
+                border: `1px solid ${userVote === 'ai' ? '#0891B2' : 'rgba(103,232,249,0.45)'}`,
                 backdropFilter: 'blur(4px)',
                 opacity: userVote === null ? 0.7 : 1,
               }}
@@ -386,7 +386,7 @@ export function HeadFadePlayer({
               >
                 <div
                   className="h-full transition-[width] duration-500 rounded-full"
-                  style={{ width: `${aiPct}%`, backgroundColor: '#A78BFA' }}
+                  style={{ width: `${aiPct}%`, backgroundColor: '#67E8F9' }}
                 />
               </div>
               <div className="flex justify-between text-[10px] text-white/80">
@@ -429,7 +429,7 @@ export function HeadFadePlayer({
               >
                 <div
                   className="h-full rounded-full transition-[width] duration-100"
-                  style={{ width: `${progress}%`, backgroundColor: '#7C3AED' }}
+                  style={{ width: `${progress}%`, backgroundColor: '#0891B2' }}
                 />
               </div>
             </button>

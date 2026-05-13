@@ -30,7 +30,7 @@
 
 import { doc, increment, onSnapshot, runTransaction } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { db } from '@/lib/firebase';
+import { getFirestoreInstance } from '@/lib/firebase';
 
 export type DeceptionTier = 'transparent' | 'convincing' | 'expert' | 'god-tier';
 
@@ -101,27 +101,36 @@ function loadLocalElo(): ForensicEloState {
 export function useForensicElo(uid: string | null) {
   const [elo, setElo] = useState<ForensicEloState>(loadLocalElo);
 
-  // Subscribe to live Firestore Elo when authenticated
+  // Subscribe to live Firestore Elo when authenticated — async init
   useEffect(() => {
     if (!uid) return;
-    const ref = doc(db, 'users', uid);
-    return onSnapshot(ref, (snap) => {
-      if (!snap.exists()) return;
-      const d = snap.data();
-      const next: ForensicEloState = {
-        eloRating: d.eloRating ?? 1000,
-        correctVotes: d.correctVotes ?? 0,
-        totalVotes: d.totalVotes ?? 0,
-        badges: d.badges ?? [],
-        accuracy: d.totalVotes > 0 ? Math.round((d.correctVotes / d.totalVotes) * 100) : 0,
-      };
-      setElo(next);
-      try {
-        localStorage.setItem(LS_ELO_KEY, JSON.stringify(next));
-      } catch {
-        /* quota */
-      }
-    });
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    getFirestoreInstance().then((db) => {
+      if (cancelled) return;
+      const ref = doc(db, 'users', uid);
+      unsub = onSnapshot(ref, (snap) => {
+        if (!snap.exists()) return;
+        const d = snap.data();
+        const next: ForensicEloState = {
+          eloRating: d.eloRating ?? 1000,
+          correctVotes: d.correctVotes ?? 0,
+          totalVotes: d.totalVotes ?? 0,
+          badges: d.badges ?? [],
+          accuracy: d.totalVotes > 0 ? Math.round((d.correctVotes / d.totalVotes) * 100) : 0,
+        };
+        setElo(next);
+        try {
+          localStorage.setItem(LS_ELO_KEY, JSON.stringify(next));
+        } catch {
+          /* quota */
+        }
+      });
+    }).catch(() => { /* offline */ });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
   }, [uid]);
 
   /**
@@ -166,6 +175,7 @@ export function useForensicElo(uid: string | null) {
 
       // Firestore write — read-then-write to ensure 1000 base Elo for new users
       try {
+        const db = await getFirestoreInstance();
         const userRef = doc(db, 'users', uid);
         await runTransaction(db, async (tx) => {
           const snap = await tx.get(userRef);
@@ -222,3 +232,4 @@ export function useForensicElo(uid: string | null) {
 
   return { elo, recordVoteOutcome };
 }
+

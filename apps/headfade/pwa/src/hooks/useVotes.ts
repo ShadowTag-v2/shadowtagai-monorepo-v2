@@ -1,7 +1,7 @@
 'use client';
 import { doc, increment, onSnapshot, runTransaction } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { db, getAnalyticsInstance } from '@/lib/firebase';
+import { getFirestoreInstance, getAnalyticsInstance } from '@/lib/firebase';
 
 const LS_KEY = 'headfade_votes_v1';
 const LS_FILTER = 'headfade_filter_v1';
@@ -61,15 +61,24 @@ export function useVotes(count: number) {
   const [globalAI, setGlobalAI] = useState(68_200_000);
   const [globalHuman, setGlobalHuman] = useState(31_800_000);
 
-  // Live global totals from Firestore
+  // Live global totals from Firestore — async init to avoid undefined db
   useEffect(() => {
-    const ref = doc(db, 'meta', 'vote_totals');
-    return onSnapshot(ref, (snap) => {
-      if (!snap.exists()) return;
-      const d = snap.data();
-      if (d.totalAI) setGlobalAI(d.totalAI);
-      if (d.totalHuman) setGlobalHuman(d.totalHuman);
-    });
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    getFirestoreInstance().then((db) => {
+      if (cancelled) return;
+      const ref = doc(db, 'meta', 'vote_totals');
+      unsub = onSnapshot(ref, (snap) => {
+        if (!snap.exists()) return;
+        const d = snap.data();
+        if (d.totalAI) setGlobalAI(d.totalAI);
+        if (d.totalHuman) setGlobalHuman(d.totalHuman);
+      });
+    }).catch(() => { /* offline */ });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
   }, []);
 
   const setFilter = useCallback((f: VoteFilter) => {
@@ -109,6 +118,7 @@ export function useVotes(count: number) {
 
     // Firestore atomic increment
     try {
+      const db = await getFirestoreInstance();
       const ref = doc(db, 'videos', `video_${key}`);
       await runTransaction(db, async (tx) => {
         const snap = await tx.get(ref);
