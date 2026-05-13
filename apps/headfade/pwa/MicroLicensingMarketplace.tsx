@@ -13,7 +13,7 @@ interface Workflow {
 }
 
 export default function MicroLicensingMarketplace() {
-  const [workflows, setWorkflows] = useState<Workflow[]>([
+  const [workflows, _setWorkflows] = useState<Workflow[]>([
     {
       id: 'wf-001',
       title: 'Cyberpunk Neon Dreams',

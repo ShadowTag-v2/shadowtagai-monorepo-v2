@@ -16,21 +16,21 @@ Modules:
 """
 
 from gates.tengu_j6_bridge import (
-    GateCategory,
-    GateDefinition,
-    HandoffRequest,
-    enforce_zta_handoff,
-    evaluate_gate,
-    get_gate_diagnostics,
-    is_security_gate_active,
+  GateCategory,
+  GateDefinition,
+  HandoffRequest,
+  enforce_zta_handoff,
+  evaluate_gate,
+  get_gate_diagnostics,
+  is_security_gate_active,
 )
 
 __all__ = [
-    "GateCategory",
-    "GateDefinition",
-    "HandoffRequest",
-    "enforce_zta_handoff",
-    "evaluate_gate",
-    "get_gate_diagnostics",
-    "is_security_gate_active",
+  "GateCategory",
+  "GateDefinition",
+  "HandoffRequest",
+  "enforce_zta_handoff",
+  "evaluate_gate",
+  "get_gate_diagnostics",
+  "is_security_gate_active",
 ]

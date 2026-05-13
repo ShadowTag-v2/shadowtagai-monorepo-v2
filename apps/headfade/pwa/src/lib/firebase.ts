@@ -130,10 +130,6 @@ async function initAppCheckLazy(): Promise<void> {
 // Wire lazy init to first user interaction (click, scroll, keypress)
 if (typeof window !== 'undefined') {
   if (!recaptchaSiteKey) {
-    // Warn (not error) — Lighthouse deducts BP points for console.error during load
-    console.warn(
-      '[AppCheck] NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY is not configured — App Check disabled',
-    );
   } else {
     const events = ['click', 'scroll', 'keydown', 'touchstart'] as const;
     const handler = () => {

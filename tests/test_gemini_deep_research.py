@@ -13,7 +13,6 @@ from typing import Any
 
 import pytest
 
-from _mock_helpers import make_mock_deep_research_client
 
 from gemini_deep_research.client import (
   AGENT_FAST,

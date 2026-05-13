@@ -42,13 +42,20 @@ TIER_QUOTAS = {
     "max_api_calls_per_hour": 200,
     "max_daily_tokens": 500_000,
     "max_concurrent_sessions": 3,
-    "models": ["gemini-3.1-flash-lite-preview", "gemini-3.1-pro"],
+    "models": [
+      "gemini-3.1-flash-lite-preview",
+      "gemini-3.1-flash-lite-preview-thinking",
+    ],
   },
   "practice": {
     "max_api_calls_per_hour": 1000,
     "max_daily_tokens": 2_000_000,
     "max_concurrent_sessions": 10,
-    "models": ["gemini-3.1-flash-lite-preview", "gemini-3.1-pro", "claude-sonnet-4-5"],
+    "models": [
+      "gemini-3.1-flash-lite-preview",
+      "gemini-3.1-flash-lite-preview-thinking",
+      "claude-sonnet-4-5",
+    ],
   },
   "enterprise": {
     "max_api_calls_per_hour": 10000,

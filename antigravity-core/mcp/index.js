@@ -79,6 +79,4 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 const transport = new StdioServerTransport();
-server.connect(transport).then(() => {
-  console.error('HeadFade Truth Oracle MCP server running on stdio');
-});
+server.connect(transport).then(() => {});

@@ -99,7 +99,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       message: 'Account and all data have been cryptographically shredded',
     });
   } catch (error: any) {
-    console.error('Nuke account error:', error);
     return res.status(500).json({
       error: 'Failed to delete account',
       details: error.message,

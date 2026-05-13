@@ -165,7 +165,8 @@
         "**/kovelai/tests/**",
         "**/shadowtag-web/**",
         "**/thumbly/**",
-        "**/counselconduit-dashboard/src/**"
+        "**/counselconduit-dashboard/src/**",
+        "**/headfade/pwa/src/**"
       ],
       "linter": {
         "rules": {

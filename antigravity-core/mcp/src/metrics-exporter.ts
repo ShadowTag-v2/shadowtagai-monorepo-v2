@@ -1,4 +1,4 @@
-export function getMetricsHandler(req: any, res: any) {
+export function getMetricsHandler(_req: any, res: any) {
   res.json({
     totalRequests: 1247,
     totalLicensesGranted: 89,
@@ -11,6 +11,6 @@ export function getMetricsHandler(req: any, res: any) {
 }
 
 export const metrics = {
-  increment: (name: string) => {},
-  recordDuration: (name: string, duration: number) => {},
+  increment: (_name: string) => {},
+  recordDuration: (_name: string, _duration: number) => {},
 };

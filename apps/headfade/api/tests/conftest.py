@@ -17,7 +17,7 @@ import pytest
 # ---------------------------------------------------------------------------
 _API_ROOT = os.path.join(os.path.dirname(__file__), "..")
 if _API_ROOT not in sys.path:
-    sys.path.insert(0, _API_ROOT)
+  sys.path.insert(0, _API_ROOT)
 
 # ---------------------------------------------------------------------------
 # Module-level mock injection — executes once when pytest collects this file.
@@ -69,46 +69,46 @@ sys.modules["opentelemetry.trace"] = MagicMock()
 
 @pytest.fixture
 def mock_firestore_db():
-    """Fresh MagicMock Firestore client for per-test isolation."""
-    db = MagicMock()
-    doc = MagicMock()
-    db.collection.return_value.document.return_value = doc
-    return db, doc
+  """Fresh MagicMock Firestore client for per-test isolation."""
+  db = MagicMock()
+  doc = MagicMock()
+  db.collection.return_value.document.return_value = doc
+  return db, doc
 
 
 @pytest.fixture
 def mock_genai_response():
-    """Construct a standard GenAI response with thinking + verdict parts."""
+  """Construct a standard GenAI response with thinking + verdict parts."""
 
-    def _factory(thought_text: str, verdict_text: str):
-        mock_part = MagicMock()
-        mock_part.thought = True
-        mock_part.text = thought_text
+  def _factory(thought_text: str, verdict_text: str):
+    mock_part = MagicMock()
+    mock_part.thought = True
+    mock_part.text = thought_text
 
-        mock_verdict_part = MagicMock()
-        mock_verdict_part.thought = False
-        mock_verdict_part.text = verdict_text
+    mock_verdict_part = MagicMock()
+    mock_verdict_part.thought = False
+    mock_verdict_part.text = verdict_text
 
-        mock_content = MagicMock()
-        mock_content.parts = [mock_part, mock_verdict_part]
+    mock_content = MagicMock()
+    mock_content.parts = [mock_part, mock_verdict_part]
 
-        mock_candidate = MagicMock()
-        mock_candidate.content = mock_content
+    mock_candidate = MagicMock()
+    mock_candidate.content = mock_content
 
-        mock_response = MagicMock()
-        mock_response.candidates = [mock_candidate]
-        return mock_response
+    mock_response = MagicMock()
+    mock_response.candidates = [mock_candidate]
+    return mock_response
 
-    return _factory
+  return _factory
 
 
 @pytest.fixture
 def mock_genai_client(mock_genai_response):
-    """Mock GenAI client whose generate_content returns a default response."""
-    client = MagicMock()
-    default = mock_genai_response(
-        "Temporal inconsistencies detected.",
-        "VERDICT: AI-generated.",
-    )
-    client.models.generate_content.return_value = default
-    return client
+  """Mock GenAI client whose generate_content returns a default response."""
+  client = MagicMock()
+  default = mock_genai_response(
+    "Temporal inconsistencies detected.",
+    "VERDICT: AI-generated.",
+  )
+  client.models.generate_content.return_value = default
+  return client
