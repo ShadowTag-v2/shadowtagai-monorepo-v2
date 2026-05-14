@@ -343,8 +343,9 @@ class EthicalCrawler:
         if requests_today >= config.requests_per_day:
             return False, config.backoff_seconds * 10  # Longer backoff for daily limit
 
-        # All checks passed
-        return True, config.crawl_delay_seconds
+        # All checks passed — compute minimum delay from rate limit config
+        crawl_delay = 60.0 / config.requests_per_minute if config.requests_per_minute > 0 else 1.0
+        return True, crawl_delay
 
     async def check_crawl_allowed(self, request: CrawlRequest) -> CrawlResult:
         """

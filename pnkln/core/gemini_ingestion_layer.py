@@ -202,13 +202,23 @@ class IngestionResult:
     @property
     def tier_1_ratio(self) -> float:
         """Overall Tier 1 ratio (target ≥40%)."""
-        tier_1_count = sum(1 for item in self.items_collected if item.tier == DataTier.TIER_1)
-        return tier_1_count / max(self.total_items, 1)
+        # Prefer items_collected if populated; fall back to source_metrics
+        if self.items_collected:
+            tier_1_count = sum(1 for item in self.items_collected if item.tier == DataTier.TIER_1)
+            return tier_1_count / max(self.total_items, 1)
+        # Derive from source metrics (mock collectors populate these)
+        total_tier_1 = sum(m.items_tier_1 for m in self.source_metrics.values())
+        total_items = sum(m.items_ingested for m in self.source_metrics.values())
+        return total_tier_1 / max(total_items, 1)
 
     @property
     def avg_cost_per_item(self) -> float:
         """Average cost per item."""
-        return self.total_cost_usd / max(self.total_items, 1)
+        # Prefer items_collected count; fall back to source_metrics total
+        if self.items_collected:
+            return self.total_cost_usd / max(self.total_items, 1)
+        total_items = sum(m.items_ingested for m in self.source_metrics.values())
+        return self.total_cost_usd / max(total_items, 1)
 
     @property
     def active_sources_count(self) -> int:

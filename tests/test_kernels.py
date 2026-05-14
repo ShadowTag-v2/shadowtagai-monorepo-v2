@@ -126,7 +126,33 @@ class TestAuditCompressKernel:
             reasoning="High risk decision rejected",
         )
 
-        kernel_input = KernelInput(data=classification, trace_id="test-trace-123", metadata={"test": "metadata"})
+        # Build a large, repetitive metadata payload to give zstd enough
+        # material for meaningful compression (small inputs can't reach 5:1).
+        large_metadata = {
+            "test": "metadata",
+            "audit_rules": [
+                {
+                    "rule_id": f"ATP-5-19-{i}.{j}",
+                    "description": f"Authority limit check for section {i} paragraph {j}",
+                    "severity": "critical" if i % 3 == 0 else "major",
+                    "status": "evaluated",
+                    "timestamp": "2026-05-14T00:00:00Z",
+                }
+                for i in range(1, 21)
+                for j in range(1, 6)
+            ],
+            "environment": {
+                "runtime": "python-3.14.4",
+                "model": "judge-six-v1",
+                "trace_context": "sovereign-meridian-test-harness",
+            },
+        }
+
+        kernel_input = KernelInput(
+            data=classification,
+            trace_id="test-trace-123",
+            metadata=large_metadata,
+        )
 
         output = await kernel(kernel_input)
 
