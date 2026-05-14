@@ -53,4 +53,16 @@ export const POMELLI_TARGET_MATRIX: SwarmTarget[] = [
       seo: 100,
     },
   },
+  {
+    id: "flpomp-service",
+    url: "https://flpomp.web.app",
+    kpi: "Lighthouse optimization targeting",
+    platform: "Cloud Run",
+    lighthouseBaseline: {
+      performance: 90,
+      accessibility: 90,
+      bestPractices: 100,
+      seo: 100,
+    },
+  },
 ];

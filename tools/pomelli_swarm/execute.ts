@@ -24,7 +24,7 @@ async function queryNotebookLM(query: string): Promise<string> {
     // nlm is installed at /opt/homebrew/bin/nlm via `uv tool install notebooklm-mcp-cli`
     // The correct invocation is `nlm query "<prompt>"` — NOT the old broken
     // `uvx --from notebooklm-mcp-cli notebooklm-mcp query` which was a phantom subcommand.
-    const result = await $`nlm query ${query}`.timeout(15_000).text();
+    const result = await $`nlm query ${query}`.text();
     const trimmed = result.trim();
     return trimmed || GROUND_TRUTH_FALLBACK;
   } catch (err) {
@@ -63,7 +63,6 @@ export async function executeSwarmAudit(): Promise<AuditResult[]> {
     try {
       const lighthouse =
         await $`bunx --bun mcp-cli call chrome-devtools-mcp lighthouse_audit --url "${site.url}"`
-          .timeout(60_000)
           .text();
 
       if (lighthouse.includes("performance")) {
@@ -104,7 +103,6 @@ export async function executeSwarmAudit(): Promise<AuditResult[]> {
   // NotebookLM audio overview generation (deferred in CI, best-effort in local)
   console.log(`\n🎙️ Triggering Audio Overview generation via nlm...`);
   await $`nlm audio-overview create`
-    .timeout(30_000)
     .quiet()
     .catch(() => console.log("⚠️ Audio overview deferred (nlm offline or no notebook bound)."));
 
