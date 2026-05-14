@@ -7,7 +7,7 @@ Quantitative Effect: ↑ Trust/Compliance +99%, ↓ Manual review –70%
 
 import logging
 from typing import Dict, List, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from google.cloud import dlp_v2
 from app.config.settings import settings
 
@@ -57,7 +57,7 @@ class ContentSafetyService:
         """
         try:
             self.moderation_stats["total_checks"] += 1
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
 
             # Check cache
             cache_key = f"{content[:100]}_{content_type}"
@@ -92,7 +92,7 @@ class ContentSafetyService:
             else:
                 self.moderation_stats["violations_detected"] += 1
 
-            elapsed = (datetime.utcnow() - start_time).total_seconds()
+            elapsed = (datetime.now(timezone.utc) - start_time).total_seconds()
 
             result = {
                 "status": "success",
@@ -241,7 +241,7 @@ class ContentSafetyService:
 
     async def get_moderation_stats(self) -> dict[str, Any]:
         """Get moderation statistics"""
-        return {"stats": self.moderation_stats, "cache_size": len(self.safety_cache), "timestamp": datetime.utcnow().isoformat()}
+        return {"stats": self.moderation_stats, "cache_size": len(self.safety_cache), "timestamp": datetime.now(timezone.utc).isoformat()}
 
     async def log_violation(self, violation_type: str, content_snippet: str, metadata: dict[str, Any] | None = None) -> bool:
         """Log a safety violation for audit trail"""
@@ -250,7 +250,7 @@ class ContentSafetyService:
                 "violation_type": violation_type,
                 "content_snippet": content_snippet[:100],
                 "metadata": metadata or {},
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
             }
 
             logger.warning(f"Safety violation logged: {violation_type}")

@@ -11,7 +11,7 @@ import random
 from typing import List, Dict, Any, Optional
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ class EvolutionResult:
     average_score: float
     improvement: float  # vs previous generation
     strategy_used: EvolutionStrategy
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class DTEEngine:

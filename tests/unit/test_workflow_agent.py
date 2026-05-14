@@ -158,10 +158,10 @@ class TestValidationRules:
         invalid_ages = [-1, -5, 150, 200]
 
         for age in valid_ages:
-            assert 0 <= age <= 150
+            assert 0 <= age <= 130
 
         for age in invalid_ages:
-            assert not (0 <= age <= 150)
+            assert not (0 <= age <= 130)
 
     def test_duplicate_detection(self):
         """Test duplicate record detection"""

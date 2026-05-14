@@ -2,7 +2,7 @@
 """Conversation service for managing chats."""
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 from sqlalchemy import select, and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -77,7 +77,7 @@ class ConversationService:
         for field, value in update_data.items():
             setattr(conversation, field, value)
 
-        conversation.updated_at = datetime.utcnow()
+        conversation.updated_at = datetime.now(timezone.utc)
         await db.commit()
         await db.refresh(conversation)
 
@@ -132,7 +132,7 @@ class ConversationService:
         db.add(vector_embedding)
 
         # Update conversation's last_message_at
-        conversation.last_message_at = datetime.utcnow()
+        conversation.last_message_at = datetime.now(timezone.utc)
 
         # Auto-generate title if this is the first user message
         if not conversation.title:

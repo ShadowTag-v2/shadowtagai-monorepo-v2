@@ -1,4 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+import importlib.util
 import os
 import sys
 import unittest
@@ -6,8 +7,12 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-# Add the 'scripts' directory to the Python path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "scripts")))
+# Direct import from scripts/utils/ to avoid shadowing by src/utils/
+_auth_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "scripts", "utils", "github_app_auth.py"))
+_spec = importlib.util.spec_from_file_location("utils.github_app_auth", _auth_path)
+_module = importlib.util.module_from_spec(_spec)
+sys.modules["utils.github_app_auth"] = _module
+_spec.loader.exec_module(_module)
 
 from utils.github_app_auth import get_github_app_token, get_session
 

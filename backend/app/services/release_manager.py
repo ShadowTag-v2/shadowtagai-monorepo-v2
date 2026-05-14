@@ -4,7 +4,7 @@ Release Manager Service for zero-downtime deployments.
 """
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 import httpx
 
@@ -135,7 +135,7 @@ class ReleaseManagerService:
             return None
 
         release.is_active = True
-        release.released_at = datetime.utcnow()
+        release.released_at = datetime.now(timezone.utc)
         await db.commit()
         await db.refresh(release)
 
@@ -236,10 +236,10 @@ class ReleaseManagerService:
         }
 
         try:
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
             async with httpx.AsyncClient(timeout=timeout) as client:
                 response = await client.get(f"{service_url}{health_endpoint}")
-                end_time = datetime.utcnow()
+                end_time = datetime.now(timezone.utc)
                 response_time = (end_time - start_time).total_seconds()
 
                 checks["http"] = True
@@ -316,7 +316,7 @@ class ReleaseManagerService:
         try:
             # Update status to in progress
             deployment.status = DeploymentStatus.IN_PROGRESS
-            deployment.started_at = datetime.utcnow()
+            deployment.started_at = datetime.now(timezone.utc)
             await db.commit()
 
             # Execute deployment strategy
@@ -328,7 +328,7 @@ class ReleaseManagerService:
 
             if success:
                 deployment.status = DeploymentStatus.DEPLOYED
-                deployment.completed_at = datetime.utcnow()
+                deployment.completed_at = datetime.now(timezone.utc)
                 logger.info(f"Deployment {deployment_id} completed successfully")
             else:
                 deployment.status = DeploymentStatus.FAILED
@@ -590,7 +590,7 @@ class ReleaseManagerService:
                 status=DeploymentStatus.IN_PROGRESS,
                 deployed_by=current_deployment.deployed_by,
                 configuration=previous_deployment.configuration,
-                started_at=datetime.utcnow(),
+                started_at=datetime.now(timezone.utc),
             )
 
             db.add(rollback_deployment)
@@ -613,7 +613,7 @@ class ReleaseManagerService:
 
                 if success or force:
                     rollback_deployment.status = DeploymentStatus.DEPLOYED
-                    rollback_deployment.completed_at = datetime.utcnow()
+                    rollback_deployment.completed_at = datetime.now(timezone.utc)
                     current_deployment.status = DeploymentStatus.ROLLED_BACK
                     rollback_deployment.logs += "Rollback completed successfully.\n"
                     logger.info(f"Rollback {rollback_deployment.id} completed")

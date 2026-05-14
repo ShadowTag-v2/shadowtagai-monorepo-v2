@@ -7,7 +7,7 @@ Quantitative Effect: ↑ Traceability +90%, ↓ Data drift –50%
 
 import logging
 from typing import Dict, List, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 from google.cloud import storage
@@ -81,7 +81,7 @@ class HiveStorageService:
                 "embedding_id": embedding_id,
                 "embeddings": embeddings,
                 "metadata": metadata or {},
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "dimensions": len(embeddings),
             }
 
@@ -142,8 +142,8 @@ class HiveStorageService:
             Success status
         """
         try:
-            log_id = f"mod_{datetime.utcnow().strftime('%Y%m%d_%H%M%S_%f')}"
-            log_data = {**log_entry, "log_id": log_id, "timestamp": datetime.utcnow().isoformat()}
+            log_id = f"mod_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S_%f')}"
+            log_data = {**log_entry, "log_id": log_id, "timestamp": datetime.now(timezone.utc).isoformat()}
 
             # Store in GCS
             if self.data_bucket:
@@ -179,7 +179,7 @@ class HiveStorageService:
                 "adapter_id": adapter_id,
                 "weights": adapter_weights,
                 "metadata": metadata or {},
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "version": metadata.get("version", "1.0") if metadata else "1.0",
             }
 
@@ -240,14 +240,14 @@ class HiveStorageService:
                 "model_bucket_accessible": self.model_bucket is not None,
             },
             "local_cache_path": str(self.local_cache_path),
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "quantitative_metrics": {"traceability_improvement": "+90%", "data_drift_reduction": "-50%"},
         }
 
     async def cleanup_old_data(self, days_old: int = 30) -> dict[str, Any]:
         """Cleanup data older than specified days"""
         try:
-            cutoff_date = datetime.utcnow().timestamp() - (days_old * 86400)
+            cutoff_date = datetime.now(timezone.utc).timestamp() - (days_old * 86400)
             cleaned_count = 0
 
             # Cleanup logic would go here

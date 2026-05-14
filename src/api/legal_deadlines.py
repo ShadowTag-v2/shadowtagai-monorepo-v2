@@ -4,7 +4,7 @@ Zero-Touch Legal Deadline Management (ZT) API
 FastAPI endpoints for automated deadline extraction, tracking, and notification
 """
 
-from datetime import datetime, date
+from datetime import datetime, timezone, date
 from typing import List, Optional, Dict, Any
 from enum import Enum
 from uuid import uuid4
@@ -114,8 +114,8 @@ class DeadlineRule(BaseModel):
     trigger_event: str = Field(..., description="Event that triggers deadline")
     rule_source: str = Field(..., description="Legal source (e.g., 'FRCP 12(a)(1)(A)')")
     notes: str | None = Field(None, description="Additional notes")
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Config:
         json_schema_extra = {
@@ -154,7 +154,7 @@ class ExtractedDeadline(BaseModel):
     calculation_details: dict[str, Any] = Field(default_factory=dict, description="Details of deadline calculation")
     reminder_schedule: list[date] = Field(default_factory=list, description="Scheduled reminder dates")
     assigned_to: str | None = Field(None, description="Assigned lawyer/staff")
-    extracted_at: datetime = Field(default_factory=datetime.utcnow)
+    extracted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     verified_at: datetime | None = Field(None, description="Verification timestamp")
     verified_by: str | None = Field(None, description="Verifying user")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
@@ -202,7 +202,7 @@ class LegalDocument(BaseModel):
     extracted_text: str | None = Field(None, description="OCR/extracted text")
     deadlines_count: int = Field(default=0, description="Number of deadlines found")
     processing_status: str = Field(default="pending", description="Processing status")
-    uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     processed_at: datetime | None = Field(None, description="Processing timestamp")
     uploaded_by: str = Field(..., description="Uploading user")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
@@ -284,7 +284,7 @@ async def root():
 @app.get("/health", tags=["Health"])
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "timestamp": datetime.utcnow(), "checks": {"database": "ok", "gcs": "ok", "ml_service": "ok", "calendar_api": "ok"}}
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc), "checks": {"database": "ok", "gcs": "ok", "ml_service": "ok", "calendar_api": "ok"}}
 
 
 @app.post("/documents/upload", response_model=LegalDocument, status_code=status.HTTP_201_CREATED, tags=["Documents"])
@@ -309,7 +309,7 @@ async def upload_document(
     """
     # TODO: Implement actual file upload to GCS, OCR, and extraction
 
-    doc_id = f"doc_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid4().hex[:8]}"
+    doc_id = f"doc_{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}_{uuid4().hex[:8]}"
 
     return LegalDocument(
         id=doc_id,
@@ -433,7 +433,7 @@ async def sync_to_calendar(
     """
     # TODO: Implement calendar API integration (Google Calendar, Outlook)
     return CalendarEntry(
-        deadline_id=deadline_id, calendar_provider=calendar_provider, calendar_id=calendar_id, synced=True, last_synced=datetime.utcnow()
+        deadline_id=deadline_id, calendar_provider=calendar_provider, calendar_id=calendar_id, synced=True, last_synced=datetime.now(timezone.utc)
     )
 
 
@@ -614,7 +614,7 @@ async def global_exception_handler(request, exc):
     """Global exception handler"""
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"error": "Internal server error", "detail": str(exc), "timestamp": datetime.utcnow().isoformat()},
+        content={"error": "Internal server error", "detail": str(exc), "timestamp": datetime.now(timezone.utc).isoformat()},
     )
 
 

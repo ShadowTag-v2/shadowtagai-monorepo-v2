@@ -18,7 +18,8 @@ import logging
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 import asyncio
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 from google.cloud import aiplatform
 
 logger = logging.getLogger(__name__)
@@ -68,8 +69,8 @@ class VertexAIClient:
         # Initialize Vertex AI
         aiplatform.init(project=self.config.project_id, location=self.config.location)
 
-        # Configure Gemini
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY", ""))
+        # Configure Gemini client
+        self.genai_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY", ""))
 
         logger.info(f"VertexAIClient initialized: {self.config.model} at {self.config.location}")
 
@@ -95,25 +96,29 @@ class VertexAIClient:
             score = extract_score(response.text)  # Only score logged
         """
         try:
-            # Use Gemini Flash for cost efficiency
-            model = genai.GenerativeModel(
-                model_name=self.config.model,
-                generation_config={
-                    "temperature": temperature or self.config.temperature,
-                    "max_output_tokens": max_tokens or self.config.max_tokens,
-                    "top_p": self.config.top_p,
-                    "top_k": self.config.top_k,
-                },
-            )
-
             # Add system instruction if provided
             full_prompt = prompt
             if system_instruction:
                 full_prompt = f"{system_instruction}\n\n{prompt}"
 
+            # Build generation config
+            gen_config = genai_types.GenerateContentConfig(
+                temperature=temperature or self.config.temperature,
+                max_output_tokens=max_tokens or self.config.max_tokens,
+                top_p=self.config.top_p,
+                top_k=self.config.top_k,
+            )
+
             # Execute (run in thread pool for async)
             loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(None, lambda: model.generate_content(full_prompt))
+            response = await loop.run_in_executor(
+                None,
+                lambda: self.genai_client.models.generate_content(
+                    model=self.config.model,
+                    contents=full_prompt,
+                    config=gen_config,
+                ),
+            )
 
             # Calculate tokens (rough estimate: 4 chars = 1 token)
             input_tokens = len(full_prompt) // 4

@@ -8,7 +8,7 @@ operations with cryptographic verification.
 
 from typing import Optional, List, Dict, Any
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -77,7 +77,7 @@ class ReceiptChain:
 
     def _generate_chain_id(self) -> str:
         """Generate a unique chain ID"""
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
         data = f"chain_{timestamp}".encode()
         return hashlib.sha256(data).hexdigest()[:16]
 
@@ -86,7 +86,7 @@ class ReceiptChain:
         genesis_receipt = Receipt(
             operation_id="genesis",
             operation_type="init",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="none",
             method="none",
             payload_hash="0" * 64,

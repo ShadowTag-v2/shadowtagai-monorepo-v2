@@ -10,6 +10,6 @@ Implements 3-tier data classification system:
 Uses Gemini 2.5 Flash-Lite for cost-effective classification.
 """
 
-from .tier_classifier import TierClassifier, ClassificationResult
+from .tier_classifier import TierClassifier, ClassificationResult, TierLevel
 
-__all__ = ["TierClassifier", "ClassificationResult"]
+__all__ = ["TierClassifier", "ClassificationResult", "TierLevel"]

@@ -60,7 +60,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, TypeVar, Generic
 from collections.abc import Callable
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -82,7 +82,7 @@ class ExecutionContext:
     """
 
     request_id: str
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     metadata: dict[str, Any] = field(default_factory=dict)
     variables: dict[str, Any] = field(default_factory=dict)
     latency_budget_ms: float = 90.0  # p99 SLA target

@@ -4,10 +4,9 @@ Database Models for Zero-Touch Legal Deadline Management
 SQLAlchemy ORM models
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Integer, Float, Boolean, Date, DateTime, Text, JSON, ForeignKey, Enum as SQLEnum, Index
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import declarative_base, relationship
 import enum
 
 Base = declarative_base()
@@ -93,7 +92,7 @@ class LegalDocument(Base):
     extracted_text = Column(Text, nullable=True)
     deadlines_count = Column(Integer, default=0)
     processing_status = Column(String(50), default="pending")
-    uploaded_at = Column(DateTime, default=datetime.utcnow)
+    uploaded_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     processed_at = Column(DateTime, nullable=True)
     uploaded_by = Column(String(200), nullable=False)
     metadata = Column(JSON, nullable=True)
@@ -132,7 +131,7 @@ class Deadline(Base):
     calculation_details = Column(JSON, nullable=True)
     reminder_schedule = Column(JSON, nullable=True)  # List of reminder dates
     assigned_to = Column(String(200), nullable=True)
-    extracted_at = Column(DateTime, default=datetime.utcnow)
+    extracted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     verified_at = Column(DateTime, nullable=True)
     verified_by = Column(String(200), nullable=True)
     metadata = Column(JSON, nullable=True)
@@ -169,8 +168,8 @@ class DeadlineRule(Base):
     trigger_event = Column(String(500), nullable=False)
     rule_source = Column(String(500), nullable=False)
     notes = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     # Indexes
     __table_args__ = (Index("idx_jurisdiction_type", "jurisdiction", "deadline_type"),)
@@ -189,7 +188,7 @@ class CalendarEntry(Base):
     synced = Column(Boolean, default=False)
     sync_error = Column(Text, nullable=True)
     last_synced = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     deadline = relationship("Deadline", back_populates="calendar_entries")
@@ -215,7 +214,7 @@ class ReminderLog(Base):
     sent = Column(Boolean, default=False)
     sent_at = Column(DateTime, nullable=True)
     error = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     deadline = relationship("Deadline", back_populates="reminders")
@@ -256,7 +255,7 @@ class AuditLog(Base):
     entity_id = Column(String(50), nullable=False)
     user_id = Column(String(200), nullable=False)
     changes = Column(JSON, nullable=True)  # Before/after values
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     ip_address = Column(String(50), nullable=True)
     user_agent = Column(String(500), nullable=True)
 
@@ -283,7 +282,7 @@ class MLFeedback(Base):
     correction_reason = Column(Text, nullable=True)
     extraction_method = Column(String(50), nullable=False)
     features = Column(JSON, nullable=True)  # Features used for prediction
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Indexes
     __table_args__ = (

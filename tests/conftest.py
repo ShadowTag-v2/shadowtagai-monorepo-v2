@@ -1,6 +1,15 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Pytest configuration and fixtures."""
 
+import sys
+from pathlib import Path
+
+# Add src/ to path for direct imports (gemini_ingestion_layer, judges, etc.)
+# Add scripts/ for test_github_app_auth which imports scripts/utils/
+_root = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_root / "scripts"))
+sys.path.insert(0, str(_root / "src"))
+
 import pytest
 import asyncio
 from collections.abc import Generator

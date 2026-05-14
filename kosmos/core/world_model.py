@@ -9,7 +9,7 @@ across multi-phase research workflows.
 
 from __future__ import annotations
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import List, Dict, Any, Optional
 import networkx as nx
@@ -34,7 +34,7 @@ class Hypothesis:
     text: str
     confidence: float = 0.0
     supporting_evidence: list[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     tested: bool = False
     test_results: dict[str, Any] | None = None
 
@@ -64,7 +64,7 @@ class AnalysisResult:
     statistical_tests: dict[str, Any] = field(default_factory=dict)
     success: bool = True
     error_message: str | None = None
-    executed_at: datetime = field(default_factory=datetime.utcnow)
+    executed_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
@@ -91,7 +91,7 @@ class LiteratureRef:
     url: str | None = None
     relevance_score: float = 0.0
     citations_extracted: list[str] = field(default_factory=list)
-    added_at: datetime = field(default_factory=datetime.utcnow)
+    added_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
@@ -132,7 +132,7 @@ class KosmosWorldModel:
         """
         self.session_id = session_id
         self.goal = goal
-        self.created_at = datetime.utcnow()
+        self.created_at = datetime.now(timezone.utc)
 
         # Core state
         self.hypotheses: list[Hypothesis] = []
@@ -246,7 +246,7 @@ class KosmosWorldModel:
                 "from_phase": self.phase.value,
                 "to_phase": new_phase.value,
                 "reason": reason,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
             }
         )
         self.phase = new_phase

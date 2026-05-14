@@ -11,7 +11,7 @@ Built with Google ADK for production-grade deterministic control.
 import os
 import logging
 from typing import Any, Dict, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 try:
     from google.adk.agents import Agent
@@ -207,7 +207,7 @@ If uncertain (confidence <60%), escalate to human review.
         Returns:
             Decision with reasoning, confidence, and risk assessment
         """
-        start_time = datetime.utcnow()
+        start_time = datetime.now(timezone.utc)
 
         if self.agent is None:
             # Mock response if ADK not available
@@ -224,7 +224,7 @@ If uncertain (confidence <60%), escalate to human review.
             # For now, return structured mock response
             result = self._mock_evaluation(request_data)
 
-            latency_ms = (datetime.utcnow() - start_time).total_seconds() * 1000
+            latency_ms = (datetime.now(timezone.utc) - start_time).total_seconds() * 1000
 
             logger.info(
                 f"Agent evaluation complete | Decision: {result['decision']} | Confidence: {result['confidence']:.2f} | Latency: {latency_ms:.0f}ms"

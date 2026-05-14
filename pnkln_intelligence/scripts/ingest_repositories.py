@@ -9,7 +9,7 @@ import logging
 import yaml
 from pathlib import Path
 from typing import List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from google.cloud import storage, bigquery
 import json
 
@@ -70,7 +70,7 @@ class RepositoryIngestionPipeline:
             flattened = await self.flattener.flatten_repository(repo_url)
 
             # Upload to GCS
-            timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
             blob_path = f"raw/repositories/{repo_name}/snapshot_{timestamp}.xml"
             blob = self.bucket.blob(blob_path)
             blob.upload_from_string(flattened.content, content_type="application/xml")
@@ -102,9 +102,9 @@ class RepositoryIngestionPipeline:
                 "category": repo_config.get("category", ""),
                 "priority": repo_config.get("priority", "medium"),
                 "stars": repo_config.get("stars", 0),
-                "created_at": datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "last_ingested_at": datetime.utcnow().isoformat(),
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "last_ingested_at": datetime.now(timezone.utc).isoformat(),
                 "metadata": json.dumps(
                     {
                         "gcs_path": gcs_path,
@@ -134,12 +134,12 @@ class RepositoryIngestionPipeline:
 
         rows = [
             {
-                "log_id": f"{repo_name}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}",
+                "log_id": f"{repo_name}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
                 "ingestion_type": "repository",
                 "entity_id": repo_name,
                 "status": "failed",
-                "started_at": datetime.utcnow().isoformat(),
-                "completed_at": datetime.utcnow().isoformat(),
+                "started_at": datetime.now(timezone.utc).isoformat(),
+                "completed_at": datetime.now(timezone.utc).isoformat(),
                 "error_message": error_message,
                 "metadata": json.dumps({"repo_name": repo_name}),
             }

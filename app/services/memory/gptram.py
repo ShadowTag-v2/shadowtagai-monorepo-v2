@@ -8,7 +8,7 @@ import redis.asyncio as redis
 import json
 import logging
 from typing import Dict, List, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from app.config.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -55,13 +55,13 @@ class GPTRAMMemory:
             Success status
         """
         try:
-            key = f"gptram:session:{session_id}:{interaction.get('timestamp', datetime.utcnow().isoformat())}"
-            interaction_data = {**interaction, "stored_at": datetime.utcnow().isoformat()}
+            key = f"gptram:session:{session_id}:{interaction.get('timestamp', datetime.now(timezone.utc).isoformat())}"
+            interaction_data = {**interaction, "stored_at": datetime.now(timezone.utc).isoformat()}
 
             await self.redis_client.setex(key, ttl or self.memory_ttl, json.dumps(interaction_data))
 
             # Add to session index
-            await self.redis_client.zadd(f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()})
+            await self.redis_client.zadd(f"gptram:index:{session_id}", {key: datetime.now(timezone.utc).timestamp()})
 
             return True
         except Exception as e:
@@ -145,7 +145,7 @@ class GPTRAMMemory:
                 "session_id": session_id,
                 "interaction_count": interaction_count,
                 "has_reasoning_graph": bool(has_reasoning_graph),
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
             }
         except Exception as e:
             logger.error(f"Failed to get memory stats: {e}")

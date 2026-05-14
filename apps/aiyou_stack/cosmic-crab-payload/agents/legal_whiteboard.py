@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 # agents/legal_whiteboard.py
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 WHITEBOARD_PATH = Path(__file__).parent.parent / "whiteboard" / "legal_state.json"
@@ -42,13 +42,13 @@ class LegalWhiteboard:
         }
 
     def _save(self):
-        self.state["last_updated"] = datetime.utcnow().isoformat() + "Z"
+        self.state["last_updated"] = datetime.now(timezone.utc).isoformat() + "Z"
         WHITEBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
         WHITEBOARD_PATH.write_text(json.dumps(self.state, indent=2))
 
     def record_bead(self, insight: str, source: str = "task", thinking_trace: str = None):
         """Records a 'memory bead' and optional thinking trace."""
-        entry = {"insight": insight, "source": source, "ts": datetime.utcnow().isoformat() + "Z"}
+        entry = {"insight": insight, "source": source, "ts": datetime.now(timezone.utc).isoformat() + "Z"}
         if thinking_trace:
             entry["thinking_trace"] = thinking_trace
             self.state["thinking_traces"].append(
@@ -59,7 +59,7 @@ class LegalWhiteboard:
 
     def record_pattern(self, pattern: str, accuracy: float):
         self.state["patterns"].append(
-            {"pattern": pattern, "accuracy": accuracy, "ts": datetime.utcnow().isoformat() + "Z"}
+            {"pattern": pattern, "accuracy": accuracy, "ts": datetime.now(timezone.utc).isoformat() + "Z"}
         )
         if self.state["level"] < 1 and len(self.state["patterns"]) >= 10:
             self.state["level"] = 1
@@ -86,7 +86,7 @@ class LegalWhiteboard:
                 "task": task,
                 "latency_ms": latency_ms,
                 "cost_usd": cost_usd,
-                "ts": datetime.utcnow().isoformat() + "Z",
+                "ts": datetime.now(timezone.utc).isoformat() + "Z",
             }
         )
         self._save()

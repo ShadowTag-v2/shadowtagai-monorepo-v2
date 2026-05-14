@@ -8,7 +8,7 @@ Email ingestion → Deadline extraction → Calendar sync → Notifications
 Powered by Pinkln AI Stack
 """
 
-from datetime import datetime, date
+from datetime import datetime, timezone, date
 from typing import List, Optional, Dict, Any
 from enum import Enum
 from uuid import uuid4
@@ -201,7 +201,7 @@ async def health_check():
     """Health check"""
     return {
         "status": "healthy",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(timezone.utc),
         "services": {
             "email_ingestion": "operational",
             "deadline_extraction": "operational",

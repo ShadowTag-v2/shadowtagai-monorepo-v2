@@ -77,8 +77,8 @@ class FinJudge(BaseJudge):
             # Large transaction always requires additional scrutiny
             reasoning_parts.append("Large transaction requires enhanced due diligence")
 
-        # Rule 5: Approved vendor with PO - streamlined
-        if vendor_status == "approved" and has_purchase_order:
+        # Rule 5: Approved vendor with PO - streamlined (only if not already blocked)
+        if vendor_status == "approved" and has_purchase_order and decision != JudgeDecision.BLOCK:
             if amount_usd < self.wire_transfer_threshold:
                 decision = JudgeDecision.ALLOW
                 reasoning_parts.append("Approved vendor with PO - auto-approved")

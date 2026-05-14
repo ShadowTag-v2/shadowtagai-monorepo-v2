@@ -112,16 +112,16 @@ def decode_audio(
 def _create_decode_receipt(media_type: str, input_file: Path, payload: bytes, stats: dict):
     """Create a receipt for a decoding operation"""
     import hashlib
-    from datetime import datetime
+    from datetime import datetime, timezone
     from ...receipt_chain import ReceiptChain, Receipt, ChainStorage
 
     payload_hash = hashlib.sha256(payload).hexdigest()
     media_hash = hashlib.sha256(input_file.read_bytes()).hexdigest()
 
     receipt = Receipt(
-        operation_id=hashlib.sha256(f"{datetime.utcnow().isoformat()}_{media_hash}".encode()).hexdigest()[:16],
+        operation_id=hashlib.sha256(f"{datetime.now(timezone.utc).isoformat()}_{media_hash}".encode()).hexdigest()[:16],
         operation_type="decode",
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         media_type=media_type,
         method=stats.get("method", "unknown"),
         payload_hash=payload_hash,

@@ -11,7 +11,7 @@ Agents are evolved versions of kernels with:
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.ratings import Glicko2Player
 from app.models.kernel import KernelOutput
@@ -39,7 +39,7 @@ class AgentPerformance(BaseModel):
     failed_executions: int = 0
     average_latency_ms: float = 0.0
     average_cost_usd: float = 0.0
-    last_updated: datetime = Field(default_factory=datetime.utcnow)
+    last_updated: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     @property
     def success_rate(self) -> float:
@@ -60,7 +60,7 @@ class AgentPerformance(BaseModel):
         n = self.total_executions
         self.average_latency_ms = (self.average_latency_ms * (n - 1) + latency_ms) / n
         self.average_cost_usd = (self.average_cost_usd * (n - 1) + cost_usd) / n
-        self.last_updated = datetime.utcnow()
+        self.last_updated = datetime.now(timezone.utc)
 
 
 class Agent(ABC):

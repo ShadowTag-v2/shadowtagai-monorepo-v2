@@ -12,7 +12,7 @@ Features:
 
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from typing import Optional, Dict, List
 import logging
 
@@ -82,8 +82,8 @@ class CostMonitor:
         # Budget state
         self.daily_burn: float = 0.0
         self.monthly_burn: float = 0.0
-        self.last_reset_date: datetime = datetime.utcnow().date()
-        self.last_reset_month: int = datetime.utcnow().month
+        self.last_reset_date: datetime = datetime.now(timezone.utc).date()
+        self.last_reset_month: int = datetime.now(timezone.utc).month
 
         logger.info(f"CostMonitor initialized: daily=${daily_budget:.2f}, monthly=${monthly_budget:.2f}, session=${session_budget:.2f}")
 
@@ -171,7 +171,7 @@ class CostMonitor:
 
         # Create usage record
         record = UsageRecord(
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             session_id=session_id,
             agent_name=agent_name,
             model=model,
@@ -282,9 +282,9 @@ class CostMonitor:
             Usage statistics dictionary
         """
         if start_time is None:
-            start_time = datetime.utcnow() - timedelta(days=1)
+            start_time = datetime.now(timezone.utc) - timedelta(days=1)
         if end_time is None:
-            end_time = datetime.utcnow()
+            end_time = datetime.now(timezone.utc)
 
         # Filter records
         period_records = [r for r in self.usage_records if start_time <= r.timestamp <= end_time]
@@ -323,7 +323,7 @@ class CostMonitor:
 
     def _reset_if_needed(self):
         """Reset daily/monthly counters if needed."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         today = now.date()
         current_month = now.month
 

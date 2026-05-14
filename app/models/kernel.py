@@ -3,7 +3,7 @@
 
 from pydantic import BaseModel, Field
 from typing import Any, Optional, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class KernelInput(BaseModel):
@@ -33,7 +33,7 @@ class KernelMetrics(BaseModel):
     token_count_input: int | None = None
     token_count_output: int | None = None
     cost_usd: float | None = None
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     confidence: float | None = None
     input_hash: str | None = None
     output_hash: str | None = None

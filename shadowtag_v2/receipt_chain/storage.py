@@ -9,7 +9,7 @@ from typing import Optional, List, Dict, Any
 from pathlib import Path
 import json
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .chain import ReceiptChain
 
@@ -95,7 +95,7 @@ class ChainStorage:
             chain: Chain to save
         """
         chain_data = chain.export_to_json()
-        now = datetime.utcnow().isoformat()
+        now = datetime.now(timezone.utc).isoformat()
 
         # Insert or replace chain
         self.conn.execute(

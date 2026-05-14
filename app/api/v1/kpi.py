@@ -7,7 +7,7 @@ Tracks governance, safety, and monetization metrics
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List, Dict, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from enum import Enum
 
 router = APIRouter()
@@ -65,7 +65,7 @@ async def get_kpi_dashboard(time_range: TimeRange = TimeRange.DAY):
     - Governance: Risk assessments, audit completion
     """
     return KPIDashboardResponse(
-        timestamp=datetime.utcnow(),
+        timestamp=datetime.now(timezone.utc),
         time_range=time_range,
         categories={
             KPICategory.SAFETY: [
@@ -118,7 +118,7 @@ async def get_metric_history(metric_name: str, time_range: TimeRange = TimeRange
         "metric_name": metric_name,
         "time_range": time_range,
         "granularity": granularity,
-        "data_points": [{"timestamp": (datetime.utcnow() - timedelta(hours=i)).isoformat(), "value": 80.0 + (i % 10)} for i in range(24)],
+        "data_points": [{"timestamp": (datetime.now(timezone.utc) - timedelta(hours=i)).isoformat(), "value": 80.0 + (i % 10)} for i in range(24)],
     }
 
 

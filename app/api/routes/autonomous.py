@@ -198,7 +198,7 @@ async def detect_obstacles(request: ObstacleDetectionRequest):
     try:
         # Call GAAS obstacle detection
         from app.services.autonomous.ros_bridge import GAASTopics
-        from datetime import datetime
+        from datetime import datetime, timezone
 
         # Publish point cloud to ROS topic
         await ros_bridge.publish(
@@ -247,7 +247,7 @@ async def detect_obstacles(request: ObstacleDetectionRequest):
 
         return ObstacleDetectionResponse(
             obstacles=obstacles,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             latency_ms=latency_ms,
         )
 

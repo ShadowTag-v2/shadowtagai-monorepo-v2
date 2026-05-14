@@ -45,12 +45,12 @@ def sample_payload():
 def sample_receipt():
     """Provide a sample receipt for testing"""
     from shadowtag_v2.receipt_chain import Receipt
-    from datetime import datetime
+    from datetime import datetime, timezone
 
     return Receipt(
         operation_id="test_op_001",
         operation_type="encode",
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         media_type="video",
         method="lsb",
         payload_hash="a" * 64,

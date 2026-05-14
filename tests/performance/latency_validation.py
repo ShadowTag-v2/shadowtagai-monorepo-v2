@@ -17,7 +17,7 @@ import time
 import statistics
 import json
 from typing import List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from src.judges import JudgeFactory, JudgeRequest, JudgeType
 
 
@@ -159,7 +159,7 @@ class LatencyValidator:
         passed = overall_stats["p99_ms"] <= p99_target
 
         results = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "target_p99_ms": p99_target,
             "passed": passed,
             "overall": overall_stats,

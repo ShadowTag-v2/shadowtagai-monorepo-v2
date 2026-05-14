@@ -12,7 +12,7 @@ import logging
 from enum import Enum
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 
 logger = logging.getLogger(__name__)
 
@@ -154,7 +154,7 @@ class PinklnFramework:
         """Apply reasoning framework"""
         self.reasoning_stack.append(framework)
 
-        return {"framework": framework.value, "persona": self.active_persona.value, "iq": self.persona_iq, "timestamp": datetime.utcnow().isoformat()}
+        return {"framework": framework.value, "persona": self.active_persona.value, "iq": self.persona_iq, "timestamp": datetime.now(timezone.utc).isoformat()}
 
     def fuse_cheat_sheet(self, essentials: CheatSheetEssentials) -> str:
         """

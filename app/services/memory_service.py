@@ -3,7 +3,7 @@
 
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -97,7 +97,7 @@ class MemoryService:
             setattr(memory, field, value)
 
         memory.is_user_edited = True
-        memory.updated_at = datetime.utcnow()
+        memory.updated_at = datetime.now(timezone.utc)
 
         # If content changed, regenerate embedding
         if "content" in update_data:
@@ -154,7 +154,7 @@ class MemoryService:
         memories = await self.get_memories(db, user_id, project_id=project_id, limit=settings.max_memory_items_per_project)
 
         if not memories:
-            return MemorySynthesisResponse(total_memories=0, synthesis="No memories available", updated_at=datetime.utcnow(), project_id=project_id)
+            return MemorySynthesisResponse(total_memories=0, synthesis="No memories available", updated_at=datetime.now(timezone.utc), project_id=project_id)
 
         # Format memories for synthesis
         memory_dicts = [
@@ -172,10 +172,10 @@ class MemoryService:
 
             if project:
                 project.summary = synthesis
-                project.last_synthesis_at = datetime.utcnow()
+                project.last_synthesis_at = datetime.now(timezone.utc)
                 await db.commit()
 
-        return MemorySynthesisResponse(total_memories=len(memories), synthesis=synthesis, updated_at=datetime.utcnow(), project_id=project_id)
+        return MemorySynthesisResponse(total_memories=len(memories), synthesis=synthesis, updated_at=datetime.now(timezone.utc), project_id=project_id)
 
     async def auto_extract_memories_from_conversation(self, db: AsyncSession, conversation_id: int, user_id: int) -> list[Memory]:
         """

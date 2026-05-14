@@ -139,7 +139,7 @@ async def ingest_filing(
 
     due_date = engine.calculate(req.trigger_date, rule.math)
     extraction_id = str(uuid.uuid4())
-    now = datetime.datetime.utcnow().isoformat()
+    now = datetime.datetime.now(timezone.utc).isoformat()
 
     conn = _get_conn()
     conn.execute(

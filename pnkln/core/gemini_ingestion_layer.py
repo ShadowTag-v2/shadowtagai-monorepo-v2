@@ -54,7 +54,7 @@ License: Proprietary
 import asyncio
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Dict, List, Optional
 import logging
@@ -128,12 +128,12 @@ class IntelligenceItem:
     metadata: dict
     tier: DataTier
     relevance_score: float
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     cost_usd: float = 0.0
 
     def is_fresh(self, max_age_hours: int = 24) -> bool:
         """Check if item is fresh (≤24h old)."""
-        age = datetime.utcnow() - self.timestamp
+        age = datetime.now(timezone.utc) - self.timestamp
         return age.total_seconds() / 3600 <= max_age_hours
 
     def is_high_value(self) -> bool:
@@ -192,7 +192,7 @@ class IngestionResult:
     total_cost_usd: float
     am_briefing_delivered: bool = False
     errors: list[str] = field(default_factory=list)
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     @property
     def total_items(self) -> int:
@@ -268,7 +268,7 @@ class YouTubeCollector(BaseSourceCollector):
         metrics.items_tier_3 = 20
         metrics.avg_relevance_score = 0.78
         metrics.total_cost_usd = 0.15  # $0.001/item
-        metrics.last_successful_fetch = datetime.utcnow()
+        metrics.last_successful_fetch = datetime.now(timezone.utc)
 
         return metrics
 
@@ -290,7 +290,7 @@ class TwitterCollector(BaseSourceCollector):
         metrics.items_tier_3 = 30
         metrics.avg_relevance_score = 0.72
         metrics.total_cost_usd = 0.20
-        metrics.last_successful_fetch = datetime.utcnow()
+        metrics.last_successful_fetch = datetime.now(timezone.utc)
 
         return metrics
 
@@ -312,7 +312,7 @@ class NewsAPICollector(BaseSourceCollector):
         metrics.items_tier_3 = 20
         metrics.avg_relevance_score = 0.85
         metrics.total_cost_usd = 0.12
-        metrics.last_successful_fetch = datetime.utcnow()
+        metrics.last_successful_fetch = datetime.now(timezone.utc)
 
         return metrics
 
@@ -502,7 +502,7 @@ class GeminiIngestionLayer:
 
             briefing = {
                 "title": "Daily Intelligence Briefing",
-                "date": datetime.utcnow().strftime("%Y-%m-%d"),
+                "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
                 "summary": {
                     "total_items": sum(m.items_ingested for m in source_metrics.values()),
                     "active_sources": len([m for m in source_metrics.values() if m.items_ingested > 0]),

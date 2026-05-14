@@ -7,7 +7,7 @@ Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 from fastapi import APIRouter, HTTPException, status
 from typing import List
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.models.governance import (
     GovernanceAssessmentRequest,
@@ -42,7 +42,7 @@ async def assess_governance(request: GovernanceAssessmentRequest):
     # Perform governance assessment
     result = await governance_engine.assess(request)
 
-    return GovernanceAssessmentResponse(assessment_id=assessment_id, timestamp=datetime.utcnow(), **result)
+    return GovernanceAssessmentResponse(assessment_id=assessment_id, timestamp=datetime.now(timezone.utc), **result)
 
 
 @router.post("/eu-ai-act/assess", response_model=EUAIActAssessment)

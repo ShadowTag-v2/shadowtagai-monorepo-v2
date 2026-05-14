@@ -9,7 +9,7 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
 from typing import Optional
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 
 from shadowtag_v2.video_stego import VideoEncoder, VideoDecoder, EncoderConfig, DecoderConfig
 from shadowtag_v2.receipt_chain import ReceiptChain, Receipt, ChainStorage
@@ -50,8 +50,8 @@ async def encode_video(
     upload_dir = Path(settings.UPLOAD_DIR)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
-    video_path = upload_dir / f"input_{datetime.utcnow().timestamp()}_{video.filename}"
-    payload_path = upload_dir / f"payload_{datetime.utcnow().timestamp()}"
+    video_path = upload_dir / f"input_{datetime.now(timezone.utc).timestamp()}_{video.filename}"
+    payload_path = upload_dir / f"payload_{datetime.now(timezone.utc).timestamp()}"
 
     with open(video_path, "wb") as f:
         f.write(await video.read())
@@ -72,7 +72,7 @@ async def encode_video(
     # Encode
     output_dir = Path(settings.OUTPUT_DIR)
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / f"encoded_{datetime.utcnow().timestamp()}_{video.filename}"
+    output_path = output_dir / f"encoded_{datetime.now(timezone.utc).timestamp()}_{video.filename}"
 
     try:
         stats = encoder.encode(
@@ -115,7 +115,7 @@ async def decode_video(
     upload_dir = Path(settings.UPLOAD_DIR)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
-    video_path = upload_dir / f"decode_{datetime.utcnow().timestamp()}_{video.filename}"
+    video_path = upload_dir / f"decode_{datetime.now(timezone.utc).timestamp()}_{video.filename}"
 
     with open(video_path, "wb") as f:
         f.write(await video.read())
@@ -133,7 +133,7 @@ async def decode_video(
         # Save extracted payload
         output_dir = Path(settings.OUTPUT_DIR)
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_path = output_dir / f"extracted_{datetime.utcnow().timestamp()}.bin"
+        output_path = output_dir / f"extracted_{datetime.now(timezone.utc).timestamp()}.bin"
 
         with open(output_path, "wb") as f:
             f.write(payload)
@@ -171,7 +171,7 @@ async def estimate_capacity(video: UploadFile = File(..., description="Video fil
     upload_dir = Path(settings.UPLOAD_DIR)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
-    video_path = upload_dir / f"capacity_{datetime.utcnow().timestamp()}_{video.filename}"
+    video_path = upload_dir / f"capacity_{datetime.now(timezone.utc).timestamp()}_{video.filename}"
 
     with open(video_path, "wb") as f:
         f.write(await video.read())
@@ -189,9 +189,9 @@ def _create_video_receipt(operation_type: str, video_path: Path, payload: bytes,
     media_hash = hashlib.sha256(video_path.read_bytes()).hexdigest()
 
     receipt = Receipt(
-        operation_id=hashlib.sha256(f"{datetime.utcnow().isoformat()}_{media_hash}".encode()).hexdigest()[:16],
+        operation_id=hashlib.sha256(f"{datetime.now(timezone.utc).isoformat()}_{media_hash}".encode()).hexdigest()[:16],
         operation_type=operation_type,
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         media_type="video",
         method=stats.get("method", "lsb"),
         payload_hash=payload_hash,

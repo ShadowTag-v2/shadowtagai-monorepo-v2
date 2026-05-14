@@ -7,7 +7,7 @@ Defines the block and block header structures for the receipt chain.
 
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import json
 
@@ -158,7 +158,7 @@ class Block:
 
         header = BlockHeader(
             index=0,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             previous_hash="0" * 64,  # No previous block
             merkle_root=merkle_root,
         )
@@ -183,7 +183,7 @@ class Block:
 
         header = BlockHeader(
             index=index,
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             previous_hash=previous_block.hash(),
             merkle_root=merkle_root,
         )

@@ -10,7 +10,7 @@ Automatically evolves prompts, kernels, and agents through:
 
 from typing import List, Dict, Any
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from app.training import GRPOSimulator, GRPOConfig
@@ -33,7 +33,7 @@ class EvolutionResult(BaseModel):
     improvement_metric: float = Field(description="% improvement over baseline")
     test_cases_passed: int
     test_cases_total: int
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     notes: str
 
 
