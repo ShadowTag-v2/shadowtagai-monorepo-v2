@@ -79,7 +79,7 @@ def _load_pem() -> str:
       text=True,
       timeout=10,
     )
-    if result.returncode == 0 and result.stdout.strip():
+    if result.returncode == 0 and result.stdout.strip().startswith("-----BEGIN"):
       return result.stdout
   except Exception:
     pass

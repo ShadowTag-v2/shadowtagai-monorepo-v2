@@ -1,8 +1,6 @@
 {
   "title": "Mastering the Google Developer Knowledge MCP Server",
   "summary": "Tutorial on troubleshooting the Google Developer Knowledge API and MCP Server, including configuration validation, using the MCP Inspector, and debugging techniques.",
-  "original_sources": [
-    "https://developers.googleblog.com/"
-  ],
+  "original_sources": ["https://developers.googleblog.com/"],
   "date_added": "2026-05-13T20:34:00-07:00"
 }

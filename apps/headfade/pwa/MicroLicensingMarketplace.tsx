@@ -88,7 +88,8 @@ export default function MicroLicensingMarketplace() {
                 <span className="px-2 py-0.5 bg-zinc-800 rounded">ComfyUI</span>
               </div>
 
-              <button type="button"
+              <button
+                type="button"
                 onClick={() => handlePurchase(workflow)}
                 disabled={purchaseMutation.isPending}
                 className="w-full py-3 bg-white text-black font-semibold rounded-xl hover:bg-zinc-200 transition disabled:opacity-50"

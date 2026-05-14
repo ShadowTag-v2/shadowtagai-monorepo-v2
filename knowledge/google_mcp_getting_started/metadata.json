@@ -1,8 +1,6 @@
 {
   "title": "Getting Started with Google MCP Services",
   "summary": "Introduction to the Google Developer Knowledge MCP Server, explaining the problem it solves (LLM hallucination on deprecated APIs) and providing a setup guide.",
-  "original_sources": [
-    "https://developers.googleblog.com/"
-  ],
+  "original_sources": ["https://developers.googleblog.com/"],
   "date_added": "2026-05-13T20:34:00-07:00"
 }

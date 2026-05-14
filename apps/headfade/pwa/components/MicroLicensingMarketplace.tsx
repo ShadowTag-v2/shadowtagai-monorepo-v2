@@ -29,7 +29,11 @@ export const MicroLicensingMarketplace: React.FC<MarketplaceProps> = ({ videoId 
 
   if (success) {
     return (
-      <div className="p-6 bg-green-50 rounded-lg text-green-800 text-center" role="alert" aria-live="polite">
+      <div
+        className="p-6 bg-green-50 rounded-lg text-green-800 text-center"
+        role="alert"
+        aria-live="polite"
+      >
         <h3 className="text-xl font-bold mb-2">License Granted!</h3>
         <p>Workflow data unlocked successfully.</p>
       </div>
@@ -50,7 +54,8 @@ export const MicroLicensingMarketplace: React.FC<MarketplaceProps> = ({ videoId 
           </div>
         </div>
 
-        <button type="button"
+        <button
+          type="button"
           onClick={handlePurchase}
           disabled={purchasing}
           aria-busy={purchasing}
