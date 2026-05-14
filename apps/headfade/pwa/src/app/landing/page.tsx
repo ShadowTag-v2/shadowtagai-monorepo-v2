@@ -80,7 +80,7 @@ const HOW_IT_WORKS = [
     step: '03',
     title: 'Human Turing Test',
     description:
-      'The crowd votes: AI or Real? Every vote feeds the Human Deception Index — the world\'s most granular authenticity dataset.',
+      "The crowd votes: AI or Real? Every vote feeds the Human Deception Index — the world's most granular authenticity dataset.",
     icon: '🗳️',
     gradient: 'from-emerald-600 to-teal-600',
   },
@@ -97,25 +97,29 @@ const HOW_IT_WORKS = [
 const USE_CASES = [
   {
     title: 'Newsrooms',
-    description: 'Verify every video before publication. Embed forensic trust badges directly in your CMS.',
+    description:
+      'Verify every video before publication. Embed forensic trust badges directly in your CMS.',
     icon: '📰',
     stat: '94% faster verification',
   },
   {
     title: 'Social Platforms',
-    description: 'Integrate the Arbiter API to flag synthetic content at upload, before it goes viral.',
+    description:
+      'Integrate the Arbiter API to flag synthetic content at upload, before it goes viral.',
     icon: '📱',
     stat: '12M+ daily scans',
   },
   {
     title: 'AI Studios',
-    description: 'Prove your content is AI-generated. Get higher CPMs from publishers who value transparency.',
+    description:
+      'Prove your content is AI-generated. Get higher CPMs from publishers who value transparency.',
     icon: '🎬',
     stat: '3x creator revenue',
   },
   {
     title: 'Legal & Insurance',
-    description: 'Forensic verdicts with provenance chains. Court-admissible evidence grade analysis.',
+    description:
+      'Forensic verdicts with provenance chains. Court-admissible evidence grade analysis.',
     icon: '⚖️',
     stat: 'ISO 27001 compliant',
   },
@@ -178,7 +182,13 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#030712]/60 border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <svg viewBox="0 0 32 32" className="w-9 h-9" fill="none" aria-label="HeadFade logo" role="img">
+            <svg
+              viewBox="0 0 32 32"
+              className="w-9 h-9"
+              fill="none"
+              aria-label="HeadFade logo"
+              role="img"
+            >
               <title>HeadFade</title>
               <rect width="32" height="32" rx="8" fill="#0891B2" />
               <path
@@ -292,7 +302,10 @@ export default function LandingPage() {
                   { label: 'Street Interview', verdict: 'REAL', confidence: 91, color: '#22C55E' },
                   { label: 'Generated Actor', verdict: 'AI', confidence: 88, color: '#EF4444' },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                  <div
+                    key={item.label}
+                    className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3"
+                  >
                     <div className="aspect-video rounded-lg bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center mb-2">
                       <div
                         className="px-3 py-1 rounded-full text-xs font-bold"
@@ -321,7 +334,10 @@ export default function LandingPage() {
       </section>
 
       {/* ── Stats Bar ── */}
-      <section ref={statsSection.ref} className="relative z-10 py-16 px-6 border-y border-white/[0.06]">
+      <section
+        ref={statsSection.ref}
+        className="relative z-10 py-16 px-6 border-y border-white/[0.06]"
+      >
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {STATS.map((stat, i) => (
             <div
@@ -380,7 +396,9 @@ export default function LandingPage() {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xl">{item.icon}</span>
-                  <span className="text-xs font-bold text-white/20 tracking-widest">{item.step}</span>
+                  <span className="text-xs font-bold text-white/20 tracking-widest">
+                    {item.step}
+                  </span>
                 </div>
                 <h3 className="text-lg font-bold mb-2 group-hover:text-cyan-300 transition-colors">
                   {item.title}
@@ -401,10 +419,15 @@ export default function LandingPage() {
       </section>
 
       {/* ── For Publishers Section ── */}
-      <section id="for-publishers" className="relative z-10 py-24 px-6 border-t border-white/[0.06]">
+      <section
+        id="for-publishers"
+        className="relative z-10 py-24 px-6 border-t border-white/[0.06]"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-sm font-bold tracking-widest text-cyan-400/80 uppercase mb-3">Use Cases</p>
+            <p className="text-sm font-bold tracking-widest text-cyan-400/80 uppercase mb-3">
+              Use Cases
+            </p>
             <h2 className="text-4xl sm:text-5xl font-black tracking-tight">
               Built for{' '}
               <span
@@ -457,9 +480,9 @@ export default function LandingPage() {
               </span>
             </h2>
             <p className="text-white/55 leading-relaxed mb-8">
-              The Arbiter Engine API returns forensic verdicts in real-time via SSE. Four specialized agents
-              analyze temporal coherence, physics simulation fidelity, audio-visual sync, and metadata
-              provenance — all in parallel under 300ms.
+              The Arbiter Engine API returns forensic verdicts in real-time via SSE. Four
+              specialized agents analyze temporal coherence, physics simulation fidelity,
+              audio-visual sync, and metadata provenance — all in parallel under 300ms.
             </p>
             <div className="flex flex-wrap gap-3">
               {['SSE Streaming', 'REST + gRPC', 'Webhook Callbacks', 'OpenAPI 3.1'].map((tag) => (
@@ -534,8 +557,8 @@ Accept: text/event-stream
               What&apos;s Real?
             </h2>
             <p className="text-white/55 text-lg mb-10 max-w-xl mx-auto">
-              Join millions of humans training the world&apos;s most advanced deepfake detection engine. Your
-              vote matters.
+              Join millions of humans training the world&apos;s most advanced deepfake detection
+              engine. Your vote matters.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
@@ -570,7 +593,9 @@ Accept: text/event-stream
                 fill="none"
               />
             </svg>
-            <span className="text-sm text-white/50">© 2026 HeadFade — Synthetic Media Infrastructure</span>
+            <span className="text-sm text-white/50">
+              © 2026 HeadFade — Synthetic Media Infrastructure
+            </span>
           </div>
           <div className="flex items-center gap-6 text-sm text-white/50">
             <a href="/trust" className="hover:text-white/60 transition-colors">

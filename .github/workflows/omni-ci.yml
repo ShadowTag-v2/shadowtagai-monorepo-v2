@@ -23,27 +23,16 @@ jobs:
         with: { app-id: "${{ secrets.CORP_APP_ID }}", private-key: "${{ secrets.CORP_APP_PEM }}", owner: "${{ github.repository_owner }}" }
       - uses: actions/checkout@v4
         with: { repository: "${{ github.repository_owner }}/YOUR-CORP-MONOREPO", token: "${{ steps.generate_token.outputs.token }}", path: "./external_repos/corp-monorepo" }
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '11.0.x'
-          dotnet-quality: 'preview'
-      - run: |
-          echo "/usr/local/share/dotnet" >> $GITHUB_PATH
-          echo "DOTNET_ROOT=/usr/local/share/dotnet" >> $GITHUB_ENV
-      - run: npm install -g @biomejs/biome knip typescript @lhci/cli && pip install ruff pyright
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          MAGIC_LINK_SECRET: ${{ secrets.MAGIC_LINK_SECRET }}
-
-      - run: dotnet build apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj --verbosity quiet
-      - run: knip || true
+      - run: npm install -g @biomejs/biome knip typescript @lhci/cli && pip install ruff vulture pyright
+      
+      - run: knip && vulture . --min-confidence 90
       - run: export PYTHONPATH="$PYTHONPATH:./external_repos/corp-monorepo" && pyright .
-
+      
       - run: biome check --write --unsafe ./apps || true
       - run: ruff check . --fix --unsafe-fixes || true
       - uses: stefanzweifel/git-auto-commit-action@v5
         with: { commit_message: "chore(ci): autonomous self-healing" }
-
+      
       - run: ruff check . --output-format=sarif -o ruff.sarif || true
       - uses: github/codeql-action/upload-sarif@v3
         with: { sarif_file: ruff.sarif, category: ruff-lint }

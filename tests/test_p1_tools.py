@@ -31,7 +31,7 @@ class TestSleepTool:
     tool = SleepTool()
     # Tool should accept duration_seconds
     if hasattr(tool, "execute"):
-      result = tool.execute(duration_seconds=1)
+      tool.execute(duration_seconds=1)
       mock_sleep.assert_called()
     elif hasattr(tool, "run"):
       tool.run(duration_seconds=1)

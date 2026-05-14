@@ -121,7 +121,10 @@ def check_chromadb() -> bool:
     """Check if ChromaDB is available"""
     # Check if chromadb package is installed
     try:
-        import chromadb
+        import importlib.util
+
+        if importlib.util.find_spec("chromadb") is None:
+            raise ImportError
 
         return True
     except ImportError:
@@ -294,7 +297,7 @@ def recommend_test_tier(detection: dict | None = None) -> str:
     has_llm = detection["ollama"] or detection["anthropic"] or detection["openai"]
     has_docker = detection["docker_sandbox"]
     has_neo4j = detection.get("neo4j", False)
-    has_redis = detection.get("redis", False)
+    detection.get("redis", False)
 
     if has_llm and has_docker and has_neo4j:
         return "full_e2e"

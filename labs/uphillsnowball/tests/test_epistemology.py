@@ -47,7 +47,7 @@ class TestValidateStatisticalClaim:
   def test_legitimate_effect_verified(self, engine):
     """Effect size well within the observed range should verify."""
     data = [10.0, 20.0, 30.0, 40.0, 50.0]
-    mean_abs_dev = sum(abs(x - 30) for x in data) / 5  # = 12.0
+    sum(abs(x - 30) for x in data) / 5  # = 12.0
     result = engine.validate_statistical_claim(
       real_data=data,
       claimed_effect_size=0.01,  # Trivial claim

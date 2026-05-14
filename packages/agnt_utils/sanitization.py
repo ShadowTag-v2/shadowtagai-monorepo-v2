@@ -21,6 +21,8 @@ from typing import Any, TypeVar, overload
 
 T = TypeVar("T")
 
+T = TypeVar("T")
+
 # Maximum NFKC normalization iterations before we treat input as hostile.
 _MAX_ITERATIONS = 10
 
@@ -100,7 +102,7 @@ def recursively_sanitize_unicode(value: dict[str, Any]) -> dict[str, Any]: ...
 
 
 @overload
-def recursively_sanitize_unicode[T](value: T) -> T: ...
+def recursively_sanitize_unicode(value: T) -> T: ...
 
 
 def recursively_sanitize_unicode(value: Any) -> Any:

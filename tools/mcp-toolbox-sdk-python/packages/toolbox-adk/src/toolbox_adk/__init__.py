@@ -27,4 +27,5 @@ __all__ = [
   "ToolboxClient",
   "ToolboxTool",
   "ToolboxToolset",
+  "__version__",
 ]

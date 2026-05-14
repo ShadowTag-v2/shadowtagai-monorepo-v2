@@ -10,6 +10,8 @@ Usage::
 
     from packages.agnt_utils.sequential import sequential
 
+R = TypeVar('R')
+
     @sequential
     async def write_config(path: str, data: dict) -> None:
         ...  # only one call runs at a time
@@ -29,7 +31,7 @@ from collections.abc import Awaitable, Callable
 R = TypeVar("R")
 
 
-def sequential[R](
+def sequential(
   fn: Callable[..., Awaitable[R]],
 ) -> Callable[..., Awaitable[R]]:
   """Wrap an async function so concurrent invocations execute sequentially.

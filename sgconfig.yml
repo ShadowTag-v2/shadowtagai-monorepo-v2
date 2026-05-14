@@ -1,2 +1,1 @@
-ruleDirs:
-  - .ast-grep/rules
+ruleDirs: [.ast-grep/rules]

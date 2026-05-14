@@ -106,27 +106,31 @@ export function useForensicElo(uid: string | null) {
     if (!uid) return;
     let unsub: (() => void) | undefined;
     let cancelled = false;
-    getFirestoreInstance().then((db) => {
-      if (cancelled) return;
-      const ref = doc(db, 'users', uid);
-      unsub = onSnapshot(ref, (snap) => {
-        if (!snap.exists()) return;
-        const d = snap.data();
-        const next: ForensicEloState = {
-          eloRating: d.eloRating ?? 1000,
-          correctVotes: d.correctVotes ?? 0,
-          totalVotes: d.totalVotes ?? 0,
-          badges: d.badges ?? [],
-          accuracy: d.totalVotes > 0 ? Math.round((d.correctVotes / d.totalVotes) * 100) : 0,
-        };
-        setElo(next);
-        try {
-          localStorage.setItem(LS_ELO_KEY, JSON.stringify(next));
-        } catch {
-          /* quota */
-        }
+    getFirestoreInstance()
+      .then((db) => {
+        if (cancelled) return;
+        const ref = doc(db, 'users', uid);
+        unsub = onSnapshot(ref, (snap) => {
+          if (!snap.exists()) return;
+          const d = snap.data();
+          const next: ForensicEloState = {
+            eloRating: d.eloRating ?? 1000,
+            correctVotes: d.correctVotes ?? 0,
+            totalVotes: d.totalVotes ?? 0,
+            badges: d.badges ?? [],
+            accuracy: d.totalVotes > 0 ? Math.round((d.correctVotes / d.totalVotes) * 100) : 0,
+          };
+          setElo(next);
+          try {
+            localStorage.setItem(LS_ELO_KEY, JSON.stringify(next));
+          } catch {
+            /* quota */
+          }
+        });
+      })
+      .catch(() => {
+        /* offline */
       });
-    }).catch(() => { /* offline */ });
     return () => {
       cancelled = true;
       unsub?.();
@@ -232,4 +236,3 @@ export function useForensicElo(uid: string | null) {
 
   return { elo, recordVoteOutcome };
 }
-

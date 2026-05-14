@@ -13,10 +13,12 @@ from collections.abc import AsyncGenerator, AsyncIterator
 
 T = TypeVar("T")
 
+T = TypeVar("T")
+
 _NO_VALUE = object()
 
 
-async def last[T](gen: AsyncIterator[T]) -> T:
+async def last(gen: AsyncIterator[T]) -> T:
   """Consume an async iterator and return its last yielded value.
 
   Raises ``ValueError`` if the iterator yields no items.
@@ -29,7 +31,7 @@ async def last[T](gen: AsyncIterator[T]) -> T:
   return last_value  # type: ignore[return-value]
 
 
-async def return_value[T](gen: AsyncGenerator[object, T]) -> T:
+async def return_value(gen: AsyncGenerator[object, T]) -> T:
   """Consume an async generator and return its return value."""
   result = None
   try:
@@ -40,7 +42,7 @@ async def return_value[T](gen: AsyncGenerator[object, T]) -> T:
   return result  # type: ignore[return-value]
 
 
-async def to_array[T](gen: AsyncIterator[T]) -> list[T]:
+async def to_array(gen: AsyncIterator[T]) -> list[T]:
   """Collect all items from an async iterator into a list."""
   result: list[T] = []
   async for item in gen:
@@ -48,13 +50,13 @@ async def to_array[T](gen: AsyncIterator[T]) -> list[T]:
   return result
 
 
-async def from_array[T](values: list[T]) -> AsyncGenerator[T]:
+async def from_array(values: list[T]) -> AsyncGenerator[T]:
   """Create an async generator from a list of values."""
   for value in values:
     yield value
 
 
-async def merge_concurrent[T](
+async def merge_concurrent(
   generators: list[AsyncIterator[T]],
   concurrency_cap: int | None = None,
 ) -> AsyncGenerator[T]:

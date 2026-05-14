@@ -10,8 +10,10 @@ from typing import TypeVar
 
 T = TypeVar("T")
 
+T = TypeVar("T")
 
-class FlushGate[T]:
+
+class FlushGate:
   """FIFO-bounded queue that gates message writes during initial flush.
 
   Lifecycle:

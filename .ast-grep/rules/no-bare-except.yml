@@ -1,12 +1,5 @@
 id: no-bare-except
-message: "Security: Bare 'except:' catches SystemExit. Use 'except Exception:' instead."
 severity: error
 language: python
-rule:
-  kind: except_clause
-  pattern: |
-    except:
-      $$$BODY
-fix: |
-  except Exception:
-    $$$BODY
+rule: { pattern: "except:\n  $$$BODY" }
+fix: "except Exception:\n  $$$BODY"

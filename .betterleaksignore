@@ -45,3 +45,5 @@ apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.temp
 # Test config files (contain fake/placeholder API keys for test isolation)
 apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py
 
+# Virtual environments (contain external libraries with test/example keys in their source code)
+.venv-ml/**

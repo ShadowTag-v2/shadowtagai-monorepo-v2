@@ -74,7 +74,6 @@ class JudgeSixHuman:
         HumanGateResult with threat level and prescribed action.
     """
     self._evaluation_count += 1
-    ctx = context or {}
 
     # TODO: Replace stub with actual policy evaluation
     result = HumanGateResult(

@@ -1,0 +1,9 @@
+{
+  "title": "Firestore MCP Server Tutorial",
+  "summary": "Tutorial on how to use Firestore MCP Server to manage Firestore databases with natural language. Contains step-by-step examples.",
+  "original_sources": [
+    "https://medium.com/google-cloud/how-to-manage-your-firestore-database-with-natural-language-step-by-step-examples-bbc764f93d70",
+    "https://docs.cloud.google.com/firestore/native/docs/use-firestore-mcp"
+  ],
+  "date_added": "2026-05-13T20:25:00-07:00"
+}

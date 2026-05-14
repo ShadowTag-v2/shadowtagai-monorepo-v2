@@ -114,7 +114,7 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
               Permanently delete your account and all associated data. This action cannot be undone.
             </p>
 
-            <button
+            <button type="button"
               onClick={openNukeModal}
               className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
             >
@@ -126,15 +126,15 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
 
       {/* Nuke Modal */}
       {showNukeModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <div className="bg-zinc-900 border border-red-500/50 rounded-2xl max-w-md w-full p-8">
             {!success ? (
               <>
                 <div className="text-center mb-6">
-                  <div className="w-16 h-16 mx-auto rounded-full bg-red-500/10 flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-red-500/10 flex items-center justify-center mb-4" aria-hidden="true">
                     <span className="text-4xl">💥</span>
                   </div>
-                  <h3 className="text-2xl font-semibold text-white mb-2">Delete Everything?</h3>
+                  <h3 id="modal-title" className="text-2xl font-semibold text-white mb-2">Delete Everything?</h3>
                   <p className="text-zinc-400 text-sm">
                     This will permanently delete your account, all data, billing information, and
                     revoke all sessions.
@@ -143,24 +143,27 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
 
                 {/* CAPTCHA */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">
+                  <label className="block text-sm font-medium text-zinc-400 mb-2" htmlFor="captcha-challenge">
                     Security Verification
                   </label>
                   <div className="flex gap-2">
                     <input
+                      id="captcha-challenge"
                       type="text"
                       value={captchaChallenge}
                       readOnly
                       className="flex-1 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-400 text-sm"
                     />
-                    <button
+                    <button type="button"
                       onClick={generateCaptcha}
                       className="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-lg text-sm"
                     >
                       ↻
                     </button>
                   </div>
+                  <label htmlFor="captcha-answer" className="sr-only">Type answer here</label>
                   <input
+                    id="captcha-answer"
                     type="text"
                     placeholder="Type the answer here"
                     className="w-full mt-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white"
@@ -171,10 +174,11 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
 
                 {/* Confirmation Input */}
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-zinc-400 mb-2">
+                  <label className="block text-sm font-medium text-zinc-400 mb-2" htmlFor="confirmation-text">
                     Type <span className="font-mono text-red-400">NUKE MY DATA</span> to confirm
                   </label>
                   <input
+                    id="confirmation-text"
                     type="text"
                     value={confirmationText}
                     onChange={(e) => setConfirmationText(e.target.value)}
@@ -186,20 +190,20 @@ export default function SecuritySettings({ userId, stripeCustomerId }: SecurityS
                 </div>
 
                 {error && (
-                  <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                  <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm" role="alert" aria-live="assertive">
                     {error}
                   </div>
                 )}
 
                 <div className="flex gap-3">
-                  <button
+                  <button type="button"
                     onClick={() => setShowNukeModal(false)}
                     className="flex-1 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg font-medium transition-colors"
                     disabled={isLoading}
                   >
                     Cancel
                   </button>
-                  <button
+                  <button type="button"
                     onClick={handleNukeAccount}
                     disabled={isLoading || confirmationText !== 'NUKE MY DATA' || !captchaVerified}
                     className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 disabled:bg-red-900 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"

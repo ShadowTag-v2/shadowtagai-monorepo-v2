@@ -1,7 +1,7 @@
 'use client';
 import { doc, increment, onSnapshot, runTransaction } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { getFirestoreInstance, getAnalyticsInstance } from '@/lib/firebase';
+import { getAnalyticsInstance, getFirestoreInstance } from '@/lib/firebase';
 
 const LS_KEY = 'headfade_votes_v1';
 const LS_FILTER = 'headfade_filter_v1';
@@ -65,16 +65,20 @@ export function useVotes(count: number) {
   useEffect(() => {
     let unsub: (() => void) | undefined;
     let cancelled = false;
-    getFirestoreInstance().then((db) => {
-      if (cancelled) return;
-      const ref = doc(db, 'meta', 'vote_totals');
-      unsub = onSnapshot(ref, (snap) => {
-        if (!snap.exists()) return;
-        const d = snap.data();
-        if (d.totalAI) setGlobalAI(d.totalAI);
-        if (d.totalHuman) setGlobalHuman(d.totalHuman);
+    getFirestoreInstance()
+      .then((db) => {
+        if (cancelled) return;
+        const ref = doc(db, 'meta', 'vote_totals');
+        unsub = onSnapshot(ref, (snap) => {
+          if (!snap.exists()) return;
+          const d = snap.data();
+          if (d.totalAI) setGlobalAI(d.totalAI);
+          if (d.totalHuman) setGlobalHuman(d.totalHuman);
+        });
+      })
+      .catch(() => {
+        /* offline */
       });
-    }).catch(() => { /* offline */ });
     return () => {
       cancelled = true;
       unsub?.();

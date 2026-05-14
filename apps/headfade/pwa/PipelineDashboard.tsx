@@ -74,7 +74,7 @@ export default function PipelineDashboard() {
       <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
         <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center">
           <h2 className="font-semibold">Recent Pipeline Runs</h2>
-          <button
+          <button type="button"
             onClick={() => window.location.reload()}
             className="px-4 py-1.5 text-sm bg-white text-black rounded-lg hover:bg-zinc-200"
           >

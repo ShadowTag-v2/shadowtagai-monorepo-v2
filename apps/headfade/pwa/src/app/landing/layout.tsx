@@ -15,14 +15,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'HeadFade — Forensic AI Detection',
     description:
-      'Can you tell what\'s real? Join millions training the world\'s most advanced deepfake detection engine.',
+      "Can you tell what's real? Join millions training the world's most advanced deepfake detection engine.",
   },
 };
 
-export default function LandingLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function LandingLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

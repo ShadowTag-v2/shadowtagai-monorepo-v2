@@ -1,24 +1,136 @@
 {
   "score": "C",
-  "total_findings": 21,
+  "total_findings": 34,
   "critical": 0,
   "errors": 1,
-  "warnings": 14,
+  "warnings": 27,
   "info": 6,
   "findings": [
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": "beads/heartbeat.json",
-      "fix": "git checkout -- beads/heartbeat.json"
+      "path": "agent/skills/system_omega_cognitive_router.ts",
+      "fix": "git checkout -- agent/skills/system_omega_cognitive_router.ts"
     },
     {
       "gate": "dirty",
       "severity": "warn",
       "message": "Dirty file (M)",
-      "path": ".beads/issues.jsonl",
-      "fix": "git checkout -- .beads/issues.jsonl"
+      "path": ".agents/skills/cognitive-structural-synthesis/SKILL.md",
+      "fix": "git checkout -- .agents/skills/cognitive-structural-synthesis/SKILL.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agents/skills/epistemic-airgap/SKILL.md",
+      "fix": "git checkout -- .agents/skills/epistemic-airgap/SKILL.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agents/skills/omni-code-sanitation/SKILL.md",
+      "fix": "git checkout -- .agents/skills/omni-code-sanitation/SKILL.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".ast-grep/rules/no-bare-except.yml",
+      "fix": "git checkout -- .ast-grep/rules/no-bare-except.yml"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_all_859_classified.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_all_859_classified.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_full_audit.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_full_audit.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260420.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260420.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260421.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260421.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260423.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260423.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260427.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260427.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260428.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260428.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/raw_originals/gitleaks_full_1348_audit.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/raw_originals/gitleaks_full_1348_audit.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/raw_originals/gitleaks_nightly_20260501.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/raw_originals/gitleaks_nightly_20260501.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/third_party_leak_manifest.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/third_party_leak_manifest.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/dream_state.json",
+      "fix": "git checkout -- .beads/dream_state.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/gitleaks_full_1348_audit.md.gz",
+      "fix": "git checkout -- .beads/gitleaks_full_1348_audit.md.gz"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/gitleaks_nightly_20260501.md.gz",
+      "fix": "git checkout -- .beads/gitleaks_nightly_20260501.md.gz"
     },
     {
       "gate": "dirty",
@@ -37,30 +149,9 @@
     {
       "gate": "dirty",
       "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": ".beads/suggestion_cache.json",
-      "fix": "git checkout -- .beads/suggestion_cache.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "archive/scratch_2026/repos/everything-claude-code",
-      "fix": "git checkout -- archive/scratch_2026/repos/everything-claude-code"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (M)",
-      "path": "vault/monitor/pipeline_metrics.json",
-      "fix": "git checkout -- vault/monitor/pipeline_metrics.json"
-    },
-    {
-      "gate": "dirty",
-      "severity": "warn",
-      "message": "Dirty file (??)",
-      "path": ".beads/dream_state.json",
-      "fix": "git add .beads/dream_state.json"
+      "message": "... and 83 more dirty files",
+      "path": "",
+      "fix": ""
     },
     {
       "gate": "conflicts",
@@ -72,9 +163,9 @@
     {
       "gate": "secrets",
       "severity": "error",
-      "message": "Command '['/Users/pikeymickey/go/bin/betterleaks', 'dir', '-c', '.betterleaks.toml', '--report-format', 'json', '--report-path', '/tmp/repo_doctor_secrets.json', '.']' timed out after 120 seconds",
+      "message": "Betterleaks found 41 potential secrets",
       "path": "",
-      "fix": ""
+      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
     },
     {
       "gate": "large_files",
@@ -149,7 +240,7 @@
     {
       "gate": "tests",
       "severity": "info",
-      "message": "Tests: ======================== 3825 tests collected in 40.06s ========================",
+      "message": "Tests: ======================== 3825 tests collected in 2.01s =========================",
       "path": "",
       "fix": ""
     }

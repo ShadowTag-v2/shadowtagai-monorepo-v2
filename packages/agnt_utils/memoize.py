@@ -22,6 +22,8 @@ import time
 from typing import Any, TypeVar
 from collections.abc import Callable
 
+R = TypeVar("R")
+
 logger = logging.getLogger(__name__)
 
 R = TypeVar("R")
@@ -39,7 +41,7 @@ class _TTLEntry:
     self.refreshing = False
 
 
-def memoize_with_ttl[R](
+def memoize_with_ttl(
   fn: Callable[..., R],
   cache_lifetime_s: float = 300.0,
 ) -> Callable[..., R]:
@@ -110,7 +112,7 @@ def memoize_with_ttl[R](
 # ── LRU memoization ───────────────────────────────────────────────────────────
 
 
-def memoize_with_lru[R](
+def memoize_with_lru(
   fn: Callable[..., R],
   *,
   maxsize: int = 100,

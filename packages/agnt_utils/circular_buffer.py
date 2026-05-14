@@ -12,8 +12,10 @@ from typing import TypeVar
 
 T = TypeVar("T")
 
+T = TypeVar("T")
 
-class CircularBuffer[T]:
+
+class CircularBuffer:
   """A fixed-size circular buffer that evicts oldest items on overflow.
 
   >>> buf = CircularBuffer(3)
