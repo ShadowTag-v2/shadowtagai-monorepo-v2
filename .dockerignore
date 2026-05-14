@@ -102,3 +102,5 @@ src/
 next.config.*
 tsconfig.*
 biome.json
+external_repos/
+geap/
