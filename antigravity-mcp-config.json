@@ -53,11 +53,7 @@
       "note": "Chrome DevTools MCP — MUST use instead of external screenshot tools. Owns all browser interaction, performance tracing, and Lighthouse audits."
     },
     "StitchMCP": {
-      "_transport": "platform-managed",
-      "_status": "Antigravity IDE platform provides this server natively. No NPM package exists.",
-      "env": {
-        "STITCH_API_KEY": "${STITCH_API_KEY}"
-      },
+      "_note": "PLATFORM-NATIVE: Managed by Antigravity MCP Store. Do NOT add command/httpUrl here — it will override the platform injection and crash.",
       "capability_owner": true,
       "owns": [
         "generate_screen_*",
@@ -65,22 +61,16 @@
         "create_design_system",
         "apply_design_system",
         "generate_variants"
-      ],
-      "note": "Stitch MCP — Platform-managed. MUST use for all UI design, screen generation, and design system work. No hand-coding design tokens."
+      ]
     },
     "google-developer-knowledge": {
-      "_transport": "platform-managed",
-      "_status": "Antigravity IDE platform provides this server natively. No NPM package exists. Fallback: firebase-mcp-server.developerknowledge_search_documents (WORKING).",
-      "env": {
-        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}"
-      },
+      "_note": "PLATFORM-NATIVE: Managed by Antigravity MCP Store. Do NOT add command/httpUrl here. Fallback: firebase-mcp-server.developerknowledge_* tools.",
       "capability_owner": true,
       "owns": [
         "search_documents",
         "get_documents",
         "answer_query"
       ],
-      "note": "Google Developer Knowledge MCP — Platform-managed. Fallback via firebase-mcp-server.developerknowledge_* tools.",
       "fallback": "firebase-mcp-server.developerknowledge_search_documents"
     },
     "sequential-thinking": {
@@ -165,21 +155,17 @@
       "note": "Cloud Storage MCP — MUST use for all GCS bucket and object operations."
     },
     "mcp-toolbox": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@googleapis/mcp-toolbox@latest"
-      ],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first"
-      },
+      "_note": "MCP Toolbox for Databases v1.2.0 — Go binary, NOT an NPM package. Deployed via OCI: us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:1.2.0. Transport: streamable-http on port 5000. Config: tools.yaml. Supports 40+ data sources including AlloyDB, Spanner, BigQuery, Cloud SQL, PostgreSQL, Oracle, MongoDB, Snowflake. OAuth 2.1 resource server for MCP Authorization. Cloned at: external_repos/mcp-toolbox/",
       "capability_owner": true,
       "owns": [
         "list_tables",
         "execute_sql",
-        "describe_table"
+        "describe_table",
+        "run_query",
+        "list_collections"
       ],
-      "note": "MCP Toolbox for Databases — MUST use for database schema exploration and SQL queries via MCP."
+      "sdk_integrations": ["python", "go", "typescript", "java"],
+      "framework_integrations": ["langchain", "llamaindex", "adk"]
     }
   },
   "routing_rules": {
