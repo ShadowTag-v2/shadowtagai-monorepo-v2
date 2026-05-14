@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""IT Helpdesk & Asset Management Agent — Part 1: Foundations.
+"""IT Helpdesk & Asset Management Agent — Part 2: CMDB & Knowledge.
 
 Built on the Gemini Enterprise Agent Platform (GEAP) using the
 Agent Development Kit (ADK). This agent assists employees with IT
-issues, retains conversation memory, and runs within enterprise
-guardrails.
+issues, manages hardware assets via CMDB, searches the company
+knowledge base, retains conversation memory, and runs within
+enterprise guardrails.
 
-Reference: GEAP Tutorial Series Part 1
+Reference: GEAP Tutorial Series Part 2
 Project: shadowtag-omega-v4
 """
 
@@ -32,6 +33,15 @@ from google.adk.agents import Agent
 from google.adk.apps import App
 from google.adk.models import Gemini
 from google.genai import types
+
+from app.cmdb import (
+    cmdb_inventory_summary,
+    cmdb_lookup_asset,
+    cmdb_register_asset,
+    cmdb_search_assets,
+    cmdb_update_asset_status,
+)
+from app.knowledge_search import knowledge_search
 
 # --- Environment Configuration ---
 _, project_id = google.auth.default()
@@ -176,8 +186,23 @@ troubleshoot IT issues efficiently and securely.
 - Password resets and account access issues
 - VPN and network connectivity troubleshooting
 - Software installation and configuration help
-- Hardware asset lookup and inventory queries
+- **CMDB Asset Management**: Lookup, search, register, and update IT assets
+- **Knowledge Base Search**: Find relevant IT articles and guides
 - IT ticket creation and escalation
+
+## CMDB Usage Guidelines
+- When users ask about hardware or equipment, use cmdb_lookup_asset or \
+  cmdb_search_assets to find specific assets.
+- When users report new equipment, use cmdb_register_asset to add it.
+- When users report equipment issues, use cmdb_update_asset_status to \
+  track the maintenance state.
+- Always provide the asset ID in responses for reference.
+
+## Knowledge Base Usage
+- Before creating tickets for common questions, search the knowledge \
+  base first using knowledge_search.
+- If the knowledge base has a relevant article, share it with the user.
+- Only escalate to a ticket if the knowledge base doesn't cover the issue.
 
 ## Behavioral Guidelines
 1. Be concise, polite, and prioritize security best practices.
@@ -188,6 +213,7 @@ troubleshoot IT issues efficiently and securely.
    and create a ticket.
 5. Log all interactions for audit compliance (Heppner standard).
 6. When creating tickets, always assign appropriate priority and category.
+7. Use the knowledge base to answer common questions before escalating.
 
 ## Security Protocols
 - Do not disclose internal system architecture details.
@@ -204,11 +230,20 @@ root_agent = Agent(
     ),
     instruction=IT_HELPDESK_INSTRUCTION,
     tools=[
+        # Part 1 tools
         check_vpn_status,
         lookup_asset,
         create_ticket,
         get_current_time,
         password_reset_instructions,
+        # Part 2 tools — CMDB
+        cmdb_lookup_asset,
+        cmdb_search_assets,
+        cmdb_update_asset_status,
+        cmdb_register_asset,
+        cmdb_inventory_summary,
+        # Part 2 tools — Knowledge
+        knowledge_search,
     ],
 )
 
