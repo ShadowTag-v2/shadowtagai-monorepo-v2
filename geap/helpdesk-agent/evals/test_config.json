@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "tool_trajectory_avg_score": 1.0,
+    "response_match_score": 0.8
+  },
+  "eval_metrics": [
+    {
+      "metric_name": "tool_trajectory_avg_score",
+      "threshold": 1.0
+    },
+    {
+      "metric_name": "response_match_score",
+      "threshold": 0.8
+    }
+  ],
+  "reset_func": null,
+  "initial_session": {
+    "state": {},
+    "app_name": "helpdesk-agent",
+    "user_id": "eval_user"
+  }
+}

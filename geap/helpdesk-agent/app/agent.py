@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""IT Helpdesk & Asset Management Agent — Parts 3-4: Memory + Governance.
+"""IT Helpdesk & Asset Management Agent — Parts 1-5: Full GEAP Stack.
 
 Built on the Gemini Enterprise Agent Platform (GEAP) using the
 Agent Development Kit (ADK). This agent assists employees with IT
 issues, manages hardware assets via CMDB, searches the company
-knowledge base, retains conversation memory via Memory Bank, and
-runs within enterprise guardrails with hardened security instructions.
+knowledge base, retains conversation memory via Memory Bank, runs
+within enterprise guardrails with hardened security instructions,
+and exports telemetry via OpenTelemetry to Cloud Trace + Cloud Logging.
 
-Reference: GEAP Tutorial Series Parts 1-4
+Reference: GEAP Tutorial Series Parts 1-5
 Project: shadowtag-omega-v4
 """
 
@@ -46,6 +47,11 @@ from app.memory import (
     generate_memories_callback,
     get_memory_tools,
 )
+from app.observability import initialize_observability
+
+# --- Observability (Part 5) ---
+# Must be called before agent construction so OTEL intercepts model calls.
+initialize_observability()
 
 # --- Environment Configuration ---
 _, project_id = google.auth.default()
