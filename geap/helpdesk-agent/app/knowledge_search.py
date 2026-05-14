@@ -31,10 +31,18 @@ log = logging.getLogger(__name__)
 
 # --- LanceDB Configuration ---
 
-LANCE_DB_PATH = os.getenv(
-    "LANCE_DB_PATH",
-    str(Path(__file__).resolve().parents[4] / "data" / "lancedb"),
-)
+
+def _resolve_lancedb_path() -> str:
+    """Resolve LanceDB path safely for both local dev and Agent Runtime container."""
+    try:
+        # Local dev: geap/helpdesk-agent/app/knowledge_search.py -> 4 levels up
+        return str(Path(__file__).resolve().parents[4] / "data" / "lancedb")
+    except IndexError:
+        # Agent Runtime container: /code/app/knowledge_search.py -> fewer parents
+        return "/tmp/lancedb"
+
+
+LANCE_DB_PATH = os.getenv("LANCE_DB_PATH", _resolve_lancedb_path())
 LANCE_TABLE_NAME = os.getenv("LANCE_TABLE_NAME", "knowledge_docs")
 
 
