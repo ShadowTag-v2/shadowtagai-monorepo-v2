@@ -200,11 +200,13 @@ def cmdb_lookup_asset(asset_id: str) -> str:
     ]
     if asset.get("os"):
         lines.append(f"  OS: {asset['os']}")
-    lines.extend([
-        f"  Serial: {asset.get('serial', 'N/A')}",
-        f"  Purchased: {asset.get('purchase_date', 'N/A')}",
-        f"  Warranty Expires: {asset.get('warranty_expires', 'N/A')}",
-    ])
+    lines.extend(
+        [
+            f"  Serial: {asset.get('serial', 'N/A')}",
+            f"  Purchased: {asset.get('purchase_date', 'N/A')}",
+            f"  Warranty Expires: {asset.get('warranty_expires', 'N/A')}",
+        ]
+    )
     if asset.get("notes"):
         lines.append(f"  Notes: {asset['notes']}")
 
@@ -230,21 +232,15 @@ def cmdb_search_assets(
 
     if department:
         dept_lower = department.lower()
-        results = [
-            a for a in results if dept_lower in a.get("department", "").lower()
-        ]
+        results = [a for a in results if dept_lower in a.get("department", "").lower()]
 
     if category:
         cat_lower = category.lower()
-        results = [
-            a for a in results if cat_lower == a.get("category", "").lower()
-        ]
+        results = [a for a in results if cat_lower == a.get("category", "").lower()]
 
     if status:
         stat_lower = status.lower()
-        results = [
-            a for a in results if stat_lower == a.get("status", "").lower()
-        ]
+        results = [a for a in results if stat_lower == a.get("status", "").lower()]
 
     if not results:
         filters = []
@@ -304,7 +300,9 @@ def cmdb_update_asset_status(
         update_note += f" — {notes}"
 
     existing_notes = asset.get("notes", "")
-    asset["notes"] = f"{existing_notes}\n{update_note}" if existing_notes else update_note
+    asset["notes"] = (
+        f"{existing_notes}\n{update_note}" if existing_notes else update_note
+    )
 
     return (
         f"✅ Asset {key} status updated: {old_status.upper()} → {new_status.upper()}\n"

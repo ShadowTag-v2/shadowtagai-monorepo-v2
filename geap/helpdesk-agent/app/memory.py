@@ -40,6 +40,8 @@ logger = logging.getLogger(__name__)
 
 # --- Feature flags ---
 USE_VERTEX_MEMORY = os.environ.get("GEAP_USE_VERTEX_MEMORY", "false").lower() == "true"
+# Part 3 canonical: add_session_to_memory (whole session) vs add_events_to_memory (granular)
+USE_SESSION_MEMORY = os.environ.get("GEAP_USE_SESSION_MEMORY", "true").lower() == "true"
 AGENT_ENGINE_ID = os.environ.get("GEAP_AGENT_ENGINE_ID", "")
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
 LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
@@ -90,10 +92,12 @@ def _store_memory(user_id: str, fact: str, source: str = "conversation") -> None
     """
     if user_id not in _local_memory_store:
         _local_memory_store[user_id] = []
-    _local_memory_store[user_id].append({
-        "fact": fact,
-        "source": source,
-    })
+    _local_memory_store[user_id].append(
+        {
+            "fact": fact,
+            "source": source,
+        }
+    )
     logger.debug("Stored memory for %s: %s", user_id, fact[:50])
 
 
@@ -153,30 +157,54 @@ def search_user_preferences(query: str, user_id: str = "default") -> str:
     return "\n".join(lines)
 
 
-# --- Memory Generation Callback ---
+# --- Memory Generation Callbacks ---
+
+
+async def add_session_to_memory_callback(callback_context: Any) -> None:
+    """GEAP Part 3 canonical callback — sends entire session for memory extraction.
+
+    This is the official ADK pattern from the GEAP tutorial. The platform
+    runs an asynchronous background job to extract cross-session facts.
+    Memory extraction takes 30-60 seconds to surface in the Memories tab.
+
+    Args:
+        callback_context: ADK CallbackContext with add_session_to_memory().
+    """
+    try:
+        await callback_context.add_session_to_memory()
+        logger.info("Memory Bank: Session submitted for memory extraction")
+    except Exception:
+        logger.exception("Memory Bank: Failed to submit session for memory extraction")
+
 
 async def generate_memories_callback(callback_context: Any) -> None:
     """After-agent callback that triggers memory generation.
 
-    In production: Uses callback_context.add_events_to_memory() to send
-    the last 5 events to Vertex AI Memory Bank for background processing.
-
+    In production with GEAP_USE_SESSION_MEMORY=true (default):
+        Uses the canonical add_session_to_memory() from GEAP Part 3.
+    In production with GEAP_USE_SESSION_MEMORY=false:
+        Uses add_events_to_memory() for granular event-level extraction.
     In local dev: Extracts simple facts from the last exchange and
-    stores them in the in-memory fallback.
+        stores them in the in-memory fallback.
 
     Args:
         callback_context: ADK CallbackContext with session and event access.
     """
     if USE_VERTEX_MEMORY:
         try:
-            # Send last 5 events for incremental memory extraction
-            events = callback_context.session.events[-5:-1]
-            if events:
-                await callback_context.add_events_to_memory(events=events)
-                logger.info(
-                    "Memory Bank: Sent %d events for memory generation",
-                    len(events),
-                )
+            if USE_SESSION_MEMORY:
+                # Part 3 canonical: submit entire session
+                await callback_context.add_session_to_memory()
+                logger.info("Memory Bank: Session submitted for memory extraction")
+            else:
+                # Granular: send last 5 events for incremental extraction
+                events = callback_context.session.events[-5:-1]
+                if events:
+                    await callback_context.add_events_to_memory(events=events)
+                    logger.info(
+                        "Memory Bank: Sent %d events for memory generation",
+                        len(events),
+                    )
         except Exception:
             logger.exception("Memory Bank: Failed to generate memories via Vertex AI")
         return
@@ -222,6 +250,7 @@ async def generate_memories_callback(callback_context: Any) -> None:
 
 # --- Session Service Factory ---
 
+
 def get_session_service():
     """Create the appropriate session service for the deployment context.
 
@@ -232,14 +261,18 @@ def get_session_service():
         try:
             from google.adk.sessions import VertexAiSessionService
 
-            logger.info("Sessions: Using Vertex AI Sessions (engine=%s)", AGENT_ENGINE_ID)
+            logger.info(
+                "Sessions: Using Vertex AI Sessions (engine=%s)", AGENT_ENGINE_ID
+            )
             return VertexAiSessionService(
                 project=PROJECT_ID,
                 location=LOCATION,
                 agent_engine_id=AGENT_ENGINE_ID,
             )
         except ImportError:
-            logger.warning("Sessions: VertexAiSessionService not available, using InMemory")
+            logger.warning(
+                "Sessions: VertexAiSessionService not available, using InMemory"
+            )
 
     from google.adk.sessions import InMemorySessionService
 
@@ -257,7 +290,10 @@ def get_memory_service():
         try:
             from google.adk.memory import VertexAiMemoryBankService
 
-            logger.info("Memory Service: Using Vertex AI Memory Bank (engine=%s)", AGENT_ENGINE_ID)
+            logger.info(
+                "Memory Service: Using Vertex AI Memory Bank (engine=%s)",
+                AGENT_ENGINE_ID,
+            )
             return VertexAiMemoryBankService(
                 project=PROJECT_ID,
                 location=LOCATION,

@@ -46,7 +46,9 @@ def _get_lance_table():
         db = lancedb.connect(LANCE_DB_PATH)
         if LANCE_TABLE_NAME in db.list_tables():
             return db.open_table(LANCE_TABLE_NAME)
-        log.warning("LanceDB table '%s' not found at %s", LANCE_TABLE_NAME, LANCE_DB_PATH)
+        log.warning(
+            "LanceDB table '%s' not found at %s", LANCE_TABLE_NAME, LANCE_DB_PATH
+        )
     except ImportError:
         log.debug("lancedb not installed, using keyword fallback")
     except Exception as e:
