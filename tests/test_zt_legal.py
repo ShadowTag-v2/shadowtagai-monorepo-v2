@@ -29,9 +29,7 @@ try:
         JurisdictionEngine,
     )
 except (ImportError, ModuleNotFoundError) as _exc:
-    pytestmark = pytest.mark.skip(
-        reason=f"control.pnkln requires unmigrated shadowtagai namespace: {_exc}"
-    )
+    pytestmark = pytest.mark.skip(reason=f"control.pnkln requires unmigrated shadowtagai namespace: {_exc}")
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
@@ -74,7 +72,7 @@ _MOCK_AI_RESPONSE_EMPTY = json.dumps([])
 class TestGate1MockIngestion(unittest.TestCase):
     """Simulate submitting a Federal Court summons via aiyou_ingest MCP."""
 
-    @patch("apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router.dispatch_compute")
+    @patch("control.pnkln.pnkln_core.agents.legal.dispatch_compute")
     def test_filing_ingestion_returns_extractions(self, mock_dispatch: MagicMock) -> None:
         mock_dispatch.return_value = [{"text": _MOCK_AI_RESPONSE_VALID, "class": "claim"}]
 
@@ -89,7 +87,7 @@ class TestGate1MockIngestion(unittest.TestCase):
         assert "legal-deadline-extraction" in call_kwargs.kwargs["prompt_description"]
         assert len(results) == 1
 
-    @patch("apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router.dispatch_compute")
+    @patch("control.pnkln.pnkln_core.agents.legal.dispatch_compute")
     def test_ingestion_passes_filing_text_in_prompt(self, mock_dispatch: MagicMock) -> None:
         mock_dispatch.return_value = [{"text": _MOCK_AI_RESPONSE_EMPTY}]
         extract_deadlines_from_filing(raw_text=_MOCK_SUMMONS_TEXT)
@@ -149,7 +147,7 @@ class TestGate3HallucinationTrap(unittest.TestCase):
     The agent MUST return [] — NOT a fabricated standard 30-day response.
     """
 
-    @patch("apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router.dispatch_compute")
+    @patch("control.pnkln.pnkln_core.agents.legal.dispatch_compute")
     def test_no_deadline_document_returns_empty_list(self, mock_dispatch: MagicMock) -> None:
         mock_dispatch.return_value = [{"text": _MOCK_AI_RESPONSE_EMPTY}]
         results = extract_deadlines_from_filing(
@@ -157,7 +155,7 @@ class TestGate3HallucinationTrap(unittest.TestCase):
         )
         assert results == []
 
-    @patch("apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router.dispatch_compute")
+    @patch("control.pnkln.pnkln_core.agents.legal.dispatch_compute")
     def test_hallucination_pattern_is_filtered(self, mock_dispatch: MagicMock) -> None:
         hallucinated = json.dumps(
             [
@@ -176,13 +174,13 @@ class TestGate3HallucinationTrap(unittest.TestCase):
         # Hallucination guard must filter "standard response window" pattern
         assert results == []
 
-    @patch("apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router.dispatch_compute")
+    @patch("control.pnkln.pnkln_core.agents.legal.dispatch_compute")
     def test_non_json_response_returns_empty_list(self, mock_dispatch: MagicMock) -> None:
         mock_dispatch.return_value = [{"text": "Here are the deadlines: none found."}]
         results = extract_deadlines_from_filing(raw_text="Anything.")
         assert results == []
 
-    @patch("apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router.dispatch_compute")
+    @patch("control.pnkln.pnkln_core.agents.legal.dispatch_compute")
     def test_empty_model_output_returns_empty_list(self, mock_dispatch: MagicMock) -> None:
         mock_dispatch.return_value = []
         results = extract_deadlines_from_filing(raw_text="Anything.")

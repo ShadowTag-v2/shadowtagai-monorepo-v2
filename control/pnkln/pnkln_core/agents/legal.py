@@ -18,6 +18,11 @@ from typing import Any
 
 logger = logging.getLogger("LegalAgent")
 
+try:
+    from zero_cpu_router import dispatch_compute
+except ImportError:
+    dispatch_compute = None
+
 # ── Extraction prompt (structured JSON output) ───────────────────────────────
 
 _EXTRACTION_PROMPT = """You are a legal deadline extraction specialist.
@@ -82,9 +87,8 @@ def extract_deadlines_from_filing(
     Returns a list of ExtractedDeadline objects. Returns [] if none found.
     Raises RuntimeError if no zero-CPU backend is available.
     """
-    from apps.aiyou_stack.aiyou_fastapi_services.zero_cpu_router import (  # type: ignore[import]
-        dispatch_compute,
-    )
+    if dispatch_compute is None:
+        raise RuntimeError("dispatch_compute is not available.")
 
     prompt = _EXTRACTION_PROMPT.replace("{filing_text}", raw_text[:8000])
     raw_results = dispatch_compute(
