@@ -102,7 +102,7 @@ class LatencyValidator:
 
                 # Measure latency
                 start = time.perf_counter()
-                response = judge.judge(request)
+                judge.judge(request)
                 end = time.perf_counter()
 
                 latency_ms = (end - start) * 1000

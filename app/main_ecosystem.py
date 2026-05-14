@@ -197,7 +197,7 @@ async def execute_decision(context: DecisionContext):
         return result
 
     except KernelChainError as e:
-        latency_ms = (time.perf_counter() - start_time) * 1000
+        (time.perf_counter() - start_time) * 1000
 
         if metrics_collector:
             metrics_collector.decisions_total.labels(status="failure").inc()

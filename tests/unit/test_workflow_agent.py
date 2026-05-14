@@ -31,7 +31,7 @@ class TestWorkflowSteps:
     @pytest.mark.asyncio
     async def test_step_validation_success(self):
         """Test that valid step results pass validation"""
-        context = MockWorkflowContext(input={"test": "data"})
+        MockWorkflowContext(input={"test": "data"})
 
         # Simulate step result
         result = {"format": "json", "schema": {}, "rules": ["rule1", "rule2"]}

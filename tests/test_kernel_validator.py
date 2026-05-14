@@ -124,8 +124,8 @@ def test_strict_mode_higher_threshold():
     normal_validator = KernelValidator(strict=False)
     strict_validator = KernelValidator(strict=True)
 
-    normal_result = normal_validator.validate(prompt)
-    strict_result = strict_validator.validate(prompt)
+    normal_validator.validate(prompt)
+    strict_validator.validate(prompt)
 
     # Strict mode should have stricter requirements
     assert strict_validator.pass_threshold > normal_validator.pass_threshold

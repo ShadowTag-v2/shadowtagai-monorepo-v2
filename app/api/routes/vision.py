@@ -310,7 +310,7 @@ async def build_feature_library(request: BuildFeatureLibraryRequest):
     3. Store embeddings in Hive (GCS)
     4. Return library ID for use in recognize-faces
     """
-    start_time = time.perf_counter()
+    time.perf_counter()
 
     try:
         # Initialize Tegu client

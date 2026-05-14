@@ -74,8 +74,8 @@ async def test_rate_limiting():
 
     # Call function twice and measure time
     start = time.time()
-    t1 = await test_func()
-    t2 = await test_func()
+    await test_func()
+    await test_func()
     elapsed = time.time() - start
 
     # Should take at least 0.5 seconds (1/2.0) between calls

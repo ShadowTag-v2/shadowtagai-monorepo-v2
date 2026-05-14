@@ -80,7 +80,7 @@ class TestMonteCarloRiskAssessment:
 
         # Measure parallel execution
         start = time.perf_counter()
-        result = await self.assessor.evaluate_scenarios(decision)
+        await self.assessor.evaluate_scenarios(decision)
         parallel_time_us = (time.perf_counter() - start) * 1_000_000
 
         # Parallel should be much faster than 5 × 100μs = 500μs

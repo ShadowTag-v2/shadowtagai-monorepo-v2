@@ -108,7 +108,7 @@ class TestQualityGates:
         ingestion = GeminiIngestionLayer()
 
         # Too few items
-        result_low = await ingestion.run_nightly_job(
+        await ingestion.run_nightly_job(
             job_id="test_low_items",
             max_items_per_source=10,  # Will produce < 1000 items
         )
