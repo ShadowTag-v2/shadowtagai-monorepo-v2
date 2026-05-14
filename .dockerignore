@@ -66,3 +66,39 @@ package-lock.json
 tmp/
 temp/
 *.tmp
+
+# Bazel symlinks (point to /private/var/tmp on macOS)
+bazel-*
+
+# Large data directories
+data/
+*.lance
+*.jsonl
+
+# Models
+models/
+*.gguf
+*.bin
+
+# Core (local-only MLX/ANE)
+core/
+
+# External repos
+external_repos/
+
+# Knowledge base
+knowledge/
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoints/
+
+# Artifacts
+.beads/
+.agents/
+
+# TypeScript/Frontend (not needed for Python API deploy)
+src/
+next.config.*
+tsconfig.*
+biome.json
