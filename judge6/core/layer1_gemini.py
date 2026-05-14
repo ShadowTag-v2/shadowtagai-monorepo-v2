@@ -4,7 +4,7 @@ Layer 1: Gemini Policy Understanding
 Interprets ATP 5-19 Purpose/Reasons/Brakes using fine-tuned LLM
 """
 
-import google.generativeai as genai
+from google import genai
 from typing import Dict, Any, Optional, List
 import json
 
@@ -21,10 +21,11 @@ class GeminiPolicyLayer:
     def __init__(self):
         """Initialize Gemini client"""
         if settings.GOOGLE_API_KEY:
-            genai.configure(api_key=settings.GOOGLE_API_KEY)
-            self.model = genai.GenerativeModel(settings.POLICY_MODEL)
+            self.client = genai.Client(api_key=settings.GOOGLE_API_KEY)
+            self.model_name = settings.POLICY_MODEL
         else:
-            self.model = None
+            self.client = None
+            self.model_name = None
             print("WARNING: GOOGLE_API_KEY not set. Layer 1 will use fallback logic.")
 
     async def assess(
@@ -47,7 +48,7 @@ class GeminiPolicyLayer:
         # Build assessment prompt for Gemini
         assessment_prompt = self._build_assessment_prompt(prompt, context, user_policies)
 
-        if self.model is None:
+        if self.client is None:
             # Fallback: Simple heuristic-based assessment
             return self._fallback_assessment(prompt, context)
 
@@ -121,8 +122,6 @@ Provide your ATP 5-19 risk assessment as JSON:
 
     async def _call_gemini(self, prompt: str) -> str:
         """Call Gemini API (async)"""
-        # Note: google.generativeai doesn't have native async support yet
-        # We'll run it in a thread pool to avoid blocking
         import asyncio
         from concurrent.futures import ThreadPoolExecutor
 
@@ -130,7 +129,10 @@ Provide your ATP 5-19 risk assessment as JSON:
         loop = asyncio.get_event_loop()
 
         def _sync_call():
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+            )
             return response.text
 
         result = await loop.run_in_executor(executor, _sync_call)

@@ -52,9 +52,8 @@ class EmbeddingService:
         loop = asyncio.get_event_loop()
         embedding = await loop.run_in_executor(
             None,
-            self._model.encode,
+            lambda t: self._model.encode(t, normalize_embeddings=True),
             text,
-            True,  # normalize_embeddings
         )
         return embedding
 
@@ -72,10 +71,8 @@ class EmbeddingService:
         loop = asyncio.get_event_loop()
         embeddings = await loop.run_in_executor(
             None,
-            self._model.encode,
+            lambda t: self._model.encode(t, normalize_embeddings=True, show_progress_bar=True),
             texts,
-            True,  # normalize_embeddings
-            True,  # show_progress_bar
         )
         return embeddings
 

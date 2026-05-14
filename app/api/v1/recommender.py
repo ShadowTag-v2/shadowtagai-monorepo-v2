@@ -7,7 +7,7 @@ Implements DSA-compliant recommender transparency
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 router = APIRouter()
 
@@ -83,7 +83,7 @@ async def explain_recommendation(request: RecommenderExplanationRequest):
     return RecommenderExplanationResponse(
         content_id=request.content_id,
         user_id=request.user_id,
-        timestamp=datetime.utcnow(),
+        timestamp=datetime.now(timezone.utc),
         main_reason="Similar to content you engaged with recently",
         contributing_factors=["Watch history similarity", "Topic alignment (tech, AI)", "Creator affinity", "Trending signal"],
         personalization_used=True,
@@ -104,7 +104,7 @@ async def update_recommender_config(request: RecommenderConfigRequest):
     - Topic blocking
     - Topic preferences
     """
-    return RecommenderConfigResponse(user_id=request.user_id, config=request.dict(), updated_at=datetime.utcnow())
+    return RecommenderConfigResponse(user_id=request.user_id, config=request.dict(), updated_at=datetime.now(timezone.utc))
 
 
 @router.get("/config/{user_id}", response_model=RecommenderConfigResponse)
@@ -114,7 +114,7 @@ async def get_recommender_config(user_id: str):
     return RecommenderConfigResponse(
         user_id=user_id,
         config={"personalization_enabled": True, "diversity_preference": 0.5, "blocked_topics": [], "preferred_topics": []},
-        updated_at=datetime.utcnow(),
+        updated_at=datetime.now(timezone.utc),
     )
 
 

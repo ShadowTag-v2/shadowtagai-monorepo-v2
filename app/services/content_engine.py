@@ -6,7 +6,7 @@ Implements C2PA content credentials and provenance tracking
 
 import logging
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from app.models.content import (
     C2PAVerificationRequest,
@@ -51,8 +51,8 @@ class ContentEngine:
                 format=request.content_type.value,
                 instance_id=str(uuid.uuid4()),
                 assertions=[
-                    C2PAAssertion(label="c2pa.actions", data={"actions": [{"action": "c2pa.created"}]}, timestamp=datetime.utcnow()),
-                    C2PAAssertion(label="c2pa.claim_creation", data={"claim_generator": "YouAi"}, timestamp=datetime.utcnow()),
+                    C2PAAssertion(label="c2pa.actions", data={"actions": [{"action": "c2pa.created"}]}, timestamp=datetime.now(timezone.utc)),
+                    C2PAAssertion(label="c2pa.claim_creation", data={"claim_generator": "YouAi"}, timestamp=datetime.now(timezone.utc)),
                 ],
                 signature="simulated_signature_hash",
             )
@@ -70,7 +70,7 @@ class ContentEngine:
             tampered = False
 
             # Build chain of custody
-            chain_of_custody = [{"timestamp": datetime.utcnow().isoformat(), "actor": "creator_001", "action": "created"}]
+            chain_of_custody = [{"timestamp": datetime.now(timezone.utc).isoformat(), "actor": "creator_001", "action": "created"}]
 
             verified = signature_valid and not tampered
 
@@ -106,7 +106,7 @@ class ContentEngine:
         logger.info(f"Creating provenance record at IQ {self.persona_iq}")
 
         provenance_id = str(uuid.uuid4())
-        timestamp = datetime.utcnow()
+        timestamp = datetime.now(timezone.utc)
 
         # Store provenance record
         provenance_record = {
@@ -169,7 +169,7 @@ class ContentEngine:
             "manifest_id": manifest_id,
             "credentials_attached": True,
             "signature": f"sig_{uuid.uuid4().hex[:16]}",
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
     async def get_credential_status(self, content_id: str) -> dict[str, Any]:

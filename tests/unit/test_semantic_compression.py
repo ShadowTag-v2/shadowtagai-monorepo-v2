@@ -193,16 +193,23 @@ class TestCompressionRatio:
 
     def test_compression_target_10_to_1(self):
         """Test that we approach 10:1 compression target"""
-        # Realistic original context
+        # Realistic original context with full wire transfer details
         original = {
             "amount_usd": 75000,
             "vendor_id": "VND-12345",
             "vendor_status": "new",
             "vendor_name": "Example Vendor Inc.",
+            "vendor_address": "123 Example Street, Suite 400, New York, NY 10001",
             "purchase_order": None,
             "destination_country": "Unknown",
+            "destination_bank": "Unknown International Bank AG",
+            "destination_account": "IBAN DE89370400440532013000",
             "requested_by": "user@company.com",
+            "requester_department": "Engineering",
+            "cost_center": "CC-ENG-4200",
             "timestamp": "2025-11-17T14:30:00Z",
+            "approval_chain": ["manager@company.com", "director@company.com"],
+            "notes": "Quarterly infrastructure payment for cloud services",
         }
 
         compressed = compress_audit_trail("wire_transfer", original, "BLOCK", "high", True, "CFO")

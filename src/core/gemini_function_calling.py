@@ -18,7 +18,8 @@ from typing import Any, Dict, List, Optional
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 
 
 @dataclass
@@ -42,39 +43,42 @@ class FunctionTool:
     function: Callable
     parameters: dict[str, Any]
 
-    def to_gemini_declaration(self) -> genai.protos.FunctionDeclaration:
-        """Convert to Gemini FunctionDeclaration."""
-        return genai.protos.FunctionDeclaration(
-            name=self.name,
-            description=self.description,
-            parameters=genai.protos.Schema(
-                type=genai.protos.Type.OBJECT,
-                properties={
-                    key: genai.protos.Schema(type=self._python_type_to_gemini(val.get("type", "string")), description=val.get("description", ""))
+    def to_gemini_declaration(self) -> dict[str, Any]:
+        """Convert to Gemini FunctionDeclaration dict."""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "parameters": {
+                "type": "OBJECT",
+                "properties": {
+                    key: {
+                        "type": self._python_type_to_gemini(val.get("type", "string")),
+                        "description": val.get("description", ""),
+                    }
                     for key, val in self.parameters.items()
                 },
-                required=list(self.parameters.keys()),
-            ),
-        )
+                "required": list(self.parameters.keys()),
+            },
+        }
 
     @staticmethod
-    def _python_type_to_gemini(python_type: str) -> genai.protos.Type:
-        """Map Python types to Gemini types."""
+    def _python_type_to_gemini(python_type: str) -> str:
+        """Map Python types to Gemini Schema type strings."""
         type_mapping = {
-            "string": genai.protos.Type.STRING,
-            "str": genai.protos.Type.STRING,
-            "integer": genai.protos.Type.INTEGER,
-            "int": genai.protos.Type.INTEGER,
-            "number": genai.protos.Type.NUMBER,
-            "float": genai.protos.Type.NUMBER,
-            "boolean": genai.protos.Type.BOOLEAN,
-            "bool": genai.protos.Type.BOOLEAN,
-            "array": genai.protos.Type.ARRAY,
-            "list": genai.protos.Type.ARRAY,
-            "object": genai.protos.Type.OBJECT,
-            "dict": genai.protos.Type.OBJECT,
+            "string": "STRING",
+            "str": "STRING",
+            "integer": "INTEGER",
+            "int": "INTEGER",
+            "number": "NUMBER",
+            "float": "NUMBER",
+            "boolean": "BOOLEAN",
+            "bool": "BOOLEAN",
+            "array": "ARRAY",
+            "list": "ARRAY",
+            "object": "OBJECT",
+            "dict": "OBJECT",
         }
-        return type_mapping.get(python_type.lower(), genai.protos.Type.STRING)
+        return type_mapping.get(python_type.lower(), "STRING")
 
 
 class GeminiFunctionCaller:
@@ -138,25 +142,29 @@ class GeminiFunctionCaller:
         self.max_function_calls = max_function_calls
         self.timeout_seconds = timeout_seconds
 
-        # Configure Gemini
-        genai.configure(api_key=self.api_key)
+        # Configure Gemini Client
+        self.client = genai.Client(api_key=self.api_key)
 
         # Build function registry
         self.function_map: dict[str, Callable] = {tool.name: tool.function for tool in self.tools}
 
-        # Convert tools to Gemini format
-        self.gemini_tools = [genai.protos.Tool(function_declarations=[tool.to_gemini_declaration() for tool in self.tools])] if self.tools else []
-
-        # Create model
-        self.model = genai.GenerativeModel(
-            model_name=self.model_name,
-            tools=self.gemini_tools if self.gemini_tools else None,
-            system_instruction=self.system_instruction,
-        )
+        # Convert tools to Gemini format (dict-based declarations)
+        self._rebuild_tool_config()
 
         # Execution metrics
         self.execution_history: list[FunctionResult] = []
         self.total_latency_ms: float = 0
+
+    def _rebuild_tool_config(self):
+        """Rebuild the tool configuration from current tools list."""
+        if self.tools:
+            self.gemini_tools = [
+                genai_types.Tool(
+                    function_declarations=[tool.to_gemini_declaration() for tool in self.tools]
+                )
+            ]
+        else:
+            self.gemini_tools = []
 
     def execute(self, prompt: str, validation_callback: Callable[[str, dict[str, Any]], bool] | None = None) -> str:
         """
@@ -176,16 +184,23 @@ class GeminiFunctionCaller:
         start_time = time.time()
         self.execution_history.clear()
 
-        # Start chat
-        chat = self.model.start_chat(enable_automatic_function_calling=self.enable_automatic_calling)
+        # Build generation config
+        config = genai_types.GenerateContentConfig(
+            system_instruction=self.system_instruction,
+            tools=self.gemini_tools if self.gemini_tools else None,
+        )
 
         # Send initial message
-        response = chat.send_message(prompt)
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=prompt,
+            config=config,
+        )
 
         function_call_count = 0
 
         # Manual function calling loop (for validation control)
-        while response.candidates[0].content.parts:
+        while response.candidates and response.candidates[0].content.parts:
             # Check timeout
             elapsed = (time.time() - start_time) * 1000
             if elapsed > self.timeout_seconds * 1000:
@@ -225,11 +240,19 @@ class GeminiFunctionCaller:
                         )
                     )
 
-                    # Send result back to Gemini
-                    response = chat.send_message(
-                        genai.protos.Content(
-                            parts=[genai.protos.Part(function_response=genai.protos.FunctionResponse(name=fn_name, response={"result": result}))]
-                        )
+                    # Send function response back to Gemini
+                    function_response = genai_types.Part.from_function_response(
+                        name=fn_name,
+                        response={"result": result},
+                    )
+                    response = self.client.models.generate_content(
+                        model=self.model_name,
+                        contents=[
+                            genai_types.Content(parts=[genai_types.Part.from_text(text=prompt)], role="user"),
+                            response.candidates[0].content,
+                            genai_types.Content(parts=[function_response], role="user"),
+                        ],
+                        config=config,
                     )
 
                 except Exception as e:
@@ -267,10 +290,4 @@ class GeminiFunctionCaller:
         self.tools.append(tool)
         self.function_map[tool.name] = tool.function
         # Rebuild Gemini tools
-        self.gemini_tools = [genai.protos.Tool(function_declarations=[t.to_gemini_declaration() for t in self.tools])]
-        # Recreate model with updated tools
-        self.model = genai.GenerativeModel(
-            model_name=self.model_name,
-            tools=self.gemini_tools,
-            system_instruction=self.system_instruction,
-        )
+        self._rebuild_tool_config()

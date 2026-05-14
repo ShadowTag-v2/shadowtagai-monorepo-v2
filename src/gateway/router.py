@@ -12,7 +12,7 @@ Every routing decision justified. Every path optimized.
 import time
 import uuid
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .models import (
     GovernanceRequest,
@@ -111,7 +111,7 @@ class GovernanceRouter:
                 model_used=None,  # OPA, not LLM
                 trust_score=1.0,  # OPA is fully trusted
                 hallucination_check=True,  # N/A for deterministic
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 audit_id=f"audit_{uuid.uuid4().hex[:16]}",
             )
 
@@ -138,7 +138,7 @@ class GovernanceRouter:
                 model_used=None,
                 trust_score=0.0,
                 hallucination_check=False,
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 audit_id=f"audit_{uuid.uuid4().hex[:16]}",
                 escalation_required=True,
                 escalation_reason="Agent system unavailable",
@@ -162,7 +162,7 @@ class GovernanceRouter:
                     model_used=agent_result.get("model", "gemini-2.5-flash"),
                     trust_score=agent_result.get("trust_score", 0.5),
                     hallucination_check=agent_result.get("hallucination_check", True),
-                    timestamp=datetime.utcnow(),
+                    timestamp=datetime.now(timezone.utc),
                     audit_id=f"audit_{uuid.uuid4().hex[:16]}",
                     escalation_required=True,
                     escalation_reason="Confidence below threshold (60%)",
@@ -179,7 +179,7 @@ class GovernanceRouter:
                 model_used=agent_result.get("model", "gemini-2.5-flash"),
                 trust_score=agent_result.get("trust_score", 0.8),
                 hallucination_check=agent_result.get("hallucination_check", True),
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 audit_id=f"audit_{uuid.uuid4().hex[:16]}",
             )
 
@@ -196,7 +196,7 @@ class GovernanceRouter:
                 model_used=None,
                 trust_score=0.0,
                 hallucination_check=False,
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 audit_id=f"audit_{uuid.uuid4().hex[:16]}",
                 escalation_required=True,
                 escalation_reason=f"Agent system error: {str(e)}",
@@ -270,7 +270,7 @@ class GovernanceRouter:
             model_used=None,
             trust_score=1.0,  # Failsafe is trusted
             hallucination_check=True,
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             audit_id=f"audit_{uuid.uuid4().hex[:16]}",
             escalation_required=True,
             escalation_reason="System failure - manual review required",

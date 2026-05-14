@@ -13,10 +13,10 @@ Classification criteria:
 
 from typing import Dict, Any
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
-# Note: In production, use google-cloud-aiplatform or google-generativeai
+# Note: In production, use google.genai (the unified Google Gen AI SDK)
 # For now, we'll create the structure
 
 
@@ -40,7 +40,7 @@ class ClassificationResult:
 
     def __post_init__(self):
         if self.timestamp is None:
-            self.timestamp = datetime.utcnow()
+            self.timestamp = datetime.now(timezone.utc)
 
     def meets_threshold(self, threshold: float = 0.60) -> bool:
         """Check if confidence meets minimum threshold"""
@@ -225,18 +225,19 @@ Provide your classification:"""
         NOTE: This is a placeholder. In production, implement actual Gemini API call:
 
         ```python
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types as genai_types
 
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel(self.model)
+        client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
         prompt = self._get_classification_prompt(content)
-        response = await model.generate_content_async(
-            prompt,
-            generation_config={
-                "temperature": self.temperature,
-                "max_output_tokens": self.max_tokens
-            }
+        response = client.models.generate_content(
+            model=self.model,
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                temperature=self.temperature,
+                max_output_tokens=self.max_tokens,
+            ),
         )
 
         # Parse JSON response

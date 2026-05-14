@@ -21,7 +21,7 @@ import argparse
 import os
 import sqlite3
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 MONOREPO_ROOT = Path(__file__).parent.parent
@@ -157,7 +157,7 @@ def crawl(
                 # Register in SQLite
                 conn.execute(
                     "INSERT OR REPLACE INTO beads_registry(filepath, size_bytes, last_indexed) VALUES (?,?,?)",
-                    (str(fpath.relative_to(MONOREPO_ROOT)), size, datetime.utcnow().isoformat()),
+                    (str(fpath.relative_to(MONOREPO_ROOT)), size, datetime.now(timezone.utc).isoformat()),
                 )
 
                 if fpath.suffix not in TEXT_EXTS or size > 500_000:

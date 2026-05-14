@@ -2,7 +2,7 @@
 """Background tasks for automatic memory synthesis and summarization."""
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from celery import Celery
 from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
@@ -83,7 +83,7 @@ async def summarize_conversation_task(conversation_id: int):
             # Generate summary
             summary = await summarization_service.summarize_conversation(messages)
             conversation.summary = summary
-            conversation.last_summarized_at = datetime.utcnow()
+            conversation.last_summarized_at = datetime.now(timezone.utc)
 
             await db.commit()
 
@@ -130,7 +130,7 @@ async def periodic_synthesis_task():
     async with AsyncSessionLocal() as db:
         try:
             # Get all projects that need synthesis
-            threshold = datetime.utcnow() - timedelta(hours=settings.memory_synthesis_interval_hours)
+            threshold = datetime.now(timezone.utc) - timedelta(hours=settings.memory_synthesis_interval_hours)
 
             stmt = select(Project).where(
                 and_(Project.memory_enabled == True, (Project.last_synthesis_at == None) | (Project.last_synthesis_at < threshold))

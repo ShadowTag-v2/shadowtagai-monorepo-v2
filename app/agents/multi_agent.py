@@ -8,7 +8,7 @@ All enhanced with cheat sheet fusion and DTE evolution
 import logging
 from typing import List, Dict, Any
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from app.core.pinkln_framework import UltrathinkPersona, ReasoningFramework, CheatSheetEssentials, WealthLeakDetection, PinklnFramework
@@ -37,7 +37,7 @@ class AgentResponse:
     content: str
     reasoning_path: list[ReasoningFramework]
     confidence: float  # 0.0 to 1.0
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -89,7 +89,7 @@ class MultiAgentSystem:
 
     def register_agent(self, agent_id: str, role: AgentRole, initial_rating: float = 1500.0):
         """Register new agent in the system"""
-        self.agents[agent_id] = {"role": role, "created_at": datetime.utcnow(), "tasks_completed": 0}
+        self.agents[agent_id] = {"role": role, "created_at": datetime.now(timezone.utc), "tasks_completed": 0}
         self.ranking.register_agent(agent_id, initial_rating)
         logger.info(f"Registered agent {agent_id} ({role.value}) with rating {initial_rating}")
 

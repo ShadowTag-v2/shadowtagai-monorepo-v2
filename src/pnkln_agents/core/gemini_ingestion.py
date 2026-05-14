@@ -15,7 +15,7 @@ Integration: Called by services in 4 namespaces
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 import re
 from urllib.parse import urlparse
@@ -161,7 +161,7 @@ class EthicalComplianceValidator:
                 source=source.url,
                 description="robots.txt not checked before accessing source",
                 severity="medium",
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 remediation="Check and cache robots.txt before scraping",
             )
 
@@ -171,7 +171,7 @@ class EthicalComplianceValidator:
                 source=source.url,
                 description="Source disallows bot access in robots.txt",
                 severity="high",
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 remediation="Skip this source or request permission",
             )
 
@@ -182,12 +182,12 @@ class EthicalComplianceValidator:
         domain = urlparse(source.url).netloc
 
         # Get request history for this domain
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         if domain not in self.request_history:
             self.request_history[domain] = []
 
         # Clean up old requests (older than 1 hour)
-        cutoff = datetime.utcnow().timestamp() - 3600
+        cutoff = datetime.now(timezone.utc).timestamp() - 3600
         self.request_history[domain] = [req for req in self.request_history[domain] if req.timestamp() > cutoff]
 
         # Check if we're over rate limit
@@ -213,7 +213,7 @@ class EthicalComplianceValidator:
                 source=item.source.url,
                 description="Missing source attribution in ingested item",
                 severity="medium",
-                timestamp=datetime.utcnow(),
+                timestamp=datetime.now(timezone.utc),
                 remediation="Add source_url to metadata",
             )
 
@@ -224,7 +224,7 @@ class EthicalComplianceValidator:
         domain = urlparse(source.url).netloc
         if domain not in self.request_history:
             self.request_history[domain] = []
-        self.request_history[domain].append(datetime.utcnow())
+        self.request_history[domain].append(datetime.now(timezone.utc))
 
 
 class TierClassifier:
@@ -408,7 +408,7 @@ class GeminiIngestionLayer:
                 title=f"Sample item {i} from {source.name}",
                 content=f"Content from {source.source_type.value}",
                 url=f"{source.url}/item/{i}",
-                ingested_at=datetime.utcnow(),
+                ingested_at=datetime.now(timezone.utc),
                 relevance_score=0.7 + (i % 3) * 0.1,  # Mock score
                 timeliness_score=0.8,
                 completeness_score=0.9,
@@ -535,7 +535,7 @@ class GeminiIngestionLayer:
         sorted_items = sorted(items, key=lambda x: x.relevance_score, reverse=True)
 
         briefing = "# Intelligence Briefing\n\n"
-        briefing += f"**Generated:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}\n\n"
+        briefing += f"**Generated:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}\n\n"
         briefing += f"**Total Items:** {len(items)}\n\n"
 
         # Group by tier

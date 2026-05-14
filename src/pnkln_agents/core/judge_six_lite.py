@@ -12,7 +12,7 @@ from typing import List, Dict, Any, Optional
 import time
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class ViolationType(Enum):
@@ -181,7 +181,7 @@ class JudgeSixLite:
     ) -> dict[str, Any]:
         """Build comprehensive audit report"""
         return {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "metadata": metadata,
             "context": context,
             "violations": [

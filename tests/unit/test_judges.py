@@ -36,7 +36,7 @@ class TestFinJudge:
 
         assert response.decision == JudgeDecision.BLOCK
         assert response.risk_assessment.risk_level in [RiskLevel.H, RiskLevel.EH]
-        assert response.approval_gate.value == "cfo"
+        assert response.approval_gate.value == "escalate"
         assert "new" in response.reasoning.lower() or "vendor" in response.reasoning.lower()
 
     def test_approved_vendor_with_po_allows(self):

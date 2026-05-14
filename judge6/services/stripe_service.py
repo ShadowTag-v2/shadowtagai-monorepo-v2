@@ -7,7 +7,7 @@ Handles subscription management, payments, webhooks
 import stripe
 from typing import Optional, Dict, Any
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..core.config import settings
 from ..models.database import User, SubscriptionTier
@@ -256,7 +256,7 @@ class StripeService:
         return stripe.UsageRecord.create(
             subscription_item=subscription_item_id,
             quantity=quantity,
-            timestamp=timestamp or int(datetime.utcnow().timestamp()),
+            timestamp=timestamp or int(datetime.now(timezone.utc).timestamp()),
             action="increment",
         )
 

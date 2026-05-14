@@ -142,7 +142,7 @@ def encode_audio(
 def _create_encode_receipt(media_type: str, input_file: Path, payload: bytes, stats: dict, config: object):
     """Create a receipt for an encoding operation"""
     import hashlib
-    from datetime import datetime
+    from datetime import datetime, timezone
     from ...receipt_chain import ReceiptChain, Receipt, ChainStorage
 
     # Calculate hashes
@@ -151,9 +151,9 @@ def _create_encode_receipt(media_type: str, input_file: Path, payload: bytes, st
 
     # Create receipt
     receipt = Receipt(
-        operation_id=hashlib.sha256(f"{datetime.utcnow().isoformat()}_{media_hash}".encode()).hexdigest()[:16],
+        operation_id=hashlib.sha256(f"{datetime.now(timezone.utc).isoformat()}_{media_hash}".encode()).hexdigest()[:16],
         operation_type="encode",
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         media_type=media_type,
         method=stats.get("method", "lsb"),
         payload_hash=payload_hash,

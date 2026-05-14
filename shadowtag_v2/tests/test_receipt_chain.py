@@ -3,7 +3,7 @@
 Tests for receipt_chain module
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 import tempfile
 
@@ -24,7 +24,7 @@ class TestReceipt:
         receipt = Receipt(
             operation_id="test_op_001",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,
@@ -83,7 +83,7 @@ class TestBlock:
         receipt = Receipt(
             operation_id="genesis",
             operation_type="init",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="none",
             method="none",
             payload_hash="0" * 64,
@@ -120,7 +120,7 @@ class TestBlock:
         receipt1 = Receipt(
             operation_id="op1",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,
@@ -130,7 +130,7 @@ class TestBlock:
         receipt2 = Receipt(
             operation_id="op2",
             operation_type="decode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="c" * 64,
@@ -161,7 +161,7 @@ class TestReceiptChain:
         receipt = Receipt(
             operation_id="op1",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,
@@ -183,7 +183,7 @@ class TestReceiptChain:
             receipt = Receipt(
                 operation_id=f"op{i}",
                 operation_type="encode",
-                timestamp=datetime.utcnow().isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 media_type="video",
                 method="lsb",
                 payload_hash="a" * 64,
@@ -207,7 +207,7 @@ class TestReceiptChain:
         receipt = Receipt(
             operation_id="unique_op",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,
@@ -234,7 +234,7 @@ class TestReceiptChain:
             receipt = Receipt(
                 operation_id=f"op{i}",
                 operation_type="encode",
-                timestamp=datetime.utcnow().isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 media_type="video",
                 method="lsb",
                 payload_hash="a" * 64,
@@ -264,7 +264,7 @@ class TestChainVerifier:
             receipt = Receipt(
                 operation_id=f"op{i}",
                 operation_type="encode",
-                timestamp=datetime.utcnow().isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 media_type="video",
                 method="lsb",
                 payload_hash="a" * 64,
@@ -283,7 +283,7 @@ class TestChainVerifier:
         encode_receipt = Receipt(
             operation_id="encode_op",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,
@@ -293,7 +293,7 @@ class TestChainVerifier:
         decode_receipt = Receipt(
             operation_id="decode_op",
             operation_type="decode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,  # Same payload
@@ -323,7 +323,7 @@ class TestChainStorage:
         receipt = Receipt(
             operation_id="op1",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,
@@ -360,7 +360,7 @@ class TestChainStorage:
         receipt = Receipt(
             operation_id="searchable_op",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="audio",
             method="phase",
             payload_hash="a" * 64,
@@ -387,7 +387,7 @@ class TestChainStorage:
         receipt = Receipt(
             operation_id="op1",
             operation_type="encode",
-            timestamp=datetime.utcnow().isoformat(),
+            timestamp=datetime.now(timezone.utc).isoformat(),
             media_type="video",
             method="lsb",
             payload_hash="a" * 64,

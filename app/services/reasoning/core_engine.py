@@ -7,7 +7,7 @@ Quantitative Effect: ↑ Throughput +82%, ↓ Cost –59%
 
 import logging
 from typing import Dict, List, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import asyncio
 from app.config.settings import settings
 from app.services.memory.gptram import GPTRAMMemory
@@ -71,7 +71,7 @@ class CoreReasoningEngine:
             Reasoning result with metadata
         """
         try:
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
 
             # Step 1: Retrieve reasoning graph (RoT)
             reasoning_graph = await self.memory.retrieve_reasoning_graph(session_id)
@@ -96,7 +96,7 @@ class CoreReasoningEngine:
             # Step 4: Update reasoning graph
             await self._update_reasoning_graph(session_id, query, result)
 
-            elapsed = (datetime.utcnow() - start_time).total_seconds()
+            elapsed = (datetime.now(timezone.utc) - start_time).total_seconds()
 
             return {
                 "status": "success",
@@ -201,7 +201,7 @@ class CoreReasoningEngine:
             graph = await self.memory.retrieve_reasoning_graph(session_id) or {"nodes": [], "edges": []}
 
             # Add new node
-            node = {"id": len(graph["nodes"]), "query": query, "result": result, "timestamp": datetime.utcnow().isoformat()}
+            node = {"id": len(graph["nodes"]), "query": query, "result": result, "timestamp": datetime.now(timezone.utc).isoformat()}
             graph["nodes"].append(node)
 
             # Store updated graph

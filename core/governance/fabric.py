@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 # Stub dependencies to ensure import resolution
@@ -75,7 +75,7 @@ class CorCSRMCGovernanceFabric:
             layer = EscalationLayer.LAYER_5_LOCKOUT
             self.active_users[user_id] = False
             notification = {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "user_id": user_id,
                 "risk": risk.value,
                 "framework": framework,

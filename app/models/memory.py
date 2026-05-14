@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Memory model for storing synthesized information."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text, Float, Index
 from sqlalchemy.orm import relationship
 
@@ -33,9 +33,9 @@ class Memory(Base):
     is_user_edited = Column(Boolean, default=False)
 
     # Timestamps
-    created_at = Column(DateTime, default=datetime.utcnow, index=True)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    last_accessed_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    last_accessed_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     user = relationship("User", back_populates="memories")
@@ -44,7 +44,6 @@ class Memory(Base):
 
     __table_args__ = (
         Index("ix_memories_user_project", "user_id", "project_id"),
-        Index("ix_memories_created_at", "created_at"),
     )
 
     def __repr__(self) -> str:

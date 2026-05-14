@@ -12,7 +12,7 @@ Unlike Judge #6's 98% coverage requirement, this focuses on:
 
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from enum import Enum
 
 
@@ -180,7 +180,7 @@ class QualityGates:
         else:
             overall_status = GateStatus.PASS
 
-        return QualityGateResult(timestamp=datetime.utcnow(), overall_status=overall_status, gates=gates, metadata=run_metadata or {})
+        return QualityGateResult(timestamp=datetime.now(timezone.utc), overall_status=overall_status, gates=gates, metadata=run_metadata or {})
 
     def _check_items_volume(self, items_ingested: int) -> GateResult:
         """Check if daily items meet target"""
@@ -288,7 +288,7 @@ class QualityGates:
                 severity="info",
             )
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         cutoff = now - timedelta(hours=self.min_timeliness_hours)
 
         old_items = sum(1 for item_time in items_by_age if item_time < cutoff)

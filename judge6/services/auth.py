@@ -6,7 +6,7 @@ Handles user registration, login, API key management
 
 import secrets
 import hashlib
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -42,9 +42,9 @@ class AuthService:
         to_encode = data.copy()
 
         if expires_delta:
-            expire = datetime.utcnow() + expires_delta
+            expire = datetime.now(timezone.utc) + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+            expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
@@ -107,11 +107,11 @@ class AuthService:
             return None
 
         # Check expiration
-        if api_key_obj.expires_at and api_key_obj.expires_at < datetime.utcnow():
+        if api_key_obj.expires_at and api_key_obj.expires_at < datetime.now(timezone.utc):
             return None
 
         # Update last used
-        api_key_obj.last_used_at = datetime.utcnow()
+        api_key_obj.last_used_at = datetime.now(timezone.utc)
         api_key_obj.total_requests += 1
         db.commit()
 

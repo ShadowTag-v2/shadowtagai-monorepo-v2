@@ -96,6 +96,7 @@ def get_token(force_refresh: bool = False) -> str:
 def _update_remote_url(token: str) -> None:
     """Rewrite the git remote URL with the current token."""
     try:
+        import re
         import subprocess
 
         result = subprocess.run(
@@ -105,10 +106,14 @@ def _update_remote_url(token: str) -> None:
         )
         if result.returncode == 0:
             current = result.stdout.strip()
-            # Only rewrite HTTPS remotes
-            if "github.com" in current:
-                import re
 
+            # Handle SSH remotes (git@github.com:org/repo.git)
+            ssh_match = re.match(r"git@github\.com:(.+)", current)
+            if ssh_match:
+                repo_path = ssh_match.group(1)
+                new_url = f"https://x-access-token:{token}@github.com/{repo_path}"
+            elif "https://" in current and "github.com" in current:
+                # Rewrite existing HTTPS remotes
                 new_url = re.sub(
                     r"https://[^@]*@github\.com/",
                     f"https://x-access-token:{token}@github.com/",
@@ -120,10 +125,13 @@ def _update_remote_url(token: str) -> None:
                         "https://github.com/",
                         f"https://x-access-token:{token}@github.com/",
                     )
-                subprocess.run(
-                    ["git", "-C", str(REPO_ROOT), "remote", "set-url", "origin", new_url],
-                    capture_output=True,
-                )
+            else:
+                return  # Unknown remote format
+
+            subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "remote", "set-url", "origin", new_url],
+                capture_output=True,
+            )
     except Exception:
         pass
 
@@ -142,8 +150,17 @@ if __name__ == "__main__":
         print(f"export GH_TOKEN={token}")
     elif args.push:
         print("Token acquired. Pushing...", file=sys.stderr)
+        import subprocess
+
+        # Determine current branch dynamically
+        branch_result = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "branch", "--show-current"],
+            capture_output=True,
+            text=True,
+        )
+        branch = branch_result.stdout.strip() or "main"
         # Remote URL already updated by get_token() — just push directly
-        ret = os.system("JUDGE6_SKIP=true git push origin main")
+        ret = os.system(f"JUDGE6_SKIP=true git -C {REPO_ROOT} push origin {branch}")
         sys.exit(ret)
     else:
         print(token)

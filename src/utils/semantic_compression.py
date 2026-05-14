@@ -8,7 +8,7 @@ Target: 10:1 compression ratio while preserving decision-critical information
 import hashlib
 import json
 from typing import Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def compress_audit_trail(
@@ -43,8 +43,7 @@ def compress_audit_trail(
         amount = context.get("amount_usd") or context.get("amount")
         components.append(_format_amount(amount))
 
-    if "vendor" in context or "vendor_id" in context:
-        vendor = context.get("vendor") or context.get("vendor_id")
+    if "vendor" in context or "vendor_id" in context or "vendor_status" in context:
         vendor_status = context.get("vendor_status", "unknown")
         components.append(f"{vendor_status}_vendor")
 
@@ -171,7 +170,7 @@ def generate_trail_id(judge_type: str, request_id: str, timestamp: datetime = No
         Unique trail ID
     """
     if timestamp is None:
-        timestamp = datetime.utcnow()
+        timestamp = datetime.now(timezone.utc)
 
     date_str = timestamp.strftime("%Y%m%d")
     type_abbrev = judge_type[:4].lower()

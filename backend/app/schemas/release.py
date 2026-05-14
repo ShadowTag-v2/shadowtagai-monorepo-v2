@@ -3,7 +3,7 @@
 Pydantic schemas for Release Manager API.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
 from pydantic import BaseModel, Field, field_validator
 import semver
@@ -203,7 +203,7 @@ class HealthCheckResult(BaseModel):
     healthy: bool
     checks: dict[str, bool]
     message: str | None = None
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ==================== Metrics Schemas ====================

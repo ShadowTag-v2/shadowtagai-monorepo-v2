@@ -19,7 +19,7 @@ from collections.abc import Callable
 from enum import Enum
 import time
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .jr_engine import JREngine, Purpose, Reason, JRDecision
 from .judge_six_lite import JudgeSixLite, VerificationResult
@@ -95,7 +95,7 @@ class PnklnAgent:
         """
         start_time = time.perf_counter()
         audit_trail = {
-            "start_time": datetime.utcnow().isoformat(),
+            "start_time": datetime.now(timezone.utc).isoformat(),
             "task": {
                 "intent": task.intent,
                 "customer_id": task.customer_id,
@@ -131,7 +131,7 @@ class PnklnAgent:
             final_result = self._apply_watermark(raw_result)
 
             execution_time_ms = (time.perf_counter() - start_time) * 1000
-            audit_trail["end_time"] = datetime.utcnow().isoformat()
+            audit_trail["end_time"] = datetime.now(timezone.utc).isoformat()
             audit_trail["execution_time_ms"] = execution_time_ms
 
             result = AgentResult(
@@ -152,7 +152,7 @@ class PnklnAgent:
         except Exception as e:
             execution_time_ms = (time.perf_counter() - start_time) * 1000
             audit_trail["error"] = str(e)
-            audit_trail["end_time"] = datetime.utcnow().isoformat()
+            audit_trail["end_time"] = datetime.now(timezone.utc).isoformat()
 
             result = AgentResult(
                 status=AgentStatus.FAILED, output=None, audit_trail=audit_trail, execution_time_ms=execution_time_ms, metadata={"error": str(e)}
@@ -218,7 +218,7 @@ class PnklnAgent:
                 for brake in jr_decision.brakes
             ],
         }
-        audit_trail["end_time"] = datetime.utcnow().isoformat()
+        audit_trail["end_time"] = datetime.now(timezone.utc).isoformat()
 
         result = AgentResult(
             status=AgentStatus.ESCALATED,
@@ -250,7 +250,7 @@ class PnklnAgent:
                 for v in verification_result.violations
             ],
         }
-        audit_trail["end_time"] = datetime.utcnow().isoformat()
+        audit_trail["end_time"] = datetime.now(timezone.utc).isoformat()
 
         # Perform rollback (override in subclasses if needed)
         self._perform_rollback(task, result)
@@ -279,7 +279,7 @@ class PnklnAgent:
         # TODO: Implement actual watermarking logic
         if isinstance(result, dict):
             result["_pnkln_watermark"] = {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "version": "shadowtag_v2",
                 "agent": self.__class__.__name__,
             }

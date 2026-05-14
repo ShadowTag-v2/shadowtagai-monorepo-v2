@@ -4,7 +4,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from enum import IntEnum
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class RiskTier(IntEnum):
@@ -43,7 +43,7 @@ class ViolationsScanOutput(BaseModel):
     violations: list[Violation]
     scan_metadata: dict[str, Any] = Field(default_factory=dict)
     total_violations: int = 0
-    scan_timestamp: datetime = Field(default_factory=datetime.utcnow)
+    scan_timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     def model_post_init(self, __context):
         """Auto-calculate total violations."""
@@ -80,5 +80,5 @@ class DecisionResult(BaseModel):
     total_latency_ms: float
     total_cost_usd: float
     trace_id: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     kernel_metrics: dict[str, Any] = Field(default_factory=dict)

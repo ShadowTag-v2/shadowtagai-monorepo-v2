@@ -7,7 +7,7 @@ Delivered to services across 4 namespaces.
 """
 
 from typing import List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from ..sources.base import IngestionItem
 from ..classification.tier_classifier import TierLevel
 
@@ -36,7 +36,7 @@ class AMBriefingGenerator:
         # Generate markdown briefing
         briefing = []
         briefing.append("# PNKLN Intelligence Briefing")
-        briefing.append(f"**Date:** {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}")
+        briefing.append(f"**Date:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
         briefing.append("")
         briefing.append("## Summary")
         briefing.append(f"- Total Items: {stats.get('items_ingested', 0)}")

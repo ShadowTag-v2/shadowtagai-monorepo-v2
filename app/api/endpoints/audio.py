@@ -9,7 +9,7 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
 from typing import Optional
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 
 from shadowtag_v2.audio_stego import AudioEncoder, AudioDecoder, AudioEncoderConfig, AudioDecoderConfig
 from shadowtag_v2.receipt_chain import ReceiptChain, Receipt, ChainStorage
@@ -50,7 +50,7 @@ async def encode_audio(
     upload_dir = Path(settings.UPLOAD_DIR)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
-    audio_path = upload_dir / f"input_{datetime.utcnow().timestamp()}_{audio.filename}"
+    audio_path = upload_dir / f"input_{datetime.now(timezone.utc).timestamp()}_{audio.filename}"
     payload_data = await payload.read()
 
     with open(audio_path, "wb") as f:
@@ -68,7 +68,7 @@ async def encode_audio(
     # Encode
     output_dir = Path(settings.OUTPUT_DIR)
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / f"encoded_{datetime.utcnow().timestamp()}_{audio.filename}"
+    output_path = output_dir / f"encoded_{datetime.now(timezone.utc).timestamp()}_{audio.filename}"
 
     try:
         stats = encoder.encode(
@@ -109,7 +109,7 @@ async def decode_audio(
     upload_dir = Path(settings.UPLOAD_DIR)
     upload_dir.mkdir(parents=True, exist_ok=True)
 
-    audio_path = upload_dir / f"decode_{datetime.utcnow().timestamp()}_{audio.filename}"
+    audio_path = upload_dir / f"decode_{datetime.now(timezone.utc).timestamp()}_{audio.filename}"
 
     with open(audio_path, "wb") as f:
         f.write(await audio.read())
@@ -127,7 +127,7 @@ async def decode_audio(
         # Save extracted payload
         output_dir = Path(settings.OUTPUT_DIR)
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_path = output_dir / f"extracted_{datetime.utcnow().timestamp()}.bin"
+        output_path = output_dir / f"extracted_{datetime.now(timezone.utc).timestamp()}.bin"
 
         with open(output_path, "wb") as f:
             f.write(payload)
@@ -156,9 +156,9 @@ def _create_audio_receipt(operation_type: str, audio_path: Path, payload: bytes,
     media_hash = hashlib.sha256(audio_path.read_bytes()).hexdigest()
 
     receipt = Receipt(
-        operation_id=hashlib.sha256(f"{datetime.utcnow().isoformat()}_{media_hash}".encode()).hexdigest()[:16],
+        operation_id=hashlib.sha256(f"{datetime.now(timezone.utc).isoformat()}_{media_hash}".encode()).hexdigest()[:16],
         operation_type=operation_type,
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         media_type="audio",
         method=stats.get("method", "lsb"),
         payload_hash=payload_hash,

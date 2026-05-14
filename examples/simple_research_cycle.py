@@ -12,7 +12,7 @@ Demonstrates a complete autonomous research workflow:
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 from kosmos.core.world_model import KosmosWorldModel, WorkflowPhase
 from kosmos.core.vertex_client import VertexAIClient, GeminiModel
@@ -89,7 +89,7 @@ def main():
     # 2. Create world model
     print("[2/8] Creating world model...")
 
-    session_id = f"research_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
+    session_id = f"research_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
     goal = "Investigate the relationship between variable X and outcome Y in dataset.csv"
 
     world_model = KosmosWorldModel(session_id=session_id, goal=goal)

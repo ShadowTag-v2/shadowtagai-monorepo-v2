@@ -11,6 +11,6 @@ Implements multi-faceted quality checks:
 - Completeness (85% field completion)
 """
 
-from .gates import QualityGates, QualityGateResult
+from .gates import QualityGates, QualityGateResult, GateStatus, GateResult
 
-__all__ = ["QualityGates", "QualityGateResult"]
+__all__ = ["QualityGates", "QualityGateResult", "GateStatus", "GateResult"]

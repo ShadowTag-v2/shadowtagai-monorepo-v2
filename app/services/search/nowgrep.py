@@ -10,7 +10,7 @@ import numpy as np
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from google.cloud import aiplatform
 from app.config.settings import settings
 
@@ -67,7 +67,7 @@ class NowgrepService:
             Index creation result
         """
         try:
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
 
             # Extract content and generate embeddings
             contents = [doc.get(content_field, "") for doc in documents]
@@ -87,7 +87,7 @@ class NowgrepService:
             self.indices[index_name] = index
             await self._save_index(index_name)
 
-            elapsed = (datetime.utcnow() - start_time).total_seconds()
+            elapsed = (datetime.now(timezone.utc) - start_time).total_seconds()
 
             logger.info(f"Created index '{index_name}' with {len(documents)} documents in {elapsed:.2f}s")
 
@@ -119,7 +119,7 @@ class NowgrepService:
             if index_name not in self.indices:
                 return {"status": "error", "error": f"Index '{index_name}' not found"}
 
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
             index = self.indices[index_name]
 
             # Generate query embedding
@@ -143,7 +143,7 @@ class NowgrepService:
 
                 results.append({"document": doc, "score": float(scores[idx]), "rank": len(results) + 1})
 
-            elapsed = (datetime.utcnow() - start_time).total_seconds()
+            elapsed = (datetime.now(timezone.utc) - start_time).total_seconds()
 
             return {
                 "status": "success",

@@ -4,7 +4,7 @@ Gemini Ingestion Layer API
 FastAPI endpoints for interfacing with the ingestion pipeline
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Dict, Any
 from enum import Enum
 
@@ -206,7 +206,7 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     # TODO: Implement actual health checks (DB, GCS, etc.)
-    return {"status": "healthy", "timestamp": datetime.utcnow(), "checks": {"database": "ok", "gcs": "ok", "redis": "ok"}}
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc), "checks": {"database": "ok", "gcs": "ok", "redis": "ok"}}
 
 
 @app.post("/ingestion/trigger", response_model=JobStatusResponse, status_code=status.HTTP_202_ACCEPTED, tags=["Ingestion"])
@@ -225,7 +225,7 @@ async def trigger_ingestion(request: TriggerRequest):
     # TODO: Implement Kubernetes Job trigger via client library
     # For now, return mock response
 
-    job_id = f"manual-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}"
+    job_id = f"manual-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
 
     # Simulate job creation
     await asyncio.sleep(0.1)
@@ -257,8 +257,8 @@ async def get_ingestion_status(job_id: str | None = Query(None, description="Spe
     return JobStatusResponse(
         job_id=job_id or "cronjob-20251107-020000",
         status=JobStatus.COMPLETED,
-        start_time=datetime.utcnow() - timedelta(minutes=45),
-        end_time=datetime.utcnow(),
+        start_time=datetime.now(timezone.utc) - timedelta(minutes=45),
+        end_time=datetime.now(timezone.utc),
         runtime_minutes=45.0,
         items_collected=3245,
         items_by_tier={"tier_1": 487, "tier_2": 1156, "tier_3": 1602},
@@ -299,8 +299,8 @@ async def get_ingested_items(
             tier=TierLevel.TIER_1,
             relevance_score=87.5,
             engagement_score=1250,
-            published_at=datetime.utcnow() - timedelta(hours=2),
-            ingested_at=datetime.utcnow(),
+            published_at=datetime.now(timezone.utc) - timedelta(hours=2),
+            ingested_at=datetime.now(timezone.utc),
             metadata={"author": "AP News", "tags": ["politics", "breaking"]},
         )
     ]
@@ -430,7 +430,7 @@ async def global_exception_handler(request, exc):
     """Global exception handler"""
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"error": "Internal server error", "detail": str(exc), "timestamp": datetime.utcnow().isoformat()},
+        content={"error": "Internal server error", "detail": str(exc), "timestamp": datetime.now(timezone.utc).isoformat()},
     )
 
 

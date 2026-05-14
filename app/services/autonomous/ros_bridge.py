@@ -8,7 +8,7 @@ Provides REST/WebSocket abstraction over ROS Melodic topics.
 import asyncio
 from typing import Dict, Any
 from collections.abc import Callable
-from datetime import datetime
+from datetime import datetime, timezone
 import structlog
 
 logger = structlog.get_logger()
@@ -144,7 +144,7 @@ class ROSBridge:
         if not self._connected:
             await self.connect()
 
-        request_id = f"service_call_{datetime.utcnow().timestamp()}"
+        request_id = f"service_call_{datetime.now(timezone.utc).timestamp()}"
 
         rosbridge_msg = {
             "op": "call_service",

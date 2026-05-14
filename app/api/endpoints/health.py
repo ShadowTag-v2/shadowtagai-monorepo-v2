@@ -6,7 +6,7 @@ Provides health and readiness checks for the service.
 """
 
 from fastapi import APIRouter
-from datetime import datetime
+from datetime import datetime, timezone
 import psutil
 import sys
 
@@ -21,7 +21,7 @@ async def health_check():
     Returns:
         Health status and basic system information
     """
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat(), "service": "shadowtag-v2-api", "version": "2.0.0"}
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc).isoformat(), "service": "shadowtag-v2-api", "version": "2.0.0"}
 
 
 @router.get("/health/detailed")
@@ -38,7 +38,7 @@ async def detailed_health():
 
     return {
         "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "service": "shadowtag-v2-api",
         "version": "2.0.0",
         "system": {
@@ -64,4 +64,4 @@ async def readiness_check():
         Service readiness status
     """
     # TODO: Add checks for database connectivity, etc.
-    return {"ready": True, "timestamp": datetime.utcnow().isoformat()}
+    return {"ready": True, "timestamp": datetime.now(timezone.utc).isoformat()}

@@ -2,7 +2,8 @@
 """Kernel 1: ATP 5-19 Violation Scanner using Gemini Flash."""
 
 from typing import Optional
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 from app.kernels.base import Kernel, KernelChainError
 from app.models.kernel import KernelInput, KernelOutput, KernelMetrics
 from app.models.decision import DecisionContext, Violation, ViolationsScanOutput
@@ -68,17 +69,13 @@ Return violations in JSON format only."""
         if not api_key:
             raise KernelChainError("Gemini API key not configured")
 
-        genai.configure(api_key=api_key)
-
-        # Initialize model with JSON output mode
-        self.model = genai.GenerativeModel(
-            model_name=settings.gemini_model,
-            generation_config={
-                "temperature": 0.1,  # Low temperature for consistency
-                "top_p": 0.95,
-                "top_k": 40,
-                "max_output_tokens": settings.kernel_1_max_output_tokens,
-            },
+        self.client = genai.Client(api_key=api_key)
+        self.model_name = settings.gemini_model
+        self.generation_config = genai_types.GenerateContentConfig(
+            temperature=0.1,  # Low temperature for consistency
+            top_p=0.95,
+            top_k=40,
+            max_output_tokens=settings.kernel_1_max_output_tokens,
         )
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
@@ -104,7 +101,11 @@ Return violations in JSON format only."""
             prompt = self.USER_PROMPT_TEMPLATE.format(context=context)
 
             # Call Gemini API
-            response = self.model.generate_content([self.SYSTEM_PROMPT, prompt])
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=[self.SYSTEM_PROMPT, prompt],
+                config=self.generation_config,
+            )
 
             # Parse JSON response
             response_text = response.text.strip()

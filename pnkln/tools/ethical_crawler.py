@@ -37,7 +37,7 @@ License: Proprietary
 
 import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Set
 import logging
 from urllib.parse import urlparse
@@ -72,7 +72,7 @@ class RobotsTxtRules:
     disallowed_paths: set[str] = field(default_factory=set)
     crawl_delay_seconds: float = 1.0  # Default 1 second
     sitemap_urls: set[str] = field(default_factory=set)
-    last_fetched: datetime = field(default_factory=datetime.utcnow)
+    last_fetched: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def is_path_allowed(self, path: str) -> bool:
         """
@@ -160,7 +160,7 @@ class CrawlResult:
     delay_seconds: float
     robots_txt_compliant: bool
     rate_limit_compliant: bool
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ============================================================================
@@ -343,8 +343,9 @@ class EthicalCrawler:
         if requests_today >= config.requests_per_day:
             return False, config.backoff_seconds * 10  # Longer backoff for daily limit
 
-        # All checks passed
-        return True, config.crawl_delay_seconds
+        # All checks passed — compute minimum delay from rate limit config
+        crawl_delay = 60.0 / config.requests_per_minute if config.requests_per_minute > 0 else 1.0
+        return True, crawl_delay
 
     async def check_crawl_allowed(self, request: CrawlRequest) -> CrawlResult:
         """

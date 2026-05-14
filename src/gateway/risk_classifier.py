@@ -131,6 +131,7 @@ class ATP519RiskClassifier:
         # High-risk administrative actions
         if request.action in [
             "delete_resource",
+            "delete_production_data",
             "grant_admin_access",
             "modify_security_policy",
         ]:

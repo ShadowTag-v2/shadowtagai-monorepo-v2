@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Vector embedding models for semantic search."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, LargeBinary, Index
 from sqlalchemy.orm import relationship
 
@@ -27,7 +27,7 @@ class VectorEmbedding(Base):
     dimension = Column(Integer, nullable=False)
 
     # Timestamps
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     message = relationship("Message", back_populates="embeddings")

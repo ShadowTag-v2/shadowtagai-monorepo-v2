@@ -5,7 +5,7 @@ Feature Flags Service for managing feature toggles.
 
 import hashlib
 from typing import Any, Dict, List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 import redis.asyncio as redis
 from sqlalchemy import select
@@ -207,7 +207,7 @@ class FeatureFlagService:
         for field, value in update_data.items():
             setattr(flag, field, value)
 
-        flag.updated_at = datetime.utcnow()
+        flag.updated_at = datetime.now(timezone.utc)
         await db.commit()
         await db.refresh(flag)
 
@@ -312,7 +312,7 @@ class FeatureFlagService:
             flag.status = FeatureFlagStatus.ENABLED
             flag.percentage = 100
 
-        flag.updated_at = datetime.utcnow()
+        flag.updated_at = datetime.now(timezone.utc)
         await db.commit()
         await db.refresh(flag)
 
@@ -334,7 +334,7 @@ class FeatureFlagService:
 
         flag.enabled = False
         flag.status = FeatureFlagStatus.DISABLED
-        flag.updated_at = datetime.utcnow()
+        flag.updated_at = datetime.now(timezone.utc)
         await db.commit()
         await db.refresh(flag)
 

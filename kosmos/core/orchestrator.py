@@ -13,7 +13,7 @@ from typing import List, Dict, Any, Optional
 from collections.abc import Callable
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from kosmos.core.world_model import KosmosWorldModel
 
@@ -31,7 +31,7 @@ class ReActStep:
 
     def __post_init__(self):
         if self.timestamp is None:
-            self.timestamp = datetime.utcnow()
+            self.timestamp = datetime.now(timezone.utc)
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""

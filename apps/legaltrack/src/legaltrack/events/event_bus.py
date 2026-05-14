@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 from collections.abc import Callable
 
@@ -27,7 +27,7 @@ class TelemetryEventBus:
         """
         Publishes event and routes to all registered subscribers async.
         """
-        event = {"id": f"evt_{datetime.utcnow().timestamp()}", "topic": topic, "timestamp": datetime.utcnow().isoformat(), "payload": payload}
+        event = {"id": f"evt_{datetime.now(timezone.utc).timestamp()}", "topic": topic, "timestamp": datetime.now(timezone.utc).isoformat(), "payload": payload}
 
         # Append to audit trail (SC.2 Immutable Backup equivalent for local tests)
         self.audit_log.append(event)

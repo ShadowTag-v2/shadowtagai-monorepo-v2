@@ -13,7 +13,7 @@ Provides:
 from __future__ import annotations
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 import os
 
@@ -120,7 +120,7 @@ class AgentOpsTracker:
             session_id=session_id or str(session_obj.session_id if hasattr(session_obj, "session_id") else "unknown"),
             goal=goal,
             agent_name=agent_name,
-            started_at=datetime.utcnow(),
+            started_at=datetime.now(timezone.utc),
             tags=all_tags,
             session_obj=session_obj,
         )
@@ -158,7 +158,7 @@ class AgentOpsTracker:
             data={
                 "result": result,
                 "final_output": final_output,
-                "duration_seconds": (datetime.utcnow() - self.current_session.started_at).total_seconds(),
+                "duration_seconds": (datetime.now(timezone.utc) - self.current_session.started_at).total_seconds(),
             },
         )
 
