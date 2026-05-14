@@ -1,4 +1,11 @@
 {
   "name": "cachedContents/0rexorf22bn6rvwda4pay8lz9e9qftpkoxz6menk",
-  "expires_at": 1774317798.3503969
+  "expires_at": "2026-05-21T19:04:37.144949+00:00",
+  "last_refresh": "2026-05-14T19:04:37.144776+00:00",
+  "status": "active",
+  "ttl_hours": 168,
+  "knowledge_source": "drive_ingest/extractions.jsonl",
+  "record_count": 1094,
+  "lancedb_table": "workspace_knowledge",
+  "engine": "aegaeon-v2-local"
 }
