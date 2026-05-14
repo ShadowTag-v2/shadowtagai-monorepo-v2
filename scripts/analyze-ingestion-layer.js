@@ -15,8 +15,8 @@
  *   --dry-run                          Show combined prompt without running analysis
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // ============================================================================
 // Configuration
@@ -142,7 +142,7 @@ function loadSupportingDocuments() {
     const extension = path.extname(file).slice(1);
 
     combined += `### Document: ${file}\n\n`;
-    combined += "```" + extension + "\n";
+    combined += `\`\`\`${extension}\n`;
     combined += content;
     combined += "\n```\n\n";
   }
@@ -153,7 +153,7 @@ function loadSupportingDocuments() {
 }
 
 function combineMaterials(prompt, supportingDocs) {
-  const divider = "\n\n" + "=".repeat(80) + "\n\n";
+  const divider = `\n\n${"=".repeat(80)}\n\n`;
   return prompt + divider + supportingDocs;
 }
 
@@ -161,7 +161,7 @@ function combineMaterials(prompt, supportingDocs) {
 // Analysis Execution
 // ============================================================================
 
-async function runAnalysisWithGemini(combinedPrompt) {
+async function runAnalysisWithGemini(_combinedPrompt) {
   console.log("\n🔮 Running analysis with Gemini 2.0 Pro...\n");
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -211,7 +211,7 @@ async function runAnalysisWithClaude(combinedPrompt) {
   console.log("\n🤖 Running analysis with Claude Agent SDK...\n");
 
   try {
-    const { query, ClaudeAgentOptions } = require("@anthropic-ai/claude-agent-sdk");
+    const { query } = require("@anthropic-ai/claude-agent-sdk");
 
     console.log("ℹ️  Using Claude Code preset for analysis...");
 
@@ -239,7 +239,7 @@ async function runAnalysisWithClaude(combinedPrompt) {
   }
 }
 
-async function runAnalysisWithOpenAI(combinedPrompt) {
+async function runAnalysisWithOpenAI(_combinedPrompt) {
   console.log("\n🧠 Running analysis with OpenAI GPT-4...\n");
 
   const apiKey = process.env.OPENAI_API_KEY;

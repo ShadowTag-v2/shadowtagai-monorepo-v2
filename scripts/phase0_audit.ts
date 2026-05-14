@@ -1,7 +1,6 @@
 import { $ } from "bun";
 
 const TARGET_URL = "https://kovelai.web.app/";
-\
 const ARTIFACT_PATH = "./docs/performance/baselines/kovelai-live-baseline.json";
 
 async function executePhaseZero() {
