@@ -137,7 +137,7 @@ export class WealthEngine {
    */
   private calculateRevenueImpact(
     before: Partial<RevenueMetrics>,
-    after: Partial<RevenueMetrics>,
+    _after: Partial<RevenueMetrics>,
     opportunity: Opportunity,
   ): RevenueMetrics {
     // Simplified calculation
@@ -159,7 +159,7 @@ export class WealthEngine {
   /**
    * Suggest next scaling plays based on impact
    */
-  private async suggestScalePlay<T>(impact: RevenueMetrics, result: T): Promise<string[]> {
+  private async suggestScalePlay<T>(impact: RevenueMetrics, _result: T): Promise<string[]> {
     const recommendations: string[] = [];
 
     // High profit, high confidence = aggressive scaling

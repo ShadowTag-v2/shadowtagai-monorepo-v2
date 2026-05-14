@@ -86,7 +86,7 @@ The difference between good and great is in the details.`,
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     result.recommendations?.push(`Execute: ${step.description}`);

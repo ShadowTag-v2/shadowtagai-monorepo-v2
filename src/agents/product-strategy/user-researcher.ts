@@ -92,7 +92,7 @@ Be specific about problems and solutions. Show exactly where users get stuck and
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     result.recommendations?.push(`Execute: ${step.description}`);

@@ -4,7 +4,7 @@
  * Command-line interface for generating transfer packages
  */
 
-import { writeFileSync } from "fs";
+import { writeFileSync } from "node:fs";
 import { TransferPackageTemplates } from "./package.js";
 
 interface CLIArgs {
@@ -157,7 +157,6 @@ function main(): void {
       case "compact":
         output = builder.toCompact();
         break;
-      case "markdown":
       default:
         output = builder.toMarkdown();
         break;

@@ -165,7 +165,7 @@ export const analyzeRevenueFunnel = tool({
         stage: stage.name,
         visitors: stage.visitors,
         conversions: stage.conversions || 0,
-        conversionRate: conversionRate.toFixed(2) + "%",
+        conversionRate: `${conversionRate.toFixed(2)}%`,
         revenue: (stage.revenue || 0).toFixed(2),
         revenuePerVisitor: revenuePerVisitor.toFixed(2),
         improvementScenario: improve10Pct,
@@ -185,10 +185,9 @@ export const analyzeRevenueFunnel = tool({
       totalVisitors: stages[0]?.visitors || 0,
       overallConversionRate:
         stages.length > 0
-          ? (
-              ((stages[stages.length - 1]?.conversions || 0) / (stages[0]?.visitors || 1)) *
-              100
-            ).toFixed(2) + "%"
+          ? `${(
+              ((stages[stages.length - 1]?.conversions || 0) / (stages[0]?.visitors || 1)) * 100
+            ).toFixed(2)}%`
           : "N/A",
       biggestLeaks: sortedByConversion.slice(0, 3).map((stage) => ({
         stage: stage.stage,
@@ -319,7 +318,7 @@ export const calculateRevenueProjections = tool({
         audience: Math.round(audienceSize),
         customers: Math.round(customers),
         revenue: revenue.toFixed(2),
-        conversionRate: (currentConv * 100).toFixed(2) + "%",
+        conversionRate: `${(currentConv * 100).toFixed(2)}%`,
       });
     }
 
@@ -349,7 +348,7 @@ export const calculateRevenueProjections = tool({
         audience: Math.round(audienceSize),
         customers: Math.round(customers),
         revenue: revenue.toFixed(2),
-        ltvMultiplier: ltvMultiplier.toFixed(2) + "x",
+        ltvMultiplier: `${ltvMultiplier.toFixed(2)}x`,
       });
     }
 
@@ -368,13 +367,12 @@ export const calculateRevenueProjections = tool({
         totalRevenue: optimizedProjection
           .reduce((sum, m) => sum + parseFloat(m.revenue), 0)
           .toFixed(2),
-        vsBaseline:
-          (
-            ((parseFloat(optimizedProjection[projectionMonths].revenue) -
-              parseFloat(baselineProjection[projectionMonths].revenue)) /
-              parseFloat(baselineProjection[projectionMonths].revenue)) *
+        vsBaseline: `${(
+          ((parseFloat(optimizedProjection[projectionMonths].revenue) -
+            parseFloat(baselineProjection[projectionMonths].revenue)) /
+            parseFloat(baselineProjection[projectionMonths].revenue)) *
             100
-          ).toFixed(1) + "% increase",
+        ).toFixed(1)}% increase`,
         projection: optimizedProjection,
       },
       aggressiveScenario: {
@@ -383,13 +381,12 @@ export const calculateRevenueProjections = tool({
         totalRevenue: aggressiveProjection
           .reduce((sum, m) => sum + parseFloat(m.revenue), 0)
           .toFixed(2),
-        vsBaseline:
-          (
-            ((parseFloat(aggressiveProjection[projectionMonths].revenue) -
-              parseFloat(baselineProjection[projectionMonths].revenue)) /
-              parseFloat(baselineProjection[projectionMonths].revenue)) *
+        vsBaseline: `${(
+          ((parseFloat(aggressiveProjection[projectionMonths].revenue) -
+            parseFloat(baselineProjection[projectionMonths].revenue)) /
+            parseFloat(baselineProjection[projectionMonths].revenue)) *
             100
-          ).toFixed(1) + "% increase",
+        ).toFixed(1)}% increase`,
         projection: aggressiveProjection,
       },
       keyInsights: [
@@ -536,7 +533,7 @@ export const evaluatePricingStrategy = tool({
     return {
       currentAnalysis: {
         price: currentPrice,
-        margin: currentMargin.toFixed(2) + "%",
+        margin: `${currentMargin.toFixed(2)}%`,
         monthlyRevenue: currentMonthlyRevenue.toFixed(2),
         annualRevenue: (currentMonthlyRevenue * 12).toFixed(2),
       },
@@ -544,7 +541,7 @@ export const evaluatePricingStrategy = tool({
         recommendedPrice: recommendedPrice,
         currentVsBenchmark: currentPrice < recommendedPrice ? "UNDERPRICED" : "PREMIUM PRICED",
         gap: (recommendedPrice - currentPrice).toFixed(2),
-        gapPercentage: (((recommendedPrice - currentPrice) / currentPrice) * 100).toFixed(1) + "%",
+        gapPercentage: `${(((recommendedPrice - currentPrice) / currentPrice) * 100).toFixed(1)}%`,
       },
       scenarios: scenarios,
       recommendations: [
@@ -772,9 +769,9 @@ export const assessMarketOpportunity = tool({
         currentMonetization: currentRevenue,
         potentialMultiplier:
           opportunities.length > 0
-            ? (
+            ? `${(
                 parseFloat(opportunities[0].potential.estimatedMonthlyRevenue) / currentRevenue
-              ).toFixed(1) + "x"
+              ).toFixed(1)}x`
             : "N/A",
       },
       opportunities: opportunities,

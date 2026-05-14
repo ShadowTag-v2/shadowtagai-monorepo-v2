@@ -84,7 +84,7 @@ Provide architectural blueprints and migration paths. Show the structure, not ju
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     result.recommendations?.push(`Execute: ${step.description}`);

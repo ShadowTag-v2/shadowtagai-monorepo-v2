@@ -87,7 +87,7 @@ export class AgentRegistry implements IAgentRegistry {
     if (!this.categories.has(agent.metadata.category)) {
       this.categories.set(agent.metadata.category, []);
     }
-    this.categories.get(agent.metadata.category)!.push(agent);
+    this.categories.get(agent.metadata.category)?.push(agent);
   }
 
   getAgent(id: string): Agent | undefined {

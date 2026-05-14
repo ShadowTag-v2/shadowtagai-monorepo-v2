@@ -128,7 +128,7 @@ Next Steps:
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     // Implementation would use Claude Agent SDK to execute the step

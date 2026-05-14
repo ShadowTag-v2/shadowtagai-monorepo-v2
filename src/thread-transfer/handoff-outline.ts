@@ -55,12 +55,12 @@ export class HandoffOutlineBuilder {
   }
 
   addQuestion(question: string): this {
-    this.outline.openQuestions!.push(question);
+    this.outline.openQuestions?.push(question);
     return this;
   }
 
   addRiskFlag(risk: RiskFlag): this {
-    this.outline.riskFlags!.push(risk);
+    this.outline.riskFlags?.push(risk);
     return this;
   }
 

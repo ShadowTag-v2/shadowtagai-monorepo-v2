@@ -85,7 +85,7 @@ Turn 30-second queries into 30-millisecond queries.`,
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     result.recommendations?.push(`Execute: ${step.description}`);

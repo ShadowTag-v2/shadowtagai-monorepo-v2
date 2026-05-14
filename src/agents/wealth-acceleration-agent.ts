@@ -14,11 +14,8 @@
  * Last Updated: 2025-11-08
  */
 
-import { ClaudeAgentOptions, query } from "@anthropic-ai/claude-agent-sdk";
-import {
-  WEALTH_ACCELERATION_AGENT_PROMPT,
-  WEALTH_ACCELERATION_SYSTEM_PROMPT,
-} from "../prompts/wealth-acceleration-strategist";
+import { query } from "@anthropic-ai/claude-agent-sdk";
+import { WEALTH_ACCELERATION_AGENT_PROMPT } from "../prompts/wealth-acceleration-strategist";
 import { monetizationTools } from "../tools/monetization-tools";
 
 /**

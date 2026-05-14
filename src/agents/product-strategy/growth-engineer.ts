@@ -92,7 +92,7 @@ Be data-driven and practical. Build features that measurably increase growth met
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     // Placeholder implementation

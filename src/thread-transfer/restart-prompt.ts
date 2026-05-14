@@ -24,17 +24,17 @@ export class RestartPromptBuilder {
   }
 
   addStateItem(item: string): this {
-    this.prompt.currentState!.push(item);
+    this.prompt.currentState?.push(item);
     return this;
   }
 
   addConstraint(constraint: string): this {
-    this.prompt.bootstrapConstraints!.push(constraint);
+    this.prompt.bootstrapConstraints?.push(constraint);
     return this;
   }
 
   addFramework(framework: string): this {
-    this.prompt.frameworksActive!.push(framework);
+    this.prompt.frameworksActive?.push(framework);
     return this;
   }
 
@@ -47,7 +47,7 @@ export class RestartPromptBuilder {
   }
 
   addQuestion(question: string): this {
-    this.prompt.openQuestions!.push(question);
+    this.prompt.openQuestions?.push(question);
     return this;
   }
 
@@ -103,7 +103,7 @@ export class RestartPromptBuilder {
 
     // Repos
     if (prompt.repos && prompt.repos.length > 0) {
-      lines.push("**Repos**: " + prompt.repos.join(", "));
+      lines.push(`**Repos**: ${prompt.repos.join(", ")}`);
       lines.push("");
     }
 

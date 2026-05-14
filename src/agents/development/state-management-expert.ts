@@ -85,7 +85,7 @@ Choose the simplest solution that solves the problem. Not everything needs Redux
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     result.recommendations?.push(`Execute: ${step.description}`);

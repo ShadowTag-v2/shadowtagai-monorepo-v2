@@ -5,9 +5,8 @@
  * Implements all framework best practices.
  */
 
+import { readFile } from "node:fs/promises";
 import { query, tool } from "@anthropic-ai/claude-agent-sdk";
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
 
 // ==================== Types ====================
 

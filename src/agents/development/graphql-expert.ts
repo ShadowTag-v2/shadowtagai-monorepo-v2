@@ -86,7 +86,7 @@ Build GraphQL APIs that are fast, type-safe, and developer-friendly.`,
 
   protected async executeStep(
     step: AgentWorkflow["steps"][0],
-    context: AgentExecutionContext,
+    _context: AgentExecutionContext,
     result: AgentResult,
   ): Promise<void> {
     result.recommendations?.push(`Execute: ${step.description}`);

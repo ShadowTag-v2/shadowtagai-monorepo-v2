@@ -96,7 +96,7 @@ export class StateSummaryBuilder {
     }
 
     if (summary.technicalContext.namespaces) {
-      lines.push("**Namespaces**: " + summary.technicalContext.namespaces.join(", "));
+      lines.push(`**Namespaces**: ${summary.technicalContext.namespaces.join(", ")}`);
       lines.push("");
     }
 
@@ -109,7 +109,7 @@ export class StateSummaryBuilder {
     }
 
     if (summary.technicalContext.integrations) {
-      lines.push("**Integrations**: " + summary.technicalContext.integrations.join(", "));
+      lines.push(`**Integrations**: ${summary.technicalContext.integrations.join(", ")}`);
     }
 
     return lines.join("\n");

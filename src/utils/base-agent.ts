@@ -49,7 +49,7 @@ export abstract class BaseAgent implements Agent {
           await this.executeStep(step, context, result);
           result.metrics!.stepsCompleted++;
         } catch (error) {
-          result.errors!.push({
+          result.errors?.push({
             code: `STEP_${i}_FAILED`,
             message: `Failed to execute step: ${step.name}`,
             details: error,
@@ -61,11 +61,11 @@ export abstract class BaseAgent implements Agent {
         }
       }
 
-      result.success = result.errors!.length === 0;
+      result.success = result.errors?.length === 0;
       result.output = this.generateOutput(result);
     } catch (error) {
       result.success = false;
-      result.errors!.push({
+      result.errors?.push({
         code: "EXECUTION_FAILED",
         message: error instanceof Error ? error.message : "Unknown error",
         details: error,
@@ -92,7 +92,7 @@ export abstract class BaseAgent implements Agent {
     }
   }
 
-  protected canContinueOnError(step: AgentWorkflow["steps"][0], error: unknown): boolean {
+  protected canContinueOnError(_step: AgentWorkflow["steps"][0], _error: unknown): boolean {
     // Override in subclasses to define error handling strategy
     return false;
   }
@@ -106,8 +106,8 @@ export abstract class BaseAgent implements Agent {
       output += "❌ Execution completed with errors\n\n";
     }
 
-    output += `Steps completed: ${result.metrics!.stepsCompleted}/${this.workflow.steps.length}\n`;
-    output += `Execution time: ${result.metrics!.executionTimeMs}ms\n\n`;
+    output += `Steps completed: ${result.metrics?.stepsCompleted}/${this.workflow.steps.length}\n`;
+    output += `Execution time: ${result.metrics?.executionTimeMs}ms\n\n`;
 
     if (result.artifacts?.filesCreated?.length) {
       output += `Files created: ${result.artifacts.filesCreated.length}\n`;
