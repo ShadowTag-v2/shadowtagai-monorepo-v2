@@ -10,7 +10,7 @@ export enum Mode {
 
 export interface UserRequest {
   input: string;
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
   userId?: string;
   sessionId?: string;
 }
@@ -19,7 +19,7 @@ export interface IntentClassification {
   mode: Mode;
   confidence: number;
   reasoning: string;
-  extractedParams: Record<string, any>;
+  extractedParams: Record<string, unknown>;
 }
 
 export interface RevenueMetrics {
@@ -57,7 +57,7 @@ export interface PnklnResponse {
   confidence: number;
   executionTime: number;
   mode: Mode;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface SinglePointOfTruth {

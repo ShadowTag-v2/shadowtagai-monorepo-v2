@@ -70,7 +70,7 @@ export interface Agent {
 export interface AgentExecutionContext {
   projectPath: string;
   userQuery: string;
-  additionalContext?: Record<string, any>;
+  additionalContext?: Record<string, unknown>;
   constraints?: {
     maxTokens?: number;
     timeoutMs?: number;
@@ -94,7 +94,7 @@ export interface AgentResult {
   errors?: Array<{
     code: string;
     message: string;
-    details?: any;
+    details?: unknown;
   }>;
   recommendations?: string[];
 }

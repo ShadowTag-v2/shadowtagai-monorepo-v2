@@ -636,7 +636,7 @@ export const assessMarketOpportunity = tool({
     },
     required: ["niche", "audienceSize", "engagement", "currentRevenue", "revenueStreams"],
   },
-  execute: async ({ niche, audienceSize, engagement, currentRevenue, revenueStreams }) => {
+  execute: async ({ niche: _niche, audienceSize, engagement, currentRevenue, revenueStreams }) => {
     // Engagement multipliers
     const engagementMultipliers = {
       low: 0.7,

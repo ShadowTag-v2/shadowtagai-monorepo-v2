@@ -55,7 +55,7 @@ export interface WealthAccelerationAgentConfig {
   /**
    * Additional custom tools to include
    */
-  customTools?: any[];
+  customTools?: unknown[];
 
   /**
    * Enable verbose logging
@@ -172,11 +172,11 @@ export class WealthAccelerationAgent {
 
     if (this.businessContext.offers?.length) {
       parts.push("\nCurrent Offers:");
-      this.businessContext.offers.forEach((offer) => {
+      for (const offer of this.businessContext.offers) {
         parts.push(
           `- ${offer.name}: $${offer.price}${offer.monthlySales ? ` (${offer.monthlySales} sales/month)` : ""}`,
         );
-      });
+      }
     }
 
     if (this.businessContext.platforms?.length) {
@@ -200,7 +200,7 @@ export class WealthAccelerationAgent {
       ? `${this.formatBusinessContext()}\n\n${userPrompt}`
       : userPrompt;
 
-    const options: any = {
+    const options: Record<string, unknown> = {
       systemPrompt: WEALTH_ACCELERATION_AGENT_PROMPT,
       tools: [...monetizationTools, ...(this.config.customTools || [])],
       model: this.config.model,
@@ -264,7 +264,7 @@ Give me the full strategic analysis with brutal honesty about what's missing.
   /**
    * Optimize conversion funnel
    */
-  async optimizeConversionFunnel(funnelStages: any[]): Promise<void> {
+  async optimizeConversionFunnel(funnelStages: unknown[]): Promise<void> {
     const prompt = `
 I need you to analyze my conversion funnel and identify exactly where I'm losing money.
 

@@ -123,13 +123,13 @@ export class Pnkln {
    * Format the enriched result into a user-friendly response
    */
   private formatResponse(
-    enrichedResult: any,
+    enrichedResult: Record<string, unknown>,
     mode: Mode,
   ): Omit<PnklnResponse, "executionTime" | "mode" | "metadata"> {
     try {
       // Try to parse JSON response from Claude
       const content = enrichedResult.content;
-      let parsed: any;
+      let parsed: Record<string, unknown>;
 
       // Extract JSON from response (handle markdown code blocks)
       const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -181,7 +181,10 @@ export class Pnkln {
   /**
    * Format THINK mode response
    */
-  private formatThinkResponse(parsed: any, enriched: any): any {
+  private formatThinkResponse(
+    parsed: Record<string, unknown>,
+    enriched: Record<string, unknown>,
+  ): Omit<PnklnResponse, "executionTime" | "mode" | "metadata"> {
     const answer = `
 **Core Insight:** ${parsed.coreInsight || "Analysis complete"}
 
@@ -209,8 +212,13 @@ ${parsed.recommendedAction || "No specific action recommended"}
   /**
    * Format BUILD mode response
    */
-  private formatBuildResponse(parsed: any, enriched: any): any {
-    const filesCreated = (parsed.files || []).map((f: any) => f.path).join(", ");
+  private formatBuildResponse(
+    parsed: Record<string, unknown>,
+    enriched: Record<string, unknown>,
+  ): Omit<PnklnResponse, "executionTime" | "mode" | "metadata"> {
+    const filesCreated = ((parsed.files as Array<Record<string, unknown>>) || [])
+      .map((f: Record<string, unknown>) => f.path)
+      .join(", ");
     const commandsToRun = (parsed.commands || []).join("\n");
 
     const answer = `
@@ -249,7 +257,10 @@ ${(parsed.securityChecklist || []).map((c: string) => `- ${c}`).join("\n")}
   /**
    * Format SCALE mode response
    */
-  private formatScaleResponse(parsed: any, enriched: any): any {
+  private formatScaleResponse(
+    parsed: Record<string, unknown>,
+    enriched: Record<string, unknown>,
+  ): Omit<PnklnResponse, "executionTime" | "mode" | "metadata"> {
     const current = parsed.currentState || {};
     const recommendation = parsed.recommendation || {};
     const projections = parsed.projections || {};
@@ -308,7 +319,7 @@ ${(parsed.executeCommands || []).join("\n")}
   /**
    * Health check
    */
-  async health(): Promise<any> {
+  async health(): Promise<Record<string, unknown>> {
     const vertexHealthy = await this.orchestrator.healthCheck();
 
     return {

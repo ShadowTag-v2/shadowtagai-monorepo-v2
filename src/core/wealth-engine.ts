@@ -17,7 +17,7 @@ export class WealthEngine {
    */
   async optimize<T>(
     operation: () => Promise<T>,
-    context?: Record<string, any>,
+    context?: Record<string, unknown>,
   ): Promise<EnrichedResult<T>> {
     const startTime = Date.now();
 
@@ -78,7 +78,7 @@ export class WealthEngine {
   /**
    * Scan for revenue opportunities in the operation context
    */
-  private async scanForMoney(context?: Record<string, any>): Promise<Opportunity> {
+  private async scanForMoney(context?: Record<string, unknown>): Promise<Opportunity> {
     // Simple heuristic-based opportunity detection
     // In production, this could use ML models
 

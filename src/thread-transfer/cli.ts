@@ -116,7 +116,7 @@ function main(): void {
   const threadId = args.threadId || generateThreadId();
 
   try {
-    let builder;
+    let builder: ReturnType<typeof TransferPackageTemplates.mcpIntegrationAnalysis> | undefined;
     let output = "";
 
     switch (args.command) {

@@ -22,12 +22,14 @@ export class HandoffOutlineBuilder {
   };
 
   addParameter(key: string, value: string | number | boolean): this {
-    this.outline.keyParameters![key] = value;
+    const params = this.outline.keyParameters ?? {};
+    params[key] = value;
+    this.outline.keyParameters = params;
     return this;
   }
 
   addParameters(params: Record<string, string | number | boolean>): this {
-    Object.assign(this.outline.keyParameters!, params);
+    this.outline.keyParameters = { ...this.outline.keyParameters, ...params };
     return this;
   }
 
@@ -50,7 +52,9 @@ export class HandoffOutlineBuilder {
   }
 
   addVariable(name: string, description: string): this {
-    this.outline.variableConventions![name] = description;
+    const conventions = this.outline.variableConventions ?? {};
+    conventions[name] = description;
+    this.outline.variableConventions = conventions;
     return this;
   }
 
@@ -83,9 +87,9 @@ export class HandoffOutlineBuilder {
 
     // Key Parameters
     lines.push("## Key Parameters\n");
-    Object.entries(outline.keyParameters).forEach(([k, v]) => {
+    for (const [k, v] of Object.entries(outline.keyParameters)) {
       lines.push(`**${k}** = \`${v}\``);
-    });
+    }
     lines.push("");
 
     // Frameworks Active
@@ -94,17 +98,21 @@ export class HandoffOutlineBuilder {
     lines.push("### JR Engine");
     lines.push(`* **Purpose**: ${outline.frameworksActive.jrEngine.purpose}`);
     lines.push("* **Reasons**:");
-    outline.frameworksActive.jrEngine.reasons.forEach((r) => lines.push(`  - ${r}`));
+    for (const r of outline.frameworksActive.jrEngine.reasons) {
+      lines.push(`  - ${r}`);
+    }
     lines.push("* **Brakes**:");
-    outline.frameworksActive.jrEngine.brakes.forEach((b) => lines.push(`  - ${b}`));
+    for (const b of outline.frameworksActive.jrEngine.brakes) {
+      lines.push(`  - ${b}`);
+    }
     lines.push("");
 
     lines.push("### ATP 5-19 Risk Matrix");
     lines.push(`* **Enabled**: ${outline.frameworksActive.atp519.enabled}`);
     lines.push("* **Thresholds**:");
-    Object.entries(outline.frameworksActive.atp519.thresholds).forEach(([level, desc]) => {
+    for (const [level, desc] of Object.entries(outline.frameworksActive.atp519.thresholds)) {
       lines.push(`  - **${level}**: ${desc}`);
-    });
+    }
     lines.push("");
 
     lines.push("### Bootstrap Constraints");
@@ -119,7 +127,7 @@ export class HandoffOutlineBuilder {
     // Repository Targets
     if (outline.repositoryTargets && outline.repositoryTargets.length > 0) {
       lines.push("## Repository Targets\n");
-      outline.repositoryTargets.forEach((repo, idx) => {
+      for (const [idx, repo] of outline.repositoryTargets.entries()) {
         const badge =
           repo.priority === "PRIMARY"
             ? "🎯 PRIMARY"
@@ -128,7 +136,7 @@ export class HandoffOutlineBuilder {
               : "📚 REFERENCE";
         lines.push(`${idx + 1}. **${repo.org}/${repo.repo}** - ${badge}`);
         lines.push(`   - ${repo.purpose}`);
-      });
+      }
       lines.push("");
     }
 
@@ -136,37 +144,45 @@ export class HandoffOutlineBuilder {
     lines.push("## Current Objectives\n");
 
     lines.push("### Immediate (M0)");
-    outline.currentObjectives.immediate.forEach((obj) => lines.push(`* ${obj}`));
+    for (const obj of outline.currentObjectives.immediate) {
+      lines.push(`* ${obj}`);
+    }
     lines.push("");
 
     lines.push("### M1-3");
-    outline.currentObjectives.m1to3.forEach((obj) => lines.push(`* ${obj}`));
+    for (const obj of outline.currentObjectives.m1to3) {
+      lines.push(`* ${obj}`);
+    }
     lines.push("");
 
     lines.push("### M3+");
-    outline.currentObjectives.m3plus.forEach((obj) => lines.push(`* ${obj}`));
+    for (const obj of outline.currentObjectives.m3plus) {
+      lines.push(`* ${obj}`);
+    }
     lines.push("");
 
     // Variable Conventions
     if (Object.keys(outline.variableConventions).length > 0) {
       lines.push("## Variable Names & Conventions\n");
-      Object.entries(outline.variableConventions).forEach(([name, desc]) => {
+      for (const [name, desc] of Object.entries(outline.variableConventions)) {
         lines.push(`* \`${name}\` - ${desc}`);
-      });
+      }
       lines.push("");
     }
 
     // Open Questions
     if (outline.openQuestions.length > 0) {
       lines.push("## Open Questions\n");
-      outline.openQuestions.forEach((q) => lines.push(`* ${q}`));
+      for (const q of outline.openQuestions) {
+        lines.push(`* ${q}`);
+      }
       lines.push("");
     }
 
     // Risk Flags
     if (outline.riskFlags.length > 0) {
       lines.push("## Risk Flags\n");
-      outline.riskFlags.forEach((risk) => {
+      for (const risk of outline.riskFlags) {
         const icon = this.getRiskIcon(risk.level);
         lines.push(
           `* ${icon} **${risk.category}** [${risk.probability}×${risk.severity} → ${risk.level}]`,
@@ -175,7 +191,7 @@ export class HandoffOutlineBuilder {
         if (risk.mitigation) {
           lines.push(`  - *Mitigation*: ${risk.mitigation}`);
         }
-      });
+      }
     }
 
     return lines.join("\n");
@@ -200,45 +216,45 @@ export class HandoffOutlineBuilder {
 /**
  * Risk Assessment Utilities
  */
-export class RiskAssessment {
-  private static readonly RISK_MATRIX: Record<Probability, Record<Severity, RiskLevel>> = {
-    [Probability.A]: {
-      [Severity.I]: RiskLevel.EH,
-      [Severity.II]: RiskLevel.EH,
-      [Severity.III]: RiskLevel.H,
-      [Severity.IV]: RiskLevel.M,
-    },
-    [Probability.B]: {
-      [Severity.I]: RiskLevel.EH,
-      [Severity.II]: RiskLevel.H,
-      [Severity.III]: RiskLevel.M,
-      [Severity.IV]: RiskLevel.L,
-    },
-    [Probability.C]: {
-      [Severity.I]: RiskLevel.H,
-      [Severity.II]: RiskLevel.M,
-      [Severity.III]: RiskLevel.M,
-      [Severity.IV]: RiskLevel.L,
-    },
-    [Probability.D]: {
-      [Severity.I]: RiskLevel.M,
-      [Severity.II]: RiskLevel.M,
-      [Severity.III]: RiskLevel.L,
-      [Severity.IV]: RiskLevel.L,
-    },
-    [Probability.E]: {
-      [Severity.I]: RiskLevel.M,
-      [Severity.II]: RiskLevel.L,
-      [Severity.III]: RiskLevel.L,
-      [Severity.IV]: RiskLevel.L,
-    },
-  };
+const RISK_MATRIX: Record<Probability, Record<Severity, RiskLevel>> = {
+  [Probability.A]: {
+    [Severity.I]: RiskLevel.EH,
+    [Severity.II]: RiskLevel.EH,
+    [Severity.III]: RiskLevel.H,
+    [Severity.IV]: RiskLevel.M,
+  },
+  [Probability.B]: {
+    [Severity.I]: RiskLevel.EH,
+    [Severity.II]: RiskLevel.H,
+    [Severity.III]: RiskLevel.M,
+    [Severity.IV]: RiskLevel.L,
+  },
+  [Probability.C]: {
+    [Severity.I]: RiskLevel.H,
+    [Severity.II]: RiskLevel.M,
+    [Severity.III]: RiskLevel.M,
+    [Severity.IV]: RiskLevel.L,
+  },
+  [Probability.D]: {
+    [Severity.I]: RiskLevel.M,
+    [Severity.II]: RiskLevel.M,
+    [Severity.III]: RiskLevel.L,
+    [Severity.IV]: RiskLevel.L,
+  },
+  [Probability.E]: {
+    [Severity.I]: RiskLevel.M,
+    [Severity.II]: RiskLevel.L,
+    [Severity.III]: RiskLevel.L,
+    [Severity.IV]: RiskLevel.L,
+  },
+};
 
-  static calculateLevel(probability: Probability, severity: Severity): RiskLevel {
-    return RiskAssessment.RISK_MATRIX[probability][severity];
-  }
+export const RiskAssessment = {
+  calculateLevel(probability: Probability, severity: Severity): RiskLevel {
+    return RISK_MATRIX[probability][severity];
+  },
 
-  static createRisk(
+  createRisk(
     category: string,
     description: string,
     probability: Probability,
@@ -253,14 +269,14 @@ export class RiskAssessment {
       level: RiskAssessment.calculateLevel(probability, severity),
       mitigation,
     };
-  }
-}
+  },
+};
 
 /**
  * Predefined Framework Configurations
  */
-export class FrameworkPresets {
-  static pnklnBootstrap(): FrameworkConfig {
+export const FrameworkPresets = {
+  pnklnBootstrap(): FrameworkConfig {
     return {
       jrEngine: {
         purpose: "Advances Pnkln/revenue?",
@@ -289,9 +305,9 @@ export class FrameworkPresets {
         },
       },
     };
-  }
+  },
 
-  static productionReady(): FrameworkConfig {
+  productionReady(): FrameworkConfig {
     const base = FrameworkPresets.pnklnBootstrap();
     return {
       ...base,
@@ -303,5 +319,5 @@ export class FrameworkPresets {
         ltvCacMonths: 6,
       },
     };
-  }
-}
+  },
+};

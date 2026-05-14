@@ -17,6 +17,9 @@ export { AgentRegistry, agentRegistry } from "./agents/registry";
 export { AgentConfig } from "./config/agent-config";
 // Export types
 export * from "./types/agent.types";
+
+import type { AgentCategory } from "./types/agent.types";
+
 // Export base agent
 export { BaseAgent } from "./utils/base-agent";
 
@@ -45,7 +48,7 @@ export function searchAgents(query: string) {
  * const agents = getAgentsByCategory('development');
  */
 export function getAgentsByCategory(category: string) {
-  return agentRegistry.getAgentsByCategory(category as any);
+  return agentRegistry.getAgentsByCategory(category as AgentCategory);
 }
 
 /**

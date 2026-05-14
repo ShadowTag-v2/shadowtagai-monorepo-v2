@@ -117,7 +117,7 @@ class Metrics {
   /**
    * Get metrics as JSON
    */
-  async getMetricsJSON(): Promise<any> {
+  async getMetricsJSON(): Promise<unknown> {
     const metrics = await client.register.getMetricsAsJSON();
     return metrics;
   }

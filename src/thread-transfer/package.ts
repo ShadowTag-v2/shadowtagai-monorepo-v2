@@ -6,7 +6,13 @@
 import { HandoffOutlineBuilder } from "./handoff-outline.js";
 import { RestartPromptBuilder } from "./restart-prompt.js";
 import { StateSummaryBuilder } from "./state-summary.js";
-import type { HandoffOutline, RestartPrompt, StateSummary, TransferPackage } from "./types.js";
+import type {
+  HandoffOutline,
+  RestartPrompt,
+  StateSummary,
+  TransferPackage,
+  ValidationResult,
+} from "./types.js";
 import { AutoCritique, CritiqueBuilder, PackageValidator } from "./validation.js";
 
 export class TransferPackageBuilder {
@@ -19,7 +25,13 @@ export class TransferPackageBuilder {
   };
 
   withThreadId(id: string): this {
-    this.package.metadata!.threadId = id;
+    const meta = this.package.metadata ?? {
+      version: "1.0.0",
+      generated: new Date().toISOString(),
+      threadId: "",
+    };
+    meta.threadId = id;
+    this.package.metadata = meta;
     return this;
   }
 
@@ -70,7 +82,7 @@ export class TransferPackageBuilder {
     return this.package as TransferPackage;
   }
 
-  validate(): { package: TransferPackage; validation: any } {
+  validate(): { package: TransferPackage; validation: ValidationResult } {
     const pkg = this.build();
     const validator = new PackageValidator();
     const validation = validator.validate(pkg);
@@ -126,13 +138,17 @@ export class TransferPackageBuilder {
 
     if (validation.errors.length > 0) {
       lines.push("## VALIDATION ERRORS:\n");
-      validation.errors.forEach((e: string) => lines.push(`* ❌ ${e}`));
+      for (const e of validation.errors) {
+        lines.push(`* ❌ ${e}`);
+      }
       lines.push("");
     }
 
     if (validation.warnings.length > 0) {
       lines.push("## VALIDATION WARNINGS:\n");
-      validation.warnings.forEach((w: string) => lines.push(`* ⚠️  ${w}`));
+      for (const w of validation.warnings) {
+        lines.push(`* ⚠️  ${w}`);
+      }
     }
 
     return lines.join("\n");
@@ -166,8 +182,22 @@ import { RestartPromptFactory } from "./restart-prompt.js";
 import { StateSummaryFactory } from "./state-summary.js";
 import { Probability, Severity } from "./types.js";
 
-export class TransferPackageTemplates {
-  static mcpIntegrationAnalysis(
+function getRepoPurpose(repoName: string): string {
+  const purposes: Record<string, string> = {
+    "anthropic-quickstarts": "Reference implementations",
+    servers: "MCP server patterns",
+    "typescript-sdk": "Core SDK for integration",
+    courses: "Training materials",
+    "DeepSeek-V3": "Model architecture reference",
+    "Qwen2.5-Coder": "Code generation benchmarks",
+    "llama-models": "Alternative model comparison",
+  };
+
+  return purposes[repoName] || "General reference";
+}
+
+export const TransferPackageTemplates = {
+  mcpIntegrationAnalysis(
     threadId: string,
     repos: string[],
     strategy: string,
@@ -224,7 +254,7 @@ export class TransferPackageTemplates {
         ),
       );
 
-    repos.forEach((repo) => {
+    for (const repo of repos) {
       const [org, name] = repo.split("/");
       const priority =
         name === "typescript-sdk"
@@ -237,9 +267,9 @@ export class TransferPackageTemplates {
         org,
         repo: name,
         priority,
-        purpose: TransferPackageTemplates.getRepoPurpose(name),
+        purpose: getRepoPurpose(name),
       });
-    });
+    }
 
     const part3 = RestartPromptFactory.forMCPIntegration(threadId, strategy, repos).build();
 
@@ -249,9 +279,9 @@ export class TransferPackageTemplates {
       .withPart2(part2Builder.build())
       .withPart3(part3)
       .autoCritique();
-  }
+  },
 
-  static geminiIngestionLayer(threadId: string, sources: string[]): TransferPackageBuilder {
+  geminiIngestionLayer(threadId: string, sources: string[]): TransferPackageBuilder {
     const part1 = StateSummaryFactory.forGeminiIngestion(threadId, sources).build();
 
     const part2Builder = new HandoffOutlineBuilder()
@@ -275,19 +305,5 @@ export class TransferPackageTemplates {
       .withPart2(part2Builder.build())
       .withPart3(part3)
       .autoCritique();
-  }
-
-  private static getRepoPurpose(repoName: string): string {
-    const purposes: Record<string, string> = {
-      "anthropic-quickstarts": "Reference implementations",
-      servers: "MCP server patterns",
-      "typescript-sdk": "Core SDK for integration",
-      courses: "Training materials",
-      "DeepSeek-V3": "Model architecture reference",
-      "Qwen2.5-Coder": "Code generation benchmarks",
-      "llama-models": "Alternative model comparison",
-    };
-
-    return purposes[repoName] || "General reference";
-  }
-}
+  },
+};

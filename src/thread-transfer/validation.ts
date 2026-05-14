@@ -51,19 +51,25 @@ export class CritiqueBuilder {
 
     if (c.assumptions.length > 0) {
       lines.push("## ASSUMPTIONS:");
-      c.assumptions.forEach((a) => lines.push(`* ${a}`));
+      for (const a of c.assumptions) {
+        lines.push(`* ${a}`);
+      }
       lines.push("");
     }
 
     if (c.weaknesses.length > 0) {
       lines.push("## WEAKNESSES:");
-      c.weaknesses.forEach((w) => lines.push(`* ${w}`));
+      for (const w of c.weaknesses) {
+        lines.push(`* ${w}`);
+      }
       lines.push("");
     }
 
     if (c.whatCouldBeWrong.length > 0) {
       lines.push("## WHAT COULD BE WRONG:");
-      c.whatCouldBeWrong.forEach((r) => lines.push(`* ${r}`));
+      for (const r of c.whatCouldBeWrong) {
+        lines.push(`* ${r}`);
+      }
     }
 
     return lines.join("\n");
@@ -247,8 +253,8 @@ export class PackageValidator {
  * Auto-Critique Generator
  * Analyzes transfer package and generates self-assessment
  */
-export class AutoCritique {
-  static analyze(pkg: TransferPackage): CritiqueBuilder {
+export const AutoCritique = {
+  analyze(pkg: TransferPackage): CritiqueBuilder {
     const builder = new CritiqueBuilder();
 
     // Analyze scope assumptions
@@ -299,9 +305,9 @@ export class AutoCritique {
     builder.addRisk("No backup of generated code/scripts in transfer package");
 
     return builder;
-  }
+  },
 
-  static forMCPIntegration(): CritiqueBuilder {
+  forMCPIntegration(): CritiqueBuilder {
     return new CritiqueBuilder()
       .addAssumption(
         "Next thread continues MCP evaluation immediately (vs pivoting to different workstream)",
@@ -331,5 +337,5 @@ export class AutoCritique {
       .addRisk(
         "No backup of generated script code in transfer package (assumes script content known)",
       );
-  }
-}
+  },
+};

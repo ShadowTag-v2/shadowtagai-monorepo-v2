@@ -33,7 +33,7 @@ export class VertexOrchestrator {
   /**
    * Execute a prompt with the appropriate mode
    */
-  async execute(prompt: string, mode: Mode, context?: Record<string, any>): Promise<string> {
+  async execute(prompt: string, mode: Mode, context?: Record<string, unknown>): Promise<string> {
     const startTime = Date.now();
     const systemPrompt = this.getSystemPrompt(mode);
 
@@ -108,7 +108,7 @@ export class VertexOrchestrator {
   /**
    * Build the full prompt with context
    */
-  private buildPromptWithContext(prompt: string, context?: Record<string, any>): string {
+  private buildPromptWithContext(prompt: string, context?: Record<string, unknown>): string {
     if (!context || Object.keys(context).length === 0) {
       return prompt;
     }

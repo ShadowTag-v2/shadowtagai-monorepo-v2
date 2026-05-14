@@ -83,21 +83,27 @@ export class RestartPromptBuilder {
     // Current State
     if (prompt.currentState.length > 0) {
       lines.push("**Current State**:");
-      prompt.currentState.forEach((item) => lines.push(`- ${item}`));
+      for (const item of prompt.currentState) {
+        lines.push(`- ${item}`);
+      }
       lines.push("");
     }
 
     // Bootstrap Constraints
     if (prompt.bootstrapConstraints.length > 0) {
       lines.push("**Bootstrap Constraints**:");
-      prompt.bootstrapConstraints.forEach((c) => lines.push(`- ${c}`));
+      for (const c of prompt.bootstrapConstraints) {
+        lines.push(`- ${c}`);
+      }
       lines.push("");
     }
 
     // Frameworks Active
     if (prompt.frameworksActive.length > 0) {
       lines.push("**Frameworks Active**:");
-      prompt.frameworksActive.forEach((f) => lines.push(`- ${f}`));
+      for (const f of prompt.frameworksActive) {
+        lines.push(`- ${f}`);
+      }
       lines.push("");
     }
 
@@ -110,7 +116,9 @@ export class RestartPromptBuilder {
     // Open Questions
     if (prompt.openQuestions.length > 0) {
       lines.push("**Open Questions**:");
-      prompt.openQuestions.forEach((q, idx) => lines.push(`${idx + 1}. ${q}`));
+      for (const [idx, q] of prompt.openQuestions.entries()) {
+        lines.push(`${idx + 1}. ${q}`);
+      }
       lines.push("");
     }
 
@@ -160,12 +168,8 @@ export class RestartPromptBuilder {
 /**
  * Restart Prompt Factory
  */
-export class RestartPromptFactory {
-  static forMCPIntegration(
-    threadId: string,
-    strategy: string,
-    repos: string[],
-  ): RestartPromptBuilder {
+export const RestartPromptFactory = {
+  forMCPIntegration(threadId: string, strategy: string, repos: string[]): RestartPromptBuilder {
     return new RestartPromptBuilder()
       .withThreadId(threadId)
       .withMission(
@@ -188,9 +192,9 @@ export class RestartPromptFactory {
       .addQuestion("Namespace? (erikcleveland personal vs pnkln org)")
       .addQuestion("Sync policy? (ad-hoc vs scheduled upstream merge)")
       .withResumePoint("Execute fork decision → begin MCP SDK analysis");
-  }
+  },
 
-  static forGeminiIngestion(threadId: string, sources: string[]): RestartPromptBuilder {
+  forGeminiIngestion(threadId: string, sources: string[]): RestartPromptBuilder {
     return new RestartPromptBuilder()
       .withThreadId(threadId)
       .withMission(
@@ -208,12 +212,12 @@ export class RestartPromptFactory {
       .addQuestion("Optimize for speed vs cost vs coverage?")
       .addQuestion("Tier distribution targets?")
       .withResumePoint("Execute coverage analysis → optimize tier ratios");
-  }
+  },
 
-  static minimal(threadId: string, mission: string, resumeFrom: string): RestartPromptBuilder {
+  minimal(threadId: string, mission: string, resumeFrom: string): RestartPromptBuilder {
     return new RestartPromptBuilder()
       .withThreadId(threadId)
       .withMission(mission)
       .withResumePoint(resumeFrom);
-  }
-}
+  },
+};

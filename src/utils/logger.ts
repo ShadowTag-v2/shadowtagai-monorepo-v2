@@ -32,6 +32,6 @@ export const logger = winston.createLogger({
 });
 
 // Create child logger with context
-export function createLogger(context: Record<string, any>) {
+export function createLogger(context: Record<string, unknown>) {
   return logger.child(context);
 }

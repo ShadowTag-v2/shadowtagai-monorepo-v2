@@ -47,7 +47,9 @@ export abstract class BaseAgent implements Agent {
 
         try {
           await this.executeStep(step, context, result);
-          result.metrics!.stepsCompleted++;
+          const metrics = result.metrics ?? { executionTimeMs: 0, stepsCompleted: 0 };
+          metrics.stepsCompleted++;
+          result.metrics = metrics;
         } catch (error) {
           result.errors?.push({
             code: `STEP_${i}_FAILED`,
@@ -71,7 +73,9 @@ export abstract class BaseAgent implements Agent {
         details: error,
       });
     } finally {
-      result.metrics!.executionTimeMs = Date.now() - startTime;
+      const finalMetrics = result.metrics ?? { executionTimeMs: 0, stepsCompleted: 0 };
+      finalMetrics.executionTimeMs = Date.now() - startTime;
+      result.metrics = finalMetrics;
     }
 
     return result;
@@ -121,16 +125,16 @@ export abstract class BaseAgent implements Agent {
 
     if (result.errors?.length) {
       output += "\n⚠️  Errors:\n";
-      result.errors.forEach((error, index) => {
+      for (const [index, error] of result.errors.entries()) {
         output += `${index + 1}. [${error.code}] ${error.message}\n`;
-      });
+      }
     }
 
     if (result.recommendations?.length) {
       output += "\n💡 Recommendations:\n";
-      result.recommendations.forEach((rec, index) => {
+      for (const [index, rec] of result.recommendations.entries()) {
         output += `${index + 1}. ${rec}\n`;
-      });
+      }
     }
 
     return output;

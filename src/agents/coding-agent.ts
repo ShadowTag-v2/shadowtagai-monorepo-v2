@@ -279,7 +279,7 @@ const analyzeComplexityTool = tool({
 // ==================== Coding Agent Class ====================
 
 export class CodingAgent {
-  private tools: any[];
+  private tools: unknown[];
 
   constructor() {
     this.tools = [readCodeFileTool, searchCodePatternTool, analyzeComplexityTool];

@@ -62,14 +62,14 @@ export class StateSummaryBuilder {
 
     // What We Built
     lines.push("## What We Built:\n");
-    summary.whatWeBuilt.forEach((artifact) => {
+    for (const artifact of summary.whatWeBuilt) {
       const status = artifact.ready ? "✅" : "⏳";
       lines.push(`* ${status} **${artifact.type.toUpperCase()}** (${artifact.path})`);
       lines.push(`  - ${artifact.description}`);
       if (artifact.dependencies && artifact.dependencies.length > 0) {
         lines.push(`  - Dependencies: ${artifact.dependencies.join(", ")}`);
       }
-    });
+    }
     lines.push("");
 
     // Current State
@@ -78,12 +78,16 @@ export class StateSummaryBuilder {
 
     if (summary.currentState.blockers.length > 0) {
       lines.push("**Blockers**:");
-      summary.currentState.blockers.forEach((b) => lines.push(`* ${b}`));
+      for (const b of summary.currentState.blockers) {
+        lines.push(`* ${b}`);
+      }
       lines.push("");
     }
 
     lines.push("**Next Actions**:");
-    summary.currentState.nextActions.forEach((a) => lines.push(`* ${a}`));
+    for (const a of summary.currentState.nextActions) {
+      lines.push(`* ${a}`);
+    }
     lines.push("");
 
     // Technical Context
@@ -91,7 +95,9 @@ export class StateSummaryBuilder {
 
     if (summary.technicalContext.architecture.length > 0) {
       lines.push("**Architecture**:");
-      summary.technicalContext.architecture.forEach((a) => lines.push(`* ${a}`));
+      for (const a of summary.technicalContext.architecture) {
+        lines.push(`* ${a}`);
+      }
       lines.push("");
     }
 
@@ -102,9 +108,9 @@ export class StateSummaryBuilder {
 
     if (summary.technicalContext.metrics) {
       lines.push("**Metrics**:");
-      Object.entries(summary.technicalContext.metrics).forEach(([k, v]) => {
+      for (const [k, v] of Object.entries(summary.technicalContext.metrics)) {
         lines.push(`* ${k}: ${v}`);
-      });
+      }
       lines.push("");
     }
 
@@ -119,12 +125,8 @@ export class StateSummaryBuilder {
 /**
  * Factory functions for common session patterns
  */
-export class StateSummaryFactory {
-  static forMCPIntegration(
-    threadId: string,
-    repos: string[],
-    strategy: string,
-  ): StateSummaryBuilder {
+export const StateSummaryFactory = {
+  forMCPIntegration(threadId: string, repos: string[], strategy: string): StateSummaryBuilder {
     return new StateSummaryBuilder()
       .withSessionScope({
         domain: "MCP Integration Analysis",
@@ -161,9 +163,9 @@ export class StateSummaryFactory {
           "SLA p99": "≤90ms",
         },
       });
-  }
+  },
 
-  static forGeminiIngestion(threadId: string, sources: string[]): StateSummaryBuilder {
+  forGeminiIngestion(threadId: string, sources: string[]): StateSummaryBuilder {
     return new StateSummaryBuilder()
       .withSessionScope({
         domain: "Gemini Ingestion Layer",
@@ -184,5 +186,5 @@ export class StateSummaryFactory {
         },
         integrations: sources,
       });
-  }
-}
+  },
+};
