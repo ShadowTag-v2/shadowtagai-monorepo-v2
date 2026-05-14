@@ -175,8 +175,7 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
 
   # Specific third-party test secrets (confirmed false positives)
   regexes = [
-    # Odoo payment_stripe test key — NOT acct_1Syh9JEHnWpykeMi
-    '''sk_test_KJtHgNwt2KS3xM7QJPr4O5E8''',
+    # Odoo payment_stripe test key removed
     # OpenTofu doc example vault token
     '''s\.Fg8wA4nDrP08TirpjE''',
     # ── VCR scrubbed token placeholders (synced from .gitleaks.toml 2026-05-09) ──
