@@ -250,7 +250,7 @@ class DTESystem:
                 default=0.0,
             ),
             "strategies_used": list(set(r.strategy for r in self.evolution_history)),
-            "latest_evolution": self.evolution_history[-1].dict() if self.evolution_history else None,
+            "latest_evolution": self.evolution_history[-1].model_dump() if self.evolution_history else None,
         }
 
 

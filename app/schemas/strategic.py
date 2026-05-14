@@ -4,7 +4,7 @@ Strategic planning models for Cor.57 Unified Sky-Ground GPU Mesh
 """
 
 from typing import Optional, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 
 
@@ -25,17 +25,14 @@ class Milestone(BaseModel):
     valuation_impact: int = Field(..., description="Valuation impact in USD")
     status: MilestoneStatus = Field(default=MilestoneStatus.PLANNED)
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "date": "Q4 2025",
                 "description": "Pilot live (3 CoreWeave–Starlink sites)",
                 "valuation_impact": 500000000,
                 "status": "planned",
             }
-        }
-
-
+        })
 class StrategicEffect(BaseModel):
     """Strategic effect measurement"""
 
@@ -44,12 +41,9 @@ class StrategicEffect(BaseModel):
     improvement: str = Field(..., description="Improvement description")
     quantified_value: str | None = Field(None, description="Quantified value if applicable")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {"category": "Efficiency", "metric": "Compute cost", "improvement": "45–55% reduction", "quantified_value": "↓ 45–55%"}
-        }
-
-
+        })
 class LegalPositioning(BaseModel):
     """Legal and contractual positioning"""
 
@@ -58,17 +52,14 @@ class LegalPositioning(BaseModel):
     revenue_model: str | None = Field(None, description="Revenue model if applicable")
     ownership_rights: list[str] = Field(default_factory=list, description="Ownership rights")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "role": "Integrator of Record",
                 "description": "Bridge contract between SpaceX, CoreWeave, and telecoms",
                 "revenue_model": "10–15% brokerage on all compute/bandwidth flows",
                 "ownership_rights": ["Orchestration IP", "Telemetry data", "Software platform"],
             }
-        }
-
-
+        })
 class CompetitiveAdvantage(BaseModel):
     """Competitive advantage description"""
 
@@ -77,17 +68,14 @@ class CompetitiveAdvantage(BaseModel):
     barrier_to_entry: str = Field(..., description="Barrier to entry level (Low, Medium, High)")
     sustainability: str = Field(..., description="Sustainability assessment")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "advantage": "Dual-Use Critical Infrastructure",
                 "description": "Only entity bridging airspace and earth with verified AI",
                 "barrier_to_entry": "High",
                 "sustainability": "10+ years with proper execution",
             }
-        }
-
-
+        })
 class PartnershipModel(BaseModel):
     """Partnership model"""
 
@@ -97,8 +85,7 @@ class PartnershipModel(BaseModel):
     revenue_sharing: str | None = Field(None, description="Revenue sharing model if applicable")
     strategic_value: str = Field(..., description="Strategic value description")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "partner_name": "SpaceX",
                 "partner_type": "Both",
@@ -106,9 +93,7 @@ class PartnershipModel(BaseModel):
                 "revenue_sharing": "Hybrid compute + bandwidth split",
                 "strategic_value": "Critical for orbital layer; global coverage enabler",
             }
-        }
-
-
+        })
 class StrategicPlan(BaseModel):
     """Complete strategic plan overview"""
 
@@ -132,8 +117,7 @@ class GlobalDeploymentMetrics(BaseModel):
     geographic_coverage: str = Field(..., description="Geographic coverage description")
     total_compute_nodes: int = Field(..., description="Total compute nodes")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "total_towers": 100000,
                 "total_satellites": 3000,
@@ -141,9 +125,7 @@ class GlobalDeploymentMetrics(BaseModel):
                 "geographic_coverage": "Global - 95% populated areas",
                 "total_compute_nodes": 3103000,
             }
-        }
-
-
+        })
 class ConsolidatedSummary(BaseModel):
     """Consolidated summary of Cor.57"""
 
@@ -154,8 +136,7 @@ class ConsolidatedSummary(BaseModel):
     annual_family_yield: int = Field(..., description="Annual family yield in USD")
     strategic_control: str = Field(..., description="Strategic control description")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "total_arr": 10000000000,
                 "ebitda_margin": 84.0,
@@ -170,4 +151,4 @@ class ConsolidatedSummary(BaseModel):
                 "annual_family_yield": 7000000000,
                 "strategic_control": "100% infrastructure + IP ownership",
             }
-        }
+        })

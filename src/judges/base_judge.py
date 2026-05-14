@@ -216,8 +216,8 @@ class BaseJudge(ABC):
             risk_level=response.risk_assessment.risk_level,
             semantic_summary=response.semantic_trail,
             full_context={
-                "request": request.dict(),
-                "response": response.dict(),
+                "request": request.model_dump(),
+                "response": response.model_dump(),
                 # In production: encrypt this
                 "encrypted": False,
             },

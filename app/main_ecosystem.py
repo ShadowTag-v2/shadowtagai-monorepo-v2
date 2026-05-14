@@ -65,7 +65,7 @@ async def lifespan(app: FastAPI):
     )
 
     if not validation.passed:
-        logger.error("Kernel chain failed JR Engine validation", extra={"validation": validation.dict()})
+        logger.error("Kernel chain failed JR Engine validation", extra={"validation": validation.model_dump()})
         raise RuntimeError("Kernel chain validation failed")
 
     logger.info(
@@ -226,7 +226,7 @@ async def get_validation_report():
         ]
     )
 
-    return validation.dict()
+    return validation.model_dump()
 
 
 # =============================================================================
@@ -263,7 +263,7 @@ async def run_debate(question: str, num_agents: int = 3, max_rounds: int = 3):
     orchestrator = DebateOrchestrator(agents, max_rounds=max_rounds)
     result = await orchestrator.run_debate(question)
 
-    return result.dict()
+    return result.model_dump()
 
 
 @app.post("/evolve")
@@ -288,7 +288,7 @@ async def evolve_prompt(
 
     result = await dte_system.evolve_prompt(prompt, test_cases, strategy)
 
-    return result.dict()
+    return result.model_dump()
 
 
 @app.post("/wealth/analyze")
@@ -320,21 +320,21 @@ async def analyze_wealth(
         conversion_rates=conversion_rates or {},
     )
 
-    return plan.dict()
+    return plan.model_dump()
 
 
 @app.get("/ratings")
 async def get_rating_systems():
     """Compare Glicko-2 vs Elo vs PPO rating approaches."""
     comparisons = compare_rating_systems()
-    return {"systems": [c.dict() for c in comparisons]}
+    return {"systems": [c.model_dump() for c in comparisons]}
 
 
 @app.get("/training/compare")
 async def compare_training_systems():
     """Compare GRPO vs PPO training approaches."""
     comparisons = compare_grpo_ppo()
-    return {"comparisons": [c.dict() for c in comparisons]}
+    return {"comparisons": [c.model_dump() for c in comparisons]}
 
 
 @app.get("/cheat-sheet")
@@ -356,10 +356,10 @@ async def get_cheat_sheet(sheet_type: str = "kernel"):
         raise HTTPException(status_code=400, detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'")
 
     return {
-        "cheat_sheet": sheet.dict(),
+        "cheat_sheet": sheet.model_dump(),
         "system_prompt": sheet.to_system_prompt(),
-        "evolution_history": [v.dict() for v in CHEAT_SHEET_VERSIONS],
-        "dte_test_result": CHEAT_SHEET_DTE_TEST.dict(),
+        "evolution_history": [v.model_dump() for v in CHEAT_SHEET_VERSIONS],
+        "dte_test_result": CHEAT_SHEET_DTE_TEST.model_dump(),
     }
 
 

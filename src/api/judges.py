@@ -295,7 +295,7 @@ async def generate_sample_request(judge_type: JudgeType):
         ),
     }
 
-    return samples.get(judge_type).dict()
+    return samples.get(judge_type).model_dump()
 
 
 # ============================================================================

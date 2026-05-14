@@ -11,7 +11,7 @@ from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Query, status, UploadFile, File
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -117,8 +117,7 @@ class DeadlineRule(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "jurisdiction": "federal",
                 "jurisdiction_type": "federal",
@@ -131,9 +130,7 @@ class DeadlineRule(BaseModel):
                 "rule_source": "FRCP 12(a)(1)(A)",
                 "notes": "Answer to complaint deadline for federal civil cases",
             }
-        }
-
-
+        })
 class ExtractedDeadline(BaseModel):
     """A deadline extracted from a legal document"""
 
@@ -159,8 +156,7 @@ class ExtractedDeadline(BaseModel):
     verified_by: str | None = Field(None, description="Verifying user")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "id": "dl_20251117_abc123",
                 "document_id": "doc_complaint_xyz789",
@@ -184,9 +180,7 @@ class ExtractedDeadline(BaseModel):
                 },
                 "reminder_schedule": ["2025-11-08", "2025-11-24", "2025-12-01", "2025-12-07"],
             }
-        }
-
-
+        })
 class LegalDocument(BaseModel):
     """Legal document for deadline extraction"""
 

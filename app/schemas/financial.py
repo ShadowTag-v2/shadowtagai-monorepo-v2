@@ -4,7 +4,7 @@ Financial projection models for Cor.57 Unified Sky-Ground GPU Mesh
 """
 
 from typing import Optional, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 
 
@@ -27,8 +27,7 @@ class RevenueStream(BaseModel):
     margin_percentage: float = Field(..., ge=0, le=100, description="Profit margin percentage")
     notes: str
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "source": "starlink_inference",
                 "description": "Starlink inference traffic",
@@ -36,9 +35,7 @@ class RevenueStream(BaseModel):
                 "margin_percentage": 85.0,
                 "notes": "AI overlay + data compression",
             }
-        }
-
-
+        })
 class FinancialProjection(BaseModel):
     """Financial projection for a specific year"""
 
@@ -49,8 +46,7 @@ class FinancialProjection(BaseModel):
     free_cash_flow: int = Field(..., description="Free cash flow in USD")
     revenue_streams: list[RevenueStream]
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "year": 2030,
                 "arr": 10000000000,
@@ -59,9 +55,7 @@ class FinancialProjection(BaseModel):
                 "free_cash_flow": 7000000000,
                 "revenue_streams": [],
             }
-        }
-
-
+        })
 class ValuationScenario(str, Enum):
     """Valuation scenario types"""
 
@@ -81,8 +75,7 @@ class Valuation(BaseModel):
     tax_exposure_percentage: float | None = Field(None, ge=0, le=100, description="Effective tax rate percentage")
     liquidity_level: str = Field(..., description="Liquidity level (Low, Medium, High)")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "scenario": "hybrid",
                 "rationale": "Private Infra ($160B) + Public Digital ($150B)",
@@ -91,9 +84,7 @@ class Valuation(BaseModel):
                 "tax_exposure_percentage": 8.0,
                 "liquidity_level": "High",
             }
-        }
-
-
+        })
 class CustomerSegment(BaseModel):
     """Customer segment financial model"""
 
@@ -102,17 +93,14 @@ class CustomerSegment(BaseModel):
     description: str
     contract_type: str = Field(default="IaaS", description="Contract type")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "customer_name": "SpaceX / Starlink",
                 "annual_spend": 400000000,
                 "description": "Starlink + AiYou hybrid AI routing",
                 "contract_type": "IaaS",
             }
-        }
-
-
+        })
 class ConsolidatedFinancials(BaseModel):
     """Consolidated financial overview"""
 
@@ -134,8 +122,7 @@ class OperatingModel(BaseModel):
     roi_period_years: float = Field(..., description="ROI period in years")
     break_even_milestone: str = Field(..., description="Break-even milestone description")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "annual_opex": 400000000,
                 "average_uptime": 99.98,
@@ -143,4 +130,4 @@ class OperatingModel(BaseModel):
                 "roi_period_years": 2.4,
                 "break_even_milestone": "Mid-Year 3",
             }
-        }
+        })

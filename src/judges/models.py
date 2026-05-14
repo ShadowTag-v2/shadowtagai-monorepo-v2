@@ -7,7 +7,7 @@ Binary enforcement decision models with ATP 5-19 risk integration
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 from src.risk_matrix import RiskLevel, RiskAssessment
 
@@ -68,8 +68,7 @@ class JudgeResponse(BaseModel):
     next_steps: list[str] = Field(default_factory=list, description="Required next steps")
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Response timestamp")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "request_id": "req_20251117_fin_001",
                 "decision": "BLOCK",
@@ -92,9 +91,7 @@ class JudgeResponse(BaseModel):
                 "next_steps": ["Route to CFO approval queue", "Verify vendor via D&B lookup", "Request supporting documentation from requester"],
                 "timestamp": "2025-11-17T14:30:00Z",
             }
-        }
-
-
+        })
 class AuditTrail(BaseModel):
     """Immutable semantic-compressed audit trail"""
 
@@ -109,8 +106,7 @@ class AuditTrail(BaseModel):
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Trail creation time")
     retention_days: int = Field(default=2555, description="Retention period (7 years default)")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "trail_id": "trail_20251117_fin_001",
                 "request_id": "req_20251117_fin_001",
@@ -131,9 +127,7 @@ class AuditTrail(BaseModel):
                 "timestamp": "2025-11-17T14:30:00Z",
                 "retention_days": 2555,
             }
-        }
-
-
+        })
 class PerformanceMetrics(BaseModel):
     """Judge performance metrics"""
 

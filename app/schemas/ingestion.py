@@ -5,7 +5,7 @@ Integrated with Cor.57 Unified Sky-Ground GPU Mesh
 """
 
 from typing import List, Dict
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 
 
@@ -51,8 +51,7 @@ class IngestionMetrics(BaseModel):
     completeness_percentage: float = Field(..., ge=0, le=100, description="Data completeness percentage")
     runtime_minutes: float = Field(..., description="Runtime in minutes for nightly job")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "items_per_day": 125000,
                 "unique_sources": 47,
@@ -62,9 +61,7 @@ class IngestionMetrics(BaseModel):
                 "completeness_percentage": 94.5,
                 "runtime_minutes": 43.2,
             }
-        }
-
-
+        })
 class EthicalComplianceMetrics(BaseModel):
     """Ethical crawling and compliance metrics"""
 
@@ -75,8 +72,7 @@ class EthicalComplianceMetrics(BaseModel):
     ethical_flags: int = Field(..., description="Number of ethical flags raised")
     compliance_status: ComplianceStatus
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "robots_txt_compliance": 99.8,
                 "rate_limiting_adherence": 98.5,
@@ -85,9 +81,7 @@ class EthicalComplianceMetrics(BaseModel):
                 "ethical_flags": 2,
                 "compliance_status": "compliant",
             }
-        }
-
-
+        })
 class SourceCoverage(BaseModel):
     """Multi-source coverage metrics"""
 
@@ -97,8 +91,7 @@ class SourceCoverage(BaseModel):
     reliability_score: float = Field(..., ge=0, le=100, description="Source reliability score")
     tier_distribution: dict[DataTier, int] = Field(..., description="Distribution across data tiers")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "source_type": "twitter",
                 "items_collected": 45000,
@@ -106,9 +99,7 @@ class SourceCoverage(BaseModel):
                 "reliability_score": 85.0,
                 "tier_distribution": {"tier_1": 12000, "tier_2": 25000, "tier_3": 8000},
             }
-        }
-
-
+        })
 class TierClassification(BaseModel):
     """Data tier classification and distribution"""
 
@@ -118,10 +109,7 @@ class TierClassification(BaseModel):
     average_cost: float = Field(..., description="Average cost per item in USD")
     quality_score: float = Field(..., ge=0, le=100, description="Quality score for this tier")
 
-    class Config:
-        json_schema_extra = {"example": {"tier": "tier_1", "item_count": 35000, "percentage": 28.0, "average_cost": 0.00142, "quality_score": 94.5}}
-
-
+    model_config = ConfigDict(json_schema_extra={"example": {"tier": "tier_1", "item_count": 35000, "percentage": 28.0, "average_cost": 0.00142, "quality_score": 94.5}})
 class GKEArchitecture(BaseModel):
     """GKE CronJob architecture configuration"""
 
@@ -134,8 +122,7 @@ class GKEArchitecture(BaseModel):
     average_runtime_minutes: float = Field(..., description="Average runtime in minutes")
     success_rate: float = Field(..., ge=0, le=100, description="Job success rate percentage")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "cluster_name": "aiyou-ingestion-cluster",
                 "namespace": "intelligence-pipeline",
@@ -146,9 +133,7 @@ class GKEArchitecture(BaseModel):
                 "average_runtime_minutes": 45.0,
                 "success_rate": 99.7,
             }
-        }
-
-
+        })
 class QualityGates(BaseModel):
     """Quality gates for ingestion validation"""
 
@@ -160,8 +145,7 @@ class QualityGates(BaseModel):
     gates_total: int = Field(..., description="Total number of quality gates")
     overall_status: str = Field(..., description="Overall quality gate status")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "minimum_items_per_day": 100000,
                 "minimum_sources": 40,
@@ -171,9 +155,7 @@ class QualityGates(BaseModel):
                 "gates_total": 4,
                 "overall_status": "PASSED",
             }
-        }
-
-
+        })
 class AMBriefingMetrics(BaseModel):
     """AM Briefing delivery effectiveness metrics"""
 
@@ -184,8 +166,7 @@ class AMBriefingMetrics(BaseModel):
     actionability_score: float = Field(..., ge=0, le=100, description="Intelligence actionability score")
     format_quality: str = Field(..., description="Briefing format quality assessment")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "delivery_time": "06:00 AM",
                 "on_time_delivery_rate": 98.5,
@@ -194,9 +175,7 @@ class AMBriefingMetrics(BaseModel):
                 "actionability_score": 91.7,
                 "format_quality": "Excellent",
             }
-        }
-
-
+        })
 class OperationalCostBreakdown(BaseModel):
     """Monthly operational cost breakdown"""
 
@@ -207,8 +186,7 @@ class OperationalCostBreakdown(BaseModel):
     gemini_api: float = Field(..., description="Gemini API cost in USD")
     total_monthly_cost: float = Field(..., description="Total monthly cost in USD")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "gke_infrastructure": 28.50,
                 "api_calls": 18.75,
@@ -217,9 +195,7 @@ class OperationalCostBreakdown(BaseModel):
                 "gemini_api": 9.00,
                 "total_monthly_cost": 77.00,
             }
-        }
-
-
+        })
 class IngestionIntegration(BaseModel):
     """Integration with PNKLN Core Stack and Cor.57 infrastructure"""
 
@@ -229,8 +205,7 @@ class IngestionIntegration(BaseModel):
     integration_points: int = Field(..., description="Number of integration points")
     data_handoff_latency_ms: int = Field(..., description="Average data handoff latency in ms")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "called_by_services": [
                     "starlink-orbital-monitor",
@@ -243,9 +218,7 @@ class IngestionIntegration(BaseModel):
                 "integration_points": 8,
                 "data_handoff_latency_ms": 125,
             }
-        }
-
-
+        })
 class GeminiIngestionLayer(BaseModel):
     """Complete Gemini Ingestion Layer analysis model"""
 
@@ -263,8 +236,7 @@ class GeminiIngestionLayer(BaseModel):
     confidence_score: float = Field(..., ge=0, le=100, description="Overall analysis confidence (target ≥60%)")
     recommendations: list[str] = Field(default_factory=list, description="Optimization recommendations")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "timestamp": "2025-11-15T08:30:00Z",
                 "version": "2.0",
@@ -275,9 +247,7 @@ class GeminiIngestionLayer(BaseModel):
                     "Expand Twitter API rate limits for better coverage",
                 ],
             }
-        }
-
-
+        })
 class IngestionVsValidation(BaseModel):
     """Comparison model: Ingestion Layer vs Judge #6 Validator"""
 
@@ -286,12 +256,11 @@ class IngestionVsValidation(BaseModel):
     judge_six: str = Field(..., description="Judge #6 characteristic")
     strategic_impact: str = Field(..., description="Impact on Cor.57 infrastructure")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "component": "Architecture",
                 "ingestion_layer": "GKE CronJob Multi-Container (Batch)",
                 "judge_six": "Hybrid Gemini+PyTorch (Real-time)",
                 "strategic_impact": "Complementary: Ingestion feeds validated data to Judge #6",
             }
-        }
+        })

@@ -1,6 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Configuration management for kernel chain service."""
 
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 from typing import Optional
 
@@ -32,10 +33,6 @@ class Settings(BaseSettings):
     kernel_1_max_output_tokens: int = 2500
     confidence_threshold: float = 0.85
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
-
-
+    model_config = ConfigDict(env_file=".env", case_sensitive=False)
 # Global settings instance
 settings = Settings()

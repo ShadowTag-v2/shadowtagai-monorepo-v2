@@ -346,7 +346,7 @@ async def create_video(video: VideoCreate):
 
     video_data = {
         "id": video_id,
-        **video.dict(),
+        **video.model_dump(),
         "products_count": 0,
         "total_views": 0,
         "total_conversions": 0,
@@ -569,7 +569,7 @@ async def create_product(product: ProductCreate):
 
     product_data = {
         "id": product_id,
-        **product.dict(),
+        **product.model_dump(),
         "total_clicks": 0,
         "total_purchases": 0,
         "click_through_rate": 0.0,
@@ -617,7 +617,7 @@ async def create_product_overlay(overlay: ProductOverlayCreate):
 
     overlay_id = str(uuid.uuid4())
 
-    overlay_data = {"id": overlay_id, **overlay.dict(), "clicks": 0, "conversions": 0, "click_rate": 0.0, "created_at": datetime.now(timezone.utc)}
+    overlay_data = {"id": overlay_id, **overlay.model_dump(), "clicks": 0, "conversions": 0, "click_rate": 0.0, "created_at": datetime.now(timezone.utc)}
 
     product_overlays_db[overlay_id] = overlay_data
 
@@ -661,7 +661,7 @@ async def create_persuasion_point(point: PersuasionPointCreate):
 
     point_id = str(uuid.uuid4())
 
-    point_data = {"id": point_id, **point.dict(), "impressions": 0, "conversion_lift": 0.0, "created_at": datetime.now(timezone.utc)}
+    point_data = {"id": point_id, **point.model_dump(), "impressions": 0, "conversion_lift": 0.0, "created_at": datetime.now(timezone.utc)}
 
     persuasion_points_db[point_id] = point_data
     return point_data
@@ -702,7 +702,7 @@ async def log_interaction(interaction: InteractionCreate):
     """
     interaction_id = str(uuid.uuid4())
 
-    interaction_data = {"id": interaction_id, **interaction.dict(), "timestamp": datetime.now(timezone.utc)}
+    interaction_data = {"id": interaction_id, **interaction.model_dump(), "timestamp": datetime.now(timezone.utc)}
 
     interactions_db.append(interaction_data)
 

@@ -104,7 +104,7 @@ async def update_recommender_config(request: RecommenderConfigRequest):
     - Topic blocking
     - Topic preferences
     """
-    return RecommenderConfigResponse(user_id=request.user_id, config=request.dict(), updated_at=datetime.now(timezone.utc))
+    return RecommenderConfigResponse(user_id=request.user_id, config=request.model_dump(), updated_at=datetime.now(timezone.utc))
 
 
 @router.get("/config/{user_id}", response_model=RecommenderConfigResponse)

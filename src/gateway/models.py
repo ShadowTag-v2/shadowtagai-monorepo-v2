@@ -9,7 +9,7 @@ Every field chosen deliberately. Nothing superfluous.
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class RiskLevel(str, Enum):
@@ -60,15 +60,14 @@ class GovernanceRequest(BaseModel):
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     source_system: str = Field(..., description="Originating system identifier")
 
-    @validator("action")
+    @field_validator("action")
     def action_not_empty(cls, v: str) -> str:
         """Ensure action is meaningful"""
         if not v or not v.strip():
             raise ValueError("Action cannot be empty")
         return v.strip()
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "request_id": "req_20251117_001",
                 "user_id": "user_789",
@@ -80,9 +79,7 @@ class GovernanceRequest(BaseModel):
                 "urgency": "standard",
                 "source_system": "expense-tracker-api",
             }
-        }
-
-
+        })
 class RiskAssessment(BaseModel):
     """
     ATP 5-19 Risk Assessment Result.
@@ -96,8 +93,7 @@ class RiskAssessment(BaseModel):
     hazards: list[str] = Field(default_factory=list, description="Identified hazards")
     controls: list[str] = Field(default_factory=list, description="Recommended controls")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "probability": "C",
                 "severity": "II",
@@ -105,9 +101,7 @@ class RiskAssessment(BaseModel):
                 "hazards": ["Budget overrun risk", "Unauthorized approval"],
                 "controls": ["Manager approval required", "Budget check"],
             }
-        }
-
-
+        })
 class RoutingDecision(BaseModel):
     """
     How this request will be processed.
@@ -121,8 +115,7 @@ class RoutingDecision(BaseModel):
     reason: str = Field(..., description="Why this path was chosen")
     estimated_latency_ms: int = Field(..., ge=0, description="Expected processing time")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "path": "slow_path",
                 "risk_assessment": {
@@ -135,9 +128,7 @@ class RoutingDecision(BaseModel):
                 "reason": "Medium risk requires contextual evaluation",
                 "estimated_latency_ms": 2500,
             }
-        }
-
-
+        })
 class GovernanceResponse(BaseModel):
     """
     Final governance decision with full provenance.
@@ -171,8 +162,7 @@ class GovernanceResponse(BaseModel):
     escalation_reason: str | None = None
     assigned_reviewer: str | None = None
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(json_schema_extra={
             "example": {
                 "request_id": "req_20251117_001",
                 "outcome": "approved",
@@ -192,9 +182,7 @@ class GovernanceResponse(BaseModel):
                 "audit_id": "audit_abc123def456",
                 "escalation_required": False,
             }
-        }
-
-
+        })
 class CircuitBreakerState(BaseModel):
     """
     Circuit breaker state for fallback management.
