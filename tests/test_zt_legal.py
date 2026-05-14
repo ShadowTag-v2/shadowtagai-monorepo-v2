@@ -29,7 +29,9 @@ try:
         JurisdictionEngine,
     )
 except (ImportError, ModuleNotFoundError) as _exc:
-    pytestmark = pytest.mark.skip(reason=f"control.pnkln requires unmigrated shadowtagai namespace: {_exc}")
+    pytestmark = pytest.mark.skip(
+        reason=f"control.pnkln requires unmigrated shadowtagai namespace: {_exc}"
+    )
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
