@@ -17,9 +17,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any
-from typing import List
 from typing import Literal
-from typing import Optional
 
 from google.genai import types
 from pydantic import ConfigDict

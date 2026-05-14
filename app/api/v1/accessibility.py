@@ -5,7 +5,6 @@ Implements WCAG 2.2, COPPA, and Age Appropriate Design Code
 """
 
 from fastapi import APIRouter
-from typing import List
 
 from app.models.accessibility import (
     WCAGAuditRequest,

@@ -19,7 +19,6 @@ import copy
 import importlib
 from typing import Any
 from collections.abc import AsyncGenerator
-from typing import Optional
 import uuid
 
 from google.genai.types import Content

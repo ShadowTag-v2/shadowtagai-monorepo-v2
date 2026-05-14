@@ -16,7 +16,6 @@ http://www.glicko.net/glicko/glicko2.pdf
 """
 
 import math
-from typing import List
 from dataclasses import dataclass
 
 

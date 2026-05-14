@@ -18,7 +18,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from dataclasses import field
 import os
-from typing import Optional
 
 from opentelemetry import _events
 from opentelemetry import _logs

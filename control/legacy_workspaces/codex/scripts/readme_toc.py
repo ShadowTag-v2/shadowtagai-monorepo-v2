@@ -13,7 +13,6 @@ import sys
 import re
 import difflib
 from pathlib import Path
-from typing import List
 
 # Markers for the Table of Contents section
 BEGIN_TOC: str = "<!-- Begin ToC -->"

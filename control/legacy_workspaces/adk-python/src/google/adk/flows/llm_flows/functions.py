@@ -24,7 +24,6 @@ import logging
 from typing import Any
 from collections.abc import AsyncGenerator
 from typing import cast
-from typing import Optional
 from typing import TYPE_CHECKING
 import uuid
 

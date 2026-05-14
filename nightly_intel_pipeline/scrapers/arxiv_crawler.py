@@ -6,7 +6,6 @@ Discovers and downloads relevant AI/MLOps research papers
 
 import asyncio
 from pathlib import Path
-from typing import List, Dict, Optional
 from datetime import datetime, timedelta
 
 import arxiv

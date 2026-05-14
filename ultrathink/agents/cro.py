@@ -5,7 +5,6 @@ ULTRATHINK Framework - Chief Reasoning Officer (CRO)
 Orchestrates multiple reasoning pathways to ensure decisions are elegantly robust.
 """
 
-from typing import Optional
 from ..core.base_agent import BaseAgent
 from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
 

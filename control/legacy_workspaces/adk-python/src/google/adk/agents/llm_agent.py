@@ -24,11 +24,7 @@ from collections.abc import Awaitable
 from collections.abc import Callable
 from typing import cast
 from typing import ClassVar
-from typing import Dict
 from typing import Literal
-from typing import Optional
-from typing import Type
-from typing import Union
 import warnings
 
 from google.genai import types

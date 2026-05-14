@@ -13,7 +13,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
-from typing import Optional, List, Dict, Any
+from typing import Any
 
 
 def read_gene_list(filepath: str) -> list[str]:

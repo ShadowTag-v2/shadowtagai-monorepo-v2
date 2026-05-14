@@ -6,7 +6,7 @@ Provides Pydantic models for hypothesis generation, validation, and analysis.
 Complements the SQLAlchemy Hypothesis model in kosmos.db.models.
 """
 
-from typing import List, Optional, Dict, Any
+from typing import Any
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 from datetime import datetime
 from enum import Enum

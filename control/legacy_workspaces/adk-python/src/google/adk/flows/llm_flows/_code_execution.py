@@ -25,7 +25,6 @@ import logging
 import os
 import re
 from collections.abc import AsyncGenerator
-from typing import Optional
 from typing import TYPE_CHECKING
 
 from google.genai import types

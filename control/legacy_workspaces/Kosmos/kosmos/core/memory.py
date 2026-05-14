@@ -9,7 +9,7 @@ Categories:
 - INSIGHTS: Key discoveries
 """
 
-from typing import List, Dict, Optional, Any, Tuple
+from typing import Any
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from enum import Enum

@@ -2,8 +2,7 @@
 import logging
 import json
 import asyncio
-from datetime import datetime, timedelta, timezone, UTC
-from typing import Optional, Dict, Set
+from datetime import datetime, timedelta, UTC
 
 import redis  # For redis.exceptions
 import redis.asyncio as aioredis

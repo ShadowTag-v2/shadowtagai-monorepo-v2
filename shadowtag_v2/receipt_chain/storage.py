@@ -5,7 +5,7 @@ Chain Storage
 Handles persistent storage and retrieval of receipt chains.
 """
 
-from typing import Optional, List, Dict, Any
+from typing import Any
 from pathlib import Path
 import json
 import sqlite3

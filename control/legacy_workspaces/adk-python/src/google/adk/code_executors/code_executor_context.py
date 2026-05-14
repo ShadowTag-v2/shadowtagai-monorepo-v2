@@ -19,7 +19,6 @@ import copy
 import dataclasses
 import datetime
 from typing import Any
-from typing import Optional
 
 from ..sessions.state import State
 from .code_execution_utils import File

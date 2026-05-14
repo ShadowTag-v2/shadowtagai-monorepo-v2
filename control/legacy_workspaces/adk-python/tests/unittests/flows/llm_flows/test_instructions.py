@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Optional
 
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.agents.llm_agent import Agent

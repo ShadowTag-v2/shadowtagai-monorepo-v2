@@ -19,7 +19,7 @@ Example usage:
     bio_ontology = kb.get_domain_ontology("biology")
 """
 
-from typing import Dict, List, Optional, Tuple, Any, Union
+from typing import Any
 from enum import Enum
 from pydantic import BaseModel, Field
 

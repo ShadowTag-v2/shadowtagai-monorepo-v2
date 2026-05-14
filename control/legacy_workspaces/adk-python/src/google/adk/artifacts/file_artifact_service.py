@@ -22,7 +22,6 @@ from pathlib import PurePosixPath
 from pathlib import PureWindowsPath
 import shutil
 from typing import Any
-from typing import Optional
 from urllib.parse import unquote
 from urllib.parse import urlparse
 

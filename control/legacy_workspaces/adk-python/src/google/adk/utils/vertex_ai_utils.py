@@ -22,7 +22,6 @@ Please do not rely on the implementation details.
 from __future__ import annotations
 
 import os
-from typing import Optional
 
 from ..utils.env_utils import is_env_enabled
 

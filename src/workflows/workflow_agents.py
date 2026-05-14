@@ -10,7 +10,7 @@ the execution of sub-agents in different patterns:
 - Conditional: Execute sub-agents based on conditions
 """
 
-from typing import List, Optional, Dict, Any
+from typing import Any
 from collections.abc import AsyncGenerator, Callable
 from google.adk.agents import BaseAgent
 from google.adk.agents.invocation_context import InvocationContext

@@ -2,7 +2,7 @@
 """Base kernel interface for the chain."""
 
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 import time
 import hashlib
 import json

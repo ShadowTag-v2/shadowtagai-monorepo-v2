@@ -16,7 +16,6 @@
 """Tests for YAML utility functions."""
 
 from pathlib import Path
-from typing import Optional
 
 from google.adk.utils.yaml_utils import dump_pydantic_to_yaml
 from google.genai import types

@@ -5,7 +5,6 @@ Custom middleware for YouAi Governance Service
 
 from fastapi import Request, HTTPException, status
 from starlette.middleware.base import BaseHTTPMiddleware
-from typing import Dict
 import time
 from collections import defaultdict
 import asyncio

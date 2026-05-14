@@ -8,7 +8,7 @@ Documents are created directly using the Google Docs API and content is inserted
 import asyncio
 import time
 import uuid
-from typing import Any, Dict, List
+from typing import Any
 
 import httpx
 from monke.bongos.base_bongo import BaseBongo

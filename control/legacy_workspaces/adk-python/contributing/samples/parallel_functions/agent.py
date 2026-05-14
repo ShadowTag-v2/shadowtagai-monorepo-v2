@@ -17,7 +17,6 @@
 
 import asyncio
 import time
-from typing import List
 
 from google.adk import Agent
 from google.adk.tools.tool_context import ToolContext

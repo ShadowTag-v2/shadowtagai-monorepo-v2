@@ -15,8 +15,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-from typing import Union
 
 from google.genai import types
 from langchain_core.tools import BaseTool as LangchainBaseTool

@@ -10,7 +10,6 @@ from PubChem for compounds and assays.
 import sys
 import json
 import time
-from typing import Dict, List, Optional
 
 try:
     import requests

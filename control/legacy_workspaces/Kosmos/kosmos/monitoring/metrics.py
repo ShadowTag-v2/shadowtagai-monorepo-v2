@@ -7,7 +7,7 @@ Provides comprehensive metrics collection for monitoring and observability.
 
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 from contextlib import contextmanager
 
 try:

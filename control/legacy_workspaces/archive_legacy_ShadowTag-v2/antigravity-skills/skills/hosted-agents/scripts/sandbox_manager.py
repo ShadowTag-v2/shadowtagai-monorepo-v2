@@ -11,7 +11,6 @@ infrastructure (Modal, Fly.io, etc.).
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Optional
 from collections.abc import Callable
 from enum import Enum
 import asyncio

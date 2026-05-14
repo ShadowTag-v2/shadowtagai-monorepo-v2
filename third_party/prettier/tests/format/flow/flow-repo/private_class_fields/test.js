@@ -53,7 +53,7 @@ class Clash {
         (this.#p
         : number) // Error, #p is a string not a number
         this.#p = "test"
-        this.#p = 3; // Error, #p is a string not a number
+        this.#p = 3 // Error, #p is a string not a number
         var x = new Clash();
         (x.#p
         : string) // Error, here #p is a number not a string

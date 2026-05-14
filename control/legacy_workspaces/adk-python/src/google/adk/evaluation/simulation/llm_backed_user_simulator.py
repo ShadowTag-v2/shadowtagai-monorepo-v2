@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import logging
 from typing import ClassVar
-from typing import Optional
 
 from google.genai import types as genai_types
 from pydantic import Field

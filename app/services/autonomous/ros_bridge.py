@@ -6,7 +6,7 @@ Provides REST/WebSocket abstraction over ROS Melodic topics.
 """
 
 import asyncio
-from typing import Dict, Any
+from typing import Any
 from collections.abc import Callable
 from datetime import datetime, timezone
 import structlog

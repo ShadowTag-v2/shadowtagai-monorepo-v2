@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from google.adk.tools.tool_context import ToolContext
-from typing import Dict, Any
+from typing import Any
 
 quiz = [
     (

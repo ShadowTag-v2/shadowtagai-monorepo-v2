@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import textwrap
-from typing import Optional
 
 from .user_simulator_personas import UserPersona
 

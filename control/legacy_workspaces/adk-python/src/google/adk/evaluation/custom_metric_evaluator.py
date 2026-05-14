@@ -18,7 +18,6 @@ from __future__ import annotations
 import importlib
 import inspect
 from collections.abc import Callable
-from typing import Optional
 
 from typing_extensions import override
 

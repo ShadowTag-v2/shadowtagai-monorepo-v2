@@ -13,7 +13,6 @@ import json
 import sys
 import os
 from pathlib import Path
-from typing import List, Dict, Optional, Tuple
 
 PLANNING_FILES = ["task_plan.md", "progress.md", "findings.md"]
 

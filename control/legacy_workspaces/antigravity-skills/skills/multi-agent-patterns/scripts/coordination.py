@@ -5,7 +5,7 @@ Multi-Agent Coordination
 This module provides utilities for implementing multi-agent coordination patterns.
 """
 
-from typing import Dict, List, Any, Optional
+from typing import Any
 from dataclasses import dataclass, field
 from enum import Enum
 import time

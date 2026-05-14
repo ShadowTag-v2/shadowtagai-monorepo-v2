@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Pydantic schemas for GitHub artifact generation (shared envelope)."""
 
-from typing import List, Literal, Union
+from typing import Literal
 from pydantic import BaseModel
 
 

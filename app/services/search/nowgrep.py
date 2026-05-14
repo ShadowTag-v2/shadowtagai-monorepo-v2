@@ -7,7 +7,7 @@ Quantitative Effect: ↑ Query speed +60%, ↓ Index size –40%
 
 import logging
 import numpy as np
-from typing import List, Dict, Any, Optional
+from typing import Any
 from pathlib import Path
 import json
 from datetime import datetime, timezone

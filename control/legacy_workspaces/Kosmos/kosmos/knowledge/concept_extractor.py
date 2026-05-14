@@ -11,7 +11,7 @@ Uses Claude API to extract structured information including:
 import json
 import logging
 import hashlib
-from typing import List, Dict, Any, Optional
+from typing import Any
 from pathlib import Path
 from dataclasses import dataclass, asdict
 import time

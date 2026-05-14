@@ -18,7 +18,6 @@ from __future__ import annotations
 import logging
 import os
 from typing import cast
-from typing import Optional
 from typing import TYPE_CHECKING
 
 import google.auth

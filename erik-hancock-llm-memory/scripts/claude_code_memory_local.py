@@ -8,7 +8,7 @@ Cost: $0.45 one-time for 2,121 conversations
 
 import json
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
 import sys
 
 # Paths

@@ -13,7 +13,7 @@ Also provides backward compatibility detection for legacy configs.
 
 import json
 import logging
-from typing import Dict, Any, List, Union
+from typing import Any
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)

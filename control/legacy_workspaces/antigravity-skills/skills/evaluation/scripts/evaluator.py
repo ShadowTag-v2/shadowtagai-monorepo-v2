@@ -5,7 +5,6 @@ Agent Evaluation Framework
 This module provides utilities for evaluating agent systems.
 """
 
-from typing import Dict, List
 from dataclasses import dataclass
 from enum import Enum
 import time

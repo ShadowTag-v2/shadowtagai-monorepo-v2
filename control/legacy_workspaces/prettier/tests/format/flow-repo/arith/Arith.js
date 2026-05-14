@@ -77,14 +77,14 @@ const tests = [
     ((1 + {})
     : number) // error: object !~> number
     ((
-    +1;
+    +1
     )
     : number) // error: object !~> number
     (("1" +
     )
     : string) // error: object !~> string
     ((
-    +"1";
+    +"1"
     )
     : string) // error: object !~> string
   },

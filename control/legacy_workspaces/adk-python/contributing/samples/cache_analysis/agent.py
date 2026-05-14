@@ -22,9 +22,6 @@ that exceeds 2048 tokens to meet both implicit and explicit cache requirements.
 import random
 import time
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from dotenv import load_dotenv
 from google.adk import Agent

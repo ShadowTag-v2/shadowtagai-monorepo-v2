@@ -17,8 +17,6 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
-from typing import List
-from typing import Optional
 
 from ..agents.callback_context import CallbackContext
 from ..events.event import Event

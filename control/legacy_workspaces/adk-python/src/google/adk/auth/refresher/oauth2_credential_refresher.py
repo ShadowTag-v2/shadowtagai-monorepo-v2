@@ -18,7 +18,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from google.adk.auth.auth_credential import AuthCredential
 from google.adk.auth.auth_schemes import AuthScheme

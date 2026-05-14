@@ -7,7 +7,7 @@ Embodies Steve Jobs' philosophy: design-first, ruthless simplification, insanely
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, List, Dict, Any
+from typing import Any
 from .types import AgentContext, AgentResponse, AgentRole, ReasoningPath, ReasoningMethod, UltrathinkConfig
 
 

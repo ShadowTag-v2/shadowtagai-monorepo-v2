@@ -6,7 +6,7 @@ Quantitative Effect: ↑ Reasoning depth +45%, ↓ Token waste –35%
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_google_vertexai import VertexAI, VertexAIEmbeddings

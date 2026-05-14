@@ -27,7 +27,6 @@ Example usage:
         )
 """
 
-from typing import List, Optional
 from kosmos.experiments.templates.base import TemplateBase, TemplateCustomizationParams
 from kosmos.models.experiment import (
     ExperimentProtocol,

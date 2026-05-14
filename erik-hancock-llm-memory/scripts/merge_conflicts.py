@@ -11,7 +11,6 @@ import sys
 import os
 import json
 from pathlib import Path
-from typing import List, Dict
 
 
 class ConflictResolver:

@@ -5,7 +5,6 @@ Evaluates content for strategic value and tier classification
 """
 
 import json
-from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
 

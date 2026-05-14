@@ -5,7 +5,7 @@ from google import genai
 from google.genai import types
 import firebase_admin
 from firebase_admin import credentials, firestore
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 
 # -------------------------------------------------------------------------------------
 # HEADFADE AI: THE MASTER PLAN (ArXiv 2512.14982 Compliant)

@@ -5,7 +5,7 @@ Video Steganography Decoder
 Extracts hidden data from steganographically encoded video frames.
 """
 
-from typing import Optional, Dict, Any, Tuple
+from typing import Any
 from pathlib import Path
 import hashlib
 from dataclasses import dataclass

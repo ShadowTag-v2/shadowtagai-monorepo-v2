@@ -27,7 +27,6 @@ from typing import Any
 from collections.abc import AsyncGenerator
 from collections.abc import Generator
 from typing import Literal
-from typing import Optional
 
 from absl.testing import parameterized
 from google.adk.tools._function_tool_declarations import build_function_declaration_with_json_schema

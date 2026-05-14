@@ -23,7 +23,6 @@ import sqlite3
 import threading
 from typing import Any
 from collections.abc import Iterable
-from typing import Optional
 from collections.abc import Sequence
 
 from opentelemetry.sdk.trace import ReadableSpan

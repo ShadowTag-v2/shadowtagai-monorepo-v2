@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import re
 from typing import Any
-from typing import Optional
 
 from ...agents.base_agent import BaseAgent
 from ...agents.llm_agent import LlmAgent

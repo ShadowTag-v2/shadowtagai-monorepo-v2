@@ -7,7 +7,6 @@ Stores scored content and metadata
 import sqlite3
 import json
 from pathlib import Path
-from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 from contextlib import contextmanager
 

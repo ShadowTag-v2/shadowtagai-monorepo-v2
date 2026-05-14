@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
-from typing import Union
 
 from google.genai import types
 from pydantic import BaseModel

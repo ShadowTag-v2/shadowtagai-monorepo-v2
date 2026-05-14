@@ -17,7 +17,6 @@
 
 import inspect
 from collections.abc import MutableMapping
-from typing import Optional
 
 import click
 from google.adk.cli.cli_tools_click import cli_api_server

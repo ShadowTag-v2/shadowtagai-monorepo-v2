@@ -2,7 +2,6 @@
 """GCS helpers for PNKLN: simple upload/download/list."""
 
 from __future__ import annotations
-from typing import List
 from google.cloud import storage
 
 

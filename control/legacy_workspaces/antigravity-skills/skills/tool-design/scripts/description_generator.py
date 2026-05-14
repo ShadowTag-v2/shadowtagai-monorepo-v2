@@ -5,7 +5,6 @@ Tool Description Engineering
 This module provides utilities for generating and evaluating tool descriptions.
 """
 
-from typing import Dict
 import re
 
 

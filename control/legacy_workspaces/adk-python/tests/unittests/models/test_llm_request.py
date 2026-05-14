@@ -15,8 +15,6 @@
 
 """Tests for LlmRequest functionality."""
 
-from typing import Optional
-
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.agents.sequential_agent import SequentialAgent
 from google.adk.models.llm_request import LlmRequest

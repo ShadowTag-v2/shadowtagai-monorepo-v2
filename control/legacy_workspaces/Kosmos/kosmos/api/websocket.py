@@ -10,7 +10,6 @@ import asyncio
 import json
 import logging
 from dataclasses import asdict
-from typing import List, Optional, Set
 
 try:
     from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Query

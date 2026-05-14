@@ -14,7 +14,6 @@ Usage:
 
 import argparse
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass

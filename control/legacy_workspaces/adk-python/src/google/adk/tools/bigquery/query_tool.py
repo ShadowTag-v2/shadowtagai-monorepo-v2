@@ -19,7 +19,6 @@ import functools
 import json
 import types
 from collections.abc import Callable
-from typing import Optional
 import uuid
 
 from google.auth.credentials import Credentials

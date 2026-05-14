@@ -15,7 +15,6 @@
 
 from collections.abc import Sequence
 from typing import Any
-from typing import Dict
 
 from google.adk.tools import _automatic_function_calling_util
 from google.adk.utils.variant_utils import GoogleLLMVariant

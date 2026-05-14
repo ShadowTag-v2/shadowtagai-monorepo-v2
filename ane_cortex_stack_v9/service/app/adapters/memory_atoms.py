@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any
 
 from ..utils.db import pg_conn
 

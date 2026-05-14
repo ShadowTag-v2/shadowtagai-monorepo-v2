@@ -3,7 +3,6 @@ import sqlite3
 import json
 import logging
 import hashlib
-from typing import List
 
 logger = logging.getLogger(__name__)
 

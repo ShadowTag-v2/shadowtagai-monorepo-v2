@@ -2,7 +2,7 @@
 """Video API Schemas"""
 
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
+from typing import Any
 
 
 class EncodeRequest(BaseModel):

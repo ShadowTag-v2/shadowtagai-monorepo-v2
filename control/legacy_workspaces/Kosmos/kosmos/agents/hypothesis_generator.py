@@ -9,7 +9,7 @@ with literature context and novelty checking.
 import logging
 import time
 import uuid
-from typing import List, Dict, Any, Optional
+from typing import Any
 
 from kosmos.agents.base import BaseAgent, AgentMessage, MessageType, AgentStatus
 from kosmos.core.llm import get_client

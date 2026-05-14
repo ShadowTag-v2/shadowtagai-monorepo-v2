@@ -6,7 +6,7 @@ Collects AI/ML related stories and discussions from Hacker News using Algolia AP
 
 import logging
 from datetime import datetime, timedelta
-from typing import List, Dict, Any, Optional
+from typing import Any
 import httpx
 from dataclasses import dataclass
 

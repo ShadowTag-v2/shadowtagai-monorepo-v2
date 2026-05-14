@@ -15,8 +15,6 @@
 
 import os
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.auth.auth_credential import AuthCredentialTypes

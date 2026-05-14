@@ -4,8 +4,6 @@
 Generates realistic test content using LLM.
 """
 
-from typing import Tuple
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.box import BoxComment, BoxFile, BoxFolder
 

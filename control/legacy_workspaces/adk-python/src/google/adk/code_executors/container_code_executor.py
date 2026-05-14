@@ -18,7 +18,6 @@ from __future__ import annotations
 import atexit
 import logging
 import os
-from typing import Optional
 
 import docker
 from docker.client import DockerClient

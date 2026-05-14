@@ -12,7 +12,7 @@ This module implements the core database models for the Swiper platform:
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional, List, Dict, Any
+from typing import Any
 from sqlalchemy import Column, String, Integer, Float, Boolean, DateTime, JSON, ForeignKey, Text, Enum as SQLEnum, Index
 from sqlalchemy.orm import declarative_base, relationship
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -586,6 +586,8 @@ class VideoResponse(BaseModel):
     published_at: datetime | None
 
     model_config = ConfigDict(from_attributes=True)
+
+
 class AdaptiveVideoRequest(BaseModel):
     """Request for adaptive video playback"""
 

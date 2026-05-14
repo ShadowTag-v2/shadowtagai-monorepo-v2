@@ -22,7 +22,7 @@ This provides:
 
 import time
 import logging
-from typing import Dict, Any
+from typing import Any
 
 from .failover_engine import JudgeDecision, ProviderType
 from .glicko_failover import GlickoEnhancedFailover

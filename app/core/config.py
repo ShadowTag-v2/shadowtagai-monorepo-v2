@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Application configuration."""
 
-from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 

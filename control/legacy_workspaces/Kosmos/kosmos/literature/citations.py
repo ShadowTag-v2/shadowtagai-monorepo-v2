@@ -11,7 +11,7 @@ Supports:
 
 import logging
 import re
-from typing import List, Dict, Any, Optional, Tuple
+from typing import Any
 
 import bibtexparser
 from bibtexparser.bparser import BibTexParser

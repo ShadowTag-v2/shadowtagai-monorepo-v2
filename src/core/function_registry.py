@@ -6,7 +6,7 @@ Provides a centralized registry for all tool functions that can be called
 by the Gemini model.
 """
 
-from typing import Dict, Any, List
+from typing import Any
 from collections.abc import Callable
 from .gemini_function_calling import FunctionTool
 

@@ -18,7 +18,6 @@
 from __future__ import annotations
 
 import re
-from typing import Optional
 
 from packaging.version import InvalidVersion
 from packaging.version import Version

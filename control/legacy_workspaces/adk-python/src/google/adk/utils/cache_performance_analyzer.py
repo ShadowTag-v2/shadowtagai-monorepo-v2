@@ -22,9 +22,6 @@ history, including hit ratios, cost savings, and cache refresh patterns.
 from __future__ import annotations
 
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from google.adk.models.cache_metadata import CacheMetadata
 from google.adk.sessions.base_session_service import BaseSessionService

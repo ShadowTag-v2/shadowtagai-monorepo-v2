@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import re
 from typing import NamedTuple
-from typing import Optional
 
 from google.genai import types
 

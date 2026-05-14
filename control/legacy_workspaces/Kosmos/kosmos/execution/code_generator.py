@@ -11,7 +11,6 @@ Based on patterns from docs/integration-plan.md.
 """
 
 import ast
-from typing import List, Optional
 import logging
 
 from kosmos.models.experiment import ExperimentProtocol, ExperimentType

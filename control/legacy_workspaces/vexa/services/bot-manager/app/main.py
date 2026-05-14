@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 import logging
 import os
 import base64
-from typing import Optional, Dict, Any
+from typing import Any
 import redis.asyncio as aioredis
 import asyncio
 import json

@@ -14,7 +14,7 @@ Supports multiple languages with language-specific parsers.
 import ast
 import re
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from dataclasses import dataclass, asdict
 
 logging.basicConfig(level=logging.INFO)

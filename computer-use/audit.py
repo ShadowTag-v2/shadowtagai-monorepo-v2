@@ -10,7 +10,7 @@ import json
 import time
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 AUDIT_PATH = Path(os.environ.get("CU_AUDIT", ".ci/computer_use_audit.jsonl"))
 AUDIT_PATH.parent.mkdir(parents=True, exist_ok=True)

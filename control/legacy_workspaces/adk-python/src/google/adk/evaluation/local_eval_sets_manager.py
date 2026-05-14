@@ -21,7 +21,6 @@ import os
 import re
 import time
 from typing import Any
-from typing import Optional
 import uuid
 
 from google.genai import types as genai_types

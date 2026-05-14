@@ -24,10 +24,7 @@ import json
 import logging
 import sys
 from typing import Any
-from typing import Dict
-from typing import Optional
 from typing import TextIO
-from typing import Union
 
 from pydantic import BaseModel
 

@@ -5,7 +5,6 @@
 
 import requests
 import time
-from typing import Optional
 
 
 class LlmsTxtDownloader:

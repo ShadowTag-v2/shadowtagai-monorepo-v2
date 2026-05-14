@@ -3,7 +3,7 @@ import logging
 import httpx
 from sqlalchemy.ext.asyncio import AsyncSession
 from shared_models.models import Meeting
-from typing import Dict, Any, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 

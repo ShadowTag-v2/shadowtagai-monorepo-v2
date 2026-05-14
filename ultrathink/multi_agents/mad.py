@@ -5,7 +5,6 @@ ULTRATHINK Framework - Multi-Agent Debate (MAD)
 Adversarial debate system for high-stakes correctness.
 """
 
-from typing import List, Optional
 from ..core.types import DebateMessage, DebateResult, AgentContext, UltrathinkConfig
 
 

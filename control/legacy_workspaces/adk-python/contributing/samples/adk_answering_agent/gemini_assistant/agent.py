@@ -15,8 +15,6 @@
 
 import json
 from typing import Any
-from typing import Dict
-from typing import List
 
 from adk_answering_agent.settings import ADK_GCP_SA_KEY
 from adk_answering_agent.settings import GEMINI_API_DATASTORE_ID

@@ -9,7 +9,7 @@ tool actions, and observation feedback.
 
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional
+from typing import Any
 from collections.abc import Callable
 import re
 import json

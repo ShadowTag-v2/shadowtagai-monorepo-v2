@@ -10,7 +10,6 @@ import os
 import sys
 from pathlib import Path
 from markitdown import MarkItDown
-from typing import Optional, List
 import argparse
 
 

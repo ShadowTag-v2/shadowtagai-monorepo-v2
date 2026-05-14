@@ -17,8 +17,6 @@
 
 import asyncio
 from typing import Any
-from typing import Dict
-from typing import List
 
 from google.adk.runners import InMemoryRunner
 

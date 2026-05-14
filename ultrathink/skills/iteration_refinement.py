@@ -5,7 +5,7 @@ ULTRATHINK Framework - Iteration & Refinement Cycle Skill
 Skill #3: The first version is never good enough. Iterate until insanely great.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from ..core.base_skill import BaseSkill
 from ..core.types import SkillInput, SkillOutput, SkillType
 

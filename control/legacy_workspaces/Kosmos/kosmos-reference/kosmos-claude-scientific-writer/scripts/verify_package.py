@@ -10,7 +10,6 @@ API and CLI usage.
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
 
 
 def get_project_root() -> Path:

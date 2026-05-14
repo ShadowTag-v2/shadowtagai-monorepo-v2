@@ -2,7 +2,7 @@
 """Base kernel data models."""
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional, Dict
+from typing import Any, Optional
 from datetime import datetime, timezone
 
 

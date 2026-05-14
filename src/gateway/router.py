@@ -11,7 +11,6 @@ Every routing decision justified. Every path optimized.
 
 import time
 import uuid
-from typing import Optional
 from datetime import datetime, timezone
 
 from .models import (

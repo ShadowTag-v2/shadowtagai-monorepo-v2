@@ -7,7 +7,7 @@ Implements C2PA content credentials and provenance tracking
 import logging
 import uuid
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any
+from typing import Any
 from app.models.content import (
     C2PAVerificationRequest,
     C2PAVerificationResponse,

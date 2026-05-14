@@ -9,7 +9,7 @@ queue lengths, utilization, wait times, and generating reports.
 """
 
 import simpy
-from typing import List, Tuple, Dict, Any
+from typing import Any
 
 
 class ResourceMonitor:

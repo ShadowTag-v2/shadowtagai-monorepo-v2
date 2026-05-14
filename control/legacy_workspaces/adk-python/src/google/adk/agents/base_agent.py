@@ -22,14 +22,10 @@ from collections.abc import AsyncGenerator
 from collections.abc import Awaitable
 from collections.abc import Callable
 from typing import ClassVar
-from typing import Dict
 from typing import final
 from collections.abc import Mapping
-from typing import Optional
-from typing import Type
 from typing import TYPE_CHECKING
 from typing import TypeVar
-from typing import Union
 
 from google.genai import types
 from pydantic import BaseModel

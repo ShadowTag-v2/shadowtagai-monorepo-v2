@@ -8,7 +8,7 @@ and cross-domain synthesis.
 
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional, Any
+from typing import Any
 from pydantic import BaseModel, Field
 
 from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL

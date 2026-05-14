@@ -2,7 +2,6 @@
 """Summarization service using Claude API."""
 
 import logging
-from typing import List, Optional
 from anthropic import AsyncAnthropic
 
 from app.core.config import settings

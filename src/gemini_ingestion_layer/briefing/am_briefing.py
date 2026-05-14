@@ -6,7 +6,7 @@ Generates morning intelligence briefings from ingested data.
 Delivered to services across 4 namespaces.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from datetime import datetime, timezone
 from ..sources.base import IngestionItem
 from ..classification.tier_classifier import TierLevel

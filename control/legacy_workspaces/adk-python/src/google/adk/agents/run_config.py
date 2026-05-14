@@ -19,7 +19,6 @@ from enum import Enum
 import logging
 import sys
 from typing import Any
-from typing import Optional
 import warnings
 
 from google.genai import types

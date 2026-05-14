@@ -18,8 +18,6 @@ from __future__ import annotations
 from typing import Any
 from collections.abc import Awaitable
 from collections.abc import Callable
-from typing import Dict
-from typing import Optional
 
 from google.adk.tools.agent_simulator.agent_simulator_config import AgentSimulatorConfig
 from google.adk.tools.agent_simulator.agent_simulator_engine import AgentSimulatorEngine

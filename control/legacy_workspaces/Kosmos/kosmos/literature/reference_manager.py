@@ -11,7 +11,7 @@ Provides:
 
 import logging
 import json
-from typing import List, Dict, Any, Optional, Tuple
+from typing import Any
 from pathlib import Path
 from difflib import SequenceMatcher
 import hashlib

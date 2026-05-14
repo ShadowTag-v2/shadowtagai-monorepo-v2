@@ -21,8 +21,6 @@ from pathlib import Path
 import textwrap
 from typing import Any
 from collections.abc import Callable
-from typing import Optional
-from typing import Union
 
 from google.adk.agents import LlmAgent
 from google.adk.agents.readonly_context import ReadonlyContext

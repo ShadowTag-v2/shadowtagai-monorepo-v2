@@ -72,4 +72,4 @@ var d: Function = () => 1;
 var e = (d.bind(1)
 : Function)()
 (e: number)
-(e: string);
+(e: string)

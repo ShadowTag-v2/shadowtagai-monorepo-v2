@@ -19,7 +19,7 @@ This is the "Boy Scout Rule" applied to AI: Leave the model better than you foun
 
 import time
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 from pathlib import Path
 import json

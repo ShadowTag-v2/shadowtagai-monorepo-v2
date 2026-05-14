@@ -12,7 +12,7 @@ import asyncio
 from pathlib import Path
 import tempfile
 import argparse
-from typing import Optional, Dict, Any
+from typing import Any
 
 # Try to import optional dependencies
 try:

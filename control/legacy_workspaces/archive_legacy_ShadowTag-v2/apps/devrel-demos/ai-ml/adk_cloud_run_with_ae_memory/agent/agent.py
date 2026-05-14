@@ -15,7 +15,6 @@
 
 import datetime
 import logging
-from typing import Optional
 from zoneinfo import ZoneInfo
 
 from google.adk.agents import Agent

@@ -12,7 +12,7 @@ This class provides:
 import time
 import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import List, Dict, Any, Optional
+from typing import Any
 from datetime import datetime
 import pandas as pd
 

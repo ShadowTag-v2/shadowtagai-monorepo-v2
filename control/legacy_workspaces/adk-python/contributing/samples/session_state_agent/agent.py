@@ -20,7 +20,6 @@ in session state.
 """
 
 import logging
-from typing import Optional
 
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.agents.llm_agent import Agent

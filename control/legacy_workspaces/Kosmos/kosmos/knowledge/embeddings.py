@@ -6,7 +6,6 @@ Uses the allenai/specter model optimized for scientific document similarity.
 SPECTER is trained on citation graphs and produces 768-dimensional embeddings.
 """
 
-from typing import List, Optional
 import numpy as np
 from pathlib import Path
 import logging

@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """SharePoint-specific Pydantic schemas used for LLM structured generation."""
 
-from typing import Dict, List
 from pydantic import BaseModel, Field
 
 

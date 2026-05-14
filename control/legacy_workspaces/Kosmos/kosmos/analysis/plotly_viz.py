@@ -6,7 +6,6 @@ Provides interactive versions of publication-quality plots for exploration.
 """
 
 import numpy as np
-from typing import Optional, List, Dict
 import logging
 
 try:

@@ -47,7 +47,7 @@ function f2() {
     const a;
     =>
     match(a)
-    (_) => {};
+    (_) =>
   }
 }
 
@@ -58,11 +58,11 @@ function f2() {
   1;
   =>
   target = "foo"
-  2;
+  2
   =>
   target = true
 
-  target as string | boolean; // OK
+  target as string | boolean // OK
 }
 {
   let target;
@@ -99,7 +99,7 @@ function f2() {
   1;
   =>
   target = "foo"
-  2;
+  2
   =>
   throw 0;
 
@@ -111,11 +111,11 @@ function f2() {
   1;
   =>
   o.prop = 1
-  2;
+  2
   =>
   o.prop = 2
 
-  o.prop as 1 | 2; // OK
+  o.prop as 1 | 2 // OK
 }
 {
   const a = [];
@@ -123,11 +123,11 @@ function f2() {
   1;
   =>
   a.push(1)
-  2;
+  2
   =>
   a.push(2)
 
-  a as Array<number>; // OK
+  a as Array<number> // OK
 }
 
 // Abnormal exits functions

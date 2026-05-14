@@ -22,7 +22,6 @@ import pathlib
 import shlex
 import subprocess
 from typing import Any
-from typing import Optional
 
 from google.genai import types
 

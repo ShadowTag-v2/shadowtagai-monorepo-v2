@@ -17,13 +17,11 @@ from __future__ import annotations
 import asyncio
 import dataclasses
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import json
 import logging
 from typing import Any
 from collections.abc import Callable
-from typing import List
-from typing import Optional
 from typing import TYPE_CHECKING
 
 from google.api_core.gapic_v1 import client_info as gapic_client_info

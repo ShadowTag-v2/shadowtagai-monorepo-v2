@@ -16,7 +16,7 @@ Implements clients for biology-related databases and APIs:
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 from dataclasses import dataclass
 import httpx
 from tenacity import retry, stop_after_attempt, wait_exponential, RetryError

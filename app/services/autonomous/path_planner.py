@@ -5,7 +5,7 @@ Path planning service using GAAS A* algorithm.
 Integrates with Judge #6 for safety validation and Cor.17 for reasoning.
 """
 
-from typing import List, Tuple, Optional, Dict, Any
+from typing import Any
 from dataclasses import dataclass
 import structlog
 

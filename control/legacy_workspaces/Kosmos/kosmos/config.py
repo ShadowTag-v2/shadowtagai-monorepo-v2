@@ -6,7 +6,7 @@ Loads configuration from environment variables and provides validated settings
 for all Kosmos components.
 """
 
-from typing import List, Optional, Literal, Annotated
+from typing import Literal, Annotated
 from pydantic import Field, model_validator, BeforeValidator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path

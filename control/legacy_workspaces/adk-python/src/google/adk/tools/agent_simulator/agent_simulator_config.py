@@ -17,9 +17,6 @@ from __future__ import annotations
 
 import enum
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from google.genai import types as genai_types
 from pydantic import BaseModel

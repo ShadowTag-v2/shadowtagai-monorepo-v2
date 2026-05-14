@@ -21,9 +21,6 @@ import logging
 import sys
 from typing import Any
 from collections.abc import Callable
-from typing import Dict
-from typing import Optional
-from typing import Union
 import warnings
 
 from fastapi.openapi.models import APIKeyIn

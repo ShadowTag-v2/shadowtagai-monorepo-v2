@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import subprocess
 import logging
-from typing import Optional
 
 logger = logging.getLogger("Kosmos.PitchDeck.CLI")
 

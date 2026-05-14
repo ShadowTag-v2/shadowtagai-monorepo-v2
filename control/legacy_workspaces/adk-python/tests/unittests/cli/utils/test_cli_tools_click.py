@@ -22,9 +22,6 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 from unittest import mock
 
 import click

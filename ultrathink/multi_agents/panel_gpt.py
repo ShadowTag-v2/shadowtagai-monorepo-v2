@@ -5,7 +5,7 @@ ULTRATHINK Framework - PanelGPT Debate Circle
 Multi-agent system for collaborative debate and consensus building.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from ..core.types import DebateMessage, DebateResult, AgentContext, UltrathinkConfig
 
 

@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Jira-specific generation adapter: issue generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.jira import JiraArtifact
 from monke.client.llm import LLMClient
 

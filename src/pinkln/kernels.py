@@ -13,7 +13,7 @@ Performance: p99 ≤52ms → 35ms with Gemini function calling
 import json
 import re
 import zlib
-from typing import Dict, List, Any
+from typing import Any
 from dataclasses import dataclass
 
 

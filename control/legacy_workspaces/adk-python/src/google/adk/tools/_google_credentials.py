@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 import json
-from typing import List
-from typing import Optional
 
 from fastapi.openapi.models import OAuth2
 from fastapi.openapi.models import OAuthFlowAuthorizationCode

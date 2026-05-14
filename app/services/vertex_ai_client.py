@@ -15,7 +15,6 @@ Based on claude/mcp-filesystem-tool-discovery patterns:
 
 import os
 import logging
-from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 import asyncio
 from google import genai

@@ -8,7 +8,7 @@ This module provides a RESTful API for interacting with the multi-agent system.
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import Any
 import logging
 
 from src.agents import CoordinatorAgent, ResearchAgent, AnalysisAgent, TaskAgent, ValidationAgent

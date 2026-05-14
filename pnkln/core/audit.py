@@ -9,7 +9,7 @@ Philosophy: Leave everything cleaner than you found it - and prove it.
 
 import json
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import Any
 from datetime import datetime, timedelta
 from dataclasses import dataclass, asdict
 

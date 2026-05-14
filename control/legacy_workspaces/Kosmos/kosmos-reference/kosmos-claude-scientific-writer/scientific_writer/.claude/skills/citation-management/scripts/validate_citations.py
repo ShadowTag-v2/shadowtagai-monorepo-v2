@@ -10,7 +10,6 @@ import re
 import requests
 import argparse
 import json
-from typing import Dict, List, Tuple, Optional
 from collections import defaultdict
 
 

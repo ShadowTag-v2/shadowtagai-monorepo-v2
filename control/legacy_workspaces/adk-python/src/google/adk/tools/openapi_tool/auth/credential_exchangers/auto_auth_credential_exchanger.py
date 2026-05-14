@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict
-from typing import Optional
-from typing import Type
 
 from .....auth.auth_credential import AuthCredential
 from .....auth.auth_credential import AuthCredentialTypes

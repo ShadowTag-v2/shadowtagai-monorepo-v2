@@ -18,7 +18,6 @@ from __future__ import annotations
 import logging
 import re
 from typing import ClassVar
-from typing import Optional
 
 from typing_extensions import override
 

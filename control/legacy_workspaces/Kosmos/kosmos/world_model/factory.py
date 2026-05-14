@@ -39,7 +39,7 @@ Thread Safety:
 """
 
 import logging
-from typing import Literal, Optional
+from typing import Literal
 
 from kosmos.world_model.interface import WorldModelStorage
 

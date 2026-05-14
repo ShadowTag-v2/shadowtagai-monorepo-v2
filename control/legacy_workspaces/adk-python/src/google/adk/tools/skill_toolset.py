@@ -23,7 +23,6 @@ import asyncio
 import json
 import logging
 from typing import Any
-from typing import Optional
 from typing import TYPE_CHECKING
 import warnings
 

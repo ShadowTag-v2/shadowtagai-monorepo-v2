@@ -21,7 +21,6 @@ Usage:
 """
 
 import argparse
-from typing import Optional
 
 try:
     import schemdraw

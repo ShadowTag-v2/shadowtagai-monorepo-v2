@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Kernel 1: ATP 5-19 Violation Scanner using Gemini Flash."""
 
-from typing import Optional
 from google import genai
 from google.genai import types as genai_types
 from app.kernels.base import Kernel, KernelChainError

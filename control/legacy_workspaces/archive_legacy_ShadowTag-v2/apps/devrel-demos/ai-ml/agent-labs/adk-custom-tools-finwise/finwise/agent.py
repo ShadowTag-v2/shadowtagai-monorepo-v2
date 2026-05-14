@@ -9,7 +9,6 @@ from google.adk.tools import agent_tool
 from google.adk.code_executors import BuiltInCodeExecutor
 from mcp import StdioServerParameters
 import time
-from typing import Dict
 from google.adk.tools.tool_context import ToolContext
 
 # ADK Auth imports

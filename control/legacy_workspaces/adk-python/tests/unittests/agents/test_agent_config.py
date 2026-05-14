@@ -18,7 +18,6 @@ import os
 from pathlib import Path
 from textwrap import dedent
 from typing import Literal
-from typing import Type
 from unittest import mock
 
 from google.adk.agents import config_agent_utils

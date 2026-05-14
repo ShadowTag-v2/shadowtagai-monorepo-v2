@@ -12,7 +12,6 @@ Validates prompts against the KERNEL framework principles:
 """
 
 from dataclasses import dataclass
-from typing import List, Dict
 import re
 
 

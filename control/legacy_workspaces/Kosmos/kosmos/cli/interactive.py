@@ -6,7 +6,7 @@ Provides an interactive interface for starting research with guided prompts,
 domain selection, and configuration options.
 """
 
-from typing import Optional, Dict, Any
+from typing import Any
 
 from rich.prompt import Prompt, Confirm, IntPrompt
 from rich.panel import Panel

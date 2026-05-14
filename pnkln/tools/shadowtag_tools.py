@@ -19,7 +19,7 @@ Version: 2.0.0
 License: Proprietary
 """
 
-from typing import Annotated, Optional
+from typing import Annotated
 import logging
 
 logger = logging.getLogger(__name__)

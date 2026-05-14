@@ -1,5 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-from typing import Dict, Any
+from typing import Any
 
 
 def initialize_quiz_state(state: dict[str, Any], with_memory: bool = False):

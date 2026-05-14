@@ -6,7 +6,6 @@ ATP 5-19 Risk Management API for AI
 
 from pydantic_settings import BaseSettings
 from functools import lru_cache
-from typing import Optional
 
 
 class Settings(BaseSettings):

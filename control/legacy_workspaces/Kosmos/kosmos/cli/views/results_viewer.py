@@ -8,7 +8,7 @@ and analysis using Rich library components.
 
 import json
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Any
 from pathlib import Path
 
 from rich.console import Console

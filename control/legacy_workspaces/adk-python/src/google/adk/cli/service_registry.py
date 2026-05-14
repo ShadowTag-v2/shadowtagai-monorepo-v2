@@ -70,7 +70,6 @@ import os
 from pathlib import Path
 import sys
 from typing import Any
-from typing import Optional
 from typing import Protocol
 from urllib.parse import unquote
 from urllib.parse import urlparse

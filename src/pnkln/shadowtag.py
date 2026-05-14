@@ -14,7 +14,7 @@ integrity verification.
 
 import hashlib
 import json
-from typing import Any, Dict, Optional
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
 from Crypto.PublicKey import ECC

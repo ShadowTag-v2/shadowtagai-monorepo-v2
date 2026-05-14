@@ -2,7 +2,7 @@
 """Test execution context - holds runtime state separate from configuration."""
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 @dataclass

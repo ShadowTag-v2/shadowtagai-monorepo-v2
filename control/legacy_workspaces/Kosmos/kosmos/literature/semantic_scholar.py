@@ -9,7 +9,6 @@ citation support.
 from itertools import islice
 from semanticscholar import SemanticScholar
 from semanticscholar.Paper import Paper as S2Paper
-from typing import List, Optional
 from datetime import datetime
 
 from kosmos.literature.base_client import BaseLiteratureClient, PaperMetadata, PaperSource, Author

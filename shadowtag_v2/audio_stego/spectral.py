@@ -5,7 +5,6 @@ Spectral Processing for Audio Steganography
 Provides frequency domain analysis and manipulation for audio steganography.
 """
 
-from typing import Tuple
 import numpy as np
 
 

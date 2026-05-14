@@ -15,9 +15,6 @@
 
 from __future__ import annotations
 
-from typing import List
-from typing import Optional
-from typing import Union
 
 from google.adk.agents.readonly_context import ReadonlyContext
 from typing_extensions import override

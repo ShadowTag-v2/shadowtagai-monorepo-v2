@@ -5,7 +5,7 @@ Safety-related data models.
 Pydantic models for safety reports, incidents, approvals, and ethical guidelines.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict

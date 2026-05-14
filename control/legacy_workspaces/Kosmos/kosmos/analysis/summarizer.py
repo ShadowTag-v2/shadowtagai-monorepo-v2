@@ -6,7 +6,7 @@ Natural language summaries of experiment results using Claude.
 """
 
 import logging
-from typing import List, Dict, Any, Optional
+from typing import Any
 from datetime import datetime
 
 from kosmos.core.llm import get_client

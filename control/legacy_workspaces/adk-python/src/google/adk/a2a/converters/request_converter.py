@@ -18,7 +18,6 @@ from __future__ import annotations
 from collections.abc import Callable
 import sys
 from typing import Any
-from typing import Optional
 
 from pydantic import BaseModel
 

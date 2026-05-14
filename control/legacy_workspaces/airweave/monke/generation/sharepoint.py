@@ -4,8 +4,6 @@
 Generates realistic document content for testing SharePoint integration using LLM.
 """
 
-from typing import Tuple
-
 from monke.generation.schemas.sharepoint import SharePointFile, SharePointFolderSpec
 from monke.client.llm import LLMClient
 

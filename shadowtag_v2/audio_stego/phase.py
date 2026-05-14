@@ -5,7 +5,6 @@ Phase Encoding for Audio Steganography
 Implements phase-based encoding techniques in the frequency domain.
 """
 
-from typing import List
 import numpy as np
 from .spectral import SpectralProcessor
 

@@ -16,7 +16,7 @@
 import base64
 from datetime import datetime
 from datetime import timedelta
-from datetime import timezone, UTC
+from datetime import UTC
 import hashlib
 import json
 import logging

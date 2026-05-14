@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import asyncio
 import sys
-from typing import Optional
 
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.errors.not_found_error import NotFoundError

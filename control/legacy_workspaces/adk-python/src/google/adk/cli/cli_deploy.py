@@ -20,7 +20,6 @@ import os
 import shutil
 import subprocess
 from typing import Final
-from typing import Optional
 
 import click
 from packaging.version import parse

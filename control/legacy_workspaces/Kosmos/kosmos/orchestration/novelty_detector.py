@@ -17,7 +17,6 @@ Performance: O(n) similarity check vs O(n²) pairwise comparison
 """
 
 import logging
-from typing import Dict, List
 import numpy as np
 
 logger = logging.getLogger(__name__)

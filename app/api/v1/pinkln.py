@@ -6,7 +6,7 @@ Multi-agent platform with debates, code crafters, wealth acceleration
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any
+from typing import Any
 
 from app.agents.multi_agent import MultiAgentSystem
 from app.core.pinkln_framework import UltrathinkPersona, CheatSheetEssentials

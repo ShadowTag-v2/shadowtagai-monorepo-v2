@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any
 
 
 def rerank(query: str, items: list[dict[str, Any]], content_key: str = "content_preview") -> list[dict[str, Any]]:

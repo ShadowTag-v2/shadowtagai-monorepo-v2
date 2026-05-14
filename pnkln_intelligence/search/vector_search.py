@@ -5,7 +5,7 @@ Manages vector search index creation, deployment, and querying
 """
 
 import logging
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 from google.cloud import aiplatform
 from google.cloud.aiplatform import MatchingEngineIndex, MatchingEngineIndexEndpoint

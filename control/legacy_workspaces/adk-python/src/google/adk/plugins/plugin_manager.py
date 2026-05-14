@@ -19,7 +19,6 @@ import asyncio
 import logging
 import sys
 from typing import Any
-from typing import List
 from typing import Literal
 from typing import Optional
 from typing import TYPE_CHECKING

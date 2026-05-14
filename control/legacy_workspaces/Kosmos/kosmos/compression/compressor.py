@@ -18,7 +18,7 @@ Key Insight: Hierarchical compression matches how scientists think:
 """
 
 import re
-from typing import Dict, List, Optional, Any
+from typing import Any
 import logging
 from dataclasses import dataclass
 

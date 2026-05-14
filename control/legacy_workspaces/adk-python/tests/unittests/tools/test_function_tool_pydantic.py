@@ -15,7 +15,6 @@
 
 # Pydantic model conversion tests
 
-from typing import Optional
 from unittest.mock import MagicMock
 
 from google.adk.agents.invocation_context import InvocationContext

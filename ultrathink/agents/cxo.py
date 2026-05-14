@@ -5,7 +5,6 @@ ULTRATHINK Framework - Chief Experience Officer (CXO)
 Iterates relentlessly. Takes screenshots, compares, refines. First version is never good enough.
 """
 
-from typing import Optional
 from ..core.base_agent import BaseAgent
 from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
 

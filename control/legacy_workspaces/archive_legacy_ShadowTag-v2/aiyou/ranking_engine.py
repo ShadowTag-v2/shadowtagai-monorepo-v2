@@ -14,7 +14,6 @@ Based on "neural PDF" research:
 - No follower count bias
 """
 
-from typing import List
 from dataclasses import dataclass
 from datetime import datetime
 

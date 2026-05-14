@@ -11,7 +11,7 @@ Matches exact formatting standards from kosmos-figures repository:
 
 import matplotlib.pyplot as plt
 import numpy as np
-from typing import Optional, List, Dict, Any
+from typing import Any
 import logging
 
 try:

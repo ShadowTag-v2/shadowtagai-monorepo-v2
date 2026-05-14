@@ -19,7 +19,6 @@ Boston University. http://www.glicko.net/glicko/glicko2.pdf
 """
 
 import math
-from typing import List, Tuple
 from dataclasses import dataclass
 
 

@@ -8,7 +8,7 @@ let maybeNum:
 
 // Uint8Array properties. All of these should type check ok.
 buffer.length
-buffer.buffer;
+buffer.buffer
 buffer.byteOffset;
 buffer.byteLength;
 buffer[1];

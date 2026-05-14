@@ -8,7 +8,6 @@ from fastapi.security import APIKeyHeader
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload, attributes
-from typing import List  # Import List for response model
 from datetime import datetime  # Import datetime
 from sqlalchemy import func
 from pydantic import BaseModel, HttpUrl

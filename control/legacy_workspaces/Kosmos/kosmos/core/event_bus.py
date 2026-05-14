@@ -8,7 +8,7 @@ Supports both sync and async callbacks with optional filtering.
 
 import asyncio
 import logging
-from typing import Dict, List, Optional, Set, Union
+from typing import Union
 from collections.abc import Callable
 
 from kosmos.core.events import (

@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Google Slides-specific generation adapter: presentation generator."""
 
-from typing import List
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.google_slides import GoogleSlidesPresentation
 

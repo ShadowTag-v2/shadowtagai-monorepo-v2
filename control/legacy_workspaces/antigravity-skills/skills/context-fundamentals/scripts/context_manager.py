@@ -9,7 +9,6 @@ Production systems should use actual tokenizers (tiktoken for OpenAI,
 model-specific tokenizers for other providers) for accurate token counts.
 """
 
-from typing import Dict, List
 import hashlib
 
 

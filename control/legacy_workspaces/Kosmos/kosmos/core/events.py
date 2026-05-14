@@ -10,7 +10,7 @@ import json
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, Literal, Optional, Union
+from typing import Any, Literal, Union
 
 
 class EventType(str, Enum):

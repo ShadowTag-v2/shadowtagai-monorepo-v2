@@ -5,7 +5,7 @@ ULTRATHINK Framework - Multi-LLM Reasoning Synthesis Skill
 Skill #4: Leverage multiple reasoning perspectives to arrive at elegantly correct solutions.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from ..core.base_skill import BaseSkill
 from ..core.types import SkillInput, SkillOutput, SkillType, ReasoningMethod, ReasoningPath
 

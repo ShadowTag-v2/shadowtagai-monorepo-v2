@@ -26,9 +26,7 @@ import traceback
 import typing
 from typing import Any
 from collections.abc import Callable
-from typing import List
 from typing import Literal
-from typing import Optional
 
 from fastapi import FastAPI
 from fastapi import HTTPException

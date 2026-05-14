@@ -62,7 +62,7 @@ trailingComments:
   superClass:
   ?Expression
   decorators: any
-  superTypeParameters: any;
+  superTypeParameters: any
   typeParameters: any;
   end: number;
   innerComments:
@@ -102,7 +102,7 @@ trailingComments:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -174,7 +174,7 @@ trailingComments:
   value:
   ?Expression
   decorators: Array<Decorator>
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -334,7 +334,7 @@ trailingComments:
   superClass:
   ?Expression
   decorators: any
-  superTypeParameters: any;
+  superTypeParameters: any
   typeParameters: any;
   end: number;
   innerComments:
@@ -443,7 +443,7 @@ trailingComments:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -731,7 +731,7 @@ trailingComments:
   argument:
   ?Expression
   delegate: boolean
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -777,7 +777,7 @@ trailingComments:
   closingElement:
   ?JSXClosingElement
   openingElement: JSXOpeningElement
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -881,7 +881,7 @@ start: number;
 trailingComments:
 ?Array<Comment>
 async: boolean
-defaults: Array<?Expression>;
+defaults: Array<?Expression>
 expression: boolean;
 generator: boolean;
 params: Array<Pattern>;
@@ -913,7 +913,7 @@ typeParameters:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -947,7 +947,7 @@ typeParameters:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -1025,7 +1025,7 @@ trailingComments:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -1267,7 +1267,7 @@ trailingComments:
   superClass:
   ?Expression
   decorators: any
-  superTypeParameters: any;
+  superTypeParameters: any
   typeParameters: any;
   end: number;
   innerComments:
@@ -1295,7 +1295,7 @@ trailingComments:
   superClass:
   ?Expression
   decorators: any
-  superTypeParameters: any;
+  superTypeParameters: any
   typeParameters: any;
   end: number;
   innerComments:
@@ -1608,7 +1608,7 @@ trailingComments:
   update:
   ?Expression
   body: Statement
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -1646,7 +1646,7 @@ trailingComments:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -1680,7 +1680,7 @@ trailingComments:
   trailingComments:
   ?Array<Comment>
   async: boolean
-  defaults: Array<?Expression>;
+  defaults: Array<?Expression>
   expression: boolean;
   generator: boolean;
   params: Array<Pattern>;
@@ -1721,7 +1721,7 @@ trailingComments:
   alternate:
   ?Statement
   consequent: Statement
-  test: Expression;
+  test: Expression
   end: number;
   innerComments:
   ?Array<Comment>
@@ -2555,7 +2555,7 @@ trailingComments:
   argument:
   ?Expression
   delegate: boolean
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -2821,7 +2821,7 @@ trailingComments:
   value:
   ?Expression
   decorators: Array<Decorator>
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -3549,7 +3549,7 @@ trailingComments:
   closingElement:
   ?JSXClosingElement
   openingElement: JSXOpeningElement
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -4015,7 +4015,7 @@ trailingComments:
   update:
   ?Expression
   body: Statement
-  end: number;
+  end: number
   innerComments:
   ?Array<Comment>
   leadingComments:
@@ -4038,7 +4038,7 @@ trailingComments:
   alternate:
   ?Statement
   consequent: Statement
-  test: Expression;
+  test: Expression
   end: number;
   innerComments:
   ?Array<Comment>
@@ -4814,7 +4814,7 @@ start: number;
 trailingComments:
 ?Array<Comment>
 async: boolean
-defaults: Array<?Expression>;
+defaults: Array<?Expression>
 expression: boolean;
 generator: boolean;
 params: Array<Pattern>;
@@ -5104,7 +5104,7 @@ export type ClassDeclaration = {
 superClass:
 ?Expression
 decorators: any
-superTypeParameters: any;
+superTypeParameters: any
 typeParameters: any;
 end: number;
 innerComments:
@@ -5133,7 +5133,7 @@ export type ClassExpression = {
 superClass:
 ?Expression
 decorators: any
-superTypeParameters: any;
+superTypeParameters: any
 typeParameters: any;
 end: number;
 innerComments:
@@ -5463,7 +5463,7 @@ test:
 update:
 ?Expression
 body: Statement
-end: number;
+end: number
 innerComments:
 ?Array<Comment>
 leadingComments:
@@ -5504,7 +5504,7 @@ start: number;
 trailingComments:
 ?Array<Comment>
 async: boolean
-defaults: Array<?Expression>;
+defaults: Array<?Expression>
 expression: boolean;
 generator: boolean;
 params: Array<Pattern>;
@@ -5539,7 +5539,7 @@ start: number;
 trailingComments:
 ?Array<Comment>
 async: boolean
-defaults: Array<?Expression>;
+defaults: Array<?Expression>
 expression: boolean;
 generator: boolean;
 params: Array<Pattern>;
@@ -6744,7 +6744,7 @@ export type ClassProperty = {
 value:
 ?Expression
 decorators: Array<Decorator>
-end: number;
+end: number
 innerComments:
 ?Array<Comment>
 leadingComments:

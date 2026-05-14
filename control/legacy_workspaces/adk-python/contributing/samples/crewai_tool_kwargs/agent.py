@@ -19,8 +19,6 @@ This sample shows how CrewaiTool correctly passes arbitrary parameters
 through **kwargs, which is a common pattern in CrewAI tools.
 """
 
-from typing import Optional
-
 from crewai.tools import BaseTool
 from google.adk import Agent
 from google.adk.tools.crewai_tool import CrewaiTool

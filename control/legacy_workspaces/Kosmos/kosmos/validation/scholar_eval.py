@@ -16,7 +16,6 @@ Performance Target: ~75% validation rate
 
 import json
 import logging
-from typing import Dict, Optional
 from dataclasses import dataclass, asdict
 
 from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL

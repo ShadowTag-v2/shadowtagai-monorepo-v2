@@ -6,7 +6,6 @@ Manage knowledge graphs - view stats, export/import, reset.
 """
 
 from pathlib import Path
-from typing import Optional
 
 import typer
 from rich.panel import Panel

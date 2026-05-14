@@ -10,7 +10,7 @@ Uses ultrathink framework for:
 Philosophy: Bugs are just unrefined opportunities.
 """
 
-from typing import Optional, Literal
+from typing import Literal
 from pydantic import BaseModel, Field
 from ultrathink.core.agents import MultiAgentDebate
 from ultrathink.core.prompts import CARE, RISE

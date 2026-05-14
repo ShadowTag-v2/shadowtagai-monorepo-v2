@@ -15,7 +15,6 @@
 
 from enum import Enum
 from functools import partial
-from typing import List
 from unittest import mock
 
 from google.adk.agents.callback_context import CallbackContext

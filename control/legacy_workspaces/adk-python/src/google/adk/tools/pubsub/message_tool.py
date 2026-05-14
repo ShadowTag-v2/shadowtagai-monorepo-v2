@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import base64
-from typing import Optional
 
 from google.auth.credentials import Credentials
 from google.cloud import pubsub_v1

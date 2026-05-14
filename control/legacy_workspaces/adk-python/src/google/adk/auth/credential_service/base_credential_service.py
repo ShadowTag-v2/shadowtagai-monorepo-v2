@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
-from typing import Optional
 
 from ...agents.callback_context import CallbackContext
 from ...utils.feature_decorator import experimental

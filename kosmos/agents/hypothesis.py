@@ -9,7 +9,7 @@ Capabilities:
 - Refine hypotheses based on new evidence
 """
 
-from typing import Dict, Any, Optional
+from typing import Any
 from kosmos.agents.base import BaseAgent, AgentConfig
 from kosmos.core.orchestrator import ReActResult
 from kosmos.core.vertex_client import GeminiModel

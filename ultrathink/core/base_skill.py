@@ -7,7 +7,7 @@ Skills are reusable expertise libraries that can be invoked by any agent.
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, List, Dict, Any
+from typing import Any
 from .types import SkillInput, SkillOutput, SkillType, UltrathinkConfig
 
 

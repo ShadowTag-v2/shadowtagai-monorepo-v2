@@ -17,9 +17,6 @@ from __future__ import annotations
 
 import json
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from google.adk.tools.spanner import client
 from google.adk.tools.spanner.settings import SpannerToolSettings

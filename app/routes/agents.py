@@ -8,7 +8,6 @@ Premium tiers:
 """
 
 from fastapi import APIRouter, HTTPException
-from typing import Dict
 from pydantic import BaseModel, Field
 
 from app.agents.base import AgentConfig

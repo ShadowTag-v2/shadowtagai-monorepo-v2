@@ -6,7 +6,7 @@ Skill #1: Autonomously scours for design improvements without changing functiona
 Embodies Steve Jobs' obsession with elegant design.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from ..core.base_skill import BaseSkill
 from ..core.types import SkillInput, SkillOutput, SkillType
 

@@ -20,8 +20,6 @@ from __future__ import annotations
 from typing import Any
 from collections.abc import Awaitable
 from collections.abc import Callable
-from typing import Optional
-from typing import Union
 
 from a2a.client.middleware import ClientCallContext
 from a2a.server.events import Event as A2AEvent

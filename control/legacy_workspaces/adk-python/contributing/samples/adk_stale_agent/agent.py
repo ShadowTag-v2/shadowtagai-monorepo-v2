@@ -14,14 +14,10 @@
 # limitations under the License.
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import logging
 import os
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
 
 from adk_stale_agent.settings import CLOSE_HOURS_AFTER_STALE_THRESHOLD
 from adk_stale_agent.settings import GITHUB_BASE_URL

@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-from typing import List
 from pydantic import BaseModel, Field
 from typing import Literal
 

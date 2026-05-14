@@ -9,7 +9,6 @@ formats with appropriate settings for various journals.
 
 import matplotlib.pyplot as plt
 from pathlib import Path
-from typing import List, Union
 
 
 def save_publication_figure(

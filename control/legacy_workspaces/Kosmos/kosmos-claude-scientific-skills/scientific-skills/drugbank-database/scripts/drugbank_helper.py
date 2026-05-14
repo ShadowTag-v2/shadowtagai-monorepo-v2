@@ -17,7 +17,7 @@ Usage:
     interactions = db.get_interactions('DB00001')
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 
 class DrugBankHelper:

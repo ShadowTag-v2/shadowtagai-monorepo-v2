@@ -15,9 +15,6 @@
 
 """Simple agent demonstrating Pydantic model arguments in tools."""
 
-from typing import Optional
-from typing import Union
-
 from google.adk.agents.llm_agent import Agent
 from google.adk.tools.function_tool import FunctionTool
 import pydantic

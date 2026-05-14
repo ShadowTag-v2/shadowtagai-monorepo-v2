@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Optional
 
 from fastapi.openapi.models import OAuth2
 from fastapi.openapi.models import OAuthFlowAuthorizationCode

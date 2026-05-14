@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Dict
 
 from google.genai.types import Schema
 from google.genai.types import Type

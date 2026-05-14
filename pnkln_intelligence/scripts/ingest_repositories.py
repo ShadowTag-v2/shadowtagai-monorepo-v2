@@ -8,7 +8,7 @@ import asyncio
 import logging
 import yaml
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any
 from datetime import datetime, timezone
 from google.cloud import storage, bigquery
 import json

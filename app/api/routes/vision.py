@@ -5,7 +5,6 @@ import time
 import tempfile
 import base64
 from pathlib import Path
-from typing import Optional
 from fastapi import APIRouter, HTTPException
 import structlog
 

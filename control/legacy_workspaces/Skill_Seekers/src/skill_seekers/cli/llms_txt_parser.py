@@ -4,7 +4,6 @@
 """ABOUTME: Extracts titles, content, code samples, and headings from markdown"""
 
 import re
-from typing import List, Dict
 
 
 class LlmsTxtParser:

@@ -16,8 +16,6 @@
 from datetime import datetime
 import random
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from google.adk.agents.llm_agent import Agent
 from google.adk.tools.tool_context import ToolContext

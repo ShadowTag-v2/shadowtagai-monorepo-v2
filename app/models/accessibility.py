@@ -4,7 +4,6 @@ Accessibility and safety compliance models
 """
 
 from pydantic import BaseModel, Field, HttpUrl
-from typing import List, Optional
 from enum import Enum
 
 

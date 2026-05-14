@@ -17,7 +17,6 @@ Uses EthicalScraper for ATP 5-19 RA-1 compliance
 
 import asyncio
 from datetime import datetime, timedelta
-from typing import List, Dict, Optional
 import logging
 import feedparser
 import json

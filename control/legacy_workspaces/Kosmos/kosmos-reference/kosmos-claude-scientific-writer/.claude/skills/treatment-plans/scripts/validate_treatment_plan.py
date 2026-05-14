@@ -9,7 +9,6 @@ import sys
 import re
 import argparse
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 # Validation criteria and patterns
 VALIDATION_CHECKS = {

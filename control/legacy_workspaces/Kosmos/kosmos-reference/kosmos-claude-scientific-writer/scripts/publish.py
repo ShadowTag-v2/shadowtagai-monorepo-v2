@@ -14,7 +14,6 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Optional, List
 
 
 def get_project_root() -> Path:

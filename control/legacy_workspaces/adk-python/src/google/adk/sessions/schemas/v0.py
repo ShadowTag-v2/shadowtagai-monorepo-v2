@@ -28,11 +28,10 @@ https://github.com/google/adk-python/discussions/3605 for more details.
 from __future__ import annotations
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import json
 import pickle
 from typing import Any
-from typing import Optional
 import uuid
 
 from google.genai import types

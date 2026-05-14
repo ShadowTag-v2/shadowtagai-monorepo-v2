@@ -8,7 +8,6 @@ of execution performance, memory usage, and bottlenecks.
 
 import typer
 from kosmos.utils.compat import model_to_dict
-from typing import Optional
 from pathlib import Path
 import json
 

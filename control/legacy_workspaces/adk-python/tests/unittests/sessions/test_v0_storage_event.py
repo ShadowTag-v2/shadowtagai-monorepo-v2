@@ -14,7 +14,7 @@
 # limitations under the License.
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 
 from google.adk.events.event_actions import EventActions
 from google.adk.events.event_actions import EventCompaction

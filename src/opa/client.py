@@ -8,7 +8,7 @@ When speed matters and rules are clear, OPA is the answer.
 
 import httpx
 import logging
-from typing import Any, Dict
+from typing import Any
 from datetime import datetime, timezone
 
 logger = logging.getLogger(__name__)

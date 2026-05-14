@@ -7,7 +7,6 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Set
 
 from monke.core.config import TestConfig
 from monke.core import events

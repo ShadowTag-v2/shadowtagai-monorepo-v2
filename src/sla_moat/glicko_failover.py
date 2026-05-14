@@ -15,7 +15,7 @@ This makes the failover architecture self-optimizing - no manual tuning needed.
 
 import time
 import logging
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any
 
 from .failover_engine import JREngineWithFailover, JudgeDecision, ProviderType, FailoverReason, TimeoutError, APIError
 from .glicko2 import Glicko2Player, create_provider_ratings, update_provider_rating, get_ranked_providers, get_allocation_percentages

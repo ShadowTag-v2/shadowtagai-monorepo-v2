@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Optional
 
 from google.genai import types
 from typing_extensions import override

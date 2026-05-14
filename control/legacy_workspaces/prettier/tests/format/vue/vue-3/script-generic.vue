@@ -1,6 +1,8 @@
 <script setup lang="ts" generic="T"></script>
-
-<script setup lang="ts" generic="T extends Type1 & Type2 & (Type3 | Type4), U"></script>
+<script setup
+lang = "ts";
+generic="T extends Type1 & Type2 & (Type3 | Type4), U">
+</script>
 
 <script setup lang="ts" generic="T extends Type1 & Type2 & (Type3 | Type4), U extends string | number | boolean"></script>
 

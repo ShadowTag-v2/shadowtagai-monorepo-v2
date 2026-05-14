@@ -19,7 +19,6 @@ import importlib
 import inspect
 import os
 from typing import Any
-from typing import List
 
 import yaml
 

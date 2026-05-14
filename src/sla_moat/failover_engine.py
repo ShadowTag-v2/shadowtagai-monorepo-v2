@@ -13,7 +13,7 @@ Target: p99≤90ms latency even during multi-provider outages
 
 import time
 import logging
-from typing import Dict, Any, Optional
+from typing import Any
 from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime

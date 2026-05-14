@@ -20,9 +20,6 @@ from __future__ import annotations
 from pathlib import Path
 import re
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from ..utils import find_adk_source_folder
 

@@ -6,7 +6,7 @@ Quantitative Effect: ↑ Trust/Compliance +99%, ↓ Manual review –70%
 """
 
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from datetime import datetime, timezone
 from google.cloud import dlp_v2
 from app.config.settings import settings

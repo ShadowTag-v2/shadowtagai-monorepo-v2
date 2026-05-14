@@ -12,7 +12,7 @@ Result: 31× faster, 97% cheaper, self-evolving system
 """
 
 import time
-from typing import Dict, Any, List, Optional
+from typing import Any
 from dataclasses import dataclass, field
 
 from src.core import GeminiFunctionCaller, FunctionRegistry

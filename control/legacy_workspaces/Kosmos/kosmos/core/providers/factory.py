@@ -7,7 +7,7 @@ based on configuration.
 """
 
 import logging
-from typing import Dict, Any
+from typing import Any
 
 from kosmos.core.providers.base import LLMProvider, ProviderAPIError
 

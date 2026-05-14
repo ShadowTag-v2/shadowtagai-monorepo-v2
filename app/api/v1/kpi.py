@@ -6,7 +6,6 @@ Tracks governance, safety, and monetization metrics
 
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import List, Dict, Optional
 from datetime import datetime, timezone, timedelta
 from enum import Enum
 

@@ -8,7 +8,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from anthropic import Anthropic
 import os
-from typing import Optional
 import logging
 
 # Configure logging

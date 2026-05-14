@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any
 import lancedb
 import pyarrow as pa
 from ..providers.embeddings import embed_text

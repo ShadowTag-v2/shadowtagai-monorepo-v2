@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-from typing import Optional
 from pydantic import BaseModel, EmailStr, Field
 
 

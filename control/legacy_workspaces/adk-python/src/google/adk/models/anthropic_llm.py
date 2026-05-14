@@ -25,9 +25,7 @@ from typing import Any
 from collections.abc import AsyncGenerator
 from collections.abc import Iterable
 from typing import Literal
-from typing import Optional
 from typing import TYPE_CHECKING
-from typing import Union
 
 from anthropic import AsyncAnthropic
 from anthropic import AsyncAnthropicVertex

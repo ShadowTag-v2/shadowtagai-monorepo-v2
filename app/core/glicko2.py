@@ -12,7 +12,6 @@ Advantages over Elo/PPO:
 
 import math
 import logging
-from typing import List, Tuple
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)

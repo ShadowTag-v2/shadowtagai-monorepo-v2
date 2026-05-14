@@ -13,7 +13,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
-from typing import Optional, Dict, List, Any
+from typing import Any
 
 
 BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"

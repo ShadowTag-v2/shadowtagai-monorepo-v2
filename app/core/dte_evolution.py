@@ -8,7 +8,7 @@ Test results: +3.7% accuracy improvement with evolved prompts
 
 import logging
 import random
-from typing import List, Dict, Any, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone

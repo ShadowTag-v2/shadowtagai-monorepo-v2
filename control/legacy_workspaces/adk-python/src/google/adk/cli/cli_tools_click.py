@@ -26,7 +26,6 @@ import os
 from pathlib import Path
 import tempfile
 import textwrap
-from typing import Optional
 
 import click
 from click.core import ParameterSource

@@ -3,7 +3,7 @@ import logging
 import asyncio
 import redis.asyncio as aioredis
 import redis  # For redis.exceptions
-from typing import Dict, Any  # For message_data type hint if being very specific
+from typing import Any  # For message_data type hint if being very specific
 
 from config import (
     REDIS_STREAM_NAME,

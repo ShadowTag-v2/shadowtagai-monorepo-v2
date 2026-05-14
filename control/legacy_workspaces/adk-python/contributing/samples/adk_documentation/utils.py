@@ -14,8 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Dict
-from typing import List
 
 from adk_documentation.settings import GITHUB_TOKEN
 from google.adk.agents.run_config import RunConfig

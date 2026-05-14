@@ -2,7 +2,7 @@
 import os
 from fastapi import FastAPI, Header, Depends
 from fastapi_mcp import FastApiMCP
-from typing import Dict, Any, List, Optional
+from typing import Any
 from pydantic import BaseModel, Field
 import httpx
 

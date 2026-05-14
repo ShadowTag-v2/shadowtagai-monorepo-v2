@@ -4,8 +4,6 @@
 Generates realistic ticket content for testing Zendesk integration using LLM.
 """
 
-from typing import Tuple
-
 from monke.generation.schemas.zendesk import ZendeskTicket
 from monke.client.llm import LLMClient
 

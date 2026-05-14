@@ -15,9 +15,6 @@
 
 """Unit tests for AutoAuthCredentialExchanger."""
 
-from typing import Dict
-from typing import Optional
-from typing import Type
 from unittest.mock import MagicMock
 
 from google.adk.auth.auth_credential import AuthCredential

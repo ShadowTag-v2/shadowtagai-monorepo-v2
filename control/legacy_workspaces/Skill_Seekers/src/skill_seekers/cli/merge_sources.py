@@ -15,7 +15,7 @@ import logging
 import subprocess
 import tempfile
 import os
-from typing import Dict, List, Any
+from typing import Any
 from .conflict_detector import Conflict, ConflictDetector
 
 logging.basicConfig(level=logging.INFO)

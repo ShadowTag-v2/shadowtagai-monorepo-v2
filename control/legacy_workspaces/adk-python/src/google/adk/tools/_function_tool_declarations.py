@@ -33,8 +33,6 @@ from collections.abc import Callable
 from typing import get_args
 from typing import get_origin
 from typing import get_type_hints
-from typing import Optional
-from typing import Type
 
 from google.genai import types
 import pydantic

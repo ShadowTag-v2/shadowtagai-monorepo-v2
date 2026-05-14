@@ -10,7 +10,7 @@ Quantitative Effect: ↑ Trust/Compliance +99%, ↓ Manual review -70%
 import logging
 import re
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any
 
 logger = logging.getLogger(__name__)
 

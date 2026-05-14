@@ -27,7 +27,6 @@ from __future__ import annotations
 import asyncio
 import logging
 from typing import Any
-from typing import Optional
 
 from google.genai import types
 from typing_extensions import override

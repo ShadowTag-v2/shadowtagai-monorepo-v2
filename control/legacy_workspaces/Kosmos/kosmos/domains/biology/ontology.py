@@ -24,7 +24,7 @@ Example usage:
     related = ontology.find_related_concepts('diabetes', relation_type='associated_gene')
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 from enum import Enum
 from pydantic import BaseModel, Field
 

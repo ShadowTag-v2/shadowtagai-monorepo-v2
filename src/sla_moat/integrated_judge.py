@@ -45,7 +45,7 @@ Example:
 """
 
 import logging
-from typing import Dict, Any
+from typing import Any
 from dataclasses import dataclass
 
 from .failover_engine import JudgeDecision, ProviderType

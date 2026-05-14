@@ -11,8 +11,8 @@ import json
 import sqlite3
 import hashlib
 from pathlib import Path
-from datetime import datetime, timezone, UTC
-from typing import List, Dict, Any
+from datetime import datetime, UTC
+from typing import Any
 import subprocess
 import sys
 

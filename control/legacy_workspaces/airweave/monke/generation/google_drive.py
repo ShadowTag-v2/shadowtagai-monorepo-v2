@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Google Drive-specific generation adapter: file content generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.google_drive import GoogleDriveArtifact
 from monke.client.llm import LLMClient
 

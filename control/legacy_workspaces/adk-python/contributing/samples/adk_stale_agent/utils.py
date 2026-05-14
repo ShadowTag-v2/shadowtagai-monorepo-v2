@@ -15,13 +15,10 @@
 
 from datetime import datetime
 from datetime import timedelta
-from datetime import timezone, UTC
+from datetime import UTC
 import logging
 import threading
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from adk_stale_agent.settings import GITHUB_TOKEN
 from adk_stale_agent.settings import STALE_HOURS_THRESHOLD

@@ -6,7 +6,7 @@ Core prompts that embed the Steve Jobs / ULTRATHINK philosophy into every intera
 These prompts prime the AI with the mindset, principles, and approach.
 """
 
-from typing import Dict, Any
+from typing import Any
 
 
 class FoundationPrompts:

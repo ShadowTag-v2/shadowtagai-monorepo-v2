@@ -3,7 +3,7 @@
 Core configuration module for Release Manager.
 """
 
-from typing import Any, Dict
+from typing import Any
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 import secrets

@@ -9,7 +9,7 @@ different journals and use cases.
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from typing import Dict, Any
+from typing import Any
 
 
 # Okabe-Ito colorblind-friendly palette

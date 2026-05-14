@@ -18,8 +18,6 @@ from __future__ import annotations
 from typing import Any
 from collections.abc import AsyncGenerator
 from typing import ClassVar
-from typing import Dict
-from typing import Type
 
 from google.adk.agents import BaseAgent
 from google.adk.agents.base_agent_config import BaseAgentConfig

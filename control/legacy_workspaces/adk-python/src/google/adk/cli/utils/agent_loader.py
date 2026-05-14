@@ -24,7 +24,6 @@ import sys
 from typing import Any
 from typing import Literal
 from typing import Optional
-from typing import Union
 
 from pydantic import ValidationError
 from typing_extensions import override

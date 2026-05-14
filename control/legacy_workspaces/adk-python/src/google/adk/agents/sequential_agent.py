@@ -20,7 +20,6 @@ from __future__ import annotations
 import logging
 from collections.abc import AsyncGenerator
 from typing import ClassVar
-from typing import Type
 
 from typing_extensions import override
 

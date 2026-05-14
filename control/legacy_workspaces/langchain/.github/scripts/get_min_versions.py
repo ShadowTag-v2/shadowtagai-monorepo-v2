@@ -11,7 +11,6 @@ else:
     import tomli as tomllib
 
 import re
-from typing import List
 
 import requests
 from packaging.requirements import Requirement

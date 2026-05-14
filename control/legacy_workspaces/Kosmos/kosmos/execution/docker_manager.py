@@ -15,7 +15,7 @@ cold-start latency when executing generated scientific code.
 import asyncio
 import docker
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Any, List
+from typing import Any
 import logging
 import time
 from enum import Enum

@@ -10,7 +10,7 @@ import os
 import requests
 import time
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 
 class ResearchLookup:

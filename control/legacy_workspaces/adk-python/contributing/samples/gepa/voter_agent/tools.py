@@ -17,8 +17,6 @@
 from datetime import datetime
 import os
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from google.adk.tools import ToolContext
 from google.cloud import bigquery

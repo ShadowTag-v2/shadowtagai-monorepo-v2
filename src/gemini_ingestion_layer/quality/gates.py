@@ -10,7 +10,7 @@ Unlike Judge #6's 98% coverage requirement, this focuses on:
 - Data quality (relevance, timeliness, completeness)
 """
 
-from typing import Dict, List, Any, Optional
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime, timezone, timedelta
 from enum import Enum

@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import List
-from typing import Optional
 from typing import Union
 
 from fastapi.openapi.models import OAuth2

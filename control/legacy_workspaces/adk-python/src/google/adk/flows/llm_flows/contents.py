@@ -18,7 +18,6 @@ from __future__ import annotations
 import copy
 import logging
 from collections.abc import AsyncGenerator
-from typing import Optional
 
 from google.genai import types
 from typing_extensions import override

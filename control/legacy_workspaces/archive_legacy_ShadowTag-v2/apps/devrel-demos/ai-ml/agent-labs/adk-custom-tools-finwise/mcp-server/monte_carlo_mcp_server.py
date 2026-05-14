@@ -16,7 +16,6 @@ import json
 import random
 import sys
 from time import perf_counter
-from typing import Dict
 
 # --- MCP server (low-level, stdio) ---
 from mcp import types as mcp_types

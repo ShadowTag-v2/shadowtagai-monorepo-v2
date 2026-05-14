@@ -12,7 +12,6 @@ Stores intelligence items in BigQuery for:
 import os
 import json
 import logging
-from typing import List
 from datetime import datetime
 from google.cloud import bigquery
 from google.api_core import exceptions

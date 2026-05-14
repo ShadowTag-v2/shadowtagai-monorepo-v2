@@ -20,7 +20,6 @@ from contextlib import AsyncExitStack
 from datetime import timedelta
 import logging
 from typing import AsyncContextManager
-from typing import Optional
 
 from mcp import ClientSession
 

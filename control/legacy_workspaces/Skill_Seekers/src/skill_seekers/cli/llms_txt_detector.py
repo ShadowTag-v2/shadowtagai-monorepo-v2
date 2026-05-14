@@ -3,7 +3,6 @@
 # ABOUTME: Supports llms-full.txt, llms.txt, and llms-small.txt variants
 
 import requests
-from typing import Optional, Dict, List
 from urllib.parse import urlparse
 
 

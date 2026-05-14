@@ -22,7 +22,6 @@ import sys
 import tempfile
 import shutil
 from pathlib import Path
-from typing import Optional, List
 
 
 class TikZCompiler:

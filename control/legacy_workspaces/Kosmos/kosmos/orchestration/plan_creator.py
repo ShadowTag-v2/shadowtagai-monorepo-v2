@@ -16,7 +16,6 @@ Performance Target: Generate plans with ~80% approval rate
 
 import json
 import logging
-from typing import Dict, List, Optional
 from dataclasses import dataclass
 
 from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL

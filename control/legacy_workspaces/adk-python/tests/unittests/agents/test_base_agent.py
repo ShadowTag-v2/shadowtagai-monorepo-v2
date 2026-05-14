@@ -19,9 +19,6 @@ from enum import Enum
 from functools import partial
 import logging
 from collections.abc import AsyncGenerator
-from typing import List
-from typing import Optional
-from typing import Union
 from unittest import mock
 
 from google.adk.agents.base_agent import BaseAgent

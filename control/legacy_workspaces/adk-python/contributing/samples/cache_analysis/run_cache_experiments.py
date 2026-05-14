@@ -30,8 +30,6 @@ import logging
 import sys
 import time
 from typing import Any
-from typing import Dict
-from typing import List
 
 try:
     # Try relative imports first (when run as module)

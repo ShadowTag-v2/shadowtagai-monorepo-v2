@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from pathlib import Path
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 import re
 from ..utils.hash import sha256_file, sha256_text
 from ..utils.db import sqlite_conn

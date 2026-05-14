@@ -5,7 +5,6 @@ Core orchestration for Judge #6
 """
 
 import time
-from typing import Optional
 from .models import Action, JRVerdict, VerdictStatus
 from .validators import PurposeValidator, ReasonsValidator, BrakesValidator
 

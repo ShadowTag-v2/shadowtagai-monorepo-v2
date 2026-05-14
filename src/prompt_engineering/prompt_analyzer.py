@@ -6,7 +6,6 @@ Analyzes prompts for quality metrics and provides optimization suggestions.
 """
 
 from dataclasses import dataclass
-from typing import List, Dict, Optional
 import re
 
 

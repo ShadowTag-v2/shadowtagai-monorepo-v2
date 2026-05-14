@@ -15,7 +15,6 @@
 import asyncio
 import time
 from typing import Literal
-from typing import Optional
 
 from google.adk.tools.computer_use.base_computer import BaseComputer
 from google.adk.tools.computer_use.base_computer import ComputerEnvironment

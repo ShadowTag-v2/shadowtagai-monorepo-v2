@@ -17,7 +17,7 @@ import argparse
 import json
 import logging
 import time
-from typing import Dict, Any, Optional
+from typing import Any
 from collections.abc import Sequence, Iterable
 
 import apache_beam as beam

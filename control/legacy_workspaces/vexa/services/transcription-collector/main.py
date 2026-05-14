@@ -4,7 +4,6 @@ import logging
 import asyncio
 import redis
 import redis.asyncio as aioredis
-from typing import Optional
 
 from filters import TranscriptionFilter
 from config import (

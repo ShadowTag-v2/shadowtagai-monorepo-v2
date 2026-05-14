@@ -4,7 +4,6 @@ Tools for the chatbot
 """
 
 import traceback
-from typing import List
 
 from langchain_core.tools import tool
 from thefuzz import process

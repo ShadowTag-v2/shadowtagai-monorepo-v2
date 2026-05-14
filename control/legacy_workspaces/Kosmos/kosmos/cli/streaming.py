@@ -7,7 +7,7 @@ Shows LLM token streaming, progress updates, and stage tracking.
 """
 
 import logging
-from typing import List, Optional
+from typing import Optional
 
 try:
     from rich.console import Console

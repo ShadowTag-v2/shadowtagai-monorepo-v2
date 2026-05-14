@@ -5,7 +5,7 @@ World model query tools for accessing research state.
 These tools allow agents to query the world model during ReAct loops.
 """
 
-from typing import Dict, Any, Optional
+from typing import Any
 
 
 def world_model_query(

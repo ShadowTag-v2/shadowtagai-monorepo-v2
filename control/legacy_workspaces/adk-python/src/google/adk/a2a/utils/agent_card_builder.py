@@ -17,9 +17,6 @@ from __future__ import annotations
 
 import re
 import sys
-from typing import Dict
-from typing import List
-from typing import Optional
 
 try:
     from a2a.types import AgentCapabilities

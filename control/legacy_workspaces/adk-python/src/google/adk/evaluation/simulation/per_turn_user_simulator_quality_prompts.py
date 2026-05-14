@@ -15,7 +15,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
 
 from .user_simulator_personas import UserPersona
 

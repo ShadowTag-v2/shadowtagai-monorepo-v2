@@ -20,12 +20,8 @@ from __future__ import annotations
 from pathlib import Path
 import re
 from typing import Any
-from typing import Dict
-from typing import List
 from collections.abc import Mapping
-from typing import Optional
 from collections.abc import Sequence
-from typing import Tuple
 
 from google.adk.tools.tool_context import ToolContext
 import jsonschema

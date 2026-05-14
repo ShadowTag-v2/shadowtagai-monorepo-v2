@@ -9,7 +9,7 @@ and relationships (CITES, USES_METHOD, DISCUSSES, AUTHORED, RELATED_TO).
 import logging
 import subprocess
 import time
-from typing import List, Dict, Any, Optional
+from typing import Any
 from datetime import datetime
 
 from py2neo import Graph, Node, Relationship, NodeMatcher, RelationshipMatcher

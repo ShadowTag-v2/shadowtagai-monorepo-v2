@@ -2,7 +2,7 @@
 import os
 from google.adk.tools import ToolContext
 from google.adk.memory import VertexAiMemoryBankService
-from typing import Dict, Any
+from typing import Any
 
 
 async def search_memory(query: str) -> list:

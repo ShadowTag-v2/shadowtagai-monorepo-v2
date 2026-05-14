@@ -7,7 +7,6 @@ Handles decoding (extraction) operations for various media types.
 
 import typer
 from pathlib import Path
-from typing import Optional
 from rich.console import Console
 from rich.progress import Progress
 

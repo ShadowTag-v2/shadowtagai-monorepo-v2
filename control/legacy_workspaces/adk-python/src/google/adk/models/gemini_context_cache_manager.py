@@ -21,7 +21,6 @@ import hashlib
 import json
 import logging
 import time
-from typing import Optional
 from typing import TYPE_CHECKING
 
 from google.genai import types

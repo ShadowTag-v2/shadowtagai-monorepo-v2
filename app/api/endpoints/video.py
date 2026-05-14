@@ -7,7 +7,6 @@ API endpoints for video encoding and decoding operations.
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
-from typing import Optional
 import hashlib
 from datetime import datetime, timezone
 

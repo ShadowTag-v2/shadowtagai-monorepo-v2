@@ -12,7 +12,7 @@ Target: p99 ≤90ms latency
 """
 
 import time
-from typing import Dict, Any, Optional, List
+from typing import Any
 from dataclasses import dataclass
 from enum import Enum
 

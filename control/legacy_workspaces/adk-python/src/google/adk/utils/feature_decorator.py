@@ -19,9 +19,7 @@ import functools
 import os
 from collections.abc import Callable
 from typing import cast
-from typing import Optional
 from typing import TypeVar
-from typing import Union
 import warnings
 
 T = TypeVar("T", bound=Callable | type)

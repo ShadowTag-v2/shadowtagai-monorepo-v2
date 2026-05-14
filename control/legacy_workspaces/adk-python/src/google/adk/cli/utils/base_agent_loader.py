@@ -20,7 +20,6 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from typing import Any
-from typing import Union
 
 from ...agents.base_agent import BaseAgent
 from ...apps.app import App

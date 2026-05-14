@@ -10,7 +10,6 @@ Emits streaming events for real-time visibility via EventBus.
 
 import logging
 import uuid
-from typing import Dict, Optional
 from datetime import datetime
 
 # Gap imports

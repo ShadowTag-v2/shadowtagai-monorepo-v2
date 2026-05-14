@@ -18,7 +18,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from fastapi.openapi.models import OAuth2
 from google.adk.auth.auth_credential import AuthCredential

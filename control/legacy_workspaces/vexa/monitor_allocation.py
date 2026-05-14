@@ -16,7 +16,6 @@ import requests
 import time
 import argparse
 from datetime import datetime
-from typing import Dict, List, Tuple
 
 
 class WhisperLiveMonitor:

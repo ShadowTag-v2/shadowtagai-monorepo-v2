@@ -17,8 +17,6 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import Optional
-from typing import Union
 
 from pydantic import alias_generators
 from pydantic import BaseModel

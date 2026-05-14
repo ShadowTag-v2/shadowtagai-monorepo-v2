@@ -23,7 +23,6 @@ from pathlib import Path
 import shutil
 from typing import Any
 from collections.abc import Mapping
-from typing import Optional
 
 import click
 from fastapi import FastAPI

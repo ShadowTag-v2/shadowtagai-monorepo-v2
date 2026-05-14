@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Bitbucket-specific generation adapter: code file generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.bitbucket import BitbucketArtifact
 from monke.client.llm import LLMClient
 

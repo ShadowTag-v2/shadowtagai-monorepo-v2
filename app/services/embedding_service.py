@@ -4,7 +4,6 @@
 import asyncio
 import logging
 import numpy as np
-from typing import List, Optional, Tuple
 from sentence_transformers import SentenceTransformer
 import faiss
 

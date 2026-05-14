@@ -16,12 +16,11 @@
 from __future__ import annotations
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import inspect
 import logging
 from collections.abc import Awaitable
 from collections.abc import Callable
-from typing import Optional
 import uuid
 
 from ...utils.context_utils import Aclosing

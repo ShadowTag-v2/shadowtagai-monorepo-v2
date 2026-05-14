@@ -5,7 +5,7 @@ Intelligently chunks source code for embedding generation
 """
 
 import logging
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 import re
 

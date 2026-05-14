@@ -12,7 +12,7 @@ Provides intelligent paper analysis including:
 """
 
 import logging
-from typing import List, Dict, Any, Optional, Tuple
+from typing import Any
 from dataclasses import dataclass, asdict
 import time
 import json

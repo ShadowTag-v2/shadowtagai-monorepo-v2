@@ -18,7 +18,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from llama_index.core import SimpleDirectoryReader
 from llama_index.core import VectorStoreIndex

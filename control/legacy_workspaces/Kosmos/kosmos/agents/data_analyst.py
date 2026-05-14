@@ -8,7 +8,7 @@ identifying anomalies, and generating scientific insights.
 
 import logging
 import json
-from typing import List, Dict, Any, Optional
+from typing import Any
 from datetime import datetime
 import numpy as np
 

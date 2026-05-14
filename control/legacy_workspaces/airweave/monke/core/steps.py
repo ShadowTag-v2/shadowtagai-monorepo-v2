@@ -4,7 +4,7 @@
 import asyncio
 import time
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from monke.core.config import TestConfig
 from monke.core.context import TestContext

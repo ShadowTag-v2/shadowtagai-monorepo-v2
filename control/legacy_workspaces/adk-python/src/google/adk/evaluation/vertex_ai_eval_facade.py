@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import math
 import os
-from typing import Optional
 from typing import TYPE_CHECKING
 
 from google.genai import types as genai_types

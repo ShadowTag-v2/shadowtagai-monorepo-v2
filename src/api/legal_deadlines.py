@@ -5,7 +5,7 @@ FastAPI endpoints for automated deadline extraction, tracking, and notification
 """
 
 from datetime import datetime, timezone, date
-from typing import List, Optional, Dict, Any
+from typing import Any
 from enum import Enum
 from uuid import uuid4
 
@@ -117,7 +117,8 @@ class DeadlineRule(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    model_config = ConfigDict(json_schema_extra={
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "jurisdiction": "federal",
                 "jurisdiction_type": "federal",
@@ -130,7 +131,10 @@ class DeadlineRule(BaseModel):
                 "rule_source": "FRCP 12(a)(1)(A)",
                 "notes": "Answer to complaint deadline for federal civil cases",
             }
-        })
+        }
+    )
+
+
 class ExtractedDeadline(BaseModel):
     """A deadline extracted from a legal document"""
 
@@ -156,7 +160,8 @@ class ExtractedDeadline(BaseModel):
     verified_by: str | None = Field(None, description="Verifying user")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    model_config = ConfigDict(json_schema_extra={
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "dl_20251117_abc123",
                 "document_id": "doc_complaint_xyz789",
@@ -180,7 +185,10 @@ class ExtractedDeadline(BaseModel):
                 },
                 "reminder_schedule": ["2025-11-08", "2025-11-24", "2025-12-01", "2025-12-07"],
             }
-        })
+        }
+    )
+
+
 class LegalDocument(BaseModel):
     """Legal document for deadline extraction"""
 
@@ -278,7 +286,11 @@ async def root():
 @app.get("/health", tags=["Health"])
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "timestamp": datetime.now(timezone.utc), "checks": {"database": "ok", "gcs": "ok", "ml_service": "ok", "calendar_api": "ok"}}
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now(timezone.utc),
+        "checks": {"database": "ok", "gcs": "ok", "ml_service": "ok", "calendar_api": "ok"},
+    }
 
 
 @app.post("/documents/upload", response_model=LegalDocument, status_code=status.HTTP_201_CREATED, tags=["Documents"])

@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import json
-from typing import Optional
 
 from google.auth.credentials import Credentials
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect

@@ -26,7 +26,7 @@ Example usage:
     comparison = analyzer.cross_species_comparison(datasets)
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 from dataclasses import dataclass, field
 import pandas as pd
 import numpy as np

@@ -20,9 +20,6 @@ from types import FunctionType
 import typing
 from typing import Any
 from collections.abc import Callable
-from typing import Dict
-from typing import Optional
-from typing import Union
 
 from google.genai import types
 import pydantic

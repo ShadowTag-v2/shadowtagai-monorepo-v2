@@ -10,7 +10,6 @@ Implements:
 """
 
 import logging
-from typing import Optional, List
 from datetime import datetime
 from enum import Enum
 

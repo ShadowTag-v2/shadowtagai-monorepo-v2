@@ -82,7 +82,7 @@ function mix_with_declared_props(o: {[k:number]:X,p:Y}, x: X, y: Y) {
   (o.p
   : Y) // ok
   o[0] = x // ok
-  o.p = y; // ok
+  o.p = y // ok
 }
 
 // Indeed, dict types are still Objects and have Object.prototype stuff

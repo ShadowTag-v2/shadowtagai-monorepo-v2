@@ -18,8 +18,6 @@ from __future__ import annotations
 import json
 import re
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from google.adk.models.llm_request import LlmRequest
 from google.adk.models.registry import LLMRegistry

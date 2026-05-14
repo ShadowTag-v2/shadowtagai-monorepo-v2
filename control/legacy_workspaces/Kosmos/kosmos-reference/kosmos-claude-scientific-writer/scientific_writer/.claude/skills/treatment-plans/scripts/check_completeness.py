@@ -9,7 +9,6 @@ import sys
 import re
 import argparse
 from pathlib import Path
-from typing import List, Tuple
 
 # Required sections for all treatment plans
 REQUIRED_SECTIONS = [

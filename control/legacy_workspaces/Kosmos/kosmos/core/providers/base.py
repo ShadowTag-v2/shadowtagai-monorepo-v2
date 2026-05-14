@@ -8,7 +8,7 @@ enabling Kosmos to work with Anthropic, OpenAI, and other providers.
 
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Optional
+from typing import Any
 from collections.abc import AsyncIterator, Iterator
 from datetime import datetime
 from dataclasses import dataclass

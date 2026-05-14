@@ -13,7 +13,6 @@ import argparse
 import json
 import time
 import random
-from typing import List, Dict, Optional
 
 try:
     from scholarly import scholarly, ProxyGenerator

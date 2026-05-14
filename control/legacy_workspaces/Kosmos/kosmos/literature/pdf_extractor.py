@@ -9,7 +9,7 @@ and fallback to abstract when full text is unavailable.
 import fitz  # PyMuPDF
 import httpx
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Any
 import logging
 import re
 

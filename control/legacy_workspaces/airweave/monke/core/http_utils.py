@@ -2,7 +2,7 @@
 """Shared HTTP utilities for Monke test steps."""
 
 import os
-from typing import Any, Dict, Optional
+from typing import Any
 import httpx
 
 

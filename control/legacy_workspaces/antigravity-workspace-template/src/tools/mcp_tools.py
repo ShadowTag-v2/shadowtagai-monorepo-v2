@@ -12,7 +12,7 @@ These tools allow the agent to:
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from src.config import settings
 

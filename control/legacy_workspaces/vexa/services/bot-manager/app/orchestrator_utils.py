@@ -6,8 +6,8 @@ import json
 import uuid
 import os
 import time
-from typing import Optional, List, Dict, Any
-from datetime import datetime, timezone, UTC
+from typing import Any
+from datetime import datetime, UTC
 
 # from app.auth import get_current_user_ws # This function does not exist
 from app.config import REDIS_URL  # Import from the single source of truth

@@ -10,7 +10,7 @@ Async Architecture (Issue #66 fix):
 - Sync wrappers provided for backwards compatibility
 """
 
-from typing import Dict, Any, Optional, List, Union
+from typing import Any
 from collections.abc import Callable, Awaitable
 from enum import Enum
 from datetime import datetime

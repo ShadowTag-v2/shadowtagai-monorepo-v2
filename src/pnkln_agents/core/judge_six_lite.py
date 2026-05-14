@@ -8,7 +8,7 @@ Output: Exportable PDF compliance report
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Dict, Any, Optional
+from typing import Any
 import time
 import re
 import json

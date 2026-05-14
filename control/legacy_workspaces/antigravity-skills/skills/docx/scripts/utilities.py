@@ -33,7 +33,6 @@ Example usage:
 
 import html
 from pathlib import Path
-from typing import Optional, Union
 
 import defusedxml.minidom
 import defusedxml.sax

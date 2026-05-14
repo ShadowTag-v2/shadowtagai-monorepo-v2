@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Confluence-specific generation adapter: page generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.confluence import ConfluenceArtifact
 from monke.client.llm import LLMClient
 

@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Optional
-from typing import Union
 
 from google.genai import types as genai_types
 from pydantic import Field

@@ -14,8 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Dict
-from typing import List
 
 from fastapi.openapi.models import Response
 from fastapi.openapi.models import Schema

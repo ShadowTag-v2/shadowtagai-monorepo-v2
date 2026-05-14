@@ -6,7 +6,7 @@ Combines unified literature search with vector database and embeddings
 for intelligent paper discovery and recommendation.
 """
 
-from typing import List, Optional, Dict, Any, Tuple
+from typing import Any
 import logging
 
 from kosmos.literature.base_client import PaperMetadata, PaperSource

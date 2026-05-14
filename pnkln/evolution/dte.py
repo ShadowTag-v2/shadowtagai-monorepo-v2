@@ -10,7 +10,7 @@ Integrated from: claude/autogen-to-gemini-migration branch
 Enhanced with: Pnkln Ultrathink principles
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum

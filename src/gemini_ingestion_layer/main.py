@@ -16,7 +16,7 @@ Called by services in 4 namespaces:
 import asyncio
 import time
 from datetime import datetime, timezone
-from typing import List, Dict, Any
+from typing import Any
 
 from .config import DEFAULT_CONFIG, IngestcionConfig
 from .sources import YouTubeSource, TwitterSource, NewsSource, IngestionItem

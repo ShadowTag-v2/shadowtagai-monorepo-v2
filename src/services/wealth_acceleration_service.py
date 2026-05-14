@@ -9,7 +9,6 @@ Version: 1.0.0
 Last Updated: 2025-11-08
 """
 
-from typing import List, Optional
 from collections.abc import AsyncIterator
 from pydantic import BaseModel, Field
 from enum import Enum

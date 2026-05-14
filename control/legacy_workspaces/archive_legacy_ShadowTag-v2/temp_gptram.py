@@ -14,7 +14,6 @@ import sqlite3
 import os
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import List, Dict, Optional
 
 
 class ClaudeCodeMemory:

@@ -17,8 +17,6 @@ import asyncio
 import contextlib
 from collections.abc import AsyncGenerator
 from collections.abc import Generator
-from typing import Optional
-from typing import Union
 
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.agents.live_request_queue import LiveRequestQueue

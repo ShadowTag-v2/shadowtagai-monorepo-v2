@@ -17,9 +17,6 @@ import datetime
 import re
 import types
 from typing import Any
-from typing import List
-from typing import Optional
-from typing import Tuple
 from unittest import mock
 
 from dateutil.parser import isoparse

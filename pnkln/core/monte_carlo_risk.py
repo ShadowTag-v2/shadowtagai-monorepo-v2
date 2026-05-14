@@ -39,7 +39,6 @@ License: Proprietary
 import asyncio
 import time
 from dataclasses import dataclass
-from typing import Dict, List
 import logging
 
 from pnkln.core.jr_engine import JREngine, RiskLevel, ProbabilityLevel, SeverityLevel

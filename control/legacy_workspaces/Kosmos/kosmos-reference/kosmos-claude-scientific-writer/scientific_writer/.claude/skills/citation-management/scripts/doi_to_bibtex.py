@@ -10,7 +10,6 @@ import requests
 import argparse
 import time
 import json
-from typing import Optional, List
 
 
 class DOIConverter:

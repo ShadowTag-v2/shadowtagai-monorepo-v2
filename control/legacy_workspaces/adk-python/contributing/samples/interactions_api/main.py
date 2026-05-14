@@ -42,7 +42,6 @@ import asyncio
 import logging
 from pathlib import Path
 import time
-from typing import Optional
 
 from dotenv import load_dotenv
 from google.adk.agents.run_config import RunConfig

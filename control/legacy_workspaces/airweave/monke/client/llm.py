@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import os
 import re
-from typing import Optional, Type, Union
 from enum import Enum
 
 from openai import AsyncOpenAI

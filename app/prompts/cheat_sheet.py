@@ -17,7 +17,6 @@ Original 21 elements → Fused 10 essentials:
 10. Call (call-to-action or next step)
 """
 
-from typing import Optional, List
 from pydantic import BaseModel, Field
 from enum import Enum
 

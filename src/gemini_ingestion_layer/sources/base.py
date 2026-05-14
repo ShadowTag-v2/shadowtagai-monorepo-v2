@@ -6,7 +6,7 @@ Abstract base for all data source implementations.
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 

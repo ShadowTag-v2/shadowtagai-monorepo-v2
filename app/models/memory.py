@@ -42,9 +42,7 @@ class Memory(Base):
     project = relationship("Project", back_populates="memories")
     embeddings = relationship("VectorEmbedding", back_populates="memory", cascade="all, delete-orphan")
 
-    __table_args__ = (
-        Index("ix_memories_user_project", "user_id", "project_id"),
-    )
+    __table_args__ = (Index("ix_memories_user_project", "user_id", "project_id"),)
 
     def __repr__(self) -> str:
         return f"<Memory(id={self.id}, type={self.memory_type})>"

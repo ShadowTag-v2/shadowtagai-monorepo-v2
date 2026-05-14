@@ -15,7 +15,7 @@ declare const x: 1 | 2;
     2 => false,
 
   out as boolean // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 {
@@ -24,7 +24,7 @@ declare const x: 1 | 2;
   => true,
     2 => 's',
   out as boolean | string // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 declare function invariant(boolean): empty;
@@ -35,7 +35,7 @@ declare function invariant(boolean): empty;
   => true,
     2 => invariant(false),
   out as boolean // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 function f1() {
@@ -54,7 +54,7 @@ function f2() {
   => true,
     _ => 's',
   out as string // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 // Nested matches

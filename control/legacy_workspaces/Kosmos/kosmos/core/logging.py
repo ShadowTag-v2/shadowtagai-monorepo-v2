@@ -14,7 +14,7 @@ import logging
 import logging.handlers
 import json
 import sys
-from typing import Optional, Dict, Any
+from typing import Any
 from datetime import datetime
 from pathlib import Path
 from enum import Enum

@@ -20,7 +20,7 @@ import sys
 import json
 import argparse
 import logging
-from typing import Dict, Optional, Any
+from typing import Any
 
 try:
     from github import Github, GithubException, Repository

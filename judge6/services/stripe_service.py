@@ -5,7 +5,7 @@ Handles subscription management, payments, webhooks
 """
 
 import stripe
-from typing import Optional, Dict, Any
+from typing import Any
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
 

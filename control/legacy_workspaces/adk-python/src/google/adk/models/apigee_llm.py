@@ -19,7 +19,6 @@ from __future__ import annotations
 from functools import cached_property
 import logging
 import os
-from typing import Optional
 from typing import TYPE_CHECKING
 
 from google.adk import version as adk_version

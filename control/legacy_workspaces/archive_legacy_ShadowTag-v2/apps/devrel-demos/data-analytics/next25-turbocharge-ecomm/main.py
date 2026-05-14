@@ -35,9 +35,7 @@ import argparse
 from apache_beam.ml.inference.base import ModelHandler
 from apache_beam.ml.inference.base import PredictionResult
 from typing import Any
-from typing import Dict
 from collections.abc import Iterable
-from typing import Optional
 from collections.abc import Sequence
 
 

@@ -20,7 +20,6 @@ Usage:
 """
 
 import argparse
-from typing import Dict, List, Tuple
 
 try:
     import matplotlib.pyplot as plt

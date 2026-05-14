@@ -18,7 +18,6 @@
 from __future__ import annotations
 
 import abc
-from typing import Optional
 
 from ...utils.feature_decorator import experimental
 from ..auth_credential import AuthCredential

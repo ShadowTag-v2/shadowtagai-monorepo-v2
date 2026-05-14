@@ -21,8 +21,6 @@ import logging
 from typing import Any
 from collections.abc import AsyncGenerator
 from typing import ClassVar
-from typing import Dict
-from typing import Optional
 
 from typing_extensions import override
 

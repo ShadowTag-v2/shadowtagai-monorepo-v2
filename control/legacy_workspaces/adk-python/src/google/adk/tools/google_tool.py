@@ -18,7 +18,6 @@ from __future__ import annotations
 import inspect
 from typing import Any
 from collections.abc import Callable
-from typing import Optional
 
 from google.auth.credentials import Credentials
 from pydantic import BaseModel

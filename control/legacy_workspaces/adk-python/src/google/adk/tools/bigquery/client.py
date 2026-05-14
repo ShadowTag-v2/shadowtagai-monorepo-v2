@@ -15,7 +15,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
 
 import google.api_core.client_info
 from google.auth.credentials import Credentials
@@ -24,10 +23,6 @@ from google.cloud import bigquery
 from ... import version
 
 USER_AGENT = f"adk-bigquery-tool google-adk/{version.__version__}"
-
-
-from typing import List
-from typing import Union
 
 
 def get_bigquery_client(

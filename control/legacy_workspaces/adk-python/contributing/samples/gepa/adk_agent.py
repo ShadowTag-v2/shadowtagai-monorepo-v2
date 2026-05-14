@@ -20,8 +20,6 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Generator
 from typing import Any
-from typing import Dict
-from typing import Optional
 from typing import Protocol
 from typing import runtime_checkable
 

@@ -14,8 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from adk_answering_agent.settings import OWNER
 from adk_answering_agent.settings import REPO

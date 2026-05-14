@@ -26,7 +26,7 @@ This module provides:
 - Marketplace-ready cheat sheet packages
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 from dataclasses import dataclass, field
 from enum import Enum
 

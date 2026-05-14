@@ -2,7 +2,7 @@
 """Minimal RAG: build embeddings matrix (NPY) + metadata, and answer queries with cosine."""
 
 from __future__ import annotations
-from typing import List, Dict, Any
+from typing import Any
 import json
 import numpy as np
 from .vertex import embedding, gemini

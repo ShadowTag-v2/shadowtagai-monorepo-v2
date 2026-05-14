@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Gmail-specific generation adapter: email generator using JSON mode."""
 
-from typing import Tuple
-
 from monke.generation.schemas.gmail import GmailArtifact
 from monke.client.llm import LLMClient
 

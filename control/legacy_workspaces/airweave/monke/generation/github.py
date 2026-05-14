@@ -3,7 +3,6 @@
 
 import re
 import json
-from typing import Tuple
 
 from monke.generation.schemas.github import GitHubArtifact
 from monke.client.llm import LLMClient

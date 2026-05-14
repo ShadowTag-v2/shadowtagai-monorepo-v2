@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Dict
+from typing import Any
 
 from ..adapters.authority_state import AuthorityState
 from ..adapters.memory_atoms import replace_authority_atoms

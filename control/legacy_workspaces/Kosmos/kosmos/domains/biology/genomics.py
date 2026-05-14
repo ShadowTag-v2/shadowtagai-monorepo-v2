@@ -31,7 +31,7 @@ Example workflow:
     top_mechanisms = analyzer.rank_mechanisms(results, top_n=10)
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 from enum import Enum
 import numpy as np
 import pandas as pd

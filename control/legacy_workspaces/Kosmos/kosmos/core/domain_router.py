@@ -7,7 +7,7 @@ to appropriate domain-specific tools, templates, and agents.
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 from kosmos.config import get_config
 from kosmos.core.llm import ClaudeClient

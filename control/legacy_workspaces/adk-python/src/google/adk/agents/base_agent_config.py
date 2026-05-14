@@ -15,11 +15,8 @@
 
 from __future__ import annotations
 
-from typing import List
 from typing import Literal
-from typing import Optional
 from typing import TypeVar
-from typing import Union
 
 from pydantic import BaseModel
 from pydantic import ConfigDict

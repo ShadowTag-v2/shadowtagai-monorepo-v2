@@ -16,7 +16,7 @@ Performance Impact:
 import logging
 import multiprocessing
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed, Future
-from typing import List, Dict, Any, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass
 import time

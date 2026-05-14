@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import sys
-from typing import Optional
 from unittest import mock
 from unittest.mock import AsyncMock
 

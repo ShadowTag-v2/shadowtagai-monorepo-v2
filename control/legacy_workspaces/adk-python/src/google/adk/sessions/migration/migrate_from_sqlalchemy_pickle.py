@@ -18,13 +18,12 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import json
 import logging
 import pickle
 import sys
 from typing import Any
-from typing import Optional
 
 from google.adk.events.event import Event
 from google.adk.events.event_actions import EventActions

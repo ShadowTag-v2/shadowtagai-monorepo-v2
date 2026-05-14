@@ -27,7 +27,6 @@ Examples:
 
 import sys
 import argparse
-from typing import List, Optional
 
 
 def create_parser() -> argparse.ArgumentParser:

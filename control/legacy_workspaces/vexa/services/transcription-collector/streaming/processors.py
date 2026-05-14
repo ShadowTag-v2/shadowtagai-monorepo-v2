@@ -4,8 +4,8 @@ import json
 import os
 import hmac
 import base64
-from datetime import datetime, timezone, timedelta, UTC
-from typing import Dict, Any, Optional
+from datetime import datetime, timedelta, UTC
+from typing import Any
 
 import redis  # For redis.exceptions
 import redis.asyncio as aioredis  # For type hinting redis_client

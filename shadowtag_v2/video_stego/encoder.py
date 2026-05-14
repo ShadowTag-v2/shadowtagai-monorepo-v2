@@ -6,7 +6,7 @@ Embeds hidden data into video frames using LSB (Least Significant Bit)
 and advanced spatial domain techniques.
 """
 
-from typing import Optional, Dict, Any
+from typing import Any
 from pathlib import Path
 from dataclasses import dataclass
 import hashlib

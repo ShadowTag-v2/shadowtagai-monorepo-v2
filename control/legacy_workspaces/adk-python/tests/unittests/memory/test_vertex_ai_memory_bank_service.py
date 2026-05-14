@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from datetime import datetime
-from typing import Optional
 from unittest import mock
 
 from google.adk.events.event import Event

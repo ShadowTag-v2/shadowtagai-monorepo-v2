@@ -25,7 +25,6 @@ Usage examples:
 import requests
 import time
 import json
-from typing import List, Dict, Optional
 from collections.abc import Generator
 
 BASE_URL = "https://rest.uniprot.org"

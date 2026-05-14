@@ -1,6 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from google.adk.agents import Agent
-from typing import Dict
 
 
 def search_local_library(title: str) -> dict[str, any]:

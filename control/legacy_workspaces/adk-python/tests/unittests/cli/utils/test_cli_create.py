@@ -21,9 +21,6 @@ import os
 from pathlib import Path
 import subprocess
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 import click
 import google.adk.cli.cli_create as cli_create

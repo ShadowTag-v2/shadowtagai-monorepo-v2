@@ -12,7 +12,7 @@ Provides a robust client for interacting with the OpenAlex API with:
 
 import time
 import requests
-from typing import Dict, List, Optional, Any
+from typing import Any
 from urllib.parse import urljoin
 
 

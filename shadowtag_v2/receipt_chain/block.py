@@ -5,7 +5,7 @@ Block Structure for Receipt Chain
 Defines the block and block header structures for the receipt chain.
 """
 
-from typing import Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 import hashlib

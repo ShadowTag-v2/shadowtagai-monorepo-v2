@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import json
-from typing import Optional
 
 import google.auth
 from google.auth import default as default_service_credential

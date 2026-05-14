@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import re
 from typing import Any
-from typing import Optional
 
 from google.genai.types import JSONSchema
 from google.genai.types import Schema

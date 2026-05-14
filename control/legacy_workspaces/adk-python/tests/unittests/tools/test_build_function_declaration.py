@@ -14,8 +14,6 @@
 # limitations under the License.
 
 from enum import Enum
-from typing import Dict
-from typing import List
 
 from google.adk.tools import _automatic_function_calling_util
 from google.adk.tools.tool_context import ToolContext

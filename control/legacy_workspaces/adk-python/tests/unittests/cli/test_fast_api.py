@@ -21,7 +21,6 @@ from pathlib import Path
 import sys
 import tempfile
 from typing import Any
-from typing import Optional
 from unittest.mock import AsyncMock
 from unittest.mock import MagicMock
 from unittest.mock import patch

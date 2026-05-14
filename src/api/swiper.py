@@ -19,7 +19,7 @@ Strategic Impact:
 
 import uuid
 from datetime import datetime, timezone
-from typing import List, Optional, Dict, Any
+from typing import Any
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import math
@@ -617,7 +617,14 @@ async def create_product_overlay(overlay: ProductOverlayCreate):
 
     overlay_id = str(uuid.uuid4())
 
-    overlay_data = {"id": overlay_id, **overlay.model_dump(), "clicks": 0, "conversions": 0, "click_rate": 0.0, "created_at": datetime.now(timezone.utc)}
+    overlay_data = {
+        "id": overlay_id,
+        **overlay.model_dump(),
+        "clicks": 0,
+        "conversions": 0,
+        "click_rate": 0.0,
+        "created_at": datetime.now(timezone.utc),
+    }
 
     product_overlays_db[overlay_id] = overlay_data
 

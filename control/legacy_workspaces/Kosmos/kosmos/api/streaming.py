@@ -10,7 +10,6 @@ import asyncio
 import json
 import logging
 from dataclasses import asdict
-from typing import List, Optional
 from collections.abc import AsyncGenerator
 
 try:

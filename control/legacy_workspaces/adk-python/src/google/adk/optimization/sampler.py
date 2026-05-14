@@ -19,7 +19,6 @@ from abc import ABC
 from abc import abstractmethod
 from typing import Generic
 from typing import Literal
-from typing import Optional
 
 from ..agents.llm_agent import Agent
 from .data_types import SamplingResult

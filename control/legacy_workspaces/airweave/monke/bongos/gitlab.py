@@ -7,7 +7,7 @@ Creates, updates, and deletes test issues, merge requests, and files via the rea
 import asyncio
 import time
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Any
 from urllib.parse import quote
 
 import httpx

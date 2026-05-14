@@ -5,7 +5,7 @@ Steganography Codec
 Provides encoding/decoding protocols and format specifications.
 """
 
-from typing import Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 from enum import Enum
 import json

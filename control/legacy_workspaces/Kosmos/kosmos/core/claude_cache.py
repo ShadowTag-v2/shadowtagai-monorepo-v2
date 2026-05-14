@@ -9,7 +9,7 @@ detect semantically similar prompts and reuse responses when appropriate.
 import hashlib
 import json
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 import logging
 
 from kosmos.core.cache_manager import CacheType, get_cache_manager

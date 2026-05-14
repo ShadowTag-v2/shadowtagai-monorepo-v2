@@ -6,7 +6,6 @@ This agent acts as the "manager" in the swarm, analyzing user requests,
 determining which specialist agents to involve, and synthesizing final results.
 """
 
-from typing import Dict, List
 from src.agents.base_agent import BaseAgent
 
 

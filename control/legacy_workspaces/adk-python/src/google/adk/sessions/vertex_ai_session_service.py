@@ -20,9 +20,7 @@ import json
 import logging
 import re
 from typing import Any
-from typing import Optional
 from typing import TYPE_CHECKING
-from typing import Union
 
 from google.genai import types
 from typing_extensions import override

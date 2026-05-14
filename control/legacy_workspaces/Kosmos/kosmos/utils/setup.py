@@ -8,7 +8,6 @@ Handles automatic .env creation and database migrations for pip-installed users.
 import logging
 import shutil
 from pathlib import Path
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

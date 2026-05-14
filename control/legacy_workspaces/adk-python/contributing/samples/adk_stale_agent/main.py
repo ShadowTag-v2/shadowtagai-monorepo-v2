@@ -16,7 +16,6 @@
 import asyncio
 import logging
 import time
-from typing import Tuple
 
 from adk_stale_agent.agent import root_agent
 from adk_stale_agent.settings import CONCURRENCY_LIMIT

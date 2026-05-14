@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Optional
 
 from google.genai import types
 from pydantic import BaseModel

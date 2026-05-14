@@ -6,7 +6,6 @@ Beautiful command-line interface for the Kosmos AI Scientist using Typer and Ric
 """
 
 import sys
-from typing import Optional
 import logging
 
 logger = logging.getLogger(__name__)

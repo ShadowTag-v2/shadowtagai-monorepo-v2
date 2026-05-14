@@ -2,7 +2,6 @@
 import re
 import logging
 import importlib
-from typing import Dict, List
 
 logger = logging.getLogger("transcription_collector.filters")
 

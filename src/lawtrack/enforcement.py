@@ -14,7 +14,7 @@ Security: 100% audit trail via ShadowTag
 Performance: <50ms compliance check
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum

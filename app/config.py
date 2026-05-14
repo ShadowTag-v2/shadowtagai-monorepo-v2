@@ -3,7 +3,6 @@
 
 from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
-from typing import Optional
 
 
 class Settings(BaseSettings):
@@ -34,5 +33,7 @@ class Settings(BaseSettings):
     confidence_threshold: float = 0.85
 
     model_config = ConfigDict(env_file=".env", case_sensitive=False)
+
+
 # Global settings instance
 settings = Settings()

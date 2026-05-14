@@ -25,8 +25,6 @@ from typing import Any
 from collections.abc import AsyncGenerator
 from collections.abc import Callable
 from collections.abc import Generator
-from typing import List
-from typing import Optional
 import warnings
 
 from google.adk.apps.compaction import _run_compaction_for_sliding_window

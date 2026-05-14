@@ -15,7 +15,6 @@
 
 import asyncio
 import os
-from typing import Union
 
 import agent
 from dotenv import load_dotenv

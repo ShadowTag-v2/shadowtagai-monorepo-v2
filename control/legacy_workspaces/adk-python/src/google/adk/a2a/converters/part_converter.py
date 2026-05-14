@@ -23,9 +23,6 @@ import base64
 from collections.abc import Callable
 import json
 import logging
-from typing import List
-from typing import Optional
-from typing import Union
 
 from .utils import _get_adk_metadata_key
 

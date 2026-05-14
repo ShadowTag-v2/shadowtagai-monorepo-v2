@@ -11,7 +11,7 @@ Key features:
 """
 
 from claude_agent_sdk import query, ClaudeAgentOptions
-from typing import List, Dict, Any, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass, field
 import json

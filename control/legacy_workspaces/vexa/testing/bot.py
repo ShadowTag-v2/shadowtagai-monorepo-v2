@@ -11,7 +11,7 @@ This class represents a single bot instance with methods for:
 import random
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
-from typing import Optional, Dict, Any
+from typing import Any
 import sys
 
 # Use the fixed PyPI client

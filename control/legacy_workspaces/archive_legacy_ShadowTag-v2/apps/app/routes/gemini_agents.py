@@ -5,7 +5,6 @@ AutoGen → Gemini migration endpoints
 """
 
 import os
-from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, status
 

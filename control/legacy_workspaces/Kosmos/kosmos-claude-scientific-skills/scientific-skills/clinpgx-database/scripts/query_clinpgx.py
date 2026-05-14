@@ -15,7 +15,7 @@ import requests
 import time
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 # API Configuration
 BASE_URL = "https://api.clinpgx.org/v1/"

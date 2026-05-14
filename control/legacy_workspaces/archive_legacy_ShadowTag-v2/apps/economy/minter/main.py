@@ -2,7 +2,6 @@
 from fastapi import FastAPI, BackgroundTasks
 from pydantic import BaseModel
 import logging
-from typing import Optional
 
 # Configure Logging
 logging.basicConfig(level=logging.INFO)

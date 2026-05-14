@@ -16,7 +16,6 @@ Output:
 
 import re
 import sys
-from typing import List, Dict, Optional
 from pathlib import Path
 
 

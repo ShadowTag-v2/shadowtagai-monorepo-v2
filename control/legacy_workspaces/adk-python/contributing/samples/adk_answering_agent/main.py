@@ -21,7 +21,6 @@ import json
 import logging
 import sys
 import time
-from typing import Union
 
 from adk_answering_agent import agent
 from adk_answering_agent.settings import OWNER

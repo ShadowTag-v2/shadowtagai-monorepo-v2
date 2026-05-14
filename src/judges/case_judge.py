@@ -10,7 +10,7 @@ Primary Use Cases:
 - Discovery scope validation
 """
 
-from typing import Dict, Any
+from typing import Any
 from src.judges.base_judge import BaseJudge
 from src.judges.models import JudgeRequest, JudgeDecision, JudgeType
 from src.risk_matrix import Probability, Severity

@@ -6,7 +6,7 @@ Searches arXiv, Semantic Scholar, and PubMed simultaneously, deduplicates result
 and ranks by relevance.
 """
 
-from typing import List, Optional, Dict, Any, Set
+from typing import Any
 from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
 import logging
 

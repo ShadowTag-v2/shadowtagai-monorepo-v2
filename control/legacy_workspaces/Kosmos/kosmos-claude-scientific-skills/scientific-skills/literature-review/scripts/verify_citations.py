@@ -8,7 +8,6 @@ Verifies DOIs, URLs, and citation metadata for accuracy.
 import re
 import requests
 import json
-from typing import Dict, List, Tuple
 import time
 
 

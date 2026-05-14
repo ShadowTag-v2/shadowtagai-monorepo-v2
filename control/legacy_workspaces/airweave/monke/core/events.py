@@ -17,7 +17,7 @@ Usage:
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Dict, Set
+from typing import Any
 
 
 class _EventBus:

@@ -15,8 +15,6 @@
 
 import abc
 from abc import ABC
-from typing import List
-from typing import Optional
 
 from google.genai import types
 

@@ -141,7 +141,9 @@ def _coerce_item(item: dict[str, Any]) -> ExtractedDeadline | None:
             trigger_event=str(item["trigger_event"]).strip(),
             exhibit_citation_id=str(item["exhibit_citation_id"]).strip(),
             days_to_respond=int(item["days_to_respond"]),
-            business_days_only=str(item.get("business_days_only", "")).strip().lower() in ("true", "1", "yes", "t") if isinstance(item.get("business_days_only"), str) else bool(item.get("business_days_only", False)),
+            business_days_only=str(item.get("business_days_only", "")).strip().lower() in ("true", "1", "yes", "t")
+            if isinstance(item.get("business_days_only"), str)
+            else bool(item.get("business_days_only", False)),
             jurisdiction_rule=str(item.get("jurisdiction_rule", "")).strip(),
             raw_date_text=str(item.get("raw_date_text", "")).strip(),
         )

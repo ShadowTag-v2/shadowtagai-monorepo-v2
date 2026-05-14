@@ -3,7 +3,7 @@
 import hashlib
 import json
 import pathlib
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "data" / "raw"

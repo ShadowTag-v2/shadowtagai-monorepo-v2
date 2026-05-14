@@ -13,7 +13,6 @@ import time
 import re
 import json
 import xml.etree.ElementTree as ET
-from typing import Optional, Dict, List, Tuple
 from urllib.parse import urlparse
 
 

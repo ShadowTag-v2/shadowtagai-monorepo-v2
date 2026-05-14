@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import json
-from typing import Optional
 
 from google.adk.agents import LlmAgent
 from google.adk.agents.callback_context import CallbackContext

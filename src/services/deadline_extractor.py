@@ -5,7 +5,7 @@ AI/ML-powered extraction of deadlines from legal documents
 """
 
 from datetime import date, datetime, timedelta
-from typing import List, Dict, Any, Optional
+from typing import Any
 import re
 from enum import Enum
 

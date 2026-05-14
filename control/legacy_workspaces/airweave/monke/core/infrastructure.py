@@ -3,7 +3,7 @@
 
 import os
 import time
-from typing import Dict, Any
+from typing import Any
 
 from monke.core.config import TestConfig
 from monke.core.context import TestContext

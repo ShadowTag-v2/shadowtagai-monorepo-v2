@@ -14,7 +14,7 @@ Key benefits:
 
 import time
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -177,7 +177,7 @@ class GeminiFunctionCaller:
         gen_config = genai_types.GenerateContentConfig(
             tools=self.gemini_tools if self.gemini_tools else None,
             system_instruction=self.system_instruction,
-            automatic_function_calling={'disable': not self.enable_automatic_calling},
+            automatic_function_calling={"disable": not self.enable_automatic_calling},
         )
 
         # Send initial message

@@ -5,7 +5,6 @@ This version fixes the metadata extraction and matching issues.
 """
 
 import re
-from typing import List, Dict
 from dotenv import load_dotenv
 
 # Load environment variables

@@ -1,8 +1,8 @@
 .stringContentIsNotModifiedEvenIfInvalid {
   background: url("@images");
   background: url("$images");
-  background: url('/+0PX!/"\a?~^[]{} $%#');
-  background: url("/+0PX!/'\a?~^[]{} $%#");
+  background: url('/+0PX!/"a?~^[]{} $%#');
+  background: url("/+0PX!/'a?~^[]{} $%#");
   background: url("whitespace-around-string");
 }
 

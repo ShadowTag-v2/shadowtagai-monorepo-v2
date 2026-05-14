@@ -13,7 +13,6 @@ Rate Limit: ~50 requests per minute per IP address
 
 import requests
 import json
-from typing import Dict, List, Optional, Union
 
 
 BASE_URL = "https://clinicaltrials.gov/api/v2"

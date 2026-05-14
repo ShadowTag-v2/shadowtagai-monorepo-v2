@@ -20,7 +20,6 @@ import logging
 import os
 import sys
 from typing import Any
-from typing import Optional
 
 import click
 from google.genai import types as genai_types

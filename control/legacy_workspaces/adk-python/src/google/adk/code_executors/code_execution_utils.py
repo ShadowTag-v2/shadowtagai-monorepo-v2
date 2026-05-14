@@ -22,8 +22,6 @@ import binascii
 import copy
 import dataclasses
 import re
-from typing import List
-from typing import Optional
 
 from google.genai import types
 

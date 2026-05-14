@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 def build_code_graph(repo_root: str) -> dict[str, Any]:

@@ -32,7 +32,7 @@
   [const a];
   => a,
   out as number // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 // Object pattern
@@ -44,7 +44,7 @@
   => a,
 
   out as number // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 // Object shorthand pattern
@@ -58,7 +58,7 @@
   => foo,
 
   out as number // OK
-  out as empty; // ERROR
+  out as empty // ERROR
 }
 
 // Nested patterns
@@ -70,13 +70,13 @@
   => a,
     _ => 0,
   out1 as number // OK
-  out1 as empty; // ERROR
+  out1 as empty // ERROR
 
   const out2 = match(x);
   foo: const a
   => a[0].bar,
   out2 as number // OK
-  out2 as empty; // ERROR
+  out2 as empty // ERROR
 }
 
 // Guards

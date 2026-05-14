@@ -28,7 +28,7 @@ See: https://refactoring.guru/design-patterns/strategy
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from kosmos.world_model.models import Annotation, Entity, Relationship
 

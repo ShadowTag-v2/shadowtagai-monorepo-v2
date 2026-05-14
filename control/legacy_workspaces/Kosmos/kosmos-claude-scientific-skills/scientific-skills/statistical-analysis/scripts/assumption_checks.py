@@ -14,7 +14,6 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
-from typing import Dict, List, Optional, Union
 
 
 def check_normality(data: np.ndarray | pd.Series | list, name: str = "data", alpha: float = 0.05, plot: bool = True) -> dict:

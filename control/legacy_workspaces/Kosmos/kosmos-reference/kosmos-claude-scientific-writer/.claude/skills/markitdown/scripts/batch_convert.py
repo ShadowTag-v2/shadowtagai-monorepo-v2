@@ -9,7 +9,6 @@ in a directory to Markdown format.
 
 import argparse
 from pathlib import Path
-from typing import List, Optional
 from markitdown import MarkItDown
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import sys

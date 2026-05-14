@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Twitter Source Implementation"""
 
-from typing import List
 from .base import BaseSource, IngestionItem
 
 

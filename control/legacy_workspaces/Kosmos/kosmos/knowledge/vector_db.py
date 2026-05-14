@@ -5,7 +5,7 @@ Vector database interface using ChromaDB.
 Stores and retrieves paper embeddings for semantic search.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 import numpy as np
 from pathlib import Path
 import logging

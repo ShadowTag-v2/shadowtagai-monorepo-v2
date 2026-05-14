@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from types import MappingProxyType
 from typing import Any
-from typing import Optional
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:

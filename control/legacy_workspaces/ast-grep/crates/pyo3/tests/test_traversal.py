@@ -1,5 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-from typing import Optional, TypeVar
+from typing import TypeVar
 from ast_grep_py import SgNode, SgRoot
 
 source = """

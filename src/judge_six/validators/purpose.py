@@ -9,7 +9,6 @@ Validates the PURPOSE of an action:
 - What is the value proposition?
 """
 
-from typing import Optional
 from ..models import Action, PurposeVerdict, VerdictStatus
 
 

@@ -4,8 +4,6 @@
 Generates realistic CRM content for testing Attio integration using LLM.
 """
 
-from typing import Dict, Tuple
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.attio import AttioCompany, AttioNoteContent, AttioPerson
 

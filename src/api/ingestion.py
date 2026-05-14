@@ -5,7 +5,7 @@ FastAPI endpoints for interfacing with the ingestion pipeline
 """
 
 from datetime import datetime, timezone, timedelta
-from typing import List, Optional, Dict, Any
+from typing import Any
 from enum import Enum
 
 from fastapi import FastAPI, Query, status
@@ -72,7 +72,8 @@ class IngestedItem(BaseModel):
     ingested_at: datetime = Field(..., description="Ingestion timestamp")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    model_config = ConfigDict(json_schema_extra={
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "id": "ing_20251107_abc123",
                 "source_type": "news",
@@ -89,7 +90,10 @@ class IngestedItem(BaseModel):
                     "tags": ["politics", "breaking"],
                 },
             }
-        })
+        }
+    )
+
+
 class JobStatusResponse(BaseModel):
     """CronJob execution status"""
 
@@ -103,7 +107,8 @@ class JobStatusResponse(BaseModel):
     sources_active: int = Field(default=0, description="Active sources")
     errors: list[str] = Field(default_factory=list, description="Error messages")
 
-    model_config = ConfigDict(json_schema_extra={
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "job_id": "cronjob-20251107-020000",
                 "status": "completed",
@@ -115,7 +120,10 @@ class JobStatusResponse(BaseModel):
                 "sources_active": 6,
                 "errors": [],
             }
-        })
+        }
+    )
+
+
 class MetricsResponse(BaseModel):
     """Performance metrics"""
 
@@ -128,7 +136,8 @@ class MetricsResponse(BaseModel):
     uptime_percentage: float = Field(..., description="Successful runs %")
     avg_runtime_minutes: float = Field(..., description="Average runtime (minutes)")
 
-    model_config = ConfigDict(json_schema_extra={
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "daily_items_avg": 3180,
                 "daily_items_trend": "stable",
@@ -139,7 +148,10 @@ class MetricsResponse(BaseModel):
                 "uptime_percentage": 99.3,
                 "avg_runtime_minutes": 43.2,
             }
-        })
+        }
+    )
+
+
 class TriggerRequest(BaseModel):
     """Manual trigger request"""
 

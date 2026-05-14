@@ -14,7 +14,6 @@ IMPORTANT: KEGG API is made available only for academic use by academic users.
 import urllib.request
 import urllib.parse
 import urllib.error
-from typing import Optional, List, Union
 
 
 KEGG_BASE_URL = "https://rest.kegg.jp"

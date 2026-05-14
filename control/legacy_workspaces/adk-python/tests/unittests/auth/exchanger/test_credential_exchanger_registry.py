@@ -15,7 +15,6 @@
 
 """Unit tests for the CredentialExchangerRegistry."""
 
-from typing import Optional
 from unittest.mock import MagicMock
 
 from google.adk.auth.auth_credential import AuthCredential

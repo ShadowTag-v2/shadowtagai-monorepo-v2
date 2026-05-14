@@ -8,7 +8,6 @@ import sys
 import shutil
 import subprocess
 from pathlib import Path
-from typing import List, Optional, Tuple
 
 
 def _resolve_codex_cmd() -> list[str]:

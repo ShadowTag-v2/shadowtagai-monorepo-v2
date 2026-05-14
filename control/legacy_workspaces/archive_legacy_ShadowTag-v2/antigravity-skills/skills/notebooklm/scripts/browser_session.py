@@ -8,7 +8,7 @@ Based on the original NotebookLM API implementation
 
 import time
 import sys
-from typing import Any, Dict, Optional
+from typing import Any
 from pathlib import Path
 
 from patchright.sync_api import BrowserContext

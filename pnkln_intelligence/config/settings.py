@@ -3,7 +3,6 @@
 PNKLN Intelligence Pipeline - Configuration Settings
 """
 
-from typing import List, Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 

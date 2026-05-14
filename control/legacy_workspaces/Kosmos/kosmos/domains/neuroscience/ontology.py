@@ -23,7 +23,7 @@ Example usage:
     dopamine_receptors = ontology.get_related_concepts('dopamine', BiologicalRelationType.INTERACTS_WITH)
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 # Import from biology ontology for shared types
 from kosmos.domains.biology.ontology import BiologicalRelationType, BiologicalConcept, BiologicalRelation

@@ -10,7 +10,6 @@ Validates the BRAKES (risks) of an action:
 """
 
 import re
-from typing import List
 from ..models import Action, BrakesVerdict, VerdictStatus, Severity
 
 

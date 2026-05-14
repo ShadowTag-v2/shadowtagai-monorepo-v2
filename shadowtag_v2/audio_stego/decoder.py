@@ -5,7 +5,7 @@ Audio Steganography Decoder
 Extracts hidden data from steganographically encoded audio files.
 """
 
-from typing import Optional, Dict, Any, Tuple
+from typing import Any
 from pathlib import Path
 from dataclasses import dataclass
 import numpy as np

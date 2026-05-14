@@ -7,7 +7,7 @@ to build a comprehensive knowledge graph of scientific literature.
 """
 
 import logging
-from typing import List, Dict, Any, Optional, Set
+from typing import Any
 import time
 
 from kosmos.literature.base_client import PaperMetadata

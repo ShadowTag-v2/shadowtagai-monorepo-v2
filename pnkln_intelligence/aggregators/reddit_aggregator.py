@@ -6,7 +6,7 @@ Collects AI/ML discussions from targeted subreddits using PRAW
 
 import logging
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 import praw
 from praw.models import Submission

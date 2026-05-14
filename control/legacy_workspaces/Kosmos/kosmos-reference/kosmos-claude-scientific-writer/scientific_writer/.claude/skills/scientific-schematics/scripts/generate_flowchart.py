@@ -13,7 +13,6 @@ Usage:
 
 import argparse
 import re
-from typing import List, Optional
 
 
 class FlowchartNode:

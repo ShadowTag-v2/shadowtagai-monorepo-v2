@@ -5,7 +5,7 @@ This module provides compatibility wrappers to handle differences between
 Pydantic v1 and v2, allowing the codebase to work with either version.
 """
 
-from typing import Any, Dict
+from typing import Any
 
 
 def model_to_dict(model: Any, **kwargs) -> dict[str, Any]:

@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """OneNote-specific generation adapter: page generator."""
 
-from typing import Tuple
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.onenote import OneNotePage
 

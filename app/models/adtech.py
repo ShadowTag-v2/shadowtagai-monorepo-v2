@@ -4,7 +4,6 @@ Adtech compliance models
 """
 
 from pydantic import BaseModel, Field, HttpUrl
-from typing import List, Optional, Dict
 from enum import Enum
 
 

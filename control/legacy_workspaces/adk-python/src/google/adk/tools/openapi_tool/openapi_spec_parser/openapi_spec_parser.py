@@ -17,9 +17,6 @@ from __future__ import annotations
 
 import copy
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from fastapi.openapi.models import Operation
 from pydantic import BaseModel

@@ -19,8 +19,6 @@ import logging
 import random
 import time
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 agent_simulator_logger = logging.getLogger("agent_simulator_logger")
 

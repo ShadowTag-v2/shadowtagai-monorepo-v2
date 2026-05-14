@@ -16,7 +16,6 @@
 # limitations under the License.
 
 import json
-from typing import Union
 
 
 class GameHealthcheck:

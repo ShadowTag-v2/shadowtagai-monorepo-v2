@@ -9,7 +9,7 @@ Tracks key metrics:
 - Runtime efficiency
 """
 
-from typing import Dict, Any
+from typing import Any
 from datetime import datetime, timezone
 
 

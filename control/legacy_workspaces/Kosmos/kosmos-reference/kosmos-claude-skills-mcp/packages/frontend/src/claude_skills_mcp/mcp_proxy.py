@@ -4,7 +4,7 @@
 import asyncio
 import contextlib
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from mcp.server import Server
 from mcp import ClientSession

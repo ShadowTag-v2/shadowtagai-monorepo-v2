@@ -5,7 +5,7 @@ Chain Verifier
 Provides advanced verification and validation capabilities for receipt chains.
 """
 
-from typing import List, Dict, Any, Tuple
+from typing import Any
 from datetime import datetime
 
 from .chain import ReceiptChain, Receipt

@@ -5,7 +5,6 @@ ULTRATHINK Framework - Chief Design Officer (CDO)
 Embodies Steve Jobs' eye for design. Questions every assumption, polishes until elegant.
 """
 
-from typing import Optional
 from ..core.base_agent import BaseAgent
 from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
 

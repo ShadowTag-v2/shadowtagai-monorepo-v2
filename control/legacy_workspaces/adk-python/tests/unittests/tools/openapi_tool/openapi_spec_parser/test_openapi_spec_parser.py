@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Dict
 
 from google.adk.tools.openapi_tool.openapi_spec_parser.openapi_spec_parser import OpenApiSpecParser
 import pytest

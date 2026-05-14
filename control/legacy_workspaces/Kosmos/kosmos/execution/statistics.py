@@ -10,7 +10,7 @@ Based on kosmos-figures patterns and standard statistical practices.
 
 import numpy as np
 from scipy import stats
-from typing import Dict, List, Tuple, Optional, Union, Any
+from typing import Any
 import logging
 import warnings
 

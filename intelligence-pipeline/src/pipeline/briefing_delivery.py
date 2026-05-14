@@ -11,7 +11,6 @@ Delivers morning briefings to CEO and team:
 import os
 import json
 import logging
-from typing import List
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart

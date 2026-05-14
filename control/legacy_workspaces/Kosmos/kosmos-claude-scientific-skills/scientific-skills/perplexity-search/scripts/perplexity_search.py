@@ -21,7 +21,7 @@ import os
 import sys
 import json
 import argparse
-from typing import Optional, Dict, Any
+from typing import Any
 
 
 def check_dependencies():

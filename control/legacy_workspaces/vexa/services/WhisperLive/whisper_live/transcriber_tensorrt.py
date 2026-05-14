@@ -4,7 +4,6 @@ import re
 import math
 from collections import OrderedDict
 from pathlib import Path
-from typing import Union
 
 import torch
 import numpy as np

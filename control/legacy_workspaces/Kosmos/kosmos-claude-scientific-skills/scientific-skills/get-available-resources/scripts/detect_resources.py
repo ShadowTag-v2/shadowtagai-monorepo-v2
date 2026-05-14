@@ -16,7 +16,7 @@ import os
 import platform
 import psutil
 import subprocess
-from typing import Dict, List, Any, Optional
+from typing import Any
 
 
 def get_cpu_info() -> dict[str, Any]:

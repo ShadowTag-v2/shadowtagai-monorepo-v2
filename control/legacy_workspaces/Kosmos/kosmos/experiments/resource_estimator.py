@@ -6,7 +6,7 @@ Estimates compute, time, and cost requirements for experimental protocols.
 """
 
 import logging
-from typing import Dict, Any, Optional
+from typing import Any
 from enum import Enum
 
 from kosmos.models.hypothesis import Hypothesis, ExperimentType

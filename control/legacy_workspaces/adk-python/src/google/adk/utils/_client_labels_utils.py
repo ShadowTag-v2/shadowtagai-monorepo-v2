@@ -19,7 +19,6 @@ from contextlib import contextmanager
 import contextvars
 import os
 import sys
-from typing import List
 
 from .. import version
 

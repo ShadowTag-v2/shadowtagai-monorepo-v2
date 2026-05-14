@@ -11,7 +11,7 @@ Dependencies: requests (pip install requests)
 """
 
 import requests
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 
 # API endpoint

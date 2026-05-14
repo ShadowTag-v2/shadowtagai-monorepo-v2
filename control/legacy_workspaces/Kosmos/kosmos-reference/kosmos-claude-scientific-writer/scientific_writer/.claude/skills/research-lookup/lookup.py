@@ -7,7 +7,6 @@ Performs research queries using Perplexity Sonar Pro via OpenRouter.
 
 import os
 import sys
-from typing import Dict
 
 # Import the main research lookup class
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts"))

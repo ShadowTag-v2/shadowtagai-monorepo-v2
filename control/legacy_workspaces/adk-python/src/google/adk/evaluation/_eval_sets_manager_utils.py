@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from ..errors.not_found_error import NotFoundError
 from .eval_case import EvalCase

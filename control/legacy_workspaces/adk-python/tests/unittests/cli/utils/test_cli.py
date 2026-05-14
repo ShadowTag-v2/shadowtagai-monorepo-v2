@@ -22,9 +22,6 @@ from pathlib import Path
 from textwrap import dedent
 import types
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 import click
 from google.adk.agents.base_agent import BaseAgent

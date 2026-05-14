@@ -2,7 +2,7 @@
 """Utility functions for scientific writer."""
 
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import Any
 import re
 
 

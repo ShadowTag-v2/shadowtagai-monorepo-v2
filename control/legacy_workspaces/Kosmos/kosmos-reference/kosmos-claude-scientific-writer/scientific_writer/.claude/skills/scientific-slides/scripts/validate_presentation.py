@@ -14,7 +14,6 @@ import sys
 import argparse
 import subprocess
 from pathlib import Path
-from typing import Dict, Optional
 
 # Try to import PyPDF2 for PDF analysis
 try:

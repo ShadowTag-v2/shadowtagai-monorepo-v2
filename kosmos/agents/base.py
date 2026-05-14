@@ -11,7 +11,7 @@ Each agent specializes in a specific aspect of autonomous research:
 
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass
 

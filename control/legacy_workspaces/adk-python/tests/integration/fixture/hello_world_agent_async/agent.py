@@ -17,7 +17,6 @@
 # instead of root_agent - https://colab.sandbox.google.com/drive/1Zq-nqmgK0nCERCv8jKIaoeTTgbNn6oSo?resourcekey=0-GYaz9pFT4wY8CI8Cvjy5GA#scrollTo=u3X3XwDOaCv9
 import contextlib
 import random
-from typing import Optional
 
 from google.adk import Agent
 from google.adk.agents import llm_agent

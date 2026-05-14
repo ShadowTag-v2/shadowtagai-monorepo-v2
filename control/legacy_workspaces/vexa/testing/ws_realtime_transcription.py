@@ -29,7 +29,6 @@ import re
 import signal
 import sys
 from datetime import datetime
-from typing import Dict, List, Set
 
 try:
     import httpx

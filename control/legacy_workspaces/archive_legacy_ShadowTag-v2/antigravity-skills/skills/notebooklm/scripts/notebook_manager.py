@@ -9,7 +9,7 @@ Based on the MCP server implementation
 import json
 import argparse
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any
 from datetime import datetime
 
 

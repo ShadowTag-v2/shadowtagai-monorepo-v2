@@ -6,7 +6,7 @@ Provides common interface and functionality for arXiv, Semantic Scholar, PubMed,
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum

@@ -16,7 +16,6 @@
 """Unit tests for canonical_xxx fields in LlmAgent."""
 
 from typing import Any
-from typing import Optional
 from unittest import mock
 
 from google.adk.agents.callback_context import CallbackContext

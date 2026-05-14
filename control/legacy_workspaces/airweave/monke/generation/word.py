@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Word-specific generation adapter: document content generator."""
 
-from typing import List, Tuple
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.word import WordDocumentContent
 

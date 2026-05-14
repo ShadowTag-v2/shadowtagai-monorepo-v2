@@ -14,7 +14,7 @@ import requests
 import time
 import json
 import argparse
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 
 class EnsemblAPIClient:

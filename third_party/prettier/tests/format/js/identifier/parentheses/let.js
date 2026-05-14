@@ -7,14 +7,17 @@ const [a] = 1;
 let [a];
 .b.c.e = 1
 
-foo[let[a]] = 1;
+foo[
+let [a];
+] = 1
 
 (let)[let[a]] = 1;
 
 let [a];
 ??= 1
 
-foo = let[a];
+foo =
+let [a];
 
 let()[a] = 1;
 

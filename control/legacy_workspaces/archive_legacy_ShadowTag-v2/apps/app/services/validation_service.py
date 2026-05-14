@@ -7,7 +7,6 @@ Based on docs/cor8-aiyou-global-edge-fabric/03-technical-architecture/judge-six-
 
 import time
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
 
 from app.models.schemas import (
     ATP519Scores,

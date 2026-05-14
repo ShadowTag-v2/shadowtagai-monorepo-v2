@@ -5,7 +5,7 @@ Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 """
 
 import logging
-from typing import Dict, Any, List
+from typing import Any
 from app.models.governance import (
     GovernanceAssessmentRequest,
     EUAIActAssessment,

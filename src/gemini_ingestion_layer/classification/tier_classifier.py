@@ -11,7 +11,7 @@ Classification criteria:
 - Tier 3: Unverified sources, low authority, needs fact-checking
 """
 
-from typing import Dict, Any
+from typing import Any
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum

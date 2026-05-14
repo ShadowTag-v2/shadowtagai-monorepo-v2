@@ -10,7 +10,7 @@ import json
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from kosmos.world_model.interface import EntityManager, WorldModelStorage
 from kosmos.world_model.models import Annotation, Entity, Relationship

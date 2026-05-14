@@ -2327,12 +2327,8 @@
       "packagesPath": "/Users/pikeymickey/.nuget/packages/",
       "outputPath": "/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/",
       "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "/Users/pikeymickey/.nuget/NuGet/NuGet.Config"
-      ],
-      "originalTargetFrameworks": [
-        "net11.0"
-      ],
+      "configFilePaths": ["/Users/pikeymickey/.nuget/NuGet/NuGet.Config"],
+      "originalTargetFrameworks": ["net11.0"],
       "sources": {
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -2344,9 +2340,7 @@
         }
       },
       "warningProperties": {
-        "warnAsError": [
-          "NU1605"
-        ]
+        "warnAsError": ["NU1605"]
       },
       "restoreAuditProperties": {
         "enableAudit": "true",
@@ -2369,15 +2363,7 @@
             "version": "[1.74.0-alpha, )"
           }
         },
-        "imports": [
-          "net461",
-          "net462",
-          "net47",
-          "net471",
-          "net472",
-          "net48",
-          "net481"
-        ],
+        "imports": ["net461", "net462", "net47", "net471", "net472", "net48", "net481"],
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {

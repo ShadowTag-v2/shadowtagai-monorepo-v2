@@ -10,7 +10,6 @@ Ranks hypotheses using multi-criteria scoring:
 """
 
 import logging
-from typing import List, Dict, Optional
 
 from kosmos.models.hypothesis import Hypothesis, PrioritizedHypothesis
 from kosmos.hypothesis.novelty_checker import NoveltyChecker

@@ -19,8 +19,6 @@ from __future__ import annotations
 
 import html
 from typing import Any
-from typing import List
-from typing import Union
 import warnings
 
 from . import models

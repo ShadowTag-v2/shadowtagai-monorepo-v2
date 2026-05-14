@@ -7,7 +7,7 @@ Temporal agent memory with Redis backend
 import redis.asyncio as redis
 import json
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 from datetime import datetime, timezone
 from app.config.settings import settings
 

@@ -5,7 +5,6 @@ History command for Kosmos CLI.
 Browse past research runs and view detailed history.
 """
 
-from typing import Optional
 from datetime import datetime, timedelta
 
 import typer

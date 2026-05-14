@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 
 from google.adk.events.event_actions import EventActions
 from google.adk.sessions.migration import _schema_check_utils

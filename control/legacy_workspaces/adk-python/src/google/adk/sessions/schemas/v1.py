@@ -25,7 +25,7 @@ See https://github.com/google/adk-python/discussions/3605 for more details.
 from __future__ import annotations
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 from typing import Any
 import uuid
 

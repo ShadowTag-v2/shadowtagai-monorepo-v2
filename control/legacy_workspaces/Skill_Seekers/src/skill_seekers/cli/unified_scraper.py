@@ -20,7 +20,7 @@ import logging
 import argparse
 import subprocess
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Any
 
 # Import validators and scrapers
 try:

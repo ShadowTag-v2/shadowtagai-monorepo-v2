@@ -18,10 +18,6 @@ from __future__ import annotations
 import inspect
 from textwrap import dedent
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Union
 
 from fastapi.encoders import jsonable_encoder
 from fastapi.openapi.models import Operation

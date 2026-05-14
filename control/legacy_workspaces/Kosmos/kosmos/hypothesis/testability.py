@@ -10,7 +10,7 @@ Assesses whether and how hypotheses can be tested:
 """
 
 import logging
-from typing import List, Dict, Any, Optional
+from typing import Any
 import re
 
 from kosmos.models.hypothesis import Hypothesis, TestabilityReport, ExperimentType

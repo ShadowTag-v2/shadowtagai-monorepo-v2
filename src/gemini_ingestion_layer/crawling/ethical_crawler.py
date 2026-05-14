@@ -14,7 +14,7 @@ Aligned with PNKLN Core Stack 2025 ethical standards.
 
 import asyncio
 import aiohttp
-from typing import Optional, Dict, Any
+from typing import Any
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from urllib.parse import urlparse

@@ -21,7 +21,7 @@ Version: 1.0.0
 
 import os
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 from datetime import datetime
 from anthropic import Anthropic
 

@@ -4,7 +4,7 @@ Pydantic schemas for Release Manager API.
 """
 
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any, List
+from typing import Any
 from pydantic import BaseModel, Field, field_validator
 import semver
 

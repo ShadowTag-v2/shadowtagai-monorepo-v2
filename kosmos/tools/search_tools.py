@@ -6,7 +6,7 @@ These are example implementations - production versions would integrate
 with actual search APIs (Google Scholar, arXiv, Semantic Scholar).
 """
 
-from typing import Dict, Any
+from typing import Any
 
 
 def google_search(query: str, limit: int = 10) -> str:

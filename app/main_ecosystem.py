@@ -15,7 +15,6 @@ from fastapi import FastAPI, HTTPException, status
 from prometheus_client import make_asgi_app
 from contextlib import asynccontextmanager
 import time
-from typing import Dict
 
 from app.config import settings
 from app.models.decision import DecisionContext, DecisionResult

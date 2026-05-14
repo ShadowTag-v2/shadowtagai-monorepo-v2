@@ -21,7 +21,6 @@ Usage:
 import arviz as az
 import numpy as np
 import matplotlib.pyplot as plt
-from typing import Dict
 
 
 def compare_models(models_dict: dict[str, az.InferenceData], ic="loo", scale="deviance", verbose=True):

@@ -8,7 +8,7 @@ Implements hybrid retirement logic:
 - Claude-powered: Ambiguous cases
 """
 
-from typing import List, Dict, Optional, Any, Tuple
+from typing import Any
 from datetime import datetime
 from enum import Enum
 import logging

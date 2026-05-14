@@ -20,9 +20,6 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from .path_normalizer import sanitize_generated_file_path
 

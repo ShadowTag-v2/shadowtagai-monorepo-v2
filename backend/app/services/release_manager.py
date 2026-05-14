@@ -5,7 +5,6 @@ Release Manager Service for zero-downtime deployments.
 
 import asyncio
 from datetime import datetime, timezone
-from typing import List, Optional
 import httpx
 
 from sqlalchemy import select, desc

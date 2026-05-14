@@ -17,7 +17,6 @@ import anthropic
 import os
 import json
 import logging
-from typing import List, Optional
 from datetime import datetime
 
 from ..models.intelligence_item import IntelligenceItem, IntelligenceTier, CorSynthesis

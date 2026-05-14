@@ -4,8 +4,6 @@
 Generates realistic task, subtask, comment, and file content for testing ClickUp integration using LLM.
 """
 
-from typing import Tuple
-
 from monke.generation.schemas.clickup import (
     ClickUpTask,
     ClickUpSubtask,

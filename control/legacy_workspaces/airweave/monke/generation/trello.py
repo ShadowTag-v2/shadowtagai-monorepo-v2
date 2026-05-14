@@ -4,7 +4,7 @@
 Generates realistic test content for Trello cards and checklists using LLM.
 """
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from monke.client.llm import LLMClient
 from monke.generation.schemas.trello import TrelloCard, TrelloChecklistContent

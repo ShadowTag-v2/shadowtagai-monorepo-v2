@@ -14,8 +14,6 @@
 # limitations under the License.
 
 
-from typing import Optional
-
 from google.adk.agents import Agent
 from google.adk.agents import ParallelAgent
 from google.adk.agents.base_agent import BeforeAgentCallback

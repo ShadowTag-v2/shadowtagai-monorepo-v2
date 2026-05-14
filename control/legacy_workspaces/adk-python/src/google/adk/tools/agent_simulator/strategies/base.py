@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from google.adk.tools.agent_simulator.tool_connection_map import ToolConnectionMap
 

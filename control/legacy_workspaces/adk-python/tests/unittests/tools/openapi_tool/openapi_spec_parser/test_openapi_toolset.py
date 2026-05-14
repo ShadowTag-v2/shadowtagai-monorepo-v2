@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import os
-from typing import Dict
 
 from fastapi.openapi.models import APIKey
 from fastapi.openapi.models import APIKeyIn

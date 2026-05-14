@@ -15,7 +15,7 @@
 
 import logging
 import mimetypes
-from typing import Literal, Optional
+from typing import Literal
 
 from google import genai
 from google.genai import types

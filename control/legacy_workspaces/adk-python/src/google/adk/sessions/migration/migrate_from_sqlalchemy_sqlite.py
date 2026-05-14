@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import argparse
-from datetime import timezone, UTC
+from datetime import UTC
 import json
 import logging
 import sqlite3

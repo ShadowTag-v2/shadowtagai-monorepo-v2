@@ -15,7 +15,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
 
 from ...utils.feature_decorator import experimental
 from ..eval_case import EvalCase

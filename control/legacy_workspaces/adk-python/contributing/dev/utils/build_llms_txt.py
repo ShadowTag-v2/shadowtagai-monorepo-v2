@@ -15,8 +15,6 @@ from pathlib import Path
 import re
 import sys
 import textwrap
-from typing import List
-from typing import Tuple
 import urllib.error
 import urllib.request
 

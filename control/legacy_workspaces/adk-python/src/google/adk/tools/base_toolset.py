@@ -19,14 +19,10 @@ from abc import ABC
 from abc import abstractmethod
 import copy
 from typing import final
-from typing import List
-from typing import Optional
 from typing import Protocol
 from typing import runtime_checkable
-from typing import Type
 from typing import TYPE_CHECKING
 from typing import TypeVar
-from typing import Union
 
 from ..agents.readonly_context import ReadonlyContext
 from .base_tool import BaseTool

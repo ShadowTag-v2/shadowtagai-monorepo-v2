@@ -10,7 +10,6 @@ Checks if generated hypotheses are novel by:
 """
 
 import logging
-from typing import List
 import numpy as np
 
 from kosmos.models.hypothesis import Hypothesis, NoveltyReport

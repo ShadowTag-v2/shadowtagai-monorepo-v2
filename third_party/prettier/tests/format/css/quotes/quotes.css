@@ -12,7 +12,7 @@
     content: "abc";
 
     /* Escape. */
-    content: "\A";
+    content: "A";
 
     /* Emoji. */
     content: "🐶";
@@ -66,8 +66,8 @@
     content: 'var backslash = "\\", doubleQuote = \'"\';';
 
     /* Leave all "escapes" alone. */
-    content: "\Abc4 foo \n" /* "comment" */ "\end";
-    content: "\Abc4 foo \n" /* 'comment' */ "\end";
+    content: "Abc4 foo \n" /* "comment" */ "end";
+    content: "Abc4 foo \n" /* 'comment' */ "end";
   }
 }
 

@@ -16,9 +16,9 @@
 import logging
 import os
 from collections import defaultdict
-from functools import lru_cache, cache
+from functools import cache
 from pathlib import Path
-from typing import Dict, List, Optional, TextIO, Tuple, Union
+from typing import TextIO, Union
 from collections.abc import Iterable
 
 import kaldialign

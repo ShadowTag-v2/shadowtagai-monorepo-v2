@@ -5,7 +5,7 @@ Interprets ATP 5-19 Purpose/Reasons/Brakes using fine-tuned LLM
 """
 
 from google import genai
-from typing import Dict, Any, Optional, List
+from typing import Any
 import json
 
 from ..models.database import RiskLevel

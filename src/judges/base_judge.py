@@ -6,7 +6,7 @@ Abstract base class for all Judge verticals with shared enforcement logic
 
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
-from typing import Dict, Any
+from typing import Any
 import time
 
 from src.judges.models import JudgeRequest, JudgeResponse, JudgeDecision, ApprovalGate, JudgeType, AuditTrail

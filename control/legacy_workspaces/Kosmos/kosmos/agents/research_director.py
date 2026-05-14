@@ -13,7 +13,7 @@ Async Architecture (Issue #66 fix):
 - Threading locks replaced with asyncio.Lock for async-safe operation
 """
 
-from typing import Dict, Any, Optional, List
+from typing import Any
 from datetime import datetime
 import logging
 import asyncio

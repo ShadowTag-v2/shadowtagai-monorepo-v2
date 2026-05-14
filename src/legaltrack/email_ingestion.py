@@ -11,7 +11,6 @@ Security: 100% encryption (transit + at rest)
 Performance: <2s email fetch
 """
 
-from typing import List, Dict, Optional
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta

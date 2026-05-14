@@ -5,7 +5,7 @@ Handles complex deadline calculations with jurisdiction-specific rules
 """
 
 from datetime import date, timedelta
-from typing import List, Optional, Dict, Any
+from typing import Any
 from dataclasses import dataclass
 from enum import Enum
 

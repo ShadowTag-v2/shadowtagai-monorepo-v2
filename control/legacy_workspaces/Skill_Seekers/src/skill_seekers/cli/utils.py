@@ -8,7 +8,6 @@ import os
 import subprocess
 import platform
 from pathlib import Path
-from typing import Optional, Tuple, Dict, Union
 
 
 def open_folder(folder_path: str | Path) -> bool:

@@ -6,7 +6,6 @@ Multiple agents debate a problem, refining solutions through iteration.
 Inspired by "Improving Factuality and Reasoning in LLMs with Multi-Agent Debate".
 """
 
-from typing import List, Dict, Optional
 from pydantic import BaseModel, Field
 
 from app.agents.base import Agent, AgentConfig

@@ -3,7 +3,6 @@
 Release Manager API endpoints.
 """
 
-from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 

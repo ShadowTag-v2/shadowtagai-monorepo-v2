@@ -9,7 +9,7 @@ Conflict Detection: Yes
 Real-time Sync: Via webhooks
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from abc import ABC, abstractmethod

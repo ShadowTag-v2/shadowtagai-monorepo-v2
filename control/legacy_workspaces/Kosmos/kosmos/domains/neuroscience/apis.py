@@ -25,7 +25,7 @@ Example usage:
     dataset = geo.get_dataset(geo_id='GSE153873')
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 from dataclasses import dataclass
 import httpx
 from tenacity import retry, stop_after_attempt, wait_exponential

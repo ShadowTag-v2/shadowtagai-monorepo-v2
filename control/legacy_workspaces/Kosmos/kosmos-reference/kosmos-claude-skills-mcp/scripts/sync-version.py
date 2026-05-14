@@ -21,7 +21,6 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Tuple
 
 
 def read_version() -> str:

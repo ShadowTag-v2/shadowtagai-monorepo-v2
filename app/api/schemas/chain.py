@@ -2,7 +2,7 @@
 """Receipt Chain API Schemas"""
 
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import Any
 
 
 class ChainSummary(BaseModel):

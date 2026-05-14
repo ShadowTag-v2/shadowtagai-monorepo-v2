@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Dropbox-specific generation adapter: file content generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.dropbox import DropboxArtifact
 from monke.client.llm import LLMClient
 

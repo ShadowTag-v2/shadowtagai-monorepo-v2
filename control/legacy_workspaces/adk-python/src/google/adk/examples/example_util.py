@@ -16,9 +16,7 @@
 """Utility functions for converting examples to a string that can be used in system instructions in the prompt."""
 
 import logging
-from typing import Optional
 from typing import TYPE_CHECKING
-from typing import Union
 
 from .base_example_provider import BaseExampleProvider
 from .example import Example

@@ -8,7 +8,6 @@ This module tracks per-agent-type rollout counts to match the paper's metrics.
 """
 
 from dataclasses import dataclass
-from typing import Dict
 import logging
 
 logger = logging.getLogger(__name__)

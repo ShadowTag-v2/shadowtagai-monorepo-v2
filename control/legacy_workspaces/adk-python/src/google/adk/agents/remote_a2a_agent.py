@@ -22,8 +22,6 @@ from pathlib import Path
 from typing import Any
 from collections.abc import AsyncGenerator
 from collections.abc import Callable
-from typing import Optional
-from typing import Union
 from urllib.parse import urlparse
 import uuid
 

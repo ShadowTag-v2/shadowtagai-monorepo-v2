@@ -23,8 +23,6 @@ from collections.abc import Callable
 from typing import get_args
 from typing import get_origin
 from typing import get_type_hints
-from typing import Optional
-from typing import Type
 from typing import TYPE_CHECKING
 from typing import TypeVar
 from typing import Union

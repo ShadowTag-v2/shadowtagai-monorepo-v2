@@ -15,7 +15,7 @@ Endpoints:
 - POST /verify/{item_id} - Verify content authenticity
 """
 
-from typing import List, Literal
+from typing import Literal
 from datetime import datetime
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form

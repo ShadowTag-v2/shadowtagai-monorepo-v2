@@ -19,7 +19,6 @@ import functools
 from collections.abc import Callable
 from typing import cast
 from typing import TypeVar
-from typing import Union
 
 from ._feature_registry import _get_feature_config
 from ._feature_registry import _register_feature

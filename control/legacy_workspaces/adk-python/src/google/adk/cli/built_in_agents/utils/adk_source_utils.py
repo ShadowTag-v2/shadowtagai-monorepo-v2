@@ -22,8 +22,6 @@ import logging
 import os
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 # Set up logger for ADK source utils
 logger = logging.getLogger("google_adk." + __name__)

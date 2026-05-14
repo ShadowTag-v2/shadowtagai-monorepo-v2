@@ -16,9 +16,6 @@
 from __future__ import annotations
 
 import logging
-from typing import List
-from typing import Optional
-from typing import Union
 
 from ...auth.auth_credential import ServiceAccount
 from ..base_toolset import ToolPredicate

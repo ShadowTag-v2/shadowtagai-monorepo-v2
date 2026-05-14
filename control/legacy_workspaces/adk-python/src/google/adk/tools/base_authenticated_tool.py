@@ -18,8 +18,6 @@ from __future__ import annotations
 from abc import abstractmethod
 import logging
 from typing import Any
-from typing import Optional
-from typing import Union
 
 from typing_extensions import override
 

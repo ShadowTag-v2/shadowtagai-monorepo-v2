@@ -19,7 +19,6 @@ import datetime
 import decimal
 import os
 import textwrap
-from typing import Optional
 from unittest import mock
 import uuid
 

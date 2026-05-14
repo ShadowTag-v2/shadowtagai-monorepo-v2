@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from abc import ABC
 import enum
-from typing import Optional
 
 from google.genai import types as genai_types
 from pydantic import alias_generators

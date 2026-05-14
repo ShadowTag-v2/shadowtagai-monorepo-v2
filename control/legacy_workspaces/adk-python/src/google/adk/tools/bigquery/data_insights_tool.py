@@ -16,8 +16,6 @@ from __future__ import annotations
 
 import json
 from typing import Any
-from typing import Dict
-from typing import List
 
 from google.auth.credentials import Credentials
 import requests

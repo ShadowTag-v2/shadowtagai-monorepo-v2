@@ -5,7 +5,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from airweave.main import app
 from api_config import API_GROUPS, is_included_endpoint

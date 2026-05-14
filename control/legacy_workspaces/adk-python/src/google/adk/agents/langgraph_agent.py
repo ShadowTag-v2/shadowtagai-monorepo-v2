@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from collections.abc import AsyncGenerator
-from typing import Union
 
 from google.genai import types
 from langchain_core.messages import AIMessage

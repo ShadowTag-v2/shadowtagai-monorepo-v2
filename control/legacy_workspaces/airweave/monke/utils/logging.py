@@ -2,7 +2,6 @@
 """Logging utilities for monke."""
 
 import logging
-from typing import Optional
 
 from rich.console import Console
 from rich.logging import RichHandler

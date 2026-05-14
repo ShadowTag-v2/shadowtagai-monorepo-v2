@@ -10,7 +10,7 @@ Quantitative Effect: ↑ Query speed +60%, ↓ Index size -40%
 import logging
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import numpy as np
 

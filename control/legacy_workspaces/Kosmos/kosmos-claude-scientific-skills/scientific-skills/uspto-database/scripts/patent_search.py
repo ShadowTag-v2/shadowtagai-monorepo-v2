@@ -18,7 +18,6 @@ import os
 import sys
 import json
 import requests
-from typing import Dict, List, Optional
 
 
 class PatentSearchClient:

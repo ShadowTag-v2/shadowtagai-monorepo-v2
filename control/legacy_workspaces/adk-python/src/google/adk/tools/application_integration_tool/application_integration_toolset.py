@@ -16,9 +16,6 @@
 from __future__ import annotations
 
 import logging
-from typing import List
-from typing import Optional
-from typing import Union
 
 from fastapi.openapi.models import HTTPBearer
 from typing_extensions import override

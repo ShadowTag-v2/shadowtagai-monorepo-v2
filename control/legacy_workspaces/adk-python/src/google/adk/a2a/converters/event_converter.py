@@ -17,12 +17,9 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import logging
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 import uuid
 
 from a2a.server.events import Event as A2AEvent

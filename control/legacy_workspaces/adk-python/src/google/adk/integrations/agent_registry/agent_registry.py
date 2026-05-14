@@ -22,8 +22,6 @@ import logging
 import re
 from typing import Any
 from collections.abc import Callable
-from typing import Dict
-from typing import Optional
 
 from a2a.types import AgentCapabilities
 from a2a.types import AgentCard

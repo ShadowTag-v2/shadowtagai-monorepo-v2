@@ -5,7 +5,7 @@ Quality gates, sources, and operational parameters
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any, List
+from typing import Any
 from ..core.gemini_ingestion import Source, SourceType, SourceTier
 
 

@@ -9,7 +9,7 @@ Embeds hidden data into audio files using various techniques:
 - Spread spectrum techniques
 """
 
-from typing import Optional, Dict, Any
+from typing import Any
 from pathlib import Path
 from dataclasses import dataclass
 import numpy as np

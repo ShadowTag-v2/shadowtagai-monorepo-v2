@@ -5,7 +5,7 @@ Binary enforcement API with <90ms p99 latency target
 """
 
 from datetime import datetime, timezone
-from typing import List, Optional, Dict, Any
+from typing import Any
 from fastapi import FastAPI, HTTPException, Query, Path, status
 from fastapi.responses import JSONResponse
 

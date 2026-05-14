@@ -15,8 +15,6 @@
 
 """Unit tests for BaseToolset."""
 
-from typing import Optional
-
 from google.adk.agents.invocation_context import InvocationContext
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.agents.sequential_agent import SequentialAgent

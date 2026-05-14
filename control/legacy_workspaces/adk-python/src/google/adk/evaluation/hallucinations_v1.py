@@ -21,7 +21,6 @@ import logging
 import re
 import statistics
 from typing import ClassVar
-from typing import Optional
 
 from google.genai import types as genai_types
 from pydantic import ValidationError

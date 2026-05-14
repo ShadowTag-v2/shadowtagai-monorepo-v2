@@ -9,7 +9,7 @@ Async Architecture (Issue #66 fix):
 - Sync wrappers provided for backwards compatibility
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Any
 from kosmos.agents.base import BaseAgent, AgentMessage
 import logging
 from datetime import datetime

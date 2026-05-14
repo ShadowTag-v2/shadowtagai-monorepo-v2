@@ -29,8 +29,6 @@ except ImportError as e:
     else:
         raise e
 
-from typing import Optional
-from typing import Union
 
 from starlette.applications import Starlette
 

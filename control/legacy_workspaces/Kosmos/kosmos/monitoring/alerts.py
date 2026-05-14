@@ -8,7 +8,7 @@ Provides alert definitions and notification handlers for critical events.
 import logging
 import os
 import json
-from typing import Dict, Any, List, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta

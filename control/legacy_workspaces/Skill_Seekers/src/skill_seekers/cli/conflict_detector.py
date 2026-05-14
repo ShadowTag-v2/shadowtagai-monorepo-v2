@@ -14,7 +14,7 @@ Used by unified scraper to identify discrepancies before merging.
 
 import json
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from dataclasses import dataclass, asdict
 from difflib import SequenceMatcher
 

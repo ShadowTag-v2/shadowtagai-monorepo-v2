@@ -16,7 +16,6 @@ Usage:
 import sys
 import subprocess
 from pathlib import Path
-from typing import Dict, Optional
 
 
 def check_conda_installed() -> bool:

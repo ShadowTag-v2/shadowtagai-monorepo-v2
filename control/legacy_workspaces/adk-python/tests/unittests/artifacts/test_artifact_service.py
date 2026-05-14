@@ -22,8 +22,6 @@ import enum
 import json
 from pathlib import Path
 from typing import Any
-from typing import Optional
-from typing import Union
 from unittest import mock
 from unittest.mock import patch
 from urllib.parse import unquote

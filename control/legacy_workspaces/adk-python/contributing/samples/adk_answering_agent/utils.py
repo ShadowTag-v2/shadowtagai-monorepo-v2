@@ -16,7 +16,6 @@
 import os
 import sys
 from typing import Any
-from typing import Optional
 from urllib.parse import urljoin
 
 from adk_answering_agent.settings import GITHUB_GRAPHQL_URL

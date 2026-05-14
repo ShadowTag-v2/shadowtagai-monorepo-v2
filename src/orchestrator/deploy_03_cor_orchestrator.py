@@ -26,7 +26,7 @@ import logging
 import os
 import sys
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Vertex AI imports
 try:

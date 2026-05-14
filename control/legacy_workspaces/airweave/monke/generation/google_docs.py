@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Google Docs-specific generation adapter: document generator."""
 
-from typing import List
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.google_docs import GoogleDocsDocument
 

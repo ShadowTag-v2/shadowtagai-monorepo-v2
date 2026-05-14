@@ -20,7 +20,6 @@ import inspect
 import logging
 from collections.abc import AsyncGenerator
 from collections.abc import Callable
-from typing import Optional
 import uuid
 
 from typing_extensions import override

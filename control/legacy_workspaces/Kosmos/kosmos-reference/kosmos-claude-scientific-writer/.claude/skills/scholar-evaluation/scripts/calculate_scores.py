@@ -18,7 +18,6 @@ License: MIT
 import json
 import argparse
 import sys
-from typing import Dict, Optional
 from pathlib import Path
 
 

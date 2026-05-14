@@ -13,7 +13,6 @@ tol = 1e-6 (convergence tolerance)
 
 import math
 from dataclasses import dataclass
-from typing import List, Tuple
 
 
 @dataclass

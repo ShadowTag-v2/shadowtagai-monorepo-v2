@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Outlook Mail-specific generation adapter: email generator."""
 
-from typing import Tuple
-
 from monke.client.llm import LLMClient
 from monke.generation.schemas.outlook_mail import OutlookMessage
 

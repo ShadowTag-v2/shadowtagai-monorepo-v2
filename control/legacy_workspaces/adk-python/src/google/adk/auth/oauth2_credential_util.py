@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
-from typing import Tuple
 
 from authlib.integrations.requests_client import OAuth2Session
 from authlib.oauth2.rfc6749 import OAuth2Token

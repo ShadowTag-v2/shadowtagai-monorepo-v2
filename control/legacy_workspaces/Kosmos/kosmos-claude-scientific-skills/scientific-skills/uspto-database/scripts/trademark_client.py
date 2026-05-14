@@ -18,7 +18,7 @@ import os
 import sys
 import json
 import requests
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 
 class TrademarkClient:

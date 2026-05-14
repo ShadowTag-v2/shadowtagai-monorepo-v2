@@ -8,7 +8,6 @@ Core data structures for intelligence items, scoring, and classification
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from enum import Enum
-from typing import Dict, Optional, List
 import hashlib
 
 

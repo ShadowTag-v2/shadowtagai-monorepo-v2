@@ -12,7 +12,6 @@ Automated actions for Tier 2 items (medium priority):
 import os
 import json
 import logging
-from typing import List
 from datetime import datetime
 
 from ..models.intelligence_item import IntelligenceItem, IntelligenceTier

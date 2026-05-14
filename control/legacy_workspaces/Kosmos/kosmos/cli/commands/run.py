@@ -14,7 +14,6 @@ import sys
 import time
 import logging
 import asyncio
-from typing import Optional
 from datetime import datetime
 from pathlib import Path
 

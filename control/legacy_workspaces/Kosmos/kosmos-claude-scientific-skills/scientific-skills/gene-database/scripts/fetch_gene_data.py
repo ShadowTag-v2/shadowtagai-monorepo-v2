@@ -12,7 +12,7 @@ import json
 import sys
 import urllib.parse
 import urllib.request
-from typing import Optional, Dict, Any, List
+from typing import Any
 
 
 DATASETS_API_BASE = "https://api.ncbi.nlm.nih.gov/datasets/v2alpha/gene"

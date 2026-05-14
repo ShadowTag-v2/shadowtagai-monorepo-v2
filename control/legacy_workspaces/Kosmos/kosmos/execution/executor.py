@@ -10,7 +10,7 @@ from kosmos.utils.compat import model_to_dict
 import io
 import traceback
 from contextlib import redirect_stdout, redirect_stderr
-from typing import Dict, Any, Optional
+from typing import Any
 import logging
 import time
 

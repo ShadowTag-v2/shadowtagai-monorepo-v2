@@ -12,7 +12,7 @@ Implements:
 
 import logging
 import numpy as np
-from typing import Dict, List, Any
+from typing import Any
 from datetime import datetime
 
 from kosmos.models.result import ExperimentResult, ResultStatus

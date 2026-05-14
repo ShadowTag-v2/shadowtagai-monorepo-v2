@@ -15,8 +15,6 @@
 
 """Credential fetcher for OpenID Connect."""
 
-from typing import Optional
-
 from .....auth.auth_credential import AuthCredential
 from .....auth.auth_credential import AuthCredentialTypes
 from .....auth.auth_credential import HttpAuth

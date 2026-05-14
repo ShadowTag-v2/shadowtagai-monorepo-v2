@@ -19,8 +19,6 @@ import inspect
 import logging
 from typing import Any
 from collections.abc import Callable
-from typing import Optional
-from typing import Union
 
 from typing_extensions import override
 

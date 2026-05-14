@@ -10,4 +10,4 @@ null == 1;
 var x = (null
 : ?number)
 x == 1
-1 == x;
+1 == x

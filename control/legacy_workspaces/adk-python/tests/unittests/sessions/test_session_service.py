@@ -14,7 +14,7 @@
 # limitations under the License.
 
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import enum
 
 from google.adk.errors.already_exists_error import AlreadyExistsError

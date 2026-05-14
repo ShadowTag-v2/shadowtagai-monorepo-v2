@@ -22,7 +22,6 @@ import os
 import sqlite3
 import time
 from typing import Any
-from typing import Optional
 import uuid
 
 import aiosqlite

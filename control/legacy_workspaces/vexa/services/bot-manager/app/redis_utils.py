@@ -4,7 +4,6 @@ import logging
 
 # Only import REDIS_URL from config
 from config import REDIS_URL
-from typing import Optional
 import re
 
 logger = logging.getLogger(__name__)

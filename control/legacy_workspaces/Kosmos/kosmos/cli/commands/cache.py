@@ -5,8 +5,6 @@ Cache command for Kosmos CLI.
 Manage caching system - view stats, clear cache, health check.
 """
 
-from typing import Optional
-
 import typer
 from rich.panel import Panel
 

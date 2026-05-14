@@ -18,9 +18,6 @@ import os
 import subprocess
 from subprocess import CompletedProcess
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from adk_documentation.settings import GITHUB_BASE_URL
 from adk_documentation.utils import error_response

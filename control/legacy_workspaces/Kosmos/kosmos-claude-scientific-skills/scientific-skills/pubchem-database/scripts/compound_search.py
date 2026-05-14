@@ -9,7 +9,6 @@ from PubChem using the PubChemPy library.
 
 import sys
 import json
-from typing import List, Dict, Optional, Union
 
 try:
     import pubchempy as pcp

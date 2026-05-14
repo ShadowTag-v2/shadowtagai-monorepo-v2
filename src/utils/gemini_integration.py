@@ -7,7 +7,7 @@ IMPORTANT: Gemini function calling returns parameters, NOT execution.
 We must handle the returned parameters and execute actions ourselves.
 """
 
-from typing import Dict, Any, List, Optional
+from typing import Any
 from pydantic import BaseModel
 
 

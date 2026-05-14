@@ -5,7 +5,7 @@ import os
 import shutil
 import zipfile
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Any
 from dotenv import load_dotenv
 
 # Load environment variables from .env file if it exists

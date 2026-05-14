@@ -18,7 +18,6 @@ from __future__ import annotations
 import logging
 import re
 import time
-from typing import Optional
 
 from google.cloud import exceptions as cloud_exceptions
 from google.cloud import storage

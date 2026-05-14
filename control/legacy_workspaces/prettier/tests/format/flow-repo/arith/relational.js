@@ -13,7 +13,7 @@
 var x = (null
 : ?number)
 1 < x // 2 errors: null !~> number; undefined !~> number
-x < 1; // 2 errors: null !~> number; undefined !~> number
+x < 1 // 2 errors: null !~> number; undefined !~> number
 
 null < null; // error
 undefined < null; // error

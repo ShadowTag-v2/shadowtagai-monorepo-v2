@@ -18,7 +18,7 @@ import argparse
 import random
 import shutil
 import sys
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
 
 import defusedxml.minidom

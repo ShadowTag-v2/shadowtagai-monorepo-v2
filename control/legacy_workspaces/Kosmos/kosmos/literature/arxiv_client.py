@@ -10,7 +10,6 @@ ArxivHTTPClient which uses direct HTTP API calls without the problematic depende
 
 from __future__ import annotations
 
-from typing import List, Optional
 import logging
 
 # Handle arxiv import with fallback for Python 3.11+ compatibility

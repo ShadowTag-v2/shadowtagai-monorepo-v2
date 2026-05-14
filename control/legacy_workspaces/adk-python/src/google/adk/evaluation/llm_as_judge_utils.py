@@ -17,8 +17,6 @@ from __future__ import annotations
 
 import enum
 import statistics
-from typing import Optional
-from typing import Union
 
 from google.genai import types as genai_types
 

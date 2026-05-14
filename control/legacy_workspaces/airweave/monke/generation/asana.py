@@ -4,8 +4,6 @@
 Generates realistic task content for testing Asana integration using LLM.
 """
 
-from typing import List, Tuple
-
 from monke.generation.schemas.asana import AsanaTask
 from monke.client.llm import LLMClient
 

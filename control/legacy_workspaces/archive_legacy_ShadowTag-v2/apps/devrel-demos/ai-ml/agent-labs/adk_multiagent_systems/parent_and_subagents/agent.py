@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from google.adk import Agent
 
 from google.genai import types
-from typing import List
 
 from google.adk.tools.tool_context import ToolContext
 

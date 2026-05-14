@@ -15,7 +15,7 @@ For full functionality, use the uspto-opendata-python library directly.
 
 import sys
 import json
-from typing import Dict, List, Optional, Any
+from typing import Any
 from datetime import datetime
 
 try:

@@ -17,9 +17,6 @@ from __future__ import annotations
 
 import logging
 from typing import Any
-from typing import Dict
-from typing import Optional
-from typing import Union
 
 from google.genai.types import FunctionDeclaration
 from typing_extensions import override

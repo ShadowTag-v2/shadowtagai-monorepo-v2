@@ -8,7 +8,6 @@ import time
 import random
 import asyncio
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
 

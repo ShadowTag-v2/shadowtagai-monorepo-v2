@@ -15,7 +15,7 @@ Mission: Pause → Breathe → Design → Urgency → Insanely Great
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional, Tuple
+from typing import Any
 from enum import Enum
 import math
 from datetime import datetime

@@ -4,8 +4,6 @@
 Generates realistic issue, merge request, and file content for testing GitLab integration using LLM.
 """
 
-from typing import List, Tuple
-
 from monke.generation.schemas.gitlab import (
     GitLabIssue,
     GitLabMergeRequest,

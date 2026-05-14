@@ -8,7 +8,7 @@ Automatically evolves prompts, kernels, and agents through:
 3. Benchmark validation: HumanEval, BigCodeBench, SWE-bench
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from pydantic import BaseModel, Field
 from datetime import datetime, timezone
 from enum import Enum

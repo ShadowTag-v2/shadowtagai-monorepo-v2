@@ -6,7 +6,7 @@ Implements DSA-compliant recommender transparency
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import Any
 from datetime import datetime, timezone
 
 router = APIRouter()

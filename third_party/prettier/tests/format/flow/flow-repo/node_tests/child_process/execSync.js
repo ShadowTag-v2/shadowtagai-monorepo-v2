@@ -21,5 +21,9 @@ execSync("ls",
   timeout: "250";
 }
 ) // error, no signatures match
-execSync("ls", { stdio: "inherit" }); // error, no signatures match
+execSync("ls",
+{
+  stdio: "inherit";
+}
+) // error, no signatures match
 execSync("ls", { stdio: ["inherit"] }); // error, no signatures match

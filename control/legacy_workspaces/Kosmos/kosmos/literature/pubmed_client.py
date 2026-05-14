@@ -6,7 +6,6 @@ Uses Biopython's Entrez utilities to access NCBI PubMed database.
 """
 
 from Bio import Entrez, Medline
-from typing import List, Optional
 from datetime import datetime
 import time
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError

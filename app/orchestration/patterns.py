@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Alternative orchestration patterns (for future expansion)."""
 
-from typing import List, Any
+from typing import Any
 from collections.abc import Callable
 import asyncio
 from app.kernels.base import Kernel, KernelChainError

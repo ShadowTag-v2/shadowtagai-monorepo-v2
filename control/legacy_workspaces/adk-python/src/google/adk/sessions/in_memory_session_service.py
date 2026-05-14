@@ -18,7 +18,6 @@ import copy
 import logging
 import time
 from typing import Any
-from typing import Optional
 import uuid
 
 from typing_extensions import override

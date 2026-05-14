@@ -9,7 +9,7 @@ Structured approach to wealth optimization:
 4. Structured response (hard truth → plan → challenge)
 """
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 from pydantic import BaseModel, Field
 from enum import Enum
 

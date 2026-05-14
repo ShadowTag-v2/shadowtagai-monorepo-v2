@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import importlib
-from typing import Optional
 
 from google.adk import Agent
 from google.adk import Runner

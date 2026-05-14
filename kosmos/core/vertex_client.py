@@ -7,7 +7,7 @@ Gemini 2.5 Pro and Flash models.
 """
 
 from __future__ import annotations
-from typing import Optional, Dict, Any, List
+from typing import Any
 from dataclasses import dataclass
 from enum import Enum
 import logging

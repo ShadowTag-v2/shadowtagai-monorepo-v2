@@ -10,7 +10,6 @@ import re
 import argparse
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import List, Dict, Tuple
 
 # Try to import matplotlib, but make it optional
 try:

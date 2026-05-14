@@ -2,7 +2,6 @@
 """Prometheus metrics collection for kernel chain."""
 
 from prometheus_client import Counter, Histogram, Info
-from typing import Optional
 from app.config import settings
 
 

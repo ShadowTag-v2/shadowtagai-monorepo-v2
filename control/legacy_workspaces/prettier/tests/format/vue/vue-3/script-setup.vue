@@ -1,5 +1,6 @@
 <script setup></script>
-<script setup="     foo"></script>
+<script setup="     foo">
+</script>
 <script setup="     {row   }"></script>
 <script setup="{destructuring:{   a:{b}}}"></script>
 

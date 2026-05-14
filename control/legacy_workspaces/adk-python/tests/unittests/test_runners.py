@@ -15,7 +15,6 @@
 
 from pathlib import Path
 import textwrap
-from typing import Optional
 from unittest.mock import AsyncMock
 
 from google.adk.agents.base_agent import BaseAgent

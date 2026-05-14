@@ -28,7 +28,7 @@ Example usage:
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 from dataclasses import dataclass
 from pathlib import Path
 import httpx

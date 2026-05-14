@@ -7,8 +7,6 @@ Provides functions for drawing shapes, text, emojis, and compositing elements
 together to create animation frames.
 """
 
-from typing import Optional
-
 from PIL import Image, ImageDraw, ImageFont
 
 

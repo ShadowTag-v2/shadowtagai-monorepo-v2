@@ -6,7 +6,7 @@ Generates embeddings for code and text using various providers
 
 import asyncio
 import logging
-from typing import List, Dict, Any, Optional
+from typing import Any
 from dataclasses import dataclass
 from openai import AsyncOpenAI
 from anthropic import AsyncAnthropic

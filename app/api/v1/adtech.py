@@ -5,7 +5,6 @@ Implements VAST 4.x, OM SDK, Privacy Sandbox verification
 """
 
 from fastapi import APIRouter
-from typing import List
 
 from app.models.adtech import (
     VASTValidationRequest,

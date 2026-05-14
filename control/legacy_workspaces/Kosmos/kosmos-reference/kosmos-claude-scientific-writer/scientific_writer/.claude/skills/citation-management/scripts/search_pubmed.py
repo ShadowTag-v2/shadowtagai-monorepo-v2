@@ -12,7 +12,6 @@ import argparse
 import json
 import time
 import xml.etree.ElementTree as ET
-from typing import List, Dict, Optional
 from datetime import datetime
 
 

@@ -15,7 +15,6 @@
 
 """Tests for the BaseAuthCredentialExchanger class."""
 
-from typing import Optional
 from unittest.mock import MagicMock
 
 from google.adk.auth.auth_credential import AuthCredential

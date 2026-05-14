@@ -14,7 +14,7 @@ Key benefits:
 
 import time
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -158,11 +158,7 @@ class GeminiFunctionCaller:
     def _rebuild_tool_config(self):
         """Rebuild the tool configuration from current tools list."""
         if self.tools:
-            self.gemini_tools = [
-                genai_types.Tool(
-                    function_declarations=[tool.to_gemini_declaration() for tool in self.tools]
-                )
-            ]
+            self.gemini_tools = [genai_types.Tool(function_declarations=[tool.to_gemini_declaration() for tool in self.tools])]
         else:
             self.gemini_tools = []
 

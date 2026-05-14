@@ -16,8 +16,6 @@
 from __future__ import annotations
 
 import json
-from typing import List
-from typing import Optional
 
 from google.adk.tools.application_integration_tool.clients.connections_client import ConnectionsClient
 import google.auth

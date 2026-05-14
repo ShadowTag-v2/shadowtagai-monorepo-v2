@@ -7,7 +7,6 @@ API endpoints for managing and querying receipt chains.
 
 from fastapi import APIRouter, HTTPException
 from pathlib import Path
-from typing import List, Optional
 
 from shadowtag_v2.receipt_chain import ChainStorage, ChainVerifier
 from app.core.config import settings

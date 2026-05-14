@@ -4,7 +4,7 @@ Content provenance and C2PA models
 """
 
 from pydantic import BaseModel, Field, HttpUrl
-from typing import List, Optional, Dict, Any
+from typing import Any
 from datetime import datetime
 from enum import Enum
 

@@ -5,7 +5,7 @@ Integrates with Google Calendar, Outlook, and other calendar providers
 """
 
 from datetime import date, timedelta
-from typing import List, Optional, Dict, Any
+from typing import Any
 from enum import Enum
 import asyncio
 

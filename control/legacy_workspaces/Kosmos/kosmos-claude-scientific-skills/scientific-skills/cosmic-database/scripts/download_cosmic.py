@@ -25,7 +25,6 @@ Requirements:
 import requests
 import sys
 import os
-from typing import Optional
 
 
 def download_cosmic_file(email: str, password: str, filepath: str, output_filename: str | None = None, genome_assembly: str = "GRCh38") -> bool:

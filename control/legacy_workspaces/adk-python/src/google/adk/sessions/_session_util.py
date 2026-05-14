@@ -17,8 +17,6 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Optional
-from typing import Type
 from typing import TypeVar
 
 from .state import State

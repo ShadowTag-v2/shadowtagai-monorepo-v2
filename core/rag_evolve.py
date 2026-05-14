@@ -42,7 +42,7 @@ import re
 import sqlite3
 import subprocess
 import sys
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
 from typing import Any
 

@@ -7,7 +7,6 @@ Searches multiple literature databases and aggregates results.
 
 import json
 import sys
-from typing import Dict, List
 from datetime import datetime
 
 

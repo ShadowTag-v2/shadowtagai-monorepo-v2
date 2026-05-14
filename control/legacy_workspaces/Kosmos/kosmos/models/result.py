@@ -8,7 +8,7 @@ with validation and structured data handling.
 
 from pydantic import BaseModel, Field, field_validator
 from kosmos.utils.compat import model_to_dict
-from typing import Dict, List, Optional, Any, Union
+from typing import Any
 from datetime import datetime
 from enum import Enum
 

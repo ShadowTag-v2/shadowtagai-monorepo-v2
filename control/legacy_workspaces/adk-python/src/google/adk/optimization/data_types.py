@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from typing import Any
 from typing import Generic
-from typing import Optional
 from typing import TypeVar
 
 from google.adk.agents.llm_agent import Agent

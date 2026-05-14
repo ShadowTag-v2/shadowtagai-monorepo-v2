@@ -14,8 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Dict
-from typing import Optional
 from unittest import mock
 
 from google.adk.agents.llm_agent import Agent

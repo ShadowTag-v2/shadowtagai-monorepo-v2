@@ -16,12 +16,7 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Literal
-from typing import Optional
-from typing import Tuple
-from typing import Union
 
 from fastapi.openapi.models import Operation
 from fastapi.openapi.models import Schema

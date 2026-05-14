@@ -9,7 +9,6 @@ Run with: uvicorn judge6.main:app --reload
 from fastapi import FastAPI, Depends, HTTPException, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
 import time
 import uuid
 

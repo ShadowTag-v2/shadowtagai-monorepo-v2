@@ -21,7 +21,6 @@ import asyncio
 import time
 import random
 from datetime import datetime, timedelta
-from typing import Optional, Dict, Tuple
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
 import logging

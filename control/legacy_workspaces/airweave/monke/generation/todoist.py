@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Todoist-specific generation adapter: task generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.todoist import TodoistArtifact
 from monke.client.llm import LLMClient
 

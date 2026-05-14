@@ -19,7 +19,7 @@ import json
 import time
 from dataclasses import dataclass, asdict
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import Any
 import statistics
 import httpx
 import argparse

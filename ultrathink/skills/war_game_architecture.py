@@ -6,7 +6,7 @@ Skill #2: Create clear, well-reasoned plans so straightforward anyone could exec
 Thinks like Leonardo da Vinci: war-game before building.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from ..core.base_skill import BaseSkill
 from ..core.types import SkillInput, SkillOutput, SkillType, ArchitecturePlan
 

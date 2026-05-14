@@ -2,7 +2,6 @@
 from google.adk.agents import LlmAgent
 from google.adk.agents.callback_context import CallbackContext
 from google.genai import types
-from typing import Optional
 from tools.tools import (
     get_quiz_questions,
     start_quiz,

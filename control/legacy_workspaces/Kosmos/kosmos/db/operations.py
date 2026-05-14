@@ -10,7 +10,7 @@ Performance Optimizations:
 - Query result caching for frequently accessed data
 """
 
-from typing import List, Optional, Dict, Any
+from typing import Any
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import event
 from kosmos.db.models import Experiment, Hypothesis, Result, Paper, AgentRecord, ResearchSession, ExperimentStatus, HypothesisStatus

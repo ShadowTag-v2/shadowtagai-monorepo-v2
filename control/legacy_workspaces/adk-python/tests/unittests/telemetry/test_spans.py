@@ -15,8 +15,6 @@
 
 import json
 from typing import Any
-from typing import Dict
-from typing import Optional
 from unittest import mock
 
 from google.adk.agents.invocation_context import InvocationContext

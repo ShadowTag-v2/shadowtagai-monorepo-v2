@@ -8,7 +8,6 @@ Validates each kernel against three criteria:
 - Brakes: What's p99 failure mode? Cost blowup scenario?
 """
 
-from typing import List, Optional, Dict
 from pydantic import BaseModel
 from enum import Enum
 

@@ -15,7 +15,7 @@ Timeline: 7-day MVP
 """
 
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional
+from typing import Any
 from enum import Enum
 
 from ..core.agent_pattern import PnklnAgent, AgentTask, AgentResult

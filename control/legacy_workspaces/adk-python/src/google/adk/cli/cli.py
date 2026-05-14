@@ -17,8 +17,6 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
-from typing import Union
 
 import click
 from google.genai import types

@@ -17,11 +17,10 @@ from __future__ import annotations
 import asyncio
 import copy
 from datetime import datetime
-from datetime import timezone, UTC
+from datetime import UTC
 import json
 import logging
 from typing import Any
-from typing import Optional
 import uuid
 
 from sqlalchemy import delete

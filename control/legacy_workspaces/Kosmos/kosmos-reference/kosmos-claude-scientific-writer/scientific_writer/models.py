@@ -2,7 +2,7 @@
 """Data models for scientific writer API responses."""
 
 from dataclasses import dataclass, field, asdict
-from typing import Optional, List, Dict, Any
+from typing import Any
 from datetime import datetime
 
 

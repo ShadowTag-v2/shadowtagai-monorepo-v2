@@ -5,7 +5,7 @@ ULTRATHINK Framework - Wealth Monetization Architecture Skill
 Skill #5: Turn attention into income at scale. Design scalable, elegant monetization systems.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from ..core.base_skill import BaseSkill
 from ..core.types import SkillInput, SkillOutput, SkillType, MonetizationStrategy
 

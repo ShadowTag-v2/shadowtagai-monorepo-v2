@@ -8,9 +8,6 @@ match(a);
   }
   ,
   'foo' =>
-  {
-    // empty
-  }
   ,
   2 =>
   label: "literal"

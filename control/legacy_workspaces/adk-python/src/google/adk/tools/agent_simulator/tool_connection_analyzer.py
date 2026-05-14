@@ -18,7 +18,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-from typing import List
 
 from google.adk.models.llm_request import LlmRequest
 from google.adk.models.registry import LLMRegistry

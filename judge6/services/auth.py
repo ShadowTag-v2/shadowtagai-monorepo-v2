@@ -7,7 +7,6 @@ Handles user registration, login, API key management
 import secrets
 import hashlib
 from datetime import datetime, timezone, timedelta
-from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session

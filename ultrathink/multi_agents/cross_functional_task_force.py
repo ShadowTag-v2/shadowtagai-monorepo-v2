@@ -5,7 +5,7 @@ ULTRATHINK Framework - Cross-Functional Task Force
 Coordinates multiple chief officers working in concert on holistic challenges.
 """
 
-from typing import Dict, Any, Optional
+from typing import Any
 from ..core.types import AgentContext, AgentResponse, AgentRole, UltrathinkConfig
 
 

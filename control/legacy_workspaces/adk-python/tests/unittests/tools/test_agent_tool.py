@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from typing import Any
-from typing import Optional
 
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.agents.invocation_context import InvocationContext

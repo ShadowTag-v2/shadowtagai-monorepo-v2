@@ -6,7 +6,7 @@ Helper functions for common OpenAlex query patterns.
 Provides high-level functions for typical research queries.
 """
 
-from typing import List, Dict, Optional, Any
+from typing import Any
 from openalex_client import OpenAlexClient
 
 

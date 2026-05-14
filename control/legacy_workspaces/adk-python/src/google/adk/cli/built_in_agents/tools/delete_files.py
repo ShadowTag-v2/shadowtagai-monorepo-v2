@@ -20,8 +20,6 @@ from __future__ import annotations
 from datetime import datetime
 import shutil
 from typing import Any
-from typing import Dict
-from typing import List
 
 from google.adk.tools.tool_context import ToolContext
 

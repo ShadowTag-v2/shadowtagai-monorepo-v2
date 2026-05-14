@@ -17,7 +17,6 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 from typing import Any
-from typing import Optional
 
 from ...artifacts.base_artifact_service import BaseArtifactService
 from ...memory.base_memory_service import BaseMemoryService

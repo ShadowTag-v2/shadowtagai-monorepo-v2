@@ -8,7 +8,7 @@ Supports OpenAI API and OpenAI-compatible endpoints (Ollama, OpenRouter, etc.).
 import os
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 from datetime import datetime
 
 try:

@@ -12,7 +12,7 @@ WithMatchStatement();
   1;
   =>
   useHook() // ERROR
-  2;
+  2
   =>
   return null
 }
@@ -31,7 +31,7 @@ match(x);
   1;
   =>
   component
-  NestedInMatch();
+  NestedInMatch()
   useHook(); // OK
   return null;
   2;

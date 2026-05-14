@@ -6,7 +6,7 @@ Quantitative Effect: ↑ Throughput +82%, ↓ Cost –59%
 """
 
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Any
 from datetime import datetime, timezone
 import asyncio
 from app.config.settings import settings

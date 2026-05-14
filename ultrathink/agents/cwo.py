@@ -5,7 +5,6 @@ ULTRATHINK Framework - Chief Wealth Officer (CWO)
 Turns attention into income at scale. Obsessed with monetization, leverage, and growth.
 """
 
-from typing import Optional
 from ..core.base_agent import BaseAgent
 from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
 

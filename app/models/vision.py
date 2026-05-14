@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Pydantic models for computer vision API."""
 
-from typing import List, Optional, Dict
 from pydantic import BaseModel, Field
 
 

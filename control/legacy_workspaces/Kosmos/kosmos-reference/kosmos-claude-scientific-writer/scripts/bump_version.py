@@ -10,7 +10,6 @@ version consistency across pyproject.toml and __init__.py.
 import re
 import sys
 from pathlib import Path
-from typing import Tuple
 
 
 def get_project_root() -> Path:

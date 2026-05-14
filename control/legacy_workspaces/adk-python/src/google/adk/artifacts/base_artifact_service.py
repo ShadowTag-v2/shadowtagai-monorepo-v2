@@ -18,7 +18,6 @@ from abc import ABC
 from abc import abstractmethod
 from datetime import datetime
 from typing import Any
-from typing import Optional
 
 from google.genai import types
 from pydantic import alias_generators

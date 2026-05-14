@@ -6,7 +6,7 @@ Implements a lightweight Router-Worker pattern for coordinating multiple
 specialist agents to solve complex tasks collaboratively.
 """
 
-from typing import Any, Dict, List
+from typing import Any
 from datetime import datetime
 from src.agents.router_agent import RouterAgent
 from src.agents.coder_agent import CoderAgent

@@ -14,7 +14,6 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Optional
 
 from a2a.server.agent_execution.context import RequestContext
 from a2a.server.events import Event as A2AEvent

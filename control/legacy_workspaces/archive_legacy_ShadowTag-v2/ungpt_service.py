@@ -7,7 +7,7 @@ Production-ready FastAPI implementation with tiered routing and cost controls
 from fastapi import FastAPI, HTTPException, Depends, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import List, Dict, Any, Optional
+from typing import Any
 import asyncio
 import json
 import os

@@ -28,7 +28,7 @@ import logging
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from kosmos.knowledge import get_knowledge_graph
 from kosmos.literature.base_client import PaperMetadata, PaperSource

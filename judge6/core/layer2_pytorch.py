@@ -6,7 +6,7 @@ Catches edge cases that LLMs might miss using fine-tuned classifier
 
 import torch
 import torch.nn as nn
-from typing import Dict, Any, Optional
+from typing import Any
 from pathlib import Path
 
 from ..models.database import RiskLevel

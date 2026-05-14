@@ -19,7 +19,6 @@ from abc import ABC
 from abc import abstractmethod
 from enum import Enum
 from collections.abc import AsyncGenerator
-from typing import Optional
 
 from pydantic import alias_generators
 from pydantic import BaseModel

@@ -20,7 +20,6 @@ import os
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Set
 
 import tomllib
 from get_min_versions import get_min_version_from_toml

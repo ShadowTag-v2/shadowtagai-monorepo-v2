@@ -16,9 +16,7 @@
 from __future__ import annotations
 
 import inspect
-from typing import Optional
 from typing import TYPE_CHECKING
-from typing import Union
 
 from google.adk.agents.callback_context import CallbackContext
 from google.adk.agents.readonly_context import ReadonlyContext

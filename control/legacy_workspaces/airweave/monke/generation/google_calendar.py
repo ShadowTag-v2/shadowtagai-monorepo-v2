@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Google Calendar-specific generation adapter: event generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.google_calendar import GoogleCalendarArtifact
 from monke.client.llm import LLMClient
 

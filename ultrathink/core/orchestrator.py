@@ -6,7 +6,7 @@ Central coordinator that routes tasks to appropriate skills, agents, and multi-a
 Embodies the ULTRATHINK philosophy at the architectural level.
 """
 
-from typing import Optional, Dict, Any
+from typing import Any
 from enum import Enum
 
 from .types import AgentContext, AgentResponse, AgentRole, SkillType, SkillInput, SkillOutput, UltrathinkConfig, DebateResult

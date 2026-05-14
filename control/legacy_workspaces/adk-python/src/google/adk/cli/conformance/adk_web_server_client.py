@@ -22,9 +22,7 @@ import json
 import logging
 from typing import Any
 from collections.abc import AsyncGenerator
-from typing import Dict
 from typing import Literal
-from typing import Optional
 
 import httpx
 

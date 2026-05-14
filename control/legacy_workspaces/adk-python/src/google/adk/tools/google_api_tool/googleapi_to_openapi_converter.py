@@ -19,8 +19,6 @@ import argparse
 import json
 import logging
 from typing import Any
-from typing import Dict
-from typing import List
 
 # Google API client
 from googleapiclient.discovery import build

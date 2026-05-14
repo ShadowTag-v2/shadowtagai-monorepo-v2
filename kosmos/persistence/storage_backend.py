@@ -10,7 +10,6 @@ Provides:
 """
 
 from __future__ import annotations
-from typing import Optional, List
 from pathlib import Path
 import logging
 

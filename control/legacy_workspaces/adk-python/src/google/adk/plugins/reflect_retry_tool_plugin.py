@@ -19,7 +19,6 @@ import asyncio
 from enum import Enum
 import json
 from typing import Any
-from typing import Optional
 
 from pydantic import BaseModel
 

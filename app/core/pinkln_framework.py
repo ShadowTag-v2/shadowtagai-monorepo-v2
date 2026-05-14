@@ -10,7 +10,7 @@ Evolution: DTE (Dynamic Test Evolution) with GRPO/PPO comparison
 
 import logging
 from enum import Enum
-from typing import Dict, List, Optional, Any
+from typing import Any
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
@@ -154,7 +154,12 @@ class PinklnFramework:
         """Apply reasoning framework"""
         self.reasoning_stack.append(framework)
 
-        return {"framework": framework.value, "persona": self.active_persona.value, "iq": self.persona_iq, "timestamp": datetime.now(timezone.utc).isoformat()}
+        return {
+            "framework": framework.value,
+            "persona": self.active_persona.value,
+            "iq": self.persona_iq,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
 
     def fuse_cheat_sheet(self, essentials: CheatSheetEssentials) -> str:
         """

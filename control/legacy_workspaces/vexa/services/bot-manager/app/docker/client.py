@@ -2,7 +2,7 @@
 import docker
 import logging
 import os
-from typing import Dict, Any, Optional
+from typing import Any
 from fastapi import HTTPException
 from app.database.service import TranscriptionService
 

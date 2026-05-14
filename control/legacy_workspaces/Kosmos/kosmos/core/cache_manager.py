@@ -10,7 +10,7 @@ import logging
 import threading
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from kosmos.core.cache import BaseCache, HybridCache, InMemoryCache, DiskCache
 from kosmos.config import get_config

@@ -16,7 +16,6 @@ dependencies available in the execution environment.
 import re
 import ast
 from dataclasses import dataclass
-from typing import List, Set, Dict, Optional, Tuple
 import logging
 
 logger = logging.getLogger(__name__)

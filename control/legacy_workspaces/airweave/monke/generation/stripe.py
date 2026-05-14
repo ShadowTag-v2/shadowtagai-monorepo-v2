@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Stripe-specific generation adapter: customer generator."""
 
-from typing import Tuple
-
 from monke.generation.schemas.stripe import StripeArtifact
 from monke.client.llm import LLMClient
 

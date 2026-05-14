@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Core kernel chain orchestration."""
 
-from typing import List, Dict, Any, Optional
+from typing import Any
 import uuid
 import time
 from app.kernels.base import Kernel, KernelChainError

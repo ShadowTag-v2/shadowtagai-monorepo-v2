@@ -20,7 +20,6 @@ Examples:
 import argparse
 import sys
 from pathlib import Path
-from typing import List
 
 try:
     from pymatgen.core import Structure

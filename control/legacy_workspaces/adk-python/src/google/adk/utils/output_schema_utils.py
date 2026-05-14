@@ -21,7 +21,6 @@ Please do not rely on the implementation details.
 
 from __future__ import annotations
 
-from typing import Union
 
 from ..models.base_llm import BaseLlm
 from .model_name_utils import is_gemini_2_or_above

@@ -25,7 +25,6 @@ import logging
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 # Try to import Vertex AI (graceful degradation if not available)
 try:

@@ -17,8 +17,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-from typing import Union
 
 from a2a.client import ClientEvent as A2AClientEvent
 from a2a.client.middleware import ClientCallContext

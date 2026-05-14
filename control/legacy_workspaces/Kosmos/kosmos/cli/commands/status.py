@@ -6,7 +6,6 @@ Shows current status of a research run with live updates.
 """
 
 import time
-from typing import Optional
 
 import typer
 from rich.panel import Panel
