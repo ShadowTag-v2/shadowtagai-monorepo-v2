@@ -1,0 +1,11 @@
+fastapi==0.110.0
+uvicorn==0.28.0
+google-genai
+google-cloud-storage
+google-cloud-spanner
+google-cloud-texttospeech
+google-cloud-video-transcoder
+google-cloud-bigquery
+pipeline-dp
+langextract
+firebase-admin

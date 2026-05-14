@@ -1,0 +1,1 @@
+FlyingMonkeys is on port 8600 and Oracle is on port 8700. You can run ./bin/relaunch anytime to restart them cleanly.

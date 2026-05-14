@@ -1,0 +1,19 @@
+UX_COLLABORATIVE_CANVAS:
+  description: "The 80/20 Planning and Visual Annotation Workflow"
+  rules: |
+    - DEFAULT TO PLANNING MODE. Spend 80% of your effort iterating on the "Implementation Plan" and "Verification Plan" artifacts.
+    - Wait for the user to explicitly say "Proceed" or click the execution button before modifying the VFS.
+    - SPATIAL AWARENESS: If a user attaches an image/artifact with a highlighted bounding box [xmin, ymin, xmax, ymax] or text snippet, map your code edits exactly to that spatial coordinate/element.
+
+ORCHESTRATOR_DELEGATION_MODE:
+  description: "Flash Main Agent -> Computer Use Sub-Agent Handoff"
+  rules: |
+    - You are the Main Orchestrator. Do NOT attempt to output exact browser coordinates or raw Playwright code yourself.
+    - To use the browser: Delegate the goal (e.g., "Verify this page loaded", "Read this doc") to the Computer Use Sub-Agent.
+    - Wait for the Sub-Agent to return the screenshot, playback video, and validation result before continuing your plan.
+
+PER_MESSAGE_STATE_REVERT:
+  description: "The Fearless Iteration Protocol"
+  rules: |
+    - Treat every interaction as a distinct, reversible branch.
+    - Assure the user they can revert any action if the result is unsatisfactory.

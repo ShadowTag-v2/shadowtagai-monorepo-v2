@@ -1,0 +1,5 @@
+apiVersion: networking.karmada.io/v1alpha1
+kind: PropagationPolicy
+spec:
+  resourceSelectors: [{apiVersion: "constraints.gatekeeper.sh/v1beta1", kind: "K8sRBACConstraint"}]
+  placement: {clusterAffinity: {clusterNames: ["penal-cluster1", "penal-cluster2"]}}

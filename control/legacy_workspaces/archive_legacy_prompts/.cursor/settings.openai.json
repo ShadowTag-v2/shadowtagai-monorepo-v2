@@ -1,0 +1,14 @@
+{
+  "providers": {
+    "openai": {
+      "apiKey": "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",
+      "defaultModel": "gpt-5-fast",
+      "streaming": false
+    },
+    "anthropic": {
+      "apiKey": "=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",
+      "defaultModel": "claude-4-sonnet"
+    }
+  },
+  "autoApprove": true
+}

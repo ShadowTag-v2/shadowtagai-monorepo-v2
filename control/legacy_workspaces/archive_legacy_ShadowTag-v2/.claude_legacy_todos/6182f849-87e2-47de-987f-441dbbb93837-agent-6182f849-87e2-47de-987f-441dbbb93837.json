@@ -1,0 +1,27 @@
+[
+  {
+    "content": "Merge PR #292 (NEXUSUS + Governance)",
+    "status": "completed",
+    "activeForm": "Merging PR #292"
+  },
+  {
+    "content": "Priority 7: Pingora panic-free hardening",
+    "status": "in_progress",
+    "activeForm": "Hardening Pingora with panic-free code"
+  },
+  {
+    "content": "Priority 8: Contract ingestion pipeline",
+    "status": "pending",
+    "activeForm": "Building contract ingestion pipeline"
+  },
+  {
+    "content": "Priority 9: DL Container infrastructure",
+    "status": "pending",
+    "activeForm": "Setting up DL Container infrastructure"
+  },
+  {
+    "content": "Priority 10: ShadowTagAi Kernel",
+    "status": "pending",
+    "activeForm": "Implementing ShadowTagAi Kernel"
+  }
+]

@@ -1,0 +1,112 @@
+{
+  "version": "1.0",
+  "last_updated": "2025-11-08",
+  "slos": [
+    {
+      "name": "API Availability",
+      "description": "Percentage of successful API responses",
+      "target": 99.9,
+      "measurement_window": "30d",
+      "error_budget_percent": 0.1,
+      "error_budget_minutes_per_month": 43.8,
+      "measurement_method": "ratio of 2xx/3xx responses to total requests",
+      "alerting": {
+        "warning_threshold": 99.95,
+        "critical_threshold": 99.9,
+        "notification_channels": ["#alerts-sre", "pagerduty-oncall"]
+      }
+    },
+    {
+      "name": "API Latency P95",
+      "description": "95th percentile response time for API requests",
+      "target_ms": 800,
+      "measurement_window": "5m",
+      "measurement_method": "histogram quantile of request duration",
+      "alerting": {
+        "warning_threshold_ms": 1000,
+        "critical_threshold_ms": 1500,
+        "notification_channels": ["#alerts-platform"]
+      }
+    },
+    {
+      "name": "API Latency P99",
+      "description": "99th percentile response time for API requests",
+      "target_ms": 2000,
+      "measurement_window": "5m",
+      "measurement_method": "histogram quantile of request duration",
+      "alerting": {
+        "warning_threshold_ms": 3000,
+        "critical_threshold_ms": 5000,
+        "notification_channels": ["#alerts-platform"]
+      }
+    },
+    {
+      "name": "Error Rate",
+      "description": "Percentage of requests returning 5xx errors",
+      "target_percent": 0.1,
+      "measurement_window": "5m",
+      "measurement_method": "ratio of 5xx responses to total requests",
+      "alerting": {
+        "warning_threshold_percent": 0.5,
+        "critical_threshold_percent": 1.0,
+        "notification_channels": ["#alerts-sre", "pagerduty-oncall"]
+      }
+    },
+    {
+      "name": "Model Inference Latency",
+      "description": "Time to complete model inference requests",
+      "target_ms": 1500,
+      "measurement_window": "5m",
+      "measurement_method": "histogram quantile of inference duration",
+      "alerting": {
+        "warning_threshold_ms": 2500,
+        "critical_threshold_ms": 5000,
+        "notification_channels": ["#alerts-ml"]
+      }
+    },
+    {
+      "name": "Data Pipeline Freshness",
+      "description": "Maximum age of processed data",
+      "target_minutes": 15,
+      "measurement_window": "15m",
+      "measurement_method": "difference between current time and last processed timestamp",
+      "alerting": {
+        "warning_threshold_minutes": 30,
+        "critical_threshold_minutes": 60,
+        "notification_channels": ["#alerts-data"]
+      }
+    }
+  ],
+  "error_budget_policy": {
+    "description": "Actions to take when error budget is exhausted",
+    "actions": [
+      {
+        "budget_remaining_percent": 50,
+        "action": "warning",
+        "description": "Alert team, increase monitoring frequency"
+      },
+      {
+        "budget_remaining_percent": 25,
+        "action": "freeze_risky_changes",
+        "description": "Require senior approval for non-urgent deployments"
+      },
+      {
+        "budget_remaining_percent": 0,
+        "action": "freeze_all_changes",
+        "description": "Halt all deployments except critical fixes until budget recovers"
+      }
+    ],
+    "budget_reset": "monthly",
+    "budget_calculation_period": "trailing_30d"
+  },
+  "dashboard_links": {
+    "grafana": "https://grafana.aiyou.com/d/slo-overview",
+    "prometheus": "https://prometheus.aiyou.com/graph",
+    "status_page": "https://status.aiyou.com"
+  },
+  "review_schedule": {
+    "frequency": "quarterly",
+    "next_review": "2026-02-08",
+    "owner": "sre-team"
+  }
+}

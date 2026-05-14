@@ -1,0 +1,49 @@
+---
+description: pnkln compact repo rules for cursor and antigravity
+globs: ["**/*.{ts,tsx,js,jsx,py,md,yml,yaml,json,sh}"]
+---
+
+# pnkln rules
+
+Use this repo only. No nested repos. No duplicate worktrees. No side folders outside canonical root.
+
+Decide with:
+- purpose = pnklnJR
+- reasons = verified doctrine
+- brakes = army risk management
+
+Do not ask for routine confirmation. Make the safest reasonable assumption, proceed, and report.
+Raise objections on security, boundary, rollback, or architecture violations.
+
+Keep diffs small and reversible.
+Prefer editing existing files.
+Do not invent packages, APIs, or paths.
+Verify before using.
+
+Architecture:
+- use Atomic Design only for design-system primitives
+- organize app code by feature and concern
+- move business logic out of UI
+- prefer components <150 lines, functions <60 lines
+- split by responsibility, not file-count theater
+
+Frontend performance order:
+1. remove async waterfalls
+2. reduce bundle size
+3. fix server/client rendering boundaries
+4. optimize rerenders and data fetching
+
+Security:
+- no custom auth if managed auth fits
+- short-lived access tokens, rotated refresh tokens
+- server-side authorization always
+- validate all inputs
+- structured logging, no secrets in logs
+- strict env separation
+- secret scanning and dependency review required
+
+Workflow:
+- write or update tests with changes
+- run lint, typecheck, tests when available
+- never claim success without fresh evidence
+- if blocked, state exact blocker and the smallest next step

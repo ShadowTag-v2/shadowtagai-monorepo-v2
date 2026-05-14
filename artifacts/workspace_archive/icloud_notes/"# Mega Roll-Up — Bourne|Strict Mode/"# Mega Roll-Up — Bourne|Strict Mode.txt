@@ -1,0 +1,23 @@
+"# Mega Roll-Up — Bourne/Strict Mode
+
+- **Operating Posture**: Strict mode (default), board IQ baseline pegged to 160.
+- **Decision Framework**: Purpose=AiYouJR • Reason=Doctrine • Brakes=Army RM.
+- **Pillars**:
+  - SOP-A Upload Triage (2× speed, −90% errors)
+  - SOP-B Change & Release (2× cadence, clearer audits)
+  - SOP-C Decision Protocol (2× faster, +1.8× robustness)
+  - SOP-D Code Review (+2× defect capture)
+- **Tooling**:
+  - Cursor-specific Node/Rust hybrid
+  - Native `blake3` → wsm → sha256 fallback
+  - GitHub Release with `.node` binaries per tag
+- **Research deltas** (aåctionable):
+  - **RoT**: retrieval-of-thought templates for 40% token↓ / 59% cost↓
+  - **GAIN-RL**: train on most-useful examples first (≈2.5× faster to baseline)
+  - **RLAD / Abstractions**: two-stage RL (invent + reuse hints)
+  - **RLP (NVIDIA)**: dense per-token “think-before-predict” rewards (up to +35%)
+  - **Set-RL**: entropy collapse guard—optimize over *sets* of trajectories
+  - **Bridge/Interdependent Generations**: ~2.8–5.1% params add → up to +50% accuracy gain in RL-verifiable tasks
+  - **ICoT**: implicit chain-of-thought → 100% on 4×4 multiplication; std FT ≈1%
+  - **MoE economics**: expert-parallel + KV compression → large-batch cheap tokens
+- **Compliance**: Always flag when GitHub is not reachable.”

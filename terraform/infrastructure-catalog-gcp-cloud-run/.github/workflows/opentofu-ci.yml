@@ -1,0 +1,20 @@
+name: OpenTofu CI
+on:
+  push:
+    branches: [main]
+    paths: ['terraform/infrastructure-catalog-gcp-cloud-run/**']
+  pull_request:
+    paths: ['terraform/infrastructure-catalog-gcp-cloud-run/**']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mise-action/mise-action@v2
+        with:
+          working_directory: terraform/infrastructure-catalog-gcp-cloud-run
+      - run: mise install
+        working-directory: terraform/infrastructure-catalog-gcp-cloud-run
+      - run: pre-commit run --all-files
+        working-directory: terraform/infrastructure-catalog-gcp-cloud-run

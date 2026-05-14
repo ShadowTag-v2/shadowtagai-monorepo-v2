@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import sys
+import uuid
+from datetime import datetime
+from pathlib import Path
+
+# CONFIG
+BEADS_DIR = Path(".beads")
+ISSUES_FILE = BEADS_DIR / "issues.jsonl"
+
+
+def init_beads():
+    BEADS_DIR.mkdir(exist_ok=True)
+    if not ISSUES_FILE.exists():
+        ISSUES_FILE.touch()
+
+
+def load_issues():
+    issues = []
+    if ISSUES_FILE.exists():
+        with open(ISSUES_FILE) as f:
+            for line in f:
+                if line.strip():
+                    issues.append(json.loads(line))
+    return issues
+
+
+def save_issue(issue):
+    with open(ISSUES_FILE, "a") as f:
+        f.write(json.dumps(issue) + "\n")
+
+
+def create_issue(title, description="", priority="2"):
+    issue = {
+        "id": str(uuid.uuid4())[:8],
+        "title": title,
+        "description": description,
+        "priority": priority,  # 0=Low, 1=Med, 2=High, 3=Critical
+        "status": "open",
+        "created_at": datetime.now().isoformat(),
+        "notes": [],
+    }
+    save_issue(issue)
+    print(f"✅ Created issue {issue['id']}: {issue['title']}")
+
+
+def list_issues(status=None):
+    issues = load_issues()
+    print(f"{'ID':<10} {'STATUS':<12} {'PRIO':<6} {'TITLE'}")
+    print("-" * 60)
+    for i in issues:
+        if status and i["status"] != status:
+            continue
+        print(f"{i['id']:<10} {i['status']:<12} {i['priority']:<6} {i['title']}")
+
+
+def main():
+    init_beads()
+    parser = argparse.ArgumentParser(description="Beads (bd) - The Agent Memory Issue Tracker")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # CREATE
+    create_parser = subparsers.add_parser("create", help="Create a new issue")
+    create_parser.add_argument("title", help="Issue title")
+    create_parser.add_argument("--desc", help="Description", default="")
+    create_parser.add_argument("--prio", help="Priority (0-3)", default="2")
+
+    # LIST
+    list_parser = subparsers.add_parser("list", help="List issues")
+    list_parser.add_argument("--status", help="Filter by status (open/closed/in_progress)")
+
+    args = parser.parse_args()
+
+    if args.command == "create":
+        create_issue(args.title, args.desc, args.prio)
+    elif args.command == "list":
+        list_issues(args.status)
+    else:
+        # If no args or just 'bd', default to list or help
+        if len(sys.argv) == 1:
+            parser.print_help()
+        else:
+            parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

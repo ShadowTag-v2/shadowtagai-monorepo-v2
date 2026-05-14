@@ -1,0 +1,159 @@
+{
+  "name": "master-agent-marketplace",
+  "version": "1.0.0",
+  "description": "Universal agent framework for scalable AI agent deployment",
+  "architecture": "marketplace-driven",
+  "strictMode": false,
+  "plugins": [
+    {
+      "id": "research-agent",
+      "name": "Research Agent",
+      "version": "1.0.0",
+      "description": "Specialized agent for research, information synthesis, and knowledge gathering",
+      "source": "./agents/research",
+      "type": "agent-archetype",
+      "capabilities": ["web-search", "document-analysis", "synthesis", "citation-management"],
+      "commands": [
+        "./agents/research/tools/search.js",
+        "./agents/research/tools/synthesis.js",
+        "./agents/research/tools/citation.js"
+      ],
+      "agents": [
+        "./agents/research/personas/academic.md",
+        "./agents/research/personas/business.md",
+        "./agents/research/personas/technical.md"
+      ],
+      "hooks": {
+        "PostToolUse": [
+          {
+            "type": "command",
+            "command": "validate-sources.sh"
+          }
+        ]
+      },
+      "mcpServers": {},
+      "environmentVariables": {
+        "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/research",
+        "RESEARCH_MODE": "comprehensive"
+      }
+    },
+    {
+      "id": "coding-agent",
+      "name": "Coding Agent",
+      "version": "1.0.0",
+      "description": "Specialized agent for software development, testing, and code review",
+      "source": "./agents/coding",
+      "type": "agent-archetype",
+      "capabilities": ["code-generation", "testing", "refactoring", "code-review", "debugging"],
+      "commands": [
+        "./agents/coding/tools/test-runner.js",
+        "./agents/coding/tools/linter.js",
+        "./agents/coding/tools/formatter.js"
+      ],
+      "agents": [
+        "./agents/coding/personas/backend-dev.md",
+        "./agents/coding/personas/frontend-dev.md",
+        "./agents/coding/personas/devops.md"
+      ],
+      "hooks": {
+        "PostToolUse": [
+          {
+            "type": "command",
+            "command": "run-tests.sh"
+          }
+        ],
+        "PreCommit": [
+          {
+            "type": "command",
+            "command": "lint-and-format.sh"
+          }
+        ]
+      },
+      "mcpServers": {
+        "github": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-github"]
+        }
+      },
+      "environmentVariables": {
+        "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/coding",
+        "TEST_MODE": "comprehensive"
+      }
+    },
+    {
+      "id": "analysis-agent",
+      "name": "Analysis Agent",
+      "version": "1.0.0",
+      "description": "Specialized agent for data analysis, metrics, and reporting",
+      "source": "./agents/analysis",
+      "type": "agent-archetype",
+      "capabilities": ["data-analysis", "visualization", "reporting", "metrics-tracking"],
+      "commands": ["./agents/analysis/tools/analyzer.js", "./agents/analysis/tools/reporter.js"],
+      "agents": [
+        "./agents/analysis/personas/data-scientist.md",
+        "./agents/analysis/personas/business-analyst.md"
+      ],
+      "hooks": {},
+      "mcpServers": {},
+      "environmentVariables": {
+        "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/analysis"
+      }
+    },
+    {
+      "id": "deployment-agent",
+      "name": "Deployment Agent",
+      "version": "1.0.0",
+      "description": "Specialized agent for deployment, CI/CD, and infrastructure management",
+      "source": "./agents/deployment",
+      "type": "agent-archetype",
+      "capabilities": ["deployment", "ci-cd", "infrastructure-as-code", "monitoring"],
+      "commands": ["./agents/deployment/tools/deploy.js", "./agents/deployment/tools/rollback.js"],
+      "agents": [
+        "./agents/deployment/personas/devops-engineer.md",
+        "./agents/deployment/personas/sre.md"
+      ],
+      "hooks": {
+        "PreDeploy": [
+          {
+            "type": "command",
+            "command": "pre-deploy-checks.sh"
+          }
+        ],
+        "PostDeploy": [
+          {
+            "type": "command",
+            "command": "health-check.sh"
+          }
+        ]
+      },
+      "mcpServers": {},
+      "environmentVariables": {
+        "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/deployment",
+        "DEPLOYMENT_STAGE": "production"
+      }
+    }
+  ],
+  "distribution": {
+    "registry": {
+      "public": "https://marketplace.claude.ai/plugins",
+      "private": "https://internal.yourcompany.com/agent-marketplace"
+    },
+    "installation": {
+      "command": "npx @anthropic-ai/claude-agent-sdk install",
+      "teamStandardization": {
+        "enabled": true,
+        "settingsPath": "./settings.json",
+        "autoSync": true
+      }
+    }
+  },
+  "settings": {
+    "defaultMode": "non-strict",
+    "versionControl": true,
+    "autoUpdate": false,
+    "telemetry": {
+      "enabled": false,
+      "endpoint": null
+    }
+  }
+}

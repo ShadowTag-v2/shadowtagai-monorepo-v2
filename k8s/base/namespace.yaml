@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-production
+  labels:
+    name: pnkln-production
+    environment: production
+    cost-center: revenue-generating

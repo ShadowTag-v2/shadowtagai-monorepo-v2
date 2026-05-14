@@ -1,0 +1,42 @@
+# Original Path: Walkthrough/Walkthrough.txt
+
+# Categories: CORE_L2
+
+Walkthrough
+9 mins ago
+Submit comment
+
+Dataform Service Account Migration Walkthrough
+Changes Applied
+I have updated the Terraform configuration to allow the Dataform Service Agent to "act as" your custom service account (shadowtagai-orchestrator).
+Infrastructure Checks
+ Audited Codebase: Confirmed no explicit Dataform repository definitions exist in the current repository code (Python/Terraform).
+ Updated IAM: Modified 
+￼
+ infrastructure/terraform/iam.tf to grant roles/iam.serviceAccountUser to the Dataform service agent.
+[UPDATED] 
+￼
+infrastructure/terraform/iam.tf
+Added the following binding:
+resource "google_service_account_iam_member" "dataform_sa_user" {
+service_account_id = google_service_account.shadowtagai_orchestrator.name
+role = "roles/iam.serviceAccountUser"
+member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-dataform.iam.gserviceaccount.com"
+}
+Verification & Next Steps
+
+1. Apply Infrastructure Changes
+   Run Terraform to apply the new IAM binding:
+   cd infrastructure/terraform
+   terraform init
+   terraform apply
+2. Manual Configuration (Required)
+   Since the Dataform repository is not managed via Terraform code in this repo, you must update it manually in the Google Cloud Console:
+   Go to the Dataform section in the Google Cloud Console.
+   Select your repository.
+   Go to Settings.
+   Find the Service Account setting.
+   Select shadowtagai-orchestrator@acquired-jet-478701-b3.iam.gserviceaccount.com (or the equivalent email for your project).
+   Save changes.
+3. Test Workflow
+   Trigger a manual execution of a Dataform workflow to ensure it can successfully run using the new service account identity.

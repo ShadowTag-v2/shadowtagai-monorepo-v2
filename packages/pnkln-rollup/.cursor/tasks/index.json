@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "tasks": [
+    {
+      "id": "agent:use:grok-fast",
+      "name": "Switch to Grok Fast route",
+      "description": "Prefer the fast Grok route for speed-critical editing flows.",
+      "run": {
+        "type": "cursor",
+        "action": "set-model",
+        "model": "grok-2-mini"
+      }
+    },
+    {
+      "id": "agent:bulk-sweep",
+      "name": "Bulk sweep (batch edit + retry + tests)",
+      "description": "Run a batch refactor with retries and then run validation.",
+      "run": {
+        "type": "composite",
+        "steps": [
+          { "type": "cursor", "action": "batch-edit" },
+          { "type": "cursor", "action": "run-tests" }
+        ]
+      }
+    },
+    {
+      "id": "agent:validate",
+      "name": "Validate (linters + tests)",
+      "description": "Run lint and test commands if present.",
+      "run": {
+        "type": "script",
+        "command": "node -e \"console.log('validate via CI or local scripts')\""
+      }
+    },
+    {
+      "id": "slurm_github:handshake",
+      "name": "GitHub visibility check",
+      "description": "Writes healthcheck.json; fail loud in CI if not visible.",
+      "run": {
+        "type": "script",
+        "command": "node scripts/healthcheck.mjs"
+      }
+    }
+  ]
+}

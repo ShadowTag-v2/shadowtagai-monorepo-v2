@@ -1,0 +1,79 @@
+{
+  "repo_name": "pnkln-rollup",
+  "incoming_repo": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/incoming_repos/pnkln-rollup",
+  "monorepo_root": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
+  "destination": "packages/pnkln-rollup",
+  "manifest_paths": [
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/monorepo_manifest.yaml",
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/manifests/monorepo_manifest.yaml"
+  ],
+  "summary": {
+    "critical": 2,
+    "high": 4,
+    "medium": 4,
+    "low": 0
+  },
+  "blocked": true,
+  "findings": [
+    {
+      "kind": "manifest_split_brain",
+      "severity": "critical",
+      "path": "monorepo_manifest.yaml <> manifests/monorepo_manifest.yaml",
+      "detail": "Multiple manifest surfaces disagree. Reconcile before any fold-in or path migration."
+    },
+    {
+      "kind": "stale_model",
+      "severity": "high",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/config_schema.json",
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro-exp-03-25"
+    },
+    {
+      "kind": "stale_model",
+      "severity": "high",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/continue_rc_schema.json",
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro-exp-03-25"
+    },
+    {
+      "kind": "stale_model",
+      "severity": "high",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/config-yaml-schema.json",
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro"
+    },
+    {
+      "kind": "stale_model",
+      "severity": "high",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/out/extension.js",
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": ".cursor/MEGA_ROLLUP/MEGA_ROLLUP.md",
+      "detail": "Stale naming/control-plane drift: pnkln"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/config_schema.json",
+      "detail": "Stale naming/control-plane drift: flash-lite-preview"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/continue_rc_schema.json",
+      "detail": "Stale naming/control-plane drift: flash-lite-preview"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "serverless/src/handler.ts",
+      "detail": "Stale naming/control-plane drift: pnkln"
+    },
+    {
+      "kind": "secret_like",
+      "severity": "critical",
+      "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/out/extension.js",
+      "detail": "Potential secret material detected: AIzaAAe1gkMA4QEMIAEAAACN2gAHtcIcAOEBHiABAAAALNoABLUCGQDhAR4gAQAAAI"
+    }
+  ]
+}

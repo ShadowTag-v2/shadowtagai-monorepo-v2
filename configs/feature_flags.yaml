@@ -1,0 +1,22 @@
+version: 1
+
+flags:
+  counselconduit_stateless_mode:
+    enabled: true
+    owner: counselconduit
+
+  counselconduit_byok_routing:
+    enabled: true
+    owner: counselconduit
+
+  uphillsnowball_local_ane_experiments:
+    enabled: true
+    owner: uphillsnowball
+
+  retriever_eval_pipeline:
+    enabled: true
+    owner: pnkln
+
+  green_loop_autopatch:
+    enabled: false
+    owner: pnkln

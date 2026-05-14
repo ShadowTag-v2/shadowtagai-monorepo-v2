@@ -1,0 +1,10 @@
+{
+  "topology": "Antigravity Spec",
+  "canonical_truths": 4,
+  "nested_git_blocks": 0,
+  "duplicate_roots": 0,
+  "scanned_modules": 56,
+  "blocked_modules": 0,
+  "relock_status": "LOCKED",
+  "verdict": "COMPLETE"
+}

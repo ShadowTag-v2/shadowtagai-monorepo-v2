@@ -1,0 +1,125 @@
+{
+  "versions": {
+    "v1": {
+      "timestamp": "2025-11-01T00:00:00Z",
+      "status": "baseline",
+      "description": "Initial Judge #6 prompt (pre-pattern integration)",
+      "location": "prompts/judge/v1/judge-6-v1.md",
+      "notes": "Baseline for comparison. v2 expected to show 10-15% accuracy improvement."
+    },
+    "v2": {
+      "timestamp": "2025-11-14T00:00:00Z",
+      "status": "ab_testing",
+      "description": "Judge #6 v2 with four-pattern integration (Role, Few-Shot, Scratchpad, SxS)",
+      "variants": {
+        "a": {
+          "name": "Original Draft",
+          "description": "Verbose variant with explicit scaffolding",
+          "location": "prompts/judge/v2/variants/variant-a-original-draft.md",
+          "token_count": 800,
+          "latency_profile": "at_risk",
+          "source": "Gemini Analysis",
+          "created": "2025-11-09"
+        },
+        "b": {
+          "name": "Reconstructed",
+          "description": "Compressed variant optimized for latency",
+          "location": "prompts/judge/v2/variants/variant-b-reconstructed.md",
+          "token_count": 420,
+          "latency_profile": "safe",
+          "source": "Ultrathink Review + Jobs Doctrine",
+          "created": "2025-11-09",
+          "optimization": {
+            "token_reduction": "47%",
+            "expected_accuracy_delta": "0%",
+            "expected_latency_improvement": "40-50%"
+          }
+        }
+      },
+      "testing": {
+        "type": "a_b_test",
+        "sample_size": 1000,
+        "metrics": ["accuracy", "latency_p50", "latency_p95", "latency_p99", "token_cost"],
+        "success_criteria": {
+          "accuracy_confidence_interval": "<2%",
+          "p99_latency": "≤90ms"
+        },
+        "kill_switch": {
+          "p99_latency_breach": ">90ms",
+          "accuracy_drop": ">2%"
+        }
+      },
+      "expected_outcomes": {
+        "accuracy_improvement_over_v1": "10-15%",
+        "variant_b_hypothesis": "Equal accuracy to variant A, superior latency"
+      }
+    }
+  },
+  "active_version": "v2",
+  "active_variant": "ab_testing",
+  "sla_constraints": {
+    "p99_latency": "≤90ms",
+    "accuracy_threshold": "baseline + 10%"
+  },
+  "framework": {
+    "name": "ATP 5-19 Risk Frameworks",
+    "categories": ["A - Benign Intent", "B - Misinformation", "C - Harmful Instructions"],
+    "output_format": {
+      "decision": ["ALLOW", "BLOCK", "FLAG_FOR_REVIEW"],
+      "policy_citation": "ATP-5-19.[Section]",
+      "justification": "<30 words max"
+    }
+  },
+  "patterns_integrated": [
+    {
+      "id": 1,
+      "name": "Scratchpad Reasoning",
+      "description": "Chain-of-thought reasoning before final output"
+    },
+    {
+      "id": 2,
+      "name": "Structured Output Format",
+      "description": "Strict JSON schema for decisions"
+    },
+    {
+      "id": 3,
+      "name": "Few-Shot Learning",
+      "description": "Gold standard examples for pattern matching"
+    },
+    {
+      "id": 4,
+      "name": "Role Definition & Constraints",
+      "description": "Clear role boundaries and operational limits"
+    }
+  ],
+  "changelog": [
+    {
+      "version": "v2",
+      "date": "2025-11-14",
+      "changes": [
+        "Integrated four identified patterns into system prompt",
+        "Created two variants for A/B testing (original vs reconstructed)",
+        "Variant B achieves 47% token reduction",
+        "Added scratchpad reasoning protocol",
+        "Standardized output contract",
+        "Improved few-shot examples with real scenarios"
+      ],
+      "contributors": ["Gemini Analysis", "Ultrathink Review"]
+    },
+    {
+      "version": "v1",
+      "date": "2025-11-01",
+      "changes": ["Initial Judge #6 implementation"],
+      "contributors": ["Internal Team"]
+    }
+  ],
+  "next_steps": [
+    "Execute 1000-sample A/B benchmark test",
+    "Measure accuracy delta between variants",
+    "Measure latency profile (p50, p95, p99)",
+    "Declare winner based on success criteria",
+    "Promote winning variant to production",
+    "Monitor production metrics for 7 days",
+    "Document findings for future optimizations"
+  ]
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "content": "Enable GCP APIs (Cloud Build, Artifact Registry, GKE)",
+    "status": "completed",
+    "activeForm": "Enabling GCP APIs"
+  },
+  {
+    "content": "Create Artifact Registry repository",
+    "status": "completed",
+    "activeForm": "Creating Artifact Registry"
+  },
+  {
+    "content": "Create GKE cluster",
+    "status": "completed",
+    "activeForm": "Creating GKE cluster"
+  },
+  {
+    "content": "Submit Cloud Build",
+    "status": "in_progress",
+    "activeForm": "Submitting Cloud Build"
+  },
+  {
+    "content": "Verify deployment",
+    "status": "pending",
+    "activeForm": "Verifying deployment"
+  }
+]

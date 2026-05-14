@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pnkln-config
+  labels:
+    app: pnkln-api
+data:
+  # Application configuration
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "info"
+
+  # Skills registry path
+  SKILLS_REGISTRY_PATH: "/app/pnkln/skills/registry.yaml"
+
+  # Agents registry path
+  AGENTS_REGISTRY_PATH: "/app/pnkln/agents/registry.yaml"
+
+  # Audit trail path
+  AUDIT_TRAIL_PATH: "/app/data/audit_trail.jsonl"
+
+  # Performance settings
+  WORKERS: "4"
+  MAX_CONNECTIONS: "100"

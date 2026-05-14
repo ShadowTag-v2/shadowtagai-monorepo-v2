@@ -1,0 +1,69 @@
+<<<<<<< HEAD
+# IDE & Diagnostic Exclusions (Structural Matrix)
+# Prevents infinite loop exclusions and AST buffer collapse inside Gemini Code Assist / Pylance.
+
+# Core Directories
+.git/
+.venv/
+__pycache__/
+node_modules/
+dist/
+build/
+coverage/
+archive_legacy_*/
+external_sdks/
+
+# Dense Text Blobs & Models (Skipped intelligently to prevent AST collapse)
+drive_knowledge/**/*.pdf
+drive_knowledge/**/*.csv
+logs/**/*.log
+models/**/*.bin
+models/**/*.safetensors
+
+# Credentials & Enclaves
+*.pem
+*.key
+*.cert
+.env*
+credentials.json
+service_account.json
+||||||| empty tree
+=======
+# Keep agents away from generated, heavy, or sensitive areas
+**/node_modules/**
+**/.next/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/.turbo/**
+**/.cache/**
+**/tmp/**
+**/vendor/**
+**/__pycache__/**
+**/.venv/**
+**/.pytest_cache/**
+**/bazel-*/**
+**/bazel-bin/**
+**/bazel-out/**
+**/bazel-testlogs/**
+**/*.min.js
+**/*.map
+**/*.lock
+**/*.log
+**/*.sqlite
+**/*.db
+**/*.parquet
+**/*.feather
+**/*.ipynb
+**/*.onnx
+**/*.pt
+**/*.bin
+**/*.ckpt
+**/*.mlmodelc/**
+**/.env
+**/.env.*
+**/secrets/**
+**/private/**
+**/generated/**
+**/gen/**
+>>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419

@@ -1,0 +1,194 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestion-config
+  namespace: pnkln-ingestion
+data:
+  # Source Configuration
+  sources.yaml: |
+    # YouTube Sources
+    youtube:
+      channels:
+        - id: UC_x5XG1OV2P6uZZ5FSM9Ttw  # Example: Google Developers
+          name: "Google Developers"
+          tier_boost: 0.5
+        - id: UCbfYPyITQ-7l4upoX8nvctg  # Example: Two Minute Papers
+          name: "Two Minute Papers"
+          tier_boost: 0.3
+      max_results_per_channel: 25
+      published_after_days: 7
+
+    # Twitter Sources
+    twitter:
+      lists:
+        - id: "1234567890"
+          name: "Tech News"
+          tier_boost: 0.4
+        - id: "0987654321"
+          name: "AI Research"
+          tier_boost: 0.6
+        - id: "1122334455"
+          name: "Cybersecurity"
+          tier_boost: 0.5
+      max_results_per_list: 100
+      exclude_retweets: true
+
+    # News API Sources
+    news:
+      sources:
+        - name: "associated-press"
+          tier_boost: 0.7
+        - name: "reuters"
+          tier_boost: 0.8
+        - name: "bbc-news"
+          tier_boost: 0.6
+        - name: "al-jazeera-english"
+          tier_boost: 0.5
+      domains:
+        - "nytimes.com"
+        - "wsj.com"
+        - "economist.com"
+      max_results: 100
+
+    # RSS Feeds
+    rss:
+      feeds:
+        - url: "https://example.com/industry-newsletter/feed.xml"
+          name: "Industry Newsletter"
+          category: "industry"
+          tier_boost: 0.4
+        - url: "https://blog.example.com/rss"
+          name: "Tech Blog"
+          category: "industry"
+          tier_boost: 0.2
+
+    # Reddit Sources
+    reddit:
+      subreddits:
+        - name: "worldnews"
+          tier_boost: 0.5
+          sort: "hot"
+          limit: 50
+        - name: "technology"
+          tier_boost: 0.3
+          sort: "hot"
+          limit: 30
+        - name: "cybersecurity"
+          tier_boost: 0.6
+          sort: "hot"
+          limit: 20
+
+  # Ethical Compliance Settings
+  ethics.yaml: |
+    # robots.txt compliance
+    robots_txt_enabled: true
+    robots_txt_cache_ttl: 3600  # 1 hour
+
+    # Rate limiting (requests per second)
+    rate_limits:
+      default: 1.0  # 1 req/sec
+      youtube: 0.5  # Conservative (API quota limit)
+      twitter: 0.3  # Strict (avoid rate limit)
+      news: 2.0     # News APIs more permissive
+      rss: 1.5      # RSS feeds usually fine
+      reddit: 0.5   # Reddit strict
+
+    # User-Agent string
+    user_agent: "GeminiIngestionBot/1.0 (+https://pnkln.ai/ingestion-policy; contact@pnkln.ai)"
+
+    # Crawl delay (override if robots.txt specifies)
+    respect_crawl_delay: true
+    max_crawl_delay: 10  # Max seconds to wait
+
+  # Tier Classification Settings
+  classification.yaml: |
+    # Rule-based scoring (Phase 1)
+    rule_based:
+      source_reputation:
+        tier_1_sources: ["reuters", "associated-press", "bbc-news"]
+        tier_2_sources: ["nytimes", "wsj", "reddit-worldnews"]
+        tier_3_sources: ["twitter", "rss-generic"]
+
+      hot_topics:
+        - "AI regulation"
+        - "cybersecurity breach"
+        - "quantum computing"
+        - "climate tech"
+        - "geopolitical conflict"
+
+      timeliness:
+        bonus_6hr: 2.0
+        bonus_24hr: 1.0
+        penalty_7days: -1.0
+
+    # Gemini NLP (Phase 2+)
+    gemini_nlp:
+      enabled: true
+      batch_size: 50
+      model: "gemini-2.0-flash-exp"
+      temperature: 0.1
+      max_tokens: 100
+
+    # Tier thresholds
+    tiers:
+      tier_1_threshold: 8.0
+      tier_2_threshold: 5.0
+      # <5.0 = Tier 3
+
+  # Quality Gates
+  quality_gates.yaml: |
+    gates:
+      items_per_day:
+        threshold: 750
+        alert_below: 700
+      sources_active:
+        threshold: 20
+        alert_below: 18
+      cost_per_item:
+        threshold: 0.50
+        alert_above: 0.60
+      relevance_score:
+        threshold: 7.0
+        alert_below: 6.5
+      tier_1_ratio:
+        threshold: 0.35
+        alert_below: 0.30
+      runtime_minutes:
+        threshold: 60
+        alert_above: 70
+      ethical_compliance:
+        threshold: 1.0  # 100% required
+        alert_below: 1.0
+
+    alert_channels:
+      slack_webhook: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+      email: "alerts@pnkln.ai"
+
+  # AM Briefing Settings
+  briefing.yaml: |
+    schedule:
+      delivery_time: "06:45"
+      timezone: "America/New_York"
+
+    content:
+      tier_1_count: 18
+      tier_2_count: 7
+      total_items: 25
+
+    channels:
+      email:
+        enabled: true
+        recipients:
+          - "stakeholder1@pnkln.ai"
+          - "stakeholder2@pnkln.ai"
+        subject_template: "AM Intelligence Briefing - {date}"
+
+      slack:
+        enabled: true
+        webhook: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+        channel: "#intelligence-briefing"
+
+      pdf:
+        enabled: true
+        template: "templates/briefing.html"
+        logo_url: "https://pnkln.ai/logo.png"

@@ -1,0 +1,55 @@
+1 as /*
+comment
+*/ const;
+1 as /*
+comment
+*/ Foo;
+1 satisfies /*
+comment
+*/ Foo;
+
+1 as /*
+comment
+*/ const;
+1 as /*
+comment
+*/ Foo;
+1 satisfies /*
+comment
+*/ Foo;
+
+1; /*
+comment
+*/
+as;
+const;
+1; /*
+comment
+*/
+as;
+Foo;
+1; /*
+comment
+*/
+satisfies;
+Foo;
+
+1 as
+  /*
+comment
+*/
+  const;
+1 as
+  /*
+comment
+*/
+  Foo;
+1 satisfies
+  /*
+comment
+*/
+  Foo;
+
+1 as const; // comment
+1 as Foo; // comment
+1 satisfies Foo; // comment

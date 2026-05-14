@@ -1,0 +1,6 @@
+Manifest:
+- apps/flyingmonkeys-server/src/main.py
+- bin/flyingmonkeys-server
+- src/governance/judge_six
+- src/intelligence/tegu_vision
+- scripts/verify_smart_actions.py

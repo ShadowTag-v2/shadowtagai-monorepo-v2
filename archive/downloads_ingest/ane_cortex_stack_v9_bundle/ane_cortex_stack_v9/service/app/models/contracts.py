@@ -1,0 +1,35 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+from typing import Any, List, Optional, Dict
+from pydantic import BaseModel, Field
+
+class SearchResultItem(BaseModel):
+    source: str
+    id: str
+    title: str
+    rel_path: Optional[str] = None
+    score: float = 0.0
+    content_preview: str = ""
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+class SearchRequest(BaseModel):
+    query: str
+    repo_id: str = "ane"
+    limit: int = 8
+
+class SearchResponse(BaseModel):
+    query: str
+    repo_id: str
+    exact: List[SearchResultItem]
+    semantic: List[SearchResultItem]
+    memory: List[SearchResultItem]
+    tasks: List[SearchResultItem]
+
+class ContextRequest(BaseModel):
+    query: str
+    repo_id: str = "ane"
+
+class ContextResponse(BaseModel):
+    query: str
+    repo_id: str
+    prompt_context: str
+    selected_ids: Dict[str, List[str]]

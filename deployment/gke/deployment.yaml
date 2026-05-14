@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plan-mode-service
+  namespace: default
+  labels:
+    app: plan-mode-service
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: plan-mode-service
+  template:
+    metadata:
+      labels:
+        app: plan-mode-service
+        version: v1
+    spec:
+      serviceAccountName: plan-mode-sa
+      containers:
+      - name: plan-mode-api
+        image: gcr.io/${PROJECT_ID}/plan-mode-service:latest
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        env:
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: anthropic-api-key
+              key: api-key
+        - name: PORT
+          value: "8000"
+        - name: PLAN_MODE_TEMPLATE_PATH
+          value: "/config/PLAN_MODE_TEMPLATE.md"
+        volumeMounts:
+        - name: plan-mode-config
+          mountPath: /config
+          readOnly: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: plan-mode-config
+        configMap:
+          name: plan-mode-template
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plan-mode-service
+  namespace: default
+  labels:
+    app: plan-mode-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: plan-mode-service
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: plan-mode-service-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: plan-mode-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

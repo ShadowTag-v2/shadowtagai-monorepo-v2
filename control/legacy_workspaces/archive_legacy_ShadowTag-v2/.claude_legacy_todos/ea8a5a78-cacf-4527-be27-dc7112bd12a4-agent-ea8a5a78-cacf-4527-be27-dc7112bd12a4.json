@@ -1,0 +1,32 @@
+[
+  {
+    "content": "Phase 1: Commit swarm + governance stack to integration-main",
+    "status": "completed",
+    "activeForm": "Committing swarm work"
+  },
+  {
+    "content": "Phase 2A: Implement RLM Judge #6 for 128K+ contexts",
+    "status": "completed",
+    "activeForm": "Implementing RLM Judge"
+  },
+  {
+    "content": "Phase 2B: Implement DeepAgent memory architecture",
+    "status": "completed",
+    "activeForm": "Implementing DeepAgent memory"
+  },
+  {
+    "content": "Phase 3: Deploy WALT MCP server to browser-tools namespace",
+    "status": "in_progress",
+    "activeForm": "Deploying WALT MCP server"
+  },
+  {
+    "content": "Phase 4: Build FastGPT-inspired RAG UI",
+    "status": "pending",
+    "activeForm": "Building RAG UI"
+  },
+  {
+    "content": "Phase 5: Implement dynamic tool retrieval",
+    "status": "pending",
+    "activeForm": "Implementing tool retrieval"
+  }
+]

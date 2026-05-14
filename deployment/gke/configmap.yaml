@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: plan-mode-template
+  namespace: default
+data:
+  PLAN_MODE_TEMPLATE.md: |
+    # 🧩 PLAN MODE STYLE GUIDE v1.0
+
+    ## Core Rules
+    - Sacrifice grammar for concision
+    - One action per line
+    - Use imperative verbs only
+    - Keep lines ≤60 chars
+    - End with 'Unresolved Qs:' section
+
+    ## Structure Template
+
+    ```
+    <module or package>:
+    - <action> → <target>
+    - <action> → <target>
+
+    Impl:
+    - <short description of method>
+    - <compat or interim strategy>
+    - <future phase trigger or boundary>
+
+    Unresolved Qs:
+    - <question 1>?
+    - <question 2>?
+
+    Options:
+    1. Proceed + auto-accept edits
+    2. Proceed + manual approve
+    3. Hold + keep planning
+    ```
+
+    ## Symbols
+    - → = transform / migrate
+    - = = set / define
+    - + = add / include
+    - - = remove / deprecate
+    - ? = question / decision needed
+    - ⚠️ = risk / dependency
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: plan-mode-sa
+  namespace: default
+  annotations:
+    iam.gke.io/gcp-service-account: plan-mode-service@${PROJECT_ID}.iam.gserviceaccount.com

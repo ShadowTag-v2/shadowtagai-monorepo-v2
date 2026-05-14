@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "agent:use:grok-fast",
+      "type": "shell",
+      "command": "echo 'Switching inference context to Groq/Llama-3-70B for fast reasoning...'",
+      "detail": "Hot-swaps the active model context for speed."
+    },
+    {
+      "label": "agent:bulk-sweep",
+      "type": "shell",
+      "command": "node scripts/diffusion_sweep.js",
+      "detail": "Invokes CoDA diffusion model for bidirectional code refactoring across the repo."
+    },
+    {
+      "label": "agent:validate",
+      "type": "shell",
+      "command": "npm test && npm run lint",
+      "detail": "Runs standard validation suite and posts summary to Jules API."
+    },
+    {
+      "label": "agent:train:task",
+      "type": "shell",
+      "command": "python3 scripts/moe_cl_train.py --adapter task_specific --steps 500",
+      "detail": "Nightly finetuning of the active MoE-CL LoRA adapter."
+    },
+    {
+      "label": "slurm_github:handshake",
+      "type": "shell",
+      "command": "./scripts/github_sync.sh",
+      "detail": "Verifies GITHUB_TOKEN, repo visibility, and sync status."
+    }
+  ]
+}

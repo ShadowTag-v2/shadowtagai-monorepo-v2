@@ -1,0 +1,23 @@
+Contractual.2 Idea #1
+
+Value my following idea for an app, “Contractual.”
+Designed to memorialize any and all contract negotiations into one huge document, legally signed by each party to be bound.
+
+I want an app that I can lay on the countertop, or drop in an email, to form a complete record of the communications.  With digital signature blocks.  Following butcher block stating for the correct jurisdiction, “The undersigned agree the above is the entirety of this agreement.”  The above being all uploaded and agreed upon in advance communications over the biz deal.  Thus, regardless of whether a contract was, in fact, created - leave that up to the courts to decide.  This simply memorializes the parties actual discussions, importantly, signed by each.  As a basis from which the court, specifically small claims type courts, can deduce the existence or lack thereof.  As well as remedies for any subsequent breaches.  I do not believe this to be practice of law without a license.  I do believe it to enlist small claims courts to serve the purpose quashed by tort reform over the past 20 years.  Because you can never find a lawyer to sue for damages below $20k.  At least not in Texas.  Therefore, you seriously have no legal remedy when, a shop for instance, botches your manual transmission install.  You sue them, they hire a lawyer, your record of the discussions is incomplete and unsigned by them.  You cannot sue them under a theory of breach of contract, because you never got one.  Contractual has taken care of this in advance.  Will work wonders for the bait and switch fav of such shops.  Can later include a “lawyer meter” with Ai I have taught to practice law.  A “lawyer meter” which analyzes the included language for legal issues.  The user then receives an alert.  As well as, if they opt in, a list of attorneys, such as aveo, who would handle such cases.  Opinion?
+Rule against perpetuities (RAP): No writing in consideration of marriage, for more than a year in duration, … and goods worth more than $500,  is good unless signed by the party to be charged.  Eg, whom you are suing.
+So you try to sue your vendor or my auto shop under a theory of tort liability, as I have in the past.  You have no way to get your evidence admitted at trial.  You witnesses may be unavailable.  You cant take the stand yourself in pro per.  Without getting massacred.  Consequently, the only way a poor is going to win in such endeavor, imo?  Is if they have everything said or sent entered in above the other party’s signature.
+
+Contactual will work equally for each state and jurisdiction in which the user is located and/or selects. Geolocated with phone gps.
+
+Contractual will give the subscriber and the other parties to each edit their input as appears on the raw transcript to remove all errors in perception, translation, or change of mind.
+In addition, its Ai will organize all competing terms into opposing lists.
+Then do any number of things with the subject matter.
+From suggesting recommended solutions,
+to providing deep research on the issue to better inform the parties.
+To tracking the issue in real time and suggesting updates after the contact is signed.
+The paying subscriber will get one included other party to any contract.
+They can pay to add in others.
+
+Include the additional fee option to notarize the parties signatures entirely online - a la fedex notary.
+
+Include an option to have Ai analyze the contract for legal issues and then provide geolocated lists of lawyers who have registered with the app and held themselves out as experts in the particular legal subject field. Like AVO.

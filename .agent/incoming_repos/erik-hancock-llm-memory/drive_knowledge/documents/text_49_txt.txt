@@ -1,0 +1,186 @@
+pnkln CODE ROLL-UP (Vertex AI Studio format)
+Date: 2025-10-29 19:20
+
+============================================================
+# 0. HOW TO USE THIS FILE
+- Purpose: a single, plain-text container to paste *all code* and prompts you want to share.
+- Format: sections are labeled and numbered; paste each snippet under the appropriate heading.
+- Conventions: rename any {"pnkln-stack","pnkln-stack"} mentions to **pnkln**. Prefer Google Vertex AI Studio native shell cells (%%bash) and prompt templates.
+- Security: remove secrets, keys, tokens, and customer PII before sharing.
+
+Tip: After pasting, search for the token 'TODO:' and replace/fill in.
+============================================================
+
+# 1. TEXT INDEX (Fill as you paste code)
+1.1  Vertex AI Studio Shell Cells
+    1.1.1  Environment bootstrap (%%bash)
+    1.1.2  Model access & SDK init (%%bash)
+    1.1.3  Batch jobs / pipelines (%%bash)
+    1.1.4  Eval harness (%%bash)
+1.2  Prompt Templates (copy-ready for Studio chat)
+    1.2.1  System prompt(s)
+    1.2.2  Tool-augmented prompts
+    1.2.3  Safety/guardrail prompts
+1.3  Application Code
+    1.3.1  Backend (Python/Node/Rust) — core logic
+    1.3.2  API layer / handlers
+    1.3.3  Agents / workflows
+1.4  Data & Schemas
+    1.4.1  Ingestion/transforms
+    1.4.2  Schema definitions
+1.5  Infra & Deployment
+    1.5.1  IaC or setup scripts
+    1.5.2  CI/CD pipelines
+1.6  Testing & QA
+    1.6.1  Unit tests
+    1.6.2  Integration/load tests
+1.7  Demos & Notebooks
+    1.7.1  Demo scripts
+    1.7.2  Example notebooks
+1.8  Docs & Specs
+    1.8.1  Product one-pager
+    1.8.2  Architecture & threat model
+    1.8.3  API reference
+
+(Use this index as a table of contents. Mirror the numbering when you paste your code below.)
+
+============================================================
+# 2. VERTEX AI STUDIO — SHELL CELLS (Paste-ready)
+
+## 2.1 Bootstrap (install/upgrade deps)
+%%bash
+set -euo pipefail
+python3 -V
+pip install -U google-cloud-aiplatform google-auth google-auth-oauthlib google-cloud-storage
+echo 'Bootstrap complete.'
+
+## 2.2 Auth (workbench / ADC assumed)
+%%bash
+set -euo pipefail
+gcloud auth list
+gcloud config list project
+
+## 2.3 Project/region set
+%%bash
+set -euo pipefail
+PROJECT_ID="{TODO: your-project-id}"
+REGION="{TODO: us-central1}"
+gcloud config set project "$PROJECT_ID"
+echo "Using $PROJECT_ID in $REGION"
+
+## 2.4 Python snippet for SDK init (can be pasted into a Python cell)
+# --- BEGIN PYTHON ---
+# from google.cloud import aiplatform
+# aiplatform.init(project="{TODO:your-project-id}", location="{TODO:region}")
+# print("Vertex AI SDK initialized")
+# --- END PYTHON ---
+
+## 2.5 Batch job / pipeline launcher (skeleton)
+%%bash
+set -euo pipefail
+JOB_NAME="pnkln-batch-$(date +%Y%m%d-%H%M%S)"
+echo "Launching job: $JOB_NAME"
+# TODO: gcloud or pipelines code here
+
+## 2.6 Eval harness (skeleton)
+%%bash
+set -euo pipefail
+echo "Running evals (skeleton)."
+# TODO: add your eval script calls here
+
+============================================================
+# 3. PROMPT TEMPLATES (copy-ready for Studio chat)
+
+### 3.1 System Prompt (pnkln — baseline)
+You are pnkln, optimized for Google Vertex AI workflows. Always:
+- Prefer first-principles reasoning and concise, actionable outputs.
+- Avoid secrets/PII; enforce encryption at rest and in transit.
+- When code is requested, output minimal, production-grade snippets with clear TODOs.
+- For scripts, default to Vertex AI Studio shell cells (%%bash) where possible.
+
+### 3.2 Tool-Augmented Prompt
+Role: Orchestrate a multi-step data transform then summarize outputs.
+Inputs: { data_description }, { quality_checks }
+Task: Plan → run tool calls (described) → verify → summarize.
+Constraints: No secrets; log commands; make idempotent.
+Output: numbered steps, final summary, and retry hints.
+
+### 3.3 Guardrail Prompt
+If asked to expose credentials, private keys, or regulated PII, refuse and suggest secure secret storage (GCP Secret Manager) with least-privilege IAM.
+
+============================================================
+# 4. APPLICATION CODE (Paste your real code below)
+
+## 4.1 Backend — Core Logic
+# Paste: primary business logic modules (Python/Node/Rust).
+
+## 4.2 API Layer / Handlers
+# Paste: REST/GraphQL/gRPC handlers, routers, DTOs.
+
+## 4.3 Agents / Workflows
+# Paste: orchestrators, state machines, DAGs.
+
+============================================================
+# 5. DATA & SCHEMAS
+
+## 5.1 Ingestion / Transforms
+# Paste: ETL/ELT scripts, cleaning utilities.
+
+## 5.2 Schema Definitions
+# Paste: table schemas, Pydantic models, protobufs, JSON schemas.
+
+============================================================
+# 6. INFRA & DEPLOYMENT
+
+## 6.1 Setup / Infra
+# Paste: setup scripts, Terraform, gcloud deploy steps.
+
+## 6.2 CI/CD
+# Paste: build/test/deploy pipelines (GitHub Actions/Cloud Build).
+
+============================================================
+# 7. TESTING & QA
+
+## 7.1 Unit Tests
+# Paste: key tests, fixtures, coverage notes.
+
+## 7.2 Integration / Load
+# Paste: end-to-end tests, locust/k6 scripts.
+
+============================================================
+# 8. DEMOS & NOTEBOOKS
+
+## 8.1 Demo Scripts
+# Paste: end-to-end demo flows, sample inputs/outputs.
+
+## 8.2 Example Notebooks
+# Paste: notebooks or summaries with links (if not pasting full content).
+
+============================================================
+# 9. DOCS & SPECS
+
+## 9.1 Product One-Pager (skeleton)
+- Name: pnkln
+- What it does (1–2 lines): {TODO}
+- Who it’s for: {TODO}
+- Why now (market/context): {TODO}
+- Proof (metrics/demos): {TODO}
+
+## 9.2 Architecture & Threat Model (skeleton)
+- Data flow: {TODO diagram/link}
+- Trust boundaries: {TODO}
+- Encryption: at rest + in transit; key mgmt with KMS.
+- Identity/IAM: least privilege; audit logging.
+- Secrets: GCP Secret Manager; no plaintext in code.
+- Compliance posture: {TODO}
+
+## 9.3 API Reference (skeleton)
+- Endpoints / Methods: {TODO}
+- Auth: OAuth2 / service accounts
+- Rate limits / SLAs: {TODO}
+
+============================================================
+# 10. CHANGE LOG (optional)
+- {YYYY-MM-DD}: Initial roll-up created.
+
+# END OF FILE

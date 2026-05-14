@@ -1,0 +1,12 @@
+{
+  "name": "infrastructure-pulumi",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "stacks/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  }
+}

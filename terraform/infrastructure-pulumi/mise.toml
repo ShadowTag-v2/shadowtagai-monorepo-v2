@@ -1,0 +1,3 @@
+[tools]
+pulumi = "3.150.0"
+node = "22"

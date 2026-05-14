@@ -1,0 +1,12 @@
+canonical-root: ShadowTag-v2/Monorepo-Uphillsnowball
+workspace: pnkln
+product: apps/counselconduit
+lab: labs/uphillsnowball
+mcp-truth: antigravity-mcp-config.json
+judge6-gate: active
+
+folded-in-components:
+  - apps/aiyou_stack/aiyou-fastapi-services
+  - apps/aiyou_stack/cosmic-crab-payload
+  - apps/aiyou_stack/Pipeline
+  - apps/aiyou_stack/nascent-apollo

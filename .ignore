@@ -1,0 +1,56 @@
+# Keep AI/search/index tools inside the live workspace only
+
+# OS / editor noise
+.DS_Store
+*.swp
+*.swo
+
+# Package / build artifacts
+node_modules/
+dist/
+build/
+out/
+.next/
+coverage/
+.cache/
+bazel-*/
+vendor/
+third_party/
+
+# Python / notebook artifacts
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Denied zones
+archive/
+tools/legacy/
+docs/legacy_shadowtag_v2/
+apps/pnkln-stack_ecosystem/raw_ingest/
+
+# Backups / recovered / legacy mirrors
+**/_PRE_OMEGA_BACKUP_*/
+**/ShadowTag-Omega/
+**/arsenal_recovered/
+**/repos/*-legacy/
+
+# Local indexes / vector stores / temp
+.chroma_db/
+.beads/
+.tmp.driveupload/
+.lancedb/
+data/lancedb/
+
+# Added by pnkln pack cleanup
+archive/
+tools/legacy/
+docs/legacy_shadowtag_v2/
+apps/pnkln-stack_ecosystem/raw_ingest/
+_PRE_OMEGA_BACKUP_*/
+ShadowTag-Omega/
+arsenal_recovered/
+repos/*-legacy/

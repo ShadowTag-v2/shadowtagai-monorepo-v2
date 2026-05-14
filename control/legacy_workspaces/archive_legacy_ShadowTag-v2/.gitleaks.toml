@@ -1,0 +1,20 @@
+title = "ShadowTag gitleaks config"
+
+[allowlist]
+paths = [
+    '''node_modules/''',
+    '''\.venv/''',
+    '''\.beads/''',
+    '''repos/''',
+    '''vendor/''',
+    '''external_memory/''',
+    '''apps/external_sdks/''',
+    '''claude_cli/''',
+    '''docs/''',
+    '''knowledge/''',
+    '''libs/''',
+    '''\.cursor/''',
+    '''.*\.json$''',
+    '''.*\.jsonl$''',
+    '''.*\.md$'''
+]

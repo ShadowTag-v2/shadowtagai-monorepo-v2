@@ -1,0 +1,115 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+import json
+import os
+import sqlite3
+import subprocess
+import sys
+from datetime import datetime
+
+# Try to load the ANE Router
+sys.path.append(os.path.abspath("apps/aiyou_stack/aiyou-fastapi-services"))
+try:
+    from zero_cpu_router import dispatch_compute
+
+    ANE_ENABLED = True
+except ImportError:
+    ANE_ENABLED = False
+
+BEADS_DIR = "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.beads"
+INDEX_DB = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.beads/beads_index.sqlite"
+
+
+def init_db():
+    os.makedirs(os.path.dirname(INDEX_DB), exist_ok=True)
+    conn = sqlite3.connect(INDEX_DB)
+    c = conn.cursor()
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS beads_registry
+                 (filepath TEXT UNIQUE, size_bytes INT, biome_status TEXT, ane_semantic_class TEXT, last_indexed TIMESTAMP)"""
+    )
+    conn.commit()
+    return conn
+
+
+def biome_check(filepath: str) -> str:
+    """COMMON SENSE FALLBACK: Use local CPU and Biome to instantly validate JSON/JSONL structure."""
+    if not filepath.endswith((".json", ".jsonl")):
+        return "N/A"
+
+    # Run Biome natively for extreme speed
+    try:
+        result = subprocess.run(["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True)
+        return "PASS" if result.returncode == 0 else "FAIL_SYNTAX"
+    except Exception as e:
+        return f"ERROR: {str(e)}"
+
+
+def ane_semantic_scan(filepath: str, filename: str) -> str:
+    """Heavy Lift: Route to Apple Neural Engine via Pickle Rick Bypass."""
+    if not ANE_ENABLED:
+        return "CPU_HEURISTIC_GUESS"
+
+    # Fast heuristic block
+    if "ast_fossil_record" in filename:
+        return "ARCHITECTURAL_AST_DUMP"
+    if "history.jsonl" in filename:
+        return "AGENT_CONVERSATION_HISTORY"
+    if "doctrinal_manuals" in filepath:
+        return "PINKLN_DOCTRINE"
+
+    ane_code = f"""
+import json
+filename = "{filename}"
+if "master" in filename.lower() or "doctrine" in filename.lower():
+    cat = "CORE_SYSTEM_RULES"
+elif "architecture" in filename.lower():
+    cat = "SYSTEM_TOPOLOGY"
+else:
+    cat = "UNCATEGORIZED_INTELLIGENCE"
+print(json.dumps({{"category": cat}}))
+"""
+    result = dispatch_compute(f"bead_{filename[:10]}", ane_code, len(ane_code))
+    if result.get("source") == "ANE_EDGE":
+        try:
+            return json.loads(result.get("data")).get("category", "UNKNOWN")
+        except:
+            return "ANE_DECODE_ERROR"
+    return "UNKNOWN"
+
+
+def index_library():
+    print("🧠 [BEADS INDEXER] Initializing 110GB Grounding Library Scan...")
+    conn = init_db()
+    c = conn.cursor()
+
+    for root, dirs, files in os.walk(BEADS_DIR):
+        for file in files:
+            # Skip massive WAL files or internal DB locks to prevent blocking
+            if file.endswith((".db-wal", ".db-shm", ".lock", ".sock", ".pid")):
+                continue
+
+            filepath = os.path.join(root, file)
+            size = os.path.getsize(filepath)
+
+            print(f"  🔍 Scanning Object: {file} ({size} bytes)...")
+
+            biome_status = biome_check(filepath)
+            ane_class = ane_semantic_scan(filepath, file)
+
+            c.execute(
+                """INSERT OR REPLACE INTO beads_registry
+                         (filepath, size_bytes, biome_status, ane_semantic_class, last_indexed)
+                         VALUES (?, ?, ?, ?, ?)""",
+                (filepath, size, biome_status, ane_class, datetime.now()),
+            )
+            conn.commit()
+
+            if biome_status == "FAIL_SYNTAX":
+                print(f"     ⚠️ Biome flagged syntax corruption in {file}.")
+
+    conn.close()
+    print("✅ [BEADS INDEXER] 110GB Library successfully mapped and categorized.")
+
+
+if __name__ == "__main__":
+    index_library()

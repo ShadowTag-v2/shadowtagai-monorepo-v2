@@ -1,0 +1,44 @@
+```mermaid
+flowchart TD
+  subgraph Core[PNKLN SYSTEMS — Core Platform]
+    PNKLN[PNKLN Systems (Vertex AI Stack)]
+    ShadowTag[ShadowTag / Provenance]
+    Orchestrator[Core OS / Orchestrator]
+    Reasoner[Structured Reasoning (Prompts/Runners)]
+    Security[Security & Compliance (BT hooks)]
+  end
+  subgraph Legal[PNKLN — Legal Stack]
+    LawCal[#p-dead • lawcal (Deadlines)]
+    Neg[#p-contract/#p-neg (Negotiation Matrix)]
+  end
+  subgraph Legacy[Legacy / Archived Lines]
+    ClarityBoard[ClarityBoard]
+    ClarityAI[ClarityAI]
+    Verdict[Verdict Systems]
+    AiYou[AiYou / YouAi]
+    CNCR[CNCR Registry]
+    Schiznit[Schiznit]
+    ECB[Extraterrestrial Base]
+    Ozonics[Ozonics / Covered Feedlots]
+  end
+  subgraph Gov[Governance]
+    Foundations[Foundations / Asset Struct]
+    BlackTrack[BlackTrack (LEO/GOV/ITAR)]
+  end
+  ClarityBoard --> LawCal
+  ClarityAI --> Reasoner
+  Verdict --> Neg
+  AiYou --> Orchestrator
+  CNCR --> Foundations
+  Schiznit --> Reasoner
+  ECB --> Orchestrator
+  Ozonics --> Security
+  LawCal --> PNKLN
+  Neg --> PNKLN
+  Reasoner --> PNKLN
+  Orchestrator --> PNKLN
+  ShadowTag --> PNKLN
+  Security --> PNKLN
+  BlackTrack --> Security
+  Foundations --> PNKLN
+```

@@ -1,0 +1,336 @@
+<<<<<<< HEAD
+# Ephemeral / local-only
+.watchman-cookie-*
+.logs/
+update_mac.log
+.DS_Store
+
+# Python
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+.installed.cfg
+MANIFEST
+dist/
+build/
+develop-eggs/
+downloads/
+
+# Node.js
+node_modules/
+.next/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# ML Models (large files)
+models/*.pkl
+models/*.h5
+models/*.pt
+models/*.pth
+!models/.gitkeep
+
+# Data files (large files)
+data/*.csv
+data/*.json
+data/*.parquet
+!data/.gitkeep
+
+# GCP credentials
+*-credentials.json
+service-account-*.json
+
+# Kubernetes secrets
+k8s/*-secrets.yaml
+k8s/secrets/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+||||||| empty tree
+=======
+# =============================================================================
+# Monorepo-Uphillsnowball .gitignore
+# Cor.GPT canonical monorepo guardrail — 2026-03-21
+# =============================================================================
+
+# =============================================================================
+# OS / editor noise
+# =============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+*.swo
+*~
+Thumbs.db
+
+# =============================================================================
+# LARGE EXCLUDED DIRECTORIES (the 97 GB + 18 GB bottlenecks)
+# =============================================================================
+
+# reference/ — 97 GB of external repo clones — NEVER push
+reference/
+
+# memory/antigravity-knowledge/ — 5 GB of derived .txt knowledge files — local only
+memory/antigravity-knowledge/
+
+# cosmic-crab external_sdks — 405 MB vendor bloat — not source
+apps/pnkln-stack_stack/cosmic-crab-payload/apps/external_sdks/
+
+# external library clones in pnkln-stack_stack — not primary project code
+apps/pnkln-stack_stack/pydantic-ai/
+apps/pnkln-stack_stack/llama-models/
+apps/pnkln-stack_stack/pytorch-image-models/
+apps/pnkln-stack_stack/kubernetes/
+apps/pnkln-stack_stack/tensorflow/
+apps/pnkln-stack_stack/tinygrad/
+apps/pnkln-stack_stack/torchtitan/
+apps/pnkln-stack_stack/torchtune/
+apps/pnkln-stack_stack/kornia/
+apps/pnkln-stack_stack/safetensors/
+apps/pnkln-stack_stack/vllm/
+apps/pnkln-stack_stack/ray/
+apps/pnkln-stack_stack/feast/
+
+# apps/ bloat — strip build artifacts, deps, binaries; KEEP source code
+apps/**/node_modules/
+apps/**/.npm/
+apps/**/.pnpm-store/
+apps/**/.venv/
+apps/**/venv/
+apps/**/__pycache__/
+apps/**/.pytest_cache/
+apps/**/.mypy_cache/
+apps/**/.ruff_cache/
+apps/**/.ipynb_checkpoints/
+apps/**/dist/
+apps/**/build/
+apps/**/out/
+apps/**/.next/
+apps/**/.nuxt/
+apps/**/.cache/
+apps/**/*.pyc
+apps/**/*.egg-info/
+apps/**/*.so
+apps/**/*.dylib
+apps/**/*.dll
+apps/**/*.exe
+
+# =============================================================================
+# Python caches (global)
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+.eggs/
+*.egg
+.coverage
+coverage.xml
+htmlcov/
+
+# =============================================================================
+# Node / JS / TS (global)
+# =============================================================================
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/cache
+.yarn/unplugged
+.pnp.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =============================================================================
+# Build / generated output (global)
+# =============================================================================
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+coverage/
+bazel-bin/
+bazel-out/
+bazel-testlogs/
+bazel-*/
+
+# =============================================================================
+# Virtual environments (global)
+# =============================================================================
+.venv/
+venv/
+ENV/
+env/
+
+# =============================================================================
+# Secrets and credentials — NEVER commit
+# =============================================================================
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets.json
+secret*.json
+*client_secret*.json
+*service_account*.json
+credentials.json
+token.json
+gcloud_auth*.json
+
+# =============================================================================
+# Logs
+# =============================================================================
+*.log
+logs/
+npm-debug.log*
+
+# =============================================================================
+# Local vector / index artifacts
+# =============================================================================
+.chroma_db/
+.beads/
+.lancedb/
+.tmp.driveupload/
+*.index
+*.faiss
+
+# =============================================================================
+# Denied zones (Cor.GPT monorepo policy)
+# =============================================================================
+# archive/ is allowed (committed as archive lane) — do NOT exclude globally
+# But exclude internal backup/legacy cruft within it:
+**/_PRE_OMEGA_BACKUP_*/
+**/ShadowTag-Omega/
+**/arsenal_recovered/
+**/repos/*-legacy/
+apps/pnkln-stack_ecosystem/raw_ingest/
+docs/legacy_shadowtag_v2/
+tools/legacy/
+
+# =============================================================================
+# Bazel / build system
+# =============================================================================
+.bazel_cache/
+user.bazelrc
+
+# =============================================================================
+# IDE / editor
+# =============================================================================
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+*.sublime-workspace
+
+# =============================================================================
+# Terraform / infra
+# =============================================================================
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+!*.tfvars.example
+
+# =============================================================================
+# Docker
+# =============================================================================
+*.tar
+*.tar.gz
+
+# =============================================================================
+# Go
+# =============================================================================
+/vendor/
+*.test
+
+# =============================================================================
+# Compiled binaries
+# =============================================================================
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Large app dirs (local only — too large for git)
+apps/headfade/pwa/
+apps/pnkln_stack/
+libs/
+data/beads_index.sqlite
+data/beads_index.sqlite-journal
+data/web_ingest/
+data/drive_ingest/
+data/lancedb/
+external_sdks/
+keys/
+docs/Strategic_Intelligence/sovereign_memory_core.json
+.gitnexus
+>>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419

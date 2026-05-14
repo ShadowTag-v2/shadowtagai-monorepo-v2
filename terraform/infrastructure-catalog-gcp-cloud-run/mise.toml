@@ -1,0 +1,4 @@
+[tools]
+opentofu = "1.9.0"
+terragrunt = "0.67.0"
+tflint = "latest"

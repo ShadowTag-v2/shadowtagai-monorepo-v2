@@ -1,0 +1,302 @@
+[
+  {
+    "id": "a01b59d9-12c8-47bc-805a-e595721288e3",
+    "status": "LOCKED",
+    "price": 151.57703526647742,
+    "risk_score": 26
+  },
+  {
+    "id": "2240ebde-557c-42ab-bbad-173030951eaf",
+    "status": "AVAILABLE",
+    "price": 82.31235567348295,
+    "risk_score": 14
+  },
+  {
+    "id": "0a948551-7ffe-4f2a-9fd4-49f497293bfa",
+    "status": "LOCKED",
+    "price": 123.73790417372162,
+    "risk_score": 16
+  },
+  {
+    "id": "1c6f85b8-32c4-44c5-93e3-a3aed9c1f200",
+    "status": "LOCKED",
+    "price": 133.3261551844712,
+    "risk_score": 20
+  },
+  {
+    "id": "6f818c7e-aee5-45e3-bc76-66b1ba90310b",
+    "status": "AVAILABLE",
+    "price": 188.04771024579523,
+    "risk_score": 30
+  },
+  {
+    "id": "33e3917b-eb8a-471a-9bea-dbe95762f573",
+    "status": "LOCKED",
+    "price": 149.25683414520893,
+    "risk_score": 7
+  },
+  {
+    "id": "42938439-97dd-4bdd-a9a9-cb41c47be2cc",
+    "status": "AVAILABLE",
+    "price": 145.9436496206131,
+    "risk_score": 10
+  },
+  {
+    "id": "8d5836a3-a203-40b9-bc75-514b690a45db",
+    "status": "LOCKED",
+    "price": 195.0940843445192,
+    "risk_score": 3
+  },
+  {
+    "id": "d470bec7-4dff-4d80-a703-6ee7f8e930f3",
+    "status": "AVAILABLE",
+    "price": 196.99099444944906,
+    "risk_score": 21
+  },
+  {
+    "id": "249b2d3c-cf80-40df-8ec9-3bab9a984098",
+    "status": "BOOKED",
+    "price": 210.34008428657117,
+    "risk_score": 10
+  },
+  {
+    "id": "50bf53c1-a44a-43e6-a2e6-a12b35d32a44",
+    "status": "BOOKED",
+    "price": 83.73462658024995,
+    "risk_score": 24
+  },
+  {
+    "id": "56d08431-02cb-4472-b573-a90d151da137",
+    "status": "BOOKED",
+    "price": 167.88033820402916,
+    "risk_score": 23
+  },
+  {
+    "id": "26ca2dfe-2a1e-4b2a-8541-04bb5ebd9ddd",
+    "status": "AVAILABLE",
+    "price": 112.36880734850001,
+    "risk_score": 14
+  },
+  {
+    "id": "8fcfd260-3afe-48cb-8c6f-ca2f6122f1c3",
+    "status": "BOOKED",
+    "price": 162.3112425789207,
+    "risk_score": 29
+  },
+  {
+    "id": "bef9dbe9-22e5-47ed-be43-aa23a76d99a4",
+    "status": "AVAILABLE",
+    "price": 121.19831715894169,
+    "risk_score": 20
+  },
+  {
+    "id": "705eed28-193f-47c9-a14f-6e09c880c8ba",
+    "status": "BOOKED",
+    "price": 115.74462540177026,
+    "risk_score": 30
+  },
+  {
+    "id": "293333d1-d1d8-4fb0-9a11-db8a917075e0",
+    "status": "AVAILABLE",
+    "price": 102.88457093623376,
+    "risk_score": 9
+  },
+  {
+    "id": "a2a4d08a-53aa-4ee2-868f-bd2f581a5724",
+    "status": "LOCKED",
+    "price": 159.4322324275389,
+    "risk_score": 27
+  },
+  {
+    "id": "5088dae4-dc29-4870-a882-b42613d7b510",
+    "status": "AVAILABLE",
+    "price": 59.826187579858136,
+    "risk_score": 12
+  },
+  {
+    "id": "dad1281a-773f-4afd-b625-063c70a459df",
+    "status": "AVAILABLE",
+    "price": 249.27692342021308,
+    "risk_score": 15
+  },
+  {
+    "id": "58d46bab-296b-483f-8b11-c9ccca9cbe20",
+    "status": "AVAILABLE",
+    "price": 154.98187393996437,
+    "risk_score": 10
+  },
+  {
+    "id": "24d181dc-e99b-46b1-b01c-fa33499d732c",
+    "status": "AVAILABLE",
+    "price": 131.3622862974192,
+    "risk_score": 17
+  },
+  {
+    "id": "01bedafa-2bac-45c9-9417-3312f2e19a31",
+    "status": "BOOKED",
+    "price": 205.25685135517736,
+    "risk_score": 3
+  },
+  {
+    "id": "5d0d26e2-f9c1-4dc8-aa68-b6c1af956704",
+    "status": "LOCKED",
+    "price": 59.97440081037742,
+    "risk_score": 26
+  },
+  {
+    "id": "1afd491a-d456-4057-82f6-8c96dab0df61",
+    "status": "BOOKED",
+    "price": 202.2357455933933,
+    "risk_score": 9
+  },
+  {
+    "id": "345fbda3-49d7-4b0b-a54c-c58e15566186",
+    "status": "AVAILABLE",
+    "price": 116.17628034881503,
+    "risk_score": 26
+  },
+  {
+    "id": "aa4dfc21-8c1e-49e7-a9e8-57d9d25a197a",
+    "status": "AVAILABLE",
+    "price": 141.40500985850747,
+    "risk_score": 28
+  },
+  {
+    "id": "88af432e-499c-43b9-9127-a23a58e8e203",
+    "status": "LOCKED",
+    "price": 120.2363959381827,
+    "risk_score": 18
+  },
+  {
+    "id": "84c36437-5eeb-4718-abfa-892209e888fc",
+    "status": "LOCKED",
+    "price": 120.88285335317165,
+    "risk_score": 11
+  },
+  {
+    "id": "9e6a4857-088c-4078-9616-a7fa815b1f37",
+    "status": "AVAILABLE",
+    "price": 183.31960169079986,
+    "risk_score": 28
+  },
+  {
+    "id": "ca3c2850-2c0d-46e8-a6c1-59a685ea1078",
+    "status": "BOOKED",
+    "price": 243.42317557907103,
+    "risk_score": 21
+  },
+  {
+    "id": "f3870dfe-de79-4ed6-b399-e9594ad14097",
+    "status": "LOCKED",
+    "price": 190.46977089916555,
+    "risk_score": 5
+  },
+  {
+    "id": "5ca22ccc-c5c2-4e23-bcdc-84dd67737ba2",
+    "status": "BOOKED",
+    "price": 50.34230056000939,
+    "risk_score": 15
+  },
+  {
+    "id": "a75df07e-fb9a-4f69-a01b-bcae01c71b00",
+    "status": "BOOKED",
+    "price": 182.67990825195363,
+    "risk_score": 16
+  },
+  {
+    "id": "cd3dbf52-af1d-4581-8274-ed58b3a49ee2",
+    "status": "LOCKED",
+    "price": 104.48150815844073,
+    "risk_score": 27
+  },
+  {
+    "id": "f756465e-600b-424f-84ad-71d308a77976",
+    "status": "LOCKED",
+    "price": 131.81278264514668,
+    "risk_score": 8
+  },
+  {
+    "id": "bf2ee75e-bc4c-4df9-bda4-0e35387ac250",
+    "status": "BOOKED",
+    "price": 240.70725687151995,
+    "risk_score": 27
+  },
+  {
+    "id": "76cef2de-5879-4fd7-9457-adb6f682ff98",
+    "status": "BOOKED",
+    "price": 180.72679136507318,
+    "risk_score": 1
+  },
+  {
+    "id": "0fe3d6a1-f35f-4b53-84ae-ec073fdba7c2",
+    "status": "LOCKED",
+    "price": 135.88769857612624,
+    "risk_score": 12
+  },
+  {
+    "id": "1ae9f788-1c05-4138-936c-c908d10dff82",
+    "status": "AVAILABLE",
+    "price": 178.20097998177516,
+    "risk_score": 18
+  },
+  {
+    "id": "0a696f52-43b0-49db-97d7-e54ec9b388a5",
+    "status": "LOCKED",
+    "price": 240.85944956220558,
+    "risk_score": 29
+  },
+  {
+    "id": "328db80b-9715-4358-a2fe-19db045c1dbb",
+    "status": "AVAILABLE",
+    "price": 181.92211998629054,
+    "risk_score": 24
+  },
+  {
+    "id": "649d6eaa-c969-41ec-b286-d3bdd299802b",
+    "status": "AVAILABLE",
+    "price": 193.9267881252688,
+    "risk_score": 0
+  },
+  {
+    "id": "c9688d53-21db-4c3f-b17c-f98a98e152c6",
+    "status": "BOOKED",
+    "price": 107.47400093983418,
+    "risk_score": 8
+  },
+  {
+    "id": "53ea25ed-0887-469f-8081-4dd403ff7b6f",
+    "status": "LOCKED",
+    "price": 52.167626018244185,
+    "risk_score": 7
+  },
+  {
+    "id": "6157dd6c-1322-4b2d-b8ff-73b97fc55c0f",
+    "status": "BOOKED",
+    "price": 151.29550062327382,
+    "risk_score": 29
+  },
+  {
+    "id": "96d0a88c-c51e-4437-a5ac-a71c43c5ad62",
+    "status": "LOCKED",
+    "price": 210.35977107484308,
+    "risk_score": 14
+  },
+  {
+    "id": "10a874c2-f8b3-4e69-9f7d-a3552a9e72bc",
+    "status": "LOCKED",
+    "price": 193.48194688866866,
+    "risk_score": 6
+  },
+  {
+    "id": "e419b06d-8a89-40b3-ac18-5386d017c2bd",
+    "status": "AVAILABLE",
+    "price": 53.94729196128401,
+    "risk_score": 7
+  },
+  {
+    "id": "9c4cc12a-eddc-49e8-94ab-92ce886b8537",
+    "status": "AVAILABLE",
+    "price": 187.01892308756345,
+    "risk_score": 27
+  }
+]

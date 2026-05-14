@@ -1,0 +1,41 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-helm-generate-tenant
+spec:
+  rules:
+  - name: generate-flux-sa
+    match:
+      resources:
+        kinds: [Namespace]
+        selector:
+          matchLabels:
+            capsule.clastix.io/tenant: "?*"
+    generate:
+      apiVersion: v1
+      kind: ServiceAccount
+      name: "{{request.object.metadata.labels['capsule.clastix.io/tenant']}}-flux-sa"
+      namespace: "{{request.object.metadata.name}}"
+      synchronize: true
+  - name: generate-flux-binding
+    match:
+      resources:
+        kinds: [Namespace]
+        selector:
+          matchLabels:
+            capsule.clastix.io/tenant: "?*"
+    generate:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      name: flux-tenant-binding
+      namespace: "{{request.object.metadata.name}}"
+      synchronize: true
+      data:
+        subjects:
+        - kind: ServiceAccount
+          name: "{{request.object.metadata.labels['capsule.clastix.io/tenant']}}-flux-sa"
+          namespace: "{{request.object.metadata.name}}"
+        roleRef:
+          kind: ClusterRole
+          name: edit  # Default to edit for tenant SA
+          apiGroup: rbac.authorization.k8s.io

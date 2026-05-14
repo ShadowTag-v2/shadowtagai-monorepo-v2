@@ -1,0 +1,4 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredAntiAffinity
+metadata: {name: penal-anti-affinity}
+spec: {match: {kinds: [{kinds: ["Deployment"]}], namespaces: ["penal-colony"]}}

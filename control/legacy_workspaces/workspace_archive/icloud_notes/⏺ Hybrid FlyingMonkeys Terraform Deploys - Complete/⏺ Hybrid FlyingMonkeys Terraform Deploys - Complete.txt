@@ -1,0 +1,36 @@
+⏺ Hybrid FlyingMonkeys Terraform Deploys - Complete
+
+  Burst Test Results:
+  Total requests:    600
+  Successful:        600
+  Failed:            0
+  Success rate:      100.0%
+  Avg per request:   19.18ms  ✅ (<35ms target)
+  Throughput:        52.2 req/sec
+
+  Files Created:
+  | File                                     | Purpose
+                    |
+  |------------------------------------------|-------------------------------------------------
+  ------------------|
+  | infrastructure/terraform/swarm_audit.py  | Async audit distributor (570 Flash + 30 Pro)
+                    |
+  | infrastructure/terraform/jura_rules.yaml | 18 JURA governance rules (security, encryption,
+  cost, compliance) |
+  | scripts/tf-swarm.sh                      | Terraform wrapper with swarm audit
+                    |
+  | docker-compose.antigravity.yml           | Added terraform-auditor service
+                    |
+
+  Usage:
+  # Plan with swarm audit
+  ./scripts/tf-swarm.sh plan -target=module.gke
+
+  # Apply after approval
+  ./scripts/tf-swarm.sh apply
+
+  # Check status
+  ./scripts/tf-swarm.sh status
+
+  # Burst test
+  ./scripts/tf-swarm.sh burst-test 60

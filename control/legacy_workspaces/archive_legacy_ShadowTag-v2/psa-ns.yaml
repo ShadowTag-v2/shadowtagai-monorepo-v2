@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: penal-colony
+  labels:
+    app: otel-monkeys
+    env: production
+    istio-injection: enabled
+    colony-mode: PENAL
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

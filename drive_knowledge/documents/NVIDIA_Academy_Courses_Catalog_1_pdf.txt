@@ -1,0 +1,290 @@
+1 
+  
+   
+  
+  
+ 
+ 
+ 
+NVIDIA Academy offers courses and workshops covering  network  and compute  
+technologies  for a variety  of accelerated comput ing deployments , based  on NVIDIA 
+solutions . This education is developed by a winning team of training developers and 
+delivered by a team of dedicated professional instructors w ho bring vast field experience 
+to each course.  
+ 
+HOW TO ORDER?  
+Instructor -led courses : training@nvidia.com  | tomero@nvidia.com  
+Self-paced online courses: https://academy. nvidia .com/en  
+Certifications : https://academy.nvidia.com/en/certification -center/   
+ 
+INSTRUCTOR -LED COURSES  
+  
+DGX SuperPOD Administration  
+This course is designed to help IT professionals successfully administer all aspects of a DGX 
+SuperPOD cluster including compute, storage, and networking. Learn more  
+Delivery Format: Private remote / onsite training  
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU : 789-SPDIV4  
+Duration : 4 sessions of up to 4 hours each | 3 -days onsite  
+ 
+DGX POD Administration  
+This course provides an overview of DGX POD components and related processes,  including the 
+NVIDIA DGX H100/A100 System;  InfiniBand and ethernet networks ; tools for in -band and out -of-
+band management ; NGC;  the basics of running workloads ; and specific management tools and CLI 
+commands . This course includes instructions for managing vendor- specific storage per the 
+architecture of your specific POD solution. Learn more  
+  
+ 
+NVIDIA ACADEMY  COURSE CATALOG  
+Compute and Network Training for Data  Center Professionals  
+
+2 
+ Delivery Format: Private remote / onsite training  
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU : 789-PODIV4  
+Duration : 4 sessions of up to 4 hours each | 3 -days onsite  
+ 
+DGX H100/A100 Administration  
+This course provides an overview the NVIDIA DGX H100/A100 system and tools for in -band and 
+out-of-band management, NGC, the basics of running workloads, and specific management tools 
+and CLI commands. In addition, this course includes content on multi -instance GPU, managing 
+storage, performan ce validation, and other system management tools and concepts.  Learn more   
+Delivery Format: Private remote / onsite training  
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU : 789-DGXIV4  
+Duration : 4 sessions of up to 4 hours each  | 3-days onsite  
+ 
+DGX H100/A100 Administration Public Training  
+This course provides an overview of the H100/A100 System and DGX H100/A100 Stations' tools 
+for in -band and out -of-band management, the basics of running workloads, specific management 
+tools and CLI commands . Learn more   
+Delivery Format: Public remote training   
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU and Price : 789-DGXIV 5, $1500 per seat  
+Duration : 3 sessions of 4 hours 
+ 
+NVIDIA AI Enterprise Administration Public Training  
+This course covers the platform and solution overview, hardware and software architecture, 
+deployment options, licensing, temporal and spatial GPU partitioning, scaling, comprehensive 
+validation, management, maintenance, monitoring, and troubleshooting.  Learn more   
+Delivery Format: Public remote training   
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU and Price : 789-ONAIV3 , $1500 per seat  
+Duration : 3 sessions of 4  hours 
+ 
+Base Command  Manager Administration Training  
+The NVIDIA Base Command  Manager  (BCM) admin istration  course provides an overview of Base 
+Command  Manager  including managing nodes and software images, monitoring devices and jobs, 
+users management , and configuring workload managers. This course also covers using  Base Command 
+Manager with cloud based nodes, configuring Base Command  Auto Scaler, and configuring Bright for 
+use with GPUs including NVIDIA multi -instance GPUs.  Learn more   
+Delivery Format: Private remote / onsite training  
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU : 723-BCAIO3  
+Duration : 3 sessions of 4  hours 
+  
+3 
+  
+Cumulus Linux Professional Private Training  
+In this  hands -on private  training,  you will learn about NVIDIA Cumulus  OS architecture, 
+installation, configuration, operation, and management of Cumulus Linux running on NVIDIA 
+switches.  Learn more  
+Delivery Format : Private r emote  / onsite training  
+Target Audience : IT Professionals , Network and System Admins/Engineers  
+SKU : 789-CUMIV5  
+Duration : 5 sessions of 4 -hours | 4-days onsite  
+ 
+Cumulus Linux Professional Public Bootcamp  
+Learn how to install, deploy, configure, and troubleshoot Cumulus -based networks. This course 
+offers a perfect blend of hands -on training and theoretical education.  Learn more  
+Delivery Format: Public remote training  
+Target Audience: IT Professionals , Network and System Admins/Engineers  
+SKU : 789-CUMBVA (APAC and Europe)  / 789 -CUMBVU  (US and Europe) , $1500 per seat   
+Duration: 3 sessions of 4 -hours  
+ 
+InfiniBand Professional Customized Training  
+In this course , you will learn about InfiniBand architecture  and how to manage, monitor and 
+troubleshoot your InfiniBand network . Learn more  
+Delivery Format: Private remote / onsite training  
+Target Audience : IT Professionals, Network and System Admins/Engineers  
+SKU : 789-IBPIV4  
+Duration : 4 Sessions of 4 -hours  
+ 
+ 
+SELF -PACED ONLINE COURSES  
+  
+Platinum Membership    
+This membership plan provides full access to a ll NVIDIA Academy  self-paced courses (view full 
+course list  below ), and free video library access . Learn more  
+SKU and Price: 789-ACPMSP , $450 Annual  
+  
+Introduction to AI in the Data Center
+ 
+Explore an introduction to AI, GPU (Graphic Processing Unit)  computing, NVIDIA AI software 
+architecture, and how to implement and scale AI workloads in the datacenter . Learn more  l 
+4 
+ Target Audience : IT Professionals , Network and System Admins/Engineers  
+Price : $49 single course I $450 as part of Platinum membership  
+SKU: 789-ADCCSP  
+ 
+InfiniBand Essentials  
+This self-paced course covers the fundamental first steps into the world of InfiniBand. If you are 
+looking to become more familiar with InfiniBand’s benefits, uses, architecture layers, and 
+management concepts, this is the best place to start.   Learn more  
+Target Audience : IT Professionals , Networking and System Admins/Engineers  
+Price : Free course  
+ 
+InfiniBand Professional   
+This course covers the fundamentals of the InfiniBand technology from a usability point of view 
+and builds on the details of the InfiniBand architecture specification . You will learn  how to install, 
+configure, manage, troubleshoot, and monitor your InfiniBand network.  Learn more 
+Target Audience : IT Professionals , Network and System Admins/Engineers  
+Price : $250 single course I $ 450 as part of Platinum membership 
+SKU: 789-IBPCSE   
+ 
+NVIDIA AI Enterprise Administration   
+In this course you will learn how to deploy and administer the NVIDIA AI Enterprise Solution in a 
+VMware vSphere environment with Docker containers . Taking the NVIDIA AI Enterprise 
+Administration course provides you with a competitive edge by equipping you with in -demand 
+skills and knowledge required to effectively administer an AI infrastructure in enterprise settings. 
+This course will empower you to navigate the complexities of AI deployments and drive successful 
+outcomes in your organizatio n. Learn more  
+Target Audience: IT professionals, including system administrators and DevOps, who are expected to successfully 
+deploy and administer the NVIDIA AI Enterprise solution.  
+Price: $ 99 single course I $450 as part of Platinum membership 
+SKU: 723-NAICSP  
+ 
+BlueField DPU Administration   
+In this self -paced course, you will learn the basic concepts of BlueField DPUs as a platform for 
+accelerated data center computing. Upon completion, you will be equipped with a set of 
+introductory knowledge and skills that will enable you to bring -up the B lueField DPUs and begin 
+using them to develop applications that accelerate your data centers services.  Learn more  
+Target Audience: IT Professionals , Networking and System Admins/Engineers  
+Price: $ 49 single course I $450 as part of Platinum membership  
+SKU: 723-BFDCSP  
+  
+5 
+  
+Introduction to Networking   
+In this course we will cover the basics of networking, introduce some of the most used TCP/IP 
+protocols and cover the fundamentals of an Ethernet network. In addition, you’ll be equipped with 
+the basic knowledge to understand the main data center requirements and how they can be 
+fulfilled . Learn more  
+Target Audience: IT Professionals , Networking and System Admins/Engineers  
+Price: Free course  
+ 
+Network Administration with NVIDIA ONYX Switch System  
+This course provides the required set of skills to configure and manage NVIDIA  ethernet switch 
+systems. You will learn in depth layer 2 configuration s such as VLAN, STP, LAG and MLAG,  as well 
+as how to configure layer 3 features such as BGP . Learn more  
+Target Audience : IT Professionals , Networking and System Admins/Engineers  
+Price : $99 single course I $450 as part of Platinum membership 
+SKU: 789-ONXCSP   
+ Introduction to Bright Cluster Manager 
+ 
+This course is based on NVIDIA Bright Cluster Manager and gives an overview of the usage and 
+components of the software.  In addition, it gives a step -by-step guide through the methods to 
+install NVIDIA Bright Cluster Manager on a head node and the steps ne cessary to bring up a 
+functioning cluster managed by NVIDIA Bright Cluster Manager . Learn more  
+Target Audience: IT Professionals , Networking and System Admins/Engineers  
+Price: Free course  
+ 
+Bright Cluster Manager Administration  
+This course is based on NVIDIA Bright Cluster Manager and gives an overview of the cluster 
+management tools, Bright View and CMSH. This course also gives information on environment 
+modules. The processes for provisioning nodes and creating software images are also covered. 
+Learners in this course will also learn about Interacting with switches, NVIDIA GPU integration, 
+and the Health Management Framework . Learn more  
+Target Audience: IT Professionals , Networking and System Admins/Engineers  
+Price: Free course  
+ 
+Bright Cluster Manager Auto Scaling Hybrid Cloud  
+This course is based on NVIDIA Bright Cluster Manager and gives an overview of extending the 
+cluster to the cloud with Cluster as a service and cluster extension (i.e.  Hybrid Cloud)  The 
+processes for deploying cluster as a service and cluster extensions fo r AWS and Azure are 
+covered in detail.  This course also shows how to setup and use of  Bright auto scaler.  The final 
+topic is  the setup and use of the  automated cloud job data management  (CMJOB) for 
+improving  flexibility and productivity of the cluster.  Learn more   
+ 
+ 
+ 
+6 
+ Target Audience: IT Professionals , Networking and System Admins/Engineers  
+Price: Free course   
+ 
+Ansible Essentials for Network Engineers  
+In this course, you will explore a variety of Ansible module s, and write playbooks specifically 
+adapted to modern data centers.  This course includes an exclusive h ands -on lab environment and 
+exercises to practice real- world scenarios in real cloud environments . Learn more  
+Target Audience : IT Professionals , Networking and System Admins/Engineers  
+Price : $49 single course I $450 as part of Platinum membership 
+SKU: 789-ANECSP   
+ The Fundamentals of RDMA Programming
+ 
+This course allows C programmers to dive into the RDMA programming world without requiring previous 
+experience in networking or RDMA programming.  We have also added tips and tricks, as well as do’s  and don’ts 
+so that the skills you acquire will truly serve you when you need them . Learn more  
+Target Audience : Developers, IT Professionals  
+Price : $49 single course I $450 as part of Platinum membership 
+SKU: 789-RDMCSP   
+ 
+RDMA over Converged Ethernet (RoCE) from A to Z  
+In this course you will learn what is RoCE, how it works, get familiar with the different network types RoCE can 
+run over and also learn how to configure RoCE for each network type . Learn more  
+Target Audience : IT Professionals , Networking and System Admins/Engineers  
+Price : Free course  
+ 
+NVIDIA License System  
+NVIDIA License System (NLS) is a new licensing solution to support the continued expansion of 
+the NVIDIA enterprise software portfolio . This course will help you to learn about NLS and how 
+you can move from your existing licensing solution to NLS.  Learn more  
+Target Audience : IT Professionals , Networking and System Admins/Engineers  
+Price : Free course  
+ 
+MLXlink and MLXcables Debug Tools  
+In this course, you'll learn about the MLXlink and MLXcables debug tools. These debug tools are 
+used for both basic link troubleshooting and for analyzing the more complex link characteristics. 
+Learn more  
+Target Audience : IT Professionals , Networking and System Admins/Engineers  
+Price : Free course   
+ 
+ 
+ 
+h //
+7 
+  
+Data Center Management Made Easy with NVIDIA UFM  
+In this course you will learn about UFM Enterprise , how to automate network discovery and 
+provisioning, how to perform traffic monitoring and congestion discovery with UFM. In addition, 
+you will discover how to enable job schedule provisioning and how to integrate with industry -
+leading job schedulers and cl oud and cluster managers, including Slurm and Platform Load 
+Sharing Facility (LSF).  Learn more  
+Target Audience: IT Professionals , Networking and System Admins/Engineers  
+Price: $49 single course I $450 as part of Platinum membership 
+SKU: 789-UFMCSP  
+ 
+ 
+CERTIFICATIONS  
+ 
+The NVIDIA Certification Program enables partners, customers, and other professionals to 
+demonstrate their skills and expertise. Further your career options by successfully completing an 
+NVIDIA certification. Learn more  
+ 
+NVIDIA Certified Associate - AI in the Data Center  
+This is an entry -level certification that validates foundational concepts of adopting artificial intelligence 
+computing by NVIDIA in a data center environment. Learn more  
+Price : $135  
+SKU: 789 -ADCESE  
+Prerequisites: A basic understanding of data center infrastructure  
+Validity: two years  
+ NVIDIA Certified Professional –  InfiniBand  
+This is an intermediate level certification that validates core concepts for designing, deploying, 
+and managing NVIDIA InfiniBand Fabrics . Learn more  
+Price : $220  
+SKU: 789 -IBPESE   
+Prerequisites: A thorough understanding of data center infrastructure and networking  
+Validity: two years  
+  
+ 
+ 
+ 

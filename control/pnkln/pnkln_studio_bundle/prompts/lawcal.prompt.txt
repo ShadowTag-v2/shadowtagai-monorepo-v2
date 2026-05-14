@@ -1,0 +1,3 @@
+Extract legal deadlines & triggers from the text. Output JSON array of objects: event, trigger, deadline_days, jurisdiction, notes.
+Input:
+{{input}}

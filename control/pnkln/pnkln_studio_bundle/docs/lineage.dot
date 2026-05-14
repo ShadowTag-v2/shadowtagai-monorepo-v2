@@ -1,0 +1,41 @@
+digraph PNKLN {
+  rankdir=LR; splines=true; node [shape=box, style=rounded];
+  subgraph cluster_core {
+    label="PNKLN SYSTEMS — Core Platform";
+    PNKLN[label="PNKLN Systems (Vertex AI)"];
+    ShadowTag[label="ShadowTag / Provenance"];
+    Orchestrator[label="Core OS / Orchestrator"];
+    Reasoner[label="Structured Reasoning (Prompts/Runners)"];
+    Security[label="Security & Compliance (BT hooks)"];
+  }
+  subgraph cluster_legal {
+    label="PNKLN — Legal Stack";
+    LawCal[label="#p-dead • lawcal (Deadlines)"];
+    Neg[label="#p-contract/#p-neg (Negotiation Matrix)"];
+  }
+  subgraph cluster_legacy {
+    label="Legacy / Archived Lines";
+    ClarityBoard; ClarityAI; Verdict; AiYou; CNCR; Schiznit; ECB; Ozonics;
+  }
+  subgraph cluster_gov {
+    label="Governance";
+    Foundations[label="Foundations / Asset Struct"];
+    BlackTrack[label="BlackTrack (LEO/GOV/ITAR)"];
+  }
+  ClarityBoard -> LawCal;
+  ClarityAI -> Reasoner;
+  Verdict -> Neg;
+  AiYou -> Orchestrator;
+  CNCR -> Foundations;
+  Schiznit -> Reasoner;
+  ECB -> Orchestrator;
+  Ozonics -> Security;
+  LawCal -> PNKLN;
+  Neg -> PNKLN;
+  Reasoner -> PNKLN;
+  Orchestrator -> PNKLN;
+  ShadowTag -> PNKLN;
+  Security -> PNKLN;
+  BlackTrack -> Security;
+  Foundations -> PNKLN;
+}

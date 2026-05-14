@@ -1,0 +1,10 @@
+node_modules
+.venv
+venv
+.gradle
+bazel-out
+bazel-bin
+bazel-testlogs
+dist
+build
+__pycache__

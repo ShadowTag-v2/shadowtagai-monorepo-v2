@@ -1,0 +1,14 @@
+out
+dist
+node_modules
+.vscode-test
+.vscode-test-web
+*.vsix
+.DS_STORE
+*.log
+test-results.xml
+
+# Generated lockfiles in test fixtures
+test-fixtures/**/package-lock.json
+test-fixtures/**/pnpm-lock.yaml
+test-fixtures/**/yarn.lock

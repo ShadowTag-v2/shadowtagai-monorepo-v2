@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "repo_id": "ane",
+  "startup_contract": {
+    "hydrate_before_reasoning": true,
+    "ignore_codebase_as_authority": true,
+    "upgrade_codebase_from_memory": true
+  },
+  "standards": {
+    "formatter": "prettier-vscode",
+    "memory_mode": "authority_first",
+    "context_rule": "never start from old codebase state"
+  },
+  "settings": {
+    "default_inference_backend": "ane",
+    "fallback_backend": "metal"
+  },
+  "procedures": [
+    "Load authority memory first",
+    "Load latest task state second",
+    "Load codebase only after memory hydration",
+    "If mismatch exists, create upgrade task instead of mutating memory backward"
+  ]
+}

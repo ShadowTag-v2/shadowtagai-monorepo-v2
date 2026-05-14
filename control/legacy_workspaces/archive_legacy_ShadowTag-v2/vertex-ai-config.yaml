@@ -1,0 +1,63 @@
+# Vertex AI Workbench Configuration for Code Refactorer Service
+
+service:
+  name: code-refactorer-service
+  version: v1
+
+deployment:
+  # Machine configuration for Vertex AI Workbench
+  machine_type: n1-standard-4
+  accelerator_type: null  # Set to "NVIDIA_TESLA_T4" if GPU needed
+  accelerator_count: 0
+
+  # Container settings
+  container:
+    image: gcr.io/${PROJECT_ID}/code-refactorer:latest
+    port: 8080
+
+  # Environment variables
+  env_vars:
+    - name: APP_NAME
+      value: "AI Code Refactorer Service"
+    - name: DEBUG
+      value: "false"
+    - name: HOST
+      value: "0.0.0.0"
+    - name: PORT
+      value: "8080"
+    - name: MODEL
+      value: "claude-sonnet-4-5-20250929"
+    - name: MAX_TOKENS
+      value: "4096"
+
+  # Secrets (configure in Google Cloud Secret Manager)
+  secrets:
+    - name: ANTHROPIC_API_KEY
+      secret_name: anthropic-api-key
+      secret_version: latest
+
+# Resource limits
+resources:
+  cpu: "4"
+  memory: "16Gi"
+  storage: "100Gi"
+
+# Scaling configuration
+scaling:
+  min_replicas: 1
+  max_replicas: 10
+  target_cpu_utilization: 70
+
+# Health checks
+health_check:
+  path: /health
+  port: 8080
+  initial_delay_seconds: 30
+  period_seconds: 10
+  timeout_seconds: 5
+  failure_threshold: 3
+
+# Networking
+networking:
+  enable_private_ip: false
+  allowed_ingress: "all"

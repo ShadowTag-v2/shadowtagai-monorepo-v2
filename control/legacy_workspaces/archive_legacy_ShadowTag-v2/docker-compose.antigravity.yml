@@ -1,0 +1,390 @@
+networks:
+  antigravity:
+    driver: bridge
+    name: antigravity-network
+
+services:
+  # ============================================================
+<<<<<<< HEAD
+||||||| f285896f1
+  # mitmproxy - Intercepts Antigravity IDE traffic
+  # ============================================================
+  mitmproxy:
+    image: mitmproxy/mitmproxy:latest
+    container_name: antigravity-proxy
+    ports:
+      - "8080:8080"   # Proxy port
+      - "8081:8081"   # Web interface
+    command: mitmweb --web-host 0.0.0.0 --set confdir=/home/mitmproxy/.mitmproxy
+    volumes:
+      - ./tools/dev-environment/antigravity-proxy:/home/mitmproxy/.mitmproxy
+    restart: unless-stopped
+    networks:
+      - antigravity
+
+  # ============================================================
+=======
+  # mitmproxy - Intercepts Antigravity IDE traffic
+  # ============================================================
+  mitmproxy:
+    image: mitmproxy/mitmproxy:latest
+    container_name: antigravity-proxy
+    ports:
+      - "8082:8080"   # Proxy port
+      - "8083:8081"   # Web interface
+    command: mitmweb --web-host 0.0.0.0 --set confdir=/home/mitmproxy/.mitmproxy
+    volumes:
+      - ./tools/dev-environment/antigravity-proxy:/home/mitmproxy/.mitmproxy
+    restart: unless-stopped
+    networks:
+      - antigravity
+
+  # ============================================================
+>>>>>>> feature/flyingmonkeys-integration
+  # FastAPI Backend (Python)
+  # ============================================================
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    container_name: antigravity-fastapi
+    environment:
+      - ENVIRONMENT=development
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - LOG_LEVEL=debug
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      timeout: 3s
+    networks:
+      - antigravity
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - ./agents:/app/agents:cached
+      - ./app:/app/app:cached
+      - ./shadowtagai:/app/shadowtagai:cached
+      - ./src:/app/src:cached
+
+  # ============================================================
+  # FastGPT - Knowledge Console (RAG)
+  # ============================================================
+  fastgpt:
+    container_name: antigravity-fastgpt
+    depends_on:
+      - flyingmonkeys
+      - mongodb
+    environment:
+      - DB_URL=mongodb://mongodb:27017/fastgpt
+      - DEFAULT_MODEL=gemini-3.1-flash
+      - OPENAI_API_KEY=dummy
+      - OPENAI_BASE_URL=http://flyingmonkeys:8600/v1
+    image: ghcr.io/labring/fastgpt:latest
+    networks:
+      - antigravity
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+
+  # ============================================================
+  # FlyingMonkeys - 600 Agent Swarm (Tiered Gemini)
+  # ============================================================
+  flyingmonkeys:
+    # Note: Installing pip packages at runtime is slow; consider moving to a Dockerfile
+    command: >
+      bash -c "pip install --quiet fastapi uvicorn pydantic && python bin/flyingmonkeys-server"
+    container_name: flyingmonkeys-server
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL_BULK=gemini-3.1-flash
+      - GEMINI_MODEL_GOVERNANCE=gemini-3.1-pro
+      - PYTHONPATH=/app
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:8600/health"]
+      timeout: 3s
+    image: python:3.11-slim
+    networks:
+      - antigravity
+    ports:
+      - "8600:8600"
+    restart: unless-stopped
+    volumes:
+      - ./agents:/app/agents:cached
+      - ./bin:/app/bin:cached
+      - ./src:/app/src:cached
+    working_dir: /app
+
+  # ============================================================
+  # Gemini CLI - Google AI CLI Interface
+  # ============================================================
+  gemini-cli:
+    command: >
+      bash -c "npm install -g @google/gemini-cli && sleep infinity"
+    container_name: gemini-cli
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    image: node:20-slim
+    networks:
+      - antigravity
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/app:cached
+      - gemini-cli-cache:/root/.gemini
+    working_dir: /app
+
+  # ============================================================
+  # mitmproxy - Intercepts Antigravity IDE traffic
+  # ============================================================
+  mitmproxy:
+    # Fixed: Combined flags into single command using multiline syntax
+    command: >
+      mitmweb
+      --web-host 0.0.0.0
+      --set confdir=/home/mitmproxy/.mitmproxy
+      --ignore-hosts '^(accounts\.google\.com|oauth2\.googleapis\.com)'
+    container_name: antigravity-proxy
+    image: mitmproxy/mitmproxy:latest
+    networks:
+      - antigravity
+    ports:
+      - "8082:8080"   # Proxy port (8080 in use by kuvasz)
+      - "8083:8081"   # Web interface
+    restart: unless-stopped
+    volumes:
+      - ./tools/dev-environment/antigravity-proxy:/home/mitmproxy/.mitmproxy
+
+  # ============================================================
+  # MongoDB - FastGPT Database
+  # ============================================================
+  mongodb:
+    container_name: fastgpt-mongo
+    image: mongo:6
+    networks:
+      - antigravity
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    volumes:
+      - fastgpt-mongo-data:/data/db
+
+  # ============================================================
+  # Next.js Frontend
+  # ============================================================
+  nextjs:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: antigravity-nextjs
+    depends_on:
+      - fastapi
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_FLYINGMONKEYS_URL=http://localhost:8600
+    networks:
+      - antigravity
+    ports:
+<<<<<<< HEAD
+      - "3030:3000"  # 3000 in use by grafana
+    restart: unless-stopped
+||||||| f285896f1
+      - "3000:3000"
+=======
+      - "3030:3000"
+>>>>>>> feature/flyingmonkeys-integration
+    volumes:
+      - ./frontend:/app:cached
+      - /app/node_modules
+      - /app/.next
+<<<<<<< HEAD
+||||||| f285896f1
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_FLYINGMONKEYS_URL=http://localhost:8600
+    restart: unless-stopped
+    networks:
+      - antigravity
+    depends_on:
+      - fastapi
+
+  # ============================================================
+  # FlyingMonkeys - 600 Agent Swarm (Tiered Gemini)
+  # ============================================================
+  flyingmonkeys:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flyingmonkeys-server
+    ports:
+      - "8600:8600"
+    volumes:
+      - ./agents:/app/agents:cached
+      - ./bin:/app/bin:cached
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL_BULK=gemini-3.1-flash
+      - GEMINI_MODEL_GOVERNANCE=gemini-3.1-pro
+    command: python bin/flyingmonkeys-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8600/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - antigravity
+
+  # ============================================================
+  # FastGPT - Knowledge Console (RAG)
+  # ============================================================
+  fastgpt:
+    image: ghcr.io/labring/fastgpt:latest
+    container_name: antigravity-fastgpt
+    ports:
+      - "3001:3000"
+    environment:
+      - OPENAI_BASE_URL=http://flyingmonkeys:8600/v1
+      - OPENAI_API_KEY=dummy
+      - DEFAULT_MODEL=gemini-3.1-flash
+      - DB_URL=mongodb://mongodb:27017/fastgpt
+    restart: unless-stopped
+    networks:
+      - antigravity
+    depends_on:
+      - mongodb
+      - flyingmonkeys
+
+  # ============================================================
+  # MongoDB - FastGPT Database
+  # ============================================================
+  mongodb:
+    image: mongo:6
+    container_name: fastgpt-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - fastgpt-mongo-data:/data/db
+    restart: unless-stopped
+    networks:
+      - antigravity
+=======
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_FLYINGMONKEYS_URL=http://localhost:8600
+    restart: unless-stopped
+    networks:
+      - antigravity
+    depends_on:
+      - fastapi
+
+  # ============================================================
+  # FlyingMonkeys - 600 Agent Swarm (Tiered Gemini)
+  # ============================================================
+  flyingmonkeys:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flyingmonkeys-server
+    ports:
+      - "8600:8600"
+    volumes:
+      - ./agents:/app/agents:cached
+      - ./bin:/app/bin:cached
+      - ./src:/app/src:cached
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL_BULK=gemini-3.1-flash
+      - GEMINI_MODEL_GOVERNANCE=gemini-3.1-pro
+    command: python bin/flyingmonkeys-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8600/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - antigravity
+
+  # ============================================================
+  # FastGPT - Knowledge Console (RAG)
+  # ============================================================
+  fastgpt:
+    image: ghcr.io/labring/fastgpt:latest
+    container_name: antigravity-fastgpt
+    ports:
+      - "3001:3000"
+    environment:
+      - OPENAI_BASE_URL=http://flyingmonkeys:8600/v1
+      - OPENAI_API_KEY=dummy
+      - DEFAULT_MODEL=gemini-3.1-flash
+      - DB_URL=mongodb://mongodb:27017/fastgpt
+    restart: unless-stopped
+    networks:
+      - antigravity
+    depends_on:
+      - mongodb
+      - flyingmonkeys
+
+  # ============================================================
+  # MongoDB - FastGPT Database
+  # ============================================================
+  mongodb:
+    image: mongo:6
+    container_name: fastgpt-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - fastgpt-mongo-data:/data/db
+    restart: unless-stopped
+    networks:
+      - antigravity
+>>>>>>> feature/flyingmonkeys-integration
+
+  # ============================================================
+  # Redis - Optional caching
+  # ============================================================
+  redis:
+    container_name: antigravity-redis
+    image: redis:7-alpine
+    networks:
+      - antigravity
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # ============================================================
+  # Terraform Auditor - Infrastructure with Swarm Audit
+  # ============================================================
+  terraform-auditor:
+    container_name: terraform-auditor
+    depends_on:
+      - flyingmonkeys
+    entrypoint: ["tail", "-f", "/dev/null"]
+    environment:
+      - FLYINGMONKEYS_URL=http://flyingmonkeys-server:8600
+      - TF_VAR_project_id=${GCP_PROJECT_ID:-}
+      - TF_VAR_region=${GCP_REGION:-us-central1}
+    image: hashicorp/terraform:1.6
+    networks:
+      - antigravity
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./infrastructure:/app/infrastructure:cached
+      - ./scripts:/app/scripts:cached
+      - ~/.aws:/root/.aws:ro
+      - ~/.config/gcloud:/root/.config/gcloud:ro
+    working_dir: /app/infrastructure
+
+version: '3.8'
+
+volumes:
+  fastgpt-mongo-data:
+  gemini-cli-cache:

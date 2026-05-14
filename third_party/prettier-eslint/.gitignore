@@ -1,0 +1,9 @@
+.DS_Store
+coverage
+lib
+node_modules
+.*cache
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!test/fixtures/paths/node_modules

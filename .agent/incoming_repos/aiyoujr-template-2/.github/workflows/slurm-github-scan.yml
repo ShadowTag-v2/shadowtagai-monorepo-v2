@@ -1,0 +1,31 @@
+name: slurm-github-scan
+on:
+  schedule: [{ cron: '17 3 * * *' }]
+  workflow_dispatch: {}
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure gh CLI
+        run: |
+          if ! command -v gh >/dev/null 2>&1; then
+            type -p sudo && sudo apt-get update && sudo apt-get install -y gh || true
+          fi
+      - name: GH scan
+        env:
+          ORG: ${{ github.repository_owner }}
+        run: |
+          OUT="$PWD/slurm_github_scan"; mkdir -p "$OUT/${{ github.event.repository.name }}"
+          base="$OUT/${{ github.event.repository.name }}"
+          gh api "repos/$ORG/${{ github.event.repository.name }}/commits" --paginate -q '.[].{sha:.sha,author:(.commit.author.name),date:(.commit.author.date),msg:(.commit.message)}' > "$base/commits.json"
+          gh pr list -R "$ORG/${{ github.event.repository.name }}" --state all --limit 200 --json number,title,state,createdAt,mergedAt,updatedAt,author,headRefName,baseRefName > "$base/prs.json"
+          gh issue list -R "$ORG/${{ github.event.repository.name }}" --state open --limit 200 --json number,title,labels,createdAt,updatedAt,author > "$base/issues_open.json"
+          gh run list -R "$ORG/${{ github.event.repository.name }}" --limit 50 --json databaseId,headBranch,status,conclusion,createdAt,updatedAt,event > "$base/ci_runs.json"
+          gh api "repos/$ORG/${{ github.event.repository.name }}" > "$base/repo.json"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: slurm_github_scan
+          path: slurm_github_scan
+

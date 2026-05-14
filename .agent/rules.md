@@ -1,0 +1,3 @@
+- ROOT: /Users/pikeymickey/aiyou-stack/ShadowTag-v2
+- MODE: ANTIGRAVITY_FORCE
+- NO_NESTED_GIT

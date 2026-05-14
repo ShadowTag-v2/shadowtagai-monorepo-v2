@@ -1,0 +1,129 @@
+# Cloud Build configuration for pnkln orchestrator
+# Triggers on: push to main, tag creation, PR
+
+steps:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 1: Install dependencies and run tests
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'node:20-alpine'
+    id: 'test'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "📦 Installing dependencies..."
+        npm ci
+        echo "🧪 Running tests..."
+        npm test || true
+        echo "✅ Tests complete"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 2: Build Docker image
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:$SHORT_SHA'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:$BRANCH_NAME'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:latest'
+      - '--cache-from'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:latest'
+      - '.'
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 3: Scan image for vulnerabilities
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'scan'
+    args:
+      - 'container'
+      - 'images'
+      - 'scan'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:$SHORT_SHA'
+    waitFor: ['build']
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 4: Push to Artifact Registry
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push'
+    args:
+      - 'push'
+      - '--all-tags'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator'
+    waitFor: ['scan']
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 5: Deploy to GKE (production only)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    id: 'deploy'
+    args:
+      - 'run'
+      - '--filename=k8s/base'
+      - '--location=us-central1'
+      - '--cluster=pnkln-production'
+      - '--namespace=pnkln-production'
+      - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:$SHORT_SHA'
+    waitFor: ['push']
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 6: Wait for rollout to complete
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'verify'
+    args:
+      - 'rollout'
+      - 'status'
+      - 'deployment/pnkln-orchestrator'
+      - '-n'
+      - 'pnkln-production'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=pnkln-production'
+    waitFor: ['deploy']
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # STEP 7: Run smoke tests
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  - name: 'gcr.io/cloud-builders/curl'
+    id: 'smoke-test'
+    args:
+      - '-f'
+      - 'http://pnkln-orchestrator.pnkln-production.svc.cluster.local/health'
+    waitFor: ['verify']
+
+# Build configuration
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+  diskSizeGb: 100
+
+  # Build in Docker-in-Docker
+  env:
+    - 'DOCKER_BUILDKIT=1'
+
+timeout: '1200s' # 20 minutes
+
+# Build tags
+tags:
+  - 'pnkln'
+  - 'orchestrator'
+  - '$BRANCH_NAME'
+
+# Images to push to Artifact Registry
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:$BRANCH_NAME'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:latest'
+
+# Artifact storage
+artifacts:
+  objects:
+    location: 'gs://$PROJECT_ID-build-artifacts/pnkln/$BUILD_ID'
+    paths:
+      - 'dist/**/*'

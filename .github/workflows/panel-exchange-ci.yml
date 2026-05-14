@@ -1,0 +1,63 @@
+name: panel-exchange-ci
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'src/pnkln-stack/services/panel_exchange/**'
+      - 'src/pnkln-stack/models/panel_exchange.py'
+      - 'src/pnkln-stack/routers/panel_exchange_router.py'
+      - 'schemas/panel_exchange.schema.json'
+      - 'router/src/panel_router.ts'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Python dependencies
+        run: |
+          pip install -e ".[dev]" || pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Install Node dependencies
+        run: |
+          cd router && npm ci || npm install
+      - name: Run Python tests with coverage
+        run: |
+          pytest tests/ -v --cov=src/pnkln-stack/services/panel_exchange --cov=src/pnkln-stack/models/panel_exchange --cov-report=json:coverage.json --cov-report=term
+      - name: Enforce coverage >= 98%
+        run: |
+          THRESHOLD=98
+          ACTUAL=$(python -c "import json; print(json.load(open('coverage.json'))['totals']['percent_covered'])" 2>/dev/null || echo "0")
+          echo "Coverage: $ACTUAL%"
+          python -c "exit(0 if float('$ACTUAL') >= $THRESHOLD else 1)"
+      - name: TypeScript lint
+        run: |
+          cd router && npm run lint --if-present
+  second_pass:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.sha != ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: |
+          pip install -e ".[dev]" || pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Second green pass
+        run: |
+          pytest tests/ -v --cov=src/pnkln-stack/services/panel_exchange --cov=src/pnkln-stack/models/panel_exchange --cov-report=json:coverage.json
+      - name: Verify coverage still >= 98%
+        run: |
+          THRESHOLD=98
+          ACTUAL=$(python -c "import json; print(json.load(open('coverage.json'))['totals']['percent_covered'])" 2>/dev/null || echo "0")
+          echo "Second pass coverage: $ACTUAL%"
+          python -c "exit(0 if float('$ACTUAL') >= $THRESHOLD else 1)"
+      - run: echo "Green #2 confirmed. Ready for merge."

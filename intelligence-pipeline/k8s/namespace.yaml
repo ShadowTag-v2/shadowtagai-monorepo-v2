@@ -1,0 +1,18 @@
+# PNKLN Intelligence Pipeline - 5th Namespace
+# GKE-Native Nightly Intelligence Pipeline
+# ATP 5-19 RA-1 Compliant | Zero Capital Bootstrap
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: intelligence-pipeline
+  labels:
+    component: intelligence
+    bootstrap: zero-capital
+    atp-5-19: ra-1
+    istio-injection: enabled
+    pnkln-namespace: "5"
+  annotations:
+    description: "Nightly intelligence pipeline for regulatory compliance and competitive intelligence"
+    cost-center: "engineering"
+    owner: "cor@pnkln.ai"

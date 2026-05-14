@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Monorepo-Uphillsnowball"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.DS_Store": true,
+      "**/node_modules": true,
+      "**/__pycache__": true,
+      "**/.pytest_cache": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "data/drive_ingest": true,
+      "data/web_ingest": true,
+      "artifacts/workspace_archive": true
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "editor.formatOnSave": true,
+    "files.watcherExclude": {
+      "data/**": true,
+      "artifacts/**": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.ruff",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types";
+import type { ZodRawShape, ZodTypeAny, z } from "zod";
+import type { Executable } from "./executable";
+
+export type ToolInputType<Input extends ZodRawShape | undefined> = Input extends ZodRawShape
+  ? z.objectOutputType<Input, ZodTypeAny>
+  : undefined;
+
+export type ToolOutputType<T extends Record<string, unknown>> = {
+  content: string;
+  metadata?: T;
+};
+
+export enum ToolType {
+  READ = "read",
+  WRITE = "write",
+  ALL_API = "all_api",
+}
+
+export interface Tool<
+  Input extends ZodRawShape | undefined,
+  Output extends Record<string, unknown> = never,
+> extends Executable<ToolInputType<Input>, ToolOutputType<Output>> {
+  name: string;
+  type: ToolType;
+  annotations: ToolAnnotations;
+  /** Whether the tool is enabled by default. Defaults to true if not specified. */
+  enabledByDefault?: boolean;
+
+  getDescription(): string;
+  getInputSchema(): Input;
+}

@@ -1,0 +1,12 @@
+# Remote Cache Optimization
+build --disk_cache=~/.cache/bazel
+build --experimental_strict_action_env=true
+
+# Test & Debug Settings
+test --test_output=errors
+test --test_env=PYTHONUNBUFFERED=1
+build --color=yes
+test --color=yes
+
+# Remote build execution (Optional toggle)
+# build --remote_cache=grpc://remote.cache.server:8980

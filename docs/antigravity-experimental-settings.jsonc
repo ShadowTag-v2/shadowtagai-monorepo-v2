@@ -1,0 +1,47 @@
+// docs/antigravity-experimental-settings.jsonc
+//
+// PROPOSED EXPERIMENTAL EXTENSION SETTINGS - GOD MODE
+// Do NOT merge these into the canonical `pnkln.code-workspace` until
+// the installed extensions are actively verified to support and respect them.
+// Mixing unverified keys can cause silent UX drift or extension crashes.
+{
+  // Antigravity speculative hooks
+  "antigravity.agents.enabled": true,
+  "antigravity.agents.maxConcurrentAgents": 3,
+  "antigravity.skills.enabled": true,
+  "antigravity.agent.skills.locations": [
+    "/Users/pikeymickey/.gemini/extensions/pickle-rick/skills"
+  ],
+  "antigravity.agent.instructions.locations": [
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/AGENTS.md"
+  ],
+  "antigravity.mcp.registry": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json",
+  "antigravity.cwd": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
+  "geminicodeassist.agent.autoApprove": true,
+
+  // Cline Auto-Approve Scopes (Verified as /settings safe, but omitted from global JSON dynamically)
+  "cline.autoApprovalSettings": {
+    "enabled": true,
+    "actions": {
+      "readFiles": true,
+      "editFiles": true,
+      "executeCommands": true,
+      "useBrowser": false,
+      "useMcp": true
+    },
+    "maxRequests": 50
+  },
+
+  // Roo-Cline Mirror
+  "roo-cline.autoApprovalSettings": {
+    "enabled": true,
+    "actions": {
+      "readFiles": true,
+      "editFiles": true,
+      "executeCommands": true,
+      "useBrowser": false,
+      "useMcp": true
+    },
+    "maxRequests": 50
+  }
+}

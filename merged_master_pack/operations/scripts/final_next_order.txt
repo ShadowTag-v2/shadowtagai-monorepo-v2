@@ -1,0 +1,11 @@
+Best next order to land the current workspace pack:
+1. patch monorepo_manifest.yaml
+2. replace docs/MERGE_STATUS.md
+3. install canonical workspace-mcp-config.json
+4. demote adapter MCP files
+5. replace verify_mcp.sh
+6. add docs/UPDATED_WORKSPACE_PACK.md
+7. add recovered operational scripts
+8. add product spec files
+9. verify root truth
+10. commit only after verification passes

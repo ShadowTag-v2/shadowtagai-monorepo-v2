@@ -1,0 +1,184 @@
+name: Security Auto-Fix (Codemender-style)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+  security-events: write
+
+jobs:
+  security-scan-and-fix:
+    runs-on: self-hosted
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        if: hashFiles('package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Python
+        if: hashFiles('requirements.txt', 'pyproject.toml') != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Node dependencies
+        if: hashFiles('package.json') != ''
+        run: |
+          npm ci || npm install
+
+      - name: Install Python dependencies
+        if: hashFiles('requirements.txt', 'pyproject.toml') != ''
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-audit safety semgrep || true
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install .; fi
+
+      - name: Run npm audit
+        if: hashFiles('package.json') != ''
+        continue-on-error: true
+        run: |
+          mkdir -p .ci
+          npm audit --json > .ci/npm-audit.json || true
+          npm audit || true
+
+      - name: Run pip-audit
+        if: hashFiles('requirements.txt', 'pyproject.toml') != ''
+        continue-on-error: true
+        run: |
+          mkdir -p .ci
+          pip-audit --format json --output .ci/pip-audit.json || true
+          pip-audit || true
+
+      - name: Run Semgrep
+        continue-on-error: true
+        run: |
+          pip install semgrep || true
+          semgrep --config=p/owasp-top-ten --json --output .ci/semgrep.json || true
+          semgrep --config=p/owasp-top-ten --error || true
+
+      - name: Attempt auto-fix (safe patches only)
+        id: autofix
+        run: |
+          CHANGED=false
+
+          # Node: safe dependency updates
+          if [ -f package.json ]; then
+            npm audit fix --only=prod --force=false && CHANGED=true || true
+          fi
+
+          # Python: pip-audit can suggest fixes
+          if command -v pip-audit &> /dev/null; then
+            pip-audit --fix --dry-run || true
+            # Note: --fix is experimental; dry-run kept for safety until pinned
+          fi
+
+          # Semgrep: Attempt auto-fix on code
+          if command -v semgrep &> /dev/null; then
+            semgrep --config=p/owasp-top-ten --autofix || true
+          fi
+
+          # Global Change Detection (Truth via Git)
+          if ! git diff --quiet; then
+            CHANGED=true
+          fi
+
+          echo "changed=${CHANGED}" >> $GITHUB_OUTPUT
+          echo "CHANGED=${CHANGED}" >> $GITHUB_ENV
+
+      - name: Create scan summary
+        run: |
+          mkdir -p .ci
+          cat > .ci/security-summary.md <<'EOF'
+          # 🔐 Security Auto-Fix Summary
+
+          **Workflow**: security-auto-fix
+          **Commit**: ${{ github.sha }}
+          **PR**: #${{ github.event.pull_request.number }}
+
+          ## Scans Performed
+
+          - ✅ npm audit
+          - ✅ pip-audit
+          - ✅ Semgrep (OWASP Top 10)
+
+          ## Auto-Fix Results
+
+          Changes applied: **${{ steps.autofix.outputs.changed }}**
+
+          ## Artifacts
+
+          - `.ci/npm-audit.json`
+          - `.ci/pip-audit.json`
+          - `.ci/semgrep.json`
+
+          Review the scan results in the uploaded artifacts.
+
+          ---
+          _Automated by Codemender-style security pipeline_
+          EOF
+
+      - name: Upload scan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan-results
+          path: |
+            .ci/npm-audit.json
+            .ci/pip-audit.json
+            .ci/semgrep.json
+            .ci/security-summary.md
+          retention-days: 90
+
+      - name: Commit safe auto-fixes
+        if: steps.autofix.outputs.changed == 'true' && github.event_name == 'pull_request'
+        run: |
+          git config user.name "Security Auto-Fix Bot"
+          git config user.email "security-bot@users.noreply.github.com"
+
+          git add -A
+          git diff --cached --quiet || {
+            git commit -m "chore(security): automated safe dependency updates [bot]
+
+          Automated fixes applied by security-auto-fix workflow.
+          - npm audit fix (safe patches only)
+          - pip-audit suggestions (dry-run reviewed)
+
+          Workflow: ${{ github.workflow }}
+          Commit: ${{ github.sha }}
+          "
+            git push
+          }
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('.ci/security-summary.md', 'utf8');
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+      - name: Update step summary
+        if: always()
+        run: |
+          cat .ci/security-summary.md >> $GITHUB_STEP_SUMMARY

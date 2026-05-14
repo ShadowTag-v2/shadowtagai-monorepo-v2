@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "permissions": {
+    "description": "Cursor CLI permissions for safety-controlled automation",
+    "deny": [
+      "Shell(git push --force)",
+      "Shell(git push -f)",
+      "Shell(gh pr merge)",
+      "Shell(rm -rf /)",
+      "Shell(sudo rm)",
+      "Write(safety/**)",
+      "Write(.git/**)",
+      "Write(.github/workflows/**)"
+    ],
+    "allow": [
+      "Read(**)",
+      "Shell(git status)",
+      "Shell(git diff)",
+      "Shell(git log)",
+      "Shell(npm *)",
+      "Shell(python *)",
+      "Shell(pytest *)",
+      "Shell(gh pr view *)",
+      "Shell(gh pr comment *)"
+    ]
+  },
+  "auto_approve": false,
+  "require_confirmation": ["delete", "modify_production", "external_network"]
+}

@@ -1,0 +1,184 @@
+# Original Path: Cor.12/Cor.12.txt
+
+# Categories: CORE_L2, FINANCE_BIZ, INFRA_L4_L5
+
+Cor.12
+
+“Short answer: it’s very buildable with today’s radios and GPUs, but there are three “hard” cliffs—(1) vehicle OEM access (especially Tesla), (2) safety-critical validation, and (3) at-scale RF reliability. If you aim for a staged rollout (aftermarket + pilot corridors first), you can stand up a real mesh in ~6–9 months and city-scale in 18–24 months.
+
+Below is the no-fluff breakdown: what’s involved, difficulty by subsystem, realistic timelines, teams, and money.
+
+⸻
+
+What you’re building (scope)
+
+Goal: a decentralized V2V/V2X mesh where GPU-equipped cars exchange BEACON/EVENT/MAPDELTA/CONSENSUS packets, apply attention-locality reasoning at the edge, and cut FSD reaction latency from ~250 ms → 90 ms—without a central controller. (ARMP protocol, ShadowTag attestation, tower GPUs optional).
+
+⸻
+
+1. On-vehicle client (OTA)
+
+What: Runs on vehicle compute (Tesla HW5/HW6, or an attached edge box). Handles radios, signing, gossip, local planner hooks.
+
+Major pieces
+• V2X link drivers: PC5/NR-V2X (3GPP), Wi-Fi Direct fallback.
+• Mesh: gossip + geo-TTL + k-of-n CONSENSUS.
+• Safety & crypto: Ed25519 in TEE/TPM, nonce/replay guard, revocation.
+• Local reasoning: attention-locality filter (cuts traffic by ~40%), event compression (LZ4), CRDT maplets.
+
+Difficulty: ★★★★☆ (hard)
+• Tesla: closed stack; no public API for low-level driving loop. You’ll likely start with an aftermarket compute module (12 V, CAN/CAN-FD + Ethernet, PC5 radio, small GPU like Orin NX or L4), then pursue OEM JVs.
+• Real-time constraints + safety hooks make this non-trivial.
+
+Team & time:
+• 6–8 senior engineers (embedded + networking + crypto + Rust).
+• MVP 3–4 months on an aftermarket box; OEM integration 9–18 months.
+
+Cost: $1.5–$2.5M/yr team + $300–600k pilots hardware.
+
+⸻
+
+2. Radios & transport (C-V2X / NR-V2X)
+
+What: Direct sidelink (no tower) for 2–5 ms hop latency, 300–1000 m range.
+
+Difficulty: ★★★☆☆ (medium)
+• Modems exist (Quectel/Qualcomm). Biggest lift is regulatory + spectrum (DSRC/C-V2X regional rules) and interference tests.
+
+Time: 2–3 months to stable drivers; 6+ months for robust field behavior.
+Cost: $150–300k modems/antennas/test gear; field testing vans.
+
+⸻
+
+3. Wire protocol (ARMP v1.0)
+
+What: BEACON/EVENT/MAPDELTA/CONSENSUS/REVOCATION; protobuf framing; replay guard; geo-scoped TTLs; burst scheduling windows.
+
+Difficulty: ★★☆☆☆ (straightforward)
+• Pure software; we already have the spec outline.
+• Hard part is RF contention tuning and avoiding broadcast storms.
+
+Time: 6–8 weeks to v1.0 + interop tests.
+Cost: team time only.
+
+⸻
+
+4. Security & identity (ShadowTag)
+
+What: Per-node keys in TEE/TPM, rotating pseudonyms, revocation lists, distance-bounding hints, signed evidence to audit vault.
+
+Difficulty: ★★★★☆ (hard where it matters)
+• Key issuance, tamper-resistant storage, and revocation propagation must be bulletproof; otherwise Sybils/spam ruin the mesh.
+
+Time: 2–3 months prototype; 6–9 months hardened.
+Cost: $400–700k engineering + HSM/PKI ops.
+
+⸻
+
+5. Edge reasoning & compression (the “GPU” win)
+
+What: Attention-locality, ZeroMerge-style KV compression, PRESERVE-style prefetch, MemServe-style shared cache at towers.
+
+Difficulty: ★★★☆☆ (medium)
+• We’re not inventing kernels; we’re integrating known methods.
+• Biggest risk is on-vehicle compute budget and thermal limits.
+
+Time: 8–12 weeks to show 2× tokens/$ on CoreWeave pods; 3–4 months to prune for in-car boxes.
+Cost: $0–$250k compute (credits can cover), 3–4 ML/sys engineers.
+
+⸻
+
+6. Mapping & CRDTs (MAPDELTA)
+
+What: Merge-only maplets for work zones/hazards; conflict-free updates between cars and roadside units; Nowgrep indexing.
+
+Difficulty: ★★★☆☆ (medium)
+• Lots of edge cases; correctness beats speed.
+
+Time: 2–3 months MVP; continuous refinement.
+Cost: 2–3 engineers; $300k/yr.
+
+⸻
+
+7. Safety moderation (Google Content Safety + Hive)
+
+What: Filters model outputs & shared media before persistence; writes audit to ShadowTag.
+
+Difficulty: ★★☆☆☆ (easy–medium)
+Time: 1–2 weeks to wire APIs; 4–6 weeks to tune thresholds.
+Ops: ~$110k–$135k/month at scale (can start far lower in pilots).
+
+⸻
+
+8. Validation & certification
+
+What: SIL/HIL rigs; closed-course tests; data for regulators/insurers; MIB/interpretability CI, failure-mode catalogs.
+
+Difficulty: ★★★★★ (very hard)
+• Not just “it works”—prove it fails safely. This is the longest pole.
+
+Time: 6–12 months iterative; ongoing thereafter.
+Cost: $2–5M for serious test program (tracks, safety drivers, insurance).
+
+⸻
+
+Realistic timeline (phased)
+
+0–90 days (pilotable)
+• Aftermarket in-car box + PC5 radio + ARMP v0.9.
+• Gossip + BEACON/EVENT/REVOCATION stable; ShadowTag signing.
+• CoreWeave tower caches; Python sim + field logs in two test corridors.
+• KPI: ≤90 ms corridor alerts; ≥60% reduction in staged intersection violations in closed-course drills.
+
+3–9 months (city pilot)
+• CONSENSUS + MAPDELTA CRDT live; attention-locality in client.
+• 500–2,000 vehicles (mixed fleet: company cars, volunteer drivers, rideshare partners).
+• KPI: –30–50% rear-end incidents on pilot corridors; –8–12% travel-time variance.
+
+12–18 months (regional scale)
+• 20–50k vehicles; 200–500 roadside/tower units.
+• Insurer partnership for premium credits; city DoT API live.
+• KPI: –15–25% corridor delay; –40–60% serious collisions; 2–4% energy savings.
+
+18–24 months (OEM JV)
+• Begin native integrations (non-Tesla first); pursue Tesla via Starlink edge verification and non-driving-loop features until formal JV.
+
+⸻
+
+Money (build + first year pilots)
+• Core engineering (12–18 FTEs): $3–5M/yr
+• RF & vehicles (hardware, test, insurance): $1–2M
+• Safety/certification program: $2–5M
+• Edge/tower infra (credits help): $0.2–$1M
+Total Y1/Y2: $6–12M gets you through a credible multi-city pilot.
+
+⸻
+
+What’s genuinely hard vs. tractable
+
+Hard
+• OEM hooks (Tesla): Without an agreement, you cannot alter the driving loop; you can run sidecar sensing + warnings + signed evidence and still deliver value (insurance, city feeds, FSD verification).
+• Safety certification: The difference between “cool demo” and “approved system” is millions of miles of evidence and robust fail-safes.
+• RF reality: Urban canyons, interference, holiday traffic—requires aggressive backoff, rate control, and geo-scoped gossip.
+
+Tractable
+• Protocol, crypto, gossip, compression, attention-locality, MemServe-like caching, moderation (Google/Hive).
+• Aftermarket deployments for mixed fleets (logistics, ride-hail) to gather the miles regulators need.
+
+⸻
+
+Cut-to-the-chase plan
+• Start aftermarket: ship an AiYou “edge puck” (Orin NX + PC5 + ShadowTag TEE) with OTA updates.
+• Pilot two corridors with 200–500 vehicles + 10–20 roadside units.
+• Prove three numbers: 1. ≤90 ms median alert latency, 2. ≥60% reduction in staged violations, 3. ≥10% throughput lift during peak.
+• Use those results to secure OEM JVs and insurer credits.
+
+⸻
+
+Bottom line
+
+You can stand up a functioning, safety-meaningful mesh in 6–9 months with aftermarket hardware and today’s radios.
+The “hard mode” (native in-vehicle autonomy + certification) is an 18–24 month climb with $6–12M to get through city pilots and regulatory buy-in.
+The payoff is massive: a structural –160 ms cut in reaction cycles, 40–75% fewer crash types regulators care about, and a multi-billion ARR verification + insurance rail once scaled.”
+
+<next>

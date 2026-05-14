@@ -1,0 +1,322 @@
+{
+  "playbook": {
+    "name": "AiYouJR Governance Framework",
+    "version": "1.0.0",
+    "description": "Three-layer control model with Army Risk Management integration",
+    "updated": "2025-11-15"
+  },
+  "governance": {
+    "layers": {
+      "purpose": {
+        "description": "Strategic objectives and mission alignment",
+        "principles": [
+          "Developer productivity (decision tracking, cache management)",
+          "Privacy-first architecture (local-only, no telemetry)",
+          "Compliance automation (SOC2, ISO27001, NIST 800-53)",
+          "Open-source transparency (GitHub public repo)"
+        ],
+        "metrics": [
+          "User adoption rate (GitHub stars, installs)",
+          "Decision logging frequency (cache writes/day)",
+          "Compliance coverage (% controls implemented)"
+        ]
+      },
+      "reason": {
+        "description": "Risk assessment and decision validation",
+        "framework": "Army Risk Management (AR 385-10)",
+        "process": [
+          "Identify hazards (security, privacy, compliance risks)",
+          "Assess hazards (likelihood × severity matrix)",
+          "Develop controls (preventive, detective, corrective)",
+          "Implement controls (automated via CI/CD)",
+          "Supervise and evaluate (monitoring, alerts)"
+        ],
+        "risk_matrix": {
+          "critical": {
+            "examples": [
+              "Data exfiltration (external API calls)",
+              "Credential leakage (secrets in logs)",
+              "Compliance violations (SOC2 control gaps)"
+            ],
+            "response": "Block via Brakes layer, escalate to governance team"
+          },
+          "high": {
+            "examples": [
+              "Unencrypted cache data",
+              "Missing audit trails",
+              "Inadequate access controls"
+            ],
+            "response": "Require mitigation plan, implement within 30 days"
+          },
+          "medium": {
+            "examples": [
+              "Suboptimal BM25 scoring",
+              "Cache size limits exceeded",
+              "Documentation gaps"
+            ],
+            "response": "Schedule for next sprint, track in backlog"
+          },
+          "low": {
+            "examples": ["Minor UI inconsistencies", "Non-critical performance optimizations"],
+            "response": "Accept risk, revisit during regular reviews"
+          }
+        }
+      },
+      "brakes": {
+        "description": "Hard stops and safety gates",
+        "prohibited_patterns": [
+          {
+            "pattern": "requests\\.get\\((?!http://127\\.0\\.0\\.1)",
+            "reason": "External HTTP calls violate privacy-first principle",
+            "exception": "Gemini CLI official APIs only (if approved)"
+          },
+          {
+            "pattern": "eval\\(|exec\\(",
+            "reason": "Dynamic code execution security risk",
+            "exception": "None - refactor to use safe alternatives"
+          },
+          {
+            "pattern": "os\\.system\\(|subprocess\\.call\\(",
+            "reason": "Command injection risk without proper validation",
+            "exception": "Allowed in extension.yaml handlers (sandboxed)"
+          },
+          {
+            "pattern": "password|secret|api_key.*=.*[\"'][^\"']+[\"']",
+            "reason": "Hardcoded credentials",
+            "exception": "Test fixtures only (must be fake/example values)"
+          }
+        ],
+        "required_checks": [
+          {
+            "name": "YAML/JSON validation",
+            "tool": "yamllint, jsonlint",
+            "gate": "pre-commit"
+          },
+          {
+            "name": "Privacy enforcement",
+            "tool": "grep -E (prohibited patterns)",
+            "gate": "CI/CD pipeline"
+          },
+          {
+            "name": "Security scan",
+            "tool": "bandit (Python), semgrep",
+            "gate": "PR review"
+          },
+          {
+            "name": "Compliance mapping",
+            "tool": "Manual review + playbook alignment",
+            "gate": "Monthly governance review"
+          }
+        ],
+        "emergency_procedures": {
+          "security_incident": [
+            "Immediately halt deployments",
+            "Isolate affected components",
+            "Notify users via GitHub Security Advisory",
+            "Publish post-mortem within 72 hours"
+          ],
+          "compliance_failure": [
+            "Document gap in compliance/$framework/gaps.md",
+            "Develop remediation plan with timeline",
+            "Report to governance team",
+            "Track in playbook.json updates"
+          ]
+        }
+      }
+    }
+  },
+  "routines": {
+    "daily": [
+      {
+        "name": "Health check",
+        "command": "gemini run 'aiyou status'",
+        "description": "Verify GPTRAM service and extension availability"
+      }
+    ],
+    "weekly": [
+      {
+        "name": "Cache cleanup",
+        "command": "sqlite3 gptram.sqlite 'DELETE FROM cache WHERE ts < strftime(\"%s\", \"now\", \"-90 days\")'",
+        "description": "Remove cache entries older than 90 days"
+      },
+      {
+        "name": "Decision log review",
+        "command": "tail -50 decisions.log",
+        "description": "Review recent decisions for patterns/insights"
+      }
+    ],
+    "monthly": [
+      {
+        "name": "Governance review",
+        "command": "cat playbook.json | jq '.governance.layers'",
+        "description": "Review and update governance layers"
+      },
+      {
+        "name": "Compliance audit",
+        "command": "find compliance/ -name 'controls.md' -exec grep -E '^- \\[ \\]' {} +",
+        "description": "Identify incomplete compliance controls"
+      },
+      {
+        "name": "Risk reassessment",
+        "command": "Review risk_matrix and update probabilities/impacts",
+        "description": "Update risk matrix based on new threats/vulnerabilities"
+      }
+    ],
+    "on_release": [
+      {
+        "name": "Version bump",
+        "command": "Update version in extension.yaml, playbook.json, tools/gptram_service.py",
+        "description": "Synchronize version numbers across all artifacts"
+      },
+      {
+        "name": "Changelog generation",
+        "command": "git log --oneline $(git describe --tags --abbrev=0)..HEAD > CHANGELOG.md",
+        "description": "Generate changelog from commit history"
+      },
+      {
+        "name": "Security scan",
+        "command": "bandit -r tools/ && semgrep --config auto .",
+        "description": "Final security validation before release"
+      },
+      {
+        "name": "GitHub release",
+        "command": "gh release create v$VERSION --generate-notes",
+        "description": "Create GitHub release with auto-generated notes"
+      }
+    ]
+  },
+  "compliance_mappings": {
+    "soc2": {
+      "CC1.1": {
+        "control": "Governance structure defined",
+        "evidence": "playbook.json (this file)",
+        "status": "implemented"
+      },
+      "CC2.1": {
+        "control": "Decision logging system",
+        "evidence": "tools/gptram_service.py + decisions.log",
+        "status": "implemented"
+      },
+      "CC3.1": {
+        "control": "Risk assessment process",
+        "evidence": "governance.layers.reason.risk_matrix",
+        "status": "implemented"
+      },
+      "CC4.1": {
+        "control": "Monitoring activities",
+        "evidence": "routines.daily.health_check + CI/CD pipeline",
+        "status": "implemented"
+      },
+      "CC5.1": {
+        "control": "Control activities",
+        "evidence": "governance.layers.brakes.prohibited_patterns",
+        "status": "implemented"
+      }
+    },
+    "iso27001": {
+      "A.5.1": {
+        "control": "Information security policies",
+        "evidence": "README.md + extension.yaml (privacy config)",
+        "status": "implemented"
+      },
+      "A.8.1": {
+        "control": "Access control",
+        "evidence": "Local-only binding (127.0.0.1), key-based cache",
+        "status": "implemented"
+      },
+      "A.12.4": {
+        "control": "Event logging",
+        "evidence": "decisions.log + cache.ts timestamps",
+        "status": "implemented"
+      }
+    },
+    "nist800-53": {
+      "AC-3": {
+        "control": "Access Enforcement",
+        "evidence": "GPTRAM service (localhost only)",
+        "status": "implemented"
+      },
+      "AU-2": {
+        "control": "Audit Events",
+        "evidence": "decisions.log (append-only)",
+        "status": "implemented"
+      },
+      "CM-2": {
+        "control": "Baseline Configuration",
+        "evidence": "extension.yaml + playbook.json (version controlled)",
+        "status": "implemented"
+      },
+      "RA-3": {
+        "control": "Risk Assessment",
+        "evidence": "governance.layers.reason.process",
+        "status": "implemented"
+      }
+    }
+  },
+  "decision_authority": {
+    "operational": {
+      "scope": "Day-to-day technical decisions",
+      "approver": "Development team",
+      "examples": [
+        "BM25 scoring parameter tuning",
+        "Cache retention policy adjustments",
+        "Documentation updates"
+      ],
+      "logging": "Required via 'aiyou:log:append'"
+    },
+    "tactical": {
+      "scope": "Feature additions, architectural changes",
+      "approver": "Technical lead + governance review",
+      "examples": [
+        "New extension commands",
+        "Compliance framework additions",
+        "Third-party integrations (if approved)"
+      ],
+      "logging": "Required + risk assessment"
+    },
+    "strategic": {
+      "scope": "Mission changes, governance updates",
+      "approver": "Founder/executive team",
+      "examples": [
+        "Pivot from open-source to proprietary",
+        "Add external API dependencies",
+        "Change privacy-first stance"
+      ],
+      "logging": "Required + governance team vote + public announcement"
+    }
+  },
+  "privacy_commitments": {
+    "data_residency": "All data stored locally (gptram.sqlite, decisions.log)",
+    "telemetry": "None - zero analytics, zero tracking",
+    "external_calls": "None - local-only operation (127.0.0.1 binding)",
+    "user_consent": "Not required (no data collection)",
+    "right_to_delete": "User controls all data (rm gptram.sqlite decisions.log)",
+    "transparency": "Open-source (public GitHub repo, Apache 2.0 license)"
+  },
+  "security_posture": {
+    "threat_model": {
+      "in_scope": [
+        "Local privilege escalation",
+        "SQL injection (GPTRAM cache)",
+        "Command injection (extension handlers)",
+        "Secrets leakage (logs, cache)"
+      ],
+      "out_of_scope": [
+        "Network-based attacks (no network exposure)",
+        "DDoS (localhost only)",
+        "Man-in-the-middle (no TLS needed for localhost)"
+      ]
+    },
+    "mitigations": {
+      "sql_injection": "Parameterized queries (sqlite3 placeholder syntax)",
+      "command_injection": "Input validation in extension.yaml handlers",
+      "secrets_leakage": "Prohibited patterns (Brakes layer) + CI/CD scanning",
+      "privilege_escalation": "Run as unprivileged user, no sudo requirements"
+    },
+    "incident_response": {
+      "contact": "security@aiyoulabs.com (when available)",
+      "sla": "Acknowledge within 24h, patch within 72h (critical), 7 days (high)",
+      "disclosure": "Coordinated disclosure (90-day embargo), GitHub Security Advisory"
+    }
+  }
+}

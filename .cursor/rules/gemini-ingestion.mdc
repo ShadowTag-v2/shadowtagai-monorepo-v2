@@ -1,0 +1,249 @@
+# Gemini Ingestion Layer - AI Development Rules
+
+## Core Development Principles
+
+### Code Quality & Style
+- Always use static imports (Python: `from x import y`; JS/TS: `import x from '...'`)
+- Always use strict typing (Python: type hints; TypeScript: explicit types, never `any`)
+- Keep code minimal; place error handling at the caller. Avoid blanket try/except
+- Prefer pure functions, deterministic outputs, and single-responsibility modules
+- If asked to deviate from these rules, echo the reason in a one-line comment
+
+## Gemini Ingestion Layer Specific Rules
+
+### 1. Ethical Compliance (CRITICAL)
+- **Robots.txt**: Every crawler MUST check and respect robots.txt before scraping
+  - Use `robotexclusionrulesparser` or equivalent
+  - Cache robots.txt for 24 hours max
+  - Fail safe: if robots.txt can't be fetched, assume disallowed
+
+- **Rate Limiting**: ALL web requests MUST be rate-limited
+  - Default: 1 request per second per domain
+  - Use `@rate_limit` decorator or `RateLimiter` class
+  - Implement exponential backoff on errors (2s, 4s, 8s, 16s max)
+
+- **User-Agent Transparency**: MUST identify as a bot
+  - Format: "AiYou-Bot/1.0 (+https://aiyou.ai/bot-info) [Contact]"
+  - Never spoof legitimate browsers
+  - Include contact information for webmasters
+
+- **Data Privacy**: Respect PII and opt-outs
+  - No collection of passwords, SSNs, financial data
+  - Honor Do-Not-Track headers
+  - Implement data retention limits (90 days default)
+
+### 2. Quality Gates
+- **Minimum Ingestion Target**: ≥100 items/day
+  - Track daily metrics in monitoring dashboard
+  - Alert if < 80 items/day for 2 consecutive days
+
+- **Source Diversity**: Minimum 4 active sources
+  - Required: YouTube, Twitter/X, News APIs, RSS feeds
+  - Optional: Reddit, HackerNews, Medium, Podcasts
+  - Each source must contribute ≥5% of daily volume
+
+- **Cost Efficiency**: Target $0.0026 per item
+  - Monthly budget: ~$77 (for ~30,000 items)
+  - Alert if cost/item > $0.004 for 3 consecutive days
+  - Log all API costs in structured format
+
+- **Relevance Score**: ≥0.70 average relevance
+  - Use Gemini 2.0 Pro for scoring (0.0-1.0 scale)
+  - Items < 0.60 should be flagged for source review
+  - Track relevance by source to identify low-quality feeds
+
+### 3. Tier Classification
+Every ingested item MUST be classified into tiers:
+
+- **Tier 1** (Target: 20% of daily volume)
+  - High-value, verified sources
+  - Examples: Official channels, peer-reviewed content
+  - Assign score: 0.90-1.00
+
+- **Tier 2** (Target: 50% of daily volume)
+  - Medium-value, reliable sources
+  - Examples: Established news outlets, popular creators
+  - Assign score: 0.70-0.89
+
+- **Tier 3** (Max: 30% of daily volume)
+  - Low-value, supplementary sources
+  - Examples: Aggregators, unverified content
+  - Assign score: 0.60-0.69
+
+Implementation:
+```python
+class IngestedItem:
+    tier: Literal[1, 2, 3]  # REQUIRED field
+    relevance_score: float  # 0.0-1.0, determines tier
+    source: str            # Must track origin
+```
+
+### 4. Runtime Efficiency
+- **Target Runtime**: ≤45 minutes/night (for batch cron job)
+  - Run time: 2:00 AM - 2:45 AM (nightly)
+  - Hard timeout: 60 minutes (fail-safe)
+
+- **Resource Limits** (GKE CronJob):
+  - CPU: 2 cores (request: 1 core, limit: 2 cores)
+  - Memory: 4GB (request: 2GB, limit: 4GB)
+  - Ephemeral storage: 10GB
+
+- **Per-Source Timeout**: 5 minutes max
+  - If a source exceeds timeout, skip and continue
+  - Log timeout events for later investigation
+
+- **Parallelization**: Use async/await for I/O-bound tasks
+  - Max concurrent requests: 10
+  - Use `asyncio.gather` with error handling
+
+- **Progress Tracking**: Log completion percentage every 5 minutes
+
+### 5. Multi-Source Architecture
+Each source MUST implement:
+
+```python
+from abc import ABC, abstractmethod
+
+class SourceCollector(ABC):
+    """Base class for all source collectors."""
+
+    @abstractmethod
+    async def collect(self) -> List[IngestedItem]:
+        """Collect items from source. MUST include retry logic."""
+        pass
+
+    @abstractmethod
+    async def check_health(self) -> bool:
+        """Health check before collection."""
+        pass
+
+    @property
+    @abstractmethod
+    def source_name(self) -> str:
+        """Unique source identifier."""
+        pass
+```
+
+Required sources:
+- `YouTubeCollector` - YouTube API v3
+- `TwitterCollector` - Twitter/X API v2 (or scraper if API unavailable)
+- `NewsAPICollector` - NewsAPI.org or similar
+- `RSSCollector` - Generic RSS/Atom feed parser
+
+Fallback/Retry Logic:
+- Retry failed requests 3 times with exponential backoff
+- If all retries fail, log error and continue with other sources
+- Track failure rate per source (alert if >20% failure)
+
+### 6. AM Briefing Delivery
+The pipeline's output is the morning briefing:
+
+- **Delivery Time**: 6:00 AM local time (configurable)
+  - Generate briefing at end of cron job
+  - Store in database + send notification
+
+- **Format**: Markdown with structured sections
+  ```markdown
+  # Daily Intelligence Briefing - [Date]
+
+  ## Summary
+  - Total items: [count]
+  - Sources active: [count]/[total]
+  - Average relevance: [score]
+
+  ## Tier 1 Items (High Value)
+  [Items sorted by relevance score]
+
+  ## Tier 2 Items (Medium Value)
+  [Items sorted by relevance score]
+
+  ## Tier 3 Items (Supplementary)
+  [Items sorted by relevance score]
+
+  ## Source Health
+  - ✅ Source: [items collected]
+  - ⚠️ Source: [partial failure]
+  - ❌ Source: [complete failure]
+  ```
+
+- **Completeness Check**: Before delivery, verify:
+  - All configured sources were attempted
+  - Minimum item threshold met (≥100 items)
+  - At least 3 sources successful
+  - No critical errors in logs
+
+### 7. Error Handling & Observability
+- **Structured Logging**: Use JSON logs with context
+  ```python
+  logger.info("item_collected", extra={
+      "source": source_name,
+      "tier": tier,
+      "cost": api_cost,
+      "relevance": score
+  })
+  ```
+
+- **Metrics to Track**:
+  - Items collected (by source, by tier)
+  - API costs (by source, total)
+  - Relevance scores (distribution)
+  - Runtime (total, per source)
+  - Error rates (by source, by error type)
+
+- **Alerting Thresholds**:
+  - Critical: Pipeline fails to complete
+  - Warning: < 80 items collected in a day
+  - Warning: Cost/item > $0.004 for 3 days
+  - Warning: Any source fails for 2 consecutive days
+
+### 8. Testing Requirements
+- **Unit Tests**: ≥80% code coverage
+  - Test each SourceCollector independently
+  - Mock external API calls
+
+- **Integration Tests**: Test end-to-end pipeline
+  - Use test fixtures for API responses
+  - Validate tier classification logic
+
+- **Ethics Tests**: Verify compliance
+  - Test robots.txt parsing
+  - Verify rate limiting (use `time.time()` assertions)
+  - Validate User-Agent formatting
+
+### 9. Code Review Checklist
+Before merging any PR, verify:
+- [ ] All crawler functions have `@rate_limit` decorator
+- [ ] robots.txt checking is implemented and tested
+- [ ] User-Agent clearly identifies as bot
+- [ ] All ingested items have `tier` classification
+- [ ] Source tracking is present on all items
+- [ ] API costs are logged
+- [ ] Error handling includes retry logic
+- [ ] Tests cover new functionality (≥80% coverage)
+- [ ] No hardcoded secrets (use environment variables)
+- [ ] Logging includes structured context
+
+### 10. Performance Optimization
+- **Caching**: Cache external API responses (1 hour TTL)
+- **Batch Processing**: Group API calls when possible
+- **Database**: Use bulk inserts, not row-by-row
+- **Async I/O**: Use `asyncio` for concurrent requests
+- **Profiling**: Run `py-spy` on slow sources (>2 min runtime)
+
+---
+
+## Deviation Policy
+If you need to deviate from any rule above:
+1. Document the reason in a code comment
+2. Create a tracking issue for technical debt
+3. Set a remediation deadline (max 2 sprints)
+4. Get approval from tech lead
+
+Example:
+```python
+# DEVIATION: Skipping robots.txt check for internal API (not a web crawl)
+# Issue: #123 - Refactor to use consistent ethical checking
+# Deadline: Sprint 24
+async def fetch_internal_data():
+    ...
+```

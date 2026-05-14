@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'release-manager-blue'
+    static_configs:
+      - targets: ['api_blue:8000']
+        labels:
+          instance: 'blue'
+          environment: 'development'
+
+  - job_name: 'release-manager-green'
+    static_configs:
+      - targets: ['api_green:8000']
+        labels:
+          instance: 'green'
+          environment: 'development'

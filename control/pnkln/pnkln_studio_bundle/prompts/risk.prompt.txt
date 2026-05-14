@@ -1,0 +1,3 @@
+Top-5 risks with likelihood (1-5) and mitigation. Output JSON array: risk, likelihood, impact, mitigation.
+Input:
+{{input}}

@@ -1,0 +1,96 @@
+version: 1
+canonical-root: ShadowTag-v2/Monorepo-Uphillsnowball
+
+workspace:
+  name: Monorepo-Uphillsnowball
+  root: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
+  policy: latest-only
+  source_of_truth: monorepo_manifest.yaml
+
+# These are folded-in components — integrated sub-paths of the monorepo.
+# They are NOT canonical roots. The monorepo owns them.
+folded_in_components:
+  aiyou_fastapi_services:
+    status: folded-in
+    path: apps/aiyou_stack/aiyou-fastapi-services
+    notes: Folded-in component. Not a root peer.
+
+  cosmic_crab_payload:
+    status: folded-in
+    path: apps/aiyou_stack/cosmic-crab-payload
+    notes: Folded-in component. Not a root peer.
+
+  pipeline:
+    status: folded-in
+    path: apps/aiyou_stack/Pipeline
+    notes: Folded-in component. Not a root peer.
+
+  nascent_apollo:
+    status: folded-in
+    path: apps/aiyou_stack/nascent-apollo
+    notes: Folded-in component. Not a root peer.
+
+control_plane:
+  canonical_mcp_config: antigravity-mcp-config.json
+  deprecated_mcp_configs:
+    - /Users/pikeymickey/.gemini/antigravity/mcp_config.json
+    - .vscode/cline_mcp_settings.json
+
+products:
+  counselconduit:
+    root: apps/counselconduit
+    runtime: Google Cloud
+    model: gemini-3.1-flash-lite-preview
+    project: shadowtag-omega-v4
+    business_role: mvp-commercial-wedge
+
+  uphillsnowball:
+    root: labs/uphillsnowball
+    runtime: local Apple Silicon
+    business_role: internal-rd-lab
+
+# ── Intelligence Layer ──────────────────────────────────────────────────────
+intelligence:
+  aegaeon_protocol:
+    root: core/aegaeon
+    description: >
+      Gemini Context Cache Slab + 7-instance Swarm Router.
+      Maps Aegaeon VRAM pooling to Gemini Context Caching API (~84% token cost reduction).
+    components:
+      - core/aegaeon/context_cache.py   # Master Memory Slab (75% input discount)
+      - core/aegaeon/swarm_router.py    # Fast Path (1-5) / Heavy Lift (6-7)
+    model: gemini-3.1-flash-lite-preview
+    replaces: gptram
+
+  sovereign_mlx_protocol:
+    root: core/sovereign_mlx
+    description: >
+      Apple Silicon KV-cache slab + ANE bridge.
+      Loads model ONCE into M1 Max Unified Memory; all requests share pre-built KV tensors.
+    components:
+      - core/sovereign_mlx/kv_cache_slab.py   # .beads → KV slab via llama.cpp/Metal
+      - core/sovereign_mlx/ane_bridge.py       # async multi-task dispatcher
+    runtime: local Apple Silicon (Metal GPU, ANE)
+
+  gemini_agent_swarm:
+    root: scripts/gemini_agent_swarm.py
+    description: >
+      Gemini-native multi-agent loop replacing flyingmonkeys.
+      Lineage: karpathy/autoresearch (research loop) + jimmc414/Kosmos (multimodal context)
+               + bio-xyz/BioAgents (role specialisation + handoff protocol).
+    roles: [research, synthesize, critique, architect]
+    replaces: flyingmonkeys
+
+  corpus_intelligence:
+    root: core/rag_evolve.py
+    description: FTS5 search across 86K+ extractions; gatekeeper for Judge 6.
+
+# ── Tooling ─────────────────────────────────────────────────────────────────
+tooling:
+  gitnexus:
+    root: apps/gitnexus
+    description: >
+      GitNexus codebase knowledge graph (tree-sitter AST, BM25+semantic search,
+      blast-radius impact analysis). Exposed as MCP server to Claude Code.
+    mcp_entry: gitnexus (see .mcp.json)
+    setup: cd apps/gitnexus && bash setup.sh

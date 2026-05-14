@@ -1,0 +1,2684 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+Research Director Agent - Master orchestrator for autonomous research (Phase 7).
+
+This agent coordinates all other agents to execute the full research cycle:
+Research Question → Hypotheses → Experiments → Results → Analysis → Refinement → Iteration
+
+Uses message-based async coordination with all specialized agents.
+
+Async Architecture (Issue #66 fix):
+- execute(), _execute_next_action(), _do_execute_action() are now async
+- All _send_to_* methods are now async
+- Threading locks replaced with asyncio.Lock for async-safe operation
+"""
+
+from typing import Dict, Any, Optional, List
+from datetime import datetime
+import logging
+import asyncio
+import threading
+import time
+from contextlib import contextmanager
+
+from kosmos.agents.base import BaseAgent, AgentMessage, MessageType
+from kosmos.core.rollout_tracker import RolloutTracker
+from kosmos.core.workflow import ResearchWorkflow, ResearchPlan, WorkflowState, NextAction
+from kosmos.core.convergence import ConvergenceDetector, StoppingDecision
+from kosmos.core.llm import get_client
+from kosmos.core.stage_tracker import get_stage_tracker
+from kosmos.world_model import get_world_model, Entity, Relationship
+from kosmos.db import get_session
+from kosmos.db.operations import get_hypothesis, get_experiment, get_result
+from kosmos.agents.skill_loader import SkillLoader
+
+logger = logging.getLogger(__name__)
+
+# Error recovery configuration
+MAX_CONSECUTIVE_ERRORS = 3  # Halt after this many failures in a row
+ERROR_BACKOFF_SECONDS = [2, 4, 8]  # Exponential backoff delays
+ERROR_RECOVERY_LOG_PREFIX = "[ERROR-RECOVERY]"
+
+# Infinite loop prevention (Issue #51)
+MAX_ACTIONS_PER_ITERATION = 50  # Force convergence if exceeded
+
+
+class ResearchDirectorAgent(BaseAgent):
+    """
+    Master orchestrator for autonomous research.
+
+    Coordinates:
+    - HypothesisGeneratorAgent: Generate and refine hypotheses
+    - ExperimentDesignerAgent: Design experiment protocols
+    - Executor: Run experiments
+    - DataAnalystAgent: Interpret results
+    - HypothesisRefiner: Refine hypotheses based on results
+    - ConvergenceDetector: Detect when research is complete
+
+    Uses message-based coordination for async agent communication.
+    """
+
+    def __init__(self, research_question: str, domain: str | None = None, agent_id: str | None = None, config: dict[str, Any] | None = None):
+        """
+        Initialize Research Director.
+
+        Args:
+            research_question: The research question to investigate
+            domain: Optional domain (biology, physics, etc.)
+            agent_id: Optional agent ID
+            config: Optional configuration (max_iterations, stopping_criteria, etc.)
+        """
+        super().__init__(agent_id=agent_id, agent_type="ResearchDirector", config=config or {})
+
+        self.research_question = research_question
+        self.domain = domain
+
+        # Domain validation and logging (Issue #51)
+        self._validate_domain()
+
+        # Load domain-specific skills (Issue #51 - skills integration)
+        self.skills: str | None = None
+        self._load_skills()
+
+        # Dataset path for experiments
+        self.data_path = self.config.get("data_path")
+
+        # Configuration
+        self.max_iterations = self.config.get("max_iterations", 10)
+        self.max_runtime_hours = self.config.get("max_runtime_hours", 12.0)  # Issue #56
+        self.mandatory_stopping_criteria = self.config.get("mandatory_stopping_criteria", ["iteration_limit", "no_testable_hypotheses"])
+        self.optional_stopping_criteria = self.config.get("optional_stopping_criteria", ["novelty_decline", "diminishing_returns"])
+
+        # Initialize research plan and workflow
+        self.research_plan = ResearchPlan(research_question=research_question, domain=domain, max_iterations=self.max_iterations)
+
+        self.workflow = ResearchWorkflow(initial_state=WorkflowState.INITIALIZING, research_plan=self.research_plan)
+
+        # Claude client for research planning and decision-making
+        self.llm_client = get_client()
+
+        # Initialize database if not already initialized
+        from kosmos.db import init_from_config
+
+        try:
+            init_from_config()
+        except RuntimeError as e:
+            # Database already initialized - only log if it's a different error
+            if "already initialized" not in str(e).lower():
+                logger.warning("Database init RuntimeError: %s", e)
+        except Exception as e:
+            logger.warning(f"Database initialization failed: {e}")
+
+        # Agent registry (will be populated during coordination)
+        self.agent_registry: dict[str, str] = {}  # agent_type -> agent_id
+
+        # Lazy-init agent slots for direct-call pattern (Issue #76 extension)
+        self._hypothesis_agent = None
+        self._experiment_designer = None
+        self._code_generator = None
+        self._code_executor = None
+        self._data_provider = None
+        self._data_analyst = None
+        self._hypothesis_refiner = None
+
+        # Message correlation tracking
+        self.pending_requests: dict[str, dict[str, Any]] = {}  # correlation_id -> request_info
+
+        # Strategy effectiveness tracking
+        self.strategy_stats: dict[str, dict[str, Any]] = {
+            "hypothesis_generation": {"attempts": 0, "successes": 0, "cost": 0.0},
+            "experiment_design": {"attempts": 0, "successes": 0, "cost": 0.0},
+            "hypothesis_refinement": {"attempts": 0, "successes": 0, "cost": 0.0},
+            "literature_review": {"attempts": 0, "successes": 0, "cost": 0.0},
+        }
+
+        # Agent rollout tracking (Issue #58)
+        self.rollout_tracker = RolloutTracker()
+
+        # Convergence detector - direct call, not message-based (Issue #76 fix)
+        self.convergence_detector = ConvergenceDetector(
+            mandatory_criteria=self.mandatory_stopping_criteria,
+            optional_criteria=self.optional_stopping_criteria,
+            config={
+                "novelty_decline_threshold": self.config.get("novelty_decline_threshold", 0.3),
+                "novelty_decline_window": self.config.get("novelty_decline_window", 5),
+                "cost_per_discovery_threshold": self.config.get("cost_per_discovery_threshold", 1000.0),
+                "min_experiments_before_convergence": self.config.get("min_experiments_before_convergence", 2),
+                "max_iterations": self.max_iterations,
+            },
+        )
+
+        # Research history
+        self.iteration_history: list[dict[str, Any]] = []
+
+        # Error recovery tracking
+        self._consecutive_errors: int = 0
+        self._error_history: list[dict[str, Any]] = []
+        self._last_error_time: datetime | None = None
+
+        # Runtime tracking (Issue #56)
+        self._start_time: float | None = None
+
+        # Async-safe locks for concurrent operations (Issue #66)
+        # Note: asyncio.Lock is not reentrant, refactored to avoid nested acquisitions
+        self._research_plan_lock = asyncio.Lock()
+        self._strategy_stats_lock = asyncio.Lock()
+        self._workflow_lock = asyncio.Lock()
+        self._agent_registry_lock = asyncio.Lock()
+        # Keep threading locks for backwards compatibility in sync contexts
+        self._research_plan_lock_sync = threading.RLock()
+        self._strategy_stats_lock_sync = threading.Lock()
+        self._workflow_lock_sync = threading.Lock()
+
+        # Concurrent operations support
+        self.enable_concurrent = self.config.get("enable_concurrent_operations", False)
+        self.max_parallel_hypotheses = self.config.get("max_parallel_hypotheses", 3)
+        self.max_concurrent_experiments = self.config.get("max_concurrent_experiments", 4)
+
+        # Initialize ParallelExperimentExecutor if concurrent operations enabled
+        self.parallel_executor = None
+        if self.enable_concurrent:
+            try:
+                from kosmos.execution.parallel import ParallelExperimentExecutor
+
+                self.parallel_executor = ParallelExperimentExecutor(max_workers=self.max_concurrent_experiments)
+                logger.info(f"Parallel execution enabled with {self.max_concurrent_experiments} workers")
+            except ImportError:
+                logger.warning("ParallelExperimentExecutor not available, using sequential execution")
+                self.enable_concurrent = False
+
+        # Initialize AsyncClaudeClient for concurrent LLM calls
+        self.async_llm_client = None
+        if self.enable_concurrent:
+            try:
+                from kosmos.core.async_llm import AsyncClaudeClient
+                import os
+
+                api_key = os.getenv("ANTHROPIC_API_KEY")
+                if api_key:
+                    self.async_llm_client = AsyncClaudeClient(
+                        api_key=api_key,
+                        max_concurrent=self.config.get("max_concurrent_llm_calls", 5),
+                        max_requests_per_minute=self.config.get("llm_rate_limit_per_minute", 50),
+                    )
+                    logger.info("Async LLM client initialized for concurrent operations")
+                else:
+                    logger.warning("ANTHROPIC_API_KEY not set, async LLM disabled")
+            except ImportError:
+                logger.warning("AsyncClaudeClient not available, using sequential LLM calls")
+
+        # Initialize world model for persistent knowledge graph
+        try:
+            self.wm = get_world_model()
+            # Create ResearchQuestion entity
+            question_entity = Entity.from_research_question(
+                question_text=research_question, domain=domain, created_by=f"ResearchDirectorAgent:{self.agent_id}"
+            )
+            self.question_entity_id = self.wm.add_entity(question_entity)
+            logger.info(f"Research question persisted to knowledge graph: {self.question_entity_id}")
+        except Exception as e:
+            logger.warning(f"Failed to initialize world model: {e}. Continuing without graph persistence.")
+            self.wm = None
+            self.question_entity_id = None
+
+        logger.info(
+            f"ResearchDirector initialized for question: '{research_question}' "
+            f"(max_iterations={self.max_iterations}, concurrent={self.enable_concurrent})"
+        )
+
+    def _validate_domain(self):
+        """Validate domain against enabled domains (Issue #51)."""
+        # Default enabled domains if not configured
+        default_domains = ["biology", "physics", "chemistry", "neuroscience"]
+        enabled_domains = self.config.get("enabled_domains", default_domains)
+
+        if self.domain:
+            if self.domain.lower() not in [d.lower() for d in enabled_domains]:
+                logger.warning(
+                    f"[DOMAIN] Domain '{self.domain}' not in enabled domains: {enabled_domains}. "
+                    "Research will proceed but domain-specific features may be limited."
+                )
+            else:
+                logger.info(f"[DOMAIN] Research domain: {self.domain}")
+        else:
+            logger.info("[DOMAIN] No domain specified - using general research mode")
+
+    def _load_skills(self):
+        """Load domain-specific skills for enhanced prompts (Issue #51)."""
+        try:
+            skill_loader = SkillLoader()
+
+            # Load skills based on domain or default research skills
+            if self.domain:
+                self.skills = skill_loader.load_skills_for_task(task_type="research", domain=self.domain, include_examples=False, include_common=True)
+                if self.skills:
+                    logger.info(f"Loaded skills for domain '{self.domain}'")
+                else:
+                    logger.debug(f"No specific skills found for domain '{self.domain}'")
+            else:
+                # Load common research skills
+                self.skills = skill_loader.load_skills_for_task(task_type="research", include_examples=False, include_common=True)
+                if self.skills:
+                    logger.info("Loaded common research skills")
+        except Exception as e:
+            logger.warning(f"Failed to load skills: {e}. Continuing without skill injection.")
+            self.skills = None
+
+    def get_skills_context(self) -> str:
+        """Get skills context for prompt injection."""
+        if self.skills:
+            return f"\n{self.skills}\n"
+        return ""
+
+    # ========================================================================
+    # LIFECYCLE HOOKS
+    # ========================================================================
+
+    def _on_start(self):
+        """Initialize director when started."""
+        logger.info(f"ResearchDirector {self.agent_id} starting research cycle")
+
+        # Start runtime tracking (Issue #56)
+        if self._start_time is None:
+            self._start_time = time.time()
+            logger.info(f"Research started at {datetime.now().isoformat()}, max runtime: {self.max_runtime_hours}h")
+
+        with self._workflow_lock_sync:
+            self.workflow.transition_to(WorkflowState.GENERATING_HYPOTHESES, action="Start research cycle")
+
+    def _check_runtime_exceeded(self) -> bool:
+        """Check if research has exceeded maximum runtime (Issue #56)."""
+        if self._start_time is None:
+            return False
+        elapsed_hours = (time.time() - self._start_time) / 3600
+        return elapsed_hours >= self.max_runtime_hours
+
+    def get_elapsed_time_hours(self) -> float:
+        """Get elapsed research time in hours (Issue #56)."""
+        if self._start_time is None:
+            return 0.0
+        return (time.time() - self._start_time) / 3600
+
+    def _on_stop(self):
+        """Cleanup when stopped."""
+        logger.info(f"ResearchDirector {self.agent_id} stopped")
+
+        # Cleanup async resources
+        if self.async_llm_client:
+            try:
+                asyncio.run(self.async_llm_client.close())
+            except Exception as e:
+                logger.warning(f"Error closing async LLM client: {e}")
+
+    # ========================================================================
+    # THREAD-SAFE CONTEXT MANAGERS
+    # ========================================================================
+
+    @contextmanager
+    def _research_plan_context(self):
+        """Context manager for thread-safe research plan access (sync version)."""
+        with self._research_plan_lock_sync:
+            yield self.research_plan
+
+    @contextmanager
+    def _strategy_stats_context(self):
+        """Context manager for thread-safe strategy stats access (sync version)."""
+        with self._strategy_stats_lock_sync:
+            yield self.strategy_stats
+
+    @contextmanager
+    def _workflow_context(self):
+        """Context manager for thread-safe workflow access (sync version, not used with async)."""
+        # Note: This is only for backwards compatibility with sync code
+        # Async code should use the async lock directly
+        yield self.workflow
+
+    # Async context manager helpers - use asyncio.Lock directly in async code
+    # Example: async with self._research_plan_lock: ...
+
+    # ========================================================================
+    # GRAPH PERSISTENCE HELPERS
+    # ========================================================================
+
+    def _persist_hypothesis_to_graph(self, hypothesis_id: str, agent_name: str = "HypothesisGeneratorAgent"):
+        """
+        Persist hypothesis to knowledge graph with SPAWNED_BY relationship.
+
+        Args:
+            hypothesis_id: ID of hypothesis to persist
+            agent_name: Name of agent that created the hypothesis
+        """
+        if not self.wm or not self.question_entity_id:
+            return  # Graph persistence disabled
+
+        try:
+            with get_session() as session:
+                # Fetch hypothesis from database
+                hypothesis = get_hypothesis(session, hypothesis_id)
+                if not hypothesis:
+                    logger.warning(f"Hypothesis {hypothesis_id} not found in database")
+                    return
+
+                # Convert to Entity and persist
+                entity = Entity.from_hypothesis(hypothesis, created_by=agent_name)
+                entity_id = self.wm.add_entity(entity)
+
+                # Create SPAWNED_BY relationship to research question
+                rel = Relationship.with_provenance(
+                    source_id=entity_id,
+                    target_id=self.question_entity_id,
+                    rel_type="SPAWNED_BY",
+                    agent=agent_name,
+                    generation=hypothesis.generation,
+                    iteration=self.research_plan.iteration_count,
+                )
+                self.wm.add_relationship(rel)
+
+                # If refined from parent, add REFINED_FROM relationship
+                if hypothesis.parent_hypothesis_id:
+                    parent_rel = Relationship.with_provenance(
+                        source_id=entity_id,
+                        target_id=hypothesis.parent_hypothesis_id,
+                        rel_type="REFINED_FROM",
+                        agent=agent_name,
+                        refinement_count=hypothesis.refinement_count,
+                    )
+                    self.wm.add_relationship(parent_rel)
+
+                logger.debug(f"Persisted hypothesis {hypothesis_id} to graph")
+
+        except Exception as e:
+            logger.warning(f"Failed to persist hypothesis {hypothesis_id} to graph: {e}")
+
+    def _persist_protocol_to_graph(self, protocol_id: str, hypothesis_id: str, agent_name: str = "ExperimentDesignerAgent"):
+        """
+        Persist experiment protocol to knowledge graph with TESTS relationship.
+
+        Args:
+            protocol_id: ID of protocol to persist
+            hypothesis_id: ID of hypothesis being tested
+            agent_name: Name of agent that created the protocol
+        """
+        if not self.wm:
+            return
+
+        try:
+            with get_session() as session:
+                # Fetch protocol from database
+                protocol = get_experiment(session, protocol_id)
+                if not protocol:
+                    logger.warning(f"Protocol {protocol_id} not found in database")
+                    return
+
+                # Convert to Entity and persist
+                entity = Entity.from_protocol(protocol, created_by=agent_name)
+                entity_id = self.wm.add_entity(entity)
+
+                # Create TESTS relationship to hypothesis
+                rel = Relationship.with_provenance(
+                    source_id=entity_id, target_id=hypothesis_id, rel_type="TESTS", agent=agent_name, iteration=self.research_plan.iteration_count
+                )
+                self.wm.add_relationship(rel)
+
+                logger.debug(f"Persisted protocol {protocol_id} to graph")
+
+        except Exception as e:
+            logger.warning(f"Failed to persist protocol {protocol_id} to graph: {e}")
+
+    def _persist_result_to_graph(self, result_id: str, protocol_id: str, hypothesis_id: str, agent_name: str = "Executor"):
+        """
+        Persist experiment result to knowledge graph with PRODUCED_BY relationship.
+
+        Args:
+            result_id: ID of result to persist
+            protocol_id: ID of protocol that produced this result
+            hypothesis_id: ID of hypothesis being tested
+            agent_name: Name of agent that created the result
+        """
+        if not self.wm:
+            return
+
+        try:
+            with get_session() as session:
+                # Fetch result from database
+                result = get_result(session, result_id)
+                if not result:
+                    logger.warning(f"Result {result_id} not found in database")
+                    return
+
+                # Convert to Entity and persist
+                entity = Entity.from_result(result, created_by=agent_name)
+                entity_id = self.wm.add_entity(entity)
+
+                # Create PRODUCED_BY relationship to protocol
+                rel = Relationship.with_provenance(
+                    source_id=entity_id, target_id=protocol_id, rel_type="PRODUCED_BY", agent=agent_name, iteration=self.research_plan.iteration_count
+                )
+                self.wm.add_relationship(rel)
+
+                # Create TESTS relationship to hypothesis
+                tests_rel = Relationship.with_provenance(source_id=entity_id, target_id=hypothesis_id, rel_type="TESTS", agent=agent_name)
+                self.wm.add_relationship(tests_rel)
+
+                logger.debug(f"Persisted result {result_id} to graph")
+
+        except Exception as e:
+            logger.warning(f"Failed to persist result {result_id} to graph: {e}")
+
+    def _add_support_relationship(
+        self, result_id: str, hypothesis_id: str, supports: bool, confidence: float, p_value: float = None, effect_size: float = None
+    ):
+        """
+        Add SUPPORTS or REFUTES relationship based on result analysis.
+
+        Args:
+            result_id: ID of result entity
+            hypothesis_id: ID of hypothesis entity
+            supports: True if result supports hypothesis, False if refutes
+            confidence: Confidence score from analyst
+            p_value: Statistical p-value if available
+            effect_size: Effect size if available
+        """
+        if not self.wm:
+            return
+
+        try:
+            rel_type = "SUPPORTS" if supports else "REFUTES"
+            metadata = {"iteration": self.research_plan.iteration_count}
+            if p_value is not None:
+                metadata["p_value"] = p_value
+            if effect_size is not None:
+                metadata["effect_size"] = effect_size
+
+            rel = Relationship.with_provenance(
+                source_id=result_id, target_id=hypothesis_id, rel_type=rel_type, agent="DataAnalystAgent", confidence=confidence, **metadata
+            )
+            self.wm.add_relationship(rel)
+
+            logger.debug(f"Added {rel_type} relationship: result {result_id} -> hypothesis {hypothesis_id}")
+
+        except Exception as e:
+            logger.warning(f"Failed to add {rel_type} relationship: {e}")
+
+    # ========================================================================
+    # MESSAGE HANDLING
+    # ========================================================================
+
+    def process_message(self, message: AgentMessage):
+        """
+        Process incoming message from other agents.
+
+        Routes messages to appropriate handlers based on source agent.
+        """
+        # Extract sender agent type from message metadata or from_agent
+        sender_type = message.metadata.get("agent_type", "unknown")
+
+        logger.debug(f"Processing message from {sender_type} ({message.from_agent})")
+
+        # Route to appropriate handler
+        if sender_type == "HypothesisGeneratorAgent":
+            self._handle_hypothesis_generator_response(message)
+        elif sender_type == "ExperimentDesignerAgent":
+            self._handle_experiment_designer_response(message)
+        elif sender_type == "Executor":
+            self._handle_executor_response(message)
+        elif sender_type == "DataAnalystAgent":
+            self._handle_data_analyst_response(message)
+        elif sender_type == "HypothesisRefiner":
+            self._handle_hypothesis_refiner_response(message)
+        elif sender_type == "ConvergenceDetector":
+            self._handle_convergence_detector_response(message)
+        else:
+            logger.warning(f"No handler for agent type: {sender_type}")
+
+    # ========================================================================
+    # ERROR RECOVERY
+    # ========================================================================
+
+    def _handle_error_with_recovery(
+        self, error_source: str, error_message: str, recoverable: bool = True, error_details: dict[str, Any] | None = None
+    ) -> NextAction | None:
+        """
+        Handle an error with recovery strategy.
+
+        Implements:
+        - Consecutive error counting
+        - Exponential backoff
+        - Circuit breaker (halt after MAX_CONSECUTIVE_ERRORS)
+        - Error history tracking
+
+        Args:
+            error_source: Name of the agent/component that failed
+            error_message: Human-readable error description
+            recoverable: Whether this error type can be retried
+            error_details: Additional error context
+
+        Returns:
+            NextAction if recovery possible, None if should abort current handler
+        """
+        import time
+
+        # Update error tracking
+        self.errors_encountered += 1
+        self._consecutive_errors += 1
+        self._last_error_time = datetime.utcnow()
+
+        # Record in error history
+        error_record = {
+            "source": error_source,
+            "message": error_message,
+            "timestamp": self._last_error_time.isoformat(),
+            "consecutive_count": self._consecutive_errors,
+            "recoverable": recoverable,
+            "details": error_details or {},
+        }
+        self._error_history.append(error_record)
+
+        # Log the error
+        logger.error(f"{ERROR_RECOVERY_LOG_PREFIX} {error_source}: {error_message} (attempt {self._consecutive_errors}/{MAX_CONSECUTIVE_ERRORS})")
+
+        # Check if we've hit the circuit breaker threshold
+        if self._consecutive_errors >= MAX_CONSECUTIVE_ERRORS:
+            logger.error(f"{ERROR_RECOVERY_LOG_PREFIX} Max consecutive errors reached. Transitioning to ERROR state.")
+
+            with self._workflow_context():
+                self.workflow.transition_to(
+                    WorkflowState.ERROR,
+                    action=f"Max errors exceeded: {error_message}",
+                    metadata={"error_history": self._error_history[-MAX_CONSECUTIVE_ERRORS:]},
+                )
+
+            return NextAction.ERROR_RECOVERY
+
+        # For recoverable errors, apply backoff and retry
+        if recoverable:
+            backoff_index = min(self._consecutive_errors - 1, len(ERROR_BACKOFF_SECONDS) - 1)
+            backoff_seconds = ERROR_BACKOFF_SECONDS[backoff_index]
+
+            logger.info(f"{ERROR_RECOVERY_LOG_PREFIX} Waiting {backoff_seconds}s before retry (attempt {self._consecutive_errors + 1})")
+
+            time.sleep(backoff_seconds)
+
+            # Re-evaluate what action to take
+            return self.decide_next_action()
+
+        # Non-recoverable error - just return None to exit handler
+        logger.warning(f"{ERROR_RECOVERY_LOG_PREFIX} Non-recoverable error from {error_source}. Skipping to next action.")
+        return None
+
+    def _reset_error_streak(self) -> None:
+        """
+        Reset consecutive error counter after successful operation.
+
+        Call this at the end of each successful handler to reset the
+        circuit breaker counter.
+        """
+        if self._consecutive_errors > 0:
+            logger.debug(f"{ERROR_RECOVERY_LOG_PREFIX} Error streak reset (was {self._consecutive_errors} consecutive errors)")
+        self._consecutive_errors = 0
+
+    # ========================================================================
+    # MESSAGE HANDLERS
+    # ========================================================================
+
+    def _handle_hypothesis_generator_response(self, message: AgentMessage):
+        """
+        Handle response from HypothesisGeneratorAgent.
+
+        Expected content:
+        - hypotheses: List of generated Hypothesis objects
+        - count: Number of hypotheses generated
+        """
+        content = message.content
+
+        if message.type == MessageType.ERROR:
+            recovery_action = self._handle_error_with_recovery(
+                error_source="HypothesisGeneratorAgent",
+                error_message=content.get("error", "Unknown error"),
+                recoverable=True,
+                error_details={"hypothesis_count_before": len(self.research_plan.hypothesis_pool)},
+            )
+            if recovery_action:
+                self._execute_next_action(recovery_action)
+            return
+
+        # Success - reset error streak
+        self._reset_error_streak()
+
+        # Extract hypotheses
+        hypothesis_ids = content.get("hypothesis_ids", [])
+        count = content.get("count", 0)
+
+        logger.info(f"Received {count} hypotheses from generator")
+
+        # Update research plan (thread-safe)
+        with self._research_plan_context():
+            for hyp_id in hypothesis_ids:
+                self.research_plan.add_hypothesis(hyp_id)
+
+        # Persist hypotheses to knowledge graph
+        for hyp_id in hypothesis_ids:
+            self._persist_hypothesis_to_graph(hyp_id, agent_name="HypothesisGeneratorAgent")
+
+        # Update strategy stats (thread-safe)
+        with self._strategy_stats_context():
+            self.strategy_stats["hypothesis_generation"]["attempts"] += 1
+            if count > 0:
+                self.strategy_stats["hypothesis_generation"]["successes"] += 1
+
+        # Decide next action
+        next_action = self.decide_next_action()
+        self._execute_next_action(next_action)
+
+    def _handle_experiment_designer_response(self, message: AgentMessage):
+        """
+        Handle response from ExperimentDesignerAgent.
+
+        Expected content:
+        - protocol_id: ID of designed experiment protocol
+        - hypothesis_id: ID of hypothesis being tested
+        """
+        content = message.content
+
+        if message.type == MessageType.ERROR:
+            recovery_action = self._handle_error_with_recovery(
+                error_source="ExperimentDesignerAgent",
+                error_message=content.get("error", "Unknown error"),
+                recoverable=True,
+                error_details={"untested_hypotheses": len(self.research_plan.get_untested_hypotheses())},
+            )
+            if recovery_action:
+                self._execute_next_action(recovery_action)
+            return
+
+        # Success - reset error streak
+        self._reset_error_streak()
+
+        protocol_id = content.get("protocol_id")
+        hypothesis_id = content.get("hypothesis_id")
+
+        logger.info(f"Received experiment design: {protocol_id} for hypothesis {hypothesis_id}")
+
+        # Update research plan (thread-safe)
+        with self._research_plan_context():
+            self.research_plan.add_experiment(protocol_id)
+
+        # Persist protocol to knowledge graph
+        if protocol_id and hypothesis_id:
+            self._persist_protocol_to_graph(protocol_id, hypothesis_id, agent_name="ExperimentDesignerAgent")
+
+        # Update strategy stats (thread-safe)
+        with self._strategy_stats_context():
+            self.strategy_stats["experiment_design"]["attempts"] += 1
+            if protocol_id:
+                self.strategy_stats["experiment_design"]["successes"] += 1
+
+        # Decide next action
+        next_action = self.decide_next_action()
+        self._execute_next_action(next_action)
+
+    def _handle_executor_response(self, message: AgentMessage):
+        """
+        Handle response from Executor.
+
+        Expected content:
+        - result_id: ID of experiment result
+        - protocol_id: ID of protocol executed
+        - status: SUCCESS/FAILURE/ERROR
+        """
+        content = message.content
+
+        if message.type == MessageType.ERROR:
+            recovery_action = self._handle_error_with_recovery(
+                error_source="Executor",
+                error_message=content.get("error", "Unknown error"),
+                recoverable=True,
+                error_details={"experiments_queued": len(self.research_plan.experiment_queue)},
+            )
+            if recovery_action:
+                self._execute_next_action(recovery_action)
+            return
+
+        # Success - reset error streak
+        self._reset_error_streak()
+
+        result_id = content.get("result_id")
+        protocol_id = content.get("protocol_id")
+        status = content.get("status")
+        hypothesis_id = content.get("hypothesis_id")  # May not be present
+
+        logger.info(f"Received experiment result: {result_id} (status: {status})")
+
+        # Update research plan (thread-safe)
+        with self._research_plan_context():
+            self.research_plan.add_result(result_id)
+            self.research_plan.mark_experiment_complete(protocol_id)
+
+        # Persist result to knowledge graph (get hypothesis_id from protocol if needed)
+        if result_id and protocol_id:
+            if not hypothesis_id:
+                # Fetch hypothesis_id from protocol
+                try:
+                    with get_session() as session:
+                        protocol = get_experiment(session, protocol_id)
+                        if protocol:
+                            hypothesis_id = protocol.hypothesis_id
+                except Exception as e:
+                    logger.warning(f"Failed to fetch hypothesis_id from protocol: {e}")
+
+            if hypothesis_id:
+                self._persist_result_to_graph(result_id, protocol_id, hypothesis_id, agent_name="Executor")
+
+        # Transition to analyzing state (thread-safe)
+        with self._workflow_context():
+            self.workflow.transition_to(WorkflowState.ANALYZING, action=f"Analyze result {result_id}")
+
+        # Send to DataAnalystAgent for interpretation
+        next_action = NextAction.ANALYZE_RESULT
+        self._execute_next_action(next_action)
+
+    def _handle_data_analyst_response(self, message: AgentMessage):
+        """
+        Handle response from DataAnalystAgent.
+
+        Expected content:
+        - interpretation: ResultInterpretation object
+        - result_id: ID of analyzed result
+        - hypothesis_supported: bool
+        """
+        content = message.content
+
+        if message.type == MessageType.ERROR:
+            recovery_action = self._handle_error_with_recovery(
+                error_source="DataAnalystAgent",
+                error_message=content.get("error", "Unknown error"),
+                recoverable=True,
+                error_details={"results_pending": len(self.research_plan.results)},
+            )
+            if recovery_action:
+                self._execute_next_action(recovery_action)
+            return
+
+        # Success - reset error streak
+        self._reset_error_streak()
+
+        result_id = content.get("result_id")
+        hypothesis_id = content.get("hypothesis_id")
+        hypothesis_supported = content.get("hypothesis_supported")
+        confidence = content.get("confidence", 0.8)  # Default confidence
+        p_value = content.get("p_value")
+        effect_size = content.get("effect_size")
+
+        logger.info(f"Received result interpretation for {result_id}: hypothesis {hypothesis_id} supported={hypothesis_supported}")
+
+        # Update hypothesis status in research plan (thread-safe)
+        with self._research_plan_context():
+            if hypothesis_supported is True:
+                self.research_plan.mark_supported(hypothesis_id)
+            elif hypothesis_supported is False:
+                self.research_plan.mark_rejected(hypothesis_id)
+            else:
+                # Inconclusive
+                self.research_plan.mark_tested(hypothesis_id)
+
+        # Add SUPPORTS/REFUTES relationship to knowledge graph
+        if result_id and hypothesis_id and hypothesis_supported is not None:
+            self._add_support_relationship(
+                result_id, hypothesis_id, supports=hypothesis_supported, confidence=confidence, p_value=p_value, effect_size=effect_size
+            )
+
+        # Transition to refining state (thread-safe)
+        with self._workflow_context():
+            self.workflow.transition_to(WorkflowState.REFINING, action=f"Refine based on result {result_id}")
+
+        # Decide next action (may refine hypothesis, generate new ones, or converge)
+        next_action = self.decide_next_action()
+        self._execute_next_action(next_action)
+
+    def _handle_hypothesis_refiner_response(self, message: AgentMessage):
+        """
+        Handle response from HypothesisRefiner.
+
+        Expected content:
+        - refined_hypothesis_ids: List of refined/spawned hypothesis IDs
+        - retired_hypothesis_ids: List of retired hypothesis IDs
+        - action_taken: REFINED/RETIRED/SPAWNED
+        """
+        content = message.content
+
+        if message.type == MessageType.ERROR:
+            recovery_action = self._handle_error_with_recovery(
+                error_source="HypothesisRefiner",
+                error_message=content.get("error", "Unknown error"),
+                recoverable=True,
+                error_details={
+                    "tested_hypotheses": len(self.research_plan.tested_hypotheses),
+                    "supported_hypotheses": len(self.research_plan.supported_hypotheses),
+                },
+            )
+            if recovery_action:
+                self._execute_next_action(recovery_action)
+            return
+
+        # Success - reset error streak
+        self._reset_error_streak()
+
+        refined_ids = content.get("refined_hypothesis_ids", [])
+        retired_ids = content.get("retired_hypothesis_ids", [])
+
+        logger.info(f"Hypothesis refinement: {len(refined_ids)} refined, {len(retired_ids)} retired")
+
+        # Add refined hypotheses to pool (thread-safe)
+        with self._research_plan_context():
+            for hyp_id in refined_ids:
+                self.research_plan.add_hypothesis(hyp_id)
+
+        # Persist refined hypotheses to knowledge graph
+        for hyp_id in refined_ids:
+            self._persist_hypothesis_to_graph(hyp_id, agent_name="HypothesisRefiner")
+
+        # Update strategy stats (thread-safe)
+        with self._strategy_stats_context():
+            self.strategy_stats["hypothesis_refinement"]["attempts"] += 1
+            if refined_ids:
+                self.strategy_stats["hypothesis_refinement"]["successes"] += 1
+
+        # Decide next action
+        next_action = self.decide_next_action()
+        self._execute_next_action(next_action)
+
+    def _handle_convergence_detector_response(self, message: AgentMessage):
+        """
+        Handle response from ConvergenceDetector.
+
+        DEPRECATED (Issue #76): This method is no longer called.
+        Convergence is now checked directly via _handle_convergence_action().
+        Kept for backwards compatibility if message-based approach is reintroduced.
+
+        Expected content:
+        - should_converge: bool
+        - reason: str (why convergence detected)
+        - metrics: ConvergenceMetrics
+        """
+        content = message.content
+
+        should_converge = content.get("should_converge", False)
+        reason = content.get("reason", "")
+
+        if should_converge:
+            logger.info(f"Convergence detected: {reason}")
+
+            # Update research plan (thread-safe)
+            with self._research_plan_context():
+                self.research_plan.has_converged = True
+                self.research_plan.convergence_reason = reason
+
+            # Add convergence annotation to research question in knowledge graph
+            if self.wm and self.question_entity_id:
+                try:
+                    from kosmos.world_model.models import Annotation
+
+                    convergence_annotation = Annotation(text=f"Research converged: {reason}", created_by="ConvergenceDetector")
+                    self.wm.add_annotation(self.question_entity_id, convergence_annotation)
+                    logger.debug("Added convergence annotation to research question")
+                except Exception as e:
+                    logger.warning(f"Failed to add convergence annotation: {e}")
+
+            # Transition to converged state (thread-safe)
+            with self._workflow_context():
+                self.workflow.transition_to(WorkflowState.CONVERGED, action=f"Research converged: {reason}")
+
+            # Stop the director
+            self.stop()
+        else:
+            logger.debug("Convergence check: not yet converged")
+
+    # ========================================================================
+    # MESSAGE SENDING (to other agents)
+    # ========================================================================
+
+    async def _send_to_hypothesis_generator(self, action: str, context: dict[str, Any] | None = None) -> AgentMessage:
+        """
+        Send request to HypothesisGeneratorAgent asynchronously.
+
+        Args:
+            action: Action to request (generate, refine)
+            context: Additional context (research_question, literature, etc.)
+
+        Returns:
+            AgentMessage: Sent message
+        """
+        content = {
+            "action": action,
+            "research_question": self.research_question,
+            "domain": self.domain,
+            "skills": self.get_skills_context(),  # Issue #51 - inject skills
+            "context": context or {},
+        }
+
+        target_agent = self.agent_registry.get("HypothesisGeneratorAgent", "hypothesis_generator")
+
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
+
+        self.pending_requests[message.id] = {"agent": "HypothesisGeneratorAgent", "action": action, "timestamp": datetime.utcnow()}
+
+        # Track rollout (Issue #58)
+        self.rollout_tracker.increment("hypothesis_generation")
+
+        logger.debug(f"Sent {action} request to HypothesisGeneratorAgent")
+        return message
+
+    async def _send_to_experiment_designer(self, hypothesis_id: str, context: dict[str, Any] | None = None) -> AgentMessage:
+        """Send request to ExperimentDesignerAgent to design protocol asynchronously."""
+        content = {
+            "action": "design_experiment",
+            "hypothesis_id": hypothesis_id,
+            "domain": self.domain,
+            "skills": self.get_skills_context(),  # Issue #51 - inject skills
+            "context": context or {},
+        }
+
+        target_agent = self.agent_registry.get("ExperimentDesignerAgent", "experiment_designer")
+
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
+
+        self.pending_requests[message.id] = {"agent": "ExperimentDesignerAgent", "hypothesis_id": hypothesis_id, "timestamp": datetime.utcnow()}
+
+        # Track rollout (Issue #58)
+        self.rollout_tracker.increment("experiment_design")
+
+        logger.debug(f"Sent design request to ExperimentDesignerAgent for hypothesis {hypothesis_id}")
+        return message
+
+    async def _send_to_executor(self, protocol_id: str, context: dict[str, Any] | None = None) -> AgentMessage:
+        """Send request to Executor to run experiment asynchronously."""
+        exec_context = context or {}
+        if self.data_path:
+            exec_context["data_path"] = self.data_path
+
+        content = {"action": "execute_experiment", "protocol_id": protocol_id, "context": exec_context}
+
+        target_agent = self.agent_registry.get("Executor", "executor")
+
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
+
+        self.pending_requests[message.id] = {"agent": "Executor", "protocol_id": protocol_id, "timestamp": datetime.utcnow()}
+
+        # Track rollout (Issue #58)
+        self.rollout_tracker.increment("code_execution")
+
+        logger.debug(f"Sent execution request to Executor for protocol {protocol_id}")
+        return message
+
+    async def _send_to_data_analyst(self, result_id: str, hypothesis_id: str | None = None, context: dict[str, Any] | None = None) -> AgentMessage:
+        """Send request to DataAnalystAgent to interpret results asynchronously."""
+        content = {"action": "interpret_results", "result_id": result_id, "hypothesis_id": hypothesis_id, "context": context or {}}
+
+        target_agent = self.agent_registry.get("DataAnalystAgent", "data_analyst")
+
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
+
+        self.pending_requests[message.id] = {"agent": "DataAnalystAgent", "result_id": result_id, "timestamp": datetime.utcnow()}
+
+        # Track rollout (Issue #58)
+        self.rollout_tracker.increment("data_analysis")
+
+        logger.debug(f"Sent interpretation request to DataAnalystAgent for result {result_id}")
+        return message
+
+    async def _send_to_hypothesis_refiner(
+        self, hypothesis_id: str, result_id: str | None = None, action: str = "evaluate", context: dict[str, Any] | None = None
+    ) -> AgentMessage:
+        """Send request to HypothesisRefiner asynchronously."""
+        content = {"action": action, "hypothesis_id": hypothesis_id, "result_id": result_id, "context": context or {}}
+
+        target_agent = self.agent_registry.get("HypothesisRefiner", "hypothesis_refiner")
+
+        message = await self.send_message(to_agent=target_agent, content=content, message_type=MessageType.REQUEST)
+
+        self.pending_requests[message.id] = {"agent": "HypothesisRefiner", "hypothesis_id": hypothesis_id, "timestamp": datetime.utcnow()}
+
+        # Track rollout - refinement is part of hypothesis lifecycle (Issue #58)
+        self.rollout_tracker.increment("hypothesis_generation")
+
+        logger.debug(f"Sent {action} request to HypothesisRefiner for hypothesis {hypothesis_id}")
+        return message
+
+    def _check_convergence_direct(self) -> StoppingDecision:
+        """
+        Check convergence directly using ConvergenceDetector utility class.
+
+        Issue #76 fix: ConvergenceDetector is not an agent that can receive messages.
+        We call it directly instead of using message passing which silently failed.
+
+        Returns:
+            StoppingDecision: Decision on whether to stop research
+        """
+        # Get hypotheses and results from research plan
+        # Note: For convergence checks, we primarily need counts, not full objects
+        # The ConvergenceDetector's mandatory checks (iteration_limit, no_testable_hypotheses)
+        # work with research_plan data, which already has what we need
+
+        hypotheses = []
+        results = []
+
+        # Try to load actual hypothesis objects if available
+        try:
+            from kosmos.db import get_session
+            from kosmos.db.models import HypothesisModel
+            from kosmos.models.hypothesis import Hypothesis
+
+            with get_session() as session:
+                # Get hypotheses for this research (limited to avoid memory issues)
+                hyp_ids = list(self.research_plan.hypothesis_pool)[:100]
+                if hyp_ids:
+                    db_hyps = session.query(HypothesisModel).filter(HypothesisModel.id.in_(hyp_ids)).all()
+                    hypotheses = [
+                        Hypothesis(
+                            id=h.id,
+                            research_question=h.research_question or self.research_question,
+                            statement=h.statement,
+                            rationale=h.rationale or "",
+                            domain=h.domain or self.domain or "general",
+                        )
+                        for h in db_hyps
+                    ]
+        except Exception as e:
+            logger.debug(f"Could not load hypotheses for convergence check: {e}")
+
+        # Perform convergence check (pass accumulated LLM cost if available)
+        provider_cost = getattr(self.llm_client, "total_cost_usd", None)
+        decision = self.convergence_detector.check_convergence(
+            research_plan=self.research_plan, hypotheses=hypotheses, results=results, total_cost=provider_cost
+        )
+
+        logger.info(f"[CONVERGENCE] Decision: should_stop={decision.should_stop}, reason={decision.reason.value}")
+
+        return decision
+
+    def _apply_multiple_comparison_correction(self):
+        """
+        Apply Benjamini-Hochberg FDR correction to p-values from the current iteration.
+
+        When multiple hypotheses produce multiple p-values in the same iteration,
+        each must be corrected for family-wise error to avoid inflated Type I error.
+        """
+        from kosmos.execution.statistics import StatisticalValidator
+        from kosmos.db.operations import get_results_for_experiment
+
+        current_iteration = self.research_plan.iteration_count
+
+        # Collect p-values from recent results in DB
+        results_with_pvalues = []
+        try:
+            with get_session() as session:
+                for exp_id in self.research_plan.completed_experiments[-20:]:
+                    try:
+                        db_results = get_results_for_experiment(session, exp_id)
+                        for db_r in db_results:
+                            if db_r.p_value is not None:
+                                results_with_pvalues.append(
+                                    {
+                                        "result_id": db_r.id,
+                                        "p_value": db_r.p_value,
+                                        "supports_hypothesis": db_r.supports_hypothesis,
+                                    }
+                                )
+                    except Exception:
+                        continue
+        except Exception as e:
+            logger.warning(f"Failed to collect p-values for correction: {e}")
+            return
+
+        if len(results_with_pvalues) < 2:
+            return  # No correction needed for single test
+
+        p_values = [r["p_value"] for r in results_with_pvalues]
+        correction = StatisticalValidator.benjamini_hochberg_fdr(p_values)
+
+        corrections_applied = 0
+        for i, result_info in enumerate(results_with_pvalues):
+            was_sig = result_info["p_value"] < 0.05
+            now_sig = correction["significant"][i]
+            if was_sig and not now_sig:
+                corrections_applied += 1
+                logger.info(
+                    f"[FDR] Multiple comparison correction: result {result_info['result_id']} "
+                    f"p={result_info['p_value']:.4f} no longer significant after BH-FDR "
+                    f"(adjusted={correction['adjusted_p_values'][i]:.4f})"
+                )
+
+        if corrections_applied > 0:
+            logger.info(f"[FDR] BH-FDR correction: {corrections_applied}/{len(p_values)} results lost significance")
+
+    async def _handle_convergence_action(self):
+        """
+        Handle CONVERGE action by checking convergence directly.
+
+        Issue #76 fix: Replaces message-based convergence check with direct call.
+        The ConvergenceDetector is a utility class, not an agent that can receive messages.
+        """
+        # Apply multiple comparison correction before checking convergence
+        try:
+            self._apply_multiple_comparison_correction()
+        except Exception as e:
+            logger.warning(f"Multiple comparison correction failed (non-fatal): {e}")
+
+        decision = self._check_convergence_direct()
+
+        # Track rollout - convergence often involves literature review (Issue #58)
+        self.rollout_tracker.increment("literature")
+
+        if decision.should_stop:
+            logger.info(f"Convergence detected: {decision.reason.value}")
+
+            # Update research plan (thread-safe)
+            with self._research_plan_context():
+                self.research_plan.has_converged = True
+                self.research_plan.convergence_reason = decision.reason.value
+
+            # Add convergence annotation to research question in knowledge graph
+            if self.wm and self.question_entity_id:
+                try:
+                    from kosmos.world_model.models import Annotation
+
+                    convergence_annotation = Annotation(text=f"Research converged: {decision.reason.value}", created_by="ConvergenceDetector")
+                    self.wm.add_annotation(self.question_entity_id, convergence_annotation)
+                    logger.debug("Added convergence annotation to research question")
+                except Exception as e:
+                    logger.warning(f"Failed to add convergence annotation: {e}")
+
+            # Transition to converged state (thread-safe)
+            with self._workflow_context():
+                self.workflow.transition_to(WorkflowState.CONVERGED, action=f"Research converged: {decision.reason.value}")
+
+            # Stop the director
+            self.stop()
+        else:
+            logger.debug(f"Convergence check: not yet converged ({decision.details})")
+            # Continue research - increment iteration if we've completed a full cycle
+            if self._actions_this_iteration > 0:
+                with self._research_plan_context():
+                    self.research_plan.increment_iteration()
+                self._actions_this_iteration = 0
+                logger.info(f"[ITERATION] Continuing to iteration {self.research_plan.iteration_count}")
+
+    async def _handle_generate_hypothesis_action(self):
+        """
+        Handle GENERATE_HYPOTHESIS action by calling HypothesisGeneratorAgent directly.
+
+        Issue #76 extension: Replaces message-based hypothesis generation with direct call.
+        Same pattern as _handle_convergence_action() — agents are not registered in the
+        message router, so send_message() silently fails.
+        """
+        from kosmos.agents.hypothesis_generator import HypothesisGeneratorAgent
+
+        try:
+            # Lazy-init the agent
+            if self._hypothesis_agent is None:
+                self._hypothesis_agent = HypothesisGeneratorAgent(config=self.config)
+
+            logger.info("Generating hypotheses via direct call (bypassing message router)")
+
+            response = self._hypothesis_agent.generate_hypotheses(
+                research_question=self.research_question, num_hypotheses=self.config.get("num_hypotheses", 3), domain=self.domain, store_in_db=True
+            )
+
+            # Track rollout (Issue #58)
+            self.rollout_tracker.increment("hypothesis_generation")
+
+            hypothesis_ids = [h.id for h in response.hypotheses]
+            count = len(hypothesis_ids)
+
+            logger.info(f"Generated {count} hypotheses via direct call")
+
+            # Reset error streak on success
+            self._reset_error_streak()
+
+            # Update research plan (thread-safe)
+            with self._research_plan_context():
+                for hyp_id in hypothesis_ids:
+                    self.research_plan.add_hypothesis(hyp_id)
+
+            # Persist hypotheses to knowledge graph
+            for hyp_id in hypothesis_ids:
+                self._persist_hypothesis_to_graph(hyp_id, agent_name="HypothesisGeneratorAgent")
+
+            # Update strategy stats (thread-safe)
+            with self._strategy_stats_context():
+                self.strategy_stats["hypothesis_generation"]["attempts"] += 1
+                if count > 0:
+                    self.strategy_stats["hypothesis_generation"]["successes"] += 1
+
+            # Transition workflow to DESIGNING_EXPERIMENTS on success
+            if count > 0:
+                with self._workflow_context():
+                    self.workflow.transition_to(WorkflowState.DESIGNING_EXPERIMENTS, action=f"Generated {count} hypotheses")
+
+        except Exception as e:
+            logger.error(f"Direct hypothesis generation failed: {e}", exc_info=True)
+            self._handle_error_with_recovery(
+                error_source="HypothesisGeneratorAgent",
+                error_message=str(e),
+                recoverable=True,
+                error_details={"hypothesis_count_before": len(self.research_plan.hypothesis_pool)},
+            )
+
+    async def _handle_design_experiment_action(self, hypothesis_id: str):
+        """
+        Handle DESIGN_EXPERIMENT action by calling ExperimentDesignerAgent directly.
+
+        Issue #76 extension: Replaces message-based experiment design with direct call.
+        Same pattern as _handle_convergence_action().
+        """
+        from kosmos.agents.experiment_designer import ExperimentDesignerAgent
+
+        try:
+            # Lazy-init the agent
+            if self._experiment_designer is None:
+                self._experiment_designer = ExperimentDesignerAgent(config=self.config)
+
+            logger.info(f"Designing experiment for hypothesis {hypothesis_id} via direct call")
+
+            response = self._experiment_designer.design_experiment(hypothesis_id=hypothesis_id, store_in_db=True)
+
+            # Track rollout (Issue #58)
+            self.rollout_tracker.increment("experiment_design")
+
+            protocol_id = response.protocol.id if response.protocol else None
+
+            logger.info(f"Designed experiment protocol {protocol_id} for hypothesis {hypothesis_id}")
+
+            # Reset error streak on success
+            self._reset_error_streak()
+
+            # Update research plan (thread-safe)
+            if protocol_id:
+                with self._research_plan_context():
+                    self.research_plan.add_experiment(protocol_id)
+
+            # Persist protocol to knowledge graph
+            if protocol_id and hypothesis_id:
+                self._persist_protocol_to_graph(protocol_id, hypothesis_id, agent_name="ExperimentDesignerAgent")
+
+            # Update strategy stats (thread-safe)
+            with self._strategy_stats_context():
+                self.strategy_stats["experiment_design"]["attempts"] += 1
+                if protocol_id:
+                    self.strategy_stats["experiment_design"]["successes"] += 1
+
+            # Transition workflow to EXECUTING on success
+            if protocol_id:
+                with self._workflow_context():
+                    self.workflow.transition_to(WorkflowState.EXECUTING, action=f"Designed experiment {protocol_id} for hypothesis {hypothesis_id}")
+
+        except Exception as e:
+            logger.error(f"Direct experiment design failed: {e}", exc_info=True)
+            self._handle_error_with_recovery(
+                error_source="ExperimentDesignerAgent",
+                error_message=str(e),
+                recoverable=True,
+                error_details={"untested_hypotheses": len(self.research_plan.get_untested_hypotheses())},
+            )
+
+    async def _handle_execute_experiment_action(self, protocol_id: str):
+        """
+        Handle EXECUTE_EXPERIMENT action by running code generation + execution directly.
+
+        Issue #76 extension: Replaces message-based _send_to_executor() with direct call.
+        Replicates the logic from _handle_executor_response().
+        """
+        from kosmos.execution.code_generator import ExperimentCodeGenerator
+        from kosmos.execution.executor import CodeExecutor
+        from kosmos.execution.data_provider import DataProvider
+        from kosmos.models.experiment import ExperimentProtocol
+        from kosmos.db.operations import create_result
+        from uuid import uuid4
+
+        try:
+            # Lazy-init components
+            if self._code_generator is None:
+                self._code_generator = ExperimentCodeGenerator(use_templates=True, use_llm=True)
+            if self._code_executor is None:
+                self._code_executor = CodeExecutor(max_retries=3)
+            if self._data_provider is None:
+                self._data_provider = DataProvider(default_data_dir=self.data_path)
+
+            logger.info(f"Executing experiment {protocol_id} via direct call")
+
+            # Load protocol from DB
+            hypothesis_id = None
+            protocol = None
+            with get_session() as session:
+                db_experiment = get_experiment(session, protocol_id)
+                if not db_experiment:
+                    raise ValueError(f"Experiment {protocol_id} not found in database")
+                hypothesis_id = db_experiment.hypothesis_id
+                # Reconstruct Pydantic model from stored protocol JSON
+                protocol_data = db_experiment.protocol
+                if isinstance(protocol_data, dict):
+                    protocol = ExperimentProtocol.model_validate(protocol_data)
+                else:
+                    raise ValueError(f"Experiment {protocol_id} has no valid protocol data")
+
+            # Generate code from protocol
+            code = self._code_generator.generate(protocol)
+
+            # Execute code
+            if self.data_path:
+                exec_result = self._code_executor.execute_with_data(code, self.data_path, retry_on_error=True)
+            else:
+                exec_result = self._code_executor.execute(code, retry_on_error=True)
+
+            # Track rollout (Issue #58)
+            self.rollout_tracker.increment("experiment_execution")
+
+            # Extract metrics from execution result
+            return_value = exec_result.return_value if exec_result.return_value else {}
+            if isinstance(return_value, dict):
+                p_value = return_value.get("p_value")
+                effect_size = return_value.get("effect_size")
+                statistical_tests = {
+                    k: v
+                    for k, v in return_value.items()
+                    if k in ("t_statistic", "p_value", "effect_size", "mean_difference", "significance_label", "correlation", "r_squared")
+                }
+            else:
+                p_value = None
+                effect_size = None
+                statistical_tests = {}
+
+            # Sanitize return_value for JSON serialization — filter out non-serializable
+            # objects (e.g. sklearn Pipeline, numpy arrays) that would crash DB insert
+            def _json_safe(obj):
+                if obj is None or isinstance(obj, (str, int, float, bool)):
+                    return obj
+                if isinstance(obj, (list, tuple)):
+                    return [_json_safe(v) for v in obj]
+                if isinstance(obj, dict):
+                    return {k: _json_safe(v) for k, v in obj.items()}
+                try:
+                    import numpy as np
+
+                    if isinstance(obj, (np.integer,)):
+                        return int(obj)
+                    if isinstance(obj, (np.floating,)):
+                        return float(obj)
+                    if isinstance(obj, np.ndarray):
+                        return obj.tolist()
+                except ImportError:
+                    pass
+                # Fallback: convert to string representation
+                return str(obj)
+
+            safe_data = _json_safe(return_value) if isinstance(return_value, dict) else {}
+            safe_stats = _json_safe(statistical_tests) if statistical_tests else {}
+
+            # Store result in DB
+            result_id = str(uuid4())
+            try:
+                with get_session() as session:
+                    create_result(
+                        session,
+                        id=result_id,
+                        experiment_id=protocol_id,
+                        data=safe_data,
+                        p_value=float(p_value) if p_value is not None else None,
+                        effect_size=float(effect_size) if effect_size is not None else None,
+                        statistical_tests=safe_stats,
+                    )
+            except Exception as db_err:
+                logger.error(f"Failed to store result in DB: {db_err}")
+
+            logger.info(f"Experiment {protocol_id} executed, result {result_id}")
+
+            # Reset error streak on success
+            self._reset_error_streak()
+
+            # Update research plan (thread-safe)
+            with self._research_plan_context():
+                self.research_plan.add_result(result_id)
+                self.research_plan.mark_experiment_complete(protocol_id)
+
+            # Persist result to knowledge graph
+            if hypothesis_id:
+                self._persist_result_to_graph(result_id, protocol_id, hypothesis_id, agent_name="CodeExecutor")
+
+            # Transition to analyzing state (thread-safe)
+            with self._workflow_context():
+                self.workflow.transition_to(WorkflowState.ANALYZING, action=f"Analyze result {result_id}")
+
+        except Exception as e:
+            logger.error(f"Direct experiment execution failed: {e}", exc_info=True)
+            self._handle_error_with_recovery(
+                error_source="CodeExecutor", error_message=str(e), recoverable=True, error_details={"protocol_id": protocol_id}
+            )
+
+    async def _handle_analyze_result_action(self, result_id: str):
+        """
+        Handle ANALYZE_RESULT action by calling DataAnalystAgent directly.
+
+        Issue #76 extension: Replaces message-based _send_to_data_analyst() with direct call.
+        Replicates the logic from _handle_data_analyst_response().
+        """
+        from kosmos.agents.data_analyst import DataAnalystAgent
+        from kosmos.db.operations import get_result as db_get_result
+        from kosmos.models.result import ExperimentResult, ResultStatus, ExecutionMetadata
+        from kosmos.models.hypothesis import Hypothesis as PydanticHypothesis
+
+        try:
+            # Lazy-init the agent
+            if self._data_analyst is None:
+                self._data_analyst = DataAnalystAgent(config=self.config)
+
+            logger.info(f"Analyzing result {result_id} via direct call")
+
+            # Load result from DB
+            hypothesis_id = None
+            pydantic_result = None
+            pydantic_hyp = None
+
+            with get_session() as session:
+                db_result = db_get_result(session, result_id, with_experiment=True)
+                if not db_result:
+                    raise ValueError(f"Result {result_id} not found in database")
+
+                # Get hypothesis_id through experiment
+                experiment = db_result.experiment
+                if experiment:
+                    hypothesis_id = experiment.hypothesis_id
+
+                # Build minimal ExperimentResult from DB fields
+                import sys as _sys
+                import platform as _platform
+
+                _now = datetime.utcnow()
+                pydantic_result = ExperimentResult(
+                    id=db_result.id,
+                    experiment_id=db_result.experiment_id,
+                    protocol_id=db_result.experiment_id,
+                    status=ResultStatus.SUCCESS,
+                    raw_data=db_result.data or {},
+                    primary_p_value=db_result.p_value,
+                    primary_effect_size=db_result.effect_size,
+                    supports_hypothesis=db_result.supports_hypothesis,
+                    metadata=ExecutionMetadata(
+                        start_time=_now,
+                        end_time=_now,
+                        duration_seconds=0.0,
+                        python_version=_sys.version,
+                        platform=_platform.platform(),
+                        experiment_id=db_result.experiment_id,
+                        protocol_id=db_result.experiment_id,
+                    ),
+                )
+
+                # Load hypothesis if available
+                if hypothesis_id:
+                    db_hyp = get_hypothesis(session, hypothesis_id)
+                    if db_hyp:
+                        pydantic_hyp = PydanticHypothesis(
+                            id=db_hyp.id,
+                            research_question=db_hyp.research_question or self.research_question,
+                            statement=db_hyp.statement,
+                            rationale=db_hyp.rationale or "",
+                            domain=db_hyp.domain or self.domain or "general",
+                        )
+
+            # Call data analyst
+            interpretation = self._data_analyst.interpret_results(
+                result=pydantic_result,
+                hypothesis=pydantic_hyp,
+            )
+
+            # Track rollout (Issue #58)
+            self.rollout_tracker.increment("data_analysis")
+
+            # Extract interpretation fields
+            hypothesis_supported = interpretation.hypothesis_supported
+            confidence = interpretation.confidence if interpretation.confidence else 0.8
+            p_value = pydantic_result.primary_p_value
+            effect_size = pydantic_result.primary_effect_size
+
+            logger.info(f"Result {result_id} interpretation: hypothesis {hypothesis_id} supported={hypothesis_supported}")
+
+            # Reset error streak on success
+            self._reset_error_streak()
+
+            # Update hypothesis status in research plan (thread-safe)
+            if hypothesis_id:
+                with self._research_plan_context():
+                    if hypothesis_supported is True:
+                        self.research_plan.mark_supported(hypothesis_id)
+                    elif hypothesis_supported is False:
+                        self.research_plan.mark_rejected(hypothesis_id)
+                    else:
+                        self.research_plan.mark_tested(hypothesis_id)
+
+            # Add SUPPORTS/REFUTES relationship to knowledge graph
+            if result_id and hypothesis_id and hypothesis_supported is not None:
+                self._add_support_relationship(
+                    result_id,
+                    hypothesis_id,
+                    supports=hypothesis_supported,
+                    confidence=confidence,
+                    p_value=p_value,
+                    effect_size=effect_size,
+                )
+
+            # Transition to refining state (thread-safe)
+            with self._workflow_context():
+                self.workflow.transition_to(WorkflowState.REFINING, action=f"Refine based on result {result_id}")
+
+        except Exception as e:
+            logger.error(f"Direct result analysis failed: {e}", exc_info=True)
+            self._handle_error_with_recovery(
+                error_source="DataAnalystAgent", error_message=str(e), recoverable=True, error_details={"result_id": result_id}
+            )
+
+    async def _handle_refine_hypothesis_action(self, hypothesis_id: str):
+        """
+        Handle REFINE_HYPOTHESIS action by calling HypothesisRefiner directly.
+
+        Issue #76 extension: Replaces message-based _send_to_hypothesis_refiner()
+        with direct call. Replicates _handle_hypothesis_refiner_response().
+
+        HypothesisRefiner is a utility class (not a BaseAgent), same as ConvergenceDetector.
+        """
+        from kosmos.hypothesis.refiner import HypothesisRefiner, RetirementDecision
+        from kosmos.db.operations import (
+            get_hypothesis as db_get_hypothesis,
+            get_results_for_experiment,
+            create_hypothesis as db_create_hypothesis,
+        )
+        from kosmos.models.hypothesis import Hypothesis as PydanticHypothesis
+        from kosmos.models.result import ExperimentResult, ResultStatus, ExecutionMetadata
+
+        try:
+            # Lazy-init refiner
+            if self._hypothesis_refiner is None:
+                self._hypothesis_refiner = HypothesisRefiner(config=self.config)
+
+            logger.info(f"Refining hypothesis {hypothesis_id} via direct call")
+
+            # Load hypothesis from DB
+            pydantic_hyp = None
+            results_history = []
+
+            with get_session() as session:
+                db_hyp = db_get_hypothesis(session, hypothesis_id, with_experiments=True)
+                if not db_hyp:
+                    logger.warning(f"Hypothesis {hypothesis_id} not found, skipping refinement")
+                    return
+
+                pydantic_hyp = PydanticHypothesis(
+                    id=db_hyp.id,
+                    research_question=db_hyp.research_question or self.research_question,
+                    statement=db_hyp.statement,
+                    rationale=db_hyp.rationale or "",
+                    domain=db_hyp.domain or self.domain or "general",
+                    novelty_score=db_hyp.novelty_score,
+                    testability_score=db_hyp.testability_score,
+                    confidence_score=db_hyp.confidence_score,
+                )
+
+                # Get results for this hypothesis's experiments
+                if hasattr(db_hyp, "experiments") and db_hyp.experiments:
+                    for exp in db_hyp.experiments:
+                        db_results = get_results_for_experiment(session, exp.id)
+                        for db_r in db_results:
+                            try:
+                                import sys as _sys
+                                import platform as _platform
+
+                                _now = datetime.utcnow()
+                                pydantic_r = ExperimentResult(
+                                    id=db_r.id,
+                                    experiment_id=db_r.experiment_id,
+                                    protocol_id=db_r.experiment_id,
+                                    status=ResultStatus.SUCCESS,
+                                    raw_data=db_r.data or {},
+                                    primary_p_value=db_r.p_value,
+                                    primary_effect_size=db_r.effect_size,
+                                    supports_hypothesis=db_r.supports_hypothesis,
+                                    metadata=ExecutionMetadata(
+                                        start_time=_now,
+                                        end_time=_now,
+                                        duration_seconds=0.0,
+                                        python_version=_sys.version,
+                                        platform=_platform.platform(),
+                                        experiment_id=db_r.experiment_id,
+                                        protocol_id=db_r.experiment_id,
+                                    ),
+                                )
+                                results_history.append(pydantic_r)
+                            except Exception as conv_err:
+                                logger.warning(f"Failed to convert result {db_r.id}: {conv_err}")
+
+            # Get latest result (for evaluate_hypothesis_status)
+            latest_result = results_history[-1] if results_history else None
+
+            if not latest_result:
+                logger.warning(f"No results found for hypothesis {hypothesis_id}, skipping refinement")
+                # Still update stats
+                with self._strategy_stats_context():
+                    self.strategy_stats["hypothesis_refinement"]["attempts"] += 1
+                self.rollout_tracker.increment("hypothesis_refinement")
+                return
+
+            # Evaluate hypothesis status
+            decision = self._hypothesis_refiner.evaluate_hypothesis_status(pydantic_hyp, latest_result, results_history)
+
+            refined_ids = []
+            retired_ids = []
+
+            if decision == RetirementDecision.RETIRE:
+                self._hypothesis_refiner.retire_hypothesis(pydantic_hyp, rationale="Retirement based on result evaluation")
+                retired_ids.append(hypothesis_id)
+                logger.info(f"Retired hypothesis {hypothesis_id}")
+
+            elif decision == RetirementDecision.REFINE:
+                refined = self._hypothesis_refiner.refine_hypothesis(pydantic_hyp, latest_result)
+                if refined and refined.id:
+                    # Store refined hypothesis in DB
+                    try:
+                        with get_session() as session:
+                            db_create_hypothesis(
+                                session,
+                                id=refined.id,
+                                research_question=refined.research_question,
+                                statement=refined.statement,
+                                rationale=refined.rationale,
+                                domain=refined.domain,
+                                novelty_score=refined.novelty_score,
+                                testability_score=refined.testability_score,
+                            )
+                    except Exception as store_err:
+                        logger.warning(f"Failed to store refined hypothesis: {store_err}")
+                    refined_ids.append(refined.id)
+                    logger.info(f"Refined hypothesis {hypothesis_id} -> {refined.id}")
+
+            elif decision == RetirementDecision.SPAWN_VARIANT:
+                variants = self._hypothesis_refiner.spawn_variant(pydantic_hyp, latest_result, num_variants=2)
+                for variant in variants:
+                    if variant and variant.id:
+                        try:
+                            with get_session() as session:
+                                db_create_hypothesis(
+                                    session,
+                                    id=variant.id,
+                                    research_question=variant.research_question,
+                                    statement=variant.statement,
+                                    rationale=variant.rationale,
+                                    domain=variant.domain,
+                                    novelty_score=variant.novelty_score,
+                                    testability_score=variant.testability_score,
+                                )
+                        except Exception as store_err:
+                            logger.warning(f"Failed to store variant hypothesis: {store_err}")
+                        refined_ids.append(variant.id)
+                logger.info(f"Spawned {len(refined_ids)} variants from {hypothesis_id}")
+
+            # decision == CONTINUE_TESTING: no action needed
+
+            # Track rollout
+            self.rollout_tracker.increment("hypothesis_refinement")
+
+            # Reset error streak on success
+            self._reset_error_streak()
+
+            # Add refined hypotheses to pool (thread-safe)
+            with self._research_plan_context():
+                for hyp_id in refined_ids:
+                    self.research_plan.add_hypothesis(hyp_id)
+
+            # Persist refined hypotheses to knowledge graph
+            for hyp_id in refined_ids:
+                self._persist_hypothesis_to_graph(hyp_id, agent_name="HypothesisRefiner")
+
+            # Update strategy stats (thread-safe)
+            with self._strategy_stats_context():
+                self.strategy_stats["hypothesis_refinement"]["attempts"] += 1
+                if refined_ids:
+                    self.strategy_stats["hypothesis_refinement"]["successes"] += 1
+
+            logger.info(f"Hypothesis refinement: {len(refined_ids)} refined, {len(retired_ids)} retired")
+
+        except Exception as e:
+            logger.error(f"Direct hypothesis refinement failed: {e}", exc_info=True)
+            self._handle_error_with_recovery(
+                error_source="HypothesisRefiner",
+                error_message=str(e),
+                recoverable=True,
+                error_details={
+                    "hypothesis_id": hypothesis_id,
+                    "tested_hypotheses": len(self.research_plan.tested_hypotheses),
+                },
+            )
+
+    async def _send_to_convergence_detector(self, context: dict[str, Any] | None = None) -> AgentMessage:
+        """
+        DEPRECATED (Issue #76): Use _handle_convergence_action() instead.
+
+        This method sent messages to a non-existent agent, causing infinite loops.
+        Kept for backwards compatibility but now calls the direct method.
+        """
+        logger.warning("[DEPRECATED] _send_to_convergence_detector is deprecated. Using direct convergence check instead (Issue #76).")
+        await self._handle_convergence_action()
+
+        # Return a dummy message for compatibility
+        return AgentMessage(
+            type=MessageType.RESPONSE,
+            from_agent="convergence_detector",
+            to_agent=self.agent_id,
+            content={"deprecated": True, "handled_directly": True},
+        )
+
+    # ========================================================================
+    # PROMPT BUILDING
+    # ========================================================================
+
+    def _build_hypothesis_evaluation_prompt(self, hyp_id: str) -> str:
+        """
+        Build evaluation prompt with actual hypothesis data from database.
+
+        Args:
+            hyp_id: Hypothesis ID to load
+
+        Returns:
+            Formatted prompt string with hypothesis details, or fallback if unavailable
+        """
+        try:
+            with get_session() as session:
+                hypothesis = get_hypothesis(session, hyp_id, with_experiments=True)
+
+                if hypothesis:
+                    # Build rich prompt with actual data
+                    related_papers = hypothesis.related_papers or []
+                    related_str = ", ".join(related_papers[:5]) if related_papers else "None identified"
+
+                    testability = hypothesis.testability_score or 0.0
+                    novelty = hypothesis.novelty_score or 0.0
+
+                    return f"""Evaluate this hypothesis for testability and scientific merit:
+
+## Hypothesis Details
+- **ID**: {hyp_id}
+- **Statement**: {hypothesis.statement}
+- **Rationale**: {hypothesis.rationale or "Not provided"}
+- **Current Scores**: Testability={testability:.2f}, Novelty={novelty:.2f}
+
+## Research Context
+- **Research Question**: {self.research_question}
+- **Domain**: {self.domain or "General"}
+- **Related Papers**: {related_str}
+
+## Evaluation Criteria
+Rate on scale 1-10:
+1. Testability: Can this be experimentally tested?
+2. Novelty: Is this approach novel?
+3. Impact: Would confirmation significantly advance the field?
+
+Provide brief JSON response:
+{{"testability": X, "novelty": X, "impact": X, "recommendation": "proceed/refine/reject", "reasoning": "brief explanation"}}
+"""
+        except Exception as e:
+            logger.warning(f"Failed to load hypothesis {hyp_id}: {e}")
+
+        # Fallback to basic prompt
+        return f"""Evaluate this hypothesis for testability and scientific merit:
+
+Hypothesis ID: {hyp_id}
+Research Question: {self.research_question}
+Domain: {self.domain or "General"}
+
+Rate on scale 1-10:
+1. Testability: Can this be experimentally tested?
+2. Novelty: Is this approach novel?
+3. Impact: Would confirmation significantly advance the field?
+
+Provide brief JSON response:
+{{"testability": X, "novelty": X, "impact": X, "recommendation": "proceed/refine/reject", "reasoning": "brief explanation"}}
+"""
+
+    def _build_result_analysis_prompt(self, result_id: str) -> str:
+        """
+        Build analysis prompt with actual result data from database.
+
+        Args:
+            result_id: Result ID to load
+
+        Returns:
+            Formatted prompt string with result details, or fallback if unavailable
+        """
+        import json as json_module
+
+        try:
+            with get_session() as session:
+                result = get_result(session, result_id)
+
+                if result:
+                    # Get related experiment and hypothesis
+                    experiment = result.experiment
+                    hypothesis = experiment.hypothesis if experiment else None
+
+                    # Format data for prompt
+                    result_data = result.data or {}
+                    stats = result.statistical_tests or {}
+
+                    return f"""Analyze this experiment result:
+
+## Result Details
+- **Result ID**: {result_id}
+- **Experiment**: {experiment.description if experiment else "Unknown"}
+- **Hypothesis Tested**: {hypothesis.statement if hypothesis else "Unknown"}
+
+## Research Context
+- **Research Question**: {self.research_question}
+- **Domain**: {self.domain or "General"}
+
+## Result Data
+```json
+{json_module.dumps(result_data, indent=2, default=str)}
+```
+
+## Statistical Tests
+{json_module.dumps(stats, indent=2) if stats else "No statistical tests performed"}
+
+## Previous Interpretation
+{result.interpretation or "None available"}
+
+## Analysis Required
+Provide analysis including:
+1. Key findings
+2. Statistical significance
+3. Relationship to hypothesis (supported/refuted/inconclusive)
+4. Next steps
+
+Provide brief JSON response:
+{{"significance": "high/medium/low", "hypothesis_supported": true/false/inconclusive, "key_finding": "summary", "next_steps": "recommendation"}}
+"""
+        except Exception as e:
+            logger.warning(f"Failed to load result {result_id}: {e}")
+
+        # Fallback to basic prompt
+        return f"""Analyze this experiment result:
+
+Result ID: {result_id}
+Research Question: {self.research_question}
+
+Provide analysis including:
+1. Key findings
+2. Statistical significance
+3. Relationship to hypothesis
+4. Next steps
+
+Provide brief JSON response:
+{{"significance": "high/medium/low", "hypothesis_supported": true/false/inconclusive, "key_finding": "summary", "next_steps": "recommendation"}}
+"""
+
+    # ========================================================================
+    # CONCURRENT OPERATIONS
+    # ========================================================================
+
+    def execute_experiments_batch(self, protocol_ids: list[str]) -> list[dict[str, Any]]:
+        """
+        Execute multiple experiments in parallel using ParallelExperimentExecutor.
+
+        Args:
+            protocol_ids: List of protocol IDs to execute
+
+        Returns:
+            List of execution results
+
+        Example:
+            results = director.execute_experiments_batch(["proto1", "proto2", "proto3"])
+        """
+        if not self.enable_concurrent or not self.parallel_executor:
+            logger.warning("Concurrent execution not enabled, falling back to sequential")
+            results = []
+            for protocol_id in protocol_ids:
+                # Sequential fallback - use direct call (Issue #76)
+                import asyncio
+
+                asyncio.get_event_loop().run_until_complete(self._handle_execute_experiment_action(protocol_id=protocol_id))
+                results.append({"protocol_id": protocol_id, "status": "executed"})
+            return results
+
+        logger.info(f"Executing {len(protocol_ids)} experiments in parallel")
+
+        try:
+            # Execute batch using parallel executor
+            batch_results = self.parallel_executor.execute_batch(protocol_ids)
+
+            # Process results and update research plan
+            for result in batch_results:
+                if result.get("success"):
+                    result_id = result.get("result_id")
+                    protocol_id = result.get("protocol_id")
+
+                    # Thread-safe update
+                    with self._research_plan_context():
+                        if result_id:
+                            self.research_plan.add_result(result_id)
+                        if protocol_id:
+                            self.research_plan.mark_experiment_complete(protocol_id)
+
+                    logger.info(f"Experiment {protocol_id} completed successfully")
+                else:
+                    logger.error(f"Experiment {result.get('protocol_id')} failed: {result.get('error')}")
+
+            return batch_results
+
+        except Exception as e:
+            logger.error(f"Batch experiment execution failed: {e}")
+            return [{"protocol_id": pid, "success": False, "error": str(e)} for pid in protocol_ids]
+
+    async def evaluate_hypotheses_concurrently(self, hypothesis_ids: list[str]) -> list[dict[str, Any]]:
+        """
+        Evaluate multiple hypotheses concurrently using AsyncClaudeClient.
+
+        Uses async LLM calls to evaluate testability and potential impact of hypotheses in parallel.
+
+        Args:
+            hypothesis_ids: List of hypothesis IDs to evaluate
+
+        Returns:
+            List of evaluation results with scores and recommendations
+
+        Example:
+            evaluations = await director.evaluate_hypotheses_concurrently(["hyp1", "hyp2", "hyp3"])
+        """
+        if not self.async_llm_client:
+            logger.warning("Async LLM client not available, using sequential evaluation")
+            return []
+
+        logger.info(f"Evaluating {len(hypothesis_ids)} hypotheses concurrently")
+
+        try:
+            from kosmos.core.async_llm import BatchRequest
+
+            # Create batch requests for hypothesis evaluation
+            requests = []
+            for i, hyp_id in enumerate(hypothesis_ids):
+                # Build prompt with actual hypothesis data from database
+                prompt = self._build_hypothesis_evaluation_prompt(hyp_id)
+
+                requests.append(
+                    BatchRequest(
+                        id=hyp_id,
+                        prompt=prompt,
+                        system="You are a research evaluator. Provide concise, objective assessments.",
+                        temperature=0.3,  # Lower temperature for more consistent evaluations
+                    )
+                )
+
+            # Execute concurrent evaluations
+            responses = await self.async_llm_client.batch_generate(requests)
+
+            # Process responses
+            evaluations = []
+            for resp in responses:
+                if resp.success:
+                    try:
+                        import json
+
+                        # Parse JSON response
+                        eval_data = json.loads(resp.response)
+                        eval_data["hypothesis_id"] = resp.id
+                        evaluations.append(eval_data)
+                    except json.JSONDecodeError:
+                        logger.warning(f"Failed to parse evaluation for {resp.id}")
+                        evaluations.append({"hypothesis_id": resp.id, "error": "Parse error", "recommendation": "refine"})
+                else:
+                    evaluations.append({"hypothesis_id": resp.id, "error": resp.error, "recommendation": "retry"})
+
+            logger.info(f"Completed {len(evaluations)} hypothesis evaluations")
+            return evaluations
+
+        except Exception as e:
+            logger.error(f"Concurrent hypothesis evaluation failed: {e}")
+            return []
+
+    async def analyze_results_concurrently(self, result_ids: list[str]) -> list[dict[str, Any]]:
+        """
+        Analyze multiple experiment results concurrently using AsyncClaudeClient.
+
+        Performs parallel interpretation of results to identify patterns and insights.
+
+        Args:
+            result_ids: List of result IDs to analyze
+
+        Returns:
+            List of analysis results
+
+        Example:
+            analyses = await director.analyze_results_concurrently(["res1", "res2", "res3"])
+        """
+        if not self.async_llm_client:
+            logger.warning("Async LLM client not available, using sequential analysis")
+            return []
+
+        logger.info(f"Analyzing {len(result_ids)} results concurrently")
+
+        try:
+            from kosmos.core.async_llm import BatchRequest
+
+            # Create batch requests for result analysis
+            requests = []
+            for result_id in result_ids:
+                # Build prompt with actual result data from database
+                prompt = self._build_result_analysis_prompt(result_id)
+
+                requests.append(
+                    BatchRequest(
+                        id=result_id,
+                        prompt=prompt,
+                        system="You are a data analyst. Provide objective, evidence-based interpretations.",
+                        temperature=0.3,
+                    )
+                )
+
+            # Execute concurrent analyses
+            responses = await self.async_llm_client.batch_generate(requests)
+
+            # Process responses
+            analyses = []
+            for resp in responses:
+                if resp.success:
+                    try:
+                        import json
+
+                        analysis_data = json.loads(resp.response)
+                        analysis_data["result_id"] = resp.id
+                        analyses.append(analysis_data)
+                    except json.JSONDecodeError:
+                        logger.warning(f"Failed to parse analysis for {resp.id}")
+                        analyses.append({"result_id": resp.id, "error": "Parse error"})
+                else:
+                    analyses.append({"result_id": resp.id, "error": resp.error})
+
+            logger.info(f"Completed {len(analyses)} result analyses")
+            return analyses
+
+        except Exception as e:
+            logger.error(f"Concurrent result analysis failed: {e}")
+            return []
+
+    # ========================================================================
+    # RESEARCH PLANNING (using Claude)
+    # ========================================================================
+
+    def generate_research_plan(self) -> str:
+        """
+        Generate initial research plan using Claude.
+
+        Returns:
+            str: Research plan description
+        """
+        prompt = f"""You are a research director planning an autonomous scientific investigation.
+
+Research Question: {self.research_question}
+Domain: {self.domain or "General"}
+
+Please generate a research plan that includes:
+
+1. **Initial Hypothesis Directions** (3-5 high-level directions to explore)
+2. **Experiment Strategy** (what types of experiments would be most informative)
+3. **Success Criteria** (how will we know when we've answered the question)
+4. **Resource Considerations** (estimated experiments needed, complexity)
+
+Provide a structured, actionable plan in 2-3 paragraphs.
+"""
+
+        try:
+            response = self.llm_client.generate(prompt, max_tokens=1000)
+
+            # Store in research plan
+            self.research_plan.initial_strategy = response
+
+            logger.info("Generated initial research plan using Claude")
+            return response
+
+        except Exception as e:
+            logger.error(f"Failed to generate research plan: {e}")
+            return f"Error generating plan: {str(e)}"
+
+    # ========================================================================
+    # DECISION MAKING
+    # ========================================================================
+
+    def decide_next_action(self) -> NextAction:
+        """
+        Decide what to do next based on current workflow state and research plan.
+
+        Decision tree:
+        - If no hypotheses: GENERATE_HYPOTHESIS
+        - If untested hypotheses: DESIGN_EXPERIMENT
+        - If experiments in queue: EXECUTE_EXPERIMENT
+        - If results need analysis: ANALYZE_RESULT
+        - If hypotheses need refinement: REFINE_HYPOTHESIS
+        - If convergence criteria met: CONVERGE
+        - Otherwise: Check convergence, then GENERATE_HYPOTHESIS
+
+        Returns:
+            NextAction: Next action to take
+        """
+        # Budget enforcement check - halt if budget exceeded
+        try:
+            from kosmos.core.metrics import get_metrics, BudgetExceededError
+
+            metrics = get_metrics()
+            if metrics.budget_enabled:
+                metrics.enforce_budget()
+        except BudgetExceededError as e:
+            logger.error(f"[BUDGET] Research halted: {e}")
+
+            # Transition to CONVERGED state gracefully
+            with self._workflow_context():
+                self.workflow.transition_to(
+                    WorkflowState.CONVERGED,
+                    action="Budget limit reached - research halted",
+                    metadata={"reason": "budget_exceeded", "cost": e.current_cost, "limit": e.limit},
+                )
+
+            # Return CONVERGE to signal workflow completion
+            return NextAction.CONVERGE
+        except ImportError:
+            # Metrics module not available - continue without enforcement
+            logger.debug("Metrics module not available for budget check")
+
+        # Runtime limit check (Issue #56)
+        if self._check_runtime_exceeded():
+            elapsed = self.get_elapsed_time_hours()
+            logger.warning(f"[RUNTIME] Research halted: {elapsed:.2f}h elapsed, limit {self.max_runtime_hours}h")
+
+            # Transition to CONVERGED state gracefully
+            with self._workflow_context():
+                self.workflow.transition_to(
+                    WorkflowState.CONVERGED,
+                    action="Runtime limit reached - research halted",
+                    metadata={"reason": "runtime_exceeded", "elapsed_hours": elapsed, "limit_hours": self.max_runtime_hours},
+                )
+
+            return NextAction.CONVERGE
+
+        current_state = self.workflow.current_state
+
+        # Action counter for infinite loop prevention (Issue #51)
+        if not hasattr(self, "_actions_this_iteration"):
+            self._actions_this_iteration = 0
+        self._actions_this_iteration += 1
+
+        if self._actions_this_iteration > MAX_ACTIONS_PER_ITERATION:
+            logger.error(
+                "[LOOP-GUARD] Exceeded %d actions in iteration %d - forcing convergence",
+                MAX_ACTIONS_PER_ITERATION,
+                self.research_plan.iteration_count,
+            )
+            return NextAction.CONVERGE
+
+        # Enhanced debug logging with comprehensive state info
+        logger.debug(
+            "[STATE] Iteration=%d/%d, State=%s, Hypotheses=%d (untested=%d), Queue=%d, Results=%d, Actions=%d/%d",
+            self.research_plan.iteration_count,
+            self.research_plan.max_iterations,
+            current_state.value,
+            len(self.research_plan.hypothesis_pool),
+            len(self.research_plan.get_untested_hypotheses()),
+            len(self.research_plan.experiment_queue),
+            len(self.research_plan.results),
+            self._actions_this_iteration,
+            MAX_ACTIONS_PER_ITERATION,
+        )
+
+        # Check convergence first
+        if self._should_check_convergence():
+            return NextAction.CONVERGE
+
+        # State-based decision making
+        if current_state == WorkflowState.GENERATING_HYPOTHESES:
+            # Generate hypotheses
+            return NextAction.GENERATE_HYPOTHESIS
+
+        elif current_state == WorkflowState.DESIGNING_EXPERIMENTS:
+            # Design experiments for untested hypotheses
+            untested = self.research_plan.get_untested_hypotheses()
+            if untested:
+                return NextAction.DESIGN_EXPERIMENT
+            elif self.research_plan.experiment_queue:
+                # Bug A fix (Issue #51): Experiments designed, move to execution
+                logger.debug(
+                    "[DECISION] DESIGNING: No untested hypotheses but queue has %d experiments - executing", len(self.research_plan.experiment_queue)
+                )
+                return NextAction.EXECUTE_EXPERIMENT
+            elif self.research_plan.results:
+                # Have results to analyze
+                logger.debug("[DECISION] DESIGNING: No untested, no queue, but have %d results - analyzing", len(self.research_plan.results))
+                return NextAction.ANALYZE_RESULT
+            else:
+                # No hypotheses AND no experiments AND no results - converge
+                logger.debug("[DECISION] DESIGNING: No hypotheses, queue, or results - converging")
+                return NextAction.CONVERGE
+
+        elif current_state == WorkflowState.EXECUTING:
+            # Execute queued experiments
+            if self.research_plan.experiment_queue:
+                return NextAction.EXECUTE_EXPERIMENT
+            elif self.research_plan.results:
+                # Bug D fix (Issue #51): Have results to analyze
+                logger.debug("[DECISION] EXECUTING: Queue empty but have %d results - analyzing", len(self.research_plan.results))
+                return NextAction.ANALYZE_RESULT
+            else:
+                # Bug D fix (Issue #51): No queue AND no results - something went wrong
+                logger.warning("[DECISION] EXECUTING: No queue and no results - refining to recover")
+                return NextAction.REFINE_HYPOTHESIS
+
+        elif current_state == WorkflowState.ANALYZING:
+            # Bug B fix (Issue #51): Guard against empty results
+            if not self.research_plan.results:
+                logger.warning("[DECISION] ANALYZING: No results to analyze")
+                if self.research_plan.experiment_queue:
+                    logger.debug("[DECISION] ANALYZING: Falling back to execute queued experiments")
+                    return NextAction.EXECUTE_EXPERIMENT
+                else:
+                    logger.debug("[DECISION] ANALYZING: No results or queue - refining")
+                    return NextAction.REFINE_HYPOTHESIS
+            return NextAction.ANALYZE_RESULT
+
+        elif current_state == WorkflowState.REFINING:
+            # Refine hypotheses based on results
+            if self.research_plan.tested_hypotheses:
+                return NextAction.REFINE_HYPOTHESIS
+            else:
+                return NextAction.GENERATE_HYPOTHESIS
+
+        elif current_state == WorkflowState.CONVERGED:
+            return NextAction.CONVERGE
+
+        elif current_state == WorkflowState.ERROR:
+            return NextAction.ERROR_RECOVERY
+
+        else:
+            # Default: generate hypotheses
+            return NextAction.GENERATE_HYPOTHESIS
+
+    async def _execute_next_action(self, action: NextAction):
+        """
+        Execute the decided next action asynchronously.
+
+        Uses concurrent execution when enabled and multiple items available.
+
+        Args:
+            action: Action to execute
+        """
+        # Enhanced execution logging (Issue #51)
+        action_count = getattr(self, "_actions_this_iteration", 0)
+        logger.info(
+            "[EXECUTE] Action=%s, Iteration=%d, ActionCount=%d/%d",
+            action.value,
+            self.research_plan.iteration_count,
+            action_count,
+            MAX_ACTIONS_PER_ITERATION,
+        )
+
+        tracker = get_stage_tracker()
+        with tracker.track(f"ACTION_{action.value}", action=action.value):
+            await self._do_execute_action(action)
+
+    async def _do_execute_action(self, action: NextAction):
+        """Internal async method to execute action (wrapped by stage tracking)."""
+        if action == NextAction.GENERATE_HYPOTHESIS:
+            await self._handle_generate_hypothesis_action()
+
+        elif action == NextAction.DESIGN_EXPERIMENT:
+            # Get untested hypotheses
+            with self._research_plan_context():
+                untested = self.research_plan.get_untested_hypotheses()
+
+            if untested:
+                # Use concurrent evaluation if enabled and multiple hypotheses
+                if self.enable_concurrent and self.async_llm_client and len(untested) > 1:
+                    # Evaluate multiple hypotheses concurrently (up to max_parallel_hypotheses)
+                    batch_size = min(len(untested), self.max_parallel_hypotheses)
+                    hypothesis_batch = untested[:batch_size]
+
+                    try:
+                        # Run async evaluation - now we can await directly!
+                        logger.info(f"Starting concurrent evaluation of {len(hypothesis_batch)} hypotheses")
+                        evaluations = await asyncio.wait_for(self.evaluate_hypotheses_concurrently(hypothesis_batch), timeout=300)
+                        logger.info("Concurrent hypothesis evaluation completed")
+
+                        if evaluations:
+                            # Process best candidate(s)
+                            for eval_result in evaluations:
+                                if eval_result.get("recommendation") == "proceed":
+                                    await self._handle_design_experiment_action(hypothesis_id=eval_result["hypothesis_id"])
+                                    break  # Design experiment for first promising hypothesis
+                            else:
+                                # No promising hypotheses, design for first untested
+                                await self._handle_design_experiment_action(hypothesis_id=untested[0])
+                        else:
+                            # Fallback to sequential
+                            await self._handle_design_experiment_action(hypothesis_id=untested[0])
+
+                    except TimeoutError:
+                        logger.warning("Hypothesis evaluation timed out, falling back to sequential")
+                        await self._handle_design_experiment_action(hypothesis_id=untested[0])
+                    except Exception as e:
+                        logger.error(f"Concurrent hypothesis evaluation failed: {e}")
+                        await self._handle_design_experiment_action(hypothesis_id=untested[0])
+                else:
+                    # Sequential: design experiment for first untested hypothesis
+                    await self._handle_design_experiment_action(hypothesis_id=untested[0])
+
+        elif action == NextAction.EXECUTE_EXPERIMENT:
+            # Get queued experiments
+            with self._research_plan_context():
+                experiment_queue = list(self.research_plan.experiment_queue)
+
+            if experiment_queue:
+                # Use batch execution if enabled and multiple experiments queued
+                if self.enable_concurrent and self.parallel_executor and len(experiment_queue) > 1:
+                    # Execute multiple experiments in parallel
+                    batch_size = min(len(experiment_queue), self.max_concurrent_experiments)
+                    experiment_batch = experiment_queue[:batch_size]
+
+                    logger.info(f"Executing {batch_size} experiments in parallel")
+                    self.execute_experiments_batch(experiment_batch)
+                else:
+                    # Sequential: execute first queued experiment (Issue #76 direct call)
+                    protocol_id = experiment_queue[0]
+                    await self._handle_execute_experiment_action(protocol_id=protocol_id)
+
+        elif action == NextAction.ANALYZE_RESULT:
+            # Get recent results
+            with self._research_plan_context():
+                results = list(self.research_plan.results)
+
+            if results:
+                # Use concurrent analysis if enabled and multiple results
+                if self.enable_concurrent and self.async_llm_client and len(results) > 1:
+                    # Analyze multiple recent results concurrently
+                    batch_size = min(len(results), 5)  # Analyze up to 5 recent results
+                    result_batch = results[-batch_size:]  # Most recent results
+
+                    try:
+                        # Run async analysis - now we can await directly!
+                        logger.info(f"Starting concurrent analysis of {len(result_batch)} results")
+                        analyses = await asyncio.wait_for(self.analyze_results_concurrently(result_batch), timeout=300)
+                        logger.info("Concurrent result analysis completed")
+
+                        if analyses:
+                            # Process analyses and update hypotheses
+                            for analysis in analyses:
+                                result_id = analysis.get("result_id")
+                                # Send to data analyst for full processing
+                                if result_id:
+                                    await self._handle_analyze_result_action(result_id=result_id)
+                                    break  # Process one at a time in workflow
+                        else:
+                            # Fallback to sequential
+                            result_id = results[-1]
+                            await self._handle_analyze_result_action(result_id=result_id)
+
+                    except TimeoutError:
+                        logger.warning("Result analysis timed out, falling back to sequential")
+                        result_id = results[-1]
+                        await self._handle_analyze_result_action(result_id=result_id)
+                    except Exception as e:
+                        logger.error(f"Concurrent result analysis failed: {e}")
+                        result_id = results[-1]
+                        await self._handle_analyze_result_action(result_id=result_id)
+                else:
+                    # Sequential: analyze most recent result
+                    result_id = results[-1]
+                    await self._handle_analyze_result_action(result_id=result_id)
+
+        elif action == NextAction.REFINE_HYPOTHESIS:
+            # Refine most recently tested hypothesis
+            with self._research_plan_context():
+                tested = list(self.research_plan.tested_hypotheses)
+
+            if tested:
+                hypothesis_id = tested[-1]
+                await self._handle_refine_hypothesis_action(hypothesis_id=hypothesis_id)
+
+            # Increment iteration after completing refinement phase
+            # This marks the completion of one full research cycle
+            with self._research_plan_context():
+                self.research_plan.increment_iteration()
+            # Reset action counter for new iteration (Issue #51)
+            self._actions_this_iteration = 0
+            logger.info(f"[ITERATION] Completed iteration {self.research_plan.iteration_count}")
+
+        elif action == NextAction.CONVERGE:
+            # Bug C fix (Issue #51): Don't increment iteration for convergence check
+            # Convergence is a check, not a new research cycle
+            # Issue #76 fix: Call convergence detector directly instead of message passing
+            logger.info(f"[CONVERGE] Checking convergence at iteration {self.research_plan.iteration_count}")
+            await self._handle_convergence_action()
+
+        elif action == NextAction.ERROR_RECOVERY:
+            logger.info("[ERROR-RECOVERY] Attempting recovery from error state")
+            self._consecutive_errors = 0
+
+            # ERROR state can only transition to: INITIALIZING, GENERATING_HYPOTHESES, PAUSED
+            # So we always recover via GENERATING_HYPOTHESES — from there the normal
+            # decide_next_action() logic will route to the correct phase.
+            with self._workflow_context():
+                self.workflow.transition_to(WorkflowState.GENERATING_HYPOTHESES, action="Error recovery: resume research from hypothesis generation")
+                logger.info("[ERROR-RECOVERY] Transitioning to GENERATING_HYPOTHESES")
+
+        elif action == NextAction.PAUSE:
+            self.pause()
+
+        else:
+            logger.warning(f"Unknown action: {action}")
+
+    def _should_check_convergence(self) -> bool:
+        """
+        Check if convergence should be evaluated.
+
+        Returns:
+            bool: True if convergence check is needed
+        """
+        # Don't converge during active research phases where new work is being generated
+        if self.workflow.current_state in {
+            WorkflowState.DESIGNING_EXPERIMENTS,
+            WorkflowState.EXECUTING,
+            WorkflowState.ANALYZING,
+        }:
+            return False
+
+        # Check iteration limit (mandatory) — but defer if too few experiments
+        # completed and testable work remains (mirrors ConvergenceDetector logic)
+        if self.research_plan.iteration_count >= self.research_plan.max_iterations:
+            completed = len(self.research_plan.completed_experiments)
+            min_exp = self.config.get("min_experiments_before_convergence", 2)
+            untested = self.research_plan.get_untested_hypotheses()
+            has_testable_work = len(untested) > 0 or len(self.research_plan.experiment_queue) > 0
+            if completed < min_exp and has_testable_work:
+                logger.info(f"Iteration limit reached but deferring: {completed}/{min_exp} experiments, testable work remains")
+                return False
+            logger.info("Iteration limit reached")
+            return True
+
+        # Don't converge if we haven't generated any hypotheses yet
+        # Let the state machine handle generating hypotheses first
+        if not self.research_plan.hypothesis_pool:
+            # Only converge on empty pool if we've already tried generating
+            # and moved past the early pipeline stages
+            convergence_ok_states = {
+                WorkflowState.REFINING,
+                WorkflowState.ERROR,
+            }
+            if self.workflow.current_state in convergence_ok_states:
+                logger.info("No hypotheses in pool after generation attempted")
+                return True
+            return False
+
+        untested = self.research_plan.get_untested_hypotheses()
+        if not untested and not self.research_plan.experiment_queue:
+            logger.info("No untested hypotheses and no queued experiments")
+            return True
+
+        return False
+
+    # ========================================================================
+    # STRATEGY ADAPTATION
+    # ========================================================================
+
+    def select_next_strategy(self) -> str:
+        """
+        Select next strategy based on effectiveness tracking.
+
+        Strategies with higher success rates are favored.
+
+        Returns:
+            str: Selected strategy name
+        """
+        # Calculate effectiveness scores
+        scores = {}
+        for strategy, stats in self.strategy_stats.items():
+            attempts = stats["attempts"]
+            if attempts == 0:
+                # Favor unexplored strategies
+                scores[strategy] = 1.0
+            else:
+                success_rate = stats["successes"] / attempts
+                scores[strategy] = success_rate
+
+        # Select strategy with highest score
+        best_strategy = max(scores.items(), key=lambda x: x[1])[0]
+
+        logger.debug(f"Selected strategy: {best_strategy} (scores: {scores})")
+        return best_strategy
+
+    def update_strategy_effectiveness(self, strategy: str, success: bool, cost: float = 0.0):
+        """
+        Update strategy effectiveness tracking.
+
+        Args:
+            strategy: Strategy name
+            success: Whether strategy was successful
+            cost: Cost incurred (API tokens, compute time, etc.)
+        """
+        # Thread-safe strategy stats update
+        with self._strategy_stats_context():
+            if strategy in self.strategy_stats:
+                self.strategy_stats[strategy]["attempts"] += 1
+                if success:
+                    self.strategy_stats[strategy]["successes"] += 1
+                self.strategy_stats[strategy]["cost"] += cost
+
+                logger.debug(f"Updated strategy {strategy}: success={success}, cost={cost}")
+
+    # ========================================================================
+    # AGENT REGISTRY
+    # ========================================================================
+
+    def register_agent(self, agent_type: str, agent_id: str):
+        """
+        Register an agent for coordination.
+
+        Args:
+            agent_type: Type of agent (HypothesisGeneratorAgent, etc.)
+            agent_id: Unique agent ID
+        """
+        self.agent_registry[agent_type] = agent_id
+        logger.info(f"Registered {agent_type} with ID {agent_id}")
+
+    def get_agent_id(self, agent_type: str) -> str | None:
+        """
+        Get agent ID for a given type.
+
+        Args:
+            agent_type: Agent type
+
+        Returns:
+            Optional[str]: Agent ID if registered
+        """
+        return self.agent_registry.get(agent_type)
+
+    # ========================================================================
+    # EXECUTE (BaseAgent interface)
+    # ========================================================================
+
+    async def execute(self, task: dict[str, Any]) -> dict[str, Any]:
+        """
+        Execute research task asynchronously.
+
+        Args:
+            task: Task specification (usually {"action": "start_research"})
+
+        Returns:
+            dict: Task result
+        """
+        action = task.get("action", "start_research")
+
+        if action == "start_research":
+            # Generate initial research plan
+            plan = self.generate_research_plan()
+
+            # Start the workflow
+            self.start()
+
+            # Execute first action
+            next_action = self.decide_next_action()
+            await self._execute_next_action(next_action)
+
+            return {"status": "research_started", "research_plan": plan, "next_action": next_action.value}
+
+        elif action == "step":
+            # Execute one step of research
+            next_action = self.decide_next_action()
+            await self._execute_next_action(next_action)
+
+            return {"status": "step_executed", "next_action": next_action.value, "workflow_state": self.workflow.current_state.value}
+
+        else:
+            raise ValueError(f"Unknown action: {action}")
+
+    def execute_sync(self, task: dict[str, Any]) -> dict[str, Any]:
+        """
+        Synchronous wrapper for execute (backwards compatibility).
+        """
+        try:
+            loop = asyncio.get_running_loop()
+            future = asyncio.run_coroutine_threadsafe(self.execute(task), loop)
+            return future.result(timeout=600)
+        except RuntimeError:
+            return asyncio.run(self.execute(task))
+
+    # ========================================================================
+    # STATUS & REPORTING
+    # ========================================================================
+
+    def get_research_status(self) -> dict[str, Any]:
+        """
+        Get comprehensive research status.
+
+        Returns:
+            dict: Full research status including plan, workflow, statistics
+        """
+        return {
+            "research_question": self.research_question,
+            "domain": self.domain,
+            "workflow_state": self.workflow.current_state.value,
+            "iteration": self.research_plan.iteration_count,
+            "max_iterations": self.research_plan.max_iterations,
+            "elapsed_time_hours": self.get_elapsed_time_hours(),  # Issue #56
+            "max_runtime_hours": self.max_runtime_hours,  # Issue #56
+            "has_converged": self.research_plan.has_converged,
+            "convergence_reason": self.research_plan.convergence_reason,
+            "hypothesis_pool_size": len(self.research_plan.hypothesis_pool),
+            "hypotheses_tested": len(self.research_plan.tested_hypotheses),
+            "hypotheses_supported": len(self.research_plan.supported_hypotheses),
+            "hypotheses_rejected": len(self.research_plan.rejected_hypotheses),
+            "experiments_completed": len(self.research_plan.completed_experiments),
+            "results_count": len(self.research_plan.results),
+            "strategy_stats": self.strategy_stats,
+            "rollouts": self.rollout_tracker.to_dict(),  # Issue #58
+            "agent_status": self.get_status(),
+        }

@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    ignore:
+      # We're deliberately targeting heavy backwards compatibility to avoid
+      # making a breaking change and causing churn for the sake of it.
+      # Ignore dependencies that would result in or require a breaking change
+      - dependency-name: 'eslint'
+      - dependency-name: 'eslint-*'
+      - dependency-name: 'prettier'
+      - dependency-name: '@types/eslint'
+      - dependency-name: 'vue-eslint-parser'
+      - dependency-name: 'mocha'
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        patterns:
+          - '*'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns:
+          - '*'

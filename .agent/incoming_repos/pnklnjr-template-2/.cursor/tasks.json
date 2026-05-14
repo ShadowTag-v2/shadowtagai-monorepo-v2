@@ -1,0 +1,111 @@
+{
+  "$schema": "https://raw.githubusercontent.com/getcursor/cursor-tasks-schema/main/schema.json",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "ops:rollup",
+      "command": "node ./ops/mega-rollup.mjs",
+      "description": "Rebuild ROLLUP.md from collected thread notes + research digests."
+    },
+    {
+      "name": "ops:collect",
+      "command": "node ./ops/collect-thread.mjs",
+      "description": "Sweep ./docs/thread/*.md and normalize into ./build/thread.json."
+    },
+    {
+      "name": "agent:use:grok-fast",
+      "command": "node -e \"console.log('Switch provider/model in Cursor UI → Cline to grok-code-fast-1')\"",
+      "description": "Helper reminder to set Grok Code Fast in Cline."
+    },
+    {
+      "name": "agent:bulk-sweep",
+      "command": "node ./scripts/bootstrap.sh bulk",
+      "description": "Batch file transforms with retry + tests."
+    },
+    {
+      "name": "agent:validate",
+      "command": "node ./ops/verify-native.mjs && npm run test --silent",
+      "description": "Run linters/tests and print a compact summary."
+    },
+    {
+      "name": "cursor:install-exts:win",
+      "command": "powershell -ExecutionPolicy Bypass -File ./scripts/install-cursor-extensions.ps1",
+      "description": "Install recommended Cursor extensions (Windows)."
+    },
+    {
+      "name": "cursor:install-exts:posix",
+      "command": "bash ./scripts/install-cursor-extensions.sh",
+      "description": "Install recommended Cursor extensions (POSIX)."
+    },
+    {
+      "name": "cursor:scrub-exts:win",
+      "command": "powershell -ExecutionPolicy Bypass -File ./scripts/scrub-extensions.ps1",
+      "description": "Remove all non-desired Cursor/VS Code extensions (Windows)."
+    },
+    {
+      "name": "cursor:scrub-exts:posix",
+      "command": "bash ./scripts/scrub-extensions.sh",
+      "description": "Remove all non-desired Cursor/VS Code extensions (POSIX)."
+    },
+    {
+      "name": "ops:check-github",
+      "command": "powershell -ExecutionPolicy Bypass -File ./scripts/check-github-access.ps1",
+      "description": "Confirm GitHub visibility/auth on this machine."
+    },
+    {
+      "name": "slurm:audit:win",
+      "command": "powershell -ExecutionPolicy Bypass -File ./scripts/slurm/audit.ps1",
+      "description": "Run slurm GitHub scan (Windows)."
+    },
+    {
+      "name": "slurm:audit:posix",
+      "command": "bash ./scripts/slurm/audit.sh",
+      "description": "Run slurm GitHub scan (POSIX)."
+    },
+    {
+      "name": "slurm:compare",
+      "command": "powershell -ExecutionPolicy Bypass -File ./scripts/slurm/compare-scan.ps1 -Before .\\before -After .\\after -Repo pnkln-api",
+      "description": "Compare two slurm scan folders (example)."
+    },
+    {
+      "name": "ops:baseline",
+      "command": "powershell -ExecutionPolicy Bypass -File ./ops/monitor.ps1 -Mode Baseline",
+      "description": "Capture baseline for Cursor/ChatGPT/Node CPU% and RAM."
+    },
+    {
+      "name": "ops:snapshot",
+      "command": "powershell -ExecutionPolicy Bypass -File ./ops/monitor.ps1 -Mode Snapshot",
+      "description": "Take a snapshot and write a markdown report."
+    },
+    {
+      "name": "ops:nightly",
+      "command": "powershell -ExecutionPolicy Bypass -File ./ops/monitor.ps1 -Mode Nightly -Owner ${env:GITHUB_OWNER} -Repo ${env:GITHUB_REPO}",
+      "description": "Snapshot + drift detect; exit code signals issues."
+    },
+    {
+      "name": "ops:export-telemetry-csv",
+      "command": "node ./ops/export-telemetry-csv.mjs",
+      "description": "Export ops/.telemetry/*.md to Grafana-friendly CSV."
+    },
+    {
+      "name": "agent:abstraction-sampler",
+      "command": "node ./tools/agents/abstraction-sampler.mjs",
+      "description": "Generate/rank abstractions, sample solutions under fixed budget."
+    },
+    {
+      "name": "agent:providers:print",
+      "command": "node -e \"console.log(require('./config/providers.json'))\"",
+      "description": "Show current GPT/Claude balancing and backoff."
+    },
+    {
+      "name": "ops:commit-all",
+      "command": "powershell -ExecutionPolicy Bypass -File ./ops/commit-all.ps1 -Message 'chore: staged auto-commit'",
+      "description": "Commit all pending changes and push if possible."
+    },
+    {
+      "name": "ultra:release",
+      "command": "node ./scripts/ultra-release.mjs",
+      "description": "Bump version, tag, push, wait for GH release assets, print URL."
+    }
+  ]
+}

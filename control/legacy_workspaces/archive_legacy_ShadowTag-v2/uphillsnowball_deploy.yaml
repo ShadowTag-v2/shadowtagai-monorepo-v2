@@ -1,0 +1,22 @@
+steps:
+  # 1. Build Docker Image (Context: Root, Dockerfile: Subdir)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-workstations-images/uphillsnowball:latest', '-f', 'uphillsnowball_sovereign/Dockerfile', '.']
+
+  # 2. Push Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-workstations-images/uphillsnowball:latest']
+
+  # 3. Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+    - run
+    - deploy
+    - uphillsnowball
+    - --image=us-central1-docker.pkg.dev/$PROJECT_ID/cloud-workstations-images/uphillsnowball:latest
+    - --region=us-central1
+    - --platform=managed
+    - --allow-unauthenticated
+    - --port=8080
+    - --service-account=767252945109-compute@developer.gserviceaccount.com

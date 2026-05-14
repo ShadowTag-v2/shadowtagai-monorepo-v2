@@ -1,0 +1,7 @@
+# Reference repos cloned at --depth 1 for local study only.
+# Tracked in fold_in_checklist.yaml as reference_only.
+# Do NOT commit source contents — only this .gitignore and the MANIFEST below.
+**/.git
+*/
+!.gitignore
+!MANIFEST.md

@@ -1,0 +1,38 @@
+name: Pulumi Preview (PR)
+on:
+  pull_request:
+    paths: ['terraform/infrastructure-pulumi/**']
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    strategy:
+      matrix:
+        stack: [dev, prod]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+        working-directory: terraform/infrastructure-pulumi
+      - run: pnpm build
+        working-directory: terraform/infrastructure-pulumi
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.PULUMI_SERVICE_ACCOUNT }}
+      - uses: pulumi/actions@v6
+        with:
+          command: preview
+          stack-name: ${{ matrix.stack }}
+          work-dir: terraform/infrastructure-pulumi/stacks/${{ matrix.stack }}
+          comment-on-pr: true
+        env:
+          PULUMI_CONFIG_PASSPHRASE: ${{ secrets.PULUMI_PASSPHRASE }}

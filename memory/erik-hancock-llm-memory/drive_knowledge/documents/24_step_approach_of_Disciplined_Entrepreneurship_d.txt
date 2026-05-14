@@ -1,0 +1,38 @@
+Of course, here is the 24-step approach of "Disciplined Entrepreneurship" taught at MIT:
+This framework is broken down into 6 overarching themes to guide you through the process of building a successful startup.
+Who is Your Customer?
+1. Market Segmentation: Start by brainstorming a wide variety of potential customers and markets for your idea.
+2. Select a Beachhead Market: Choose one market segment to focus on and win over first. This will be your entry point.
+3. Build an End User Profile: Create a detailed profile of your ideal customer within the beachhead market.
+4. Calculate the Total Addressable Market (TAM) Size for the Beachhead Market: Estimate the total revenue you could generate if you captured 100% of your beachhead market.
+5. Profile the Persona for the Beachhead Market: Go beyond the user profile and create a detailed story about one specific, real person who represents your ideal customer.
+
+What Can You Do For Your Customer?
+6. Full Life Cycle Use Case: Map out how your persona will use your product, from the moment they become aware of it to the end of its life.
+7. High-Level Product Specification: Create a visual representation and description of your product.
+8. Quantify the Value Proposition: Clearly state the tangible benefits your product will provide to the customer.
+9. Identify Your Next 10 Customers: Find at least 10 potential customers who are similar to your persona.
+10. Define Your Core: Determine the one thing you do better than anyone else that is difficult to copy.
+11. Chart Your Competitive Position: Visually represent where your product stands in relation to competitors based on the persona's top two priorities.
+
+How Does Your Customer Acquire Your Product?
+12. Determine the Customer's Decision-Making Unit (DMU): Identify everyone who has a say in the decision to purchase your product.
+13. Map the Process to Acquire a Paying Customer: Outline all the steps a customer goes through to buy your product.
+
+How Do You Make Money Off Your Product?
+14. Calculate the Total Addressable Market Size for Follow-on Markets: After conquering your beachhead market, identify adjacent markets you can expand into.
+15. Design a Business Model: Determine how you will capture a portion of the value you create for your customer.
+16. Set Your Pricing Framework: Decide how much you will charge for your product and why.
+17. Calculate the Lifetime Value (LTV) of an Acquired Customer: Estimate the total profit you'll make from an average customer over the entire course of your relationship.
+
+How Do You Design & Build Your Product?
+18. Map the Sales Process to Acquire a Customer: Detail the steps your sales team will take to land a new customer.
+19. Calculate the Cost of Customer Acquisition (COCA): Figure out how much it will cost to acquire a new customer.
+20. Identify Key Assumptions: List the most critical assumptions your business plan relies on.
+21. Test Key Assumptions: Design and run experiments to validate or invalidate your key assumptions.
+22. Define the Minimum Viable Business Product (MVBP): Determine the smallest possible product you can build that delivers value to the customer and allows you to test your assumptions.
+23. Show That "the Dogs Will Eat the Dog Food": Get your MVBP into the hands of customers and gather feedback to prove they want it.
+
+How Do You Scale Your Business?
+24. Develop a Product Plan: Create a roadmap for the future development of your product.
+To learn more about this framework, you can watch this video about Disciplined Entrepreneurship with Bill Aulet.  https://www.youtube.com/watch?v=GtWexnfPhKk 

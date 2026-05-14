@@ -1,0 +1,22 @@
+{
+  "id": "manual_kuvasz_assessment",
+  "name": "kuvasz_assessment.txt",
+  "mime_type": "text/plain",
+  "file_type": "txt",
+  "size": "2000",
+  "created": "2025-11-24T13:23:03-08:00",
+  "modified": "2025-11-24T13:23:03-08:00",
+  "owners": [
+    {
+      "displayName": "Erik",
+      "kind": "drive#user",
+      "me": true,
+      "permissionId": "manual",
+      "emailAddress": "ehanc6901@gmail.com"
+    }
+  ],
+  "web_link": null,
+  "hash": "kuvasz_manual",
+  "text_length": 2000,
+  "word_count": 300
+}

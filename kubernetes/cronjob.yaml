@@ -1,0 +1,361 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion
+  namespace: pnkln-ingestion
+  labels:
+    app: pnkln-core-stack
+    component: ingestion-layer
+    version: v1.0
+spec:
+  # Schedule: 3:00 AM daily (UTC)
+  # Adjust timezone as needed
+  schedule: "0 3 * * *"
+
+  # Timezone support (requires Kubernetes 1.27+)
+  timeZone: "America/New_York"
+
+  # Job history
+  successfulJobsHistoryLimit: 7  # Keep last 7 successful runs
+  failedJobsHistoryLimit: 3       # Keep last 3 failed runs
+
+  # Concurrency policy
+  concurrencyPolicy: Forbid  # Don't run if previous job still running
+
+  # Deadline (90 minutes max runtime)
+  startingDeadlineSeconds: 300  # Start within 5 min of schedule or skip
+
+  jobTemplate:
+    metadata:
+      labels:
+        app: pnkln-core-stack
+        component: ingestion-layer
+    spec:
+      # Backoff limit (3 retries)
+      backoffLimit: 3
+
+      # Active deadline (90 minutes)
+      activeDeadlineSeconds: 5400  # 90 minutes
+
+      template:
+        metadata:
+          labels:
+            app: pnkln-core-stack
+            component: ingestion-layer
+        spec:
+          # Service account
+          serviceAccountName: ingestion-service-account
+
+          # Restart policy
+          restartPolicy: OnFailure
+
+          # Init container: Verify PostgreSQL connectivity
+          initContainers:
+          - name: wait-for-postgres
+            image: postgres:15-alpine
+            command:
+            - sh
+            - -c
+            - |
+              until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER; do
+                echo "Waiting for PostgreSQL..."
+                sleep 2
+              done
+              echo "PostgreSQL is ready!"
+            env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-port
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-user
+
+          # Main containers (multi-container pod for parallel collection)
+          containers:
+
+          # Container 1: YouTube Collector
+          - name: youtube-collector
+            image: gcr.io/pnkln-core-stack/youtube-collector:latest
+            imagePullPolicy: Always
+            env:
+            - name: YOUTUBE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-api-keys
+                  key: youtube-api-key
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-port
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-password
+            volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: shared-data
+              mountPath: /data
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+          # Container 2: Twitter Collector
+          - name: twitter-collector
+            image: gcr.io/pnkln-core-stack/twitter-collector:latest
+            imagePullPolicy: Always
+            env:
+            - name: TWITTER_BEARER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-api-keys
+                  key: twitter-bearer-token
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-port
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-password
+            volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: shared-data
+              mountPath: /data
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+          # Container 3: News Collector
+          - name: news-collector
+            image: gcr.io/pnkln-core-stack/news-collector:latest
+            imagePullPolicy: Always
+            env:
+            - name: NEWSAPI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-api-keys
+                  key: newsapi-key
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-port
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-password
+            volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: shared-data
+              mountPath: /data
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+          # Container 4: Tier Classifier (runs after collectors)
+          - name: tier-classifier
+            image: gcr.io/pnkln-core-stack/tier-classifier:latest
+            imagePullPolicy: Always
+            env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-api-keys
+                  key: gemini-api-key
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-port
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-password
+            - name: CLASSIFICATION_MODE
+              value: "gemini-nlp"  # or "rule-based" for Phase 1
+            volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: shared-data
+              mountPath: /data
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "500m"
+              limits:
+                memory: "1Gi"
+                cpu: "1000m"
+
+          # Container 5: AM Briefing Generator (runs after classifier)
+          - name: briefing-generator
+            image: gcr.io/pnkln-core-stack/briefing-generator:latest
+            imagePullPolicy: Always
+            env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-port
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: postgres-password
+            - name: SMTP_HOST
+              value: "smtp.gmail.com"  # Or SendGrid, etc.
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-api-keys
+                  key: smtp-user
+                  optional: true
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ingestion-api-keys
+                  key: smtp-password
+                  optional: true
+            volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: shared-data
+              mountPath: /data
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+          # Shared volumes
+          volumes:
+          - name: config
+            configMap:
+              name: ingestion-config
+          - name: shared-data
+            emptyDir: {}  # Shared temp storage for inter-container data exchange
+
+          # Node affinity (optional: prefer specific node pool)
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                preference:
+                  matchExpressions:
+                  - key: workload-type
+                    operator: In
+                    values:
+                    - batch

@@ -1,0 +1,12 @@
+# Source files (only ship dist)
+src/
+tsconfig.json
+
+# Development
+node_modules/
+*.log
+.env
+
+# IDE
+.vscode/
+.idea/

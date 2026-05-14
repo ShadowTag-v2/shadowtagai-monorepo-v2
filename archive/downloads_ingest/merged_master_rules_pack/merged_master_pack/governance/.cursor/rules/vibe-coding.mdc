@@ -1,0 +1,36 @@
+---
+description: Lean repo rules for secure, maintainable vibe coding
+globs: ["**/*.{js,jsx,ts,tsx,py,md,yml,yaml,json}"]
+---
+
+# Vibe Coding Rules
+
+## Architecture
+- Use Atomic Design only for the design-system layer.
+- Organize application code by feature and concern.
+- Prefer components under 150 lines; split by responsibility, not by arbitrary count.
+- Prefer functions under 50 lines when practical.
+- Extract stateful and business logic into hooks or services.
+- Avoid file explosion and empty wrapper abstractions.
+
+## React / Next.js
+- Fix async waterfalls first.
+- Reduce bundle size second.
+- Prefer server components where possible.
+- Push client components to the leaves.
+- Avoid oversized client bundles and cascading `useEffect` fetch chains.
+
+## Security
+- No custom production auth.
+- Use short-lived access tokens and rotated refresh tokens.
+- Validate every input with typed schemas.
+- Enforce authorization server-side.
+- Use strict CORS, security headers, rate limits, and CSRF protection where applicable.
+- Validate uploads by allow-list, size, and content/signature.
+- No secrets in code, logs, comments, fixtures, or commits.
+
+## Tooling
+- Code must pass formatting, linting, type checks, tests, and secret scanning.
+- Do not treat `npm audit fix` as magic.
+- Prefer reviewed remediation over blind auto-fix.
+- If deviating from a rule, add `SEC-DEBT:` with a concise reason.

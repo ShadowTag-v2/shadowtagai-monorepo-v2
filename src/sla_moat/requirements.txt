@@ -1,0 +1,31 @@
+# SLA Moat - Multi-vendor Failover Architecture
+# Requirements for production implementation
+
+# Core dependencies (already in use)
+# fastapi>=0.104.0
+# uvicorn>=0.24.0
+# pydantic>=2.0.0
+
+# LLM Provider SDKs (to be added when implementing real API calls)
+# google-generativeai>=0.3.0          # Gemini API
+# anthropic>=0.7.0                     # Claude API
+# openai>=1.0.0                        # GPT-5/GPT-4 API
+
+# PyTorch for local fallback model (to be added)
+# torch>=2.0.0                         # Local inference
+# transformers>=4.35.0                 # Model utilities
+
+# Monitoring and metrics (optional, recommended)
+# prometheus-client>=0.19.0            # Metrics emission
+# datadog>=0.48.0                      # APM and logging
+# sentry-sdk>=1.38.0                   # Error tracking
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.12.0
+
+# Development
+black>=23.0.0
+mypy>=1.7.0
+ruff>=0.1.0

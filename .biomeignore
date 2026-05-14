@@ -1,0 +1,17 @@
+**/node_modules/**
+**/.venv/**
+**/vendor/**
+**/third_party/**
+**/archive/**
+**/tools/legacy/**
+**/docs/legacy_shadowtag_v2/**
+**/apps/pnkln-stack_ecosystem/raw_ingest/**
+**/_PRE_OMEGA_BACKUP_*/**
+**/ShadowTag-Omega/**
+**/arsenal_recovered/**
+**/repos/*-legacy/**
+**/libs/ruff/**
+**/libs/ruff-vscode/**
+**/libs/basedpyright/**
+**/libs/biome/**
+**/libs/biome-core/**

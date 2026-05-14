@@ -1,0 +1,402 @@
+# PNKLN Intelligence Pipeline - Critical ML/AI Infrastructure Repositories
+# 70 repositories organized by category for systematic ingestion
+
+multi_agent_orchestration:
+  - name: microsoft/autogen
+    url: https://github.com/microsoft/autogen
+    stars: 50400
+    priority: critical
+    category: multi-agent
+
+  - name: microsoft/agent-framework
+    url: https://github.com/microsoft/agent-framework
+    priority: high
+    category: multi-agent
+
+  - name: langchain-ai/langgraph
+    url: https://github.com/langchain-ai/langgraph
+    stars: 20100
+    priority: critical
+    category: multi-agent
+
+  - name: crewaiinc/crewai
+    url: https://github.com/crewaiinc/crewai
+    stars: 18000
+    priority: high
+    category: multi-agent
+
+  - name: microsoft/Multi-Agent-Custom-Automation-Engine-Solution-Accelerator
+    url: https://github.com/microsoft/Multi-Agent-Custom-Automation-Engine-Solution-Accelerator
+    priority: medium
+    category: multi-agent
+
+llm_sdks_apis:
+  - name: anthropics/anthropic-sdk-python
+    url: https://github.com/anthropics/anthropic-sdk-python
+    stars: 2385
+    priority: critical
+    category: llm-sdk
+
+  - name: googleapis/python-genai
+    url: https://github.com/googleapis/python-genai
+    priority: critical
+    category: llm-sdk
+
+  - name: GoogleCloudPlatform/generative-ai
+    url: https://github.com/GoogleCloudPlatform/generative-ai
+    priority: high
+    category: llm-sdk
+
+  - name: google-gemini/genai-processors
+    url: https://github.com/google-gemini/genai-processors
+    priority: high
+    category: llm-sdk
+
+  - name: openai/openai-python
+    url: https://github.com/openai/openai-python
+    stars: 22000
+    priority: critical
+    category: llm-sdk
+
+llm_inference_servers:
+  - name: vllm-project/vllm
+    url: https://github.com/vllm-project/vllm
+    stars: 30000
+    priority: critical
+    category: inference
+
+  - name: triton-inference-server/vllm_backend
+    url: https://github.com/triton-inference-server/vllm_backend
+    priority: high
+    category: inference
+
+  - name: triton-inference-server/server
+    url: https://github.com/triton-inference-server/server
+    stars: 8000
+    priority: critical
+    category: inference
+
+  - name: pytorch/serve
+    url: https://github.com/pytorch/serve
+    stars: 4000
+    priority: high
+    category: inference
+
+  - name: tensorflow/serving
+    url: https://github.com/tensorflow/serving
+    stars: 6000
+    priority: high
+    category: inference
+
+  - name: sgl-project/sglang
+    url: https://github.com/sgl-project/sglang
+    priority: high
+    category: inference
+
+  - name: huggingface/text-generation-inference
+    url: https://github.com/huggingface/text-generation-inference
+    stars: 8500
+    priority: critical
+    category: inference
+
+  - name: triton-inference-server/onnxruntime_backend
+    url: https://github.com/triton-inference-server/onnxruntime_backend
+    priority: medium
+    category: inference
+
+distributed_training_optimization:
+  - name: microsoft/DeepSpeed
+    url: https://github.com/microsoft/DeepSpeed
+    stars: 35000
+    priority: critical
+    category: distributed-training
+
+  - name: deepspeedai/Megatron-DeepSpeed
+    url: https://github.com/deepspeedai/Megatron-DeepSpeed
+    priority: high
+    category: distributed-training
+
+  - name: NVIDIA/Megatron-LM
+    url: https://github.com/NVIDIA/Megatron-LM
+    stars: 9000
+    priority: critical
+    category: distributed-training
+
+  - name: horovod/horovod
+    url: https://github.com/horovod/horovod
+    stars: 14000
+    priority: high
+    category: distributed-training
+
+  - name: ray-project/ray
+    url: https://github.com/ray-project/ray
+    stars: 33000
+    priority: critical
+    category: distributed-training
+
+  - name: ray-project/serve_config_examples
+    url: https://github.com/ray-project/serve_config_examples
+    priority: medium
+    category: distributed-training
+
+  - name: intel/llm-on-ray
+    url: https://github.com/intel/llm-on-ray
+    priority: medium
+    category: distributed-training
+
+  - name: Lightning-AI/pytorch-lightning
+    url: https://github.com/Lightning-AI/pytorch-lightning
+    stars: 28000
+    priority: critical
+    category: distributed-training
+
+kubernetes_mlops:
+  - name: ray-project/kuberay
+    url: https://github.com/ray-project/kuberay
+    stars: 1200
+    priority: critical
+    category: kubernetes
+
+  - name: kserve/kserve
+    url: https://github.com/kserve/kserve
+    stars: 3500
+    priority: critical
+    category: kubernetes
+
+  - name: SeldonIO/seldon-core
+    url: https://github.com/SeldonIO/seldon-core
+    stars: 4300
+    priority: high
+    category: kubernetes
+
+  - name: SeldonIO/MLServer
+    url: https://github.com/SeldonIO/MLServer
+    stars: 700
+    priority: high
+    category: kubernetes
+
+  - name: bentoml/BentoML
+    url: https://github.com/bentoml/BentoML
+    stars: 7000
+    priority: high
+    category: kubernetes
+
+  - name: kubeflow/kubeflow
+    url: https://github.com/kubeflow/kubeflow
+    stars: 14000
+    priority: critical
+    category: kubernetes
+
+  - name: kubeflow/katib
+    url: https://github.com/kubeflow/katib
+    stars: 1500
+    priority: medium
+    category: kubernetes
+
+  - name: GoogleCloudPlatform/accelerated-platforms
+    url: https://github.com/GoogleCloudPlatform/accelerated-platforms
+    priority: high
+    category: kubernetes
+
+  - name: GoogleCloudPlatform/ai-on-gke
+    url: https://github.com/GoogleCloudPlatform/ai-on-gke
+    priority: critical
+    category: kubernetes
+
+  - name: GoogleCloudPlatform/container-engine-accelerators
+    url: https://github.com/GoogleCloudPlatform/container-engine-accelerators
+    priority: medium
+    category: kubernetes
+
+gpu_optimization_communication:
+  - name: NVIDIA/nccl
+    url: https://github.com/NVIDIA/nccl
+    stars: 3800
+    priority: critical
+    category: gpu
+
+  - name: NVIDIA/nccl-tests
+    url: https://github.com/NVIDIA/nccl-tests
+    priority: medium
+    category: gpu
+
+  - name: Mellanox/nv_peer_memory
+    url: https://github.com/Mellanox/nv_peer_memory
+    priority: medium
+    category: gpu
+
+  - name: NVIDIA/gdrcopy
+    url: https://github.com/NVIDIA/gdrcopy
+    stars: 400
+    priority: medium
+    category: gpu
+
+  - name: google/nccl-plugin-gpudirecttcpx
+    url: https://github.com/google/nccl-plugin-gpudirecttcpx
+    priority: high
+    category: gpu
+
+  - name: NVIDIA/cuda-samples
+    url: https://github.com/NVIDIA/cuda-samples
+    stars: 6000
+    priority: high
+    category: gpu
+
+inference_optimization_conversion:
+  - name: microsoft/onnxruntime
+    url: https://github.com/microsoft/onnxruntime
+    stars: 14000
+    priority: critical
+    category: optimization
+
+  - name: onnx/onnx
+    url: https://github.com/onnx/onnx
+    stars: 18000
+    priority: critical
+    category: optimization
+
+  - name: onnx/onnx-tensorrt
+    url: https://github.com/onnx/onnx-tensorrt
+    stars: 2700
+    priority: high
+    category: optimization
+
+  - name: NVIDIA/TensorRT
+    url: https://github.com/NVIDIA/TensorRT
+    stars: 10500
+    priority: critical
+    category: optimization
+
+  - name: pytorch/TensorRT
+    url: https://github.com/pytorch/TensorRT
+    stars: 2500
+    priority: high
+    category: optimization
+
+  - name: huggingface/optimum
+    url: https://github.com/huggingface/optimum
+    stars: 2400
+    priority: high
+    category: optimization
+
+  - name: apache/tvm
+    url: https://github.com/apache/tvm
+    stars: 11000
+    priority: high
+    category: optimization
+
+  - name: openvinotoolkit/openvino
+    url: https://github.com/openvinotoolkit/openvino
+    stars: 7000
+    priority: medium
+    category: optimization
+
+edge_computing_mobile:
+  - name: google-ai-edge/LiteRT
+    url: https://github.com/google-ai-edge/LiteRT
+    priority: high
+    category: edge
+
+  - name: tensorflow/tensorflow
+    url: https://github.com/tensorflow/tensorflow
+    stars: 186000
+    priority: critical
+    category: edge
+
+  - name: pytorch/executorch
+    url: https://github.com/pytorch/executorch
+    stars: 1800
+    priority: high
+    category: edge
+
+  - name: alibaba/MNN
+    url: https://github.com/alibaba/MNN
+    stars: 8500
+    priority: medium
+    category: edge
+
+  - name: Tencent/ncnn
+    url: https://github.com/Tencent/ncnn
+    stars: 20000
+    priority: high
+    category: edge
+
+mlops_observability:
+  - name: mlflow/mlflow
+    url: https://github.com/mlflow/mlflow
+    stars: 18000
+    priority: critical
+    category: mlops
+
+  - name: wandb/wandb
+    url: https://github.com/wandb/wandb
+    stars: 8800
+    priority: high
+    category: mlops
+
+  - name: prometheus/prometheus
+    url: https://github.com/prometheus/prometheus
+    stars: 55000
+    priority: critical
+    category: observability
+
+  - name: grafana/grafana
+    url: https://github.com/grafana/grafana
+    stars: 64000
+    priority: high
+    category: observability
+
+  - name: argoproj/argo-workflows
+    url: https://github.com/argoproj/argo-workflows
+    stars: 15000
+    priority: high
+    category: mlops
+
+  - name: kedro-org/kedro
+    url: https://github.com/kedro-org/kedro
+    stars: 9700
+    priority: medium
+    category: mlops
+
+  - name: zenml-io/zenml
+    url: https://github.com/zenml-io/zenml
+    stars: 4000
+    priority: medium
+    category: mlops
+
+  - name: dagster-io/dagster
+    url: https://github.com/dagster-io/dagster
+    stars: 11000
+    priority: high
+    category: mlops
+
+advanced_tools_frameworks:
+  - name: skypilot-org/skypilot
+    url: https://github.com/skypilot-org/skypilot
+    stars: 6500
+    priority: high
+    category: cloud
+
+  - name: mosaicml/composer
+    url: https://github.com/mosaicml/composer
+    stars: 5000
+    priority: medium
+    category: training
+
+  - name: determined-ai/determined
+    url: https://github.com/determined-ai/determined
+    stars: 3000
+    priority: medium
+    category: training
+
+  - name: Netflix/metaflow
+    url: https://github.com/Netflix/metaflow
+    stars: 8000
+    priority: high
+    category: mlops
+
+  - name: feast-dev/feast
+    url: https://github.com/feast-dev/feast
+    stars: 5500
+    priority: medium
+    category: feature-store

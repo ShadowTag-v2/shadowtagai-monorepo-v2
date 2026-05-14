@@ -1,0 +1,22 @@
+[
+  {
+    "content": "Update KOSMOS_DEV_REQUIREMENTS.md to align with paper terminology",
+    "status": "completed",
+    "activeForm": "Updating requirements to match paper"
+  },
+  {
+    "content": "Refactor agents to DataAnalysisAgent + LiteratureAgent pattern",
+    "status": "completed",
+    "activeForm": "Refactoring agent structure"
+  },
+  {
+    "content": "Build product registry for all GitHub repos",
+    "status": "pending",
+    "activeForm": "Building product registry"
+  },
+  {
+    "content": "Create Shadowtag V2 product specification",
+    "status": "completed",
+    "activeForm": "Creating Shadowtag V2 spec"
+  }
+]

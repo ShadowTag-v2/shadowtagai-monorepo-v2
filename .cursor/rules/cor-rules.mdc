@@ -1,0 +1,70 @@
+---
+description: Cor.Rules enforcement for Antigravity — security, architecture, agent behavior
+globs: ["**/*.{js,jsx,ts,tsx,py}"]
+---
+
+# Cor.Rules — Antigravity
+
+## Architecture
+- Atomic Design ONLY for design-system layer (atoms → molecules → organisms). Do not force on full app.
+- Organize app code by feature and concern: features/, hooks/, services/, policies/, validation/, permissions/, route handlers, server actions.
+- **Atoms**: smallest indivisible unit (Button, Input, Badge, Spinner).
+- **Molecules**: group of atoms forming a coherent unit (Modal, Sheet, SearchBar, FormField).
+- **Components**: combination of atoms + molecules into reusable feature elements (ProductCard, AuthForm, DataTable).
+- Prefer components under 150 lines. If it exceeds 150, evaluate distinct concerns (data fetching, sub-UI sections, reusable logic) and split at natural boundaries. Never split purely to meet line count.
+- Prefer functions under 50 lines. Review anything over 50. Mandatory refactor review at 300+.
+- Always extract stateful and business logic into custom hooks.
+- One responsibility per component. No hidden logic swamp.
+
+## Security (All 30 enforced)
+- Access tokens 15–60 min, refresh tokens rotated + revocable. Absolute session max 7–14 days.
+- Never write custom production auth. Use Clerk, Supabase Auth, or Auth0. Enforce MFA.
+- Never paste API keys in AI chats. Use process.env. Always.
+- .gitignore is file #1, before any application code.
+- Rotate secrets every 90 days; immediately on suspected exposure.
+- Verify every package before installing. Check npm/PyPI. Check download count + publish date.
+- Always request latest stable versions explicitly.
+- Run npm audit on every PR; review remediation — no blind audit fix on main.
+- Sanitize every input. Use parameterized queries always. Zod/Pydantic at every boundary.
+- Enable Row-Level Security from day one.
+- No console.log/debug in prod. Structured logging with severity only. Strip debug in client bundles.
+- CORS: production domain only. Never wildcard.
+- Validate all redirect URLs against a hardcoded allow-list.
+- Auth + rate limits on every endpoint including mobile APIs.
+- Rate limit by IP + user + endpoint. Stricter for auth/payment/export.
+- Password reset: max 3/hr/email + CAPTCHA.
+- Cap AI API costs in dashboard AND in code.
+- DDoS protection: Cloudflare or Vercel edge config.
+- Storage buckets locked per-user. RLS enforced.
+- Upload validation by allow-list, size cap (10MB), and content/signature (magic bytes), never extension.
+- Verify webhook signatures (Stripe etc.) before processing payment data.
+- Resend/SendGrid with SPF/DKIM before any user emails.
+- Server-side permission checks always. UI checks are UX, not security.
+- Ask AI to act as security engineer and review code before shipping.
+- Ask AI to red-team your app. It finds things humans miss.
+- Log critical actions: deletions, role changes, payments, data exports.
+- Build GDPR account deletion flow before launch.
+- Automate backups + test restoration weekly.
+- Test and prod fully separate: different DBs, VPCs, keys.
+- No test webhooks touching real systems. Use sandbox/test modes.
+- CSP + security headers by default (HSTS, X-Content-Type-Options, Referrer-Policy).
+- CSRF protection when using cookie sessions (SameSite + CSRF tokens).
+- Secrets scanning pre-commit (Gitleaks/detect-secrets) + CI gate.
+- Pin dependencies + lockfile discipline. No floating versions.
+- Least privilege for all service roles. No god keys in app runtime.
+
+## Agent Behavior
+- If a rule must be broken, add `SEC-DEBT: <reason>` comment and explain in PR.
+- CLAUDE.md / AGENTS.md is a behavior contract, not just a style guide. Operational constraints belong here.
+- Enter plan mode for any non-trivial task (3+ steps or architectural decisions).
+- After any correction: update rules to prevent recurrence.
+- Never mark a task complete without proving it works.
+- Autonomous bug fixing: given a bug, fix it. No hand-holding required from user.
+
+## Stack Defaults
+- Backend: Python FastAPI > Node.js
+- Auth: Firebase > Supabase
+- Vector DB: Pinecone > pgvector
+- Compute: Render > Vercel (heavy backend), Modal/Lambda > Celery
+- Mobile: Expo > bare Xcode
+- Inference: ANE → Metal → Colab (never local CPU)

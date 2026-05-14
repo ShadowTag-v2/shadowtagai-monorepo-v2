@@ -1,0 +1,265 @@
+{
+  "security-enforcement": {
+    "type": "guardrail",
+    "enforcement": "block",
+    "priority": "critical",
+    "promptTriggers": {
+      "keywords": [
+        "auth",
+        "authenticate",
+        "authorization",
+        "encrypt",
+        "encryption",
+        "decrypt",
+        "secret",
+        "password",
+        "token",
+        "apiKey",
+        "api",
+        "endpoint",
+        "deploy",
+        "production",
+        "database",
+        "db",
+        "prisma",
+        "query"
+      ],
+      "intentPatterns": [
+        "(create|add|implement|build).*(auth|security|api|endpoint)",
+        "(deploy|ship|release|production)",
+        "store.*(password|secret|key)",
+        "connect.*(database|db|api)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/*.ts",
+        "**/*.py",
+        "**/*.js",
+        "**/auth/**/*",
+        "**/api/**/*",
+        "**/.env*",
+        "**/config/**/*"
+      ],
+      "contentPatterns": [
+        "password",
+        "apiKey",
+        "SECRET",
+        "secret",
+        "token",
+        "encrypt",
+        "decrypt",
+        "http://",
+        "prisma",
+        "fetch\\(",
+        "axios"
+      ]
+    }
+  },
+
+  "aiyoujr-judge": {
+    "type": "decision",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "feature",
+        "implement",
+        "build",
+        "create",
+        "architecture",
+        "design",
+        "plan",
+        "refactor",
+        "deploy",
+        "launch",
+        "release"
+      ],
+      "intentPatterns": [
+        "(plan|design|architect).*feature",
+        "(implement|build|create).*(feature|service|component)",
+        "refactor.*",
+        "deploy.*(production|staging)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/ARCHITECTURE.md", "**/PLAN.md", "**/dev/active/**/*", "**/CLAUDE.md"],
+      "contentPatterns": ["## Architecture", "## Plan", "Monte Carlo", "ROI", "LTV:CAC"]
+    }
+  },
+
+  "backend-dev-guidelines": {
+    "type": "domain",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "backend",
+        "api",
+        "endpoint",
+        "route",
+        "controller",
+        "service",
+        "repository",
+        "database",
+        "db",
+        "prisma",
+        "query",
+        "express"
+      ],
+      "intentPatterns": [
+        "(create|add|build).*(route|endpoint|controller|service)",
+        "(how to|best practice).*(backend|api)",
+        "database.*(query|operation|migration)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/backend/**/*.ts",
+        "**/api/**/*.ts",
+        "**/services/**/*.ts",
+        "**/controllers/**/*.ts",
+        "**/repositories/**/*.ts",
+        "**/routes/**/*.ts"
+      ],
+      "contentPatterns": [
+        "router\\.",
+        "export.*Controller",
+        "express",
+        "prisma",
+        "app\\.use",
+        "app\\.get",
+        "app\\.post"
+      ]
+    }
+  },
+
+  "frontend-dev-guidelines": {
+    "type": "domain",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "frontend",
+        "react",
+        "component",
+        "ui",
+        "tanstack",
+        "query",
+        "router",
+        "mui",
+        "form"
+      ],
+      "intentPatterns": [
+        "(create|add|build).*(component|page|layout)",
+        "(how to|best practice).*(react|frontend|ui)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/frontend/**/*.tsx",
+        "**/frontend/**/*.jsx",
+        "**/components/**/*.tsx",
+        "**/pages/**/*.tsx",
+        "**/src/**/*.tsx"
+      ],
+      "contentPatterns": [
+        "import.*React",
+        "export.*function.*Component",
+        "useState",
+        "useEffect",
+        "useQuery",
+        "useMutation"
+      ]
+    }
+  },
+
+  "universal-copilot-patterns": {
+    "type": "compliance",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "copilot",
+        "ai assist",
+        "code completion",
+        "llm routing",
+        "multi-llm",
+        "vendor api",
+        "spoofing",
+        "compliant",
+        "mitm"
+      ],
+      "intentPatterns": [
+        "(build|create|implement).*(ai assist|copilot|code completion)",
+        "(integrate|add).*(llm|openai|anthropic|claude)",
+        "(route|routing).*(llm|model|provider)",
+        "compliant.*(api|integration)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": ["**/ai-assist/**/*", "**/llm/**/*", "**/providers/**/*", "**/router/**/*"],
+      "contentPatterns": [
+        "OpenAI",
+        "Anthropic",
+        "import.*openai",
+        "import.*anthropic",
+        "routing.*llm",
+        "multi.*agent"
+      ]
+    }
+  },
+
+  "pnkln-component-analysis": {
+    "type": "analysis",
+    "enforcement": "suggest",
+    "priority": "high",
+    "promptTriggers": {
+      "keywords": [
+        "analyze",
+        "review",
+        "audit",
+        "pnkln",
+        "component",
+        "architecture",
+        "performance",
+        "optimization",
+        "gemini",
+        "ingestion",
+        "judge",
+        "validator",
+        "pipeline",
+        "metrics",
+        "kpi"
+      ],
+      "intentPatterns": [
+        "(analyze|review|audit).*(component|architecture|system)",
+        "(optimize|improve).*(performance|cost|latency)",
+        "pnkln.*(stack|component|service)",
+        "(gemini|claude).*(analysis|prompt)",
+        "(ingestion|collection|validation).*(layer|service)"
+      ]
+    },
+    "fileTriggers": {
+      "pathPatterns": [
+        "**/ARCHITECTURE.md",
+        "**/ANALYSIS.md",
+        "**/REVIEW.md",
+        "**/docs/architecture/**/*",
+        "**/docs/analysis/**/*",
+        "**/pnkln/**/*"
+      ],
+      "contentPatterns": [
+        "## Component Analysis",
+        "## Architecture",
+        "Gemini.*Analysis",
+        "Judge #",
+        "Ingestion Layer",
+        "Performance Metrics",
+        "KPI",
+        "p99",
+        "throughput"
+      ]
+    }
+  }
+}

@@ -1,0 +1,3 @@
+name: prod-infra
+runtime: nodejs
+description: GCP Cloud Run serverless — prod environment

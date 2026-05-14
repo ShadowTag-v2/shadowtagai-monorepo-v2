@@ -1,0 +1,6 @@
+{
+  "outputStyle": "explanatory",
+  "permissions": {
+    "allow": ["Bash(git checkout:*)"]
+  }
+}

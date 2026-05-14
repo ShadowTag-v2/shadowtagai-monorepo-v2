@@ -1,0 +1,7 @@
+{
+  "providers": {
+    "openai": { "apiKey": "REDACTED_OPENAI_KEY", "defaultModel": "gpt-5-fast", "streaming": false },
+    "anthropic": { "apiKey": "REDACTED_ANTHROPIC_KEY", "defaultModel": "claude-4-sonnet" }
+  },
+  "autoApprove": true
+}

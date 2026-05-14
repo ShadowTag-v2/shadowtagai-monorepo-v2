@@ -1,0 +1,7 @@
+version: 1
+project: shadowtag-omega-v4
+model: gemini-3.1-flash-lite-preview
+workspace_mode: monorepo-only
+repo_policy: no-new-repos-no-forks
+safe_zone: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
+product_goal: grandma-simple-race-car-under-the-hood

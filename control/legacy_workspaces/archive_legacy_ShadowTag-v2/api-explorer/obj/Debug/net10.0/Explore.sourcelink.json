@@ -1,0 +1,9 @@
+{
+  "documents": {
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/*": "https://raw.githubusercontent.com/ShadowTag-v2/aiyou-fastapi-services/c4f1ad1fede0d490989ff524db508da2be48409c/*",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/external_sdks/scraping/brave-core/*": "https://raw.githubusercontent.com/brave/brave-core/c8ebf643b10904673313c9c812bc075d493bf864/*",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/external_sdks/scraping/firecrawl/*": "https://raw.githubusercontent.com/firecrawl/firecrawl/3d2aae674109682e191901849cb9ae23302cdfe9/*",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/external_sdks/scraping/scrapegraph-ai/*": "https://raw.githubusercontent.com/ScrapeGraphAI/Scrapegraph-ai/7dc19567c379ba17eb468e511753dbbb5a9ee023/*",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/external_sdks/scraping/skyvern/*": "https://raw.githubusercontent.com/Skyvern-AI/skyvern/1d4f9ef9e21654e4f2901f4369e25a98067df1f2/*"
+  }
+}

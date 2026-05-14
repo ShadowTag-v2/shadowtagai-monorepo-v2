@@ -1,0 +1,6 @@
+I didn't know ChatGPT could do all this now:
+https://x.com/samuraipreneur/status/1863963121532231935
+UI to React Component: Prompt: "Convert this UI mockup into a React component using Tailwind CSS."
+2. Build your Agents: • Web Search Agent (2:40) • Finance Agent (3:30) • Hackernews Agent (5:50) • Data Analysis Agent (8:10) • Research Agent (9:35)
+7. Automate Report Generation: Prompt: "Generate a detailed PDF report based on this set of charts and graphs."
+12. Website from sketch: Prompt: "Write me the all the codes needed for creating this HTML website"

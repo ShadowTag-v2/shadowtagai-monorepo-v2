@@ -1,0 +1,124 @@
+name: "Main"
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run prettier -- --check
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    name: Test on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      # pnpm is needed for test fixtures that use packageManager: pnpm
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
+        shell: bash
+        if: ${{ success() && matrix.os == 'ubuntu-latest' }}
+
+      - run: npm ci
+      - run: npm test
+        env:
+          DISPLAY: ":99.0"
+
+  test-web:
+    runs-on: ubuntu-latest
+    name: Test Web Extension
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:web
+
+  package:
+    runs-on: ubuntu-latest
+    needs: [lint, test, test-web]
+    name: Package
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - run: npm ci
+      - run: npm run compile
+      - run: npx @vscode/vsce package
+      - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
+      - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v7
+        with:
+          path: ${{ env.VSIX_PATH }}
+          name: ${{ env.VSIX_NAME }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/v')
+    name: Release
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Check if prerelease
+        id: check_prerelease
+        run: |
+          if [[ "${{ github.ref_name }}" =~ -preview|-beta|-alpha|-rc ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+      - run: npm ci
+      - run: npm run compile
+      - run: npx @vscode/vsce package ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
+      - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes \
+            --notes-start-tag "$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo '')" \
+            ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--prerelease' || '' }} \
+            "${{ env.VSIX_PATH }}"
+
+          # Append changelog link to release notes
+          gh release edit "${{ github.ref_name }}" --notes "$(gh release view "${{ github.ref_name }}" --json body -q .body)
+
+          ---
+          See the full [CHANGELOG](https://github.com/prettier/prettier-vscode/blob/main/CHANGELOG.md) for details."
+      - run: npx @vscode/vsce publish -p ${{ secrets.MARKETPLACE_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
+      - run: npx ovsx publish "${{ env.VSIX_PATH }}" -p ${{ secrets.OPENVSX_TOKEN }} ${{ steps.check_prerelease.outputs.is_prerelease == 'true' && '--pre-release' || '' }}
