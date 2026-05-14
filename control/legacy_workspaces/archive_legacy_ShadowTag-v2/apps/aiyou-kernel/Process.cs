@@ -120,7 +120,7 @@ public static class JudgeProcessBuilder
         var enforce = builder.AddStepFromType<EnforcementStep>("Enforcer");
 
         // The Directed Graph (The "Flow")
-        builder.OnExternalEvent("Start")
+        builder.OnInputEvent("Start")
             .SendEventTo(new ProcessFunctionTargetBuilder(compress, nameof(CompressionStep.ExtractFeaturesAsync), "rawInput"));
 
         compress.OnEvent("FeaturesExtracted")
@@ -137,9 +137,9 @@ public static class JudgeProcessBuilder
             .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Block), "risk"));
 
         // Human Loop Closure
-        // Fixed: Use OnExternalEvent because HumanGateStep doesn't emit "Approved" internally.
+        // Fixed: Use OnInputEvent (SK 1.74.0+, renamed from OnExternalEvent) because
         // The external system (API/UI) must fire "HumanApprovalReceived" with the RiskAssessment object.
-        builder.OnExternalEvent("HumanApprovalReceived")
+        builder.OnInputEvent("HumanApprovalReceived")
             .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Execute), "risk"));
 
         return builder.Build();

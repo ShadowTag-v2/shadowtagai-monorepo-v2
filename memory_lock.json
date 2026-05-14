@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "workspace_root": "/Users/pikeymickey/.gemini/antigravity/playground/core-zenith",
   "project": "shadowtag-omega-v4",
@@ -12,15 +11,3 @@
   ]
 }
 ||||||| empty tree
-=======
-{
-  "workspace_root": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
-  "project": "shadowtag-omega-v4",
-  "model_family": "gemini-3.1-family",
-  "canonical_mcp": "antigravity-mcp-config.json",
-  "product_path": "apps/counselconduit",
-  "lab_path": "labs/uphillsnowball",
-  "brain_dir": "/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50",
-  "forbidden_strings": []
-}
->>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419

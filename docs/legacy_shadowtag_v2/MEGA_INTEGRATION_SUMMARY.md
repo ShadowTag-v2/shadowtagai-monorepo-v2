@@ -2317,11 +2317,7 @@ prompt = f"""
 You are resolving a Git merge conflict in an LLM memory state file.
 
 Conflict Sections:
-<<<<<<< HEAD (Mac - User's local changes)
 {conflict_sections['head']}
-=======
-{conflict_sections['remote']} (Vertex Workbench - Cloud changes)
->>>>>>> origin/main
 
 Rules:
 1. Preserve both changes if they affect different keys

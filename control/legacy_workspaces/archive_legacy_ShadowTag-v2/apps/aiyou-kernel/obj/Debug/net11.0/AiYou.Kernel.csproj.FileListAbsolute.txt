@@ -1,0 +1,13 @@
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.csproj.AssemblyReference.cache
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.GeneratedMSBuildEditorConfig.editorconfig
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.AssemblyInfoInputs.cache
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.AssemblyInfo.cs
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.csproj.CoreCompileInputs.cache
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.sourcelink.json
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/bin/Debug/net11.0/AiYou.Kernel.deps.json
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/bin/Debug/net11.0/AiYou.Kernel.dll
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/bin/Debug/net11.0/AiYou.Kernel.pdb
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.dll
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/refint/AiYou.Kernel.dll
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/AiYou.Kernel.pdb
+/Users/pikeymickey/.gemini/mono-fresh/control/legacy_workspaces/archive_legacy_ShadowTag-v2/apps/aiyou-kernel/obj/Debug/net11.0/ref/AiYou.Kernel.dll
