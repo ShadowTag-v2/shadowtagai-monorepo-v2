@@ -122,6 +122,73 @@
         "jules_*"
       ],
       "note": "Jules MCP Server — MUST use for all Jules session management and autonomous code generation tasks."
+    },
+    "gcloud": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google-cloud/gcloud-mcp@latest"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first"
+      },
+      "capability_owner": true,
+      "owns": [
+        "gcloud_*"
+      ],
+      "note": "gcloud MCP — Natural language interface to gcloud CLI. MUST use instead of raw terminal gcloud commands."
+    },
+    "observability": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google-cloud/observability-mcp@latest"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first"
+      },
+      "capability_owner": true,
+      "owns": [
+        "query_logs",
+        "query_metrics",
+        "query_traces"
+      ],
+      "note": "Cloud Observability MCP — MUST use for all Cloud Logging, Monitoring, and Trace queries."
+    },
+    "storage": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google-cloud/storage-mcp@latest"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first"
+      },
+      "capability_owner": true,
+      "owns": [
+        "storage_*",
+        "list_buckets",
+        "upload_object",
+        "download_object"
+      ],
+      "note": "Cloud Storage MCP — MUST use for all GCS bucket and object operations."
+    },
+    "mcp-toolbox": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@googleapis/mcp-toolbox@latest"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--dns-result-order=ipv4first"
+      },
+      "capability_owner": true,
+      "owns": [
+        "list_tables",
+        "execute_sql",
+        "describe_table"
+      ],
+      "note": "MCP Toolbox for Databases — MUST use for database schema exploration and SQL queries via MCP."
     }
   },
   "routing_rules": {
@@ -151,14 +218,18 @@
   ],
   "fleet_manifest": {
     "antigravity_native": {
-      "total": 6,
+      "total": 10,
       "servers": [
         "firebase-mcp-server",
         "chrome-devtools-mcp",
         "StitchMCP",
         "google-developer-knowledge",
         "sequential-thinking",
-        "jules-mcp-server"
+        "jules-mcp-server",
+        "gcloud",
+        "observability",
+        "storage",
+        "mcp-toolbox"
       ]
     },
     "cline_protocol_aligned": {
