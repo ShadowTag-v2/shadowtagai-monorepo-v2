@@ -107,6 +107,7 @@ class TestChainResilience:
     """Tests for chain error handling and resilience."""
 
     @pytest.mark.asyncio
+    @pytest.mark.skipif(not settings.gemini_api_key, reason="Gemini API key not configured")
     async def test_invalid_input_type(self):
         """Test chain with invalid input type."""
         kernels = [ATP519ScanKernel()]
@@ -117,6 +118,7 @@ class TestChainResilience:
             await chain.execute(initial_input={"invalid": "input"})
 
     @pytest.mark.asyncio
+    @pytest.mark.skipif(not settings.gemini_api_key, reason="Gemini API key not configured")
     async def test_trace_id_propagation(self, sample_clean_context):
         """Test that trace_id propagates through chain."""
         kernels = [
