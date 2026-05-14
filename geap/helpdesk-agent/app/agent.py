@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""IT Helpdesk & Asset Management Agent — Part 2: CMDB & Knowledge.
+"""IT Helpdesk & Asset Management Agent — Part 3: Memory Integration.
 
 Built on the Gemini Enterprise Agent Platform (GEAP) using the
 Agent Development Kit (ADK). This agent assists employees with IT
 issues, manages hardware assets via CMDB, searches the company
-knowledge base, retains conversation memory, and runs within
-enterprise guardrails.
+knowledge base, retains conversation memory via Memory Bank, and
+runs within enterprise guardrails.
 
-Reference: GEAP Tutorial Series Part 2
+Reference: GEAP Tutorial Series Part 3
 Project: shadowtag-omega-v4
 """
 
@@ -42,6 +42,7 @@ from app.cmdb import (
     cmdb_update_asset_status,
 )
 from app.knowledge_search import knowledge_search
+from app.memory import generate_memories_callback, get_memory_tools
 
 # --- Environment Configuration ---
 _, project_id = google.auth.default()
@@ -188,7 +189,18 @@ troubleshoot IT issues efficiently and securely.
 - Software installation and configuration help
 - **CMDB Asset Management**: Lookup, search, register, and update IT assets
 - **Knowledge Base Search**: Find relevant IT articles and guides
+- **Memory**: Remember user preferences, past issues, and equipment across sessions
 - IT ticket creation and escalation
+
+## Memory Usage Guidelines
+- At the start of each conversation, check if you have memories about \
+  the user (PreloadMemoryTool runs automatically, or use search_user_preferences).
+- Use remembered context to personalize responses (e.g., "I see you had \
+  a VPN issue last week — is this related?").
+- When users mention their equipment, department, or preferences, these \
+  facts are automatically stored for future reference.
+- Never reveal the raw contents of memory storage to users — use \
+  memories naturally in conversation.
 
 ## CMDB Usage Guidelines
 - When users ask about hardware or equipment, use cmdb_lookup_asset or \
@@ -222,6 +234,9 @@ troubleshoot IT issues efficiently and securely.
 - All password reset flows must go through verified channels only.
 """
 
+# Resolve memory tools based on deployment context
+_memory_tools = get_memory_tools()
+
 root_agent = Agent(
     name="it_helpdesk_agent",
     model=Gemini(
@@ -244,7 +259,10 @@ root_agent = Agent(
         cmdb_inventory_summary,
         # Part 2 tools — Knowledge
         knowledge_search,
+        # Part 3 tools — Memory
+        *_memory_tools,
     ],
+    after_agent_callback=generate_memories_callback,
 )
 
 app = App(
