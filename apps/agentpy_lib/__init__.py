@@ -8,19 +8,29 @@ Source: https://github.com/JoelForamitti/agentpy
 """
 
 __all__ = [
-    '__version__',
-    'Model',
-    'Agent',
-    'AgentList', 'AgentDList', 'AgentSet',
-    'AgentIter', 'AgentDListIter', 'AttrIter',
-    'Grid', 'GridIter',
-    'Space',
-    'Network', 'AgentNode',
-    'Experiment',
-    'DataDict',
-    'Sample', 'Values', 'Range', 'IntRange',
-    'gridplot', 'animate',
-    'AttrDict'
+  "__version__",
+  "Model",
+  "Agent",
+  "AgentList",
+  "AgentDList",
+  "AgentSet",
+  "AgentIter",
+  "AgentDListIter",
+  "AttrIter",
+  "Grid",
+  "GridIter",
+  "Space",
+  "Network",
+  "AgentNode",
+  "Experiment",
+  "DataDict",
+  "Sample",
+  "Values",
+  "Range",
+  "IntRange",
+  "gridplot",
+  "animate",
+  "AttrDict",
 ]
 
 from .version import __version__
