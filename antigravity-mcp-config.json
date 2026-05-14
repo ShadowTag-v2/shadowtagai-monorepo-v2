@@ -53,11 +53,8 @@
       "note": "Chrome DevTools MCP — MUST use instead of external screenshot tools. Owns all browser interaction, performance tracing, and Lighthouse audits."
     },
     "StitchMCP": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@anthropic-ai/stitch-mcp@latest"
-      ],
+      "_transport": "platform-managed",
+      "_status": "Antigravity IDE platform provides this server natively. No NPM package exists.",
       "env": {
         "STITCH_API_KEY": "${STITCH_API_KEY}"
       },
@@ -69,19 +66,13 @@
         "apply_design_system",
         "generate_variants"
       ],
-      "note": "Stitch MCP — MUST use for all UI design, screen generation, and design system work. No hand-coding design tokens."
+      "note": "Stitch MCP — Platform-managed. MUST use for all UI design, screen generation, and design system work. No hand-coding design tokens."
     },
     "google-developer-knowledge": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@anthropic-ai/google-developer-knowledge-mcp@latest"
-      ],
+      "_transport": "platform-managed",
+      "_status": "Antigravity IDE platform provides this server natively. No NPM package exists. Fallback: firebase-mcp-server.developerknowledge_search_documents (WORKING).",
       "env": {
-        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}",
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
+        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}"
       },
       "capability_owner": true,
       "owns": [
@@ -89,7 +80,7 @@
         "get_documents",
         "answer_query"
       ],
-      "note": "Google Developer Knowledge MCP — MUST use instead of search_web for ALL Google API documentation queries.",
+      "note": "Google Developer Knowledge MCP — Platform-managed. Fallback via firebase-mcp-server.developerknowledge_* tools.",
       "fallback": "firebase-mcp-server.developerknowledge_search_documents"
     },
     "sequential-thinking": {
