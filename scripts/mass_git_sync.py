@@ -120,7 +120,7 @@ def process_git_directory(repo_path: str, token: str):
         # 4. Push aggressively using ephemeral App Token via direct HTTPS injection
         push_cmd = f"https://x-access-token:{token}@github.com/{relative_repo}"
         # Using check_call to let failure propagate cleanly to logs without exposing token in stdout by default
-        env = os.environ.copy()
+        os.environ.copy()
 
         print("🚀 Pushing to GitHub via App Authorized Route...")
         subprocess.run(["git", "push", push_cmd, "HEAD"], cwd=repo_path, check=True)

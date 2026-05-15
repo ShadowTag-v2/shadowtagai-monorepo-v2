@@ -92,7 +92,7 @@ def main() -> int:
     blocked = 0
 
     for item in items:
-        name = item.get("repo") or item.get("name") or item.get("repository") or "unknown"
+        item.get("repo") or item.get("name") or item.get("repository") or "unknown"
         dest = item.get("destination") or item.get("canonical_path") or item.get("path")
         status = str(item.get("status", "")).strip()
 

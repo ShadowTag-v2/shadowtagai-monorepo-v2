@@ -11,7 +11,7 @@ Built with Google ADK for production-grade deterministic control.
 import os
 import logging
 from typing import Any
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 try:
     from google.adk.agents import Agent
@@ -107,7 +107,7 @@ If uncertain (confidence <60%), escalate to human review.
 
         try:
             # Configure Gemini client
-            client = genai.Client(api_key=self.api_key)
+            genai.Client(api_key=self.api_key)
 
             # Define policy evaluation tool
             def check_policy_compliance(action: str, resource_type: str, user_role: str, financial_value: float = 0.0) -> dict:
@@ -207,7 +207,7 @@ If uncertain (confidence <60%), escalate to human review.
         Returns:
             Decision with reasoning, confidence, and risk assessment
         """
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         if self.agent is None:
             # Mock response if ADK not available
@@ -215,7 +215,7 @@ If uncertain (confidence <60%), escalate to human review.
 
         try:
             # Build agent prompt
-            prompt = self._build_prompt(request_data)
+            self._build_prompt(request_data)
 
             # Invoke agent
             # TODO: Actual ADK invocation when API available
@@ -224,7 +224,7 @@ If uncertain (confidence <60%), escalate to human review.
             # For now, return structured mock response
             result = self._mock_evaluation(request_data)
 
-            latency_ms = (datetime.now(timezone.utc) - start_time).total_seconds() * 1000
+            latency_ms = (datetime.now(UTC) - start_time).total_seconds() * 1000
 
             logger.info(
                 f"Agent evaluation complete | Decision: {result['decision']} | Confidence: {result['confidence']:.2f} | Latency: {latency_ms:.0f}ms"
@@ -293,7 +293,7 @@ Return structured JSON response per system instruction.
         """
         action = request_data.get("action", "")
         financial_value = request_data.get("financial_value", 0)
-        user_role = request_data.get("context", {}).get("user_role", "engineer")
+        request_data.get("context", {}).get("user_role", "engineer")
 
         # Simple decision logic
         if "delete" in action.lower() and financial_value > 10000:

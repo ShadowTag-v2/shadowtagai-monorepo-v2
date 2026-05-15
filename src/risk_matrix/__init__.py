@@ -5,7 +5,6 @@ Army Techniques Publication 5-19 compliant risk matrix implementation
 """
 
 from enum import Enum
-from typing import Tuple
 from pydantic import BaseModel, Field
 
 

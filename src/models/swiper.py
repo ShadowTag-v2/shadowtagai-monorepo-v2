@@ -10,7 +10,7 @@ This module implements the core database models for the Swiper platform:
 - AI Personalization: Adaptive content based on user signals
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import Enum
 from typing import Any
 from sqlalchemy import Column, String, Integer, Float, Boolean, DateTime, JSON, ForeignKey, Text, Enum as SQLEnum, Index
@@ -152,8 +152,8 @@ class Video(Base):
     conversion_rate = Column(Float)
 
     # Timestamps
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC), index=True)
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
     published_at = Column(DateTime, index=True)
 
     # Relationships
@@ -206,8 +206,8 @@ class Product(Base):
     click_through_rate = Column(Float)
 
     # Timestamps
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
 
     # Relationships
     overlays = relationship("ProductOverlay", back_populates="product")
@@ -254,7 +254,7 @@ class ProductOverlay(Base):
     conversions = Column(Integer, default=0)
     click_rate = Column(Float)
 
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     # Relationships
     video = relationship("Video", back_populates="products")
@@ -299,7 +299,7 @@ class PersuasionPoint(Base):
     impressions = Column(Integer, default=0)
     conversion_lift = Column(Float)  # % increase in purchases when shown
 
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     # Relationships
     video = relationship("Video", back_populates="persuasion_points")
@@ -335,8 +335,8 @@ class User(Base):
     personalization_data = Column(JSON)  # AI-learned preferences
 
     # Timestamps
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    last_active_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    last_active_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     # Relationships
     interactions = relationship("UserInteraction", back_populates="user")
@@ -358,7 +358,7 @@ class UserInteraction(Base):
 
     # Interaction details
     interaction_type = Column(SQLEnum(InteractionType), nullable=False, index=True)
-    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+    timestamp = Column(DateTime, default=lambda: datetime.now(UTC), index=True)
 
     # Context
     video_time_seconds = Column(Float)  # Where in video did this occur
@@ -423,8 +423,8 @@ class Retailer(Base):
     total_revenue = Column(Float, default=0.0)
 
     # Timestamps
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
 
     # Relationships
     videos = relationship("Video", backref="retailer")
@@ -474,7 +474,7 @@ class VideoAnalytics(Base):
     test_variant = Column(String(50))
     control_vs_test_lift = Column(Float)
 
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     # Relationships
     video = relationship("Video", back_populates="analytics")

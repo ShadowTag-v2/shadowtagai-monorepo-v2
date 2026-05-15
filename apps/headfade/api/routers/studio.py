@@ -48,7 +48,7 @@ async def export_studio_video(payload: ForgeRequest):
 
         # 4. Write to Vector Search Shadow Index
         embedding_model = aiplatform.TextEmbeddingModel.from_pretrained("text-multilingual-embedding-002")
-        vector = embedding_model.get_embeddings([payload.prompt])[0].values
+        embedding_model.get_embeddings([payload.prompt])[0].values
 
     except Exception as e:
         return {"status": "error", "message": str(e)}

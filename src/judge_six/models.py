@@ -6,7 +6,7 @@ Data models for Judge #6
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 
 class VerdictStatus(Enum):
@@ -39,7 +39,7 @@ class Action:
     description: str
     context: dict[str, Any] = field(default_factory=dict)
     metadata: dict[str, Any] = field(default_factory=dict)
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
     user_id: str | None = None
     source: str | None = None
 
@@ -127,7 +127,7 @@ class JRVerdict:
     reasons: ReasonsVerdict
     brakes: BrakesVerdict
     overall_status: VerdictStatus
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
     latency_ms: float | None = None
     policy_ids: list[str] = field(default_factory=list)
 

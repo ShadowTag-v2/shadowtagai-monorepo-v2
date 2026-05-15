@@ -13,7 +13,7 @@ Classification criteria:
 
 from typing import Any
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import Enum
 
 # Note: In production, use google.genai (the unified Google Gen AI SDK)
@@ -40,7 +40,7 @@ class ClassificationResult:
 
     def __post_init__(self):
         if self.timestamp is None:
-            self.timestamp = datetime.now(timezone.utc)
+            self.timestamp = datetime.now(UTC)
 
     def meets_threshold(self, threshold: float = 0.60) -> bool:
         """Check if confidence meets minimum threshold"""

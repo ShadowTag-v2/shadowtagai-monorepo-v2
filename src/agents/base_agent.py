@@ -65,7 +65,7 @@ class MultiAgent(BaseAgent):
         # Initialize the base agent with sub_agents
         super().__init__(name=name, sub_agents=sub_agents or [], **kwargs)
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Implementation of the agent's execution logic.
 

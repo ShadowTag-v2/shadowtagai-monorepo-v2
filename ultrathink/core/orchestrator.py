@@ -102,7 +102,7 @@ class UltrathinkOrchestrator:
             Dictionary with results, reasoning, and metadata
         """
         # Apply entry protocol (prime with ULTRATHINK philosophy)
-        entry_prompt = self.prompts.ultrathink_entry_protocol()
+        self.prompts.ultrathink_entry_protocol()
 
         # Classify task if not explicitly provided
         if task_type is None:

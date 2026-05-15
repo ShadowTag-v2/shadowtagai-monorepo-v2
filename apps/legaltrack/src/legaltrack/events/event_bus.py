@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from typing import Any
 from collections.abc import Callable
 
@@ -28,9 +28,9 @@ class TelemetryEventBus:
         Publishes event and routes to all registered subscribers async.
         """
         event = {
-            "id": f"evt_{datetime.now(timezone.utc).timestamp()}",
+            "id": f"evt_{datetime.now(UTC).timestamp()}",
             "topic": topic,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "payload": payload,
         }
 

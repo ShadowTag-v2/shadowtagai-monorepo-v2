@@ -5,7 +5,7 @@ Abstract base class for all Judge verticals with shared enforcement logic
 """
 
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from typing import Any
 import time
 
@@ -154,7 +154,7 @@ class BaseJudge(ABC):
             judge_type=self.judge_type,
             metadata=evaluation.get("metadata", {}),
             next_steps=next_steps,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
         )
 
         return response

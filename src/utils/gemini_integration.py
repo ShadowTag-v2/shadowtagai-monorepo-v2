@@ -164,10 +164,9 @@ def example_gemini_integration():
 
     IMPORTANT: Gemini returns PARAMETERS, not execution!
     """
-    assistant = GeminiJudgeAssistant()
+    GeminiJudgeAssistant()
 
     # Example context
-    context = {"amount_usd": 75000, "vendor_status": "new", "has_purchase_order": False}
 
     # In production, Gemini would return function call parameters like:
     # {

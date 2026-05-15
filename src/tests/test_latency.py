@@ -49,7 +49,7 @@ def function_caller():
 def test_single_function_call_latency(function_caller):
     """Test latency of single function call."""
     start = time.time()
-    result = function_caller.execute("Double the number 5")
+    function_caller.execute("Double the number 5")
     latency_ms = (time.time() - start) * 1000
 
     metrics = function_caller.get_metrics()
@@ -74,7 +74,7 @@ def test_p99_latency_over_multiple_calls(function_caller):
     for i in range(num_runs):
         start = time.time()
         try:
-            result = function_caller.execute(f"Double the number {i}")
+            function_caller.execute(f"Double the number {i}")
             latency_ms = (time.time() - start) * 1000
             latencies.append(latency_ms)
             print(f"  Run {i + 1}: {latency_ms:.2f}ms")
@@ -104,7 +104,7 @@ def test_p99_latency_over_multiple_calls(function_caller):
 
 def test_function_execution_overhead(function_caller):
     """Test that function execution overhead is minimal."""
-    result = function_caller.execute("Double 10 and then uppercase the word 'hello'")
+    function_caller.execute("Double 10 and then uppercase the word 'hello'")
     metrics = function_caller.get_metrics()
 
     print("\nMetrics:")

@@ -9,7 +9,7 @@ When speed matters and rules are clear, OPA is the answer.
 import httpx
 import logging
 from typing import Any
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ class OPAClient:
         Raises:
             OPAException: If OPA evaluation fails
         """
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         try:
             url = f"{self.opa_url}/v1/data/{policy_path}"
@@ -62,7 +62,7 @@ class OPAClient:
             response.raise_for_status()
             result = response.json()
 
-            latency_ms = (datetime.now(timezone.utc) - start_time).total_seconds() * 1000
+            latency_ms = (datetime.now(UTC) - start_time).total_seconds() * 1000
 
             logger.info(f"OPA policy evaluated: {policy_path} | Allow: {result.get('result', {}).get('allow', False)} | Latency: {latency_ms:.2f}ms")
 

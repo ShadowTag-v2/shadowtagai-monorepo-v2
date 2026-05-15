@@ -4,7 +4,7 @@ Judge #6 HITL System - FastAPI Endpoints
 Binary enforcement API with <90ms p99 latency target
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from typing import Any
 from fastapi import FastAPI, HTTPException, Query, Path, status
 from fastapi.responses import JSONResponse
@@ -49,7 +49,7 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "timestamp": datetime.now(timezone.utc),
+        "timestamp": datetime.now(UTC),
         "judges_active": 4,
         "checks": {"fin_judge": "ok", "case_judge": "ok", "law_judge": "ok", "fraud_judge": "ok"},
     }
@@ -308,7 +308,7 @@ async def global_exception_handler(request, exc):
     """Global exception handler"""
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"error": "Internal server error", "detail": str(exc), "timestamp": datetime.now(timezone.utc).isoformat()},
+        content={"error": "Internal server error", "detail": str(exc), "timestamp": datetime.now(UTC).isoformat()},
     )
 
 

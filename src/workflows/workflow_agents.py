@@ -57,7 +57,7 @@ class SequentialWorkflowAgent(BaseAgent):
         self._description = description or "Sequential workflow execution"
         self.results: list[dict[str, Any]] = []
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Execute sub-agents sequentially.
 
@@ -139,7 +139,7 @@ class ParallelWorkflowAgent(BaseAgent):
         self.max_concurrent = max_concurrent
         self.results: list[dict[str, Any]] = []
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Execute sub-agents in parallel.
 
@@ -249,7 +249,7 @@ class LoopWorkflowAgent(BaseAgent):
         self.condition = condition
         self.iteration_results: list[dict[str, Any]] = []
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Execute sub-agents in a loop.
 
@@ -352,7 +352,7 @@ class ConditionalWorkflowAgent(BaseAgent):
         self.conditions = conditions
         self.default_agents = default_agents or []
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Execute sub-agents based on conditions.
 

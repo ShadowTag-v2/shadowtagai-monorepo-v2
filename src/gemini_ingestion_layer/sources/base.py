@@ -8,7 +8,7 @@ Abstract base for all data source implementations.
 from abc import ABC, abstractmethod
 from typing import Any
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 
 @dataclass
@@ -22,7 +22,7 @@ class IngestionItem:
     content: str
     author: str = ""
     domain: str = ""
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
     metadata: dict[str, Any] = field(default_factory=dict)
 
     # Classification fields (filled by tier classifier)

@@ -1,2 +1,2 @@
-# Alpha-Omega recovery scaffold\n
-||||||| empty tree
+# Alpha-Omega recovery scaffold
+"""Hybrid scraper placeholder — merge conflict artifacts cleaned."""

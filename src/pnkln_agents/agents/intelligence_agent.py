@@ -29,7 +29,7 @@ Architecture:
 
 from dataclasses import dataclass
 from typing import Any
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import time
 
 from ..core.gemini_ingestion import (
@@ -254,7 +254,7 @@ class IntelligenceAgent(PnklnAgent):
             briefing=briefing,
             metrics=combined_metrics,
             audit_trail={
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "query": query,
                 "target_items": target_items,
                 "actual_items": len(ingestion_result.items),

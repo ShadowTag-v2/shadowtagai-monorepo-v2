@@ -1,4 +1,4 @@
-target-version = "py311"
+target-version = "py313"
 line-length = 150
 extend-exclude = [
     # Historical and recovered trees are not canonical workspace truth.
@@ -24,7 +24,7 @@ extend-exclude = [
 [lint]
 # E: Errors, F: Pyflakes (unused imports), I: Isort, UP: PyUpgrade (strict typing)
 select = ["E", "F", "I", "UP"]
-ignore = ["E501", "E402", "E722", "F841", "E741", "F821", "I001", "PTH118", "PTH123", "SIM108", "N815", "F401"]
+ignore = ["E501", "E402", "E722", "E741", "F821", "I001", "PTH118", "PTH123", "SIM108", "N815"]
 
 [lint.isort]
 force-single-line = false

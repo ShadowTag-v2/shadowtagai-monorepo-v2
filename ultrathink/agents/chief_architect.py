@@ -5,7 +5,6 @@ ULTRATHINK Framework - Chief Architect
 Designs systems so clear anyone could execute them. Thinks like Da Vinci, war-games before building.
 """
 
-from typing import Optional
 from ..core.base_agent import BaseAgent
 from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
 
@@ -41,12 +40,8 @@ Core Principles:
 
 You are Leonardo da Vinci designing a cathedral - every beam must serve purpose AND beauty."""
 
-    def __init__(self, config: Optional[UltrathinkConfig] = None):
-        super().__init__(
-            role=AgentRole.ARCHITECT,
-            system_prompt=self.SYSTEM_PROMPT,
-            config=config
-        )
+    def __init__(self, config: UltrathinkConfig | None = None):
+        super().__init__(role=AgentRole.ARCHITECT, system_prompt=self.SYSTEM_PROMPT, config=config)
 
     async def execute(self, context: AgentContext) -> AgentResponse:
         """
@@ -61,11 +56,7 @@ You are Leonardo da Vinci designing a cathedral - every beam must serve purpose 
         6. Create visual narrative
         """
         if not self.validate_security(context):
-            return AgentResponse(
-                role=self.role,
-                content="SECURITY VALIDATION FAILED.",
-                confidence=0.0
-            )
+            return AgentResponse(role=self.role, content="SECURITY VALIDATION FAILED.", confidence=0.0)
 
         # Use Tree-of-Thoughts reasoning
         reasoning = self.create_reasoning_path(
@@ -76,9 +67,9 @@ You are Leonardo da Vinci designing a cathedral - every beam must serve purpose 
                 "3. Explored implications of each branch",
                 "4. Evaluated against simplicity, scalability, elegance, resilience",
                 "5. Selected approach requiring fewest explanations",
-                "6. War-gamed for failure points and mitigation"
+                "6. War-gamed for failure points and mitigation",
             ],
-            confidence=0.88
+            confidence=0.88,
         )
 
         # Generate architecture content
@@ -90,7 +81,7 @@ You are Leonardo da Vinci designing a cathedral - every beam must serve purpose 
             "Implement the selected architecture incrementally",
             "Monitor identified failure points proactively",
             "Build resilience mechanisms from day one",
-            "Document decisions for future maintainers"
+            "Document decisions for future maintainers",
         ]
 
         response = AgentResponse(
@@ -99,16 +90,8 @@ You are Leonardo da Vinci designing a cathedral - every beam must serve purpose 
             reasoning_path=reasoning,
             confidence=reasoning.confidence,
             recommendations=recommendations,
-            next_steps=[
-                "Begin phased implementation",
-                "Set up monitoring for failure points",
-                "Create runbooks for mitigation strategies"
-            ],
-            metadata={
-                "diagram": mermaid_diagram,
-                "risk_map": risk_map,
-                "approaches_evaluated": 5
-            }
+            next_steps=["Begin phased implementation", "Set up monitoring for failure points", "Create runbooks for mitigation strategies"],
+            metadata={"diagram": mermaid_diagram, "risk_map": risk_map, "approaches_evaluated": 5},
         )
 
         self.record_execution(response)
@@ -139,28 +122,23 @@ You are Leonardo da Vinci designing a cathedral - every beam must serve purpose 
                 "scenario": "Traffic spike (10x)",
                 "failure_point": "Load balancer saturation",
                 "impact": "High",
-                "mitigation": "Auto-scaling + rate limiting"
+                "mitigation": "Auto-scaling + rate limiting",
             },
             {
                 "scenario": "Database failure",
                 "failure_point": "Data unavailability",
                 "impact": "Critical",
-                "mitigation": "Replication + failover automation"
+                "mitigation": "Replication + failover automation",
             },
             {
                 "scenario": "Service dependency down",
                 "failure_point": "Cascading failure",
                 "impact": "Medium",
-                "mitigation": "Circuit breakers + graceful degradation"
-            }
+                "mitigation": "Circuit breakers + graceful degradation",
+            },
         ]
 
-    def _generate_architecture_narrative(
-        self,
-        context: AgentContext,
-        diagram: str,
-        risk_map: list
-    ) -> str:
+    def _generate_architecture_narrative(self, context: AgentContext, diagram: str, risk_map: list) -> str:
         """Generate clear architectural narrative."""
         return f"""# Chief Architect Plan
 
@@ -191,7 +169,7 @@ A system so clear, a 12-year-old can understand it.
 
 ### Failure Points Identified
 
-{chr(10).join(f"**{i+1}. {risk['scenario']}**{chr(10)}- Failure: {risk['failure_point']}{chr(10)}- Impact: {risk['impact']}{chr(10)- Mitigation: {risk['mitigation']}{chr(10)}" for i, risk in enumerate(risk_map))}
+{chr(10).join(f"**{i + 1}. {risk['scenario']}**{chr(10)}- Failure: {risk['failure_point']}{chr(10)}- Impact: {risk['impact']}{chr(10)}- Mitigation: {risk['mitigation']}{chr(10)}" for i, risk in enumerate(risk_map))}
 
 ## Go/No-Go Decision
 

@@ -42,7 +42,7 @@ class IterationRefinementSkill(BaseSkill):
 
         for i in range(max_iterations):
             # Capture current state
-            state_snapshot = self._capture_state(current_content, i)
+            self._capture_state(current_content, i)
 
             # Compare against elegance criteria
             elegance_assessment = self._assess_elegance(current_content)

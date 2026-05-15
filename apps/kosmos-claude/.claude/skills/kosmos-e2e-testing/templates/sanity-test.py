@@ -18,7 +18,7 @@ def test_core_imports():
     print("Testing core imports...")
 
     try:
-        import kosmos
+        import kosmos  # noqa: F401
 
         print("  [OK] kosmos")
     except ImportError as e:
@@ -26,7 +26,7 @@ def test_core_imports():
         return False
 
     try:
-        from kosmos.config import get_settings
+        from kosmos.config import get_settings  # noqa: F401
 
         print("  [OK] kosmos.config")
     except ImportError as e:
@@ -34,7 +34,7 @@ def test_core_imports():
         return False
 
     try:
-        from kosmos.workflow.research_loop import ResearchWorkflow
+        from kosmos.workflow.research_loop import ResearchWorkflow  # noqa: F401
 
         print("  [OK] kosmos.workflow.research_loop")
     except ImportError as e:
@@ -42,7 +42,7 @@ def test_core_imports():
         return False
 
     try:
-        from kosmos.core.llm import get_client
+        from kosmos.core.llm import get_client  # noqa: F401
 
         print("  [OK] kosmos.core.llm")
     except ImportError as e:

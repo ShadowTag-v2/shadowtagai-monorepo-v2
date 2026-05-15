@@ -32,7 +32,7 @@ class PurposeValidator:
             PurposeVerdict with status and scoring
         """
         # Extract purpose from action description/context
-        purpose = self._extract_purpose(action)
+        self._extract_purpose(action)
 
         # Check for clear business objective
         business_objective = self._identify_business_objective(action)

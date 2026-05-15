@@ -14,7 +14,7 @@ Strategic Value:
 """
 
 from typing import Any
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import random
 import math
 from collections import defaultdict
@@ -244,7 +244,7 @@ class PersonalizationEngine:
             "visual_style": self._select_visual_style(user_profile),
             # Dynamic scene substitution
             "scenes": self._generate_scene_sequence(user_profile, product_info, video_metadata),
-            "generation_timestamp": datetime.now(timezone.utc).isoformat(),
+            "generation_timestamp": datetime.now(UTC).isoformat(),
             "cache_key": self._generate_cache_key(user_profile, product_info),
         }
 

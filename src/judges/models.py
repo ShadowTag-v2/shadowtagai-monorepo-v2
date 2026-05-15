@@ -4,7 +4,7 @@ Judge #6 HITL System - Core Models
 Binary enforcement decision models with ATP 5-19 risk integration
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import Enum
 from typing import Any
 from pydantic import BaseModel, Field, ConfigDict
@@ -50,7 +50,7 @@ class JudgeRequest(BaseModel):
     context: dict[str, Any] = Field(..., description="Action context and parameters")
     urgency: str = Field(default="normal", description="Request urgency: low, normal, high, critical")
     requested_by: str = Field(..., description="User/system requesting the action")
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Request timestamp")
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC), description="Request timestamp")
 
 
 class JudgeResponse(BaseModel):
@@ -66,7 +66,7 @@ class JudgeResponse(BaseModel):
     judge_type: JudgeType = Field(..., description="Judge vertical used")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
     next_steps: list[str] = Field(default_factory=list, description="Required next steps")
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Response timestamp")
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC), description="Response timestamp")
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -107,7 +107,7 @@ class AuditTrail(BaseModel):
     semantic_summary: str = Field(..., description="Compressed semantic summary")
     full_context: dict[str, Any] = Field(..., description="Complete context (encrypted)")
     approval_chain: list[dict[str, Any]] = Field(default_factory=list, description="Approval history")
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), description="Trail creation time")
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC), description="Trail creation time")
     retention_days: int = Field(default=2555, description="Retention period (7 years default)")
 
     model_config = ConfigDict(

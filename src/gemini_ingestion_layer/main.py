@@ -15,7 +15,7 @@ Called by services in 4 namespaces:
 
 import asyncio
 import time
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from typing import Any
 
 from .config import DEFAULT_CONFIG, IngestcionConfig
@@ -84,7 +84,7 @@ class GeminiIngestionLayer:
             Run statistics and results
         """
         start_time = time.time()
-        print(f"[{datetime.now(timezone.utc).isoformat()}] Starting Gemini Ingestion Layer")
+        print(f"[{datetime.now(UTC).isoformat()}] Starting Gemini Ingestion Layer")
 
         # Step 1: Fetch from sources
         print("Step 1/5: Fetching from sources...")
@@ -163,7 +163,7 @@ class GeminiIngestionLayer:
             "sources_used": len(unique_sources),
             "quality_gates_passed": gate_result.passed,
             "briefing_generated": True,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
         }
 
         print(f"\n{'=' * 70}")

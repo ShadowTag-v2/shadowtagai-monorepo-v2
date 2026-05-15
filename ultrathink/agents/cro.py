@@ -34,8 +34,8 @@ You are the epistemology lead. Confidence matters."""
             return AgentResponse(role=self.role, content="SECURITY VALIDATION FAILED.", confidence=0.0)
 
         # Use multiple reasoning methods
-        cot_path = self._execute_cot(context.task)
-        tot_path = self._execute_tot(context.task)
+        self._execute_cot(context.task)
+        self._execute_tot(context.task)
 
         reasoning = self.create_reasoning_path(
             method=ReasoningMethod.CHAIN_OF_THOUGHT,

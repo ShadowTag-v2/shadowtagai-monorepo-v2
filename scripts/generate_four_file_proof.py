@@ -10,7 +10,7 @@ def generate_four_file_proof():
         census = json.load(f)
 
     with open("fold_in_checklist.yaml") as f:
-        checklist = yaml.safe_load(f)
+        yaml.safe_load(f)
 
     with open("repo_fold_in_delta.json") as f:
         delta = json.load(f)
@@ -60,7 +60,7 @@ def generate_four_file_proof():
 
     # 04_canonical_state.md
     total_repos = len(census)
-    total_canon = len([c for c in census if c["desired_status"] in ["canonical_in_monorepo", "queued_for_fold_in"]]) + len(delta)
+    len([c for c in census if c["desired_status"] in ["canonical_in_monorepo", "queued_for_fold_in"]]) + len(delta)
     # The script made everything canonical.
     with open("04_canonical_state.md", "w") as f:
         f.write("# Executive Truth File\n\n")

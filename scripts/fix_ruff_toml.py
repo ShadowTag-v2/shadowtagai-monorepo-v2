@@ -11,7 +11,6 @@ def fix_toml(filepath):
 
     changed = False
     in_tool_ruff = False
-    in_tool_ruff_lint = False
     out_lines = []
 
     for line in lines:
@@ -21,11 +20,9 @@ def fix_toml(filepath):
             in_tool_ruff = True
         elif stripped.startswith("[") and stripped.endswith("]"):
             if stripped == "[tool.ruff.lint]":
-                in_tool_ruff_lint = True
                 in_tool_ruff = False
             elif stripped != "[tool.ruff]":
                 in_tool_ruff = False
-                in_tool_ruff_lint = False
 
         if in_tool_ruff and "=" in stripped and not stripped.startswith("#") and not stripped.startswith("["):
             key = stripped.split("=")[0].strip()

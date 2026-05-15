@@ -46,7 +46,7 @@ class CoordinatorAgent(MultiAgent):
             **kwargs,
         )
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Coordinate execution across sub-agents.
 
@@ -55,7 +55,7 @@ class CoordinatorAgent(MultiAgent):
         """
         logger.info(f"CoordinatorAgent {self.name} analyzing request")
 
-        user_input = context.get("user_input", "")
+        context.get("user_input", "")
         task_type = context.get("task_type", "general")
 
         # Emit coordination start event
@@ -98,7 +98,7 @@ class ResearchAgent(MultiAgent):
             **kwargs,
         )
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Perform research tasks.
         """
@@ -141,7 +141,7 @@ class AnalysisAgent(MultiAgent):
             **kwargs,
         )
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Perform analysis tasks.
         """
@@ -184,7 +184,7 @@ class TaskAgent(MultiAgent):
         )
         self.task_description = task_description
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Execute assigned tasks.
         """
@@ -225,13 +225,13 @@ class ValidationAgent(MultiAgent):
         )
         self.validation_criteria = validation_criteria or {}
 
-    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event, None]:
+    async def _run_async_impl(self, context: InvocationContext) -> AsyncGenerator[Event]:
         """
         Validate outputs from other agents.
         """
         logger.info(f"ValidationAgent {self.name} validating output")
 
-        output_to_validate = context.get("user_input", "")
+        context.get("user_input", "")
 
         yield AgentEvent(agent_name=self.name, data={"status": "validating", "criteria": self.validation_criteria})
 

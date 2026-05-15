@@ -21,7 +21,7 @@ import argparse
 import os
 import sqlite3
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from pathlib import Path
 
 MONOREPO_ROOT = Path(__file__).parent.parent
@@ -157,7 +157,7 @@ def crawl(
                 # Register in SQLite
                 conn.execute(
                     "INSERT OR REPLACE INTO beads_registry(filepath, size_bytes, last_indexed) VALUES (?,?,?)",
-                    (str(fpath.relative_to(MONOREPO_ROOT)), size, datetime.now(timezone.utc).isoformat()),
+                    (str(fpath.relative_to(MONOREPO_ROOT)), size, datetime.now(UTC).isoformat()),
                 )
 
                 if fpath.suffix not in TEXT_EXTS or size > 500_000:
@@ -174,7 +174,7 @@ def crawl(
                     indexed += 1
 
                     if len(texts_buf) >= BATCH_SIZE:
-                        n = flush_batch(model, collection, conn, texts_buf, metas_buf, dry_run)
+                        flush_batch(model, collection, conn, texts_buf, metas_buf, dry_run)
                         texts_buf.clear()
                         metas_buf.clear()
                         print(f"   flushed batch — total chunks: {indexed}")

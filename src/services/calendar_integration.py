@@ -111,7 +111,7 @@ class CalendarService:
         full_description = self._build_event_description(description, case_number, document_links, deadline_id)
 
         # Event structure
-        event = {
+        {
             "summary": title,
             "description": full_description,
             "start": {
@@ -157,7 +157,7 @@ class CalendarService:
         full_description = self._build_event_description(description, case_number, document_links, deadline_id)
 
         # Event structure for Microsoft Graph API
-        event = {
+        {
             "subject": title,
             "body": {"contentType": "HTML", "content": full_description},
             "start": {

@@ -264,7 +264,7 @@ class IntegratedJudge:
         logger.info(f"Starting DTE evolution: max_iterations={max_iterations}")
 
         # Run evolution
-        evolved_model = self.dte_trainer.evolve_continuously(max_iterations=max_iterations, save_checkpoints=save_checkpoints)
+        self.dte_trainer.evolve_continuously(max_iterations=max_iterations, save_checkpoints=save_checkpoints)
 
         # Get training summary
         summary = self.dte_trainer.get_training_summary()

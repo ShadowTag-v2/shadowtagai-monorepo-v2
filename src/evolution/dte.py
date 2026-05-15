@@ -10,7 +10,7 @@ Automatically evolves prompts, kernels, and agents through:
 
 from typing import Any
 from pydantic import BaseModel, Field
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import Enum
 
 from app.training import GRPOSimulator, GRPOConfig
@@ -33,7 +33,7 @@ class EvolutionResult(BaseModel):
     improvement_metric: float = Field(description="% improvement over baseline")
     test_cases_passed: int
     test_cases_total: int
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     notes: str
 
 
@@ -144,12 +144,6 @@ class DTESystem:
         4. Validate and iterate
         """
         # Simulated critiques from different perspectives
-        critiques = [
-            "Add explicit format instructions (JSON schema)",
-            "Include few-shot examples for clarity",
-            "Clarify success criteria and edge cases",
-            "Reduce verbosity, focus on essential elements",
-        ]
 
         # Apply top critiques to evolve prompt
         evolved = prompt
@@ -216,11 +210,6 @@ class DTESystem:
         4. Validate improvements
         """
         # Analyze failure patterns (simulated)
-        common_failures = [
-            "Missing error handling instructions",
-            "Ambiguous output format",
-            "No handling for edge cases",
-        ]
 
         evolved = prompt
 

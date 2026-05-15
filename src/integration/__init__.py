@@ -10,7 +10,6 @@ This is the bridge between:
 - Gemini Function Calling (1 API call with local function execution)
 """
 
-from typing import Dict, Any, List
 import asyncio
 
 from src.core import FunctionRegistry, FunctionTool
@@ -20,7 +19,7 @@ from src.kernels.audit_compress import AuditCompressKernel
 from src.agents.debate import DebateOrchestrator, DebateAgent, DebateConfig
 from src.evolution.dte import DTESystem, EvolutionStrategy
 from src.ratings.glicko2 import Glicko2System, Glicko2Player
-from src.training.grpo import GRPOSimulator, GRPOConfig
+from src.training.grpo import GRPOSimulator as GRPOSimulator, GRPOConfig as GRPOConfig
 from src.wealth.model import WealthAccelerator
 
 

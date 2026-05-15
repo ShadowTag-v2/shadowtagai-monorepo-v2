@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AiYou.Kernel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db44d7cad0753f99bedc037d614a6878b83e156a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac90d4e28a56184793f366e217dca7a543f1a5cd")]
 [assembly: System.Reflection.AssemblyProductAttribute("AiYou.Kernel")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AiYou.Kernel")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -14,7 +14,7 @@ def benchmark():
     print("Starting p99 Latency Benchmark...")
 
     # Setup
-    device = EdgeDevice("worker-local")
+    EdgeDevice("worker-local")
     histogram = LatencyHistogram()
 
     # Mock workload

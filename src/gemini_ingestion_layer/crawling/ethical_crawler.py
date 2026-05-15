@@ -16,7 +16,7 @@ import asyncio
 import aiohttp
 from typing import Any
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
 
@@ -39,7 +39,7 @@ class CrawlResult:
 
     def __post_init__(self):
         if self.timestamp is None:
-            self.timestamp = datetime.now(timezone.utc)
+            self.timestamp = datetime.now(UTC)
 
 
 class EthicalCrawler:

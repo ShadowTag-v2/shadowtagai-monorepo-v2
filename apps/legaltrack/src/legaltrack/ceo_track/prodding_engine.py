@@ -17,7 +17,7 @@ async def _orchestrate_departure(schedule: CEOTrackSchedule):
     await tesla.precondition_cabin(target_temp_c=21.0)
 
     # Check charge vs route
-    charge_state = await tesla.check_charge_limits()
+    await tesla.check_charge_limits()
 
     # 5 mins prior: Push destination to FSD
     if schedule.location:

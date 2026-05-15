@@ -18,7 +18,7 @@ Strategic Impact:
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from typing import Any
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -318,7 +318,7 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "platform": "Swiper",
         "videos_count": len(videos_db),
         "products_count": len(products_db),
@@ -351,8 +351,8 @@ async def create_video(video: VideoCreate):
         "total_views": 0,
         "total_conversions": 0,
         "conversion_rate": 0.0,
-        "created_at": datetime.now(timezone.utc),
-        "published_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
+        "published_at": datetime.now(UTC),
         "personalization_stage": PersonalizationStage.RULES,
         "avg_watch_time_seconds": 0.0,
     }
@@ -528,7 +528,7 @@ async def get_adaptive_playback(request: AdaptiveVideoRequest):
             "user_id": request.user_id,
             "video_id": request.video_id,
             "interaction_type": InteractionType.VIEW,
-            "timestamp": datetime.now(timezone.utc),
+            "timestamp": datetime.now(UTC),
             "runtime_mode": request.runtime_mode,
             "device_type": request.device_type,
             "location_lat": request.location_lat,
@@ -573,8 +573,8 @@ async def create_product(product: ProductCreate):
         "total_clicks": 0,
         "total_purchases": 0,
         "click_through_rate": 0.0,
-        "created_at": datetime.now(timezone.utc),
-        "updated_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
+        "updated_at": datetime.now(UTC),
     }
 
     products_db[product_id] = product_data
@@ -623,7 +623,7 @@ async def create_product_overlay(overlay: ProductOverlayCreate):
         "clicks": 0,
         "conversions": 0,
         "click_rate": 0.0,
-        "created_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
     }
 
     product_overlays_db[overlay_id] = overlay_data
@@ -668,7 +668,7 @@ async def create_persuasion_point(point: PersuasionPointCreate):
 
     point_id = str(uuid.uuid4())
 
-    point_data = {"id": point_id, **point.model_dump(), "impressions": 0, "conversion_lift": 0.0, "created_at": datetime.now(timezone.utc)}
+    point_data = {"id": point_id, **point.model_dump(), "impressions": 0, "conversion_lift": 0.0, "created_at": datetime.now(UTC)}
 
     persuasion_points_db[point_id] = point_data
     return point_data
@@ -709,7 +709,7 @@ async def log_interaction(interaction: InteractionCreate):
     """
     interaction_id = str(uuid.uuid4())
 
-    interaction_data = {"id": interaction_id, **interaction.model_dump(), "timestamp": datetime.now(timezone.utc)}
+    interaction_data = {"id": interaction_id, **interaction.model_dump(), "timestamp": datetime.now(UTC)}
 
     interactions_db.append(interaction_data)
 
@@ -868,7 +868,7 @@ async def get_platform_analytics():
 
     return {
         "platform": "Swiper Adaptive Shoppable Video",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "overview": {
             "total_videos": total_videos,
             "total_products": total_products,
@@ -922,8 +922,8 @@ async def create_retailer(
         "total_videos_sponsored": 0,
         "total_conversions": 0,
         "total_revenue": 0.0,
-        "created_at": datetime.now(timezone.utc),
-        "updated_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
+        "updated_at": datetime.now(UTC),
     }
 
     retailers_db[retailer_id] = retailer_data
@@ -998,8 +998,8 @@ async def startup_event():
         "total_videos_sponsored": 0,
         "total_conversions": 0,
         "total_revenue": 0.0,
-        "created_at": datetime.now(timezone.utc),
-        "updated_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
+        "updated_at": datetime.now(UTC),
     }
 
     # Create demo Premium Beacon video (Superman doll movie)
@@ -1029,8 +1029,8 @@ async def startup_event():
         "total_conversions": 0,
         "conversion_rate": 0.0,
         "avg_watch_time_seconds": 0.0,
-        "created_at": datetime.now(timezone.utc),
-        "published_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
+        "published_at": datetime.now(UTC),
     }
 
     # Create Superman product
@@ -1052,8 +1052,8 @@ async def startup_event():
         "total_clicks": 0,
         "total_purchases": 0,
         "click_through_rate": 0.0,
-        "created_at": datetime.now(timezone.utc),
-        "updated_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
+        "updated_at": datetime.now(UTC),
     }
 
     # Create product overlay
@@ -1073,7 +1073,7 @@ async def startup_event():
         "clicks": 0,
         "conversions": 0,
         "click_rate": 0.0,
-        "created_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
     }
 
     # Create persuasion points (Kids → Parents)
@@ -1091,7 +1091,7 @@ async def startup_event():
         "emphasis_level": "subtle",
         "impressions": 0,
         "conversion_lift": 0.0,
-        "created_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
     }
 
     persuasion_2_id = str(uuid.uuid4())
@@ -1108,7 +1108,7 @@ async def startup_event():
         "emphasis_level": "moderate",
         "impressions": 0,
         "conversion_lift": 0.0,
-        "created_at": datetime.now(timezone.utc),
+        "created_at": datetime.now(UTC),
     }
 
     print(f"✅ Created demo Premium Beacon: '{videos_db[superman_video_id]['title']}'")

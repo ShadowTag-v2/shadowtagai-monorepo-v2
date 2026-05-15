@@ -10,7 +10,7 @@ Tracks key metrics:
 """
 
 from typing import Any
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 
 class MetricsCollector:
@@ -39,7 +39,7 @@ class MetricsCollector:
             "tier_1_count": 0,
             "tier_2_count": 0,
             "tier_3_count": 0,
-            "timestamp": datetime.now(timezone.utc),
+            "timestamp": datetime.now(UTC),
         }
 
     def record_run(self, stats: dict[str, Any]):
@@ -53,7 +53,7 @@ class MetricsCollector:
                 "tier_1_count": stats.get("tier_1_count", 0),
                 "tier_2_count": stats.get("tier_2_count", 0),
                 "tier_3_count": stats.get("tier_3_count", 0),
-                "timestamp": datetime.now(timezone.utc),
+                "timestamp": datetime.now(UTC),
             }
         )
 

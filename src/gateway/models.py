@@ -6,7 +6,7 @@ Elegant, type-safe models for governance requests and responses.
 Every field chosen deliberately. Nothing superfluous.
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from enum import Enum
 from typing import Any
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -57,7 +57,7 @@ class GovernanceRequest(BaseModel):
     urgency: str | None = Field(None, description="immediate, standard, low")
 
     # Metadata
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     source_system: str = Field(..., description="Originating system identifier")
 
     @field_validator("action")
@@ -166,7 +166,7 @@ class GovernanceResponse(BaseModel):
     hallucination_check: bool = Field(default=True, description="Passed hallucination detection")
 
     # Audit trail
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     audit_id: str = Field(..., description="Immutable audit log entry ID")
 
     # Optional escalation

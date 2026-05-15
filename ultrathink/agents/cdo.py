@@ -71,7 +71,7 @@ You are Steve Jobs reviewing an iPhone prototype. Every pixel matters."""
         elegance_assessment = self.assess_elegance(context.task)
 
         # Apply Boy Scout Rule thinking
-        improved_content = self.apply_boy_scout_rule(context.task)
+        self.apply_boy_scout_rule(context.task)
 
         # Create reasoning path
         reasoning = self.create_reasoning_path(
@@ -105,7 +105,7 @@ Every element scrutinized for elegance before functionality.
 
 ## Elegance Assessment
 
-{chr(10).join(f"- **{k}**: {v["question"]}" for k, v in elegance_assessment.items())}
+{chr(10).join(f"- **{k}**: {v['question']}" for k, v in elegance_assessment.items())}
 
 ## Recommendations
 

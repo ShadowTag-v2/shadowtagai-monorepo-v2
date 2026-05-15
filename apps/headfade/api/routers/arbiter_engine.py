@@ -28,7 +28,6 @@ async def run_forensic_arbiter(video_id: str, vote: str):
 
         try:
             # We mock the video URI for the MVP scaffold, expecting Media CDN integration
-            file_uri = f"gs://headfade-cdn-origin/{video_id}.mp4"
 
             # Note: We omit the actual file part for this scaffolding code
             # since we do not have an active GCS bucket with the asset.

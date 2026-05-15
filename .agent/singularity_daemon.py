@@ -1,2 +1,2 @@
-# Alpha-Omega recovery scaffold\n
-||||||| empty tree
+# Alpha-Omega recovery scaffold
+"""Singularity daemon — placeholder for autonomous agent operations."""

@@ -1,0 +1,25 @@
+# .gitleaksignore — Allowlisted false positives for gitleaks
+# Generated: 2026-05-15 by sovereign migration audit
+#
+# Format: fingerprint (from gitleaks JSON report)
+# Categories: placeholder keys, documentation examples, ingested markdown
+
+# Thumbly test/placeholder Stripe key (sk_test_placeholder)
+apps/thumbly/src/app/api/webhooks/stripe/route.ts:stripe-access-token:5
+
+# Data ingestion — markdown docs containing example AWS/API keys from external docs
+data/drive_ingest/markdown/*:aws-access-token
+data/drive_ingest/lancedb/*:aws-access-token
+data/drive_ingest/extractions.jsonl:aws-access-token
+
+# External repos — not our code
+external_repos/**
+
+# Legacy workspace archive — frozen, not deployed
+control/legacy_workspaces/**
+
+# Kubernetes example manifests with placeholder secrets
+terraform/gke-file-search/**:kubernetes-secret-yaml
+
+# Generic API key patterns in configuration files that use env var references
+*.toml:generic-api-key

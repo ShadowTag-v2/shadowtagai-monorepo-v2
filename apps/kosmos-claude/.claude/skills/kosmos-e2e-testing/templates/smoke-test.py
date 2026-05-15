@@ -37,7 +37,7 @@ def test_workflow_initialization():
     try:
         from kosmos.workflow.research_loop import ResearchWorkflow
 
-        workflow = ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
+        ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
         print("  [OK] Workflow created")
         return True
     except Exception as e:
@@ -51,14 +51,14 @@ def test_provider_modules():
 
     providers = []
     try:
-        from kosmos.core.providers import anthropic_provider
+        from kosmos.core.providers import anthropic_provider  # noqa: F401
 
         providers.append("anthropic")
     except ImportError:
         pass
 
     try:
-        from kosmos.core.providers import openai_provider
+        from kosmos.core.providers import openai_provider  # noqa: F401
 
         providers.append("openai")
     except ImportError:
