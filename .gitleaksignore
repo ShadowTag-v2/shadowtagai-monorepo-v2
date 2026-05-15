@@ -1210,3 +1210,5 @@ apps/headfade/pwa/src/lib/firebase.ts:generic-api-key:5
 # Lighthouse HTML reports capture the live page's Firebase config
 lighthouse-headfade.html:gcp-api-key
 lighthouse-headfade.html:generic-api-key
+pnkln.code-workspace:google-api-key:0
+# MCP server config — Google Design API key (platform-managed, non-secret)

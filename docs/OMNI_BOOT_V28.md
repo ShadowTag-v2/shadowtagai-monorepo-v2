@@ -1,9 +1,13 @@
-# SYSTEM OVERRIDE: OMNI-BOOT INITIALIZATION (V28 — POST-SOVEREIGN MERIDIAN)
+# SYSTEM OVERRIDE: OMNI-BOOT INITIALIZATION (V28.2 — V26 SYMBIOTIC ALIGNMENT)
 
 > **Purpose:** Copy-paste this entire block as the first message in any new Antigravity thread.
 > It cold-starts the agent with full operational awareness — no discovery phase needed.
 >
-> **Last Updated:** 2026-05-15 | **Epoch:** Post-Sovereign Meridian
+> **Last Updated:** 2026-05-15 | **Epoch:** V26 Symbiotic Alignment (Post-Sovereign Meridian)
+>
+> **Key Principle (arXiv:2512.14982):** Tool namespace redundancy destroys test-time reasoning
+> efficiency. Duplicate tools across the host platform and local extensions cause *tool-choice
+> paralysis* — the LLM burns compute tokens deliberating between identical API surfaces.
 
 ---
 
@@ -18,18 +22,73 @@ pkill -f "git.*credential" 2>/dev/null || true
 pkill -f "gh auth" 2>/dev/null || true
 ```
 
-### 0B. MCP Fleet Pre-Flight (5 Servers, 90 Tools)
+### 0B. Dual-Plane MCP Fleet Pre-Flight (20 Servers Total)
+
+The fleet operates across two symbiotic planes. Tool redundancy is constitutionally prohibited.
+
+> **⚠️ BOUNDARY COLLISION DIAGNOSTIC:** When both Antigravity and Cline expose the same tool
+> (e.g., two `take_screenshot`, two `deploy_cloud_run`), the LLM experiences tool-choice
+> paralysis. It burns tokens deliberating over which namespace to invoke. This is a
+> measurable degradation in test-time reasoning efficiency. The Dual-Plane separation
+> eliminates this noise entirely.
+
+#### PLANE 1: ANTIGRAVITY INTERNAL HOST (6 Servers — Probe on Boot)
 Run one probe per server. Retry once on EOF. Report status table.
 
-| # | Server | Probe Tool | Domain |
-|---|--------|-----------|--------|
-| 1 | `chrome-devtools-mcp` | `list_pages` | Browser automation, screenshots, DOM, Lighthouse, perf traces |
-| 2 | `firebase-mcp-server` | `firebase_get_environment` | Firebase Auth, Firestore, Hosting, Functions, Storage |
-| 3 | `StitchMCP` | `list_projects` | Design systems, screen generation, UI variants |
-| 4 | `google-developer-knowledge` | `search_documents("Firebase quickstart")` | Google developer docs search |
-| 5 | `sequential-thinking` | `sequentialthinking(thought="boot", ...)` | Multi-step reasoning |
+| # | Server | Probe Tool | Tools | Domain |
+|---|--------|-----------|-------|--------|
+| 1 | `StitchMCP` | `list_projects` | 14 | Generative UI variants, design systems |
+| 2 | `chrome-devtools-mcp` | `list_pages` | 29 | Browser sensorium, screenshots, DOM, Lighthouse |
+| 3 | `cloudrun` | `list_services` | 8 | Compute deployment |
+| 4 | `firebase-mcp-server` | `firebase_get_environment` | 36 | State, auth, hosting, Firestore |
+| 5 | `google-developer-knowledge` | `search_documents("quickstart")` | 3 | Omniscience (Google dev docs) |
+| 6 | `sequential-thinking` | `sequentialthinking(thought="boot")` | 1 | Multi-step reasoning |
 
 **Self-Healing Loop:** If a server returns EOF on first probe, retry exactly once. If still down, log to `.beads/issues.jsonl` and continue. **Never use terminal fallbacks** for MCP-capable operations.
+
+#### PLANE 2: CLINE TACTICAL LOCAL CONFIG (14 Servers — No Probing by Antigravity)
+These servers are managed exclusively by `cline_mcp_settings.json`. Antigravity does **NOT** probe, start, or duplicate them.
+
+| # | Server | Runtime | Domain |
+|---|--------|---------|--------|
+| 7 | `design-cortex` | Bun | Stitch SDK design extraction |
+| 8 | `workspace-intake` | Bun | Google Workspace webhook listener |
+| 9 | `google-drive-api` | Bun | Drive document fetcher |
+| 10 | `jules-delegation` | Bun | Jules async agent delegation |
+| 11 | `jules-fleet` | Bun | Jules skill fleet coordination |
+| 12 | `gcp-infrastructure` | bunx | Resource Manager, Spanner, PubSub |
+| 13 | `autonomic-insights` | bunx | Database insights (Spanner) |
+| 14 | `observability` | bunx | Genkit MCP observability |
+| 15 | `storage-cdn` | bunx | Cloud Storage operations |
+| 16 | `stripe-governor` | bunx | Stripe financial governor |
+| 17 | `semantic-scalpel` | Bun | AST-Grep semantic code surgery |
+| 18 | `notebooklm-mcp` | uvx | NotebookLM epistemic memory |
+| 19 | `pomelli-swarm` | Bun | Pomelli brand content swarm |
+| 20 | `dart-compiler` | Dart | Dart language server protocol |
+
+> **⚠️ SEPARATION AXIOM:** If Antigravity provides a capability natively (Plane 1), Cline MUST NOT duplicate it. If Cline provides a tactical capability (Plane 2), Antigravity MUST NOT attempt to manage it. See `docs/SYSTEM_OVERRIDE.md` for the constitutional reference.
+
+### 0C. Plane Integrity Validator (Run After Pre-Flight)
+
+After both planes are confirmed, validate that no drift has occurred:
+
+```bash
+# Plane Integrity Check — detect namespace collisions
+PLANE1_TOOLS="StitchMCP chrome-devtools-mcp cloudrun firebase-mcp-server google-developer-knowledge sequential-thinking"
+CLINE_CFG="$HOME/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json"
+if [ -f "$CLINE_CFG" ]; then
+  for srv in $PLANE1_TOOLS; do
+    if grep -qi "$srv" "$CLINE_CFG" 2>/dev/null; then
+      echo "❌ DRIFT: $srv found in BOTH Plane 1 and Plane 2 — REMOVE from cline_mcp_settings.json"
+    fi
+  done
+  echo "✅ Plane integrity check complete"
+else
+  echo "⚠️ Cline config not found at expected path — manual verification needed"
+fi
+```
+
+**If drift is detected:** Remove the colliding server from `cline_mcp_settings.json` immediately. Log to `.beads/issues.jsonl` with severity `ARCHITECTURE_DRIFT`.
 
 ---
 
@@ -131,6 +190,7 @@ antigravity-mcp-config.json → MCP server truth
 BUSINESS_CONTEXT_LOCKED.md → Pricing/architecture truth
 RISK_REGISTER.md         → Operational risk truth
 .agents/RULE_00_IMMUTABLE_INFRASTRUCTURE.md → Non-destruction law
+docs/SYSTEM_OVERRIDE.md  → V26 Dual-Plane fleet separation rules
 ```
 
 ---
@@ -163,6 +223,13 @@ RISK_REGISTER.md         → Operational risk truth
 - Screenshots → `chrome-devtools-mcp` MCP (NOT external tools)
 - Design tokens → `StitchMCP` (NOT hand-coded from memory)
 - Architecture reasoning → `sequential-thinking` MCP (NOT ad-hoc lists)
+
+### 5F. Dual-Plane Separation (V26 Symbiotic Architecture)
+- **Anti-Duplication Law:** If Antigravity provides a tool natively (Plane 1), it MUST NOT exist in `cline_mcp_settings.json` (Plane 2). Duplication causes tool-choice paralysis — the AI burns tokens deliberating between identical tool namespaces.
+- **Purged from Cline (7 servers):** `firebase-hippocampus`, `browser-sensorium`, `stitch-ui-gen`, `stitch-mcp-server`, `vertex-omniscience`, `archon-reasoning`, `cloud-run` — all subsumed by Antigravity Plane 1.
+- **Plane Integrity:** Run `0C. Plane Integrity Validator` on boot. Any collision = immediate removal from Cline config.
+- **Adding new servers:** Before adding ANY MCP server, check BOTH `antigravity-mcp-config.json` (Plane 1) and `cline_mcp_settings.json` (Plane 2). If the capability exists in either, the addition is DENIED.
+- **Constitutional reference:** `docs/SYSTEM_OVERRIDE.md`
 
 ---
 
@@ -263,7 +330,9 @@ End every response with **5–22** explicitly selectable actionable prompts, sca
 ```bash
 # Zombie cleanup
 find /Users/pikeymickey/.gemini -name "*.lock" -mmin +5 -delete 2>/dev/null
+find /Users/pikeymickey/.gemini -name "index.lock" -type f -delete 2>/dev/null
 pkill -f "git.*credential" 2>/dev/null
+pkill -f "gh auth" 2>/dev/null
 
 # Runtime check
 python3 --version && node --version && /usr/local/share/dotnet/dotnet --version && bun --version
@@ -282,6 +351,15 @@ pgrep -af "kairos\|dream_cons\|loop_stew"
 # Lint sweep
 ruff check --fix . && ruff format .
 
+# Plane integrity check (V26 anti-drift)
+PLANE1_TOOLS="StitchMCP chrome-devtools-mcp cloudrun firebase-mcp-server google-developer-knowledge sequential-thinking"
+CLINE_CFG="$HOME/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json"
+if [ -f "$CLINE_CFG" ]; then
+  for srv in $PLANE1_TOOLS; do
+    grep -qi "$srv" "$CLINE_CFG" 2>/dev/null && echo "❌ DRIFT: $srv in both planes"
+  done
+fi
+
 # .NET 11 build
 /usr/local/share/dotnet/dotnet build apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel/AiYou.Kernel.csproj
 
@@ -294,10 +372,11 @@ bash scripts/dead-code-audit.sh
 ## 13. THREAD LIFECYCLE
 
 ### Start of Thread
-1. Execute Section 0 (zombies + MCP pre-flight)
-2. Report MCP fleet status table
-3. Confirm repo coordinates (`git remote -v`)
-4. Acknowledge session invariants from Section 5
+1. Execute Section 0A (kill zombies + stale locks)
+2. Execute Section 0B (probe Plane 1 servers — report status table)
+3. Execute Section 0C (Plane Integrity Validator — check for drift)
+4. Confirm repo coordinates (`git remote -v`)
+5. Acknowledge session invariants from Section 5
 
 ### End of Thread (`f1 gca`)
 1. Kill all zombies

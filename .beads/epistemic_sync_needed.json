@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-05-12T19:27:57Z",
-  "commit": "07ae22c2b05edbde6bce4db77664b984f2c0fc57",
-  "changed_docs": [".agents/skills/csuite-swarm-dispatcher/SKILL.md"],
+  "timestamp": "2026-05-15T20:30:32Z",
+  "commit": "2d4bbcbae06a578189b0803e2b9681b020b42cbc",
+  "changed_docs": ["docs/OMNI_BOOT_V28.md", "docs/SYSTEM_OVERRIDE.md"],
   "action": "re-upload_to_epistemic_engine",
   "store": "fileSearchStores/uphillsnowballarchitecture-r0dt6v412dh1"
 }

@@ -1,6 +1,7 @@
 {
   "folders": [
     {
+      "name": "shadowtagai-monorepo-v2",
       "path": "."
     }
   ],
@@ -21,7 +22,7 @@
   "settings": {
     "terminal.integrated.env.osx": {
       "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
-      "NODE_OPTIONS": "--require /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/patches/suppress-punycode-dep0040.js",
+      "NODE_OPTIONS": "--require ${workspaceFolder}/scripts/patches/suppress-punycode-dep0040.js",
       "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/Users/pikeymickey/google-cloud-sdk/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     },
     "python.defaultInterpreterPath": "",
@@ -212,6 +213,7 @@
     "cloudcode.dependencyPaths": {
       "gcloud": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud"
     },
+    "cloudcode.sourceRepository": "https://github.com/ShadowTag-v2/shadowtagai-monorepo-v2.git",
     "gradle.nestedProjects": false,
     "java.gradle.enabled": false,
     "telemetry.telemetryLevel": "off",
