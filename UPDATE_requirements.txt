@@ -34,7 +34,7 @@ structlog>=23.1.0
 torch>=2.0.0
 
 # Compression
-zstandard>=0.21.0  # For audit compression
+zstandard>=0.25.0  # For audit compression
 
 # HTTP client (for testing)
 httpx>=0.24.0
