@@ -10,7 +10,7 @@ google-genai>=1.0.0
 google-cloud-firestore>=2.19.0
 google-cloud-tasks>=2.16.0
 google-cloud-secret-manager>=2.22.0
-firebase-admin>=6.6.0
+firebase-admin>=7.4.0
 
 # LiteLLM — multi-model routing
 litellm>=1.60.0
