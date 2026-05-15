@@ -1,9 +1,51 @@
-# SYSTEM OVERRIDE: V26 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
+# SYSTEM OVERRIDE: V26.2 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
 
 > **To:** Antigravity Core Engine
 > **Project:** `shadowtag-omega-v4`
-> **Version:** V26 | **Status:** LOCKED
+> **Version:** V26.2 | **Status:** LOCKED
 > **Last Updated:** 2026-05-15
+
+---
+
+## PLATFORM TOOL BUDGET CONSTRAINT
+
+> [!CAUTION]
+> **Antigravity enforces a hard limit of 100 tools across ALL enabled MCP servers.**
+> Exceeding this limit causes servers to fail with `Error: adding this instance with N enabled tools would exceed max limit of 100`.
+
+### Current Budget
+
+| Plane 1 Server | Tools | Status |
+|----------------|-------|--------|
+| firebase-mcp-server | 36 | ✅ |
+| chrome-devtools-mcp | 29 | ✅ |
+| StitchMCP | 14 | ✅ |
+| cloudrun | 8 | ✅ |
+| google-developer-knowledge | 3 | ✅ |
+| sequential-thinking | 1 | ✅ |
+| **Total** | **91** | **9 tools headroom** |
+
+### Removed Servers (Budget/Compatibility)
+
+| Server | Tools | Reason | Alternative |
+|--------|-------|--------|-------------|
+| `gemini-graph-memory` | 9 | Freed for headroom | Cline Plane 2: `gemini-memory` |
+| `gemini-web-fetcher` | ~4 | Python server misconfigured as Node.js | Ready-to-add via `uvx` (see below) |
+| `notebooklm-mcp` | 39 | Would bust 100-tool limit | Cline Plane 2: `notebooklm-mcp` |
+
+### Ready-to-Add: `gemini-web-fetcher` (via uvx)
+
+When budget allows, add this to `~/.gemini/antigravity/mcp_config.json`:
+
+```json
+"gemini-web-fetcher": {
+  "command": "uvx",
+  "args": ["--from", "mcp-server-fetch", "mcp-server-fetch"],
+  "transport": "stdio"
+}
+```
+
+**Estimated tools:** ~4. Budget after addition: ~95/100.
 
 ---
 
@@ -26,8 +68,9 @@ The Dual-Plane separation eliminates all three failure modes.
 
 ---
 
-## PLANE 1: ANTIGRAVITY INTERNAL HOST (6 Servers)
+## PLANE 1: ANTIGRAVITY INTERNAL HOST (6 Servers, 91 Tools)
 
+**Config:** `~/.gemini/antigravity/mcp_config.json`
 **Do NOT duplicate in Cline config. Rely on native host access.**
 
 | # | Server | Tools | Domain |
@@ -39,7 +82,7 @@ The Dual-Plane separation eliminates all three failure modes.
 | 5 | `google-developer-knowledge` | 3 | Omniscience — Google developer docs search, retrieval, answers |
 | 6 | `sequential-thinking` | 1 | Multi-step reasoning, hypothesis verification |
 
-**Total Plane 1:** 91 tools
+**Total Plane 1:** 91 tools (9 headroom)
 
 ### Plane 1 Capabilities That Were Duplicated (Now Purged from Cline)
 
@@ -92,10 +135,11 @@ Redundancy is noise. We eliminate the noise.
 
 ### Enforcement
 - Before adding ANY new MCP server, check both manifests:
-  - Antigravity native: `antigravity-mcp-config.json`
+  - Antigravity native: `~/.gemini/antigravity/mcp_config.json`
   - Cline local: `cline_mcp_settings.json`
 - If the capability already exists in either plane, the addition is **DENIED**.
 - Violations are logged to `.beads/issues.jsonl` with severity `ARCHITECTURE_DRIFT`.
+- **Budget check:** Verify tool count stays ≤100 before adding any Plane 1 server.
 
 ### Server Addition Decision Tree
 ```
@@ -104,8 +148,10 @@ Want to add server X?
       ├─ YES → DENIED. Use native Antigravity tool.
       └─ NO → Does Cline already provide this capability (Plane 2)?
           ├─ YES → DENIED. Enhance existing server.
-          └─ NO → APPROVED. Add to Cline config (Plane 2).
-                  Antigravity host additions require platform team approval.
+          └─ NO → Will adding to Plane 1 exceed 100-tool limit?
+              ├─ YES → Add to Cline config (Plane 2) instead.
+              └─ NO → APPROVED. Add to mcp_config.json (Plane 1).
+                      Antigravity host additions require platform team approval.
 ```
 
 ### Drift Detection Protocol
@@ -204,3 +250,4 @@ The canonical `cline_mcp_settings.json` for Plane 2:
 > **Version History:**
 > - V26 (2026-05-15): Initial dual-plane separation. 7 redundant servers purged.
 > - V26.1 (2026-05-15): Added cognitive cost rationale, drift detection protocol, server addition decision tree.
+> - V26.2 (2026-05-15): **100-tool platform constraint documented.** Plane 1 reduced from 7→6 servers (91 tools, 9 headroom). Removed `gemini-graph-memory` (Cline has equivalent), `gemini-web-fetcher` (module mismatch, now ready-to-add via `uvx`), `notebooklm-mcp` (budget overflow, lives on Cline Plane 2). Config source corrected to `~/.gemini/antigravity/mcp_config.json`. Decision tree updated with budget check step.
