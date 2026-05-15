@@ -32,7 +32,8 @@ TOKEN_EXPIRY_CACHE = Path("/tmp/gh_token_shadowtag_exp.txt")
 
 # Known repos in the ShadowTag-v2 installation
 _KNOWN_REPOS = {
-  "origin": "ShadowTag-v2/Monorepo-Uphillsnowball",
+  "origin": "ShadowTag-v2/Monorepo-Uphillsnowball",  # ARCHIVED
+  "sovereign": "ShadowTag-v2/shadowtagai-monorepo-v2",  # CANONICAL
   "v2": "ShadowTag-v2/shadowtagai-monorepo-v2",
 }
 
@@ -180,7 +181,7 @@ def get_token(force_refresh: bool = False) -> str:
   return token
 
 
-def _update_remote_url(token: str, remote: str = "origin") -> None:
+def _update_remote_url(token: str, remote: str = "sovereign") -> None:
   """Rewrite the git remote push URL with the current token.
 
   Handles both SSH and HTTPS remotes:
@@ -212,7 +213,7 @@ def _update_remote_url(token: str, remote: str = "origin") -> None:
     current = result.stdout.strip()
 
     # Determine the repo slug from current URL or _KNOWN_REPOS
-    repo_slug = _KNOWN_REPOS.get(remote, "ShadowTag-v2/Monorepo-Uphillsnowball")
+    repo_slug = _KNOWN_REPOS.get(remote, "ShadowTag-v2/shadowtagai-monorepo-v2")
     https_token_url = f"https://x-access-token:{token}@github.com/{repo_slug}.git"
 
     if current.startswith("git@github.com:"):
@@ -270,7 +271,7 @@ if __name__ == "__main__":
   )
   parser.add_argument("--refresh", action="store_true", help="Force token refresh")
   parser.add_argument(
-    "--remote", default="origin", help="Git remote to push to (default: origin)"
+    "--remote", default="sovereign", help="Git remote to push to (default: sovereign)"
   )
   parser.add_argument("--branch", default="HEAD", help="Branch to push (default: HEAD)")
   parser.add_argument("--force", action="store_true", help="Force push")
@@ -288,7 +289,7 @@ if __name__ == "__main__":
     pass
   elif args.push_ref:
     # Push arbitrary refspec (used by batch_push.sh for chunked uploads)
-    repo_slug = _KNOWN_REPOS.get(args.remote, "ShadowTag-v2/Monorepo-Uphillsnowball")
+    repo_slug = _KNOWN_REPOS.get(args.remote, "ShadowTag-v2/shadowtagai-monorepo-v2")
     remote_url = f"https://x-access-token:{token}@github.com/{repo_slug}.git"
     force_flag = "--force" if args.force else ""
     cmd = f"GIT_LFS_SKIP_PUSH=1 JUDGE6_SKIP=true git push {remote_url} {args.push_ref} {force_flag} --no-verify".strip()
