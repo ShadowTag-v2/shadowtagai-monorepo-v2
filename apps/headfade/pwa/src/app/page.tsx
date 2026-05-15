@@ -12,14 +12,34 @@ import { getAuthInstance } from '@/lib/firebase';
 
 /* hoverVideo: Google sample bucket now 403 — removed until own CDN available */
 
+/* ── Brand-Tinted Palette (Google technique) ──
+ * Core brand: #06b6d4 (Forensic Cyan)
+ * Every shade from near-white to near-black carries a subtle cyan tint.
+ * Pure white → light cyan.  Pure black → deep navy-cyan.
+ * Borders: near-black for definition.  Highlighting: cyan-accented.
+ */
 const brand = {
-  bg: '#FFFFFF',
-  bgSubtle: '#F7F9FC',
-  textPrimary: '#0A2540',
-  textMuted: '#3D5166',
+  /* Backgrounds — cyan-tinted whites */
+  bg: '#F5FBFC', // very light cyan (was pure white)
+  bgSubtle: '#EFF8FA', // subtle cyan wash
+  bgDeep: '#0A1A2F', // near-black with deep cyan undertone
+  /* Text — cyan-tinted darks */
+  textPrimary: '#0C2D48', // dark navy-cyan (was #0A2540)
+  textMuted: '#3A5A72', // muted cyan-grey
+  textLight: '#E8F7FA', // very light cyan for dark surfaces
+  /* Accent */
   accent: '#0891B2',
-  border: '#E5E8ED',
-  chipDefault: '#F0FDFA',
+  accentGlow: '#06B6D4',
+  accentMuted: '#67E8F9',
+  /* Borders — near-black */
+  border: '#0C2D4820', // translucent dark cyan (subtle)
+  borderStrong: '#0A1A2F', // solid near-black
+  /* Chips & cards */
+  chipDefault: '#E6F7FA', // light cyan chip bg
+  chipText: '#0C2D48', // dark cyan chip text
+  /* Surfaces */
+  cardBg: '#F0F8FA', // card background
+  hoverBg: '#E0F4F7', // hover state
 } as const;
 
 const categories = [
@@ -216,6 +236,8 @@ export default function HeadfadeHomepage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [batchCount, setBatchCount] = useState(1);
   const [authWallOpen, setAuthWallOpen] = useState(false);
+  /* TikTok-style fullscreen lock — blocks page scroll until user opts out */
+  const [heroLocked, setHeroLocked] = useState(true);
   // Live Firebase Auth — subscribes to session changes
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const isAuthenticated = firebaseUser !== null;
@@ -326,6 +348,8 @@ export default function HeadfadeHomepage() {
         @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.6} }
         @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
         @keyframes headfade-flash-in { from{opacity:0;transform:scale(1.04)} to{opacity:1;transform:scale(1)} }
+        @keyframes logo-pulse { 0%,100%{filter:drop-shadow(0 0 0px rgba(6,182,212,0))} 50%{filter:drop-shadow(0 0 8px rgba(6,182,212,0.6))} }
+        .headfade-logo:hover { animation: logo-pulse 1.2s ease-in-out infinite; }
         .cat-chip:hover .cat-glyph { animation: float 0.8s ease-in-out infinite; }
         .scrollbar-hide::-webkit-scrollbar { display:none; }
         .scrollbar-hide { -ms-overflow-style:none; scrollbar-width:none; }
@@ -334,18 +358,33 @@ export default function HeadfadeHomepage() {
       {/* Auth Wall Modal */}
       <AuthWallModal isOpen={authWallOpen} onClose={() => setAuthWallOpen(false)} />
 
-      <div className="min-h-screen" style={{ backgroundColor: brand.bg, color: brand.textPrimary }}>
+      <div
+        className="min-h-screen"
+        style={{
+          backgroundColor: brand.bg,
+          color: brand.textPrimary,
+          overflow: heroLocked ? 'hidden' : undefined,
+          height: heroLocked ? '100vh' : undefined,
+        }}
+      >
         {/* ── Sticky Header ── */}
         <header
           className="sticky top-0 z-50"
-          style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.border}` }}
+          style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.borderStrong}` }}
         >
           <div className="w-full px-4 h-14 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 type="button"
                 aria-label="Open menu"
-                className="p-2 hover:bg-[#f2f2f2] rounded-full transition-colors"
+                className="p-2 rounded-full transition-colors"
+                style={{ color: brand.textPrimary }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = brand.hoverBg;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+                }}
               >
                 <svg
                   className="w-6 h-6"
@@ -364,36 +403,131 @@ export default function HeadfadeHomepage() {
               </button>
               <div className="flex items-center gap-2 cursor-pointer select-none">
                 <svg
-                  viewBox="0 0 32 32"
-                  className="w-8 h-8"
+                  viewBox="0 0 36 36"
+                  className="headfade-logo w-9 h-9 transition-transform hover:scale-110"
                   fill="none"
                   aria-label="HeadFade logo"
                   role="img"
                 >
                   <title>HeadFade</title>
-                  <rect width="32" height="32" rx="8" fill="#0891B2" />
-                  <path
-                    d="M6 22 Q10 10 16 16 Q22 22 26 10"
+                  <defs>
+                    <linearGradient
+                      id="hf-grad"
+                      x1="0"
+                      y1="0"
+                      x2="36"
+                      y2="36"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop offset="0%" stopColor="#0891B2" />
+                      <stop offset="100%" stopColor="#06B6D4" />
+                    </linearGradient>
+                  </defs>
+                  {/* Circular base */}
+                  <circle cx="18" cy="18" r="17" fill="url(#hf-grad)" />
+                  {/* Outer detection ring */}
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="14"
                     stroke="white"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.3"
                     fill="none"
                   />
+                  {/* Inner detection ring */}
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="10"
+                    stroke="white"
+                    strokeWidth="0.6"
+                    strokeOpacity="0.25"
+                    fill="none"
+                  />
+                  {/* Crosshair lines */}
+                  <line
+                    x1="18"
+                    y1="4"
+                    x2="18"
+                    y2="11"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="18"
+                    y1="25"
+                    x2="18"
+                    y2="32"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="4"
+                    y1="18"
+                    x2="11"
+                    y2="18"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="25"
+                    y1="18"
+                    x2="32"
+                    y2="18"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Center eye — forensic detection symbol */}
+                  <ellipse
+                    cx="18"
+                    cy="18"
+                    rx="5"
+                    ry="3.5"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    fill="none"
+                  />
+                  <circle cx="18" cy="18" r="1.8" fill="white" />
+                  {/* Scan line accent */}
+                  <line
+                    x1="8"
+                    y1="13"
+                    x2="28"
+                    y2="13"
+                    stroke="#67E8F9"
+                    strokeWidth="0.7"
+                    strokeOpacity="0.6"
+                    strokeDasharray="2 2"
+                  />
                 </svg>
-                <span className="font-bold text-[20px] tracking-tight">HeadFade</span>
+                <span
+                  className="font-bold text-[20px] tracking-tight"
+                  style={{ color: brand.textPrimary }}
+                >
+                  HeadFade
+                </span>
               </div>
             </div>
 
             <div className="hidden md:flex flex-1 max-w-[600px] px-8">
               <div
                 className="flex w-full items-center rounded-full overflow-hidden"
-                style={{ border: `1px solid ${brand.border}` }}
+                style={{ border: `1px solid ${brand.borderStrong}`, backgroundColor: brand.bg }}
               >
                 <input
                   type="text"
                   placeholder="Search AI-presumed videos..."
                   className="w-full px-4 py-2 outline-none text-[16px]"
-                  style={{ backgroundColor: brand.bg }}
+                  style={{ backgroundColor: brand.bg, color: brand.textPrimary }}
                 />
                 <button
                   type="button"
@@ -401,7 +535,7 @@ export default function HeadfadeHomepage() {
                   className="px-5 py-2"
                   style={{
                     backgroundColor: brand.bgSubtle,
-                    borderLeft: `1px solid ${brand.border}`,
+                    borderLeft: `1px solid ${brand.borderStrong}`,
                   }}
                 >
                   <svg
@@ -503,17 +637,19 @@ export default function HeadfadeHomepage() {
           isAuthenticated={isAuthenticated}
           onAuthRequired={() => setAuthWallOpen(true)}
           eloRating={isAuthenticated ? elo.eloRating : undefined}
+          heroLocked={heroLocked}
+          onUnlockScroll={() => setHeroLocked(false)}
         />
 
         <div className="flex">
           {/* Sidebar */}
           <aside
             className="hidden lg:flex flex-col w-[240px] sticky top-[108px] h-[calc(100vh-6.75rem)] overflow-y-auto py-3 flex-shrink-0"
-            style={{ borderRight: `1px solid ${brand.border}` }}
+            style={{ borderRight: `1px solid ${brand.borderStrong}` }}
           >
             <nav
               className="flex flex-col gap-0.5 px-3 pb-3 mb-3"
-              style={{ borderBottom: `1px solid ${brand.border}` }}
+              style={{ borderBottom: `1px solid ${brand.borderStrong}` }}
             >
               {[
                 {
@@ -538,7 +674,7 @@ export default function HeadfadeHomepage() {
                   aria-current={item.active ? 'page' : undefined}
                   className="flex items-center gap-6 px-3 py-2.5 rounded-[10px] text-[14px] font-medium transition-colors"
                   style={{
-                    backgroundColor: item.active ? '#E0F7FA' : 'transparent',
+                    backgroundColor: item.active ? brand.chipDefault : 'transparent',
                     color: item.active ? brand.accent : brand.textPrimary,
                     fontWeight: item.active ? 700 : 400,
                   }}
@@ -597,7 +733,7 @@ export default function HeadfadeHomepage() {
 
             <div
               className="flex flex-col gap-0.5 px-3 pb-3 mb-3"
-              style={{ borderBottom: `1px solid ${brand.border}` }}
+              style={{ borderBottom: `1px solid ${brand.borderStrong}` }}
             >
               <h3 className="px-3 py-2 font-bold text-[16px]">Your Votes</h3>
               {(
@@ -615,8 +751,8 @@ export default function HeadfadeHomepage() {
                   onClick={() => setFilter(value)}
                   className="flex items-center gap-6 px-3 py-2 rounded-[10px] text-[14px] transition-colors"
                   style={{
-                    backgroundColor: filter === value ? '#E0F7FA' : 'transparent',
-                    color: filter === value ? '#0891B2' : '#0A2540',
+                    backgroundColor: filter === value ? brand.chipDefault : 'transparent',
+                    color: filter === value ? brand.accent : brand.textPrimary,
                     fontWeight: filter === value ? 700 : 400,
                   }}
                 >
@@ -636,7 +772,7 @@ export default function HeadfadeHomepage() {
           <main className="flex-1 overflow-x-hidden">
             <div
               className="sticky top-[108px] z-40 flex items-center gap-2 px-6 py-3 overflow-x-auto scrollbar-hide"
-              style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.border}` }}
+              style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.borderStrong}` }}
             >
               {categories.map((cat) => {
                 const isActive = activeCategory === cat.label;
@@ -649,7 +785,7 @@ export default function HeadfadeHomepage() {
                     onClick={() => setActiveCategory(cat.label)}
                     style={{
                       background: isActive ? cat.color : brand.chipDefault,
-                      color: isActive ? '#fff' : '#1E1B4B',
+                      color: isActive ? brand.textLight : brand.chipText,
                       boxShadow: isActive ? `0 2px 12px ${cat.color}55` : 'none',
                     }}
                   >

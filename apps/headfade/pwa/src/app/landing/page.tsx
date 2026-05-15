@@ -131,7 +131,12 @@ export default function LandingPage() {
   const howSection = useIntersect(0.15);
   const ctaSection = useIntersect(0.2);
 
-  const statValues = STATS.map((s) => useCounter(s.value, 2200, statsSection.visible));
+  // Call each counter at top level (Rules of Hooks — no hooks in callbacks)
+  const stat0 = useCounter(STATS[0].value, 2200, statsSection.visible);
+  const stat1 = useCounter(STATS[1].value, 2200, statsSection.visible);
+  const stat2 = useCounter(STATS[2].value, 2200, statsSection.visible);
+  const stat3 = useCounter(STATS[3].value, 2200, statsSection.visible);
+  const statValues = [stat0, stat1, stat2, stat3];
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
@@ -583,7 +588,14 @@ Accept: text/event-stream
       <footer className="relative z-10 border-t border-white/[0.06] py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none">
+            <svg
+              viewBox="0 0 32 32"
+              className="w-7 h-7"
+              fill="none"
+              aria-label="HeadFade logo"
+              role="img"
+            >
+              <title>HeadFade</title>
               <rect width="32" height="32" rx="8" fill="#0891B2" />
               <path
                 d="M6 22 Q10 10 16 16 Q22 22 26 10"
@@ -601,13 +613,13 @@ Accept: text/event-stream
             <a href="/trust" className="hover:text-white/60 transition-colors">
               Trust & Safety
             </a>
-            <a href="#" className="hover:text-white/60 transition-colors">
+            <a href="/privacy" className="hover:text-white/60 transition-colors">
               Privacy
             </a>
-            <a href="#" className="hover:text-white/60 transition-colors">
+            <a href="/terms" className="hover:text-white/60 transition-colors">
               Terms
             </a>
-            <a href="#" className="hover:text-white/60 transition-colors">
+            <a href="/status" className="hover:text-white/60 transition-colors">
               Status
             </a>
           </div>
