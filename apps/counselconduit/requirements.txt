@@ -7,7 +7,7 @@ python-dotenv>=1.2.2  # CVE-2026-28684 fix (transitive dep)
 
 # Google Cloud
 google-genai>=1.0.0
-google-cloud-firestore>=2.19.0
+google-cloud-firestore>=2.27.0
 google-cloud-tasks>=2.16.0
 google-cloud-secret-manager>=2.22.0
 firebase-admin>=6.6.0
