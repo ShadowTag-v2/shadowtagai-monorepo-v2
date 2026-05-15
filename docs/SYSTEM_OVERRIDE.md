@@ -2,7 +2,7 @@
 
 > **To:** Antigravity Core Engine
 > **Project:** `shadowtag-omega-v4`
-> **Version:** V26.2 | **Status:** LOCKED
+> **Version:** V29 | **Status:** LOCKED
 > **Last Updated:** 2026-05-15
 
 ---
@@ -194,7 +194,7 @@ The canonical `cline_mcp_settings.json` for Plane 2:
     },
     "maps-grounding-lite-mcp": {
       "httpUrl": "https://mapstools.googleapis.com/mcp",
-      "headers": { "X-Goog-Api-Key": "AIzaSyAtINCKbu86HPVGa3tXOuv8SMg41YXl_BA" }
+      "headers": { "X-Goog-Api-Key": "${GOOGLE_MAPS_API_KEY}" }
     },
     "container-mcp-server": {
       "httpUrl": "https://container.googleapis.com/mcp",
@@ -240,3 +240,4 @@ The daemon runs daily (3–5 AM) and pushes fixes via ephemeral GitHub App JWT.
 > - V26.1 (2026-05-15): Added cognitive cost rationale, drift detection protocol, server addition decision tree.
 > - V26.2 (2026-05-15): Sovereign repo migration (`shadowtagai-monorepo-v2`). Archived `Monorepo-Uphillsnowball` (READ-ONLY). Added `gemini-graph-memory` to Plane 1 (7 servers, 99 tools). Fixed stale workspace paths. Added lint delegation doctrine. Python target locked to `py313`.
 > - V28 (2026-05-15): Documented 2 undocumented Cline servers (`gemini-github-mcp`, `gemini-web-fetcher`). Fleet: 7 Plane 1 + 14 Plane 2 = 21 servers. Resolved `.gitignore` merge conflict. Added .NET `bin/obj` exclusions. Updated lint stats to 343 rule categories.
+> - V29 (2026-05-15): Credential audit — 2 API keys identified (Chrome CrUX key: upstream vendor, Maps key: migrated to `${GOOGLE_MAPS_API_KEY}` env ref). Daemon validated (5 classes, 22 functions, file-based KI — no Spanner/BigQuery wiring). Dead-code audit: 925 F401/F841 isolated to legacy archives. AiYou.Kernel csproj removed from active tree (GitNexus test fixtures only). Drift detection: 0 Plane 1 leakage. Cline config: 14 servers verified.
