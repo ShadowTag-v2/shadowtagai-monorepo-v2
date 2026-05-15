@@ -17,7 +17,7 @@ python-dotenv>=1.0.0
 # Testing and benchmarking
 pytest>=7.4.0
 pytest-asyncio>=0.21.0
-pytest-benchmark>=4.0.0
+pytest-benchmark>=5.2.3
 
 # Cryptography for ShadowTagAI
 cryptography>=41.0.0
