@@ -142,16 +142,18 @@ This is NOT optional. It is a behavioral invariant enforced at the operator leve
 **ABSOLUTE RULE: The GitHub App PEM is the ONLY authorized authentication path.**
 
 ### Canonical Credentials
-- **Repo**: `https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git`
+- **Repo**: `https://github.com/ShadowTag-v2/shadowtagai-monorepo-v2.git` *(sovereign — migrated 2026-05-15)*
+- **Archived**: `https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git` *(READ-ONLY, do NOT push)*
 - **PEM**: `/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem`
 - **App ID**: `3018200`
 - **Client ID**: `Iv23ctYqrxPQIt2ir8gY`
 - **Env var**: `$SHADOWTAG_PEM` points to the PEM above
 
 ### Transport
-- SSH (`git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git`) is PRIMARY for push/pull.
+- SSH (`git@github.com:ShadowTag-v2/shadowtagai-monorepo-v2.git`) is PRIMARY for push/pull.
 - HTTPS is last-resort fallback only.
 - GitHub App JWT (generated from PEM) is for ALL API operations (PRs, issues, releases, actions).
+- **NEVER push to Monorepo-Uphillsnowball** — it is archived.
 
 ### Prohibited
 - **`gh auth login`** — NEVER use the GitHub CLI's browser OAuth flow. It creates stale credentials.
