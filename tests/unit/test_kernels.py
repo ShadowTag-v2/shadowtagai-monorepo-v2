@@ -8,20 +8,16 @@ Tests cover:
 """
 
 import pytest
-import asyncio
-import json
-from unittest.mock import AsyncMock, patch, MagicMock
 
 from app.kernels.base import Kernel, KernelChainError
 from app.kernels.audit_compress import AuditCompressKernel
-from app.models.kernel import KernelInput, KernelOutput, KernelMetrics
+from app.models.kernel import KernelInput
 from app.models.decision import (
     Violation,
     ViolationsScanOutput,
     JudgeSixClassification,
     AuditTrail,
     RiskTier,
-    DecisionContext,
 )
 
 # ─── Skip JudgeSix if torch unavailable ─────────────────────────────────

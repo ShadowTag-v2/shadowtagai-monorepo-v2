@@ -112,9 +112,7 @@ def configure_otel_tracing() -> None:
 
             exporter = CloudTraceSpanExporter(project_id=PROJECT_ID)
             provider.add_span_processor(BatchSpanProcessor(exporter))
-            logger.info(
-                "Cloud Trace exporter configured for project=%s", PROJECT_ID
-            )
+            logger.info("Cloud Trace exporter configured for project=%s", PROJECT_ID)
         except ImportError:
             from opentelemetry.sdk.trace.export import ConsoleSpanExporter
 
@@ -187,9 +185,7 @@ class _NoOpSpan:
 
 
 @contextmanager
-def trace_tool_call(
-    tool_name: str, **attributes
-) -> Generator[object, None, None]:
+def trace_tool_call(tool_name: str, **attributes) -> Generator[object, None, None]:
     """Context manager to trace an ADK tool call.
 
     Usage::
@@ -255,7 +251,9 @@ def initialize_observability() -> None:
     2. OpenTelemetry tracing (spans → Cloud Trace)
     3. GenAI auto-instrumentation (model call tracing)
     """
-    logger.info("Initializing observability stack for %s v%s", SERVICE_NAME, SERVICE_VERSION)
+    logger.info(
+        "Initializing observability stack for %s v%s", SERVICE_NAME, SERVICE_VERSION
+    )
     configure_cloud_logging()
     configure_otel_tracing()
     configure_genai_instrumentation()

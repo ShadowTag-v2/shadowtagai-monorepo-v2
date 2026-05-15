@@ -25,11 +25,9 @@ Tests the memory module's local fallback functionality including:
 from __future__ import annotations
 
 import importlib.util
-import os
 import sys
 from pathlib import Path
 from types import ModuleType
-from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -37,13 +35,7 @@ import pytest
 
 def _load_memory_module() -> ModuleType:
     """Load the memory module without triggering __init__.py ADK imports."""
-    module_path = (
-        Path(__file__).resolve().parents[2]
-        / "geap"
-        / "helpdesk-agent"
-        / "app"
-        / "memory.py"
-    )
+    module_path = Path(__file__).resolve().parents[2] / "geap" / "helpdesk-agent" / "app" / "memory.py"
     spec = importlib.util.spec_from_file_location("geap_memory", str(module_path))
     if spec is None or spec.loader is None:
         pytest.skip(f"Cannot load memory module from {module_path}")
@@ -335,10 +327,13 @@ class TestServiceFactories:
     def test_get_memory_tools_vertex_without_import(self, memory_module):
         """Should fall back to local if ADK memory tools can't be imported."""
         with patch.object(memory_module, "USE_VERTEX_MEMORY", True):
-            with patch.dict("sys.modules", {
-                "google.adk.tools.load_memory_tool": None,
-                "google.adk.tools.preload_memory_tool": None,
-            }):
+            with patch.dict(
+                "sys.modules",
+                {
+                    "google.adk.tools.load_memory_tool": None,
+                    "google.adk.tools.preload_memory_tool": None,
+                },
+            ):
                 tools = memory_module.get_memory_tools()
         # Falls back to local tool
         assert len(tools) == 1

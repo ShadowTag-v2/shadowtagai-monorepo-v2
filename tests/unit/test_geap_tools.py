@@ -18,7 +18,6 @@ Tests the Part 2 tool functions independently of the ADK agent runtime.
 """
 
 import importlib.util
-import sys
 from pathlib import Path
 
 import pytest
@@ -30,9 +29,7 @@ _cmdb_spec = importlib.util.spec_from_file_location("cmdb", _geap_app / "cmdb.py
 _cmdb_mod = importlib.util.module_from_spec(_cmdb_spec)
 _cmdb_spec.loader.exec_module(_cmdb_mod)
 
-_ks_spec = importlib.util.spec_from_file_location(
-    "knowledge_search", _geap_app / "knowledge_search.py"
-)
+_ks_spec = importlib.util.spec_from_file_location("knowledge_search", _geap_app / "knowledge_search.py")
 _ks_mod = importlib.util.module_from_spec(_ks_spec)
 _ks_spec.loader.exec_module(_ks_mod)
 
