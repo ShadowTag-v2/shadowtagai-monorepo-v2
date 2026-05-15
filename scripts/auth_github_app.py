@@ -32,7 +32,7 @@ TOKEN_EXPIRY_CACHE = Path("/tmp/gh_token_shadowtag_exp.txt")
 
 # Known repos in the ShadowTag-v2 installation
 _KNOWN_REPOS = {
-  "origin": "ShadowTag-v2/Monorepo-Uphillsnowball",  # ARCHIVED
+  "origin": "ShadowTag-v2/shadowtagai-monorepo-v2",  # CANONICAL (migrated 2026-05-14)
   "sovereign": "ShadowTag-v2/shadowtagai-monorepo-v2",  # CANONICAL
   "v2": "ShadowTag-v2/shadowtagai-monorepo-v2",
 }
@@ -232,7 +232,7 @@ def _update_remote_url(token: str, remote: str = "origin") -> None:
         capture_output=True,
       )
     elif "github.com" in current:
-      # HTTPS remote: rewrite the token in-place
+      # HTTPS remote: rewrite the token in-place for BOTH fetch and push
       new_url = re.sub(
         r"https://[^@]*@github\.com/",
         f"https://x-access-token:{token}@github.com/",
@@ -243,8 +243,14 @@ def _update_remote_url(token: str, remote: str = "origin") -> None:
           "https://github.com/",
           f"https://x-access-token:{token}@github.com/",
         )
+      # Set fetch URL
       subprocess.run(
         ["git", "-C", str(REPO_ROOT), "remote", "set-url", remote, new_url],
+        capture_output=True,
+      )
+      # Set push URL (critical — git push uses the push URL, not fetch)
+      subprocess.run(
+        ["git", "-C", str(REPO_ROOT), "remote", "set-url", "--push", remote, new_url],
         capture_output=True,
       )
   except Exception:
