@@ -63,7 +63,7 @@ fi
 SECRETS="
 DEVELOPER_KNOWLEDGE_API_KEY:developer-knowledge-api-key
 STITCH_API_KEY:stitch-api-key-regional
-GOOGLE_DESIGN_API_KEY:google-design-api-key-regional
+GOOGLE_DESIGN_API_KEY:google-design-api-key
 GEMINI_API_KEY:gemini-api-key-regional
 STRIPE_SECRET_KEY:stripe-secret-key-regional
 STRIPE_PUBLISHABLE_KEY:stripe-publishable-key-regional
