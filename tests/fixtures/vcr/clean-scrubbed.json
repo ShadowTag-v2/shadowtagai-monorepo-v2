@@ -1,0 +1,40 @@
+{
+  "interactions": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://firestore.googleapis.com/v1/projects/shadowtag-omega-v4/databases/(default)/documents/users/uid-001",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]"
+        }
+      },
+      "response": {
+        "status_code": 200,
+        "body": "{\"fields\":{\"displayName\":{\"stringValue\":\"Test User\"},\"role\":{\"stringValue\":\"attorney\"}}}",
+        "elapsed_ms": 45
+      },
+      "recorded_at": "2026-05-02T10:00:00Z"
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://firestore.googleapis.com/v1/projects/shadowtag-omega-v4/databases/(default)/documents/sessions",
+        "headers": {
+          "Authorization": "Bearer [SCRUBBED]",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"fields\":{\"status\":{\"stringValue\":\"active\"}}}"
+      },
+      "response": {
+        "status_code": 200,
+        "body": "{\"name\":\"sessions/s-001\",\"createTime\":\"2026-05-02T10:00:01Z\"}",
+        "elapsed_ms": 120
+      },
+      "recorded_at": "2026-05-02T10:00:01Z"
+    }
+  ],
+  "metadata": {
+    "purpose": "Fully scrubbed, clean cassette — should pass all validations with 0 errors",
+    "expected_behavior": "should_pass_validation"
+  }
+}

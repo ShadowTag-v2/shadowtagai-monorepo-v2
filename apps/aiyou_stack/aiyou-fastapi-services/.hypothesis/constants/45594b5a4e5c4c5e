@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/activeshield_medical/core/medical_dlp.py
+# hypothesis_version: 6.151.5
+
+[0.9, 100, '[ADDRESS_REDACTED]', '[DATE_REDACTED]', '[EMAIL_REDACTED]', '[PHONE_REDACTED]', '\\b\\d{5}\\b', 'account', 'address', 'allergy', 'audit_id', 'biometric', 'clinical_count', 'confidential', 'dates', 'device', 'diagnosis', 'disclosure_allowed', 'email', 'employer', 'external', 'family_history', 'fax', 'genetic', 'health_plan', 'highly_restricted', 'insurance', 'internal', 'ip', 'lab_result', 'license', 'medication', 'mental_health', 'mrn', 'name', 'other_unique', 'phi_count', 'phone', 'photo', 'procedure', 'public', 'redacted_text', 'restricted', 'ssn', 'substance_abuse', 'treatment', 'url', 'vehicle', 'vital_sign', 'warnings']

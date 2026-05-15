@@ -1,0 +1,39 @@
+# infrastructure/serverless/omega_service.yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: omega-judge-jetski
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      containerConcurrency: 8
+      timeoutSeconds: 300
+      containers:
+        - name: judge-core
+          image: gcr.io/shadowtag-omega-v2/judge-core:latest
+          ports: [{ containerPort: 8080 }]
+          env:
+            - name: PROJECT_ID
+              value: "shadowtag-omega-v2"
+            - name: JETSKI_BASE
+              value: "http://127.0.0.1:8081"
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+
+        - name: jetski-sidecar
+          image: gcr.io/shadowtag-omega-v2/jetski-sidecar:latest
+          ports: [{ containerPort: 8081 }]
+          env:
+            - name: PORT
+              value: "8081"
+            - name: JETSKI_ARTIFACT_DIR
+              value: "/tmp/artifacts"
+          resources:
+            limits:
+              cpu: "2"
+              memory: "4Gi"

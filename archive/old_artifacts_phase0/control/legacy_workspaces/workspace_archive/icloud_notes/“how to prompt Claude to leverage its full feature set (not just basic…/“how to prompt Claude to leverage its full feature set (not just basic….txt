@@ -1,0 +1,40 @@
+“how to prompt Claude to leverage its full feature set (not just basic chat):
+THE SKILL LAYER - BUILD YOUR EXPERTISE LIBRARY
+  don't repeat the same instructions every time... create Claude Skills instead
+  Skills embed your standards, voice, and frameworks permanently
+  build Skills for: writing style, proposal templates, analysis frameworks, research methods
+ they activate automatically when relevant, no pasting context repeatedly
+THE MEMORY SYSTEM - LET CLAUDE REMEMBER YOUR CONTEXT
+  enable memory so Claude learns your preferences over time
+  remembers: your goals, work context, communication style, recurring needs
+  no more re-explaining I run two agencies" or "write casually, avoid jargon"
+  memory compounds across all conversations, not just one session
+THE PROJECT SETUP - ARCHITECT YOUR WORKSPACE
+  Projects let you create dedicated environments with custom instructions
+  upload key documents: SOPs, brand guidelines, past work, frameworks
+  set a system prompt defining Claude's role for this project
+  example: "You're my content strategist. Analyze based on my audience data and past performance."
+ everything in the project shares this context automatically
+THE CONTEXT WINDOW STRATEGY - FRONT-LOAD WHAT MATTERS
+  Claude has a massive context window... use it intelligently
+  put critical information at the top AND bottom (attention peaks at edges)
+  structure with XML tags: <role> <task> <constraints> <examples>
+  don't bury important details in the middle
+  Claude processes structured data 3x better than walls of text
+THE EXTENDED THINKING MODE - UNLOCK DEEPER REASONING
+  for complex problems: "think this through step-by-step using extended thinking"
+  Claude shows its reasoning process before answering
+  reduces hallucinations, catches logical errors, explores alternatives
+  use for: strategy decisions, technical architecture, complex analysis
+THE MULTI-TURN REFINEMENT - ITERATE LIKE REAL COLLABORATION
+  don't expect perfection on first output
+  treat it like a team member: "make this concise" → "add data" → "rewrite intro"
+  Claude maintains full conversation context
+  each refinement builds on previous understanding
+THE VALIDATION LAYER-OR SERIE
+  end complex requests with: "critique your response and identify weaknesses"
+  or: "what assumptions are you making? what could be wrong?"
+  Claude catches its own errors if prompted
+  adds automatic quality control”
+
+<next>

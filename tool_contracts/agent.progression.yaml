@@ -1,0 +1,9 @@
+# tool_contracts/agent.progression.yaml
+tool_id: "agent.progression"
+description: "Governs the agent.progression operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/agent_progression.jsonl"
+reuse_queries: []

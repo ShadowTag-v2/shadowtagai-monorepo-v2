@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "repo_id": "antigravity",
+  "atoms": [
+    {
+      "atom_kind": "preference",
+      "subject": "settings",
+      "predicate": "github_control_plane",
+      "object_text": "github_app",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "github",
+        "control-plane",
+        "canonical"
+      ]
+    },
+    {
+      "atom_kind": "preference",
+      "subject": "settings",
+      "predicate": "git_remote_preference",
+      "object_text": "ssh",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "git",
+        "auth",
+        "canonical"
+      ]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "settings",
+      "predicate": "git_https_repair_command",
+      "object_text": "gh auth login && gh auth setup-git",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "git",
+        "github",
+        "repair"
+      ]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "startup_contract",
+      "predicate": "hydrate_before_reasoning",
+      "object_text": "True",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "startup",
+        "memory",
+        "canonical"
+      ]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "startup_contract",
+      "predicate": "ignore_codebase_as_authority",
+      "object_text": "True",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "startup",
+        "authority",
+        "canonical"
+      ]
+    },
+    {
+      "atom_kind": "rule",
+      "subject": "startup_contract",
+      "predicate": "load_github_git_invariants_before_repo_actions",
+      "object_text": "True",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "startup",
+        "git",
+        "github"
+      ]
+    },
+    {
+      "atom_kind": "preference",
+      "subject": "settings",
+      "predicate": "local_clone_role",
+      "object_text": "indexed_working_copy",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "clones",
+        "indexing"
+      ]
+    },
+    {
+      "atom_kind": "preference",
+      "subject": "settings",
+      "predicate": "github_app_role",
+      "object_text": "freshness_and_repo_truth",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "github-app",
+        "truth"
+      ]
+    },
+    {
+      "atom_kind": "preference",
+      "subject": "settings",
+      "predicate": "monorepo_primary_workspace",
+      "object_text": "ShadowTag-v2/Monorepo-Uphillsnowball",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "monorepo",
+        "workspace"
+      ]
+    },
+    {
+      "atom_kind": "preference",
+      "subject": "settings",
+      "predicate": "monorepo_primary_remote",
+      "object_text": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
+      "canonical_weight": 1.0,
+      "validity": "active",
+      "source_type": "operator_invariants",
+      "source_ref": "operator_invariants.json",
+      "tags": [
+        "git",
+        "remote",
+        "monorepo"
+      ]
+    }
+  ]
+}

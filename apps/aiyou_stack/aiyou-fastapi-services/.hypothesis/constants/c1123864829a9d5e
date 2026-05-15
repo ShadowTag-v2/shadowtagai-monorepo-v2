@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/schemas/event.py
+# hypothesis_version: 6.151.5
+
+[99.99, 100, 1000, '2025-01-01T00:00:00Z', '2025-01-31T23:59:59Z', 'Browser name', 'City', 'Country', 'Currency code', 'Event properties', 'Event timestamp', 'IP address', 'Name of the event', 'Operating system', 'Page URL', 'Page title', 'Premium Plan', 'Referrer URL', 'Region/State', 'Revenue amount', 'Session ID', 'USD', 'UTM campaign', 'UTM content', 'UTM medium', 'UTM source', 'UTM term', 'User ID', 'User agent string', 'conversion', 'currency', 'end_date', 'event_name', 'event_type', 'examples', 'limit', 'page_view', 'prod_456', 'product_id', 'product_name', 'properties', 'purchase_completed', 'quantity', 'revenue', 'session_abc', 'session_id', 'start_date', 'user_123', 'user_id']

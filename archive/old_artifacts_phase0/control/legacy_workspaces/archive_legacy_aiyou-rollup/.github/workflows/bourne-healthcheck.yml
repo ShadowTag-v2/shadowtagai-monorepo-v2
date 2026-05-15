@@ -1,0 +1,26 @@
+name: bourne-healthcheck
+
+on:
+  push:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run GitHub visibility healthcheck
+        run: |
+          node scripts/healthcheck.mjs || true
+      - name: Upload healthcheck artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: healthcheck
+          path: healthcheck.json
+      - name: Fail if GitHub not visible
+        run: |
+          node -e "const fs=require('fs');if(!fs.existsSync('healthcheck.json')){console.log('no healthcheck.json, passing');process.exit(0);}const j=JSON.parse(fs.readFileSync('healthcheck.json','utf8'));if(j && j.githubVisible===false){console.error('GitHub not visible. Failing per Bourne healthcheck.');process.exit(1);}"

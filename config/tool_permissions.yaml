@@ -1,0 +1,156 @@
+# AGNT Tool Permissions Configuration
+# Reference: AGNT STATE B Spec P2.2
+# Source: SAFE_YOLO_ALLOWLISTED_TOOLS from Claude Code v2.1.91
+#
+# Categories:
+#   auto_approved: Skip classifier entirely (Stage 0)
+#   requires_classifier: Must pass 2-stage XML classifier
+#   always_blocked: Never executable by agent
+#
+# To override at runtime:
+#   export AGNT_FC_OVERRIDES='{"xml_classifier":true}'
+
+auto_approved:
+  # Read-only operations — zero risk
+  read_only:
+    - view_file
+    - list_dir
+    - grep_search
+
+  # Search operations — information gathering
+  search:
+    - search_web
+    - read_url_content
+
+  # MCP read operations — no state mutation
+  mcp_reads:
+    - mcp_chrome-devtools-mcp_take_snapshot
+    - mcp_chrome-devtools-mcp_take_screenshot
+    - mcp_chrome-devtools-mcp_list_pages
+    - mcp_chrome-devtools-mcp_list_console_messages
+    - mcp_chrome-devtools-mcp_list_network_requests
+    - mcp_chrome-devtools-mcp_get_console_message
+    - mcp_chrome-devtools-mcp_get_network_request
+    - mcp_google-developer-knowledge_search_documents
+    - mcp_google-developer-knowledge_get_documents
+    - mcp_google-developer-knowledge_answer_query
+    - mcp_firebase-mcp-server_firebase_get_environment
+    - mcp_firebase-mcp-server_firebase_get_project
+    - mcp_firebase-mcp-server_firebase_list_projects
+    - mcp_firebase-mcp-server_firebase_list_apps
+    - mcp_firebase-mcp-server_firebase_get_sdk_config
+    - mcp_firebase-mcp-server_firebase_get_security_rules
+    - mcp_firebase-mcp-server_firebase_read_resources
+    - mcp_firebase-mcp-server_firestore_list_collections
+    - mcp_firebase-mcp-server_firestore_list_documents
+    - mcp_firebase-mcp-server_firestore_get_document
+    - mcp_firebase-mcp-server_firestore_list_databases
+    - mcp_firebase-mcp-server_firestore_get_database
+    - mcp_firebase-mcp-server_firestore_list_indexes
+    - mcp_firebase-mcp-server_firestore_get_index
+    - mcp_firebase-mcp-server_functions_list_functions
+    - mcp_firebase-mcp-server_functions_get_logs
+    - mcp_firebase-mcp-server_remoteconfig_get_template
+    - mcp_firebase-mcp-server_dataconnect_list_services
+    - mcp_firebase-mcp-server_dataconnect_build
+    - mcp_StitchMCP_list_projects
+    - mcp_StitchMCP_get_project
+    - mcp_StitchMCP_get_screen
+    - mcp_StitchMCP_list_screens
+    - mcp_StitchMCP_list_design_systems
+    - mcp_sequential-thinking_sequentialthinking
+
+  # Status/monitoring tools
+  monitoring:
+    - command_status
+
+requires_classifier:
+  # File write operations — need content and path validation
+  file_writes:
+    - write_to_file
+    - replace_file_content
+    - multi_replace_file_content
+
+  # Shell execution — needs subcommand cap + env var check
+  shell:
+    - run_command
+    - send_command_input
+
+  # Browser interaction — can modify page state
+  browser_mutate:
+    - browser_subagent
+    - mcp_chrome-devtools-mcp_click
+    - mcp_chrome-devtools-mcp_fill
+    - mcp_chrome-devtools-mcp_fill_form
+    - mcp_chrome-devtools-mcp_type_text
+    - mcp_chrome-devtools-mcp_press_key
+    - mcp_chrome-devtools-mcp_navigate_page
+    - mcp_chrome-devtools-mcp_new_page
+    - mcp_chrome-devtools-mcp_evaluate_script
+    - mcp_chrome-devtools-mcp_upload_file
+    - mcp_chrome-devtools-mcp_drag
+    - mcp_chrome-devtools-mcp_hover
+    - mcp_chrome-devtools-mcp_emulate
+    - mcp_chrome-devtools-mcp_resize_page
+    - mcp_chrome-devtools-mcp_close_page
+    - mcp_chrome-devtools-mcp_select_page
+    - mcp_chrome-devtools-mcp_handle_dialog
+
+  # Firebase write operations
+  firebase_mutate:
+    - mcp_firebase-mcp-server_firebase_init
+    - mcp_firebase-mcp-server_firebase_create_project
+    - mcp_firebase-mcp-server_firebase_create_app
+    - mcp_firebase-mcp-server_firebase_create_android_sha
+    - mcp_firebase-mcp-server_firebase_update_environment
+    - mcp_firebase-mcp-server_firebase_login
+    - mcp_firebase-mcp-server_firebase_logout
+    - mcp_firebase-mcp-server_firebase_validate_security_rules
+    - mcp_firebase-mcp-server_firestore_add_document
+    - mcp_firebase-mcp-server_firestore_update_document
+    - mcp_firebase-mcp-server_firestore_delete_document
+    - mcp_firebase-mcp-server_firestore_create_database
+    - mcp_firebase-mcp-server_firestore_update_database
+    - mcp_firebase-mcp-server_firestore_delete_database
+    - mcp_firebase-mcp-server_firestore_create_index
+    - mcp_firebase-mcp-server_firestore_delete_index
+    - mcp_firebase-mcp-server_firestore_query_collection
+    - mcp_firebase-mcp-server_auth_get_users
+    - mcp_firebase-mcp-server_auth_update_user
+    - mcp_firebase-mcp-server_auth_set_sms_region_policy
+    - mcp_firebase-mcp-server_messaging_send_message
+    - mcp_firebase-mcp-server_storage_get_object_download_url
+    - mcp_firebase-mcp-server_remoteconfig_update_template
+    - mcp_firebase-mcp-server_dataconnect_execute
+    - mcp_firebase-mcp-server_apphosting_list_backends
+    - mcp_firebase-mcp-server_apphosting_fetch_logs
+
+  # Stitch write operations
+  stitch_mutate:
+    - mcp_StitchMCP_create_project
+    - mcp_StitchMCP_generate_screen_from_text
+    - mcp_StitchMCP_edit_screens
+    - mcp_StitchMCP_generate_variants
+    - mcp_StitchMCP_create_design_system
+    - mcp_StitchMCP_update_design_system
+    - mcp_StitchMCP_apply_design_system
+
+  # Performance/audit tools — long-running operations
+  performance:
+    - mcp_chrome-devtools-mcp_lighthouse_audit
+    - mcp_chrome-devtools-mcp_performance_start_trace
+    - mcp_chrome-devtools-mcp_performance_stop_trace
+    - mcp_chrome-devtools-mcp_performance_analyze_insight
+    - mcp_chrome-devtools-mcp_take_memory_snapshot
+    - mcp_chrome-devtools-mcp_wait_for
+
+always_blocked:
+  # Destructive operations — RULE 00 enforcement
+  destructive:
+    - shell_rm_rf
+    - shell_sudo
+    - shell_unlink
+
+  # Image generation — TACSOP 7 Visual Provenance
+  banned_visual:
+    - generate_image

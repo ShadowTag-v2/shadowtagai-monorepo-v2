@@ -1,0 +1,66 @@
+# ═══════════════════════════════════════════════════════════
+# upload_policy.yaml — Two-Lane Upload Doctrine
+# Invariant #111: Git for source, artifact storage for payloads.
+# ═══════════════════════════════════════════════════════════
+version: 1
+
+git_lane:
+  description: Canonical source, small docs, manifests, build files, tests, scripts, policy.
+  max_file_size_mb: 10
+  allowed_extensions:
+    - .py
+    - .ts
+    - .tsx
+    - .js
+    - .jsx
+    - .go
+    - .rs
+    - .cs
+    - .md
+    - .yaml
+    - .yml
+    - .json
+    - .toml
+    - .sh
+    - .bash
+    - .css
+    - .html
+    - .sql
+    - .tf
+    - .hcl
+    - .bzl
+    - .BUILD
+    - .bazel
+    - .proto
+    - .graphql
+    - .fga
+    - .mjs
+    - .cjs
+  blocked_patterns:
+    - "*.pem"
+    - "*.key"
+    - "client_secret*"
+    - "service-account*"
+    - "*.env"
+    - "*.env.*"
+
+artifact_lane:
+  description: Large binaries, archives, generated indexes, vector DBs, raw payloads, model files.
+  storage: GCS or local ignored directories
+  requires_manifest: true
+  types:
+    - model_weights
+    - video_assets
+    - generated_indexes
+    - vector_databases
+    - raw_data_payloads
+    - notebook_outputs
+    - external_repo_mirrors
+    - build_artifacts
+    - heapsnapshots
+    - trace_files
+
+enforcement:
+  pre_push_gate: scripts/classify-upload-payload.sh
+  bloat_gate: scripts/prepush-bloat-gate.sh
+  secret_scan: scripts/secret-scan.sh

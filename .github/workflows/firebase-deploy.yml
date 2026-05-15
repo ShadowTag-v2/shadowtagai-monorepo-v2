@@ -1,0 +1,35 @@
+name: Deploy to Firebase Hosting
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/kovelai/public/**'
+      - 'apps/shadowtagai/public/**'
+      - 'firebase.json'
+      - '.firebaserc'
+
+  workflow_dispatch:
+
+
+concurrency:
+  group: firebase-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          projectId: shadowtag-omega-v4
+          channelId: live

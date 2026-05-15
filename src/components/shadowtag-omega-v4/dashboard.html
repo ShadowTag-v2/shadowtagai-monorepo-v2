@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speculation Engine — Research Telemetry</title>
+<meta name="description" content="Real-time research telemetry dashboard for ShadowTag Speculation Engine">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a28;--border:#2a2a3e;
+  --text:#e4e4ef;--text2:#8888a4;--accent:#6c5ce7;--accent2:#a29bfe;
+  --green:#00b894;--red:#ff6b6b;--yellow:#ffd93d;--blue:#74b9ff;
+  --radius:12px;--font:'Inter',system-ui,-apple-system,sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+.dashboard{max-width:1400px;margin:0 auto;padding:24px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+h1{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.status-pill{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text2);background:var(--surface);padding:6px 14px;border-radius:20px;border:1px solid var(--border)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:transform .2s,border-color .3s}
+.kpi:hover{transform:translateY(-2px);border-color:var(--accent)}
+.kpi-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:8px}
+.kpi-value{font-size:1.8rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.kpi-sub{font-size:.7rem;color:var(--text2);margin-top:4px}
+.section{margin-bottom:32px}
+.section-title{font-size:1rem;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';width:3px;height:18px;background:var(--accent);border-radius:2px}
+table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+th{text-align:left;padding:12px 16px;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);background:var(--surface2);border-bottom:1px solid var(--border)}
+td{padding:12px 16px;font-size:.85rem;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.8rem}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(108,92,231,.05)}
+.badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.7rem;font-weight:600}
+.badge-ok{background:rgba(0,184,148,.15);color:var(--green)}
+.badge-fail{background:rgba(255,107,107,.15);color:var(--red)}
+.badge-sweep{background:rgba(108,92,231,.15);color:var(--accent2)}
+.badge-pair{background:rgba(116,185,255,.15);color:var(--blue)}
+.chart-container{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;height:220px;display:flex;align-items:flex-end;gap:4px;position:relative}
+.chart-bar{flex:1;min-width:8px;background:linear-gradient(to top,var(--accent),var(--accent2));border-radius:4px 4px 0 0;transition:height .6s cubic-bezier(.22,1,.36,1);position:relative;cursor:pointer}
+.chart-bar:hover{opacity:.8}
+.chart-bar:hover::after{content:attr(data-label);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--surface2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:.65rem;white-space:nowrap;border:1px solid var(--border);font-family:'JetBrains Mono',monospace}
+.chart-label{position:absolute;top:12px;left:16px;font-size:.7rem;color:var(--text2)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text2)}
+.empty-state svg{width:48px;height:48px;margin-bottom:16px;opacity:.3}
+.controls{display:flex;gap:8px;margin-bottom:16px}
+.btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:8px;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:var(--font)}
+.btn:hover{border-color:var(--accent);background:var(--surface2)}
+.btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.fade-in{animation:fadeIn .4s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="dashboard">
+  <header>
+    <nav aria-label="Dashboard navigation">
+      <h1>⚡ Speculation Engine Telemetry</h1>
+    </nav>
+    <div class="status-pill"><span class="status-dot"></span>Live — Local Beads</div>
+  </header>
+
+  <main id="dashboard-main">
+    <div class="kpi-grid" id="kpis"></div>
+
+    <div class="controls">
+      <button class="btn active" onclick="setFilter('all')">All</button>
+      <button class="btn" onclick="setFilter('research_sweep')">Sweeps</button>
+      <button class="btn" onclick="setFilter('pair_programming')">Pair Sessions</button>
+      <button class="btn" onclick="loadData()">↻ Refresh</button>
+    </div>
+
+    <div class="grid-2">
+      <div class="section">
+        <div class="section-title">Duration Distribution (last 20)</div>
+        <div class="chart-container" id="durationChart"><span class="chart-label">Duration (s)</span></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Report Size Distribution (last 20)</div>
+        <div class="chart-container" id="sizeChart"><span class="chart-label">Chars</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Recent Research Sweeps</div>
+      <table>
+        <thead><tr><th>Time</th><th>Query</th><th>Mode</th><th>Duration</th><th>Report</th><th>Status</th></tr></thead>
+        <tbody id="sweepTable"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Bridge Telemetry Events</div>
+      <table>
+        <thead><tr><th>Time</th><th>Event</th><th>Duration</th><th>Details</th></tr></thead>
+        <tbody id="telemetryTable"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+// Dashboard reads from local .beads/ JSONL files via fetch (when served by Firebase Hosting or dev server)
+// For local development, we parse embedded data or use the Firestore REST API
+
+let currentFilter = 'all';
+let sweepData = [];
+let telemetryData = [];
+
+function _setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.controls .btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  render();
+}
+
+async function loadData() {
+  try {
+    // Try loading from local JSONL files (served via hosting)
+    const [sweepResp, telResp] = await Promise.allSettled([
+      fetch('/.beads/research_sweep.jsonl').then(r => r.ok ? r.text() : ''),
+      fetch('/.beads/speculation_telemetry.jsonl').then(r => r.ok ? r.text() : '')
+    ]);
+
+    sweepData = parseJSONL(sweepResp.status === 'fulfilled' ? sweepResp.value : '');
+    telemetryData = parseJSONL(telResp.status === 'fulfilled' ? telResp.value : '');
+  } catch(e) {
+    sweepData = generateDemoData();
+    telemetryData = generateDemoTelemetry();
+  }
+
+  if (sweepData.length === 0) {
+    sweepData = generateDemoData();
+    telemetryData = generateDemoTelemetry();
+  }
+
+  render();
+}
+
+function parseJSONL(text) {
+  if (!text) return [];
+  return text.trim().split('\n').filter(Boolean).map(line => {
+    try { return JSON.parse(line); }
+    catch { return null; }
+  }).filter(Boolean);
+}
+
+function generateDemoData() {
+  const topics = [
+    'Legal AI competitive landscape 2026',
+    'Attorney-client privilege in LLM routing',
+    'Cloud Run cold start optimization patterns',
+    'Firestore TTL policy best practices',
+    'OpenTelemetry Python instrumentation',
+    'Stripe Connect dual-billing architecture',
+    'WebSocket vs SSE for real-time dashboards',
+    'gRPC service mesh latency patterns'
+  ];
+  return topics.map((t, i) => ({
+    timestamp: new Date(Date.now() - i * 3600000 * 3).toISOString(),
+    topic: t,
+    duration_seconds: 120 + Math.random() * 500,
+    report_length: 3000 + Math.floor(Math.random() * 12000),
+    agent: ['gemini-3-flash','gemini-3-pro'][i % 2],
+    pipeline_mode: i % 3 === 0 ? 'pair_programming' : 'research_sweep',
+    status: 'completed',
+    source: i % 4 === 0 ? 'sweep-now' : 'scheduled'
+  }));
+}
+
+function generateDemoTelemetry() {
+  const events = ['bridge_research_sweep','bridge_pair_session','speculation_phase_start','speculation_phase_complete','bridge_health_check'];
+  return events.flatMap((e, i) => Array.from({length: 3}, (_, j) => ({
+    timestamp: Date.now()/1000 - (i*3+j)*1800,
+    iso: new Date(Date.now() - (i*3+j)*1800000).toISOString(),
+    event_type: e,
+    duration_ms: 50 + Math.random() * 400,
+    success: Math.random() > 0.1,
+    session_id: `kairos-${1000+i}`
+  })));
+}
+
+function render() {
+  const filtered = currentFilter === 'all' ? sweepData :
+    sweepData.filter(d => d.pipeline_mode === currentFilter);
+
+  renderKPIs(filtered);
+  renderCharts(filtered);
+  renderSweepTable(filtered);
+  renderTelemetryTable(telemetryData.slice(0, 15));
+}
+
+function renderKPIs(data) {
+  const completed = data.filter(d => d.status !== 'failed');
+  const avgDuration = completed.length ? completed.reduce((a,d) => a + (d.duration_seconds||0), 0) / completed.length : 0;
+  const avgSize = completed.length ? completed.reduce((a,d) => a + (d.report_length||0), 0) / completed.length : 0;
+  const failRate = data.length ? ((data.length - completed.length) / data.length * 100) : 0;
+
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi fade-in"><div class="kpi-label">Total Sweeps</div><div class="kpi-value">${data.length}</div><div class="kpi-sub">${completed.length} completed</div></div>
+    <div class="kpi fade-in"><div class="kpi-label">Avg Duration</div><div class="kpi-value">${avgDuration.toFixed(0)}s</div><div class="kpi-sub">${(avgDuration/60).toFixed(1)} min</div></div>
+    <div class="kpi fade-in"><div class="kpi-label">Avg Report Size</div><div class="kpi-value">${(avgSize/1000).toFixed(1)}K</div><div class="kpi-sub">characters</div></div>
+    <div class="kpi fade-in"><div class="kpi-label">Failure Rate</div><div class="kpi-value" style="color:${failRate > 10 ? 'var(--red)' : 'var(--green)'}">${failRate.toFixed(1)}%</div><div class="kpi-sub">${data.length - completed.length} failed</div></div>
+    <div class="kpi fade-in"><div class="kpi-label">Bridge Events</div><div class="kpi-value">${telemetryData.length}</div><div class="kpi-sub">last 24h</div></div>
+  `;
+}
+
+function renderCharts(data) {
+  const recent = data.slice(0, 20);
+  const maxDur = Math.max(...recent.map(d => d.duration_seconds || 1), 1);
+  const maxSize = Math.max(...recent.map(d => d.report_length || 1), 1);
+
+  const durChart = document.getElementById('durationChart');
+  durChart.innerHTML = '<span class="chart-label">Duration (s)</span>' +
+    recent.map(d => {
+      const h = Math.max(((d.duration_seconds||0)/maxDur)*180, 4);
+      return `<div class="chart-bar" style="height:${h}px" data-label="${(d.duration_seconds||0).toFixed(0)}s — ${(d.topic||'').slice(0,30)}"></div>`;
+    }).join('');
+
+  const sizeChart = document.getElementById('sizeChart');
+  sizeChart.innerHTML = '<span class="chart-label">Chars</span>' +
+    recent.map(d => {
+      const h = Math.max(((d.report_length||0)/maxSize)*180, 4);
+      return `<div class="chart-bar" style="height:${h}px;background:linear-gradient(to top,var(--blue),var(--accent2))" data-label="${(d.report_length||0).toLocaleString()} chars"></div>`;
+    }).join('');
+}
+
+function renderSweepTable(data) {
+  const tbody = document.getElementById('sweepTable');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No sweep data available</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.slice(0, 20).map(d => {
+    const time = d.timestamp ? new Date(d.timestamp).toLocaleString() : '—';
+    const mode = d.pipeline_mode || 'research_sweep';
+    const modeBadge = mode === 'pair_programming' ? '<span class="badge badge-pair">pair</span>' : '<span class="badge badge-sweep">sweep</span>';
+    const statusBadge = d.status === 'failed' ? '<span class="badge badge-fail">failed</span>' : '<span class="badge badge-ok">ok</span>';
+    return `<tr class="fade-in">
+      <td>${time}</td>
+      <td>${(d.topic||d.query||'—').slice(0,50)}</td>
+      <td>${modeBadge}</td>
+      <td>${(d.duration_seconds||0).toFixed(1)}s</td>
+      <td>${((d.report_length||0)/1000).toFixed(1)}K</td>
+      <td>${statusBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTelemetryTable(data) {
+  const tbody = document.getElementById('telemetryTable');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No telemetry events</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(d => {
+    const time = d.iso ? new Date(d.iso).toLocaleTimeString() : new Date(d.timestamp*1000).toLocaleTimeString();
+    const dur = d.duration_ms ? `${d.duration_ms.toFixed(0)}ms` : '—';
+    const details = Object.entries(d).filter(([k]) => !['timestamp','iso','event_type','duration_ms'].includes(k)).map(([k,v]) => `${k}=${v}`).slice(0,3).join(', ');
+    return `<tr class="fade-in"><td>${time}</td><td>${d.event_type||'—'}</td><td>${dur}</td><td style="font-size:.7rem;color:var(--text2)">${details.slice(0,80)}</td></tr>`;
+  }).join('');
+}
+
+// Boot
+loadData();
+setInterval(loadData, 30000);
+</script>
+</body>
+</html>

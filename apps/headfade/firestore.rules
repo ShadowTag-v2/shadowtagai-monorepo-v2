@@ -1,0 +1,122 @@
+rules_version = '2';
+
+// HeadFade Firestore Security Rules
+// Schema reference: apps/headfade/DATABASE_SCHEMA.md
+// Last updated: 2026-05-13
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helper Functions ──
+
+    // Is the request from an authenticated user?
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Is the requesting user the document owner?
+    function isOwner(uid) {
+      return isAuth() && request.auth.uid == uid;
+    }
+
+    // Is the requesting user an admin?
+    function isAdmin() {
+      return isAuth() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'ADMIN';
+    }
+
+    // Is the request from a service account? (backend-only writes)
+    function isServiceAccount() {
+      return request.auth != null && request.auth.token.email_verified == true
+             && request.auth.token.email.matches('.*@.*\\.iam\\.gserviceaccount\\.com');
+    }
+
+    // ── 1. users ──
+    // Read: self or admin
+    // Write: self or admin (cannot escalate to ADMIN)
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId)
+                    && request.resource.data.role in ['CREATOR', 'PUBLISHER', 'USER']
+                    && request.resource.data.uid == userId;
+      allow update: if (isOwner(userId) || isAdmin())
+                    && (!('role' in request.resource.data) || request.resource.data.role in ['CREATOR', 'PUBLISHER', 'USER'] || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // ── 2. videos ──
+    // Read: public if status == PUBLISHED; creator/admin for all statuses
+    // Write: creator (own videos) or service account
+    match /videos/{videoId} {
+      allow read: if resource.data.status == 'PUBLISHED'
+                  || isOwner(resource.data.creatorId)
+                  || isAdmin();
+      allow create: if isAuth()
+                    && request.resource.data.creatorId == request.auth.uid
+                    && request.resource.data.status == 'PROCESSING';
+      allow update: if isOwner(resource.data.creatorId) || isServiceAccount() || isAdmin();
+      allow delete: if isAdmin() || isServiceAccount();
+    }
+
+    // ── 3. forensic_verdicts ──
+    // Read: public (transparency — verdicts are open data)
+    // Write: service account ONLY (Gemini AI backend)
+    match /forensic_verdicts/{verdictId} {
+      allow read: if true;
+      allow write: if isServiceAccount();
+    }
+
+    // ── 4. human_telemetry ──
+    // Read: admin or content creator (for their videos)
+    // Write: public append-only via API (rate-limited in middleware)
+    match /human_telemetry/{telemetryId} {
+      allow read: if isAdmin();
+      allow create: if isAuth()
+                    && request.resource.data.keys().hasAll(['videoId', 'userVote', 'votedAt'])
+                    && request.resource.data.userVote in ['AI', 'REAL']
+                    && (!('userId' in request.resource.data) || request.resource.data.userId == request.auth.uid);
+      allow update, delete: if false;
+    }
+
+    // ── 5. licenses ──
+    // Read: buyer, seller, or admin
+    // Write: service account ONLY (Stripe webhook handler)
+    match /licenses/{licenseId} {
+      allow read: if isOwner(resource.data.buyerId)
+                  || isOwner(resource.data.sellerId)
+                  || isAdmin();
+      allow write: if isServiceAccount();
+    }
+
+    // ── 6. embed_telemetry ──
+    // Read: publisher, creator, or admin
+    // Write: public append-only via embed player (validated by App Check middleware)
+    match /embed_telemetry/{telemetryId} {
+      allow read: if isOwner(resource.data.publisherId) || isAdmin();
+      allow create: if isAuth()
+                    && request.resource.data.keys().hasAll(['videoId', 'publisherId', 'domain', 'recordedAt']);
+      allow update, delete: if false;
+    }
+
+    // ── 7. remix_nodes ──
+    // Read: public (provenance graph is transparent)
+    // Write: service account ONLY (ingestion pipeline)
+    match /remix_nodes/{nodeId} {
+      allow read: if true;
+      allow write: if isServiceAccount();
+    }
+
+    // ── 8. ingestion_jobs ──
+    // Read: creator (own jobs) or admin
+    // Write: service account ONLY (pipeline state machine)
+    match /ingestion_jobs/{jobId} {
+      allow read: if isAdmin()
+                  || (isAuth() && resource.data.creatorId == request.auth.uid);
+      allow write: if isServiceAccount();
+    }
+
+    // ── Deny all unmatched ──
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

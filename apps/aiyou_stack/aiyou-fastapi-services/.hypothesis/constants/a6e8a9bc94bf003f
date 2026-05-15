@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/shadowtagai/core/jr_engine.py
+# hypothesis_version: 6.151.5
+
+[500, 1000000, '\nClean request:', '\nCustom decision:', '\nRisky request:', 'APPROVE', 'A_FREQUENT', 'B_LIKELY', 'C_OCCASIONAL', 'D_SELDOM', 'ESCALATE', 'EXTREMELY_HIGH', 'E_UNLIKELY', 'HIGH', 'III_MODERATE', 'II_CRITICAL', 'IV_NEGLIGIBLE', 'I_CATASTROPHIC', 'LOW', 'MODERATE', 'REJECT', '__main__', 'backdoor', 'data_analysis', 'ddos', 'execution_time_us', 'exploit', 'hack', 'kill', 'malware', 'quick_keyword_scan', 'ransomware', 'request_type', 'rootkit', 'scan_type', 'text', 'trojan', 'user_123', 'user_id', 'violations_found', 'virus']

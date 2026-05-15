@@ -1,0 +1,9 @@
+# tool_contracts/firebase.function_bridge.yaml
+tool_id: "firebase.function_bridge"
+description: "Governs the firebase.function_bridge operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/firebase_function_bridge.jsonl"
+reuse_queries: []

@@ -1,0 +1,1530 @@
+# Skill Fleet Manifest — Auto-generated 2026-04-24T22:17:10Z
+# Total: 223 global skills
+---
+skills:
+  - folder: a11y-debugging
+    name: "a11y-debugging"
+    name_matches_folder: true
+    lines: 89
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: a2a-agent-card-publisher
+    name: "A2A Agent Card Publisher"
+    name_matches_folder: false
+    lines: 206
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: a2a-development-patterns
+    name: "a2a-development-patterns"
+    name_matches_folder: true
+    lines: 118
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: a2ui-generative-blueprint
+    name: "A2UI Generative Blueprint Prompter"
+    name_matches_folder: false
+    lines: 182
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: adk-tool-scaffold
+    name: "adk-tool-scaffold"
+    name_matches_folder: true
+    lines: 36
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: adk2-graph-workflow
+    name: "ADK 2.0 Graph Workflow Architect"
+    name_matches_folder: false
+    lines: 188
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: advanced-evaluation
+    name: "advanced-evaluation"
+    name_matches_folder: true
+    lines: 402
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: aegaeon-caching-strategist
+    name: "Aegaeon Caching Strategist"
+    name_matches_folder: false
+    lines: 84
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: ag-ui-frontend-protocol
+    name: "AG-UI Frontend Protocol"
+    name_matches_folder: false
+    lines: 509
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agent-design-patterns
+    name: "'Skill: Agent Design Patterns'"
+    name_matches_folder: false
+    lines: 106
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agent-encryption-doctrine
+    name: "Agent Encryption Doctrine"
+    name_matches_folder: false
+    lines: 156
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agent-security-web
+    name: "Agent Security for Web Applications"
+    name_matches_folder: false
+    lines: 403
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agentic-web-architecture
+    name: "Agentic Web Architecture"
+    name_matches_folder: false
+    lines: 288
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agentic-website-construction
+    name: "Agentic Website Construction Doctrine"
+    name_matches_folder: false
+    lines: 349
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agentops-quality-engineering
+    name: "AgentOps Quality Engineering"
+    name_matches_folder: false
+    lines: 480
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agui-generative-ui
+    name: "agui-generative-ui"
+    name_matches_folder: true
+    lines: 175
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: agui-sse-transport
+    name: "AG-UI SSE Transport Adapter"
+    name_matches_folder: false
+    lines: 247
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: aiyou-cto-operator
+    name: "AiYou CTO Operator (Gemini 3.1 Pro)"
+    name_matches_folder: false
+    lines: 32
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: andrej-karpathy
+    name: "andrej-karpathy"
+    name_matches_folder: true
+    lines: 1169
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: anti-vibe-code-enforcer
+    name: "anti-vibe-code-enforcer"
+    name_matches_folder: true
+    lines: 122
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: antigravity-safe-scrapling-runner
+    name: "antigravity-safe-scrapling-runner"
+    name_matches_folder: true
+    lines: 33
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: antigravity-stitch-integration
+    name: "Antigravity + Stitch Integration"
+    name_matches_folder: false
+    lines: 251
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: ast-grep-integration
+    name: "ast-grep-integration"
+    name_matches_folder: true
+    lines: 23
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: asymmetric-compute-model
+    name: "asymmetric-compute-model"
+    name_matches_folder: true
+    lines: 128
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: autonomous-pm2-debugger
+    name: "autonomous-pm2-debugger"
+    name_matches_folder: true
+    lines: 34
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: board-posture-identity
+    name: "board-posture-identity"
+    name_matches_folder: true
+    lines: 92
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: bootstrapped-b2b-ideator
+    name: "bootstrapped-b2b-ideator"
+    name_matches_folder: true
+    lines: 31
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: bourne-mode-sop
+    name: "bourne-mode-sop"
+    name_matches_folder: true
+    lines: 120
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: boy-scout-deliverables
+    name: "boy-scout-deliverables"
+    name_matches_folder: true
+    lines: 33
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: brainstorming-design
+    name: "brainstorming"
+    name_matches_folder: false
+    lines: 165
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: business-context-lock
+    name: "business-context-lock"
+    name_matches_folder: true
+    lines: 131
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: canonicalization-guard
+    name: "canonicalization-guard"
+    name_matches_folder: true
+    lines: 133
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: chrome-headless-mastery
+    name: "chrome-headless-mastery"
+    name_matches_folder: true
+    lines: 185
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cloud-api-registry-mcp-binder
+    name: "Cloud API Registry MCP Binder"
+    name_matches_folder: false
+    lines: 174
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cloud-architect
+    name: "cloud-architect"
+    name_matches_folder: true
+    lines: 136
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cloud-run-functions-2ndgen
+    name: "Cloud Run Functions (2nd Gen)"
+    name_matches_folder: false
+    lines: 196
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: cloud-run-functions
+    name: "Cloud Run Functions (2nd Gen)"
+    name_matches_folder: false
+    lines: 248
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: coderabbit-review
+    name: "code-review"
+    name_matches_folder: false
+    lines: 142
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: compiler-guillotine
+    name: "Compiler Guillotine (Dead Code Janitor)"
+    name_matches_folder: false
+    lines: 171
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: context-compression
+    name: "context-compression"
+    name_matches_folder: true
+    lines: 272
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: context-engineering-web
+    name: "Context Engineering for Web Agents"
+    name_matches_folder: false
+    lines: 443
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: context-optimization
+    name: "context-optimization"
+    name_matches_folder: true
+    lines: 226
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: context-window-guardian
+    name: "context-window-guardian"
+    name_matches_folder: true
+    lines: 109
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cor-build-websites
+    name: "cor-build-websites"
+    name_matches_folder: true
+    lines: 288
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cor-cursor-vdi
+    name: "cor-cursor-vdi"
+    name_matches_folder: true
+    lines: 151
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cor-deployment-operations
+    name: "Cor Deployment Operations"
+    name_matches_folder: false
+    lines: 202
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cor30-security-enforcer
+    name: "Cor.30 Anti-Vibe Security Enforcer"
+    name_matches_folder: false
+    lines: 113
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: cost-optimization
+    name: "cost-optimization"
+    name_matches_folder: true
+    lines: 294
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: daemon-fleet-manager
+    name: "daemon-fleet-manager"
+    name_matches_folder: true
+    lines: 73
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: database-schema-validator
+    name: "database-schema-validator"
+    name_matches_folder: true
+    lines: 28
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: db-architect
+    name: "db-architect"
+    name_matches_folder: true
+    lines: 18
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: deep-research
+    name: "deep-research"
+    name_matches_folder: true
+    lines: 120
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: deliberation
+    name: "deliberation"
+    name_matches_folder: true
+    lines: 108
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: design-taste-frontend
+    name: "design-taste-frontend"
+    name_matches_folder: true
+    lines: 247
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: designmd-stitch-visual-mastery
+    name: "designmd-stitch-visual-mastery"
+    name_matches_folder: true
+    lines: 406
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: developer-connect-cicd
+    name: "Developer Connect CI/CD Pipeline"
+    name_matches_folder: false
+    lines: 153
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: dispatching-parallel-agents
+    name: "dispatching-parallel-agents"
+    name_matches_folder: true
+    lines: 182
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: docker-orchestrator
+    name: "Docker Orchestrator"
+    name_matches_folder: false
+    lines: 28
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: doctrinal-acquisition
+    name: "Doctrinal Acquisition Protocol"
+    name_matches_folder: false
+    lines: 81
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: docx-processor
+    name: "docx-processor"
+    name_matches_folder: true
+    lines: 126
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: dynamic-skill-execution
+    name: "dynamic-skill-execution"
+    name_matches_folder: true
+    lines: 229
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: error-recovery
+    name: "error-recovery"
+    name_matches_folder: true
+    lines: 67
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: evaluation-framework
+    name: "evaluation"
+    name_matches_folder: false
+    lines: 251
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: executing-plans
+    name: "executing-plans"
+    name_matches_folder: true
+    lines: 70
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: expert-agent-builder
+    name: "expert-agent-builder"
+    name_matches_folder: true
+    lines: 11
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: true
+  - folder: fastapi-pro
+    name: "fastapi-pro"
+    name_matches_folder: true
+    lines: 195
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: filesystem-context
+    name: "filesystem-context"
+    name_matches_folder: true
+    lines: 287
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: finishing-a-development-branch
+    name: "finishing-a-development-branch"
+    name_matches_folder: true
+    lines: 200
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: firebase-mcp-deploy-doctrine
+    name: "Firebase MCP Deploy Doctrine"
+    name_matches_folder: false
+    lines: 123
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: firebase-mcp-hosting-deploy
+    name: "Firebase MCP Hosting Deploy"
+    name_matches_folder: false
+    lines: 157
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: firebase-security-architect
+    name: "Firebase Security Architect"
+    name_matches_folder: false
+    lines: 11
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: firestore-pipeline-architect
+    name: "Firestore Pipeline Architect"
+    name_matches_folder: false
+    lines: 306
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: flutter_driver_control
+    name: "flutter-control-and-screenshot"
+    name_matches_folder: false
+    lines: 107
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: four-pillar-protocol-stack
+    name: "Four-Pillar Agent Protocol Stack"
+    name_matches_folder: false
+    lines: 153
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: frontend-debugger
+    name: "frontend-debugger"
+    name_matches_folder: true
+    lines: 16
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: frontend-design
+    name: "frontend-design"
+    name_matches_folder: true
+    lines: 42
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gcp-cloud-run
+    name: "gcp-cloud-run"
+    name_matches_folder: true
+    lines: 1382
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gdpr-data-handling
+    name: "gdpr-data-handling"
+    name_matches_folder: true
+    lines: 41
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gemini-api
+    name: "gemini-api-dev"
+    name_matches_folder: false
+    lines: 161
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gemini-interactions-api
+    name: "gemini-interactions-api"
+    name_matches_folder: true
+    lines: 290
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gemini-live-api
+    name: "gemini-live-api-dev"
+    name_matches_folder: false
+    lines: 284
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gemini-ultra-tier
+    name: "Gemini Ultra Tier Architecture"
+    name_matches_folder: false
+    lines: 194
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: geo-seo-optimizer
+    name: "geo-seo-optimizer"
+    name_matches_folder: true
+    lines: 160
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: git-commit-formatter
+    name: "git-commit-formatter"
+    name_matches_folder: true
+    lines: 34
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: git-execution-auditor
+    name: "git-execution-auditor"
+    name_matches_folder: true
+    lines: 30
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: github-repo-autosearch
+    name: "github-repo-autosearch"
+    name_matches_folder: true
+    lines: 119
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: go-serverless-shield
+    name: "go-serverless-shield"
+    name_matches_folder: true
+    lines: 185
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-ai-mode-research
+    name: "Google AI Mode Research"
+    name_matches_folder: false
+    lines: 98
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-external-cognitive-suite
+    name: "Google External Cognitive Suite"
+    name_matches_folder: false
+    lines: 412
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-go-style
+    name: "google-go-style"
+    name_matches_folder: true
+    lines: 22
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-infra-native-mcp
+    name: "google-infra-native-mcp"
+    name_matches_folder: true
+    lines: 264
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-python-style
+    name: "google-python-style"
+    name_matches_folder: true
+    lines: 22
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-shell-style
+    name: "google-shell-style"
+    name_matches_folder: true
+    lines: 22
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-skills-core
+    name: "google-skills-core"
+    name_matches_folder: true
+    lines: 52
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: google-typescript-style
+    name: "google-typescript-style"
+    name_matches_folder: true
+    lines: 22
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: gws-unified-workspace
+    name: "gws-unified-workspace"
+    name_matches_folder: true
+    lines: 275
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: headless-cli-protocol
+    name: "Headless CLI Protocol"
+    name_matches_folder: false
+    lines: 110
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: holdco-exit-strategy
+    name: "holdco-exit-strategy"
+    name_matches_folder: true
+    lines: 106
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: hosted-agents
+    name: "hosted-agents"
+    name_matches_folder: true
+    lines: 260
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: hybrid-hardware-orchestrator
+    name: "Hybrid Hardware Orchestrator"
+    name_matches_folder: false
+    lines: 33
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: hybrid-osint-router
+    name: "hybrid-osint-router"
+    name_matches_folder: true
+    lines: 11
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: true
+  - folder: json-to-pydantic
+    name: "json-to-pydantic"
+    name_matches_folder: true
+    lines: 30
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: judge6-compliance
+    name: "judge6-compliance"
+    name_matches_folder: true
+    lines: 36
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: k6-load-testing
+    name: "k6-load-testing"
+    name_matches_folder: true
+    lines: 632
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: knowledge-rag-doctrine
+    name: "knowledge-rag-doctrine"
+    name_matches_folder: true
+    lines: 99
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: lancedb-rag-automator
+    name: "LanceDB RAG Automator"
+    name_matches_folder: false
+    lines: 42
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: last30days-activity
+    name: "last30days"
+    name_matches_folder: false
+    lines: 1382
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: license-header-adder
+    name: "license-header-adder"
+    name_matches_folder: true
+    lines: 38
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: managed-agents-builder
+    name: "Managed Agents Builder"
+    name_matches_folder: false
+    lines: 104
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-brave-search
+    name: "mcp-brave-search"
+    name_matches_folder: true
+    lines: 13
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-builder
+    name: "mcp-builder"
+    name_matches_folder: true
+    lines: 236
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-chrome-devtools
+    name: "Chrome DevTools MCP Orchestrator"
+    name_matches_folder: false
+    lines: 165
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-filesystem
+    name: "mcp-filesystem"
+    name_matches_folder: true
+    lines: 14
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-fleet-vanguard
+    name: "mcp-fleet-vanguard"
+    name_matches_folder: true
+    lines: 119
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-github
+    name: "mcp-github"
+    name_matches_folder: true
+    lines: 202
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-googleworkspace
+    name: "mcp-googleworkspace"
+    name_matches_folder: true
+    lines: 13
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-linear
+    name: "mcp-linear"
+    name_matches_folder: true
+    lines: 13
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-memory
+    name: "mcp-memory"
+    name_matches_folder: true
+    lines: 17
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-postgres
+    name: "mcp-postgres"
+    name_matches_folder: true
+    lines: 14
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-puppeteer
+    name: "mcp-puppeteer"
+    name_matches_folder: true
+    lines: 13
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-sequential-thinking
+    name: "mcp-sequential-thinking"
+    name_matches_folder: true
+    lines: 17
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: mcp-tool-design-doctrine
+    name: "MCP Tool Design Doctrine"
+    name_matches_folder: false
+    lines: 345
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: memory-leak-debugging
+    name: "memory-leak-debugging"
+    name_matches_folder: true
+    lines: 50
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: memory-systems
+    name: "memory-systems"
+    name_matches_folder: true
+    lines: 225
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: micro-saas-launcher
+    name: "micro-saas-launcher"
+    name_matches_folder: true
+    lines: 520
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: model-isolation-enforcer
+    name: "model-isolation-enforcer"
+    name_matches_folder: true
+    lines: 79
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: multi-agent-patterns
+    name: "multi-agent-patterns"
+    name_matches_folder: true
+    lines: 264
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: multi-agent-web-patterns
+    name: "Multi-Agent Web Patterns"
+    name_matches_folder: false
+    lines: 507
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: n-autoresearch-monkeys
+    name: "No More Monkeys (Autoresearch Triad Enforcer)"
+    name_matches_folder: false
+    lines: 76
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: nag-protocol-enforcer
+    name: "nag-protocol-enforcer"
+    name_matches_folder: true
+    lines: 37
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: notebooklm-bridge
+    name: "notebooklm-bridge"
+    name_matches_folder: true
+    lines: 203
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: notebooklm-oracle
+    name: "notebooklm-oracle"
+    name_matches_folder: true
+    lines: 113
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: notebooklm-orchestrator
+    name: "notebooklm-orchestrator"
+    name_matches_folder: true
+    lines: 129
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: notebooklm
+    name: "notebooklm"
+    name_matches_folder: true
+    lines: 219
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: obsidian-formatter
+    name: "obsidian-formatter"
+    name_matches_folder: true
+    lines: 142
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: obsidian-vault-operator
+    name: "obsidian-vault-operator"
+    name_matches_folder: true
+    lines: 134
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: omni-linter-deployment
+    name: "Omni-Linter Singularity (Ruff + Biome + AST-Grep) Deploy"
+    name_matches_folder: false
+    lines: 11
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: omni-security-engine
+    name: "omni-security-engine"
+    name_matches_folder: true
+    lines: 274
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: omni-skill-hunter
+    name: "omni-skill-hunter"
+    name_matches_folder: true
+    lines: 70
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: operator-invariants
+    name: "operator-invariants"
+    name_matches_folder: true
+    lines: 72
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: payment-integration
+    name: "payment-integration"
+    name_matches_folder: true
+    lines: 81
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pci-compliance
+    name: "pci-compliance"
+    name_matches_folder: true
+    lines: 486
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pdf-processor
+    name: "pdf-processor"
+    name_matches_folder: true
+    lines: 206
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pliny-deepmind-fusion
+    name: "pliny-deepmind-fusion"
+    name_matches_folder: true
+    lines: 135
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pnkln-ane-orchestrator
+    name: "Pnkln ANE Orchestrator"
+    name_matches_folder: false
+    lines: 30
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pptx-builder
+    name: "pptx-builder"
+    name_matches_folder: true
+    lines: 201
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pre-action-memory-gate
+    name: "pre-action-memory-gate"
+    name_matches_folder: true
+    lines: 132
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pre-agent-protocol
+    name: "pre-agent-protocol"
+    name_matches_folder: true
+    lines: 132
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: premise-check
+    name: "premise-check"
+    name_matches_folder: true
+    lines: 38
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: product-matrix-pricing
+    name: "product-matrix-pricing"
+    name_matches_folder: true
+    lines: 100
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: production-code-audit
+    name: "production-code-audit"
+    name_matches_folder: true
+    lines: 548
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: progressive-web-app
+    name: "progressive-web-app"
+    name_matches_folder: true
+    lines: 357
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: prompt-caching
+    name: "prompt-caching"
+    name_matches_folder: true
+    lines: 483
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: prompt-engineering-master
+    name: "prompt-engineering-master"
+    name_matches_folder: true
+    lines: 256
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: prompt-repetition-boost
+    name: "Prompt Repetition Accuracy Boost"
+    name_matches_folder: false
+    lines: 106
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: pydantic-ai
+    name: "pydantic-ai"
+    name_matches_folder: true
+    lines: 355
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: rcr-code-reviewer
+    name: "rcr-code-reviewer"
+    name_matches_folder: true
+    lines: 66
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: react-best-practices
+    name: "react-best-practices"
+    name_matches_folder: true
+    lines: 145
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: remotion-video
+    name: "remotion-video"
+    name_matches_folder: true
+    lines: 182
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: roc-drill-rehearsal
+    name: "ROC Drill Rehearsal"
+    name_matches_folder: false
+    lines: 66
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: runtime-health-watchdog
+    name: "runtime-health-watchdog"
+    name_matches_folder: true
+    lines: 125
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: saas-architecture-gate
+    name: "saas-architecture-gate"
+    name_matches_folder: true
+    lines: 87
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: saas-multi-tenant
+    name: "saas-multi-tenant"
+    name_matches_folder: true
+    lines: 188
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: scrapling-vue-spa-parse
+    name: "'Scrapling Vue SPA Data Parser'"
+    name_matches_folder: false
+    lines: 24
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: scroll-experience
+    name: "scroll-experience"
+    name_matches_folder: true
+    lines: 609
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: secret-scanner-duo
+    name: "Secret Scanner (Betterleaks Primary)"
+    name_matches_folder: false
+    lines: 80
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: secure-blast-pipeline
+    name: "secure-blast-pipeline"
+    name_matches_folder: true
+    lines: 255
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: secure-infra
+    name: "Secure Infrastructure Automation"
+    name_matches_folder: false
+    lines: 38
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: security-ghost-mode
+    name: "security-ghost-mode"
+    name_matches_folder: true
+    lines: 82
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: security-guardrails
+    name: "security-guardrails"
+    name_matches_folder: true
+    lines: 20
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: self-consistency-reasoner
+    name: "self-consistency-reasoner"
+    name_matches_folder: true
+    lines: 103
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: semantic-kernel-process
+    name: "semantic-kernel-process"
+    name_matches_folder: true
+    lines: 93
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: sentinel-shield-doctrine
+    name: "sentinel-shield-doctrine"
+    name_matches_folder: true
+    lines: 129
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: seo-technical
+    name: "seo-technical"
+    name_matches_folder: true
+    lines: 179
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: sequential-attention-selector
+    name: "Sequential Attention Feature Selector"
+    name_matches_folder: false
+    lines: 142
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: session-wrap-up
+    name: "session-wrap-up"
+    name_matches_folder: true
+    lines: 114
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: sidecar-isolation-protocol
+    name: "sidecar-isolation-protocol"
+    name_matches_folder: true
+    lines: 51
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: skill-creator
+    name: "skill-creator"
+    name_matches_folder: true
+    lines: 485
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: sovereign-dual-stack
+    name: "sovereign-dual-stack"
+    name_matches_folder: true
+    lines: 28
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: sovereign-monorepo-hygiene
+    name: "Sovereign Monorepo Hygiene"
+    name_matches_folder: false
+    lines: 74
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: sovereign-pr-review
+    name: "Sovereign PR Review Pipeline"
+    name_matches_folder: false
+    lines: 55
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: spec-driven-vibe-coding
+    name: "spec-driven-vibe-coding"
+    name_matches_folder: true
+    lines: 235
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: startup-financial-modeling
+    name: "startup-financial-modeling"
+    name_matches_folder: true
+    lines: 470
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: state-machine-autonomy
+    name: "state-machine-autonomy"
+    name_matches_folder: true
+    lines: 141
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: stitch-antigravity-integration
+    name: "Antigravity + Stitch Integration"
+    name_matches_folder: false
+    lines: 166
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-design-md
+    name: "stitch-design-md"
+    name_matches_folder: true
+    lines: 179
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-design
+    name: "stitch-design"
+    name_matches_folder: true
+    lines: 91
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-enhance-prompt
+    name: "stitch-enhance-prompt"
+    name_matches_folder: true
+    lines: 204
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-first-websites
+    name: "stitch-first-websites"
+    name_matches_folder: true
+    lines: 219
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-loop
+    name: "stitch-loop"
+    name_matches_folder: true
+    lines: 263
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-react-components
+    name: "stitch-react-components"
+    name_matches_folder: true
+    lines: 50
+    has_scripts: true
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-shadcn-ui
+    name: "stitch-shadcn-ui"
+    name_matches_folder: true
+    lines: 326
+    has_scripts: true
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stitch-taste-design
+    name: "stitch-taste-design"
+    name_matches_folder: true
+    lines: 191
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: stripe-integration
+    name: "stripe-integration"
+    name_matches_folder: true
+    lines: 462
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: subagent-driven-development
+    name: "subagent-driven-development"
+    name_matches_folder: true
+    lines: 277
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: systematic-debugging
+    name: "systematic-debugging"
+    name_matches_folder: true
+    lines: 302
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: taste-design
+    name: "taste-design"
+    name_matches_folder: true
+    lines: 244
+    has_scripts: false
+    has_allowed_tools: true
+    is_redirect: false
+  - folder: tdd-workflow
+    name: "tdd-workflow"
+    name_matches_folder: true
+    lines: 371
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: temporal-rollback-doctrine
+    name: "temporal-rollback-doctrine"
+    name_matches_folder: true
+    lines: 98
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: temporalio-idempotency-auditor
+    name: "Temporal.io Idempotency Auditor"
+    name_matches_folder: false
+    lines: 9
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: terraform-comprehensive-workflow
+    name: "Cor. Comprehensive Terraform Workflow"
+    name_matches_folder: false
+    lines: 771
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: tool-design
+    name: "tool-design"
+    name_matches_folder: true
+    lines: 271
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: triad-architecture
+    name: "triad-architecture"
+    name_matches_folder: true
+    lines: 147
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: ui-consistency-auditor
+    name: "UI Consistency Auditor"
+    name_matches_folder: false
+    lines: 24
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: ui-ux-pro-max
+    name: "ui-ux-pro-max"
+    name_matches_folder: true
+    lines: 658
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: ultrathink-prompting
+    name: "ultrathink-prompting"
+    name_matches_folder: true
+    lines: 64
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: unfettered-directory-access
+    name: "unfettered-directory-access"
+    name_matches_folder: true
+    lines: 18
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: veo3-flow-cinematic
+    name: "Veo 3 Flow Cinematic Engine"
+    name_matches_folder: false
+    lines: 341
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: verification-before-completion
+    name: "verification-before-completion"
+    name_matches_folder: true
+    lines: 203
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: vertex-ai-api
+    name: "vertex-ai-api"
+    name_matches_folder: true
+    lines: 225
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: wealth-acceleration-strategy
+    name: "wealth-acceleration-strategy"
+    name_matches_folder: true
+    lines: 30
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: web-design-guidelines
+    name: "web-design-guidelines"
+    name_matches_folder: true
+    lines: 39
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: webapp-testing
+    name: "webapp-testing"
+    name_matches_folder: true
+    lines: 95
+    has_scripts: true
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: writing-plans
+    name: "writing-plans"
+    name_matches_folder: true
+    lines: 152
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: writing-skills
+    name: "writing-skills"
+    name_matches_folder: true
+    lines: 655
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: xlsx-processor
+    name: "xlsx-processor"
+    name_matches_folder: true
+    lines: 232
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: yolo-mode-operator
+    name: "YOLO Mode Operator"
+    name_matches_folder: false
+    lines: 83
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false
+  - folder: zeitgeist-osint-engine
+    name: "zeitgeist-osint-engine"
+    name_matches_folder: true
+    lines: 112
+    has_scripts: false
+    has_allowed_tools: false
+    is_redirect: false

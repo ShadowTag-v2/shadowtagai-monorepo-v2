@@ -1,0 +1,5729 @@
+#!/usr/bin/env python
+
+import bisect
+import ctypes
+import itertools
+import json
+import os
+import os.path
+import re
+import subprocess
+import tempfile
+from collections import OrderedDict
+from datetime import datetime
+from difflib import SequenceMatcher
+from enum import Enum
+from functools import partial
+from itertools import islice
+from pathlib import PurePath
+
+import vim
+
+from .devicons import (
+    matchaddDevIconsDefault,
+    matchaddDevIconsExact,
+    matchaddDevIconsExtension,
+    webDevIconsGetFileTypeSymbol,
+)
+from .diff import LfDiffer
+from .explorer import *
+from .manager import *
+from .utils import *
+
+
+def ensureWorkingDirectory(func):
+    @wraps(func)
+    def deco(self, *args, **kwargs):
+        try:
+            orig_cwd = lfGetCwd()
+            changed = False
+            if self._project_root != orig_cwd:
+                changed = True
+                lfChdir(self._project_root)
+
+            return func(self, *args, **kwargs)
+        finally:
+            if changed:
+                lfChdir(orig_cwd)
+
+    return deco
+
+
+def lfGetFilePath(source):
+    """
+    source is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+    """
+    return source[3] if source[4] == "" else source[4]
+
+
+def lfGetOrigFilePath(source):
+    """
+    source is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+    """
+    return "" if source[4] == "" else source[3]
+
+
+def lfConfirm(what):
+    try:
+        selection = int(lfEval(f"""confirm("{what}", "&Yes\n&No")"""))
+        if selection == 1:
+            return True
+        else:
+            return False
+    except KeyboardInterrupt:
+        return False
+    except vim.error:  # for neovim
+        return False
+
+
+# *****************************************************
+# GitExplorer
+# *****************************************************
+class GitExplorer(Explorer):
+    def __init__(self):
+        self._executor = []
+        self._show_icon = lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1"
+
+    def getContent(self, *args, **kwargs):
+        commands = lfEval("leaderf#Git#Commands()")
+        return [list(item)[0] for item in commands]
+
+    def formatLine(self, line):
+        pass
+
+    def getStlCategory(self):
+        return "Git"
+
+    def getStlCurDir(self):
+        return escQuote(lfEncode(lfGetCwd()))
+
+    def supportsNameOnly(self):
+        return False
+
+    def cleanup(self):
+        for exe in self._executor:
+            exe.killProcess()
+        self._executor = []
+
+
+class GitDiffExplorer(GitExplorer):
+    def __init__(self):
+        super().__init__()
+        self._source_info = {}
+
+    def supportsNameOnly(self):
+        return True
+
+    def getContent(self, *args, **kwargs):
+        arguments_dict = kwargs.get("arguments", {})
+
+        if "content" in arguments_dict:
+            return arguments_dict["content"]
+
+        executor = AsyncExecutor(True)
+        self._executor.append(executor)
+
+        self._source_info = {}
+
+        cmd = "git diff --no-color --raw --no-abbrev"
+        if "--cached" in arguments_dict:
+            cmd += " --cached"
+        if "extra" in arguments_dict:
+            cmd += " " + " ".join(arguments_dict["extra"])
+        content = executor.execute(cmd, encoding=lfEval("&encoding"), format_line=self.formatLine)
+        return content
+
+    def formatLine(self, line):
+        """
+        :000000 100644 000000000 5b01d33aa A    runtime/syntax/json5.vim
+        :100644 100644 671b269c0 ef52cddf4 M    runtime/syntax/nix.vim
+        :100644 100644 69671c59c 084f8cdb4 M    runtime/syntax/zsh.vim
+        :100644 100644 b90f76fc1 bad07e644 R099 src/version.c   src/version2.c
+        :100644 000000 b5825eb19 000000000 D    src/testdir/dumps
+
+        ':100644 100644 72943a1 dbee026 R050\thello world.txt\thello world2.txt'
+        """
+        tmp = line.split(sep="\t")
+        file_names = (tmp[1], tmp[2] if len(tmp) == 3 else "")
+        blob_status = tmp[0].split()
+        self._source_info[file_names] = (blob_status[2], blob_status[3], blob_status[4], file_names[0], file_names[1])
+        icon = webDevIconsGetFileTypeSymbol(file_names[0]) if self._show_icon else ""
+        return "{:<4} {}{}{}".format(blob_status[4], icon, file_names[0], "" if file_names[1] == "" else "\t=>\t" + file_names[1])
+
+    def getStlCategory(self):
+        return "Git_diff"
+
+    def getSourceInfo(self):
+        return self._source_info
+
+
+class GitLogExplorer(GitExplorer):
+    def __init__(self):
+        super().__init__()
+        self.orig_name = {}
+        self.patches = {}
+
+    def generateContent(self, content):
+        for line1, line2, _ in itertools.zip_longest(content, content, content):
+            commit_id = line1.split(None, 1)[0]
+            self.orig_name[commit_id] = line2
+            yield line1
+
+    def generateContentPatches(self, content):
+        result = []
+        commit = None
+        for line in content:
+            if line.startswith("$"):
+                result.append(line[1:])
+                commit = line.split(None, 1)[0].lstrip("$")
+                self.patches[commit] = []
+            else:
+                self.patches[commit].append(line)
+
+        return result
+
+    def getContent(self, *args, **kwargs):
+        self.orig_name.clear()
+        self.patches = {}
+
+        arguments_dict = kwargs.get("arguments", {})
+
+        executor = AsyncExecutor(True)
+        self._executor.append(executor)
+
+        options = GitLogExplorer.generateOptions(arguments_dict)
+        cmd = f'git log {options} --pretty=format:"%h%d %s"'
+        if "--current-file" in arguments_dict and "current_file" in arguments_dict:
+            cmd += " --name-only --follow -- {}".format(arguments_dict["current_file"])
+        elif "--current-line" in arguments_dict and "current_file" in arguments_dict:
+            cmd = f'git log {options} --pretty=format:"$%h%d %s"'
+            cmd += " -L{},{}:{}".format(arguments_dict["current_line_num"], arguments_dict["current_line_num"], arguments_dict["current_file"])
+            content = executor.execute(cmd, encoding=lfEval("&encoding"))
+            return self.generateContentPatches(content)
+
+        if "extra" in arguments_dict:
+            cmd += " " + " ".join(arguments_dict["extra"])
+
+        content = executor.execute(cmd, encoding=lfEval("&encoding"))
+
+        if "--current-file" in arguments_dict and "current_file" in arguments_dict:
+            return AsyncExecutor.Result(self.generateContent(content))
+
+        return content
+
+    def getStlCategory(self):
+        return "Git_log"
+
+    @staticmethod
+    def generateOptions(arguments_dict):
+        options = ""
+        if "-n" in arguments_dict:
+            options += "-n {} ".format(arguments_dict["-n"][0])
+
+        if "--skip" in arguments_dict:
+            options += "--skip {} ".format(arguments_dict["--skip"][0])
+
+        if "--since" in arguments_dict:
+            options += "--since {} ".format(arguments_dict["--since"][0])
+
+        if "--until" in arguments_dict:
+            options += "--until {} ".format(arguments_dict["--until"][0])
+
+        if "--author" in arguments_dict:
+            options += "--author {} ".format(arguments_dict["--author"][0])
+
+        if "--committer" in arguments_dict:
+            options += "--committer {} ".format(arguments_dict["--committer"][0])
+
+        if "--no-merges" in arguments_dict:
+            options += "--no-merges "
+
+        if "--all" in arguments_dict:
+            options += "--all "
+
+        if "--graph" in arguments_dict:
+            options += "--graph "
+
+        if "--reverse-order" in arguments_dict:
+            options += "--reverse "
+
+        return options
+
+
+class GitCommand:
+    def __init__(self, arguments_dict, source):
+        self._arguments = arguments_dict
+        self._source = source
+        self._cmd = ""
+        self._file_type = ""
+        self._file_type_cmd = ""
+        self._buffer_name = ""
+        self.buildCommandAndBufferName()
+
+    def buildCommandAndBufferName(self):
+        pass
+
+    def getCommand(self):
+        return self._cmd
+
+    def getFileType(self):
+        return self._file_type
+
+    def getFileTypeCommand(self):
+        return self._file_type_cmd
+
+    def getBufferName(self):
+        return self._buffer_name
+
+    def getArguments(self):
+        return self._arguments
+
+    def getSource(self):
+        return self._source
+
+    def getTitle(self):
+        return "Changes:"
+
+
+class GitDiffCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        """
+        source is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        """
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        self._cmd = "git diff --no-color"
+        extra_options = ""
+        if "--cached" in self._arguments:
+            extra_options += " --cached"
+
+        if len(self._source) == 6 and self._source[5] == "Staged Changes":
+            extra_options += " --cached"
+
+        if "extra" in self._arguments:
+            extra_options += " " + " ".join(self._arguments["extra"])
+
+        if self._source is not None:
+            if " -- " not in self._arguments["arg_line"]:
+                file_name = lfGetFilePath(self._source)
+                if " " in file_name:
+                    file_name = file_name.replace(" ", r"\ ")
+                if not extra_options.endswith(file_name):
+                    extra_options += f" -- {file_name}"
+        elif "--current-file" in self._arguments and "current_file" in self._arguments:
+            extra_options += " -- {}".format(self._arguments["current_file"])
+
+        self._cmd += extra_options
+        self._buffer_name = "LeaderF://git diff" + extra_options
+        self._file_type = "diff"
+        if lfEval("has('nvim')") == "1":
+            self._file_type_cmd = "setlocal filetype=diff"
+        else:
+            self._file_type_cmd = "silent! doautocmd filetypedetect BufNewFile *.diff"
+
+
+class GitLogDiffCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        """
+        source is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        """
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        # fuzzy search in navigation panel
+        if not self._arguments["parent"].startswith("0000000"):
+            self._cmd = "git diff --follow --no-color {}..{} -- {}".format(
+                self._arguments["parent"], self._arguments["commit_id"], lfGetFilePath(self._source)
+            )
+        else:
+            self._cmd = "git show --pretty= --no-color {} -- {}".format(self._arguments["commit_id"], lfGetFilePath(self._source))
+        self._buffer_name = "LeaderF://" + self._cmd
+        self._file_type = "diff"
+        if lfEval("has('nvim')") == "1":
+            self._file_type_cmd = "setlocal filetype=diff"
+        else:
+            self._file_type_cmd = "silent! doautocmd filetypedetect BufNewFile *.diff"
+
+
+class GitCatFileCommand(GitCommand):
+    def __init__(self, arguments_dict, source, commit_id):
+        """
+        source is a tuple like (b90f76fc1, R099, src/version.c)
+        """
+        self._commit_id = commit_id
+        super().__init__(arguments_dict, source)
+
+    @staticmethod
+    def buildBufferName(commit_id, source):
+        """
+        source is a tuple like (b90f76fc1, R099, src/version.c)
+        """
+        if source[1].startswith("C"):
+            return "{}:{}:{}:{}".format(commit_id[:8], source[0][:9], "C", source[2])
+
+        return f"{commit_id[:8]}:{source[0][:9]}:{source[2]}"
+
+    def buildCommandAndBufferName(self):
+        self._cmd = f"git cat-file -p {self._source[0]}"
+        if self._source[0].startswith("0000000"):
+            if self._source[1] == "M":
+                if os.name == "nt":
+                    self._cmd = f'type "{os.path.normpath(self._source[2])}"'
+                else:
+                    self._cmd = f"cat {escSpecial(self._source[2])}"
+            else:
+                self._cmd = ""
+        elif self._source[0] == "uuu":  # Untracked files
+            self._cmd = ""
+        elif self._source[0] == "xxx":  # Untracked files
+            if os.name == "nt":
+                self._cmd = f'type "{os.path.normpath(self._source[2])}"'
+            else:
+                self._cmd = f"cat {escSpecial(self._source[2])}"
+
+        self._buffer_name = GitCatFileCommand.buildBufferName(self._commit_id, self._source)
+        self._file_type_cmd = f"silent! doautocmd filetypedetect BufNewFile {self._source[2]}"
+
+
+class GitLogCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        """
+        source is a commit id
+        """
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        if "--directly" in self._arguments:
+            options = GitLogExplorer.generateOptions(self._arguments)
+            self._cmd = f"git log {options}"
+
+            if "extra" in self._arguments:
+                self._cmd += " " + " ".join(self._arguments["extra"])
+
+            if "--current-file" in self._arguments and "current_file" in self._arguments:
+                self._cmd += " --follow -- {}".format(self._arguments["current_file"])
+
+            self._buffer_name = "LeaderF://" + self._cmd
+        elif "--current-line" in self._arguments and "current_file" in self._arguments:
+            self._buffer_name = "LeaderF://" + self._source
+        else:
+            sep = " " if os.name == "nt" else ""
+            if "--find-copies-harder" in self._arguments:
+                find_copies_harder = " -C"
+            else:
+                find_copies_harder = ""
+
+            self._cmd = (
+                f'git show {self._source} -C{find_copies_harder} --pretty=format:"commit %H%nparent %P%n'
+                "Author:     %an <%ae>%nAuthorDate: %ad%nCommitter:  %cn <%ce>%nCommitDate:"
+                f' %cd{sep}%n%n%s%n%n%b%n%x2d%x2d%x2d" --stat=70 --stat-graph-width=10 --no-color'
+                f' && git log -1 -p --pretty=format:"%x20" --no-color {self._source}'
+            )
+
+            if ("--recall" in self._arguments or "--current-file" in self._arguments) and "current_file" in self._arguments:
+                self._cmd = (
+                    'git show {} -C{} --pretty=format:"commit %H%nparent %P%n'
+                    "Author:     %an <%ae>%nAuthorDate: %ad%nCommitter:  %cn <%ce>%nCommitDate:"
+                    ' %cd{}%n%n%s%n%n%b%n%x2d%x2d%x2d" --stat=70 --stat-graph-width=10 --no-color'
+                    ' && git log -1 -p --follow --pretty=format:"%x20" --no-color {} -- {}'
+                ).format(
+                    self._source,
+                    find_copies_harder,
+                    sep,
+                    self._source,
+                    self._arguments["orig_name"].get(self._source, self._arguments["current_file"]),
+                )
+
+            self._buffer_name = "LeaderF://" + self._source
+
+        self._file_type = "git"
+        self._file_type_cmd = "setlocal filetype=git"
+
+
+class GitDiffExplCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        self._cmd = "git diff --raw -C --numstat --shortstat --no-abbrev"
+        extra_options = ""
+        if "--cached" in self._arguments:
+            extra_options += " --cached"
+
+        if "extra" in self._arguments:
+            extra_options += " " + " ".join(self._arguments["extra"])
+
+        self._cmd += extra_options
+
+        self._buffer_name = "LeaderF://navigation/" + self._source
+        self._file_type_cmd = ""
+
+
+class GitStagedCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        self._cmd = "git diff --cached --raw -C --numstat --shortstat --no-abbrev"
+        extra_options = ""
+
+        if "extra" in self._arguments:
+            extra_options += " " + " ".join(self._arguments["extra"])
+
+        self._cmd += extra_options
+
+        self._buffer_name = "LeaderF://navigation/" + self._source
+        self._file_type_cmd = ""
+
+    def getTitle(self):
+        return "Staged Changes:"
+
+
+class GitUnstagedCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        self._cmd = "git diff --raw -C --numstat --shortstat --no-abbrev"
+        extra_options = ""
+
+        if "extra" in self._arguments:
+            extra_options += " " + " ".join(self._arguments["extra"])
+
+        self._cmd += extra_options
+
+        self._buffer_name = "LeaderF://navigation/" + self._source
+        self._file_type_cmd = ""
+
+    def getTitle(self):
+        return "Unstaged Changes:"
+
+
+class GitUntrackedCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        self._cmd = "git ls-files --others --exclude-standard"
+
+        self._buffer_name = "LeaderF://navigation/" + self._source
+        self._file_type_cmd = ""
+
+    def getTitle(self):
+        return "Untracked files:"
+
+
+class GitLogExplCommand(GitCommand):
+    def __init__(self, arguments_dict, source):
+        """
+        source is a commit id
+        """
+        super().__init__(arguments_dict, source)
+
+    def buildCommandAndBufferName(self):
+        if "--find-copies-harder" in self._arguments:
+            find_copies_harder = " -C"
+        else:
+            find_copies_harder = ""
+
+        self._cmd = f'git show -m --raw -C{find_copies_harder} --numstat --shortstat --pretty=format:"# %P" --no-abbrev {self._source}'
+
+        self._buffer_name = "LeaderF://navigation/" + self._source
+        self._file_type_cmd = ""
+
+
+class GitBlameCommand(GitCommand):
+    def __init__(self, arguments_dict, commit_id):
+        super().__init__(arguments_dict, commit_id)
+
+    @staticmethod
+    def buildCommand(arguments_dict, commit_id, file_name, use_contents=False):
+        extra_options = ""
+        if "-c" in arguments_dict:
+            extra_options += " -c"
+
+        if "-w" in arguments_dict:
+            extra_options += " -w"
+
+        if "--date" in arguments_dict:
+            extra_options += " --date={}".format(arguments_dict["--date"][0])
+
+        if use_contents and "--contents" in arguments_dict:
+            extra_options += " --contents {}".format(arguments_dict["--contents"][0])
+
+        return f"git blame -f -n {extra_options} {commit_id} -- {file_name}"
+
+    def buildCommandAndBufferName(self):
+        commit_id = ""
+        if self._source is not None:
+            commit_id = self._source
+
+        file_name = vim.current.buffer.name
+        if " " in file_name:
+            file_name = file_name.replace(" ", r"\ ")
+        file_name = PurePath(lfRelpath(file_name)).as_posix()
+
+        self._cmd = GitBlameCommand.buildCommand(self._arguments, commit_id, file_name, True)
+        self._buffer_name = f"LeaderF://git blame {commit_id} {file_name}"
+        self._file_type = ""
+        self._file_type_cmd = ""
+
+
+class GitShowCommand(GitCommand):
+    def __init__(self, arguments_dict, commit_id, file_name):
+        self._commit_id = commit_id
+        self._file_name = file_name
+        super().__init__(arguments_dict, None)
+
+    def buildCommandAndBufferName(self):
+        self._cmd = f"git log -1 -p --follow {self._commit_id} -- {self._file_name}"
+        self._file_type = "git"
+        self._file_type_cmd = "setlocal filetype=git"
+
+
+class GitCustomizeCommand(GitCommand):
+    def __init__(self, arguments_dict, cmd, buf_name, file_type, file_type_cmd):
+        super().__init__(arguments_dict, None)
+        self._cmd = cmd
+        self._buffer_name = buf_name
+        self._file_type = file_type
+        self._file_type_cmd = file_type_cmd
+
+
+class ParallelExecutor:
+    @staticmethod
+    def run(*cmds, format_line=None, directory=None, silent=False, error=None, env=None):
+        outputs = [[] for _ in range(len(cmds))]
+        stop_thread = threading.Event()
+
+        def readContent(content, output):
+            try:
+                for line in content:
+                    if stop_thread.is_set():
+                        break
+                    output.append(line)
+            except Exception as e:
+                if not silent:
+                    traceback.print_exc()
+                    traceback.print_stack()
+                elif isinstance(error, list):
+                    error.append(str(e))
+
+        executors = [AsyncExecutor(True) for _ in range(len(cmds))]
+        workers = []
+        for i, (exe, cmd) in enumerate(zip(executors, cmds)):
+            if isinstance(format_line, list):
+                format_line_cb = format_line[i]
+            else:
+                format_line_cb = format_line
+            content = exe.execute(cmd, encoding=lfEval("&encoding"), env=env, format_line=format_line_cb, cwd=directory)
+            worker = threading.Thread(target=readContent, args=(content, outputs[i]))
+            worker.daemon = True
+            worker.start()
+            workers.append(worker)
+
+        for w in workers:
+            w.join(5)  # I think 5s is enough for git cat-file
+
+        stop_thread.set()
+
+        for e in executors:
+            e.killProcess()
+
+        return outputs
+
+
+class GitCommandView:
+    def __init__(self, owner, cmd):
+        self._owner = owner
+        self._cmd = cmd
+        self._executor = AsyncExecutor(True)
+        self._buffer = None
+        self._window_id = -1
+        self._bufhidden = "wipe"
+        self._format_line = None
+        self.init()
+        owner.register(self)
+
+    def init(self):
+        self._content = []
+        self._timer_id = None
+        self._reader_thread = None
+        self._offset_in_content = 0
+        self._read_finished = 0
+        self._stop_reader_thread = threading.Event()
+
+    def getBufferName(self):
+        return self._cmd.getBufferName()
+
+    def getBufferNum(self):
+        if self._buffer is None:
+            return -1
+        else:
+            return self._buffer.number
+
+    def getWindowId(self):
+        self._window_id = int(lfEval(f"bufwinid({self._buffer.number})"))
+        # window not exist in current tabpage
+        if self._window_id == -1:
+            ids = lfEval(f"win_findbuf({self._buffer.number})")
+            if len(ids) > 0:
+                self._window_id = int(ids[0])
+
+        return self._window_id
+
+    def setWindowId(self, winid):
+        self._window_id = winid
+
+    def getContent(self):
+        return self._content
+
+    def setContent(self, content):
+        try:
+            self._buffer.options["modifiable"] = True
+            self._buffer[:] = content
+        finally:
+            self._buffer.options["modifiable"] = False
+
+    def getSource(self):
+        return self._cmd.getSource()
+
+    def start(self, sync):
+        # start a timer and thread
+        self._reader_thread = threading.Thread(target=self._readContent, args=(lfEval("&encoding"),))
+        self._reader_thread.daemon = True
+        self._reader_thread.start()
+
+        if not sync:
+            self._timer_id = lfEval("timer_start(100, function('leaderf#Git#WriteBuffer', [%d]), {'repeat': -1})" % id(self))
+        else:
+            while self._read_finished != 2:
+                time.sleep(0.05)
+                self.writeBuffer()
+
+    def setOptions(self, winid, bufhidden):
+        lfCmd(f"call win_execute({winid}, 'setlocal nobuflisted')")
+        lfCmd(f"call win_execute({winid}, 'setlocal buftype=nofile')")
+        lfCmd(f"call win_execute({winid}, 'setlocal bufhidden={bufhidden}')")
+        lfCmd(f"call win_execute({winid}, 'setlocal undolevels=-1')")
+        lfCmd(f"call win_execute({winid}, 'setlocal noswapfile')")
+        lfCmd(f"call win_execute({winid}, 'setlocal nospell')")
+        lfCmd(f"call win_execute({winid}, 'setlocal nomodifiable')")
+        if lfEval("getbufvar(winbufnr(%d), '&ft')" % winid) != self._cmd.getFileType():
+            lfCmd(f"silent! call win_execute({winid}, '{self._cmd.getFileTypeCommand()}')")
+
+    def defineMaps(self, winid):
+        pass
+
+    def enableColor(self, winid):
+        pass
+
+    def create(self, winid, bufhidden="wipe", buf_content=None, format_line=None, sync=False):
+        self._bufhidden = bufhidden
+        self._format_line = format_line
+
+        if self._buffer is not None:
+            self.cleanup()
+            lfCmd(f"noautocmd call win_gotoid({self.getWindowId()})")
+
+        self.init()
+
+        if self._buffer is None:
+            self.defineMaps(winid)
+            self.setOptions(winid, bufhidden)
+            lfCmd("augroup Lf_Git | augroup END")
+            lfCmd(f"call win_execute({winid}, 'autocmd! Lf_Git BufWipeout <buffer> call leaderf#Git#Suicide({id(self)})')")
+            lfCmd(f"call win_execute({winid}, 'autocmd! Lf_Git BufHidden <buffer> call leaderf#Git#Bufhidden({id(self)})')")
+
+            self._buffer = vim.buffers[int(lfEval(f"winbufnr({winid})"))]
+            self._window_id = winid
+
+        self.enableColor(self.getWindowId())
+
+        if buf_content is not None:
+            # cache the content if buf_content is the result of ParallelExecutor.run()
+            self._content = buf_content
+            self._owner.readFinished(self)
+
+            self._read_finished = 2
+
+            self._buffer.options["modifiable"] = True
+            self._buffer[:] = buf_content
+            self._buffer.options["modifiable"] = False
+
+            self._owner.writeFinished(self.getWindowId())
+
+            return
+
+        if self._cmd.getCommand() == "":
+            self._read_finished = 2
+            self._owner.writeFinished(self.getWindowId())
+            return
+
+        self.start(sync)
+
+    def writeBuffer(self):
+        if self._read_finished == 2:
+            return
+
+        if not self._buffer.valid:
+            self.stopTimer()
+            return
+
+        self._buffer.options["modifiable"] = True
+        try:
+            cur_len = len(self._content)
+            if cur_len > self._offset_in_content:
+                if self._offset_in_content == 0:
+                    self._buffer[:] = self._content[:cur_len]
+                else:
+                    self._buffer.append(self._content[self._offset_in_content : cur_len])
+
+                self._offset_in_content = cur_len
+                lfCmd("redraw")
+        finally:
+            self._buffer.options["modifiable"] = False
+
+        if self._read_finished == 1 and self._offset_in_content == len(self._content):
+            self._read_finished = 2
+            self._owner.writeFinished(self.getWindowId())
+            self.stopTimer()
+
+    def _readContent(self, encoding):
+        try:
+            content = self._executor.execute(
+                self._cmd.getCommand(), encoding=encoding, format_line=self._format_line, cwd=self._owner.getProjectRoot()
+            )
+            for line in content:
+                self._content.append(line)
+                if self._stop_reader_thread.is_set():
+                    break
+            else:
+                self._read_finished = 1
+                self._owner.readFinished(self)
+        except Exception:
+            traceback.print_exc()
+            traceback.print_stack()
+            self._read_finished = 1
+
+    def stopThread(self):
+        if self._reader_thread and self._reader_thread.is_alive():
+            self._stop_reader_thread.set()
+            self._reader_thread.join(0.01)
+
+    def stopTimer(self):
+        if self._timer_id is not None:
+            lfCmd(f"call timer_stop({self._timer_id})")
+            self._timer_id = None
+
+    def cleanup(self, wipe=True):
+        self.stopTimer()
+        self.stopThread()
+        # must do this at last
+        self._executor.killProcess()
+
+        if self._bufhidden == "hide" and wipe and self._buffer.valid:
+            lfCmd(f"noautocmd bwipe! {self._buffer.number}")
+
+    def suicide(self):
+        self._owner.deregister(self)
+
+    def bufHidden(self):
+        self._owner.bufHidden(self)
+
+    def valid(self):
+        return self._buffer is not None and self._buffer.valid
+
+
+class GitBlameView(GitCommandView):
+    def __init__(self, owner, cmd):
+        super().__init__(owner, cmd)
+        self._alternate_winid = None
+        self._alternate_buffer_num = None
+        self._alternate_win_options = {}
+        self._color_table = {
+            "0": "#000000",
+            "1": "#800000",
+            "2": "#008000",
+            "3": "#808000",
+            "4": "#000080",
+            "5": "#800080",
+            "6": "#008080",
+            "7": "#c0c0c0",
+            "8": "#808080",
+            "9": "#ff0000",
+            "10": "#00ff00",
+            "11": "#ffff00",
+            "12": "#0000ff",
+            "13": "#ff00ff",
+            "14": "#00ffff",
+            "15": "#ffffff",
+            "16": "#000000",
+            "17": "#00005f",
+            "18": "#000087",
+            "19": "#0000af",
+            "20": "#0000d7",
+            "21": "#0000ff",
+            "22": "#005f00",
+            "23": "#005f5f",
+            "24": "#005f87",
+            "25": "#005faf",
+            "26": "#005fd7",
+            "27": "#005fff",
+            "28": "#008700",
+            "29": "#00875f",
+            "30": "#008787",
+            "31": "#0087af",
+            "32": "#0087d7",
+            "33": "#0087ff",
+            "34": "#00af00",
+            "35": "#00af5f",
+            "36": "#00af87",
+            "37": "#00afaf",
+            "38": "#00afd7",
+            "39": "#00afff",
+            "40": "#00d700",
+            "41": "#00d75f",
+            "42": "#00d787",
+            "43": "#00d7af",
+            "44": "#00d7d7",
+            "45": "#00d7ff",
+            "46": "#00ff00",
+            "47": "#00ff5f",
+            "48": "#00ff87",
+            "49": "#00ffaf",
+            "50": "#00ffd7",
+            "51": "#00ffff",
+            "52": "#5f0000",
+            "53": "#5f005f",
+            "54": "#5f0087",
+            "55": "#5f00af",
+            "56": "#5f00d7",
+            "57": "#5f00ff",
+            "58": "#5f5f00",
+            "59": "#5f5f5f",
+            "60": "#5f5f87",
+            "61": "#5f5faf",
+            "62": "#5f5fd7",
+            "63": "#5f5fff",
+            "64": "#5f8700",
+            "65": "#5f875f",
+            "66": "#5f8787",
+            "67": "#5f87af",
+            "68": "#5f87d7",
+            "69": "#5f87ff",
+            "70": "#5faf00",
+            "71": "#5faf5f",
+            "72": "#5faf87",
+            "73": "#5fafaf",
+            "74": "#5fafd7",
+            "75": "#5fafff",
+            "76": "#5fd700",
+            "77": "#5fd75f",
+            "78": "#5fd787",
+            "79": "#5fd7af",
+            "80": "#5fd7d7",
+            "81": "#5fd7ff",
+            "82": "#5fff00",
+            "83": "#5fff5f",
+            "84": "#5fff87",
+            "85": "#5fffaf",
+            "86": "#5fffd7",
+            "87": "#5fffff",
+            "88": "#870000",
+            "89": "#87005f",
+            "90": "#870087",
+            "91": "#8700af",
+            "92": "#8700d7",
+            "93": "#8700ff",
+            "94": "#875f00",
+            "95": "#875f5f",
+            "96": "#875f87",
+            "97": "#875faf",
+            "98": "#875fd7",
+            "99": "#875fff",
+            "100": "#878700",
+            "101": "#87875f",
+            "102": "#878787",
+            "103": "#8787af",
+            "104": "#8787d7",
+            "105": "#8787ff",
+            "106": "#87af00",
+            "107": "#87af5f",
+            "108": "#87af87",
+            "109": "#87afaf",
+            "110": "#87afd7",
+            "111": "#87afff",
+            "112": "#87d700",
+            "113": "#87d75f",
+            "114": "#87d787",
+            "115": "#87d7af",
+            "116": "#87d7d7",
+            "117": "#87d7ff",
+            "118": "#87ff00",
+            "119": "#87ff5f",
+            "120": "#87ff87",
+            "121": "#87ffaf",
+            "122": "#87ffd7",
+            "123": "#87ffff",
+            "124": "#af0000",
+            "125": "#af005f",
+            "126": "#af0087",
+            "127": "#af00af",
+            "128": "#af00d7",
+            "129": "#af00ff",
+            "130": "#af5f00",
+            "131": "#af5f5f",
+            "132": "#af5f87",
+            "133": "#af5faf",
+            "134": "#af5fd7",
+            "135": "#af5fff",
+            "136": "#af8700",
+            "137": "#af875f",
+            "138": "#af8787",
+            "139": "#af87af",
+            "140": "#af87d7",
+            "141": "#af87ff",
+            "142": "#afaf00",
+            "143": "#afaf5f",
+            "144": "#afaf87",
+            "145": "#afafaf",
+            "146": "#afafd7",
+            "147": "#afafff",
+            "148": "#afd700",
+            "149": "#afd75f",
+            "150": "#afd787",
+            "151": "#afd7af",
+            "152": "#afd7d7",
+            "153": "#afd7ff",
+            "154": "#afff00",
+            "155": "#afff5f",
+            "156": "#afff87",
+            "157": "#afffaf",
+            "158": "#afffd7",
+            "159": "#afffff",
+            "160": "#d70000",
+            "161": "#d7005f",
+            "162": "#d70087",
+            "163": "#d700af",
+            "164": "#d700d7",
+            "165": "#d700ff",
+            "166": "#d75f00",
+            "167": "#d75f5f",
+            "168": "#d75f87",
+            "169": "#d75faf",
+            "170": "#d75fd7",
+            "171": "#d75fff",
+            "172": "#d78700",
+            "173": "#d7875f",
+            "174": "#d78787",
+            "175": "#d787af",
+            "176": "#d787d7",
+            "177": "#d787ff",
+            "178": "#d7af00",
+            "179": "#d7af5f",
+            "180": "#d7af87",
+            "181": "#d7afaf",
+            "182": "#d7afd7",
+            "183": "#d7afff",
+            "184": "#d7d700",
+            "185": "#d7d75f",
+            "186": "#d7d787",
+            "187": "#d7d7af",
+            "188": "#d7d7d7",
+            "189": "#d7d7ff",
+            "190": "#d7ff00",
+            "191": "#d7ff5f",
+            "192": "#d7ff87",
+            "193": "#d7ffaf",
+            "194": "#d7ffd7",
+            "195": "#d7ffff",
+            "196": "#ff0000",
+            "197": "#ff005f",
+            "198": "#ff0087",
+            "199": "#ff00af",
+            "200": "#ff00d7",
+            "201": "#ff00ff",
+            "202": "#ff5f00",
+            "203": "#ff5f5f",
+            "204": "#ff5f87",
+            "205": "#ff5faf",
+            "206": "#ff5fd7",
+            "207": "#ff5fff",
+            "208": "#ff8700",
+            "209": "#ff875f",
+            "210": "#ff8787",
+            "211": "#ff87af",
+            "212": "#ff87d7",
+            "213": "#ff87ff",
+            "214": "#ffaf00",
+            "215": "#ffaf5f",
+            "216": "#ffaf87",
+            "217": "#ffafaf",
+            "218": "#ffafd7",
+            "219": "#ffafff",
+            "220": "#ffd700",
+            "221": "#ffd75f",
+            "222": "#ffd787",
+            "223": "#ffd7af",
+            "224": "#ffd7d7",
+            "225": "#ffd7ff",
+            "226": "#ffff00",
+            "227": "#ffff5f",
+            "228": "#ffff87",
+            "229": "#ffffaf",
+            "230": "#ffffd7",
+            "231": "#ffffff",
+            "232": "#080808",
+            "233": "#121212",
+            "234": "#1c1c1c",
+            "235": "#262626",
+            "236": "#303030",
+            "237": "#3a3a3a",
+            "238": "#444444",
+            "239": "#4e4e4e",
+            "240": "#585858",
+            "241": "#626262",
+            "242": "#6c6c6c",
+            "243": "#767676",
+            "244": "#808080",
+            "245": "#8a8a8a",
+            "246": "#949494",
+            "247": "#9e9e9e",
+            "248": "#a8a8a8",
+            "249": "#b2b2b2",
+            "250": "#bcbcbc",
+            "251": "#c6c6c6",
+            "252": "#d0d0d0",
+            "253": "#dadada",
+            "254": "#e4e4e4",
+            "255": "#eeeeee",
+        }
+
+        self._heat_colors = {
+            "dark": [
+                "160",
+                "196",
+                "202",
+                "208",
+                "214",
+                "220",
+                "226",
+                "190",
+                "154",
+                "118",
+                "46",
+                "47",
+                "48",
+                "49",
+                "50",
+                "51",
+                "45",
+                "39",
+                "33",
+                "27",
+                "21",
+                "244",
+                "242",
+                "240",
+            ],
+            "light": [
+                "160",
+                "196",
+                "202",
+                "208",
+                "214",
+                "178",
+                "142",
+                "106",
+                "70",
+                "34",
+                "35",
+                "36",
+                "37",
+                "38",
+                "39",
+                "33",
+                "32",
+                "27",
+                "26",
+                "21",
+                "232",
+            ],
+        }
+
+        self._date_dict = {}
+        self._heat_seconds = []
+
+        self.blame_stack = []
+        # key is commit id, value is (blame_buffer, alternate_buffer_num)
+        self.blame_dict = {}
+        # key is alternate buffer name, value is (blame_buffer, alternate_buffer_num)
+        self.blame_buffer_dict = {}
+
+    def setOptions(self, winid, bufhidden):
+        super().setOptions(winid, bufhidden)
+        lfCmd(f"call win_execute({winid}, 'setlocal nowrap')")
+        lfCmd(f"call win_execute({winid}, 'setlocal winfixwidth')")
+        lfCmd(f"call win_execute({winid}, 'setlocal foldcolumn=0')")
+        lfCmd(f"call win_execute({winid}, 'setlocal number norelativenumber')")
+        lfCmd(f"call win_execute({winid}, 'setlocal nofoldenable')")
+        lfCmd(f"call win_execute({winid}, 'setlocal signcolumn=no')")
+        lfCmd(f"call win_execute({winid}, 'setlocal cursorline')")
+        lfCmd(f"call win_execute({winid}, 'setlocal scrolloff=0')")
+
+    def saveAlternateWinOptions(self, winid, buffer_num):
+        self._alternate_winid = winid
+        self._alternate_buffer_num = buffer_num
+
+        self._alternate_win_options = {
+            "foldenable": lfEval(f"getwinvar({winid}, '&foldenable')"),
+            "scrollbind": lfEval(f"getwinvar({winid}, '&scrollbind')"),
+        }
+
+    def getAlternateWinid(self):
+        return self._alternate_winid
+
+    def enableColor(self, winid):
+        if (
+            lfEval("hlexists('Lf_hl_blame_255')") == "0"
+            or lfEval("exists('*hlget')") == "0"
+            or lfEval("hlget('Lf_hl_blame_255')[0]").get("cleared", False)
+        ):
+            for cterm_color, gui_color in self._color_table.items():
+                lfCmd(f"hi def Lf_hl_blame_{cterm_color} guifg={gui_color} guibg=NONE gui=NONE ctermfg={cterm_color} ctermbg=NONE cterm=NONE")
+
+            stl = ""
+            for i, cterm_color in enumerate(self._heat_colors[lfEval("&bg")]):
+                lfCmd(
+                    f"hi def Lf_hl_blame_heat_{i} guifg={self._color_table[cterm_color]} guibg=NONE gui=NONE ctermfg={cterm_color} ctermbg=NONE cterm=NONE"
+                )
+                lfCmd(f"call leaderf#colorscheme#popup#link_two('Lf_hl_blame_stl_heat_{i}', 'StatusLine', 'Lf_hl_blame_heat_{i}', 1)")
+                if lfEval("has('nvim')") == "1":
+                    lfCmd(f"hi Lf_hl_blame_stl_heat_{i} gui=nocombine cterm=nocombine")
+                stl = f"%#Lf_hl_blame_stl_heat_{i}#>" + stl
+
+            lfCmd(f"let g:Lf_GitStlHeatLine = '{stl}'")
+
+        if lfEval("hlexists('Lf_hl_gitBlameDate')") == "0":
+            lfCmd("call leaderf#colorscheme#popup#load('{}', '{}')".format("git", lfEval("get(g:, 'Lf_PopupColorscheme', 'default')")))
+
+        lfCmd(r"""call win_execute(%d, 'syn match WarningMsg /\<Not Committed Yet\>/')""" % winid)
+
+    def highlightCommitId(self, commit_id):
+        n = int(commit_id.lstrip("^")[:2], 16)
+        lfCmd(rf"syn match Lf_hl_blame_{n} /^\^\?{commit_id[:2]}\x\+/")
+
+    def suicide(self):
+        super().suicide()
+
+        line_num = vim.current.window.cursor[0]
+        top_line = lfEval("line('w0')")
+        if len(self.blame_stack) > 0:
+            line_num = self.blame_stack[0][3]
+            top_line = self.blame_stack[0][4]
+
+        lfCmd(f"call win_execute({self._alternate_winid}, 'buffer {self._alternate_buffer_num} | norm! {top_line}Gzt{line_num}G0')")
+
+        if self._alternate_winid is not None:
+            for k, v in self._alternate_win_options.items():
+                lfCmd(f"call setwinvar({self._alternate_winid}, '&{k}', {v})")
+
+        for item in self.blame_dict.values():
+            buffer_num = int(item[1])
+            # buftype is not empty
+            if lfEval(f"bufexists({buffer_num})") == "1" and vim.buffers[buffer_num].options["buftype"]:
+                lfCmd(f"bwipe {buffer_num}")
+        self.blame_dict = {}
+        self.blame_stack = []
+        self.blame_buffer_dict = {}
+
+    def _helper(self, date_format):
+        if date_format == "iso":
+            # 6817817e (Yggdroot       2014-02-26 00:37:26 +0800) 1 autoload/leaderf/manager.py
+            pattern = r"\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+-]\d{4}\b"
+            format_str = "%Y-%m-%d %H:%M:%S %z"
+
+            def to_timestamp(date):
+                return int(datetime.strptime(date, format_str).timestamp())
+        elif date_format == "iso-strict":
+            # 6817817e (Yggdroot       2014-02-26T00:37:26+08:00) 1 autoload/leaderf/manager.py
+            pattern = r"\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}\b"
+
+            def to_timestamp(date):
+                return int(datetime.fromisoformat(date).timestamp())
+        elif date_format == "short":
+            # 6817817e (Yggdroot       2014-02-26) 1 autoload/leaderf/manager.py
+            pattern = r"\b\d{4}-\d{2}-\d{2}\b"
+
+            def to_timestamp(date):
+                return int(datetime.fromisoformat(date).timestamp())
+        else:
+            lfPrintError(f"Error. date_format = {date_format}")
+
+        return (pattern, to_timestamp)
+
+    def highlightHeatDate1(self, date_format, blame_list):
+        pattern, to_timestamp = self._helper(date_format)
+        self._date_dict = {}
+        for line in blame_list:
+            commit_id, rest = line.split(None, 1)
+            if commit_id not in self._date_dict:
+                self.highlightCommitId(commit_id)
+                match = re.search(pattern, rest)
+                if match:
+                    date = match.group(0)
+                    timestamp = to_timestamp(date)
+                else:
+                    lfPrintError(f"Error. pattern '{pattern}' can not be found in '{rest}'")
+
+                self._date_dict[commit_id] = (date, timestamp)
+
+        self._highlightHeatDate()
+
+    def highlightHeatDate2(self, normal_blame_list, unix_blame_list):
+        """
+        normal_blame_list:
+        ["6817817e\t(  Yggdroot\t10 years ago          \t1)#!/usr/bin/env python",
+         ...
+        ]
+
+        unix_blame_list:
+        ["6817817e\t(  Yggdroot\t1393346246\t1)#!/usr/bin/env python",
+         ...
+        ]
+        """
+        self._date_dict = {}
+        for i, line in enumerate(normal_blame_list):
+            commit_id, rest = line.split("\t", 1)
+            if commit_id not in self._date_dict:
+                self.highlightCommitId(commit_id)
+                date = rest.split("\t")[1].strip()
+                timestamp = int(unix_blame_list[i].split("\t")[2])
+                self._date_dict[commit_id] = (date, timestamp)
+
+        self._highlightHeatDate()
+
+    def _highlightHeatDate(self):
+        color_num = len(self._heat_colors[lfEval("&bg")])
+        current_time = int(time.time())
+        heat_seconds = sorted((current_time - timestamp for date, timestamp in self._date_dict.values()))
+        heat_seconds_len = len(heat_seconds)
+        if heat_seconds_len > color_num:
+            step, remainder = divmod(heat_seconds_len, color_num)
+            if step > 0:
+                tmp = heat_seconds[step - 1 : heat_seconds_len - remainder : step]
+                if remainder > 0:
+                    tmp[-1] = heat_seconds[-1]
+                heat_seconds = tmp
+
+        self._heat_seconds = heat_seconds
+        self._highlight(current_time, self._date_dict)
+
+    def highlightRestHeatDate1(self, date_format, blame_list):
+        pattern, to_timestamp = self._helper(date_format)
+        date_dict = {}
+        for line in blame_list:
+            commit_id, rest = line.split(None, 1)
+            if commit_id not in self._date_dict:
+                self.highlightCommitId(commit_id)
+                match = re.search(pattern, rest)
+                if match:
+                    date = match.group(0)
+                    timestamp = to_timestamp(date)
+                else:
+                    lfPrintError(f"Error. pattern '{pattern}' can not be found in '{rest}'")
+
+                date_dict[commit_id] = (date, timestamp)
+                self._date_dict[commit_id] = date_dict[commit_id]
+
+        current_time = int(time.time())
+        self._highlight(current_time, date_dict)
+
+    def highlightRestHeatDate2(self, normal_blame_list, unix_blame_list):
+        """
+        normal_blame_list:
+        ["6817817e\t(  Yggdroot\t10 years ago          \t1)#!/usr/bin/env python",
+         ...
+        ]
+
+        unix_blame_list:
+        ["6817817e\t(  Yggdroot\t1393346246\t1)#!/usr/bin/env python",
+         ...
+        ]
+        """
+        date_dict = {}
+        for i, line in enumerate(normal_blame_list):
+            commit_id, rest = line.split("\t", 1)
+            if commit_id not in self._date_dict:
+                self.highlightCommitId(commit_id)
+                date = rest.split("\t")[1].strip()
+                timestamp = int(unix_blame_list[i].split("\t")[2])
+                date_dict[commit_id] = (date, timestamp)
+                self._date_dict[commit_id] = date_dict[commit_id]
+
+        current_time = int(time.time())
+        self._highlight(current_time, date_dict)
+
+    def _highlight(self, current_time, date_dict):
+        date_set = set()
+        for date, timestamp in date_dict.values():
+            if date not in date_set:
+                date_set.add(date)
+                index = Bisect.bisect_left(self._heat_seconds, current_time - timestamp)
+                lfCmd(rf"syn match Lf_hl_blame_heat_{index} /\<{date}\>/")
+
+    def clearHeatSyntax(self):
+        for i in range(len(self._heat_seconds)):
+            lfCmd(f"silent! syn clear Lf_hl_blame_heat_{i}")
+
+
+class LfOrderedDict(OrderedDict):
+    def last_key(self):
+        return next(reversed(self.keys()))
+
+    def last_value(self):
+        return next(reversed(self.values()))
+
+    def last_key_value(self):
+        return next(reversed(self.items()))
+
+    def first_key(self):
+        return next(iter(self.keys()))
+
+    def first_value(self):
+        return next(iter(self.values()))
+
+    def first_key_value(self):
+        return next(iter(self.items()))
+
+
+class FolderStatus(Enum):
+    CLOSED = 0
+    OPEN = 1
+
+
+class TreeNode:
+    def __init__(self, status=FolderStatus.OPEN):
+        self.status = status
+        # key is the directory name, value is a TreeNode
+        self.dirs = LfOrderedDict()
+        # key is the file name,
+        # value is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        self.files = LfOrderedDict()
+
+
+class MetaInfo:
+    def __init__(self, level, is_dir, name, info, path):
+        """
+        info is TreeNode if is_dir is true or source otherwise.
+        """
+        self.level = level
+        self.is_dir = is_dir
+        self.name = name
+        self.info = info
+        self.path = path
+        self.has_num_stat = False
+
+
+class KeyWrapper:
+    def __init__(self, iterable, key):
+        self._list = iterable
+        self._key = key
+
+    def __getitem__(self, i):
+        if self._key is None:
+            return self._list[i]
+
+        return self._key(self._list[i])
+
+    def __len__(self):
+        return len(self._list)
+
+
+class Bisect:
+    @staticmethod
+    def bisect_left(a, x, lo=0, hi=None, *, key=None):
+        if hi is None:
+            hi = len(a)
+
+        pos = bisect.bisect_left(a, x, lo, hi, key=key)
+        return pos
+
+    @staticmethod
+    def bisect_right(a, x, lo=0, hi=None, *, key=None):
+        if hi is None:
+            hi = len(a)
+
+        pos = bisect.bisect_right(a, x, lo, hi, key=key)
+        return pos
+
+
+class TreeView(GitCommandView):
+    def __init__(self, owner, cmd, project_root, target_path, callback, next_tree_view=None, content_buffer=None, cursor_line=None):
+        super().__init__(owner, cmd)
+        self._project_root = project_root
+        self._target_path = target_path
+        # the argument is source, source is a tuple like
+        # (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        self._callback = callback
+        self._next_tree_view = next_tree_view
+        self._content_buffer = content_buffer
+        self._cursor_line = cursor_line
+        # key is the parent hash, value is a TreeNode
+        self._trees = LfOrderedDict()
+        # key is the parent hash, value is a list of MetaInfo
+        self._file_structures = {}
+        # to protect self._file_structures
+        self._lock = threading.Lock()
+        self._file_list = {}
+        self._file_path_list = {}
+        self._cur_parent = None
+        self._short_stat = {}
+        self._num_stat = {}
+        self._first_source = {}
+        self._show_icon = lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1"
+        self._closed_folder_icon = self._owner._closed_folder_icon
+        self._open_folder_icon = self._owner._open_folder_icon
+        self._preopen_num = int(lfEval("get(g:, 'Lf_GitPreopenNum', 100)"))
+        self._add_icon = self._owner._add_icon
+        self._copy_icon = self._owner._copy_icon
+        self._del_icon = self._owner._del_icon
+        self._modification_icon = self._owner._modification_icon
+        self._rename_icon = self._owner._rename_icon
+        self._untrack_icon = self._owner._untrack_icon
+        self._status_icons = {
+            "A": self._add_icon,
+            "C": self._copy_icon,
+            "D": self._del_icon,
+            "M": self._modification_icon,
+            "R": self._rename_icon,
+            "?": self._untrack_icon,
+        }
+        self._match_ids = []
+        self._match_id_winid = -1
+        self._init = False
+
+    def startLine(self):
+        return self._owner.startLine(self)
+
+    def defineMaps(self, winid):
+        if isinstance(self._owner._owner._owner, GitStatusExplManager):
+            status = 1
+        else:
+            status = 0
+        lfCmd(f"call win_execute({winid}, 'call leaderf#Git#TreeViewMaps({id(self)}, {status})')")
+
+    def getCurrentParent(self):
+        return self._cur_parent
+
+    def getFileList(self):
+        return self._file_list.get(self._cur_parent, [])
+
+    @staticmethod
+    def generateSource(line):
+        """
+        :000000 100644 000000000 5b01d33aa A    runtime/syntax/json5.vim
+        :100644 100644 671b269c0 ef52cddf4 M    runtime/syntax/nix.vim
+        :100644 100644 69671c59c 084f8cdb4 M    runtime/syntax/zsh.vim
+        :100644 100644 b90f76fc1 bad07e644 R099 src/version.c   src/version2.c
+        :100644 000000 b5825eb19 000000000 D    src/testdir/dumps
+
+        ':100644 100644 72943a1 dbee026 R050\thello world.txt\thello world2.txt'
+
+        return a tuple like (100644, (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c))
+                            (100644, (69671c59c, 084f8cdb4, M,    runtime/syntax/zsh.vim, ""))
+        """
+        if not line.startswith(":"):  # Untracked files
+            return ("100644", ("uuu", "xxx", "?", line, ""))
+
+        tmp = line.split(sep="\t")
+        file_names = (tmp[1], tmp[2] if len(tmp) == 3 else "")
+        blob_status = tmp[0].split()
+        return (blob_status[1], (blob_status[2], blob_status[3], blob_status[4], file_names[0], file_names[1]))
+
+    def buildFileStructure(self, parent, level, name, tree_node, path):
+        if len(tree_node.dirs) == 1 and len(tree_node.files) == 0:
+            if tree_node.status == FolderStatus.CLOSED:
+                self._file_structures[parent].append(MetaInfo(level, True, name, tree_node, path))
+            else:
+                dir_name, node = tree_node.dirs.last_key_value()
+                self.buildFileStructure(parent, level, f"{name}/{dir_name}", node, f"{path}{dir_name}/")
+        else:
+            self._file_structures[parent].append(MetaInfo(level, True, name, tree_node, path))
+
+            if tree_node.status == FolderStatus.OPEN:
+                for dir_name, node in tree_node.dirs.items():
+                    self.buildFileStructure(parent, level + 1, dir_name, node, f"{path}{dir_name}/")
+
+                self.appendFiles(parent, level + 1, tree_node)
+
+    def appendRemainingFiles(self, parent, tree_node):
+        if len(tree_node.dirs) == 0:
+            return
+
+        dir_name, node = tree_node.dirs.last_key_value()
+        if len(node.dirs) > 1:
+            if node.status == FolderStatus.OPEN:
+                child_dir_name, child_node = node.dirs.last_key_value()
+                self.buildFileStructure(parent, 1, child_dir_name, child_node, f"{dir_name}/{child_dir_name}/")
+
+                self.appendFiles(parent, 1, node)
+        else:
+            self.buildFileStructure(parent, 0, dir_name, node, dir_name + "/")
+
+    def appendFiles(self, parent, level, tree_node):
+        for k, v in tree_node.files.items():
+            self._file_structures[parent].append(MetaInfo(level, False, k, v, lfGetFilePath(v)))
+
+    def getLeftMostFile(self, tree_node):
+        for node in tree_node.dirs.values():
+            result = self.getLeftMostFile(node)
+            if result is not None:
+                return result
+
+        for i in tree_node.files.values():
+            return i
+
+        return None
+
+    def buildTree(self, line):
+        """
+        command output is something as follows:
+
+        # 9d0ccb54c743424109751a82a742984699e365fe 63aa0c07bcd16ddac52d5275b9513712b780bc25
+        :100644 100644 0cbabf4 d641678 M        src/a.txt
+        2       0       src/a.txt
+         1 file changed, 2 insertions(+)
+
+        # 9d0ccb54c743424109751a82a742984699e365fe 63aa0c07bcd16ddac52d5275b9513712b780bc25
+        :100644 100644 acc5824 d641678 M        src/a.txt
+        3       0       src/a.txt
+         1 file changed, 3 insertions(+)
+        """
+        if line.startswith("#"):
+            size = len(self._trees)
+            parents = line.split()
+            if len(parents) == 1:  # first commit
+                parent = "0000000"
+            else:
+                parent = parents[size + 1]
+            if self._cur_parent is None:
+                self._cur_parent = parent
+            self._trees[parent] = TreeNode()
+            self._file_structures[parent] = []
+            self._file_list[parent] = []
+            self._file_path_list[parent] = []
+        elif line.startswith(" "):
+            parent, tree_node = self._trees.last_key_value()
+            self._short_stat[parent] = line
+            self.appendRemainingFiles(parent, tree_node)
+            self.appendFiles(parent, 0, tree_node)
+        elif line == "":
+            pass
+        elif line.startswith(":") or not re.match(r"^(\d+|-)\t(\d+|-)\t(.+)$", line):
+            if self._cur_parent is None:
+                parent = "0000000"
+                self._cur_parent = parent
+                self._trees[parent] = TreeNode()
+                self._file_structures[parent] = []
+                self._file_list[parent] = []
+                self._file_path_list[parent] = []
+
+            parent, tree_node = self._trees.last_key_value()
+            root_node = tree_node
+            mode, source = TreeView.generateSource(line)
+            if source[2] == "U":
+                return
+            file_path = lfGetFilePath(source)
+            icon = webDevIconsGetFileTypeSymbol(file_path) if self._show_icon else ""
+            self._file_list[parent].append("{:<4} {}{}{}".format(source[2], icon, source[3], "" if source[4] == "" else "\t=>\t" + source[4]))
+            self._file_path_list[parent].append(source[3])
+            if mode == "160000":  # gitlink
+                directories = file_path.split("/")
+            else:
+                *directories, file = file_path.split("/")
+            with self._lock:
+                for i, d in enumerate(directories, 0):
+                    if i == 0:
+                        level0_dir_name = d
+
+                    if d not in tree_node.dirs:
+                        # not first directory
+                        if len(tree_node.dirs) > 0:
+                            if i == 1:
+                                if len(tree_node.dirs) == 1:
+                                    self._file_structures[parent].append(MetaInfo(0, True, level0_dir_name, tree_node, level0_dir_name + "/"))
+
+                                if tree_node.status == FolderStatus.OPEN:
+                                    dir_name, node = tree_node.dirs.last_key_value()
+                                    self.buildFileStructure(parent, 1, dir_name, node, f"{level0_dir_name}/{dir_name}/")
+                            elif i == 0:
+                                self.appendRemainingFiles(parent, tree_node)
+
+                        if len(self._file_structures[parent]) >= self._preopen_num:
+                            status = FolderStatus.CLOSED
+                        else:
+                            status = FolderStatus.OPEN
+                        tree_node.dirs[d] = TreeNode(status)
+
+                    tree_node = tree_node.dirs[d]
+
+                if self._target_path == file_path:
+                    node = root_node
+                    node.status = FolderStatus.OPEN
+                    for d in directories:
+                        node = node.dirs[d]
+                        node.status = FolderStatus.OPEN
+
+            if mode != "160000":
+                tree_node.files[file] = source
+        else:
+            parent = self._trees.last_key()
+            if parent not in self._num_stat:
+                self._num_stat[parent] = {}
+
+            #'3\t1\tarch/{i386 => x86}/Makefile'
+            added, deleted, pathname = line.split("\t")
+            if "=>" in pathname:
+                if "{" in pathname:
+                    pathname = re.sub(r"{.*?=> (.*?)}", r"\1", pathname)
+                else:
+                    pathname = pathname.split(" => ")[1]
+            if added == "-" and deleted == "-":
+                self._num_stat[parent][pathname] = "(Bin)"
+            else:
+                self._num_stat[parent][pathname] = f"+{added:3} -{deleted}"
+
+    def metaInfoGenerator(self, meta_info, recursive, level):
+        meta_info.info.status = FolderStatus.OPEN
+
+        tree_node = meta_info.info
+        if len(tree_node.dirs) == 1 and len(tree_node.files) == 0 and level != -1:
+            node = tree_node
+            while len(node.dirs) == 1 and len(node.files) == 0:
+                dir_name, node = node.dirs.last_key_value()
+                meta_info.name = f"{meta_info.name}/{dir_name}"
+                meta_info.path = f"{meta_info.path}{dir_name}/"
+                meta_info.info = node
+                if level == 0:
+                    node.status = FolderStatus.OPEN
+
+            if recursive or node.status == FolderStatus.OPEN:
+                yield from self.metaInfoGenerator(meta_info, recursive, level + 1)
+
+            return
+
+        for dir_name, node in tree_node.dirs.items():
+            cur_path = f"{meta_info.path}{dir_name}/"
+            info = MetaInfo(meta_info.level + 1, True, dir_name, node, cur_path)
+            yield info
+            if recursive or node.status == FolderStatus.OPEN:
+                yield from self.metaInfoGenerator(info, recursive, level + 1)
+
+        for k, v in tree_node.files.items():
+            yield MetaInfo(meta_info.level + 1, False, k, v, lfGetFilePath(v))
+
+    def expandOrCollapseFolder(self, recursive=False):
+        with self._lock:
+            if len(self._file_structures) == 0:
+                return None
+
+            line_num = int(lfEval(f"getcurpos({self.getWindowId()})[1]"))
+            index = line_num - self.startLine()
+            # the root
+            if index == -1 and recursive:
+                self.expandRoot(line_num)
+                return None
+
+            structure = self._file_structures[self._cur_parent]
+            if index < 0 or index >= len(structure):
+                return None
+
+            meta_info = structure[index]
+            if meta_info.is_dir:
+                if meta_info.info.status == FolderStatus.CLOSED:
+                    self.expandFolder(line_num, index, meta_info, recursive)
+                elif recursive:
+                    self.collapseFolder(line_num, index, meta_info, recursive)
+                    self.expandFolder(line_num, index, meta_info, recursive)
+                else:
+                    self.collapseFolder(line_num, index, meta_info, recursive)
+                return None
+            else:
+                return meta_info.info
+
+    def collapseChildren(self):
+        with self._lock:
+            line_num = vim.current.window.cursor[0]
+            index = line_num - self.startLine()
+            structure = self._file_structures[self._cur_parent]
+            if index < -1 or index >= len(structure):
+                return
+
+            # the root
+            if index == -1:
+                level = -1
+            else:
+                meta_info = structure[index]
+                if not meta_info.is_dir:
+                    return
+
+                level = meta_info.level
+
+            index += 1
+            line_num += 1
+            while index < len(structure) and structure[index].level > level and structure[index].is_dir:
+                if structure[index].info.status == FolderStatus.OPEN:
+                    self.collapseFolder(line_num, index, structure[index], False)
+                index += 1
+                line_num += 1
+
+    def expandRoot(self, line_num):
+        meta_info = MetaInfo(-1, True, "", self._trees[self._cur_parent], "")
+        orig_len = len(self._file_structures[self._cur_parent])
+        self._file_structures[self._cur_parent] = list(self.metaInfoGenerator(meta_info, True, -1))
+        self._buffer.options["modifiable"] = True
+        structure = self._file_structures[self._cur_parent]
+        try:
+            increment = len(structure)
+            self._buffer[line_num : line_num + orig_len] = [self.buildLine(info) for info in structure]
+            self._offset_in_content = increment
+        finally:
+            self._buffer.options["modifiable"] = False
+
+        return increment
+
+    def expandFolder(self, line_num, index, meta_info, recursive):
+        structure = self._file_structures[self._cur_parent]
+        size = len(structure)
+        structure[index + 1 : index + 1] = self.metaInfoGenerator(meta_info, recursive, 0)
+        self._buffer.options["modifiable"] = True
+        try:
+            increment = len(structure) - size
+            if index >= 0:
+                self._buffer[line_num - 1] = self.buildLine(structure[index])
+            self._buffer.append([self.buildLine(info) for info in structure[index + 1 : index + 1 + increment]], line_num)
+            self._offset_in_content += increment
+        finally:
+            self._buffer.options["modifiable"] = False
+
+        return increment
+
+    def collapseFolder(self, line_num, index, meta_info, recursive):
+        meta_info.info.status = FolderStatus.CLOSED
+        # # Should all the status be set as CLOSED ?
+        # # No.
+        # if "/" in meta_info.name:
+        #     prefix = meta_info.path[:len(meta_info.path) - len(meta_info.name) - 2]
+        #     tree_node = self._trees[self._cur_parent]
+        #     for d in prefix.split("/"):
+        #         tree_node = tree_node.dirs[d]
+
+        #     for d in meta_info.name.split("/"):
+        #         tree_node = tree_node.dirs[d]
+        #         tree_node.status = FolderStatus.CLOSED
+
+        structure = self._file_structures[self._cur_parent]
+        cur_node = meta_info.info
+        children_num = len(cur_node.dirs) + len(cur_node.files)
+        if index + children_num + 1 == len(structure) or not structure[index + children_num + 1].path.startswith(meta_info.path):
+            decrement = children_num
+        else:
+            pos = Bisect.bisect_right(structure, False, lo=index + children_num + 1, key=lambda info: not info.path.startswith(meta_info.path))
+            decrement = pos - 1 - index
+
+        del structure[index + 1 : index + 1 + decrement]
+        self._buffer.options["modifiable"] = True
+        try:
+            self._buffer[line_num - 1] = self.buildLine(structure[index])
+            del self._buffer[line_num : line_num + decrement]
+            self._offset_in_content -= decrement
+        finally:
+            self._buffer.options["modifiable"] = False
+
+    def inFileStructure(self, path):
+        *directories, file = path.split("/")
+        tree_node = self._trees[self._cur_parent]
+        for d in directories:
+            if d not in tree_node.dirs:
+                return False
+            tree_node = tree_node.dirs[d]
+
+        return file in tree_node.files
+
+    def locateFile(self, path):
+        with self._lock:
+            self._locateFile(PurePath(lfRelpath(path)).as_posix())
+
+    @staticmethod
+    def getDirName(path):
+        if path.endswith("/"):
+            return path
+        else:
+            path = os.path.dirname(path)
+            if path != "":
+                path += "/"
+            return path
+
+    def _locateFile(self, path):
+        def getKey(info):
+            if info.path == path:
+                return 0
+            else:
+                info_path_dir = TreeView.getDirName(info.path)
+                path_dir = TreeView.getDirName(path)
+                if (info.path > path and not (info_path_dir.startswith(path_dir) and info_path_dir != path_dir)) or (
+                    info.path < path and not info.is_dir and (path_dir.startswith(info_path_dir) and info_path_dir != path_dir)
+                ):
+                    return 1
+                else:
+                    return -1
+
+        structure = self._file_structures[self._cur_parent]
+        index = Bisect.bisect_left(structure, 0, key=getKey)
+        if index < len(structure) and structure[index].path == path:
+            lfCmd(f"call win_execute({self.getWindowId()}, 'norm! {index + self.startLine()}G0zz')")
+        else:
+            if not self.inFileStructure(path):
+                lfPrintError("File can't be found!")
+                return
+
+            meta_info = structure[index - 1]
+            prefix_len = len(meta_info.path)
+            tree_node = meta_info.info
+            *directories, file = path[prefix_len:].split("/")
+            node = tree_node
+            node.status = FolderStatus.OPEN
+            for d in directories:
+                node = node.dirs[d]
+                node.status = FolderStatus.OPEN
+
+            line_num = index + self.startLine() - 1
+            increment = self.expandFolder(line_num, index - 1, meta_info, False)
+
+            index = Bisect.bisect_left(structure, 0, index, index + increment, key=getKey)
+            if index < len(structure) and structure[index].path == path:
+                lfCmd(f"call win_execute({self.getWindowId()}, 'norm! {index + self.startLine()}G0zz')")
+            else:
+                lfPrintError("BUG: File can't be found!")
+
+    def buildLine(self, meta_info):
+        if meta_info.is_dir:
+            if meta_info.info.status == FolderStatus.CLOSED:
+                icon = self._closed_folder_icon
+            else:
+                icon = self._open_folder_icon
+            return "{}{} {}/".format("  " * meta_info.level, icon, meta_info.name)
+        else:
+            num_stat = self._num_stat.get(self._cur_parent, {}).get(meta_info.path, "")
+            if num_stat != "":
+                meta_info.has_num_stat = True
+
+            icon = self._status_icons.get(meta_info.info[2][0], self._modification_icon)
+
+            orig_name = ""
+            if meta_info.info[2][0] in ("R", "C"):
+                orig_name = "{} => ".format(PurePath(lfRelpath(meta_info.info[3], os.path.dirname(meta_info.info[4]))).as_posix())
+
+            return "{}{} {}{}\t{}".format("  " * meta_info.level, icon, orig_name, meta_info.name, num_stat)
+
+    def setOptions(self, winid, bufhidden):
+        super().setOptions(winid, bufhidden)
+        if lfEval("has('nvim')") == "1":
+            lfCmd("call nvim_win_set_option(%d, 'number', v:false)" % winid)
+        else:
+            lfCmd(f"call win_execute({winid}, 'setlocal nonumber')")
+        lfCmd(f"call win_execute({winid}, 'noautocmd setlocal sw=2 tabstop=4')")
+        lfCmd(f"call win_execute({winid}, 'setlocal signcolumn=no')")
+        lfCmd(f"call win_execute({winid}, 'setlocal foldmethod=indent')")
+        lfCmd(f"call win_execute({winid}, 'setlocal foldcolumn=1')")
+        lfCmd(f"call win_execute({winid}, 'setlocal foldlevel=100')")
+        lfCmd(f"call win_execute({winid}, 'setlocal conceallevel=0')")
+        lfCmd(f"call win_execute({winid}, 'setlocal winfixwidth')")
+        lfCmd(f"call win_execute({winid}, 'setlocal winfixheight')")
+        try:
+            lfCmd(rf"call win_execute({winid}, 'setlocal list lcs=leadmultispace:¦\ ,tab:\ \ ')")
+        except vim.error:
+            lfCmd(f"call win_execute({winid}, 'setlocal nolist')")
+        lfCmd("augroup Lf_Git_Colorscheme | augroup END")
+        lfCmd(
+            "autocmd Lf_Git_Colorscheme ColorScheme * call leaderf#colorscheme#popup#load('Git', '{}')".format(
+                lfEval("get(g:, 'Lf_PopupColorscheme', 'default')")
+            )
+        )
+
+    def initBuffer(self):
+        if self._init:
+            return
+
+        self._init = True
+
+        if self._content_buffer is not None:
+            self._content_buffer.append("")
+            title = self._cmd.getTitle()
+            if title is not None:
+                self._content_buffer.append(title)
+
+            self._content_buffer.append(shrinkUser(self._project_root))
+        else:
+            self._buffer.append("")
+            title = self._cmd.getTitle()
+            if title is not None:
+                self._buffer.append(title)
+
+            self._buffer.append(shrinkUser(self._project_root))
+
+    def getCommand(self):
+        return self._cmd
+
+    def getTitle(self):
+        return self._cmd.getTitle()
+
+    def getTitleHeight(self):
+        if self._cmd.getTitle() is None:
+            return 0
+        else:
+            return 1
+
+    def getHeight(self):
+        if len(self._file_structures) == 0:
+            return 0
+
+        return len(self._file_structures[self._cur_parent])
+
+    def refreshNumStat(self):
+        self._buffer.options["modifiable"] = True
+        try:
+            init_line = self.startLine() - 1
+            structure = self._file_structures[self._cur_parent]
+            for i, info in enumerate(structure, init_line):
+                if info.has_num_stat:
+                    return
+                if not info.is_dir:
+                    if self._content_buffer is not None:
+                        self._content_buffer[i] = self.buildLine(info)
+                    else:
+                        self._buffer[i] = self.buildLine(info)
+        finally:
+            self._buffer.options["modifiable"] = False
+
+    def writeBuffer(self):
+        if self._cur_parent is None:
+            if self._read_finished == 1:
+                self.stopTimer()
+                self._read_finished = 2
+                if self._next_tree_view is not None:
+                    self._next_tree_view()
+            return
+
+        if self._read_finished == 2:
+            return
+
+        if not self._buffer.valid:
+            self.stopTimer()
+            return
+
+        with self._lock:
+            self._buffer.options["modifiable"] = True
+            try:
+                structure = self._file_structures[self._cur_parent]
+                cur_len = len(structure)
+                if cur_len > 0:
+                    self.initBuffer()
+
+                if cur_len > self._offset_in_content:
+                    init_line = self.startLine() - 1
+                    cursor_line = init_line
+
+                    source = None
+                    for info in structure[self._offset_in_content : cur_len]:
+                        if self._content_buffer is not None:
+                            self._content_buffer.append(self.buildLine(info))
+                        else:
+                            self._buffer.append(self.buildLine(info))
+                        if cursor_line == init_line and not info.is_dir:
+                            if self._target_path is None or info.path == self._target_path:
+                                if self._content_buffer is not None:
+                                    cursor_line = len(self._content_buffer)
+                                    if self._cursor_line is not None:
+                                        self._cursor_line[0] = cursor_line
+                                else:
+                                    cursor_line = len(self._buffer)
+                                source = info.info
+
+                    if source is not None and self._callback(source, tree_view_id=id(self), title=self.getTitle()):
+                        if lfEval("has('nvim')") == "1":
+                            lfCmd(f"call nvim_win_set_option({self.getWindowId()}, 'cursorline', v:true)")
+                        else:
+                            lfCmd(f"call win_execute({self.getWindowId()}, 'setlocal cursorline')")
+                        lfCmd(f"call win_execute({self.getWindowId()}, 'norm! {cursor_line}G0zz')")
+
+                    if self._target_path is None:
+                        lfCmd(f"noautocmd call win_gotoid({self.getWindowId()})")
+
+                    self._offset_in_content = cur_len
+                    lfCmd("redraw")
+            finally:
+                self._buffer.options["modifiable"] = False
+
+        if self._read_finished == 1 and self._offset_in_content == len(structure):
+            self.refreshNumStat()
+            self._setChangedFilesNum()
+            self._read_finished = 2
+            self._owner.writeFinished(self.getWindowId())
+            self.stopTimer()
+            if self._next_tree_view is not None:
+                self._next_tree_view()
+
+    def _setChangedFilesNum(self):
+        num = len(self.getFileList())
+        self._buffer.options["modifiable"] = True
+        try:
+            if self._content_buffer is not None:
+                title = self._content_buffer[self.startLine() - 3]
+                self._content_buffer[self.startLine() - 3] = title.replace(":", f" ({num}):")
+            else:
+                title = self._buffer[self.startLine() - 3]
+                self._buffer[self.startLine() - 3] = title.replace(":", f" ({num}):")
+        finally:
+            self._buffer.options["modifiable"] = False
+
+    def getFilePath(self):
+        """
+        return (path, meta_info)
+        """
+        line_num = vim.current.window.cursor[0]
+        index = line_num - self.startLine()
+        structure = self._file_structures[self._cur_parent]
+        if index < -1 or index >= len(structure):
+            return (None, None)
+
+        # the root
+        if index == -1:
+            return ("./", None)
+        else:
+            return (structure[index].path, structure[index])
+
+    def getFileInfo(self, meta_info):
+        """
+        return a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        """
+        if meta_info is None:
+            return None
+        elif meta_info.is_dir:
+            file_info = self.getLeftMostFile(meta_info.info)
+            return file_info
+        else:
+            return meta_info.info
+
+    def getFilePathPair(self):
+        """
+        return (path, next_path)
+        """
+        line_num = vim.current.window.cursor[0]
+        index = line_num - self.startLine()
+        structure = self._file_structures[self._cur_parent]
+        if index < -1 or index >= len(structure):
+            return (None, None)
+
+        # the root
+        if index == -1:
+            return ("./", None)
+
+        file_path_list = self._file_path_list[self._cur_parent]
+        if len(file_path_list) == 1:
+            return (structure[index].path, None)
+        elif index == len(structure) - 1:
+            next_path = file_path_list[-2]
+            return (structure[index].path, next_path)
+        else:
+            file_info = self.getFileInfo(structure[index + 1])
+            next_path = None if file_info is None else file_info[3]
+            return (structure[index].path, next_path)
+
+    def _readContent(self, encoding):
+        try:
+            content = self._executor.execute(self._cmd.getCommand(), encoding=encoding, cwd=self._project_root)
+            count = 0
+            for line in content:
+                count += 1
+                if self._stop_reader_thread.is_set():
+                    break
+                self.buildTree(line)
+            else:
+                if isinstance(self._cmd, GitUntrackedCommand) and count > 0:
+                    self.buildTree(" 1 file")
+
+                self._read_finished = 1
+                self._owner.readFinished(self)
+        except Exception:
+            traceback.print_exc()
+            traceback.print_stack()
+            self._read_finished = 1
+
+    def cleanup(self, wipe=True):
+        super().cleanup(wipe)
+        for i in self._match_ids:
+            lfCmd(f"silent! call matchdelete({i}, {self._match_id_winid})")
+        self._match_ids = []
+
+
+class Panel:
+    def __init__(self):
+        self._project_root = None
+
+    def getProjectRoot(self):
+        return self._project_root
+
+    def register(self, view):
+        pass
+
+    def deregister(self, view):
+        pass
+
+    def bufHidden(self, view):
+        pass
+
+    def cleanup(self):
+        pass
+
+    def writeBuffer(self):
+        pass
+
+    def readFinished(self, view):
+        pass
+
+    def writeFinished(self, winid):
+        pass
+
+
+class ResultPanel(Panel):
+    def __init__(self):
+        super().__init__()
+        self._views = {}
+        self._sources = set()
+
+    def register(self, view):
+        self._views[view.getBufferName()] = view
+        self._sources.add(view.getSource())
+
+    def deregister(self, view):
+        name = view.getBufferName()
+        if name in self._views:
+            self._sources.discard(self._views[name].getSource())
+            self._views[name].cleanup()
+            del self._views[name]
+
+    def getSources(self):
+        return self._sources
+
+    def _createWindow(self, win_pos, buffer_name):
+        if win_pos == "tab":
+            lfCmd(f"silent! keepa keepj hide edit {buffer_name}")
+        elif win_pos == "top":
+            lfCmd(f"silent! noa keepa keepj abo sp {buffer_name}")
+        elif win_pos == "bottom":
+            lfCmd(f"silent! noa keepa keepj bel sp {buffer_name}")
+        elif win_pos == "left":
+            lfCmd(f"silent! noa keepa keepj abo vsp {buffer_name}")
+        elif win_pos == "right":
+            lfCmd(f"silent! noa keepa keepj bel vsp {buffer_name}")
+        else:
+            lfCmd(f"silent! keepa keepj hide edit {buffer_name}")
+
+        return int(lfEval("win_getid()"))
+
+    def create(self, cmd, content=None):
+        buffer_name = cmd.getBufferName()
+        if buffer_name in self._views and self._views[buffer_name].valid():
+            self._views[buffer_name].create(-1, buf_content=content)
+        else:
+            arguments = cmd.getArguments()
+            if arguments.get("mode") == "t":
+                win_pos = "tab"
+            else:
+                win_pos = arguments.get("--position", ["top"])[0]
+            winid = self._createWindow(win_pos, buffer_name)
+            GitCommandView(self, cmd).create(winid, buf_content=content)
+            if cmd.getFileType() in ("diff", "git"):
+                key_map = lfEval("g:Lf_GitKeyMap")
+                lfCmd(
+                    "call win_execute({}, 'nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#PreviousChange(1)<CR>')".format(
+                        winid, key_map["previous_change"]
+                    )
+                )
+                lfCmd(
+                    "call win_execute({}, 'nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#NextChange(1)<CR>')".format(
+                        winid, key_map["next_change"]
+                    )
+                )
+                lfCmd(
+                    "call win_execute({}, 'nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#EditFile(1)<CR>')".format(winid, key_map["edit_file"])
+                )
+
+    def writeBuffer(self):
+        for v in self._views.values():
+            v.writeBuffer()
+
+
+class PreviewPanel(Panel):
+    def __init__(self):
+        super().__init__()
+        self._view = None
+        self._buffer_contents = {}
+        self._preview_winid = 0
+
+    def register(self, view):
+        if self._view is not None:
+            self._view.cleanup()
+        self._view = view
+
+    def deregister(self, view):
+        if self._view is view:
+            self._view.cleanup()
+            self._view = None
+
+    def create(self, cmd, config, buf_content=None, project_root=None):
+        self._project_root = project_root
+        if lfEval("has('nvim')") == "1":
+            lfCmd("noautocmd let scratch_buffer = nvim_create_buf(0, 1)")
+            self._preview_winid = int(lfEval(f"nvim_open_win(scratch_buffer, 0, {json.dumps(config)})"))
+        else:
+            lfCmd(f"noautocmd silent! let winid = popup_create([], {json.dumps(config)})")
+            self._preview_winid = int(lfEval("winid"))
+
+        GitCommandView(self, cmd).create(self._preview_winid, buf_content=buf_content)
+
+    def createView(self, cmd):
+        if self._preview_winid > 0:
+            GitCommandView(self, cmd).create(self._preview_winid)
+
+    def writeBuffer(self):
+        if self._view is not None:
+            self._view.writeBuffer()
+
+    def getPreviewWinId(self):
+        return self._preview_winid
+
+    def cleanup(self):
+        if self._view is not None:
+            # may never run here
+            self._view.cleanup()
+        self._view = None
+        self._buffer_contents = {}
+        self._preview_winid = 0
+
+    def readFinished(self, view):
+        self._buffer_contents[view.getSource()] = view.getContent()
+
+    def getContent(self, source):
+        return self._buffer_contents.get(source)
+
+    def setContent(self, content):
+        if self._view:
+            self._view.setContent(content)
+
+    def getFileType(self):
+        return lfEval("getbufvar(winbufnr(%d), '&ft')" % self._preview_winid)
+
+    def setFileType(self, filetype):
+        lfCmd(f"silent! call win_execute({self._preview_winid}, 'setlocal ft={filetype}')")
+
+    def getViewContent(self):
+        if self._view:
+            return self._view.getContent()
+
+        return []
+
+
+class DiffViewPanel(Panel):
+    def __init__(self, bufhidden_callback=None, commit_id=""):
+        super().__init__()
+        self._commit_id = commit_id
+        self._views = {}
+        self._hidden_views = {}
+        # key is current tabpage
+        self._buffer_names = {}
+        self._bufhidden_cb = bufhidden_callback
+
+    def setCommitId(self, commit_id):
+        self._commit_id = commit_id
+
+    def register(self, view):
+        self._views[view.getBufferName()] = view
+
+    def deregister(self, view):
+        # :bw
+        name = view.getBufferName()
+        if name in self._views:
+            self._views[name].cleanup(wipe=False)
+            del self._views[name]
+
+        if name in self._hidden_views:
+            self._hidden_views[name].cleanup(wipe=False)
+            del self._hidden_views[name]
+
+    def bufHidden(self, view):
+        name = view.getBufferName()
+        if name in self._views:
+            del self._views[name]
+        self._hidden_views[name] = view
+        lfCmd(f"call win_execute({view.getWindowId()}, 'diffoff')")
+
+        if self._bufhidden_cb is not None:
+            self._bufhidden_cb()
+
+    def bufShown(self, buffer_name, winid):
+        view = self._hidden_views[buffer_name]
+        view.setWindowId(winid)
+        del self._hidden_views[buffer_name]
+        self._views[buffer_name] = view
+        lfCmd(f"call win_execute({winid}, 'diffthis')")
+
+    def cleanup(self):
+        for view in self._hidden_views.values():
+            view.cleanup()
+        self._hidden_views = {}
+
+        self._buffer_names = {}
+
+    def writeFinished(self, winid):
+        lfCmd(f"call win_execute({winid}, 'diffthis')")
+
+    def getValidWinIDs(self, win_ids, win_pos):
+        if win_ids == [-1, -1]:
+            if win_pos in ["top", "left"]:
+                lfCmd("wincmd w")
+            else:
+                lfCmd("wincmd W")
+            lfCmd("leftabove new")
+            win_ids[1] = int(lfEval("win_getid()"))
+            lfCmd("noautocmd leftabove vertical new")
+            win_ids[0] = int(lfEval("win_getid()"))
+        elif win_ids[0] == -1:
+            lfCmd(f"noautocmd call win_gotoid({win_ids[1]})")
+            lfCmd("noautocmd leftabove vertical new")
+            win_ids[0] = int(lfEval("win_getid()"))
+        elif win_ids[1] == -1:
+            lfCmd(f"noautocmd call win_gotoid({win_ids[0]})")
+            lfCmd("noautocmd rightbelow vertical new")
+            win_ids[1] = int(lfEval("win_getid()"))
+
+        return win_ids
+
+    def isAllHidden(self):
+        return len(self._views) == 0
+
+    def configBuffer(self, win_id, k, source, right_winid, **kwargs):
+        lfCmd(f"call win_execute({win_id}, 'setlocal cursorlineopt=number')")
+        lfCmd(f"call win_execute({win_id}, 'setlocal cursorline')")
+        lfCmd("call win_execute({}, 'let b:lf_explorer_page_id = {}')".format(win_id, kwargs.get("explorer_page_id", 0)))
+        lfCmd("call win_execute({}, 'let b:lf_tree_view_id = {}')".format(win_id, kwargs.get("tree_view_id", 0)))
+        lfCmd(f"call win_execute({win_id}, 'let b:lf_git_diff_win_pos = {k}')")
+        lfCmd(f"call win_execute({win_id}, 'let b:lf_git_diff_win_id = {right_winid}')")
+        abs_file_path = os.path.join(self._project_root, lfGetFilePath(source))
+        lfCmd("""call win_execute(%d, "let b:lf_git_file_name = '%s'")""" % (win_id, escQuote(abs_file_path)))
+        lfCmd(f"""call win_execute({win_id}, 'let b:lf_diff_view_mode = "side-by-side"')""")
+        lfCmd(f"""call win_execute({win_id}, "let b:lf_diff_view_source = {str(list(source))}")""")
+        key_map = lfEval("g:Lf_GitKeyMap")
+        lfCmd("""call win_execute({}, 'nnoremap <buffer> <silent> {} [c')""".format(win_id, key_map["previous_change"]))
+        lfCmd("""call win_execute({}, 'nnoremap <buffer> <silent> {} ]c')""".format(win_id, key_map["next_change"]))
+        lfCmd("""call win_execute({}, 'nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#EditFile(2)<CR>')""".format(win_id, key_map["edit_file"]))
+        lfCmd(
+            """call win_execute({}, 'nnoremap <buffer> <silent> {} :<C-U>LeaderfGitNavigationOpen<CR>')""".format(win_id, key_map["open_navigation"])
+        )
+
+    def create(self, arguments_dict, source, **kwargs):
+        """
+        source is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        """
+        self._project_root = kwargs.get("project_root")
+        file_path = lfGetFilePath(source)
+        sources = ((source[0], source[2], source[3]), (source[1], source[2], file_path))
+        if source[1].startswith("0000000"):  # for Unstaged changes
+            unique_id = "U" + self._commit_id
+        else:
+            unique_id = self._commit_id
+        buffer_names = (GitCatFileCommand.buildBufferName(unique_id, sources[0]), GitCatFileCommand.buildBufferName(unique_id, sources[1]))
+        target_winid = None
+        if buffer_names[0] in self._views and buffer_names[1] in self._views:
+            win_ids = (self._views[buffer_names[0]].getWindowId(), self._views[buffer_names[1]].getWindowId())
+            lfCmd(f"noautocmd call win_gotoid({win_ids[1]})")
+            target_winid = win_ids[1]
+        elif buffer_names[0] in self._views:
+            win_id0 = self._views[buffer_names[0]].getWindowId()
+            lfCmd(f"noautocmd call win_gotoid({win_id0})")
+            buf_name1 = self._buffer_names[vim.current.tabpage][1]
+            win_id1 = int(lfEval(f"bufwinid('{escQuote(escSpecial(buf_name1))}')"))
+            if win_id1 == -1:
+                # :bd
+                if lfEval(f"bufloaded('{escQuote(escSpecial(buffer_names[1]))}')") == "0":
+                    if buffer_names[1] in self._hidden_views:
+                        del self._hidden_views[buffer_names[1]]
+
+                lfCmd(f"rightbelow vsp {buffer_names[1]}")
+                win_id1 = int(lfEval("win_getid()"))
+            else:
+                lfCmd(f"noautocmd call win_gotoid({win_id1})")
+
+            if buffer_names[1] in self._hidden_views:
+                self.bufShown(buffer_names[1], win_id1)
+            else:
+                cmd = GitCatFileCommand(arguments_dict, sources[1], unique_id)
+                GitCommandView(self, cmd).create(win_id1, bufhidden="hide")
+            self.configBuffer(win_id0, 0, source, win_id1, **kwargs)
+            self.configBuffer(win_id1, 1, source, win_id1, **kwargs)
+            target_winid = win_id1
+        elif buffer_names[1] in self._views:
+            win_id1 = self._views[buffer_names[1]].getWindowId()
+            lfCmd(f"noautocmd call win_gotoid({win_id1})")
+            buf_name0 = self._buffer_names[vim.current.tabpage][0]
+            win_id0 = int(lfEval(f"bufwinid('{escQuote(escSpecial(buf_name0))}')"))
+            if win_id0 == -1:
+                # :bd
+                if lfEval(f"bufloaded('{escQuote(escSpecial(buffer_names[0]))}')") == "0":
+                    if buffer_names[0] in self._hidden_views:
+                        del self._hidden_views[buffer_names[0]]
+
+                lfCmd(f"leftabove vsp {buffer_names[0]}")
+                win_id0 = int(lfEval("win_getid()"))
+            else:
+                lfCmd(f"noautocmd call win_gotoid({win_id0})")
+
+            if buffer_names[0] in self._hidden_views:
+                self.bufShown(buffer_names[0], win_id0)
+            else:
+                cmd = GitCatFileCommand(arguments_dict, sources[0], unique_id)
+                GitCommandView(self, cmd).create(win_id0, bufhidden="hide")
+            self.configBuffer(win_id0, 0, source, win_id1, **kwargs)
+            self.configBuffer(win_id1, 1, source, win_id1, **kwargs)
+            lfCmd(f"noautocmd call win_gotoid({win_id1})")
+            target_winid = win_id1
+        else:
+            if kwargs.get("mode", "") == "t":
+                lfCmd("noautocmd tabnew | vsp")
+                tabmove()
+                win_ids = [int(lfEval(f"win_getid({w.number})")) for w in vim.current.tabpage.windows]
+            elif "winid" in kwargs:  # --explorer create
+                win_ids = [kwargs["winid"], 0]
+                lfCmd(f"noautocmd call win_gotoid({win_ids[0]})")
+                lfCmd("noautocmd bel vsp")
+                win_ids[1] = int(lfEval("win_getid()"))
+                lfCmd(f"noautocmd call win_gotoid({win_ids[0]})")
+            elif vim.current.tabpage not in self._buffer_names:  # Leaderf git diff -s
+                lfCmd("noautocmd tabnew | vsp")
+                tabmove()
+                win_ids = [int(lfEval(f"win_getid({w.number})")) for w in vim.current.tabpage.windows]
+            else:  # open
+                buffer_names = self._buffer_names[vim.current.tabpage]
+                win_ids = [int(lfEval(f"bufwinid('{escQuote(escSpecial(name))}')")) for name in buffer_names]
+                win_pos = arguments_dict.get("--navigation-position", ["left"])[0]
+                win_ids = self.getValidWinIDs(win_ids, win_pos)
+
+            target_winid = win_ids[1]
+            cat_file_cmds = [GitCatFileCommand(arguments_dict, s, unique_id) for s in sources]
+            outputs = [None, None]
+            if cat_file_cmds[0].getBufferName() not in self._hidden_views and cat_file_cmds[1].getBufferName() not in self._hidden_views:
+                outputs = ParallelExecutor.run(*[cmd.getCommand() for cmd in cat_file_cmds], directory=self._project_root)
+
+            if vim.current.tabpage not in self._buffer_names:
+                self._buffer_names[vim.current.tabpage] = [None, None]
+
+            for i, (cmd, winid) in enumerate(zip(cat_file_cmds, win_ids)):
+                if lfEval(f"bufname(winbufnr({winid}))") == "" and int(lfEval(f"bufnr('{escQuote(escSpecial(cmd.getBufferName()))}')")) != -1:
+                    lfCmd(f"call win_execute({winid}, 'setlocal bufhidden=wipe')")
+
+                buffer_name = lfEval(f"bufname(winbufnr({winid}))")
+                lfCmd(f"call win_execute({winid}, 'diffoff | hide edit {escQuote(escSpecial(cmd.getBufferName()))}')")
+
+                self.configBuffer(winid, i, source, win_ids[1], **kwargs)
+
+                # if the buffer also in another tabpage, BufHidden is not triggerd
+                # should run this code
+                if buffer_name in self._views:
+                    self.bufHidden(self._views[buffer_name])
+
+                self._buffer_names[vim.current.tabpage][i] = cmd.getBufferName()
+                if cmd.getBufferName() in self._hidden_views:
+                    self.bufShown(cmd.getBufferName(), winid)
+                else:
+                    GitCommandView(self, cmd).create(winid, bufhidden="hide", buf_content=outputs[i])
+
+            lfCmd(f"noautocmd call win_gotoid({win_ids[1]})")
+
+        if kwargs.get("line_num") is not None:
+            lfCmd("call win_execute({}, 'norm! {}G0zbzz')".format(target_winid, kwargs["line_num"]))
+        else:
+            lfCmd(f"call win_execute({target_winid}, 'norm! gg]c0')")
+
+        # sometimes the two sides don't align.
+        lfCmd(f"call win_execute({target_winid}, 'norm! ztzz')")
+
+
+class UnifiedDiffViewPanel(Panel):
+    def __init__(self, bufhidden_callback=None, commit_id=""):
+        super().__init__()
+        self._commit_id = commit_id
+        self._views = {}
+        self._hidden_views = {}
+        self._bufhidden_cb = bufhidden_callback
+        lfCmd("sign define Leaderf_diff_add linehl=Lf_hl_gitDiffAdd")
+        lfCmd("sign define Leaderf_diff_delete linehl=Lf_hl_gitDiffDelete")
+        lfCmd("sign define Leaderf_diff_change linehl=Lf_hl_gitDiffChange")
+
+    def setCommitId(self, commit_id):
+        self._commit_id = commit_id
+
+    def register(self, view):
+        self._views[view.getBufferName()] = view
+
+    def removeView(self, buffer_name):
+        if buffer_name in self._views:
+            self._views[buffer_name].cleanup(wipe=False)
+            del self._views[buffer_name]
+
+        if buffer_name in self._hidden_views:
+            self._hidden_views[buffer_name].cleanup(wipe=False)
+            del self._hidden_views[buffer_name]
+
+    def deregister(self, view):
+        # :bw
+        self.removeView(view.getBufferName())
+
+    def bufHidden(self, view):
+        # window is closed if not equal
+        if int(lfEval("win_getid()")) == view.getWindowId():
+            lfCmd("silent! call leaderf#Git#ClearMatches()")
+
+        name = view.getBufferName()
+        if name in self._views:
+            del self._views[name]
+        self._hidden_views[name] = view
+
+        if self._bufhidden_cb is not None:
+            self._bufhidden_cb()
+
+    def bufShown(self, buffer_name, winid):
+        view = self._hidden_views[buffer_name]
+        view.setWindowId(winid)
+        del self._hidden_views[buffer_name]
+        self._views[buffer_name] = view
+        lfCmd(f"call setmatches(b:Leaderf_matches, {winid})")
+
+    def cleanup(self):
+        for view in self._hidden_views.values():
+            view.cleanup()
+        self._hidden_views = {}
+
+    def isAllHidden(self):
+        return len(self._views) == 0
+
+    def signPlace(self, added_line_nums, deleted_line_nums, buffer_num):
+        lfCmd(f"call leaderf#Git#SignPlace({str(added_line_nums)}, {str(deleted_line_nums)}, {buffer_num})")
+
+    def setLineNumberWin(self, line_num_content, buffer_num):
+        if lfEval("has('nvim')") == "1":
+            self.nvim_setLineNumberWin(line_num_content, buffer_num)
+            return
+
+        hi_line_num = int(lfEval("get(g:, 'Lf_GitHightlightLineNumber', 1)"))
+        for i, line in enumerate(line_num_content, 1):
+            if line[-2] == "-":
+                if hi_line_num == 1:
+                    property_type = "Lf_hl_gitDiffDelete"
+                else:
+                    property_type = "Lf_hl_LineNr"
+                lfCmd("call prop_add(%d, 1, {'type': '%s', 'text': '%s', 'bufnr': %d})" % (i, property_type, line[:-2], buffer_num))
+                property_type = "Lf_hl_gitDiffDelete"
+                lfCmd("call prop_add(%d, 1, {'type': '%s', 'text': '%s', 'bufnr': %d})" % (i, property_type, line[-2:], buffer_num))
+            elif line[-2] == "+":
+                if hi_line_num == 1:
+                    property_type = "Lf_hl_gitDiffAdd"
+                else:
+                    property_type = "Lf_hl_LineNr"
+                lfCmd("call prop_add(%d, 1, {'type': '%s', 'text': '%s', 'bufnr': %d})" % (i, property_type, line[:-2], buffer_num))
+                property_type = "Lf_hl_gitDiffAdd"
+                lfCmd("call prop_add(%d, 1, {'type': '%s', 'text': '%s', 'bufnr': %d})" % (i, property_type, line[-2:], buffer_num))
+            else:
+                property_type = "Lf_hl_LineNr"
+                lfCmd("call prop_add(%d, 1, {'type': '%s', 'text': '%s', 'bufnr': %d})" % (i, property_type, line, buffer_num))
+
+    def nvim_setLineNumberWin(self, line_num_content, buffer_num):
+        lfCmd(f"call leaderf#Git#SetLineNumberWin({str(line_num_content)}, {buffer_num})")
+
+    def highlight(self, winid, status, content, line_num, line):
+        i = 0
+        while i < len(line):
+            if line[i] == status or line[i] == "^":
+                c = line[i]
+                beg = i
+                i += 1
+                while i < len(line) and line[i] == c:
+                    i += 1
+                end = i
+                col = lfBytesLen(content[line_num - 1][:beg]) + 1
+                length = lfBytesLen(content[line_num - 1][beg:end])
+                if c == "^" or c == "-":
+                    hl_group = "Lf_hl_gitDiffText"
+                else:
+                    hl_group = "Lf_hl_gitDiffText"
+                lfCmd(f"""call win_execute({winid}, "let matchid = matchaddpos('{hl_group}', [{str([line_num, col, length])}], -100)")""")
+            else:
+                i += 1
+
+    def highlightOneline(self, winid, content, minus_beg, plus_beg):
+        sm = SequenceMatcher(None, content[minus_beg - 1], content[plus_beg - 1])
+        opcodes = sm.get_opcodes()
+        if len(opcodes) == 1 and opcodes[0][0] == "replace":
+            return
+
+        hl_group = "Lf_hl_gitDiffChange"
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''{hl_group}'', ''\%{minus_beg}l'', -101)')""")
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''{hl_group}'', ''\%{plus_beg}l'', -101)')""")
+
+        for tag, beg1, end1, beg2, end2 in sm.get_opcodes():
+            if tag == "delete":
+                col = lfBytesLen(content[minus_beg - 1][:beg1]) + 1
+                length = lfBytesLen(content[minus_beg - 1][beg1:end1])
+                hl_group = "Lf_hl_gitDiffText"
+                lfCmd(f"""call win_execute({winid}, "let matchid = matchaddpos('{hl_group}', [{str([minus_beg, col, length])}], -100)")""")
+            elif tag == "insert":
+                col = lfBytesLen(content[plus_beg - 1][:beg2]) + 1
+                length = lfBytesLen(content[plus_beg - 1][beg2:end2])
+                hl_group = "Lf_hl_gitDiffText"
+                lfCmd(f"""call win_execute({winid}, "let matchid = matchaddpos('{hl_group}', [{str([plus_beg, col, length])}], -100)")""")
+            elif tag == "replace":
+                col = lfBytesLen(content[minus_beg - 1][:beg1]) + 1
+                length = lfBytesLen(content[minus_beg - 1][beg1:end1])
+                hl_group = "Lf_hl_gitDiffText"
+                lfCmd(f"""call win_execute({winid}, "let matchid = matchaddpos('{hl_group}', [{str([minus_beg, col, length])}], -100)")""")
+
+                col = lfBytesLen(content[plus_beg - 1][:beg2]) + 1
+                length = lfBytesLen(content[plus_beg - 1][beg2:end2])
+                hl_group = "Lf_hl_gitDiffText"
+                lfCmd(f"""call win_execute({winid}, "let matchid = matchaddpos('{hl_group}', [{str([plus_beg, col, length])}], -100)")""")
+
+    def highlightDiff(self, winid, content, minus_plus_lines):
+        for minus_beg, minus_end, plus_beg, plus_end in minus_plus_lines:
+            if minus_beg == minus_end and plus_beg == plus_end:
+                self.highlightOneline(winid, content, minus_beg, plus_beg)
+                continue
+
+            minus_text = content[minus_beg - 1 : minus_end]
+            plus_text = content[plus_beg - 1 : plus_end]
+            minus_line_num = minus_beg - 1
+            plus_line_num = plus_beg - 1
+            status = " "
+            changed_line_num = 0
+            for line in LfDiffer().compare(minus_text, plus_text):
+                if line.startswith("- "):
+                    status = "-"
+                    minus_line_num += 1
+                elif line.startswith("+ "):
+                    status = "+"
+                    plus_line_num += 1
+                elif line.startswith("? "):
+                    if status == "-":
+                        hl_group = "Lf_hl_gitDiffChange"
+                        changed_line_num = plus_line_num + 1
+                        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''{hl_group}'', ''\%{minus_line_num}l'', -101)')""")
+                        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''{hl_group}'', ''\%{plus_line_num + 1}l'', -101)')""")
+                        self.highlight(winid, status, content, minus_line_num, line[2:])
+                    elif status == "+":
+                        hl_group = "Lf_hl_gitDiffChange"
+                        if changed_line_num != plus_line_num:
+                            lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''{hl_group}'', ''\%{minus_line_num}l'', -101)')""")
+                            lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''{hl_group}'', ''\%{plus_line_num}l'', -101)')""")
+                        self.highlight(winid, status, content, plus_line_num, line[2:])
+                elif line.startswith("  "):
+                    status = " "
+                    minus_line_num += 1
+                    plus_line_num += 1
+
+    def setSomeOptions(self):
+        lfCmd("setlocal foldcolumn=1")
+        lfCmd("setlocal signcolumn=no")
+        lfCmd("setlocal nonumber")
+        lfCmd("setlocal conceallevel=0")
+        lfCmd("setlocal nowrap")
+        lfCmd("setlocal foldenable")
+        lfCmd("setlocal foldmethod=expr")
+        lfCmd("setlocal foldexpr=leaderf#Git#FoldExpr()")
+        lfCmd("setlocal foldlevel=0")
+
+    def create(self, arguments_dict, source, **kwargs):
+        """
+        source is a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        """
+        index = 0
+        self._project_root = kwargs.get("project_root")
+        ignore_whitespace = kwargs.get("ignore_whitespace", False)
+        diff_algorithm = kwargs.get("diff_algorithm", "myers")
+        algo_dict = {"myers": 0, "minimal": 2, "patience": 4, "histogram": 6}
+        blob_id = source[1][:7]
+        uid = algo_dict[diff_algorithm] + int(ignore_whitespace)
+        buf_name = f"LeaderF://{self._commit_id}:{blob_id}:{uid}:{lfGetFilePath(source)}"
+        if buf_name in self._views:
+            winid = self._views[buf_name].getWindowId()
+            lfCmd(f"noautocmd call win_gotoid({winid})")
+            lfCmd("let b:lf_tree_view_id = {}".format(kwargs.get("tree_view_id", 0)))
+        else:
+            explorer_page_id = int(kwargs.get("explorer_page_id", 0))
+            if explorer_page_id != 0:
+                explorer_page = ctypes.cast(explorer_page_id, ctypes.py_object).value
+            else:
+                explorer_page = None
+
+            if kwargs.get("mode", "") == "t":
+                lfCmd("noautocmd tabnew")
+                tabmove()
+                winid = int(lfEval("win_getid()"))
+            elif "winid" in kwargs:  # --explorer
+                winid = kwargs["winid"]
+            else:
+                if explorer_page is not None:
+                    lfCmd(f"noautocmd call win_gotoid({explorer_page._navigation_panel.getWindowId()})")
+
+                win_pos = arguments_dict.get("--navigation-position", ["left"])[0]
+                if win_pos in ["top", "left"]:
+                    lfCmd("noautocmd wincmd w")
+                else:
+                    lfCmd("noautocmd wincmd W")
+                winid = int(lfEval("win_getid()"))
+
+            if buf_name not in self._hidden_views:
+                fold_ranges = []
+                minus_plus_lines = []
+                line_num_dict = {}
+                change_start_lines = []
+                delimiter = lfEval("get(g:, 'Lf_GitDelimiter', '│')")
+                if source[0].startswith("0000000"):
+                    git_cmd = f"git show {source[1]}"
+                    outputs = ParallelExecutor.run(git_cmd, directory=self._project_root)
+                    line_num_width = len(str(len(outputs[0])))
+                    content = outputs[0]
+                    line_num_content = ["{:>{}} +{}".format(i, line_num_width, delimiter) for i in range(1, len(content) + 1)]
+                    deleted_line_nums = []
+                    added_line_nums = range(1, len(outputs[0]) + 1)
+                elif source[1].startswith("0000000") and source[2] != "M":
+                    git_cmd = f"git show {source[0]}"
+                    outputs = ParallelExecutor.run(git_cmd, directory=self._project_root)
+                    line_num_width = len(str(len(outputs[0])))
+                    content = outputs[0]
+                    line_num_content = ["{:>{}} -{}".format(i, line_num_width, delimiter) for i in range(1, len(content) + 1)]
+                    deleted_line_nums = range(1, len(outputs[0]) + 1)
+                    added_line_nums = []
+                elif source[1] == "xxx":  # Untracked files
+                    if os.name == "nt":
+                        git_cmd = f'type "{os.path.normpath(source[3])}"'
+                    else:
+                        git_cmd = f"cat {escSpecial(source[3])}"
+                    outputs = ParallelExecutor.run(git_cmd, directory=self._project_root, silent=True)
+                    line_num_width = len(str(len(outputs[0])))
+                    content = outputs[0]
+                    line_num_content = []
+                    deleted_line_nums = []
+                    added_line_nums = []
+                else:
+                    if source[1].startswith("0000000"):
+                        extra_options = "--diff-algorithm=" + diff_algorithm
+                        if "--cached" in arguments_dict:
+                            extra_options += " --cached"
+
+                        if "extra" in arguments_dict:
+                            extra_options += " " + " ".join(arguments_dict["extra"])
+
+                        if ignore_whitespace:
+                            extra_options += " -w"
+
+                        git_cmd = f"git diff -U999999 --no-color {extra_options} -- {source[3]}"
+                    else:
+                        extra_options = "--diff-algorithm=" + diff_algorithm
+                        if ignore_whitespace:
+                            extra_options += " -w"
+
+                        git_cmd = f"git diff -U999999 --no-color {extra_options} {source[0]} {source[1]}"
+
+                    outputs = ParallelExecutor.run(git_cmd, directory=self._project_root)
+                    start = 0
+                    for i, line in enumerate(outputs[0], 1):
+                        if line.startswith("@@"):
+                            start = i
+                            break
+
+                    line_num_width = len(str(len(outputs[0]) - start))
+
+                    content = []
+                    line_num_content = []
+                    orig_line_num = 0
+                    line_num = 0
+
+                    minus_beg = 0
+                    minus_end = 0
+                    plus_beg = 0
+                    plus_end = 0
+
+                    change_start = 0
+                    deleted_line_nums = []
+                    added_line_nums = []
+                    context_num = int(lfEval("get(g:, 'Lf_GitContextNum', 6)"))
+                    if context_num < 0:
+                        context_num = 6
+                    beg = 1
+                    for i, line in enumerate(islice(outputs[0], start, None), 1):
+                        content.append(line[1:])
+                        if line.startswith("-"):
+                            # for fold
+                            if beg != 0:
+                                end = i - context_num - 1
+                                if end > beg:
+                                    fold_ranges.append([beg, end])
+                                beg = 0
+
+                            # for highlight
+                            if plus_beg != 0:
+                                plus_end = i - 1
+                                minus_plus_lines.append((minus_beg, minus_end, plus_beg, plus_end))
+                                minus_beg = 0
+                                plus_beg = 0
+
+                            if minus_beg == 0:
+                                minus_beg = i
+
+                            if change_start == 0:
+                                change_start = i
+
+                            deleted_line_nums.append(i)
+                            orig_line_num += 1
+                            line_num_content.append("{:>{}} {:{}} -{}".format(orig_line_num, line_num_width, " ", line_num_width, delimiter))
+                        elif line.startswith("+"):
+                            # for fold
+                            if beg != 0:
+                                end = i - context_num - 1
+                                if end > beg:
+                                    fold_ranges.append([beg, end])
+                                beg = 0
+
+                            # for highlight
+                            if minus_beg != 0 and plus_beg == 0:
+                                minus_end = i - 1
+                                plus_beg = i
+
+                            if change_start == 0:
+                                change_start = i
+
+                            added_line_nums.append(i)
+                            line_num += 1
+                            line_num_dict[line_num] = i
+                            line_num_content.append("{:{}} {:>{}} +{}".format(" ", line_num_width, line_num, line_num_width, delimiter))
+                        else:
+                            # for fold
+                            if beg == 0:
+                                beg = i + context_num
+
+                            # for highlight
+                            if plus_beg != 0:
+                                plus_end = i - 1
+                                minus_plus_lines.append((minus_beg, minus_end, plus_beg, plus_end))
+                                plus_beg = 0
+
+                            minus_beg = 0
+
+                            if change_start != 0:
+                                change_start_lines.append(change_start)
+                                change_start = 0
+
+                            orig_line_num += 1
+                            line_num += 1
+                            line_num_dict[line_num] = i
+                            line_num_content.append("{:>{}} {:>{}}  {}".format(orig_line_num, line_num_width, line_num, line_num_width, delimiter))
+                    else:
+                        # for fold
+                        end = len(outputs[0]) - start
+                        if beg != 0 and end > beg:
+                            fold_ranges.append([beg, end])
+
+                        # for highlight
+                        if plus_beg != 0:
+                            plus_end = end
+                            minus_plus_lines.append((minus_beg, minus_end, plus_beg, plus_end))
+
+                        if change_start != 0:
+                            change_start_lines.append(change_start)
+
+                lfCmd(f"noautocmd call win_gotoid({winid})")
+                if not vim.current.buffer.name:  # buffer name is empty
+                    lfCmd("setlocal bufhidden=wipe")
+                orig_buf_name = vim.current.buffer.name
+                orig_change_start_lines = [int(i) for i in vim.current.buffer.vars.get("lf_change_start_lines", [])]
+                index = Bisect.bisect_right(orig_change_start_lines, vim.current.window.cursor[0])
+                lfCmd(f"silent hide edit {escSpecial(buf_name)}")
+                if buf_name == orig_buf_name:
+                    lfCmd("setlocal syntax=ON")
+                abs_file_path = os.path.join(self._project_root, lfGetFilePath(source))
+                lfCmd(f"let b:lf_git_file_name = '{escQuote(abs_file_path)}'")
+                abs_orig_file_path = lfGetOrigFilePath(source)
+                if abs_orig_file_path != "":
+                    abs_orig_file_path = os.path.join(self._project_root, lfGetOrigFilePath(source))
+                lfCmd(f"let b:lf_git_orig_file_name = '{escQuote(abs_orig_file_path)}'")
+                lfCmd(f"let b:lf_git_line_num_content = {str(line_num_content)}")
+                lfCmd("augroup Lf_Git_Log | augroup END")
+                lfCmd("autocmd! Lf_Git_Log BufWinEnter <buffer> call leaderf#Git#SetMatches()")
+                ranges = (range(sublist[0], sublist[1] + 1) for sublist in fold_ranges)
+                fold_ranges_dict = {i: 0 for i in itertools.chain.from_iterable(ranges)}
+                lfCmd(f"let b:Leaderf_fold_ranges_dict = {str(fold_ranges_dict)}")
+                lfCmd("silent! IndentLinesDisable")
+                self.setSomeOptions()
+                if source[1] == "xxx":  # Untracked files
+                    lfCmd("setlocal number")
+                    lfCmd("setlocal foldmethod=indent")
+                    lfCmd("setlocal foldlevel=100")
+
+                cmd = GitCustomizeCommand(arguments_dict, "", buf_name, "", "")
+                view = GitCommandView(self, cmd)
+                view.line_num_dict = line_num_dict
+                view.change_start_lines = change_start_lines
+                view.create(winid, bufhidden="hide", buf_content=content)
+
+                buffer_num = int(lfEval(f"winbufnr({winid})"))
+                self.clear(buffer_num)
+                self.signPlace(added_line_nums, deleted_line_nums, buffer_num)
+
+                self.setLineNumberWin(line_num_content, buffer_num)
+                self.highlightDiff(winid, content, minus_plus_lines)
+                lfCmd("let b:Leaderf_matches = getmatches()")
+                lfCmd(f"let b:lf_change_start_lines = {str(change_start_lines)}")
+                lfCmd(f"let b:lf_explorer_page_id = {explorer_page_id}")
+                lfCmd("let b:lf_tree_view_id = {}".format(kwargs.get("tree_view_id", 0)))
+                lfCmd("let b:lf_diff_view_mode = 'unified'")
+                lfCmd(f"let b:lf_diff_view_source = {str(list(source))}")
+                key_map = lfEval("g:Lf_GitKeyMap")
+                lfCmd("nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#PreviousChange(0)<CR>".format(key_map["previous_change"]))
+                lfCmd("nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#NextChange(0)<CR>".format(key_map["next_change"]))
+                if source[1] == "xxx":  # Untracked files
+                    lfCmd("let b:lf_git_diff_win_pos = 1")
+                    lfCmd("nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#EditFile(2)<CR>".format(key_map["edit_file"]))
+                else:
+                    lfCmd("nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#EditFile(0)<CR>".format(key_map["edit_file"]))
+                lfCmd("nnoremap <buffer> <silent> {} :<C-U>LeaderfGitNavigationOpen<CR>".format(key_map["open_navigation"]))
+                if explorer_page is not None and isinstance(explorer_page._owner, GitStatusExplManager):
+                    lfCmd(
+                        "nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#StageUnstageHunk({}, 0)<CR>".format(
+                            key_map["stage_unstage_hunk"], id(self)
+                        )
+                    )
+                    lfCmd(
+                        "nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#StageUnstageHunk({}, 1)<CR>".format(
+                            key_map["stage_unstage_all_hunk"], id(self)
+                        )
+                    )
+                    lfCmd("nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#DiscardHunk({}, 1)<CR>".format(key_map["discard_hunk"], id(self)))
+                    lfCmd(
+                        "nnoremap <buffer> <silent> {} :<C-U>call leaderf#Git#DiscardHunk({}, 0)<CR>".format(
+                            key_map["discard_hunk_no_prompt"], id(self)
+                        )
+                    )
+            else:
+                lfCmd(f"noautocmd call win_gotoid({winid})")
+                if not vim.current.buffer.name:  # buffer name is empty
+                    lfCmd("setlocal bufhidden=wipe")
+                lfCmd(f"silent hide edit {escSpecial(buf_name)}")
+                self.bufShown(buf_name, winid)
+                lfCmd("let b:lf_tree_view_id = {}".format(kwargs.get("tree_view_id", 0)))
+                self.setSomeOptions()
+                if source[1] == "xxx":  # Untracked files
+                    lfCmd("setlocal number")
+                    lfCmd("setlocal foldmethod=indent")
+                    lfCmd("setlocal foldlevel=100")
+
+        target_line_num = kwargs.get("line_num")
+        if target_line_num is not None:
+            target_line_num = int(target_line_num)
+            line_num = self._views[buf_name].line_num_dict.get(target_line_num, target_line_num)
+            lfCmd(f"call win_execute({winid}, 'norm! {line_num}G0zbzz')")
+        else:
+            change_start_lines = self._views[buf_name].change_start_lines
+            if len(change_start_lines) == 0:
+                first_change = 1
+            else:
+                if index == 0:
+                    first_change = change_start_lines[0]
+                elif index > len(change_start_lines):
+                    first_change = change_start_lines[-1]
+                else:
+                    first_change = change_start_lines[index - 1]
+            lfCmd(f"call win_execute({winid}, 'norm! {first_change}G0zbzz')")
+
+    def stageUnstageHunk(self, is_all=False):
+        if is_all:
+            explorer_page_id = int(lfEval("string(b:lf_explorer_page_id)"))
+            navigation_panel = ctypes.cast(explorer_page_id, ctypes.py_object).value._navigation_panel
+            lfCmd("noautocmd LeaderfGitNavigationOpen")
+            navigation_panel.stageUnstage(focus=False)
+        else:
+            self.processHunk(how="stage", prompt=False)
+
+    def processHunk(self, how, prompt):
+        line_num_content = lfEval("b:lf_git_line_num_content")
+        if len(line_num_content) == 0:
+            lfCmd("echohl WarningMsg | redraw | echo 'No hunk under cursor!' | echohl None")
+            return
+
+        line_info = line_num_content[vim.current.window.cursor[0] - 1]
+        if not ("-" in line_info or "+" in line_info):
+            lfCmd("echohl WarningMsg | redraw | echo 'No hunk under cursor!' | echohl None")
+            return
+
+        explorer_page_id = int(lfEval("string(b:lf_explorer_page_id)"))
+        navigation_panel = ctypes.cast(explorer_page_id, ctypes.py_object).value._navigation_panel
+        if navigation_panel._ignore_whitespace:
+            lfCmd("echohl WarningMsg | redraw | echo 'Please turn off `Ignore Whitespace`!' | echohl None")
+            return
+
+        if len(lfEval("b:lf_change_start_lines")) <= 1:
+            lfCmd("noautocmd LeaderfGitNavigationOpen")
+            if how == "discard":
+                navigation_panel.discard(prompt=prompt)
+            else:
+                navigation_panel.stageUnstage(focus=False)
+        else:
+            file_name = lfEval("b:lf_git_file_name")
+            orig_file_name = lfEval("b:lf_git_orig_file_name")
+            buffer_name_parts = vim.current.buffer.name.split(":")
+            right_commit = buffer_name_parts[2]
+            if right_commit == "xxx":
+                return
+            elif right_commit.startswith("0000000"):
+                title = "Unstaged Changes:"
+                git_cmd = f"git diff --diff-algorithm={navigation_panel._diff_algorithm} -U5 -- {file_name}"
+                if how == "discard":
+                    if prompt:
+                        selection = lfConfirm("Discard this hunk?")
+                        if not selection:
+                            return
+                    git_apply_cmd = "git apply -R --whitespace=nowarn"
+                else:
+                    git_apply_cmd = "git apply --cached --whitespace=nowarn"
+
+                self.removeView(vim.current.buffer.name)
+            else:
+                if how == "discard":
+                    msg = "Cannot discard staged hunk directly. You should unstage it first."
+                    lfCmd(f"echohl WarningMsg | redraw | echo '{msg}'| echohl NONE")
+                    return
+
+                title = "Staged Changes:"
+                git_cmd = f"git diff --cached --diff-algorithm={navigation_panel._diff_algorithm} -U5 -- {orig_file_name} {file_name}"
+                git_apply_cmd = "git apply -R --cached --whitespace=nowarn"
+
+                buffer_name_parts[2] = "0000000"  # 7 zeros
+                buffer_name = ":".join(buffer_name_parts)
+                self.removeView(buffer_name)
+
+            output = subprocess.run(git_cmd, capture_output=True, shell=True, cwd=self._project_root)
+            if output.stderr != b"":
+                lfPrintError(lfBytes2Str(output.stderr.strip()))
+                return
+
+            change_start_lines = [int(i) for i in lfEval("b:lf_change_start_lines")]
+            index = Bisect.bisect_right(change_start_lines, vim.current.window.cursor[0])
+            line_info = line_num_content[change_start_lines[index - 1] - 1]
+            line_num, add_del_flag = line_info.split()
+            line_num = int(line_num)
+            add_del_flag = add_del_flag[0]
+            hunk_diff = self.extractHunk(output.stdout, line_num, add_del_flag)
+
+            output = subprocess.run(git_apply_cmd, input=hunk_diff, capture_output=True, shell=True, cwd=self._project_root)
+            if output.stderr != b"":
+                lfPrintError("git apply failed! " + lfBytes2Str(output.stderr.strip()))
+                return
+
+            if orig_file_name != "":
+                target_path = os.path.relpath(orig_file_name, self._project_root)
+            else:
+                target_path = os.path.relpath(file_name, self._project_root)
+            lfCmd("noautocmd LeaderfGitNavigationOpen")
+            navigation_panel.updateTreeview(title, target_path, focus=False, sync=True)
+
+    def extractHunk(self, diff, line_num, add_del_flag):
+        lines = diff.splitlines(keepends=True)
+        header_end = next(i for i, l in enumerate(lines) if l.startswith(b"@@"))
+        header = lines[:header_end]
+        hunk_re = re.compile(rb"^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@")
+        hunk_line = None
+        minus_line_num = 0
+        plus_line_num = 0
+        minus_line_num_start = 0
+        plus_line_num_start = 0
+        block_start = None
+        block_end = None
+
+        def getBlockStart(lines, i):
+            start = i - 1
+            while start >= i - 5:
+                if not lines[start].startswith(b" "):
+                    break
+                start -= 1
+
+            start += 1
+            return start
+
+        for i, line in enumerate(islice(lines, header_end, None), header_end):
+            if block_start is not None:
+                if line.startswith(b"-"):
+                    minus_line_num += 1
+                    block_end += 1
+                elif line.startswith(b"+"):
+                    plus_line_num += 1
+                    block_end += 1
+                else:
+                    for j in range(i, min(i + 5, len(lines))):
+                        if lines[j].startswith(b" "):
+                            minus_line_num += 1
+                            plus_line_num += 1
+                            block_end += 1
+                        else:
+                            break
+                    break
+            elif line.startswith(b"@@"):
+                m = hunk_re.match(line)
+                if add_del_flag == "-":
+                    start = int(m.group(1))
+                    length = int(m.group(2) or 1)
+                else:
+                    start = int(m.group(3))
+                    length = int(m.group(4) or 1)
+
+                if line_num >= start and line_num < start + length:
+                    hunk_line = line
+                    minus_line_num = int(m.group(1)) - 1
+                    plus_line_num = int(m.group(3)) - 1
+            elif hunk_line is not None:
+                if line.startswith(b"-"):
+                    minus_line_num += 1
+                    if add_del_flag == "-" and minus_line_num == line_num:
+                        block_start = getBlockStart(lines, i)
+                        block_end = i + 1
+                        minus_line_num_start = minus_line_num - 1 - (i - block_start) + 1
+                        plus_line_num_start = plus_line_num - (i - block_start) + 1
+                elif line.startswith(b"+"):
+                    plus_line_num += 1
+                    if add_del_flag == "+" and plus_line_num == line_num:
+                        block_start = getBlockStart(lines, i)
+                        block_end = i + 1
+                        minus_line_num_start = minus_line_num - (i - block_start) + 1
+                        plus_line_num_start = plus_line_num - 1 - (i - block_start) + 1
+                else:
+                    minus_line_num += 1
+                    plus_line_num += 1
+
+        hunk_header = b"@@ -%d,%d +%d,%d @@" % (
+            minus_line_num_start,
+            minus_line_num - minus_line_num_start + 1,
+            plus_line_num_start,
+            plus_line_num - plus_line_num_start + 1,
+        )
+        hunk_header = hunk_header + hunk_line.rsplit(b"@@", 1)[1]
+        return b"".join(header) + hunk_header + b"".join(lines[block_start:block_end])
+
+    def clear(self, buffer_num):
+        lfCmd("silent! call sign_unplace('LeaderF', {'buffer': %d})" % buffer_num)
+        lfCmd("silent! call leaderf#Git#ClearMatches()")
+        if lfEval("has('nvim')") != "1":
+            for property_type in ("Lf_hl_gitDiffDelete", "Lf_hl_gitDiffAdd", "Lf_hl_LineNr"):
+                lfCmd("call prop_remove({'type': '%s', 'bufnr': %d, 'all': 1})" % (property_type, buffer_num))
+
+    def discardHunk(self, prompt):
+        self.processHunk(how="discard", prompt=prompt)
+
+
+class NavigationPanel(Panel):
+    def __init__(self, owner, project_root, commit_id, bufhidden_callback=None):
+        super().__init__()
+        self._owner = owner
+        self._project_root = project_root
+        self._commit_id = commit_id
+        self._tree_views = []
+        self._bufhidden_cb = bufhidden_callback
+        self._is_hidden = False
+        self._arguments = {}
+        self._diff_view_mode = None
+        self._ignore_whitespace = False
+        self._diff_algorithm = "myers"
+        self._git_diff_manager = None
+        self._buffer = None
+        self._match_ids = []
+        folder_icons = lfEval("g:Lf_GitFolderIcons")
+        self._closed_folder_icon = folder_icons["closed"]
+        self._open_folder_icon = folder_icons["open"]
+        self._add_icon = lfEval("get(g:, 'Lf_GitAddIcon', '')")  #  
+        self._copy_icon = lfEval("get(g:, 'Lf_GitCopyIcon', '')")
+        self._del_icon = lfEval("get(g:, 'Lf_GitDelIcon', '')")  #  
+        self._modification_icon = lfEval("get(g:, 'Lf_GitModifyIcon', '')")
+        self._rename_icon = lfEval("get(g:, 'Lf_GitRenameIcon', '')")
+        self._untrack_icon = lfEval("get(g:, 'Lf_GitUntrackIcon', '')")
+        self._head = [
+            '" Press <F1> for help',
+            " Side-by-side ◉ Unified ○",
+            " Ignore Whitespace 🗷 ",
+            " Myers ◉ Minimal ○ Patience ○ Histogram ○",
+        ]
+        self.initDiffopt()
+
+    def initDiffopt(self):
+        if lfEval('has("patch-9.1.1243")') == "1":
+            diffopt = lfEval("&diffopt")
+            if "inline:" not in diffopt:
+                lfCmd("set diffopt+=inline:char")
+
+    def startLine(self, tree_view):
+        n = len(self._head) + 1
+        for view in self._tree_views:
+            if view.getHeight() > 0:
+                n += view.getTitleHeight() + 2
+
+            if tree_view is view:
+                return n
+            else:
+                n += view.getHeight()
+
+        return n
+
+    def getTreeView(self):
+        line_num = int(lfEval(f"getcurpos({self.getWindowId()})[1]"))
+        n = len(self._head) + 1
+        for view in self._tree_views:
+            if view.getHeight() > 0:
+                n += view.getTitleHeight() + view.getHeight() + 2
+                if line_num <= n:
+                    return view
+
+    def getDiffViewMode(self):
+        return self._diff_view_mode
+
+    def getIgnoreWhitespace(self):
+        return self._ignore_whitespace
+
+    def getDiffAlgorithm(self):
+        return self._diff_algorithm
+
+    def register(self, view):
+        self._tree_views.append(view)
+
+    def bufHidden(self, view):
+        self._is_hidden = True
+        if self._bufhidden_cb is not None:
+            self._bufhidden_cb()
+
+    def isHidden(self):
+        return self._is_hidden
+
+    def cleanup(self):
+        for view in self._tree_views:
+            if view is not None:
+                view.cleanup()
+        self._tree_views = []
+
+    def enableColor(self, winid):
+        self._match_id_winid = winid
+        if lfEval("hlexists('Lf_hl_help')") == "0":
+            lfCmd("call leaderf#colorscheme#popup#load('{}', '{}')".format("git", lfEval("get(g:, 'Lf_PopupColorscheme', 'default')")))
+
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitHelp'', ''^".*'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitFolder'', ''\S*[/\\]'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitTitle'', ''.*:'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitFilesNum'', ''(\d\+)'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(
+            rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitFolderIcon'', ''^\s*\zs[{self._closed_folder_icon}{self._open_folder_icon}]'', -100)')"""
+        )
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitAddIcon'', ''^\s*\zs{self._add_icon}'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitCopyIcon'', ''^\s*\zs{self._copy_icon}'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitDelIcon'', ''^\s*\zs{self._del_icon}'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitModifyIcon'', ''^\s*\zs{self._modification_icon}'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitModifyIcon'', ''^\s*\zs{self._untrack_icon}'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitRenameIcon'', ''^\s*\zs{self._rename_icon}'', -100)')""")
+        id = int(lfEval("matchid"))
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitRenameIcon'', '' \zs=>\ze '', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitNumStatAdd'', ''\t\zs+\d\+'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitNumStatDel'', ''\t+\d\+\s\+\zs-\d\+'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitNumStatBinary'', ''\t\zs(Bin)'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Identifier'', '''', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitSelectedOption'', ''\S\+ ◉\@='', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitDiffAddition'', ''\(\S\+ \)\@<=◉'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitNonSelectedOption'', ''\S\+ ○\@='', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitDiffDeletion'', ''\(\S\+ \)\@<=○'', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitSelectedOption'', ''\( \)\@<=Ignore Whitespace 🗹\@='', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitDiffAddition'', ''\( Ignore Whitespace \)\@<=🗹 '', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitNonSelectedOption'', ''\( \)\@<=Ignore Whitespace 🗷\@='', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+        lfCmd(rf"""call win_execute({winid}, 'let matchid = matchadd(''Lf_hl_gitDiffDeletion'', ''\( Ignore Whitespace \)\@<=🗷 '', -100)')""")
+        id = int(lfEval("matchid"))
+        self._match_ids.append(id)
+
+    def create(self, arguments_dict, command, winid, project_root, target_path, callback):
+        if "-u" in arguments_dict:
+            self._diff_view_mode = "unified"
+        elif "-s" in arguments_dict:
+            self._diff_view_mode = "side-by-side"
+        else:
+            self._diff_view_mode = lfEval("get(g:, 'Lf_GitDiffViewMode', 'unified')")
+
+        self._buffer = vim.buffers[int(lfEval(f"winbufnr({winid})"))]
+
+        saved_eventignore = vim.options["eventignore"]
+        vim.options["eventignore"] = "all"
+        self._buffer[:] = self._head
+        # https://github.com/vim/vim/issues/19039
+        vim.options["eventignore"] = saved_eventignore
+        self.setDiffViewMode(self._diff_view_mode)
+
+        flag = [False]
+
+        def wrapper(cb, flag, *args, **kwargs):
+            if not flag[0]:
+                flag[0] = True
+                cb(*args, **kwargs)
+                return True
+            else:
+                return False
+
+        if isinstance(command, list):
+
+            def createTreeView(cmds):
+                if len(cmds) > 0:
+                    TreeView(self, cmds[0], project_root, target_path, partial(wrapper, callback, flag), partial(createTreeView, cmds[1:])).create(
+                        winid, bufhidden="hide"
+                    )
+
+            self._arguments = command[0].getArguments()
+            createTreeView(command)
+            git_cmd = "git log -1 --pretty=format:'%h %d' HEAD"
+        else:
+            self._arguments = command.getArguments()
+            TreeView(
+                self,
+                command,
+                project_root,
+                target_path,
+                partial(wrapper, callback, flag),
+            ).create(winid, bufhidden="hide")
+            if isinstance(command, GitDiffExplCommand):
+                git_cmd = "git log -1 --pretty=format:'%h %d' HEAD"
+            else:
+                git_cmd = f"git log -1 --pretty=format:'%h %d' {self._commit_id}"
+
+        self.enableColor(winid)
+        lfCmd(f"call win_execute({winid}, 'let b:lf_navigation_matches = getmatches()')")
+
+        self.defineMaps(winid)
+        self.setStatusline(git_cmd, winid)
+
+    def setStatusline(self, git_cmd, winid):
+        output = subprocess.run(git_cmd, capture_output=True, shell=True, cwd=self._project_root, text=True)
+        if output.stdout != "":
+            info = self.getGitInfo(output.stdout)
+            info = re.sub(r"^.*?:", r"%#Lf_hl_gitStlIdentity#\g<0>%#Lf_hl_gitStlHash#", info)
+            info = re.sub(r"\(.*?\)", r"%#Lf_hl_gitStlTag#\g<0>", info)
+            lfCmd(rf"""call win_execute({winid}, 'let &l:stl=" {info}"')""")
+
+    def getGitInfo(self, output):
+        """
+        9994a4213 (HEAD, tag: v3.11.0-0)           => detached HEAD: 9994a4213(tag: v3.11.0-0)
+        0eb959069 (HEAD)                           => detached HEAD: 0eb959069
+        1e8d34661 (HEAD -> main)                   => HEAD: 1e8d34661(main)
+        83fc7c4d8 (HEAD -> master, tag: v9.1.2032) => HEAD: 83fc7c4d8(master, tag: v9.1.2032)
+        eb3007b41 (tag: v9.1.2018)                 => commit: eb3007b41(tag: v9.1.2018)
+        7982966f3                                  => commit: 7982966f3
+        """
+        output = output.strip()
+        parts = output.split(None, 1)
+        if len(parts) == 1:
+            return "commit: " + parts[0]
+        else:
+            commit_id = parts[0]
+            if "HEAD" not in output:  # eb3007b41 (tag: v9.1.2018)
+                return f"commit: {commit_id}{parts[1]}"
+            else:
+                refs = parts[1].strip("()").split(", ", 1)
+                tag = "" if len(refs) == 1 else refs[1]
+                if "->" in refs[0]:
+                    branch = refs[0].rsplit(None, 1)[1]
+                    if tag == "":
+                        return f"HEAD: {commit_id}({branch})"
+                    else:
+                        return "HEAD: {}({}, {})".format(commit_id, branch, tag.split(", ")[0])
+                else:
+                    if tag == "":
+                        return f"detached HEAD: {commit_id}"
+                    else:
+                        return "detached HEAD: {}({})".format(commit_id, tag.split(", ")[0])
+
+    def defineMaps(self, winid):
+        lfCmd(f"call win_execute({winid}, 'call leaderf#Git#NavigationPanelMaps({id(self)})')")
+        if isinstance(self._owner._owner, GitStatusExplManager):
+            lfCmd(f"call win_execute({winid}, 'call leaderf#Git#NavigationPanelMapsForStatus({id(self)})')")
+
+    def setDiffViewMode(self, mode):
+        self._buffer.options["modifiable"] = True
+        if mode == "side-by-side":
+            self._buffer[1] = " Side-by-side ◉ Unified ○"
+
+            diffopt = lfEval("&diffopt")
+            if "iwhiteall" in diffopt:
+                self._buffer[2] = " Ignore Whitespace 🗹 "
+            else:
+                self._buffer[2] = " Ignore Whitespace 🗷 "
+
+            if "algorithm:" in diffopt:
+                algo = re.sub(r".*algorithm:(\w+).*", r"\1", diffopt)
+                self.setDiffAlgorithm(algo)
+            else:
+                self.setDiffAlgorithm("myers")
+        else:
+            self._buffer[1] = " Side-by-side ○ Unified ◉"
+        self._buffer.options["modifiable"] = False
+
+    def setIgnoreWhitespace(self, diff_view_mode, ignore):
+        self._buffer.options["modifiable"] = True
+        if diff_view_mode == "side-by-side":
+            if "iwhiteall" in lfEval("&diffopt"):
+                self._buffer[2] = " Ignore Whitespace 🗹 "
+            else:
+                self._buffer[2] = " Ignore Whitespace 🗷 "
+        else:
+            if ignore:
+                self._buffer[2] = " Ignore Whitespace 🗹 "
+            else:
+                self._buffer[2] = " Ignore Whitespace 🗷 "
+        self._buffer.options["modifiable"] = False
+
+    def setDiffAlgorithm(self, algorithm):
+        self._buffer.options["modifiable"] = True
+        if algorithm == "myers":
+            self._buffer[3] = " Myers ◉ Minimal ○ Patience ○ Histogram ○"
+        elif algorithm == "minimal":
+            self._buffer[3] = " Myers ○ Minimal ◉ Patience ○ Histogram ○"
+        elif algorithm == "patience":
+            self._buffer[3] = " Myers ○ Minimal ○ Patience ◉ Histogram ○"
+        elif algorithm == "histogram":
+            self._buffer[3] = " Myers ○ Minimal ○ Patience ○ Histogram ◉"
+        self._buffer.options["modifiable"] = False
+
+    def selectOption(self):
+        mouse_pos = lfEval("getmousepos()")
+        column = int(mouse_pos["column"])
+        if mouse_pos["line"] == "2":
+            if column >= 5 and column <= 18:
+                mode = "side-by-side"
+            elif column >= 22 and column <= 30:
+                mode = "unified"
+            else:
+                mode = None
+
+            if mode is not None and mode != self._diff_view_mode:
+                self.toggleDiffViewMode()
+        elif mouse_pos["line"] == "3":
+            if column >= 5 and column <= 23:
+                self.toggleIgnoreWhitespace()
+        elif mouse_pos["line"] == "4":
+            if column >= 5 and column <= 11:
+                diff_algorithm = "myers"
+            elif column >= 15 and column <= 23:
+                diff_algorithm = "minimal"
+            elif column >= 27 and column <= 36:
+                diff_algorithm = "patience"
+            elif column >= 40 and column <= 50:
+                diff_algorithm = "histogram"
+            else:
+                diff_algorithm = self._diff_algorithm
+
+            if self._diff_algorithm != diff_algorithm:
+                self._diff_algorithm = diff_algorithm
+                self.selectDiffAlgorithm()
+
+    def selectDiffAlgorithm(self):
+        self.setDiffAlgorithm(self._diff_algorithm)
+        if self._diff_view_mode == "side-by-side":
+            lfCmd("set diffopt+=internal")
+            diffopt = lfEval("&diffopt")
+            if "algorithm:" in diffopt:
+                diffopt = re.sub(r"(?<=algorithm:)\w+", self._diff_algorithm, diffopt)
+                lfCmd(f"let &diffopt = '{diffopt}'")
+            else:
+                lfCmd(f"set diffopt+=algorithm:{self._diff_algorithm}")
+        else:
+            self.openDiffView(False, preview=True, diff_view_source=True)
+
+    def toggleDiffViewMode(self):
+        if self._diff_view_mode == "side-by-side":
+            self._diff_view_mode = "unified"
+            self._ignore_whitespace = "iwhiteall" in lfEval("&diffopt")
+        else:
+            self._diff_view_mode = "side-by-side"
+            if self._ignore_whitespace:
+                lfCmd("set diffopt+=iwhiteall")
+            else:
+                lfCmd("set diffopt-=iwhiteall")
+
+        self.setDiffViewMode(self._diff_view_mode)
+
+        if self._diff_view_mode == "side-by-side":
+            diffopt = lfEval("&diffopt")
+            if "algorithm:" in diffopt:
+                algo = re.sub(r".*algorithm:(\w+).*", r"\1", diffopt)
+                self._diff_algorithm = algo
+            else:
+                self._diff_algorithm = "myers"
+
+        self.openDiffView(False, preview=True, diff_view_source=True)
+
+    def toggleIgnoreWhitespace(self):
+        if self._diff_view_mode == "side-by-side":
+            if "iwhiteall" in lfEval("&diffopt"):
+                lfCmd("set diffopt-=iwhiteall")
+            else:
+                lfCmd("set diffopt+=iwhiteall")
+            self.setIgnoreWhitespace(self._diff_view_mode, self._ignore_whitespace)
+        else:
+            self._ignore_whitespace = not self._ignore_whitespace
+            self.setIgnoreWhitespace(self._diff_view_mode, self._ignore_whitespace)
+            self.openDiffView(False, preview=True, diff_view_source=True)
+
+    def openDiffView(self, recursive, **kwargs):
+        return self._owner.openDiffView(recursive, **kwargs)
+
+    def open(self):
+        navigation_winid = self.getWindowId()
+        tree_view_id = int(lfEval("string(b:lf_tree_view_id)"))
+        current_file_path = os.path.relpath(lfEval("b:lf_git_file_name"), self._project_root)
+        if navigation_winid != -1:
+            lfCmd(f"noautocmd call win_gotoid({navigation_winid})")
+            ctypes.cast(tree_view_id, ctypes.py_object).value.locateFile(current_file_path)
+            return
+
+        buffer_name = self._buffer.name
+        win_pos = self._arguments.get("--navigation-position", ["left"])[0]
+        if win_pos == "top":
+            height = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelHeight', &lines * 0.3)")))
+            lfCmd(f"silent! noa keepa keepj topleft {height}sp {buffer_name}")
+        elif win_pos == "bottom":
+            height = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelHeight', &lines * 0.3)")))
+            lfCmd(f"silent! noa keepa keepj botright {height}sp {buffer_name}")
+        elif win_pos == "left":
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            lfCmd(f"silent! noa keepa keepj topleft {width}vsp {buffer_name}")
+        elif win_pos == "right":
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            lfCmd(f"silent! noa keepa keepj botright {width}vsp {buffer_name}")
+        else:  # left
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            lfCmd(f"silent! noa keepa keepj topleft {width}vsp {buffer_name}")
+
+        lfCmd("call setmatches(b:lf_navigation_matches)")
+        lfCmd("setlocal winfixwidth | wincmd =")
+        self._is_hidden = False
+        if len(self._tree_views) == 1:
+            self.getTreeView().locateFile(current_file_path)
+        else:
+            ctypes.cast(tree_view_id, ctypes.py_object).value.locateFile(current_file_path)
+
+    def getWindowId(self):
+        return int(lfEval(f"bufwinid('{escQuote(self._buffer.name)}')"))
+
+    def collapseChildren(self):
+        tree_view = self.getTreeView()
+        if tree_view is not None:
+            tree_view.collapseChildren()
+
+    def locateFile(self, path, line_num=None, preview=True, title=""):
+        tree_view = self.getTreeView()
+        for view in self._tree_views:
+            if view.getTitle().startswith(title):
+                tree_view = view
+                break
+
+        tree_view.locateFile(path)
+        self.openDiffView(False, line_num=line_num, preview=preview)
+
+    @ensureWorkingDirectory
+    def fuzzySearch(self, recall=False):
+        if self._git_diff_manager is None:
+            self._git_diff_manager = GitDiffExplManager()
+
+        tree_view = self.getTreeView()
+        if tree_view is None:
+            return
+
+        if len(self._tree_views) == 1:
+            file_list = self._tree_views[0].getFileList()
+        else:
+            file_list = []
+            for view in self._tree_views:
+                file_list.extend("{}\t[{}]".format(file, view.getTitle().rstrip(":")) for file in view.getFileList())
+
+        kwargs = {}
+        kwargs["arguments"] = {
+            "owner": self._owner._owner,
+            "commit_id": self._commit_id,
+            "parent": tree_view.getCurrentParent(),
+            "content": file_list,
+            "accept": self.locateFile,
+        }
+
+        if recall:
+            kwargs["arguments"]["--recall"] = []
+
+        self._git_diff_manager.startExplorer("popup", **kwargs)
+
+    @ensureWorkingDirectory
+    def showCommitMessage(self):
+        cmd = f"git show {self._commit_id} -s --decorate --pretty=fuller"
+        lfCmd(f"""call leaderf#Git#ShowCommitMessage(systemlist('{cmd}'))""")
+
+    def stageUnstage(self, focus=True):
+        tree_view = self.getTreeView()
+        if tree_view is None:
+            return
+
+        path, meta_info = tree_view.getFilePath()
+        if path is None:
+            return
+
+        file_info = tree_view.getFileInfo(meta_info)
+        if file_info is None:
+            change_type = None
+            target_path = None
+        else:
+            change_type = file_info[2]
+            target_path = file_info[3]
+
+        if tree_view.getTitle() == "Staged Changes:":
+            if change_type == "A":
+                title = "Untracked files:"
+            elif change_type.startswith("R"):
+                title = "Staged Changes:"
+            else:
+                title = "Unstaged Changes:"
+
+            if os.name == "nt":
+                cmd = f'git reset -q HEAD -- "{path}"'
+            else:
+                cmd = f"git reset -q HEAD -- {escSpecial(path)}"
+        elif tree_view.getTitle() == "Unstaged Changes:":
+            title = "Staged Changes:"
+            if os.name == "nt":
+                cmd = f'git add -u "{path}"'
+            else:
+                cmd = f"git add -u {escSpecial(path)}"
+        elif tree_view.getTitle() == "Untracked files:":
+            title = "Staged Changes:"
+            if os.name == "nt":
+                if not path.endswith("/"):
+                    cmd = f'git add "{path}"'
+                else:
+                    cmd = f'git ls-files --others --exclude-standard -z -- "{path}" | xargs -0 git add'
+            else:
+                if not path.endswith("/"):
+                    cmd = f"git add {escSpecial(path)}"
+                else:
+                    cmd = f"git ls-files --others --exclude-standard -z -- {escSpecial(path)} | xargs -0 git add"
+        else:
+            return
+
+        ParallelExecutor.run(cmd, directory=self._project_root)
+
+        self.updateTreeview(title, target_path, focus, sync=True)
+
+    def updateTreeview(self, title=None, target_path=None, focus=True, sync=False):
+        if target_path is None:
+            title = None
+
+        for view in self._tree_views:
+            if view is not None:
+                view.cleanup(wipe=False)
+        self._tree_views = []
+
+        flag = [False]
+
+        def callback(source, **kwargs):
+            if title is None:
+                if not flag[0]:
+                    flag[0] = True
+                    kwargs["source_to_open"] = source
+                    kwargs["preview"] = focus
+                    self.openDiffView(False, **kwargs)
+                    return True
+                else:
+                    return False
+            elif kwargs["title"] == title:
+                kwargs["source_to_open"] = source
+                kwargs["preview"] = focus
+                self.openDiffView(False, **kwargs)
+                return True
+            else:
+                return False
+
+        content_buffer = self._buffer[: len(self._head)]
+        cursor_line = [None]
+
+        def createTreeView(cmds):
+            if len(cmds) > 0:
+                TreeView(
+                    self,
+                    cmds[0],
+                    self._project_root,
+                    target_path,
+                    callback,
+                    next_tree_view=partial(createTreeView, cmds[1:]),
+                    content_buffer=content_buffer,
+                    cursor_line=cursor_line if cmds[0].getTitle() == title else None,
+                ).create(self.getWindowId(), bufhidden="hide", sync=sync)
+            else:
+                line_num, col_num = lfEval(f"getcurpos({self.getWindowId()})[1:2]")
+                self._buffer.options["modifiable"] = True
+                self._buffer[:] = content_buffer
+                self._buffer.options["modifiable"] = False
+                lfCmd(f"silent! call win_execute({self.getWindowId()}, 'norm! {line_num}G{col_num}|')")
+
+                if target_path is not None and cursor_line[0] is not None:
+                    lfCmd(f"call win_execute({self.getWindowId()}, 'norm! {cursor_line[0]}G0')")
+
+                if len(self._buffer) == len(self._head):
+                    lfCmd("only")
+
+                lfCmd("checktime")
+
+        uid = str(hex(int(time.time())))[-7:]
+        command = [
+            GitStagedCommand(self._arguments, uid),
+            GitUnstagedCommand(self._arguments, uid),
+            GitUntrackedCommand(self._arguments, uid),
+        ]
+        createTreeView(command)
+        lfCmd("let b:lf_navigation_matches = getmatches()")
+
+    def refresh(self):
+        lfCmd("only")
+        self._owner.cleanupDiffViewPanel()
+        self.updateTreeview()
+
+    def discard(self, prompt=True):
+        tree_view = self.getTreeView()
+        if tree_view is None:
+            return
+
+        path, next_path = tree_view.getFilePathPair()
+        if path is None:
+            return
+
+        if tree_view.getTitle() == "Staged Changes:":
+            msg = "Cannot discard staged changes directly. You should unstage them first."
+            lfCmd(f"echohl WarningMsg | redraw | echo '{msg}'| echohl NONE")
+            return
+        elif tree_view.getTitle() == "Unstaged Changes:":
+            if path == "./":
+                path = shrinkUser(self._project_root)
+            if prompt:
+                selection = lfConfirm(f"Discard changes to `{path}`?")
+                if not selection:
+                    return
+
+            if os.name == "nt":
+                cmd = f'git checkout -- "{path}"'
+            else:
+                cmd = f"git checkout -- {escSpecial(path)}"
+        elif tree_view.getTitle() == "Untracked files:":
+            path_type = "directory" if path.endswith("/") else "file"
+            if prompt:
+                what = f"Remove untracked {path_type} `{path}`?"
+                if path == "./":
+                    what = "Remove all untracked files/directories?"
+                selection = lfConfirm(what)
+                if not selection:
+                    return
+
+            if os.name == "nt":
+                cmd = f'git clean -fdq -- "{path}"'
+            else:
+                cmd = f"git clean -fdq -- {escSpecial(path)}"
+        else:
+            return
+
+        ParallelExecutor.run(cmd, directory=self._project_root)
+
+        self.updateTreeview(tree_view.getTitle(), next_path, sync=True)
+
+    def commit(self):
+        env = os.environ
+        env["GIT_EDITOR"] = ":"
+        output = subprocess.run("git commit", capture_output=True, shell=True, cwd=self._project_root, text=True, env=env)
+        if output.stdout != "":
+            lfCmd(f"echohl WarningMsg | redraw | echo '{escQuote(output.stdout)}' | echohl NONE")
+        elif output.stderr != "":
+            if (
+                "Aborting commit; you did not edit the message." not in output.stderr
+                and "Aborting commit due to empty commit message." not in output.stderr
+            ):
+                lfCmd(f"echohl WarningMsg | redraw | echo '{escQuote(output.stderr)}' | echohl NONE")
+            else:
+                self.handleCommit()
+        else:
+            print("Unexpected behavior.")
+
+    def handleCommit(self):
+        commit_file = os.path.join(os.path.expanduser(self._project_root), ".git", "COMMIT_EDITMSG")
+        winids = lfEval(f"win_findbuf(bufnr('{escQuote(commit_file)}'))")
+        if len(winids) != 0:
+            lfCmd(f"noautocmd call win_gotoid({winids[0]}) | edit! | norm! gg")
+        else:
+            lfCmd("silent keepa keepj botright {}sp {} | silent edit! | norm! gg".format(lfEval("(&lines-3)/2"), commit_file))
+            lfCmd("noautocmd resize {}".format(lfEval("(&lines-3)/2")))
+
+        lfCmd("setlocal nobuflisted bufhidden=wipe")
+        self._init_changedtick = vim.current.buffer.vars["changedtick"]
+        lfCmd("augroup Lf_Git_Commit | augroup END")
+        lfCmd(f"autocmd! Lf_Git_Commit BufWipeout <buffer> call leaderf#Git#CommitBufWipeout({id(self)})")
+
+    def commitBufferWipeout(self):
+        if vim.current.buffer.vars["changedtick"] == self._init_changedtick:
+            err_msg = "Aborting commit; you did not edit the message."
+            lfCmd(f"echohl WarningMsg | redraw | echo '{err_msg}' | echohl NONE")
+        else:
+            output = subprocess.run(
+                "git commit --cleanup=strip -F .git/COMMIT_EDITMSG", capture_output=True, shell=True, cwd=self._project_root, text=True
+            )
+            if output.stdout != "":
+                self.updateTreeview()
+                lfCmd("call timer_start(500, function('leaderf#Git#Echo', ['{}']))".format("Committed!"))
+            elif output.stderr != "":
+                lfCmd(f"call timer_start(1, function('leaderf#Git#Echo', ['{escQuote(output.stderr.strip())}']))")
+
+
+class BlamePanel(Panel):
+    def __init__(self, owner):
+        super().__init__()
+        self._owner = owner
+        self._views = {}
+
+    def register(self, view):
+        self._views[view.getBufferName()] = view
+
+    def deregister(self, view):
+        name = view.getBufferName()
+        if name in self._views:
+            self._views[name].cleanup()
+            del self._views[name]
+            if len(self._views) == 0:
+                self._owner.discardPanel(self.getProjectRoot())
+
+    def getBlameView(self, buffer_name):
+        return self._views[buffer_name]
+
+    def getAlternateWinid(self, buffer_name):
+        return self._views[buffer_name].getAlternateWinid()
+
+    def getBlameStack(self, buffer_name):
+        return self._views[buffer_name].blame_stack
+
+    def getBlameDict(self, buffer_name):
+        return self._views[buffer_name].blame_dict
+
+    def getBlameBufferDict(self, buffer_name):
+        return self._views[buffer_name].blame_buffer_dict
+
+    @staticmethod
+    def formatLine(arguments_dict, line_num_width, line):
+        if line.startswith("0000000"):
+            line = line.replace("External file (--contents)", "Not Committed Yet         ")
+
+        date_format = arguments_dict.get("--date", ["iso"])[0]
+        if date_format in ["iso", "iso-strict", "short"]:
+            # 6817817e autoload/leaderf/manager.py 1 (Yggdroot 2014-02-26 00:37:26 +0800 1) #!/usr/bin/env python
+            return re.sub(r"(^\^?\w+)\s+(.*?)\s+(\d+)\s+(\(.*?\d\d)\s+\d+\).*", r"\g<1> \g<4>)\t\g<3> \g<2>", line, 1)
+        elif date_format == "relative":
+            # c5c6d072 autoload/leaderf/python/leaderf/manager.py 63 (Yggdroot 4 years, 6 months ago    66) def catchException(func):
+            line = re.sub(r"(^.*?\s\d+\)).*", r"\g<1>", line, 1)
+            return re.sub(r"(^\^?\w+)\s+(.*?)\s+(\d+)\s+(\(.*)", r"\g<1> \g<4>)\t\g<3> \g<2>", line[: -(line_num_width + 1)], 1)
+        elif date_format == "local":
+            # 6817817e autoload/leaderf/manager.py 1 (Yggdroot Wed Feb 26 00:37:26 2014  1) #!/usr/bin/env python
+            line = re.sub(r"(^.*?\s\d+\)).*", r"\g<1>", line, 1)
+            return re.sub(r"(^\^?\w+)\s+(.*?)\s+(\d+)\s+(\(.*)", r"\g<1> \g<4>)\t\g<3> \g<2>", line[: -(line_num_width + 7)], 1)
+        elif date_format in ("rfc", "default"):
+            # 6817817e autoload/leaderf/manager.py 1 (Yggdroot Wed, 26 Feb 2014 00:37:26 +0800    1) #!/usr/bin/env python
+            # 6817817e autoload/leaderf/manager.py 1 (Yggdroot Wed Feb 26 00:37:26 2014 +0800    1) #!/usr/bin/env python
+            line = re.sub(r"(^.*?\s\d+\)).*", r"\g<1>", line, 1)
+            return re.sub(r"(^\^?\w+)\s+(.*?)\s+(\d+)\s+(\(.*)", r"\g<1> \g<4>)\t\g<3> \g<2>", line[: -(line_num_width + 1)], 1)
+        else:
+            return line
+
+    def create(self, arguments_dict, cmd, project_root=None):
+        self._project_root = project_root
+        buffer_name = cmd.getBufferName()
+        line_num_width = len(str(len(vim.current.buffer))) + 1
+
+        date_format = arguments_dict.get("--date", ["iso"])[0]
+        error = []
+        if date_format in ["iso", "iso-strict", "short"]:
+            outputs = ParallelExecutor.run(
+                cmd.getCommand(),
+                format_line=partial(BlamePanel.formatLine, arguments_dict, line_num_width),
+                directory=self._project_root,
+                silent=True,
+                error=error,
+            )
+        else:
+            arguments_dict2 = arguments_dict.copy()
+            arguments_dict2["-c"] = []
+            cmd2 = GitBlameCommand(arguments_dict2, None)
+
+            arguments_dict3 = arguments_dict2.copy()
+            arguments_dict3["--date"] = ["unix"]
+            cmd3 = GitBlameCommand(arguments_dict3, None)
+
+            outputs = ParallelExecutor.run(
+                cmd.getCommand(),
+                cmd2.getCommand(),
+                cmd3.getCommand(),
+                format_line=[partial(BlamePanel.formatLine, arguments_dict, line_num_width), None, None],
+                directory=self._project_root,
+                silent=True,
+                error=error,
+            )
+        if len(error) > 0:
+            lfPrintError(error[0])
+            return
+
+        line_num_width = max(line_num_width, int(lfEval("&numberwidth")))
+        if len(outputs[0]) > 0:
+            if buffer_name in self._views and self._views[buffer_name].valid():
+                top_line = lfEval("line('w0')")
+                cursor_line = lfEval("line('.')")
+                line_width = outputs[0][0].rfind("\t")
+                self._views[buffer_name].create(-1, buf_content=outputs[0])
+                lfCmd(f"vertical resize {line_width + line_num_width}")
+                lfCmd(f"noautocmd norm! {top_line}Gzt{cursor_line}G0")
+                if date_format != lfEval("b:lf_blame_date_format"):
+                    lfCmd(f"let b:lf_blame_date_format = '{date_format}'")
+                    blame_view = self._views[buffer_name]
+                    blame_view.clearHeatSyntax()
+                    if date_format in ["iso", "iso-strict", "short"]:
+                        blame_view.highlightHeatDate1(date_format, outputs[0])
+                    else:
+                        blame_view.highlightHeatDate2(outputs[1], outputs[2])
+            else:
+                winid = int(lfEval("win_getid()"))
+                blame_view = GitBlameView(self, cmd)
+                blame_view.saveAlternateWinOptions(winid, vim.current.buffer.number)
+                lfCmd("setlocal nofoldenable")
+                top_line = lfEval("line('w0')")
+                cursor_line = lfEval("line('.')")
+                line_width = outputs[0][0].rfind("\t")
+                lfCmd(f"silent! noa keepa keepj abo {line_width + line_num_width}vsp {buffer_name}")
+                blame_winid = int(lfEval("win_getid()"))
+                blame_view.create(blame_winid, buf_content=outputs[0])
+                if date_format in ["iso", "iso-strict", "short"]:
+                    blame_view.highlightHeatDate1(date_format, outputs[0])
+                else:
+                    blame_view.highlightHeatDate2(outputs[1], outputs[2])
+                self._owner.defineMaps(blame_winid)
+                lfCmd(f"let b:lf_blame_project_root = '{self._project_root}'")
+                lfCmd(f"let b:lf_blame_date_format = '{date_format}'")
+                lfCmd("let b:lf_blame_file_name = '{}'".format(escQuote(arguments_dict["blamed_file_name"])))
+                lfCmd(f"noautocmd norm! {top_line}Gzt{cursor_line}G0")
+                lfCmd(f"call win_execute({winid}, 'setlocal scrollbind')")
+                lfCmd("setlocal scrollbind")
+                lfCmd(rf"""call win_execute({blame_winid}, 'let &l:stl=" Press <F1> for help.%=".g:Lf_GitStlHeatLine')""")
+        else:
+            lfPrintError("No need to blame!")
+
+
+class ExplorerPage:
+    def __init__(self, project_root, commit_id, owner):
+        self._project_root = project_root
+        self._navigation_panel = NavigationPanel(self, project_root, commit_id, self.afterBufhidden)
+        self._diff_view_panel = DiffViewPanel(self.afterBufhidden, commit_id)
+        self._unified_diff_view_panel = UnifiedDiffViewPanel(self.afterBufhidden, commit_id)
+        self.commit_id = commit_id
+        self._owner = owner
+        self._arguments = {}
+        self.tabpage = None
+
+    def openNavigationPanel(self):
+        self._navigation_panel.open()
+
+    def _createWindow(self, win_pos, buffer_name):
+        if win_pos == "top":
+            height = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelHeight', &lines * 0.3)")))
+            lfCmd(f"silent! noa keepa keepj abo {height}sp {buffer_name}")
+        elif win_pos == "bottom":
+            height = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelHeight', &lines * 0.3)")))
+            lfCmd(f"silent! noa keepa keepj bel {height}sp {buffer_name}")
+        elif win_pos == "left":
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            lfCmd(f"silent! noa keepa keepj abo {width}vsp {buffer_name}")
+        elif win_pos == "right":
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            lfCmd(f"silent! noa keepa keepj bel {width}vsp {buffer_name}")
+        else:  # left
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            lfCmd(f"silent! noa keepa keepj abo {width}vsp {buffer_name}")
+
+        return int(lfEval("win_getid()"))
+
+    def splitWindow(self, win_pos):
+        if win_pos == "top":
+            height = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelHeight', &lines * 0.3)")))
+            height = int(lfEval("&lines")) - height - 4
+            lfCmd(f"silent! noa keepa keepj bel {height}sp")
+        elif win_pos == "bottom":
+            height = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelHeight', &lines * 0.3)")))
+            height = int(lfEval("&lines")) - height - 4
+            lfCmd(f"silent! noa keepa keepj abo {height}sp")
+        elif win_pos == "left":
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            width = int(lfEval("&columns")) - width - 1
+            lfCmd(f"silent! noa keepa keepj bel {width}vsp")
+        elif win_pos == "right":
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            width = int(lfEval("&columns")) - width - 1
+            lfCmd(f"silent! noa keepa keepj abo {width}vsp")
+        else:  # left
+            width = int(float(lfEval("get(g:, 'Lf_GitNavigationPanelWidth', 44)")))
+            width = int(lfEval("&columns")) - width - 1
+            lfCmd(f"silent! noa keepa keepj bel {width}vsp")
+
+        return int(lfEval("win_getid()"))
+
+    def getDiffViewPanel(self):
+        if self._navigation_panel.getDiffViewMode() == "side-by-side":
+            return self._diff_view_panel
+        else:
+            return self._unified_diff_view_panel
+
+    def create(self, arguments_dict, command, target_path=None, line_num=None):
+        self._arguments = arguments_dict
+        lfCmd("noautocmd tabnew | setlocal bufhidden=wipe")
+
+        self.tabpage = vim.current.tabpage
+        diff_view_winid = int(lfEval("win_getid()"))
+        win_pos = arguments_dict.get("--navigation-position", ["left"])[0]
+
+        if isinstance(command, list):
+            buffer_name = command[0].getBufferName()
+            winid = self._createWindow(win_pos, buffer_name)
+        else:
+            buffer_name = command.getBufferName()
+            winid = self._createWindow(win_pos, buffer_name)
+
+        def createDiffViewPanel(get_diff_view_panel, arguments_dict, source, **kwargs):
+            return get_diff_view_panel().create(arguments_dict, source, **kwargs)
+
+        callback = partial(
+            createDiffViewPanel,
+            self.getDiffViewPanel,
+            arguments_dict,
+            winid=diff_view_winid,
+            line_num=line_num,
+            project_root=self._project_root,
+            explorer_page_id=id(self),
+        )
+
+        self._navigation_panel.create(arguments_dict, command, winid, self._project_root, target_path, callback)
+
+    def afterBufhidden(self):
+        if self._navigation_panel.isHidden() and self._diff_view_panel.isAllHidden() and self._unified_diff_view_panel.isAllHidden():
+            lfCmd(f"call timer_start(1, function('leaderf#Git#Cleanup', [{id(self)}]))")
+
+    def cleanup(self):
+        self._navigation_panel.cleanup()
+        self._diff_view_panel.cleanup()
+        self._unified_diff_view_panel.cleanup()
+        self._owner.cleanupExplorerPage(self)
+
+    def cleanupDiffViewPanel(self):
+        self._diff_view_panel.cleanup()
+        self._unified_diff_view_panel.cleanup()
+
+    def getExistingSourceAndTreeViewID(self):
+        for w in vim.current.tabpage.windows:
+            source = lfEval(f"getbufvar({w.buffer.number}, 'lf_diff_view_source', 0)")
+            if source != "0":
+                tree_view_id = lfEval(f"getbufvar({w.buffer.number}, 'lf_tree_view_id', 0)")
+                return (source, int(tree_view_id))
+
+        return (None, None)
+
+    def makeOnly(self):
+        diff_view_mode = self._navigation_panel.getDiffViewMode()
+        for w in vim.current.tabpage.windows:
+            if lfEval(f"getbufvar({w.buffer.number}, 'lf_diff_view_mode', '{diff_view_mode}')") != diff_view_mode:
+                lfCmd("only")
+                break
+
+    def openDiffView(self, recursive, **kwargs):
+        kwargs["project_root"] = self._project_root
+        kwargs["explorer_page_id"] = id(self)
+        kwargs["ignore_whitespace"] = self._navigation_panel.getIgnoreWhitespace()
+        kwargs["diff_algorithm"] = self._navigation_panel.getDiffAlgorithm()
+        if "diff_view_source" in kwargs:
+            source, tree_view_id = self.getExistingSourceAndTreeViewID()
+            kwargs["tree_view_id"] = tree_view_id
+        elif "source_to_open" in kwargs:
+            source = kwargs["source_to_open"]
+        else:
+            tree_view = self._navigation_panel.getTreeView()
+            if tree_view is None:
+                return
+            source = tree_view.expandOrCollapseFolder(recursive)
+            kwargs["tree_view_id"] = id(tree_view)
+
+        if source is not None:
+            self.makeOnly()
+
+            if kwargs.get("mode", "") == "t":
+                tabpage_count = len(vim.tabpages)
+                self.getDiffViewPanel().create(self._arguments, source, **kwargs)
+                if len(vim.tabpages) > tabpage_count:
+                    tabmove()
+            elif len(vim.current.tabpage.windows) == 1:
+                win_pos = self._arguments.get("--navigation-position", ["left"])[0]
+                diff_view_winid = self.splitWindow(win_pos)
+                kwargs["winid"] = diff_view_winid
+                self.getDiffViewPanel().create(self._arguments, source, **kwargs)
+            else:
+                self.getDiffViewPanel().create(self._arguments, source, **kwargs)
+
+            if kwargs.get("preview", False):
+                lfCmd(f"noautocmd call win_gotoid({self._navigation_panel.getWindowId()})")
+
+    def locateFile(self, path, line_num=None, preview=True):
+        self._navigation_panel.locateFile(path, line_num, preview)
+
+
+# *****************************************************
+# GitExplManager
+# *****************************************************
+class GitExplManager(Manager):
+    def __init__(self):
+        super().__init__()
+        self._show_icon = lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1"
+        self._result_panel = ResultPanel()
+        self._preview_panel = PreviewPanel()
+        self._git_diff_manager = None
+        self._git_log_manager = None
+        self._git_blame_manager = None
+        self._git_status_manager = None
+        self._selected_content = None
+        self._project_root = None
+        self._subcommand = ""
+        self._alias_dict = {v: k for k, v in lfEval("g:Lf_GitAlias").items()}
+
+    def _getExplClass(self):
+        return GitExplorer
+
+    def _defineMaps(self):
+        lfCmd(f"call leaderf#Git#Maps({id(self)})")
+        if type(self) is GitExplManager:
+            lfCmd(f"call leaderf#Git#SpecificMaps({id(self)})")
+
+    def _createHelp(self):
+        help = []
+        help.append('" <CR>/<double-click>/o : execute command under cursor')
+        help.append('" i/<Tab> : switch to input mode')
+        if type(self) is GitExplManager:
+            help.append('" e : edit command under cursor')
+        help.append('" p : preview the help information')
+        help.append('" q : quit')
+        help.append('" <F1> : toggle this help')
+        help.append('" <ESC> : close the preview window or quit')
+        help.append('" ---------------------------------------------------------')
+        return help
+
+    def _workInIdle(self, content=None, bang=False):
+        self._result_panel.writeBuffer()
+        self._preview_panel.writeBuffer()
+
+        super()._workInIdle(content, bang)
+
+    def _beforeExit(self):
+        super()._beforeExit()
+        self._preview_panel.cleanup()
+
+    def getExplManager(self, subcommand):
+        subcommand = self._alias_dict.get(subcommand, subcommand)
+        if subcommand == "diff":
+            if self._git_diff_manager is None:
+                self._git_diff_manager = GitDiffExplManager()
+            return self._git_diff_manager
+        elif subcommand == "log":
+            if self._git_log_manager is None:
+                self._git_log_manager = GitLogExplManager()
+            return self._git_log_manager
+        elif subcommand == "blame":
+            if self._git_blame_manager is None:
+                self._git_blame_manager = GitBlameExplManager()
+            return self._git_blame_manager
+        elif subcommand == "status":
+            if self._git_status_manager is None:
+                self._git_status_manager = GitStatusExplManager()
+            return self._git_status_manager
+        else:
+            return super()
+
+    def getWorkingDirectory(self, orig_cwd):
+        wd_mode = lfEval("get(g:, 'Lf_GitWorkingDirectoryMode', 'f')")
+        if wd_mode == "f":
+            cur_buf_name = lfDecode(vim.current.buffer.name)
+            if cur_buf_name:
+                return nearestAncestor([".git"], os.path.dirname(cur_buf_name))
+
+        return nearestAncestor([".git"], orig_cwd)
+
+    def checkWorkingDirectory(self, *args, **kwargs):
+        self._orig_cwd = lfGetCwd()
+        self._project_root = self.getWorkingDirectory(self._orig_cwd)
+
+        if self._project_root:  # there exists a root marker in nearest ancestor path
+            lfChdir(self._project_root)
+        else:
+            if kwargs.get("autocmd") is None:
+                lfPrintError("Not a git repository (or any of the parent directories): .git")
+            return False
+
+        return True
+
+    def startExplorer(self, win_pos, *args, **kwargs):
+        arguments_dict = kwargs.get("arguments", {})
+        if "--recall" in arguments_dict:
+            self._arguments.update(arguments_dict)
+            subcommand = self._subcommand
+        else:
+            self.setArguments(arguments_dict)
+
+            arg_list = self._arguments.get("arg_line", "git").split()
+            arg_list = [item for item in arg_list if not item.startswith("-")]
+            if len(arg_list) == 1:
+                subcommand = ""
+            else:
+                subcommand = arg_list[1]
+            if "autocmd" not in arguments_dict:
+                self._subcommand = subcommand
+
+        self.getExplManager(subcommand).startExplorer(win_pos, *args, **kwargs)
+
+    def accept(self, mode=""):
+        source = self.getSource(self._getInstance().currentLine)
+        self._selected_content = self._preview_panel.getContent(source)
+
+        return super().accept(mode)
+
+    def _accept(self, file, mode, *args, **kwargs):
+        self._acceptSelection(file, *args, **kwargs)
+
+    def _acceptSelection(self, *args, **kwargs):
+        if len(args) == 0 or args[0] == "":
+            return
+
+        line = args[0]
+        cmd = line
+        try:
+            lfCmd(cmd)
+        except vim.error:
+            lfPrintTraceback()
+
+    def _bangEnter(self):
+        super()._bangEnter()
+
+        if lfEval("exists('*timer_start')") == "0":
+            lfCmd("echohl Error | redraw | echo ' E117: Unknown function: timer_start' | echohl NONE")
+            return
+
+        self._callback(bang=True)
+        if self._read_finished < 2:
+            self._timer_id = lfEval("timer_start(10, function('leaderf#Git#TimerCallback', [%d]), {'repeat': -1})" % id(self))
+
+    def getSource(self, line):
+        commands = lfEval("leaderf#Git#Commands()")
+        for cmd in commands:
+            if line in cmd:
+                return cmd[line]
+
+        return None
+
+    def _previewInPopup(self, *args, **kwargs):
+        if len(args) == 0 or args[0] == "":
+            return
+
+        line = args[0]
+        source = self.getSource(line)
+
+        self._createPopupPreview("", source, 0)
+
+    def _createPreviewWindow(self, config, source, line_num, jump_cmd):
+        if lfEval("has('nvim')") == "1":
+            lfCmd("noautocmd let scratch_buffer = nvim_create_buf(0, 1)")
+            lfCmd(f"noautocmd call setbufline(scratch_buffer, 1, '{escQuote(source)}')")
+            lfCmd("noautocmd call nvim_buf_set_option(scratch_buffer, 'bufhidden', 'wipe')")
+            lfCmd("noautocmd call nvim_buf_set_option(scratch_buffer, 'undolevels', -1)")
+
+            self._preview_winid = int(lfEval(f"nvim_open_win(scratch_buffer, 0, {json.dumps(config)})"))
+        else:
+            lfCmd(f"noautocmd let winid = popup_create('{escQuote(source)}', {json.dumps(config)})")
+            self._preview_winid = int(lfEval("winid"))
+
+        self._setWinOptions(self._preview_winid)
+
+    def createGitCommand(self, arguments_dict, source):
+        pass
+
+    def _useExistingWindow(self, title, source, line_num, jump_cmd):
+        self.setOptionsForCursor()
+
+        if lfEval("has('nvim')") == "1":
+            lfCmd(f"""call win_execute({self._preview_winid}, "call nvim_buf_set_lines(0, 0, -1, v:false, ['{escQuote(source)}'])")""")
+        else:
+            lfCmd(f"noautocmd call popup_settext({self._preview_winid}, '{escQuote(source)}')")
+
+    def _cmdExtension(self, cmd):
+        if type(self) is GitExplManager:
+            if equal(cmd, "<C-o>"):
+                self.editCommand()
+            return True
+
+    def editCommand(self):
+        instance = self._getInstance()
+        line = instance.currentLine
+        instance.exitBuffer()
+        lfCmd(f"call feedkeys(':{escQuote(line)}', 'n')")
+
+
+class GitDiffExplManager(GitExplManager):
+    def __init__(self):
+        super().__init__()
+        self._diff_view_panel = DiffViewPanel(self.afterBufhidden)
+        self._pages = set()
+
+    def _getExplorer(self):
+        if self._explorer is None:
+            self._explorer = GitDiffExplorer()
+        return self._explorer
+
+    def _getDigest(self, line, mode):
+        line = line.split("\t[")[0]
+        if mode == 0:
+            return line[5:]
+        elif mode == 1:
+            return getBasename(line)
+        else:
+            return getDirname(line[5:])
+
+    def _getDigestStartPos(self, line, mode):
+        if mode == 0 or mode == 2:
+            return 5
+        else:
+            line = line.split("\t[")[0]
+            return lfBytesLen(getDirname(line))
+
+    def afterBufhidden(self):
+        if self._diff_view_panel.isAllHidden():
+            lfCmd(f"call timer_start(1, function('leaderf#Git#Cleanup', [{id(self)}]))")
+
+    def getSource(self, line):
+        """
+        return a tuple like (b90f76fc1, bad07e644, R099, src/version.c, src/version2.c)
+        """
+        if line == "":
+            return None
+
+        def getFileName(string):
+            return string.split(None, 2 if self._show_icon else 1)[-1]
+
+        parts = line.split("\t[")
+        line = parts[0]
+        if line.startswith("?"):
+            if len(parts) == 2:
+                return ("uuu", "xxx", "?", getFileName(line), "", parts[1].rstrip("]"))
+            else:
+                return ("uuu", "xxx", "?", getFileName(line), "")
+
+        file_name2 = ""
+        if "\t=>\t" in line:
+            # 'R050 hello world.txt\t=>\thello world2.txt'
+            # 'R050   hello world.txt\t=>\thello world2.txt'
+            tmp = line.split("\t=>\t")
+            file_name1 = getFileName(tmp[0])
+            file_name2 = tmp[1]
+        else:
+            # 'M      runtime/syntax/nix.vim'
+            file_name1 = getFileName(line)
+
+        source = self._getExplorer().getSourceInfo().get((file_name1, file_name2), ("", "", "", file_name1, file_name2))
+        if len(parts) == 2:
+            return (*source, parts[1].rstrip("]"))
+        else:
+            return source
+
+    def _createPreviewWindow(self, config, source, line_num, jump_cmd):
+        # source is ('uuu', 'xxx', '?', 'aaa.c', '')
+        if len(source) > 0 and source[1] == "xxx":
+            return self._preview_panel.createView(GitCatFileCommand({}, source[1:4], "000000000"))
+
+        self._preview_panel.create(self.createGitCommand(self._arguments, source), config, project_root=self._project_root)
+        self._preview_winid = self._preview_panel.getPreviewWinId()
+        self._setWinOptions(self._preview_winid)
+
+    def getPreviewCommand(self, arguments_dict, source):
+        arguments_dict.update(self._arguments)
+        return GitDiffCommand(arguments_dict, source)
+
+    def createGitCommand(self, arguments_dict, source):
+        if "owner" in arguments_dict:
+            return arguments_dict["owner"].getPreviewCommand(arguments_dict, source)
+        else:
+            return GitDiffCommand(arguments_dict, source)
+
+    def _useExistingWindow(self, title, source, line_num, jump_cmd):
+        # source is ('uuu', 'xxx', '?', 'aaa.c', '')
+        if len(source) > 0 and source[1] == "xxx":
+            return self._preview_panel.createView(GitCatFileCommand({}, source[1:4], "000000000"))
+
+        self.setOptionsForCursor()
+
+        content = self._preview_panel.getContent(source)
+        if content is None:
+            self._preview_panel.createView(self.createGitCommand(self._arguments, source))
+        else:
+            self._preview_panel.setContent(content)
+            if self._preview_panel.getFileType() != "diff":
+                self._preview_panel.setFileType("diff")
+
+    def vsplitDiff(self):
+        if "--cached" not in self._arguments:
+            if "extra" in self._arguments:
+                cmd = "git diff {} --raw -- {}".format(" ".join(self._arguments["extra"]), self._arguments["current_file"])
+
+                outputs = ParallelExecutor.run(cmd, directory=self._project_root)
+                if len(outputs[0]) == 0:
+                    lfPrintError("No diffs!")
+                    return
+
+                blob = outputs[0][0].split()[2]
+                cmd = f"git cat-file -p {blob}"
+                file_name = "LeaderF://{}:{}".format(blob, self._arguments["current_file"])
+            else:
+                cmd = "git show :{}".format(self._arguments["current_file"])
+                file_name = "LeaderF://:{}".format(self._arguments["current_file"])
+
+            win_ids = [int(lfEval("win_getid()")), 0]
+            lfCmd(f"keepa keepj abo vsp {file_name}")
+            win_ids[1] = int(lfEval("win_getid()"))
+            lfCmd("augroup Lf_Git_Diff | augroup END")
+            lfCmd(f"autocmd! Lf_Git_Diff BufWipeout <buffer> call leaderf#Git#DiffOff({win_ids})")
+            lfCmd(f"call win_execute({win_ids[0]}, 'autocmd! Lf_Git_Diff BufHidden,BufWipeout <buffer> call leaderf#Git#DiffOff({win_ids})')")
+            lfCmd("setlocal nobuflisted")
+            lfCmd("setlocal buftype=nofile")
+            lfCmd("setlocal bufhidden=wipe")
+            lfCmd("setlocal undolevels=-1")
+            lfCmd("setlocal noswapfile")
+            lfCmd("setlocal nospell")
+
+            outputs = ParallelExecutor.run(cmd, directory=self._project_root)
+            vim.current.buffer[:] = outputs[0]
+            lfCmd("setlocal nomodifiable")
+
+            for winid in win_ids:
+                lfCmd(f"call win_execute({winid}, 'diffthis')")
+        else:
+            if "extra" in self._arguments:
+                extra = " ".join(self._arguments["extra"])
+            else:
+                extra = ""
+
+            cmd = "git diff {} --cached --raw -- {}".format(extra, self._arguments["current_file"])
+            outputs = ParallelExecutor.run(cmd, directory=self._project_root)
+            if len(outputs[0]) > 0:
+                _, source = TreeView.generateSource(outputs[0][0])
+                self._diff_view_panel.create(self._arguments, source, **{"mode": "t"})
+            else:
+                lfPrintError("No diffs!")
+
+    def startExplorer(self, win_pos, *args, **kwargs):
+        arguments_dict = kwargs.get("arguments", {})
+        if "--recall" not in arguments_dict and not self.checkWorkingDirectory():
+            return
+
+        if "--recall" not in arguments_dict:
+            self.setArguments(arguments_dict)
+
+        if "--recall" in arguments_dict:
+            super(GitExplManager, self).startExplorer(win_pos, *args, **kwargs)
+        elif "--with" in self._arguments:
+            if len(self._arguments["--with"]) > 0:
+                if "--current-file" in self._arguments:
+                    lfCmd("Leaderf git diff {} --explorer --current-file -s".format(self._arguments["--with"][0]))
+                else:
+                    lfCmd("Leaderf git diff {} --explorer".format(self._arguments["--with"][0]))
+            else:
+                if self._git_log_manager is None:
+                    self._git_log_manager = GitLogExplManager()
+                kw = {"arguments": {"GitDiffExplManager": self}}
+                if "--current-file" in arguments_dict:
+                    kw["arguments"]["--current-file"] = []
+                self._git_log_manager.startExplorer(win_pos, *args, **kw)
+        elif "--current-file" in arguments_dict and vim.current.buffer.name and not vim.current.buffer.options["bt"]:
+            file_name = vim.current.buffer.name
+            if " " in file_name:
+                file_name = file_name.replace(" ", r"\ ")
+            self._arguments["current_file"] = PurePath(lfRelpath(file_name)).as_posix()
+            if "-s" in self._arguments:
+                self.vsplitDiff()
+            else:
+                self._accept(self._arguments["current_file"], "")
+
+            self._restoreOrigCwd()
+        elif "--directly" in self._arguments:
+            self._result_panel.create(self.createGitCommand(self._arguments, None))
+            self._restoreOrigCwd()
+        elif "--explorer" in self._arguments:
+            uid = str(hex(int(time.time())))[-7:]
+            page = ExplorerPage(self._project_root, uid, self)
+            page.create(arguments_dict, GitDiffExplCommand(arguments_dict, uid))
+            self._pages.add(page)
+            self._restoreOrigCwd()
+        else:
+            super(GitExplManager, self).startExplorer(win_pos, *args, **kwargs)
+
+    def _afterEnter(self):
+        super(GitExplManager, self)._afterEnter()
+
+        if lfEval("get(g:, 'Lf_ShowDevIcons', 1)") == "1":
+            winid = self._getInstance().getPopupWinId() if self._getInstance().getWinPos() == "popup" else None
+            icon_pattern = r"^\S*\s*\zs__icon__"
+            self._match_ids.extend(matchaddDevIconsExtension(icon_pattern, winid))
+            self._match_ids.extend(matchaddDevIconsExact(icon_pattern, winid))
+            self._match_ids.extend(matchaddDevIconsDefault(icon_pattern, winid))
+
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitDiffModification'', ''^[MRT]\S*'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitDiffAddition'', ''^[AC]\S*'')')""" % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitDiffDeletion'', ''^[DU]'')')""" % self._getInstance().getPopupWinId())
+            id = int(lfEval("matchid"))
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Comment'', ''\t\zs\[.*]'')')""" % self._getInstance().getPopupWinId())
+            id = int(lfEval("matchid"))
+        else:
+            id = int(lfEval(r"""matchadd('Lf_hl_gitDiffModification', '^[MRT]\S*')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitDiffAddition', '^[AC]\S*')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitDiffDeletion', '^[DU]')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Comment', '\t\zs\[.*]')"""))
+            self._match_ids.append(id)
+
+    def _accept(self, file, mode, *args, **kwargs):
+        if "-s" in self._arguments:
+            kwargs["mode"] = mode
+            self._acceptSelection(file, *args, **kwargs)
+        else:
+            super(GitExplManager, self)._accept(file, mode, *args, **kwargs)
+
+    def _acceptSelection(self, *args, **kwargs):
+        if len(args) == 0 or args[0] == "":
+            return
+
+        line = args[0]
+        source = self.getSource(line)
+
+        if "accept" in self._arguments:
+            title = "" if len(source) == 5 else source[5]
+            self._arguments["accept"](lfGetFilePath(source), title=title)
+        elif "-s" in self._arguments:
+            kwargs["project_root"] = self._project_root
+            self._diff_view_panel.create(self._arguments, source, **kwargs)
+        else:
+            if kwargs.get("mode", "") == "t" and source not in self._result_panel.getSources():
+                self._arguments["mode"] = "t"
+                lfCmd("tabnew")
+            else:
+                self._arguments["mode"] = ""
+
+            tabpage_count = len(vim.tabpages)
+
+            self._result_panel.create(self.createGitCommand(self._arguments, source), self._selected_content)
+
+            if kwargs.get("mode", "") == "t" and len(vim.tabpages) > tabpage_count:
+                tabmove()
+
+    def cleanup(self):
+        self._diff_view_panel.cleanup()
+
+    def cleanupExplorerPage(self, page):
+        self._pages.discard(page)
+
+
+class GitLogExplManager(GitExplManager):
+    def __init__(self):
+        super().__init__()
+        lfCmd("augroup Lf_Git_Log | augroup END")
+        lfCmd("autocmd! Lf_Git_Log FileType git call leaderf#Git#DefineSyntax()")
+        self._diff_view_panel = None
+        # key is commit id, value is ExplorerPage
+        self._pages = {}
+
+    def _getExplorer(self):
+        if self._explorer is None:
+            self._explorer = GitLogExplorer()
+        return self._explorer
+
+    def _getDigest(self, line, mode):
+        return line.lstrip(r"*\|_/ ")
+
+    def _getDigestStartPos(self, line, mode):
+        return len(line) - len(line.lstrip(r"*\|_/ "))
+
+    def afterBufhidden(self):
+        if self._diff_view_panel.isAllHidden():
+            lfCmd(f"call timer_start(1, function('leaderf#Git#Cleanup', [{id(self)}]))")
+
+    def getSource(self, line):
+        """
+        return the hash
+        """
+        line = line.lstrip(r"*\|_/ ")
+        if line == "":
+            return None
+
+        return line.split(None, 1)[0]
+
+    def _createPreviewWindow(self, config, source, line_num, jump_cmd):
+        if source is None:
+            return
+
+        if "--current-line" in self._arguments and len(self._getExplorer().patches) > 0:
+            self._preview_panel.create(
+                self.createGitCommand(self._arguments, source),
+                config,
+                buf_content=self._getExplorer().patches[source],
+                project_root=self._project_root,
+            )
+        else:
+            self._preview_panel.create(self.createGitCommand(self._arguments, source), config, project_root=self._project_root)
+        self._preview_winid = self._preview_panel.getPreviewWinId()
+        self._setWinOptions(self._preview_winid)
+
+    def getPreviewCommand(self, arguments_dict, source):
+        return GitLogDiffCommand(arguments_dict, source)
+
+    def createGitCommand(self, arguments_dict, commit_id):
+        return GitLogCommand(arguments_dict, commit_id)
+
+    def _useExistingWindow(self, title, source, line_num, jump_cmd):
+        if source is None:
+            return
+
+        self.setOptionsForCursor()
+
+        content = self._preview_panel.getContent(source)
+        if content is None:
+            if "--current-line" in self._arguments and len(self._getExplorer().patches) > 0:
+                self._preview_panel.setContent(self._getExplorer().patches[source])
+            else:
+                self._preview_panel.createView(self.createGitCommand(self._arguments, source))
+        else:
+            self._preview_panel.setContent(content)
+
+    def startExplorer(self, win_pos, *args, **kwargs):
+        arguments_dict = kwargs.get("arguments", {})
+        if "--recall" not in arguments_dict and not self.checkWorkingDirectory():
+            return
+
+        if "--recall" not in arguments_dict:
+            self.setArguments(arguments_dict)
+            if "--current-file" in arguments_dict and vim.current.buffer.name and not vim.current.buffer.options["bt"]:
+                file_name = vim.current.buffer.name
+                if " " in file_name:
+                    file_name = file_name.replace(" ", r"\ ")
+                self._arguments["current_file"] = PurePath(lfRelpath(file_name)).as_posix()
+                self._arguments["orig_name"] = self._getExplorer().orig_name
+            elif "--current-line" in arguments_dict and vim.current.buffer.name and not vim.current.buffer.options["bt"]:
+                file_name = vim.current.buffer.name
+                if " " in file_name:
+                    file_name = file_name.replace(" ", r"\ ")
+                self._arguments["current_file"] = PurePath(lfRelpath(file_name)).as_posix()
+                self._arguments["current_line_num"] = vim.current.window.cursor[0]
+
+        if "--recall" in arguments_dict:
+            super(GitExplManager, self).startExplorer(win_pos, *args, **kwargs)
+        elif "--directly" in self._arguments:
+            self._result_panel.create(self.createGitCommand(self._arguments, None))
+            self._restoreOrigCwd()
+        else:
+            super(GitExplManager, self).startExplorer(win_pos, *args, **kwargs)
+
+    def _afterEnter(self):
+        super(GitExplManager, self)._afterEnter()
+
+        if self._getInstance().getWinPos() == "popup":
+            lfCmd(r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitGraph1'', ''^|'')')""" % self._getInstance().getPopupWinId())
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitGraph2'', ''^[*\|_/ ]\{2}\zs|'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitGraph3'', ''^[*\|_/ ]\{4}\zs|'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitGraph4'', ''\(^[*\|_/ ]\{6,}\)\@<=|'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitGraphSlash'', ''\(^[*\|_/ ]\{-}\)\@<=[\/]'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitHash'', ''\(^[*\|_/ ]*\)\@<=[0-9A-Fa-f]\+'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+            lfCmd(
+                r"""call win_execute(%d, 'let matchid = matchadd(''Lf_hl_gitRefNames'', ''^[*\|_/ ]*[0-9A-Fa-f]\+\s*\zs(.\{-})'')')"""
+                % self._getInstance().getPopupWinId()
+            )
+            id = int(lfEval("matchid"))
+        else:
+            id = int(lfEval(r"""matchadd('Lf_hl_gitGraph1', '^|')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitGraph2', '^[*\|_/ ]\{2}\zs|')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitGraph3', '^[*\|_/ ]\{4}\zs|')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitGraph4', '\(^[*\|_/ ]\{6,}\)\@<=|')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitGraphSlash', '\(^[*\|_/ ]\{-}\)\@<=[\/]')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitHash', '\(^[*\|_/ ]*\)\@<=[0-9A-Fa-f]\+')"""))
+            self._match_ids.append(id)
+            id = int(lfEval(r"""matchadd('Lf_hl_gitRefNames', '^[*\|_/ ]*[0-9A-Fa-f]\+\s*\zs(.\{-})')"""))
+            self._match_ids.append(id)
+
+    def _accept(self, file, mode, *args, **kwargs):
+        super(GitExplManager, self)._accept(file, mode, *args, **kwargs)
+
+    def _createExplorerPage(self, commit_id, target_path=None, line_num=None):
+        if commit_id in self._pages:
+            vim.current.tabpage = self._pages[commit_id].tabpage
+        else:
+            self._pages[commit_id] = ExplorerPage(self._project_root, commit_id, self)
+            self._pages[commit_id].create(self._arguments, GitLogExplCommand(self._arguments, commit_id), target_path=target_path, line_num=line_num)
+
+    def _getPathAndLineNum(self, commit_id):
+        patch = self._getExplorer().patches[commit_id]
+        file_path = patch[0].rsplit(None, 1)[1][2:]
+        line_num = 1
+        count = 0
+        found = False
+        for line in patch:
+            if line.startswith("@@"):
+                found = True
+                line_numbers = line.split("+", 1)[1].split(None, 1)[0]
+                if "," in line_numbers:
+                    line_num, _ = line_numbers.split(",")
+                    line_num = int(line_num)
+                else:
+                    # @@ -1886 +1893 @@
+                    line_num = int(line_numbers)
+            elif found:
+                if line.startswith("-"):
+                    pass
+                elif line.startswith("+"):
+                    line_num += count
+                    break
+                else:
+                    count += 1
+
+        return (file_path, line_num)
+
+    def _acceptSelection(self, *args, **kwargs):
+        if len(args) == 0 or args[0] == "":
+            return
+
+        line = args[0]
+        commit_id = self.getSource(line)
+        if commit_id is None:
+            return
+
+        if "GitDiffExplManager" in self._arguments:
+            if "--current-file" in self._arguments:
+                lfCmd(f"Leaderf git diff {commit_id} --explorer --current-file -s")
+            else:
+                lfCmd(f"Leaderf git diff {commit_id} --explorer")
+        elif "--current-file" in self._arguments and "current_file" in self._arguments:
+            file_name = self._getExplorer().orig_name[commit_id]
+            if "--explorer" in self._arguments:
+                self._createExplorerPage(commit_id, file_name)
+            else:
+                if self._diff_view_panel is None:
+                    self._diff_view_panel = DiffViewPanel(self.afterBufhidden)
+
+                self._diff_view_panel.setCommitId(commit_id)
+                cmd = f"git log -1 --follow --pretty= --no-color --raw {commit_id} -- {file_name}"
+                outputs = ParallelExecutor.run(cmd, directory=self._project_root)
+                if len(outputs[0]) > 0:
+                    _, source = TreeView.generateSource(outputs[0][0])
+                    kwargs["project_root"] = self._project_root
+                    self._diff_view_panel.create(self._arguments, source, **kwargs)
+        elif "--current-line" in self._arguments and len(self._getExplorer().patches) > 0:
+            if "--explorer" in self._arguments:
+                file_path, line_num = self._getPathAndLineNum(commit_id)
+                self._createExplorerPage(commit_id, file_path, line_num)
+            else:
+                if kwargs.get("mode", "") == "t" and commit_id not in self._result_panel.getSources():
+                    self._arguments["mode"] = "t"
+                    lfCmd("tabnew")
+
+                tabpage_count = len(vim.tabpages)
+
+                self._result_panel.create(self.createGitCommand(self._arguments, commit_id), self._getExplorer().patches[commit_id])
+
+                if kwargs.get("mode", "") == "t" and len(vim.tabpages) > tabpage_count:
+                    tabmove()
+        elif "--explorer" in self._arguments:
+            self._createExplorerPage(commit_id)
+        else:
+            if kwargs.get("mode", "") == "t" and commit_id not in self._result_panel.getSources():
+                self._arguments["mode"] = "t"
+                lfCmd("tabnew")
+
+            tabpage_count = len(vim.tabpages)
+
+            self._result_panel.create(self.createGitCommand(self._arguments, commit_id), self._selected_content)
+
+            if kwargs.get("mode", "") == "t" and len(vim.tabpages) > tabpage_count:
+                tabmove()
+
+    def cleanup(self):
+        if self._diff_view_panel is not None:
+            self._diff_view_panel.cleanup()
+
+    def cleanupExplorerPage(self, page):
+        del self._pages[page.commit_id]
+
+
+class GitBlameExplManager(GitExplManager):
+    def __init__(self):
+        super().__init__()
+        self._blame_panels = {}
+        # key is commit_id, value is ExplorerPage
+        self._pages = {}
+        # key is buffer number
+        self._blame_infos = {}
+        # key is buffer number
+        self._initial_changedtick = {}
+        lfCmd(f"let g:lf_blame_manager_id = {id(self)}")
+        if lfEval("hlexists('Lf_hl_gitInlineBlame')") == "0":
+            lfCmd("call leaderf#colorscheme#popup#load('{}', '{}')".format("git", lfEval("get(g:, 'Lf_PopupColorscheme', 'default')")))
+        self._blame_timer_id = None
+
+    def discardPanel(self, project_root):
+        del self._blame_panels[project_root]
+
+    def createGitCommand(self, arguments_dict, commit_id):
+        return GitBlameCommand(arguments_dict, commit_id)
+
+    def getPreviewCommand(self, arguments_dict, source):
+        return GitLogDiffCommand(arguments_dict, source)
+
+    def defineMaps(self, winid):
+        lfCmd(f"call win_execute({winid}, 'call leaderf#Git#BlameMaps({id(self)})')")
+
+    def setOptions(self, winid):
+        lfCmd(f"call win_execute({winid}, 'setlocal nobuflisted')")
+        lfCmd(f"call win_execute({winid}, 'setlocal buftype=nofile')")
+        lfCmd(f"call win_execute({winid}, 'setlocal bufhidden=hide')")
+        lfCmd(f"call win_execute({winid}, 'setlocal undolevels=-1')")
+        lfCmd(f"call win_execute({winid}, 'setlocal noswapfile')")
+        lfCmd(f"call win_execute({winid}, 'setlocal nospell')")
+
+    def getLineNumber(self, commit_id, file_name, line_num, text, project_root):
+        cmd = f"git log -1 -p --pretty= -U0 --follow {commit_id} -- {file_name}"
+        outputs = ParallelExecutor.run(cmd, directory=project_root)
+        for i, line in enumerate(outputs[0]):
+            # @@ -2,11 +2,21 @@
+            if line.startswith("@@"):
+                line_numbers = line.split("+", 1)[1].split(None, 1)[0]
+                if "," in line_numbers:
+                    start, count = line_numbers.split(",")
+                    start = int(start)
+                    count = int(count)
+                else:
+                    # @@ -1886 +1893 @@
+                    start = int(line_numbers)
+                    count = 1
+
+                if start + count > line_num:
+                    orig_line_numbers = line.split(None, 2)[1].lstrip("-")
+                    if "," in orig_line_numbers:
+                        orig_start, orig_count = orig_line_numbers.split(",")
+                        orig_start = int(orig_start)
+                        orig_count = int(orig_count)
+                    else:
+                        orig_start = int(orig_line_numbers)
+                        orig_count = 1
+
+                    if orig_count == 1 or orig_count == 0:
+                        return orig_start
+                    elif orig_count == count:
+                        return orig_start + line_num - start
+                    else:
+                        ratio = 0
+                        index = i + 1
+                        for j, line in enumerate(outputs[0][index : index + orig_count], index):
+                            r = SequenceMatcher(None, text, line).ratio()
+                            if r > ratio:
+                                ratio = r
+                                index = j
+
+                        return orig_start + index - i - 1
+
+        return line_num
+
+    def blamePrevious(self):
+        if vim.current.line == "":
+            return
+
+        if vim.current.line.startswith("^"):
+            lfPrintError("First commit!")
+            return
+
+        commit_id = vim.current.line.lstrip("^").split(None, 1)[0]
+        if commit_id.startswith("0000000"):
+            lfPrintError("Not Committed Yet!")
+            return
+
+        line_num, file_name = vim.current.line.rsplit("\t", 1)[1].split(None, 1)
+        line_num = int(line_num)
+        project_root = lfEval("b:lf_blame_project_root")
+        blame_panel = self._blame_panels[project_root]
+        blame_buffer_name = vim.current.buffer.name
+        alternate_winid = blame_panel.getAlternateWinid(blame_buffer_name)
+        blame_winid = lfEval("win_getid()")
+
+        alternate_buffer_num = int(lfEval(f"winbufnr({alternate_winid})"))
+        text = vim.buffers[alternate_buffer_num][vim.current.window.cursor[0] - 1]
+        line_num = self.getLineNumber(commit_id, file_name, line_num, text, project_root)
+        top_line_delta = vim.current.window.cursor[0] - int(lfEval("line('w0')"))
+
+        if commit_id not in blame_panel.getBlameDict(blame_buffer_name):
+            cmd = f'git log -2 --pretty="%H" --name-status --follow {commit_id} -- {file_name}'
+            # output is as below:
+
+            # a7cdd68e0f9e891e6f5def7b2b657d07d92a3675
+            #
+            # R064    tui.py  src/tui.py
+            # 5a0cd5103deba164a6fb33a5a3f67fb3a5dcf378
+            #
+            # M       tui.py
+            outputs = ParallelExecutor.run(cmd, directory=project_root)
+            name_stat = outputs[0][2]
+            if name_stat.startswith("A") or name_stat.startswith("C"):
+                lfPrintError("First commit of current file!")
+                return
+            else:
+                if name_stat.startswith("R"):
+                    orig_name = name_stat.split()[1]
+                else:
+                    orig_name = file_name
+
+            parent_commit_id = outputs[0][3]
+
+            blame_win_width = vim.current.window.width
+            blame_panel.getBlameStack(blame_buffer_name).append(
+                (
+                    vim.current.buffer[:],
+                    lfEval(f"winbufnr({alternate_winid})"),
+                    blame_win_width,
+                    vim.current.window.cursor[0],
+                    int(lfEval("line('w0')")),
+                )
+            )
+
+            alternate_buffer_name = f"LeaderF://{parent_commit_id[:7]}:{orig_name}"
+            blame_buffer_dict = blame_panel.getBlameBufferDict(blame_buffer_name)
+
+            lfCmd(f"noautocmd call win_gotoid({alternate_winid})")
+            if alternate_buffer_name in blame_buffer_dict:
+                blame_buffer, alternate_buffer_num = blame_buffer_dict[alternate_buffer_name]
+                lfCmd(f"noautocmd buffer {alternate_buffer_num}")
+                lfCmd(f"noautocmd norm! {line_num - top_line_delta}Gzt{line_num}G0")
+                top_line = lfEval("line('w0')")
+
+                lfCmd(f"noautocmd call win_gotoid({blame_winid})")
+            else:
+                date_format = self._arguments.get("--date", ["iso"])[0]
+                if date_format in ["iso", "iso-strict", "short"]:
+                    cmd = [
+                        GitBlameCommand.buildCommand(self._arguments, parent_commit_id, orig_name),
+                        f"git show {parent_commit_id}:{orig_name}",
+                    ]
+                else:
+                    arguments_dict2 = self._arguments.copy()
+                    arguments_dict2["-c"] = []
+
+                    arguments_dict3 = arguments_dict2.copy()
+                    arguments_dict3["--date"] = ["unix"]
+
+                    cmd = [
+                        GitBlameCommand.buildCommand(self._arguments, parent_commit_id, orig_name),
+                        f"git show {parent_commit_id}:{orig_name}",
+                        GitBlameCommand.buildCommand(arguments_dict2, parent_commit_id, orig_name),
+                        GitBlameCommand.buildCommand(arguments_dict3, parent_commit_id, orig_name),
+                    ]
+
+                outputs = ParallelExecutor.run(*cmd, directory=project_root)
+                line_num_width = len(str(len(outputs[1]))) + 1
+                blame_buffer = [BlamePanel.formatLine(self._arguments, line_num_width, line) for line in outputs[0]]
+
+                lfCmd("noautocmd enew")
+                self.setOptions(alternate_winid)
+
+                vim.current.buffer[:] = outputs[1]
+                vim.current.buffer.name = alternate_buffer_name
+                lfCmd(f"doautocmd filetypedetect BufNewFile {orig_name}")
+                lfCmd("setlocal nomodifiable")
+                alternate_buffer_num = vim.current.buffer.number
+
+                lfCmd(f"noautocmd norm! {line_num - top_line_delta}Gzt{line_num}G0")
+                top_line = lfEval("line('w0')")
+
+                lfCmd(f"noautocmd call win_gotoid({blame_winid})")
+                blame_view = blame_panel.getBlameView(blame_buffer_name)
+                if date_format in ["iso", "iso-strict", "short"]:
+                    blame_view.highlightRestHeatDate1(date_format, outputs[0])
+                else:
+                    blame_view.highlightRestHeatDate2(outputs[2], outputs[3])
+
+            # here we are in the blame window
+            lfCmd("setlocal modifiable")
+            vim.current.buffer[:] = blame_buffer
+            lfCmd("setlocal nomodifiable")
+            if len(blame_buffer) > 0:
+                line_width = blame_buffer[0].rfind("\t")
+                line_num_width = max(len(str(len(vim.current.buffer))) + 1, int(lfEval("&numberwidth")))
+                lfCmd(f"vertical resize {line_width + line_num_width}")
+                lfCmd(f"noautocmd norm! {top_line}Gzt{line_num}G0")
+                lfCmd(f"call win_execute({alternate_winid}, 'setlocal scrollbind')")
+
+            blame_win_width = vim.current.window.width
+            blame_panel.getBlameDict(blame_buffer_name)[commit_id] = (blame_buffer, alternate_buffer_num, blame_win_width)
+            blame_buffer_dict[alternate_buffer_name] = (blame_buffer, alternate_buffer_num)
+        else:
+            blame_panel.getBlameStack(blame_buffer_name).append(
+                (
+                    vim.current.buffer[:],
+                    lfEval(f"winbufnr({alternate_winid})"),
+                    vim.current.window.width,
+                    vim.current.window.cursor[0],
+                    int(lfEval("line('w0')")),
+                )
+            )
+            (blame_buffer, alternate_buffer_num, blame_win_width) = blame_panel.getBlameDict(blame_buffer_name)[commit_id]
+            lfCmd(f"noautocmd call win_gotoid({alternate_winid})")
+            lfCmd(f"noautocmd buffer {alternate_buffer_num}")
+            lfCmd(f"noautocmd norm! {line_num - top_line_delta}Gzt{line_num}G0")
+            top_line = lfEval("line('w0')")
+
+            lfCmd(f"noautocmd call win_gotoid({blame_winid})")
+            lfCmd("setlocal modifiable")
+            vim.current.buffer[:] = blame_buffer
+            lfCmd("setlocal nomodifiable")
+            lfCmd(f"vertical resize {blame_win_width}")
+            lfCmd(f"noautocmd norm! {top_line}Gzt{line_num}G0")
+
+        if lfEval("exists('b:lf_preview_winid') && winbufnr(b:lf_preview_winid) != -1") == "1":
+            if lfEval("has('nvim')") == "1":
+                lfCmd("call nvim_win_close(b:lf_preview_winid, 1)")
+            else:
+                lfCmd("call popup_close(b:lf_preview_winid)")
+            self.preview()
+
+    def blameNext(self):
+        project_root = lfEval("b:lf_blame_project_root")
+        blame_panel = self._blame_panels[project_root]
+        blame_stack = blame_panel.getBlameStack(vim.current.buffer.name)
+        if len(blame_stack) == 0:
+            return
+
+        blame_buffer, alternate_buffer_num, blame_win_width, cursor_line, top_line = blame_stack.pop()
+        blame_winid = lfEval("win_getid()")
+        alternate_winid = blame_panel.getAlternateWinid(vim.current.buffer.name)
+
+        lfCmd(f"noautocmd call win_gotoid({alternate_winid})")
+        lfCmd(f"noautocmd buffer {alternate_buffer_num}")
+        lfCmd(f"noautocmd norm! {top_line}Gzt{cursor_line}G0")
+
+        lfCmd(f"noautocmd call win_gotoid({blame_winid})")
+        lfCmd("setlocal modifiable")
+        vim.current.buffer[:] = blame_buffer
+        lfCmd("setlocal nomodifiable")
+        lfCmd(f"vertical resize {blame_win_width}")
+        lfCmd(f"noautocmd norm! {top_line}Gzt{cursor_line}G0")
+
+        if lfEval("exists('b:lf_preview_winid') && winbufnr(b:lf_preview_winid) != -1") == "1":
+            if lfEval("has('nvim')") == "1":
+                lfCmd("call nvim_win_close(b:lf_preview_winid, 1)")
+            else:
+                lfCmd("call popup_close(b:lf_preview_winid)")
+            self.preview()
+
+    def showCommitMessage(self):
+        if vim.current.line == "":
+            return
+
+        commit_id = vim.current.line.lstrip("^").split(None, 1)[0]
+        if commit_id.startswith("0000000"):
+            lfPrintError("Not Committed Yet!")
+            return
+
+        project_root = lfEval("b:lf_blame_project_root")
+        cmd = f"cd {project_root} && git show {commit_id} -s --decorate --pretty=fuller"
+        lfCmd(f"""call leaderf#Git#ShowCommitMessage(systemlist('{cmd}'))""")
+
+    def open(self):
+        if vim.current.line == "":
+            return
+
+        commit_id = vim.current.line.lstrip("^").split(None, 1)[0]
+        if commit_id.startswith("0000000"):
+            lfPrintError("Not Committed Yet!")
+            return
+
+        line_num, file_name = vim.current.line.rsplit("\t", 1)[1].split(None, 1)
+
+        if commit_id in self._pages:
+            vim.current.tabpage = self._pages[commit_id].tabpage
+            self._pages[commit_id].locateFile(file_name, line_num, False)
+        else:
+            project_root = lfEval("b:lf_blame_project_root")
+            self._pages[commit_id] = ExplorerPage(project_root, commit_id, self)
+            self._pages[commit_id].create(self._arguments, GitLogExplCommand(self._arguments, commit_id), target_path=file_name, line_num=line_num)
+
+    def generateConfig(self, project_root):
+        maxheight = int(lfEval(f"get(g:, 'Lf_GitBlamePreviewHeight', {vim.current.window.height // 3})"))
+        if maxheight < 5:
+            maxheight = 5
+
+        blame_panel = self._blame_panels[project_root]
+        alternate_winid = blame_panel.getAlternateWinid(vim.current.buffer.name)
+        screenpos = lfEval(f"screenpos({alternate_winid}, {vim.current.window.cursor[0]}, {1})")
+        col = int(screenpos["col"])
+        maxwidth = int(lfEval("&columns")) - col
+
+        if lfEval("has('nvim')") == "1":
+            row = int(screenpos["row"])
+
+            popup_borders = lfEval("g:Lf_PopupBorders")
+            borderchars = [
+                [popup_borders[4], "Lf_hl_popupBorder"],
+                [popup_borders[0], "Lf_hl_popupBorder"],
+                [popup_borders[5], "Lf_hl_popupBorder"],
+                [popup_borders[1], "Lf_hl_popupBorder"],
+                [popup_borders[6], "Lf_hl_popupBorder"],
+                [popup_borders[2], "Lf_hl_popupBorder"],
+                [popup_borders[7], "Lf_hl_popupBorder"],
+                [popup_borders[3], "Lf_hl_popupBorder"],
+            ]
+
+            if row > maxheight + 2:
+                anchor = "SW"
+                row -= 1
+            else:
+                anchor = "NW"
+
+            config = {
+                "title": " Preview ",
+                "title_pos": "center",
+                "relative": "editor",
+                "anchor": anchor,
+                "row": row,
+                "col": col - 1,
+                "width": maxwidth,
+                "height": maxheight,
+                "zindex": 20482,
+                "noautocmd": 1,
+                "border": borderchars,
+                "style": "minimal",
+            }
+        else:
+            config = {
+                "title": " Preview ",
+                "maxwidth": maxwidth,
+                "minwidth": maxwidth,
+                "maxheight": maxheight,
+                "minheight": maxheight,
+                "zindex": 20482,
+                "pos": "botleft",
+                "line": "cursor-1",
+                "col": col,
+                "scrollbar": 0,
+                "padding": [0, 0, 0, 0],
+                "border": [1, 1, 1, 1],
+                "borderchars": lfEval("g:Lf_PopupBorders"),
+                "borderhighlight": ["Lf_hl_popupBorder"],
+                "filter": "leaderf#Git#PreviewFilter",
+                "mapping": 0,
+            }
+
+        return config
+
+    def preview(self):
+        if vim.current.line == "":
+            return
+
+        commit_id = vim.current.line.lstrip("^").split(None, 1)[0]
+
+        line_num, file_name = vim.current.line.rsplit("\t", 1)[1].split(None, 1)
+        line_num = int(line_num)
+
+        if lfEval("has('nvim')") == "1":
+            lfCmd("let b:lf_blame_preview_cursorline = line('.')")
+            lfCmd("let b:lf_blame_winid = win_getid()")
+            if lfEval("exists('b:lf_preview_winid') && winbufnr(b:lf_preview_winid) != -1") == "1":
+                lfCmd("call nvim_win_close(b:lf_preview_winid, 1)")
+
+        project_root = lfEval("b:lf_blame_project_root")
+        if commit_id.startswith("0000000"):
+            cmd = GitCustomizeCommand(self._arguments, f"git diff @ -- {file_name}", None, "git", "setlocal filetype=git")
+        else:
+            cmd = GitShowCommand(self._arguments, commit_id, file_name)
+        outputs = ParallelExecutor.run(cmd.getCommand(), directory=project_root)
+        self._preview_panel.create(cmd, self.generateConfig(project_root), outputs[0])
+        preview_winid = self._preview_panel.getPreviewWinId()
+        self._setWinOptions(preview_winid)
+        lfCmd(f"let b:lf_preview_winid = {preview_winid}")
+        if lfEval("has('nvim')") == "1":
+            lfCmd("call nvim_win_set_option(%d, 'number', v:false)" % preview_winid)
+        else:
+            lfCmd(f"call win_execute({preview_winid}, 'setlocal nonumber')")
+            lfCmd(f"call win_execute({preview_winid}, 'let b:lf_blame_manager_id = {id(self)}')")
+
+        self.gotoLine(preview_winid, line_num)
+        lfCmd(f"call win_execute({preview_winid}, 'setlocal filetype=diff')")
+
+    def quit(self):
+        if lfEval("has('nvim')") == "1":
+            if lfEval("exists('b:lf_preview_winid') && winbufnr(b:lf_preview_winid) != -1") == "1":
+                lfCmd("call nvim_win_close(b:lf_preview_winid, 1)")
+
+        lfCmd("bwipe")
+
+    def gotoLine(self, winid, line_num):
+        found = False
+        current_line = 0
+        view_content = self._preview_panel.getViewContent()
+        for i, line in enumerate(view_content, 1):
+            if found:
+                if not line.startswith("-"):
+                    current_line += 1
+                    if current_line == line_num:
+                        lfCmd(f"call win_execute({winid}, 'norm! {i}Gzz')")
+                        break
+            # @@ -2,11 +2,21 @@
+            elif line.startswith("@@"):
+                line_numbers = line.split("+", 1)[1].split(None, 1)[0]
+                if "," in line_numbers:
+                    start, count = line_numbers.split(",")
+                    start = int(start)
+                    count = int(count)
+                else:
+                    # @@ -1886 +1893 @@
+                    start = int(line_numbers)
+                    count = 1
+
+                if start + count > line_num:
+                    found = True
+                    current_line = start - 1
+
+    def startInlineBlame(self, tmp_file_name):
+        if lfEval("exists('b:lf_blame_changedtick')") == "1":
+            return
+
+        lfCmd("let b:lf_blame_changedtick = b:changedtick")
+        self._initial_changedtick[vim.current.buffer.number] = vim.current.buffer.vars["changedtick"]
+
+        file_name = vim.current.buffer.name
+        if " " in file_name:
+            file_name = file_name.replace(" ", r"\ ")
+
+        if tmp_file_name is None:
+            git_cmd = rf'git blame --line-porcelain -- {file_name} | grep "^author \|^author-time\|^summary"'
+        else:
+            git_cmd = rf'git blame --line-porcelain --contents {tmp_file_name} -- {file_name} | grep "^author \|^author-time\|^summary"'
+
+        self._blame_info_list = []
+        self._read_finished = 0
+
+        reader_thread = threading.Thread(target=self._readBlameInfo, args=(git_cmd, lfEval("&encoding")))
+        reader_thread.daemon = True
+        reader_thread.start()
+
+        if self._blame_timer_id is not None:
+            lfCmd(f"call timer_stop({self._blame_timer_id})")
+        self._blame_timer_id = lfEval("timer_start(50, function('leaderf#Git#InlineBlame', [%d]), {'repeat': -1})" % id(self))
+
+        lfCmd("let g:Lf_git_inline_blame_enabled = 1")
+
+    def _readBlameInfo(self, git_cmd, encoding):
+        try:
+            executor = AsyncExecutor(True)
+            content = executor.execute(git_cmd, encoding=encoding, cwd=self._project_root)
+            self._blame_info_list = list(content)
+            self._read_finished = 1
+        except Exception:
+            # traceback.print_exc()
+            # traceback.print_stack()
+            self._read_finished = 1
+
+    def inlineBlame(self):
+        if self._read_finished == 0:
+            return
+
+        if self._blame_timer_id is not None:
+            lfCmd(f"call timer_stop({self._blame_timer_id})")
+            self._blame_timer_id = None
+
+        lfCmd("augroup Lf_Git_Blame | augroup END")
+        lfCmd("autocmd! Lf_Git_Blame BufRead * silent call leaderf#Git#StartInlineBlame()")
+        lfCmd("autocmd! Lf_Git_Blame BufWinEnter * silent call leaderf#Git#StartInlineBlame()")
+
+        lfCmd("let b:lf_blame_line_number = line('.')")
+
+        if len(self._blame_info_list) == 0:
+            return
+
+        blame_list = iter(self._blame_info_list)
+        i = 0
+        self._blame_infos[vim.current.buffer.number] = {}
+        blame_infos = self._blame_infos[vim.current.buffer.number]
+        if lfEval("has('nvim')") == "1":
+            lfCmd("let ns_id = nvim_create_namespace('LeaderF_Git_Blame_0')")
+            for i, (author, author_time, summary) in enumerate(itertools.zip_longest(blame_list, blame_list, blame_list)):
+                author = author.split(None, 1)[1].replace("External file (--contents)", "Not Committed Yet")
+                author_time = int(author_time.split(None, 1)[1])
+                summary = summary.split(None, 1)[1]
+                mark_id = i + 1
+                blame_infos[mark_id] = (vim.current.buffer[i], author, author_time, summary)
+                lfCmd("call nvim_buf_set_extmark(0, ns_id, %d, 0, {'id': %d})" % (i, mark_id))
+        else:
+            for i, (author, author_time, summary) in enumerate(itertools.zip_longest(blame_list, blame_list, blame_list)):
+                author = author.split(None, 1)[1].replace("External file (--contents)", "Not Committed Yet")
+                author_time = int(author_time.split(None, 1)[1])
+                summary = summary.split(None, 1)[1]
+                prop_id = i + 1
+                blame_infos[prop_id] = (vim.current.buffer[i], author, author_time, summary)
+                lfCmd('call prop_add(%d, 1, {"type": "Lf_hl_gitTransparent", "length": 0, "id": %d})' % (i + 1, prop_id))
+
+        line_number = vim.current.window.cursor[0]
+        _, author, author_time, summary = blame_infos[line_number]
+        author_time = self.formated_time(author_time)
+        blame_info = f"{author} • {author_time} • {summary}"
+        if lfEval("has('nvim')") == "1":
+            lfCmd("let ns_id = nvim_create_namespace('LeaderF_Git_Blame_1')")
+            lfCmd(
+                f"call nvim_buf_set_extmark(0, ns_id, line('.') - 1, 0, {{'id': 1, 'virt_text': [['    {escQuote(blame_info)}', 'Lf_hl_gitInlineBlame']]}})"
+            )
+        else:
+            lfCmd(f"call prop_add(line('.'), 0, {{'type': 'Lf_hl_gitInlineBlame', 'text': '    {escQuote(blame_info)}'}})")
+
+        lfCmd(f"autocmd! Lf_Git_Blame CursorMoved <buffer> call leaderf#Git#UpdateInlineBlame({id(self)})")
+        lfCmd(f"autocmd! Lf_Git_Blame InsertEnter <buffer> call leaderf#Git#HideInlineBlame({id(self)})")
+        lfCmd(f"autocmd! Lf_Git_Blame InsertLeave <buffer> call leaderf#Git#ShowInlineBlame({id(self)})")
+
+    def formated_time(self, timestamp):
+        time_format = lfEval("get(g:, 'Lf_GitBlameTimeFormat', '')")
+        if time_format == "":
+            return self.relative_time(timestamp)
+        else:
+            return datetime.fromtimestamp(timestamp).strftime(time_format)
+
+    def relative_time(self, timestamp):
+        def format_time_unit(value, unit):
+            if value == 1:
+                return f"{value} {unit}"
+            else:
+                return f"{value} {unit}s"
+
+        current_time = datetime.now()
+        past_time = datetime.fromtimestamp(timestamp)
+
+        delta = current_time - past_time
+
+        years = delta.days // 365
+        months = (delta.days % 365) // 30
+        if years >= 1:
+            if months == 0:
+                return "{} ago".format(format_time_unit(years, "year"))
+            else:
+                return "{}, {} ago".format(format_time_unit(years, "year"), format_time_unit(months, "month"))
+        elif months >= 1:
+            return "{} ago".format(format_time_unit(months, "month"))
+        else:
+            days = delta.days
+            if days >= 7:
+                weeks = days // 7
+                return "{} ago".format(format_time_unit(weeks, "week"))
+            elif days >= 1:
+                return "{} ago".format(format_time_unit(days, "day"))
+            else:
+                hours = delta.seconds // 3600
+                if hours >= 1:
+                    return "{} ago".format(format_time_unit(hours, "hour"))
+                else:
+                    minutes = delta.seconds // 60
+                    if minutes >= 1:
+                        return "{} ago".format(format_time_unit(minutes, "minute"))
+                    else:
+                        return "{} ago".format(format_time_unit(delta.seconds, "second"))
+
+    def updateInlineBlame(self):
+        if lfEval("b:lf_blame_line_number == line('.')") == "1" and lfEval("b:lf_blame_changedtick == b:changedtick") == "1":
+            return
+
+        self.showInlineBlame()
+
+    def showInlineBlame(self):
+        if lfEval("has('nvim')") == "1":
+            self.nvim_showInlineBlame()
+            return
+
+        lfCmd("let b:lf_blame_line_number = line('.')")
+        lfCmd("let b:lf_blame_changedtick = b:changedtick")
+
+        lfCmd("call prop_remove({'type': 'Lf_hl_gitInlineBlame'})")
+        prop_list = lfEval("prop_list(line('.'), {'types':['Lf_hl_gitTransparent']})")
+        if len(prop_list) > 0:
+            prop_id = int(prop_list[0]["id"])
+            line, author, author_time, summary = self._blame_infos[vim.current.buffer.number][prop_id]
+            if vim.current.buffer.vars["changedtick"] == self._initial_changedtick[vim.current.buffer.number] or vim.current.line == line:
+                author_time = self.formated_time(author_time)
+                blame_info = f"{author} • {author_time} • {summary}"
+                lfCmd(f"call prop_add(line('.'), 0, {{'type': 'Lf_hl_gitInlineBlame', 'text': '    {escQuote(blame_info)}'}})")
+            else:
+                lfCmd("call prop_add(line('.'), 0, {'type': 'Lf_hl_gitInlineBlame', 'text': '    Not Committed Yet'})")
+        else:
+            lfCmd("call prop_add(line('.'), 0, {'type': 'Lf_hl_gitInlineBlame', 'text': '    Not Committed Yet'})")
+
+    def nvim_showInlineBlame(self):
+        lfCmd("let b:lf_blame_line_number = line('.')")
+        lfCmd("let b:lf_blame_changedtick = b:changedtick")
+
+        lfCmd("let ns_id_1 = nvim_create_namespace('LeaderF_Git_Blame_1')")
+        lfCmd("call nvim_buf_del_extmark(0, ns_id_1, 1)")
+
+        lfCmd("let ns_id_0 = nvim_create_namespace('LeaderF_Git_Blame_0')")
+        mark_list = lfEval("nvim_buf_get_extmarks(0, ns_id_0, [line('.')-1, 0], [line('.')-1, -1], {})")
+        if len(mark_list) > 0:
+            mark_id = int(mark_list[0][0])
+            line, author, author_time, summary = self._blame_infos[vim.current.buffer.number][mark_id]
+            if vim.current.buffer.vars["changedtick"] == self._initial_changedtick[vim.current.buffer.number] or vim.current.line == line:
+                author_time = self.formated_time(author_time)
+                blame_info = f"{author} • {author_time} • {summary}"
+                if lfEval("has('nvim')") == "1":
+                    lfCmd(
+                        f"call nvim_buf_set_extmark(0, ns_id_1, line('.') - 1, 0, {{'id': 1, 'virt_text': [['    {escQuote(blame_info)}', 'Lf_hl_gitInlineBlame']]}})"
+                    )
+                else:
+                    lfCmd(f"call prop_add(line('.'), 0, {{'type': 'Lf_hl_gitInlineBlame', 'text': '    {escQuote(blame_info)}'}})")
+            else:
+                if lfEval("has('nvim')") == "1":
+                    lfCmd(
+                        "call nvim_buf_set_extmark(0, ns_id_1, line('.') - 1, 0, {'id': 1, 'virt_text': [[ '    Not Committed Yet', 'Lf_hl_gitInlineBlame']]})"
+                    )
+                else:
+                    lfCmd("call prop_add(line('.'), 0, {'type': 'Lf_hl_gitInlineBlame', 'text': '    Not Committed Yet'})")
+        else:
+            if lfEval("has('nvim')") == "1":
+                lfCmd(
+                    "call nvim_buf_set_extmark(0, ns_id_1, line('.') - 1, 0, {'id': 1, 'virt_text': [[ '    Not Committed Yet', 'Lf_hl_gitInlineBlame']]})"
+                )
+            else:
+                lfCmd("call prop_add(line('.'), 0, {'type': 'Lf_hl_gitInlineBlame', 'text': '    Not Committed Yet'})")
+
+    def hideInlineBlame(self):
+        if lfEval("has('nvim')") == "1":
+            lfCmd("let ns_id_1 = nvim_create_namespace('LeaderF_Git_Blame_1')")
+            lfCmd("call nvim_buf_del_extmark(0, ns_id_1, 1)")
+        else:
+            lfCmd("call prop_remove({'type': 'Lf_hl_gitInlineBlame'})")
+
+    def disableInlineBlame(self):
+        lfCmd("let g:Lf_git_inline_blame_enabled = 0")
+        lfCmd("augroup Lf_Git_Blame | au! | augroup END")
+        buffers = {b.number for b in vim.buffers}
+        if lfEval("has('nvim')") == "1":
+            for buffer_num in self._blame_infos:
+                if buffer_num not in buffers:
+                    continue
+
+                lfCmd("call leaderf#Git#RemoveExtmarks(%d)" % buffer_num)
+                del vim.buffers[buffer_num].vars["lf_blame_changedtick"]
+        else:
+            for buffer_num in self._blame_infos:
+                if buffer_num not in buffers:
+                    continue
+
+                lfCmd("call prop_remove({'type': 'Lf_hl_gitInlineBlame', 'bufnr': %d})" % buffer_num)
+                lfCmd("call prop_remove({'type': 'Lf_hl_gitTransparent', 'bufnr': %d})" % buffer_num)
+                del vim.buffers[buffer_num].vars["lf_blame_changedtick"]
+
+        self._blame_infos = {}
+        self._initial_changedtick = {}
+
+    def startExplorer(self, win_pos, *args, **kwargs):
+        arguments_dict = kwargs.get("arguments", {})
+        if not self.checkWorkingDirectory(**arguments_dict):
+            return
+
+        self.setArguments(arguments_dict)
+
+        if lfEval("exists('b:lf_blame_file_name')") == "1":
+            buf_winid = int(lfEval("bufwinid(b:lf_blame_file_name)"))
+            if buf_winid != -1:
+                lfCmd(f"noautocmd call win_gotoid({buf_winid})")
+            else:
+                lfCmd("bel vsp {}".format(lfEval("b:lf_blame_file_name")))
+
+        if vim.current.buffer.name and not vim.current.buffer.options["bt"]:
+            if not vim.current.buffer.name.startswith(self._project_root):
+                lfPrintError(f"fatal: '{lfRelpath(vim.current.buffer.name)}' is outside repository at '{self._project_root}'")
+            else:
+                self._arguments["blamed_file_name"] = vim.current.buffer.name
+                tmp_file_name = None
+                if vim.current.buffer.options["modified"]:
+                    tmp_file = partial(tempfile.NamedTemporaryFile, encoding=lfEval("&encoding"))
+
+                    with tmp_file(mode="w+", delete=False) as f:
+                        for line in vim.current.buffer:
+                            f.write(line + "\n")
+                        tmp_file_name = f.name
+                    self._arguments["--contents"] = [tmp_file_name]
+
+                if "--inline" in self._arguments:
+                    self.startInlineBlame(tmp_file_name)
+                else:
+                    if self._project_root not in self._blame_panels:
+                        self._blame_panels[self._project_root] = BlamePanel(self)
+
+                    self._blame_panels[self._project_root].create(
+                        arguments_dict, self.createGitCommand(self._arguments, None), project_root=self._project_root
+                    )
+                if tmp_file_name is not None:
+                    os.remove(tmp_file_name)
+        else:
+            if arguments_dict.get("autocmd", None) is None:
+                lfPrintError(f"fatal: no such path '{vim.current.buffer.name}' in HEAD")
+
+        self._restoreOrigCwd()
+
+    def cleanupExplorerPage(self, page):
+        del self._pages[page.commit_id]
+
+
+class GitStatusExplManager(GitExplManager):
+    def __init__(self):
+        super().__init__()
+        self._pages = set()
+
+    def startExplorer(self, win_pos, *args, **kwargs):
+        arguments_dict = kwargs.get("arguments", {})
+        if "--recall" not in arguments_dict and not self.checkWorkingDirectory():
+            return
+
+        if "--recall" in arguments_dict:
+            super(GitExplManager, self).startExplorer(win_pos, *args, **kwargs)
+        else:
+            self.setArguments(arguments_dict)
+
+            uid = str(hex(int(time.time())))[-7:]
+            page = ExplorerPage(self._project_root, uid, self)
+            command = [
+                GitStagedCommand(arguments_dict, uid),
+                GitUnstagedCommand(arguments_dict, uid),
+                GitUntrackedCommand(arguments_dict, uid),
+            ]
+            page.create(arguments_dict, command)
+            self._pages.add(page)
+            self._restoreOrigCwd()
+
+    def getPreviewCommand(self, arguments_dict, source):
+        arguments_dict.update(self._arguments)
+        return GitDiffCommand(arguments_dict, source)
+
+    def cleanupExplorerPage(self, page):
+        self._pages.discard(page)
+
+
+# *****************************************************
+# gitExplManager is a singleton
+# *****************************************************
+gitExplManager = GitExplManager()
+
+__all__ = ["gitExplManager"]

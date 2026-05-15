@@ -1,0 +1,464 @@
+# .github/workflows/monorepo-os-gates.yml — Monorepo OS Health Verification
+# Runs the heartbeat probe on every push to main and on PR.
+# Verifies all 10 subsystems are operational.
+name: Monorepo OS Gates
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'tool_contracts/**'
+      - '.beads/**'
+      - '.memory/**'
+      - 'operator_invariants_atoms.json'
+      - 'operator_invariants.json'
+      - 'upload_policy.yaml'
+      - 'index_policy.yaml'
+      - 'MONOREPO_OS.md'
+      - 'AGENTS.md'
+      - 'scripts/monorepo-health-loop.sh'
+      - 'scripts/skills-audit.sh'
+      - 'scripts/prepush-bloat-gate.sh'
+      - 'scripts/release-readiness-gate.sh'
+      - 'scripts/repo-oracle-score.sh'
+      - 'scripts/daily-truth-report.sh'
+      - 'external_repos/upstream_manifest.yaml'
+      - '.bloat-allowlist'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  monorepo-os-health:
+    name: Monorepo OS Health Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Truth Files Exist
+        run: |
+          echo "═══ Monorepo OS Truth File Verification ═══"
+          MISSING=0
+
+          # Core truth files
+          for f in \
+            ".beads/issues.jsonl" \
+            ".memory/events.ndjson" \
+            "tool_contracts/tool.gateway.yaml" \
+            "operator_invariants_atoms.json" \
+            "upload_policy.yaml" \
+            "index_policy.yaml" \
+            "MONOREPO_OS.md"; do
+            if [ -f "$f" ]; then
+              echo "  ✓ $f"
+            else
+              echo "  ✗ $f — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::${MISSING} truth files missing"
+            exit 1
+          fi
+          echo "All truth files present."
+
+      - name: Verify ToolGateway Contracts
+        run: |
+          echo "═══ ToolGateway Contract Verification ═══"
+          REQUIRED_CONTRACTS=(
+            "tool.gateway.yaml"
+            "github.push.yaml"
+            "repo.secret_scan.yaml"
+            "skills.update.yaml"
+            "skills.repo_mass_reduction.yaml"
+            "skills.yolo_mode_operator.yaml"
+          )
+          MISSING=0
+          for contract in "${REQUIRED_CONTRACTS[@]}"; do
+            if [ -f "tool_contracts/$contract" ]; then
+              echo "  ✓ $contract"
+            else
+              echo "  ✗ $contract — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::${MISSING} required contracts missing"
+            exit 1
+          fi
+          echo "All required contracts present."
+
+      - name: Verify Operator Invariants (Bidirectional Cross-Check)
+        run: |
+          echo "═══ Operator Invariants Bidirectional Verification ═══"
+          python3 -c "
+          import json, sys
+
+          # Load both truth surfaces
+          with open('operator_invariants.json') as f:
+              invariants = json.load(f)
+          with open('operator_invariants_atoms.json') as f:
+              atoms_data = json.load(f)
+
+          atoms = atoms_data.get('atoms', [])
+          print(f'  Invariants count: {len(invariants)}')
+          print(f'  Atoms count: {len(atoms)}')
+
+          # Extract all invariant IDs from canonical JSON
+          invariant_ids = {str(inv['id']) for inv in invariants}
+          print(f'  Invariant IDs: {sorted(invariant_ids, key=int)}')
+
+          # Required governance IDs (must be in BOTH surfaces)
+          required_ids = {'105', '113', '114', '115', '138', '139', '140', '141'}
+
+          # Check 1: All required IDs exist in operator_invariants.json
+          missing_from_invariants = required_ids - invariant_ids
+          if missing_from_invariants:
+              print(f'  FAIL: Missing from operator_invariants.json: {missing_from_invariants}')
+              sys.exit(1)
+          print(f'  ✓ All {len(required_ids)} required IDs present in invariants')
+
+          # Check 2: All required IDs have matching atoms (via source_ref #ID pattern)
+          atom_refs = set()
+          for atom in atoms:
+              ref = atom.get('source_ref', '')
+              for rid in required_ids:
+                  if f'#{rid}' in ref:
+                      atom_refs.add(rid)
+
+          missing_from_atoms = required_ids - atom_refs
+          if missing_from_atoms:
+              print(f'  FAIL: Missing atoms for IDs: {missing_from_atoms}')
+              sys.exit(1)
+          print(f'  ✓ All {len(required_ids)} required IDs have matching atoms')
+
+          # Check 3: Both files parse as valid JSON (structural integrity)
+          print('  ✓ Bidirectional cross-verification PASSED')
+          "
+
+      - name: Verify Triage Completeness
+        run: |
+          echo "═══ SkillOps Triage Verification ═══"
+          if [ -f ".reports/skills/unsafe_findings_triage.md" ]; then
+            echo "  ✓ Triage report exists"
+            # Check that triage has all three categories
+            for category in "ACTUAL RISK" "MODERATE" "FALSE POSITIVE"; do
+              if grep -q "$category" .reports/skills/unsafe_findings_triage.md; then
+                echo "  ✓ Category: $category"
+              else
+                echo "  ✗ Category missing: $category"
+                exit 1
+              fi
+            done
+          else
+            echo "::warning::No triage report found — run skills-audit.sh"
+          fi
+
+      - name: NDJSON Integrity Check
+        run: |
+          echo "═══ NDJSON Integrity ═══"
+          for f in ".beads/issues.jsonl" ".memory/events.ndjson"; do
+            if [ -f "$f" ]; then
+              LINE_COUNT=$(wc -l < "$f" | tr -d ' ')
+              # Validate each line is valid JSON
+              ERRORS=$(python3 -c "
+          import json, sys
+          errors = 0
+          with open('$f') as fh:
+              for i, line in enumerate(fh, 1):
+                  line = line.strip()
+                  if not line:
+                      continue
+                  try:
+                      json.loads(line)
+                  except json.JSONDecodeError:
+                      errors += 1
+                      print(f'  Line {i}: invalid JSON', file=sys.stderr)
+          print(errors)
+              ")
+              if [ "$ERRORS" -gt 0 ]; then
+                echo "::error::$f has $ERRORS invalid JSON lines"
+                exit 1
+              fi
+              echo "  ✓ $f — $LINE_COUNT lines, valid"
+            fi
+          done
+
+      - name: Verify Clone Yard & Guardrail Audit
+        run: |
+          echo "═══ Clone Yard Truth ═══"
+          test -f external_repos/upstream_manifest.yaml || (echo "::error::Missing clone-yard manifest"; exit 1)
+          python3 -c "import yaml; yaml.safe_load(open('external_repos/upstream_manifest.yaml'))" || (echo "::error::Invalid YAML in manifest"; exit 1)
+          bash -n scripts/clone-external-reference-repos.sh
+          scripts/clone-external-reference-repos.sh --dry-run || (echo "::error::Clone yard dry-run failed"; exit 1)
+          echo "  ✓ Clone-yard manifest and dry-run passed"
+
+          echo "═══ Guardrail Audit ═══"
+          bash -n scripts/guardrail-annotation-audit.sh
+          scripts/guardrail-annotation-audit.sh || (echo "::error::Guardrail audit failed"; exit 1)
+          test -f .reports/skills/guardrail_annotation_audit.md || (echo "::error::Missing guardrail audit report"; exit 1)
+          echo "  ✓ Guardrail annotation passed"
+
+      - name: Repo Oracle Score
+        run: |
+          echo "═══ Repo Oracle Score Gate ═══"
+          if [ -x scripts/repo-oracle-score.sh ]; then
+            SCORE_JSON=$(bash scripts/repo-oracle-score.sh --json)
+            PERCENTAGE=$(echo "$SCORE_JSON" | python3 -c "import json,sys; print(json.load(sys.stdin)['percentage'])")
+            echo "  Oracle Score: ${PERCENTAGE}%"
+            if [ "$PERCENTAGE" -lt 85 ]; then
+              echo "::error::Oracle score ${PERCENTAGE}% is below 85% threshold"
+              exit 1
+            fi
+            echo "  ✓ Score above threshold"
+          else
+            echo "::warning::repo-oracle-score.sh not executable"
+          fi
+
+      - name: Guardrail Annotation Audit
+        run: |
+          echo "═══ Guardrail Annotation Audit ═══"
+          if [ -x scripts/guardrail-annotation-audit.sh ]; then
+            bash scripts/guardrail-annotation-audit.sh || true
+            echo "  ✓ Audit complete"
+          else
+            echo "::warning::guardrail-annotation-audit.sh not executable"
+          fi
+
+      - name: Clone Yard Manifest Validation
+        run: |
+          echo "═══ Clone Yard Dry Run ═══"
+          if [ -f "external_repos/upstream_manifest.yaml" ]; then
+            # Validate YAML structure (stdlib-only, no pyyaml dependency)
+            python3 -c "
+          import re, sys
+          with open('external_repos/upstream_manifest.yaml') as f:
+              content = f.read()
+          # Extract all '- org/repo' entries
+          entries = re.findall(r'^\s+-\s+(\S+)', content, re.MULTILINE)
+          valid = 0
+          for entry in entries:
+              if '/' not in entry:
+                  print(f'  INVALID: {entry} (missing org/repo format)')
+                  sys.exit(1)
+              valid += 1
+          # Count groups (lines ending with colon, indented under 'groups:')
+          groups = re.findall(r'^\s{2}(\w[\w_]*):', content, re.MULTILINE)
+          print(f'  Groups: {len(groups)}')
+          print(f'  Total repos: {valid}')
+          print('  ✓ All repo references valid (org/repo format)')
+            "
+          else
+            echo "::warning::upstream_manifest.yaml not found"
+          fi
+
+      - name: Bloat Gate (CI Mode)
+        run: |
+          echo "═══ Bloat Gate ═══"
+          if [ -x scripts/prepush-bloat-gate.sh ]; then
+            bash scripts/prepush-bloat-gate.sh --fast
+            echo "  ✓ Bloat gate passed"
+          else
+            echo "::warning::prepush-bloat-gate.sh not executable"
+          fi
+
+      - name: Daily Truth Report
+        run: |
+          echo "═══ Daily Truth Report ═══"
+          if [ -x scripts/daily-truth-report.sh ]; then
+            bash scripts/daily-truth-report.sh 2>/dev/null || true
+            echo "  ✓ Report generated"
+          fi
+
+      - name: Firebase Deploy Gate (P0)
+        run: |
+          echo "═══ Firebase Deploy Gate ═══"
+          if [ -x scripts/firebase-deploy-gate.sh ]; then
+            if ! bash scripts/firebase-deploy-gate.sh; then
+              echo "::error::Firebase deploy gate FAILED"
+              exit 1
+            fi
+            echo "  ✓ Firebase deploy gate complete"
+          else
+            echo "::warning::firebase-deploy-gate.sh not executable"
+          fi
+
+      - name: GITHUB_TOKEN Scope Audit (P0)
+        run: |
+          echo "═══ GITHUB_TOKEN Scope Audit ═══"
+          if [ -x scripts/github-token-scope-audit.sh ]; then
+            if ! bash scripts/github-token-scope-audit.sh; then
+              echo "::error::GitHub token scope audit FAILED"
+              exit 1
+            fi
+            echo "  ✓ Token scope audit complete"
+          else
+            echo "::warning::github-token-scope-audit.sh not executable"
+          fi
+
+      # ─── P1 Operational Contracts (v3.0) ───
+
+      - name: Beads Health Check (P1)
+        run: |
+          echo "═══ Beads Health Check ═══"
+          if [ -x scripts/beads-health.sh ]; then
+            bash scripts/beads-health.sh || true
+            echo "  ✓ Beads health check complete"
+          else
+            echo "::warning::beads-health.sh not executable"
+          fi
+
+      - name: Memory Integrity Check (P1)
+        run: |
+          echo "═══ Memory Integrity Check ═══"
+          # Verify .memory/atoms/ contains at least one atom
+          ATOM_COUNT=$(find .memory/atoms/ -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+          echo "  Memory atoms: ${ATOM_COUNT}"
+          if [ "$ATOM_COUNT" -lt 1 ]; then
+            echo "::warning::No memory atoms found in .memory/atoms/"
+          else
+            echo "  ✓ Memory atoms present"
+          fi
+
+          # Verify events.ndjson integrity
+          if [ -f ".memory/events.ndjson" ]; then
+            LINE_COUNT=$(wc -l < .memory/events.ndjson | tr -d ' ')
+            echo "  Events log: ${LINE_COUNT} entries"
+            echo "  ✓ Memory integrity check passed"
+          else
+            echo "::warning::events.ndjson not found"
+          fi
+
+      - name: Knowledge Compile Check (P1)
+        run: |
+          echo "═══ Knowledge Compile Check ═══"
+          if [ -f scripts/dream_consolidation.py ]; then
+            echo "  ✓ dream_consolidation.py exists"
+          else
+            echo "::warning::dream_consolidation.py not found"
+          fi
+          # Verify KI directories exist
+          KI_COUNT=$(find knowledge/ -name 'metadata.json' 2>/dev/null | wc -l | tr -d ' ')
+          echo "  Knowledge Items: ${KI_COUNT}"
+          if [ "$KI_COUNT" -gt 0 ]; then
+            echo "  ✓ Knowledge items present"
+          else
+            echo "::warning::No KI metadata.json files found"
+          fi
+
+      - name: Design System Lint (P1)
+        run: |
+          echo "═══ Design System Lint ═══"
+          if [ -f scripts/design-system-lint.mjs ]; then
+            echo "  ✓ design-system-lint.mjs exists"
+            DESIGN_FILES=$(find . -name 'DESIGN.md' -not -path './node_modules/*' -not -path './external_repos/*' 2>/dev/null | wc -l | tr -d ' ')
+            echo "  DESIGN.md files found: ${DESIGN_FILES}"
+            if [ "$DESIGN_FILES" -gt 0 ]; then
+              echo "  ✓ Design system files present"
+            else
+              echo "::warning::No DESIGN.md files found"
+            fi
+          else
+            echo "::warning::design-system-lint.mjs not found"
+          fi
+
+      - name: Bootstrap Alignment (P1)
+        run: |
+          echo "═══ Bootstrap Alignment Check ═══"
+          if [ -x scripts/bootstrap-alignment-plan.sh ]; then
+            bash scripts/bootstrap-alignment-plan.sh --check 2>/dev/null || true
+            echo "  ✓ Bootstrap alignment check complete"
+          else
+            echo "::warning::bootstrap-alignment-plan.sh not executable"
+          fi
+
+      - name: Firebase Tool Bridge Check (P1)
+        run: |
+          echo "═══ Firebase Tool Bridge ═══"
+          REQUIRED_FILES=(
+            "packages/firebase_tool_bridge/bridge.py"
+            "packages/firebase_tool_bridge/registry.py"
+            "packages/firebase_tool_bridge/evidence.py"
+          )
+          MISSING=0
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ -f "$f" ]; then
+              echo "  ✓ $f"
+            else
+              echo "  ✗ $f — MISSING"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::warning::${MISSING} Firebase Tool Bridge files missing"
+          else
+            echo "  ✓ Firebase Tool Bridge complete"
+          fi
+
+      - name: Python Typecheck (ruff E-series)
+        run: |
+          echo "═══ python.typecheck.yaml Enforcement ═══"
+          if command -v ruff >/dev/null 2>&1; then
+            # E-series: runtime errors, syntax errors, import errors
+            ERRORS=$(ruff check --select E --exclude external_repos --exclude node_modules --quiet . 2>&1 | wc -l | tr -d ' ')
+            ERRORS=${ERRORS:-0}
+            if [ "$ERRORS" -eq 0 ]; then
+              echo "  ✓ ruff E-series: 0 errors"
+            else
+              echo "  ❌ ruff E-series: ${ERRORS} findings"
+              ruff check --select E --exclude external_repos --exclude node_modules . 2>&1 | head -30
+              echo "::error::${ERRORS} ruff E-series errors — P1 enforcement FAIL"
+              exit 1
+            fi
+          elif pip install ruff 2>/dev/null; then
+            ERRORS=$(ruff check --select E --exclude external_repos --exclude node_modules --quiet . 2>&1 | wc -l | tr -d ' ')
+            echo "  ruff installed on-the-fly — ${ERRORS:-0} E-series findings"
+          else
+            echo "::warning::ruff not available — python.typecheck enforcement skipped"
+          fi
+
+      - name: Consequential Action Contract (v3.5)
+        run: |
+          echo "═══ function_call.consequential_action Enforcement ═══"
+          if [ -f "tool_contracts/function_call.consequential_action.yaml" ]; then
+            # Verify the contract has preconditions (not advisory-only)
+            if grep -q "consequential_action_confirmed" tool_contracts/function_call.consequential_action.yaml; then
+              echo "  ✓ Contract has confirmation precondition"
+            else
+              echo "  ❌ Contract exists but lacks confirmation precondition"
+              echo "::error::consequential_action contract missing confirmation gate"
+              exit 1
+            fi
+            # Verify ClassifiedGateway integration
+            if grep -q "consequential_action" packages/tool_gateway/classified_gateway.py 2>/dev/null; then
+              echo "  ✓ Wired into ClassifiedGateway"
+            else
+              echo "::warning::Contract not wired into ClassifiedGateway"
+            fi
+          else
+            echo "::warning::function_call.consequential_action.yaml not found"
+          fi
+
+  release-readiness:
+    name: Release Readiness Gate
+    runs-on: ubuntu-latest
+    needs: monorepo-os-health
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Release Readiness Gate
+        run: |
+          chmod +x scripts/release-readiness-gate.sh scripts/repo-oracle-score.sh scripts/prepush-bloat-gate.sh 2>/dev/null || true
+          bash scripts/release-readiness-gate.sh

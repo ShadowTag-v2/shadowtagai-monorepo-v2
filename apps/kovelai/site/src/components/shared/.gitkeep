@@ -1,0 +1,3 @@
+# Shared — Composed multi-feature components
+# Components that combine multiple UI primitives into domain-specific blocks.
+# Move Hero, Nav, Footer, Pricing, etc. here during component reorganization.

@@ -1,0 +1,220 @@
+{
+  "timestamp": "2026-04-30T17:44:58.360083+00:00",
+  "memories_reviewed": 35,
+  "contradictions_found": 1,
+  "memories_deleted": 1,
+  "memories_annotated": 0,
+  "learnings_extracted": 3,
+  "reconciliations": [
+    {
+      "slug": "tacsop1-disposition-audit",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "v93_canonicalization_hardening",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "cl4r1t4s_competitive_intel",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "claude_code_leak_audit",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "lsp_voice_integration",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "third-party-leak-inventory",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "gemini-ultra-tier",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "mcp-fleet-ecosystem",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "gitnexus_integration_ops",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "tacsop2-disposition-audit",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "agents",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "setup-workspace-skill",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "shared",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "gemini_agent_swarm_ops",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "veo-3.1-architecture",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "submodule-cleanup-mcp-fleet",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "temporal_swarm_orchestration",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "tacsop4-kairos-github-push",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "_views",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "claude_code_forensic_spec",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "github-first-protocol",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "sovereign-compute-integration",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "kosmos-swarm-architecture",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "veo-3.1-api-findings",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "google-cognitive-suite-v2",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "react-native-ecosystem",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "ccleaks_deep_fold_in_part_3",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "cc_leaks_deep_fold_in",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "tacsop0-activation-audit",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "claude_code_remaining_services",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "tacsop5-gitops-assessment",
+      "resolution": "memory_stale",
+      "annotation": "Memory 'tacsop5-gitops-assessment' conflicts with AGENTS.md \u2014 AGENTS.md is the maintained source. Memory marked for deletion/rewrite.",
+      "action_taken": "MARKED_FOR_DELETION"
+    },
+    {
+      "slug": "uphillsnowball_operator_invariants_doctrine",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "uuid7-cloud-run-fix",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "monorepo_secure_drift_control",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    },
+    {
+      "slug": "cor_ant_source_code_gates",
+      "resolution": "not_a_conflict",
+      "annotation": "",
+      "action_taken": "NO_ACTION"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "request": {
+      "method": "research",
+      "query": "Python asyncio patterns"
+    },
+    "response": {
+      "text": "# Research Report\n\n## Key Findings\n\n1. asyncio.Queue for producer-consumer\n2. TaskGroup for structured concurrency",
+      "images": [],
+      "interaction_id": "sweep-vcr-001"
+    },
+    "timestamp": 1777900010.0
+  }
+]

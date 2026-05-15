@@ -1,0 +1,38 @@
+#!/bin/bash
+# post-commit hook — Epistemic Engine Write-Through Cache
+# Prevents sync drift by notifying the agent when docs change.
+#
+# Install: cp scripts/hooks/post-commit .git/hooks/post-commit && chmod +x .git/hooks/post-commit
+
+set -e
+
+# Only trigger for changes in curated knowledge paths
+CHANGED_DOCS=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -E '^(docs/|adrs/|design/|\.agents/|AGENTS\.md|GEMINI\.md|BUSINESS_CONTEXT_LOCKED\.md|RISK_REGISTER\.md|monorepo_manifest\.yaml|walkthrough\.md)' || true)
+
+if [ -z "$CHANGED_DOCS" ]; then
+    exit 0
+fi
+
+# Count changed files
+DOC_COUNT=$(echo "$CHANGED_DOCS" | wc -l | tr -d ' ')
+
+echo "[epistemic-cache] $DOC_COUNT document(s) changed in curated paths:"
+echo "$CHANGED_DOCS" | head -10
+
+# Write a marker file for the agent to pick up on next boot
+MARKER_DIR=".beads"
+mkdir -p "$MARKER_DIR"
+MARKER="$MARKER_DIR/epistemic_sync_needed.json"
+
+cat > "$MARKER" << EOF
+{
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "commit": "$(git rev-parse HEAD)",
+  "changed_docs": $(echo "$CHANGED_DOCS" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read().strip().split('\n')))" 2>/dev/null || echo '[]'),
+  "action": "re-upload_to_epistemic_engine",
+  "store": "fileSearchStores/uphillsnowballarchitecture-r0dt6v412dh1"
+}
+EOF
+
+echo "[epistemic-cache] Sync marker written to $MARKER"
+echo "[epistemic-cache] Agent will re-upload changed docs on next cycle."

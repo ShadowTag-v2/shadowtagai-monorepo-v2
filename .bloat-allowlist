@@ -1,0 +1,21 @@
+# .bloat-allowlist — Pre-existing files allowed through the bloat gate
+# These files existed before the bloat gate was introduced.
+# New additions MUST be justified via PR review.
+# Format: one path per line (prefix match), comments with #
+
+# Legacy ingest bundles (control plane history)
+.agent/ingest_staging/
+control/antigravity/
+
+# Development databases (local dev, not deployed)
+.beads/beads_index.sqlite
+.chroma_db/chroma.sqlite3
+apps/aiyou_stack/aiyou-fastapi-services/aiyou_agents.db
+apps/aiyou_stack/aiyou-fastapi-services/apps/autoresearch-server/aiyou_agents.db
+apps/aiyou_stack/aiyou-fastapi-services/data/context_index.db
+apps/aiyou_stack/aiyou-fastapi-services/data/web_ingest/test_ingest.db
+apps/aiyou_stack/aiyou-fastapi-services/data/wp_gemini_kosmos.db
+
+# Legacy archived video assets
+apps/kovelai/public-v1-archive/hero-videos/legal-data-arch.webm
+apps/shadowtagai/public-v1-archive/hero-videos/legal-data-arch.webm

@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""
+ANTIGRAVITY // MISSION LAUNCHER
+Integrates with pnkln_tasks.sh and SOP Snippets
+"""
+
+import json
+import logging
+import ssl
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.request
+
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+SERVER_URL = "https://n-autoresearch/Kosmos/BioAgentss-server-x6h2e7g3aa-uc.a.run.app"
+
+# Bypass SSL verification for local dev environment issues
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
+
+def get_identity_token():
+    try:
+        token = subprocess.check_output(
+            ["gcloud", "auth", "print-identity-token"], text=True
+        ).strip()
+        return token
+    except Exception as e:
+        print(f"❌ Failed to get auth token: {e}")
+        sys.exit(1)
+
+
+def load_doctrine():
+    with open("Prompts/pnkln_SOPSnippets.json") as f:
+        return json.load(f)
+
+
+def execute_sop(sop, token):
+    print(f"\n⚡ EXECUTING SOP: {sop['name']}")
+    print(f"   📝 Prompt: {sop['prompt']}")
+
+    url = f"{SERVER_URL}/task"
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    data = json.dumps(
+        {
+            "prompt": sop["prompt"],
+            "agents": 5,
+            "cost_tier": "flash",  # Use flash for speed in this demo
+        }
+    ).encode("utf-8")
+
+    try:
+        req = urllib.request.Request(url, data=data, headers=headers, method="POST")
+        start_time = time.time()
+        with urllib.request.urlopen(req, context=ssl_context) as response:
+            result = json.loads(response.read().decode("utf-8"))
+            latency = time.time() - start_time
+
+            status_icon = "✅" if result.get("success") else "❌"
+            print(f"   {status_icon} STATUS: {result.get('status', 'Completed')}")
+            print(
+                f"   🤖 AGENTS: {result.get('agents_used')} | ⏱️ {latency:.2f}s | 💵 ${result.get('cost_usd', 0)}"
+            )
+            if result.get("error"):
+                print(f"   ⚠️ ERROR: {result.get('error')}")
+
+    except urllib.error.HTTPError as e:
+        print(f"   ❌ HTTP Error {e.code}: {e.read().decode('utf-8')}")
+    except Exception as e:
+        print(f"   ❌ Error: {e}")
+
+
+def execute_tier_30():
+    print("🚀 ACTIVATING TIER 30: THE CHILD INSTANCE")
+    print("⚔️ 30 VERTICALS ENGAGED")
+    print("🛡️ JUDGE #6 BRAKES ACTIVE")
+
+    token = get_identity_token()
+    doctrine = load_doctrine()
+    print(f"✅ LOADED {len(doctrine)} SOPs. Commencing execution sequence...")
+
+    for sop in doctrine:
+        execute_sop(sop, token)
+        time.sleep(1)  # Brief pause between missions
+
+
+if __name__ == "__main__":
+    execute_tier_30()

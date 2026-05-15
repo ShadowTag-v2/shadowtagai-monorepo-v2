@@ -1,0 +1,30 @@
+Analyzing dio...
+
+  error - test/interceptor_test.dart:113:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:115:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:120:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:125:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:130:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:135:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:138:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:143:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:148:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:162:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:165:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:168:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:175:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:213:17 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:318:15 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:325:15 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:330:15 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:337:15 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/interceptor_test.dart:344:15 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/transformer_test.dart:46:9 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/transformer_test.dart:47:9 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/transformer_test.dart:49:9 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/transformer_test.dart:256:11 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/transformer_test.dart:257:11 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+  error - test/transformer_test.dart:259:11 - The 'case' shouldn't complete normally. Try adding 'break', 'return', or 'throw'. - switch_case_completes_normally
+   info - test/adapters_test.dart:16:11 - 'onHttpClientCreate' is deprecated and shouldn't be used. Use createHttpClient instead. This will be removed in 6.0.0. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+
+26 issues found.

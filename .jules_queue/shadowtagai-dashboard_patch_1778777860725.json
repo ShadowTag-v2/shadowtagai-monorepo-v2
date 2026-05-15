@@ -1,0 +1,7 @@
+{
+  "siteId": "shadowtagai-dashboard",
+  "url": "https://shadowtagai.web.app",
+  "astRule": "Dynamic Import Optimization",
+  "baseline": { "performance": 94, "accessibility": 93, "bestPractices": 100, "seo": 100 },
+  "timestamp": 1778777860725
+}

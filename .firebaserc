@@ -1,0 +1,27 @@
+{
+  "projects": {
+    "default": "shadowtag-omega-v4"
+  },
+  "targets": {
+    "shadowtag-omega-v4": {
+      "hosting": {
+        "shadowtagai": [
+          "shadowtagai"
+        ],
+        "kovelai": [
+          "kovelai"
+        ],
+        "headfade": [
+          "headfade"
+        ],
+        "headfade-com": [
+          "headfade-com"
+        ],
+        "counselconduit-dashboard": [
+          "counselconduit-dashboard"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

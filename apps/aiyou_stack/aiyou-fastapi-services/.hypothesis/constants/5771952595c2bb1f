@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/shadowtag_v4/middleware.py
+# hypothesis_version: 6.151.5
+
+['DENY', 'Permissions-Policy', 'Referrer-Policy', 'X-Frame-Options', 'nosniff']

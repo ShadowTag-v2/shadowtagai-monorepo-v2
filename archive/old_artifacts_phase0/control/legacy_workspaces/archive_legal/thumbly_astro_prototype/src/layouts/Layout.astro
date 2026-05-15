@@ -1,0 +1,21 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Thumbly | High-Conversion Thumbnails</title>
+	</head>
+	<body class="bg-black text-white selection:bg-emerald-500/30">
+        <!-- Abstract Glass Orbs -->
+        <div class="fixed top-1/4 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px] -z-10 pointer-events-none" aria-hidden="true"></div>
+        <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] -z-10 pointer-events-none" aria-hidden="true"></div>
+
+        <slot />
+	</body>
+</html>

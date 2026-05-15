@@ -1,0 +1,11 @@
+# --- SECURITY: BLOCKED FILES ---
+.env
+.env.*
+*.key
+*.pem
+*.p12
+**/secrets/*
+credentials.json
+# --- NOISE REDUCTION ---
+package-lock.json
+yarn.lock

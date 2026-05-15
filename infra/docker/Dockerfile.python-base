@@ -1,0 +1,19 @@
+# Docker/OCI Base Images for ShadowTagAI Services
+
+## Python Base (3.14-slim)
+
+FROM python:3.14-slim AS python-base
+WORKDIR /app
+RUN pip install --no-cache-dir --upgrade pip
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+## Usage
+# This is a reference Dockerfile. Each app has its own Dockerfile
+# that extends these base patterns.
+
+## CounselConduit
+# See: apps/counselconduit/Dockerfile
+
+## AiYou Stack
+# See: apps/aiyou_stack/Dockerfile (to be created)

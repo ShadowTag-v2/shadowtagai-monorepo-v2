@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/schemas/funnel.py
+# hypothesis_version: 6.151.5
+
+[0.25, 0.5, 45.2, 180.5, 250, 500, 1000, 'Funnel description', 'Funnel name', 'Funnel steps', 'Landing Page', 'Sign-up Complete', 'Sign-up Form', 'Sign-up Funnel', 'Step description', 'acquisition', 'avg_completion_time', 'conversion_rate', 'description', 'drop_off_rate', 'event_name', 'example', 'funnel_id', 'funnel_name', 'landing_page_view', 'name', 'signup', 'signup_completed', 'signup_form_view', 'step_order', 'steps', 'tags', 'time_window_hours', 'total_users_entered', 'users_completed', 'users_entered']

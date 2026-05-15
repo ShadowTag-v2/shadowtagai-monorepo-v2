@@ -1,0 +1,116 @@
+#!/bin/bash
+# Antigravity CLI - Thin client that calls Cloud Run
+#
+# Usage:
+#   antigravity "Build a REST API for user authentication"
+#   antigravity intake "Break this into atoms"
+#   antigravity status
+#
+# Requires: gcloud auth configured
+
+ANTIGRAVITY_URL="${ANTIGRAVITY_URL:-https://antigravity-orchestrator-215390634092.us-central1.run.app}"
+
+# Get auth token
+get_token() {
+    gcloud auth print-identity-token 2>/dev/null
+}
+
+# Make authenticated request
+auth_request() {
+    local method="$1"
+    local endpoint="$2"
+    local data="$3"
+
+    TOKEN=$(get_token)
+    if [ -z "$TOKEN" ]; then
+        echo "Error: Could not get auth token. Run 'gcloud auth login'"
+        exit 1
+    fi
+
+    if [ "$method" = "GET" ]; then
+        curl -s -H "Authorization: Bearer $TOKEN" "$ANTIGRAVITY_URL$endpoint"
+    else
+        curl -s -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$data" \
+            "$ANTIGRAVITY_URL$endpoint"
+    fi
+}
+
+# Commands
+case "$1" in
+    health|status)
+        echo "=== Antigravity Status ==="
+        auth_request GET /health | python3 -m json.tool
+        ;;
+
+    intake)
+        shift
+        INPUT="$*"
+        echo "=== Antigravity Intake (Gemini 3 Pro 2M) ==="
+        auth_request POST /intake "{\"input\": \"$INPUT\"}" | python3 -m json.tool
+        ;;
+
+    research)
+        echo "=== Antigravity Research (Perplexity + Grok) ==="
+        # Expects JSON atoms from stdin
+        ATOMS=$(cat)
+        auth_request POST /research "{\"atoms\": $ATOMS}" | python3 -m json.tool
+        ;;
+
+    execute)
+        echo "=== Antigravity Execute (10× Claude Code) ==="
+        ATOMS=$(cat)
+        auth_request POST /execute "{\"atoms\": $ATOMS}" | python3 -m json.tool
+        ;;
+
+    vote)
+        CODE="$2"
+        TASK="$3"
+        echo "=== Antigravity Vote (650 Autoresearch) ==="
+        auth_request POST /vote "{\"code\": \"$CODE\", \"task\": \"$TASK\"}" | python3 -m json.tool
+        ;;
+
+    validate)
+        CODE="$2"
+        echo "=== Antigravity Validate (CodePMCS) ==="
+        auth_request POST /validate "{\"code\": \"$CODE\"}" | python3 -m json.tool
+        ;;
+
+    pipeline|"")
+        shift
+        TASK="$*"
+        if [ -z "$TASK" ]; then
+            echo "Usage: antigravity \"Your task description\""
+            echo ""
+            echo "Commands:"
+            echo "  antigravity \"task\"       Run full pipeline"
+            echo "  antigravity intake \"in\"  Atomize input only"
+            echo "  antigravity status       Check service health"
+            echo "  antigravity vote         Run Autoresearch vote"
+            echo ""
+            echo "Pipeline: Gemini→Perplexity→Grok→Claude→Autoresearch→CodePMCS→Deploy"
+            echo "Agents: 8,450 (650 × 10 Claude + 650 × 3 research)"
+            exit 0
+        fi
+
+        echo "╔══════════════════════════════════════════════════════════════════╗"
+        echo "║           ANTIGRAVITY - Running Full Pipeline                    ║"
+        echo "╠══════════════════════════════════════════════════════════════════╣"
+        echo "║  Task: ${TASK:0:60}"
+        echo "║  Pipeline: Gemini→Perplexity→Grok→Claude→Autoresearch           ║"
+        echo "║  Agents: 8,450                                                   ║"
+        echo "╚══════════════════════════════════════════════════════════════════╝"
+        echo ""
+
+        auth_request POST /pipeline "{\"task\": \"$TASK\", \"auto_deploy\": false}" | python3 -m json.tool
+        ;;
+
+    *)
+        # Treat as task
+        TASK="$*"
+        echo "Running full pipeline for: $TASK"
+        auth_request POST /pipeline "{\"task\": \"$TASK\", \"auto_deploy\": false}" | python3 -m json.tool
+        ;;
+esac

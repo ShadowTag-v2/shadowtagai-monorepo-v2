@@ -1,0 +1,266 @@
+#!/usr/bin/env python3
+"""
+Antigravity Daemon - Unified startup and monitoring for n-autoresearch/Kosmos/BioAgentss + Oracle
+
+Commands:
+    antigravity-daemon start    - Start all services
+    antigravity-daemon stop     - Stop all services
+    antigravity-daemon status   - Check service status
+    antigravity-daemon monitor  - Continuous health monitoring (for launchd)
+    antigravity-daemon restart  - Restart all services
+"""
+
+import argparse
+import os
+import signal
+import subprocess
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+# Service configuration
+SERVICES = {
+    "n-autoresearch/Kosmos/BioAgentss": {
+        "port": 8600,
+        "script": "bin/n-autoresearch/Kosmos/BioAgentss-server",
+        "health": "http://127.0.0.1:8600/health",
+        "env": {"PORT": "8600"},
+    },
+    "oracle": {
+        "port": 8700,
+        "script": "bin/oracle-server",
+        "health": "http://127.0.0.1:8700/health",
+        "env": {"ORACLE_PORT": "8700"},
+    },
+}
+
+PROJECT_ROOT = Path(__file__).parent.parent.resolve()
+LOG_DIR = PROJECT_ROOT / ".logs"
+PID_DIR = PROJECT_ROOT / ".pids"
+
+
+def log(msg: str):
+    """Log with timestamp."""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] {msg}")
+
+
+def get_pid_file(service: str) -> Path:
+    """Get PID file path for a service."""
+    PID_DIR.mkdir(exist_ok=True)
+    return PID_DIR / f"{service}.pid"
+
+
+def get_log_file(service: str) -> Path:
+    """Get log file path for a service."""
+    LOG_DIR.mkdir(exist_ok=True)
+    return LOG_DIR / f"{service}.log"
+
+
+def is_running(service: str) -> bool:
+    """Check if a service is running."""
+    pid_file = get_pid_file(service)
+    if not pid_file.exists():
+        return False
+
+    try:
+        pid = int(pid_file.read_text().strip())
+        os.kill(pid, 0)  # Check if process exists
+        return True
+    except (ValueError, ProcessLookupError, PermissionError):
+        pid_file.unlink(missing_ok=True)
+        return False
+
+
+def check_health(service: str) -> bool:
+    """Check service health endpoint."""
+    config = SERVICES[service]
+    try:
+        import urllib.request
+
+        with urllib.request.urlopen(config["health"], timeout=5) as response:
+            return response.status == 200
+    except Exception:
+        return False
+
+
+def start_service(service: str) -> bool:
+    """Start a single service."""
+    if is_running(service):
+        log(f"{service}: Already running")
+        return True
+
+    config = SERVICES[service]
+    script = PROJECT_ROOT / config["script"]
+    log_file = get_log_file(service)
+    pid_file = get_pid_file(service)
+
+    # Build environment
+    env = os.environ.copy()
+    env["PYTHONPATH"] = f"{PROJECT_ROOT}:{PROJECT_ROOT}/src"
+    env.update(config.get("env", {}))
+
+    # Start the process
+    with open(log_file, "a") as log_f:
+        log_f.write(f"\n{'=' * 60}\n")
+        log_f.write(f"Starting {service} at {datetime.now()}\n")
+        log_f.write(f"{'=' * 60}\n")
+
+        process = subprocess.Popen(
+            [sys.executable, str(script)],
+            cwd=str(PROJECT_ROOT),
+            env=env,
+            stdout=log_f,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+
+    # Save PID
+    pid_file.write_text(str(process.pid))
+    log(f"{service}: Started (PID {process.pid})")
+
+    # Wait for health check
+    for _ in range(10):
+        time.sleep(1)
+        if check_health(service):
+            log(f"{service}: Healthy on port {config['port']}")
+            return True
+
+    log(f"{service}: Started but health check failed")
+    return True  # Process started, even if health check fails
+
+
+def stop_service(service: str) -> bool:
+    """Stop a single service."""
+    pid_file = get_pid_file(service)
+    if not pid_file.exists():
+        log(f"{service}: Not running (no PID file)")
+        return True
+
+    try:
+        pid = int(pid_file.read_text().strip())
+        os.kill(pid, signal.SIGTERM)
+        log(f"{service}: Sent SIGTERM to PID {pid}")
+
+        # Wait for graceful shutdown
+        for _ in range(10):
+            time.sleep(0.5)
+            try:
+                os.kill(pid, 0)
+            except ProcessLookupError:
+                pid_file.unlink(missing_ok=True)
+                log(f"{service}: Stopped")
+                return True
+
+        # Force kill if still running
+        os.kill(pid, signal.SIGKILL)
+        pid_file.unlink(missing_ok=True)
+        log(f"{service}: Force killed")
+        return True
+
+    except (ValueError, ProcessLookupError, PermissionError) as e:
+        pid_file.unlink(missing_ok=True)
+        log(f"{service}: {e}")
+        return True
+
+
+def status_all():
+    """Print status of all services."""
+    print("\n╔══════════════════════════════════════════════════════════════════════╗")
+    print("║  ANTIGRAVITY DAEMON STATUS                                            ║")
+    print("╠══════════════════════════════════════════════════════════════════════╣")
+
+    for service, config in SERVICES.items():
+        running = is_running(service)
+        healthy = check_health(service) if running else False
+
+        status_str = "HEALTHY" if healthy else ("RUNNING" if running else "STOPPED")
+        status_icon = "●" if healthy else ("○" if running else "✗")
+
+        print(
+            f"║  {status_icon} {service.upper():15} Port {config['port']:5}  Status: {status_str:10} ║"
+        )
+
+    print("╚══════════════════════════════════════════════════════════════════════╝\n")
+
+
+def start_all():
+    """Start all services."""
+    log("Starting all services...")
+    for service in SERVICES:
+        start_service(service)
+    status_all()
+
+
+def stop_all():
+    """Stop all services."""
+    log("Stopping all services...")
+    for service in SERVICES:
+        stop_service(service)
+    status_all()
+
+
+def restart_all():
+    """Restart all services."""
+    stop_all()
+    time.sleep(2)
+    start_all()
+
+
+def monitor():
+    """
+    Continuous monitoring loop for launchd.
+    Restarts services that fail health checks.
+    """
+    log("Starting monitor mode...")
+    start_all()
+
+    check_interval = 30  # seconds
+    failure_threshold = 3  # consecutive failures before restart
+    failures = {service: 0 for service in SERVICES}
+
+    while True:
+        for service in SERVICES:
+            if check_health(service):
+                failures[service] = 0
+            else:
+                failures[service] += 1
+                log(f"{service}: Health check failed ({failures[service]}/{failure_threshold})")
+
+                if failures[service] >= failure_threshold:
+                    log(f"{service}: Restarting due to repeated failures")
+                    stop_service(service)
+                    time.sleep(2)
+                    start_service(service)
+                    failures[service] = 0
+
+        time.sleep(check_interval)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Antigravity Daemon - n-autoresearch/Kosmos/BioAgentss + Oracle service manager"
+    )
+    parser.add_argument(
+        "command",
+        choices=["start", "stop", "status", "restart", "monitor"],
+        help="Command to execute",
+    )
+
+    args = parser.parse_args()
+
+    if args.command == "start":
+        start_all()
+    elif args.command == "stop":
+        stop_all()
+    elif args.command == "status":
+        status_all()
+    elif args.command == "restart":
+        restart_all()
+    elif args.command == "monitor":
+        monitor()
+
+
+if __name__ == "__main__":
+    main()

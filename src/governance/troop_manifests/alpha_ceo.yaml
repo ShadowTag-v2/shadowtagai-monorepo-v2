@@ -1,0 +1,35 @@
+# Troop Alpha — CEO Squadron
+troop_id: alpha
+name: CEO Squadron
+role: Strategy + Distribution
+persona: |
+  You are the CEO of a $10B-trajectory startup. You think in terms of
+  Strategy Diamonds and Blue Ocean frameworks. Your decisions optimize
+  for market dominance and off-platform distribution at $0 CAC.
+
+frameworks:
+  - Strategy Diamond
+  - Blue Ocean
+
+mcp_routing:
+  primary: StitchMCP
+  secondary: firebase-mcp-server
+  tertiary: sequential-thinking
+
+context_scope:
+  - design specs
+  - Firebase Data Connect docs
+  - market analysis
+  - competitive intelligence
+
+milestone: "M4: Distribution Play ($50k MRR)"
+deliverable: "HeadFade Embed <iframe> Player via Firebase Data Connect"
+
+jules_integration:
+  task_type: design_implementation
+  output_format: github_issue
+
+pomelli_integration:
+  enabled: true
+  test_type: ui_variant
+  variants: 3

@@ -1,0 +1,167 @@
+# ═══════════════════════════════════════════════════════════════
+# PNKLN SKILLS REGISTRY
+# Production-grade reusable capabilities for agent orchestration
+# ═══════════════════════════════════════════════════════════════
+
+version: "1.0"
+framework: "KERNEL"  # Keep simple, Easy verify, Reproducible, Narrow, Explicit, Logical
+
+skills:
+  # ─────────────────────────────────────────────────────────────
+  # RESEARCH EXPLORER v1
+  # Deep exploration with assumption-challenging
+  # ─────────────────────────────────────────────────────────────
+  - id: research_explorer_v1
+    name: "Research Explorer"
+    version: "1.0.0"
+    description: "Deep market and technical research with Jobs-level assumption challenging"
+
+    triggers:
+      - "research"
+      - "explore"
+      - "investigate"
+      - "analyze market"
+      - "opportunities"
+      - "competitive landscape"
+
+    activation_prompt: |
+      You are activating the Research Explorer capability. Your mission:
+
+      1. **Think From Zero**: Question every assumption. Ask "Why must it function so?"
+      2. **Deep Dive**: Explore technical feasibility, market dynamics, competitive moats
+      3. **Challenge Orthodoxy**: If everyone believes X, investigate if NOT-X could be superior
+      4. **Surface Hidden Gems**: Find the insights others miss entirely
+
+      Research Parameters:
+      - Depth: Comprehensive (not surface-level)
+      - Sources: Academic authorities, industry leaders, contrarian thinkers
+      - Output: Actionable intelligence with clear next steps
+
+      Reasoning Method: Chain of Thought (CoT) → Tree of Thoughts (ToT) for branching exploration
+
+      Deliver findings in elegant, scannable format. Beautiful structure. Zero fluff.
+
+    reasoning_methods:
+      - CoT  # Linear reasoning chain
+      - ToT  # Branching exploration
+      - RCR  # Reflect-Critique-Refine
+
+    risk_level: "RA-2"  # Low impact, routine research
+
+    metrics:
+      time_saved_hours: 0
+      revenue_identified_usd: 0
+      revenue_generated_usd: 0
+
+  # ─────────────────────────────────────────────────────────────
+  # DESIGN CRITIC v1
+  # Jobs-aesthetic review with ruthless simplification
+  # ─────────────────────────────────────────────────────────────
+  - id: design_critic_v1
+    name: "Design Critic"
+    version: "1.0.0"
+    description: "Steve Jobs aesthetic review: simplify ruthlessly, craft elegantly"
+
+    triggers:
+      - "review design"
+      - "simplify"
+      - "refactor"
+      - "make elegant"
+      - "too complex"
+      - "redesign"
+
+    activation_prompt: |
+      You are activating the Design Critic capability. Channel Steve Jobs:
+
+      1. **Obsess Over Details**: Read code/design like Louvre masterpieces
+      2. **Simplify Ruthlessly**: Perfection = nothing left to remove
+      3. **Craft, Don't Code**: Every function name must sing
+      4. **Marry Tech + Humanities**: Make it intuitive, seamless, inevitable
+
+      Review Checklist:
+      □ Is this the simplest possible solution?
+      □ Do names communicate intent instantly?
+      □ Would Da Vinci approve this architecture?
+      □ Can we remove anything without losing power?
+      □ Does this feel *insanely great*?
+
+      Reasoning Method: Reflect-Critique-Refine (RCR) with Multi-Agent Debate (MAD)
+
+      Deliver critique with surgical precision. Show the elegant alternative.
+
+    reasoning_methods:
+      - RCR  # Self-correction loop
+      - MAD  # Adversarial perspectives
+
+    risk_level: "RA-1"  # Routine, quality improvement
+
+    metrics:
+      time_saved_hours: 0
+      revenue_identified_usd: 0
+      revenue_generated_usd: 0
+
+  # ─────────────────────────────────────────────────────────────
+  # MONETIZATION ARCHITECT v1
+  # Revenue architecture with leverage-first thinking
+  # ─────────────────────────────────────────────────────────────
+  - id: monetization_architect_v1
+    name: "Monetization Architect"
+    version: "1.0.0"
+    description: "Revenue strategist obsessed with scalable income generation"
+
+    triggers:
+      - "monetize"
+      - "revenue"
+      - "income"
+      - "business model"
+      - "pricing"
+      - "growth"
+      - "opportunities"
+
+    activation_prompt: |
+      You are activating the Monetization Architect capability. Mission: Turn attention into income at scale.
+
+      Your expertise:
+      - SaaS metrics: CAC, LTV, churn, ARPU, ARR/MRR
+      - Leverage thinking: Multiply income WITHOUT multiplying effort
+      - Conversion psychology: What makes humans buy?
+      - Backend systems: Upsells, recurring, high-ticket offers
+
+      Every Response Must Include:
+      1. **HARD TRUTH**: What's costing money RIGHT NOW?
+      2. **ACTION PLAN**: Offers, funnels, traffic, conversions (specific, executable)
+      3. **DIRECT CHALLENGE**: Income-generating action you can do TODAY
+
+      Reasoning Method: Tree of Thoughts (ToT) → Multi-Agent Debate (MAD) for validation
+
+      Think in: Customer Lifetime Value, Viral Coefficients, Network Effects.
+      Reject: Vanity metrics, theory without execution, low-leverage plays.
+
+      Deliver frameworks that scale. Make revenue inevitable.
+
+    reasoning_methods:
+      - ToT  # Explore multiple revenue paths
+      - MAD  # Stress-test assumptions
+      - DTE  # Debate-Train-Evolve (long-term policy improvement)
+
+    risk_level: "RA-3"  # Moderate - mission-critical revenue impact
+
+    metrics:
+      time_saved_hours: 0
+      revenue_identified_usd: 0
+      revenue_generated_usd: 0
+
+# ═══════════════════════════════════════════════════════════════
+# AUDIT TRAIL
+# Boy Scout Rule: Leave every execution cleaner than found
+# ═══════════════════════════════════════════════════════════════
+audit:
+  created_at: "2025-11-14T00:00:00Z"
+  created_by: "pnkln_orchestrator"
+  framework_version: "1.0"
+  total_skills: 3
+  risk_levels:
+    RA-1: 1  # Routine
+    RA-2: 1  # Low impact
+    RA-3: 1  # Moderate (mission-critical)
+    RA-4: 0  # High (requires senior review)

@@ -1,0 +1,2467 @@
+# Config
+
+## Environment Variables
+
+- `_` **required** — external_repos/firebase-tools/standalone/firepit.js
+- `__CFB` **required** — archive/claude-code-src-leak/src/main.tsx
+- `__FIREBASE_DEFAULTS__` **required** — external_repos/firebase-tools/src/frameworks/index.ts
+- `__FIREBASE_FRAMEWORKS_ENTRY__` **required** — external_repos/firebase-tools/src/frameworks/index.ts
+- `__TEST_MEMORY_KEY` **required** — external_repos/apps/memory-lancedb-pro/test/resolve-env-vars-array.test.mjs
+- `_ID_TOKEN` **required** — apps/slides_agent_demo/tests/load_test/load_test.py
+- `_TEST_AGENT_COMBINATION` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `A` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `A_SET_ENV_VAR` **required** — external_repos/node/test/message/test-testpy-env-var-via-comment.js
+- `ABC` **required** — external_repos/node/test/parallel/test-process-env-deprecation.js
+- `ACCESS_TOKEN` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gate0_tesla_validation.py
+- `ACCESS_TOKEN_EXPIRE_MINUTES` (has default) — archive/root_debris/backend/.env.example
+- `ACTIONS_ID_TOKEN_REQUEST_TOKEN` **required** — external_repos/cli/lib/utils/oidc.js
+- `ACTIONS_ID_TOKEN_REQUEST_URL` **required** — external_repos/cli/lib/utils/oidc.js
+- `ADDITIONAL_CORS_ORIGINS` **required** — control/legacy_workspaces/airweave/.env.example
+- `ADMIN_PASSWORD` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `ADMIN_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_web.py
+- `ADMIN_USERNAME` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `AFTER_LINE` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `AGE_VERIFICATION_REQUIRED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `AGENT_ENGINE_SESSION_NAME` **required** — apps/slides_agent_demo/app/fast_api_app.py
+- `AGENT_TIMEOUT` **required** — external_repos/node/test/fixtures/post-resource-and-log.js
+- `AGENTOPS_API_KEY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `AIRFLOW_HOME` **required** — apps/aiyou_stack/aiyou-fastapi-services/dags/nightly_synthesis.py
+- `AIRWEAVE_API_KEY` **required** — control/legacy_workspaces/airweave/examples/quickstart_tutorial.py
+- `AIRWEAVE_BASE_URL` **required** — control/legacy_workspaces/airweave/examples/quickstart_tutorial.py
+- `ALACRITTY_LOG` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `ALERT_EMAIL_ENABLED` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `ALERT_EMAIL_FROM` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `ALERT_EMAIL_TO` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `ALERT_PAGERDUTY_ENABLED` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `ALERT_SLACK_ENABLED` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `ALERT_THRESHOLD` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ALGORITHM` (has default) — archive/root_debris/backend/.env.example
+- `ALLOW_CRASHES` **required** — external_repos/node/test/abort/test-addon-register-signal-handler.js
+- `ALLOW_EXTRA_ARGS` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `ALLOW_ORIGINS` **required** — apps/agent-starter-pack/shadowtag-agent/app/fast_api_app.py
+- `ALLOWED_DOMAINS` **required** — archive/root_debris/router/.env.example
+- `ALLOWED_HOSTS` **required** — external_repos/cloud-run-mcp/mcp-server.js
+- `ALLOWED_ORIGINS` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `ALLOYDB_AI_NL_CLUSTER` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_AI_NL_DATABASE` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_AI_NL_INSTANCE` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_AI_NL_PASS` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_AI_NL_PROJECT` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_AI_NL_REGION` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_AI_NL_USER` **required** — external_repos/mcp-toolbox/tests/alloydbainl/alloydb_ai_nl_mcp_test.go
+- `ALLOYDB_CLUSTER` **required** — external_repos/mcp-toolbox/tests/alloydb/alloydb_mcp_test.go
+- `ALLOYDB_INSTANCE` **required** — external_repos/mcp-toolbox/tests/alloydb/alloydb_mcp_test.go
+- `ALLOYDB_POSTGRES_CLUSTER` **required** — external_repos/mcp-toolbox/tests/alloydbpg/alloydb_pg_integration_test.go
+- `ALLOYDB_POSTGRES_DATABASE` **required** — external_repos/mcp-toolbox/tests/alloydbpg/alloydb_pg_integration_test.go
+- `ALLOYDB_POSTGRES_INSTANCE` **required** — external_repos/mcp-toolbox/tests/alloydbpg/alloydb_pg_integration_test.go
+- `ALLOYDB_POSTGRES_PASSWORD` **required** — external_repos/mcp-toolbox/tests/alloydbpg/alloydb_pg_integration_test.go
+- `ALLOYDB_POSTGRES_PROJECT` **required** — external_repos/mcp-toolbox/tests/alloydbpg/alloydb_pg_integration_test.go
+- `ALLOYDB_POSTGRES_REGION` **required** — external_repos/mcp-toolbox/tests/alloydbpg/alloydb_pg_integration_test.go
+- `ALLOYDB_POSTGRES_USER` **required** — external_repos/mcp-toolbox/tests/alloydb/alloydb_mcp_test.go
+- `ALLOYDB_PROJECT` **required** — external_repos/mcp-toolbox/tests/alloydb/alloydb_mcp_test.go
+- `ALLOYDB_REGION` **required** — external_repos/mcp-toolbox/tests/alloydb/alloydb_mcp_test.go
+- `ALT_API_KEY` (has default) — archive/root_debris/router/.env.example
+- `ALT_BASE_URL` (has default) — archive/root_debris/router/.env.example
+- `ALT_MODEL` (has default) — archive/root_debris/router/.env.example
+- `ANALYTICS_ID` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ANALYZE` **required** — control/legacy_workspaces/dashpress/next.config.js
+- `ANE_PROXY_PORT` **required** — apps/aiyou_stack/aiyou-fastapi-services/ane_testbed_proxy.py
+- `ANONYMIZED_TELEMETRY` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `ANTHROPIC_API_KEY` **required** — tools/GitNexus/eval/.env.example
+- `ANTHROPIC_AUTH_TOKEN` **required** — archive/claude-code-src-leak/src/utils/auth.ts
+- `ANTHROPIC_BASE_URL` **required** — archive/claude-code-src-leak/src/main.tsx
+- `ANTHROPIC_BETAS` **required** — archive/claude-code-src-leak/src/utils/betas.ts
+- `ANTHROPIC_FOUNDRY_BASE_URL` **required** — archive/claude-code-src-leak/src/utils/status.tsx
+- `ANTHROPIC_FOUNDRY_RESOURCE` **required** — archive/claude-code-src-leak/src/utils/status.tsx
+- `ANTHROPIC_LOG` **required** — control/legacy_workspaces/anthropic-sdk-typescript/src/client.ts
+- `ANTHROPIC_MODEL` (has default) — control/legacy_workspaces/claude-cookbooks/tool_use/.env.example
+- `ANTHROPIC_MODEL_CHAT` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `ANTHROPIC_UNIX_SOCKET` **required** — archive/claude-code-src-leak/src/utils/apiPreconnect.ts
+- `ANTHROPIC_VERTEX_PROJECT_ID` **required** — archive/claude-code-src-leak/src/utils/status.tsx
+- `ANTIGRAVITY_CLI_ALIAS` **required** — external_repos/firebase-tools/src/env.ts
+- `ANTIGRAVITY_GOD_MODE` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gca_autopilot_finish.py
+- `ANTIGRAVITY_KEY_PATH` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/generate_final_report.py
+- `ANTIGRAVITY_MODE` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/patch_gemini_cli.py
+- `ANTIGRAVITY_NUM_AGENTS` **required** — apps/aiyou_stack/aiyou-fastapi-services/antigravity.py
+- `API_FULL_URL` **required** — control/legacy_workspaces/airweave/.env.example
+- `API_HOST` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `API_KEY` **required** — labs/uphillsnowball/.env.example
+- `API_KEY_HEADER` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `API_KEYS` **required** — apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/api_server.py
+- `API_MODEL_NAME` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `API_PORT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `API_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/measure_p99.py
+- `API_VERBOSE` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `APP_ENV` (has default) — labs/uphillsnowball/.env.example
+- `APP_FULL_URL` **required** — control/legacy_workspaces/airweave/.env.example
+- `APP_HOST` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `APP_NAME` (has default) — labs/uphillsnowball/.env.example
+- `APP_PORT` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `APP_URL` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `APP_VERSION` (has default) — archive/root_debris/backend/.env.example
+- `APPDATA` **required** — archive/claude-code-src-leak/src/utils/jetbrains.ts
+- `APPLE_ID` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `APPLE_PASSWORD` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `APPLE_SILICON_LOCAL_ONLY` (has default) — labs/uphillsnowball/.env.example
+- `APPLE_TEAM_ID` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `APPLICATION_ID` **required** — external_repos/GoogleChrome/chromium-dashboard/testing_config.py
+- `APPROVE_BUTTON_SELECTOR` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_web.py
+- `ARCJET_KEY` **required** — external_repos/apps/Next-js-Boilerplate/src/proxy.ts
+- `ARXIV_CATEGORIES` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ARXIV_DELAY_SECONDS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ARXIV_DOWNLOAD_PDF` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ARXIV_MAX_RESULTS_PER_QUERY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ARXIV_NUM_RETRIES` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ARXIV_PAPERS_DIRECTORY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ASCEND_RT_VISIBLE_DEVICES` **required** — external_repos/apps/ComfyUI/main.py
+- `AST_GREP_CONFIG` **required** — control/legacy_workspaces/ast-grep-mcp/main.py
+- `ASYNC_BATCH_TIMEOUT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `AUDIT_TRAIL_DIR` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `AUDIT_WEBHOOK_URL` **required** — archive/agent_debris/app/pubsub/audit_worker.py
+- `AUTH_DOMAIN` **required** — external_repos/GoogleChrome/chromium-dashboard/testing_config.py
+- `AUTH_ENABLED` (has default) — control/legacy_workspaces/airweave/.env.example
+- `AUTH_MODE` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `AUTH_SECRET` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `AUTH_TOKEN_KEY` (has default) — control/legacy_workspaces/dashpress/.env.example
+- `AUTH0_AUDIENCE` **required** — control/legacy_workspaces/airweave/.env.example
+- `AUTH0_DOMAIN` **required** — control/legacy_workspaces/airweave/.env.example
+- `AUTH0_RULE_NAMESPACE` **required** — control/legacy_workspaces/airweave/.env.example
+- `AUTO_HALT_ON_VIOLATION` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `AUTOSCALER_CONFIG` **required** — external_repos/memorystore-cluster-autoscaler/src/unified-scaler.js
+- `AWS_ACCESS_KEY_ID` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `AWS_DEFAULT_REGION` **required** — archive/claude-code-src-leak/src/utils/envUtils.ts
+- `AWS_EXECUTION_ENV` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `AWS_LAMBDA_FUNCTION_NAME` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `AWS_REGION` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `AWS_SECRET_ACCESS_KEY` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `AWS_TEST_OIDC_ROLE_ARN` **required** — external_repos/apps/terragrunt/test/integration_aws_oidc_test.go
+- `AWS_TEST_S3_ASSUME_ROLE` **required** — external_repos/apps/terragrunt/test/integration_aws_test.go
+- `AZURE_API_BASE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_API_VERSION` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_DEPLOYMENT` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_FUNCTIONS_ENVIRONMENT` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `AZURE_GPT4O_MINI_API_BASE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT4O_MINI_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT4O_MINI_API_VERSION` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT4O_MINI_DEPLOYMENT` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_API_BASE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_API_VERSION` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_DEPLOYMENT` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_MINI_API_BASE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_MINI_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_MINI_API_VERSION` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_MINI_DEPLOYMENT` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_NANO_API_BASE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_NANO_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_NANO_API_VERSION` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_GPT5_NANO_DEPLOYMENT` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `AZURE_OPENAI_API_KEY` **required** — control/legacy_workspaces/openai-node/src/azure.ts
+- `AZURE_OPENAI_ENDPOINT` **required** — control/legacy_workspaces/openai-node/src/azure.ts
+- `AZURE_RESOURCE_NAME` **required** — external_repos/apps/AliFullStack/e2e-tests/azure_send_message.spec.ts
+- `B` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `B_SET_ENV_VAR` **required** — external_repos/node/test/message/test-testpy-env-var-via-comment.js
+- `B402_ASSET` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_ENABLED` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_ENVIRONMENT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_FACILITATOR_URL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_NETWORK` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_PAYMENT_ADDRESS` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_TIMEOUT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `B402_USDT_ADDRESS` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `BACKEND_URL` **required** — tools/GitNexus/gitnexus-web/e2e/debug-issues.spec.ts
+- `BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `BACKTICKS_INSIDE_DOUBLE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `BACKTICKS_INSIDE_SINGLE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `BACKTICKS_SPACED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `BAR` **required** — external_repos/firebase-tools/scripts/emulator-tests/functionsEmulator.spec.ts
+- `BASE_REF` **required** — third_party/security/gitleaks-action/src/gitleaks.js
+- `BASE_URL` **required** — control/legacy_workspaces/fastmcp/examples/sampling_fallback.py
+- `BASIC` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `BATCH_SCHEDULE_CRON` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `BAZ` **required** — external_repos/node/test/parallel/test-child-process-spawn-shell.js
+- `BE_CHILD` **required** — external_repos/node/test/parallel/test-inspector-open.js
+- `BEDROCK_BASE_URL` **required** — archive/claude-code-src-leak/src/utils/status.tsx
+- `BIGQUERY_DATASET_LOCATION` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `BIGQUERY_PROJECT` **required** — external_repos/mcp-toolbox/tests/bigquery/bigquery_integration_test.go
+- `BIGTABLE_INSTANCE` **required** — external_repos/mcp-toolbox/tests/bigtable/bigtable_integration_test.go
+- `BIGTABLE_PROJECT` **required** — external_repos/mcp-toolbox/tests/bigtable/bigtable_integration_test.go
+- `BING_WEBMASTER_API_KEY` **required** — reference_architectures/claude-seo/scripts/backlinks_auth.py
+- `BIO_ANALYSIS_TASK_TIMEOUT_MINUTES` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `BIO_LIT_AGENT_API_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `BIO_LIT_AGENT_API_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `BIO_LITERATURE_TASK_TIMEOUT_MINUTES` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `BIOAGENTS_SECRET` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `BIOAGENTS_TOKEN` (has default) — archive/root_debris/cor-autoresearch/.env.example
+- `BLOCKCHAIN_INTEGRATION_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `BOTTLENECK_THRESHOLD_PERCENT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `BOUND` **required** — external_repos/node/test/parallel/test-cluster-disconnect-unshared-tcp.js
+- `BQ_LOCATION` **required** — external_repos/click-to-deploy-solutions/document-ai/code/main.py
+- `BQ_TABLE_ID` **required** — external_repos/click-to-deploy-solutions/document-ai/code/main.py
+- `BRAIN_DIR` **required** — apps/ultraviolet-zodiac/interactive_runner.py
+- `BRAND_SAFETY_THRESHOLD` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `BROWSER` **required** — archive/claude-code-src-leak/src/utils/browser.ts
+- `BROWSER_ACTION_TIMEOUT_MS` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `BROWSER_STREAMING_MODE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `BROWSER_TYPE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `BROWSER_USE_API_KEY` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `BROWSER_USE_DEBUG_LOG_FILE` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `BROWSER_USE_INFO_LOG_FILE` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `BROWSER_USE_LOGGING_LEVEL` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `BROWSER_USE_VERSION_CHECK` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `BUBBLETEA_LOG` **required** — external_repos/bubbletea/examples/simple/main.go
+- `BUILD_ENV` **required** — external_repos/GoogleChrome/webstatus.dev/frontend/rollup.config.mjs
+- `BUILD_EXCLUDE_BABEL_REGISTER` **required** — external_repos/apps/react-native/jest/preprocessor.js
+- `BUILD_OUTPUT_ID` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `BUILD_SANDBOX` **required** — control/legacy_workspaces/gemini-cli/scripts/build.js
+- `BUILD_SANDBOX_FLAGS` **required** — control/legacy_workspaces/gemini-cli/scripts/build_sandbox.js
+- `BUILD_WITH_CONDA_DEBUG` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `BUILDIFIER_DIFF` **required** — external_repos/apps/buildtools/differ/diff.go
+- `BUILDIFIER_MULTIDIFF` **required** — external_repos/apps/buildtools/differ/diff.go
+- `BUILDKITE` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `BUN_GARBAGE_COLLECTOR_LEVEL` **required** — external_repos/apps/bun/test/harness.ts
+- `BUNDLE_STORAGE_BUCKET` **required** — tools/firestore-bundle-builder/functions/src/index.ts
+- `BUNDLESPEC_COLLECTION` **required** — tools/firestore-bundle-builder/admin-dashboard/app/firebase.server.ts
+- `C` **required** — archive/claude-code-src-leak/src/ink/terminal.ts
+- `C2PA_VERIFICATION_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `CA_OUT` **required** — external_repos/node/test/fixtures/tls-get-ca-certificates.js
+- `CA_TYPE` **required** — external_repos/node/test/fixtures/tls-get-ca-certificates.js
+- `CACHE_ADAPTOR` (has default) — control/legacy_workspaces/dashpress/.env.example
+- `CACHE_ADAPTOR_CONNECTION_STRING` (has default) — control/legacy_workspaces/dashpress/.env.example
+- `CACHE_TTL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `CANARY_COOKIE_NAME` **required** — external_repos/flagger/test/verify_session_affinity.go
+- `CANARY_VERSION` **required** — external_repos/flagger/test/verify_session_affinity.go
+- `CARGO_TARGET_DIR` **required** — external_repos/apps/pyrefly/test.py
+- `CASSANDRA_HOST` **required** — external_repos/mcp-toolbox/tests/cassandra/cassandra_integration_test.go
+- `CASSANDRA_PASS` **required** — external_repos/mcp-toolbox/tests/cassandra/cassandra_integration_test.go
+- `CASSANDRA_USER` **required** — external_repos/mcp-toolbox/tests/cassandra/cassandra_integration_test.go
+- `CC` **required** — external_repos/node/android_configure.py
+- `CCR_ENABLE_BUNDLE` **required** — archive/claude-code-src-leak/src/utils/teleport.tsx
+- `CCR_FORCE_BUNDLE` **required** — archive/claude-code-src-leak/src/utils/teleport.tsx
+- `CCR_UPSTREAM_PROXY_ENABLED` **required** — archive/claude-code-src-leak/src/upstreamproxy/upstreamproxy.ts
+- `CDP_API_KEY_ID` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `CDP_API_KEY_SECRET` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `CDP_LOGGING_LEVEL` (has default) — archive/external_payloads/repos/browser-use/.env.example
+- `CDP_PROJECT_ID` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `CERTS_TYPE` **required** — external_repos/node/test/fixtures/list-certs.js
+- `CF_PAGES` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `CHARACTER_FILE` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `CHARACTER_JSON` **required** — external_repos/BioAgents/src/character.ts
+- `CHAT_QUEUE_CONCURRENCY` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `CHAT_RATE_LIMIT_PER_MINUTE` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `CHECK_ORIGIN` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `CHECKLY_EMAIL_ADDRESS` **required** — external_repos/apps/Next-js-Boilerplate/checkly.config.ts
+- `CHECKLY_LOGICAL_ID` **required** — external_repos/apps/Next-js-Boilerplate/checkly.config.ts
+- `CHECKLY_PROJECT_NAME` **required** — external_repos/apps/Next-js-Boilerplate/checkly.config.ts
+- `CHEETAH_API_KEY` (has default) — archive/root_debris/router/.env.example
+- `CHEETAH_BASE_URL` (has default) — archive/root_debris/router/.env.example
+- `CHEETAH_MODEL` (has default) — archive/root_debris/router/.env.example
+- `CHILD` **required** — external_repos/node/test/parallel/test-tls-env-bad-extra-ca.js
+- `CHILD_PROCESS` **required** — external_repos/node/test/parallel/test-runner-xfail.js
+- `CHROMA_DIR` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `CHROMA_PERSIST_DIRECTORY` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `CHROME_M146_EXECUTABLE_PATH` **required** — external_repos/apps/chrome-devtools-mcp/scripts/test.mjs
+- `CHUNK_OVERLAP` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `CHUNK_SIZE` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `CI` **required** — apps/kovelai/agent/e2e/playwright.config.js
+- `CIRCLECI` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `CLASSIFIER_API_KEY` **required** — external_repos/apps/pyrefly/scripts/llm_transport.py
+- `CLAUBBIT` **required** — archive/claude-code-src-leak/src/interactiveHelpers.tsx
+- `CLAUDE_AGENT_SDK_CLIENT_APP` **required** — archive/claude-code-src-leak/src/utils/http.ts
+- `CLAUDE_AGENT_SDK_VERSION` **required** — archive/claude-code-src-leak/src/utils/http.ts
+- `CLAUDE_API_KEY` **required** — packages/aiyou/src/scripts/ingest.ts
+- `CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR` **required** — archive/claude-code-src-leak/src/utils/envUtils.ts
+- `CLAUDE_BRIDGE_BASE_URL` **required** — archive/claude-code-src-leak/src/bridge/bridgeConfig.ts
+- `CLAUDE_BRIDGE_OAUTH_TOKEN` **required** — archive/claude-code-src-leak/src/bridge/bridgeConfig.ts
+- `CLAUDE_BRIDGE_SESSION_INGRESS_URL` **required** — archive/claude-code-src-leak/src/bridge/bridgeMain.ts
+- `CLAUDE_BRIDGE_USE_CCR_V2` **required** — archive/claude-code-src-leak/src/bridge/bridgeMain.ts
+- `CLAUDE_CODE_ABLATION_BASELINE` **required** — archive/claude-code-src-leak/src/entrypoints/cli.tsx
+- `CLAUDE_CODE_ACCESSIBILITY` **required** — archive/claude-code-src-leak/src/components/TextInput.tsx
+- `CLAUDE_CODE_ACCOUNT_TAGGED_ID` **required** — archive/claude-code-src-leak/src/utils/telemetryAttributes.ts
+- `CLAUDE_CODE_ACTION` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD` **required** — archive/claude-code-src-leak/src/utils/claudemd.ts
+- `CLAUDE_CODE_AGENT` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_ALWAYS_ENABLE_EFFORT` **required** — archive/claude-code-src-leak/src/utils/effort.ts
+- `CLAUDE_CODE_API_KEY_FILE_DESCRIPTOR` **required** — archive/claude-code-src-leak/src/utils/auth.ts
+- `CLAUDE_CODE_API_KEY_HELPER_TTL_MS` **required** — archive/claude-code-src-leak/src/utils/auth.ts
+- `CLAUDE_CODE_ATTRIBUTION_HEADER` **required** — archive/claude-code-src-leak/src/constants/system.ts
+- `CLAUDE_CODE_AUTO_CONNECT_IDE` **required** — archive/claude-code-src-leak/src/hooks/useIDEIntegration.tsx
+- `CLAUDE_CODE_BASE_REF` **required** — archive/claude-code-src-leak/src/utils/gitDiff.ts
+- `CLAUDE_CODE_BRIEF` **required** — archive/claude-code-src-leak/src/components/Spinner.tsx
+- `CLAUDE_CODE_BUBBLEWRAP` **required** — archive/claude-code-src-leak/src/setup.ts
+- `CLAUDE_CODE_CCR_MIRROR` **required** — archive/claude-code-src-leak/src/bridge/bridgeEnabled.ts
+- `CLAUDE_CODE_CLIENT_CERT` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_CLIENT_KEY` **required** — archive/claude-code-src-leak/src/utils/apiPreconnect.ts
+- `CLAUDE_CODE_CLIENT_KEY_PASSPHRASE` **required** — archive/claude-code-src-leak/src/utils/mtls.ts
+- `CLAUDE_CODE_COMMIT_LOG` **required** — archive/claude-code-src-leak/src/ink/reconciler.ts
+- `CLAUDE_CODE_CONTAINER_ID` **required** — archive/claude-code-src-leak/src/utils/queryHelpers.ts
+- `CLAUDE_CODE_COORDINATOR_MODE` **required** — archive/claude-code-src-leak/src/coordinator/coordinatorMode.ts
+- `CLAUDE_CODE_CUSTOM_OAUTH_URL` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `CLAUDE_CODE_DEBUG_LOG_LEVEL` **required** — archive/claude-code-src-leak/src/utils/debug.ts
+- `CLAUDE_CODE_DEBUG_LOGS_DIR` **required** — archive/claude-code-src-leak/src/utils/debug.ts
+- `CLAUDE_CODE_DEBUG_REPAINTS` **required** — archive/claude-code-src-leak/src/ink/reconciler.ts
+- `CLAUDE_CODE_DIAGNOSTICS_FILE` **required** — archive/claude-code-src-leak/src/utils/diagLogs.ts
+- `CLAUDE_CODE_DISABLE_1M_CONTEXT` **required** — archive/claude-code-src-leak/src/utils/context.ts
+- `CLAUDE_CODE_DISABLE_ADVISOR_TOOL` **required** — archive/claude-code-src-leak/src/utils/advisor.ts
+- `CLAUDE_CODE_DISABLE_ATTACHMENTS` **required** — archive/claude-code-src-leak/src/utils/attachments.ts
+- `CLAUDE_CODE_DISABLE_AUTO_MEMORY` **required** — archive/claude-code-src-leak/src/memdir/memdir.ts
+- `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` **required** — archive/claude-code-src-leak/src/components/SessionBackgroundHint.tsx
+- `CLAUDE_CODE_DISABLE_CLAUDE_MDS` **required** — archive/claude-code-src-leak/src/context.ts
+- `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS` **required** — archive/claude-code-src-leak/src/utils/api.ts
+- `CLAUDE_CODE_DISABLE_FAST_MODE` **required** — archive/claude-code-src-leak/src/query/config.ts
+- `CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING` **required** — archive/claude-code-src-leak/src/utils/fileHistory.ts
+- `CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS` **required** — archive/claude-code-src-leak/src/utils/gitSettings.ts
+- `CLAUDE_CODE_DISABLE_MESSAGE_ACTIONS` **required** — archive/claude-code-src-leak/src/screens/REPL.tsx
+- `CLAUDE_CODE_DISABLE_MOUSE` **required** — archive/claude-code-src-leak/src/utils/fullscreen.ts
+- `CLAUDE_CODE_DISABLE_MOUSE_CLICKS` **required** — archive/claude-code-src-leak/src/utils/fullscreen.ts
+- `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` **required** — archive/claude-code-src-leak/src/utils/privacyLevel.ts
+- `CLAUDE_CODE_DISABLE_POLICY_SKILLS` **required** — archive/claude-code-src-leak/src/skills/loadSkillsDir.ts
+- `CLAUDE_CODE_DISABLE_PRECOMPACT_SKIP` **required** — archive/claude-code-src-leak/src/utils/sessionStorage.ts
+- `CLAUDE_CODE_DISABLE_TERMINAL_TITLE` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_DISABLE_VIRTUAL_SCROLL` **required** — archive/claude-code-src-leak/src/components/Messages.tsx
+- `CLAUDE_CODE_EAGER_FLUSH` **required** — archive/claude-code-src-leak/src/QueryEngine.ts
+- `CLAUDE_CODE_EFFORT_LEVEL` **required** — archive/claude-code-src-leak/src/utils/effort.ts
+- `CLAUDE_CODE_EMIT_SESSION_STATE_EVENTS` **required** — archive/claude-code-src-leak/src/utils/sessionState.ts
+- `CLAUDE_CODE_EMIT_TOOL_USE_SUMMARIES` **required** — archive/claude-code-src-leak/src/query/config.ts
+- `CLAUDE_CODE_ENABLE_FINE_GRAINED_TOOL_STREAMING` **required** — archive/claude-code-src-leak/src/utils/api.ts
+- `CLAUDE_CODE_ENABLE_PROMPT_SUGGESTION` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING` **required** — archive/claude-code-src-leak/src/utils/fileHistory.ts
+- `CLAUDE_CODE_ENABLE_TASKS` **required** — archive/claude-code-src-leak/src/utils/tasks.ts
+- `CLAUDE_CODE_ENABLE_TOKEN_USAGE_ATTACHMENT` **required** — archive/claude-code-src-leak/src/utils/attachments.ts
+- `CLAUDE_CODE_ENTRYPOINT` **required** — archive/claude-code-src-leak/src/constants/system.ts
+- `CLAUDE_CODE_ENVIRONMENT_KIND` **required** — archive/claude-code-src-leak/src/cli/remoteIO.ts
+- `CLAUDE_CODE_ENVIRONMENT_RUNNER_VERSION` **required** — archive/claude-code-src-leak/src/cli/remoteIO.ts
+- `CLAUDE_CODE_EXIT_AFTER_FIRST_RENDER` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_EXIT_AFTER_STOP_DELAY` **required** — archive/claude-code-src-leak/src/utils/idleTimeout.ts
+- `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` **required** — archive/claude-code-src-leak/src/utils/agentSwarmsEnabled.ts
+- `CLAUDE_CODE_FRAME_TIMING_LOG` **required** — archive/claude-code-src-leak/src/interactiveHelpers.tsx
+- `CLAUDE_CODE_GIT_BASH_PATH` **required** — archive/claude-code-src-leak/src/utils/windowsPaths.ts
+- `CLAUDE_CODE_GLOB_HIDDEN` **required** — archive/claude-code-src-leak/src/utils/glob.ts
+- `CLAUDE_CODE_GLOB_NO_IGNORE` **required** — archive/claude-code-src-leak/src/utils/glob.ts
+- `CLAUDE_CODE_GLOB_TIMEOUT_SECONDS` **required** — archive/claude-code-src-leak/src/utils/ripgrep.ts
+- `CLAUDE_CODE_HOST_PLATFORM` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `CLAUDE_CODE_IDE_HOST_OVERRIDE` **required** — archive/claude-code-src-leak/src/utils/ide.ts
+- `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` **required** — archive/claude-code-src-leak/src/utils/ide.ts
+- `CLAUDE_CODE_IDE_SKIP_VALID_CHECK` **required** — archive/claude-code-src-leak/src/utils/ide.ts
+- `CLAUDE_CODE_IDLE_THRESHOLD_MINUTES` **required** — archive/claude-code-src-leak/src/screens/REPL.tsx
+- `CLAUDE_CODE_IDLE_TOKEN_THRESHOLD` **required** — archive/claude-code-src-leak/src/screens/REPL.tsx
+- `CLAUDE_CODE_INCLUDE_PARTIAL_MESSAGES` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_IS_COWORK` **required** — archive/claude-code-src-leak/src/QueryEngine.ts
+- `CLAUDE_CODE_MAX_CONTEXT_TOKENS` **required** — archive/claude-code-src-leak/src/utils/context.ts
+- `CLAUDE_CODE_MAX_OUTPUT_TOKENS` **required** — archive/claude-code-src-leak/src/query.ts
+- `CLAUDE_CODE_MCP_INSTR_DELTA` **required** — archive/claude-code-src-leak/src/utils/mcpInstructionsDelta.ts
+- `CLAUDE_CODE_MESSAGING_SOCKET` **required** — archive/claude-code-src-leak/src/utils/concurrentSessions.ts
+- `CLAUDE_CODE_NEW_INIT` **required** — archive/claude-code-src-leak/src/commands/init.ts
+- `CLAUDE_CODE_NO_FLICKER` **required** — archive/claude-code-src-leak/src/utils/fullscreen.ts
+- `CLAUDE_CODE_OAUTH_CLIENT_ID` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `CLAUDE_CODE_OAUTH_TOKEN` **required** — archive/claude-code-src-leak/src/utils/auth.ts
+- `CLAUDE_CODE_OAUTH_TOKEN_FILE_DESCRIPTOR` **required** — archive/claude-code-src-leak/src/utils/auth.ts
+- `CLAUDE_CODE_ORGANIZATION_UUID` **required** — archive/claude-code-src-leak/src/utils/sessionIngressAuth.ts
+- `CLAUDE_CODE_OTEL_HEADERS_HELPER_DEBOUNCE_MS` **required** — archive/claude-code-src-leak/src/utils/auth.ts
+- `CLAUDE_CODE_OVERRIDE_DATE` **required** — archive/claude-code-src-leak/src/constants/common.ts
+- `CLAUDE_CODE_PLAN_MODE_INTERVIEW_PHASE` **required** — archive/claude-code-src-leak/src/utils/planModeV2.ts
+- `CLAUDE_CODE_PLAN_MODE_REQUIRED` **required** — archive/claude-code-src-leak/src/utils/teammate.ts
+- `CLAUDE_CODE_PLAN_V2_AGENT_COUNT` **required** — archive/claude-code-src-leak/src/utils/planModeV2.ts
+- `CLAUDE_CODE_PLAN_V2_EXPLORE_AGENT_COUNT` **required** — archive/claude-code-src-leak/src/utils/planModeV2.ts
+- `CLAUDE_CODE_PLUGIN_CACHE_DIR` **required** — archive/claude-code-src-leak/src/hooks/useManagePlugins.ts
+- `CLAUDE_CODE_PROACTIVE` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_PROFILE_QUERY` **required** — archive/claude-code-src-leak/src/utils/queryProfiler.ts
+- `CLAUDE_CODE_PROFILE_STARTUP` **required** — archive/claude-code-src-leak/src/utils/headlessProfiler.ts
+- `CLAUDE_CODE_PROVIDER_MANAGED_BY_HOST` **required** — archive/claude-code-src-leak/src/utils/managedEnv.ts
+- `CLAUDE_CODE_PROXY_RESOLVES_HOSTS` **required** — archive/claude-code-src-leak/src/utils/proxy.ts
+- `CLAUDE_CODE_QUESTION_PREVIEW_FORMAT` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_REMOTE` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_REMOTE_MEMORY_DIR` **required** — archive/claude-code-src-leak/src/memdir/paths.ts
+- `CLAUDE_CODE_REMOTE_SEND_KEEPALIVES` **required** — archive/claude-code-src-leak/src/utils/sessionActivity.ts
+- `CLAUDE_CODE_REMOTE_SESSION_ID` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_RESUME_INTERRUPTED_TURN` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_SAVE_HOOK_ADDITIONAL_CONTEXT` **required** — archive/claude-code-src-leak/src/utils/sessionStorage.ts
+- `CLAUDE_CODE_SCROLL_SPEED` **required** — archive/claude-code-src-leak/src/components/ScrollKeybindingHandler.tsx
+- `CLAUDE_CODE_SESSION_ACCESS_TOKEN` **required** — archive/claude-code-src-leak/src/bridge/remoteBridgeCore.ts
+- `CLAUDE_CODE_SESSION_KIND` **required** — archive/claude-code-src-leak/src/utils/concurrentSessions.ts
+- `CLAUDE_CODE_SESSION_LOG` **required** — archive/claude-code-src-leak/src/utils/concurrentSessions.ts
+- `CLAUDE_CODE_SESSION_NAME` **required** — archive/claude-code-src-leak/src/utils/concurrentSessions.ts
+- `CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS` **required** — archive/claude-code-src-leak/src/utils/hooks.ts
+- `CLAUDE_CODE_SHELL` **required** — archive/claude-code-src-leak/src/utils/Shell.ts
+- `CLAUDE_CODE_SHELL_PREFIX` **required** — archive/claude-code-src-leak/src/utils/hooks.ts
+- `CLAUDE_CODE_SIMPLE` **required** — archive/claude-code-src-leak/src/constants/prompts.ts
+- `CLAUDE_CODE_SKIP_BEDROCK_AUTH` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_SKIP_FAST_MODE_NETWORK_ERRORS` **required** — archive/claude-code-src-leak/src/utils/fastMode.ts
+- `CLAUDE_CODE_SKIP_FOUNDRY_AUTH` **required** — archive/claude-code-src-leak/src/utils/status.tsx
+- `CLAUDE_CODE_SKIP_PROMPT_HISTORY` **required** — archive/claude-code-src-leak/src/history.ts
+- `CLAUDE_CODE_SKIP_VERTEX_AUTH` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_SLOW_OPERATION_THRESHOLD_MS` **required** — archive/claude-code-src-leak/src/utils/slowOperations.ts
+- `CLAUDE_CODE_SSE_PORT` **required** — archive/claude-code-src-leak/src/hooks/useIDEIntegration.tsx
+- `CLAUDE_CODE_STREAMLINED_OUTPUT` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` **required** — archive/claude-code-src-leak/src/utils/subprocessEnv.ts
+- `CLAUDE_CODE_SYNC_PLUGIN_INSTALL` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_SYNTAX_HIGHLIGHT` **required** — archive/claude-code-src-leak/src/components/ThemePicker.tsx
+- `CLAUDE_CODE_TASK_LIST_ID` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_TERMINAL_RECORDING` **required** — archive/claude-code-src-leak/src/utils/asciicast.ts
+- `CLAUDE_CODE_TEST_FIXTURES_ROOT` **required** — archive/claude-code-src-leak/src/services/vcr.ts
+- `CLAUDE_CODE_TMPDIR` **required** — archive/claude-code-src-leak/src/utils/Shell.ts
+- `CLAUDE_CODE_TMUX_TRUECOLOR` **required** — archive/claude-code-src-leak/src/ink/colorize.ts
+- `CLAUDE_CODE_UNDERCOVER` **required** — archive/claude-code-src-leak/src/utils/undercover.ts
+- `CLAUDE_CODE_USE_BEDROCK` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_USE_CCR_V2` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `CLAUDE_CODE_USE_FOUNDRY` **required** — archive/claude-code-src-leak/src/utils/apiPreconnect.ts
+- `CLAUDE_CODE_USE_NATIVE_FILE_SEARCH` **required** — archive/claude-code-src-leak/src/utils/markdownConfigLoader.ts
+- `CLAUDE_CODE_USE_VERTEX` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CODE_VERIFY_PLAN` **required** — archive/claude-code-src-leak/src/tools.ts
+- `CLAUDE_CODE_WEBSOCKET_AUTH_FILE_DESCRIPTOR` **required** — archive/claude-code-src-leak/src/main.tsx
+- `CLAUDE_CONFIG_DIR` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `CLAUDE_COWORK_MEMORY_EXTRA_GUIDELINES` **required** — archive/claude-code-src-leak/src/memdir/memdir.ts
+- `CLAUDE_COWORK_MEMORY_PATH_OVERRIDE` **required** — archive/claude-code-src-leak/src/memdir/paths.ts
+- `CLAUDE_DEBUG` **required** — archive/claude-code-src-leak/src/utils/warningHandler.ts
+- `CLAUDE_ENABLE_CACHE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `CLAUDE_ENV_FILE` **required** — archive/claude-code-src-leak/src/utils/sessionEnvironment.ts
+- `CLAUDE_JOB_DIR` **required** — archive/claude-code-src-leak/src/query/stopHooks.ts
+- `CLAUDE_LOCAL_OAUTH_API_BASE` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `CLAUDE_LOCAL_OAUTH_APPS_BASE` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `CLAUDE_LOCAL_OAUTH_CONSOLE_BASE` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `CLAUDE_MAX_TOKENS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `CLAUDE_MOCK_HEADERLESS_429` **required** — archive/claude-code-src-leak/src/services/mockRateLimits.ts
+- `CLAUDE_MODEL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `CLAUDE_MORERIGHT` **required** — archive/claude-code-src-leak/src/screens/REPL.tsx
+- `CLAUDE_SESSION_INGRESS_TOKEN_FILE` **required** — archive/claude-code-src-leak/src/utils/sessionIngressAuth.ts
+- `CLAUDE_TEMPERATURE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `CLAUDE_TRUSTED_DEVICE_TOKEN` **required** — archive/claude-code-src-leak/src/bridge/trustedDevice.ts
+- `CLAUDECODE` **required** — external_repos/firebase-tools/src/env.ts
+- `CLAWTEAM_MEMORY_SCOPE` **required** — external_repos/apps/memory-lancedb-pro/index.ts
+- `CLEAR_GLOBAL_PROXY_AND_RETRY` **required** — external_repos/node/test/fixtures/fetch-and-log.mjs
+- `CLERK_SECRET_KEY` (has default) — archive/external_repos_root/apps/Next-js-Boilerplate/.env
+- `CLI_VERSION` **required** — control/legacy_workspaces/gemini-cli/esbuild.config.js
+- `CLICKHOUSE_DATABASE` **required** — external_repos/mcp-toolbox/tests/clickhouse/clickhouse_integration_test.go
+- `CLICKHOUSE_HOST` **required** — external_repos/mcp-toolbox/tests/clickhouse/clickhouse_integration_test.go
+- `CLICKHOUSE_PASS` **required** — external_repos/mcp-toolbox/tests/clickhouse/clickhouse_integration_test.go
+- `CLICKHOUSE_PORT` **required** — external_repos/mcp-toolbox/tests/clickhouse/clickhouse_integration_test.go
+- `CLICKHOUSE_PROTOCOL` **required** — external_repos/mcp-toolbox/tests/clickhouse/clickhouse_integration_test.go
+- `CLICKHOUSE_USER` **required** — external_repos/mcp-toolbox/tests/clickhouse/clickhouse_integration_test.go
+- `CLIENT_ID` **required** — external_repos/mcp-toolbox/tests/auth.go
+- `CLINE_ACTIVE` **required** — external_repos/firebase-tools/src/env.ts
+- `CLOUD_GDA_PROJECT` **required** — external_repos/mcp-toolbox/tests/cloudgda/cloud_gda_integration_test.go
+- `CLOUD_ML_REGION` **required** — apps/aiyou_stack/aiyou-fastapi-services/agents/codemender.py
+- `CLOUD_RUN_URL` **required** — apps/counselconduit/api/cloud_tasks_gdpr_handler.py
+- `CLOUD_SHELL` **required** — external_repos/firebase-tools/src/utils.ts
+- `CLOUD_SQL_MSSQL_DATABASE` **required** — external_repos/mcp-toolbox/tests/cloudsqlmssql/cloud_sql_mssql_integration_test.go
+- `CLOUD_SQL_MSSQL_INSTANCE` **required** — external_repos/mcp-toolbox/tests/cloudsqlmssql/cloud_sql_mssql_integration_test.go
+- `CLOUD_SQL_MSSQL_PASS` **required** — external_repos/mcp-toolbox/tests/cloudsqlmssql/cloud_sql_mssql_integration_test.go
+- `CLOUD_SQL_MSSQL_PROJECT` **required** — external_repos/mcp-toolbox/tests/cloudsqlmssql/cloud_sql_mssql_integration_test.go
+- `CLOUD_SQL_MSSQL_REGION` **required** — external_repos/mcp-toolbox/tests/cloudsqlmssql/cloud_sql_mssql_integration_test.go
+- `CLOUD_SQL_MSSQL_USER` **required** — external_repos/mcp-toolbox/tests/cloudsqlmssql/cloud_sql_mssql_integration_test.go
+- `CLOUD_SQL_MYSQL_DATABASE` **required** — external_repos/mcp-toolbox/tests/cloudsqlmysql/cloud_sql_mysql_integration_test.go
+- `CLOUD_SQL_MYSQL_INSTANCE` **required** — external_repos/mcp-toolbox/tests/cloudsqlmysql/cloud_sql_mysql_integration_test.go
+- `CLOUD_SQL_MYSQL_PASS` **required** — external_repos/mcp-toolbox/tests/cloudsqlmysql/cloud_sql_mysql_integration_test.go
+- `CLOUD_SQL_MYSQL_PROJECT` **required** — external_repos/mcp-toolbox/tests/cloudsqlmysql/cloud_sql_mysql_integration_test.go
+- `CLOUD_SQL_MYSQL_REGION` **required** — external_repos/mcp-toolbox/tests/cloudsqlmysql/cloud_sql_mysql_integration_test.go
+- `CLOUD_SQL_MYSQL_USER` **required** — external_repos/mcp-toolbox/tests/cloudsqlmysql/cloud_sql_mysql_integration_test.go
+- `CLOUD_SQL_POSTGRES_DATABASE` **required** — external_repos/mcp-toolbox/tests/cloudsqlpg/cloud_sql_pg_integration_test.go
+- `CLOUD_SQL_POSTGRES_INSTANCE` **required** — external_repos/mcp-toolbox/tests/cloudsqlpg/cloud_sql_pg_integration_test.go
+- `CLOUD_SQL_POSTGRES_PASS` **required** — external_repos/mcp-toolbox/tests/cloudsqlpg/cloud_sql_pg_integration_test.go
+- `CLOUD_SQL_POSTGRES_PROJECT` **required** — external_repos/mcp-toolbox/tests/cloudsqlpg/cloud_sql_pg_integration_test.go
+- `CLOUD_SQL_POSTGRES_REGION` **required** — external_repos/mcp-toolbox/tests/cloudsqlpg/cloud_sql_pg_integration_test.go
+- `CLOUD_SQL_POSTGRES_USER` **required** — external_repos/mcp-toolbox/tests/cloudsqlpg/cloud_sql_pg_integration_test.go
+- `CLOUDSDK_CONFIG` **required** — apps/ultraviolet-zodiac/gcloud_auth_solver.py
+- `CMAKE_ARGS` **required** — control/legacy_workspaces/vllm/setup.py
+- `CMAKE_OSX_ARCHITECTURES` **required** — external_repos/apps/OpenViking/setup.py
+- `CMDER_ROOT` **required** — control/legacy_workspaces/pipenv/pipenv/shells.py
+- `CMDER_START` **required** — control/legacy_workspaces/pipenv/pipenv/shells.py
+- `CMS_API_KEY` (has default) — archive/external_payloads/repos/awesome-nano-banana-pro-prompts/.env.example
+- `CMS_HOST` (has default) — archive/external_payloads/repos/awesome-nano-banana-pro-prompts/.env.example
+- `CODE_BOT_TOKEN` **required** — external_repos/google-api-nodejs-client/src/generator/synth.ts
+- `CODE_SUMMARIZER_ENABLED` (has default) — control/legacy_workspaces/airweave/.env.example
+- `CODEOWNER_NAME` **required** — external_repos/apps/grafana/jest.config.codeowner.js
+- `CODESPACES` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `CODEX_HOME` **required** — control/legacy_workspaces/vercel-skills/src/agents.ts
+- `CODEX_SANDBOX` **required** — external_repos/firebase-tools/src/env.ts
+- `COHERE_API_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `COLLECTION_PATH` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `COLOR` **required** — external_repos/apps/cli/lib/npm.js
+- `COLORFGBG` **required** — archive/claude-code-src-leak/src/utils/systemTheme.ts
+- `COMMENTS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `COMMIT_SHA` **required** — apps/slides_agent_demo/app/app_utils/telemetry.py
+- `COMMON_DIRECTORY` **required** — external_repos/node/test/fixtures/sea.js
+- `COMP_LINE` **required** — external_repos/apps/terraform/main.go
+- `COMPLIANCE_DEFAULT_RATE_LIMIT` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `COMPLIANCE_RESPECT_ROBOTS_TXT` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `COMPLIANCE_USER_AGENT` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `COMSPEC` **required** — control/legacy_workspaces/pipenv/pipenv/environments.py
+- `CONDA_EXE` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `CONDA_PREFIX` **required** — external_repos/apps/vllm/vllm/env_override.py
+- `CONFIG` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `CONFIG_ADAPTOR` (has default) — control/legacy_workspaces/dashpress/.env.example
+- `CONFIG_ADAPTOR_CONNECTION_STRING` (has default) — control/legacy_workspaces/dashpress/.env.example
+- `CONFORMANCE_SUITE_COMMIT` **required** — external_repos/apps/ruff/scripts/conformance.py
+- `CONTENT_API_URL` **required** — external_repos/apps/payload/test/generateDatabaseAdapter.ts
+- `CONTENT_MODERATION_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `CONTENT_SYSTEM_ID` **required** — external_repos/apps/payload/test/generateDatabaseAdapter.ts
+- `CONTINUE_RESEARCH_LLM_MODEL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `CONTINUE_RESEARCH_LLM_PROVIDER` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `COO_CREATOR` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `COO_RUNNING_ON_HOMESPACE` **required** — archive/claude-code-src-leak/src/utils/envUtils.ts
+- `COORDINATION_TOPIC` **required** — apps/aiyou_stack/aiyou-fastapi-services/digital-freeway-api/main.py
+- `COPPA_MODE_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `COR_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `COR_INSTANCE_ID` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `COR_MAX_DEPTH` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `COREPACK_ENABLE_AUTO_PIN` **required** — archive/claude-code-src-leak/src/entrypoints/cli.tsx
+- `CORPUS_DIR` **required** — external_repos/agents/Agentic-AI-Pipeline/Agentic-RAG-Pipeline/app.py
+- `CORS_ALLOWED_ORIGINS` (has default) — external_repos/super-dev/.env.example
+- `CORS_CREDENTIALS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `CORS_HEADERS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `CORS_METHODS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `CORS_ORIGINS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `CORTEX_AUTH_CACHE_TTL_SECONDS` **required** — external_repos/apps/CortexLTM/cortexltm/api.py
+- `CORTEX_DB_POOL_MAX` **required** — external_repos/apps/CortexLTM/cortexltm/db.py
+- `CORTEX_DB_POOL_MIN` **required** — external_repos/apps/CortexLTM/cortexltm/db.py
+- `CORTEX_LTM_ASYNC_WORKERS` **required** — external_repos/apps/CortexLTM/cortexltm/messages.py
+- `CORTEX_SOUL_SPEC_PATH` **required** — external_repos/apps/CortexLTM/cortexltm/llm.py
+- `CORTEXLTM_API_KEY` **required** — external_repos/apps/CortexLTM/.env.example
+- `CORTEXLTM_USER_ID` (has default) — labs/uphillsnowball/ane-workbench/ane_cortex_stack_v9/.env.example
+- `CPU` **required** — control/legacy_workspaces/tinygrad/examples/compile_tensorflow.py
+- `CRASHLYTICS_LOCAL_JAR` **required** — external_repos/firebase-tools/src/crashlytics/buildToolsJarHelper.spec.ts
+- `CREDENTIALS_ENCRYPTION_KEY` (has default) — control/legacy_workspaces/dashpress/.env.example
+- `CRM_CLIENT_ID` **required** — apps/kovelai/.env.example
+- `CRM_CLIENT_SECRET` **required** — apps/kovelai/.env.example
+- `CRM_REDIRECT_URI` (has default) — apps/kovelai/.env.example
+- `CSE_API_KEY` **required** — external_repos/agents/Agentic-AI-Pipeline/Agentic-RAG-Pipeline/app.py
+- `CSE_ENGINE_ID` **required** — external_repos/agents/Agentic-AI-Pipeline/Agentic-RAG-Pipeline/app.py
+- `CU_AUDIT` **required** — apps/aiyou_stack/aiyou-fastapi-services/computer-use/audit.py
+- `CU_GOAL` **required** — apps/aiyou_stack/aiyou-fastapi-services/computer-use/agent.py
+- `CU_HTML_OUT` **required** — apps/aiyou_stack/aiyou-fastapi-services/computer-use/agent.py
+- `CU_MODEL` **required** — apps/aiyou_stack/aiyou-fastapi-services/computer-use/agent.py
+- `CU_START_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/computer-use/agent.py
+- `CUBLAS_WORKSPACE_CONFIG` **required** — external_repos/apps/ComfyUI/main.py
+- `CUDA_HOME` **required** — control/legacy_workspaces/vllm/tools/generate_cmake_presets.py
+- `CUDA_MODULE_LOADING` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `CUDA_PATH` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `CUDA_VISIBLE_DEVICES` **required** — control/legacy_workspaces/vllm/tests/utils.py
+- `CUDNN_LIBRARY` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `CURRENT_VERSION_ID` **required** — external_repos/GoogleChrome/chromium-dashboard/testing_config.py
+- `CURSOR_AGENT` **required** — external_repos/firebase-tools/src/env.ts
+- `CURSOR_TRACE_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `CUSTOM_DOMAIN` **required** — external_repos/super-dev/super-dev-website/next.config.mjs
+- `CWD` **required** — external_repos/node/test/parallel/test-process-execve.js
+- `CXX` **required** — external_repos/node/android_configure.py
+- `DAILY_BUDGET` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DASHBOARD_LANDING_SELECTOR` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_web.py
+- `DATA` **required** — control/legacy_workspaces/anthropic-sdk-typescript/scripts/publish-packages.ts
+- `DATA_ANALYSIS_API_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `DATA_ANALYSIS_API_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `DATABASE_ECHO` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `DATABASE_ID` **required** — external_repos/nodejs-firestore/dev/system-test/tracing.ts
+- `DATABASE_MAX_OVERFLOW` (has default) — archive/root_debris/backend/.env.example
+- `DATABASE_POOL_SIZE` (has default) — archive/root_debris/backend/.env.example
+- `DATABASE_STRING` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `DATABASE_URL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `DATAFORSEO_PASSWORD` **required** — reference_architectures/claude-seo/scripts/dataforseo_merchant.py
+- `DATAFORSEO_USERNAME` **required** — reference_architectures/claude-seo/scripts/dataforseo_merchant.py
+- `DATAPLEX_PROJECT` **required** — external_repos/mcp-toolbox/tests/dataplex/dataplex_integration_test.go
+- `DATAPROC_LIST_JOBS_CLUSTER` **required** — external_repos/mcp-toolbox/tests/dataproc/dataproc_integration_test.go
+- `DATAPROC_PROJECT` **required** — external_repos/mcp-toolbox/tests/dataproc/dataproc_integration_test.go
+- `DATAPROC_REGION` **required** — external_repos/mcp-toolbox/tests/dataproc/dataproc_integration_test.go
+- `DATASET_ID` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `DATASTORE_DATASET` **required** — external_repos/GoogleChrome/chromium-dashboard/testing_config.py
+- `DATASTORE_EMULATOR_HOST` **required** — external_repos/GoogleChrome/chromium-dashboard/conftest.py
+- `DATASTORE_EMULATOR_HOST_PATH` **required** — external_repos/GoogleChrome/chromium-dashboard/conftest.py
+- `DATASTORE_HOST` **required** — external_repos/GoogleChrome/chromium-dashboard/conftest.py
+- `DATASTORE_PROJECT_ID` **required** — external_repos/GoogleChrome/chromium-dashboard/testing_config.py
+- `DB_HOST` **required** — external_repos/super-dev/super_dev/creators/implementation_builder.py
+- `DB_NAME` **required** — external_repos/super-dev/super_dev/creators/implementation_builder.py
+- `DB_PASSWORD` **required** — external_repos/super-dev/super_dev/creators/implementation_builder.py
+- `DB_PORT` **required** — external_repos/super-dev/super_dev/creators/implementation_builder.py
+- `DB_USER` **required** — external_repos/super-dev/super_dev/creators/implementation_builder.py
+- `DEB_ARCH` **required** — external_repos/apps/rustdesk/build.py
+- `DEBATE_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DEBATE_MAX_ROUNDS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DEBATE_NUM_AGENTS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DEBUG` (has default) — control/legacy_workspaces/claude-cookbooks/.env.example
+- `DEBUG_DELAY` **required** — external_repos/semaphore/api/helpers/helpers_test.go
+- `DEBUG_E2E` **required** — tools/GitNexus/gitnexus-web/e2e/debug-issues.spec.ts
+- `DEBUG_LEVEL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `DEBUG_MODE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `DEBUG_OG` **required** — control/legacy_workspaces/create-t3-app/www/.env.example
+- `DEBUG_PORT` **required** — control/legacy_workspaces/gemini-cli/scripts/start.js
+- `DEBUG_SDK` **required** — archive/claude-code-src-leak/src/utils/debug.ts
+- `DEBUGPY_RUNNING` **required** — control/legacy_workspaces/fastmcp/tests/test_mcp_config.py
+- `DEEP_RESEARCH_QUEUE_CONCURRENCY` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `DEEP_RESEARCH_RATE_LIMIT_PER_5MIN` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `DEEPSEEK_API_KEY` **required** — external_repos/Kosmos/tests/conftest.py
+- `DEFAULT_HF_TOKEN` **required** — control/legacy_workspaces/hf-mcp-server/scripts/test-hf-logging.ts
+- `DEFAULT_MODEL` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DEFAULT_PROVIDER` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `DEFAULT_SERVICE_NAME` **required** — external_repos/cloud-run-mcp/mcp-server.js
+- `DEMO_VERSION` **required** — archive/claude-code-src-leak/src/utils/logoV2Utils.ts
+- `DENO_DEPLOYMENT_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `DEPLOYMENT_STRATEGY` (has default) — archive/root_debris/backend/.env.example
+- `DEST_BUCKET_NAME` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `DEST_MINIO_ENDPOINT` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `DEV` **required** — control/legacy_workspaces/gemini-cli/esbuild.config.js
+- `DEVELOPER_KNOWLEDGE_API_KEY` **required** — labs/uphillsnowball/.env.example
+- `DEVELOPERKNOWLEDGE_API_KEY` **required** — apps/aiyou_stack/cosmic-crab-payload/agents/bar_exam_protocol.py
+- `DEVICE_TYPE` **required** — control/legacy_workspaces/vexa/download_model.py
+- `DGRAPH_URL` **required** — external_repos/mcp-toolbox/tests/dgraph/dgraph_integration_test.go
+- `DISABLE_AUTOUPDATER` **required** — archive/claude-code-src-leak/src/migrations/migrateAutoUpdatesToSettings.ts
+- `DISABLE_COST_WARNINGS` **required** — archive/claude-code-src-leak/src/utils/billing.ts
+- `DISABLE_ERROR_REPORTING` (has default) — .env
+- `DISABLE_INSTALLATION_CHECKS` **required** — archive/claude-code-src-leak/src/utils/doctorDiagnostic.ts
+- `DISABLE_INTERLEAVED_THINKING` **required** — archive/claude-code-src-leak/src/utils/betas.ts
+- `DISABLE_SYMLINKS_IN_WINDOWS_TESTS` **required** — external_repos/apps/huggingface_hub/tests/conftest.py
+- `DISABLE_TELEMETRY` (has default) — .env
+- `DISABLE_VERSION_CHECK` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `DISCORD_WEBHOOK_URL` **required** — scripts/discord_alerts.py
+- `DISCORD_WEBHOOK_URL_ALERTS` **required** — scripts/discord_alerts.py
+- `DISPLAY` **required** — external_repos/apps/ComfyUI/comfy_extras/nodes_glsl.py
+- `DISPLAY_NAME` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `DO_NOT_TRACK` **required** — control/legacy_workspaces/vercel-skills/src/telemetry.ts
+- `DOCKER_DESKTOP` **required** — external_repos/apps/vite-plugin-devtools-json/src/index.ts
+- `DOCS_BASE_URL` **required** — external_repos/cfo-stack/docs/docusaurus.config.ts
+- `DOCS_URL` **required** — external_repos/cfo-stack/docs/docusaurus.config.ts
+- `DOCUSAURUS_BASE_URL` **required** — external_repos/apps/pyrefly/website/docusaurus.config.ts
+- `DONT_EXPAND_SQUOTED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DONT_EXPAND_UNQUOTED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DOTEST` **required** — external_repos/node/test/parallel/test-process-remove-all-signal-listeners.js
+- `DOUBLE_AND_SINGLE_QUOTES_INSIDE_BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DOUBLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DOUBLE_QUOTES_INSIDE_BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DOUBLE_QUOTES_INSIDE_SINGLE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DOUBLE_QUOTES_SPACED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DOUBLE_QUOTES_WITH_NO_SPACE_BRACKET` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `DRIVE_FOLDER_ID` **required** — scripts/drive_ingest_daemon.py
+- `DRONE` **required** — external_repos/apps/grafana/jest.config.js
+- `DRY_RUN` **required** — external_repos/claude-code-leaks/anthropics/scripts/backfill-duplicate-comments.ts
+- `DSA_VLOP_MODE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DTE_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DTE_EVOLUTION_THRESHOLD` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DTE_LEARNING_RATE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `DUMMY` **required** — external_repos/node/benchmark/process/bench-env.js
+- `DW_PROJECT_ID` **required** — external_repos/click-to-deploy-solutions/data-analytics-platform-event-driven/code/main.py
+- `DYNO` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `E2B_API_KEY` **required** — archive/broken/aiyou_fastapi_agents/hybrid_orchestrator.py
+- `E2E` **required** — tools/GitNexus/gitnexus-web/e2e/server-connect.spec.ts
+- `E2E_DEV_PROJECT` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `E2E_IMPORT_DB_DIR` **required** — external_repos/apps/ladybug/scripts/export-import-test.py
+- `E2E_PROD_PROJECT` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `E2E_STAGING_PROJECT` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `E2E_TEST_BUILD` **required** — external_repos/apps/AliFullStack/forge.config.ts
+- `ECOSYSTEM_TESTS_PROXY` **required** — control/legacy_workspaces/openai-node/ecosystem-tests/cli.ts
+- `EDGE_CASE_INLINE_COMMENTS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EDISON_API_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `EDISON_API_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `EDISON_TASK_TIMEOUT_MINUTES` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `EDITOR` **required** — archive/claude-code-src-leak/src/utils/editor.ts
+- `EDITOR_TIMEOUT_MS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `EHANC69_APP_ID` **required** — scripts/fetch_github_repos.py
+- `ELEVENTY_RUN_MODE` **required** — external_repos/GoogleChrome/samples/trailblazers/eleventy.config.js
+- `EMAIL` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EMBED_MODEL_ID` (has default) — .env
+- `EMBEDDED_SEARCH_TOOLS` **required** — archive/claude-code-src-leak/src/utils/embeddedTools.ts
+- `EMBEDDING_ANTHROPIC_API_KEY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_BATCH_SIZE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_CHUNK_OVERLAP` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_CHUNK_SIZE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_DIMENSIONS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_MODEL_NAME` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_OPENAI_API_KEY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMBEDDING_PROVIDER` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `EMBEDDING_VOYAGE_API_KEY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EMPTY` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `EMPTY_BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EMPTY_DOUBLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EMPTY_LINE` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `EMPTY_SINGLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `ENABLE_ANE_EXPERIMENTS` (has default) — labs/uphillsnowball/.env.example
+- `ENABLE_ANTHROPIC` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_AUTONOMOUS_ITERATION` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_AZURE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_AZURE_GPT4O_MINI` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_AZURE_GPT5` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_AZURE_GPT5_MINI` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_AZURE_GPT5_NANO` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_BOTTLENECK_DETECTION` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_CODE_COVERAGE` **required** — control/legacy_workspaces/prettier/jest.config.js
+- `ENABLE_COMPLIANCE` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `ENABLE_CONCURRENT_OPERATIONS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_CONCURRENT_RESULT_ANALYSIS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_DEBUG` (has default) — labs/uphillsnowball/.env.example
+- `ENABLE_GEMINI` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_GOVERNANCE` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `ENABLE_GROWTHBOOK_DEV` **required** — archive/claude-code-src-leak/src/constants/keys.ts
+- `ENABLE_HOST_VALIDATION` **required** — external_repos/cloud-run-mcp/mcp-server.js
+- `ENABLE_LOG_ARTIFACTS` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_LSP_TOOL` **required** — archive/claude-code-src-leak/src/tools.ts
+- `ENABLE_METRICS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ENABLE_NOVITA` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_OPENAI` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLE_OTEL_TRACING` **required** — control/legacy_workspaces/feast/go/main.go
+- `ENABLE_PROFILING` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_RESULT_CACHING` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_SAFETY_CHECKS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_SANDBOXING` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_SESSION_PERSISTENCE` **required** — archive/claude-code-src-leak/src/cli/print.ts
+- `ENABLE_SHORT_CONSOLE` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `ENABLE_TELEMETRY` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ENABLE_TOOL_SEARCH` **required** — archive/claude-code-src-leak/src/utils/toolSearch.ts
+- `ENABLE_TRACING` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ENABLE_USAGE_STATS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLE_VOLCENGINE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENABLED_DOMAINS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENABLED_EXPERIMENT_TYPES` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `ENCRYPTION_KEY` **required** — control/legacy_workspaces/airweave/.env.example
+- `ENV` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `ENVIRONMENT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `ENVIRONMENT_URL` **required** — external_repos/apps/Next-js-Boilerplate/checkly.config.ts
+- `EQUAL_SIGNS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EU_AI_ACT_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `EXECUTION_MODE` **required** — apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/config.py
+- `EXECVE_A` **required** — external_repos/node/test/parallel/test-process-execve.js
+- `EXECVE_B` **required** — external_repos/node/test/parallel/test-process-execve.js
+- `EXISTING_AGENT_ENGINE_ID` **required** — external_repos/agent-starter-pack/tests/cicd/test_gemini_enterprise_registration.py
+- `EXISTING_SERVICE_URL` **required** — external_repos/agent-starter-pack/tests/cicd/test_gemini_enterprise_registration.py
+- `EXPAND_NEWLINES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EXPECTED_CERTS_PATH` **required** — external_repos/node/test/fixtures/list-certs.js
+- `EXPORT_EXAMPLE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `EXT_INSTANCE_ID` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `EXTERNAL_SDKS` **required** — apps/ultraviolet-zodiac/interactive_runner.py
+- `FAIL_FAST` **required** — external_repos/node/test/common/test-error-reporter.js
+- `FAST` **required** — external_repos/node/test/parallel/test-zlib.js
+- `FASTAPI_ROOT_PATH` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `FAVICON_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `FBSOURCE_ENV` **required** — external_repos/apps/react-native/jest/preprocessor.js
+- `FBTOOLS_CLIENT_INTEGRATION_SITE` **required** — external_repos/firebase-tools/scripts/client-integration-tests/tests.ts
+- `FBTOOLS_TARGET_PROJECT` **required** — external_repos/firebase-tools/scripts/client-integration-tests/tests.ts
+- `FEATURE_FLAGS_CACHE_TTL` (has default) — archive/root_debris/backend/.env.example
+- `FEATURE_FLAGS_ENABLED` (has default) — archive/root_debris/backend/.env.example
+- `FEATURE_REQUEST` **required** — tools/orchestrator/run1_code_A.mjs
+- `FETCH_URL` **required** — external_repos/node/test/fixtures/fetch-and-log.mjs
+- `FETCHCONTENT_BASE_DIR` **required** — control/legacy_workspaces/vllm/setup.py
+- `FILE` **required** — third_party/security/secrets-patterns-db/scripts/db-confidence-check.py
+- `FILE_PROCESS_CONCURRENCY` **required** — external_repos/BioAgents/src/worker.ts
+- `FILE_SEARCH_CHUNK_OVERLAP` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `FILE_SEARCH_CHUNK_SIZE` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `FILE_SEARCH_TOP_K` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `FILE_STATUS_TTL_MINUTES` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `FILESTORE_PATH` **required** — apps/aiyou_stack/aiyou-fastapi-services/jetski-bridge/agent-worker.js
+- `FIREBASE_AUTH_EMULATOR_HOST` **required** — external_repos/firebase-tools/scripts/emulator-import-export-tests/tests.ts
+- `FIREBASE_CLI_EXPERIMENTS` **required** — external_repos/firebase-tools/src/experiments.spec.ts
+- `FIREBASE_CLI_GA4_API_SECRET` **required** — external_repos/firebase-tools/src/track.ts
+- `FIREBASE_CLI_GA4_MEASUREMENT_ID` **required** — external_repos/firebase-tools/src/track.ts
+- `FIREBASE_CLI_MP_VALIDATE` **required** — external_repos/firebase-tools/src/track.spec.ts
+- `FIREBASE_CONFIG` **required** — external_repos/firebase-tools/scripts/emulator-tests/functionsEmulator.spec.ts
+- `FIREBASE_CRASHLYTICS_BUILDTOOLS_PATH` **required** — external_repos/firebase-tools/src/crashlytics/buildToolsJarHelper.ts
+- `FIREBASE_CRASHLYTICS_CACHE_PATH` **required** — external_repos/firebase-tools/src/commands/crashlytics-symbols-upload.ts
+- `FIREBASE_DATABASE_EMULATOR_HOST` **required** — external_repos/firebase-tools/scripts/emulator-tests/functionsEmulator.spec.ts
+- `FIREBASE_DEBUG` **required** — external_repos/firebase-tools/scripts/dataconnect-test/tests.ts
+- `FIREBASE_DEPLOY_AGENT` **required** — external_repos/firebase-tools/src/deploymentTool.ts
+- `FIREBASE_DEVELOPERCONNECT_LOCATION_OVERRIDE` **required** — external_repos/firebase-tools/src/gcp/devConnect.ts
+- `FIREBASE_EMULATOR_GA4_API_SECRET` **required** — external_repos/firebase-tools/src/track.ts
+- `FIREBASE_EMULATOR_GA4_MEASUREMENT_ID` **required** — external_repos/firebase-tools/src/track.ts
+- `FIREBASE_EMULATOR_HUB` **required** — external_repos/firebase-tools/scripts/webframeworks-deploy-tests/tests.ts
+- `FIREBASE_EMULATORS_PATH` **required** — external_repos/firebase-tools/src/emulator/downloadableEmulators.ts
+- `FIREBASE_EXTENSIONS_CACHE_PATH` **required** — external_repos/firebase-tools/scripts/extensions-emulator-tests/tests.ts
+- `FIREBASE_FIRESTORE_EMULATOR_ADDRESS` **required** — tools/firestore-bundle-builder/functions/__tests__/functions.test.ts
+- `FIREBASE_FRAMEWORKS_BUILD_TARGET` **required** — external_repos/firebase-tools/src/frameworks/utils.ts
+- `FIREBASE_FRAMEWORKS_VERSION` **required** — external_repos/firebase-tools/src/frameworks/constants.ts
+- `FIREBASE_MCP_DEBUG_LOG` **required** — external_repos/firebase-tools/src/mcp/index.ts
+- `FIREBASE_PROJECT_ID` (has default) — .env
+- `FIREBASE_REALTIME_URL` **required** — external_repos/firebase-tools/src/database/api.spec.ts
+- `FIREBASE_SKIP_INFORMATIONAL_IAM` **required** — external_repos/firebase-tools/src/gcp/iam.ts
+- `FIREBASE_STORAGE_EMULATOR_HOST` **required** — tools/firestore-bundle-builder/functions/__tests__/functions.test.ts
+- `FIREBASE_TOKEN` **required** — external_repos/firebase-tools/src/requireAuth.ts
+- `FIREBASE_VSCODE_GA4_API_SECRET` **required** — external_repos/firebase-tools/src/track.ts
+- `FIREBASE_VSCODE_GA4_MEASUREMENT_ID` **required** — external_repos/firebase-tools/src/track.ts
+- `FIREBIRD_DATABASE` **required** — external_repos/mcp-toolbox/tests/firebird/firebird_integration_test.go
+- `FIREBIRD_HOST` **required** — external_repos/mcp-toolbox/tests/firebird/firebird_integration_test.go
+- `FIREBIRD_PASS` **required** — external_repos/mcp-toolbox/tests/firebird/firebird_integration_test.go
+- `FIREBIRD_PORT` **required** — external_repos/mcp-toolbox/tests/firebird/firebird_integration_test.go
+- `FIREBIRD_USER` **required** — external_repos/mcp-toolbox/tests/firebird/firebird_integration_test.go
+- `FIRECRAWL_API_KEY` **required** — external_repos/apps/firecrawl/examples/attributes-extraction-js-sdk.js
+- `FIREPIT_VERSION` **required** — external_repos/firebase-tools/src/bin/cli.ts
+- `FIRESTORE_DATABASE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `FIRESTORE_EMULATOR_HOST` **required** — external_repos/firebase-tools/scripts/emulator-tests/functionsEmulator.spec.ts
+- `FIRESTORE_ENABLE_TRACING` **required** — external_repos/nodejs-firestore/dev/src/index.ts
+- `FIRESTORE_NAMED_DATABASE` **required** — external_repos/nodejs-firestore/dev/system-test/firestore.ts
+- `FIRESTORE_PREFER_REST` **required** — external_repos/nodejs-firestore/dev/src/util.ts
+- `FIRESTORE_PROJECT` **required** — external_repos/mcp-toolbox/tests/firestore/firestore_integration_test.go
+- `FIRESTORE_TARGET_BACKEND` **required** — external_repos/nodejs-firestore/dev/system-test/firestore.ts
+- `FIRESTORE_URL` **required** — external_repos/firebase-tools/src/api.spec.ts
+- `FIRST_SUPERUSER` (has default) — control/legacy_workspaces/airweave/.env.example
+- `FIRST_SUPERUSER_PASSWORD` (has default) — control/legacy_workspaces/airweave/.env.example
+- `FLY_APP_NAME` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `FLY_MACHINE_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `FOO` **required** — external_repos/firebase-tools/scripts/emulator-tests/functionsEmulator.spec.ts
+- `FOO_BAR_BAZ` **required** — external_repos/firebase-tools/src/utils.spec.ts
+- `FORCE_AUTOUPDATE_PLUGINS` **required** — archive/claude-code-src-leak/src/utils/config.ts
+- `FORCE_CHECK_IMPORTS` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `FORCE_CODE_TERMINAL` **required** — archive/claude-code-src-leak/src/utils/ide.ts
+- `FORCE_COLOR` **required** — external_repos/node/test/parallel/test-runner-reporters.js
+- `FORCE_TORCHRUN` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `FORCE_VCR` **required** — archive/claude-code-src-leak/src/services/vcr.ts
+- `FORK` **required** — external_repos/node/test/parallel/test-child-process-fork-exec-path.js
+- `FORM_PARSER_PROCESSOR` **required** — external_repos/click-to-deploy-solutions/document-ai/code/main.py
+- `FROM_EMAIL` (has default) — apps/counselconduit/.env.example
+- `FROM_NAME` (has default) — apps/counselconduit/.env.example
+- `FRONTEND_LOCAL_DEVELOPMENT_PORT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `FRONTEND_URL` **required** — tools/GitNexus/gitnexus-web/e2e/server-connect.spec.ts
+- `FUNCTION_DEBUG_MODE` **required** — external_repos/firebase-tools/src/emulator/functionsEmulatorRuntime.ts
+- `FUNCTION_SIGNATURE_TYPE` **required** — external_repos/firebase-tools/src/emulator/functionsEmulatorRuntime.ts
+- `FUNCTION_TARGET` **required** — external_repos/firebase-tools/src/emulator/functionsEmulatorRuntime.ts
+- `GA4_PROPERTY_ID` **required** — reference_architectures/claude-seo/scripts/google_auth.py
+- `GAE_ENV` **required** — external_repos/GoogleChrome/chromium-dashboard/settings.py
+- `GAE_VERSION` **required** — external_repos/GoogleChrome/chromium-dashboard/framework/basehandlers.py
+- `GANC_KEEP_TEMPDIRS` **required** — external_repos/google-api-nodejs-client/system-test/kitchen.test.ts
+- `GATSBY_DEV_SSR` **required** — external_repos/apps/documentation/gatsby-config.mjs
+- `GCA_AUTO_APPROVE_CHANGES` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gca_autopilot_finish.py
+- `GCLOUD_PROJECT` (has default) — .env
+- `GCLOUD_SERVICE_KEY` **required** — external_repos/apps/terragrunt/test/integration_serial_gcp_test.go
+- `GCLOUD_SERVICE_KEY_IMPERSONATOR` **required** — external_repos/apps/terragrunt/test/integration_serial_gcp_test.go
+- `GCP_BIGQUERY_DATASET` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_BIGQUERY_LOCATION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_GCS_BUCKET_PROCESSED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_GCS_BUCKET_RAW` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_LOCATION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_PARENT` **required** — external_repos/cloud-run-mcp/test/need-gcp/test-helpers.js
+- `GCP_PROJECT` **required** — apps/counselconduit/api/gdpr.py
+- `GCP_PROJECT_ID` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_REGION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_STDIO` (has default) — external_repos/cloud-run-mcp/.env.example
+- `GCP_STORAGE_BUCKET` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `GCP_TOKEN` **required** — external_repos/click-to-deploy-solutions/streaming-data-to-analytics/load_test/locustfile.py
+- `GCP_VERTEX_AI_EMBEDDING_DIMENSIONS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_VERTEX_AI_ENDPOINT_DISPLAY_NAME` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_VERTEX_AI_INDEX_DISPLAY_NAME` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_VERTEX_AI_MACHINE_TYPE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_VERTEX_AI_MAX_REPLICAS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCP_VERTEX_AI_MIN_REPLICAS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GCS_ARCHIVE_BUCKET` **required** — external_repos/click-to-deploy-solutions/data-analytics-platform-event-driven/code/main.py
+- `GCS_BUCKET` **required** — external_repos/agentsmithy/agent_bar_v2/agent_use_case_golden_template/config.py
+- `GCS_BUCKET_NAME` **required** — control/legacy_workspaces/archive_swarm/apps_aiyou_stack_aiyou-fastapi-services_flying_monkeys.py
+- `GCS_DATA_LAKE_BUCKET` **required** — external_repos/click-to-deploy-solutions/cloud-composer-etl/dags/from_data_lake_to_data_warehouse.py
+- `GCS_MEDIA_BUCKET` **required** — labs/uphillsnowball/media-mcp-server/media_mcp_server.py
+- `GCS_OUTPUT` **required** — external_repos/click-to-deploy-solutions/document-ai/code/main.py
+- `GCS_SQL_BACKUP_BUCKET` **required** — external_repos/click-to-deploy-solutions/cloud-composer-etl/dags/restore_postgres_backup.py
+- `GCSFUSE_METADATA_IMAGE_TYPE` **required** — external_repos/gcsfuse/cmd/legacy_main.go
+- `GDPR_TASK_QUEUE` **required** — apps/counselconduit/api/gdpr.py
+- `GEMINI_ANALYSIS_ENABLED` **required** — apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/config.py
+- `GEMINI_API_KEY` (has default) — control/legacy_workspaces/antigravity-proxy/.env.example
+- `GEMINI_API_KEYS` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_rotation.py
+- `GEMINI_CLI` **required** — external_repos/firebase-tools/src/env.ts
+- `GEMINI_CLI_INTEGRATION_TEST` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `GEMINI_CONFIDENCE_THRESHOLD` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `GEMINI_CONFIG_DIR` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `GEMINI_FLASH_MODEL` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GEMINI_FORCE_FILE_STORAGE` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `GEMINI_GEN_MODEL` **required** — packages/aiyou/src/scripts/ingest.ts
+- `GEMINI_KEY_1` **required** — archive/broken/aiyou_fastapi_scripts/manual_monkey_run.py
+- `GEMINI_LOCATION` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/setup_judge6_memory.py
+- `GEMINI_MODEL` (has default) — labs/uphillsnowball/.env.example
+- `GEMINI_MODEL_VERSION` **required** — external_repos/agentsmithy/agent_bar_v2/agent.py
+- `GEMINI_PATH` **required** — external_repos/apps/Gemini-CLI-UI/server/gemini-cli.js
+- `GEMINI_PRO_MODEL` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GEMINI_PROJECT_ID` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/setup_judge6_memory.py
+- `GEMINI_SANDBOX` **required** — control/legacy_workspaces/gemini-cli/scripts/sandbox_command.js
+- `GEMINI_SANDBOX_IMAGE_TAG` **required** — control/legacy_workspaces/gemini-cli/scripts/build_sandbox.js
+- `GENAI_TELEMETRY_PATH` **required** — apps/slides_agent_demo/app/app_utils/telemetry.py
+- `GH_TOKEN` **required** — control/legacy_workspaces/archive_legacy_aiyou-rollup/scripts/healthcheck.mjs
+- `GIT` **required** — external_repos/node/tools/lint-sh.mjs
+- `GIT_ASKPASS` **required** — scripts/managed_push.py
+- `GIT_BRANCH` **required** — external_repos/cloud-run-button/tests/run_integration_test.py
+- `GIT_CURL_VERBOSE` **required** — libs/cyberpunk_stack/git-lfs/lfs/lfs.go
+- `GIT_LOG_STATS` **required** — libs/cyberpunk_stack/git-lfs/commands/run.go
+- `GIT_PARAMS` **required** — external_repos/apps/vue/scripts/verify-commit-msg.js
+- `GIT_TERMINAL_PROMPT` **required** — scripts/managed_push.py
+- `GIT_TRACE` **required** — libs/cyberpunk_stack/git-lfs/lfs/lfs.go
+- `GIT_TRANSFER_TRACE` **required** — libs/cyberpunk_stack/git-lfs/lfs/lfs.go
+- `GITHUB_ACTION_INPUTS` **required** — archive/claude-code-src-leak/src/main.tsx
+- `GITHUB_ACTION_REPOSITORY` **required** — external_repos/firebase-tools/src/utils.ts
+- `GITHUB_ACTIONS` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/bugbot_hook.py
+- `GITHUB_ACTOR` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `GITHUB_ACTOR_ID` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `GITHUB_API_URL` **required** — control/legacy_workspaces/checkout/src/url-helper.ts
+- `GITHUB_APP_ID` (has default) — .env
+- `GITHUB_APP_INSTALLATION_ID` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `GITHUB_APP_PEM` **required** — scripts/gh_app_token.py
+- `GITHUB_BASE_REF` **required** — control/legacy_workspaces/gemini-cli/scripts/lint.js
+- `GITHUB_CLIENT_ID` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `GITHUB_CLIENT_SECRET` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `GITHUB_EVENT_NAME` **required** — third_party/security/gitleaks-action/src/index.js
+- `GITHUB_EVENT_PATH` **required** — control/legacy_workspaces/checkout/src/workflow-context-helper.ts
+- `GITHUB_INSTALLATION_ID` **required** — scripts/github-app-mcp-wrapper.mjs
+- `GITHUB_PAT` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `GITHUB_PEM_PATH` **required** — scripts/github-app-mcp-wrapper.mjs
+- `GITHUB_PERSONAL_ACCESS_TOKEN` (has default) — .env
+- `GITHUB_REF` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/bugbot_hook.py
+- `GITHUB_REPO` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_prs.py
+- `GITHUB_REPOSITORY` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `GITHUB_REPOSITORY_ID` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `GITHUB_REPOSITORY_NAME` **required** — control/legacy_workspaces/fastmcp/scripts/auto_close_duplicates.py
+- `GITHUB_REPOSITORY_OWNER` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `GITHUB_REPOSITORY_OWNER_ID` **required** — archive/claude-code-src-leak/src/utils/user.ts
+- `GITHUB_RUN_ID` **required** — control/legacy_workspaces/checkout/src/ref-helper.ts
+- `GITHUB_SERVER_URL` **required** — control/legacy_workspaces/checkout/__test__/url-helper.test.ts
+- `GITHUB_SHA` **required** — external_repos/apps/grafana/jest.config.codeowner.js
+- `GITHUB_TOKEN` (has default) — control/legacy_workspaces/claude-cookbooks/claude_agent_sdk/.env.example
+- `GITHUB_WORKFLOW_REF` **required** — external_repos/firebase-tools/src/experiments.ts
+- `GITHUB_WORKSPACE` **required** — control/legacy_workspaces/checkout/__test__/git-auth-helper.test.ts
+- `GITLAB_CI` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `GITLEAKS_CONFIG` **required** — third_party/security/gitleaks/cmd/root.go
+- `GITLEAKS_CONFIG_TOML` **required** — third_party/security/gitleaks/cmd/root.go
+- `GITLEAKS_ENABLE_COMMENTS` **required** — third_party/security/gitleaks-action/src/gitleaks.js
+- `GITLEAKS_ENABLE_SUMMARY` **required** — third_party/security/gitleaks-action/src/index.js
+- `GITLEAKS_ENABLE_UPLOAD_ARTIFACT` **required** — third_party/security/gitleaks-action/src/index.js
+- `GITLEAKS_LICENSE` **required** — third_party/security/gitleaks-action/src/index.js
+- `GITLEAKS_NOTIFY_USER_LIST` **required** — third_party/security/gitleaks-action/src/gitleaks.js
+- `GITLEAKS_VERSION` **required** — third_party/security/gitleaks-action/src/index.js
+- `GITNEXUS_DEBUG` **required** — tools/GitNexus/gitnexus-claude-plugin/hooks/gitnexus-hook.js
+- `GITPOD_WORKSPACE_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `GLICKO2_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GLICKO2_INITIAL_RATING` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GLICKO2_INITIAL_RD` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GLITCH_PERSONAL_TOKEN` **required** — external_repos/GoogleChrome/workbox/gulp-tasks/publish-glitch.js
+- `GLITCH_WORKBOX_SECRET` **required** — external_repos/GoogleChrome/workbox/gulp-tasks/publish-glitch.js
+- `GLOG_MINLOGLEVEL` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/patch_gemini_cli.py
+- `GMAIL_SENDER` (has default) — apps/counselconduit/.env.example
+- `GNOME_TERMINAL_SERVICE` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `GOCOVERDIR` **required** — external_repos/opentofu/internal/e2e/e2e.go
+- `GOD_MODE_BUCKET` **required** — apps/phantom-radiation/scripts/god_mode_admin.py
+- `GOD_MODE_HEALTH_INTERVAL_SEC` **required** — apps/phantom-radiation/scripts/god_mode_admin.py
+- `GOD_MODE_SYNC_INTERVAL_SEC` **required** — apps/phantom-radiation/scripts/god_mode_admin.py
+- `GODEBUG` **required** — external_repos/opentofu/cmd/tofu/main.go
+- `GOOGLE_API_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `GOOGLE_APIS_USER_AGENT` **required** — external_repos/cloud-builders/gke-deploy/services/gcloud.go
+- `GOOGLE_APPLICATION_CREDENTIALS` (has default) — apps/kovelai/.env.example
+- `GOOGLE_CHAT_SPACE` (has default) — apps/counselconduit/.env.example
+- `GOOGLE_CLOUD_API_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/Prompts/antigravity_uniscript.py
+- `GOOGLE_CLOUD_LOCATION` (has default) — labs/uphillsnowball/.env.example
+- `GOOGLE_CLOUD_PROJECT` (has default) — labs/uphillsnowball/.env.example
+- `GOOGLE_CLOUD_PROJECT_ID` **required** — apps/aiyou_stack/aiyou-fastapi-services/fixer-agent/main.py
+- `GOOGLE_CLOUD_QUOTA_PROJECT` **required** — external_repos/firebase-tools/src/apiv2.spec.ts
+- `GOOGLE_CLOUD_REGION` (has default) — .env
+- `GOOGLE_CLOUD_SHELL` **required** — external_repos/firebase-tools/src/utils.ts
+- `GOOGLE_CLOUD_UNIVERSE_DOMAIN` **required** — external_repos/nodejs-firestore/dev/test/gapic_firestore_admin_v1.ts
+- `GOOGLE_CLOUD_WORKSTATIONS` **required** — external_repos/firebase-tools/src/utils.spec.ts
+- `GOOGLE_GEMINI_BASE_URL` **required** — external_repos/python-genai/google/genai/_base_url.py
+- `GOOGLE_GENAI_CLIENT_MODE` **required** — external_repos/python-genai/google/genai/client.py
+- `GOOGLE_GENAI_REPLAY_ID` **required** — external_repos/python-genai/google/genai/client.py
+- `GOOGLE_GENAI_REPLAYS_DIRECTORY` **required** — external_repos/python-genai/google/genai/client.py
+- `GOOGLE_GENAI_USE_GCA` **required** — control/legacy_workspaces/gemini-cli/integration-tests/json-output.test.ts
+- `GOOGLE_GENAI_USE_VERTEXAI` **required** — apps/slides_agent_demo/app/agent.py
+- `GOOGLE_IDENTITY_EMAIL` **required** — external_repos/apps/terragrunt/test/integration_gcp_test.go
+- `GOOGLE_OAUTH_AUDIENCE` (has default) — external_repos/cloud-run-mcp/.env.example
+- `GOOGLE_OAUTH_CLIENT_ID` (has default) — external_repos/cloud-run-mcp/.env.example
+- `GOOGLE_OAUTH_CLIENT_SECRET` (has default) — external_repos/cloud-run-mcp/.env.example
+- `GOOGLE_OAUTH_REDIRECT_URI` (has default) — external_repos/cloud-run-mcp/.env.example
+- `GOOGLE_PROJECT_ID` **required** — apps/aiyou_stack/aiyou-fastapi-services/antigravity.js
+- `GOOGLE_VERTEX_BASE_URL` **required** — external_repos/python-genai/google/genai/_base_url.py
+- `GPTRAM_ENCRYPTION_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/tests/test_crypto_manager.py
+- `GRADIO_IPV6` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `GRADIO_ROOT_PATH` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `GRADIO_SERVER_NAME` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `GRADIO_SERVER_PORT` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `GRADIO_SHARE` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `GRAFANA_ADMIN_USER` **required** — external_repos/apps/grafana/playwright.config.ts
+- `GRAFANA_URL` **required** — external_repos/apps/grafana/playwright.config.ts
+- `GROK_API_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/grok_extraction.py
+- `GROQ_API_KEY` (has default) — external_repos/apps/CortexLTM/.env.example
+- `GROQ_MODEL` (has default) — external_repos/apps/CortexLTM/.env.example
+- `GRPC_VERBOSITY` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/patch_gemini_cli.py
+- `GRPO_BATCH_SIZE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GRPO_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GRPO_LEARNING_RATE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `GSC_PROPERTY` **required** — reference_architectures/claude-seo/scripts/google_auth.py
+- `GWS_BIN` (has default) — apps/counselconduit/.env.example
+- `GYP_CROSSCOMPILE` **required** — external_repos/node/configure.py
+- `GYP_DEFINES` **required** — external_repos/node/android_configure.py
+- `HAS_STARTED_WORKER` **required** — external_repos/node/test/es-module/test-esm-import-meta-main.mjs
+- `HEADFUL` **required** — external_repos/apps/playwright-python/tests/conftest.py
+- `HEALTH_CHECK_INTERVAL` (has default) — archive/root_debris/backend/.env.example
+- `HEALTH_CHECK_TIMEOUT` (has default) — archive/root_debris/backend/.env.example
+- `HEALTHCARE_DATASET` **required** — external_repos/mcp-toolbox/tests/cloudhealthcare/cloud_healthcare_integration_test.go
+- `HEALTHCARE_PROJECT` **required** — external_repos/mcp-toolbox/tests/cloudhealthcare/cloud_healthcare_integration_test.go
+- `HEALTHCARE_REGION` **required** — external_repos/mcp-toolbox/tests/cloudhealthcare/cloud_healthcare_integration_test.go
+- `HELLO` **required** — external_repos/node/test/parallel/test-child-process-default-options.js
+- `HELP_DEBUG` **required** — external_repos/bubbletea/examples/help/main.go
+- `HF_HOME` **required** — control/legacy_workspaces/vexa/download_model.py
+- `HF_HUB_DISABLE_PROGRESS_BARS` **required** — archive/external_payloads/repos/autoresearch/train.py
+- `HF_HUB_DISABLE_TELEMETRY` **required** — external_repos/apps/ComfyUI/main.py
+- `HF_INFERENCE_TEST_TOKEN` **required** — external_repos/apps/huggingface_hub/tests/test_inference_client.py
+- `HIP_VISIBLE_DEVICES` **required** — external_repos/apps/ComfyUI/main.py
+- `HIVE_API_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/safety_estop.py
+- `HN_API_BASE_URL` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `HN_MAX_RESULTS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `HN_MIN_POINTS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `HN_SEARCH_KEYWORDS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `HOME` **required** — archive/claude-code-src-leak/src/utils/xdg.ts
+- `HOMEPATH` **required** — control/legacy_workspaces/gemini-cli/scripts/telemetry.js
+- `HOST` (has default) — archive/root_debris/backend/.env.example
+- `HOSTNAME` **required** — apps/aiyou_stack/aiyou-fastapi-services/jetski-bridge/agent-worker.js
+- `HOT_RELOAD` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `HTTP_PROXY` **required** — archive/claude-code-src-leak/src/utils/apiPreconnect.ts
+- `HTTPS_PROXY` **required** — archive/claude-code-src-leak/src/upstreamproxy/upstreamproxy.ts
+- `HYP_LLM_MODEL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `HYP_LLM_PROVIDER` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `ID` **required** — external_repos/agent-starter-pack/tests/cicd/test_gemini_enterprise_registration.py
+- `III_REST_PORT` **required** — external_repos/n-autoresearch/workers/orchestrator/orchestrator.py
+- `III_WS_URL` **required** — external_repos/n-autoresearch/workers/orchestrator/orchestrator.py
+- `INFINITY_API_KEY` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `INFISICAL_TOKEN` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `INGEST_OUT` **required** — apps/aiyou_stack/aiyou-fastapi-services/ingestion/moondream_ingest.py
+- `INGEST_ROOTS` **required** — apps/aiyou_stack/aiyou-fastapi-services/ingestion/moondream_ingest.py
+- `INGEST_SEEN` **required** — apps/aiyou_stack/aiyou-fastapi-services/ingestion/moondream_ingest.py
+- `INGESTION_FLATTENING_TOOL` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_INCLUDE_SECURITY_SCAN` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_ITEMS_PER_DAY_TARGET` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `INGESTION_LOG_FILE` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/monitor_quality_gates.py
+- `INGESTION_MAX_FILE_SIZE_MB` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_MIN_SOURCES` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `INGESTION_MONTHLY_COST_TARGET` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `INGESTION_OUTPUT_FORMAT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_REPOMIX_COMPRESSION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_REPOMIX_TOKEN_ENCODER` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_REPOSITORIES_CONFIG` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `INGESTION_RUNTIME_TARGET_MINUTES` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `INGESTION_TIER_1_PERCENTAGE_TARGET` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `INLINE_COMMENTS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `INLINE_COMMENTS_BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `INLINE_COMMENTS_DOUBLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `INLINE_COMMENTS_SINGLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `INLINE_COMMENTS_SPACE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `INSTALL_INTERNAL_SKILLS` **required** — control/legacy_workspaces/vercel-skills/src/add.test.ts
+- `INSTALL_PACKAGE` **required** — control/legacy_workspaces/prettier/jest.config.js
+- `INTEGRATION_TEST_FILE_DIR` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `INTERNAL_PW_GREENLET_DEBUG` **required** — external_repos/playwright-python/playwright/_impl/_greenlets.py
+- `INTERNAL_STATIC_DOCS` **required** — external_repos/apps/pyrefly/website/docusaurus.config.ts
+- `IS_DEMO` **required** — archive/claude-code-src-leak/src/commands.ts
+- `IS_FIREBASE_CLI` **required** — external_repos/firebase-tools/src/bin/cli.ts
+- `IS_FORK` **required** — external_repos/apps/grafana/scripts/levitate-parse-json-report.js
+- `IS_GEMINI_CLI_EXTENSION` **required** — external_repos/firebase-tools/src/mcp/index.ts
+- `IS_LOCAL` (has default) — archive/external_repos_root/apps/python-uv/.env.local
+- `IS_PR_BUILD` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `IS_SANDBOX` **required** — archive/claude-code-src-leak/src/setup.ts
+- `ISO_42001_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ISSUE_NUMBER` **required** — external_repos/claude-code-leaks/anthropics/scripts/lifecycle-comment.ts
+- `JAMAI_API_BASE` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `JAMAI_TOKEN` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `JAX_PLATFORMS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `JENKINS_URL` **required** — control/legacy_workspaces/vercel-skills/src/telemetry.ts
+- `JETSKI_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/verify_omega.py
+- `JIRA_API_TOKEN` **required** — external_repos/agents/Agentic-AI-Pipeline/Agentic-Coding-Pipeline/services.py
+- `JIRA_BASE_URL` **required** — external_repos/agents/Agentic-AI-Pipeline/Agentic-Coding-Pipeline/services.py
+- `JIRA_EMAIL` **required** — external_repos/agents/Agentic-AI-Pipeline/Agentic-Coding-Pipeline/services.py
+- `JIT` **required** — control/legacy_workspaces/tinygrad/examples/compile_tensorflow.py
+- `JOBS` **required** — external_repos/node/test/parallel/test-worker-memory.js
+- `JR_AUDIT_LOG_PATH` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `JR_VALIDATION_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `JUDGE_GEMINI_ALLOCATION` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `JUDGE_P99_LATENCY_TARGET` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `JUDGE6_DATASTORE_ID` **required** — archive/agent_debris/app/services/judge6_grounded.py
+- `JUDGE6_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/verify_omega.py
+- `JUDGE6_WEBHOOK_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/codepmcsbak.py
+- `JULES_KEY` **required** — external_repos/firebase-tools/julesbot/issue_to_jules_agent/agent.py
+- `JUPYTER_PLATFORM_DIRS` (has default) — archive/external_payloads/repos/micropython-stubber/.env
+- `JWT_ALGORITHM` (has default) — apps/counselconduit/.env.example
+- `JWT_EXPIRY_MINUTES` (has default) — apps/counselconduit/.env.example
+- `JWT_PUBLIC_KEY` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `JWT_SECRET` (has default) — archive/external_repos_root/apps/Gemini-CLI-UI/.env.example
+- `K_SCALE_CONSTANT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `K_SERVICE` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `K8S_POD_NAME` **required** — external_repos/memorystore-cluster-autoscaler/src/autoscaler-common/counters-base.js
+- `KEEP_OUTPUT` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `KERNEL_1_MAX_LATENCY_MS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/apply_re_punch.py
+- `KI_DIR` **required** — scripts/loop_steward.py
+- `KILL_SWITCH_CORPUS_SYNC_FAILURE_RATE` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `KILL_SWITCH_FALSE_POSITIVE_RATE` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `KILL_SWITCH_FILE_SEARCH_P99_LATENCY` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `KITTY_WINDOW_ID` **required** — archive/claude-code-src-leak/src/ink/terminal.ts
+- `KNOWLEDGE_DOCS_PATH` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `KONSOLE_VERSION` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `KOSMOS_SKILLS_DIR` **required** — external_repos/Kosmos/kosmos/agents/skill_loader.py
+- `KOVEL_ATTESTATION_SECRET` **required** — apps/counselconduit/api/kovel_attestation.py
+- `KOVEL_KMS_SECRET` (has default) — apps/kovelai/.env.example
+- `KOVELAI_BASE_URL` **required** — apps/counselconduit/api/magic_link.py
+- `KOVELAI_PORT` **required** — apps/kovelai/agent/kovelai_agent.py
+- `KOVELAI_URL` **required** — apps/kovelai/agent/e2e/home.spec.js
+- `KUBERNETES_SERVICE_HOST` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `KUVASZ_BASE_URL` (has default) — archive/root_debris/monitoring/.env.example
+- `KUVASZ_DB_PASSWORD` (has default) — archive/root_debris/monitoring/.env.example
+- `LABEL` **required** — external_repos/claude-code-leaks/anthropics/scripts/lifecycle-comment.ts
+- `LAKE_BUCKET_NAME` **required** — apps/aiyou_stack/aiyou-fastapi-services/jetski-bridge/agent-worker.js
+- `LANCEDB_PATH` (has default) — .env
+- `LANCEDB_TABLE` **required** — scripts/pnkln_lancedb.py
+- `LANCEDB_URI` **required** — scripts/pnkln_lancedb.py
+- `LANG` **required** — archive/claude-code-src-leak/src/utils/formatBriefTimestamp.ts
+- `LANGEXTRACT_API_KEY` **required** — scripts/extract_icloud_lang.py
+- `LANTERN_DEBUG` **required** — external_repos/lighthouse/core/lib/asset-saver.js
+- `LAWTRACK_SYSTEM_KEY` **required** — core/lawtrack/api/main.py
+- `LC_ALL` **required** — archive/claude-code-src-leak/src/utils/formatBriefTimestamp.ts
+- `LC_TIME` **required** — archive/claude-code-src-leak/src/utils/formatBriefTimestamp.ts
+- `LD_LIBRARY_PATH` **required** — control/legacy_workspaces/vllm/tools/install_nixl_from_source_ubuntu.py
+- `LFS_FASTWALK_LIMIT` **required** — libs/cyberpunk_stack/git-lfs/tools/filetools.go
+- `LHCI_ROOT_URL` **required** — external_repos/GoogleChrome/lighthouse-ci/scripts/ci-dogfood-get-urls.js
+- `LITELLM_MASTER_KEY` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `LITELLM_MODEL` (has default) — apps/counselconduit/.env.example
+- `LITERATURE_CACHE_TTL_HOURS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LLAMA_API_KEY` **required** — external_repos/apps/pyrefly/scripts/llm_transport.py
+- `LLAMA_SERVER_PATH` **required** — core/sovereign_mlx/kv_cache_slab.py
+- `LLAMABOARD_ENABLED` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `LLAMABOARD_WORKDIR` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `LLAMAFACTORY_VERBOSITY` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `LLM_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `LLM_PROVIDER` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LLM_RATE_LIMIT_PER_MINUTE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOCAL_BASE_URL` (has default) — archive/root_debris/router/.env.example
+- `LOCAL_CURSOR_DEVELOPMENT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `LOCAL_DEVELOPMENT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `LOCAL_MODEL` (has default) — archive/root_debris/router/.env.example
+- `LOCAL_PYPROJECT` **required** — apps/aiyou_stack/aiyou-fastapi-services/antigravity-arch/update_package.py
+- `LOCAL_RANK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `LOCALAPPDATA` **required** — archive/claude-code-src-leak/src/utils/desktopDeepLink.ts
+- `LOCALHOST` **required** — external_repos/node/test/common/index.js
+- `LOCATION` **required** — external_repos/agentsmithy/generate_custom_instructions.py
+- `LOG_AGENT_MESSAGES` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOG_API_REQUESTS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOG_DIR` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `LOG_FILE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOG_FORMAT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOG_LEVEL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOG_LLM_CALLS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOG_PATCHES` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `LOG_REQUESTS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `LOG_WORKFLOW_TRANSITIONS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `LOGADMIN_PROJECT` **required** — external_repos/mcp-toolbox/tests/cloudloggingadmin/cloud_logging_admin_integration_test.go
+- `LOGGING_HF_TOKEN` **required** — control/legacy_workspaces/hf-mcp-server/scripts/test-hf-logging.ts
+- `LOGIN_BUTTON_SELECTOR` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_web.py
+- `LOGS_BUCKET_NAME` **required** — apps/agent-starter-pack/shadowtag-agent/app/fast_api_app.py
+- `LOOKER_AGENT_CONFIG` **required** — external_repos/click-to-deploy-solutions/looker-ai-agent/code/app.py
+- `LOOKER_BASE_URL` **required** — external_repos/mcp-toolbox/tests/looker/looker_integration_test.go
+- `LOOKER_CLIENT_ID` **required** — external_repos/mcp-toolbox/tests/looker/looker_integration_test.go
+- `LOOKER_CLIENT_SECRET` **required** — external_repos/mcp-toolbox/tests/looker/looker_integration_test.go
+- `LOOKER_LOCATION` **required** — external_repos/mcp-toolbox/tests/looker/looker_integration_test.go
+- `LOOKER_PROJECT` **required** — external_repos/mcp-toolbox/tests/looker/looker_integration_test.go
+- `LOOKER_VERIFY_SSL` **required** — external_repos/mcp-toolbox/tests/looker/looker_integration_test.go
+- `LTV_CAC_RATIO` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `MAGIC_LINK_SECRET` **required** — apps/counselconduit/api/magic_link.py
+- `MANUALLY_SET` **required** — external_repos/node/test/parallel/test-worker-process-env.js
+- `MAPS_API_KEY` **required** — archive/broken/aiyou_fastapi_apps_src/adk_monkeys.py
+- `MARIADB_DATABASE` **required** — external_repos/mcp-toolbox/tests/mariadb/mariadb_integration_test.go
+- `MARIADB_HOST` **required** — external_repos/mcp-toolbox/tests/mariadb/mariadb_integration_test.go
+- `MARIADB_PASS` **required** — external_repos/mcp-toolbox/tests/mariadb/mariadb_integration_test.go
+- `MARIADB_PORT` **required** — external_repos/mcp-toolbox/tests/mariadb/mariadb_integration_test.go
+- `MARIADB_USER` **required** — external_repos/mcp-toolbox/tests/mariadb/mariadb_integration_test.go
+- `MASTER_ADDR` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `MASTER_PORT` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `MATH_AUDITOR_PRICE_ID` **required** — archive/agent_debris/api/routes/subscription.py
+- `MAX_AUTO_ITERATIONS` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `MAX_CONCURRENT` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `MAX_CONCURRENT_EXPERIMENTS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_CONCURRENT_LLM_CALLS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_CONCURRENT_PAPER_JOBS` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `MAX_CONCURRENT_THREADS` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `MAX_CONSECUTIVE_CRASHES` **required** — external_repos/n-autoresearch/workers/orchestrator/orchestrator.py
+- `MAX_COST_PER_DECISION` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `MAX_COST_PER_QUERY` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `MAX_EXPERIMENT_EXECUTION_TIME` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_FILE_SIZE_KB` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `MAX_ISSUE_NUMBER` **required** — external_repos/claude-code-leaks/anthropics/scripts/backfill-duplicate-comments.ts
+- `MAX_JOBS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `MAX_JWT_EXPIRATION` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `MAX_LATENCY_P99_MS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `MAX_LINE_COUNT` **required** — control/legacy_workspaces/tinygrad/sz.py
+- `MAX_MCP_OUTPUT_TOKENS` **required** — archive/claude-code-src-leak/src/utils/mcpValidation.ts
+- `MAX_MEMORY_MB` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_PARALLEL_HYPOTHESES` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_PARALLEL_HYPOTHESIS_EVALUATIONS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_PATH` **required** — external_repos/node/test/pummel/test-fs-read-file-sync-utf8-memory.js
+- `MAX_RESEARCH_ITERATIONS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_RESULTS_PER_QUERY` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MAX_SCRAPING_RETRIES` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `MAX_STEPS_PER_RUN` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `MAX_STRUCTURED_OUTPUT_RETRIES` **required** — archive/claude-code-src-leak/src/QueryEngine.ts
+- `MAX_THINKING_TOKENS` **required** — archive/claude-code-src-leak/src/main.tsx
+- `MAX_TOKENS` (has default) — control/legacy_workspaces/claude-cookbooks/.env.example
+- `MAX_TOKENS_PER_REQUEST` **required** — apps/counselconduit/api/middleware/token_budget.py
+- `MAX_TOKENS_PER_SESSION` **required** — apps/counselconduit/api/sandbox_router.py
+- `MAX_WORKFLOW_EXECUTION_TIME` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `MCP_DEBUG` **required** — control/legacy_workspaces/gemini-cli/integration-tests/mcp_server_cyclic_schema.test.ts
+- `MCP_IN_DOCKER` **required** — external_repos/playwright-mcp/packages/playwright-mcp/playwright.config.ts
+- `MEMORY_DATABASE` **required** — labs/uphillsnowball/agent/memory.py
+- `MEMORY_DB_PATH` **required** — external_repos/apps/memory-lancedb-pro/scripts/governance-maintenance.mjs
+- `MEMORY_PATH` **required** — apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/api_server.py
+- `MEMORY_PRO_OAUTH_AUTHORIZE_URL` **required** — external_repos/apps/memory-lancedb-pro/src/llm-oauth.ts
+- `MEMORY_PRO_OAUTH_CLIENT_ID` **required** — external_repos/apps/memory-lancedb-pro/src/llm-oauth.ts
+- `MEMORY_PRO_OAUTH_REDIRECT_URI` **required** — external_repos/apps/memory-lancedb-pro/src/llm-oauth.ts
+- `MEMORY_PRO_OAUTH_TOKEN_URL` **required** — external_repos/apps/memory-lancedb-pro/src/llm-oauth.ts
+- `MEMORY_VECTOR_DIM` **required** — external_repos/apps/memory-lancedb-pro/scripts/governance-maintenance.mjs
+- `METRICS_EXPORT_INTERVAL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MIGRATION_MAX_WORKERS` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `MIMALLOC_PURGE_DELAY` **required** — external_repos/apps/ComfyUI/main.py
+- `MIN_ISSUE_NUMBER` **required** — external_repos/claude-code-leaks/anthropics/scripts/backfill-duplicate-comments.ts
+- `MIN_NOVELTY_SCORE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `MINDSDB_DATABASE` **required** — external_repos/mcp-toolbox/tests/mindsdb/mindsdb_integration_test.go
+- `MINDSDB_HOST` **required** — external_repos/mcp-toolbox/tests/mindsdb/mindsdb_integration_test.go
+- `MINDSDB_PASS` **required** — external_repos/mcp-toolbox/tests/mindsdb/mindsdb_integration_test.go
+- `MINDSDB_PORT` **required** — external_repos/mcp-toolbox/tests/mindsdb/mindsdb_integration_test.go
+- `MINDSDB_USER` **required** — external_repos/mcp-toolbox/tests/mindsdb/mindsdb_integration_test.go
+- `MINIFORGE_HOME` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `MINIMAX_API_KEY` **required** — tools/GitNexus/eval/.env.example
+- `MISTRAL_API_KEY` **required** — control/legacy_workspaces/airweave/.env.example
+- `MITMPROXY_CACHE_ENABLED` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MITMPROXY_CACHE_TTL` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MITMPROXY_ENABLE_METRICS` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MITMPROXY_INJECT_SAFETY` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MITMPROXY_MAX_RETRIES` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MITMPROXY_MODEL_FALLBACK` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MITMPROXY_OPTIMIZE_PAYLOADS` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/mitmproxy_ultra.py
+- `MO_ANALYZE_PATH` **required** — external_repos/Mole/cmd/analyze/main.go
+- `MODE` **required** — external_repos/apps/AliFullStack/src/renderer.tsx
+- `MODEL` **required** — control/legacy_workspaces/fastmcp/examples/sampling_fallback.py
+- `MODEL_ID` (has default) — .env
+- `MODEL_PROVIDER` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `MOLE_SKIP_FINDER_TESTS` **required** — external_repos/Mole/cmd/analyze/test_helpers_test.go
+- `MONGODB_ATLAS_URL` **required** — external_repos/apps/payload/test/generateDatabaseAdapter.ts
+- `MONGODB_DATABASE` **required** — external_repos/mcp-toolbox/tests/mongodb/mongodb_integration_test.go
+- `MONGODB_URI` **required** — external_repos/mcp-toolbox/tests/mongodb/mongodb_integration_test.go
+- `MONGODB_URL` **required** — external_repos/apps/payload/test/generateDatabaseAdapter.ts
+- `MONITORING_DAILY_COST_INCREASE_PERCENT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MONITORING_ENABLE_PROMETHEUS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MONITORING_INDEX_STALENESS_HOURS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MONITORING_INGESTION_ERROR_RATE_PERCENT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MONITORING_PROMETHEUS_PORT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MONITORING_VECTOR_SEARCH_P95_LATENCY_MS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MONKE_COMPOSIO_API_KEY` **required** — control/legacy_workspaces/airweave/monke/.env.example
+- `MONKE_COMPOSIO_PROVIDER_ID` **required** — control/legacy_workspaces/airweave/monke/runner.py
+- `MONKE_MAX_PARALLEL` **required** — control/legacy_workspaces/airweave/monke/runner.py
+- `MONKE_STRIPE_API_KEY` **required** — control/legacy_workspaces/airweave/monke/.env.example
+- `MONOSPACE_ENV` **required** — external_repos/firebase-tools/src/env.ts
+- `MONTHLY_BUDGET` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `MORPH_API_KEY` **required** — apps/aiyou_stack/nascent-apollo/tools/warpgrep_wrapper.py
+- `MOZ_API_KEY` **required** — reference_architectures/claude-seo/scripts/backlinks_auth.py
+- `MSSQL_DATABASE` **required** — external_repos/mcp-toolbox/tests/mssql/mssql_integration_test.go
+- `MSSQL_HOST` **required** — external_repos/mcp-toolbox/tests/mssql/mssql_integration_test.go
+- `MSSQL_PASS` **required** — external_repos/mcp-toolbox/tests/mssql/mssql_integration_test.go
+- `MSSQL_PORT` **required** — external_repos/mcp-toolbox/tests/mssql/mssql_integration_test.go
+- `MSSQL_USER` **required** — external_repos/mcp-toolbox/tests/mssql/mssql_integration_test.go
+- `MSTEAMS_URL` **required** — external_repos/flagger/cmd/flagger/main.go
+- `MSYSTEM` **required** — archive/claude-code-src-leak/src/ink/clearTerminal.ts
+- `MULTI_BACKTICKED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `MULTI_DOUBLE_QUOTED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `MULTI_NOT_VALID` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `MULTI_NOT_VALID_QUOTE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `MULTI_SINGLE_QUOTED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `MUMBAI_RPC_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/hardhat.config.js
+- `MY_SECRET` **required** — external_repos/firebase-tools/scripts/emulator-tests/functionsEmulator.spec.ts
+- `MYSQL_DATABASE` **required** — external_repos/mcp-toolbox/tests/mysql/mysql_integration_test.go
+- `MYSQL_HOST` **required** — external_repos/mcp-toolbox/tests/mysql/mysql_integration_test.go
+- `MYSQL_PASS` **required** — external_repos/mcp-toolbox/tests/mysql/mysql_integration_test.go
+- `MYSQL_PORT` **required** — external_repos/mcp-toolbox/tests/mysql/mysql_integration_test.go
+- `MYSQL_USER` **required** — external_repos/mcp-toolbox/tests/mysql/mysql_integration_test.go
+- `N` **required** — archive/claude-code-src-leak/src/main.tsx
+- `NAME` **required** — apps/aiyou_stack/aiyou-fastapi-services/cloud-run-go/main.go
+- `NEAR_MISS_THRESHOLD` **required** — external_repos/n-autoresearch/workers/orchestrator/orchestrator.py
+- `NEO4J_DATABASE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `NEO4J_MAX_CONNECTION_LIFETIME` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `NEO4J_MAX_CONNECTION_POOL_SIZE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `NEO4J_PASS` **required** — external_repos/mcp-toolbox/tests/neo4j/neo4j_integration_test.go
+- `NEO4J_PASSWORD` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `NEO4J_URI` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `NEO4J_USER` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `NETLIFY` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `NEW_SLOT_SYNTAX` **required** — external_repos/apps/vue/test/vitest.setup.ts
+- `NEWS_API_KEY` **required** — control/legacy_workspaces/archive_ingestion/services_gemini_ingestion/cron_job.py
+- `NEXT_PUBLIC_API_URL` **required** — apps/aiyou-web-dashboard/src/config.ts
+- `NEXT_PUBLIC_APP_URL` **required** — external_repos/apps/Next-js-Boilerplate/checkly.config.ts
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` (has default) — archive/external_repos_root/apps/Next-js-Boilerplate/.env
+- `NEXT_PUBLIC_LOGGING_LEVEL` (has default) — archive/external_repos_root/apps/Next-js-Boilerplate/.env
+- `NEXT_PUBLIC_POSTHOG_HOST` (has default) — archive/external_repos_root/apps/Next-js-Boilerplate/.env
+- `NEXT_PUBLIC_POSTHOG_KEY` **required** — archive/external_repos_root/apps/Next-js-Boilerplate/.env
+- `NEXT_PUBLIC_SENTRY_DISABLED` **required** — external_repos/apps/Next-js-Boilerplate/next.config.ts
+- `NEXT_PUBLIC_SENTRY_DSN` **required** — external_repos/apps/Next-js-Boilerplate/src/instrumentation-client.ts
+- `NEXT_RUNTIME` **required** — external_repos/apps/Next-js-Boilerplate/src/instrumentation.ts
+- `NEXT_TELEMETRY_DISABLED` (has default) — archive/external_repos_root/apps/Next-js-Boilerplate/.env
+- `NGINX_HTTP_PORT` (has default) — apps/kovelai/.env.example
+- `NGINX_HTTPS_PORT` (has default) — apps/kovelai/.env.example
+- `NIST_RMF_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `NIXL_VERSION` **required** — control/legacy_workspaces/vllm/tools/install_nixl_from_source_ubuntu.py
+- `NNODES` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `NO_COLOR` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `NO_LOG_REQUEST` **required** — external_repos/node/test/fixtures/request-and-log.js
+- `NO_PROXY` **required** — archive/claude-code-src-leak/src/utils/proxy.ts
+- `NODE` **required** — external_repos/firebase-tools/standalone/firepit.js
+- `NODE_BENCHMARK_FLAGS` **required** — external_repos/node/benchmark/common.js
+- `NODE_CHANNEL_FD` **required** — external_repos/node/test/parallel/test-worker-unsupported-things.js
+- `NODE_CLUSTER_SCHED_POLICY` **required** — external_repos/node/test/parallel/test-cluster-disconnect-unshared-tcp.js
+- `NODE_COMMON_PORT` **required** — external_repos/node/test/common/index.js
+- `NODE_DEBUG` **required** — external_repos/node/test/parallel/test-esm-loader-hooks-inspect-wait.js
+- `NODE_DEBUG_NATIVE` **required** — external_repos/node/test/fixtures/compile-cache-flush.js
+- `NODE_DISABLE_COLORS` **required** — external_repos/node/test/parallel/test-assert-checktag.js
+- `NODE_DISABLE_COMPILE_CACHE` **required** — control/legacy_workspaces/vercel-skills/bin/cli.mjs
+- `NODE_ENV` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `NODE_EXTRA_CA_CERTS` **required** — archive/claude-code-src-leak/src/main.tsx
+- `NODE_NO_WARNINGS` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `NODE_OPTIONS` **required** — archive/claude-code-src-leak/src/entrypoints/cli.tsx
+- `NODE_PATH` **required** — external_repos/apps/memory-lancedb-pro/test/cli-smoke.mjs
+- `NODE_PENDING_DEPRECATION` **required** — external_repos/node/test/parallel/test-buffer-constructor-node-modules-paths.js
+- `NODE_PENDING_PIPE_INSTANCES` **required** — external_repos/node/lib/net.js
+- `NODE_PROCESS_ENV` **required** — external_repos/node/test/parallel/test-process-env.js
+- `NODE_PROCESS_ENV_DELETED` **required** — external_repos/node/test/parallel/test-process-env.js
+- `NODE_RANK` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `NODE_REGENERATE_SNAPSHOTS` **required** — external_repos/node/test/common/assertSnapshot.js
+- `NODE_RUN_BENCHMARK_FN` **required** — external_repos/node/benchmark/common.js
+- `NODE_RUN_BENCHMARK_GROUPS` **required** — external_repos/node/benchmark/common.js
+- `NODE_SKIP_CRYPTO` **required** — external_repos/node/test/common/index.js
+- `NODE_SKIP_FLAG_CHECK` **required** — external_repos/node/test/common/index.js
+- `NODE_TEST_COMPILE_CACHE_DIR` **required** — external_repos/node/test/fixtures/compile-cache-wrapper.js
+- `NODE_TEST_COMPILE_CACHE_OPTIONS` **required** — external_repos/node/test/fixtures/compile-cache-wrapper-options.js
+- `NODE_TEST_CONTEXT` **required** — external_repos/node/test/parallel/test-runner-expect-error-but-pass.js
+- `NODE_TEST_DIR` **required** — external_repos/node/test/common/assertSnapshot.js
+- `NODE_TEST_FORK_PORT` **required** — external_repos/node/test/parallel/test-http-server-stale-close.js
+- `NODE_TEST_KNOWN_GLOBALS` **required** — external_repos/node/test/common/index.js
+- `NODE_TEST_REPORTER` **required** — external_repos/apps/chrome-devtools-mcp/scripts/test.mjs
+- `NODE_TEST_WITH_ASYNC_HOOKS` **required** — external_repos/node/test/common/index.js
+- `NODE_TEST_WORKER_ID` **required** — external_repos/node/test/parallel/test-runner-worker-id.js
+- `NODE_TLS_REJECT_UNAUTHORIZED` **required** — external_repos/apps/bun/test/harness.ts
+- `NODE_UNIQUE_ID` **required** — external_repos/node/test/parallel/test-cluster-basic.js
+- `NODE_USE_DOMAINS` **required** — external_repos/node/benchmark/fixtures/simple-http-server.js
+- `NODE_USE_ENV_PROXY` **required** — external_repos/node/test/client-proxy/test-use-env-proxy-cli-http.mjs
+- `NODE_V8_COVERAGE` **required** — external_repos/node/lib/child_process.js
+- `NODEJS_BENCHMARK_ZERO_ALLOWED` **required** — external_repos/node/benchmark/common.js
+- `NON_EXISTING_VARIABLE` **required** — external_repos/node/test/parallel/test-process-env.js
+- `NONEXISTENT_ENV_VAR` **required** — external_repos/node/test/parallel/test-process-env-windows-error-reset.js
+- `NOTION_DIARY_DB` (has default) — reference_architectures/agent-assistant/skills/diary/.env.example
+- `NOTION_TOKEN` (has default) — reference_architectures/agent-assistant/skills/diary/.env.example
+- `NOVITA_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `NPM_ID_TOKEN` **required** — external_repos/cli/lib/utils/oidc.js
+- `NPROC_PER_NODE` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `NPU_JIT_COMPILE` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `NS_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `NS_VECTOR_DB_PATH` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `NVCC_THREADS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `OAUTH_AUTHORIZATION_ENDPOINT` (has default) — external_repos/cloud-run-mcp/.env.example
+- `OAUTH_AUTHORIZATION_SERVER` (has default) — external_repos/cloud-run-mcp/.env.example
+- `OAUTH_ENABLED` (has default) — external_repos/cloud-run-mcp/.env.example
+- `OAUTH_PROTECTED_RESOURCE` (has default) — external_repos/cloud-run-mcp/.env.example
+- `OAUTH_TOKEN_ENDPOINT` (has default) — external_repos/cloud-run-mcp/.env.example
+- `OCEANBASE_DATABASE` **required** — external_repos/mcp-toolbox/tests/oceanbase/oceanbase_integration_test.go
+- `OCEANBASE_HOST` **required** — external_repos/mcp-toolbox/tests/oceanbase/oceanbase_integration_test.go
+- `OCEANBASE_PASSWORD` **required** — external_repos/mcp-toolbox/tests/oceanbase/oceanbase_integration_test.go
+- `OCEANBASE_PORT` **required** — external_repos/mcp-toolbox/tests/oceanbase/oceanbase_integration_test.go
+- `OCEANBASE_USER` **required** — external_repos/mcp-toolbox/tests/oceanbase/oceanbase_integration_test.go
+- `OCL_SET_SVM_SIZE` **required** — external_repos/apps/ComfyUI/main.py
+- `OFFICIAL_SYSTEM_PROMPT` (has default) — archive/external_repos_root/apps/antigravity2api-nodejs/.env.example
+- `OG_IMAGE_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `OLLAMA_API_KEY` **required** — external_repos/apps/ollama-python/examples/gpt-oss-tools-stream.py
+- `OLLAMA_FLASH_ATTENTION` **required** — third_party/turboquant-mlx/tests/test_turboquant.py
+- `OLLAMA_HOST` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `OLLAMA_KEEP_ALIVE` **required** — third_party/turboquant-mlx/tests/test_turboquant.py
+- `OLLAMA_NUM_CTX` **required** — third_party/turboquant-mlx/tests/test_turboquant.py
+- `OLLAMA_NUM_PARALLEL` **required** — third_party/turboquant-mlx/tests/test_turboquant.py
+- `OM_SDK_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `ONEAPI_DEVICE_SELECTOR` **required** — external_repos/apps/ComfyUI/main.py
+- `OP_SERVICE_ACCOUNT_TOKEN` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `OPENAI_API_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `OPENAI_API_VERSION` **required** — control/legacy_workspaces/openai-node/src/azure.ts
+- `OPENAI_BASE_URL` (has default) — archive/root_debris/router/.env.example
+- `OPENAI_EMBED_MODEL` (has default) — external_repos/apps/CortexLTM/.env.example
+- `OPENAI_KEY` **required** — archive/external_repos_root/apps/payload/.env.example
+- `OPENAI_LOG` **required** — control/legacy_workspaces/openai-node/src/client.ts
+- `OPENAI_MODEL` (has default) — archive/root_debris/router/.env.example
+- `OPENAI_MODEL_CHAT` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `OPENAI_MODEL_EMBED` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `OPENAI_ORG_ID` **required** — control/legacy_workspaces/openai-node/src/azure.ts
+- `OPENAI_PROJECT_ID` **required** — control/legacy_workspaces/openai-node/src/client.ts
+- `OPENAI_WEBHOOK_SECRET` **required** — control/legacy_workspaces/openai-node/src/client.ts
+- `OPENCLAW_CLI_BIN` **required** — external_repos/apps/memory-lancedb-pro/index.ts
+- `OPENCLAW_CONFIG_PATH` **required** — external_repos/apps/memory-lancedb-pro/cli.ts
+- `OPENCLAW_EXTENSION_API_PATH` **required** — external_repos/apps/memory-lancedb-pro/index.ts
+- `OPENCLAW_HOME` **required** — external_repos/apps/memory-lancedb-pro/cli.ts
+- `OPENCODE` **required** — external_repos/firebase-tools/src/env.ts
+- `OPENROUTER_API_KEY` **required** — tools/GitNexus/eval/.env.example
+- `OPENSCHOLAR_API_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `OPENTOFU_STATEFILE_PROVIDER_ADDRESS_TRANSLATION` **required** — external_repos/opentofu/internal/tofumigrate/tofumigrate.go
+- `OPENVIKING_CONFIG_FILE` **required** — external_repos/apps/OpenViking/openviking_cli/server_bootstrap.py
+- `OPTIM_TORCH` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `OR_API_KEY` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `OR_APP_NAME` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `OR_SITE_URL` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `ORACLE_HOST` **required** — external_repos/mcp-toolbox/tests/oracle/oracle_integration_test.go
+- `ORACLE_PASSWORD` **required** — external_repos/mcp-toolbox/tests/oracle/oracle_integration_test.go
+- `ORACLE_SERVER_NAME` **required** — external_repos/mcp-toolbox/tests/oracle/oracle_integration_test.go
+- `ORACLE_USERNAME` **required** — external_repos/mcp-toolbox/tests/oracle/oracle_integration_test.go
+- `ORIGIN` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OSX_SDK_DIR` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `OTEL_COLLECTOR_URL` **required** — external_repos/memorystore-cluster-autoscaler/src/autoscaler-common/counters-base.js
+- `OTEL_EXPORTER_OTLP_ENDPOINT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` **required** — apps/slides_agent_demo/app/app_utils/telemetry.py
+- `OTEL_IS_LONG_RUNNING_PROCESS` **required** — external_repos/memorystore-cluster-autoscaler/src/autoscaler-common/counters-base.js
+- `OTEL_SERVICE_NAME` (has default) — apps/counselconduit/.env.example
+- `OTEL_TRACE_SAMPLING_RATE` **required** — apps/counselconduit/api/telemetry.py
+- `OTLP_GOOGLE_CLOUD_PROJECT` **required** — control/legacy_workspaces/gemini-cli/scripts/telemetry_gcp.js
+- `OUTLINES_CACHE_DIR` **required** — external_repos/apps/mlx-engine/mlx_engine/__init__.py
+- `OUTPUT_PATH` (has default) — control/legacy_workspaces/claude-cookbooks/skills/.env.example
+- `OV_PREBUILT_BIN_DIR` **required** — external_repos/apps/OpenViking/setup.py
+- `OV_SKIP_AGFS_BUILD` **required** — external_repos/apps/OpenViking/setup.py
+- `OV_SKIP_OV_BUILD` **required** — external_repos/apps/OpenViking/setup.py
+- `OV_X86_BUILD_VARIANTS` **required** — external_repos/apps/OpenViking/build_support/x86_profiles.py
+- `OWL_ANTHROPIC_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_AUTH0_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_AZURE_AI_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_AZURE_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_BEDROCK_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_CEREBRAS_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_COHERE_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_CONCURRENT_CELL_BATCH_SIZE` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_DEEPSEEK_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_ELLM_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_GEMINI_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_GROQ_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_HYPERBOLIC_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_JINA_AI_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_MAX_WRITE_BATCH_SIZE` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_OPENAI_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_OPENROUTER_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_PORT` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_S3_ACCESS_KEY_ID` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `OWL_S3_SECRET_ACCESS_KEY` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `OWL_SAGEMAKER_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_SAMBANOVA_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_STRIPE_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_STRIPE_PUBLISHABLE_KEY_LIVE` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_STRIPE_PUBLISHABLE_KEY_TEST` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_STRIPE_WEBHOOK_SECRET_LIVE` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_STRIPE_WEBHOOK_SECRET_TEST` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_TOGETHER_AI_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_URL` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_USE_VLM_OCR` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_VERTEX_AI_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_VOYAGE_API_KEY` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `OWL_WORKERS` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `P` **required** — external_repos/apps/rustdesk/build.py
+- `P4PORT` **required** — archive/claude-code-src-leak/src/utils/platform.ts
+- `PAGERDUTY_INTEGRATION_KEY` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `PAPER_GENERATION_CONCURRENCY` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `PARALLEL_EXPERIMENTS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `PARTITIONING_FIELD` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `PASSWORD_SELECTOR` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_web.py
+- `PATH` **required** — archive/claude-code-src-leak/src/utils/doctorDiagnostic.ts
+- `PAYLOAD_CACHE_COMPONENTS` **required** — external_repos/apps/payload/next.config.mjs
+- `PAYLOAD_CI_DEPENDENCY_CHECKER` **required** — external_repos/apps/payload/test/vitest.setup.ts
+- `PAYLOAD_CONFIG_PATH` **required** — external_repos/apps/payload/test/testHooks.ts
+- `PAYLOAD_DATABASE` (has default) — archive/external_repos_root/apps/payload/.env.example
+- `PAYLOAD_DISABLE_ADMIN` **required** — external_repos/apps/payload/test/buildConfigWithDefaults.ts
+- `PAYLOAD_DO_NOT_SANITIZE_LOCALIZED_PROPERTY` **required** — external_repos/apps/payload/test/dev.ts
+- `PAYLOAD_DROP_DATABASE` **required** — external_repos/apps/payload/test/dev.ts
+- `PAYLOAD_PUBLIC_CLOUD_STORAGE_ADAPTER` **required** — external_repos/apps/payload/test/vitest.setup.ts
+- `PAYLOAD_PUBLIC_DISABLE_AUTO_LOGIN` **required** — external_repos/apps/payload/test/buildConfigWithDefaults.ts
+- `PAYLOAD_TEST_PROD` **required** — external_repos/apps/payload/test/dev.ts
+- `PB_MAX_CLIENT_CONN` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `PDF_DOWNLOAD_TIMEOUT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `PERPLEXITY_API_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/atomic_consensus_orchestrator.py
+- `PERSONA_IQ_OVERRIDE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `PG_MAX_CONNECTIONS` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `PINCHTAB_DEV_PORT` **required** — external_repos/apps/pinchtab/dashboard/vite.config.ts
+- `PINCHTAB_TOKEN` **required** — external_repos/apps/pinchtab/dashboard/vite.config.ts
+- `PIP_DISABLE_PIP_VERSION_CHECK` (has default) — archive/external_payloads/repos/micropython-stubber/.env
+- `PIP_NO_SETUPTOOLS` **required** — control/legacy_workspaces/pipenv/get-pipenv.py
+- `PIP_NO_WHEEL` **required** — control/legacy_workspaces/pipenv/get-pipenv.py
+- `PIP_RESOLVER_DEBUG` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PIP_USE_DEPRECATED` **required** — control/legacy_workspaces/pip/tests/conftest.py
+- `PIP_USE_FEATURE` **required** — control/legacy_workspaces/pip/tests/conftest.py
+- `PIPE_NAME` **required** — external_repos/node/benchmark/http/_chunky_http_client.js
+- `PIPENV_COLORBLIND` **required** — control/legacy_workspaces/pipenv/pipenv/environments.py
+- `PIPENV_HIDE_EMOJIS` **required** — control/legacy_workspaces/pipenv/pipenv/environments.py
+- `PIPENV_PIPFILE` **required** — control/legacy_workspaces/pipenv/pipenv/environments.py
+- `PIPENV_PYPI_MIRROR` **required** — control/legacy_workspaces/pipenv/pipenv/project.py
+- `PIPENV_PYTHON` **required** — control/legacy_workspaces/pipenv/tasks/release.py
+- `PIPENV_REQ_DIR` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PIPENV_RESOLVER_FILE` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PIPENV_RESOLVER_PYTHON_VERSION` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PIPENV_SITE_DIR` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PIPENV_VERBOSITY` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PKG_CONFIG` **required** — external_repos/node/configure.py
+- `PLANNING_LLM_MODEL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `PLANNING_LLM_PROVIDER` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `PLAYWRIGHT_INSECURE` **required** — tools/GitNexus/gitnexus-web/playwright.config.ts
+- `PLAYWRIGHT_MODE` **required** — external_repos/GoogleChrome/chromium-dashboard/settings.py
+- `PLAYWRIGHT_NODEJS_PATH` **required** — external_repos/playwright-python/playwright/_impl/_driver.py
+- `PLAYWRIGHT_TARGET_WHEEL` **required** — external_repos/apps/playwright-python/setup.py
+- `PNKLN_API_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/fast-api/main.py
+- `PNKLN_GL_MAX_ITERS` **required** — apps/aiyou_stack/aiyou-fastapi-services/pnkln_automation/green_loop.py
+- `PNKLN_GL_MAX_LINES` **required** — apps/aiyou_stack/aiyou-fastapi-services/pnkln_automation/green_loop.py
+- `PNKLN_GL_WRITE_PATHS` **required** — apps/aiyou_stack/aiyou-fastapi-services/pnkln_automation/green_loop.py
+- `PNKLN_VERTEX_MODEL` **required** — apps/aiyou_stack/aiyou-fastapi-services/pnkln_automation/green_loop.py
+- `POLLER_TOPIC` **required** — external_repos/memorystore-cluster-autoscaler/src/forwarder/index.js
+- `PORT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `POSTGRES_DATABASE` **required** — external_repos/mcp-toolbox/tests/postgres/postgres_integration_test.go
+- `POSTGRES_DB` (has default) — control/legacy_workspaces/airweave/.env.example
+- `POSTGRES_HOST` (has default) — control/legacy_workspaces/airweave/.env.example
+- `POSTGRES_PASS` **required** — external_repos/mcp-toolbox/tests/postgres/postgres_integration_test.go
+- `POSTGRES_PASSWORD` (has default) — labs/uphillsnowball/ane-workbench/ane_cortex_stack_v9/.env.example
+- `POSTGRES_PORT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `POSTGRES_REPLICA_URL` **required** — external_repos/apps/payload/test/generateDatabaseAdapter.ts
+- `POSTGRES_URL` **required** — external_repos/apps/payload/test/buildConfigWithDefaults.ts
+- `POSTGRES_USER` (has default) — control/legacy_workspaces/airweave/.env.example
+- `PR_NUMBER` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/bugbot_hook.py
+- `PRE_COMMIT_FROM_REF` **required** — control/legacy_workspaces/pre-commit-hooks/pre_commit_hooks/forbid_new_submodules.py
+- `PRE_COMMIT_TO_REF` **required** — control/legacy_workspaces/pre-commit-hooks/pre_commit_hooks/forbid_new_submodules.py
+- `PREFIX` **required** — external_repos/cli/test/fixtures/mock-npm.js
+- `PRETTIER_DIR` **required** — control/legacy_workspaces/prettier/jest.config.js
+- `PRETTIER_EXPERIMENTAL_CLI` **required** — control/legacy_workspaces/prettier/bin/prettier.cjs
+- `PRETTIER_INSTALLED_DIR` **required** — control/legacy_workspaces/prettier/jest.config.js
+- `PRIMARY_ANALYSIS_AGENT` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `PRIMARY_COOKIE_NAME` **required** — external_repos/flagger/test/verify_session_affinity.go
+- `PRIMARY_LITERATURE_AGENT` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `PRIMARY_VERSION` **required** — external_repos/flagger/test/verify_session_affinity.go
+- `PRINT_ENV` **required** — external_repos/playwright-mcp/packages/playwright-mcp/update-readme.js
+- `PRIVACY_SANDBOX_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `PRIVATE_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/hardhat.config.js
+- `PRIVATE_REGISTRY_TOKEN` **required** — external_repos/apps/terragrunt/test/integration_private_registry_test.go
+- `PRIVATE_REGISTRY_URL` **required** — external_repos/apps/terragrunt/test/integration_private_registry_test.go
+- `PRO_PRICE_ID` **required** — archive/agent_debris/api/routes/subscription.py
+- `PROCESSING_MODE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `PROCESSOR_ARCHITECTURE` **required** — external_repos/node/configure.py
+- `PROCESSOR_ARCHITEW6432` **required** — external_repos/node/configure.py
+- `PROFILE_STORAGE_DAYS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `PROFILING_MODE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `PROGRAMFILES` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `PROJECT` **required** — external_repos/click-to-deploy-solutions/looker-ai-agent/code/app.py
+- `PROJECT_CWD` **required** — external_repos/apps/grafana/packages/rollup.config.parts.ts
+- `PROJECT_DOMAIN` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `PROJECT_ID` **required** — apps/aiyou_stack/aiyou-fastapi-services/codepmcsbak.py
+- `PROJECT_NAME` (has default) — control/legacy_workspaces/airweave/.env.example
+- `PROJECT_ROOT` **required** — external_repos/firebase-tools/src/mcp/index.ts
+- `PROMETHEUS_ENABLED` (has default) — archive/root_debris/backend/.env.example
+- `PROMETHEUS_PORT` (has default) — archive/root_debris/backend/.env.example
+- `PROMPT` **required** — control/legacy_workspaces/pipenv/pipenv/shells.py
+- `PROV_DIR` **required** — external_repos/apps/grafana/playwright.config.ts
+- `PROXY_PORT` (has default) — control/legacy_workspaces/antigravity-proxy/.env.example
+- `PROXY_TOKEN_TTL` **required** — apps/counselconduit/api/sandbox_router.py
+- `PRT1` **required** — external_repos/node/test/known_issues/test-dgram-bind-shared-ports-after-port-0.js
+- `PS1` **required** — control/legacy_workspaces/pipenv/pipenv/shells.py
+- `PUB_SUB_TOPIC` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `PUBLIC_GITHUB_TOKEN` **required** — control/legacy_workspaces/create-t3-app/www/.env.example
+- `PUBLIC_IS_SPA` (has default) — archive/external_repos_root/apps/JamAIBase/.env.example
+- `PUBLIC_JAMAI_URL` **required** — archive/external_repos_root/apps/JamAIBase/.env.example
+- `PUBSUB_EMULATOR_HOST` **required** — tools/firestore-bundle-builder/functions/__tests__/functions.test.ts
+- `PULL_REQUEST` **required** — control/legacy_workspaces/prettier/scripts/build-website.js
+- `PUMMEL` **required** — external_repos/node/test/parallel/test-zlib.js
+- `PUPPETEER_EXECUTABLE_PATH` **required** — external_repos/apps/chrome-devtools-mcp/tests/utils.ts
+- `PW_WRITE_SCREENSHOT` **required** — external_repos/apps/playwright-python/tests/conftest.py
+- `PWD` **required** — external_repos/apps/devtools-frontend/scripts/npm_test.js
+- `PWDEBUG` **required** — tools/GitNexus/gitnexus-web/e2e/manual-record.spec.ts
+- `PYDEVD_DISABLE_FILE_VALIDATION` (has default) — archive/external_payloads/repos/micropython-stubber/.env
+- `PYDEVD_WARN_EVALUATION_TIMEOUT` (has default) — archive/external_payloads/repos/micropython-stubber/.env
+- `PYENV_SHELL` **required** — control/legacy_workspaces/pipenv/pipenv/environments.py
+- `PYOPENGL_PLATFORM` **required** — external_repos/apps/ComfyUI/comfy_extras/nodes_glsl.py
+- `PYTEST_CURRENT_TEST` **required** — external_repos/python-genai/google/genai/_replay_api_client.py
+- `PYTEST_XDIST_WORKER` **required** — external_repos/GoogleChrome/chromium-dashboard/conftest.py
+- `PYTEST_XDIST_WORKER_COUNT` **required** — external_repos/apps/cloud-foundation-fabric/tests/fixtures.py
+- `PYTHON` **required** — external_repos/node/test/common/assertSnapshot.js
+- `PYTHONDONTWRITEBYTECODE` **required** — control/legacy_workspaces/pipenv/pipenv/environment.py
+- `PYTHONIOENCODING` **required** — control/legacy_workspaces/pipenv/pipenv/environment.py
+- `PYTHONPATH` (has default) — archive/external_payloads/repos/micropython-stubber/.env
+- `PYTHONUNBUFFERED` **required** — control/legacy_workspaces/pipenv/pipenv/resolver.py
+- `PYTORCH_ALLOC_CONF` **required** — archive/external_payloads/repos/autoresearch/train.py
+- `PYTORCH_CUDA_ALLOC_CONF` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `PYTORCH_NVML_BASED_CUDA_CHECK` **required** — control/legacy_workspaces/vllm/vllm/env_override.py
+- `Q_SCALE_CONSTANT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `QDRANT_FULL_URL` **required** — control/legacy_workspaces/airweave/.env.example
+- `QDRANT_HOST` (has default) — control/legacy_workspaces/airweave/.env.example
+- `QDRANT_PORT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `QUALITY_GATE_COMPLETENESS_THRESHOLD` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `QUALITY_GATE_RELEVANCE_THRESHOLD` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `QUALITY_GATE_TIMELINESS_THRESHOLD` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `QUERY_STRING` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `R2_ACCESS_KEY` **required** — third_party/turboquant-mlx/turboquant_mlx/persistence.py
+- `R2_BUCKET` **required** — third_party/turboquant-mlx/turboquant_mlx/persistence.py
+- `R2_ENDPOINT` **required** — third_party/turboquant-mlx/turboquant_mlx/persistence.py
+- `R2_SECRET_KEY` **required** — third_party/turboquant-mlx/turboquant_mlx/persistence.py
+- `RAILWAY_ENVIRONMENT_NAME` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `RAILWAY_SERVICE_NAME` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `RATE_LIMIT` **required** — apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/api_server.py
+- `RATE_LIMIT_CONCURRENT` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `RATE_LIMIT_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `RATE_LIMIT_REQUESTS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `RATE_LIMIT_RPM` (has default) — archive/root_debris/router/.env.example
+- `RATE_LIMIT_RPS` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `RATE_LIMIT_WINDOW` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `RAY_RUNTIME_ENV_IGNORE_GITIGNORE` **required** — control/legacy_workspaces/vllm/tests/utils.py
+- `RECORD_VRAM` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `REDDIT_CLIENT_ID` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `REDDIT_CLIENT_SECRET` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `REDDIT_POSTS_LIMIT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `REDDIT_SUBREDDITS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `REDDIT_USER_AGENT` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `REDIS_ADDRESS` **required** — external_repos/mcp-toolbox/tests/redis/redis_test.go
+- `REDIS_DECODE_RESPONSES` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_DEFAULT_TTL_SECONDS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_ENABLED` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_FEATURE_FLAGS_DB` (has default) — archive/root_debris/backend/.env.example
+- `REDIS_HOST` (has default) — control/legacy_workspaces/airweave/.env.example
+- `REDIS_MAX_CONNECTIONS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_PASS` **required** — external_repos/mcp-toolbox/tests/redis/redis_test.go
+- `REDIS_PORT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `REDIS_RETRY_ON_TIMEOUT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_SOCKET_CONNECT_TIMEOUT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_SOCKET_TIMEOUT` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDIS_URL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `REDISHOST` **required** — external_repos/GoogleChrome/chromium-dashboard/framework/rediscache.py
+- `REDISPORT` **required** — external_repos/GoogleChrome/chromium-dashboard/framework/rediscache.py
+- `REFS_TEST_DIR` **required** — libs/cyberpunk_stack/git-lfs/tools/util_windows_test.go
+- `REGENERATE_MODEL_GOLDENS` **required** — control/legacy_workspaces/gemini-cli/integration-tests/test-helper.ts
+- `REGION` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/rag_router.py
+- `RELAY_PORT` **required** — labs/uphillsnowball/relay.js
+- `RELOAD` (has default) — archive/root_debris/backend/.env.example
+- `RENDER` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `REPAIR_AUTO_COMMIT` **required** — scripts/auto_error_repair.py
+- `REPAIR_MAX_ROUNDS` **required** — scripts/auto_error_repair.py
+- `REPAIR_PROVIDER` **required** — scripts/auto_error_repair.py
+- `REPL_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `REPL_SLUG` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `REPL_TEST_PPID` **required** — external_repos/node/test/parallel/test-repl-sigint.js
+- `REPLICATE_API_KEY` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `REPLICATE_API_TOKEN` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `REPLY_LLM_MODEL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `REPLY_LLM_PROVIDER` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `REPO_PATH` **required** — control/legacy_workspaces/tinygrad/extra/weekly_commits_table.py
+- `REQUEST_TIMEOUT` **required** — external_repos/node/test/fixtures/post-resource-and-log.js
+- `REQUEST_URL` **required** — external_repos/node/test/fixtures/post-resource-and-log.js
+- `REQUIRE_HUMAN_APPROVAL` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `RERANK_FINAL_LIMIT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `RERANKER_SCORE_THRESHOLD` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `RESEARCH_BUDGET_USD` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `RESEND_WEBHOOK_SECRET` **required** — apps/counselconduit/api/resend_webhook.py
+- `RESOLVE_TO_LOCALHOST` **required** — external_repos/node/test/fixtures/request-and-log.js
+- `RESOURCE_DATA` **required** — external_repos/node/test/fixtures/post-resource-and-log.js
+- `RETAIN_INNER_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `RETAIN_INNER_QUOTES_AS_BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `RETAIN_INNER_QUOTES_AS_STRING` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `REVIEW_ID` **required** — control/legacy_workspaces/prettier/scripts/build-website.js
+- `RKILL_ARMOR_POLICY` **required** — control/pnkln/governance/judge6_factory.py
+- `RKILL_ARMOR_PRIORITY` **required** — control/pnkln/governance/judge6_factory.py
+- `RKILL_DRY_RUN` **required** — control/pnkln/governance/judge6_factory.py
+- `RKILL_FLAG` **required** — labs/uphillsnowball/agent/gauntlet.py
+- `RKILL_KMS_KEY_NAME` **required** — control/pnkln/governance/judge6_factory.py
+- `RLM_AUDIT_PATH` **required** — control/legacy_workspaces/archive_judge_six/apps_aiyou_stack_aiyou-fastapi-services_apps_src_pnkln_judge_six_rlm.py
+- `ROCM_HOME` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `ROCM_PATH` **required** — external_repos/apps/vllm/setup.py
+- `ROI_THRESHOLD` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `ROLLBACK_TIMEOUT` (has default) — archive/root_debris/backend/.env.example
+- `ROOT_DIR` **required** — external_repos/apps/payload/test/generateImportMap.ts
+- `ROTATING_PROXIES` **required** — scripts/scrapling_a11y_extractor.py
+- `RTD_API_TOKEN` **required** — control/legacy_workspaces/pip/tools/update-rtd-redirects.py
+- `RUN_ALEMBIC_MIGRATIONS` (has default) — control/legacy_workspaces/airweave/.env.example
+- `RUN_DB_SYNC` (has default) — control/legacy_workspaces/airweave/.env.example
+- `RUN_E2E_TESTS` **required** — external_repos/agent-starter-pack/tests/cicd/test_e2e_deployment.py
+- `RUN_ENTERPRISE_TESTS` **required** — external_repos/nodejs-firestore/dev/system-test/firestore.ts
+- `RUN_GEMINI_ENTERPRISE_TEST` **required** — external_repos/agent-starter-pack/tests/cicd/test_gemini_enterprise_registration.py
+- `RUN_INGRESS_POLICY` **required** — external_repos/cloud-run-mcp/mcp-server.js
+- `RUNNER_TEMP` **required** — control/legacy_workspaces/checkout/__test__/git-auth-helper.test.ts
+- `RUNNING_IN_SUBPROCESS` **required** — control/legacy_workspaces/vllm/tests/utils.py
+- `RUNTIME_TARGET_MINUTES` **required** — control/legacy_workspaces/archive_ingestion/services_gemini_ingestion/cron_job.py
+- `RUSTC` **required** — external_repos/node/configure.py
+- `S` **required** — external_repos/node/lib/os.js
+- `S3_ACCESS_KEY_ID` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `S3_BUCKET` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `S3_ENDPOINT` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `S3_ENDPOINT_URL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `S3_REGION` **required** — external_repos/BioAgents/src/storage/config.ts
+- `S3_SECRET_ACCESS_KEY` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `SAFEUSER` **required** — archive/claude-code-src-leak/src/commands/commit-push-pr.ts
+- `SANDBOX` **required** — control/legacy_workspaces/gemini-cli/scripts/start.js
+- `SAVE_TO_PYTORCH_BENCHMARK_FORMAT` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_utils.py
+- `SCHEDULE` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `SEARCH_ENABLES_FETCH` **required** — control/legacy_workspaces/hf-mcp-server/scripts/test-search-enables-fetch.js
+- `SEATBELT_PROFILE` **required** — control/legacy_workspaces/gemini-cli/scripts/sandbox_command.js
+- `SEATJUDGE_MCP_URL` **required** — apps/aiyou_stack/aiyou-fastapi-services/verify_omega.py
+- `SECOND_WORKER` **required** — external_repos/node/test/parallel/test-worker-process-cwd.js
+- `SECONDARY_LLM_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `SECRET_KEY` (has default) — archive/root_debris/backend/.env.example
+- `SEMANTIC_SCHOLAR_API_KEY` **required** — external_repos/Kosmos/tests/conftest.py
+- `SEMAPHORE_CONFIG_PATH` **required** — external_repos/semaphore/util/config.go
+- `SEMAPHORE_DB_HOST` **required** — external_repos/semaphore/util/config.go
+- `SEMAPHORE_DB_NAME` **required** — external_repos/semaphore/util/config.go
+- `SEMAPHORE_DB_PASS` **required** — external_repos/semaphore/util/config.go
+- `SEMAPHORE_DB_USER` **required** — external_repos/semaphore/util/config.go
+- `SEMAPHORE_LOG_LEVEL` **required** — external_repos/semaphore/cli/cmd/root.go
+- `SENTRY_ORGANIZATION` **required** — external_repos/apps/Next-js-Boilerplate/next.config.ts
+- `SENTRY_PROJECT` **required** — external_repos/apps/Next-js-Boilerplate/next.config.ts
+- `SEO_DESCRIPTION` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `SEO_TITLE` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `SERVER_SOFTWARE` **required** — external_repos/GoogleChrome/chromium-dashboard/settings.py
+- `SERVERLESS_SPARK_LOCATION` **required** — external_repos/mcp-toolbox/tests/serverlessspark/serverless_spark_integration_test.go
+- `SERVERLESS_SPARK_PROJECT` **required** — external_repos/mcp-toolbox/tests/serverlessspark/serverless_spark_integration_test.go
+- `SERVERLESS_SPARK_SERVICE_ACCOUNT` **required** — external_repos/mcp-toolbox/tests/serverlessspark/serverless_spark_integration_test.go
+- `SERVICE_ACCOUNT_EMAIL` **required** — external_repos/mcp-toolbox/tests/auth.go
+- `SERVICE_HOST` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `SERVICE_NAME` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `SERVICE_PORT` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `SERVICE_VERSION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `SESSION_BUDGET` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `SESSION_ID` **required** — external_repos/firebase-tools/julesbot/issues_call.py
+- `SESSION_INGRESS_URL` **required** — archive/claude-code-src-leak/src/commands/ultraplan.tsx
+- `SESSIONNAME` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `SET_GLOBAL_PROXY` **required** — external_repos/node/test/fixtures/fetch-and-log.mjs
+- `SET_GLOBAL_PROXY_DEFAULT` **required** — external_repos/node/test/fixtures/fetch-and-log.mjs
+- `SET_IN_PARENT` **required** — external_repos/node/test/parallel/test-worker-process-env-shared.js
+- `SET_IN_PARENT_AFTER_CREATION` **required** — external_repos/node/test/parallel/test-worker-process-env-shared.js
+- `SET_IN_WORKER` **required** — external_repos/node/test/parallel/test-worker-process-env-shared.js
+- `SETUPTOOLS_SCM_PRETEND_VERSION` **required** — control/legacy_workspaces/vllm/setup.py
+- `SHADOWTAG_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `SHADOWTAG_KEY_PATH` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `SHADOWTAG_PEM` (has default) — .env
+- `SHELL` **required** — archive/claude-code-src-leak/src/constants/prompts.ts
+- `SHELLCHECK` **required** — external_repos/node/tools/lint-sh.mjs
+- `SHIELD_URL` **required** — apps/bennett/hive_mind/central_hive_mind.py
+- `SHOULD_OPEN_COVERAGE_REPORT` **required** — external_repos/apps/grafana/jest.config.codeowner.js
+- `SIGN_TIMEOUT` **required** — external_repos/apps/rustdesk/res/job.py
+- `SIGSTORE_ID_TOKEN` **required** — external_repos/cli/lib/utils/oidc.js
+- `SIMILARITY_THRESHOLD` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `SINGLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `SINGLE_QUOTES_INSIDE_BACKTICKS` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `SINGLE_QUOTES_INSIDE_DOUBLE` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `SINGLE_QUOTES_SPACED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `SINGLESTORE_DATABASE` **required** — external_repos/mcp-toolbox/tests/singlestore/singlestore_integration_test.go
+- `SINGLESTORE_HOST` **required** — external_repos/mcp-toolbox/tests/singlestore/singlestore_integration_test.go
+- `SINGLESTORE_PASSWORD` **required** — external_repos/mcp-toolbox/tests/singlestore/singlestore_integration_test.go
+- `SINGLESTORE_PORT` **required** — external_repos/mcp-toolbox/tests/singlestore/singlestore_integration_test.go
+- `SINGLESTORE_USER` **required** — external_repos/mcp-toolbox/tests/singlestore/singlestore_integration_test.go
+- `SKILL_SEEKER_TERMINAL` **required** — control/legacy_workspaces/Skill_Seekers/tests/test_terminal_detection.py
+- `SKILLS_API_URL` **required** — control/legacy_workspaces/vercel-skills/src/find.ts
+- `SKILLS_DOWNLOAD_URL` **required** — control/legacy_workspaces/vercel-skills/src/blob.ts
+- `SKILLS_STORAGE_PATH` (has default) — control/legacy_workspaces/claude-cookbooks/skills/.env.example
+- `SKIP_AZURE_STORAGE` (has default) — control/legacy_workspaces/airweave/.env.example
+- `SKIP_CLONE_REPORTING` **required** — external_repos/cloud-run-button/cmd/cloudshell_open/main.go
+- `SKIP_GCE_CHECK` **required** — external_repos/cloud-run-button/cmd/cloudshell_open/main.go
+- `SKIP_IAM_CHECK` **required** — external_repos/cloud-run-mcp/mcp-server.js
+- `SKIP_PRODUCTION_INSTALL` **required** — control/legacy_workspaces/prettier/jest.config.js
+- `SKYVERN_AUTH_BITWARDEN_CLIENT_ID` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `SKYVERN_AUTH_BITWARDEN_CLIENT_SECRET` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `SKYVERN_AUTH_BITWARDEN_MASTER_PASSWORD` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `SKYVERN_AUTH_BITWARDEN_ORGANIZATION_ID` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `SLACK_WEBHOOK_URL` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `SM_CODE_SIGNING_CERT_SHA1` **required** — archive/external_repos_root/apps/AliFullStack/.env.example
+- `SMTP_HOST` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `SMTP_PASSWORD` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `SMTP_PORT` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `SMTP_USER` **required** — external_repos/Kosmos/kosmos/monitoring/alerts.py
+- `SNOWFLAKE_ACCOUNT` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SNOWFLAKE_DATABASE` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SNOWFLAKE_PASS` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SNOWFLAKE_ROLE` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SNOWFLAKE_SCHEMA` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SNOWFLAKE_USER` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SNOWFLAKE_WAREHOUSE` **required** — external_repos/mcp-toolbox/tests/snowflake/snowflake_integration_test.go
+- `SONAR_HOST_URL` **required** — archive/agent_debris/app/quality/sonar_connected_mode.py
+- `SONAR_TOKEN` **required** — archive/agent_debris/app/quality/sonar_connected_mode.py
+- `SOURCE_BUCKET_NAME` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `SOURCE_MINIO_ENDPOINT` **required** — external_repos/apps/JamAIBase/scripts/migration_s3_v1_to_v2.py
+- `SPACE_BEFORE_DOUBLE_QUOTES` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `SPACE_CREATOR_USER_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `SPACED_KEY` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `SPACES_LINE` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `SPACES_TABS_LINE` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `SPANNER_DATABASE` **required** — external_repos/mcp-toolbox/tests/spanner/spanner_integration_test.go
+- `SPANNER_INSTANCE` **required** — external_repos/mcp-toolbox/tests/spanner/spanner_integration_test.go
+- `SPANNER_PG_DATABASE` **required** — external_repos/mcp-toolbox/tests/spanner/spanner_integration_test.go
+- `SPANNER_PROJECT` **required** — external_repos/mcp-toolbox/tests/spanner/spanner_integration_test.go
+- `SQL_INSTANCE_NAME` **required** — external_repos/click-to-deploy-solutions/cloud-composer-etl/dags/restore_postgres_backup.py
+- `SQLITE_DATABASE` **required** — external_repos/mcp-toolbox/tests/sqlite/sqlite_integration_test.go
+- `SQLITE_PATH` (has default) — archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example
+- `SQLITE_URL` **required** — external_repos/apps/payload/test/generateDatabaseAdapter.ts
+- `SSH_CLIENT` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `SSH_CONNECTION` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `SSH_TTY` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `SSL_CERT_DIR` **required** — external_repos/python-genai/google/genai/_api_client.py
+- `SSL_CERT_FILE` **required** — archive/claude-code-src-leak/src/upstreamproxy/upstreamproxy.ts
+- `STACK_DEPTH` **required** — external_repos/node/test/fixtures/deep-exit.js
+- `STAGE_TRACKING_ENABLED` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `STAGE_TRACKING_FILE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `START_MEMORY_DB` **required** — external_repos/apps/payload/test/runE2E.ts
+- `STARTUP_DELAY_SECONDS` **required** — apps/aiyou_stack/aiyou-fastapi-services/verify_omega.py
+- `STATE_SECRET` **required** — control/legacy_workspaces/airweave/.env.example
+- `STEWARD_CYCLE_INTERVAL` **required** — scripts/loop_steward.py
+- `STEWARD_MAX_IDLE` **required** — scripts/loop_steward.py
+- `STITCH_API_KEY` **required** — labs/uphillsnowball/.env.example
+- `STORAGE_BUCKET` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `STORAGE_BUCKET_URL` **required** — external_repos/firebase-tools/src/emulator/adminSdkConfig.ts
+- `STORAGE_EMULATOR_HOST` **required** — external_repos/firebase-tools/scripts/emulator-import-export-tests/tests.ts
+- `STORAGE_PREFIX` **required** — tools/firestore-bundle-builder/functions/src/index.ts
+- `STORAGE_PROVIDER` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `STORAGE_TYPE` (has default) — apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example
+- `STORE_MODEL_IN_DB` (has default) — archive/external_payloads/repos/litellm/.env.example
+- `STORE_PROFILE_RESULTS` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `STRICT_MODE` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `STRIPE_CONNECT_WEBHOOK_SECRET` (has default) — apps/counselconduit/.env.example
+- `STRIPE_ENABLED` (has default) — control/legacy_workspaces/airweave/.env.example
+- `STRIPE_PRICE_PRO` (has default) — apps/kovelai/.env.example
+- `STRIPE_PRICE_SOVEREIGN` (has default) — apps/kovelai/.env.example
+- `STRIPE_PRICE_STARTER` (has default) — apps/kovelai/.env.example
+- `STRIPE_PUBLISHABLE_KEY` (has default) — apps/kovelai/.env.example
+- `STRIPE_SECRET_KEY` (has default) — apps/kovelai/.env.example
+- `STRIPE_WEBHOOK_SECRET` (has default) — apps/kovelai/.env.example
+- `STRUCTURED_LLM_MODEL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `STRUCTURED_LLM_PROVIDER` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `STY` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `SUMMARY_PROCESSOR` **required** — external_repos/click-to-deploy-solutions/document-ai/code/main.py
+- `SUPABASE_ANON_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `SUPABASE_DB_URL` (has default) — labs/uphillsnowball/ane-workbench/ane_cortex_stack_v9/.env.example
+- `SUPABASE_FULL_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `SUPABASE_KEY` **required** — control/pnkln/pnkln_core/storage/supabase_client.py
+- `SUPABASE_SERVICE_KEY` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `SUPABASE_URL` **required** — libs/autoresearch_sources/BioAgents/.env.example
+- `SUPER_DEV_ALLOW_NO_HOST` **required** — external_repos/super-dev/scripts/check_delivery_ready.py
+- `SUPER_DEV_API_HOST` **required** — external_repos/super-dev/super_dev/web/api.py
+- `SUPER_DEV_API_KEY` **required** — external_repos/super-dev/.env.example
+- `SUPER_DEV_API_PORT` **required** — external_repos/super-dev/super_dev/web/api.py
+- `SUPER_DEV_API_RELOAD` **required** — external_repos/super-dev/super_dev/web/api.py
+- `SUPER_DEV_DISABLE_VISUAL_CAPTURE` **required** — external_repos/super-dev/super_dev/reviewers/ui_review.py
+- `SUPER_DEV_DISABLE_WEB` **required** — external_repos/super-dev/scripts/check_delivery_ready.py
+- `SUPER_DEV_GENERATED_KEY` **required** — external_repos/super-dev/super_dev/web/api.py
+- `SUPER_DEV_KNOWLEDGE_ALLOWED_DOMAINS` **required** — external_repos/super-dev/super_dev/orchestrator/knowledge.py
+- `SUPER_DEV_KNOWLEDGE_CACHE_TTL_SECONDS` **required** — external_repos/super-dev/super_dev/orchestrator/knowledge.py
+- `SUPER_DEV_LANG` (has default) — external_repos/super-dev/.env.example
+- `SUPER_DEV_LOG_FORMAT` (has default) — external_repos/super-dev/.env.example
+- `SUPER_DEV_LOG_LEVEL` (has default) — external_repos/super-dev/.env.example
+- `SUPER_DEV_OUTPUT_MODE` **required** — external_repos/super-dev/super_dev/terminal.py
+- `SUPER_DEV_PHASE` **required** — external_repos/super-dev/tests/unit/test_hook_manager.py
+- `SUPER_DEV_PORT` (has default) — external_repos/super-dev/.env.example
+- `SUPER_DEV_RATE_LIMIT` (has default) — external_repos/super-dev/.env.example
+- `SUPER_DEV_RATE_WINDOW` (has default) — external_repos/super-dev/.env.example
+- `SUPER_DEV_TAVILY_KEY` **required** — external_repos/super-dev/super_dev/orchestrator/engine.py
+- `SUPER_DEV_WEBHOOK_SECRET` **required** — external_repos/super-dev/super_dev/webhooks.py
+- `SUPER_DEV_WEBHOOK_URL` **required** — external_repos/super-dev/super_dev/webhooks.py
+- `SWARM_MODEL` **required** — core/rag_evolve/__init__.py
+- `SYSTEM_INSTRUCTION` (has default) — archive/external_repos_root/apps/antigravity2api-nodejs/.env.example
+- `SYSTEMROOT` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `TABLE_NAME` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `TABS_LINE` **required** — external_repos/node/test/parallel/test-dotenv-edge-cases.js
+- `TARGET` **required** — external_repos/apps/vue/scripts/config.js
+- `TARGET_API_URL` (has default) — control/legacy_workspaces/antigravity-proxy/.env.example
+- `TARGET_P99_LATENCY_MS` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `TARGET_PRB_COVERAGE` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `TARGET_TOKEN_REDUCTION_PCT` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `TAURI_DEV_HOST` **required** — external_repos/apps/Antigravity-Manager/vite.config.ts
+- `TAVILY_API_KEY` **required** — external_repos/super-dev/super_dev/orchestrator/engine.py
+- `TEA_DEBUG` **required** — external_repos/bubbletea/tea.go
+- `TEA_LOGFILE` **required** — external_repos/bubbletea/examples/clickable/main.go
+- `TEAMCITY_VERSION` **required** — control/legacy_workspaces/vercel-skills/src/telemetry.ts
+- `TELEMETRY_LOG_FILE` **required** — control/legacy_workspaces/gemini-cli/integration-tests/globalSetup.ts
+- `TELEMETRY_TOPIC` **required** — apps/aiyou_stack/aiyou-fastapi-services/digital-freeway-api/main.py
+- `TEMP` **required** — archive/claude-code-src-leak/src/utils/imagePaste.ts
+- `TEMPORAL_ENABLED` (has default) — control/legacy_workspaces/airweave/.env.example
+- `TEMPORAL_HOST` (has default) — control/legacy_workspaces/airweave/.env.example
+- `TEMPORAL_NAMESPACE` (has default) — control/legacy_workspaces/airweave/.env.example
+- `TEMPORAL_PORT` (has default) — control/legacy_workspaces/airweave/.env.example
+- `TEMPORAL_TASK_QUEUE` (has default) — control/legacy_workspaces/airweave/.env.example
+- `TERM` **required** — archive/claude-code-src-leak/src/ink/terminal.ts
+- `TERM_PROGRAM` **required** — archive/claude-code-src-leak/src/components/ScrollKeybindingHandler.tsx
+- `TERM_PROGRAM_VERSION` **required** — archive/claude-code-src-leak/src/ink/clearTerminal.ts
+- `TERMINAL_EMULATOR` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `TERMINATOR_UUID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `TERMINUS_SUBLIME` **required** — external_repos/super-dev/super_dev/terminal.py
+- `TERRAFORM` **required** — external_repos/apps/cloud-foundation-fabric/tests/collectors.py
+- `TESLA_API_BASE` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gate0_tesla_validation.py
+- `TESLA_CALLS` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gate0_tesla_validation.py
+- `TESLA_SLEEP_S` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gate0_tesla_validation.py
+- `TESLA_TIMEOUT_S` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gate0_tesla_validation.py
+- `TEST` **required** — external_repos/cli/mock-globals/test/index.js
+- `TEST_ADMIN_LOGIN` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_ADMIN_PASSWORD` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_API_BASE_URL` **required** — control/legacy_workspaces/anthropic-sdk-typescript/tests/index.test.ts
+- `TEST_AZURE_BASE_URL` **required** — external_repos/apps/AliFullStack/e2e-tests/azure_send_message.spec.ts
+- `TEST_CHILD_PROCESS` **required** — external_repos/node/test/parallel/test-experimental-shared-value-conveyor.js
+- `TEST_EMBEDDING_BASE_URL` **required** — external_repos/apps/memory-lancedb-pro/test/context-support-e2e.mjs
+- `TEST_ENABLE_SESSION_PERSISTENCE` **required** — archive/claude-code-src-leak/src/utils/sessionStorage.ts
+- `TEST_INIT` **required** — external_repos/node/test/sequential/test-init.js
+- `TEST_MODE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `TEST_PARALLEL` **required** — external_repos/node/test/common/index.js
+- `TEST_PRIVATE_REPO_HTTPS` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_PRIVATE_REPO_PAT` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_PRIVATE_REPO_SSH` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_PRIVATE_REPO_SSH_KEY` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_PRIVATE_REPO_SSH_KEY_PASSPHRASE` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_RUNTIME` **required** — external_repos/apps/prettier/jest.config.js
+- `TEST_SERIAL_ID` **required** — external_repos/node/test/common/tmpdir.js
+- `TEST_SRCDIR` **required** — external_repos/apps/buildtools/tables/jsonparser_test.go
+- `TEST_STANDALONE` **required** — control/legacy_workspaces/prettier/jest.config.js
+- `TEST_THREAD_ID` **required** — external_repos/node/test/async-hooks/test-graph.signal.js
+- `TEST_USER_LOGIN` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_USER_PASSWORD` **required** — external_repos/semaphore/test/e2e/.env.example
+- `TEST_VAR` **required** — external_repos/node/test/fixtures/spawn-worker-with-copied-env.js
+- `TEST_WORKSPACE` **required** — external_repos/apps/buildtools/tables/jsonparser_test.go
+- `TESTVAR` **required** — external_repos/node/test/parallel/test-process-env-sideeffects.js
+- `TEXT_EMBEDDING_MODEL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `TEXT2VEC_INFERENCE_URL` (has default) — control/legacy_workspaces/airweave/.env.example
+- `TF_ACC` **required** — external_repos/opentofu/internal/command/init_test.go
+- `TF_CLOUD_HOSTNAME` **required** — external_repos/opentofu/internal/cloud/backend.go
+- `TF_CLOUD_ORGANIZATION` **required** — external_repos/opentofu/internal/cloud/backend.go
+- `TF_CLOUD_PROJECT` **required** — external_repos/opentofu/internal/cloud/backend.go
+- `TF_DATA_DIR` **required** — external_repos/apps/terraform/commands.go
+- `TF_DISABLE_PLUGIN_TLS` **required** — external_repos/opentofu/internal/command/meta_providers.go
+- `TF_FORCE_LOCAL_BACKEND` **required** — external_repos/opentofu/internal/cloud/backend.go
+- `TF_REATTACH_PROVIDERS` **required** — external_repos/opentofu/cmd/tofu/main.go
+- `TF_TFC_TEST` **required** — external_repos/opentofu/internal/cloud/testing.go
+- `TF_WARN_OUTPUT_ERRORS` **required** — external_repos/opentofu/internal/tofu/features.go
+- `TF_WORKSPACE` **required** — external_repos/opentofu/internal/cloud/backend.go
+- `TFC_RUN_ID` **required** — external_repos/opentofu/internal/cloud/backend_plan.go
+- `TFE_RUN_ID` **required** — external_repos/opentofu/internal/cloud/state.go
+- `TFTEST_E2E_SETUP_TFVARS_PATH` **required** — external_repos/apps/cloud-foundation-fabric/tests/fixtures.py
+- `TFTEST_E2E_TFVARS_PATH` **required** — external_repos/apps/cloud-foundation-fabric/tests/fixtures.py
+- `TG_TF_PATH` **required** — external_repos/apps/terragrunt/test/integration_test.go
+- `TIDB_DATABASE` **required** — external_repos/mcp-toolbox/tests/tidb/tidb_integration_test.go
+- `TIDB_HOST` **required** — external_repos/mcp-toolbox/tests/tidb/tidb_integration_test.go
+- `TIDB_PASS` **required** — external_repos/mcp-toolbox/tests/tidb/tidb_integration_test.go
+- `TIDB_PORT` **required** — external_repos/mcp-toolbox/tests/tidb/tidb_integration_test.go
+- `TIDB_USER` **required** — external_repos/mcp-toolbox/tests/tidb/tidb_integration_test.go
+- `TILIX_ID` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `TIME_HORIZON_MONTHS` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `TIMEOUT` **required** — external_repos/apps/rustdesk/res/job.py
+- `TLS_CERT_DIR` (has default) — apps/kovelai/.env.example
+- `TMP` **required** — external_repos/node/lib/os.js
+- `TMPDIR` **required** — archive/claude-code-src-leak/src/utils/tmuxSocket.ts
+- `TMUX` **required** — archive/claude-code-src-leak/src/ink/colorize.ts
+- `TOFU_X_EXPERIMENTAL_RUNTIME` **required** — external_repos/opentofu/internal/tofu/context_temp_runtime.go
+- `TOGETHER_API_KEY` **required** — archive/external_repos_root/apps/aicommits/.env.example
+- `TOKENIZERS_PARALLELISM` **required** — external_repos/apps/LlamaFactory/tests_v1/conftest.py
+- `TOOLBOX_URL` **required** — external_repos/mcp-toolbox/cmd/root.go
+- `TOPIC_ID` **required** — external_repos/click-to-deploy-solutions/streaming-data-to-analytics/code/main.py
+- `TORCH_CUDA_ARCH_LIST` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL` **required** — external_repos/apps/ComfyUI/main.py
+- `TORCHINDUCTOR_COMPILE_THREADS` **required** — control/legacy_workspaces/vllm/vllm/env_override.py
+- `TRANSCRIPTION_ENGINE` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `TRANSFER_CONFIG_NAME` **required** — external_repos/firebase-extensions/bigquery-firestore-export/functions/jest.teardown.js
+- `TRAVIS` **required** — control/legacy_workspaces/vercel-skills/src/telemetry.ts
+- `TRIM_SPACE_FROM_UNQUOTED` **required** — external_repos/node/test/parallel/test-dotenv.js
+- `TRINO_CATALOG` **required** — external_repos/mcp-toolbox/tests/trino/trino_integration_test.go
+- `TRINO_HOST` **required** — external_repos/mcp-toolbox/tests/trino/trino_integration_test.go
+- `TRINO_PASS` **required** — external_repos/mcp-toolbox/tests/trino/trino_integration_test.go
+- `TRINO_PORT` **required** — external_repos/mcp-toolbox/tests/trino/trino_integration_test.go
+- `TRINO_SCHEMA` **required** — external_repos/mcp-toolbox/tests/trino/trino_integration_test.go
+- `TRINO_USER` **required** — external_repos/mcp-toolbox/tests/trino/trino_integration_test.go
+- `TRUSTED_ENVIRONMENT` **required** — external_repos/cloud-run-button/cmd/cloudshell_open/main.go
+- `TURBOPACK` **required** — external_repos/apps/payload/test/dev.ts
+- `TWITTER_BEARER_TOKEN` **required** — control/legacy_workspaces/create-t3-app/www/.env.example
+- `TYPED` **required** — control/legacy_workspaces/tinygrad/tinygrad/__init__.py
+- `TZ` **required** — external_repos/apps/JamAIBase/scripts/oss_migrate.py
+- `UI_PASSWORD` **required** — external_repos/BioAgents/src/routes/auth.ts
+- `ULTRAPLAN_PROMPT_FILE` **required** — archive/claude-code-src-leak/src/commands/ultraplan.tsx
+- `UPDATE_BRANCH` **required** — apps/aiyou_stack/aiyou-fastapi-services/antigravity-arch/update_package.py
+- `UPHILLSNOWBALL_DATA_DIR` (has default) — labs/uphillsnowball/.env.example
+- `UPHILLSNOWBALL_LANCEDB_DIR` (has default) — labs/uphillsnowball/.env.example
+- `UPLOAD_PACKAGES` **required** — archive/external_payloads/apps_fastapi_external_repos/pyrefly-feedstock/build-locally.py
+- `URL` **required** — external_repos/flagger/test/verify_session_affinity.go
+- `USE_API_CONTEXT_MANAGEMENT` **required** — archive/claude-code-src-leak/src/utils/betas.ts
+- `USE_BUILTIN_RIPGREP` **required** — archive/claude-code-src-leak/src/utils/ripgrep.ts
+- `USE_CONNECTOR_TEXT_SUMMARIZATION` **required** — archive/claude-code-src-leak/src/utils/betas.ts
+- `USE_IN_MEMORY_SESSION` **required** — apps/slides_agent_demo/app/fast_api_app.py
+- `USE_JOB_QUEUE` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `USE_KT` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `USE_LOCAL_OAUTH` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `USE_MCA` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `USE_MOCK` (has default) — apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example
+- `USE_MODELSCOPE_HUB` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `USE_OPENMIND_HUB` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `USE_RAY` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `USE_RERANKING` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `USE_STAGING_OAUTH` **required** — archive/claude-code-src-leak/src/constants/oauth.ts
+- `USE_VERTEX_AI` **required** — scripts/veo_pipeline.py
+- `USER` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/god_mode_unlock.py
+- `USER_EMAIL` **required** — external_repos/GoogleChrome/chromium-dashboard/framework/users.py
+- `USER_ID` **required** — external_repos/GoogleChrome/chromium-dashboard/testing_config.py
+- `USER_IS_ADMIN` **required** — external_repos/GoogleChrome/chromium-dashboard/framework/users.py
+- `USER_TYPE` **required** — archive/claude-code-src-leak/src/bootstrap/state.ts
+- `USERDOMAIN` **required** — control/legacy_workspaces/checkout/src/git-auth-helper.ts
+- `USERNAME` **required** — control/legacy_workspaces/checkout/src/git-auth-helper.ts
+- `USERNAME_SELECTOR` **required** — apps/aiyou_stack/aiyou-fastapi-services/auto_approve_web.py
+- `USERPROFILE` **required** — archive/claude-code-src-leak/src/utils/claudeDesktop.ts
+- `UV` **required** — control/legacy_workspaces/vllm/vllm/collect_env.py
+- `UV_TOOL_BIN_DIR` **required** — external_repos/super-dev/super_dev/cli_host_ops_mixin.py
+- `V` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `V_SCALE_CONSTANT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `V2X_MESH_GATEWAY_URL` **required** — control/legacy_workspaces/archive_ingestion/services_gemini_ingestion/cron_job.py
+- `VALKEY_ADDRESS` **required** — external_repos/mcp-toolbox/tests/valkey/valkey_test.go
+- `VAST_VERSION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `VCR_RECORD` **required** — archive/claude-code-src-leak/src/services/vcr.ts
+- `VECTOR_DB_TYPE` (has default) — libs/autoresearch_sources/Kosmos/.env.example
+- `VECTOR_SEARCH_LIMIT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `VEHICLE_ID` **required** — apps/aiyou_stack/aiyou-fastapi-services/scripts/gate0_tesla_validation.py
+- `VERBOSE` **required** — control/legacy_workspaces/gemini-cli/integration-tests/file-system.test.ts
+- `VERCEL` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `VERCEL_BYPASS_TOKEN` **required** — external_repos/apps/Next-js-Boilerplate/checkly.config.ts
+- `VERDICT_API_KEY` **required** — apps/aiyou_stack/aiyou-fastapi-services/tests/test_rate_limiting.py
+- `VERSION` **required** — external_repos/apps/vue/scripts/config.js
+- `VERTEX_AI_LOCATION` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `VERTEX_AI_MODEL` (has default) — apps/aiyou_stack/aiyou-fastapi-services/.env.example
+- `VERTEX_BASE_URL` **required** — archive/claude-code-src-leak/src/utils/status.tsx
+- `VERTEX_EMBED_DIM` **required** — scripts/pnkln_lancedb.py
+- `VERTEX_EMBED_MODEL` **required** — scripts/pnkln_lancedb.py
+- `VERTEX_LOCATION` (has default) — .env
+- `VERTEX_PROJECT` (has default) — .env
+- `VERTEX_PROJECT_ID` **required** — archive/agent_debris/app/services/judge6_grounded.py
+- `VIDEO_PATH` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `VIEWER_ORIGIN` **required** — external_repos/GoogleChrome/lighthouse-ci/scripts/build-app.js
+- `VIRTUAL_ENV` **required** — control/legacy_workspaces/pip/tools/protected_pip.py
+- `VISUAL` **required** — archive/claude-code-src-leak/src/utils/editor.ts
+- `VITE_API_URL` (has default) — control/legacy_workspaces/airweave/frontend/.env.example
+- `VITE_APP_NAME` **required** — external_repos/gke-mcp/ui/vite.config.ts
+- `VITE_APPROVER_ID` **required** — control/legacy_workspaces/archive_legal/lawtrack-ui/.env.example
+- `VITE_AUTH0_AUDIENCE` (has default) — control/legacy_workspaces/airweave/frontend/.env.example
+- `VITE_AUTH0_CLIENT_ID` (has default) — control/legacy_workspaces/airweave/frontend/.env.example
+- `VITE_AUTH0_DOMAIN` (has default) — control/legacy_workspaces/airweave/frontend/.env.example
+- `VITE_ENABLE_AUTH` (has default) — control/legacy_workspaces/airweave/frontend/.env.example
+- `VITE_IS_PR` **required** — external_repos/apps/prettier/website/vite.config.mjs
+- `VITE_MATTER_ID` **required** — control/legacy_workspaces/archive_legal/lawtrack-ui/.env.example
+- `VITE_PORT` (has default) — archive/external_repos_root/apps/Gemini-CLI-UI/.env.example
+- `VITE_POSTHOG_API_KEY` (has default) — archive/external_payloads/repos/nanobrowser/.env.example
+- `VITE_ZT_API_URL` (has default) — control/legacy_workspaces/archive_legal/lawtrack-ui/.env.example
+- `VLLM_ALLOW_CHUNKED_LOCAL_ATTN_WITH_HYBRID_KV_CACHE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ALLOW_INSECURE_SERIALIZATION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ALLOW_LONG_MAX_MODEL_LEN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ALLOW_RUNTIME_LORA_UPDATING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ALLREDUCE_USE_FLASHINFER` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ALLREDUCE_USE_SYMM_MEM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_API_KEY` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ASSETS_CACHE_MODEL_CLEAN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ATTENTION_BACKEND` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_AUDIO_FETCH_TIMEOUT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_BATCH_INVARIANT` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_BACKEND` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_BATCH_SIZE` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_GPU_MEMORY_UTILIZATION` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_MAX_MODEL_LEN` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_MAX_PROMPT` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_MAX_TOKENS` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_MIN_PROMPT` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_MODEL` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_NUM_TRIALS` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_TEMPERATURE` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BENCH_TP_SIZE` **required** — control/legacy_workspaces/vllm/benchmarks/benchmark_batch_invariance.py
+- `VLLM_BLOCKSCALE_FP8_GEMM_FLASHINFER` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_CI_DTYPE` **required** — control/legacy_workspaces/vllm/tests/ci_envs.py
+- `VLLM_CI_ENFORCE_EAGER` **required** — control/legacy_workspaces/vllm/tests/ci_envs.py
+- `VLLM_CI_HEAD_DTYPE` **required** — control/legacy_workspaces/vllm/tests/ci_envs.py
+- `VLLM_CI_HF_DTYPE` **required** — control/legacy_workspaces/vllm/tests/ci_envs.py
+- `VLLM_CI_NO_SKIP` **required** — control/legacy_workspaces/vllm/tests/ci_envs.py
+- `VLLM_CI_USE_S3` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_COMPUTE_NANS_IN_LOGITS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CONFIGURE_LOGGING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CPU_KVCACHE_SPACE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CPU_NUM_OF_RESERVED_CPU` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CPU_OMP_THREADS_BIND` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CPU_SGL_KERNEL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CUDA_COMPATIBILITY_PATH` **required** — external_repos/apps/vllm/vllm/env_override.py
+- `VLLM_CUDART_SO_PATH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_CUSTOM_SCOPES_FOR_PROFILING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DBO_COMM_SMS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DEBUG_DUMP_PATH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DEBUG_MFU_METRICS` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_DEBUG_WORKSPACE` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_DEEPEP_BUFFER_SIZE_MB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DEEPEP_HIGH_THROUGHPUT_FORCE_INTRA_NODE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DEEPEP_LOW_LATENCY_USE_MNNVL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DEEPEPLL_NVFP4_DISPATCH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DISABLE_COMPILE_CACHE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DISABLE_LOG_LOGO` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_DISABLE_PYNCCL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DISABLE_REQUEST_ID_RANDOMIZATION` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_DISABLE_SCCACHE` **required** — control/legacy_workspaces/vllm/setup.py
+- `VLLM_DISABLE_SHARED_EXPERTS_STREAM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DISABLED_KERNELS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DO_NOT_TRACK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DOCKER_BUILD_CONTEXT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DP_MASTER_IP` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DP_MASTER_PORT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DP_RANK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DP_RANK_LOCAL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_DP_SIZE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ELASTIC_EP_DRAIN_REQUESTS` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ELASTIC_EP_SCALE_UP_LAUNCH` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ENABLE_CUDA_COMPATIBILITY` **required** — external_repos/apps/vllm/vllm/env_override.py
+- `VLLM_ENABLE_CUDAGRAPH_GC` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENABLE_FLA_PACKED_RECURRENT_DECODE` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ENABLE_FUSED_MOE_ACTIVATION_CHUNKING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENABLE_INDUCTOR_COORDINATE_DESCENT_TUNING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENABLE_INDUCTOR_MAX_AUTOTUNE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENABLE_MOE_DP_CHUNK` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ENABLE_RESPONSES_API_STORE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENABLE_V1_MULTIPROCESSING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENGINE_ITERATION_TIMEOUT_S` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ENGINE_READY_TIMEOUT_S` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FLASH_ATTN_MAX_NUM_SPLITS_FOR_CUDA_GRAPH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FLASH_ATTN_VERSION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FLASHINFER_ALLREDUCE_FUSION_THRESHOLDS_MB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FLASHINFER_DISABLE_Q_QUANTIZATION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FLASHINFER_WORKSPACE_BUFFER_SIZE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FORCE_AOT_LOAD` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_FUSED_MOE_CHUNK_SIZE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_GC_DEBUG` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_GPT_OSS_HARMONY_SYSTEM_INSTRUCTIONS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_HAS_FLASHINFER_CUBIN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_HOST_IP` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_HTTP_TIMEOUT_KEEP_ALIVE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_IMAGE_FETCH_TIMEOUT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_KEEP_ALIVE_ON_ENGINE_DEATH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_KV_EVENTS_USE_INT_BLOCK_HASHES` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOG_BATCHSIZE_INTERVAL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOG_MODEL_INSPECTION` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_LOG_STATS_INTERVAL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOGGING_COLOR` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOGGING_CONFIG_PATH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOGGING_LEVEL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOGGING_PREFIX` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOGGING_STREAM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LOOPBACK_IP` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_LORA_DISABLE_PDL` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MAIN_CUDA_VERSION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MAX_AUDIO_CLIP_FILESIZE_MB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MAX_N_SEQUENCES` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MAX_TOKENS_PER_EXPERT_FP4_MOE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MEDIA_CONNECTOR` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MEDIA_FETCH_MAX_RETRIES` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MEDIA_LOADING_THREAD_COUNT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MEDIA_URL_ALLOW_REDIRECTS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MLA_DISABLE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MM_INPUT_CACHE_GIB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MOE_DP_CHUNK_SIZE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MOE_USE_DEEP_GEMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MOONCAKE_ABORT_REQUEST_TIMEOUT` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MOONCAKE_BOOTSTRAP_PORT` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MORIIO_CONNECTOR_READ_MODE` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MORIIO_NUM_WORKERS` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MORIIO_POST_BATCH_SIZE` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MORIIO_QP_PER_TRANSFER` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_MQ_MAX_CHUNK_BYTES_MB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MSGPACK_ZERO_COPY_THRESHOLD` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_MXFP4_USE_MARLIN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_NCCL_INCLUDE_PATH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_NCCL_SO_PATH` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_NIXL_ABORT_REQUEST_TIMEOUT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_NIXL_EP_MAX_NUM_RANKS` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_NIXL_SIDE_CHANNEL_PORT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_NO_USAGE_STATS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_NVTX_SCOPES_FOR_PROFILING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_PLUGINS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_PORT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_PP_LAYER_PARTITION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_PRECOMPILED_WHEEL_COMMIT` **required** — external_repos/apps/vllm/setup.py
+- `VLLM_PRECOMPILED_WHEEL_LOCATION` **required** — control/legacy_workspaces/vllm/setup.py
+- `VLLM_PRECOMPILED_WHEEL_VARIANT` **required** — control/legacy_workspaces/vllm/setup.py
+- `VLLM_PROCESS_NAME_PREFIX` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_PROFILER_DELAY_ITERS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_PROFILER_MAX_ITERS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_RAY_BUNDLE_INDICES` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_RAY_PER_WORKER_GPUS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_RINGBUFFER_WARNING_INTERVAL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_CUSTOM_PAGED_ATTN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_FP8_MFMA_PAGE_ATTN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_FP8_PADDING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_MOE_PADDING` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_QUICK_REDUCE_CAST_BF16_TO_FP16` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_QUICK_REDUCE_MAX_SIZE_BYTES_MB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ROCM_SLEEP_MEM_CHUNK_SIZE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_FP4_ASM_GEMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_FP4BMM` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_FP8BMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_FUSION_SHARED_EXPERTS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_LINEAR` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_MHA` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_MLA` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_MOE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_PAGED_ATTN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_RMSNORM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_TRITON_GEMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_TRITON_ROPE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_AITER_UNIFIED_ATTENTION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_ROCM_USE_SKINNY_GEMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_RPC_TIMEOUT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_SERVER_DEV_MODE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_SHARED_EXPERTS_STREAM_TOKEN_THRESHOLD` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_SKIP_P2P_CHECK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_SKIP_PRECOMPILED_VERSION_SUFFIX` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_SLEEP_WHEN_IDLE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_SYSTEM_START_DATE` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_TARGET_DEVICE` **required** — control/legacy_workspaces/vllm/setup.py
+- `VLLM_TEST_CLEAN_GPU_MEMORY` **required** — control/legacy_workspaces/vllm/tests/conftest.py
+- `VLLM_TEST_FORCE_FP8_MARLIN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TEST_USE_PRECOMPILED_NIGHTLY_WHEEL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TOOL_JSON_ERROR_AUTOMATIC_RETRY` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TOOL_PARSE_REGEX_TIMEOUT_SECONDS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_CUDA_PROFILE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_DIR` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_DISABLE_ASYNC_LLM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_DUMP_CUDA_TIME_TOTAL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_RECORD_SHAPES` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_USE_GZIP` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_WITH_FLOPS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_WITH_PROFILE_MEMORY` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TORCH_PROFILER_WITH_STACK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TPU_BUCKET_PADDING_GAP` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TPU_MOST_MODEL_LEN` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TRACE_FUNCTION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_TUNED_CONFIG_FOLDER` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USAGE_SOURCE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_AOT_COMPILE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_BYTECODE_HOOK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_CUDNN_PREFILL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_DEEP_GEMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_DEEP_GEMM_E8M0` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_DEEP_GEMM_TMA_ALIGNED_SCALES` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_USE_EXPERIMENTAL_PARSER_CONTEXT` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_USE_FBGEMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_FP16` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_FP4` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_FP8` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_INT4` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_MXFP4_BF16` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8_CUTLASS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FLASHINFER_SAMPLER` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_FUSED_MOE_GROUPED_TOPK` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_MEGA_AOT_ARTIFACT` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_USE_MODELSCOPE` **required** — control/legacy_workspaces/vllm/benchmarks/backend_request_func.py
+- `VLLM_USE_NCCL_SYMM_MEM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_NVFP4_CT_EMULATIONS` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_OINK_OPS` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_USE_PRECOMPILED` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_RAY_COMPILED_DAG_OVERLAP_COMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_RAY_WRAPPED_PP_COMM` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_TRITON_AWQ` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_TRTLLM_ATTENTION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_TRTLLM_RAGGED_DEEPSEEK_PREFILL` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_USE_V2_MODEL_RUNNER` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_V1_OUTPUT_PROC_CHUNK_SIZE` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_V1_USE_PREFILL_DECODE_ATTENTION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_VERSION_OVERRIDE` **required** — control/legacy_workspaces/vllm/setup.py
+- `VLLM_VIDEO_FETCH_TIMEOUT` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_WEIGHT_OFFLOADING_DISABLE_UVA` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_XGRAMMAR_CACHE_MB` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_XLA_CHECK_RECOMPILATION` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_XLA_USE_SPMD` **required** — control/legacy_workspaces/vllm/vllm/envs.py
+- `VLLM_XPU_ENABLE_XPU_GRAPH` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VLLM_ZENTORCH_WEIGHT_PREPACK` **required** — external_repos/apps/vllm/vllm/envs.py
+- `VOICE_LANGUAGE` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `VOICE_STREAM_BASE_URL` **required** — archive/claude-code-src-leak/src/services/voiceStreamSTT.ts
+- `VOLCENGINE_API_BASE` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `VOLCENGINE_API_KEY` (has default) — archive/external_payloads/repos/skyvern/.env.example
+- `VSCODE_DEBUG_MODE` **required** — external_repos/firebase-tools/src/track.ts
+- `VSCODE_DEBUGGER` **required** — external_repos/apps/devtools-frontend/test/run.ts
+- `VSCODE_GIT_ASKPASS_MAIN` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `VSCODE_WEBHOOK_PORT` **required** — external_repos/firebase-tools/src/dataconnect/webhook.ts
+- `VTE_VERSION` **required** — archive/claude-code-src-leak/src/ink/terminal.ts
+- `VUE_APP_BUILD_TYPE` **required** — external_repos/semaphore/web/vue.config.js
+- `WANDB_API_KEY` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `WANDB_DISABLED` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `WANDB_PROJECT` **required** — archive/external_repos_root/apps/LlamaFactory/.env.local
+- `WAYLAND_DISPLAY` **required** — external_repos/apps/ComfyUI/comfy_extras/nodes_glsl.py
+- `WCAG_LEVEL` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `WEALTH_LEAK_DETECTION` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `WEALTH_MODEL_ENABLED` (has default) — archive/recovered_assets/repos/aiyou-fastapi-services/.env.example
+- `WEB_HOST` **required** — external_repos/firebase-tools/src/emulator/env.ts
+- `WEBSITE_SITE_NAME` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `WEBSITE_SKU` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `WHEELS_CACHE_HOME` **required** — control/legacy_workspaces/vllm/tools/install_nixl_from_source_ubuntu.py
+- `WHISPER_MODEL_SIZE` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `WORKER_ID` **required** — external_repos/node/test/sequential/test-cluster-port-reuse-between-workers.js
+- `WORKER_USAGE_FILE` **required** — external_repos/node/test/parallel/test-runner-worker-id.js
+- `WORKER2_NAME` **required** — external_repos/node/test/sequential/test-dgram-bind-shared-ports.js
+- `WORKING_DIR` **required** — external_repos/cloud-run-button/tests/run_integration_test.py
+- `WORKSPACE_SLUG` **required** — external_repos/firebase-tools/src/management/studio.spec.ts
+- `WPT_REPORT` **required** — external_repos/node/test/common/wpt.js
+- `WPT_REVISION` **required** — external_repos/node/test/common/wpt.js
+- `WRITE_DB_ADAPTER` **required** — external_repos/apps/payload/test/generateDatabaseSchema.ts
+- `WSL_DISTRO_NAME` **required** — archive/claude-code-src-leak/src/hooks/useDiffInIDE.ts
+- `WT_SESSION` **required** — archive/claude-code-src-leak/src/ink/bidi.ts
+- `X402_ASSET` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_ENABLED` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_ENVIRONMENT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_FACILITATOR_URL` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_NETWORK` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_PAYMENT_ADDRESS` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_TEST_API_URL` **required** — external_repos/BioAgents/scripts/x402/test-x402-mainnet.ts
+- `X402_TEST_PRIVATE_KEY` **required** — external_repos/BioAgents/scripts/x402/request-faucet.ts
+- `X402_TIMEOUT` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `X402_USDC_ADDRESS` (has default) — libs/autoresearch_sources/BioAgents/.env.example
+- `XAI_API_KEY` (has default) — archive/root_debris/router/.env.example
+- `XAI_BASE_URL` (has default) — archive/root_debris/router/.env.example
+- `XAI_ENDPOINT` **required** — apps/aiyou_stack/aiyou-fastapi-services/config.py
+- `XAI_MODEL` (has default) — archive/root_debris/router/.env.example
+- `XDG_CONFIG_HOME` **required** — archive/claude-code-src-leak/src/utils/completionCache.ts
+- `XDG_STATE_HOME` **required** — control/legacy_workspaces/vercel-skills/src/cli.ts
+- `XTERM_VERSION` **required** — archive/claude-code-src-leak/src/utils/env.ts
+- `YOUTUBE_API_KEY` **required** — control/legacy_workspaces/archive_ingestion/services_gemini_ingestion/cron_job.py
+- `YUGABYTEDB_DATABASE` **required** — external_repos/mcp-toolbox/tests/yugabytedb/yugabytedb_integration_test.go
+- `YUGABYTEDB_HOST` **required** — external_repos/mcp-toolbox/tests/yugabytedb/yugabytedb_integration_test.go
+- `YUGABYTEDB_LOADBALANCE` **required** — external_repos/mcp-toolbox/tests/yugabytedb/yugabytedb_integration_test.go
+- `YUGABYTEDB_PASS` **required** — external_repos/mcp-toolbox/tests/yugabytedb/yugabytedb_integration_test.go
+- `YUGABYTEDB_PORT` **required** — external_repos/mcp-toolbox/tests/yugabytedb/yugabytedb_integration_test.go
+- `YUGABYTEDB_USER` **required** — external_repos/mcp-toolbox/tests/yugabytedb/yugabytedb_integration_test.go
+- `ZED_TERM` **required** — archive/claude-code-src-leak/src/ink/terminal.ts
+- `ZHIPUAI_API_KEY` **required** — tools/GitNexus/eval/.env.example
+- `ZOSLIB_INCLUDES` **required** — external_repos/node/tools/install.py
+
+## Config Files
+
+- `Dockerfile`
+- `apps/aiyou-web-dashboard/next.config.ts`
+- `apps/aiyou_stack/aiyou-fastapi-services/.env.example`
+- `apps/aiyou_stack/aiyou-fastapi-services/backend/.env.example`
+- `apps/aiyou_stack/aiyou-fastapi-services/frontend/next.config.js`
+- `apps/aiyou_stack/aiyou-fastapi-services/frontend/tailwind.config.ts`
+- `apps/aiyou_stack/aiyou-fastapi-services/monitoring/.env.example`
+- `apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/.env.example`
+- `apps/aiyou_stack/aiyou-fastapi-services/router/.env.example`
+- `apps/aiyou_stack/aiyou-fastapi-services/universal-copilot/.env.example`
+- `apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/.env.example`
+- `apps/aiyou_stack/nascent-apollo/sovereign-web/tailwind.config.js`
+- `apps/awesome-nano-banana-pro-prompts/.env.example`
+- `apps/cosmic-crab/apps/shadowtag-web/tailwind.config.ts`
+- `apps/counselconduit-dashboard/vite.config.ts`
+- `apps/counselconduit/.env.example`
+- `apps/headfade/pwa/next.config.ts`
+- `apps/kovelai/.env.example`
+- `apps/kovelai/site/vite.config.js`
+- `apps/lawtrack-ui/.env.example`
+- `apps/lawtrack-ui/vite.config.ts`
+- `apps/legaltrack/ui/vite.config.ts`
+- `apps/shadowtag-web/next.config.ts`
+- `apps/shadowtagai/site/vite.config.js`
+- `apps/thumbly/next.config.ts`
+- `archive/external_payloads/apps_fastapi_external_repos/Agentic-AI-Pipeline/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/BioAgents/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/JamAIBase/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/Kosmos/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/aicommits/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/browser-use/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/payload/.env.example`
+- `archive/external_payloads/apps_fastapi_external_repos/recursive-llm/.env.example`
+- `archive/external_payloads/repos/Agentic-AI-Pipeline/.env.example`
+- `archive/external_payloads/repos/AliFullStack/.env.example`
+- `archive/external_payloads/repos/BioAgents/.env.example`
+- `archive/external_payloads/repos/Gemini-CLI-UI/.env.example`
+- `archive/external_payloads/repos/JamAIBase/.env.example`
+- `archive/external_payloads/repos/Kosmos/.env.example`
+- `archive/external_payloads/repos/aicommits/.env.example`
+- `archive/external_payloads/repos/antigravity2api-nodejs/.env.example`
+- `archive/external_payloads/repos/awesome-nano-banana-pro-prompts/.env.example`
+- `archive/external_payloads/repos/browser-use/.env.example`
+- `archive/external_payloads/repos/dashpress/.env.example`
+- `archive/external_payloads/repos/litellm/.env.example`
+- `archive/external_payloads/repos/nanobrowser/.env.example`
+- `archive/external_payloads/repos/nightly_intel_pipeline/.env.example`
+- `archive/external_payloads/repos/payload/.env.example`
+- `archive/external_payloads/repos/recursive-llm/.env.example`
+- `archive/external_payloads/repos/skyvern/.env.example`
+- `archive/external_payloads/repos/voice_consensus/.env.example`
+- `archive/external_repos_root/BioAgents/.env.example`
+- `archive/external_repos_root/Kosmos/.env.example`
+- `archive/external_repos_root/agents/Agentic-AI-Pipeline/.env.example`
+- `archive/external_repos_root/agents/BioAgents/.env.example`
+- `archive/external_repos_root/apps/AliFullStack/.env.example`
+- `archive/external_repos_root/apps/Gemini-CLI-UI/.env.example`
+- `archive/external_repos_root/apps/JamAIBase/.env.example`
+- `archive/external_repos_root/apps/aicommits/.env.example`
+- `archive/external_repos_root/apps/antigravity2api-nodejs/.env.example`
+- `archive/external_repos_root/apps/payload/.env.example`
+- `archive/external_repos_root/claude-code-leaks/nirholas/.env.example`
+- `archive/labs_graveyard/.env.example`
+- `archive/labs_graveyard/ane-workbench/ane_cortex_stack_v9/.env.example`
+- `archive/recovered_assets/repos/aiyou-fastapi-services/.env.example`
+- `archive/root_debris/ane_cortex_stack_v9/.env.example`
+- `archive/root_debris/backend/.env.example`
+- `archive/root_debris/cor-autoresearch/.env.example`
+- `archive/root_debris/cor-autoresearch/BioAgents/.env.example`
+- `archive/root_debris/cor-autoresearch/Kosmos/.env.example`
+- `archive/root_debris/labs/uphillsnowball/.env.example`
+- `archive/root_debris/monitoring/.env.example`
+- `archive/root_debris/router/.env.example`
+- `control/antigravity/ane_cortex_stack_v10/.env.example`
+- `control/antigravity/ane_cortex_stack_v9/.env.example`
+- `control/legacy_workspaces/Kosmos/.env.example`
+- `control/legacy_workspaces/airweave/.env.example`
+- `control/legacy_workspaces/airweave/frontend/.env.example`
+- `control/legacy_workspaces/airweave/frontend/tailwind.config.ts`
+- `control/legacy_workspaces/airweave/frontend/vite.config.ts`
+- `control/legacy_workspaces/airweave/monke/.env.example`
+- `control/legacy_workspaces/antigravity-proxy/.env.example`
+- `control/legacy_workspaces/archive_control_planes/ane_cortex_stack_v10/.env.example`
+- `control/legacy_workspaces/archive_control_planes/ane_cortex_stack_v9/.env.example`
+- `control/legacy_workspaces/archive_control_planes/ops_staging_ane_v9/.env.example`
+- `control/legacy_workspaces/archive_legal/aiyou_ui_vite_prototype/vite.config.ts`
+- `control/legacy_workspaces/archive_legal/lawtrack-ui/.env.example`
+- `control/legacy_workspaces/archive_legal/lawtrack-ui/vite.config.ts`
+- `control/legacy_workspaces/claude-cookbooks/.env.example`
+- `control/legacy_workspaces/claude-cookbooks/claude_agent_sdk/.env.example`
+- `control/legacy_workspaces/claude-cookbooks/skills/.env.example`
+- `control/legacy_workspaces/claude-cookbooks/tool_use/.env.example`
+- `control/legacy_workspaces/create-t3-app/www/.env.example`
+- `control/legacy_workspaces/create-t3-app/www/tailwind.config.ts`
+- `control/legacy_workspaces/dashpress/.env.example`
+- `control/legacy_workspaces/dashpress/next.config.js`
+- `control/legacy_workspaces/dashpress/tailwind.config.ts`
+- `control/legacy_workspaces/magika/website/vite.config.js`
+- `control/legacy_workspaces/react-native-firebase/website/tailwind.config.js`
+- `external_repos/apps/AliFullStack/drizzle.config.ts`
+- `external_repos/apps/AliFullStack/scaffold-3d/tailwind.config.ts`
+- `external_repos/apps/AliFullStack/scaffold-3d/vite.config.ts`
+- `external_repos/apps/AliFullStack/scaffold-nextjs/next.config.js`
+- `external_repos/apps/AliFullStack/scaffold-nextjs/tailwind.config.js`
+- `external_repos/apps/AliFullStack/scaffold-vue/tailwind.config.js`
+- `external_repos/apps/AliFullStack/scaffold-vue/tailwind.config.ts`
+- `external_repos/apps/AliFullStack/scaffold-vue/vite.config.ts`
+- `external_repos/apps/AliFullStack/scaffold/tailwind.config.ts`
+- `external_repos/apps/AliFullStack/scaffold/vite.config.ts`
+- `external_repos/apps/Antigravity-Manager/tailwind.config.js`
+- `external_repos/apps/Antigravity-Manager/vite.config.ts`
+- `external_repos/apps/CortexLTM/.env.example`
+- `external_repos/apps/Gemini-CLI-UI/tailwind.config.js`
+- `external_repos/apps/Gemini-CLI-UI/vite.config.js`
+- `external_repos/apps/Next-js-Boilerplate/drizzle.config.ts`
+- `external_repos/apps/Next-js-Boilerplate/next.config.ts`
+- `external_repos/apps/clauADA/tailwind.config.js`
+- `external_repos/apps/payload/next.config.mjs`
+- `external_repos/apps/payload/test/next.config.mjs`
+- `external_repos/apps/pinchtab/dashboard/vite.config.ts`
+- `external_repos/apps/ralph/flowchart/vite.config.ts`
+- `external_repos/cloud-run-mcp/.env.example`
+- `external_repos/gke-mcp/ui/vite.config.ts`
+- `external_repos/semaphore/test/e2e/.env.example`
+- `external_repos/semaphore/web/.env.example`
+- `external_repos/super-dev/.env.example`
+- `external_repos/super-dev/super-dev-website/next.config.mjs`
+- `external_repos/super-dev/super-dev-website/tailwind.config.ts`
+- `labs/uphillsnowball/.env.example`
+- `labs/uphillsnowball/ane-workbench/ane_cortex_stack_v9/.env.example`
+- `labs/uphillsnowball/product-pitch-site/cloner-tool/next.config.ts`
+- `labs/uphillsnowball/tauri-agentic-workspace/vite.config.ts`
+- `libs/autoresearch_sources/BioAgents/.env.example`
+- `libs/autoresearch_sources/Kosmos/.env.example`
+- `pyproject.toml`
+- `reference_architectures/agent-assistant/skills/diary/.env.example`
+- `reference_architectures/agent-assistant/web/vite.config.ts`
+- `tools/GitNexus/eval/.env.example`
+- `tools/GitNexus/gitnexus-web/vite.config.ts`
+- `tools/GitNexus/gitnexus/.env.example`
+- `tools/firebase-quickstart-js/ai/ai-react-app/vite.config.ts`
+- `tools/firebase-quickstart-js/auth/vite.config.js`
+- `tools/firebase-quickstart-js/dataconnect/app/tailwind.config.js`
+- `tools/firebase-quickstart-js/dataconnect/app/vite.config.ts`
+- `tools/firebase-quickstart-js/functions/public/vite.config.js`
+- `tools/firebase-quickstart-js/messaging/vite.config.js`
+- `tools/firebase-quickstart-js/remote-config/vite.config.js`
+- `tools/firebase-quickstart-js/storage/vite.config.js`
+- `tools/firestore-bundle-builder/admin-dashboard/tailwind.config.js`
+- `tools/google-workspace-cli/.env.example`
+- `tsconfig.json`
+
+## Key Dependencies
+
+- express: ^5.2.1
+- zod: ^4.3.6

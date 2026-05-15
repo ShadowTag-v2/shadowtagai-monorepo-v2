@@ -1,0 +1,9 @@
+# tool_contracts/repo.oracle.yaml
+tool_id: "repo.oracle"
+description: "Governs the repo.oracle operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/repo_oracle.jsonl"
+reuse_queries: []

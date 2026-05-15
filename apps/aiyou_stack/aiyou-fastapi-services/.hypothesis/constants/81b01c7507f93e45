@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/app/routers/stripe_handler.py
+# hypothesis_version: 6.151.5
+
+[400, 500, '/stripe', '/webhooks', 'Checkout completed', 'Invalid payload', 'Invalid signature', 'Payment failed', 'Payment succeeded', 'STRIPE_PRICE_EU26', 'STRIPE_SECRET_KEY', 'Stripe-Signature', 'Subscription deleted', 'Subscription updated', 'acknowledged', 'action', 'amount', 'amount_cents', 'amount_paid', 'attempt_count', 'consumer', 'currency', 'customer', 'customer_email', 'customer_id', 'data', 'email', 'enterprise', 'error', 'eu26', 'event_type', 'free', 'id', 'items', 'object', 'payment_recorded', 'price', 'price_consumer', 'price_enterprise', 'price_eu26', 'processed', 'status', 'subscription', 'subscription_id', 'tier', 'type', 'usd', 'webhooks']

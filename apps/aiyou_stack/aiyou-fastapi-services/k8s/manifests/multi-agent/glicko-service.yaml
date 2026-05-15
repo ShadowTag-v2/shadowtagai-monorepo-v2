@@ -1,0 +1,193 @@
+# Glicko-2 Rating Service
+# Manages agent performance ratings with sophisticated tracking
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glicko-config
+  namespace: pinkln-system
+data:
+  config.yaml: |
+    redis:
+      host: redis-master
+      port: 6379
+      db: 0
+
+    glicko:
+      initial_rating: 1500
+      initial_rd: 350
+      initial_vol: 0.06
+      tau: 0.5
+      tolerance: 1e-6
+
+    agents:
+      - name: wealth-accelerator
+        specialty: revenue-optimization
+        initial_rating: 1500
+      - name: deep-reasoning
+        specialty: bigcodebench
+        initial_rating: 1500
+      - name: code-crafter
+        specialty: humaneval
+        initial_rating: 1500
+      - name: ultrathink-designer
+        specialty: architecture
+        initial_rating: 1500
+      - name: panel-debate
+        specialty: consensus
+        initial_rating: 1500
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glicko-service
+  namespace: pinkln-system
+  labels:
+    app: glicko-service
+    component: rating-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: glicko-service
+  template:
+    metadata:
+      labels:
+        app: glicko-service
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: training-sa
+
+      containers:
+        - name: glicko-api
+          image: gcr.io/omega-production/glicko-service:latest
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 9090
+              name: metrics
+              protocol: TCP
+
+          env:
+            - name: REDIS_HOST
+              value: "redis-master"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: PORT
+              value: "8080"
+            - name: LOG_LEVEL
+              value: "info"
+            - name: ENVIRONMENT
+              value: "production"
+
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "2"
+            limits:
+              memory: "4Gi"
+              cpu: "4"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+
+          volumeMounts:
+            - name: config
+              mountPath: /etc/glicko
+              readOnly: true
+
+      volumes:
+        - name: config
+          configMap:
+            name: glicko-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: glicko-service
+  namespace: pinkln-system
+  labels:
+    app: glicko-service
+spec:
+  type: ClusterIP
+  selector:
+    app: glicko-service
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: 9090
+      protocol: TCP
+      name: metrics
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: glicko-service-hpa
+  namespace: pinkln-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: glicko-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+---
+# Service Monitor for Prometheus (if using Prometheus Operator)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: glicko-service
+  namespace: pinkln-system
+  labels:
+    app: glicko-service
+spec:
+  selector:
+    matchLabels:
+      app: glicko-service
+  endpoints:
+    - port: metrics
+      interval: 30s
+      path: /metrics

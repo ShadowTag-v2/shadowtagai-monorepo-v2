@@ -1,0 +1,20 @@
+{
+  "name": "ShadowTag-v2-orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ACE-inspired opposing-chain interrogation workflow",
+  "scripts": {
+    "run1:code:A": "node run1_code_A.mjs",
+    "run2:explain:A": "node run2_explain_A.mjs",
+    "run3:oppose:B": "node run3_oppose_B.mjs",
+    "apply:cursor": "node apply_in_cursor.mjs",
+    "triple:pass": "node triple_pass.mjs"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0"
+  }
+}

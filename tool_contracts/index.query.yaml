@@ -1,0 +1,112 @@
+name: index.query
+risk: low
+
+description: >
+  Routes code-intelligence questions to the correct Monorepo OS index.
+
+inputs:
+  required:
+    - query_type
+    - query
+  optional:
+    - path
+    - language
+    - target
+    - changed_files
+    - require_fresh_index
+
+query_types:
+  - symbol_definition
+  - references
+  - implementations
+  - impact
+  - build_dependencies
+  - configured_dependencies
+  - build_actions
+  - text_search
+  - process_flow
+  - architecture_docs
+  - pre_push_evidence
+  - index_status
+
+routes:
+  symbol_definition:
+    primary: scip
+    fallback: [gitnexus, ripgrep]
+    evidence: [index_used, symbol, location]
+
+  references:
+    primary: scip
+    fallback: [gitnexus, ripgrep]
+    evidence: [index_used, symbol, reference_count]
+
+  implementations:
+    primary: scip
+    fallback: [gitnexus]
+    evidence: [index_used, symbol, implementation_count]
+
+  impact:
+    primary: gitnexus
+    fallback: [bazel_rdeps, scip_references]
+    requires: [changed_files_or_target]
+    evidence: [impacted_files, impacted_symbols, suggested_tests, risk_tier]
+
+  build_dependencies:
+    primary: bazel_query
+    fallback: [gitnexus_import_graph]
+    evidence: [bazel_targets, dependency_paths]
+
+  configured_dependencies:
+    primary: bazel_cquery
+    fallback: []
+    evidence: [configured_targets, build_options_if_available]
+
+  build_actions:
+    primary: bazel_aquery
+    fallback: []
+    evidence: [actions, inputs, outputs]
+
+  text_search:
+    primary: zoekt
+    fallback: [ripgrep]
+    evidence: [result_count, paths]
+
+  process_flow:
+    primary: gitnexus
+    fallback: [docs_search]
+    evidence: [process_name, steps, files]
+
+  architecture_docs:
+    primary: rag
+    fallback: [docs_search]
+    constraints: [recall_only_not_source_truth]
+    evidence: [docs, citations]
+
+  pre_push_evidence:
+    primary: [gitnexus, bazel, secret_scan, bloat_gate]
+    evidence: [gitnexus_impact, bazel_report, secret_report, bloat_report]
+
+freshness:
+  gitnexus:
+    stale_if_head_changed_since_index: true
+  scip:
+    stale_if_index_older_than_head: true
+  bazel:
+    stale_if_build_files_changed_since_report: true
+  zoekt:
+    stale_allowed_for_text_search: true
+  rag:
+    stale_allowed_for_recall_only: true
+
+blocks:
+  - use_rag_as_source_truth_for_code_mutation
+  - use_text_search_as_only_proof_for_refactor
+  - skip_gitnexus_impact_for_nontrivial_refactor
+  - skip_bazel_query_for_build_metadata_change
+
+outputs:
+  - index_used
+  - freshness
+  - query
+  - result_count
+  - evidence_path

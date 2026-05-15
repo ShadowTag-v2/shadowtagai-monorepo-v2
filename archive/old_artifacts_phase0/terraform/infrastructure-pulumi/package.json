@@ -1,0 +1,20 @@
+{
+  "name": "shadowtag-infrastructure-pulumi",
+  "version": "1.0.0",
+  "description": "ShadowTag GCP Infrastructure — Pulumi TypeScript alternative to Terragrunt",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "preview": "pulumi preview",
+    "up": "pulumi up",
+    "destroy": "pulumi destroy"
+  },
+  "dependencies": {
+    "@pulumi/gcp": "^8.0.0",
+    "@pulumi/pulumi": "^3.150.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}

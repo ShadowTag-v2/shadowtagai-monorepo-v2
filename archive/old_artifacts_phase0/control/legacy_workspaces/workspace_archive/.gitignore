@@ -1,0 +1,56 @@
+# Secrets - never commit
+*.env
+.env.*
+**/credentials.json
+**/service-account*.json
+**/*secret*
+**/*token*
+**/*.pem
+**/*.key
+
+# Large files - use LFS or exclude
+*.zip
+*.tar.gz
+*.tar
+*.gz
+*.7z
+*.rar
+*.dmg
+*.iso
+*.bin
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Binary/media files over 50MB
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+*.flac
+
+# Cache/temp
+*.pyc
+__pycache__/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*~
+
+# Node
+node_modules/
+
+# Python
+venv/
+.venv/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*

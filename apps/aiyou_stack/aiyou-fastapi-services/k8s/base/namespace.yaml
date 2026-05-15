@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-core
+  labels:
+    name: pnkln-core
+    environment: validation
+    component: core-stack
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-monitoring
+  labels:
+    name: pnkln-monitoring
+    environment: validation
+    component: observability
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-workload
+  labels:
+    name: pnkln-workload
+    environment: validation
+    component: testing

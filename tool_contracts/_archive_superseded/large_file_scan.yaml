@@ -1,0 +1,9 @@
+# tool_contracts/large_file_scan.yaml
+tool_id: "large_file_scan"
+description: "Governs the large_file_scan operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/large_file_scan.jsonl"
+reuse_queries: []

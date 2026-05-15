@@ -1,0 +1,9 @@
+# tool_contracts/memory.promote.yaml
+tool_id: "memory.promote"
+description: "Governs the memory.promote operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/memory_promote.jsonl"
+reuse_queries: []

@@ -1,0 +1,70 @@
+.root :global .token.cdata,
+.root :global .token.comment,
+.root :global .token.doctype,
+.root :global .token.prolog {
+  color: rgb(21 128 61);
+}
+
+.root :global .token.punctuation {
+  color: rgb(185 28 28);
+}
+
+.root :global .namespace {
+  opacity: 0.7;
+}
+
+.root :global .token.boolean,
+.root :global .token.constant,
+.root :global .token.deleted,
+.root :global .token.number,
+.root :global .token.property,
+.root :global .token.symbol,
+.root :global .token.tag {
+  color: rgb(29 78 216);
+}
+
+.root :global .token.attr-name,
+.root :global .token.builtin,
+.root :global .token.char,
+.root :global .token.inserted,
+.root :global .token.selector,
+.root :global .token.string {
+  color: rgb(180 83 9);
+}
+
+.root :global .language-css .token.string,
+.root :global .style .token.string,
+.root :global .token.entity,
+.root :global .token.operator,
+.root :global .token.url {
+  color: rgb(126 34 206);
+}
+
+.root :global .token.atrule,
+.root :global .token.attr-value,
+.root :global .token.keyword {
+  color: rgb(14 116 144);
+}
+
+.root :global .token.function {
+  color: rgb(77 124 15);
+}
+
+.root :global .token.important,
+.root :global .token.regex,
+.root :global .token.variable {
+  color: rgb(194 65 12);
+}
+
+.root :global .token.bold,
+.root :global .token.important {
+  font-weight: 700;
+}
+
+.root :global .token.italic {
+  font-style: italic;
+}
+
+.root :global .token.entity {
+  cursor: help;
+}

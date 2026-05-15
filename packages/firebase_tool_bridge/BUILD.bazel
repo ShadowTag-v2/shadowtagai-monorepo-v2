@@ -1,0 +1,18 @@
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+
+py_library(
+    name = "firebase_tool_bridge",
+    srcs = [
+        "__init__.py",
+        "bridge.py",
+        "evidence.py",
+        "registry.py",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_test(
+    name = "bridge_test",
+    srcs = ["bridge_test.py"],
+    deps = [":firebase_tool_bridge"],
+)

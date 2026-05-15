@@ -1,0 +1,78 @@
+# COR.JUDGE.6 CONSTITUTION
+# SOVEREIGN GOVERNANCE POLICY (DoD CSRMC 2026 Compatible)
+
+ver: "3.0.OMEGA"
+mode: "STRICT"
+
+# STRATEGIC TENETS (The 10 Commandments)
+tenets:
+  - "AUTOMATION: Machines manage risk scaling; humans manage intent."
+  - "CONTINUOUS_MONITORING: Accreditation is a live stream, not a certificate."
+  - "DEVSECOPS: Security is Shifted Left."
+  - "CYBER_SURVIVABILITY: Function in contested environments."
+  - "RECIPROCITY: Inherit once, use many."
+  - "THREAT_INFORMED: Red-team validation over paper audits."
+
+# CRITICAL CONTROLS (High-Signal)
+critical_controls:
+  mfa_required: true
+  pam_enforcement: strict
+  edr_active: true
+  sbom_verification: true
+
+# RISK TIERS (Wet Fleece / Dry Ground)
+risk_matrix:
+
+  # RED (BLOCKED - Wet Fleece)
+  # Immediate rejection. Requires Supervisor override.
+  red_flags:
+    - pattern: "curl .* \\| sh"
+      reason: "Unverified Binary Execution (Supply Chain Risk)"
+    - pattern: "(?i)social scoring"
+      reason: "EU AI Act Violation (Article 5)"
+    - pattern: "(?i)biometric categorization"
+      reason: "EU AI Act Violation (Article 5)"
+    - pattern: "(?i)private_key|BEGIN RSA"
+      reason: "Potential Secret Exfiltration"
+    - pattern: "sudo rm -rf"
+      reason: "Destructive Command"
+    - pattern: "(?i)medical advice|prescription|diagnosis|treatment"
+      reason: "Safety Violation: Medical Advice"
+    - pattern: "(?i)hate speech|discrimination|slur"
+      reason: "Safety Violation: Hate Speech"
+    - pattern: "(?i)sexually explicit|nsfw|erotica"
+      reason: "Safety Violation: Adult Content"
+    - pattern: "\\b\\d{3}-\\d{2}-\\d{4}\\b"
+      reason: "PII Violation: SSN Pattern"
+
+  # AMBER (MITIGATE - Review)
+  # Paused for 3-Iteration Refinement Loop.
+  amber_flags:
+    - pattern: "(?i)scrape|crawl"
+      reason: "Data Ingestion Risk (Respect robots.txt?)"
+    - pattern: "(?i)deploy|release"
+      reason: "Change Management (Requires Approval)"
+    - pattern: "gcloud .* delete"
+      reason: "Destructive Cloud Action"
+
+  # GREEN (DRY GROUND - Approved)
+  # Fast-track execution.
+  green_flags:
+    - pattern: "(?i)read|list|get|status"
+      reason: "Passive / Safe Operation"
+    - pattern: "(?i)test|verify|check"
+      reason: "Verification Activity"
+
+# BUSINESS JUDGMENT LAYER
+# "Estop users from making poor financial decisions"
+business_rules:
+  max_cost_increase_percent: 20
+  forbidden_cloud_regions: ["europe-west1"] # GDPR Lock
+  vendor_lock_warnings: true
+
+# SELF-PROMPTING LOOP CONFIG
+loop_protocol:
+  max_iterations: 3
+  model_r1: "gemini-3.1-flash-lite-preview" # Divergent
+  model_r2: "gemini-3.1-flash-lite-preview" # Convergent
+  model_r3: "gemini-3.1-flash-lite-preview"   # Final Verdict

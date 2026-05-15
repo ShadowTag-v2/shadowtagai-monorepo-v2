@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium cinematic scroll experience powered by Nano Banana 2 and Veo 3.1. 100% Google-native creative pipeline.">
+  <title>Cinematic Scroll — Google-Native Creative</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="css/design-tokens.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#a855f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="main-nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" id="nav-logo">
+        <span class="nav__logo-icon">◆</span>
+        <span class="nav__logo-text">CinemaScroll</span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="#story" class="nav__link" style="color: hsl(220, 10%, 75%);">Story</a></li>
+        <li><a href="#features" class="nav__link" style="color: hsl(220, 10%, 75%);">Features</a></li>
+        <li><a href="#reviews" class="nav__link" style="color: hsl(220, 10%, 75%);">Reviews</a></li>
+      </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
+        <span class="theme-toggle__knob" id="theme-knob">🌙</span>
+      </button>
+      <a href="#contact" class="nav__cta" id="nav-cta">Get Started</a>
+      <button class="nav__hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__progress" id="scroll-progress"></div>
+  </nav>
+
+  <!-- ===== HERO (Cinematic Scroll) ===== -->
+  <main>
+  <section class="hero" id="hero-section">
+    <canvas class="hero__canvas" id="hero-canvas"></canvas>
+    <div class="hero__loading" id="hero-loading">
+      <div style="text-align: center;">
+        <div class="hero__loading-spinner"></div>
+        <p class="hero__loading-text">Loading cinematic frames…</p>
+      </div>
+    </div>
+    <div class="hero__overlay">
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__title-line">Cinematic</span>
+        <span class="hero__title-line hero__title-line--accent">Scroll</span>
+      </h1>
+      <p class="hero__subtitle" id="hero-subtitle" style="color: hsl(220, 10%, 72%);">
+        100% Google-native pipeline. Nano Banana 2 → Veo 3.1 → Frame Sequence.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== STORY ===== -->
+  <section class="story" id="story">
+    <div class="story__container">
+      <h2 class="section-title" id="story-title">The Pipeline</h2>
+      <div class="story__scroll" id="story-scroll">
+        <article class="story__card" id="story-card-1">
+          <div class="story__card-number">01</div>
+          <h3 class="story__card-title">Generate Image</h3>
+          <p class="story__card-text">
+            Nano Banana 2 in Google Flow. 16:9 ratio, 4 variations.
+            Camera angle + lighting + environment + camera model.
+            Watermark-free download.
+          </p>
+        </article>
+        <article class="story__card" id="story-card-2">
+          <div class="story__card-number">02</div>
+          <h3 class="story__card-title">Create Video</h3>
+          <p class="story__card-text">
+            Veo 3.1 via Vertex AI. Upload as start frame.
+            8 seconds, 4K, native audio generation.
+            Smooth motion, no sharp cuts.
+          </p>
+        </article>
+        <article class="story__card" id="story-card-3">
+          <div class="story__card-number">03</div>
+          <h3 class="story__card-title">Extract Frames</h3>
+          <p class="story__card-text">
+            ffmpeg extracts each frame as PNG.
+            30fps × 8s = 240 frames.
+            Canvas rendering on scroll position.
+          </p>
+        </article>
+        <article class="story__card" id="story-card-4">
+          <div class="story__card-number">04</div>
+          <h3 class="story__card-title">Scroll Magic</h3>
+          <p class="story__card-text">
+            Frames change on scroll, NOT video playback.
+            requestAnimationFrame + IntersectionObserver.
+            Silky smooth at 60fps.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="features__container">
+      <h2 class="section-title" id="features-title">Capabilities</h2>
+      <div class="features__grid" id="features-grid">
+        <div class="feature-card" id="feature-1">
+          <div class="feature-card__icon">🎨</div>
+          <h3 class="feature-card__title">Nano Banana 2</h3>
+          <p class="feature-card__text">4K image generation with Google Flow. No watermarks, 4 outputs per prompt.</p>
+        </div>
+        <div class="feature-card" id="feature-2">
+          <div class="feature-card__icon">🎬</div>
+          <h3 class="feature-card__title">Veo 3.1</h3>
+          <p class="feature-card__text">8s 4K video with native audio. Image-to-video, text-to-video, 3 speed tiers.</p>
+        </div>
+        <div class="feature-card" id="feature-3">
+          <div class="feature-card__icon">🔄</div>
+          <h3 class="feature-card__title">Google Whisk</h3>
+          <p class="feature-card__text">Remix engine: subject + scene + style. Feed outputs as Veo start frames.</p>
+        </div>
+        <div class="feature-card" id="feature-4">
+          <div class="feature-card__icon">🧠</div>
+          <h3 class="feature-card__title">NotebookLM</h3>
+          <p class="feature-card__text">35 MCP tools. Programmatic notebooks, podcasts, video explainers, research.</p>
+        </div>
+        <div class="feature-card" id="feature-5">
+          <div class="feature-card__icon">🌐</div>
+          <h3 class="feature-card__title">Google Mariner</h3>
+          <p class="feature-card__text">Browser AI agent for automated research within the 25K free credit budget.</p>
+        </div>
+        <div class="feature-card" id="feature-6">
+          <div class="feature-card__icon">⚡</div>
+          <h3 class="feature-card__title">Antigravity</h3>
+          <p class="feature-card__text">Planning Mode → agent.md → implementation plan → cinematic website in minutes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REVIEWS ===== -->
+  <section class="reviews" id="reviews">
+    <h2 class="section-title" id="reviews-title">What People Say</h2>
+    <div class="reviews__marquee" id="reviews-marquee">
+      <div class="reviews__track">
+        <blockquote class="review-card" id="review-1">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"The scroll effect is insane. No video playback jank — just pure frame-by-frame cinema."</p>
+          <cite class="review-card__author">— Remik, Agent Factory</cite>
+        </blockquote>
+        <blockquote class="review-card" id="review-2">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"Nano Banana Pro + Veo 3.1 is the best image-to-video pipeline I've used. All Google-native."</p>
+          <cite class="review-card__author">— Developer Relations</cite>
+        </blockquote>
+        <blockquote class="review-card" id="review-3">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"25K free credits across Flow, Whisk, Mariner, NotebookLM. Unmatched creative suite."</p>
+          <cite class="review-card__author">— Labs Explorer</cite>
+        </blockquote>
+        <!-- Duplicate for infinite marquee -->
+        <blockquote class="review-card" aria-hidden="true">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"The scroll effect is insane. No video playback jank — just pure frame-by-frame cinema."</p>
+          <cite class="review-card__author">— Remik, Agent Factory</cite>
+        </blockquote>
+        <blockquote class="review-card" aria-hidden="true">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"Nano Banana Pro + Veo 3.1 is the best image-to-video pipeline I've used. All Google-native."</p>
+          <cite class="review-card__author">— Developer Relations</cite>
+        </blockquote>
+        <blockquote class="review-card" aria-hidden="true">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"25K free credits across Flow, Whisk, Mariner, NotebookLM. Unmatched creative suite."</p>
+          <cite class="review-card__author">— Labs Explorer</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer">
+    <div class="footer__wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,30 1440,60 L1440,120 L0,120 Z" fill="var(--color-bg-dark)"/>
+      </svg>
+    </div>
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">◆ CinemaScroll</span>
+        <p class="footer__tagline">Google-native cinematic pipeline</p>
+      </div>
+      <div class="footer__links">
+        <a href="https://labs.google/fx/tools/flow" class="footer__link" target="_blank" rel="noopener">Google Flow</a>
+        <a href="https://labs.google/fx/tools/whisk" class="footer__link" target="_blank" rel="noopener">Whisk</a>
+        <a href="https://notebooklm.google.com" class="footer__link" target="_blank" rel="noopener">NotebookLM</a>
+      </div>
+      <p class="footer__copy">&copy; 2026 ShadowTagAI. Built with Antigravity.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { ScrollEngine } from './js/scroll-engine.js';
+
+    // ===== SCROLL ENGINE =====
+    const canvas = document.getElementById('hero-canvas');
+    const heroSection = document.getElementById('hero-section');
+
+    if (canvas && heroSection) {
+      const engine = new ScrollEngine({
+        canvas,
+        container: heroSection,
+        frameCount: 240, // 30fps × 8s Veo 3.1 video
+        framePath: 'frames/frame_',
+        frameExtension: '.png',
+        preloadCount: 10,
+        bufferSize: 5,
+      });
+
+      engine.init().catch(err => {
+        console.warn('ScrollEngine: No frames found (generate with Veo 3.1 first)', err.message);
+        // Fallback: show gradient background
+        heroSection.style.background = 'linear-gradient(135deg, hsl(220, 20%, 8%), hsl(280, 50%, 15%))';
+      });
+    }
+
+    // ===== NAV + HERO OVERLAY SCROLL BEHAVIOR =====
+    const nav = document.getElementById('main-nav');
+    const progressBar = document.getElementById('scroll-progress');
+    const heroOverlay = document.querySelector('.hero__overlay');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      // Progress bar
+      if (progressBar) {
+        progressBar.style.width = `${(scrollY / docHeight) * 100}%`;
+      }
+
+      // Hide/show nav
+      if (nav) {
+        if (scrollY > lastScroll && scrollY > 100) {
+          nav.classList.add('nav--hidden');
+        } else {
+          nav.classList.remove('nav--hidden');
+        }
+      }
+
+      // Fade out hero overlay as user scrolls
+      if (heroOverlay) {
+        const fadeEnd = window.innerHeight * 0.8;
+        const opacity = Math.max(0, 1 - (scrollY / fadeEnd));
+        heroOverlay.style.opacity = opacity;
+      }
+
+      lastScroll = scrollY;
+    }, { passive: true });
+
+    // ===== INTERSECTION OBSERVER (Fade-in) =====
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px',
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.story__card, .feature-card, .section-title').forEach(el => {
+      el.classList.add('fade-in');
+      observer.observe(el);
+    });
+
+    // ===== MARQUEE PAUSE ON HOVER =====
+    const marqueeTrack = document.querySelector('.reviews__track');
+    if (marqueeTrack) {
+      const marquee = marqueeTrack.closest('.reviews__marquee');
+      if (marquee) {
+        marquee.addEventListener('mouseenter', () => {
+          marqueeTrack.style.animationPlayState = 'paused';
+        });
+        marquee.addEventListener('mouseleave', () => {
+          marqueeTrack.style.animationPlayState = 'running';
+        });
+      }
+    }
+
+    // ===== THEME TOGGLE (Item 9) =====
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeKnob = document.getElementById('theme-knob');
+    if (themeToggle) {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      themeKnob.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+      themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeKnob.textContent = next === 'dark' ? '🌙' : '☀️';
+      });
+    }
+
+    // ===== PREFERS-REDUCED-MOTION STATIC FALLBACK (Item 18) =====
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReduced.matches) {
+      const heroLoading = document.getElementById('hero-loading');
+      if (heroLoading) heroLoading.classList.add('loaded');
+      // Static hero gradient background instead of frame animation
+      if (heroSection) {
+        heroSection.style.height = '100vh';
+        heroSection.style.background = 'linear-gradient(135deg, hsl(220, 20%, 8%), hsl(280, 50%, 15%), hsl(200, 80%, 15%))';
+      }
+    }
+
+    // ===== SCROLL DEPTH TRACKING (Item 20) =====
+    const scrollDepthMarkers = [25, 50, 75, 100];
+    const firedDepths = new Set();
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percentScrolled = Math.round((scrollY / docHeight) * 100);
+
+      scrollDepthMarkers.forEach(depth => {
+        if (percentScrolled >= depth && !firedDepths.has(depth)) {
+          firedDepths.add(depth);
+          // Google Analytics gtag event
+          if (typeof gtag === 'function') {
+            gtag('event', 'scroll_depth', {
+              event_category: 'engagement',
+              event_label: `${depth}%`,
+              value: depth,
+              non_interaction: true,
+            });
+          }
+          console.log(`[Analytics] Scroll depth: ${depth}%`);
+        }
+      });
+    }, { passive: true });
+
+    // Track hero frame progress
+    if (canvas && heroSection) {
+      let lastTrackedFrame = -1;
+      window.addEventListener('scroll', () => {
+        const rect = heroSection.getBoundingClientRect();
+        const scrollable = rect.height - window.innerHeight;
+        if (scrollable <= 0) return;
+        const progress = Math.max(0, Math.min(1, (window.scrollY - rect.top - window.scrollY) / scrollable));
+        const framePercent = Math.round(progress * 100);
+        if (framePercent % 25 === 0 && framePercent !== lastTrackedFrame) {
+          lastTrackedFrame = framePercent;
+          if (typeof gtag === 'function') {
+            gtag('event', 'hero_frame_progress', {
+              event_category: 'cinematic_scroll',
+              event_label: `${framePercent}%`,
+              value: framePercent,
+            });
+          }
+        }
+      }, { passive: true });
+    }
+
+    // ===== LOADING PLACEHOLDER DISMISS (Item 16) =====
+    const heroLoading2 = document.getElementById('hero-loading');
+    if (heroLoading2 && canvas) {
+      // Dismiss after engine loads first frame or after timeout
+      const dismissLoading = () => heroLoading2.classList.add('loaded');
+      canvas.addEventListener('load', dismissLoading);
+      setTimeout(dismissLoading, 3000); // Max 3s wait
+    }
+  </script>
+  <script>
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[SW] Registered:', reg.scope))
+          .catch(err => console.warn('[SW] Registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>

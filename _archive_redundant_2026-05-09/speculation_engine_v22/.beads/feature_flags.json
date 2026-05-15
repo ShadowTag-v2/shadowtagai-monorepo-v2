@@ -1,0 +1,12 @@
+{
+  "async_consumer": false,
+  "agent_mailbox": false,
+  "cow_overlay": true,
+  "proactive_suggestions": true,
+  "quality_benchmark": false,
+  "semantic_routing": false,
+  "speculate_research": true,
+  "speculate_synthesis": true,
+  "speculation_telemetry": true,
+  "stitch_visualization": false
+}

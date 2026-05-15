@@ -1,0 +1,126 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: legal-deadlines-reminder-job
+  namespace: legal-deadlines
+  labels:
+    app: legal-deadlines
+    component: reminder-worker
+spec:
+  schedule: "0 8 * * *"  # Daily at 8 AM UTC
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: legal-deadlines
+        component: reminder-worker
+    spec:
+      template:
+        metadata:
+          labels:
+            app: legal-deadlines
+            component: reminder-worker
+        spec:
+          serviceAccountName: legal-deadlines-sa
+          restartPolicy: OnFailure
+          containers:
+          - name: reminder-worker
+            image: gcr.io/PROJECT_ID/legal-deadlines-worker:latest
+            imagePullPolicy: Always
+            command: ["python", "-m", "src.workers.reminder_worker"]
+            env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: database-url
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: redis-url
+            - name: SENDGRID_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: sendgrid-api-key
+            - name: TWILIO_ACCOUNT_SID
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: twilio-account-sid
+            - name: TWILIO_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: twilio-auth-token
+            - name: SLACK_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: slack-webhook-url
+            - name: LOG_LEVEL
+              value: "INFO"
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: legal-deadlines-status-update-job
+  namespace: legal-deadlines
+  labels:
+    app: legal-deadlines
+    component: status-worker
+spec:
+  schedule: "*/30 * * * *"  # Every 30 minutes
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: legal-deadlines
+        component: status-worker
+    spec:
+      template:
+        metadata:
+          labels:
+            app: legal-deadlines
+            component: status-worker
+        spec:
+          serviceAccountName: legal-deadlines-sa
+          restartPolicy: OnFailure
+          containers:
+          - name: status-worker
+            image: gcr.io/PROJECT_ID/legal-deadlines-worker:latest
+            imagePullPolicy: Always
+            command: ["python", "-m", "src.workers.status_worker"]
+            env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: database-url
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: legal-deadlines-secrets
+                  key: redis-url
+            - name: LOG_LEVEL
+              value: "INFO"
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "100m"
+              limits:
+                memory: "512Mi"
+                cpu: "250m"

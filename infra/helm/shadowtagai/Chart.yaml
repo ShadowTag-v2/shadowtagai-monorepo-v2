@@ -1,0 +1,10 @@
+apiVersion: v2
+name: shadowtagai
+description: ShadowTagAI Helm chart for Kubernetes deployment
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: ShadowTagAI
+    email: founder@shadowtagai.com
+dependencies: []

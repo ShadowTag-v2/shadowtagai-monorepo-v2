@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/cor_memory.py
+# hypothesis_version: 6.151.5
+
+[0.02, 0.5, 0.8, 100, 500, 'avg_latency_ms', 'compression_ratio', 'episodic_count', 'execution_count', 'importance', 'latency_ms', 'long_term_count', 'period_end', 'period_start', 'request_id', 'result_summary', 'short_term_count', 'stage_frequency', 'stage_latencies', 'timestamp', 'total_compressions', 'total_latency_ms', 'variables']

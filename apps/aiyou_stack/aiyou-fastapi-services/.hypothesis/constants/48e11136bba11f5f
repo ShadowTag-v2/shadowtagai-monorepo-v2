@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/gov_config.py
+# hypothesis_version: 6.151.5
+
+[0.01, 0.1, 0.3, 0.6, 0.7, 1.0, 180, 300, 500, 1500, 2000, 3600, 5000, 5432, 6379, 1000000, '.env', 'GCP project ID', 'PostgreSQL password', 'PostgreSQL port', 'PostgreSQL username', 'Redis host', 'Redis port', 'Tokens per minute', 'Vertex AI location', 'cloud-run', 'confidence_threshold', 'development', 'escalation_threshold', 'gke-autopilot', 'gke-standard', 'governance', 'ignore', 'localhost', 'pgvector', 'production', 'shadowtag-omega-v4', 'staging', 'us-central1', 'utf-8', 'vertex-ai', 'vertex-workbench']

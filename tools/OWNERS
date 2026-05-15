@@ -1,0 +1,5 @@
+# OWNERS — tools/
+# Build tooling, lint wrappers, and developer utilities.
+# Platform-owned — changes affect CI/CD pipelines.
+
+ehanc69@gmail.com

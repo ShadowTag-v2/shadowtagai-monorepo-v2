@@ -1,0 +1,12 @@
+{
+  "name": "audit_codebase_against_design_md",
+  "description": "Runs a strict audit comparing frontend code (CSS/Tailwind/JSX) against the design.md specification to detect style hallucinations or drift.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "target_directory": { "type": "string", "default": "./src/components" }
+    },
+    "required": ["target_directory"]
+  },
+  "system_instruction": "Execute 'npx @google-labs/design-cli audit <target_directory>' via bash. Treat violations as blockers and fix the code to match the spec before proceeding."
+}

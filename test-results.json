@@ -1,0 +1,442 @@
+{
+  "config": {
+    "configFile": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/playwright.config.ts",
+    "rootDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "checkout.spec.ts",
+      "file": "checkout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "KovelAI Pricing & Checkout",
+          "file": "checkout.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "pricing page loads with 3 tiers",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6086,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46",
+                        "location": {
+                          "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                          "column": 46,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/pricing.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.pricing-card'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.tier-name'\u001b[39m))\u001b[33m.\u001b[39mtoContainText([\u001b[32m'Trial'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Professional'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Enterprise'\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m\n \u001b[90m 14 |\u001b[39m   test(\u001b[32m'monthly/annual toggle updates pricing'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                            "column": 46,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n\n   9 |     await page.goto(`${BASE_URL}/pricing.html`);\n  10 |     await expect(page.locator('.pricing-card')).toHaveCount(3);\n> 11 |     await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);\n     |                                              ^\n  12 |   });\n  13 |\n  14 |   test('monthly/annual toggle updates pricing', async ({ page }) => {\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-06T02:30:08.976Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                        "column": 46,
+                        "line": 11
+                      }
+                    },
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6125,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46",
+                        "location": {
+                          "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                          "column": 46,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/pricing.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.pricing-card'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.tier-name'\u001b[39m))\u001b[33m.\u001b[39mtoContainText([\u001b[32m'Trial'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Professional'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Enterprise'\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m\n \u001b[90m 14 |\u001b[39m   test(\u001b[32m'monthly/annual toggle updates pricing'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                            "column": 46,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n\n   9 |     await page.goto(`${BASE_URL}/pricing.html`);\n  10 |     await expect(page.locator('.pricing-card')).toHaveCount(3);\n> 11 |     await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);\n     |                                              ^\n  12 |   });\n  13 |\n  14 |   test('monthly/annual toggle updates pricing', async ({ page }) => {\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-05-06T02:30:15.948Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                        "column": 46,
+                        "line": 11
+                      }
+                    },
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7773,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46",
+                        "location": {
+                          "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                          "column": 46,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/pricing.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.pricing-card'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.tier-name'\u001b[39m))\u001b[33m.\u001b[39mtoContainText([\u001b[32m'Trial'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Professional'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Enterprise'\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m\n \u001b[90m 14 |\u001b[39m   test(\u001b[32m'monthly/annual toggle updates pricing'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                            "column": 46,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n\n   9 |     await page.goto(`${BASE_URL}/pricing.html`);\n  10 |     await expect(page.locator('.pricing-card')).toHaveCount(3);\n> 11 |     await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);\n     |                                              ^\n  12 |   });\n  13 |\n  14 |   test('monthly/annual toggle updates pricing', async ({ page }) => {\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 2,
+                      "startTime": "2026-05-06T02:30:23.207Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile-retry2/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-mobile-retry2/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                        "column": 46,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "25ab1bfc84c57e3e3a45-88c9fb3a60fd21c428e5",
+              "file": "checkout.spec.ts",
+              "line": 8,
+              "column": 7
+            },
+            {
+              "title": "pricing page loads with 3 tiers",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6070,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46",
+                        "location": {
+                          "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                          "column": 46,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/pricing.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.pricing-card'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.tier-name'\u001b[39m))\u001b[33m.\u001b[39mtoContainText([\u001b[32m'Trial'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Professional'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Enterprise'\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m\n \u001b[90m 14 |\u001b[39m   test(\u001b[32m'monthly/annual toggle updates pricing'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                            "column": 46,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n\n   9 |     await page.goto(`${BASE_URL}/pricing.html`);\n  10 |     await expect(page.locator('.pricing-card')).toHaveCount(3);\n> 11 |     await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);\n     |                                              ^\n  12 |   });\n  13 |\n  14 |   test('monthly/annual toggle updates pricing', async ({ page }) => {\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-05-06T02:30:31.967Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                        "column": 46,
+                        "line": 11
+                      }
+                    },
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5845,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46",
+                        "location": {
+                          "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                          "column": 46,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/pricing.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.pricing-card'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.tier-name'\u001b[39m))\u001b[33m.\u001b[39mtoContainText([\u001b[32m'Trial'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Professional'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Enterprise'\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m\n \u001b[90m 14 |\u001b[39m   test(\u001b[32m'monthly/annual toggle updates pricing'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                            "column": 46,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n\n   9 |     await page.goto(`${BASE_URL}/pricing.html`);\n  10 |     await expect(page.locator('.pricing-card')).toHaveCount(3);\n> 11 |     await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);\n     |                                              ^\n  12 |   });\n  13 |\n  14 |   test('monthly/annual toggle updates pricing', async ({ page }) => {\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-05-06T02:30:38.944Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop-retry1/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop-retry1/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop-retry1/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                        "column": 46,
+                        "line": 11
+                      }
+                    },
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5586,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46",
+                        "location": {
+                          "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                          "column": 46,
+                          "line": 11
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/pricing.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.pricing-card'\u001b[39m))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m3\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'.tier-name'\u001b[39m))\u001b[33m.\u001b[39mtoContainText([\u001b[32m'Trial'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Professional'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Enterprise'\u001b[39m])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 13 |\u001b[39m\n \u001b[90m 14 |\u001b[39m   test(\u001b[32m'monthly/annual toggle updates pricing'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                            "column": 46,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('.tier-name')\nTimeout: 5000ms\n\u001b[32m- Expected  - 5\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"Trial\",\u001b[39m\n\u001b[32m-   \"Professional\",\u001b[39m\n\u001b[32m-   \"Enterprise\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.tier-name')\u001b[22m\n\u001b[2m    9 × locator resolved to 0 elements\u001b[22m\n\n\n   9 |     await page.goto(`${BASE_URL}/pricing.html`);\n  10 |     await expect(page.locator('.pricing-card')).toHaveCount(3);\n> 11 |     await expect(page.locator('.tier-name')).toContainText(['Trial', 'Professional', 'Enterprise']);\n     |                                              ^\n  12 |   });\n  13 |\n  14 |   test('monthly/annual toggle updates pricing', async ({ page }) => {\n    at /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts:11:46"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 2,
+                      "startTime": "2026-05-06T02:30:46.071Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop-retry2/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/test-results/checkout-KovelAI-Pricing-C-514a8-ing-page-loads-with-3-tiers-desktop-retry2/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tests/e2e/checkout.spec.ts",
+                        "column": 46,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "25ab1bfc84c57e3e3a45-114ff1005c823fa57aad",
+              "file": "checkout.spec.ts",
+              "line": 8,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-05-06T02:30:08.487Z",
+    "duration": 43368.339,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

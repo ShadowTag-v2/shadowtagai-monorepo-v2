@@ -1,0 +1,27 @@
+# Invoked via: /lint:push
+# Commits and pushes lint fixes via the secure autolint daemon.
+description = "Commit and push lint fixes via the secure GCA autolint daemon."
+
+prompt = """
+Run the gca_autolint_daemon.py script with the --yes flag for headless execution:
+
+```
+python3 scripts/gca_autolint_daemon.py --yes --json
+```
+
+This will:
+1. Authenticate via GitHub App JWT (short-lived token)
+2. Pull latest from origin/main
+3. Run the full Omni-Linter suite (ruff + vulture + biome)
+4. Auto-approve any AST changes (headless mode)
+5. Create a branch and push securely via GIT_ASKPASS
+6. Write structured results to .lint-results/latest.json
+
+After it completes, report:
+- Whether the push succeeded or failed
+- The branch name created
+- The contents of .lint-results/latest.json
+- Any errors encountered
+
+If the push failed, suggest the corrective action.
+"""

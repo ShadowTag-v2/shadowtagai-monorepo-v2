@@ -1,0 +1,51 @@
+{
+  "hooks": {
+    "AfterTool": [
+      {
+        "matcher": ".*list_log_entries.*|.*list_timeseries.*|.*query_range.*",
+        "hooks": [
+          {
+            "name": "compress-mcp-output",
+            "type": "command",
+            "command": "python3 $GEMINI_PROJECT_DIR/.gemini/hooks/compress-mcp-output.py",
+            "timeout": 5000,
+            "description": "Compresses verbose Logging/Monitoring MCP JSON to flat CSV (~70% token savings)"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "memory-gate-check",
+            "type": "command",
+            "command": "python3 $GEMINI_PROJECT_DIR/.gemini/hooks/memory-gate-check.py",
+            "timeout": 3000,
+            "description": "Injects memory lock state at session start"
+          },
+          {
+            "name": "beads-hydrate",
+            "type": "command",
+            "command": "python3 $GEMINI_PROJECT_DIR/.gemini/hooks/beads-hydrate.py",
+            "timeout": 3000,
+            "description": "Auto-hydrates last 10 .beads/issues.jsonl entries into session context"
+          }
+        ]
+      }
+    ]
+  },
+  "hooksConfig": {
+    "enabled": true
+  },
+  "contextFileName": "AGENTS.md",
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
+      "args": [
+        "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@anthropic-ai/claude-code/vendor/@anthropic-ai/mcp-server-sequential-thinking/dist/index.js"
+      ]
+    }
+  }
+}

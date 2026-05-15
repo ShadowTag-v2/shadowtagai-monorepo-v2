@@ -1,0 +1,6 @@
+{
+  "target_url": "http://localhost:3000",
+  "audit_categories": ["performance", "accessibility", "best-practices", "seo"],
+  "status": "QUEUED_FOR_MCP",
+  "notes": "Awaiting shadowtag-web local server ignition."
+}

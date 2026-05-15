@@ -1,0 +1,99 @@
+name: Bazel CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  BUILD_BUDDY_API_KEY: ${{ secrets.BUILD_BUDDY_API_KEY }}
+
+jobs:
+  bazel-build:
+    name: Build all targets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
+
+      - name: Build all targets
+        run: |
+          bazel build \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //...
+
+  bazel-test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
+
+      - name: Run all tests
+        run: |
+          bazel test \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //...
+
+  format-check:
+    name: Format check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
+
+      - name: Run format check
+        run: |
+          bazel run \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //:format.check
+
+  lint-check:
+    name: Lint check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
+
+      - name: Run lint check
+        run: |
+          bazel lint \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //...

@@ -1,0 +1,24 @@
+# ZAP flagged 404 on /robots.txt — this file prevents that
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /health
+Disallow: /health/providers
+
+# CounselConduit is a privileged legal AI API — no public crawling
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+Sitemap: https://counselconduit-767252945109.us-central1.run.app/sitemap.xml

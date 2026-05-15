@@ -1,0 +1,4 @@
+# VCR Tape Store — Deterministic API Replay
+# See: external_repos/claude_code_services/vcr.ts
+# When stochastic API failures occur, fixtures are stored here
+# for deterministic replay instead of burning tokens on hallucinated fixes.

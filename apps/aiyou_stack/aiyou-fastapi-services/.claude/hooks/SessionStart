@@ -1,0 +1,18 @@
+Load and internalize the `using-superpowers` skill from `.claude/skills/meta/using-superpowers.md`.
+
+This skill introduces the Superpowers Skills System and makes you aware of all available skills.
+
+You now have access to a comprehensive skills library:
+- Testing skills (TDD, async testing, anti-patterns)
+- Debugging skills (systematic debugging, root cause analysis, verification)
+- Collaboration skills (brainstorming, planning, code review, git workflows)
+- Meta skills (creating skills, sharing skills, testing skills)
+
+Automatically activate relevant skills based on the task at hand:
+- Implementing features → test-driven-development
+- Debugging issues → systematic-debugging
+- About to claim completion → verification-before-completion
+- Planning complex work → writing-plans
+- Executing a plan → executing-plans
+
+Skills are mandatory workflows, not optional guidelines. When a skill exists for a task, use it.

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/routers/auth.py
+# hypothesis_version: 6.151.5
+
+[400, '/api/v1/auth', '/login', '/register', 'Authentication', 'access_token', 'bearer', 'hashed_password', 'sub', 'token_type']

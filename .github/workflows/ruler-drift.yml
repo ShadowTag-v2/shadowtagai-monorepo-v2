@@ -1,0 +1,129 @@
+name: Ruler Drift Detection
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.ruler/**'
+      - 'monorepo_manifest.yaml'
+      - 'AGENTS.md'
+      - '.agents/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.ruler/**'
+      - 'monorepo_manifest.yaml'
+      - 'AGENTS.md'
+      - '.agents/**'
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly Monday 6am UTC
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  ruler-drift:
+    name: Check Ruler Configuration Drift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Validate ruler.toml
+        run: |
+          python3 -c "
+          import tomllib, sys, json
+          with open('.ruler/ruler.toml', 'rb') as f:
+              config = tomllib.load(f)
+          print('✅ ruler.toml is valid TOML')
+          print(json.dumps(config, indent=2, default=str))
+          "
+
+      - name: Check truth surface alignment
+        run: |
+          echo "=== Truth Surface Alignment Check ==="
+          ERRORS=0
+
+          # Check monorepo_manifest.yaml exists and is valid YAML
+          if [ ! -f monorepo_manifest.yaml ]; then
+            echo "❌ monorepo_manifest.yaml missing"
+            ERRORS=$((ERRORS + 1))
+          else
+            python3 -c "import yaml; yaml.safe_load(open('monorepo_manifest.yaml'))" 2>/dev/null \
+              && echo "✅ monorepo_manifest.yaml valid" \
+              || { echo "❌ monorepo_manifest.yaml invalid YAML"; ERRORS=$((ERRORS + 1)); }
+          fi
+
+          # Check AGENTS.md canonical references
+          for ref in "monorepo_manifest.yaml" "antigravity-mcp-config.json" "BUSINESS_CONTEXT_LOCKED.md"; do
+            if ! grep -q "$ref" .ruler/AGENTS.md 2>/dev/null; then
+              echo "⚠️  .ruler/AGENTS.md missing reference to $ref"
+            fi
+          done
+
+          # Check tool contracts are valid YAML
+          for contract in tool_contracts/*.yaml; do
+            python3 -c "import yaml; yaml.safe_load(open('$contract'))" 2>/dev/null \
+              && echo "✅ $contract valid" \
+              || { echo "❌ $contract invalid YAML"; ERRORS=$((ERRORS + 1)); }
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::$ERRORS drift issues found"
+            exit 1
+          fi
+          echo "✅ All truth surfaces aligned"
+
+      - name: Validate beads journal
+        run: |
+          if [ -f .beads/issues.jsonl ]; then
+            python3 -c "
+          import json, sys
+          errors = 0
+          with open('.beads/issues.jsonl') as f:
+              for i, line in enumerate(f, 1):
+                  line = line.strip()
+                  if not line: continue
+                  try: json.loads(line)
+                  except json.JSONDecodeError as e:
+                      print(f'❌ Line {i}: {e}')
+                      errors += 1
+          if errors:
+              print(f'::error::{errors} invalid lines in issues.jsonl')
+              sys.exit(1)
+          print(f'✅ issues.jsonl valid ({i} lines)')
+          "
+          else
+            echo "⚠️ No .beads/issues.jsonl found"
+          fi
+
+      - name: Check memory atoms frontmatter
+        run: |
+          python3 -c "
+          import os, sys, re
+          errors = 0
+          for root, dirs, files in os.walk('.memory/atoms'):
+              for f in files:
+                  if not f.endswith('.md'): continue
+                  path = os.path.join(root, f)
+                  with open(path) as fh:
+                      content = fh.read()
+                  if not content.startswith('---'):
+                      print(f'❌ {path}: missing frontmatter')
+                      errors += 1
+                  elif 'type:' not in content.split('---')[1]:
+                      print(f'❌ {path}: missing type in frontmatter')
+                      errors += 1
+                  else:
+                      print(f'✅ {path}')
+          if errors:
+              sys.exit(1)
+          print(f'✅ All memory atoms valid')
+          "

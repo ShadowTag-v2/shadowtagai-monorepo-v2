@@ -1,0 +1,89 @@
+/* ─── KovelAI "Sovereign Architect" Design Tokens ─── */
+/* Generated from Stitch asset: 16076fab918644088a3d948067760e83 */
+/* Version: 1.0 | Date: 2026-04-28 */
+
+:root {
+  /* ─── Foundation Colors ─── */
+  --sa-ink: #071325;
+  --sa-surface: #071325;
+  --sa-surface-lowest: #030e20;
+  --sa-surface-low: #101c2e;
+  --sa-surface-container: #142032;
+  --sa-surface-high: #1f2a3d;
+  --sa-surface-highest: #2a3548;
+  --sa-surface-bright: #2e394d;
+  --sa-surface-dim: #071325;
+
+  /* ─── Accent Colors ─── */
+  --sa-gold: #e6c487;
+  --sa-gold-container: #c9a96e;
+  --sa-gold-on: #412d00;
+  --sa-gold-fixed: #ffdea4;
+  --sa-gold-fixed-dim: #e4c285;
+  --sa-blue: #aac7ff;
+  --sa-blue-container: #3e90ff;
+  --sa-blue-on: #003064;
+  --sa-blue-fixed: #d6e3ff;
+  --sa-lavender: #b8c8f2;
+  --sa-lavender-container: #9dadd5;
+
+  /* ─── Text Colors ─── */
+  --sa-on-surface: #d7e3fc;
+  --sa-on-surface-variant: #d0c5b5;
+  --sa-on-background: #d7e3fc;
+  --sa-on-primary: #412d00;
+  --sa-on-secondary: #003064;
+  --sa-on-error: #690005;
+
+  /* ─── Outline ─── */
+  --sa-outline: #998f81;
+  --sa-outline-variant: #4d463a;
+
+  /* ─── Error ─── */
+  --sa-error: #ffb4ab;
+  --sa-error-container: #93000a;
+
+  /* ─── Inverse ─── */
+  --sa-inverse-surface: #d7e3fc;
+  --sa-inverse-on-surface: #253144;
+  --sa-inverse-primary: #745a27;
+
+  /* ─── Typography ─── */
+  --sa-font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --sa-display-lg: 3.5rem;
+  --sa-display-lg-tracking: -0.02em;
+  --sa-headline-md: 1.75rem;
+  --sa-headline-md-tracking: -0.01em;
+  --sa-body-md: 0.875rem;
+  --sa-body-md-lh: 1.6;
+  --sa-label-sm: 0.6875rem;
+  --sa-label-sm-tracking: 0.05em;
+
+  /* ─── Shape ─── */
+  --sa-radius-sm: 0.25rem;
+  --sa-radius-md: 0.375rem;
+  --sa-radius-lg: 0.5rem;
+  --sa-radius-xl: 0.75rem;
+  --sa-radius-2xl: 1rem;
+  --sa-radius-full: 9999px;
+
+  /* ─── Spacing ─── */
+  --sa-space-1: 4px;
+  --sa-space-2: 8px;
+  --sa-space-3: 16px;
+  --sa-space-4: 24px;
+  --sa-space-5: 32px;
+  --sa-space-6: 48px;
+  --sa-space-7: 64px;
+  --sa-space-8: 96px;
+
+  /* ─── Elevation ─── */
+  --sa-shadow-ambient: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 1px rgba(170, 199, 255, 0.1);
+  --sa-ghost-border: 1px solid rgba(77, 70, 58, 0.15);
+  --sa-glass-bg: rgba(42, 53, 72, 0.7);
+  --sa-glass-blur: 24px;
+
+  /* ─── Gradients ─── */
+  --sa-gradient-gold: linear-gradient(135deg, #e6c487, #c9a96e);
+  --sa-gradient-progress: linear-gradient(90deg, #e6c487, #aac7ff);
+}

@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════
+# Root .npmignore — ShadowTag-v2/Monorepo-Uphillsnowball
+# Defensive publishing safety (Sabrina.dev incident prevention)
+# Reference: https://www.sabrina.dev/p/claude-code-source-leak-analysis
+# ═══════════════════════════════════════════════════════════
+
+# --- Source Maps (CRITICAL — one-line fix for source leak prevention) ---
+*.map
+*.js.map
+*.css.map
+*.mjs.map
+*.cjs.map
+**/*.map
+
+# --- Source Files (never ship raw source in published packages) ---
+*.ts
+!*.d.ts
+*.tsx
+*.vue
+*.svelte
+*.coffee
+
+# --- Test & Config ---
+__tests__/
+tests/
+test/
+*.test.*
+*.spec.*
+jest.config.*
+vitest.config.*
+.eslintrc*
+.prettierrc*
+tsconfig*.json
+biome.json
+
+# --- Development Files ---
+.editorconfig
+.gitignore
+.gitattributes
+.github/
+.vscode/
+.idea/
+*.md
+!README.md
+!LICENSE.md
+!CHANGELOG.md
+
+# --- Build Tooling ---
+Makefile
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# --- CI/CD ---
+.circleci/
+.travis.yml
+Jenkinsfile
+.gitlab-ci.yml
+.github/workflows/
+
+# --- Secrets & Credentials (defense-in-depth) ---
+.env
+.env.*
+*.pem
+*.key
+service-account*.json
+client_secret*.json
+
+# --- Caches & Artifacts ---
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+coverage/
+.nyc_output/
+node_modules/
+__pycache__/
+*.pyc

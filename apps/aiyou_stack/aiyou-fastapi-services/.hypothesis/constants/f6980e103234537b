@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/core/gemini_function_calling.py
+# hypothesis_version: 6.151.5
+
+[1000, 'GOOGLE_API_KEY', 'array', 'bool', 'boolean', 'description', 'dict', 'float', 'function_call', 'function_calls', 'gemini_overhead_ms', 'int', 'integer', 'list', 'meets_p99_sla', 'name', 'number', 'object', 'result', 'str', 'string', 'text', 'time_ms', 'timestamp', 'total_latency_ms', 'type']

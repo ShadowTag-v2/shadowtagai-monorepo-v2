@@ -1,0 +1,1593 @@
+#!/usr/bin/env python3
+"""
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║  UNGPT v2.0 - Reasoning Handoff Architecture                                  ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                                                                ║
+║  FLOW WITH REASONING HANDOFF:                                                  ║
+║  ┌─────────────────────────────────────────────────────────────────────────┐  ║
+║  │ Whisper Voice                                                            │  ║
+║  │     ↓                                                                    │  ║
+║  │ Gemini 3 Pro (browser/phone app)                                         │  ║
+║  │   - Searches: pipeline, drive, memory, web                               │  ║
+║  │   - Breaks into atomic chats                                             │  ║
+║  │   - Writes tests for each                                                │  ║
+║  │   - EXPLAINS REASONING → hands off to Perplexity                         │  ║
+║  │     ↓                                                                    │  ║
+║  │ Perplexity (local install + iPhone shortcut)                             │  ║
+║  │   - Receives reasoning from Gemini                                       │  ║
+║  │   - Researches all sources for context/upgrades                          │  ║
+║  │   - Applies biz acumen                                                   │  ║
+║  │   - EXPLAINS ALL PRIOR REASONING → hands off to SuperGrok                │  ║
+║  │     ↓                                                                    │  ║
+║  │ SuperGrok (iPhone shortcut)                                              │  ║
+║  │   - Receives all prior reasoning                                         │  ║
+║  │   - Searches X and Grokipedia                                            │  ║
+║  │   - Applies biz acumen                                                   │  ║
+║  │   - EXPLAINS REASONING → routes to Gemini Code Assist                    │  ║
+║  │     ↓                                                                    │  ║
+║  │ 10x Gemini Code Assist Standard (headless, common dashboard)             │  ║
+║  │   - Receives full reasoning chain                                        │  ║
+║  │   - Generates code                                                       │  ║
+║  │   - Push to Git → PR → Merge → Cloud Run                                 │  ║
+║  └─────────────────────────────────────────────────────────────────────────┘  ║
+║                                                                                ║
+║  LLM-TO-LLM CONVERSATION: All LLMs can converse for clarification            ║
+║  AUTORESEARCH_TRIAD: Full 650-agent complement on EACH LLM                    ║
+║  STRUCTURE: Bottom-up CAV MTOE - squads research, leaders coalesce            ║
+║                                                                                ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+"""
+
+import argparse
+import asyncio
+import hashlib
+import json
+import os
+import subprocess
+import sys
+import time
+from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from datetime import UTC, datetime, timezone
+from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+# =============================================================================
+# CONFIGURATION
+# =============================================================================
+
+
+@dataclass
+class UngptConfig:
+    """Ungpt v2.0 configuration"""
+
+    # Local Mac paths
+    base_dir: Path = field(default_factory=lambda: Path.home() / ".ungpt")
+    chats_dir: Path = field(default_factory=lambda: Path.home() / ".ungpt" / "chats")
+    atoms_dir: Path = field(default_factory=lambda: Path.home() / ".ungpt" / "atoms")
+    code_dir: Path = field(default_factory=lambda: Path.home() / ".ungpt" / "code")
+    reasoning_dir: Path = field(default_factory=lambda: Path.home() / ".ungpt" / "reasoning")
+
+    # API Keys
+    gemini_key: str = field(default_factory=lambda: os.getenv("GEMINI_API_KEY", ""))
+    perplexity_key: str = field(default_factory=lambda: os.getenv("PERPLEXITY_API_KEY", ""))
+    grok_key: str = field(default_factory=lambda: os.getenv("GROK_API_KEY", ""))
+    anthropic_key: str = field(default_factory=lambda: os.getenv("ANTHROPIC_API_KEY", ""))
+    github_token: str = field(default_factory=lambda: os.getenv("GITHUB_TOKEN", ""))
+
+    # 10x Gemini Code Assist Standard licenses
+    gemini_code_assist_licenses: int = 10
+
+    # Autoresearch per LLM
+    autoresearch_per_llm: int = 650
+
+    # GitHub + GCP
+    github_repo: str = field(default_factory=lambda: os.getenv("UNGPT_GITHUB_REPO", ""))
+    gcp_project: str = field(default_factory=lambda: os.getenv("GCP_PROJECT_ID", ""))
+    gcp_region: str = field(default_factory=lambda: os.getenv("GCP_REGION", "us-central1"))
+
+    # Communication ports
+    antigravity_port: int = 8700
+    claude_code_port: int = 8701
+    llm_conversation_port: int = 8702
+
+    def __post_init__(self):
+        for d in [self.base_dir, self.chats_dir, self.atoms_dir, self.code_dir, self.reasoning_dir]:
+            d.mkdir(parents=True, exist_ok=True)
+
+
+CONFIG = UngptConfig()
+
+
+# =============================================================================
+# CAV MTOE - CAVALRY MODIFIED TABLE OF ORGANIZATION AND EQUIPMENT
+# =============================================================================
+# Bottom-up structure: Squads do research, leaders coalesce votes
+
+
+@dataclass
+class CavSoldier:
+    """Individual soldier in the CAV MTOE"""
+
+    id: str
+    role: str  # rifleman, grenadier, saw_gunner, team_leader, squad_leader
+    specialty: str  # research, code, security, ops
+    status: str = "ready"
+    current_task: str = ""
+    vote: str = ""  # A/R/E
+
+
+@dataclass
+class FireTeam:
+    """4-soldier fire team - smallest tactical unit"""
+
+    id: str
+    team_leader: CavSoldier
+    members: list[CavSoldier]  # 3 soldiers
+
+    def vote(self, intent: str) -> dict:
+        """Team votes, leader coalesces"""
+        votes = [m.vote for m in self.members if m.vote]
+        # Majority rules, leader breaks ties
+        return {
+            "team_id": self.id,
+            "votes": votes,
+            "coalesced": max(set(votes), key=votes.count) if votes else "A",
+        }
+
+
+@dataclass
+class Squad:
+    """9-soldier squad = 2 fire teams + squad leader"""
+
+    id: str
+    squad_leader: CavSoldier
+    alpha_team: FireTeam
+    bravo_team: FireTeam
+
+    def research_and_vote(self, intent: str) -> dict:
+        """Squad does research, squad leader coalesces team votes"""
+        alpha_vote = self.alpha_team.vote(intent)
+        bravo_vote = self.bravo_team.vote(intent)
+
+        # Squad leader coalesces
+        team_votes = [alpha_vote["coalesced"], bravo_vote["coalesced"]]
+
+        return {
+            "squad_id": self.id,
+            "alpha": alpha_vote,
+            "bravo": bravo_vote,
+            "coalesced": self.squad_leader.vote or max(set(team_votes), key=team_votes.count),
+        }
+
+
+@dataclass
+class Platoon:
+    """~40 soldiers = 4 squads + platoon leader + PSG"""
+
+    id: str
+    platoon_leader: CavSoldier
+    platoon_sergeant: CavSoldier
+    squads: list[Squad]  # 4 squads
+
+    def coalesce_votes(self, intent: str) -> dict:
+        """Platoon leader coalesces squad votes"""
+        squad_results = [s.research_and_vote(intent) for s in self.squads]
+        squad_votes = [r["coalesced"] for r in squad_results]
+
+        return {
+            "platoon_id": self.id,
+            "squads": squad_results,
+            "coalesced": max(set(squad_votes), key=squad_votes.count),
+        }
+
+
+@dataclass
+class Troop:
+    """~120 soldiers = 3 platoons + troop commander"""
+
+    id: str
+    troop_commander: CavSoldier
+    first_sergeant: CavSoldier
+    platoons: list[Platoon]  # 3 platoons
+
+    def coalesce_votes(self, intent: str) -> dict:
+        """Troop commander coalesces platoon votes"""
+        platoon_results = [p.coalesce_votes(intent) for p in self.platoons]
+        platoon_votes = [r["coalesced"] for r in platoon_results]
+
+        return {
+            "troop_id": self.id,
+            "platoons": platoon_results,
+            "coalesced": max(set(platoon_votes), key=platoon_votes.count),
+        }
+
+
+class CavMTOE:
+    """
+    Full CAV MTOE Structure for Autoresearch
+    Bottom-up: Squads research → Team leaders coalesce → up the chain
+    """
+
+    def __init__(self, num_soldiers: int = 650):
+        self.num_soldiers = num_soldiers
+        self.troops = self._build_structure()
+
+    def _build_structure(self) -> list[Troop]:
+        """Build CAV structure from bottom up"""
+        troops = []
+        soldier_id = 0
+
+        # Create ~5 troops to cover 650 soldiers
+        for t in range(5):
+            platoons = []
+            for p in range(3):
+                squads = []
+                for s in range(4):
+                    # Build fire teams
+                    alpha_members = [
+                        CavSoldier(f"S{soldier_id + i}", "rifleman", "research") for i in range(3)
+                    ]
+                    soldier_id += 3
+                    alpha_team = FireTeam(
+                        f"A-{t}-{p}-{s}",
+                        CavSoldier(f"TL{soldier_id}", "team_leader", "research"),
+                        alpha_members,
+                    )
+                    soldier_id += 1
+
+                    bravo_members = [
+                        CavSoldier(f"S{soldier_id + i}", "rifleman", "research") for i in range(3)
+                    ]
+                    soldier_id += 3
+                    bravo_team = FireTeam(
+                        f"B-{t}-{p}-{s}",
+                        CavSoldier(f"TL{soldier_id}", "team_leader", "research"),
+                        bravo_members,
+                    )
+                    soldier_id += 1
+
+                    squad = Squad(
+                        f"SQD-{t}-{p}-{s}",
+                        CavSoldier(f"SL{soldier_id}", "squad_leader", "ops"),
+                        alpha_team,
+                        bravo_team,
+                    )
+                    soldier_id += 1
+                    squads.append(squad)
+
+                platoon = Platoon(
+                    f"PLT-{t}-{p}",
+                    CavSoldier(f"PL{soldier_id}", "platoon_leader", "ops"),
+                    CavSoldier(f"PSG{soldier_id + 1}", "platoon_sergeant", "ops"),
+                    squads,
+                )
+                soldier_id += 2
+                platoons.append(platoon)
+
+            troop = Troop(
+                f"TRP-{t}",
+                CavSoldier(f"CO{soldier_id}", "troop_commander", "ops"),
+                CavSoldier(f"1SG{soldier_id + 1}", "first_sergeant", "ops"),
+                platoons,
+            )
+            soldier_id += 2
+            troops.append(troop)
+
+        return troops
+
+    def bottom_up_vote(self, intent: str, risk_level: str = "L") -> dict:
+        """
+        Execute bottom-up voting:
+        1. Squads research and vote
+        2. Team leaders coalesce team votes
+        3. Squad leaders coalesce team votes
+        4. Platoon leaders coalesce squad votes
+        5. Troop commanders coalesce platoon votes
+        6. Final vote from all troops
+        """
+        troop_results = [t.coalesce_votes(intent) for t in self.troops]
+        troop_votes = [r["coalesced"] for r in troop_results]
+
+        # Risk-based thresholds
+        thresholds = {"L": 0.5, "M": 0.6, "H": 0.75, "EH": 0.9}
+        threshold = thresholds.get(risk_level, 0.5)
+
+        approve_count = troop_votes.count("A")
+        total = len(troop_votes)
+        approval_rate = approve_count / total if total > 0 else 0
+
+        final_action = "A" if approval_rate >= threshold else ("E" if approval_rate >= 0.4 else "R")
+
+        return {
+            "intent": intent,
+            "risk_level": risk_level,
+            "troops": troop_results,
+            "approval_rate": approval_rate,
+            "threshold": threshold,
+            "final_action": final_action,
+            "confidence": approval_rate,
+        }
+
+
+# =============================================================================
+# REASONING CHAIN - Handoff with explanation
+# =============================================================================
+
+
+@dataclass
+class ReasoningHandoff:
+    """Reasoning passed between LLMs"""
+
+    from_llm: str
+    to_llm: str
+    atom_id: str
+    reasoning: str
+    evidence: list[str]
+    biz_acumen: str
+    tests: list[str]
+    prior_reasoning: list["ReasoningHandoff"] = field(default_factory=list)
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+
+    def to_prompt(self) -> str:
+        """Convert to prompt for receiving LLM"""
+        prior = "\n".join([f"[{r.from_llm}]: {r.reasoning}" for r in self.prior_reasoning])
+
+        return f"""## REASONING HANDOFF FROM {self.from_llm}
+
+### Prior Chain:
+{prior if prior else "None - I am first in chain"}
+
+### My Reasoning ({self.from_llm}):
+{self.reasoning}
+
+### Evidence Found:
+{chr(10).join(f"- {e}" for e in self.evidence)}
+
+### Business Acumen Applied:
+{self.biz_acumen}
+
+### Tests Required:
+{chr(10).join(f"- {t}" for t in self.tests)}
+
+---
+YOUR TASK ({self.to_llm}):
+1. Understand all prior reasoning
+2. Conduct your specialized research
+3. Apply your biz acumen
+4. Prepare your reasoning handoff for the next stage
+"""
+
+    def to_dict(self) -> dict:
+        return {
+            "from_llm": self.from_llm,
+            "to_llm": self.to_llm,
+            "atom_id": self.atom_id,
+            "reasoning": self.reasoning,
+            "evidence": self.evidence,
+            "biz_acumen": self.biz_acumen,
+            "tests": self.tests,
+            "prior_reasoning": [r.to_dict() for r in self.prior_reasoning],
+            "timestamp": self.timestamp,
+        }
+
+    def save(self):
+        """Save reasoning handoff"""
+        path = CONFIG.reasoning_dir / f"{self.atom_id}_{self.from_llm}_{self.to_llm}.json"
+        with open(path, "w") as f:
+            json.dump(self.to_dict(), f, indent=2)
+
+
+# =============================================================================
+# ATOM v2.0 - With full reasoning chain
+# =============================================================================
+
+
+@dataclass
+class Atom:
+    """Atomic chat unit with full reasoning chain"""
+
+    id: str
+    content: str
+    source: str
+    tests: list[str] = field(default_factory=list)
+
+    # Reasoning chain
+    reasoning_chain: list[ReasoningHandoff] = field(default_factory=list)
+
+    # Research results
+    gemini_search_results: dict[str, Any] = field(
+        default_factory=dict
+    )  # pipeline, drive, memory, web
+    perplexity_research: dict[str, Any] = field(default_factory=dict)
+    supergrok_research: dict[str, Any] = field(default_factory=dict)
+
+    # Biz acumen from each stage
+    gemini_biz_acumen: str = ""
+    perplexity_biz_acumen: str = ""
+    supergrok_biz_acumen: str = ""
+
+    # Code and deployment
+    code: str = ""
+    assigned_license: int = 0
+    git_branch: str = ""
+    pr_url: str = ""
+    pr_merged: bool = False
+    cloud_run_url: str = ""
+
+    # Autoresearch votes from each LLM
+    gemini_swarm_vote: dict = field(default_factory=dict)
+    perplexity_swarm_vote: dict = field(default_factory=dict)
+    supergrok_swarm_vote: dict = field(default_factory=dict)
+    codeassist_swarm_vote: dict = field(default_factory=dict)
+
+    status: str = "pending"
+    created_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+    github_chat_url: str = ""
+
+    def to_dict(self) -> dict:
+        d = self.__dict__.copy()
+        d["reasoning_chain"] = [r.to_dict() for r in self.reasoning_chain]
+        return d
+
+    def save(self):
+        path = CONFIG.atoms_dir / f"{self.id}.json"
+        with open(path, "w") as f:
+            json.dump(self.to_dict(), f, indent=2)
+
+    def add_reasoning(self, handoff: ReasoningHandoff):
+        """Add reasoning handoff to chain"""
+        handoff.prior_reasoning = self.reasoning_chain.copy()
+        self.reasoning_chain.append(handoff)
+        handoff.save()
+
+
+def generate_atom_id(content: str) -> str:
+    ts = datetime.now(UTC).strftime("%Y%m%d%H%M%S")
+    h = hashlib.sha256(content.encode()).hexdigest()[:8]
+    return f"ATOM-{ts}-{h}"
+
+
+# =============================================================================
+# LLM-TO-LLM CONVERSATION PROTOCOL
+# =============================================================================
+
+
+class LLMConversation:
+    """
+    Allows LLMs to converse amongst themselves for questions.
+    Each LLM has full 650 Autoresearch complement.
+    """
+
+    def __init__(self):
+        self.conversation_log: list[dict] = []
+        self.llms = {
+            "gemini": {"autoresearch": CavMTOE(650), "available": True},
+            "perplexity": {"autoresearch": CavMTOE(650), "available": True},
+            "supergrok": {"autoresearch": CavMTOE(650), "available": True},
+            "codeassist": {"autoresearch": CavMTOE(650), "available": True},
+        }
+
+    async def ask_llm(
+        self, from_llm: str, to_llm: str, question: str, context: ReasoningHandoff = None
+    ) -> dict:
+        """One LLM asks another a clarifying question"""
+
+        message = {
+            "from": from_llm,
+            "to": to_llm,
+            "question": question,
+            "context": context.to_dict() if context else None,
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+
+        self.conversation_log.append(message)
+
+        # Get swarm vote from both LLMs' Autoresearch
+        from_vote = self.llms[from_llm]["autoresearch"].bottom_up_vote(question)
+        to_vote = self.llms[to_llm]["autoresearch"].bottom_up_vote(question)
+
+        # Route to appropriate LLM for answer
+        answer = await self._route_question(to_llm, question, context)
+
+        response = {
+            "from": to_llm,
+            "to": from_llm,
+            "answer": answer,
+            "from_swarm_vote": from_vote,
+            "to_swarm_vote": to_vote,
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+
+        self.conversation_log.append(response)
+        return response
+
+    async def _route_question(
+        self, llm: str, question: str, context: ReasoningHandoff = None
+    ) -> str:
+        """Route question to specific LLM"""
+
+        if llm == "gemini":
+            return await self._ask_gemini(question, context)
+        elif llm == "perplexity":
+            return await self._ask_perplexity(question, context)
+        elif llm == "supergrok":
+            return await self._ask_supergrok(question, context)
+        elif llm == "codeassist":
+            return await self._ask_codeassist(question, context)
+        return "Unknown LLM"
+
+    async def _ask_gemini(self, question: str, context: ReasoningHandoff = None) -> str:
+        """Ask Gemini"""
+        try:
+            import google.generativeai as genai
+
+            genai.configure(api_key=CONFIG.gemini_key)
+            model = genai.GenerativeModel("gemini-1.5-pro")
+
+            prompt = f"""Another LLM is asking you a clarifying question.
+
+Context: {context.to_prompt() if context else "None"}
+
+Question: {question}
+
+Provide a clear, concise answer.
+
+---
+CRITICAL REMINDER: Provide a clear, concise answer to: {question}"""
+
+            response = model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            return f"Gemini error: {e}"
+
+    async def _ask_perplexity(self, question: str, context: ReasoningHandoff = None) -> str:
+        """Ask Perplexity"""
+        import httpx
+
+        if not CONFIG.perplexity_key:
+            return "Perplexity not configured"
+
+        prompt = f"""Another LLM is asking you a clarifying question.
+
+Context: {context.to_prompt() if context else "None"}
+
+Question: {question}
+
+Research and provide a clear answer with sources.
+
+---
+CRITICAL REMINDER: Research and provide a clear answer with sources to: {question}"""
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.perplexity.ai/chat/completions",
+                headers={"Authorization": f"Bearer {CONFIG.perplexity_key}"},
+                json={
+                    "model": "llama-3.1-sonar-large-128k-online",
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+                timeout=60.0,
+            )
+
+            if response.status_code == 200:
+                return response.json()["choices"][0]["message"]["content"]
+            return f"Perplexity error: {response.status_code}"
+
+    async def _ask_supergrok(self, question: str, context: ReasoningHandoff = None) -> str:
+        """Ask SuperGrok"""
+        import httpx
+
+        if not CONFIG.grok_key:
+            return "SuperGrok not configured"
+
+        prompt = f"""Another LLM is asking you a clarifying question.
+
+Context: {context.to_prompt() if context else "None"}
+
+Question: {question}
+
+Search X and Grokipedia for relevant information. Provide a clear answer.
+
+---
+CRITICAL REMINDER: Search X and Grokipedia for relevant information and provide a clear answer to: {question}"""
+
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(
+                    "https://api.x.ai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {CONFIG.grok_key}"},
+                    json={"model": "grok-beta", "messages": [{"role": "user", "content": prompt}]},
+                    timeout=60.0,
+                )
+
+                if response.status_code == 200:
+                    return response.json()["choices"][0]["message"]["content"]
+                return f"SuperGrok error: {response.status_code}"
+            except Exception as e:
+                return f"SuperGrok error: {e}"
+
+    async def _ask_codeassist(self, question: str, context: ReasoningHandoff = None) -> str:
+        """Ask Gemini Code Assist"""
+        # Uses same Gemini API but with code-focused prompt
+        try:
+            import google.generativeai as genai
+
+            genai.configure(api_key=CONFIG.gemini_key)
+            model = genai.GenerativeModel("gemini-1.5-pro")
+
+            prompt = f"""You are Gemini Code Assist. Another LLM is asking you a code-related question.
+
+Context: {context.to_prompt() if context else "None"}
+
+Question: {question}
+
+Provide a code-focused answer with examples if relevant.
+
+---
+CRITICAL REMINDER: Provide a code-focused answer with examples for: {question}"""
+
+            response = model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            return f"Code Assist error: {e}"
+
+
+# =============================================================================
+# STAGE 1: GEMINI 3 PRO INTAKE (Browser/Phone App)
+# =============================================================================
+
+
+class GeminiIntake:
+    """
+    Gemini 3 Pro intake:
+    - Browser or phone app
+    - Searches: pipeline, drive, memory, web
+    - Breaks into atomic chats
+    - Writes tests for each
+    - Explains reasoning → hands off to Perplexity
+    """
+
+    def __init__(self):
+        self.api_key = CONFIG.gemini_key
+        self.autoresearch = CavMTOE(650)
+        self.llm_conv = LLMConversation()
+        self._init_client()
+
+    def _init_client(self):
+        try:
+            import google.generativeai as genai
+
+            genai.configure(api_key=self.api_key)
+            self.model = genai.GenerativeModel("gemini-1.5-pro")
+            self.available = True
+        except Exception as e:
+            print(f"⚠️  Gemini unavailable: {e}")
+            self.available = False
+
+    async def search_all_sources(self, content: str) -> dict[str, Any]:
+        """Search pipeline, drive, memory, and web"""
+
+        # Swarm vote before searching
+        vote = self.autoresearch.bottom_up_vote(f"Search all sources for: {content}", "L")
+
+        if vote["final_action"] == "R":
+            return {"error": "Swarm rejected search", "vote": vote}
+
+        results = {
+            "pipeline": await self._search_pipeline(content),
+            "drive": await self._search_drive(content),
+            "memory": await self._search_memory(content),
+            "web": await self._search_web(content),
+            "swarm_vote": vote,
+        }
+
+        return results
+
+    async def _search_pipeline(self, content: str) -> dict:
+        """Search existing pipeline/codebase"""
+        # Search local code directories
+        code_paths = [CONFIG.code_dir, CONFIG.atoms_dir]
+        matches = []
+
+        for path in code_paths:
+            if path.exists():
+                for f in path.glob("**/*"):
+                    if f.is_file():
+                        try:
+                            text = f.read_text()
+                            if any(kw in text.lower() for kw in content.lower().split()):
+                                matches.append({"file": str(f), "snippet": text[:200]})
+                        except:
+                            pass
+
+        return {"matches": matches[:10]}
+
+    async def _search_drive(self, content: str) -> dict:
+        """Search Google Drive (if configured)"""
+        # Would integrate with Google Drive API
+        return {"status": "Drive search - implement with Drive API"}
+
+    async def _search_memory(self, content: str) -> dict:
+        """Search conversation memory/chats"""
+        matches = []
+
+        if CONFIG.chats_dir.exists():
+            for chat_file in CONFIG.chats_dir.glob("*.json"):
+                try:
+                    data = json.loads(chat_file.read_text())
+                    if any(kw in json.dumps(data).lower() for kw in content.lower().split()):
+                        matches.append({"chat_id": chat_file.stem, "preview": str(data)[:200]})
+                except:
+                    pass
+
+        return {"matches": matches[:10]}
+
+    async def _search_web(self, content: str) -> dict:
+        """Search web via Gemini"""
+        if not self.available:
+            return {"error": "Gemini not available"}
+
+        prompt = f"""Search the web for information about: {content}
+
+Return a summary of key findings with sources.
+
+---
+CRITICAL REMINDER: Return a summary of key findings with sources specifically about: {content}"""
+
+        try:
+            response = self.model.generate_content(prompt)
+            return {"web_results": response.text}
+        except Exception as e:
+            return {"error": str(e)}
+
+    async def atomize_with_reasoning(
+        self, content: str
+    ) -> tuple[list[Atom], list[ReasoningHandoff]]:
+        """
+        Break content into atoms with full reasoning.
+        Each atom gets tests and reasoning handoff for Perplexity.
+        """
+
+        # First, search all sources
+        search_results = await self.search_all_sources(content)
+
+        # Swarm vote on atomization
+        vote = self.autoresearch.bottom_up_vote(f"Atomize: {content}", "L")
+
+        if not self.available:
+            atom = Atom(
+                id=generate_atom_id(content),
+                content=content,
+                source="fallback",
+                tests=["manual_review"],
+                gemini_search_results=search_results,
+                gemini_swarm_vote=vote,
+            )
+            return [atom], []
+
+        # Atomize with context from all sources
+        prompt = f"""Break this input into atomic, actionable units.
+
+Input: {content}
+
+Context from sources:
+- Pipeline: {search_results.get("pipeline", {})}
+- Memory: {search_results.get("memory", {})}
+- Web: {search_results.get("web", {})}
+
+For EACH atom, provide:
+1. The atomic task
+2. 2-3 specific test cases
+3. Business acumen assessment
+4. Your reasoning (explain WHY you structured it this way)
+
+Return JSON:
+[{{
+  "content": "atomic task",
+  "tests": ["test1", "test2"],
+  "biz_acumen": "strategic value",
+  "reasoning": "explanation of why this is an atom and how it connects"
+}}]"""
+
+        response = self.model.generate_content(prompt)
+
+        try:
+            text = response.text
+            if "```json" in text:
+                text = text.split("```json")[1].split("```")[0]
+            atoms_data = json.loads(text.strip())
+
+            atoms = []
+            handoffs = []
+
+            for data in atoms_data:
+                atom = Atom(
+                    id=generate_atom_id(data["content"]),
+                    content=data["content"],
+                    source="gemini",
+                    tests=data.get("tests", []),
+                    gemini_search_results=search_results,
+                    gemini_biz_acumen=data.get("biz_acumen", ""),
+                    gemini_swarm_vote=vote,
+                )
+
+                # Create reasoning handoff for Perplexity
+                handoff = ReasoningHandoff(
+                    from_llm="gemini",
+                    to_llm="perplexity",
+                    atom_id=atom.id,
+                    reasoning=data.get("reasoning", ""),
+                    evidence=list(search_results.keys()),
+                    biz_acumen=data.get("biz_acumen", ""),
+                    tests=data.get("tests", []),
+                )
+
+                atom.add_reasoning(handoff)
+                atoms.append(atom)
+                handoffs.append(handoff)
+
+            return atoms, handoffs
+
+        except Exception as e:
+            print(f"Parse error: {e}")
+            atom = Atom(
+                id=generate_atom_id(content),
+                content=content,
+                source="gemini",
+                tests=["verify_completion"],
+                gemini_search_results=search_results,
+                gemini_swarm_vote=vote,
+            )
+            return [atom], []
+
+
+# =============================================================================
+# STAGE 2: PERPLEXITY RESEARCH (Local + iPhone)
+# =============================================================================
+
+
+class PerplexityResearch:
+    """
+    Perplexity - local install + iPhone shortcut.
+    Receives reasoning from Gemini.
+    Researches all sources.
+    Explains all prior reasoning → hands off to SuperGrok.
+    """
+
+    def __init__(self):
+        self.api_key = CONFIG.perplexity_key
+        self.autoresearch = CavMTOE(650)
+        self.llm_conv = LLMConversation()
+
+    async def research_with_reasoning(
+        self, atom: Atom, gemini_handoff: ReasoningHandoff
+    ) -> ReasoningHandoff:
+        """
+        Research atom with full context from Gemini.
+        Create handoff for SuperGrok with all prior reasoning.
+        """
+
+        # Swarm vote
+        vote = self.autoresearch.bottom_up_vote(f"Research: {atom.content}", "L")
+        atom.perplexity_swarm_vote = vote
+
+        if vote["final_action"] == "R":
+            return ReasoningHandoff(
+                from_llm="perplexity",
+                to_llm="supergrok",
+                atom_id=atom.id,
+                reasoning="Research rejected by swarm",
+                evidence=[],
+                biz_acumen="",
+                tests=atom.tests,
+            )
+
+        import httpx
+
+        if not self.api_key:
+            return self._fallback_handoff(atom, gemini_handoff)
+
+        # Build prompt with Gemini's reasoning
+        prompt = f"""## REASONING RECEIVED FROM GEMINI
+
+{gemini_handoff.to_prompt()}
+
+---
+
+## YOUR TASK (PERPLEXITY)
+
+Research this atom for:
+1. Useful context from all sources
+2. Upgrade potential (newer versions, better approaches)
+3. Competitive landscape
+4. Security considerations
+
+Atom: {atom.content}
+Tests: {atom.tests}
+
+After researching, provide:
+1. Your findings
+2. Your business acumen assessment
+3. Your reasoning for SuperGrok (explain EVERYTHING so far)
+
+Return JSON:
+{{
+  "research": "detailed findings",
+  "sources": ["source1", "source2"],
+  "upgrades_available": ["upgrade1"],
+  "biz_acumen": "strategic assessment",
+  "reasoning_for_supergrok": "full explanation including Gemini's reasoning and yours"
+}}"""
+
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(
+                    "https://api.perplexity.ai/chat/completions",
+                    headers={"Authorization": f"Bearer {self.api_key}"},
+                    json={
+                        "model": "llama-3.1-sonar-large-128k-online",
+                        "messages": [{"role": "user", "content": prompt}],
+                    },
+                    timeout=60.0,
+                )
+
+                if response.status_code != 200:
+                    return self._fallback_handoff(atom, gemini_handoff)
+
+                content = response.json()["choices"][0]["message"]["content"]
+
+                # Parse response
+                try:
+                    if "```json" in content:
+                        content = content.split("```json")[1].split("```")[0]
+                    data = json.loads(content.strip())
+                except:
+                    data = {
+                        "research": content,
+                        "sources": [],
+                        "upgrades_available": [],
+                        "biz_acumen": "",
+                        "reasoning_for_supergrok": content,
+                    }
+
+                # Store research
+                atom.perplexity_research = {
+                    "research": data.get("research", ""),
+                    "sources": data.get("sources", []),
+                    "upgrades": data.get("upgrades_available", []),
+                }
+                atom.perplexity_biz_acumen = data.get("biz_acumen", "")
+
+                # Create handoff for SuperGrok
+                handoff = ReasoningHandoff(
+                    from_llm="perplexity",
+                    to_llm="supergrok",
+                    atom_id=atom.id,
+                    reasoning=data.get("reasoning_for_supergrok", ""),
+                    evidence=data.get("sources", []),
+                    biz_acumen=data.get("biz_acumen", ""),
+                    tests=atom.tests,
+                )
+
+                atom.add_reasoning(handoff)
+                return handoff
+
+            except Exception as e:
+                print(f"Perplexity error: {e}")
+                return self._fallback_handoff(atom, gemini_handoff)
+
+    def _fallback_handoff(self, atom: Atom, prior: ReasoningHandoff) -> ReasoningHandoff:
+        """Fallback when Perplexity unavailable"""
+        handoff = ReasoningHandoff(
+            from_llm="perplexity",
+            to_llm="supergrok",
+            atom_id=atom.id,
+            reasoning=f"Perplexity unavailable. Prior reasoning from Gemini: {prior.reasoning}",
+            evidence=[],
+            biz_acumen="Manual assessment needed",
+            tests=atom.tests,
+        )
+        atom.add_reasoning(handoff)
+        return handoff
+
+    def iphone_shortcut(self, query: str) -> str:
+        """iPhone shortcut URL for Perplexity"""
+        import urllib.parse
+
+        return f"perplexity://search?q={urllib.parse.quote(query)}"
+
+
+# =============================================================================
+# STAGE 3: SUPERGROK (X/Grokipedia + Route to Code Assist)
+# =============================================================================
+
+
+class SuperGrok:
+    """
+    SuperGrok:
+    - Receives all prior reasoning
+    - Searches X and Grokipedia
+    - Applies biz acumen
+    - Routes to Gemini Code Assist with full explanation
+    """
+
+    def __init__(self):
+        self.api_key = CONFIG.grok_key
+        self.autoresearch = CavMTOE(650)
+        self.llm_conv = LLMConversation()
+
+    async def research_and_route(
+        self, atom: Atom, perplexity_handoff: ReasoningHandoff
+    ) -> tuple[ReasoningHandoff, int]:
+        """
+        Research via X/Grokipedia, route to specific Gemini Code Assist license.
+        Returns handoff and license number.
+        """
+
+        # Swarm vote
+        vote = self.autoresearch.bottom_up_vote(f"SuperGrok: {atom.content}", "M")
+        atom.supergrok_swarm_vote = vote
+
+        import httpx
+
+        if not self.api_key:
+            return self._fallback_route(atom, perplexity_handoff)
+
+        prompt = f"""## ALL PRIOR REASONING
+
+{perplexity_handoff.to_prompt()}
+
+---
+
+## YOUR TASK (SUPERGROK)
+
+1. Search X (Twitter) for real-time insights on this task
+2. Search Grokipedia for relevant knowledge
+3. Apply your business acumen
+4. Route to one of 10 Gemini Code Assist licenses (1-10 by complexity)
+5. Explain EVERYTHING to Code Assist
+
+Atom: {atom.content}
+Tests: {atom.tests}
+
+Return JSON:
+{{
+  "x_insights": "findings from X",
+  "grokipedia": "relevant knowledge",
+  "biz_acumen": "strategic assessment",
+  "recommended_license": 1-10,
+  "complexity": "low|medium|high",
+  "reasoning_for_codeassist": "FULL explanation including all prior reasoning"
+}}"""
+
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "https://api.x.ai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {self.api_key}"},
+                    json={"model": "grok-beta", "messages": [{"role": "user", "content": prompt}]},
+                    timeout=60.0,
+                )
+
+                if response.status_code != 200:
+                    return self._fallback_route(atom, perplexity_handoff)
+
+                content = response.json()["choices"][0]["message"]["content"]
+
+                try:
+                    if "```json" in content:
+                        content = content.split("```json")[1].split("```")[0]
+                    data = json.loads(content.strip())
+                except:
+                    data = {
+                        "x_insights": content,
+                        "grokipedia": "",
+                        "biz_acumen": "",
+                        "recommended_license": 5,
+                        "complexity": "medium",
+                        "reasoning_for_codeassist": content,
+                    }
+
+                # Store research
+                atom.supergrok_research = {
+                    "x_insights": data.get("x_insights", ""),
+                    "grokipedia": data.get("grokipedia", ""),
+                    "complexity": data.get("complexity", "medium"),
+                }
+                atom.supergrok_biz_acumen = data.get("biz_acumen", "")
+
+                license_num = max(1, min(10, data.get("recommended_license", 5)))
+
+                # Create handoff for Code Assist
+                handoff = ReasoningHandoff(
+                    from_llm="supergrok",
+                    to_llm=f"codeassist_{license_num}",
+                    atom_id=atom.id,
+                    reasoning=data.get("reasoning_for_codeassist", ""),
+                    evidence=[data.get("x_insights", ""), data.get("grokipedia", "")],
+                    biz_acumen=data.get("biz_acumen", ""),
+                    tests=atom.tests,
+                )
+
+                atom.add_reasoning(handoff)
+                return handoff, license_num
+
+        except Exception as e:
+            print(f"SuperGrok error: {e}")
+            return self._fallback_route(atom, perplexity_handoff)
+
+    def _fallback_route(self, atom: Atom, prior: ReasoningHandoff) -> tuple[ReasoningHandoff, int]:
+        """Fallback routing"""
+        complexity = "low"
+        license_num = 1
+
+        content = atom.content.lower()
+        if any(k in content for k in ["payment", "auth", "security"]):
+            complexity = "high"
+            license_num = 9
+        elif any(k in content for k in ["api", "database", "deploy"]):
+            complexity = "medium"
+            license_num = 5
+
+        handoff = ReasoningHandoff(
+            from_llm="supergrok",
+            to_llm=f"codeassist_{license_num}",
+            atom_id=atom.id,
+            reasoning=f"SuperGrok unavailable. Prior reasoning: {prior.reasoning}. Routing to license {license_num} based on complexity: {complexity}",
+            evidence=[],
+            biz_acumen="Manual assessment needed",
+            tests=atom.tests,
+        )
+
+        atom.add_reasoning(handoff)
+        return handoff, license_num
+
+    def iphone_shortcut(self, query: str) -> str:
+        """iPhone shortcut URL for Grok/X"""
+        import urllib.parse
+
+        return f"twitter://search?query={urllib.parse.quote(query)}"
+
+
+# =============================================================================
+# STAGE 4: GEMINI CODE ASSIST STANDARD (10 Headless Licenses)
+# =============================================================================
+
+
+class GeminiCodeAssistPool:
+    """
+    10x Gemini Code Assist Standard licenses.
+    All headless with common dashboard.
+    Each receives full reasoning chain.
+    Each has 650 Autoresearch.
+    """
+
+    def __init__(self):
+        self.num_licenses = CONFIG.gemini_code_assist_licenses
+        self.licenses = {}
+
+        for i in range(1, self.num_licenses + 1):
+            self.licenses[i] = {
+                "id": i,
+                "status": "idle",
+                "atom": None,
+                "completed": 0,
+                "errors": 0,
+                "autoresearch": CavMTOE(650),
+            }
+
+    def dashboard(self) -> dict:
+        """Common dashboard for all 10 licenses"""
+        return {
+            "licenses": {
+                k: {kk: vv for kk, vv in v.items() if kk != "autoresearch"}
+                for k, v in self.licenses.items()
+            },
+            "total_completed": sum(l["completed"] for l in self.licenses.values()),
+            "active": sum(1 for l in self.licenses.values() if l["status"] == "busy"),
+            "autoresearch_per_license": 650,
+            "total_autoresearch": 650 * self.num_licenses,
+        }
+
+    async def process_atom(
+        self, atom: Atom, license_num: int, supergrok_handoff: ReasoningHandoff
+    ) -> dict:
+        """
+        Process atom with full reasoning chain.
+        Push to Git → PR → Merge → Cloud Run.
+        """
+
+        # Swarm vote for this license
+        vote = self.licenses[license_num]["autoresearch"].bottom_up_vote(
+            f"Code: {atom.content}", "M"
+        )
+        atom.codeassist_swarm_vote = vote
+
+        self.licenses[license_num]["status"] = "busy"
+        self.licenses[license_num]["atom"] = atom.id
+        atom.assigned_license = license_num
+        atom.status = "coding"
+
+        try:
+            import google.generativeai as genai
+
+            genai.configure(api_key=CONFIG.gemini_key)
+            model = genai.GenerativeModel("gemini-1.5-pro")
+
+            # Full reasoning chain in prompt
+            prompt = f"""## FULL REASONING CHAIN
+
+{supergrok_handoff.to_prompt()}
+
+---
+
+## YOUR TASK (GEMINI CODE ASSIST LICENSE #{license_num})
+
+Generate production-ready code for this atom.
+
+Atom: {atom.content}
+Tests to pass: {atom.tests}
+
+All prior biz acumen:
+- Gemini: {atom.gemini_biz_acumen}
+- Perplexity: {atom.perplexity_biz_acumen}
+- SuperGrok: {atom.supergrok_biz_acumen}
+
+Requirements:
+1. Production-ready code
+2. Error handling
+3. Documentation
+4. Pass all tests
+
+Return ONLY the code, no explanations."""
+
+            response = model.generate_content(prompt)
+            code = response.text
+
+            # Extract code from markdown
+            if "```" in code:
+                parts = code.split("```")
+                for i, part in enumerate(parts):
+                    if i % 2 == 1:
+                        code = part.split("\n", 1)[-1] if "\n" in part else part
+                        break
+
+            atom.code = code
+            atom.status = "coded"
+
+            self.licenses[license_num]["completed"] += 1
+            self.licenses[license_num]["status"] = "idle"
+            self.licenses[license_num]["atom"] = None
+
+            return {"success": True, "code": code[:200] + "...", "license": license_num}
+
+        except Exception as e:
+            self.licenses[license_num]["errors"] += 1
+            self.licenses[license_num]["status"] = "error"
+            return {"success": False, "error": str(e), "license": license_num}
+
+
+# =============================================================================
+# GIT WORKFLOW
+# =============================================================================
+
+
+class GitWorkflow:
+    """Push → PR → Merge → Cloud Run"""
+
+    def __init__(self, repo_path: Path = None):
+        self.repo_path = repo_path or Path.cwd()
+
+    async def full_workflow(self, atom: Atom) -> dict:
+        """Complete Git workflow"""
+        results = {"push": await self.push_code(atom), "pr": None, "merge": None, "deploy": None}
+
+        if results["push"].get("success"):
+            results["pr"] = await self.create_pr(atom)
+
+            # Auto-merge if low risk
+            if atom.supergrok_swarm_vote.get("final_action") == "A":
+                results["merge"] = await self.merge_pr(atom)
+
+                if results["merge"].get("success"):
+                    results["deploy"] = await self.deploy_to_cloud_run(atom)
+
+        return results
+
+    async def push_code(self, atom: Atom) -> dict:
+        """Push code to Git"""
+        if not atom.code:
+            return {"error": "No code"}
+
+        branch = f"ungpt/{atom.id}"
+        atom.git_branch = branch
+
+        code_file = CONFIG.code_dir / f"{atom.id}.py"
+        code_file.write_text(atom.code)
+
+        try:
+            cmds = [
+                ["git", "checkout", "-b", branch],
+                ["git", "add", str(code_file)],
+                ["git", "commit", "-m", f"[UNGPT] {atom.content[:50]}"],
+                ["git", "push", "-u", "origin", branch],
+            ]
+
+            for cmd in cmds:
+                subprocess.run(cmd, cwd=self.repo_path, capture_output=True, check=True)
+
+            atom.status = "pushed"
+            return {"success": True, "branch": branch}
+        except Exception as e:
+            return {"error": str(e)}
+
+    async def create_pr(self, atom: Atom) -> dict:
+        """Create GitHub PR"""
+        try:
+            result = subprocess.run(
+                [
+                    "gh",
+                    "pr",
+                    "create",
+                    "--title",
+                    f"[UNGPT] {atom.content[:50]}",
+                    "--body",
+                    f"Atom: {atom.id}\n\nReasoning chain: {len(atom.reasoning_chain)} handoffs\n\nAuto-generated by Ungpt.",
+                ],
+                cwd=self.repo_path,
+                capture_output=True,
+                text=True,
+            )
+
+            if result.returncode == 0:
+                atom.pr_url = result.stdout.strip()
+                atom.status = "pr"
+                return {"success": True, "pr_url": atom.pr_url}
+            return {"error": result.stderr}
+        except Exception as e:
+            return {"error": str(e)}
+
+    async def merge_pr(self, atom: Atom) -> dict:
+        """Merge PR"""
+        try:
+            result = subprocess.run(
+                ["gh", "pr", "merge", "--merge", "--delete-branch"],
+                cwd=self.repo_path,
+                capture_output=True,
+                text=True,
+            )
+
+            if result.returncode == 0:
+                atom.pr_merged = True
+                atom.status = "merged"
+                return {"success": True}
+            return {"error": result.stderr}
+        except Exception as e:
+            return {"error": str(e)}
+
+    async def deploy_to_cloud_run(self, atom: Atom) -> dict:
+        """Deploy to Cloud Run"""
+        if not CONFIG.gcp_project:
+            return {"error": "GCP not configured"}
+
+        service = f"ungpt-{atom.id[:8].lower()}"
+
+        try:
+            result = subprocess.run(
+                [
+                    "gcloud",
+                    "run",
+                    "deploy",
+                    service,
+                    "--source",
+                    ".",
+                    "--project",
+                    CONFIG.gcp_project,
+                    "--region",
+                    CONFIG.gcp_region,
+                    "--allow-unauthenticated",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=300,
+            )
+
+            if result.returncode == 0:
+                for line in result.stdout.split("\n"):
+                    if "https://" in line:
+                        atom.cloud_run_url = line.strip()
+                        break
+                atom.status = "deployed"
+                return {"success": True, "url": atom.cloud_run_url}
+            return {"error": result.stderr}
+        except Exception as e:
+            return {"error": str(e)}
+
+
+# =============================================================================
+# GITHUB CHAT STORAGE
+# =============================================================================
+
+
+class GitHubChatStorage:
+    """Save all chats to GitHub"""
+
+    async def save_chat(self, atom: Atom) -> str:
+        """Save atom with full reasoning chain to GitHub"""
+        import base64
+
+        import httpx
+
+        content = json.dumps(atom.to_dict(), indent=2)
+
+        if not CONFIG.github_token or not CONFIG.github_repo:
+            path = CONFIG.chats_dir / f"{atom.id}.json"
+            path.write_text(content)
+            return f"file://{path}"
+
+        path = f"chats/{atom.id}.json"
+
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                f"https://api.github.com/repos/{CONFIG.github_repo}/contents/{path}",
+                headers={"Authorization": f"token {CONFIG.github_token}"},
+            )
+            sha = resp.json().get("sha") if resp.status_code == 200 else None
+
+            data = {
+                "message": f"[UNGPT] Chat {atom.id}",
+                "content": base64.b64encode(content.encode()).decode(),
+            }
+            if sha:
+                data["sha"] = sha
+
+            resp = await client.put(
+                f"https://api.github.com/repos/{CONFIG.github_repo}/contents/{path}",
+                headers={"Authorization": f"token {CONFIG.github_token}"},
+                json=data,
+            )
+
+            if resp.status_code in [200, 201]:
+                url = f"https://github.com/{CONFIG.github_repo}/blob/main/{path}"
+                atom.github_chat_url = url
+                return url
+            return f"error: {resp.status_code}"
+
+
+# =============================================================================
+# MAIN PIPELINE ORCHESTRATOR
+# =============================================================================
+
+
+class UngptPipeline:
+    """Complete Ungpt v2.0 pipeline with reasoning handoffs"""
+
+    def __init__(self):
+        self.gemini = GeminiIntake()
+        self.perplexity = PerplexityResearch()
+        self.supergrok = SuperGrok()
+        self.code_pool = GeminiCodeAssistPool()
+        self.git = GitWorkflow()
+        self.chat_storage = GitHubChatStorage()
+        self.llm_conv = LLMConversation()
+
+    async def process(self, input_text: str) -> list[Atom]:
+        """Run full pipeline with reasoning handoffs"""
+
+        print("\n" + "═" * 70)
+        print("  UNGPT v2.0 - REASONING HANDOFF PIPELINE")
+        print("═" * 70)
+
+        # Stage 1: Gemini atomize (searches pipeline, drive, memory, web)
+        print("\n📦 STAGE 1: Gemini 3 Pro Intake")
+        print("   Searching: pipeline, drive, memory, web...")
+        atoms, gemini_handoffs = await self.gemini.atomize_with_reasoning(input_text)
+        print(f"   Created {len(atoms)} atoms with tests")
+
+        results = []
+
+        for i, (atom, gemini_handoff) in enumerate(zip(atoms, gemini_handoffs)):
+            print(f"\n{'─' * 60}")
+            print(f"ATOM {i + 1}/{len(atoms)}: {atom.id}")
+            print(f"{'─' * 60}")
+
+            # Stage 2: Perplexity research with reasoning handoff
+            print("\n🔍 STAGE 2: Perplexity Research")
+            print("   Receiving reasoning from Gemini...")
+            perplexity_handoff = await self.perplexity.research_with_reasoning(atom, gemini_handoff)
+            print("   Research complete. Explaining reasoning to SuperGrok...")
+
+            # Stage 3: SuperGrok research and route
+            print("\n🚀 STAGE 3: SuperGrok (X/Grokipedia)")
+            print("   Receiving all prior reasoning...")
+            supergrok_handoff, license_num = await self.supergrok.research_and_route(
+                atom, perplexity_handoff
+            )
+            print(f"   Routing to Gemini Code Assist License #{license_num}")
+
+            # Stage 4: Gemini Code Assist
+            print(f"\n💻 STAGE 4: Gemini Code Assist (License #{license_num})")
+            print(f"   Full reasoning chain: {len(atom.reasoning_chain)} handoffs")
+            await self.code_pool.process_atom(atom, license_num, supergrok_handoff)
+
+            # Stage 5: Git workflow
+            print("\n📤 STAGE 5: Git → PR → Merge → Cloud Run")
+            git_result = await self.git.full_workflow(atom)
+            print(f"   Push: {'✓' if git_result['push'].get('success') else '✗'}")
+            print(f"   PR: {'✓' if git_result.get('pr', {}).get('success') else '✗'}")
+            print(f"   Merge: {'✓' if git_result.get('merge', {}).get('success') else '✗'}")
+            print(f"   Deploy: {'✓' if git_result.get('deploy', {}).get('success') else '✗'}")
+
+            # Save chat to GitHub
+            await self.chat_storage.save_chat(atom)
+            atom.save()
+
+            results.append(atom)
+
+            print(f"\n✅ ATOM COMPLETE: {atom.status}")
+            if atom.cloud_run_url:
+                print(f"   URL: {atom.cloud_run_url}")
+            if atom.github_chat_url:
+                print(f"   Chat: {atom.github_chat_url}")
+
+        return results
+
+    def dashboard(self) -> dict:
+        """Full pipeline dashboard"""
+        return {
+            "code_assist_pool": self.code_pool.dashboard(),
+            "llm_conversation_log": self.llm_conv.conversation_log[-10:],
+            "total_autoresearch": 650 * 4,  # 4 LLMs each with 650
+        }
+
+
+# =============================================================================
+# CLI
+# =============================================================================
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Ungpt v2.0 - Reasoning Handoff Pipeline")
+    parser.add_argument("input", nargs="?", help="Input text or command")
+    parser.add_argument("--dashboard", "-d", action="store_true")
+    parser.add_argument("--iphone", action="store_true", help="Show iPhone shortcuts")
+
+    args = parser.parse_args()
+
+    pipeline = UngptPipeline()
+
+    if args.dashboard or args.input == "dashboard":
+        print(json.dumps(pipeline.dashboard(), indent=2))
+        return
+
+    if args.iphone or args.input == "iphone":
+        print("\n📱 iPhone Shortcuts:")
+        print("   Perplexity: perplexity://search?q=YOUR_QUERY")
+        print("   SuperGrok: twitter://search?query=YOUR_QUERY")
+        return
+
+    if args.input:
+        results = asyncio.run(pipeline.process(args.input))
+
+        print("\n" + "═" * 70)
+        print("  PIPELINE COMPLETE")
+        print("═" * 70)
+        for atom in results:
+            print(f"\n  {atom.id}")
+            print(f"    Status: {atom.status}")
+            print(f"    Reasoning chain: {len(atom.reasoning_chain)} handoffs")
+            print(
+                f"    Swarm votes: Gemini={atom.gemini_swarm_vote.get('final_action', '?')} "
+                f"Perplexity={atom.perplexity_swarm_vote.get('final_action', '?')} "
+                f"SuperGrok={atom.supergrok_swarm_vote.get('final_action', '?')} "
+                f"CodeAssist={atom.codeassist_swarm_vote.get('final_action', '?')}"
+            )
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

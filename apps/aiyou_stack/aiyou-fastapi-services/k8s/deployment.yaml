@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pnkln-file-search
+  namespace: pnkln-core
+  labels:
+    app: pnkln-file-search
+    component: file-search
+    version: v0.1.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: pnkln-file-search
+  template:
+    metadata:
+      labels:
+        app: pnkln-file-search
+        component: file-search
+        version: v0.1.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: pnkln-file-search
+      containers:
+        - name: file-search
+          image: gcr.io/pnkln-core-gke/file-search:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: GCP_PROJECT_ID
+              value: "pnkln-core-gke"
+            - name: GCP_REGION
+              value: "us-central1"
+            - name: GCP_STORAGE_BUCKET
+              value: "gs://pnkln-policy-corpus"
+            - name: VERTEX_AI_LOCATION
+              value: "us-central1"
+            - name: VERTEX_AI_MODEL
+              value: "gemini-3.1-flash-lite-preview"
+            - name: SERVICE_PORT
+              value: "8000"
+            - name: LOG_LEVEL
+              value: "INFO"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pnkln-file-search
+  namespace: pnkln-core
+  labels:
+    app: pnkln-file-search
+spec:
+  type: ClusterIP
+  selector:
+    app: pnkln-file-search
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pnkln-file-search
+  namespace: pnkln-core
+  annotations:
+    iam.gke.io/gcp-service-account: redacted@shadowtag-v4.local

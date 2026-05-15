@@ -1,0 +1,128 @@
+# Unified Repo Maintenance — Betterleaks + Ruff + Biome + ast-grep
+# This workflow runs the full maintenance stack on push to main and on PRs.
+# See tools/repo_maintenance/README.md for the local equivalent.
+
+name: "🧹 Repo Maintenance"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "libs/**"
+      - "tools/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "libs/**"
+      - "tools/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repo-maintenance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Betterleaks: Secret Detection ──────────────────────────────────────────
+  betterleaks:
+    name: "🔒 Betterleaks"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Betterleaks
+        run: |
+          go install github.com/betterleaks/betterleaks@latest
+          echo "$HOME/go/bin" >> $GITHUB_PATH
+
+      - name: Scan working tree
+        run: |
+          betterleaks dir \
+            --report-format=json \
+            --report-path=betterleaks-dir.json \
+            --redact \
+            . || true
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: betterleaks-dir-${{ github.run_id }}
+          path: betterleaks-dir.json
+          if-no-files-found: ignore
+
+  # ── Ruff: Python Lint + Format ─────────────────────────────────────────────
+  ruff:
+    name: "🐍 Ruff"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Ruff
+        run: pip install ruff==0.15.11
+
+      - name: Ruff check (apps + scripts)
+        run: ruff check apps/ scripts/ --output-format sarif > ruff-results.sarif || true
+
+      - name: Ruff format check
+        run: ruff format --check apps/ scripts/ || true
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ruff-results.sarif
+        continue-on-error: true
+
+  # ── Biome: JS/TS Lint + Format ─────────────────────────────────────────────
+  biome:
+    name: "📐 Biome"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Biome
+        run: npm install -g @biomejs/biome
+
+      - name: Biome check
+        run: |
+          biome check \
+            --diagnostic-level=warn \
+            apps/ scripts/ || true
+
+  # ── ast-grep: Structural Pattern Scan ──────────────────────────────────────
+  ast-grep:
+    name: "🌳 ast-grep"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install ast-grep
+        run: npm install -g @ast-grep/cli
+
+      - name: Scan structural rules
+        run: ast-grep scan --format github || true

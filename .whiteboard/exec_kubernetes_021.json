@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_kubernetes_021",
+  "level": 2,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "kubernetes",
+  "tier": "execution",
+  "shift": "shift_4",
+  "knowledge_graph": {
+    "specialization": "kubernetes",
+    "domain": "kubernetes"
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

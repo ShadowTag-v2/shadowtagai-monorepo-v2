@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/antigravity/deploy.py
+# hypothesis_version: 6.151.5
+
+[30.0, 200, '%Y%m%d_%H%M%S', 'Authorization', 'GITHUB_TOKEN', 'No GitHub token', 'ShadowTag-v2', 'base', 'body', 'branch', 'chat_log_url', 'code', 'commit_title', 'content', 'deployment', 'error', 'head', 'html_url', 'main', 'merge_method', 'merged', 'message', 'number', 'object', 'pr_url', 'ref', 'sha', 'squash', 'success', 'title']

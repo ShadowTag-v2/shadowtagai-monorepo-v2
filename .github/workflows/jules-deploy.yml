@@ -1,0 +1,63 @@
+# Jules V25 Ascendancy — Autonomous Deployment Pipeline
+#
+# Trigger: On push to main, or manual dispatch.
+# Uses @google/jules-sdk via jules-action to create sessions
+# that autonomously deploy to Cloud Run.
+#
+# Secrets required:
+#   JULES_API_KEY — from GCP Secret Manager
+#   SHADOWTAG_PEM — GitHub App private key
+
+name: Jules Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: 'Deployment prompt for Jules'
+        required: true
+        type: string
+      service:
+        description: 'Cloud Run service name'
+        required: false
+        default: 'counselconduit'
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - 'apps/counselconduit/**'
+      - 'packages/jules_apex/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  jules-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 30
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Invoke Jules
+        uses: google-labs-code/jules-action@main
+        with:
+          prompt: ${{ inputs.prompt || 'Review and deploy the latest changes to Cloud Run.' }}
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          starting_branch: main
+          include_last_commit: true
+          include_commit_log: true
+
+      - name: Post-deploy notification
+        if: always()
+        run: |
+          echo "::notice::Jules deployment session initiated for service: ${{ inputs.service || 'counselconduit' }}"
+          echo "Check https://jules.google.com for session status"

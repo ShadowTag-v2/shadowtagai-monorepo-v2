@@ -1,0 +1,90 @@
+{
+  "bundle": "antigravity_strict_final_foldin_apply",
+  "files": [
+    {
+      "path": "APPLY_INTERNAL.sh",
+      "sha256": "06f34a304c17611baf570e48ea684ce0cf71170366bf0ba29447f681ddc55b8f",
+      "bytes": 2791
+    },
+    {
+      "path": "INSTALL_ANTIGRAVITY_V10_LOCAL.md",
+      "sha256": "400f55214e885b9dfc9d27cf3aaa0faaa0b14a75db97f136d70c65ec80b2898e",
+      "bytes": 3285
+    },
+    {
+      "path": "INSTALL_ANTIGRAVITY_V11_MERGED.md",
+      "sha256": "6cb75b2d4668985f9b1e38674b6ffeb2da328b9b93f4417b23d09d7a6fee6395",
+      "bytes": 1641
+    },
+    {
+      "path": "INSTALL_INTERNAL_APPLY.md",
+      "sha256": "af4073bfb7256ff680ecea2999df5c32873502eac891b469796641b519d09ba8",
+      "bytes": 1227
+    },
+    {
+      "path": "KEEP_OR_DEMOTE.md",
+      "sha256": "7ca9aaa93fd6aed6a9dab558437874802a9758802e822f99aa4a562bd35fc6b8",
+      "bytes": 676
+    },
+    {
+      "path": "PUBLIC_REPOS_TO_CLONE.md",
+      "sha256": "21fb87d36c0a6f6134af3d4436c9363bb71072241265b2ad605c882958fccb1a",
+      "bytes": 1610
+    },
+    {
+      "path": "README_STRICT_FINAL_FOLDIN.md",
+      "sha256": "ab3af8188c48048502ec3b390bd8f3cf0f315f26b7876a8ddb91d86643e05740",
+      "bytes": 1325
+    },
+    {
+      "path": "ane_cortex_stack_v10_bundle.tar.gz",
+      "sha256": "e62922d421422371dedadc610d05d9c5b3083071b6a97c713acbed015de3c48a",
+      "bytes": 29980
+    },
+    {
+      "path": "antigravity_final_ingest_bundle.tar.gz",
+      "sha256": "c85183c4ce6280c8235e1cff49bb0927db6bf300f48ed9a9018ed4ba6307101b",
+      "bytes": 36566
+    },
+    {
+      "path": "antigravity_handoff.txt",
+      "sha256": "424bd69e9027ed1e26fd9c09346f0adf742353b90e99381efab767da19b85c54",
+      "bytes": 3052
+    },
+    {
+      "path": "antigravity_v11_merged_control_plane_final_bundle.tar.gz",
+      "sha256": "d2c5d049177a7289d6379393151385c5e509006fb3041d73a033961d8072467b",
+      "bytes": 37871
+    },
+    {
+      "path": "clone_public_support_repos.sh",
+      "sha256": "aa2108b20ba6d6f0be721defbd6de421a2949536f771be833c1112519171d94f",
+      "bytes": 1226
+    },
+    {
+      "path": "fold_in_checklist.yaml",
+      "sha256": "0985b0b92cacce4102b30ec962859f211a384b6ca6ef887e78ef0b7af2911a2f",
+      "bytes": 28219
+    },
+    {
+      "path": "operator_invariants.json",
+      "sha256": "ef8be2b40a71c5e20261a663ba3111266c69220d4c405e609685c35eea3bbad3",
+      "bytes": 1435
+    },
+    {
+      "path": "operator_invariants_atoms.json",
+      "sha256": "2bfb53a4af8ccb6b351db8466da406bcdabace505125b0a821e7c34af1986ef1",
+      "bytes": 3979
+    },
+    {
+      "path": "setup_antigravity_v10_local.sh",
+      "sha256": "0a97ec49bb4f1bec2d11fecf233abd325475b8e39f4b7d1ccd647eaedf4f7016",
+      "bytes": 4299
+    },
+    {
+      "path": "setup_antigravity_v11_merged.sh",
+      "sha256": "8e4d23de8c7e6b13a4a39491a5a71a6ccb6741ef6c1e93d2dbe188bbfbed6271",
+      "bytes": 3342
+    }
+  ]
+}

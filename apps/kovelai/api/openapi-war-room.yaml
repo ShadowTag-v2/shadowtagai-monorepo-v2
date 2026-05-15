@@ -1,0 +1,351 @@
+# OpenAPI 3.1 — War Room API Specification
+# CounselConduit / KovelAI War Room Endpoints
+#
+# @see WAR_ROOM_ARCHITECTURE.md — Technical Design
+# @see murder-board.ts — Implementation
+# @see OMNIBUS_STRATEGIC_BLUEPRINT.md — Business Context
+
+openapi: 3.1.0
+info:
+  title: KovelAI War Room API
+  description: |
+    API for the KovelAI War Room / Murder Board Pipeline.
+    All endpoints require S.E.U. token authentication.
+    Zero data retained — all processing is stateless transit.
+  version: 2.2.0
+  contact:
+    name: CounselConduit Engineering
+    email: engineering@counselconduit.com
+  license:
+    name: Proprietary
+    identifier: LicenseRef-CounselConduit
+
+servers:
+  - url: https://counselconduit-767252945109.us-central1.run.app
+    description: Production (Cloud Run)
+  - url: http://localhost:3000
+    description: Local Development
+
+security:
+  - seuToken: []
+  - bearerAuth: []
+
+paths:
+  /api/war-room/murder-board:
+    post:
+      operationId: triggerMurderBoard
+      summary: Trigger War Room Pipeline
+      description: |
+        Creates a new Murder Board session and begins the 7-stage
+        pipeline. Returns immediately with the session ID. Use GET
+        to poll for status updates.
+      tags: [War Room]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MurderBoardRequest'
+            examples:
+              basic:
+                summary: Basic intake trigger
+                value:
+                  firmId: "firm_abc123"
+                  clientStatement: "I signed a contract in June 2025 and the other party has not delivered..."
+                  jurisdiction: "CA"
+              with_evidence:
+                summary: With Google Drive evidence
+                value:
+                  firmId: "firm_abc123"
+                  clientStatement: "I was terminated without cause..."
+                  jurisdiction: "NY"
+                  evidenceUrls:
+                    - "https://drive.google.com/file/d/abc123"
+      responses:
+        '202':
+          description: Pipeline accepted and processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MurderBoardAccepted'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+    get:
+      operationId: getMurderBoardStatus
+      summary: Get Pipeline Status
+      description: Returns the current state and available stage outputs.
+      tags: [War Room]
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The Murder Board session ID
+      responses:
+        '200':
+          description: Session status and available outputs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MurderBoardStatus'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/war-room/stages/{stage}:
+    post:
+      operationId: executeStage
+      summary: Execute Pipeline Stage (Internal)
+      description: |
+        Called by Cloud Tasks to execute a specific pipeline stage.
+        Not for external consumption.
+      tags: [Internal]
+      parameters:
+        - name: stage
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [intake, osint, verb-audit, oracle, citations, brief, vault]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StagePayload'
+      responses:
+        '200':
+          description: Stage completed
+        '500':
+          description: Stage failed
+      security:
+        - cloudTasksAuth: []
+
+  /api/war-room/brief/{sessionId}:
+    get:
+      operationId: getBrief
+      summary: Download Attorney Brief
+      description: Returns the generated brief as markdown or PDF.
+      tags: [War Room]
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [markdown, pdf]
+            default: markdown
+      responses:
+        '200':
+          description: Brief content
+          content:
+            text/markdown:
+              schema:
+                type: string
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/war-room/verb-ledger/{sessionId}:
+    get:
+      operationId: getVerbLedger
+      summary: Get Verb Audit Results
+      description: Returns the kinematic verb analysis for a session.
+      tags: [War Room]
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Verb ledger data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerbLedger'
+
+components:
+  securitySchemes:
+    seuToken:
+      type: apiKey
+      in: header
+      name: X-SEU-Token
+      description: S.E.U. (Sandbox-Bound, Ephemeral, User-Billed) token
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cloudTasksAuth:
+      type: http
+      scheme: bearer
+      description: Google Cloud Tasks OIDC token
+
+  schemas:
+    MurderBoardRequest:
+      type: object
+      required: [firmId, clientStatement]
+      properties:
+        firmId:
+          type: string
+          description: The law firm's unique identifier
+        clientStatement:
+          type: string
+          minLength: 50
+          description: The client's initial statement or narrative
+        jurisdiction:
+          type: string
+          pattern: '^[A-Z]{2}$'
+          description: Two-letter state code
+        evidenceUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Google Drive URLs for evidence ingestion
+
+    MurderBoardAccepted:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        status:
+          type: string
+          enum: [accepted]
+        estimatedMinutes:
+          type: integer
+          description: Estimated completion time
+
+    MurderBoardStatus:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        status:
+          type: string
+          enum: [intake, osint, verb_audit, oracle, citations, brief, vault, complete, failed]
+        stagesCompleted:
+          type: integer
+          minimum: 0
+          maximum: 7
+        outputs:
+          type: object
+          properties:
+            verbCount:
+              type: integer
+            citationCount:
+              type: integer
+            briefAvailable:
+              type: boolean
+            kovelAttestationHash:
+              type: string
+        error:
+          type: string
+          nullable: true
+
+    StagePayload:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        stage:
+          type: integer
+          minimum: 1
+          maximum: 7
+        firmId:
+          type: string
+
+    VerbLedger:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        verbs:
+          type: array
+          items:
+            type: object
+            properties:
+              verb:
+                type: string
+              context:
+                type: string
+              kinematicClassification:
+                type: string
+                enum: [volitional, negligent, coercive, fraudulent, omissive, consequential, statutory, contractual]
+              causeOfAction:
+                type: string
+              confidence:
+                type: number
+                minimum: 0
+                maximum: 1
+              strengthensOrWeakens:
+                type: string
+                enum: [strengthens, weakens]
+        summary:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              count:
+                type: integer
+              avgConfidence:
+                type: number
+
+  responses:
+    BadRequest:
+      description: Invalid request body
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    Unauthorized:
+      description: Missing or invalid S.E.U. token
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    NotFound:
+      description: Session not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+
+    ProblemDetail:
+      description: RFC 9457 Problem Details
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                format: uri
+              title:
+                type: string
+              status:
+                type: integer
+              detail:
+                type: string
+              instance:
+                type: string
+                format: uri

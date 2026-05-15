@@ -1,0 +1,9 @@
+# tool_contracts/bazel.build.yaml
+tool_id: "bazel.build"
+description: "Governs the bazel.build operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/bazel_build.jsonl"
+reuse_queries: []

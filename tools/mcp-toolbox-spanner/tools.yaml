@@ -1,0 +1,66 @@
+# MCP Toolbox for Databases — Custom Spanner Configuration
+# Project: shadowtag-omega-v4
+# Instance: core-cluster / Database: shadowtag-db
+# Dialect: GoogleSQL
+#
+# This config provides additional database insight tools beyond the prebuilt set.
+# The prebuilt config (--prebuilt spanner) already provides:
+#   execute_sql, execute_sql_dql, list_tables, list_graphs
+#
+# To use this custom config instead of prebuilt:
+#   npx @toolbox-sdk/server --config tools/mcp-toolbox-spanner/tools.yaml --stdio
+
+---
+kind: source
+name: spanner-source
+type: spanner
+project: ${SPANNER_PROJECT}
+instance: ${SPANNER_INSTANCE}
+database: ${SPANNER_DATABASE}
+dialect: ${SPANNER_DIALECT:googlesql}
+---
+# Read-only SQL execution (safe for agent auto-approval)
+kind: tool
+name: execute_sql_dql
+type: spanner-execute-sql
+source: spanner-source
+description: >
+  Execute read-only (DQL) SQL queries against the Spanner database.
+  Use GoogleSQL syntax. This tool cannot modify data.
+readOnly: true
+---
+# DML SQL execution (requires human approval)
+kind: tool
+name: execute_sql
+type: spanner-execute-sql
+source: spanner-source
+description: >
+  Execute DML SQL (INSERT, UPDATE, DELETE) against the Spanner database.
+  Use GoogleSQL syntax. This tool CAN modify data — use with caution.
+---
+# Schema introspection
+kind: tool
+name: list_tables
+type: spanner-list-tables
+source: spanner-source
+description: >
+  Lists detailed schema information (columns, constraints, indexes) as JSON
+  for user-created tables. Supports 'simple' (names only) or 'detailed' output.
+---
+# Graph schema introspection
+kind: tool
+name: list_graphs
+type: spanner-list-graphs
+source: spanner-source
+description: >
+  Lists graph schema information (node tables, edge tables, labels, properties)
+  for user-created Spanner graphs.
+---
+# Toolset grouping
+kind: toolset
+name: shadowtag-data
+tools:
+  - execute_sql
+  - execute_sql_dql
+  - list_tables
+  - list_graphs

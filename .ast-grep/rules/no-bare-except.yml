@@ -1,0 +1,5 @@
+id: no-bare-except
+severity: error
+language: python
+rule: { pattern: "except:\n  $$$BODY" }
+fix: "except Exception:\n  $$$BODY"

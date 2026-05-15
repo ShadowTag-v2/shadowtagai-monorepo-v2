@@ -1,0 +1,9 @@
+{
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "pkg",
+    "target",
+    "website/public/parsers/*.wasm"
+  ]
+}

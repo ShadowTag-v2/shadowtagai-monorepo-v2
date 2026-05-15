@@ -1,0 +1,123 @@
+// == WARNING ==
+// These functions are used to generate GitLeak's default config.
+// You are free to use these in your own project, HOWEVER, no API stability is guaranteed.
+
+package utils
+
+import (
+	"strings"
+
+	"github.com/betterleaks/betterleaks/cmd/generate/config/base"
+	"github.com/betterleaks/betterleaks/config"
+	"github.com/betterleaks/betterleaks/detect"
+	"github.com/betterleaks/betterleaks/logging"
+	"github.com/betterleaks/betterleaks/sources"
+)
+
+func Validate(rule config.Rule, truePositives []string, falsePositives []string) *config.Rule {
+	r := &rule
+	d := createSingleRuleDetector(r)
+	for _, tp := range truePositives {
+		if len(d.DetectString(tp)) < 1 {
+			logging.Fatal().
+				Str("rule", r.RuleID).
+				Str("value", tp).
+				Str("regex", r.Regex.String()).
+				Msg("Failed to Validate. True positive was not detected by regex.")
+		}
+	}
+	for _, fp := range falsePositives {
+		findings := d.DetectString(fp)
+		if len(findings) != 0 {
+			logging.Fatal().
+				Str("rule", r.RuleID).
+				Str("value", fp).
+				Str("regex", r.Regex.String()).
+				Msg("Failed to Validate. False positive was detected by regex.")
+		}
+	}
+	return r
+}
+
+func ValidateWithPaths(rule config.Rule, truePositives map[string]string, falsePositives map[string]string) *config.Rule {
+	r := &rule
+	d := createSingleRuleDetector(r)
+	for path, tp := range truePositives {
+		f := sources.Fragment{
+			Raw: tp,
+			Attributes: map[string]string{
+				sources.AttrPath: path,
+			},
+		}
+		if len(d.Detect(f)) != 1 {
+			logging.Fatal().
+				Str("rule", r.RuleID).
+				Str("value", tp).
+				Str("regex", r.Regex.String()).
+				Str("path", r.Path.String()).
+				Msg("Failed to Validate. True positive was not detected by regex and/or path.")
+		}
+	}
+	for path, fp := range falsePositives {
+		f := sources.Fragment{
+			Raw: fp,
+			Attributes: map[string]string{
+				sources.AttrPath: path,
+			},
+		}
+		if len(d.Detect(f)) != 0 {
+			logging.Fatal().
+				Str("rule", r.RuleID).
+				Str("value", fp).
+				Str("regex", r.Regex.String()).
+				Str("path", r.Path.String()).
+				Msg("Failed to Validate. False positive was detected by regex and/or path.")
+		}
+	}
+	return r
+}
+
+func createSingleRuleDetector(r *config.Rule) *detect.Detector {
+	// normalize keywords like in the config package
+	var (
+		uniqueKeywords = make(map[string]struct{})
+		keywords       []string
+	)
+	for _, keyword := range r.Keywords {
+		k := strings.ToLower(keyword)
+		if _, ok := uniqueKeywords[k]; ok {
+			continue
+		}
+		keywords = append(keywords, k)
+		uniqueKeywords[k] = struct{}{}
+	}
+	r.Keywords = keywords
+
+	// SkipReport and RequiredRules are runtime concerns — strip them so the
+	// generation-time regex validation can detect findings normally.
+	testRule := *r
+	testRule.SkipReport = false
+	testRule.RequiredRules = nil
+	rules := map[string]config.Rule{
+		r.RuleID: testRule,
+	}
+	cfg := base.CreateGlobalConfig()
+	cfg.Rules = rules
+	cfg.Keywords = uniqueKeywords
+
+	cfg.KeywordToRules = make(map[string][]string)
+	if len(r.Keywords) == 0 {
+		cfg.NoKeywordRules = []string{r.RuleID}
+	} else {
+		for _, k := range r.Keywords {
+			cfg.KeywordToRules[k] = append(cfg.KeywordToRules[k], r.RuleID)
+		}
+	}
+
+	for _, a := range cfg.Allowlists {
+		if err := a.Validate(); err != nil {
+			logging.Fatal().Err(err).Msg("invalid global allowlist")
+		}
+	}
+	return detect.NewDetector(cfg)
+}

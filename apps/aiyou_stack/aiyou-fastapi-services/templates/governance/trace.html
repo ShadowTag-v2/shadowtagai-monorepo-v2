@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNKLN // GOVERNANCE TRACE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Subtle CRT Scanline effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100%; }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #00ff41;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Pnkln Brand Colors */
+        .text-pnkln-green { color: #00ff41; }
+        .text-pnkln-red { color: #ff3333; }
+        .text-pnkln-dim { color: #4a5568; }
+        .border-pnkln-dim { border-color: #333; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-10 selection:bg-green-900 selection:text-white">
+
+    <div class="scanline"></div>
+
+    <!-- HEADER -->
+    <header class="border-b border-pnkln-dim pb-4 mb-8 flex justify-between items-end">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tighter">PNKLN <span class="text-pnkln-dim">//</span> TRACE</h1>
+            <div class="text-xs text-pnkln-dim mt-1">SECURE GOVERNANCE ENVIRONMENT</div>
+        </div>
+        <div class="text-right">
+            <div class="text-xs text-pnkln-dim">TX ID</div>
+            <div class="text-sm font-bold text-white" id="decision-id">{{ decision_id }}</div>
+        </div>
+    </header>
+
+    <!-- MAIN TERMINAL AREA -->
+    <main class="flex-grow max-w-4xl w-full mx-auto">
+
+        <!-- Loading State -->
+        <div id="loader" class="text-center mt-20">
+            <span class="text-pnkln-green">ESTABLISHING SECURE CONNECTION...</span>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-screen" class="hidden text-center mt-20 text-pnkln-red">
+            [ERROR] TRACE LINK EXPIRED OR INVALID.<br>
+            ACCESS DENIED.
+        </div>
+
+        <!-- Content Area (Hidden initially) -->
+        <div id="terminal-content" class="hidden space-y-6">
+
+            <!-- Metadata Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm border-b border-pnkln-dim pb-6">
+                <div>
+                    <span class="text-pnkln-dim block text-xs">TIMESTAMP (UTC)</span>
+                    <span id="meta-timestamp">--</span>
+                </div>
+                <div>
+                    <span class="text-pnkln-dim block text-xs">JUDGE VERSION</span>
+                    <span id="meta-version">--</span>
+                </div>
+                <div class="md:col-span-2">
+                    <span class="text-pnkln-dim block text-xs">INPUTS</span>
+                    <pre id="meta-inputs" class="text-xs text-gray-400 mt-1 whitespace-pre-wrap">{}</pre>
+                </div>
+            </div>
+
+            <!-- The Replay Log -->
+            <div class="space-y-2 font-mono text-sm md:text-base min-h-[300px]">
+                <div id="log-container" class="space-y-1">
+                    <!-- Logs injected here via JS -->
+                </div>
+                <div id="active-line" class="hidden">
+                    <span class="text-pnkln-dim">></span> <span id="typing-buffer"></span><span class="cursor"></span>
+                </div>
+            </div>
+
+            <!-- Final Verdict Stamp -->
+            <div id="verdict-container" class="hidden border-t border-pnkln-dim pt-8 mt-8">
+                <div class="flex items-center space-x-4">
+                    <div class="text-xs text-pnkln-dim uppercase tracking-widest">Final Determination</div>
+                    <div class="flex-grow border-b border-dotted border-gray-800 h-1"></div>
+                </div>
+                <div id="verdict-stamp" class="text-4xl md:text-6xl font-black mt-4 tracking-tighter opacity-0 transform scale-95 transition-all duration-300">
+                    <!-- PASSED / REJECTED -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="mt-10 text-center text-xs text-pnkln-dim">
+        PNKLN AUTOMATED GOVERNANCE // FEDRAMP COMPLIANT // CONFIDENTIAL
+    </footer>
+
+    <script>
+        // 1. Get the Signed URL from Flask/Jinja template or query param fallback
+        const TRACE_URL = "{{ trace_url }}";
+        const DECISION_ID = "{{ decision_id }}";
+
+        // MOCK DATA for static preview (when Flask is not running)
+        const MOCK_DATA = {
+            "timestamp_utc": new Date().toISOString(),
+            "judge_version": "Judge 6 (v1.0.4) [PREVIEW MODE]",
+            "inputs": {"file": "video_submission_9982.mp4", "user_tier": "ENTERPRISE"},
+            "logic_trace": [
+                "STEP 1: Initializing Pnkln Neural Engine...",
+                "STEP 2: Metadata verification... OK",
+                "STEP 3: Sampling 60 frames for ShadowTag analysis...",
+                "STEP 4: Frame 01... CLEAR",
+                "STEP 5: Frame 15... CLEAR",
+                "STEP 6: Frame 30... WARNING: Obfuscation detected",
+                "STEP 7: Deep scan engaged on sector 4...",
+                "STEP 8: Watermark detected (ID: 555-ALPHA)",
+                "STEP 9: Cross-referencing policy database...",
+                "STEP 10: Policy check... APPROVED"
+            ],
+            "final_verdict": "APPROVED"
+        };
+
+        async function init() {
+            // Check if we are running in a raw HTML context (where the template tag wasn't replaced)
+            if (TRACE_URL.includes("{{") || !TRACE_URL || TRACE_URL === "None" || TRACE_URL === "") {
+                console.log("Running in preview mode with mock data.");
+                // Set mock decision ID if template wasn't processed
+                if (DECISION_ID.includes("{{") || !DECISION_ID) {
+                    document.getElementById('decision-id').textContent = 'PREVIEW-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+                }
+                // Simulate network delay then load mock data
+                setTimeout(() => startReplay(MOCK_DATA), 800);
+                return;
+            }
+
+            try {
+                // Fetch the JSON from GCS (unescape HTML entities in URL)
+                const response = await fetch(TRACE_URL.replace(/&amp;/g, '&'));
+
+                if (!response.ok) throw new Error("Expired or Invalid");
+
+                const data = await response.json();
+                startReplay(data);
+
+            } catch (e) {
+                console.error("Trace fetch failed:", e);
+                showError();
+            }
+        }
+
+        function showError() {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('error-screen').classList.remove('hidden');
+        }
+
+        function startReplay(data) {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('terminal-content').classList.remove('hidden');
+
+            // Populate Static Metadata
+            document.getElementById('meta-timestamp').innerText = data.timestamp_utc;
+            document.getElementById('meta-version').innerText = data.judge_version;
+            document.getElementById('meta-inputs').innerText = JSON.stringify(data.inputs, null, 2);
+
+            // Start the "Typewriter" Sequence for logs
+            const logs = data.logic_trace || [];
+            let index = 0;
+            const logContainer = document.getElementById('log-container');
+            const activeLine = document.getElementById('active-line');
+            const typingBuffer = document.getElementById('typing-buffer');
+
+            activeLine.classList.remove('hidden');
+
+            function typeNextLine() {
+                if (index >= logs.length) {
+                    activeLine.classList.add('hidden');
+                    revealVerdict(data.final_verdict);
+                    return;
+                }
+
+                const lineText = logs[index];
+
+                // Add completed line to DOM
+                const p = document.createElement('div');
+                p.innerHTML = `<span class="text-pnkln-dim mr-2">${index + 1 < 10 ? '0'+(index+1) : index+1}</span> ${colorizeLog(lineText)}`;
+                p.className = "opacity-0 transition-opacity duration-100";
+                logContainer.appendChild(p);
+
+                // Trigger reflow for fade-in
+                setTimeout(() => p.classList.remove('opacity-0'), 10);
+
+                index++;
+
+                // Randomize delay to feel "computational" (fast, then thinking pauses)
+                const delay = Math.random() * 300 + 100;
+                setTimeout(typeNextLine, delay);
+
+                // Auto scroll to bottom
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+
+            typeNextLine();
+        }
+
+        function colorizeLog(text) {
+            // Syntax highlighting for compliance logs
+            if (text.includes("ERROR") || text.includes("FAIL") || text.includes("REJECTED")) {
+                return `<span class="text-pnkln-red">${text}</span>`;
+            }
+            if (text.includes("OK") || text.includes("APPROVED") || text.includes("PASS") || text.includes("CLEAR")) {
+                return `<span class="text-pnkln-green">${text}</span>`;
+            }
+            if (text.includes("WARN") || text.includes("WARNING")) {
+                return `<span class="text-yellow-500">${text}</span>`;
+            }
+            return text;
+        }
+
+        function revealVerdict(verdict) {
+            const el = document.getElementById('verdict-stamp');
+            const container = document.getElementById('verdict-container');
+
+            container.classList.remove('hidden');
+            el.innerText = verdict;
+
+            if (verdict === "APPROVED" || verdict === "PASS" || verdict === "PASSED") {
+                el.classList.add("text-pnkln-green");
+            } else {
+                el.classList.add("text-pnkln-red");
+            }
+
+            // Slam effect
+            setTimeout(() => {
+                el.classList.remove("opacity-0", "scale-95");
+                el.classList.add("opacity-100", "scale-100");
+            }, 100);
+        }
+
+        // Boot
+        init();
+    </script>
+</body>
+</html>

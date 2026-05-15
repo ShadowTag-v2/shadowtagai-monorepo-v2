@@ -1,0 +1,9 @@
+# tool_contracts/artifact.upload.yaml
+tool_id: "artifact.upload"
+description: "Governs the artifact.upload operations."
+risk_level: "low"
+preconditions: []
+evidence_requirements:
+  - type: "log"
+    path: ".beads/evidence/artifact_upload.jsonl"
+reuse_queries: []

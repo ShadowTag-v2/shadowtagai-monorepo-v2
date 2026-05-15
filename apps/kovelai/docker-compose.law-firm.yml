@@ -1,0 +1,98 @@
+# Law Firm 1-Click Appliance
+# Docker Compose for isolated per-firm deployment
+#
+# Deploys the complete KovelAI stack as a self-contained appliance:
+# - KovelAI Frontend (Next.js)
+# - Privileged Search Proxy
+# - Oracle Studio Pipeline
+# - Local Redis for session management
+# - Nginx reverse proxy with TLS
+#
+# Usage: docker compose -f docker-compose.law-firm.yml up -d
+
+services:
+  # ─── KovelAI Frontend ─────────────────────────────────────
+  kovelai-app:
+    image: gcr.io/shadowtag-omega-v4/kovelai:latest
+    environment:
+      - NODE_ENV=production
+      - KOVELAI_BASE_URL=${KOVELAI_BASE_URL:-https://portal.lawfirm.example}
+      - GOOGLE_ENTERPRISE_KEY=${GOOGLE_ENTERPRISE_KEY}
+      - GOOGLE_DEFAULT_CX_ID=${GOOGLE_DEFAULT_CX_ID}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
+      - KOVELAI_PROXY_SECRET=${KOVELAI_PROXY_SECRET}
+      - KOVELAI_INTAKE_SECRET=${KOVELAI_INTAKE_SECRET}
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - CLOUD_TASKS_QUEUE_URL=${CLOUD_TASKS_QUEUE_URL}
+      - FIRESTORE_API_URL=${FIRESTORE_API_URL}
+      - CLIO_MCP_URL=http://clio-mcp:8081
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─── Clio MCP Bridge ──────────────────────────────────────
+  clio-mcp:
+    image: gcr.io/shadowtag-omega-v4/clio-mcp-bridge:latest
+    environment:
+      - CLIO_API_KEY=${CLIO_API_KEY}
+      - CLIO_FIRM_ID=${CLIO_FIRM_ID}
+      - NODE_ENV=production
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  # ─── Session Store ────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --requirepass ${REDIS_PASSWORD:-changeme}
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256M
+
+  # ─── Nginx TLS Termination ────────────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx-law-firm.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - kovelai-app
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

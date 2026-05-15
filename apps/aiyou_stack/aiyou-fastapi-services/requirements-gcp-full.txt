@@ -1,0 +1,9 @@
+# Full GCP Suite (Optional)
+# Install with: pip install -r requirements.txt -r requirements-gcp-full.txt
+
+google-cloud-bigquery>=3.26.0,<4.0.0
+google-cloud-pubsub>=2.26.0,<3.0.0
+google-cloud-logging>=3.11.0,<4.0.0
+google-cloud-firestore>=2.19.0,<3.0.0
+google-api-python-client>=2.150.0,<3.0.0
+kubernetes>=31.0.0,<32.0.0

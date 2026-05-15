@@ -1,0 +1,106 @@
+name: Omega Sync CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+
+concurrency:
+  group: omega-sync-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  structural-tests:
+    name: Structural Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          revoke_token: true
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml
+
+      - name: Run structural tests
+        run: python -m pytest tests/ -v --tb=short
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+
+  lint:
+    name: Lint & Dead Code
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install lint tools
+        run: pip install ruff
+
+      - name: Run ruff
+        run: ruff check . --select=E,W,F --ignore=E501
+
+      - name: Run ruff dead code scan (F401/F841 — V22 replaces vulture)
+        run: ruff check apps/ labs/ scripts/ --select F401,F841 --statistics || true
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ secrets.GH_APP_ID }}
+          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          organization: ShadowTag-v2
+          revoke_token: true
+
+      - name: Scan for secrets
+        run: |
+          # Check no API keys or PEMs committed
+          if grep -rn "PRIVATE KEY" --include="*.pem" --include="*.key" .; then
+            echo "❌ Private keys found in repo!"
+            exit 1
+          fi
+          echo "✅ No private keys found"
+
+      - name: Check .gitignore coverage
+        run: |
+          # Verify critical patterns are in .gitignore
+          for pattern in "*.pem" "*.key" ".env" "node_modules" "__pycache__"; do
+            if grep -q "$pattern" .gitignore; then
+              echo "✅ $pattern in .gitignore"
+            else
+              echo "⚠️ $pattern NOT in .gitignore"
+            fi
+          done

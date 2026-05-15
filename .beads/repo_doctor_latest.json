@@ -1,0 +1,248 @@
+{
+  "score": "C",
+  "total_findings": 34,
+  "critical": 0,
+  "errors": 1,
+  "warnings": 27,
+  "info": 6,
+  "findings": [
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": "agent/skills/system_omega_cognitive_router.ts",
+      "fix": "git checkout -- agent/skills/system_omega_cognitive_router.ts"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agents/skills/cognitive-structural-synthesis/SKILL.md",
+      "fix": "git checkout -- .agents/skills/cognitive-structural-synthesis/SKILL.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agents/skills/epistemic-airgap/SKILL.md",
+      "fix": "git checkout -- .agents/skills/epistemic-airgap/SKILL.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".agents/skills/omni-code-sanitation/SKILL.md",
+      "fix": "git checkout -- .agents/skills/omni-code-sanitation/SKILL.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".ast-grep/rules/no-bare-except.yml",
+      "fix": "git checkout -- .ast-grep/rules/no-bare-except.yml"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_all_859_classified.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_all_859_classified.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_full_audit.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_full_audit.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260420.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260420.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260421.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260421.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260423.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260423.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260427.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260427.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/gitleaks_nightly_20260428.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/gitleaks_nightly_20260428.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/raw_originals/gitleaks_full_1348_audit.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/raw_originals/gitleaks_full_1348_audit.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/raw_originals/gitleaks_nightly_20260501.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/raw_originals/gitleaks_nightly_20260501.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/_archive_2026-05-04/third_party_leak_manifest.md",
+      "fix": "git checkout -- .beads/_archive_2026-05-04/third_party_leak_manifest.md"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/dream_state.json",
+      "fix": "git checkout -- .beads/dream_state.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/gitleaks_full_1348_audit.md.gz",
+      "fix": "git checkout -- .beads/gitleaks_full_1348_audit.md.gz"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (D)",
+      "path": ".beads/gitleaks_nightly_20260501.md.gz",
+      "fix": "git checkout -- .beads/gitleaks_nightly_20260501.md.gz"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/kairos_heartbeat.json",
+      "fix": "git checkout -- .beads/kairos_heartbeat.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "Dirty file (M)",
+      "path": ".beads/repo_doctor_latest.json",
+      "fix": "git checkout -- .beads/repo_doctor_latest.json"
+    },
+    {
+      "gate": "dirty",
+      "severity": "warn",
+      "message": "... and 83 more dirty files",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "conflicts",
+      "severity": "info",
+      "message": "No conflict markers found",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "secrets",
+      "severity": "error",
+      "message": "Betterleaks found 41 potential secrets",
+      "path": "",
+      "fix": "Review /tmp/repo_doctor_secrets.json and add false positives to .betterleaksignore"
+    },
+    {
+      "gate": "large_files",
+      "severity": "info",
+      "message": "No large files in staging",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/random/.gitignore",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/random/BUILD.bazel",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/BUILD.bazel",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/README.MD",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "File outside canonical layout",
+      "path": "experimental/service_test_go/go.mod",
+      "fix": "Move to apps/, libs/, tools/, or archive/"
+    },
+    {
+      "gate": "drift",
+      "severity": "warn",
+      "message": "... and 194 more drift files",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "drift",
+      "severity": "info",
+      "message": "10871 files in known legacy directories (scheduled for archival)",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "lint",
+      "severity": "info",
+      "message": "Ruff lint clean",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "manifest",
+      "severity": "info",
+      "message": "Manifest v23.0 valid",
+      "path": "",
+      "fix": ""
+    },
+    {
+      "gate": "tests",
+      "severity": "info",
+      "message": "Tests: ======================== 3825 tests collected in 2.01s =========================",
+      "path": "",
+      "fix": ""
+    }
+  ]
+}

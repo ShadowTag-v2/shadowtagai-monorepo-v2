@@ -1,0 +1,13 @@
+node_modules/**
+.venv/**
+dist/**
+build/**
+.next/**
+apps/ShadowTag-v2_stack/**/node_modules/**
+tests/**
+legacy/**
+coverage/**
+.git/**
+external_repos/
+tools/
+.turbo/

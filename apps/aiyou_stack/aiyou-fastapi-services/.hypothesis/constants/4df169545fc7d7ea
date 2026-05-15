@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/models.py
+# hypothesis_version: 6.151.5
+
+[255, 'AIAgent', 'CASCADE', 'User', 'Workspace', 'WorkspaceMember', 'admin', 'agents', 'ai_agents', 'all, delete-orphan', 'member', 'members', 'user', 'users', 'users.id', 'workspace', 'workspace_links', 'workspace_members', 'workspaces', 'workspaces.id']

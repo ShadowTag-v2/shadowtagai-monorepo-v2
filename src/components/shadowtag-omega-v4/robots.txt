@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shadowtag-omega-v4.web.app/sitemap.xml

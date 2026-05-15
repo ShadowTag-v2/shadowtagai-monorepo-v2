@@ -1,0 +1,77 @@
+name: Deploy CounselConduit
+on:
+  push:
+    branches: [main]
+    paths: ['apps/counselconduit/**']
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deploy target'
+        required: true
+        default: 'staging'
+        type: choice
+        options: [staging, production]
+
+env:
+  PROJECT_ID: shadowtag-omega-v4
+  REGION: us-central1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Install Dependencies
+        run: pip install -r apps/counselconduit/requirements.txt pytest httpx
+      - name: Run Regression Tests
+        run: |
+          CC_STAGING_URL="https://counselconduit-staging-767252945109.us-central1.run.app" \
+            python -m pytest apps/counselconduit/tests/test_regression.py -v
+
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.inputs.environment == 'staging'
+    steps:
+      - uses: actions/checkout@v4
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+      - uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: counselconduit-staging
+          source: apps/counselconduit
+          region: ${{ env.REGION }}
+
+  deploy-production:
+    needs: [test, deploy-staging]
+    runs-on: ubuntu-latest
+    if: github.event.inputs.environment == 'production'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SA }}
+      - uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: counselconduit
+          source: apps/counselconduit
+          region: ${{ env.REGION }}
+          flags: '--no-traffic --tag=canary'
+      - name: Canary Health Check
+        run: |
+          sleep 30
+          curl -sf "https://canary---counselconduit-6byqzjbd7a-uc.a.run.app/health"
+      - name: Promote Canary
+        run: |
+          gcloud run services update-traffic counselconduit \
+            --project=${{ env.PROJECT_ID }} --region=${{ env.REGION }} \
+            --to-latest --quiet

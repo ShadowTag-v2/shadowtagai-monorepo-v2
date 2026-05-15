@@ -1,0 +1,61 @@
+name: V25 Jules & Pomelli Fleet Evolution
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+concurrency:
+  group: v25-fleet
+  cancel-in-progress: false
+permissions:
+  contents: write
+  id-token: write
+env:
+  GOOGLE_CLOUD_PROJECT: shadowtag-omega-v4
+jobs:
+  security-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install --frozen-lockfile
+      - run: bun run packages/agnt_bash_classifier/classifier.ts --audit-workspace
+      - run: bunx @ast-grep/cli scan --rule .ast-grep/rules/
+      - run: bunx @biomejs/biome check ./apps/ ./tools/ --no-errors-on-unmatched
+  deploy:
+    needs: security-gate
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - uses: google-github-actions/auth@v2
+        with:
+          project_id: shadowtag-omega-v4
+          workload_identity_provider: projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+      - run: bun install --frozen-lockfile
+      - run: bun run scripts/apply_pomelli_patch.ts
+      - run: npm i -g firebase-tools && CI=true firebase deploy --only hosting --project shadowtag-omega-v4
+  pomelli-audit:
+    needs: security-gate
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - uses: google-github-actions/auth@v2
+        with:
+          project_id: shadowtag-omega-v4
+          workload_identity_provider: projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+      - run: bun install --frozen-lockfile
+      - run: bun run tools/pomelli_swarm/execute.ts
+      - run: bun run scripts/apply_pomelli_patch.ts
+  property-tests:
+    needs: security-gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install --frozen-lockfile
+      - run: bun test tests/semantic_routing.test.ts

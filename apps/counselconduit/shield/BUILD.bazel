@@ -1,0 +1,24 @@
+# BUILD.bazel — apps/counselconduit/shield
+# Phase 4: Go-based microsecond risk interceptor (Shield 1 / ATP 5-19)
+# Owner: security
+#
+# This is the Go-based Shield layer that performs sub-millisecond
+# risk classification on action payloads using ATP 5-19 doctrine.
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+package(default_visibility = ["//apps/counselconduit:__subpackages__"])
+
+go_library(
+    name = "shield",
+    srcs = ["doctrine.go"],
+    importpath = "github.com/ShadowTag-v2/Monorepo-Uphillsnowball/apps/counselconduit/shield",
+)
+
+go_test(
+    name = "shield_test",
+    srcs = ["doctrine_test.go"],
+    embed = [":shield"],
+    size = "small",
+    timeout = "short",
+)

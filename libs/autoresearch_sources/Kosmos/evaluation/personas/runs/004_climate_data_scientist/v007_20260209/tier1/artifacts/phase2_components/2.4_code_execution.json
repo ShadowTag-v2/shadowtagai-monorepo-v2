@@ -1,0 +1,25 @@
+{
+  "code_generated": true,
+  "code_length": 3001,
+  "code_preview": "# T-Test Comparison Analysis\n# Generated from protocol template\n\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\nfrom pathlib import Path\nfrom kosmos.execution.data_analysis import DataAnalyzer\n\n# Data loading with synthetic fallback (Issue #51 fix)\n# Expected format: CSV with columns 'group' and 'measurement'\ndf = None\nif 'data_path' in dir() and data_path:\n    try:\n        df = pd.read_csv(data_path)\n        _data_source = 'file'\n    except Exception as e:\n        print(f'Warnin",
+  "domain": "physics",
+  "data_path": "/mnt/c/python/Kosmos/evaluation/data/climate_co2_temperature_test.csv",
+  "has_data_source_flag": true,
+  "uses_synthetic_data": true,
+  "hardcoded_effect_size": false,
+  "execution": {
+    "success": false,
+    "stdout": "",
+    "stderr": "\nTraceback (most recent call last):\n  File \"/home/jim/miniconda3/envs/llm/lib/python3.11/site-packages/pandas/core/indexes/base.py\", line 3812, in get_loc\n    return self._engine.get_loc(casted_key)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"pandas/_libs/index.pyx\", line 167, in pandas._libs.index.IndexEngine.get_loc\n  File \"pandas/_libs/index.pyx\", line 196, in pandas._libs.index.IndexEngine.get_loc\n  File \"pandas/_libs/hashtable_class_helper.pxi\", line 7088, in pandas._libs.hashtable.",
+    "error": "'group'",
+    "return_value": "None"
+  },
+  "gap_notes": [
+    "Synthetic data flag in code: True",
+    "Uses synthetic data: True",
+    "Hardcoded effect_size=0.5: False",
+    "Direct exec() used (no Docker sandbox by default)"
+  ],
+  "status": "PASS",
+  "duration_seconds": 0.25
+}

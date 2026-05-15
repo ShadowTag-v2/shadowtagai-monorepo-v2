@@ -1,0 +1,107 @@
+# This Cloud Workflow orchestrates a reflective correction loop between AI agents.
+# 1. It calls a "Fixer" agent to propose a code fix.
+# 2. It calls a "Reviewer" agent to approve or reject the fix.
+# 3. If rejected, it loops and calls the Fixer again with the reviewer's feedback.
+
+main:
+  params: [input] # Expects input like: { "original_code": "...", "error_message": "..." }
+  steps:
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - location: "us-central1"
+          - fixer_agent_url: "https://fixer-agent-abc123xyz-uc.a.run.app"
+          - reviewer_agent_url: "https://reviewer-agent-abc123xyz-uc.a.run.app"
+          - max_attempts: 3
+          - last_rejection_reason: ""
+          - fix_approved: false
+          - final_fix: ""
+
+    - fix_and_review_loop:
+        for:
+          value: attempt
+          range: [1, ${max_attempts + 1}]
+          steps:
+            - log_attempt:
+                call: sys.log
+                args:
+                  - text: ${"Fix attempt " + string(attempt) + "/" + string(max_attempts)}
+                  - severity: "INFO"
+
+            - call_fixer_agent:
+                call: http.post
+                args:
+                  url: ${fixer_agent_url}
+                  auth:
+                    type: OIDC
+                  body:
+                    original_code: ${input.original_code}
+                    error_message: ${input.error_message}
+                    rejection_reason: ${last_rejection_reason} # Will be empty on first attempt
+                result: fixer_response
+
+            - check_fixer_output:
+                switch:
+                  - condition: ${"proposed_fix" in fixer_response.body}
+                    next: call_reviewer_agent
+                next: handle_fixer_failure # Skip to end of loop if fixer fails
+
+            - call_reviewer_agent:
+                call: http.post
+                args:
+                  url: ${reviewer_agent_url}
+                  auth:
+                    type: OIDC
+                  body:
+                    original_code: ${input.original_code}
+                    error_message: ${input.error_message}
+                    proposed_fix: ${fixer_response.body.proposed_fix}
+                result: reviewer_response
+
+            - check_review:
+                switch:
+                  - condition: ${reviewer_response.body.approved == true}
+                    assign:
+                      - fix_approved: true
+                      - final_fix: ${fixer_response.body.proposed_fix}
+                    next: break_loop # Exit the for loop on success
+
+            - process_rejection:
+                assign:
+                  - last_rejection_reason: ${reviewer_response.body.reason}
+                next: log_rejection
+
+            - log_rejection:
+                call: sys.log
+                args:
+                  - text: ${"Reviewer rejected fix. Reason: " + last_rejection_reason}
+                  - severity: "WARNING"
+                next: continue_loop
+
+            - handle_fixer_failure:
+                assign:
+                  - last_rejection_reason: "Fixer agent failed to produce a valid output."
+                next: continue_loop
+
+            - break_loop:
+                break:
+
+            - continue_loop:
+                continue:
+
+    - check_final_status:
+        switch:
+          - condition: ${fix_approved}
+            next: return_success
+        next: return_failure
+
+    - return_success:
+        return:
+          status: "SUCCESS"
+          approved_fix: ${final_fix}
+
+    - return_failure:
+        return:
+          status: "FAILURE"
+          reason: ${"All " + string(max_attempts) + " fix attempts were rejected or failed."}
+          last_rejection: ${last_rejection_reason}

@@ -1,0 +1,38 @@
+# ═══════════════════════════════════════════════════════════
+# skills.update.yaml — SkillOps Tool Contract
+# Version: 1.0.0
+# Purpose: Governs safe skill creation, update, and audit
+# ═══════════════════════════════════════════════════════════
+contract: skills.update
+version: 1
+
+trigger:
+  - agent creates or modifies a skill SKILL.md
+  - agent installs skill from external source (npx skills add)
+  - agent archives or deduplicates a skill
+
+preconditions:
+  - skill_id: MUST be unique across .agents/skills/ and ~/.gemini/antigravity/skills/
+  - frontmatter: SKILL.md MUST have YAML frontmatter with name, description, version
+  - no_overlap: skill MUST NOT duplicate an existing skill's capability (run scripts/skills-audit.sh --check-overlap)
+  - external_source: if from external repo, MUST be listed in external_repos/upstream_manifest.yaml
+
+invariants:
+  - 139: SkillOps Is Repo-Governed — all skill mutations go through this contract
+  - rule_00: No skill deletion. Archive to _archive_redundant_*/ only.
+  - naming: Skill directory names are kebab-case, max 40 chars
+  - dedup: Workspace skills override global skills of same name (no dual-active)
+
+postconditions:
+  - registry_update: scripts/skills-registry.py --refresh MUST run after any skill mutation
+  - manifest_sync: monorepo_manifest.yaml skill_fleet count MUST be updated
+  - agents_md_sync: AGENTS.md Core Truth #4 skill count MUST match registry output
+  - heartbeat: .beads/kairos_heartbeat.json MUST be updated
+
+evidence:
+  - append to .agent/evidence/index.ndjson:
+      event: skills.update
+      skill_id: <skill-name>
+      action: create | update | archive | install
+      source: local | google-skills | vercel-skills | community
+      timestamp: ISO8601

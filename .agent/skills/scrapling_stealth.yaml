@@ -1,0 +1,15 @@
+id: "scrapling-stealth"
+name: "Scrapling Stealth Extraction"
+description: "Use Scrapling StealthyFetcher for adaptive, anti-bot web scraping."
+activation:
+  conditions:
+    - "site blocks traditional scraping (403, Cloudflare)"
+    - "need to bypass rate limits"
+execution:
+  script: |
+    from scrapling import StealthyFetcher
+    # Use adaptive extraction for undetectable fetching
+    fetcher = StealthyFetcher(adaptive=True)
+    page = fetcher.fetch(user_input['url'])
+    # Return cleanly extracted markdown/JSON
+    return page.adaptive_extract()

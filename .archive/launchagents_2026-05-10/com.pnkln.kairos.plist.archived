@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.pnkln.kairos</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python</string>
+        <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/kairos_daemon.py</string>
+        <string>--once</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball</string>
+    <key>StartInterval</key>
+    <integer>300</integer>
+    <key>StandardOutPath</key>
+    <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.beads/kairos-stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.beads/kairos-stderr.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>DISABLE_TELEMETRY</key>
+        <string>1</string>
+        <key>DISABLE_ERROR_REPORTING</key>
+        <string>1</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>KeepAlive</key>
+    <false/>
+</dict>
+</plist>

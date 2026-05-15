@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KovelAI | CounselConduit</title>
+  <meta name="description" content="AI-Orchestrated Case Intake & Triage. The decisive advantage for modern law. Every query privileged. Every transcript immutable.">
+  <meta name="color-scheme" content="dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+          colors: {
+            void: '#050505',
+            atmospheric: '#0a0f16',
+            'glass-border': '#3a4556',
+            'glass-text': '#8da2c0',
+            'sub-text': '#a0aabf',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fade-up { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .animate-fade-up-delay { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards; opacity: 0; }
+    .animate-fade-up-delay-2 { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards; opacity: 0; }
+    .animate-fade-up-delay-3 { animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards; opacity: 0; }
+    .animate-scale-in { animation: scaleIn 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    /* Subtle vignette */
+    .vignette::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(5,5,5,0.6) 100%);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* Button hover glow */
+    .btn-primary { transition: all 0.3s ease; }
+    .btn-primary:hover { box-shadow: 0 4px 24px rgba(255,255,255,0.08); }
+    .btn-ghost { transition: all 0.3s ease; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.04); }
+  </style>
+</head>
+<body class="bg-void text-white font-sans antialiased">
+
+  <!-- ═══ HERO ═══ -->
+  <main class="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center vignette">
+
+    <!-- Layer 0: Cinematic Video Background -->
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 animate-scale-in opacity-[0.08]">
+      <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Layer 1: Atmospheric Glass Scrim -->
+    <div class="absolute inset-0 bg-[#080d14] z-10" style="opacity:0.95"></div>
+
+    <!-- Layer 2: Content -->
+    <div class="relative z-20 text-center max-w-4xl px-6">
+
+      <!-- Badge -->
+      <span class="px-4 py-1.5 text-[10px] font-semibold tracking-[0.15em] uppercase border border-glass-border rounded-full text-glass-text mb-8 inline-block bg-atmospheric/50 backdrop-blur-sm animate-fade-up">
+        Post-Heppner Compliant
+      </span>
+
+      <!-- Headline -->
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-light tracking-[-0.03em] text-white mb-6 animate-fade-up-delay">
+        <span class="font-bold">CounselConduit</span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg md:text-xl lg:text-2xl text-sub-text font-light mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-up-delay-2">
+        AI-Orchestrated Case Intake &amp; Triage. The decisive advantage for modern law. Every query privileged. Every transcript immutable.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex gap-4 justify-center animate-fade-up-delay-3">
+        <button class="btn-primary px-8 py-3.5 bg-white text-void font-semibold rounded-sm hover:bg-gray-100 transition-all text-sm tracking-wide">
+          Deploy Pipeline
+        </button>
+        <button class="btn-ghost px-8 py-3.5 border border-glass-border text-white rounded-sm transition-all backdrop-blur-sm text-sm tracking-wide">
+          View Architecture
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom gradient fade -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-void to-transparent z-20 pointer-events-none"></div>
+  </main>
+
+  <!-- ═══ AUTHORITY SECTION ═══ -->
+  <section class="bg-void py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Trust indicators -->
+      <div class="flex items-center justify-center gap-12 mb-20 opacity-40">
+        <span class="text-xs tracking-[0.2em] uppercase font-medium">Am Law 100</span>
+        <span class="text-xs tracking-[0.2em] uppercase font-medium">SOC 2 Type II</span>
+        <span class="text-xs tracking-[0.2em] uppercase font-medium">Heppner Certified</span>
+        <span class="text-xs tracking-[0.2em] uppercase font-medium">CCPA Compliant</span>
+      </div>
+
+      <!-- Split section -->
+      <div class="grid md:grid-cols-2 gap-16 items-center mb-24">
+        <div>
+          <span class="text-[10px] tracking-[0.2em] uppercase text-glass-text font-semibold mb-4 block">Privilege-First Architecture</span>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-6 leading-tight">
+            Every AI query routed<br>through Kovel attestation.
+          </h2>
+          <p class="text-sub-text text-base leading-relaxed mb-8">
+            After <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026), every AI-assisted
+            legal communication must prove privileged status. CounselConduit guarantees it cryptographically
+            with HMAC-SHA256 receipts per session.
+          </p>
+          <button class="text-sm text-white border-b border-white/30 pb-1 hover:border-white/60 transition-all tracking-wide">
+            Read the Compliance Brief →
+          </button>
+        </div>
+        <div class="aspect-[4/3] bg-[#0d1117] rounded border border-white/[0.04] flex items-center justify-center overflow-hidden">
+          <div class="text-center space-y-3 opacity-60">
+            <div class="text-[10px] tracking-[0.2em] uppercase text-glass-text font-semibold">Kovel Attestation Receipt</div>
+            <div class="font-mono text-xs text-sub-text">Session: kv_2026_04_25_a7f3...</div>
+            <div class="font-mono text-xs text-sub-text">Hash: SHA-256 0x8fa3c9e...</div>
+            <div class="font-mono text-xs text-emerald-500/70 mt-2">✓ PRIVILEGE VERIFIED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature row -->
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="p-8 border border-white/[0.04] rounded bg-[#0a0c10] hover:border-white/[0.08] transition-all group">
+          <h3 class="text-lg font-semibold mb-3 tracking-tight">Oracle Studio</h3>
+          <p class="text-sm text-sub-text leading-relaxed">7-stage pipeline routing queries through Gemini, Claude, GPT, Grok, and Perplexity simultaneously.</p>
+        </div>
+        <div class="p-8 border border-white/[0.04] rounded bg-[#0a0c10] hover:border-white/[0.08] transition-all group">
+          <h3 class="text-lg font-semibold mb-3 tracking-tight">Ephemeral Client View</h3>
+          <p class="text-sm text-sub-text leading-relaxed">Auto-logout, screen wipe, dead-man's switch. No export. No copy. Privilege preserved.</p>
+        </div>
+        <div class="p-8 border border-white/[0.04] rounded bg-[#0a0c10] hover:border-white/[0.08] transition-all group">
+          <h3 class="text-lg font-semibold mb-3 tracking-tight">Dual-Billing Engine</h3>
+          <p class="text-sm text-sub-text leading-relaxed">Stripe Connect. Client pays the lawyer. Lawyer pays us. Auto-scaling tiers from Solo to Enterprise.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="bg-void py-24 px-6 border-t border-white/[0.04]">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-6">Ready to protect privilege?</h2>
+      <p class="text-sub-text text-base mb-10 max-w-xl mx-auto">
+        Join law firms already using CounselConduit to route AI queries through cryptographic Kovel attestation.
+      </p>
+      <button class="btn-primary px-10 py-4 bg-white text-void font-semibold rounded-sm hover:bg-gray-100 transition-all text-sm tracking-wide">
+        Start Free Trial
+      </button>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="bg-void border-t border-white/[0.04] py-12 px-6">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <span class="text-xs text-sub-text">© 2026 KovelAI. A ShadowTag Product.</span>
+      <div class="flex gap-8">
+        <a href="#" class="text-xs text-sub-text hover:text-white transition-colors">Privacy</a>
+        <a href="#" class="text-xs text-sub-text hover:text-white transition-colors">Terms</a>
+        <a href="#" class="text-xs text-sub-text hover:text-white transition-colors">Compliance</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

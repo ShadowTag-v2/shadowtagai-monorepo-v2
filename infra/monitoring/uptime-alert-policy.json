@@ -1,0 +1,27 @@
+{
+  "displayName": "Uptime Alert — kovelai + shadowtagai",
+  "documentation": {
+    "content": "## Uptime Failure Alert\n\nOne or more Firebase Hosting sites are returning non-200 responses.\n\n### Sites Monitored\n- kovelai.web.app\n- shadowtagai.web.app\n\n### Response Procedure\n1. Check Firebase Console → Hosting\n2. Verify DNS resolution: `dig kovelai.web.app`\n3. Check Cloud Logging for errors\n4. If deployment-related, rollback: `firebase hosting:rollback --site kovelai`",
+    "mimeType": "text/markdown"
+  },
+  "conditions": [
+    {
+      "displayName": "Uptime check failure rate > 20%",
+      "conditionThreshold": {
+        "filter": "resource.type = \"uptime_url\" AND metric.type = \"monitoring.googleapis.com/uptime_check/check_passed\"",
+        "comparison": "COMPARISON_LT",
+        "thresholdValue": 0.8,
+        "duration": "300s",
+        "aggregations": [
+          {
+            "alignmentPeriod": "300s",
+            "perSeriesAligner": "ALIGN_FRACTION_TRUE"
+          }
+        ]
+      }
+    }
+  ],
+  "combiner": "OR",
+  "enabled": true,
+  "severity": "CRITICAL"
+}

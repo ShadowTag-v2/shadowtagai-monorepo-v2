@@ -1,0 +1,13 @@
+id: no-bullmq-import
+message: "Doctrine: BullMQ is BANNED. Use Google Cloud Tasks as the exclusive queue broker. See GEMINI.md rich_hickey_doctrine."
+severity: error
+language: typescript
+rule:
+  pattern: import { $$$NAMES } from 'bullmq'
+ignores:
+  - "libs/autoresearch_sources/**"
+  - "external_repos/**"
+  - "external_sdks/**"
+  - "archive/**"
+  - "reference_architectures/**"
+  - "node_modules/**"

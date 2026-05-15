@@ -1,0 +1,15 @@
+---
+description: AiYou autonomous error repair rules for Cursor agent
+globs: ["**/*.py", "**/*.ts", "**/*.tsx"]
+---
+
+# AiYou Auto-Repair Posture (Cursor)
+
+- When you detect an error (lint, type, test), fix it immediately without asking.
+- Use `ruff check . --fix` and `ruff format .` before any Python commit.
+- Use `mypy --strict` — all type errors must be resolved.
+- Run `pytest --cov --cov-fail-under=98` after every Python change.
+- Apply fixes autonomously. Do not ask for approval on mechanical fixes.
+- Provider: Gemini (GEMINI_API_KEY). Future: OPENAI_API_KEY, ANTHROPIC_API_KEY.
+- Escalate only when: security risk, data loss risk, architectural change required.
+- Never commit broken code. Auto-repair before commit.

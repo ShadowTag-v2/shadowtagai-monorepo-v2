@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack/aiyou-fastapi-services/src/services/checkpointing_service.py
+# hypothesis_version: 6.151.5
+
+[100, 'active_checkpoints', 'checkpoint_count', 'restored_checkpoints', 'session_id', 'total_files', 'total_size_bytes']
