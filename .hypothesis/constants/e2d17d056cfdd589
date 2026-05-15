@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/forked_agent.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1000, 'CacheSafeParams', 'Execution completed', 'ForkedAgentResult', 'SubagentContext', 'TokenUsage', 'accumulate_usage', 'assistant', 'content', 'event', 'extract_result_text', 'input_tokens', 'message_delta', 'output_tokens', 'role', 'run_forked_agent', 'stream_event', 'stream_request_start', 'text', 'type', 'usage']

@@ -1,10 +1,10 @@
-# AGENTS.md — v11.3 Obsidian Hardened State (2026-05-15)
+# AGENTS.md — v11.4 Obsidian Hardened State (2026-05-15)
 
 ## Core Technical Truths
 1. **Canonical Repo**: `git@github.com:ShadowTag-v2/shadowtagai-monorepo-v2.git` (sovereign primary)
 2. **Archived**: `Monorepo-Uphillsnowball` — READ-ONLY. **NEVER push.**
 3. **Local Workspace**: `/Users/pikeymickey/.gemini/mono-fresh`
-4. **Fleet Governance**: `docs/SYSTEM_OVERRIDE.md` V26.2 — Dual-Plane Fleet (7 Plane 1 + 12 Plane 2 = 19 servers, 99+ tools)
+4. **Fleet Governance**: `docs/SYSTEM_OVERRIDE.md` V28 — Dual-Plane Fleet (7 Plane 1 + 14 Plane 2 = 21 servers, 99+ tools)
 5. **Lint Delegation**: `gca_autolint_daemon.py` (TACSOP 5). Manual linter invocation **prohibited**.
 6. Cloud Run: MUST use `try/except ImportError` for `uuid7` fallback.
 7. .NET 11.0.100-preview.3 INSTALLED. SK 1.74.0. `OnExternalEvent` is correct SK Process.Core API.

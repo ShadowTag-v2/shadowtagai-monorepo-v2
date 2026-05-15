@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/src/governance/j6_csrmc_cato.py
+# hypothesis_version: 6.151.5
+
+['AUTH_CHANGE', 'CATASTROPHIC', 'CRITICAL', 'DATABASE_MIGRATION', 'HIGH', 'J6-CSRMC-ZeroTrust', 'LOW', 'MARGINAL', 'MODERATE', 'UNKNOWN', 'risk_sev', 'type']

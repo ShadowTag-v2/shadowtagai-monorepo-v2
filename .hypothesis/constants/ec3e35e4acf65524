@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_classifier/chain_depth_limiter.py
+# hypothesis_version: 6.151.5
+
+[0.0, 60.0, 100, 200, 'BLOCKED', 'Chain depth %d: %s', 'ChainDepthLimiter', 'ChainState', 'ESCALATE', 'EscalationLevel', 'HUMAN_REQUIRED', 'KILLED', 'NORMAL', 'THRESHOLD_C1_WARN', 'THRESHOLD_C3_HUMAN', 'THRESHOLD_C4_BLOCK', 'THRESHOLD_C5_KILL', 'WARN', '[A-Za-z0-9+/=]{40,}', '\\$\\(\\s*printf', '\\\\[0-7]{3}', '\\\\x[0-9a-fA-F]{2}', 'command_count', 'commands_per_minute', 'depth', 'encoding_detections', 'escalation_level', 'last_reset', 'session_id', 'xxd\\s+-r']

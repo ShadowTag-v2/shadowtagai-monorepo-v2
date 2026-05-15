@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_coordinator/coordinator.py
+# hypothesis_version: 6.151.5
+
+[0.0, 300.0, '_max_concurrency', '_results', '_semaphore', '_timeout_s', 'cancelled', 'done', 'failed', 'max_concurrency', 'pending', 'running', 'success_rate', 'total_elapsed_s', 'total_tasks']

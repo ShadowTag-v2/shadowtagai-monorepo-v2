@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/magic_docs/detector.py
+# hypothesis_version: 6.151.5
+
+['^[_*](.+?)[_*]\\s*$']

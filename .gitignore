@@ -1,107 +1,7 @@
-<<<<<<< HEAD
-# Ephemeral / local-only
-.watchman-cookie-*
-.logs/
-update_mac.log
-.DS_Store
-
-# Python
-.venv/
-venv/
-env/
-ENV/
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyo
-*.so
-.Python
-*.egg-info/
-*.egg
-.eggs/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-.installed.cfg
-MANIFEST
-dist/
-build/
-develop-eggs/
-downloads/
-
-# Node.js
-node_modules/
-.next/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.hypothesis/
-
-# MyPy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-*.pem
-
-# Logs
-*.log
-logs/
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# ML Models (large files)
-models/*.pkl
-models/*.h5
-models/*.pt
-models/*.pth
-!models/.gitkeep
-
-# Data files (large files)
-data/*.csv
-data/*.json
-data/*.parquet
-!data/.gitkeep
-
-# GCP credentials
-*-credentials.json
-service-account-*.json
-
-# Kubernetes secrets
-k8s/*-secrets.yaml
-k8s/secrets/
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-||||||| empty tree
-=======
 # =============================================================================
 # Monorepo-Uphillsnowball .gitignore
 # Cor.GPT canonical monorepo guardrail — 2026-03-21
+# Sovereign: shadowtagai-monorepo-v2 (V28)
 # =============================================================================
 
 # =============================================================================
@@ -116,6 +16,9 @@ temp/
 *.swo
 *~
 Thumbs.db
+.watchman-cookie-*
+.logs/
+update_mac.log
 
 # =============================================================================
 # LARGE EXCLUDED DIRECTORIES (the 97 GB + 18 GB bottlenecks)
@@ -170,6 +73,13 @@ apps/**/*.dll
 apps/**/*.exe
 
 # =============================================================================
+# .NET build artifacts (bin/obj) — NEVER commit
+# =============================================================================
+**/bin/Debug/
+**/bin/Release/
+**/obj/
+
+# =============================================================================
 # Python caches (global)
 # =============================================================================
 __pycache__/
@@ -185,6 +95,10 @@ __pycache__/
 .coverage
 coverage.xml
 htmlcov/
+.venv/
+venv/
+ENV/
+env/
 
 # =============================================================================
 # Node / JS / TS (global)
@@ -216,14 +130,6 @@ bazel-testlogs/
 bazel-*/
 
 # =============================================================================
-# Virtual environments (global)
-# =============================================================================
-.venv/
-venv/
-ENV/
-env/
-
-# =============================================================================
 # Secrets and credentials — NEVER commit
 # =============================================================================
 .env
@@ -248,7 +154,6 @@ gcloud_auth*.json
 # =============================================================================
 *.log
 logs/
-npm-debug.log*
 
 # =============================================================================
 # Local vector / index artifacts
@@ -263,8 +168,6 @@ npm-debug.log*
 # =============================================================================
 # Denied zones (Cor.GPT monorepo policy)
 # =============================================================================
-# archive/ is allowed (committed as archive lane) — do NOT exclude globally
-# But exclude internal backup/legacy cruft within it:
 **/_PRE_OMEGA_BACKUP_*/
 **/ShadowTag-Omega/
 **/arsenal_recovered/
@@ -333,6 +236,5 @@ external_sdks/
 keys/
 docs/Strategic_Intelligence/sovereign_memory_core.json
 .gitnexus
->>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419
 geap/adk-js/
 external_repos/

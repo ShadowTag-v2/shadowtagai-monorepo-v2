@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/micro_compact.py
+# hypothesis_version: 6.151.5
+
+[0.0, 60.0, 2000, '+00:00', ',', ':', 'Bash', 'Edit', 'Glob', 'Grep', 'Read', 'Terminal', 'WebFetch', 'WebSearch', 'Write', 'Z', 'assistant', 'bash', 'content', 'data', 'document', 'file_edit', 'file_read', 'file_write', 'glob', 'grep_search', 'id', 'image', 'inf', 'input', 'list_dir', 'main', 'message', 'name', 'read_file', 'redacted_thinking', 'repl_main_thread', 'role', 'run_command', 'search_files', 'shell', 'text', 'thinking', 'time_based', 'timestamp', 'tool_result', 'tool_use', 'tool_use_id', 'type', 'user', 'view_file', 'web_fetch', 'web_search']

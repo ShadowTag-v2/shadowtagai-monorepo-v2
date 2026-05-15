@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/prevent_sleep/__init__.py
+# hypothesis_version: 6.151.5
+
+['get_ref_count', 'is_preventing_sleep', 'prevent_sleep', 'start_prevent_sleep', 'stop_prevent_sleep']

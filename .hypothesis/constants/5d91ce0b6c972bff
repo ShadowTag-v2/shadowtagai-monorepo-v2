@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/speculation_engine.py
+# hypothesis_version: 6.151.5
+
+[0.0, 100, 200, 1000, 30000, '/', 'Run the test suite', '[.!?]\\s+[A-Z]', '[\\n*]|\\*\\*', '^\\(.*\\)$|^\\[.*\\]$', 'aborted', 'accepted', 'active', 'api error:', 'architecture', 'assistant', 'check', 'commit', 'complete', 'complex', 'content', 'continue', 'deploy', 'disabled', 'done', 'early_conversation', 'empty', 'error', 'exit', 'filtered', 'generating', 'idle', 'invalid api key', 'is_error', 'last_response_error', 'medium', 'no', 'no suggestion', 'no_prompts', 'nothing found', 'nothing found.', 'nothing to suggest', 'ok', 'okay', 'plan_mode', 'planning', 'prompt is too long', 'push', 'quit', 'rate_limit', 'ready', 'request timed out', 'role', 'simple', 'start', 'stop', 'sure', 'telemetry_enabled', 'user_intent', 'yea', 'yeah', 'yep', 'yes', 'yup', '|']

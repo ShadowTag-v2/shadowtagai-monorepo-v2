@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/session_memory_compact.py
+# hypothesis_version: 6.151.5
+
+[10000, 40000, 'assistant', 'compactMetadata', 'compact_boundary', 'content', 'id', 'message_id', 'role', 'session_memory', 'text', 'tool_result', 'tool_use', 'tool_use_id', 'type', 'user', 'uuid']

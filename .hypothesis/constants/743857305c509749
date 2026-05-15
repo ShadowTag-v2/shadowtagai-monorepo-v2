@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/token_budget/estimation.py
+# hypothesis_version: 6.151.5
+
+[1024, 2000, 2048, ',', '.', ':', 'IMAGE_MAX_TOKEN_SIZE', 'args', 'content', 'data', 'document', 'functionCall', 'functionResponse', 'image', 'inlineData', 'input', 'json', 'jsonc', 'jsonl', 'name', 'parts', 'redacted_thinking', 'response', 'rough_token_count', 'text', 'thinking', 'tool_result', 'tool_use', 'type']

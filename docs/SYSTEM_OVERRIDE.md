@@ -22,7 +22,7 @@
 
 ---
 
-## THE DUAL-PLANE SOVEREIGN FLEET (18 TOTAL SERVERS)
+## THE DUAL-PLANE SOVEREIGN FLEET (21 TOTAL SERVERS)
 
 Tool redundancy is eradicated. The fleet operates across two symbiotic planes.
 Namespace collision between the Antigravity host platform and the Cline local configuration
@@ -71,25 +71,27 @@ The Dual-Plane separation eliminates all three failure modes.
 
 ---
 
-## PLANE 2: CLINE TACTICAL LOCAL CONFIG (12 Servers)
+## PLANE 2: CLINE TACTICAL LOCAL CONFIG (14 Servers)
 
 **Executed purely via local `cline_mcp_settings.json` via Bun/npx/uvx physics.**
 Antigravity does NOT probe, start, or manage these servers.
 
 | # | Server | Runtime | Domain |
 |---|--------|---------|--------|
-| 7 | `observability` | bunx | Genkit MCP observability |
-| 8 | `storage-cdn` | npx | Cloud Storage operations |
-| 9 | `stripe-governor` | npx | Stripe financial governor |
-| 10 | `notebooklm-mcp` | uvx | NotebookLM epistemic memory |
-| 11 | `jules-delegation` | node | Jules async agent delegation |
-| 12 | `semantic-scalpel` | npx | AST-Grep semantic code surgery |
-| 13 | `pomelli-swarm` | Bun | Pomelli AI brand content swarm |
-| 14 | `workspace-intake` | Bun | Google Workspace webhook listener |
-| 15 | `bigquery-mcp-server` | HTTP | BigQuery analytics (Google hosted) |
-| 16 | `maps-grounding-lite-mcp` | HTTP | Maps grounding context (Google hosted) |
-| 17 | `container-mcp-server` | HTTP | GKE container management (Google hosted) |
-| 18 | `compute-mcp-server` | HTTP | GCE compute management (Google hosted) |
+| 8 | `observability` | bunx | Genkit MCP observability |
+| 9 | `storage-cdn` | npx | Cloud Storage operations |
+| 10 | `stripe-governor` | npx | Stripe financial governor |
+| 11 | `notebooklm-mcp` | uvx | NotebookLM epistemic memory |
+| 12 | `jules-delegation` | node | Jules async agent delegation |
+| 13 | `semantic-scalpel` | npx | AST-Grep semantic code surgery |
+| 14 | `pomelli-swarm` | Bun | Pomelli AI brand content swarm |
+| 15 | `workspace-intake` | Bun | Google Workspace webhook listener |
+| 16 | `bigquery-mcp-server` | HTTP | BigQuery analytics (Google hosted) |
+| 17 | `maps-grounding-lite-mcp` | HTTP | Maps grounding context (Google hosted) |
+| 18 | `container-mcp-server` | HTTP | GKE container management (Google hosted) |
+| 19 | `compute-mcp-server` | HTTP | GCE compute management (Google hosted) |
+| 20 | `gemini-github-mcp` | Bun | GitHub API via JWT wrapper (App PEM auth) |
+| 21 | `gemini-web-fetcher` | Bun | HTTP fetch for web content retrieval |
 
 ---
 
@@ -226,7 +228,7 @@ All linting and formatting is delegated to `scripts/gca_autolint_daemon.py` (TAC
 | `ast-grep` | Structural search-and-replace | ✅ Ad-hoc (semantic-scalpel MCP) |
 
 The daemon runs daily (3–5 AM) and pushes fixes via ephemeral GitHub App JWT.
-Informational lint issues (85 remaining: UP042, E402, D200) are tracked, not auto-fixed.
+343 informational rule categories tracked (top: T201 17K, D400/D415 27K, S101 12K). F401/F841 auto-fixed by daemon.
 
 ---
 
@@ -237,3 +239,4 @@ Informational lint issues (85 remaining: UP042, E402, D200) are tracked, not aut
 > - V26 (2026-05-15): Initial dual-plane separation. 7 redundant servers purged.
 > - V26.1 (2026-05-15): Added cognitive cost rationale, drift detection protocol, server addition decision tree.
 > - V26.2 (2026-05-15): Sovereign repo migration (`shadowtagai-monorepo-v2`). Archived `Monorepo-Uphillsnowball` (READ-ONLY). Added `gemini-graph-memory` to Plane 1 (7 servers, 99 tools). Fixed stale workspace paths. Added lint delegation doctrine. Python target locked to `py313`.
+> - V28 (2026-05-15): Documented 2 undocumented Cline servers (`gemini-github-mcp`, `gemini-web-fetcher`). Fleet: 7 Plane 1 + 14 Plane 2 = 21 servers. Resolved `.gitignore` merge conflict. Added .NET `bin/obj` exclusions. Updated lint stats to 343 rule categories.

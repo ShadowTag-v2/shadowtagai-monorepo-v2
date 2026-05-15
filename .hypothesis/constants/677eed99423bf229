@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/src/risk_matrix/__init__.py
+# hypothesis_version: 6.151.5
+
+[10000, 50000, 'A', 'Automated', 'B', 'C', 'C-Suite + Board', 'CFO', 'D', 'Department Head', 'E', 'Finance Director', 'I', 'II', 'III', 'IV', 'Probability', 'RiskAssessment', 'RiskLevel', 'Senior Executive', 'Severity', 'assess_risk', 'calculate_risk_level', 'extremely_high', 'high', 'low', 'medium']

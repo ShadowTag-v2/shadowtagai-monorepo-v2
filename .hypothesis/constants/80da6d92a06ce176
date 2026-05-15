@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/token_budget/__init__.py
+# hypothesis_version: 6.151.5
+
+[1000, 1000000, 1000000000, 'IMAGE_MAX_TOKEN_SIZE', 'TokenBudgetPosition', 'b', 'k', 'm', 'parse_token_budget', 'rough_token_count']

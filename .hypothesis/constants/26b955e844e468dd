@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/conversation_compact.py
+# hypothesis_version: 6.151.5
+
+[0.0, 100, 5000, 25000, 50000, ',', 'Read', '[document]', '[image]', 'assistant', 'attachment', 'auto', 'compactBoundary', 'compactMetadata', 'content', 'direction', 'document', 'file_path', 'from', 'id', 'image', 'input', 'isCompactSummary', 'isMeta', 'is_partial', 'lastPreCompactUuid', 'manual', 'messages', 'messagesSummarized', 'name', 'preCompactTokenCount', 'role', 'rounds_preserved', 'skill_discovery', 'skill_listing', 'summarizeMetadata', 'summary', 'system', 'text', 'tokens_after', 'tokens_before', 'tool_result', 'tool_use', 'tool_use_id', 'trigger', 'type', 'up_to', 'user', 'userContext', 'userFeedback', 'uuid']

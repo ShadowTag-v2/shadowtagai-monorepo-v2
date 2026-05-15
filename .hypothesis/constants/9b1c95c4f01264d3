@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_classifier/classifier.py
+# hypothesis_version: 6.151.5
+
+['<(\\w+)>', '<(\\w+)[^>]*>.*?</\\1>', '<[^>]+>', '<block>no</block>', '<block>yes</block>', 'ALLOW', 'BLOCK', 'UNKNOWN', 'code', 'code_agent', 'db_architect', 'deploy', 'deploy_agent', 'echo', 'general_agent', 'git status', 'intent', 'ls', 'no', 'osint_agent', 'pwd', 'rm -rf', 'search']

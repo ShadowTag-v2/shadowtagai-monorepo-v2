@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/src/gates/tengu_j6_bridge.py
+# hypothesis_version: 6.151.5
+
+['.claude', '.config', 'CLAUDE_CONFIG_DIR', 'ENTITLEMENT', 'FEATURE', 'INTERNAL', 'MARGINAL', 'SECURITY', 'TELEMETRY', 'USER_TYPE', 'XDG_CONFIG_HOME', 'ant', 'ant_model_override', 'ant_only', 'cached_value', 'category', 'claude', 'context_compaction', 'default_value', 'effective_value', 'globalConfig.json', 'key', 'risk_sev', 'speculation_engine', 'tengu-gates', 'tengu_j6_zta_handoff', 'type', 'utf-8', 'xml_pipeline_enabled']

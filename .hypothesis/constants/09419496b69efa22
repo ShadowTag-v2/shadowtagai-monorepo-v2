@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/magic_link.py
+# hypothesis_version: 6.151.5
+
+[3600, ',', '.', '/create-matter', '/onboarding', '/verify/{token}', ':', 'INVALID_TOKEN', 'KOVELAI_BASE_URL', 'MAGIC_LINK_SECRET', 'Onboarding', 'attorney_id', 'client_email', 'code', 'exp', 'firm_id', 'gemini-flash', 'magic-dev-secret', 'matter_id', 'message', 'models', 'ttl', 'utf-8']

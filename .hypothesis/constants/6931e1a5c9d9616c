@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/speculation_engine/suggestion.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1.0, 100, 1000, 10000, '/', '[.!?]\\s+[A-Z]', '[\\n*]', '^\\w+:\\s+', 'build', 'cache_cold', 'claude_voice', 'commit', 'continue', 'deploy', 'disabled', 'done', 'elicitation_active', 'env_override', 'error_message', 'evaluative', 'feature_flag_off', 'filtered', 'fix', 'gate', 'has_formatting', 'last_response_error', 'lint', 'meta_text', 'meta_wrapped', 'multiple_sentences', 'no', 'non_interactive', 'nope', 'ok', 'okay', 'outcome', 'pending_permission', 'plan_mode', 'prefixed_label', 'proceed', 'push', 'rate_limited', 'retry', 'run', 'state', 'stop', 'suppressed', 'sure', 'swarm_teammate', 'test', 'too_few_turns', 'too_few_words', 'too_long', 'too_many_words', 'undo', 'yeah', 'yep', 'yes', 'yup']

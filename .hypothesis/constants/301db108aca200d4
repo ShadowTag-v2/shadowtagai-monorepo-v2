@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/tool_gateway/sandbox_path_resolver.py
+# hypothesis_version: 6.151.5
+
+['.agents', '.env', '.git', '/', '//', '/etc/passwd', '/etc/shadow', '/etc/sudoers', '/proc/self', '/root', '/sys/kernel', '/tmp', '/var/folders', 'Empty path', 'absolute', 'keys', 'node_modules/.cache', 'relative', 'secrets', 'workspace', '~', '~/.gnupg', '~/.ssh/id_ed25519', '~/.ssh/id_rsa']

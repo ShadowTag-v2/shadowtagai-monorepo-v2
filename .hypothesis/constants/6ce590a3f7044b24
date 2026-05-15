@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/vcr_fixtures/manager.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1000, '%Y-%m-%dT%H:%M:%SZ', '(Cookie:\\s*)[^\\r\\n]+', '(whsec_)[A-Za-z0-9]+', '*.json', '?', 'NODE_ENV', 'PYTEST_CURRENT_TEST', 'Purged cassette: %s', 'VCR RECORD: %s %s', 'VCR REPLAY: %s %s', 'VCR_FORCE_ENABLE', '\\1[SCRUBBED]', '\\1[SCRUBBED]\\2', 'cassette_name', 'cassette_version', 'interactions', 'new_episodes', 'off', 'record', 'recorded_at', 'replay', 'request', 'response', 'test', 'tests/fixtures/vcr', 'utf-8', 'whsec_[SCRUBBED]']

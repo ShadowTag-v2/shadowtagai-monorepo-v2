@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/decay_warning.py
+# hypothesis_version: 6.151.5
+
+[100, 2000, 20000, 50000, 1000000, 'CRITICAL', 'INFO', 'WARNING', 'file_read_oversize', 'token_count_high', 'tool_result_bloat', 'turn_count_high']

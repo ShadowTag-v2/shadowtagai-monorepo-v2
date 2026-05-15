@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_utils/sanitization.py
+# hypothesis_version: 6.151.5
+
+['Cf', 'Cn', 'Co', 'NFKC', 'T', '[\\u200B-\\u200F]', '[\\u202A-\\u202E]', '[\\u2066-\\u2069]', '[\\uE000-\\uF8FF]', '\\uFEFF']

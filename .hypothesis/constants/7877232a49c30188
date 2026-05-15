@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/vcr/cassette.py
+# hypothesis_version: 6.151.5
+
+[0.0, 'a', 'latency_ms', 'model', 'request_body', 'request_hash', 'request_id', 'response_body', 'session_id', 'tags', 'timestamp', 'token_usage', 'w']
