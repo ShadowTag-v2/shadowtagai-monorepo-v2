@@ -181,7 +181,7 @@ def get_token(force_refresh: bool = False) -> str:
   return token
 
 
-def _update_remote_url(token: str, remote: str = "sovereign") -> None:
+def _update_remote_url(token: str, remote: str = "origin") -> None:
   """Rewrite the git remote push URL with the current token.
 
   Handles both SSH and HTTPS remotes:
@@ -271,7 +271,7 @@ if __name__ == "__main__":
   )
   parser.add_argument("--refresh", action="store_true", help="Force token refresh")
   parser.add_argument(
-    "--remote", default="sovereign", help="Git remote to push to (default: sovereign)"
+    "--remote", default="origin", help="Git remote to push to (default: origin)"
   )
   parser.add_argument("--branch", default="HEAD", help="Branch to push (default: HEAD)")
   parser.add_argument("--force", action="store_true", help="Force push")
