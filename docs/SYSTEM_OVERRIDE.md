@@ -1,28 +1,55 @@
-# SYSTEM OVERRIDE: V26 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
+# SYSTEM OVERRIDE: V26.2 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
 
 > **To:** Antigravity Core Engine
 > **Project:** `shadowtag-omega-v4`
-> **Version:** V29 | **Status:** LOCKED
+> **Version:** V26.2 | **Status:** LOCKED
 > **Last Updated:** 2026-05-15
 
 ---
 
-## SOVEREIGN REPO GOVERNANCE
+## PLATFORM TOOL BUDGET CONSTRAINT
 
-| Property | Value |
-|----------|-------|
-| **Canonical Repo** | `git@github.com:ShadowTag-v2/shadowtagai-monorepo-v2.git` |
-| **Local Workspace** | `/Users/pikeymickey/.gemini/mono-fresh` |
-| **Archived (READ-ONLY)** | `Monorepo-Uphillsnowball` — **NEVER push** |
-| **Auth** | GitHub App PEM (`$SHADOWTAG_PEM`), App ID `3018200` |
-| **Transport** | SSH primary, HTTPS last-resort fallback |
-| **Python Target** | `py313` (ruff.toml) — CPython 3.14.5 |
-| **Lint/Format** | Delegated to `gca_autolint_daemon.py` — manual linter invocation **prohibited** |
-| **Active Runtimes** | Python 3.14.5, Node v26.0.0, .NET 11.0.100-preview.3, Bun 1.3.14 |
+> [!CAUTION]
+> **Antigravity enforces a hard limit of 100 tools across ALL enabled MCP servers.**
+> Exceeding this limit causes servers to fail with `Error: adding this instance with N enabled tools would exceed max limit of 100`.
+
+### Current Budget
+
+| Plane 1 Server | Tools | Status |
+|----------------|-------|--------|
+| firebase-mcp-server | 36 | ✅ |
+| chrome-devtools-mcp | 29 | ✅ |
+| StitchMCP | 14 | ✅ |
+| cloudrun | 8 | ✅ |
+| google-developer-knowledge | 3 | ✅ |
+| sequential-thinking | 1 | ✅ |
+| **Total** | **91** | **9 tools headroom** |
+
+### Removed Servers (Budget/Compatibility)
+
+| Server | Tools | Reason | Alternative |
+|--------|-------|--------|-------------|
+| `gemini-graph-memory` | 9 | Freed for headroom | Cline Plane 2: `gemini-memory` |
+| `gemini-web-fetcher` | ~4 | Python server misconfigured as Node.js | Ready-to-add via `uvx` (see below) |
+| `notebooklm-mcp` | 39 | Would bust 100-tool limit | Cline Plane 2: `notebooklm-mcp` |
+
+### Ready-to-Add: `gemini-web-fetcher` (via uvx)
+
+When budget allows, add this to `~/.gemini/antigravity/mcp_config.json`:
+
+```json
+"gemini-web-fetcher": {
+  "command": "uvx",
+  "args": ["--from", "mcp-server-fetch", "mcp-server-fetch"],
+  "transport": "stdio"
+}
+```
+
+**Estimated tools:** ~4. Budget after addition: ~95/100.
 
 ---
 
-## THE DUAL-PLANE SOVEREIGN FLEET (21 TOTAL SERVERS)
+## THE DUAL-PLANE SOVEREIGN FLEET (18 TOTAL SERVERS)
 
 Tool redundancy is eradicated. The fleet operates across two symbiotic planes.
 Namespace collision between the Antigravity host platform and the Cline local configuration
@@ -41,8 +68,9 @@ The Dual-Plane separation eliminates all three failure modes.
 
 ---
 
-## PLANE 1: ANTIGRAVITY INTERNAL HOST (7 Servers)
+## PLANE 1: ANTIGRAVITY INTERNAL HOST (6 Servers, 91 Tools)
 
+**Config:** `~/.gemini/antigravity/mcp_config.json`
 **Do NOT duplicate in Cline config. Rely on native host access.**
 
 | # | Server | Tools | Domain |
@@ -52,10 +80,9 @@ The Dual-Plane separation eliminates all three failure modes.
 | 3 | `cloudrun` | 8 | Compute deployment — deploy containers, folders, file contents |
 | 4 | `firebase-mcp-server` | 36 | State, auth, hosting — Firestore, Functions, Storage, Config |
 | 5 | `google-developer-knowledge` | 3 | Omniscience — Google developer docs search, retrieval, answers |
-| 6 | `gemini-graph-memory` | 8 | Knowledge graph — entity CRUD, relation management, search |
-| 7 | `sequential-thinking` | 1 | Multi-step reasoning, hypothesis verification |
+| 6 | `sequential-thinking` | 1 | Multi-step reasoning, hypothesis verification |
 
-**Total Plane 1:** 99 tools
+**Total Plane 1:** 91 tools (9 headroom)
 
 ### Plane 1 Capabilities That Were Duplicated (Now Purged from Cline)
 
@@ -71,27 +98,25 @@ The Dual-Plane separation eliminates all three failure modes.
 
 ---
 
-## PLANE 2: CLINE TACTICAL LOCAL CONFIG (14 Servers)
+## PLANE 2: CLINE TACTICAL LOCAL CONFIG (12 Servers)
 
 **Executed purely via local `cline_mcp_settings.json` via Bun/npx/uvx physics.**
 Antigravity does NOT probe, start, or manage these servers.
 
 | # | Server | Runtime | Domain |
 |---|--------|---------|--------|
-| 8 | `observability` | bunx | Genkit MCP observability |
-| 9 | `storage-cdn` | npx | Cloud Storage operations |
-| 10 | `stripe-governor` | npx | Stripe financial governor |
-| 11 | `notebooklm-mcp` | uvx | NotebookLM epistemic memory |
-| 12 | `jules-delegation` | node | Jules async agent delegation |
-| 13 | `semantic-scalpel` | npx | AST-Grep semantic code surgery |
-| 14 | `pomelli-swarm` | Bun | Pomelli AI brand content swarm |
-| 15 | `workspace-intake` | Bun | Google Workspace webhook listener |
-| 16 | `bigquery-mcp-server` | HTTP | BigQuery analytics (Google hosted) |
-| 17 | `maps-grounding-lite-mcp` | HTTP | Maps grounding context (Google hosted) |
-| 18 | `container-mcp-server` | HTTP | GKE container management (Google hosted) |
-| 19 | `compute-mcp-server` | HTTP | GCE compute management (Google hosted) |
-| 20 | `gemini-github-mcp` | Bun | GitHub API via JWT wrapper (App PEM auth) |
-| 21 | `gemini-web-fetcher` | Bun | HTTP fetch for web content retrieval |
+| 7 | `observability` | bunx | Genkit MCP observability |
+| 8 | `storage-cdn` | npx | Cloud Storage operations |
+| 9 | `stripe-governor` | npx | Stripe financial governor |
+| 10 | `notebooklm-mcp` | uvx | NotebookLM epistemic memory |
+| 11 | `jules-delegation` | node | Jules async agent delegation |
+| 12 | `semantic-scalpel` | npx | AST-Grep semantic code surgery |
+| 13 | `pomelli-swarm` | Bun | Pomelli AI brand content swarm |
+| 14 | `workspace-intake` | Bun | Google Workspace webhook listener |
+| 15 | `bigquery-mcp-server` | HTTP | BigQuery analytics (Google hosted) |
+| 16 | `maps-grounding-lite-mcp` | HTTP | Maps grounding context (Google hosted) |
+| 17 | `container-mcp-server` | HTTP | GKE container management (Google hosted) |
+| 18 | `compute-mcp-server` | HTTP | GCE compute management (Google hosted) |
 
 ---
 
@@ -110,10 +135,11 @@ Redundancy is noise. We eliminate the noise.
 
 ### Enforcement
 - Before adding ANY new MCP server, check both manifests:
-  - Antigravity native: `antigravity-mcp-config.json`
+  - Antigravity native: `~/.gemini/antigravity/mcp_config.json`
   - Cline local: `cline_mcp_settings.json`
 - If the capability already exists in either plane, the addition is **DENIED**.
 - Violations are logged to `.beads/issues.jsonl` with severity `ARCHITECTURE_DRIFT`.
+- **Budget check:** Verify tool count stays ≤100 before adding any Plane 1 server.
 
 ### Server Addition Decision Tree
 ```
@@ -122,14 +148,16 @@ Want to add server X?
       ├─ YES → DENIED. Use native Antigravity tool.
       └─ NO → Does Cline already provide this capability (Plane 2)?
           ├─ YES → DENIED. Enhance existing server.
-          └─ NO → APPROVED. Add to Cline config (Plane 2).
-                  Antigravity host additions require platform team approval.
+          └─ NO → Will adding to Plane 1 exceed 100-tool limit?
+              ├─ YES → Add to Cline config (Plane 2) instead.
+              └─ NO → APPROVED. Add to mcp_config.json (Plane 1).
+                      Antigravity host additions require platform team approval.
 ```
 
 ### Drift Detection Protocol
 Run on every boot (OMNI-BOOT Section 0C):
 ```bash
-PLANE1_TOOLS="StitchMCP chrome-devtools-mcp cloudrun firebase-mcp-server google-developer-knowledge gemini-graph-memory sequential-thinking"
+PLANE1_TOOLS="StitchMCP chrome-devtools-mcp cloudrun firebase-mcp-server google-developer-knowledge sequential-thinking"
 CLINE_CFG="$HOME/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json"
 for srv in $PLANE1_TOOLS; do
   grep -qi "$srv" "$CLINE_CFG" 2>/dev/null && echo "❌ DRIFT: $srv" && exit 1
@@ -167,7 +195,7 @@ The canonical `cline_mcp_settings.json` for Plane 2:
     },
     "jules-delegation": {
       "command": "node",
-      "args": ["/Users/pikeymickey/.gemini/mono-fresh/antigravity-jules-orchestration/index.js"],
+      "args": ["/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-jules-orchestration/index.js"],
       "transport": "stdio"
     },
     "semantic-scalpel": {
@@ -177,12 +205,12 @@ The canonical `cline_mcp_settings.json` for Plane 2:
     },
     "pomelli-swarm": {
       "command": "bun",
-      "args": ["run", "--cwd", "/Users/pikeymickey/.gemini/mono-fresh/external_repos/flpomp-team", "dev"],
+      "args": ["run", "--cwd", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/external_repos/flpomp-team", "dev"],
       "transport": "stdio"
     },
     "workspace-intake": {
       "command": "bun",
-      "args": ["run", "/Users/pikeymickey/.gemini/mono-fresh/tools/workspace-intake/index.ts"],
+      "args": ["run", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/tools/workspace-intake/index.ts"],
       "transport": "stdio"
     },
     "bigquery-mcp-server": {
@@ -194,7 +222,7 @@ The canonical `cline_mcp_settings.json` for Plane 2:
     },
     "maps-grounding-lite-mcp": {
       "httpUrl": "https://mapstools.googleapis.com/mcp",
-      "headers": { "X-Goog-Api-Key": "${GOOGLE_MAPS_API_KEY}" }
+      "headers": { "X-Goog-Api-Key": "${GOOGLE_DESIGN_API_KEY}" }
     },
     "container-mcp-server": {
       "httpUrl": "https://container.googleapis.com/mcp",
@@ -216,28 +244,10 @@ The canonical `cline_mcp_settings.json` for Plane 2:
 
 ---
 
-## LINT DELEGATION DOCTRINE
-
-Manual invocation of `ruff`, `biome`, or any linter by the agent is **prohibited**.
-All linting and formatting is delegated to `scripts/gca_autolint_daemon.py` (TACSOP 5).
-
-| Tool | Scope | Manual Allowed? |
-|------|-------|-----------------|
-| `ruff` | Python lint + format + dead code | ❌ Daemon only |
-| `biome` | TypeScript/JS lint + format | ❌ Daemon only |
-| `ast-grep` | Structural search-and-replace | ✅ Ad-hoc (semantic-scalpel MCP) |
-
-The daemon runs daily (3–5 AM) and pushes fixes via ephemeral GitHub App JWT.
-343 informational rule categories tracked (top: T201 17K, D400/D415 27K, S101 12K). F401/F841 auto-fixed by daemon.
-
----
-
 > **Constitutional Status:** LOCKED.
 > Modifications require STATE B (Clutch) approval and 8-Agent Board Synthesis.
 >
 > **Version History:**
 > - V26 (2026-05-15): Initial dual-plane separation. 7 redundant servers purged.
 > - V26.1 (2026-05-15): Added cognitive cost rationale, drift detection protocol, server addition decision tree.
-> - V26.2 (2026-05-15): Sovereign repo migration (`shadowtagai-monorepo-v2`). Archived `Monorepo-Uphillsnowball` (READ-ONLY). Added `gemini-graph-memory` to Plane 1 (7 servers, 99 tools). Fixed stale workspace paths. Added lint delegation doctrine. Python target locked to `py313`.
-> - V28 (2026-05-15): Documented 2 undocumented Cline servers (`gemini-github-mcp`, `gemini-web-fetcher`). Fleet: 7 Plane 1 + 14 Plane 2 = 21 servers. Resolved `.gitignore` merge conflict. Added .NET `bin/obj` exclusions. Updated lint stats to 343 rule categories.
-> - V29 (2026-05-15): Credential audit — 2 API keys identified (Chrome CrUX key: upstream vendor, Maps key: migrated to `${GOOGLE_MAPS_API_KEY}` env ref). Daemon validated (5 classes, 22 functions, file-based KI — no Spanner/BigQuery wiring). Dead-code audit: 925 F401/F841 isolated to legacy archives. AiYou.Kernel csproj removed from active tree (GitNexus test fixtures only). Drift detection: 0 Plane 1 leakage. Cline config: 14 servers verified.
+> - V26.2 (2026-05-15): **100-tool platform constraint documented.** Plane 1 reduced from 7→6 servers (91 tools, 9 headroom). Removed `gemini-graph-memory` (Cline has equivalent), `gemini-web-fetcher` (module mismatch, now ready-to-add via `uvx`), `notebooklm-mcp` (budget overflow, lives on Cline Plane 2). Config source corrected to `~/.gemini/antigravity/mcp_config.json`. Decision tree updated with budget check step.

@@ -1,173 +1,5 @@
 {
   "version": "3.0",
-  "mcpServers": {
-    "firebase-mcp-server": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "firebase-tools@latest",
-        "mcp",
-        "--dir",
-        "/Users/pikeymickey/.gemini/mono-fresh"
-      ],
-      "env": {
-        "CI": "true",
-        "FIREBASE_CLI_NONINTERACTIVE": "true",
-        "NO_UPDATE_NOTIFIER": "1"
-      },
-      "capability_owner": true,
-      "owns": [
-        "firebase_init",
-        "firebase_deploy",
-        "firestore_*",
-        "auth_*",
-        "hosting_*",
-        "storage_*",
-        "functions_*",
-        "apphosting_*",
-        "remoteconfig_*",
-        "messaging_*"
-      ],
-      "note": "Firebase MCP — MUST use instead of terminal firebase CLI for all Firebase operations. Three-layer auth: CLI token, MCP OAuth2 session, ADC."
-    },
-    "chrome-devtools-mcp": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@anthropic-ai/chrome-devtools-mcp@latest"
-      ],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
-      "capability_owner": true,
-      "owns": [
-        "take_screenshot",
-        "take_snapshot",
-        "lighthouse_audit",
-        "performance_*",
-        "navigate_page",
-        "evaluate_script"
-      ],
-      "note": "Chrome DevTools MCP — MUST use instead of external screenshot tools. Owns all browser interaction, performance tracing, and Lighthouse audits."
-    },
-    "StitchMCP": {
-      "_note": "PLATFORM-NATIVE: Managed by Antigravity MCP Store. Do NOT add command/httpUrl here — it will override the platform injection and crash.",
-      "capability_owner": true,
-      "owns": [
-        "generate_screen_*",
-        "edit_screens",
-        "create_design_system",
-        "apply_design_system",
-        "generate_variants"
-      ]
-    },
-    "google-developer-knowledge": {
-      "_note": "PLATFORM-NATIVE: Managed by Antigravity MCP Store. Do NOT add command/httpUrl here. Fallback: firebase-mcp-server.developerknowledge_* tools.",
-      "capability_owner": true,
-      "owns": [
-        "search_documents",
-        "get_documents",
-        "answer_query"
-      ],
-      "fallback": "firebase-mcp-server.developerknowledge_search_documents"
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking@latest"
-      ],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first",
-        "HTTP_PROXY": "",
-        "HTTPS_PROXY": ""
-      },
-      "capability_owner": true,
-      "owns": [
-        "sequentialthinking"
-      ],
-      "note": "Sequential Thinking MCP — MUST use for architecture decisions, multi-step reasoning, and complex problem decomposition. No ad-hoc reasoning lists."
-    },
-    "jules-mcp-server": {
-      "command": "node",
-      "args": [
-        "/Users/pikeymickey/.gemini/mono-fresh/antigravity-jules-orchestration/index.js"
-      ],
-      "env": {
-        "JULES_API_KEY": "${JULES_API_KEY}"
-      },
-      "capability_owner": true,
-      "owns": [
-        "jules_*"
-      ],
-      "note": "Jules MCP Server — MUST use for all Jules session management and autonomous code generation tasks."
-    },
-    "gcloud": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@google-cloud/gcloud-mcp@latest"
-      ],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first"
-      },
-      "capability_owner": true,
-      "owns": [
-        "gcloud_*"
-      ],
-      "note": "gcloud MCP — Natural language interface to gcloud CLI. MUST use instead of raw terminal gcloud commands."
-    },
-    "observability": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@google-cloud/observability-mcp@latest"
-      ],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first"
-      },
-      "capability_owner": true,
-      "owns": [
-        "query_logs",
-        "query_metrics",
-        "query_traces"
-      ],
-      "note": "Cloud Observability MCP — MUST use for all Cloud Logging, Monitoring, and Trace queries."
-    },
-    "storage": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@google-cloud/storage-mcp@latest"
-      ],
-      "env": {
-        "NODE_OPTIONS": "--dns-result-order=ipv4first"
-      },
-      "capability_owner": true,
-      "owns": [
-        "storage_*",
-        "list_buckets",
-        "upload_object",
-        "download_object"
-      ],
-      "note": "Cloud Storage MCP — MUST use for all GCS bucket and object operations."
-    },
-    "mcp-toolbox": {
-      "_note": "MCP Toolbox for Databases v1.2.0 — Go binary, NOT an NPM package. Deployed via OCI: us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:1.2.0. Transport: streamable-http on port 5000. Config: tools.yaml. Supports 40+ data sources including AlloyDB, Spanner, BigQuery, Cloud SQL, PostgreSQL, Oracle, MongoDB, Snowflake. OAuth 2.1 resource server for MCP Authorization. Cloned at: external_repos/mcp-toolbox/",
-      "capability_owner": true,
-      "owns": [
-        "list_tables",
-        "execute_sql",
-        "describe_table",
-        "run_query",
-        "list_collections"
-      ],
-      "sdk_integrations": ["python", "go", "typescript", "java"],
-      "framework_integrations": ["langchain", "llamaindex", "adk"]
-    }
-  },
   "routing_rules": {
     "google_api_docs": "google-developer-knowledge | fallback: firebase-mcp-server.developerknowledge_search_documents",
     "firebase_operations": "firebase-mcp-server",
@@ -176,63 +8,68 @@
     "architecture_reasoning": "sequential-thinking",
     "gcloud_cli_operations": "gcloud",
     "cloud_logging_monitoring": "observability",
-    "cloud_run_deployment": "cloud-run",
+    "cloud_run_deployment": "cloudrun",
     "cloud_storage_operations": "storage",
-    "sovereign_memory": "gemini-memory",
+    "sovereign_memory": "gemini-graph-memory",
     "autonomous_coding": "jules-mcp-server"
   },
   "anti_patterns": [
-    "NEVER use search_web for Google API documentation — use google-developer-knowledge MCP",
-    "NEVER use terminal for firebase deploy — use firebase-mcp-server MCP",
-    "NEVER take screenshots with external tools — use chrome-devtools-mcp MCP",
-    "NEVER hand-code design tokens — use StitchMCP",
-    "NEVER use ad-hoc reasoning lists — use sequential-thinking MCP",
+    "NEVER use search_web for Google API documentation \u2014 use google-developer-knowledge MCP",
+    "NEVER use terminal for firebase deploy \u2014 use firebase-mcp-server MCP",
+    "NEVER take screenshots with external tools \u2014 use chrome-devtools-mcp MCP",
+    "NEVER hand-code design tokens \u2014 use StitchMCP",
+    "NEVER use ad-hoc reasoning lists \u2014 use sequential-thinking MCP",
     "NEVER run gcloud CLI directly in terminal when gcloud MCP can handle it",
-    "NEVER guess Cloud Run service state — use cloud-run MCP to query live state",
-    "NEVER write Cloud Logging filters by hand — use observability MCP structured queries",
-    "NEVER use NotebookLM for RAG — use gemini-memory (Epistemic Engine) for all memory operations",
+    "NEVER guess Cloud Run service state \u2014 use cloudrun MCP to query live state",
+    "NEVER write Cloud Logging filters by hand \u2014 use observability MCP structured queries",
     "NEVER ingest files matching .geminiignore into the Epistemic Engine"
   ],
   "fleet_manifest": {
-    "antigravity_native": {
-      "total": 10,
+    "antigravity_platform": {
+      "total": 7,
+      "tool_budget": "100/100",
       "servers": [
-        "firebase-mcp-server",
-        "chrome-devtools-mcp",
-        "StitchMCP",
-        "google-developer-knowledge",
-        "sequential-thinking",
-        "jules-mcp-server",
+        "firebase-mcp-server (36)",
+        "chrome-devtools-mcp (29)",
+        "StitchMCP (14)",
+        "gemini-graph-memory (9)",
+        "cloudrun (8)",
+        "google-developer-knowledge (3)",
+        "sequential-thinking (1)"
+      ],
+      "config_source": "~/.gemini/antigravity/mcp_config.json"
+    },
+    "cline_tactical": {
+      "total": 17,
+      "servers": [
+        "dart-language-server",
+        "stripe",
         "gcloud",
         "observability",
-        "storage",
-        "mcp-toolbox"
-      ]
-    },
-    "cline_protocol_aligned": {
-      "total": 12,
-      "phase_1_foundation": [
-        "dart-language-server",
-        "gcloud"
-      ],
-      "phase_2_observability": [
-        "observability",
-        "google-cloud-spanner"
-      ],
-      "phase_3_knowledge": [
+        "google-cloud-spanner",
+        "mcp-toolbox-spanner",
         "gemini-memory",
         "genkit",
-        "storage"
-      ],
-      "phase_4_data": [
+        "storage",
         "firebase-mcp-server",
         "bigquery",
-        "cloud-run"
-      ],
-      "phase_5_compute": [
+        "cloud-run",
         "playwright",
-        "jules-mcp-server"
-      ]
+        "jules-mcp-server",
+        "stripe-governor",
+        "semantic-scalpel",
+        "notebooklm-mcp"
+      ],
+      "config_source": "cline_mcp_settings.json"
+    }
+  },
+  "budget_notes": {
+    "platform_limit": 100,
+    "current_usage": 100,
+    "headroom": 0,
+    "removed_servers": {
+      "gemini-web-fetcher": "Python server misconfigured as Node.js — module path dist/index.js does not exist",
+      "notebooklm-mcp": "39 tools exceeded 100-tool limit — available on Cline tactical plane instead"
     }
   }
 }
