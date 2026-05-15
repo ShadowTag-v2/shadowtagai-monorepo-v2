@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 
 log = logging.getLogger(__name__)
@@ -294,7 +294,7 @@ def cmdb_update_asset_status(
     old_status = asset["status"]
     asset["status"] = new_status.lower()
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    timestamp = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     update_note = f"[{timestamp}] Status: {old_status} → {new_status.lower()}"
     if notes:
         update_note += f" — {notes}"
@@ -362,7 +362,7 @@ def cmdb_register_asset(
         "department": department or "Unassigned",
         "location": location or "TBD",
         "serial": serial or f"AUTO-{uuid.uuid4().hex[:8].upper()}",
-        "purchase_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "purchase_date": datetime.now(UTC).strftime("%Y-%m-%d"),
         "warranty_expires": "TBD",
         "notes": notes,
     }

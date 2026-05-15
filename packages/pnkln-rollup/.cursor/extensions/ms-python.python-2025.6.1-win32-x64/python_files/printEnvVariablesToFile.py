@@ -13,5 +13,4 @@ else:
     raise ValueError("Missing output file argument")
 
 with open(output_file, "w") as outfile:  # noqa: PTH123
-    for key, val in os.environ.items():
-        outfile.write(f"{key}={val}\n")
+    outfile.writelines(f"{key}={val}\n" for key, val in os.environ.items())

@@ -15,10 +15,9 @@ import schedule
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
-
 from agents.bugbot import BugBot
 from agents.jura_protocol import JuraProtocol
+from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
 
 
 class GeminiScheduler:

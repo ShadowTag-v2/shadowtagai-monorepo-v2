@@ -1,4 +1,3 @@
-import re
 import json
 import fnmatch
 from tree_sitter import Language, Parser

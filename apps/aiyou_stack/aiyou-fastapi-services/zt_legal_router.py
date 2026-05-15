@@ -25,11 +25,12 @@ from __future__ import annotations
 import datetime
 import logging
 import uuid
-from typing import Annotated
 from collections.abc import AsyncGenerator
+from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, Request, status
 from pydantic import UUID4, BaseModel, Field
+
 from zt_legal_db import (  # type: ignore[import]
     approve_extraction,
     insert_extraction,
@@ -149,11 +150,12 @@ async def ingest_filing(
     req: Annotated[FilingIngestRequest, Body()],
     conn: DBConn,
 ) -> list[ExtractionResponse]:
+    import sys
+    from pathlib import Path
+
     from control.pnkln.pnkln_core.agents.legal import (  # type: ignore[import]
         extract_deadlines_from_filing,
     )
-    import sys
-    from pathlib import Path
 
     # Resolving path to the Ultrathink Router
     src_path = str(Path(__file__).parent.parent.parent.parent / "legaltrack" / "src")

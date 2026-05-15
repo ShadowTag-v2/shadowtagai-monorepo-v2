@@ -114,7 +114,7 @@ def main() -> None:
     batch.commit()
     print(f"\n✅ Successfully seeded {len(DEVICES)} devices into Firestore!")
     print(f"   Project: {PROJECT_ID}")
-    print(f"   Collection: devices")
+    print("   Collection: devices")
 
 
 if __name__ == "__main__":

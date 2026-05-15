@@ -29,4 +29,4 @@ class TokenBudgetManager:
         return compacted_history
 
     async def _generate_claude_summary(self, messages: list, prompt: str) -> str:
-        return f"[COMPACTED SUMMARY]: Exhaustive context compressed via native agent synthesis."
+        return "[COMPACTED SUMMARY]: Exhaustive context compressed via native agent synthesis."

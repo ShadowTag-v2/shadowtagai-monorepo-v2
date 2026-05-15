@@ -8,6 +8,7 @@ import uuid
 
 from sqlalchemy import JSON, Boolean, Column, DateTime, Index, Integer, String
 from sqlalchemy.sql import func
+
 from src.shadowtag_v4.database import Base
 
 

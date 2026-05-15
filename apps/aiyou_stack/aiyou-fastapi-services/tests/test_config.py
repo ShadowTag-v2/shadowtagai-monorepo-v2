@@ -4,6 +4,7 @@ Tests for application configuration and settings
 """
 
 import pytest
+
 from src.shadowtag_v4.config import Settings, get_settings
 
 

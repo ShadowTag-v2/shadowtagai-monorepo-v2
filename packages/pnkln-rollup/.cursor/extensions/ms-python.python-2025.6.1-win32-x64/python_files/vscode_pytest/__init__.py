@@ -163,7 +163,7 @@ def pytest_exception_interact(node, call, report):
             send_execution_message(
                 os.fsdecode(cwd),
                 "success",
-                collected_test if collected_test else None,
+                collected_test or None,
             )
 
 
@@ -287,7 +287,7 @@ def pytest_report_teststatus(report, config):  # noqa: ARG001
             send_execution_message(
                 os.fsdecode(cwd),
                 "success",
-                collected_test if collected_test else None,
+                collected_test or None,
             )
     yield
 
@@ -321,7 +321,7 @@ def pytest_runtest_protocol(item, nextitem):  # noqa: ARG001
             send_execution_message(
                 os.fsdecode(cwd),
                 "success",
-                collected_test if collected_test else None,
+                collected_test or None,
             )
     yield
 

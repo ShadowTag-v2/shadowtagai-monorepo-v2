@@ -6,7 +6,6 @@ Data Plane: PostgreSQL (until MRR) and Firestore (replacing Redis).
 """
 from __future__ import annotations
 import os
-import time
 from datetime import datetime, timezone
 from typing import Dict, List, Any
 
