@@ -21,7 +21,7 @@ pytest-benchmark>=4.0.0
 
 # Cryptography for ShadowTagAI
 cryptography>=41.0.0
-pycryptodome>=3.19.0
+pycryptodome>=3.23.0
 
 # Watermarking
 Pillow>=10.0.0
