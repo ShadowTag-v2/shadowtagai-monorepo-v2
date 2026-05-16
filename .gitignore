@@ -239,3 +239,16 @@ docs/Strategic_Intelligence/sovereign_memory_core.json
 geap/adk-js/
 external_repos/
 bin/mcp-toolbox
+
+# V26.3 — Large file exclusions for GitHub 100MB limit
+archive/
+.hypothesis/
+src.zip
+*.pack
+*.apk
+*.node
+
+# Turbopack dev caches (not just .next/)
+**/dev/cache/turbopack/
+# .sst files (turbopack cache blobs)
+*.sst

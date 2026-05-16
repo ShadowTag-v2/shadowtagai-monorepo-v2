@@ -1,0 +1,245 @@
+/* [project]/src/app/agent-spinner.css [app-client] (css) */
+.agent-spinner {
+  letter-spacing: .03em;
+  -webkit-user-select: none;
+  user-select: none;
+  align-items: center;
+  gap: .625rem;
+  font-family: SF Mono, Fira Code, JetBrains Mono, Cascadia Code, monospace;
+  font-size: .8125rem;
+  display: inline-flex;
+}
+
+.agent-spinner__glyph {
+  text-align: center;
+  will-change: contents;
+  width: 1.2em;
+  animation: 1s steps(8, end) infinite agent-spinner-rotate;
+  display: inline-block;
+}
+
+@keyframes agent-spinner-rotate {
+  0% {
+    content: "⠋";
+  }
+
+  12.5% {
+    content: "⠙";
+  }
+
+  25% {
+    content: "⠹";
+  }
+
+  37.5% {
+    content: "⠸";
+  }
+
+  50% {
+    content: "⠼";
+  }
+
+  62.5% {
+    content: "⠴";
+  }
+
+  75% {
+    content: "⠦";
+  }
+
+  87.5% {
+    content: "⠧";
+  }
+}
+
+.agent-spinner__verb {
+  background: linear-gradient(90deg,
+    var(--spinner-color-dim, #ffffff59) 0%,
+    var(--spinner-color-dim, #ffffff59) var(--shimmer-start, 0%),
+    var(--spinner-color-bright, #fffffff2) var(--shimmer-mid, 50%),
+    var(--spinner-color-dim, #ffffff59) var(--shimmer-end, 100%),
+    var(--spinner-color-dim, #ffffff59) 100%);
+  -webkit-text-fill-color: transparent;
+  animation: agent-shimmer-sweep var(--shimmer-duration, 2.4s) linear infinite;
+  white-space: nowrap;
+  background-size: 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline-block;
+  position: relative;
+}
+
+@keyframes agent-shimmer-sweep {
+  0% {
+    --shimmer-start: 100%;
+    --shimmer-mid: 105%;
+    --shimmer-end: 110%;
+  }
+
+  100% {
+    --shimmer-start: -10%;
+    --shimmer-mid: -5%;
+    --shimmer-end: 0%;
+  }
+}
+
+@supports not (animation-timeline: auto) {
+  .agent-spinner__verb {
+    background: linear-gradient(90deg,
+      var(--spinner-color-dim, #ffffff59) 0%,
+      var(--spinner-color-bright, #fffffff2) 50%,
+      var(--spinner-color-dim, #ffffff59) 100%);
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: 2.4s ease-in-out infinite agent-shimmer-fallback;
+  }
+}
+
+@keyframes agent-shimmer-fallback {
+  0% {
+    background-position: 200%;
+  }
+
+  100% {
+    background-position: -200%;
+  }
+}
+
+.agent-spinner__dots {
+  min-width: 1.5em;
+  color: var(--spinner-color-dim, #ffffff59);
+  display: inline-block;
+}
+
+.agent-spinner__dots:after {
+  content: "";
+  animation: 1.5s step-end infinite agent-dots;
+}
+
+@keyframes agent-dots {
+  0% {
+    content: ".";
+  }
+
+  33% {
+    content: "..";
+  }
+
+  66% {
+    content: "...";
+  }
+}
+
+.agent-spinner__verb-wrap {
+  min-width: 10ch;
+  height: 1.4em;
+  position: relative;
+  overflow: hidden;
+}
+
+.agent-spinner__verb-inner {
+  align-items: center;
+  transition: opacity .25s ease-out, transform .25s ease-out;
+  display: flex;
+  position: absolute;
+  inset: 0;
+}
+
+.agent-spinner__verb-inner[data-state="entering"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.agent-spinner__verb-inner[data-state="exiting"] {
+  opacity: 0;
+  transform: translateY(-.5em);
+}
+
+.agent-spinner[data-stall="normal"] {
+  --spinner-color-dim: #ffffff59;
+  --spinner-color-bright: #fffffff2;
+}
+
+.agent-spinner[data-stall="warm"] {
+  --spinner-color-dim: #ffbf0066;
+  --spinner-color-bright: #ffe178;
+}
+
+.agent-spinner[data-stall="hot"] {
+  --spinner-color-dim: #ff6b6b73;
+  --spinner-color-bright: #ff8c8c;
+  animation: 1.5s ease-in-out infinite agent-stall-pulse;
+}
+
+@keyframes agent-stall-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .75;
+  }
+}
+
+.agent-spinner--overlay {
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 20;
+  border-radius: inherit;
+  background: #0009;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .75rem;
+  display: flex;
+  position: absolute;
+  inset: 0;
+}
+
+.agent-spinner--overlay .agent-spinner__label {
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--spinner-color-bright, #fffffff2);
+  font-size: .6875rem;
+  animation: 2s ease-in-out infinite agent-label-pulse;
+}
+
+@keyframes agent-label-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .6;
+  }
+}
+
+.agent-spinner--shadowtag {
+  --spinner-color-dim: #f183ff59;
+  --spinner-color-bright: #ec6afff2;
+}
+
+.agent-spinner--kovelai {
+  --spinner-color-dim: #e6c48759;
+  --spinner-color-bright: #e6c487f2;
+}
+
+.agent-spinner--headfade {
+  --spinner-color-dim: #00f5a059;
+  --spinner-color-bright: #00d9f5f2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-spinner__glyph, .agent-spinner__verb, .agent-spinner__dots:after, .agent-spinner__verb-inner {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .agent-spinner__verb {
+    -webkit-text-fill-color: var(--spinner-color-bright, #fffffff2);
+    background: none;
+  }
+}
+
+/*# sourceMappingURL=src_app_agent-spinner_css_0w3-wzy._.single.css.map*/
