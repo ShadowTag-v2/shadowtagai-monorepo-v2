@@ -2,15 +2,35 @@
 
 Tests all API endpoints against a live deployment (staging by default).
 Run with: pytest tests/test_regression.py -v --base-url=<url>
+
+These tests require a live staging deployment. They are automatically
+skipped when the staging URL is unreachable (returns non-200 on /health).
+Set CC_STAGING_URL to override the target.
 """
 
 import os
 
+import pytest
 import requests
 
 BASE_URL = os.environ.get(
   "CC_STAGING_URL",
   "https://counselconduit-staging-767252945109.us-central1.run.app",
+)
+
+
+def _staging_is_live() -> bool:
+  """Check if the staging deployment is reachable."""
+  try:
+    resp = requests.get(f"{BASE_URL}/health", timeout=5)
+    return resp.status_code == 200
+  except (requests.ConnectionError, requests.Timeout):
+    return False
+
+
+pytestmark = pytest.mark.skipif(
+  not _staging_is_live(),
+  reason=f"Staging URL {BASE_URL} is unreachable — skipping regression suite",
 )
 
 

@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/judges/fraud_judge.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.1, 0.3, 0.4, 0.5, 0.7, 365, 1000, 5000, 10000, 100000, '; ', 'FraudJudge', 'account_age_days', 'amount_usd', 'decision', 'fraud_score', 'geo_mismatch', 'high_fraud_score', 'identity_unverified', 'identity_verified', 'is_new_payee', 'medium_fraud_score', 'metadata', 'multiple_indicators', 'reasoning', 'risk_flags', 'velocity_exceeded']

@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/speculation_engine/firestore_persistence.py
-# hypothesis_version: 6.151.5
-
-[0.0, 120.0, 3600.0, 500, 86400, '.beads', '30', '4', '<', '==', 'BEADS_DIR', 'DESCENDING', 'GCP_PROJECT', 'MAX_SWEEPS_PER_HOUR', 'SWEEP_TTL_DAYS', 'agent', 'completed', 'created_at', 'created_at_epoch', 'daemon_pid', 'doc_id', 'duration_seconds', 'firestore', 'image_count', 'images', 'interaction_chain', 'interaction_id', 'message_count', 'message_roles', 'model', 'pair_sessions', 'pipeline_mode', 'query', 'report_text', 'research_sweep', 'role', 'session_id', 'shadowtag-omega-v4', 'status', 'sweep_ratelimit.json', 'sweep_results', 'timestamps', 'total_tokens', 'turn_count', 'unknown']

@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/token_estimator.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.75, 0.9, 100, 2000, ',', '.', ':', 'breakdown', 'cs', 'current_tokens', 'data', 'document', 'go', 'html', 'image', 'is_critical', 'is_warning', 'js', 'json', 'jsonc', 'jsonl', 'max_tokens', 'messages', 'py', 'redacted_thinking', 'remaining', 'rs', 'svg', 'system', 'text', 'thinking', 'tool_result', 'tool_use', 'tools', 'ts', 'type', 'utilization', 'xml', 'yaml', 'yml']

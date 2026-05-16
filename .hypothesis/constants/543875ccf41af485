@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_bridge/_types.py
-# hypothesis_version: 6.151.5
-
-['/tmp', 'XDG_RUNTIME_DIR', 'completed', 'error', 'failed', 'initialize', 'interrupt', 'interrupted', 'result', 'same-dir', 'set_model', 'set_permission_mode', 'single-session', 'socket_path', 'success', 'text', 'tool_start', 'worktree']

@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/sandbox/cached_session_store.py
-# hypothesis_version: 6.151.5
-
-[300, 1800, 'Cache HIT: %s…', '_cached_at', 'attorney_uid', 'cached_get_session', 'cached_update_state', 'cc:sandbox:session:', 'committed_files', 'created', 'created_at', 'hits', 'matter_id', 'max_overlay_files', 'misses', 'rejection_reason', 'session_id', 'state', 'total', 'trust_level', 'ttl_seconds']

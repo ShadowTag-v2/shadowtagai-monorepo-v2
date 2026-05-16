@@ -1,7 +1,0 @@
-export * as bar from "bar.json";
-export * as baz from "baz.json" /* comment */;
-export * as foo from "foo.json";
-
-import * as bar from "bar.json";
-import * as baz from "baz.json" /* comment */;
-import * as foo from "foo.json";

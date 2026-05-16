@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/judge6_atp519_scoring.py
-# hypothesis_version: 6.151.5
-
-['EXTREMELY_HIGH', 'HIGH', 'LOW', 'MEDIUM', 'UNKNOWN', 'action', 'catastrophic', 'critical', 'error', 'frequent', 'likely', 'moderate', 'negligible', 'occasional', 'probability', 'probability_score', 'risk_level', 'severity', 'severity_score', 'unlikely']

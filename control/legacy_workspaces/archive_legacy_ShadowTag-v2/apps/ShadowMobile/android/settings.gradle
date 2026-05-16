@@ -1,8 +1,0 @@
-pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
-plugins { id("com.facebook.react.settings") }
-def npmRoot = settingsDir.parentFile
-def cliFile = new File(npmRoot, "node_modules/react-native/cli.js")
-extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand(["node", cliFile.absolutePath, "config"]) }
-rootProject.name = 'ShadowMobile'
-include ':app'
-includeBuild('../node_modules/@react-native/gradle-plugin')

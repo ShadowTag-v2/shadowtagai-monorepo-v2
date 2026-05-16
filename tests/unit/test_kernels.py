@@ -22,7 +22,13 @@ from app.models.decision import (
 
 # ─── Skip JudgeSix if torch unavailable ─────────────────────────────────
 torch = pytest.importorskip("torch", reason="PyTorch required for JudgeSix tests")
-from app.kernels.judge_six import JudgeSixClassifyKernel, JudgeSixModel
+from app.kernels.judge_six import JudgeSixClassifyKernel
+
+# JudgeSixModel was removed in the pipeline refactor — guard import
+try:
+    from app.kernels.judge_six import JudgeSixModel
+except ImportError:
+    JudgeSixModel = None
 
 
 # ─── Fixtures ────────────────────────────────────────────────────────────
@@ -163,6 +169,7 @@ class TestBaseKernel:
 # ─── JudgeSixModel Tests ────────────────────────────────────────────────
 
 
+@pytest.mark.skipif(JudgeSixModel is None, reason="JudgeSixModel removed in pipeline refactor")
 class TestJudgeSixModel:
     """Tests for the JudgeSixModel neural network."""
 

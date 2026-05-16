@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/resilient_retry.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.25, 200, 408, 409, 429, 500, 529, 1000, 30000, 32000, '1', 'Aborted', 'T', 'aborted', 'exhausted', 'fallen_back', 'get', 'headers', 'primary', 'retried', 'retry-after', 'status', 'status_code', 'success', 'true', 'yes']

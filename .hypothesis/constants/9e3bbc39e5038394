@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_classifier/allowlist.py
-# hypothesis_version: 6.151.5
-
-['browser_subagent', 'command_status', 'grep_search', 'list_dir', 'read_url_content', 'replace_file_content', 'run_command', 'search_web', 'send_command_input', 'view_file', 'write_to_file']

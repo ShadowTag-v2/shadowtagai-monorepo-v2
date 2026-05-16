@@ -1,3 +1,0 @@
-n8n API key
-
-[JWT_REDACTED]

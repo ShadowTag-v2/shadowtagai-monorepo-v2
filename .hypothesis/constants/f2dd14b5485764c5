@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/gemini_ingestion_layer.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.001, 0.02, 0.12, 0.15, 0.2, 0.4, 0.7, 0.72, 0.78, 0.85, 3.0, 4.0, 5.0, 100, 120, 150, 200, 500, 1000, 3600, 5000, '\nPer-Source Metrics:', '%Y-%m-%d', '__main__', 'academic', 'active_sources', 'am_briefing', 'avg_relevance', 'completed', 'cost_per_item', 'date', 'failed', 'gates_passed', 'github', 'items_per_day', 'job_2025_11_15', 'job_config', 'linkedin', 'max_cost_per_item', 'max_items_per_day', 'max_items_per_source', 'min_active_sources', 'min_avg_relevance', 'min_items_per_day', 'min_tier_1_ratio', 'news_api', 'partial_success', 'pending', 'quality_gates_passed', 'reddit', 'rss_feeds', 'running', 'source_metrics', 'summary', 'tier_1', 'tier_1_items', 'tier_1_ratio', 'tier_2', 'tier_3', 'tier_classification', 'title', 'top_insights', 'total_items', 'twitter', 'youtube', '✅', '❌']

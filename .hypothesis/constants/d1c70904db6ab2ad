@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/collapse_read_search/types.py
-# hypothesis_version: 6.151.5
-
-[0.0, 'amend', 'checkout', 'create', 'delete', 'merge', 'regular', 'update']

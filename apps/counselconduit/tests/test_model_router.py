@@ -222,7 +222,7 @@ class TestSelectModel:
       firm_allowed_models=["gemini-flash", "gemini-pro"],
     )
     model = select_model(req)
-    assert model.model_id == "gemini-3.1-pro"
+    assert model.model_id == "gemini-3.1-flash-lite-preview-thinking"
 
   def test_preferred_model_respected(self):
     req = ModelRequest(

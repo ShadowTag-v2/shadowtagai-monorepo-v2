@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/services/cloud_tasks_handler.py
-# hypothesis_version: 6.151.5
-
-['Content-Type', 'Invalid JSON payload', 'Memo ready: task=%s', 'Task completed: %s', 'a2a-notifications', 'application/json', 'error', 'gdpr_delete', 'ignored', 'memo_ready', 'message', 'ok', 'payload', 'session_expired', 'session_id', 'shadowtag-omega-v4', 'status', 'task_completed', 'task_failed', 'task_id', 'tenant_id', 'type', 'us-central1']

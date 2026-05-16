@@ -1,9 +1,0 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: tenant-hht
-spec:
-  path: "./tenants/hht"
-  sourceRef:
-    kind: GitRepository
-    name: hht-repo

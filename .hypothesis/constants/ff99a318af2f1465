@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/gates/quality_gates.py
-# hypothesis_version: 6.151.5
-
-[0.004, 0.65, 0.8, 3.0, 100, '0.0026', '0.70', '1.1', '1.2', '1.3', '100', '15.0', '2.1', '2.2', '2.57', '25.0', '3.1', '3.2', '30.0', '4', '45.0', '5.0', '55.0', 'DAILY_BUDGET', 'MIN_AVG_RELEVANCE', 'MIN_ITEMS_PER_DAY', 'MIN_SOURCES', 'MIN_SOURCE_PERCENT', 'TARGET_COST_PER_ITEM', 'TIER1_MAX_PCT', 'TIER1_MIN_PCT', 'TIER2_MAX_PCT', 'TIER2_MIN_PCT', 'TIER3_MAX_PCT', 'critical', 'gate', 'message', 'ok', 'overall_status', 'passed', 'results', 'severity', 'total_gates', 'warning', 'warnings']

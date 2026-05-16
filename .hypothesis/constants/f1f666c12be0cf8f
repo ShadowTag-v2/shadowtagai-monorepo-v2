@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/gemini_ingestion_layer/classification/tier_classifier.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.1, 0.3, 0.4, 0.6, 0.65, 0.7, 0.75, 0.85, 0.95, 20.0, 25.0, 30.0, 50.0, 100, 150, 500, 1000, 8192, 1000000, 'actual', 'apnews.com', 'arstechnica.com', 'arxiv.org', 'author', 'bbc.com', 'below_threshold', 'bloomberg.com', 'cost_usd', 'domain', 'domain_whitelist', 'fail', 'gemini_api', 'max', 'message', 'method', 'model', 'nature.com', 'news', 'no_data', 'pass', 'reddit', 'reuters.com', 'science.org', 'source', 'status', 'target', 'techcrunch.com', 'text', 'theverge.com', 'tier_1', 'tier_1_count', 'tier_1_percentage', 'tier_2', 'tier_2_count', 'tier_2_percentage', 'tier_3', 'tier_3_count', 'tier_3_percentage', 'title', 'tokens_used', 'total_cost_usd', 'total_tokens_used', 'twitter', 'unknown', 'wired.com', 'youtube']

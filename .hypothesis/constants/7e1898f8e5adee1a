@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/resilient_retry/retry_engine.py
-# hypothesis_version: 6.151.5
-
-[0.25, 200, 400, 408, 409, 429, 500, 529, 1000, 3000, 30000, 32000, '?', 'Retry aborted', 'T', 'aborted', 'agent:builtin', 'agent:custom', 'agent:default', 'auto_mode', 'bash_classifier', 'cannot_retry', 'compact', 'context_limit', 'fallback_triggered', 'get', 'headers', 'hook_agent', 'hook_prompt', 'input_tokens', 'max_tokens', 'repl_main_thread', 'response', 'retried', 'retry-after', 'sdk', 'side_question', 'status', 'status_code', 'success', 'verification_agent']

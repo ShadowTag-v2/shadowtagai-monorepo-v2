@@ -21,7 +21,7 @@ Template structure (matches mini-swe-agent's expectations):
 import logging
 import re
 import time
-from enum import Enum, StrEnum
+from enum import StrEnum
 from pathlib import Path
 
 from constants import AUGMENT_TIMEOUT_SECONDS

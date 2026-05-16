@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/api_context_management.py
-# hypothesis_version: 6.151.5
-
-[40000, 180000, 'Bash', 'Edit', 'Glob', 'Grep', 'MultiEdit', 'NotebookEdit', 'Read', 'View', 'WebFetch', 'WebSearch', 'Write', 'all', 'bash', 'clear_at_least', 'clear_tool_inputs', 'edit', 'edits', 'exclude_tools', 'glob', 'grep', 'input_tokens', 'keep', 'mcp_read', 'multi_edit', 'notebook_edit', 'read', 'read_url_content', 'replace_file_content', 'search_web', 'thinking_turns', 'tool_uses', 'trigger', 'type', 'value', 'view', 'web_fetch', 'web_search', 'write', 'write_to_file']

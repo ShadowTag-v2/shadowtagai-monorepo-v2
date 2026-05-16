@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/orbstack_sandbox/overlay.py
-# hypothesis_version: 6.151.5
-
-[256, 1024, 8192, '*', '.deleted', '/', '\\', '_', 'created', 'deleted', 'file_count', 'modified', 'rb', 'total_bytes']

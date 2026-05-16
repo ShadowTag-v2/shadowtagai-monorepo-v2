@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/layers.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.4, 100, 200, 300, 2000, 13000, 20000, 50000, 'L1_CachedMC', 'L2_TimeBased', 'L3_APIManagement', 'L4 compaction failed', 'L4_FullCompaction', '[Cleared via API]', 'assistant', 'clear_directives', 'clear_thinking', 'clear_tool_uses', 'has_thinking', 'image_block_removal', 'max_tokens_change', 'message_content_edit', 'message_deletion', 'message_insertion', 'model_switch', 'role_change', 'stop_sequence_change', 'system', 'system_prompt_change', 'temperature_change', 'tool', 'user']

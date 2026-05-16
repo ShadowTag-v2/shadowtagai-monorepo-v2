@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_vcr/vcr.py
-# hypothesis_version: 6.151.5
-
-['.cassettes', 'AGNT_FC_OVERRIDES', '[REDACTED]', 'api_key', 'authorization', 'headers', 'kwargs', 'method', 'off', 'password', 'record', 'replay', 'request', 'response', 'secret', 'token', 'utf-8', 'vcr_mode', 'w', '{}']

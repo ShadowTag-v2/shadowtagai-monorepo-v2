@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/prompt_engineering/metrics.py
-# hypothesis_version: 6.151.5
-
-[0.0, 100, 'AFTER:\n', 'BEFORE:\n', 'IMPROVEMENTS:\n', 'PromptMetrics', 'avg_cost_usd', 'avg_revisions', 'avg_time_sec', 'avg_tokens', 'cost_reduction_pct', 'revision_reduction', 'success_rate', 'time_reduction_pct', 'token_reduction_pct', 'total_cost_usd', 'total_executions', 'total_revisions', 'total_time_sec', 'total_tokens', 'w']

@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/apps/aiyou_stack/aiyou-fastapi-services/pnkln/core/grpo.py
-# hypothesis_version: 6.151.5
-
-[-2.0, -0.2, 1e-08, 0.0001, 0.01, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0, '\nBatch statistics:', '\nConfiguration:', '\nTraining step:', '  Advantages:', '  Disadvantages:', '=', 'Can be unstable', 'Less established', 'Moderate', 'More hyperparameters', 'More stable training', 'Policy (actor only)', 'Policy (actor)', 'Proven on many tasks', 'Well-established', '__main__', 'accuracy', 'advantages', 'baseline', 'clip_epsilon', 'complexity', 'components', 'disadvantages', 'elegance', 'ent_coef', 'entropy', 'entropy_bonus', 'grpo', 'hyperparameters', 'leverage', 'loss', 'lr', 'lr_actor', 'lr_critic', 'max_reward', 'mean_advantage', 'mean_ratio', 'mean_reward', 'min_reward', 'num_groups', 'policy_loss', 'ppo', 'responses_per_prompt', 'sample_efficiency', 'simplicity', 'speed', 'stability', 'std_advantage', 'total_loss', 'vf_coef']

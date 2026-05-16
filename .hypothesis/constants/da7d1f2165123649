@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_utils/context_visualizer.py
-# hypothesis_version: 6.151.5
-
-[1.0, 100, 500, 3000, 33000, 200000, 1000000, ',', ':', 'Autocompact buffer', 'Compact buffer', 'Custom agents', 'Free space', 'MCP tools', 'MCP tools (deferred)', 'Memory files', 'Messages', 'Skills', 'System prompt', 'System tools', 'assistant', 'attachment', 'call_tokens', 'claude', 'color', 'content', 'cyan', 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-3-flash', 'gemini-3-pro', 'gemini-3.1-flash', 'gemini-3.1-pro', 'haiku-4', 'id', 'inactive', 'input_tokens', 'message', 'name', 'opus-4', 'percentage', 'permission', 'promptBorder', 'purple', 'remaining', 'result_tokens', 'sonnet-4', 'squares', 'tokens', 'tool_result', 'tool_use', 'tool_use_id', 'type', 'unknown', 'used', 'user', 'warning']

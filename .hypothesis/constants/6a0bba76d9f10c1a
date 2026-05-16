@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/judges/fin_judge.py
-# hypothesis_version: 6.151.5
-
-[10000, 50000, 100000, 1000000, '; ', 'FinJudge', 'US', 'Unknown', 'XX', 'amount_usd', 'approved', 'decision', 'destination_country', 'has_po', 'metadata', 'new', 'purchase_order', 'reasoning', 'threshold_exceeded', 'unknown', 'unverified', 'vendor_status', 'wire_transfer']

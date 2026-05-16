@@ -1,2 +1,0 @@
-Error importing FlyingMonkeys: No module named 'agents.flying_monkeys'
-Make sure you're running from the project root

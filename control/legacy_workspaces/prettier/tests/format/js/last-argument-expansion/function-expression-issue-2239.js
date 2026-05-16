@@ -1,1 +1,0 @@
-someFunctionCallWithBigArgumentsAndACallback(thisArgumentIsQuiteLong, (cool) => cool);

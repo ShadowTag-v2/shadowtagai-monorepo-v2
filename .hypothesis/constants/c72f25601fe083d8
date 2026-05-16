@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/repo_oracle/oracle.py
-# hypothesis_version: 6.151.5
-
-['!*.pyc', '!.venv/', '!archive/', '!external_repos/', '!node_modules/', '--files-with-matches', '--glob', '--json', '--max-count', '.', '.agent', '.agents/skills', '1', '_', '__main__', 'a', 'apps', 'event', 'evidence', 'index.ndjson', 'libs', 'manifest_keys', 'matches', 'packages', 'query', 'repo.oracle.query', 'rg', 'scripts', 'skills', 'summary', 'timestamp', 'version_line']

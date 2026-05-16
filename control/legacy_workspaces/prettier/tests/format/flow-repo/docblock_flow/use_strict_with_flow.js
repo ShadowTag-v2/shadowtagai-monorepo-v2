@@ -1,4 +1,0 @@
-/* @flow */
-
-(""
-: void) // error

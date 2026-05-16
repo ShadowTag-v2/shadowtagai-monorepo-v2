@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "flyingmonkeys": {
-      "command": "python3",
-      "args": ["src/governance/mcp_server.py"],
-      "env": { "PYTHONPATH": "." }
-    }
-  }
-}

@@ -1,8 +1,0 @@
-mesop
-gunicorn
-anthropic
-google-generativeai
-pg8000
-SQLAlchemy
-pinecone[grpc]
-pandas

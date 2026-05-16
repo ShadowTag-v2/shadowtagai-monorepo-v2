@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/prompt_engineering/prompt_analyzer.py
-# hypothesis_version: 6.151.5
-
-[0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0, 1.3, 3.0, 15.0, 100, 500, 1000, 1000000, ' are ', ' been ', ' being ', ' is ', ' was ', ' were ', 'Prompt 1', 'Prompt 2', 'Tie', '[.!?]+', '^\\s*[-*•\\d+\\.]\\s', '^\\s*[A-Z]+:', 'analyses', 'avoid', 'check', 'clarity_improvement', 'comparison', 'complexity_change', 'constraint', 'cost_difference_usd', 'current', 'ensure', 'gemini-2.0-pro', 'labels', 'latest', 'limit', 'maximum', 'modern', 'must', 'new', 'prompts', 'recent', 'should not', 'success criteria', 'time_difference_sec', 'token_difference', 'validate', 'verify', 'winner']

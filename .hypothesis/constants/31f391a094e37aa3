@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/voice_service.py
-# hypothesis_version: 6.151.5
-
-[4096, 16000, '-', '--buffer', '-b', '-c', '-e', '-f', '-q', '-r', '-t', '0.1', '1', '1024', '16', '2.0', '3%', 'Darwin', 'Linux', 'S16_LE', 'Windows', 'apt-get', 'arecord', 'brew', 'brew install sox', 'dnf', 'pacman', 'raw', 'rec', 'signed', 'silence', 'sox (rec command)', 'sudo dnf install sox', 'sudo pacman -S sox']

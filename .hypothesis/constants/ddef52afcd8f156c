@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/tool_output_caps.py
-# hypothesis_version: 6.151.5
-
-[1000, 2000, 3600, '%Y%m%d_%H%M%S', '.txt', '200000', '50000', 'TOOL_OVERFLOW_DIR']

@@ -1,3 +1,0 @@
-[yanked]
-enabled = false # doesn't work in Nix sandbox
-update_index = false # crates.io index managed by Nix

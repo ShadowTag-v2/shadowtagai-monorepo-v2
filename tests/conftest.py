@@ -1,6 +1,13 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Pytest configuration and fixtures."""
 
+# Exclude non-test scripts and aspirational test stubs.
+# test_security_paradigms.py: standalone verification script (uses
+#   asyncio.run(main()), no test_ functions, imports archived modules).
+# test_memory_service.py: aspirational stub referencing app.models.User
+#   and app.models.Project which don't exist in the models package exports.
+collect_ignore = ["test_security_paradigms.py", "test_memory_service.py"]
+
 import sys
 from pathlib import Path
 

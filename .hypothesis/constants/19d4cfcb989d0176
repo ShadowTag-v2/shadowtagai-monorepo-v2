@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/scripts/prune_gca_chat_threads.py
-# hypothesis_version: 6.151.5
-
-[5.0, 20.0, 100, 600, 1024, 3600, '%H:%M:%S', '--keep', '--monitor', '--vacuum-only', '--write', '-e', 'Error:', 'RangeError:', 'TypeError:', 'VACUUM', '__main__', 'after_bytes', 'after_size', 'before_bytes', 'before_size', 'database is locked', 'found', 'freed_bytes', 'gca_total_bytes', 'invalid JSON', 'key not found', 'osascript', 'other_key_count', 'other_keys', 'raw_bytes', 'reason', 'recovered', 'say', 'success', 'thread_count', 'threads_after', 'threads_before', 'threads_bytes', 'utf-8', 'valid_json', '✅ Done.', '🚨 IDE Bloat Alert']

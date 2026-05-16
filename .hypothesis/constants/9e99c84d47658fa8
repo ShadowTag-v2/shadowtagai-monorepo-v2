@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_classifier/diagnostics.py
-# hypothesis_version: 6.151.5
-
-[0.0, 1000, 'AGNTClassifier', 'ClassifierResult', 'ClassifierVerdict', 'CommandLine', 'FAIL', 'PASS', 'StitchMCP', 'TwoStageClassifier', 'XMLClassifier', 'allow', 'allowlist_count', 'allowlist_sanity', 'checks', 'chrome-devtools-mcp', 'classifier_function', 'classifier_import', 'claude-in-chrome', 'command_status', 'denylist_count', 'details', 'duration_ms', 'echo hello', 'echo_verdict', 'event_name', 'fail', 'failed', 'firebase-mcp-server', 'fleet_servers_count', 'gateway_pipeline', 'grep_search', 'list_dir', 'message', 'modules', 'name', 'overall', 'pass', 'passed', 'policy_config', 'rm -rf /', 'rm_verdict', 'run_command', 'safe_count', 'safe_tool_verdict', 'send_command_input', 'sequential-thinking', 'skip', 'status', 'telemetry', 'telemetry_catalog', 'test', 'total', 'total_evaluations', 'view_file', 'warn', 'warned', 'write_to_file']

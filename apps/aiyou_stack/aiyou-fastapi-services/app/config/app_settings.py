@@ -142,6 +142,7 @@ class AppSettings(BaseSettings):
 
     # Kernel configuration
     kernel_1_max_latency_ms: float = Field(default=3000.0)
+    kernel_2_max_latency_ms: float = Field(default=1000.0)
     kernel_1_max_output_tokens: int = Field(default=4096)
     gemini_model: str = Field(default="gemini-2.5-flash")
 

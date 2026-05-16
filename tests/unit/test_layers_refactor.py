@@ -24,10 +24,30 @@ PNKLN_ROOT = (
 
 @pytest.fixture(autouse=True)
 def patch_sys_path():
-  """Add the pnkln apps directory to sys.path for import resolution."""
+  """Add the pnkln apps directory to sys.path for import resolution.
+
+  Multiple ``pnkln/`` packages exist in the monorepo (root, src/, apps/).
+  Python resolves from ``src/pnkln/`` first (via pytest's pythonpath) which
+  lacks ``governance``.  We extend ``pnkln.__path__`` to include the apps
+  directory so ``pnkln.governance`` is discoverable.
+  """
+  # Clear any cached pnkln modules from root-level namespace collision
+  _clear_pnkln_cache()
   path_str = str(PNKLN_ROOT)
   if path_str not in sys.path:
     sys.path.insert(0, path_str)
+
+  # Import base pnkln, then extend its __path__ so governance is findable.
+  # Also patch __spec__.submodule_search_locations for importlib mode.
+  import pnkln
+  apps_pnkln = str(PNKLN_ROOT / "pnkln")
+  if apps_pnkln not in pnkln.__path__:
+    pnkln.__path__.insert(0, apps_pnkln)
+  if hasattr(pnkln, "__spec__") and pnkln.__spec__ is not None:
+    locs = pnkln.__spec__.submodule_search_locations
+    if locs is not None and apps_pnkln not in locs:
+      locs.insert(0, apps_pnkln)
+
   # Mock numpy since it may not be installed in the test venv
   if "numpy" not in sys.modules:
     sys.modules["numpy"] = MagicMock()

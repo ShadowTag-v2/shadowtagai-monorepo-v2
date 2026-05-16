@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/mcp_tools/interactions_wrapper.py
-# hypothesis_version: 6.151.5
-
-[0.0, 100, 1000000, '.beads/interactions', '/', 'GEMINI_API_KEY', 'STOP', 'active', 'closed', 'created', 'created_at', 'error', 'function', 'functionResponse', 'gemini-3.1-pro', 'input', 'last_activity', 'metadata', 'model', 'name', 'output', 'parts', 'paused', 'response', 'role', 'session_id', 'state', 'systemInstruction', 'text', 'token_usage', 'tools', 'turn_count', 'user']

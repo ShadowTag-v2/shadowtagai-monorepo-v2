@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/sandbox/ws_state_push.py
-# hypothesis_version: 6.151.5
-
-[300, 'from', 'metadata', 'ping', 'pong', 'sandbox-ws', 'session_id_prefix', 'state_change', 'to', 'ts', 'type']

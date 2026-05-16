@@ -13,21 +13,14 @@ class TestPromptCache(unittest.TestCase):
     system = "Hello<DYNAMIC_BOUNDARY>World"
     cm.detect_break(tools, system, 100)
 
-    # Test exact match
-    import io
-    from contextlib import redirect_stdout
+    # Test exact match — no changes expected
+    changes = cm.detect_break(tools, system, 0)
+    self.assertEqual(changes, [])
 
-    f = io.StringIO()
-    with redirect_stdout(f):
-      cm.detect_break(tools, system, 0)
-    self.assertEqual(f.getvalue(), "")
-
-    # Test break
-    f = io.StringIO()
+    # Test break — tool changed
     tools["bash"]["type"] = "tool"
-    with redirect_stdout(f):
-      cm.detect_break(tools, system, 0)
-    self.assertIn("CACHE BUST DETECTED: bash changed.", f.getvalue())
+    changes = cm.detect_break(tools, system, 0)
+    self.assertIn("bash", changes)
 
 
 if __name__ == "__main__":

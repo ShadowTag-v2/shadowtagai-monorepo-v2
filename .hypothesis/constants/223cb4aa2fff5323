@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/context_compactor/compactor.py
-# hypothesis_version: 6.151.5
-
-[1000, '%s had errors: %s', 'a', 'agnt_compact_result', 'anchors_surviving', 'anchors_total', 'break_position', 'cache_preserved', 'circuit_breaker_open', 'context_compaction', 'disabled', 'elapsed_ms', 'errors', 'event', 'last_cache_preserved', 'layer', 'messages_modified', 'run_count', 'savings_pct', 'survival_rate', 'telemetry.jsonl', 'timestamp', 'tokens_after', 'tokens_before', 'tokens_saved', 'total_tokens_saved', 'vectors_triggered']

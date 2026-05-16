@@ -1,4 +1,0 @@
-google-cloud-storage==3.6.*
-google-genai==1.52.*
-fastmcp==2.13.*
-

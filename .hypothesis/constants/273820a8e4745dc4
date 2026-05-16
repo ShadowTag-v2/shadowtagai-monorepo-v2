@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/gemini_interactions/session.py
-# hypothesis_version: 6.151.5
-
-["Tool '%s' raised: %s", 'arguments', 'auto', 'call_id', 'function_call', 'function_result', 'id', 'name', 'result', 'type']

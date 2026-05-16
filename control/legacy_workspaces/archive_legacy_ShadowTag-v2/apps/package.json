@@ -1,8 +1,0 @@
-{
-  "name": "shadowtag-apps",
-  "version": "1.0.0",
-  "private": true,
-  "devDependencies": {
-    "@biomejs/biome": "2.4.5"
-  }
-}

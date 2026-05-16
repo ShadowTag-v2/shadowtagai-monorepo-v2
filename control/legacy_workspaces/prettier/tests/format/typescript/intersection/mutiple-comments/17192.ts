@@ -1,3 +1,0 @@
-export type ErrorLike = SerializedProps<Error> & { cause?: unknown }; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause // it to try and pinpoint additional reasoning for failures such as Node's fetch. // cause is a new addition to Error that is not yet available in all runtimes. We have added
-
-export type ErrorLike2 = SerializedProps<Error> & { cause?: unknown }; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause // it to try and pinpoint additional reasoning for failures such as Node's fetch. // cause is a new addition to Error that is not yet available in all runtimes. We have added

@@ -1,9 +1,0 @@
-mesop
-gunicorn
-anthropic
-#google-generativeai
-google-genai
-openai
-google-cloud-aiplatform
-pg8000
-SQLAlchemy

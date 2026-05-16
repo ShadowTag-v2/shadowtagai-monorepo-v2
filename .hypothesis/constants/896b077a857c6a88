@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_upstreamproxy/allowlist.py
-# hypothesis_version: 6.151.5
-
-['*.firebaseio.com', '*.googleapis.com', '*.run.app', ',', '_patterns', 'accounts.google.com']

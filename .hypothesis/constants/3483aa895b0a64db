@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_utils/cli_diagnostics.py
-# hypothesis_version: 6.151.5
-
-[0.0, '*.py', '.', 'Browser', 'Buffer Size', 'Design', 'Docs', 'Domain', 'Duration', 'Enabled', 'Events Emitted', 'Failed', 'Firebase', 'Passed', 'Reasoning', 'Sink Path', 'Skipped', 'Status', 'StitchMCP', 'Tools', 'XFailed', '__', 'buffer_size', 'chrome-devtools-mcp', 'domain', 'duration_s', 'enabled', 'events_emitted', 'failed', 'firebase-mcp-server', 'packages', 'passed', 'sequential-thinking', 'sink_path', 'skipped', 'status', 'tools', 'unknown', 'xfailed', '✅', '✅ Yes', '❌', '❌ No', '⬜ unknown', '📦 Packages\n', '🔌 MCP Fleet\n']

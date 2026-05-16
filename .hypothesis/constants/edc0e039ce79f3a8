@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_bash_classifier/classifier.py
-# hypothesis_version: 6.151.5
-
-[0.0, 200, 1000, '#.*["\\\']|["\\\'].*#', '/', '/proc/[^/]+/environ', 'BLOCK', 'PASS', 'Unknown block', '[;&|]', '[`]', '[|;\\\\&]\\s*$', "\\$'(?:[^'\\\\]|\\\\.)*'", '\\$\\(\\(.*\\)\\)', '\\\\[tnr]', '\\\\[|&;><]', '\\b(source|\\.)\\s+', '\\bIFS\\s*=', '\\bcoproc\\s+', '\\bjq\\b.*\\bdef\\b', '\\n', '\\w#\\w', '\\x1b\\[|\\\\e\\[|\\\\033\\[', '\\|\\s*base64\\s+-d', 'allowed', 'check_id', 'duration_ms', 'git\\s+commit.*\\$\\(', 'reason']

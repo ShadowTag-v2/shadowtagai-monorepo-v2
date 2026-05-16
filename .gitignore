@@ -239,3 +239,6 @@ docs/Strategic_Intelligence/sovereign_memory_core.json
 geap/adk-js/
 external_repos/
 bin/mcp-toolbox
+_archive_redundant_venvs_*/
+.hypothesis/
+control/legacy_workspaces/

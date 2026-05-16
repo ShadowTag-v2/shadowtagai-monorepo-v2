@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/speculation_engine/mailbox_policies.py
-# hypothesis_version: 6.151.5
-
-[30.0, 60.0, 90.0, 120.0, 180.0, 'architecture_board', 'billing_monitor', 'compliance_auditor', 'cost', 'cost_analyst', 'critical', 'cto_reviewer', 'dx_reviewer', 'full_review', 'high', 'infra_reviewer', 'legal_reviewer', 'lightweight', 'low', 'medium', 'qa_reviewer', 'security', 'security_reviewer', 'ux_reviewer']

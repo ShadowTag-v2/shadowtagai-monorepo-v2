@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/vcr/recorder.py
-# hypothesis_version: 6.151.5
-
-[1000, 'AGNT_VCR_DIR', 'AGNT_VCR_MODE', 'default', 'diff', 'diffs_matched', 'diffs_mismatched', 'diffs_run', 'live', 'mismatches', 'mode', 'off', 'record', 'recorded', 'recordings', 'replay', 'replay_misses', 'replays', 'request_hash', 'stats', 'timestamp', 'vcr_cassettes', 'vcr_mode', 'w']

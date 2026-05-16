@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/utils/gemini_integration.py
-# hypothesis_version: 6.151.5
-
-['GeminiFunction', 'GeminiFunctionCall', 'GeminiJudgeAssistant', 'ML fraud score (0-1)', 'ai_system_type', 'amount_usd', 'approved', 'assess_fraud_risk', 'boolean', 'ca_sb53', 'compliance_area', 'description', 'enum', 'eu_ai_act', 'export_control', 'fraud_score', 'gdpr', 'gemini_enhanced', 'geo_mismatch', 'has_legal_review', 'has_purchase_order', 'identity_verified', 'maximum', 'minimum', 'new', 'note', 'number', 'object', 'properties', 'required', 'string', 'type', 'unverified', 'vendor_status']

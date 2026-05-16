@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/session_recovery/core.py
-# hypothesis_version: 6.151.5
-
-[0.0, 1000, 10000, 'assistant', 'attachment_type', 'cap_max', 'code', 'code_block', 'content', 'crashed', 'file', 'file_content', 'image', 'image_url', 'interrupted_prompt', 'interrupted_tool', 'is_terminal', 'metadata', 'name', 'none', 'remove_empty', 'role', 'skill_state', 'system', 'terminal', 'terminal_output', 'timestamp', 'tool', 'tool_name', 'tool_use_id', 'truncated', 'user']

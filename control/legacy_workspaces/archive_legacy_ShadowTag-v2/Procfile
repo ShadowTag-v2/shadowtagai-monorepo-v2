@@ -1,2 +1,0 @@
-web: ./bin/flyingmonkeys-server
-verifier: ./bin/shadowtag-verifier

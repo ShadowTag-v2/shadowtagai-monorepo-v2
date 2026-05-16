@@ -1,7 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/bin/flyingmonkeys-server", line 42, in <module>
-    from src.flyingmonkeys.agents.flying_monkeys import FlyingMonkeys, LLMProvider, AgentTier
-  File "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/src/flyingmonkeys/agents/flying_monkeys.py", line 1513
-    ||||||| empty tree
-    ^
-SyntaxError: invalid syntax

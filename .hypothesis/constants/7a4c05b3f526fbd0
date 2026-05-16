@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/src/core/gemini_function_calling.py
-# hypothesis_version: 6.151.5
-
-[1000, 'ARRAY', 'BOOLEAN', 'GOOGLE_API_KEY', 'INTEGER', 'NUMBER', 'OBJECT', 'STRING', 'array', 'bool', 'boolean', 'description', 'dict', 'float', 'function_call', 'function_calls', 'gemini-2.0-flash-exp', 'gemini_overhead_ms', 'int', 'integer', 'list', 'meets_p99_sla', 'name', 'number', 'object', 'parameters', 'properties', 'required', 'result', 'str', 'string', 'text', 'time_ms', 'timestamp', 'total_latency_ms', 'type', 'user']

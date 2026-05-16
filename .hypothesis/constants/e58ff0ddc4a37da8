@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/extract_memories_service.py
-# hypothesis_version: 6.151.5
-
-[0.0, 1.0, 30.0, 100, '.md', 'assistant', 'bash', 'file_edit', 'file_path', 'file_read', 'file_write', 'glob', 'grep', 'name', 'path', 'read-only tool', 'repl', 'size', 'user']

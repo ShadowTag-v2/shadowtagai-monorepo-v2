@@ -1,4 +1,0 @@
-// @flow
-
-(require('./b')
-: number)

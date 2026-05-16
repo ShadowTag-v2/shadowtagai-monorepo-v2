@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_utils/circular_buffer.py
-# hypothesis_version: 6.151.5
-
-['T', '_buffer', '_capacity', '_head', '_size']

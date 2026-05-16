@@ -26,11 +26,10 @@ def test_ane_bridge():
   """Test ANE bridge loads and inits."""
   print("=== Test 1: ANE Bridge ===")
   try:
-    from ane_bridge import init_bridge, get_compile_count
+    from ane_bridge import init_bridge
 
     result = init_bridge()
     print(f"  init_bridge(): {result}")
-    print(f"  compile_count: {get_compile_count()}")
     assert result is True, "ANE bridge init failed"
     print("  ✅ PASS")
   except Exception as e:

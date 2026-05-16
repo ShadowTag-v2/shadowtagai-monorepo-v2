@@ -1,4 +1,0 @@
-# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/forked_cache.py
-# hypothesis_version: 6.151.5
-
-[100, 900, 1800, 3600, '*.json', '.beads', '.gemini', '__pycache__', 'agnt.forked_cache', 'antigravity', 'compact', 'created_at', 'fingerprint', 'hit_count', 'kairos', 'key', 'metadata', 'namespace', 'spec', 'spec_cache', 'ttl_seconds', 'value']
