@@ -49,7 +49,7 @@ class JudgeSixClassifyKernel(Kernel):
         violations = scan_output.violations
 
         # ── Feature extraction ──────────────────────────────────────────
-        features = self._extract_features(scan_output)
+        _features = self._extract_features(scan_output)
 
         # ── Classification logic ────────────────────────────────────────
         if not violations:
