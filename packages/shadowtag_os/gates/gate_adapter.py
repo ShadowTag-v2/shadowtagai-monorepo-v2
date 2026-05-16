@@ -202,7 +202,42 @@ class GateAdapter:
         payload = getattr(ctx, "payload", {}) or {}
 
         # Check for destructive markers.
-        dangerous_keywords = {"rm -rf", "DROP TABLE", "DELETE FROM", "sudo"}
+        # Categories: shell destruction, privilege escalation, network exfil,
+        # file manipulation, code injection, SQL injection.
+        dangerous_keywords = {
+            # Shell destruction
+            "rm -rf",
+            "rm -f /",
+            "mkfs.",
+            "dd if=/dev/zero",
+            "shred",
+            "> /dev/sda",
+            # Privilege escalation
+            "sudo",
+            "su -",
+            "doas",
+            "chmod 777",
+            "chmod +s",
+            # Network exfiltration
+            "| sh",
+            "| bash",
+            "nc -e",
+            "ncat -e",
+            "mkfifo",
+            # Code injection
+            "eval(",
+            "exec(",
+            "os.system(",
+            "child_process",
+            "__import__(",
+            # SQL injection
+            "DROP TABLE",
+            "DELETE FROM",
+            "TRUNCATE TABLE",
+            "ALTER TABLE DROP",
+            "UNION SELECT",
+            "xp_cmdshell",
+        }
         payload_str = str(payload).lower()
 
         for keyword in dangerous_keywords:
