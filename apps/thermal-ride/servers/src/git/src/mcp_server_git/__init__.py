@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
 import sys
 from pathlib import Path
@@ -14,7 +15,7 @@ def main(repository: Path | None, verbose: bool) -> None:
     """MCP Git Server - Git functionality for MCP"""
     import asyncio
 
-    logging_level = logging.WARNING
+    logging_level = logging.WARN
     if verbose == 1:
         logging_level = logging.INFO
     elif verbose >= 2:

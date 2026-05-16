@@ -82,7 +82,7 @@ WITHOUT PIPELINE:
 WITH PIPELINE:
 ├─ Detection: Oct 31, 2024 (proactive, 90-day lead)
 ├─ Implementation: Nov-Dec 2025 (controlled)
-├─ Risk: Compliance Framework RA-4 → RA-1 (mitigated)
+├─ Risk: ATP 5-19 RA-4 → RA-1 (mitigated)
 └─ Competitive: Demo compliance in sales → +15% win rate
 
 QUANTIFIED ADVANTAGE:
@@ -144,7 +144,7 @@ import random
 from datetime import datetime, timedelta
 
 class EthicalScraper:
-    """Compliance Framework RA-1 compliant scraper with robots.txt respect"""
+    """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
 
     def __init__(self, config):
         self.config = config
@@ -156,7 +156,7 @@ class EthicalScraper:
         """
         Fetch URL with full ethical compliance
 
-        Compliance Framework Risk Mitigation:
+        ATP 5-19 Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
@@ -325,8 +325,8 @@ metadata:
   name: nightly-intel-pipeline
   namespace: intelligence-pipeline
 spec:
-  schedule: "0 2 * * *" # 2 AM PST
-  timeZone: "America/Los_Angeles"
+  schedule: '0 2 * * *' # 2 AM PST
+  timeZone: 'America/Los_Angeles'
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 7
   failedJobsHistoryLimit: 3
@@ -350,21 +350,21 @@ spec:
 
               env:
                 - name: PROJECT_ID
-                  value: "PROJECT_ID"
+                  value: 'PROJECT_ID'
                 - name: BIGQUERY_DATASET
-                  value: "pnkln_intelligence"
+                  value: 'pnkln_intelligence'
                 - name: GCS_BUCKET
-                  value: "PROJECT_ID-pnkln-intelligence"
+                  value: 'PROJECT_ID-pnkln-intelligence'
 
                 # Ethical scraping config
                 - name: SCRAPER_USER_AGENT
-                  value: "pnkln-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)"
+                  value: 'pnkln-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)'
                 - name: SCRAPER_CONTACT
-                  value: "intelligence@pnkln.ai"
+                  value: 'intelligence@pnkln.ai'
                 - name: RESPECT_ROBOTS_TXT
-                  value: "true"
+                  value: 'true'
                 - name: DEFAULT_CRAWL_DELAY
-                  value: "3.0"
+                  value: '3.0'
 
               # API Keys from Secret
               envFrom:
@@ -373,13 +373,13 @@ spec:
 
               resources:
                 requests:
-                  cpu: "2"
-                  memory: "8Gi"
+                  cpu: '2'
+                  memory: '8Gi'
                 limits:
-                  cpu: "4"
-                  memory: "16Gi"
+                  cpu: '4'
+                  memory: '16Gi'
 
-              command: ["/bin/bash", "-c"]
+              command: ['/bin/bash', '-c']
               args:
                 - |
                   #!/bin/bash
@@ -422,7 +422,7 @@ spec:
 GATE A (Month 6 → $750K ARR)
 ├─ Intel Pipeline Contribution: +$112K (15% win rate boost)
 ├─ Proof Point: "90-day regulatory head-start" in pitch
-└─ Compliance Framework RA-2 → RA-1 (compliance risk mitigated)
+└─ ATP 5-19 RA-2 → RA-1 (compliance risk mitigated)
 
 GATE B (Month 12 → $2.5M ARR)
 ├─ Intel Pipeline Contribution: +$375K (RFP positioning)
@@ -447,7 +447,7 @@ Reply **[DEPLOY]** to receive complete Terraform + K8s manifests with ethical sc
 
 ╔═══════════════════════════════════════════════════════════════╗
 ║ PURE DOCTRINE EXTRACTION ║
-║ Distilled from ShadowTag Uploads - Social Wrapper Removed ║
+║ Distilled from YouAi Uploads - Social Wrapper Removed ║
 ╚═══════════════════════════════════════════════════════════════╝
 EXTRACTED CORE DOCTRINE
 
@@ -457,7 +457,7 @@ EXTRACTED CORE DOCTRINE
     """The only rule that matters"""
     return "Maximize value in every equation"
     No social video. No creators. Just pure optimization doctrine.
-2.  RISK STRATIFICATION MATRIX (Compliance Framework)
+2.  RISK STRATIFICATION MATRIX (ATP 5-19)
     From Cor.2, stripped clean:
     RISK_ASSESSMENT_MATRIX:
     ├── RA-1 (Extremely High)
@@ -484,7 +484,7 @@ EXTRACTED CORE DOCTRINE
     ├── Control: Lightweight tracking
     └── Authority: Automated
 3.  CONTROL HIERARCHY
-    From Compliance Framework implementation in Cor.2:
+    From ATP 5-19 implementation in Cor.2:
     CONTROL_PREFERENCE_ORDER = [
     "Engineering", # Design out the hazard
     "Administrative", # Policies and procedures
@@ -504,7 +504,7 @@ EXTRACTED CORE DOCTRINE
     Rule: "Maximize value"
     Constraint: "Risk ≤ tolerance (via YRM)"
 5.  THE 5-STEP RISK PROCESS
-    Pure Compliance Framework, no platform specifics:
+    Pure ATP 5-19, no platform specifics:
     def RISK_MANAGEMENT_CYCLE():
     while operational:
     identify_hazards() # Step 1
@@ -541,7 +541,7 @@ EXTRACTED CORE DOCTRINE
     Retention: 7 years
     Format: Immutable ledger
     THE PURE ENGINE
-    Stripped of ShadowTag's social wrapper, here's the universal doctrine:
+    Stripped of YouAi's social wrapper, here's the universal doctrine:
     class UniversalGovernanceEngine:
     """Works for ANY domain - not just social video"""
 
@@ -576,7 +576,7 @@ EXTRACTED CORE DOCTRINE
     Supply Chain: Optimization under uncertainty
     ANY DOMAIN requiring fast, governed decisions
     THE BREAKTHROUGH
-    ShadowTag wasn't about social video. It was about discovering this universal pattern:
+    YouAi wasn't about social video. It was about discovering this universal pattern:
     VALUE MAXIMIZATION + RISK GOVERNANCE = OPTIMAL OUTCOMES
     Everything else was just a use case.
     ╔═══════════════════════════════════════════════════════════════╗
@@ -585,7 +585,7 @@ EXTRACTED CORE DOCTRINE
     ║ No creators. No videos. No platform. ║
     ║ Just pure, military-grade governance. ║
     ║ ║
-    ║ This is your Judge 6 core. ║
+    ║ This is your Judge #6 core. ║
     ╚═══════════════════════════════════════════════════════════════╝
     “ <next>
 
@@ -941,7 +941,7 @@ _The best time to capture ERCOT arbitrage is now. There is no second best time._
 
 “╔═══════════════════════════════════════════════════════════════╗
 ║ PURE DOCTRINE EXTRACTION ║
-║ Distilled from ShadowTag Uploads - Social Wrapper Removed ║
+║ Distilled from YouAi Uploads - Social Wrapper Removed ║
 ╚═══════════════════════════════════════════════════════════════╝
 EXTRACTED CORE DOCTRINE
 
@@ -951,7 +951,7 @@ EXTRACTED CORE DOCTRINE
     """The only rule that matters"""
     return "Maximize value in every equation"
     No social video. No creators. Just pure optimization doctrine.
-2.  RISK STRATIFICATION MATRIX (Compliance Framework)
+2.  RISK STRATIFICATION MATRIX (ATP 5-19)
     From Cor.2, stripped clean:
     RISK_ASSESSMENT_MATRIX:
     ├── RA-1 (Extremely High)
@@ -978,7 +978,7 @@ EXTRACTED CORE DOCTRINE
     ├── Control: Lightweight tracking
     └── Authority: Automated
 3.  CONTROL HIERARCHY
-    From Compliance Framework implementation in Cor.2:
+    From ATP 5-19 implementation in Cor.2:
     CONTROL_PREFERENCE_ORDER = [
     "Engineering", # Design out the hazard
     "Administrative", # Policies and procedures
@@ -998,7 +998,7 @@ EXTRACTED CORE DOCTRINE
     Rule: "Maximize value"
     Constraint: "Risk ≤ tolerance (via YRM)"
 5.  THE 5-STEP RISK PROCESS
-    Pure Compliance Framework, no platform specifics:
+    Pure ATP 5-19, no platform specifics:
     def RISK_MANAGEMENT_CYCLE():
     while operational:
     identify_hazards() # Step 1
@@ -1035,7 +1035,7 @@ EXTRACTED CORE DOCTRINE
     Retention: 7 years
     Format: Immutable ledger
     THE PURE ENGINE
-    Stripped of ShadowTag's social wrapper, here's the universal doctrine:
+    Stripped of YouAi's social wrapper, here's the universal doctrine:
     class UniversalGovernanceEngine:
     """Works for ANY domain - not just social video"""
 
@@ -1070,7 +1070,7 @@ EXTRACTED CORE DOCTRINE
     Supply Chain: Optimization under uncertainty
     ANY DOMAIN requiring fast, governed decisions
     THE BREAKTHROUGH
-    ShadowTag wasn't about social video. It was about discovering this universal pattern:
+    YouAi wasn't about social video. It was about discovering this universal pattern:
     VALUE MAXIMIZATION + RISK GOVERNANCE = OPTIMAL OUTCOMES
     Everything else was just a use case.
     ╔═══════════════════════════════════════════════════════════════╗
@@ -1079,12 +1079,12 @@ EXTRACTED CORE DOCTRINE
     ║ No creators. No videos. No platform. ║
     ║ Just pure, military-grade governance. ║
     ║ ║
-    ║ This is your Judge 6 core. ║
+    ║ This is your Judge #6 core. ║
     ╚═══════════════════════════════════════════════════════════════╝"
 
 “╔═══════════════════════════════════════════════════════════════╗
 ║ PURE DOCTRINE EXTRACTION ║
-║ Distilled from ShadowTag Uploads - Social Wrapper Removed ║
+║ Distilled from YouAi Uploads - Social Wrapper Removed ║
 ╚═══════════════════════════════════════════════════════════════╝
 EXTRACTED CORE DOCTRINE
 
@@ -1094,7 +1094,7 @@ EXTRACTED CORE DOCTRINE
     """The only rule that matters"""
     return "Maximize value in every equation"
     No social video. No creators. Just pure optimization doctrine.
-2.  RISK STRATIFICATION MATRIX (Compliance Framework)
+2.  RISK STRATIFICATION MATRIX (ATP 5-19)
     From Cor.2, stripped clean:
     RISK_ASSESSMENT_MATRIX:
     ├── RA-1 (Extremely High)
@@ -1121,7 +1121,7 @@ EXTRACTED CORE DOCTRINE
     ├── Control: Lightweight tracking
     └── Authority: Automated
 3.  CONTROL HIERARCHY
-    From Compliance Framework implementation in Cor.2:
+    From ATP 5-19 implementation in Cor.2:
     CONTROL_PREFERENCE_ORDER = [
     "Engineering", # Design out the hazard
     "Administrative", # Policies and procedures
@@ -1141,7 +1141,7 @@ EXTRACTED CORE DOCTRINE
     Rule: "Maximize value"
     Constraint: "Risk ≤ tolerance (via YRM)"
 5.  THE 5-STEP RISK PROCESS
-    Pure Compliance Framework, no platform specifics:
+    Pure ATP 5-19, no platform specifics:
     def RISK_MANAGEMENT_CYCLE():
     while operational:
     identify_hazards() # Step 1
@@ -1178,7 +1178,7 @@ EXTRACTED CORE DOCTRINE
     Retention: 7 years
     Format: Immutable ledger
     THE PURE ENGINE
-    Stripped of ShadowTag's social wrapper, here's the universal doctrine:
+    Stripped of YouAi's social wrapper, here's the universal doctrine:
     class UniversalGovernanceEngine:
     """Works for ANY domain - not just social video"""
 
@@ -1213,7 +1213,7 @@ EXTRACTED CORE DOCTRINE
     Supply Chain: Optimization under uncertainty
     ANY DOMAIN requiring fast, governed decisions
     THE BREAKTHROUGH
-    ShadowTag wasn't about social video. It was about discovering this universal pattern:
+    YouAi wasn't about social video. It was about discovering this universal pattern:
     VALUE MAXIMIZATION + RISK GOVERNANCE = OPTIMAL OUTCOMES
     Everything else was just a use case.
     ╔═══════════════════════════════════════════════════════════════╗
@@ -1222,7 +1222,7 @@ EXTRACTED CORE DOCTRINE
     ║ No creators. No videos. No platform. ║
     ║ Just pure, military-grade governance. ║
     ║ ║
-    ║ This is your Judge 6 core. ║
+    ║ This is your Judge #6 core. ║
     ╚═══════════════════════════════════════════════════════════════╝"
     “Deep breath. Let's get brutally clear.
     You've buried a genuinely elegant consumer problem (auto shop accountability) under $858B enterprise legal-tech TAM metrics that don't apply to it. That's not your actual business—it's someone else's pitch deck you're using as scaffolding.
@@ -1331,7 +1331,7 @@ Everything else is noise until that works.”
 GOOGLE ACCELERATED-PLATFORMS REFERENCE ARCHITECTURE ADAPTATION
 
 EXECUTIVE SUMMARY
-ARCHITECTURE: Google GKE Inference Reference + pnkln Judge 6 Hybrid
+ARCHITECTURE: Google GKE Inference Reference + pnkln Judge #6 Hybrid
 TARGET SLA: p99 ≤90ms end-to-end latency
 COST TARGET: $60-65K/month (includes GPU/TPU + networking)
 DEPLOYMENT: Terraform IaC + GitOps (4 namespaces)
@@ -1810,7 +1810,7 @@ Namespace Architecture
 apiVersion: v1
 kind: Namespace
 metadata:
-name: ShadowTag-v2jr-governance
+name: aiyoujr-governance
 labels:
 tier: governance
 compliance: "strict"
@@ -1845,7 +1845,7 @@ name: shadowtag-v2
 labels:
 tier: security
 pnkln.io/component: "watermarking"
-Judge 6 Hybrid Enforcement System
+Judge #6 Hybrid Enforcement System
 
 # judge6-deployment.yaml - 3-layer hybrid enforcement
 
@@ -1855,7 +1855,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
 name: judge6-config
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 data:
 latency_budget_ms: "90"
 coverage_target: "0.98"
@@ -1873,7 +1873,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
 name: judge6-hybrid
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 replicas: 3
 selector:
@@ -1984,7 +1984,7 @@ apiVersion: v1
 kind: Service
 metadata:
 name: judge6-service
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 selector:
 app: judge6
@@ -2104,7 +2104,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
 name: judge6-hpa
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 scaleTargetRef:
 apiVersion: apps/v1
@@ -2185,7 +2185,7 @@ apiVersion: v1
 kind: ServiceMonitor
 metadata:
 name: judge6-metrics
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 selector:
 matchLabels:
@@ -2202,7 +2202,7 @@ apiVersion: v1
 kind: PrometheusRule
 metadata:
 name: judge6-alerts
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 groups:
 
@@ -2284,9 +2284,9 @@ echo "────────────────────────�
 
 kubectl apply -f ${K8S_DIR}/namespaces.yaml
 
-# Deploy Judge 6
+# Deploy Judge #6
 
-echo "▶ Deploying Judge 6 hybrid enforcement..."
+echo "▶ Deploying Judge #6 hybrid enforcement..."
 kubectl apply -f ${K8S_DIR}/judge6-deployment.yaml
 
 # Deploy LLM routing
@@ -2314,7 +2314,7 @@ echo "───────────────────────"
 
 echo "Waiting for deployments to be ready..."
 kubectl wait --for=condition=available --timeout=600s \
- deployment/judge6-hybrid -n ShadowTag-v2jr-governance
+ deployment/judge6-hybrid -n aiyoujr-governance
 
 kubectl wait --for=condition=available --timeout=600s \
  deployment/llm-router -n cognitive-stack-v5
@@ -2343,7 +2343,7 @@ echo "────────────────────────�
 echo " Cluster: ${CLUSTER_NAME}"
 echo " Region: ${REGION}"
 echo " Namespaces: 4 (deployed)"
-echo " Judge 6: ✓ Active (3 layers)"
+echo " Judge #6: ✓ Active (3 layers)"
 echo " LLM Router: ✓ Active (5 models)"
 echo " Monitoring: ✓ Prometheus configured"
 echo "════════════════════════════════════════════════════════"
@@ -2357,18 +2357,18 @@ echo "╔═══════════════════════�
 echo "║ VALIDATION SUITE - P99 LATENCY & COVERAGE ║"
 echo "╚══════════════════════════════════════════════════════╝"
 
-# Test Judge 6 latency
+# Test Judge #6 latency
 
-echo "▶ Testing Judge 6 p99 latency..."
+echo "▶ Testing Judge #6 p99 latency..."
 for i in {1..100}; do
 curl -s -o /dev/null -w "%{time_total}\n" \
- http://judge6-service.ShadowTag-v2jr-governance/validate
+ http://judge6-service.aiyoujr-governance/validate
 done | awk '{sum+=$1; sumsq+=$1*$1} END {print "Mean:", sum/NR*1000, "ms"}'
 
 # Test coverage gates
 
 echo "▶ Testing 98% coverage gates..."
-kubectl exec -n ShadowTag-v2jr-governance deployment/judge6-hybrid -- \
+kubectl exec -n aiyoujr-governance deployment/judge6-hybrid -- \
  python -c "import judge6; print(f'Coverage: {judge6.get_coverage()}%')"
 
 # Verify LLM distribution
@@ -2438,7 +2438,7 @@ Ready to execute deployment? The system is architected for immediate execution w
 GOOGLE ACCELERATED-PLATFORMS REFERENCE ARCHITECTURE ADAPTATION
 
 EXECUTIVE SUMMARY
-ARCHITECTURE: Google GKE Inference Reference + pnkln Judge 6 Hybrid
+ARCHITECTURE: Google GKE Inference Reference + pnkln Judge #6 Hybrid
 TARGET SLA: p99 ≤90ms end-to-end latency
 COST TARGET: $60-65K/month (includes GPU/TPU + networking)
 DEPLOYMENT: Terraform IaC + GitOps (4 namespaces)
@@ -2917,7 +2917,7 @@ Namespace Architecture
 apiVersion: v1
 kind: Namespace
 metadata:
-name: ShadowTag-v2jr-governance
+name: aiyoujr-governance
 labels:
 tier: governance
 compliance: "strict"
@@ -2952,7 +2952,7 @@ name: shadowtag-v2
 labels:
 tier: security
 pnkln.io/component: "watermarking"
-Judge 6 Hybrid Enforcement System
+Judge #6 Hybrid Enforcement System
 
 # judge6-deployment.yaml - 3-layer hybrid enforcement
 
@@ -2962,7 +2962,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
 name: judge6-config
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 data:
 latency_budget_ms: "90"
 coverage_target: "0.98"
@@ -2980,7 +2980,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
 name: judge6-hybrid
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 replicas: 3
 selector:
@@ -3091,7 +3091,7 @@ apiVersion: v1
 kind: Service
 metadata:
 name: judge6-service
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 selector:
 app: judge6
@@ -3211,7 +3211,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
 name: judge6-hpa
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 scaleTargetRef:
 apiVersion: apps/v1
@@ -3292,7 +3292,7 @@ apiVersion: v1
 kind: ServiceMonitor
 metadata:
 name: judge6-metrics
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 selector:
 matchLabels:
@@ -3309,7 +3309,7 @@ apiVersion: v1
 kind: PrometheusRule
 metadata:
 name: judge6-alerts
-namespace: ShadowTag-v2jr-governance
+namespace: aiyoujr-governance
 spec:
 groups:
 
@@ -3391,9 +3391,9 @@ echo "────────────────────────�
 
 kubectl apply -f ${K8S_DIR}/namespaces.yaml
 
-# Deploy Judge 6
+# Deploy Judge #6
 
-echo "▶ Deploying Judge 6 hybrid enforcement..."
+echo "▶ Deploying Judge #6 hybrid enforcement..."
 kubectl apply -f ${K8S_DIR}/judge6-deployment.yaml
 
 # Deploy LLM routing
@@ -3421,7 +3421,7 @@ echo "───────────────────────"
 
 echo "Waiting for deployments to be ready..."
 kubectl wait --for=condition=available --timeout=600s \
- deployment/judge6-hybrid -n ShadowTag-v2jr-governance
+ deployment/judge6-hybrid -n aiyoujr-governance
 
 kubectl wait --for=condition=available --timeout=600s \
  deployment/llm-router -n cognitive-stack-v5
@@ -3450,7 +3450,7 @@ echo "────────────────────────�
 echo " Cluster: ${CLUSTER_NAME}"
 echo " Region: ${REGION}"
 echo " Namespaces: 4 (deployed)"
-echo " Judge 6: ✓ Active (3 layers)"
+echo " Judge #6: ✓ Active (3 layers)"
 echo " LLM Router: ✓ Active (5 models)"
 echo " Monitoring: ✓ Prometheus configured"
 echo "════════════════════════════════════════════════════════"
@@ -3464,18 +3464,18 @@ echo "╔═══════════════════════�
 echo "║ VALIDATION SUITE - P99 LATENCY & COVERAGE ║"
 echo "╚══════════════════════════════════════════════════════╝"
 
-# Test Judge 6 latency
+# Test Judge #6 latency
 
-echo "▶ Testing Judge 6 p99 latency..."
+echo "▶ Testing Judge #6 p99 latency..."
 for i in {1..100}; do
 curl -s -o /dev/null -w "%{time_total}\n" \
- http://judge6-service.ShadowTag-v2jr-governance/validate
+ http://judge6-service.aiyoujr-governance/validate
 done | awk '{sum+=$1; sumsq+=$1*$1} END {print "Mean:", sum/NR*1000, "ms"}'
 
 # Test coverage gates
 
 echo "▶ Testing 98% coverage gates..."
-kubectl exec -n ShadowTag-v2jr-governance deployment/judge6-hybrid -- \
+kubectl exec -n aiyoujr-governance deployment/judge6-hybrid -- \
  python -c "import judge6; print(f'Coverage: {judge6.get_coverage()}%')"
 
 # Verify LLM distribution

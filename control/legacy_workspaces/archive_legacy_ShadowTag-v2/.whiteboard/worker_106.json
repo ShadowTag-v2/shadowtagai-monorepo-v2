@@ -1,0 +1,15 @@
+{
+  "agent_id": "worker_106",
+  "level": 0,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": null,
+  "tier": "worker",
+  "shift": "active",
+  "knowledge_graph": {
+    "role": "generalist",
+    "tasks": ["git", "deploy", "monitor"]
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

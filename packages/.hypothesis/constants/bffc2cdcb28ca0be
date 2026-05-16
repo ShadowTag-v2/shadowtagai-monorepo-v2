@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/circuit_breaker/dashboard.py
+# hypothesis_version: 6.151.5
+
+['HALF_OPEN', 'OPEN', 'closed', 'degraded', 'half_open', 'health_status', 'healthy', 'open', 'open_services', 'services', 'state', 'summary', 'timestamp', 'total_breakers', 'unknown', '—', '─', '⚠️', '✅']

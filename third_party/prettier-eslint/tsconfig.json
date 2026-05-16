@@ -1,0 +1,9 @@
+{
+  "extends": "@1stg/tsconfig/node",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "prettier-eslint": ["./src/index.ts"]
+    }
+  }
+}

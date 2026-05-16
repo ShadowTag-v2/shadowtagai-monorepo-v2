@@ -12,7 +12,7 @@
  * 8. Added proper dependency ordering
  *
  * PREREQUISITES:
- * 1. GCS bucket 'shadowtagai-terraform-state' must exist (create manually or via bootstrap)
+ * 1. GCS bucket 'pnkln-terraform-state' must exist (create manually or via bootstrap)
  * 2. Terraform >= 1.5.0
  * 3. gcloud CLI authenticated
  */
@@ -32,9 +32,9 @@ terraform {
   }
 
   # Backend bucket must be created before running terraform init
-  # Create with: gsutil mb -p shadowtagai-core-stack gs://shadowtagai-terraform-state
+  # Create with: gsutil mb -p pnkln-core-stack gs://pnkln-terraform-state
   backend "gcs" {
-    bucket = "shadowtagai-terraform-state"
+    bucket = "pnkln-terraform-state"
     prefix = "judge6/terraform/state"
   }
 }
@@ -54,7 +54,7 @@ provider "google-beta" {
 variable "project_id" {
   description = "GCP Project ID"
   type        = string
-  default     = "shadowtagai-core-stack"
+  default     = "pnkln-core-stack"
 }
 
 variable "region" {
@@ -101,17 +101,17 @@ resource "google_project_service" "required_apis" {
 # KMS Encryption Key
 # ============================================================================
 
-resource "google_kms_key_ring" "shadowtagai_keyring" {
-  name     = "shadowtagai-keyring"
+resource "google_kms_key_ring" "pnkln_keyring" {
+  name     = "pnkln-keyring"
   location = var.region
   project  = var.project_id
 
   depends_on = [google_project_service.required_apis]
 }
 
-resource "google_kms_crypto_key" "shadowtagai_key" {
-  name            = "shadowtagai-key"
-  key_ring        = google_kms_key_ring.shadowtagai_keyring.id
+resource "google_kms_crypto_key" "pnkln_key" {
+  name            = "pnkln-key"
+  key_ring        = google_kms_key_ring.pnkln_keyring.id
   rotation_period = "7776000s" # 90 days
 
   lifecycle {
@@ -123,12 +123,12 @@ resource "google_kms_crypto_key" "shadowtagai_key" {
     protection_level = "SOFTWARE"
   }
 
-  depends_on = [google_kms_key_ring.shadowtagai_keyring]
+  depends_on = [google_kms_key_ring.pnkln_keyring]
 }
 
 # Grant Cloud Storage service account access to KMS key
 resource "google_kms_crypto_key_iam_member" "storage_kms" {
-  crypto_key_id = google_kms_crypto_key.shadowtagai_key.id
+  crypto_key_id = google_kms_crypto_key.pnkln_key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
 }
@@ -193,7 +193,7 @@ resource "google_artifact_registry_repository" "judge6" {
   description   = "Docker repository for Judge6 container images"
   format        = "DOCKER"
 
-  kms_key_name = google_kms_crypto_key.shadowtagai_key.id
+  kms_key_name = google_kms_crypto_key.pnkln_key.id
 
   # Cleanup policy - delete images older than 30 days
   cleanup_policies {
@@ -243,7 +243,7 @@ resource "google_storage_bucket" "model_artifacts" {
   uniform_bucket_level_access = true
 
   encryption {
-    default_kms_key_name = google_kms_crypto_key.shadowtagai_key.id
+    default_kms_key_name = google_kms_crypto_key.pnkln_key.id
   }
 
   versioning {
@@ -280,7 +280,7 @@ resource "google_vertex_ai_featurestore" "judge6_featurestore" {
   }
 
   encryption_spec {
-    kms_key_name = google_kms_crypto_key.shadowtagai_key.id
+    kms_key_name = google_kms_crypto_key.pnkln_key.id
   }
 
   force_destroy = false
@@ -303,7 +303,7 @@ resource "google_vertex_ai_endpoint" "judge6_gemini" {
   project      = var.project_id
 
   encryption_spec {
-    kms_key_name = google_kms_crypto_key.shadowtagai_key.id
+    kms_key_name = google_kms_crypto_key.pnkln_key.id
   }
 
   depends_on = [
@@ -406,7 +406,7 @@ output "artifact_registry_repository" {
 
 output "kms_key_id" {
   description = "KMS crypto key ID"
-  value       = google_kms_crypto_key.shadowtagai_key.id
+  value       = google_kms_crypto_key.pnkln_key.id
 }
 
 output "vertex_endpoint_id" {

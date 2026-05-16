@@ -1,84 +1,12 @@
+canonical-root: ShadowTag-v2/Monorepo-Uphillsnowball
 workspace: pnkln
 product: apps/counselconduit
 lab: labs/uphillsnowball
 mcp-truth: antigravity-mcp-config.json
 judge6-gate: active
 
-# Version & Phase Tracking
-version: "15.4"
-phase: 4
-milestone: 9
-milestone_name: "KAIROS Daemon Wiring + Batch 10 Native Services"
-milestone_status: "COMPLETE"
-phase_started: "2026-04-30"
-last_updated: "2026-05-01"
-
-# Canonical Packages (batch-6 through batch-10)
-canonical_packages:
-  - packages/collapse_read_search
-  - packages/sanitization
-  - packages/undercover
-  - packages/prompt_assembler
-  - packages/token_estimation
-  - packages/prevent_sleep
-  - packages/speculation_engine
-  - packages/magic_docs
-  - packages/plugin_manager
-  - packages/terminal_notifier
-  - packages/auto_dream
-  - packages/context_compactor
-  - packages/agnt_termio
-  - packages/agnt_keybindings
-  - packages/agnt_bash_classifier
-  - packages/agnt_classifier
-  - packages/agnt_context_compactor
-  - packages/agnt_tools
-  - packages/agnt_ui
-  - packages/agnt_utils
-  - packages/agnt_vcr
-  - packages/feature_flags
-  - packages/xml_tags
-  - packages/tool_gateway
-  - packages/tool_limits
-  - packages/code_reasoning
-  - packages/plan_mode
-  - packages/vcr
-  - packages/vcr_fixtures
-  - packages/prompt_sections
-  - packages/repo_oracle
-  - packages/circuit_breaker
-  - packages/deep_research
-  - packages/evaluation_bridge
-  - packages/resilient_retry
-  - packages/telemetry
-  - packages/mcp_tools
-  - packages/agent_progression
-  - packages/agnt_agents
-  - packages/agnt_tmux
-  - packages/firebase_tool_bridge
-  - packages/gemini_deep_research
-  - packages/gemini_interactions
-  - packages/orbstack_sandbox
-  - packages/shadowtag
-
-# Deployment
-production_url: "https://counselconduit-767252945109.us-central1.run.app"
-firebase_project: shadowtag-omega-v4
-service_account: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
-
-# Test Health
-test_framework: pytest
-test_count: 2046
-test_count_phase3: 110
-test_count_phase4: 261
-collection_errors: 0
-collection_error_reason: "RESOLVED — conftest.py module stubbing active"
-vitest_count: 14
-vitest_status: "passing"
-
-# Branch Health
-stale_branches_cleaned:
-  - feat/cor-re-coding-vibe-completion
-  - feat/panopticon-telemetry
-  - feat/phase-3-milestone-2-3
-  - fix/test-alignment-auth-telemetry
+folded-in-components:
+  - apps/aiyou_stack/aiyou-fastapi-services
+  - apps/aiyou_stack/cosmic-crab-payload
+  - apps/aiyou_stack/Pipeline
+  - apps/aiyou_stack/nascent-apollo

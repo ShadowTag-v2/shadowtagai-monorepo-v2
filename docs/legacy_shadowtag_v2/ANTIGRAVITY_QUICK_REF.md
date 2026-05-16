@@ -25,14 +25,14 @@ python3 shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrato
 
 ## 📊 Routing Matrix
 
-| Task                 | Model      | SLA       | Cost/1K |
-| -------------------- | ---------- | --------- | ------- |
-| Production Inference | Gemini     | p99≤100ms | $0.002  |
-| Deep Analysis        | Claude     | p95≤2s    | $0.015  |
-| Code Refactoring     | Claude     | p95≤3s    | $0.015  |
-| Judge#6 Binary       | Gemini+MCP | p99≤90ms  | $0.0003 |
-| Artifact Creation    | Claude     | p95≤4s    | $0.015  |
-| Specialized          | GPT-5      | p99≤500ms | $0.010  |
+| Task | Model | SLA | Cost/1K |
+|------|-------|-----|---------|
+| Production Inference | Gemini | p99≤100ms | $0.002 |
+| Deep Analysis | Claude | p95≤2s | $0.015 |
+| Code Refactoring | Claude | p95≤3s | $0.015 |
+| Judge#6 Binary | Gemini+MCP | p99≤90ms | $0.0003 |
+| Artifact Creation | Claude | p95≤4s | $0.015 |
+| Specialized | GPT-5 | p99≤500ms | $0.010 |
 
 ---
 
@@ -80,12 +80,12 @@ result = await router.execute_handoff(prompt, context, routing)
 
 ## 💰 Economics
 
-| Metric      | Month 1-2          | Month 12+         |
-| ----------- | ------------------ | ----------------- |
-| **Usage**   | 10M decisions/year | 1B decisions/year |
-| **Cost**    | $2.5K/mo           | $60K/mo           |
-| **Revenue** | $3K MRR            | $300K MRR         |
-| **Profit**  | -$500/mo           | +$240K/mo         |
+| Metric | Month 1-2 | Month 12+ |
+|--------|-----------|-----------|
+| **Usage** | 10M decisions/year | 1B decisions/year |
+| **Cost** | $2.5K/mo | $60K/mo |
+| **Revenue** | $3K MRR | $300K MRR |
+| **Profit** | -$500/mo | +$240K/mo |
 
 **Bootstrap Gates**: ROI ≥3×, LTV:CAC ≥4:1, p99≤90ms
 
@@ -123,7 +123,7 @@ Legal Whiteboard (GitHub persistence)
 
 ---
 
-## 📝 Compliance Framework Risk Scoring
+## 📝 ATP 5-19 Risk Scoring
 
 ```
 SEVERITY × PROBABILITY = RISK SCORE
@@ -243,13 +243,13 @@ python3 shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrato
 
 ## 🎯 SLA Targets
 
-| Component    | Target    | Consequence                  |
-| ------------ | --------- | ---------------------------- |
-| Judge#6      | p99≤90ms  | Kill-switch after 1hr breach |
-| Kernel Chain | <35ms     | Revert to full context       |
-| Gemini       | p99≤100ms | Route to Claude fallback     |
-| Claude       | p95≤2s    | Route to Gemini fallback     |
-| Compliance Framework     | <50ms     | Skip compression             |
+| Component | Target | Consequence |
+|-----------|--------|-------------|
+| Judge#6 | p99≤90ms | Kill-switch after 1hr breach |
+| Kernel Chain | <35ms | Revert to full context |
+| Gemini | p99≤100ms | Route to Claude fallback |
+| Claude | p95≤2s | Route to Gemini fallback |
+| ATP 5-19 | <50ms | Skip compression |
 
 ---
 
@@ -267,7 +267,6 @@ python3 shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrato
 ## 🔌 Gemini CLI MCP Integration (NEW 2025-11-29)
 
 ### Cloud Run Deployment
-
 ```bash
 # Service URL
 https://https://github.com/karpathy/autoresearchs-server-dev-x6h2e7g3aa-uc.a.run.app
@@ -280,7 +279,6 @@ https://https://github.com/karpathy/autoresearchs-server-dev-x6h2e7g3aa-uc.a.run
 ```
 
 ### MCP Endpoints
-
 ```bash
 GET  /health       # Health check (650 agents)
 GET  /mcp/tools    # List 8 MCP tools
@@ -294,20 +292,18 @@ curl -X POST -H "Authorization: Bearer $TOKEN" \
 ```
 
 ### MCP Tools Available
-
-| Tool               | Tier  | Cost/1K  |
-| ------------------ | ----- | -------- |
-| gemini_prompt      | FLASH | $0.00015 |
-| gemini_summarize   | FLASH | $0.00015 |
-| gemini_analyze     | PRO   | $0.00125 |
-| gemini_sandbox     | PRO   | $0.00125 |
-| gemini_eval_plan   | PRO   | $0.00125 |
-| gemini_review_code | PRO   | $0.00125 |
-| gemini_models      | FREE  | $0.00    |
-| gemini_metrics     | FREE  | $0.00    |
+| Tool | Tier | Cost/1K |
+|------|------|---------|
+| gemini_prompt | FLASH | $0.00015 |
+| gemini_summarize | FLASH | $0.00015 |
+| gemini_analyze | PRO | $0.00125 |
+| gemini_sandbox | PRO | $0.00125 |
+| gemini_eval_plan | PRO | $0.00125 |
+| gemini_review_code | PRO | $0.00125 |
+| gemini_models | FREE | $0.00 |
+| gemini_metrics | FREE | $0.00 |
 
 ### Python Usage
-
 ```python
 from src.pnkln-stack.mcp import GeminiMCPBridge, MCPToolRequest
 

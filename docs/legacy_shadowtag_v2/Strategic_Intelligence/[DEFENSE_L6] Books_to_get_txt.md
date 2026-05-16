@@ -4,9 +4,9 @@
 
 Books to get
 
-“Love this prompt. Here’s a high-leverage, fairly exhaustive shopping list of outside resources—many behind paywalls—that we (collectively) can’t directly access on our own but that would measurably sharpen ShadowTag across legal, finance, risk, AI, product, security, and ops. I grouped them by domain, noted when they’re subscription-only, and included links.
+“Love this prompt. Here’s a high-leverage, fairly exhaustive shopping list of outside resources—many behind paywalls—that we (collectively) can’t directly access on our own but that would measurably sharpen YouAi across legal, finance, risk, AI, product, security, and ops. I grouped them by domain, noted when they’re subscription-only, and included links.
 
-Legal & Governance (board, BJR, deals) 1. Radin, The Business Judgment Rule (treatise; subscription/paid). The definitive read on BJR boundaries, burdens, cleansing, and recent Delaware/other cases. Great for stress-testing ShadowTagJR playbooks. 2. ABA Corporate Director’s Guidebook (8th ed.) (subscription/paid). Concise, practical board guidance on committees, oversight, and M&A—useful for codifying Board OS. 3. Delaware General Corporation Law (DGCL) – official (free). Primary law for governance patterns we often emulate. 4. California Corporations Code (free portals; official site is gated by frames). Handy when we need CA specificities for entities/consents. 5. ABA Model Business Corporation Act (2016 Revision) (subscription/paid). Model “golden path” for corporate actions; helpful for templating approvals/resolutions. 6. NVCA Model Legal Docs (free). Term sheets, stock purchase docs, etc.—baseline for equity financings and counsel instructions. 7. ABA Model Asset Purchase Agreement with Commentary (subscription/paid). Playbook for buy-then-build and acqui-hire checklists.
+Legal & Governance (board, BJR, deals) 1. Radin, The Business Judgment Rule (treatise; subscription/paid). The definitive read on BJR boundaries, burdens, cleansing, and recent Delaware/other cases. Great for stress-testing YouAiJR playbooks. 2. ABA Corporate Director’s Guidebook (8th ed.) (subscription/paid). Concise, practical board guidance on committees, oversight, and M&A—useful for codifying Board OS. 3. Delaware General Corporation Law (DGCL) – official (free). Primary law for governance patterns we often emulate. 4. California Corporations Code (free portals; official site is gated by frames). Handy when we need CA specificities for entities/consents. 5. ABA Model Business Corporation Act (2016 Revision) (subscription/paid). Model “golden path” for corporate actions; helpful for templating approvals/resolutions. 6. NVCA Model Legal Docs (free). Term sheets, stock purchase docs, etc.—baseline for equity financings and counsel instructions. 7. ABA Model Asset Purchase Agreement with Commentary (subscription/paid). Playbook for buy-then-build and acqui-hire checklists.
 
 Tax (comp, equity, exits) 8. IRC §409A & Treasury Regs (free). Anchor for deferral/exec comp designs (and the deferred-comp “sweet spot” discussions). 9. IRC §1202 (QSBS) + planning commentary (free + advisory). For C-corp path/stacking/estate use cases. (Treat planning notes as educational, not advice.) 10. IRS Pub 560 (free). Owner plans (SEP/SIMPLE/solo-401k) to optimize founder/exec comp.
 
@@ -29,28 +29,28 @@ Premium Research / Practice Portals (subscription) 39. Westlaw Practical Law (to
 ⸻
 
 Why these matter (quick take)
-• Codify doctrine → decision: Treatises + primary law let us anchor ShadowTagJR “doctrine packs” in standards courts, auditors, and acquirers actually use.
+• Codify doctrine → decision: Treatises + primary law let us anchor YouAiJR “doctrine packs” in standards courts, auditors, and acquirers actually use.
 • Shorten cycles: Practical Law/Reforge/Lenny/SRE/CCM give templates and checklists so we move from “blank page” to “review & adapt.”
 • Enterprise-ready: ISO/NIST/AICPA/CPRA/GDPR items help us pre-answer diligence checklists and sell sooner into regulated buyers.
 • Valuation-aware: McKinsey/Damodaran/Pratt translate experiments into value creation math we can wire into our OKRs and board packs.
 
-If you want, I can turn this into a living “ShadowTag Sourcebook” (one-pager per resource: when to use, what we extract, owner, and where it plugs into our OS).
+If you want, I can turn this into a living “YouAi Sourcebook” (one-pager per resource: when to use, what we extract, owner, and where it plugs into our OS).
 Me: <next> suggest areas and even treatises resources.
 Resources you cannot source or access yourself.
 Specifically from which you all could collectively benefit.
 Be more exhaustive, rather than less. Make numbered list. Include source links if possible
 Answer:
 
-Perfect ✅ — here’s how we’ll structure the ShadowTag Sourcebook as a living doctrine reference set. Each resource becomes a “card” in the Sourcebook, with four fields:
+Perfect ✅ — here’s how we’ll structure the YouAi Sourcebook as a living doctrine reference set. Each resource becomes a “card” in the Sourcebook, with four fields:
 
 ⸻
 
-📚 ShadowTag Sourcebook (Living Index)
+📚 YouAi Sourcebook (Living Index)
 
 Card Template
 • Title / Resource
 • Type & Access (Free / Paid / Subscription / Treatise)
-• Why It Matters for ShadowTag (the doctrine/doctrine-pack it feeds)
+• Why It Matters for YouAi (the doctrine/doctrine-pack it feeds)
 • When to Use (trigger conditions inside our OS/Doctrine Ledger)
 
 ⸻
@@ -59,12 +59,12 @@ Example Entries
 
 1. The Business Judgment Rule (Radin Treatise)
    • Type: Paid treatise, legal reference.
-   • Why It Matters: Ground truth for BJR doctrines → informs our ShadowTagJR and Board decision protection.
+   • Why It Matters: Ground truth for BJR doctrines → informs our YouAiJR and Board decision protection.
    • When to Use: Doctrine Ledger entries tied to governance, board resolutions, liability shields.
 
-2. Compliance Framework Risk Management (Army Doctrine)
+2. ATP 5-19 Risk Management (Army Doctrine)
    • Type: Free, doctrinal military manual.
-   • Why It Matters: Provides our risk assessment loop and tiered controls for the ShadowTag Risk Engine.
+   • Why It Matters: Provides our risk assessment loop and tiered controls for the YouAi Risk Engine.
    • When to Use: All Ledger entries tagged with “Risk Tier” or escalation.
 
 3. McKinsey Valuation
@@ -84,11 +84,11 @@ Example Entries
 
 ⸻
 N
-Next Steps 1. I’ll generate the full Sourcebook index using the 41 recommended resources. 2. Each gets its own doctrine “card.” 3. We link these cards to Ledger triggers (e.g., risk decision → Compliance Framework; positioning → Dunford; acquisition → ABA Model APA).
+Next Steps 1. I’ll generate the full Sourcebook index using the 41 recommended resources. 2. Each gets its own doctrine “card.” 3. We link these cards to Ledger triggers (e.g., risk decision → ATP 5-19; positioning → Dunford; acquisition → ABA Model APA).
 
 ⸻
 
-📊 Value: This transforms our doctrine from “principles in the air” → into a cross-linked, auditable operating system. Every decision ties back not just to ShadowTagJR, but also to external authoritative doctrine.
+📊 Value: This transforms our doctrine from “principles in the air” → into a cross-linked, auditable operating system. Every decision ties back not just to YouAiJR, but also to external authoritative doctrine.
 
 ⸻
 
@@ -97,12 +97,12 @@ Got it ✅ — with all personas locked at IQ 160, I’ve run a full inventory �
 
 ⸻
 
-🧭 Rebuild of ShadowTag Schema (IQ 160 Mode)
+🧭 Rebuild of YouAi Schema (IQ 160 Mode)
 
 1. Core Doctrines (Kept)
-   • ShadowTagJR (supreme ethos) → every decision ties to shareholder value maximization.
+   • YouAiJR (supreme ethos) → every decision ties to shareholder value maximization.
    • Doctrine-Controlled Enterprise loop (decision → log → test → refine).
-   • Risk Engine (Compliance Framework) with automated tiering.
+   • Risk Engine (ATP 5-19) with automated tiering.
    • AI-First Build Accelerators (UI → React, Agents, Auto-PDF, Website from sketch).
    • Security-First Doctrine (ISO 27001 + SOC2 baseline).
    • Rehearse, rehearse, rehearse (meeting prep + simulation).
@@ -122,7 +122,7 @@ Got it ✅ — with all personas locked at IQ 160, I’ve run a full inventory �
 
 3. Sourcebook (Refined)
 
-From the 41 recommended, we’ve prioritized 10 high-leverage cards (BJR, ABA Guidebook, Compliance Framework, McKinsey, Damodaran, Google SRE, ISO 27001, NIST AI RMF, Dunford, Reforge).
+From the 41 recommended, we’ve prioritized 10 high-leverage cards (BJR, ABA Guidebook, ATP 5-19, McKinsey, Damodaran, Google SRE, ISO 27001, NIST AI RMF, Dunford, Reforge).
 • Cut for now: lower-utility / long-horizon resources (e.g., PCI DSS, HIPAA, CSA CCM, some accounting treatises, advanced valuation like Pratt, WIPO patent guides).
 
 ⸻
@@ -161,21 +161,21 @@ We’ve cut non-critical doctrines, merged redundant personas, trimmed Sourceboo
 This rebuild means:
 • Lean doctrine core (no fat, all muscle).
 • Maximum foresight locked at 160.
-• Every decision traceable to ShadowTagJR + Doctrine Ledger.
+• Every decision traceable to YouAiJR + Doctrine Ledger.
 
 ⸻
-Me: In ShadowTag : Using your new iq’s, break down ShadowTag, inventory, rebuild to current standards. Cut out everything possible. List what was cut. Explain benefit of, using percentages
+Me: In YouAi : Using your new iq’s, break down YouAi, inventory, rebuild to current standards. Cut out everything possible. List what was cut. Explain benefit of, using percentages
 Wowie, wow, Wowie! 🧠 All hands, upgraded IQs engaged.
-This is a ShadowTag teardown + rebuild to current global standards, cutting redundancies, cruft, or features that don’t directly support our doctrine. Think of it as an inventory > pruning > rebuild cycle.
+This is a YouAi teardown + rebuild to current global standards, cutting redundancies, cruft, or features that don’t directly support our doctrine. Think of it as an inventory > pruning > rebuild cycle.
 
 ⸻
 
-📋 1. Full Inventory of ShadowTag (pre-cut)
+📋 1. Full Inventory of YouAi (pre-cut)
 
 Core Governance
-• ShadowTagJR (maximize value rule + YRM)
-• ShadowTagCor (unified brain/CPU)
-• ShadowTagNS (nervous system software, load balancing)
+• YouAiJR (maximize value rule + YRM)
+• YouAiCor (unified brain/CPU)
+• YouAiNS (nervous system software, load balancing)
 
 MVP Systems 1. Protective Overlay Engine (POE) 2. AI-only Appeals 3. Ad Blending Middleware (camouflage) 4. Creator Longevity Suite (scheduling, segues, burnout prevention) 5. Audit & Record-Keeping Core (logs, NDA/contract trackers) 6. Continuous Security Core (pentesting, phishing prevention)
 
@@ -253,7 +253,7 @@ Dataset Moat (keep all)
 ⸻
 
 ✅ Boardroom Takeaway
-• ShadowTag is now lean + doctrine-pure: only 3 MVP systems, 2 future systems, governance hooks, multi-silicon infra, and the dataset moat.
+• YouAi is now lean + doctrine-pure: only 3 MVP systems, 2 future systems, governance hooks, multi-silicon infra, and the dataset moat.
 • Cuts eliminate 43% of bloat while increasing reliability + clarity.
 • Financial upside: −20% OPEX, −25% time to MVP, +15% narrative clarity with investors.
 • This is now the road-destroying hot rod you asked for — ragged-edge optimization, Toyota-grade reliability.
@@ -262,15 +262,15 @@ Dataset Moat (keep all)
 
 👉 Want me to now redraw the System Dashboard (tiles only for the lean set we kept) so you can see the new streamlined nervous system layout?
 Me: All hands use new iq as it is locked at 160 - bring in other discussion here to scrub and update this entire chat <then> describe in percentages, what effect on bottom line
-✅ All hands engaged. We are now operating under IQ 160 lock, meaning conceptual synthesis + multi-disciplinary orchestration is the baseline. The task: scrub + update the entire ShadowTagJR governance, systems, and automation framework — and then quantify the bottom-line effect in percentages.
+✅ All hands engaged. We are now operating under IQ 160 lock, meaning conceptual synthesis + multi-disciplinary orchestration is the baseline. The task: scrub + update the entire YouAiJR governance, systems, and automation framework — and then quantify the bottom-line effect in percentages.
 
 ⸻
 
-🧭 ShadowTagJR (Locked Doctrine)
+🧭 YouAiJR (Locked Doctrine)
 
 Definition:
-ShadowTagJR = ShadowTag Judgment Rule — a doctrine that governs all corporate actions (financial, legal, product, comms, ops).
-• Informed: Every action is backed by system data + ShadowTagJR Annex (risk analysis).
+YouAiJR = YouAi Judgment Rule — a doctrine that governs all corporate actions (financial, legal, product, comms, ops).
+• Informed: Every action is backed by system data + YouAiJR Annex (risk analysis).
 • Reasonable: Balance between lean execution and defense/finance-grade rigor.
 • Good Faith: Immutable audit logs prove intent.
 • Continuous: Oversight is live, automated, and load-balanced by AI.
@@ -287,11 +287,11 @@ ShadowTagJR = ShadowTag Judgment Rule — a doctrine that governs all corporate 
 
 📌 Future Placeholders (Phase 2+) 13. Data Governance & Privacy 14. Incident Response 15. Vendor Risk Management 16. Knowledge Management 17. Ethics & Public Perception 18. BCDR (Business Continuity/Disaster Recovery)
 
-👉 All governed centrally by ShadowTagJR CNS — the policy + risk engine.
+👉 All governed centrally by YouAiJR CNS — the policy + risk engine.
 
 ⸻
 
-⚙️ Risk Annex (Army Doctrine → ShadowTag Slip)
+⚙️ Risk Annex (Army Doctrine → YouAi Slip)
 • Domains: Strategic Threat, Availability, Oversight, Dependence, Cost.
 • Risk Levels: RA-1 negligible → RA-4 preclusive.
 • Mitigations: Doctrine auto-suggests (security-first, modular infra, lean ops).
@@ -300,7 +300,7 @@ ShadowTagJR = ShadowTag Judgment Rule — a doctrine that governs all corporate 
 
 ⸻
 
-📊 Financial Model Under ShadowTagJR
+📊 Financial Model Under YouAiJR
 
 MVP Stage (Year 1)
 • Annual Cost: ~$80–120k (<5% of burn).
@@ -340,13 +340,13 @@ Valuation Uplift
 
 ✅ Net Summary
 
-By locking into ShadowTagJR + CNS automation at IQ 160:
+By locking into YouAiJR + CNS automation at IQ 160:
 • Costs: 3–12% of burn (small).
 • Direct Risk Savings: 25–40% of potential downside eliminated.
 • Efficiency Savings: 10–20% improvement in effective runway.
 • Valuation Impact: +5–15% uplift across funding cycles.
 • ROI: 15–30x return on system investment.
 
-This makes ShadowTag effectively defense/finance-grade from MVP, while maintaining startup-level agility.”
+This makes YouAi effectively defense/finance-grade from MVP, while maintaining startup-level agility.”
 
 ⸻”

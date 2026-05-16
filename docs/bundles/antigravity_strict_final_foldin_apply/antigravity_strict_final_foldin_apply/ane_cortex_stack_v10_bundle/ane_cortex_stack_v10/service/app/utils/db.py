@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import sqlite3
 from contextlib import contextmanager
 

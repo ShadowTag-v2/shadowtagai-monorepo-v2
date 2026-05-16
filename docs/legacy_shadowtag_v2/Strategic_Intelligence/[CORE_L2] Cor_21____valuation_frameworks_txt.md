@@ -388,11 +388,11 @@ Cor.8
 “What do you think?
 The current product:
 
-✅ All hands engaged. Here’s the System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under ShadowTagJR.
+✅ All hands engaged. Here’s the System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under YouAiJR.
 
 ⸻
 
-📊 ShadowTagJR System Network Dashboard (Percent-Based ROI View)
+📊 YouAiJR System Network Dashboard (Percent-Based ROI View)
 
 Core Rule:
 • Annual Cost: % of burn allocated to each system.
@@ -518,11 +518,11 @@ Cor.8
 “What do you think?
 The current product:
 
-✅ All hands engaged. Here’s the System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under ShadowTagJR.
+✅ All hands engaged. Here’s the System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under YouAiJR.
 
 ⸻
 
-📊 ShadowTagJR System Network Dashboard (Percent-Based ROI View)
+📊 YouAiJR System Network Dashboard (Percent-Based ROI View)
 
 Core Rule:
 • Annual Cost: % of burn allocated to each system.

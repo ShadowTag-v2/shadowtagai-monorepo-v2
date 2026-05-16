@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 import redis
-from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
 
 from agents.legal_whiteboard import LegalWhiteboard
+from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
 
 
 @dataclass

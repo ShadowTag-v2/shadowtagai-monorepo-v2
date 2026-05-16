@@ -20,7 +20,7 @@ STALE_MODEL_PATTERNS = [
     r"gemini-3\.1-flash-lite-preview",
 ]
 
-CURRENT_MODEL_HINT = "gemini-3.1-flash-lite-preview"
+CURRENT_MODEL_HINT = "gemini-3.1-family"
 
 STALE_MCP_PATTERNS = [
     r"mcp_config\.json",
@@ -32,7 +32,7 @@ STALE_MCP_PATTERNS = [
 STALE_NAMING_PATTERNS = [
     r"\bpnkln\b",
     r"\bpnkln\b",
-    r"\bshadowtag-omega-v4\b",
+    r"\bShadowTag-v2\b",
     r"\bshadowtag-v2\b",
     r"\bflash-lite-preview\b",
 ]
@@ -122,12 +122,7 @@ def canonical_destinations(root_manifest: dict[str, Any]) -> set[str]:
 
 def file_text(path: Path) -> str | None:
     try:
-        if path.suffix.lower() not in TEXT_EXTS and path.name not in {
-            ".env",
-            ".gitignore",
-            "BUILD",
-            "WORKSPACE",
-        }:
+        if path.suffix.lower() not in TEXT_EXTS and path.name not in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
             return None
         return path.read_text(encoding="utf-8", errors="ignore")
     except Exception:
@@ -139,12 +134,7 @@ def iter_text_files(root: Path):
         dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
         for name in files:
             p = Path(base) / name
-            if p.suffix.lower() in TEXT_EXTS or name in {
-                ".env",
-                ".gitignore",
-                "BUILD",
-                "WORKSPACE",
-            }:
+            if p.suffix.lower() in TEXT_EXTS or name in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
                 yield p
 
 
@@ -277,24 +267,8 @@ def main() -> int:
         )
     )
     findings.extend(search_patterns(incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"))
-    findings.extend(
-        search_patterns(
-            incoming,
-            STALE_NAMING_PATTERNS,
-            "stale_naming",
-            "medium",
-            "Stale naming/control-plane drift",
-        )
-    )
-    findings.extend(
-        search_patterns(
-            incoming,
-            SECRET_PATTERNS,
-            "secret_like",
-            "critical",
-            "Potential secret material detected",
-        )
-    )
+    findings.extend(search_patterns(incoming, STALE_NAMING_PATTERNS, "stale_naming", "medium", "Stale naming/control-plane drift"))
+    findings.extend(search_patterns(incoming, SECRET_PATTERNS, "secret_like", "critical", "Potential secret material detected"))
 
     report = {
         "repo_name": args.repo_name,

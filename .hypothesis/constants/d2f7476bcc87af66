@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/core/ki_engine/fts_index.py
+# hypothesis_version: 6.151.5
+
+['.ki-index.db', '.md', '.txt', 'artifacts', 'metadata.json', 'replace', 'value']

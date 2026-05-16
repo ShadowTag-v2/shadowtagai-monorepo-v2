@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/speculation_engine/__init__.py
+# hypothesis_version: 6.151.5
+
+['AbortReason', 'BASH_TOOLS', 'BoundaryType', 'CACHE_TTL_1HOUR_S', 'CACHE_TTL_5MIN_S', 'CacheBreakDetector', 'CompletionBoundary', 'FilterReason', 'GeminiPairProgrammer', 'GeminiResearchSweep', 'MessageUpdate', 'OverlayFS', 'PairSession', 'PendingChanges', 'PipelineMode', 'PlanSession', 'PlanState', 'PlanStep', 'ProgressMessage', 'PromptStateSnapshot', 'SAFE_READ_TOOLS', 'SessionState', 'SpeculationEngine', 'SpeculationState', 'SuggestionConfig', 'SuggestionConsumer', 'SuggestionEntry', 'SuggestionOutcome', 'SuggestionResult', 'SuppressReason', 'SweepResult', 'ToolResult', 'ToolStatus', 'TrackedState', 'TrackedTool', 'TransitionError', 'WRITE_TOOLS', 'log_suggestion_event']

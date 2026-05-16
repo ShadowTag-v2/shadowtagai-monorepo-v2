@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""GitHub App Token Generator — ShadowTag-v2 / Antigravity Manager
-App ID: 3018200 | Client ID: Iv23ctYqrxPQIt2ir8gY.
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+GitHub App Token Generator — ShadowTag-v2 / Antigravity Manager
+App ID: 3018200 | Client ID: Iv23ctYqrxPQIt2ir8gY
 
 Usage:
   python scripts/auth_github_app.py           # prints token
@@ -12,14 +14,11 @@ Token cached to /tmp/gh_token_shadowtag.txt for reuse within the 1hr window.
 
 import argparse
 import json
-import logging
 import os
 import sys
 import time
 import urllib.request
 from pathlib import Path
-
-logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 APP_ID = "3018200"
@@ -29,81 +28,21 @@ PEM_PATH = REPO_ROOT / "keys" / "shadowtag-manager.pem"
 TOKEN_CACHE = Path("/tmp/gh_token_shadowtag.txt")
 TOKEN_EXPIRY_CACHE = Path("/tmp/gh_token_shadowtag_exp.txt")
 
-# --- Circuit Breaker: github_api ---
-_github_breaker = None
-
-
-def _get_github_breaker():
-    """Lazily initialize the github_api circuit breaker."""
-    global _github_breaker  # noqa: PLW0603
-    if _github_breaker is not None:
-        return _github_breaker
-    try:
-        from circuit_breaker.telemetry_bridge import default_registry
-
-        _github_breaker = default_registry.get_or_create(
-            "github_api",
-            failure_threshold=5,
-            reset_timeout_s=120.0,
-        )
-    except Exception:
-        logger.debug("Circuit breaker unavailable — github_api calls ungated")
-        _github_breaker = None
-    return _github_breaker
-
 
 def _load_pem() -> str:
-    """Load GitHub App PEM. Priority: Secret Manager → keys/ → ~/Downloads → $SHADOWTAG_PEM."""
-    # 1. Secret Manager (production + CI)
-    try:
-        import subprocess
-
-        result = subprocess.run(
-            [
-                "/opt/homebrew/share/google-cloud-sdk/bin/gcloud",
-                "secrets",
-                "versions",
-                "access",
-                "latest",
-                "--secret=github-app-shadowtag-v2-pem",
-                "--project=shadowtag-omega-v4",
-            ],
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            return result.stdout
-    except Exception:
-        pass
-
-    # 2. Local keys/ directory
     if PEM_PATH.exists():
         return PEM_PATH.read_text()
-
-    # 3. Downloads fallback
     fallback = Path.home() / "Downloads" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem"
     if fallback.exists():
         return fallback.read_text()
-
-    # 4. SSH directory fallback
-    ssh_fallback = Path.home() / ".ssh" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem"
-    if ssh_fallback.exists():
-        return ssh_fallback.read_text()
-
-    # 5. Environment variable
-    env_pem = os.environ.get("SHADOWTAG_PEM")
-    if env_pem and Path(env_pem).exists():
-        return Path(env_pem).read_text()
-
-    sys.exit(f"ERROR: PEM not found. Checked: SM, {PEM_PATH}, {fallback}, $SHADOWTAG_PEM")
+    sys.exit(f"ERROR: PEM not found at {PEM_PATH} or {fallback}")
 
 
 def _generate_jwt(pem: str) -> str:
     try:
         import jwt as pyjwt
     except ImportError:
-        os.system(f"{sys.executable} -m pip install PyJWT cryptography -q")  # nosec B605 — intentional shell for git/system ops
+        os.system(f"{sys.executable} -m pip install PyJWT cryptography -q")
         import jwt as pyjwt
     now = int(time.time())
     return pyjwt.encode(
@@ -114,11 +53,7 @@ def _generate_jwt(pem: str) -> str:
 
 
 def _get_installation_token(jwt_token: str) -> tuple[str, str]:
-    """Returns (token, expires_at). Gated by github_api circuit breaker."""
-    breaker = _get_github_breaker()
-    if breaker is not None and not breaker.allow_request():
-        raise RuntimeError(f"Circuit breaker OPEN for github_api (probe in {breaker.seconds_until_probe:.1f}s)")
-
+    """Returns (token, expires_at)."""
     url = f"https://api.github.com/app/installations/{INSTALLATION_ID}/access_tokens"
     req = urllib.request.Request(
         url,
@@ -129,16 +64,9 @@ def _get_installation_token(jwt_token: str) -> tuple[str, str]:
             "X-GitHub-Api-Version": "2022-11-28",
         },
     )
-    try:
-        with urllib.request.urlopen(req) as resp:
-            data = json.loads(resp.read())
-        if breaker is not None:
-            breaker.record_success()
-        return data["token"], data.get("expires_at", "")
-    except Exception:
-        if breaker is not None:
-            breaker.record_failure()
-        raise
+    with urllib.request.urlopen(req) as resp:
+        data = json.loads(resp.read())
+    return data["token"], data.get("expires_at", "")
 
 
 def get_token(force_refresh: bool = False) -> str:
@@ -149,7 +77,7 @@ def get_token(force_refresh: bool = False) -> str:
         try:
             from datetime import datetime
 
-            exp = datetime.fromisoformat(expires_at)
+            exp = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
             if exp.timestamp() - time.time() > 120:  # 2min buffer
                 return TOKEN_CACHE.read_text().strip()
         except Exception:
@@ -166,47 +94,47 @@ def get_token(force_refresh: bool = False) -> str:
 
 
 def _update_remote_url(token: str) -> None:
-    """Rewrite the git remote push URL with the current token.
-
-    Handles both SSH and HTTPS remotes:
-    - SSH (git@github.com:Org/Repo.git) → sets a separate --push URL via HTTPS
-    - HTTPS (https://github.com/...) → rewrites embedded token
-    """
-    import re
-    import subprocess
-
+    """Rewrite the git remote URL with the current token."""
     try:
+        import re
+        import subprocess
+
         result = subprocess.run(
             ["git", "-C", str(REPO_ROOT), "remote", "get-url", "origin"],
             capture_output=True,
             text=True,
         )
-        if result.returncode != 0:
-            return
+        if result.returncode == 0:
+            current = result.stdout.strip()
 
-        current = result.stdout.strip()
-        https_token_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
-
-        if current.startswith("git@github.com:"):
-            # SSH remote: preserve SSH for fetch, set HTTPS push URL
-            subprocess.run(
-                ["git", "-C", str(REPO_ROOT), "remote", "set-url", "--push", "origin", https_token_url],
-                capture_output=True,
-            )
-        elif "github.com" in current:
-            # HTTPS remote: rewrite the token in-place
-            new_url = re.sub(
-                r"https://[^@]*@github\.com/",
-                f"https://x-access-token:{token}@github.com/",
-                current,
-            )
-            if new_url == current:
-                new_url = current.replace(
-                    "https://github.com/",
+            # Handle SSH remotes (git@github.com:org/repo.git)
+            ssh_match = re.match(r"git@github\.com:(.+)", current)
+            if ssh_match:
+                repo_path = ssh_match.group(1)
+                new_url = f"https://x-access-token:{token}@github.com/{repo_path}"
+            elif "https://" in current and "github.com" in current:
+                # Rewrite existing HTTPS remotes
+                new_url = re.sub(
+                    r"https://[^@]*@github\.com/",
                     f"https://x-access-token:{token}@github.com/",
+                    current,
                 )
+                if new_url == current:
+                    # No existing token in URL — insert one
+                    new_url = current.replace(
+                        "https://github.com/",
+                        f"https://x-access-token:{token}@github.com/",
+                    )
+            else:
+                return  # Unknown remote format
+
             subprocess.run(
                 ["git", "-C", str(REPO_ROOT), "remote", "set-url", "origin", new_url],
+                capture_output=True,
+            )
+            # Also update the push URL to prevent SSH deploy key conflicts
+            subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "remote", "set-url", "--push", "origin", new_url],
                 capture_output=True,
             )
     except Exception:
@@ -223,10 +151,21 @@ if __name__ == "__main__":
     token = get_token(force_refresh=args.refresh)
 
     if args.export:
-        pass
+        print(f"export GITHUB_TOKEN={token}")
+        print(f"export GH_TOKEN={token}")
     elif args.push:
+        print("Token acquired. Pushing...", file=sys.stderr)
+        import subprocess
+
+        # Determine current branch dynamically
+        branch_result = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "branch", "--show-current"],
+            capture_output=True,
+            text=True,
+        )
+        branch = branch_result.stdout.strip() or "main"
         # Remote URL already updated by get_token() — just push directly
-        ret = os.system("JUDGE6_SKIP=true git push --no-verify origin HEAD")  # nosec B605 — intentional shell for git/system ops
+        ret = os.system(f"JUDGE6_SKIP=true git -C {REPO_ROOT} push origin {branch}")
         sys.exit(ret)
     else:
-        pass
+        print(token)

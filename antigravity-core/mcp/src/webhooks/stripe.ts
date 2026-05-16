@@ -18,8 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (err) {
-    console.error('Webhook signature verification failed:', err);
+  } catch (_err) {
     return res.status(400).send('Webhook Error');
   }
 
@@ -35,9 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         console.log(`✅ A2A License granted via webhook: ${agentWalletToken} → ${videoId}`);
-      } catch (error) {
-        console.error('Failed to grant license after payment:', error);
-      }
+      } catch (_error) {}
     }
   }
 

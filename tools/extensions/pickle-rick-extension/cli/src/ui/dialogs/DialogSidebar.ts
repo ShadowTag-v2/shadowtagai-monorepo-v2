@@ -1,6 +1,6 @@
-import type { CliRenderer } from '@opentui/core';
-import type { SessionData } from '../../types/tasks.js';
-import { DashboardDialog } from './DashboardDialog.js';
+import type { CliRenderer } from "@opentui/core";
+import type { SessionData } from "../../types/tasks.js";
+import { DashboardDialog } from "./DashboardDialog.js";
 
 export class DialogSidebar {
   private dashboardDialog: DashboardDialog;

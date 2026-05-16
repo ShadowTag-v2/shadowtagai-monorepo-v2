@@ -77,10 +77,7 @@ def get_auth_token():
         payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
         encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
 
-        headers = {
-            "Authorization": f"Bearer {encoded_jwt}",
-            "Accept": "application/vnd.github.v3+json",
-        }
+        headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
         res = requests.get("https://api.github.com/app/installations", headers=headers)
         res.raise_for_status()
@@ -124,8 +121,8 @@ for repo_name, dest_path in REPOS:
     cloned = False
 
     if not os.path.exists(clone_path):
-        # Try shadowtag-omega-v4 first, then ehanc69
-        orgs_to_try = ["shadowtag-omega-v4", "ehanc69"]
+        # Try ShadowTag-v2 first, then ehanc69
+        orgs_to_try = ["ShadowTag-v2", "ehanc69"]
         for org in orgs_to_try:
             if token:
                 clone_url = f"https://x-access-token:{token}@github.com/{org}/{repo_name}.git"
@@ -168,7 +165,7 @@ for repo_name, dest_path in REPOS:
                 if rep_data.get("blocked"):
                     blockers = str(rep_data.get("block_reasons", "Unknown block"))
                     status = "blocked"
-            except Exception:
+            except:
                 pass
 
     if status == "blocked":

@@ -3,10 +3,14 @@ set -euo pipefail
 
 echo "🌱 Seeding full pnkln monorepo..."
 
-mkdir -p apps/counselconduit labs/uphillsnowball docs/judge6-reports scripts prompts .antigravity/rules
+mkdir -p apps/counselconduit labs/uphillsnowball docs/judge6-reports scripts prompts .antigravity/rules core
 
 # Core canonical files (all previous raw blocks)
-cp -f .antigravity/rules/cor-antigravity.mdc .antigravity/rules/cor-antigravity.mdc || true
+# Ensure file exists before copying over itself or creating it if missing
+if [ ! -f .antigravity/rules/cor-antigravity.mdc ]; then
+  touch .antigravity/rules/cor-antigravity.mdc
+fi
+cp -f .antigravity/rules/cor-antigravity.mdc .antigravity/rules/cor-antigravity.mdc
 
 cat > monorepo_manifest.yaml << 'EOF'
 workspace: pnkln

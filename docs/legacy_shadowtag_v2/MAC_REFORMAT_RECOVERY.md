@@ -85,11 +85,13 @@ gcloud auth application-default login
 
 ```
 
-### 3. Flying n-autoresearch/Kosmos/BioAgents (Cloud Run)
+### 3. Flying Monkeys (Cloud Run)
 
 Already deployed at:
 
+
 - **URL**: `https://https://github.com/karpathy/autoresearchs-server-215390634092.us-central1.run.app`
+
 
 - **Image**: `us-central1-docker.pkg.dev/acquired-jet-478701-b3/https://github.com/karpathy/autoresearchs/server:gemini25flash`
 
@@ -106,12 +108,12 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
 
 ## Key Credentials (Store in 1Password/Keychain)
 
-| Service             | Location                           |
-| ------------------- | ---------------------------------- |
-| GitHub Token        | `gh auth login`                    |
+| Service | Location |
+|---------|----------|
+| GitHub Token | `gh auth login` |
 | GCP Service Account | `~/Downloads/client_secret_*.json` |
-| GEMINI_API_KEY      | Environment variable               |
-| Anthropic API Key   | Claude Code auth                   |
+| GEMINI_API_KEY | Environment variable |
+| Anthropic API Key | Claude Code auth |
 
 ---
 
@@ -128,27 +130,35 @@ export GEMINI_API_KEY="your-key-here"
 
 ## Project Locations
 
-| Project        | Path                             |
-| -------------- | -------------------------------- |
-| Main Repo      | `~/pnkln-stack-fastapi-services` |
-| Actions Runner | `~/actions-runner`               |
-| GCloud SDK     | `~/google-cloud-sdk`             |
+| Project | Path |
+|---------|------|
+| Main Repo | `~/pnkln-stack-fastapi-services` |
+| Actions Runner | `~/actions-runner` |
+| GCloud SDK | `~/google-cloud-sdk` |
 
 ---
 
 ## Verification Checklist
 
+
+
 - [ ] Git configured (`git config --global user.name/email`)
+
 
 - [ ] GitHub CLI authenticated (`gh auth status`)
 
+
 - [ ] GCloud authenticated (`gcloud auth list`)
+
 
 - [ ] Runner online (`gh api .../actions/runners`)
 
+
 - [ ] Claude Code installed (`claude --version`)
 
+
 - [ ] Python 3.11+ (`python3 --version`)
+
 
 - [ ] Node 18+ (`node --version`)
 
@@ -156,13 +166,13 @@ export GEMINI_API_KEY="your-key-here"
 
 ## Cloud Resources (No Local State Needed)
 
-| Resource          | Location    | Status      |
-| ----------------- | ----------- | ----------- |
-| GKE Autopilot     | us-central1 | Active      |
-| Cloud Run (FM)    | us-central1 | Active      |
-| Artifact Registry | us-central1 | Active      |
-| Cloud SQL         | us-central1 | Provisioned |
+| Resource | Location | Status |
+|----------|----------|--------|
+| GKE Autopilot | us-central1 | Active |
+| Cloud Run (FM) | us-central1 | Active |
+| Artifact Registry | us-central1 | Active |
+| Cloud SQL | us-central1 | Provisioned |
 
 ---
 
-_Last updated: 2025-11-30_
+*Last updated: 2025-11-30*

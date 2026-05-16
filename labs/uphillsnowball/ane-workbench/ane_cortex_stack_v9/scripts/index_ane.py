@@ -1,7 +1,8 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from service.app.config import load_settings
-from service.app.jobs.sync_postgres import sync_doc_registry
+from service.app.retrieval.sqlite_index import scan_repo, refresh_symbols, chunk_text
 from service.app.retrieval.lancedb_store import upsert_chunks
-from service.app.retrieval.sqlite_index import chunk_text, refresh_symbols, scan_repo
+from service.app.jobs.sync_postgres import sync_doc_registry
 
 s = load_settings()
 print(scan_repo(s.sqlite_db, s.repo_id, s.repo_root))

@@ -28,35 +28,35 @@ logger = logging.getLogger("Cor_Claude_Code_6_rkill_bridge")
 
 
 class RkillNotifier:
-    """Sync ceo_notifier that auto-triggers RKILL on L5_LOCKOUT verdicts."""
+  """Sync ceo_notifier that auto-triggers RKILL on L5_LOCKOUT verdicts."""
 
-    def __init__(self, cfg: RkillConfig) -> None:
-        self._protocol = RkillProtocol(cfg)
+  def __init__(self, cfg: RkillConfig) -> None:
+    self._protocol = RkillProtocol(cfg)
 
-    def __call__(self, decision: GovernanceDecision) -> None:
-        if not decision.control:
-            return
-        if decision.control.enforcement_level < EnforcementLevel.L5_LOCKOUT:
-            # L4_CONTAIN only notifies CEO — no lockout.
-            logger.warning(
-                "[bridge] CEO notified (L4): violation=%s decision=%s",
-                decision.event.violation_type.value,
-                decision.decision_id,
-            )
-            return
+  def __call__(self, decision: GovernanceDecision) -> None:
+    if not decision.control:
+      return
+    if decision.control.enforcement_level < EnforcementLevel.L5_LOCKOUT:
+      # L4_CONTAIN only notifies CEO — no lockout.
+      logger.warning(
+        "[bridge] CEO notified (L4): violation=%s decision=%s",
+        decision.event.violation_type.value,
+        decision.decision_id,
+      )
+      return
 
-        logger.critical(
-            "[bridge] L5_LOCKOUT — scheduling RKILL: violation=%s decision=%s",
-            decision.event.violation_type.value,
-            decision.decision_id,
-        )
-        triggered_by = f"Cor_Claude_Code_6-auto:{decision.event.violation_type.value}"
-        self._fire(triggered_by)
+    logger.critical(
+      "[bridge] L5_LOCKOUT — scheduling RKILL: violation=%s decision=%s",
+      decision.event.violation_type.value,
+      decision.decision_id,
+    )
+    triggered_by = f"Cor_Claude_Code_6-auto:{decision.event.violation_type.value}"
+    self._fire(triggered_by)
 
-    def _fire(self, triggered_by: str) -> None:
-        try:
-            loop = asyncio.get_running_loop()
-            loop.create_task(self._protocol.execute(triggered_by))
-        except RuntimeError:
-            # No running loop — sync context (CLI, test).
-            asyncio.run(self._protocol.execute(triggered_by))
+  def _fire(self, triggered_by: str) -> None:
+    try:
+      loop = asyncio.get_running_loop()
+      loop.create_task(self._protocol.execute(triggered_by))
+    except RuntimeError:
+      # No running loop — sync context (CLI, test).
+      asyncio.run(self._protocol.execute(triggered_by))

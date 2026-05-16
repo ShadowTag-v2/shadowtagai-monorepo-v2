@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useReducer, useState } from 'react';
-import './index.css';
+import { useCallback, useEffect, useReducer, useState } from "react";
+import "./index.css";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -13,17 +13,17 @@ interface Extraction {
   days_to_respond: number;
   business_days_only: boolean;
   confidence: number;
-  status: 'pending_approval' | 'approved' | 'rejected';
+  status: "pending_approval" | "approved" | "rejected";
   created_at: string;
 }
 
 type Action =
-  | { type: 'SET_QUEUE'; payload: Extraction[] }
-  | { type: 'SET_DOCKET'; payload: Extraction[] }
-  | { type: 'APPROVE'; id: string; updated: Extraction }
-  | { type: 'REJECT'; id: string; updated: Extraction }
-  | { type: 'SET_ERROR'; msg: string }
-  | { type: 'SET_LOADING'; loading: boolean };
+  | { type: "SET_QUEUE"; payload: Extraction[] }
+  | { type: "SET_DOCKET"; payload: Extraction[] }
+  | { type: "APPROVE"; id: string; updated: Extraction }
+  | { type: "REJECT"; id: string; updated: Extraction }
+  | { type: "SET_ERROR"; msg: string }
+  | { type: "SET_LOADING"; loading: boolean };
 
 interface State {
   queue: Extraction[];
@@ -34,16 +34,16 @@ interface State {
 
 // ── API ───────────────────────────────────────────────────────────────────────
 
-const API = import.meta.env.VITE_ZT_API_URL ?? 'http://localhost:8000';
+const API = import.meta.env.VITE_ZT_API_URL ?? "http://localhost:8000";
 // DEMO_MATTER_ID is the matter whose queue and docket this UI manages.
 // In a multi-matter app this would come from routing / auth context.
-const MATTER_ID = import.meta.env.VITE_MATTER_ID ?? 'aaaaaaaa-0000-0000-0000-000000000001';
+const MATTER_ID = import.meta.env.VITE_MATTER_ID ?? "aaaaaaaa-0000-0000-0000-000000000001";
 // APPROVER_ID is the currently authenticated user. Replace with real auth.
-const APPROVER_ID = import.meta.env.VITE_APPROVER_ID ?? 'ffffffff-0000-0000-0000-000000000001';
+const APPROVER_ID = import.meta.env.VITE_APPROVER_ID ?? "ffffffff-0000-0000-0000-000000000001";
 
 async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     ...opts,
   });
   if (!res.ok) {
@@ -59,15 +59,15 @@ const initial: State = { queue: [], docket: [], loading: false, error: null };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'SET_LOADING':
+    case "SET_LOADING":
       return { ...state, loading: action.loading, error: null };
-    case 'SET_ERROR':
+    case "SET_ERROR":
       return { ...state, loading: false, error: action.msg };
-    case 'SET_QUEUE':
+    case "SET_QUEUE":
       return { ...state, queue: action.payload, loading: false };
-    case 'SET_DOCKET':
+    case "SET_DOCKET":
       return { ...state, docket: action.payload, loading: false };
-    case 'APPROVE':
+    case "APPROVE":
       return {
         ...state,
         queue: state.queue.filter((e) => e.extraction_id !== action.id),
@@ -76,7 +76,7 @@ function reducer(state: State, action: Action): State {
             new Date(a.calculated_due_date).getTime() - new Date(b.calculated_due_date).getTime(),
         ),
       };
-    case 'REJECT':
+    case "REJECT":
       return {
         ...state,
         queue: state.queue.filter((e) => e.extraction_id !== action.id),
@@ -89,7 +89,7 @@ function reducer(state: State, action: Action): State {
 function ConfidencePip({ value }: { value: number }) {
   const pct = Math.round(value * 100);
   const color =
-    pct >= 90 ? 'var(--success-green)' : pct >= 70 ? 'var(--warn-amber)' : 'var(--alert-red)';
+    pct >= 90 ? "var(--success-green)" : pct >= 70 ? "var(--warn-amber)" : "var(--alert-red)";
   return (
     <span className="confidence-pip" style={{ color, borderColor: color }}>
       {pct}%
@@ -107,14 +107,14 @@ function QueueCard({
   onReject: (id: string, reason: string) => void;
 }) {
   const [rejecting, setRejecting] = useState(false);
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState("");
   const daysUntil = Math.ceil(
     (new Date(item.calculated_due_date).getTime() - Date.now()) / 86_400_000,
   );
   const urgent = daysUntil <= 7;
 
   return (
-    <div className={`glass-panel queue-card animate-slide-up ${urgent ? 'urgent' : ''}`}>
+    <div className={`glass-panel queue-card animate-slide-up ${urgent ? "urgent" : ""}`}>
       <div className="queue-card-header">
         <div>
           <span className="trigger-label">{item.trigger_event}</span>
@@ -124,13 +124,13 @@ function QueueCard({
       </div>
 
       <div className="queue-meta">
-        <span className={`due-badge ${urgent ? 'urgent' : ''}`}>
+        <span className={`due-badge ${urgent ? "urgent" : ""}`}>
           Due {item.calculated_due_date}
           {urgent && <span> — {daysUntil}d</span>}
         </span>
-        <span className="rule-tag">{item.jurisdiction_rule || 'FRCP'}</span>
+        <span className="rule-tag">{item.jurisdiction_rule || "FRCP"}</span>
         <span className="biz-days">
-          {item.days_to_respond}d {item.business_days_only ? 'business' : 'calendar'}
+          {item.days_to_respond}d {item.business_days_only ? "business" : "calendar"}
         </span>
       </div>
 
@@ -141,10 +141,10 @@ function QueueCard({
             placeholder="Rejection reason (required)"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
+            autoFocus
           />
           <div className="action-row">
             <button
-              type="button"
               className="btn-reject"
               disabled={!reason.trim()}
               onClick={() => {
@@ -154,21 +154,17 @@ function QueueCard({
             >
               Confirm Reject
             </button>
-            <button type="button" className="btn-ghost" onClick={() => setRejecting(false)}>
+            <button className="btn-ghost" onClick={() => setRejecting(false)}>
               Cancel
             </button>
           </div>
         </div>
       ) : (
         <div className="action-row">
-          <button
-            type="button"
-            className="btn-approve"
-            onClick={() => onApprove(item.extraction_id)}
-          >
+          <button className="btn-approve" onClick={() => onApprove(item.extraction_id)}>
             Approve
           </button>
-          <button type="button" className="btn-reject-outline" onClick={() => setRejecting(true)}>
+          <button className="btn-reject-outline" onClick={() => setRejecting(true)}>
             Reject
           </button>
         </div>
@@ -185,11 +181,11 @@ function DocketRow({ item }: { item: Extraction }) {
   return (
     <div className="docket-row glass-panel">
       <div className="docket-date">
-        <span className={urgent ? 'alert-text' : ''}>{item.calculated_due_date}</span>
+        <span className={urgent ? "alert-text" : ""}>{item.calculated_due_date}</span>
       </div>
       <div className="docket-info">
         <span className="trigger-label">{item.trigger_event}</span>
-        <span className="rule-tag">{item.jurisdiction_rule || 'FRCP'}</span>
+        <span className="rule-tag">{item.jurisdiction_rule || "FRCP"}</span>
       </div>
       <div className="docket-citation">{item.exhibit_citation_id}</div>
     </div>
@@ -200,10 +196,10 @@ function DocketRow({ item }: { item: Extraction }) {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initial);
-  const [tab, setTab] = useState<'queue' | 'docket'>('queue');
+  const [tab, setTab] = useState<"queue" | "docket">("queue");
 
   const refresh = useCallback(async () => {
-    dispatch({ type: 'SET_LOADING', loading: true });
+    dispatch({ type: "SET_LOADING", loading: true });
     try {
       const [queue, docket] = await Promise.all([
         apiFetch<Extraction[]>(
@@ -211,10 +207,10 @@ export default function App() {
         ),
         apiFetch<Extraction[]>(`/api/v1/zt/matters/${MATTER_ID}/docket`),
       ]);
-      dispatch({ type: 'SET_QUEUE', payload: queue });
-      dispatch({ type: 'SET_DOCKET', payload: docket });
+      dispatch({ type: "SET_QUEUE", payload: queue });
+      dispatch({ type: "SET_DOCKET", payload: docket });
     } catch (e) {
-      dispatch({ type: 'SET_ERROR', msg: (e as Error).message });
+      dispatch({ type: "SET_ERROR", msg: (e as Error).message });
     }
   }, []);
 
@@ -225,24 +221,24 @@ export default function App() {
   const handleApprove = useCallback(async (id: string) => {
     try {
       const updated = await apiFetch<Extraction>(`/api/v1/zt/extractions/${id}/approve`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({ approver_id: APPROVER_ID }),
       });
-      dispatch({ type: 'APPROVE', id, updated });
+      dispatch({ type: "APPROVE", id, updated });
     } catch (e) {
-      dispatch({ type: 'SET_ERROR', msg: (e as Error).message });
+      dispatch({ type: "SET_ERROR", msg: (e as Error).message });
     }
   }, []);
 
   const handleReject = useCallback(async (id: string, reason: string) => {
     try {
       const updated = await apiFetch<Extraction>(`/api/v1/zt/extractions/${id}/reject`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({ rejector_id: APPROVER_ID, reason }),
       });
-      dispatch({ type: 'REJECT', id, updated });
+      dispatch({ type: "REJECT", id, updated });
     } catch (e) {
-      dispatch({ type: 'SET_ERROR', msg: (e as Error).message });
+      dispatch({ type: "SET_ERROR", msg: (e as Error).message });
     }
   }, []);
 
@@ -251,7 +247,7 @@ export default function App() {
       {/* Sidebar */}
       <aside className="sidebar">
         <h1 className="sidebar-logo">
-          Cor.<span style={{ color: 'var(--accent-cyan)' }}>LawTrack</span>
+          Cor.<span style={{ color: "var(--accent-cyan)" }}>LawTrack</span>
         </h1>
         <p className="sidebar-meta">
           Matter: {MATTER_ID.slice(0, 8)}&hellip;
@@ -261,17 +257,15 @@ export default function App() {
 
         <nav className="sidebar-nav">
           <button
-            type="button"
-            className={`nav-item ${tab === 'queue' ? 'active' : ''}`}
-            onClick={() => setTab('queue')}
+            className={`nav-item ${tab === "queue" ? "active" : ""}`}
+            onClick={() => setTab("queue")}
           >
             Pending
             {state.queue.length > 0 && <span className="badge">{state.queue.length}</span>}
           </button>
           <button
-            type="button"
-            className={`nav-item ${tab === 'docket' ? 'active' : ''}`}
-            onClick={() => setTab('docket')}
+            className={`nav-item ${tab === "docket" ? "active" : ""}`}
+            onClick={() => setTab("docket")}
           >
             Docket
             {state.docket.length > 0 && (
@@ -290,15 +284,15 @@ export default function App() {
       <main className="main-content">
         <header className="main-header">
           <div>
-            <h2>{tab === 'queue' ? 'Approval Queue' : 'Master Docket'}</h2>
+            <h2>{tab === "queue" ? "Approval Queue" : "Master Docket"}</h2>
             <p className="header-sub">
-              {tab === 'queue'
-                ? 'Agent-drafted deadlines awaiting attorney verification'
-                : 'Approved deadlines — chronological'}
+              {tab === "queue"
+                ? "Agent-drafted deadlines awaiting attorney verification"
+                : "Approved deadlines — chronological"}
             </p>
           </div>
-          <button type="button" className="btn-refresh" onClick={refresh} disabled={state.loading}>
-            {state.loading ? 'Loading…' : 'Refresh'}
+          <button className="btn-refresh" onClick={refresh} disabled={state.loading}>
+            {state.loading ? "Loading…" : "Refresh"}
           </button>
         </header>
 
@@ -308,7 +302,7 @@ export default function App() {
           </div>
         )}
 
-        {tab === 'queue' && (
+        {tab === "queue" && (
           <div className="card-grid">
             {state.queue.length === 0 && !state.loading && (
               <p className="empty-state">No pending extractions.</p>
@@ -324,7 +318,7 @@ export default function App() {
           </div>
         )}
 
-        {tab === 'docket' && (
+        {tab === "docket" && (
           <div className="docket-list">
             {state.docket.length === 0 && !state.loading && (
               <p className="empty-state">No approved deadlines yet.</p>

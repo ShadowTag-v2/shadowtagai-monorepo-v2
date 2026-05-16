@@ -29,8 +29,8 @@ This is not harmless if future agents search broadly and mistake it for active c
 
 ### Confirmed mixed naming in repo content
 Observed active/reachable terms include:
-- `ShadowTagAI-Omega`
-- `ShadowTagAI v2`
+- `ShadowTag-Omega`
+- `ShadowTag v2`
 - `pnkln`
 - `UphillSnowball`
 - `pnkln`
@@ -38,8 +38,8 @@ Observed active/reachable terms include:
 - `antigravity`
 
 Examples:
-- `GEMINI.md` still anchors to `ShadowTagAI-Omega` and the old root path.
-- `autoresearch.py` registers “ShadowTagAI v2 tools” and “UphillSnowball tools” in the same runtime.
+- `GEMINI.md` still anchors to `ShadowTag-Omega` and the old root path.
+- `flying_monkeys.py` registers “ShadowTag v2 tools” and “UphillSnowball tools” in the same runtime.
 
 ## Why this matters
 
@@ -66,4 +66,4 @@ Every major namespace should be assigned one role:
 - `pnkln` = doctrine/control plane
 - `antigravity` = agent operating layer
 
-Old names like `ShadowTagAI-Omega` and `ShadowTagAI v2` should be treated as legacy references unless intentionally preserved in archived docs.
+Old names like `ShadowTag-Omega` and `ShadowTag v2` should be treated as legacy references unless intentionally preserved in archived docs.

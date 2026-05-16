@@ -1,22 +1,33 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import re
+from collections.abc import Iterable
 from pathlib import Path
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from collections.abc import Iterable
 
 CANONICAL_FILES = [
     "monorepo_manifest.yaml",
     "AGENTS.md",
     "antigravity-mcp-config.json",
-    "docs/UPDATED_PNKLN_PACK.md",
+    "docs/UPDATED_pnkln_PACK.md",
     "docs/MEMORY_LOCK.md",
+]
+SCAN_ROOT_DIRS = [
+    ".cursor",
+    ".gemini",
+    ".vscode",
+    "configs",
+    "control",
+    "docs",
+    "labs",
+    "manifests",
+    "ops",
+    "scripts",
+    "tests",
 ]
 
 STALE_MODEL_PATTERNS = [
@@ -32,13 +43,26 @@ MCP_FILES = [
     "mcp_config.json",
     ".vscode/cline_mcp_settings.json",
 ]
-NAME_PATTERNS = [r"\bShadowTag-v2\b", r"\bShadowTag\b", r"\bshadowtag-v2\b"]
-SECRET_PATTERNS = [
-    r"AIza[0-9A-Za-z\-_]{20,}",
-    r"-----BEGIN [A-Z ]+PRIVATE KEY-----",
-    r"sk-[A-Za-z0-9]{20,}",
-]
-SKIP_DIRS = {".git", "node_modules", ".venv", "dist", "build", "__pycache__"}
+NAME_PATTERNS = [r"\bAiYou\b", r"\bYouAi\b", r"\bshadowtag-v2\b"]
+SECRET_PATTERNS = [r"AIza[0-9A-Za-z\-_]{20,}", r"-----BEGIN [A-Z ]+PRIVATE KEY-----", r"sk-[A-Za-z0-9]{20,}"]
+SKIP_DIRS = {
+    ".agent",
+    ".benchmarks",
+    ".chroma_db",
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+    "archive",
+    "drive_knowledge",
+    "logs",
+    "node_modules",
+    "reference",
+    "dist",
+    "build",
+}
+SKIP_DIR_PREFIXES = ("bazel-",)
 TEXT_EXTS = {
     ".md",
     ".txt",
@@ -57,20 +81,45 @@ TEXT_EXTS = {
     ".js",
     ".jsx",
 }
+MAX_TEXT_BYTES = 512 * 1024
+MAX_FINDINGS_PER_CATEGORY = 500
+
+
+def should_skip_dir(name: str) -> bool:
+    return name in SKIP_DIRS or any(name.startswith(prefix) for prefix in SKIP_DIR_PREFIXES)
+
+
+def should_scan_file(path: Path) -> bool:
+    if not (path.suffix.lower() in TEXT_EXTS or path.name in {"AGENTS.md", "monorepo_manifest.yaml", "antigravity-mcp-config.json", ".env.example"}):
+        return False
+    try:
+        return path.stat().st_size <= MAX_TEXT_BYTES
+    except OSError:
+        return False
 
 
 def iter_text_files(root: Path) -> Iterable[Path]:
-    for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
-        for name in filenames:
-            path = Path(dirpath) / name
-            if path.suffix.lower() in TEXT_EXTS or name in {
-                "AGENTS.md",
-                "monorepo_manifest.yaml",
-                "antigravity-mcp-config.json",
-                ".env.example",
-            }:
-                yield path
+    seen: set[Path] = set()
+
+    for rel in CANONICAL_FILES:
+        path = root / rel
+        if path.exists() and should_scan_file(path):
+            seen.add(path)
+            yield path
+
+    for rel in SCAN_ROOT_DIRS:
+        base = root / rel
+        if not base.exists() or not base.is_dir():
+            continue
+        for dirpath, dirnames, filenames in os.walk(base):
+            dirnames[:] = [d for d in dirnames if not should_skip_dir(d)]
+            for name in filenames:
+                path = Path(dirpath) / name
+                if path in seen:
+                    continue
+                if should_scan_file(path):
+                    seen.add(path)
+                    yield path
 
 
 def read_text(path: Path) -> str:
@@ -84,18 +133,22 @@ def find_matches(root: Path, patterns: list[str]) -> list[dict]:
     hits = []
     regexes = [re.compile(p) for p in patterns]
     for path in iter_text_files(root):
+        if len(hits) >= MAX_FINDINGS_PER_CATEGORY:
+            break
         text = read_text(path)
         for rx in regexes:
-            for m in rx.finditer(text):
-                line_no = text.count("\n", 0, m.start()) + 1
+            for match in rx.finditer(text):
+                line_no = text.count("\n", 0, match.start()) + 1
                 hits.append(
                     {
                         "file": str(path.relative_to(root)),
                         "line": line_no,
-                        "match": m.group(0),
+                        "match": match.group(0),
                         "pattern": rx.pattern,
-                    },
+                    }
                 )
+                if len(hits) >= MAX_FINDINGS_PER_CATEGORY:
+                    return hits
     return hits
 
 
@@ -120,7 +173,7 @@ def to_markdown(report: dict) -> str:
             out.append("None found.")
             return "\n".join(out)
         for row in rows[:200]:
-            out.append(f"- `{row['file']}:{row['line']}` → `{row['match']}`")
+            out.append(f"- `{row['file']}:{row['line']}` -> `{row['match']}`")
         return "\n".join(out)
 
     parts = [
@@ -135,8 +188,8 @@ def to_markdown(report: dict) -> str:
     else:
         parts.append("None.")
     parts.append("## MCP file presence")
-    for k, v in report["mcp_file_presence"].items():
-        parts.append(f"- `{k}`: `{v}`")
+    for key, value in report["mcp_file_presence"].items():
+        parts.append(f"- `{key}`: `{value}`")
     parts.append(block("Model mentions", report["model_mentions"]))
     parts.append(block("Stale naming mentions", report["stale_naming_mentions"]))
     parts.append(block("Secret-like mentions", report["secret_like_mentions"]))
@@ -144,13 +197,14 @@ def to_markdown(report: dict) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--repo-root", required=True)
-    ap.add_argument("--write", action="store_true")
-    args = ap.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--repo-root", required=True)
+    parser.add_argument("--write", action="store_true")
+    args = parser.parse_args()
 
     root = Path(args.repo_root).resolve()
     report = audit(root)
+    print(json.dumps(report, indent=2))
     if args.write:
         docs = root / "docs"
         docs.mkdir(exist_ok=True)

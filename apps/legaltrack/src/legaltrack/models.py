@@ -1,7 +1,7 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+from pydantic import BaseModel
 from datetime import datetime
 from typing import Any
-
-from pydantic import BaseModel
 
 
 class LegalFilingEvent(BaseModel):

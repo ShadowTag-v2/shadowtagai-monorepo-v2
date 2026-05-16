@@ -1,10 +1,12 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
 
 logger = logging.getLogger("GroundingEngine")
 
 
 class GroundingEngine:
-    """ShadowTag Omega V7 Grounding Engine
+    """
+    ShadowTag Omega V7 Grounding Engine
     Verifies autonomous decisions against real-world data (e.g., Google Maps).
     """
 

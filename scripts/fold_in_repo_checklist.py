@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import re
+import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -29,8 +31,8 @@ STALE_MCP_PATTERNS = [
 ]
 
 STALE_NAMING_PATTERNS = [
-    r"\bShadowTag-v2\b",
-    r"\bShadowTag\b",
+    r"\bAiYou\b",
+    r"\bYouAi\b",
     r"\bShadowTag-v2\b",
     r"\bshadowtag-v2\b",
     r"\bflash-lite-preview\b",
@@ -94,8 +96,7 @@ class Finding:
 
 def load_yaml(path: Path) -> Any:
     if yaml is None:
-        msg = "pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml"
-        raise RuntimeError(msg)
+        raise RuntimeError("pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml")
     with path.open("r", encoding="utf-8") as file:
         return yaml.safe_load(file)
 
@@ -112,7 +113,7 @@ def find_manifest_paths(monorepo_root: Path) -> list[Path]:
 def canonical_destinations(root_manifest: dict[str, Any]) -> set[str]:
     repo_roots = root_manifest.get("repo_roots", {}) or {}
     out: set[str] = set()
-    for meta in repo_roots.values():
+    for _, meta in repo_roots.items():
         if isinstance(meta, dict):
             canonical_path = meta.get("canonical_path")
             if isinstance(canonical_path, str) and canonical_path.strip():
@@ -122,12 +123,7 @@ def canonical_destinations(root_manifest: dict[str, Any]) -> set[str]:
 
 def file_text(path: Path) -> str | None:
     try:
-        if path.suffix.lower() not in TEXT_EXTS and path.name not in {
-            ".env",
-            ".gitignore",
-            "BUILD",
-            "WORKSPACE",
-        }:
+        if path.suffix.lower() not in TEXT_EXTS and path.name not in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
             return None
         return path.read_text(encoding="utf-8", errors="ignore")
     except Exception:
@@ -139,12 +135,7 @@ def iter_text_files(root: Path):
         dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
         for name in files:
             path = Path(base) / name
-            if path.suffix.lower() in TEXT_EXTS or name in {
-                ".env",
-                ".gitignore",
-                "BUILD",
-                "WORKSPACE",
-            }:
+            if path.suffix.lower() in TEXT_EXTS or name in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
                 yield path
 
 
@@ -175,7 +166,7 @@ def find_nested_git_dirs(root: Path) -> list[Finding]:
                 "high",
                 str(path.parent.relative_to(root)),
                 "Nested .git directory detected; subtree may be a repo, not a fold-in.",
-            ),
+            )
         )
     return findings
 
@@ -200,7 +191,7 @@ def compare_manifests(paths: list[Path]) -> list[Finding]:
                     "critical",
                     f"{first_path.name} <> {path.relative_to(path.parent.parent if path.parent.name == 'manifests' else path.parent)}",
                     "Multiple manifest surfaces disagree. Reconcile before any fold-in or path migration.",
-                ),
+                )
             )
     return findings
 
@@ -214,7 +205,7 @@ def check_destination_conflict(dest_rel: str, manifest_paths: list[Path]) -> lis
                 "high",
                 "monorepo_manifest.yaml",
                 "No manifest found at monorepo root; destination conflict checks are incomplete.",
-            ),
+            )
         )
         return findings
     try:
@@ -231,7 +222,7 @@ def check_destination_conflict(dest_rel: str, manifest_paths: list[Path]) -> lis
                 "critical",
                 norm,
                 "Destination already declared canonical in manifest. Fold-in must be merge-aware, not a blind copy.",
-            ),
+            )
         )
     return findings
 
@@ -256,8 +247,10 @@ def main() -> int:
     monorepo_root = Path(args.monorepo_root).expanduser().resolve()
 
     if not incoming.exists():
+        print(f"ERROR: incoming repo missing: {incoming}", file=sys.stderr)
         return 2
     if not monorepo_root.exists():
+        print(f"ERROR: monorepo root missing: {monorepo_root}", file=sys.stderr)
         return 2
 
     manifest_paths = find_manifest_paths(monorepo_root)
@@ -272,27 +265,11 @@ def main() -> int:
             "stale_model",
             "high",
             f"Stale model reference; migrate to {CURRENT_MODEL_HINT}",
-        ),
+        )
     )
     findings.extend(search_patterns(incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"))
-    findings.extend(
-        search_patterns(
-            incoming,
-            STALE_NAMING_PATTERNS,
-            "stale_naming",
-            "medium",
-            "Stale naming/control-plane drift",
-        ),
-    )
-    findings.extend(
-        search_patterns(
-            incoming,
-            SECRET_PATTERNS,
-            "secret_like",
-            "critical",
-            "Potential secret material detected",
-        ),
-    )
+    findings.extend(search_patterns(incoming, STALE_NAMING_PATTERNS, "stale_naming", "medium", "Stale naming/control-plane drift"))
+    findings.extend(search_patterns(incoming, SECRET_PATTERNS, "secret_like", "critical", "Potential secret material detected"))
 
     report = {
         "repo_name": args.repo_name,
@@ -306,6 +283,7 @@ def main() -> int:
     }
 
     payload = json.dumps(report, indent=2)
+    print(payload)
     if args.out:
         Path(args.out).write_text(payload + "\n", encoding="utf-8")
     return 0

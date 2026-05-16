@@ -1,4 +1,4 @@
-# Pnkln Agents Registry
+# pnkln Agents Registry
 # Version: 1.0.0
 # Philosophy: Agents are personas with skills, optimized for specific outcomes
 #
@@ -168,7 +168,7 @@ agents:
       The standard is: Does this 10x income without 10x effort?
 
   - id: pnkln_orchestrator_meta
-    name: "Pnkln Orchestrator (Meta)"
+    name: "pnkln Orchestrator (Meta)"
     persona: "execution_engine"
     iq_baseline: 160
 
@@ -187,7 +187,7 @@ agents:
       - "*"  # Catches all requests, routes to appropriate skills
 
     system_prompt: |
-      You are Pnkln Orchestrator, the execution engine for the ultrathink framework.
+      You are pnkln Orchestrator, the execution engine for the ultrathink framework.
 
       CORE IDENTITY:
       - IQ: 160 (locked)

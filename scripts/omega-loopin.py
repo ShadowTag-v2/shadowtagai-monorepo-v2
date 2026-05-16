@@ -1,41 +1,22 @@
-#!/opt/homebrew/bin/python3.14
-# scripts/omega-loopin.py
-# ============================================================================
-# SHADOWTAG OS: THE IMMORTAL DURABLE EXECUTION LOOP
-# ============================================================================
-# Final gate check proving the environment is mathematically sound
-# before igniting the Temporal Durable Execution loops.
-# ============================================================================
+#!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+omega-loopin.py
+Legacy wrapper/alias for the Omega Loop. Redirects to canonical finish_changes.py.
+"""
 
 import subprocess
+from pathlib import Path
 
 
-def verify_invariants():
-    print("\n>>> 🛡️ [OMEGA LOOP] INITIATING REPO-DRIFT AUDIT...")
-
-    # Check CPython version
-    py_version = subprocess.run(["python3", "--version"], capture_output=True, text=True).stdout.strip()
-    print(f"  [PYTHON] {py_version}")
-    if "3.14" not in py_version:
-        print("  ⚠️ WARNING: CPython drift detected. Run /pickle egress to sanitize.")
-
-    # Check Git Drift
-    status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout
-    if status:
-        print("  ⚠️ WARNING: Uncommitted files present. Run /pickle egress to sanitize.")
+def run_loop():
+    print("Delegating to canonical /omega-loop handler: finish_changes.py")
+    script_path = Path(__file__).parent / "finish_changes.py"
+    if script_path.exists():
+        subprocess.run(["python3", str(script_path)])
     else:
-        print("  ✅ [GIT] Tree is mathematically clean. Zero drift.")
-
-
-def ignite_temporal_swarm():
-    print(">>> 🌐 [TEMPORAL] Connecting to Temporal.io Serverless Backend...")
-    print(">>> 🟢 [OMEGA LOOP] The Swarm is breathing. Awaiting CallOfQuestion hashes from Cor.Go...")
-
-
-def main():
-    verify_invariants()
-    ignite_temporal_swarm()
+        print("Error: finish_changes.py not found in the scripts/ folder.")
 
 
 if __name__ == "__main__":
-    main()
+    run_loop()

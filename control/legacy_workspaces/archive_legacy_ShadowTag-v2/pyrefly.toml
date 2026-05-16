@@ -1,0 +1,18 @@
+disableTypeErrors = false
+extraPaths = [
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps/.venv/lib/python3.14/site-packages",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps/backend_legacy/apps/worker/libs",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps/backend_legacy"
+]
+
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv",
+    "**/.git",
+    "**/dist",
+    "**/build",
+    "**/.vscode"
+]
+# Refreshed by Gemini: 2026-02-03

@@ -1,35 +1,35 @@
-import { execSync } from 'child_process';
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
-import { printMinimalPanel, Style } from './pickle-utils.js';
+import { execSync } from "child_process";
+import * as fs from "fs";
+import * as os from "os";
+import * as path from "path";
+import { printMinimalPanel, Style } from "./pickle-utils.js";
 
 function run_cmd(cmd: string | string[], options: { cwd?: string; check?: boolean } = {}): string {
   const { cwd, check = true } = options;
-  const command = Array.isArray(cmd) ? cmd.join(' ') : cmd;
+  const command = Array.isArray(cmd) ? cmd.join(" ") : cmd;
   try {
-    return execSync(command, { cwd, encoding: 'utf-8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+    return execSync(command, { cwd, encoding: "utf-8", stdio: ["ignore", "pipe", "pipe"] }).trim();
   } catch (error: any) {
     if (check)
       throw new Error(
         `Command failed: ${command}\nError: ${error.stderr?.toString() || error.message}`,
       );
-    return error.stdout?.toString().trim() || '';
+    return error.stdout?.toString().trim() || "";
   }
 }
 
 export function run_git(cmd: string[], cwd?: string, check: boolean = true): string {
-  return run_cmd(['git', ...cmd], { cwd, check });
+  return run_cmd(["git", ...cmd], { cwd, check });
 }
 
 export function get_github_user(): string {
   try {
-    return run_cmd('gh api user -q .login');
+    return run_cmd("gh api user -q .login");
   } catch {
     try {
-      return run_cmd('git config user.name').replace(/\s+/g, '');
+      return run_cmd("git config user.name").replace(/\s+/g, "");
     } catch {
-      return 'pickle-rick';
+      return "pickle-rick";
     }
   }
 }
@@ -37,7 +37,7 @@ export function get_github_user(): string {
 export function get_branch_name(task_id: string): string {
   const user = get_github_user();
   const lowerId = task_id.toLowerCase();
-  const type = ['fix', 'bug', 'patch', 'issue'].some((x) => lowerId.includes(x)) ? 'fix' : 'feat';
+  const type = ["fix", "bug", "patch", "issue"].some((x) => lowerId.includes(x)) ? "fix" : "feat";
   return `${user}/${type}/${task_id}`;
 }
 
@@ -69,8 +69,8 @@ export function update_ticket_status(
   }
 
   // 2. Read and update the frontmatter
-  let content = fs.readFileSync(ticket_path, 'utf-8');
-  const today = new Date().toISOString().split('T')[0];
+  let content = fs.readFileSync(ticket_path, "utf-8");
+  const today = new Date().toISOString().split("T")[0];
 
   // Update status and updated date
   content = content.replace(/^status:.*$/m, `status: "${new_status}"`);
@@ -81,17 +81,17 @@ export function update_ticket_status(
 }
 
 // CLI Interface
-if (process.argv[1] && path.basename(process.argv[1]).includes('git-utils')) {
+if (process.argv[1] && path.basename(process.argv[1]).includes("git-utils")) {
   const args = process.argv.slice(2);
 
-  if (args.includes('--update-status')) {
-    const idIdx = args.indexOf('--update-status') + 1;
+  if (args.includes("--update-status")) {
+    const idIdx = args.indexOf("--update-status") + 1;
     const ticketId = args[idIdx];
     const status = args[idIdx + 1];
     const sessionDir = args[idIdx + 2];
 
     if (!ticketId || !status || !sessionDir) {
-      console.error('Usage: node git_utils.js --update-status <id> <status> <session_dir>');
+      console.error("Usage: node git_utils.js --update-status <id> <status> <session_dir>");
       process.exit(1);
     }
 

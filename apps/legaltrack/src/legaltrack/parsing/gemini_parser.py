@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 
 from fastapi import APIRouter
@@ -19,7 +20,8 @@ router = APIRouter()
 
 @router.post("/extract", response_model=ParsedDeadline)
 async def extract_deadline_from_filing(event: LegalFilingEvent):
-    """Passes the filing text to Gemini using the native Pnkln "lawcal" prompt.
+    """
+    Passes the filing text to Gemini using the native Pnkln "lawcal" prompt.
     This guarantees zero-drift extraction by routing through the proven template.
     """
     # 1. Decrypt Body — uses Fernet key from settings (falls back to raw bytes in dev)
@@ -45,14 +47,14 @@ async def extract_deadline_from_filing(event: LegalFilingEvent):
         from datetime import datetime as _dt
 
         deadline_dt = _dt.fromisoformat(raw_deadline) if raw_deadline else event.received_at
-    except ValueError, TypeError:
+    except (ValueError, TypeError):
         deadline_dt = event.received_at
 
     return ParsedDeadline(
-        filing_type=str(structured_data.get("filing_type", "Unknown")),
-        jurisdiction=str(structured_data.get("jurisdiction", "FRCP")),
+        filing_type=structured_data.get("filing_type", "Unknown"),
+        jurisdiction=structured_data.get("jurisdiction", "FRCP"),
         deadline_date=deadline_dt,
-        rule_citation=str(structured_data.get("rule_citation", "Unknown")),
-        confidence_score=float(structured_data.get("confidence_score", 0.98)),
-        requires_review=bool(structured_data.get("requires_review", False)),
+        rule_citation=structured_data.get("rule_citation", "Unknown"),
+        confidence_score=structured_data.get("confidence_score", 0.98),
+        requires_review=structured_data.get("requires_review", False),
     )

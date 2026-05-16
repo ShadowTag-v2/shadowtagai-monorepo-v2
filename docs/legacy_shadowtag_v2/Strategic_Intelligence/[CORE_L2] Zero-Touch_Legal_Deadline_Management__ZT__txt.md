@@ -9,7 +9,7 @@ claude/build-into-01MRQcG3xbZNirVvs2VSwfxY; claude/encode-for-workbench-01MjjvPg
 claude/mcp-fastapi-cache-integration-01LBHK7ByAuit28x6fBhEkbL;
 claude/build-and-verify-01TePFHPYZKUUevdGi6PNW2j;
 claude/design-system-builder-017bPGPFFNeGVVFiiTeiEjuB;
-claude/ShadowTag-v2jr-diet103-infrastructure-01WeWvB8LhnA27fckYTF2myF; claude/encode-for-018sq1r7PmDuTzRF5HHMcNkj; claude/gemini-rag-routing-implementation-01DFQeDamVMJ6Y7MLoZmR23S; claude/shadowtag-architecture-search-01Xjiz4UaLoBTQGou8un81yg; claude/skill-md-yaml-format-0124xZi4rK77nhegfzgRQbRK;
+claude/aiyoujr-diet103-infrastructure-01WeWvB8LhnA27fckYTF2myF; claude/encode-for-018sq1r7PmDuTzRF5HHMcNkj; claude/gemini-rag-routing-implementation-01DFQeDamVMJ6Y7MLoZmR23S; claude/shadowtag-architecture-search-01Xjiz4UaLoBTQGou8un81yg; claude/skill-md-yaml-format-0124xZi4rK77nhegfzgRQbRK;
 claude/cor-integration-deployment-01H68gzv26893rqrchCFHTww;
 claude/typescript-hooks-judge-enforcement-01QS8keDjf5qkoZJ7kTZSM9Q;
 claude/p3-hybrid-implementation-013MK8vgVRPu3pBbPzARUtij;

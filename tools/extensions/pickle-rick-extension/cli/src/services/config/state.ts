@@ -1,17 +1,17 @@
-import { existsSync } from 'node:fs';
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import { findProjectRoot } from '../../utils/project-root.js';
-import { loadSettings } from './settings.js';
-import { type SessionState, SessionStateSchema } from './types.js';
+import { existsSync } from "node:fs";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import { findProjectRoot } from "../../utils/project-root.js";
+import { loadSettings } from "./settings.js";
+import { type SessionState, SessionStateSchema } from "./types.js";
 
 export const GLOBAL_SESSIONS_DIR = join(
   homedir(),
-  '.gemini',
-  'extensions',
-  'pickle-rick',
-  'sessions',
+  ".gemini",
+  "extensions",
+  "pickle-rick",
+  "sessions",
 );
 
 export interface SessionSummary {
@@ -23,26 +23,26 @@ export interface SessionSummary {
 
 // Helper to get session path relative to CWD
 export function getSessionPath(cwd: string, sessionId: string): string {
-  return join(cwd, '.pickle', 'sessions', sessionId);
+  return join(cwd, ".pickle", "sessions", sessionId);
 }
 
 export async function loadState(sessionDir: string): Promise<SessionState | null> {
-  const path = join(sessionDir, 'state.json');
+  const path = join(sessionDir, "state.json");
   if (!existsSync(path)) return null;
 
   try {
-    const content = await readFile(path, 'utf-8');
+    const content = await readFile(path, "utf-8");
     const json = JSON.parse(content);
     return SessionStateSchema.parse(json);
   } catch (e) {
-    console.error('Failed to load state:', e);
+    console.error("Failed to load state:", e);
     return null;
   }
 }
 
 export async function saveState(sessionDir: string, state: SessionState): Promise<void> {
-  const path = join(sessionDir, 'state.json');
-  await writeFile(path, JSON.stringify(state, null, 2), 'utf-8');
+  const path = join(sessionDir, "state.json");
+  await writeFile(path, JSON.stringify(state, null, 2), "utf-8");
 }
 
 export async function createSession(
@@ -51,7 +51,7 @@ export async function createSession(
   is_prd_mode: boolean = false,
 ): Promise<SessionState> {
   const root = findProjectRoot(cwd);
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   const hash = Math.random().toString(36).substring(2, 10);
   const sessionId = `${today}-${hash}`;
   const sessionDir = getSessionPath(root, sessionId);
@@ -65,13 +65,13 @@ export async function createSession(
   const state: SessionState = {
     active: true,
     working_dir: root,
-    step: 'prd',
+    step: "prd",
     iteration: 1,
     max_iterations: maxIterations,
     max_time_minutes: 60,
     worker_timeout_seconds: 1200,
     start_time_epoch: Math.floor(Date.now() / 1000),
-    completion_promise: 'I AM DONE',
+    completion_promise: "I AM DONE",
     original_prompt: prompt,
     current_ticket: null,
     history: [],
@@ -103,7 +103,7 @@ export async function listSessions(cwd?: string): Promise<SessionSummary[]> {
   if (cwd) {
     try {
       const root = findProjectRoot(cwd);
-      const localDir = join(root, '.pickle', 'sessions');
+      const localDir = join(root, ".pickle", "sessions");
       if (existsSync(localDir)) {
         const entries = await readdir(localDir, { withFileTypes: true });
         for (const entry of entries) {
@@ -124,9 +124,9 @@ export async function listSessions(cwd?: string): Promise<SessionSummary[]> {
 
     if (state) {
       const status =
-        state.active && state.step !== 'done'
+        state.active && state.step !== "done"
           ? `${state.step.toUpperCase()} (Iteration ${state.iteration})`
-          : 'Done';
+          : "Done";
 
       sessions.push({
         original_prompt: state.original_prompt,

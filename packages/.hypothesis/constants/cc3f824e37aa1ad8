@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/benchmarks/bench_sm_compact.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1.0, 10.0, 100.0, 128, 200, 500, 1024, 4096, 1000000, '-', '--iterations', '=', 'Iterations per size', '__main__', 'attorney', 'budget', 'confidential', 'context_tokens', 'inf', 'l4_p50_ms', 'l4_p95_ms', 'l4_p99_ms', 'privilege', 'sm_p50_ms', 'sm_p95_ms', 'sm_p99_ms', 'speedup_x', 'target_met', '✅', '❌']

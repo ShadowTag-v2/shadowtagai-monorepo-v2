@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
 GOVERNANCE TOOLS - ATP 5-19 Validation & Risk Assessment
 =========================================================
@@ -5,7 +6,7 @@ GOVERNANCE TOOLS - ATP 5-19 Validation & Risk Assessment
 SK PATTERN 3: Standardized Plugin Schema
 
 Tools for agent governance:
-1. governance_validate: JR Engine + Judge 6 validation (p99≤90ms)
+1. governance_validate: JR Engine + Judge #6 validation (p99≤90ms)
 2. risk_assess_monte_carlo: Concurrent probability assessment (<500μs)
 
 Type-annotated for LLM function calling.
@@ -31,7 +32,7 @@ _monte_carlo = None
 
 
 def _get_judge_six() -> JudgeSixPipeline:
-    """Get or create Judge 6 singleton."""
+    """Get or create Judge #6 singleton."""
     global _judge_six
     if _judge_six is None:
         _judge_six = JudgeSixPipeline()
@@ -52,7 +53,7 @@ async def governance_validate(
     sla_ms: Annotated[float, "SLA target in milliseconds (default: 90.0)"] = 90.0,
 ) -> Annotated[dict, "Validation result with decision, confidence, latency, and reasoning"]:
     """
-    Validates request using Judge 6 hybrid pipeline (JR Engine + Gemini + PyTorch).
+    Validates request using Judge #6 hybrid pipeline (JR Engine + Gemini + PyTorch).
 
     SLA: p99 ≤ 90ms
 

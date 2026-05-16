@@ -14,30 +14,30 @@ import {
   TabSelectRenderableEvents,
   TextAttributes,
   type TextRenderable,
-} from '@opentui/core';
-import { isGameboyActive } from '../../games/gameboy/GameboyView.js';
-import { createSession, listSessions } from '../../services/config/state.js';
-import { WorkerExecutorClient } from '../../services/execution/worker-client.js';
+} from "@opentui/core";
+import { isGameboyActive } from "../../games/gameboy/GameboyView.js";
+import { createSession, listSessions } from "../../services/config/state.js";
+import { WorkerExecutorClient } from "../../services/execution/worker-client.js";
 import {
   cleanupPickleWorktree,
   createPullRequest,
   getGitStatusInfo,
   isGhAvailable,
   syncWorktreeToOriginal,
-} from '../../services/git/index.js';
-import { execCommand } from '../../services/providers/base.js';
-import type { SessionData } from '../../types/tasks.js';
-import { isSessionActive } from '../../utils/index.js';
-import { recursiveSearch } from '../../utils/search.js';
-import { sessionTracker, type TrackedSession } from '../../utils/session-tracker.js';
-import { FilePickerView } from '../components/FilePickerView.js';
-import { SessionChip } from '../components/SessionChip.js';
-import { DashboardDialog } from '../dialogs/DashboardDialog.js';
-import { DiffViewDialog } from '../dialogs/DiffViewDialog.js';
-import { PRPreviewDialog } from '../dialogs/PRPreviewDialog.js';
-import { type FilePickerState, setupFilePicker } from '../file-picker-utils.js';
-import { THEME } from '../theme.js';
-import { ToyboxView } from '../views/ToyboxView.js';
+} from "../../services/git/index.js";
+import { execCommand } from "../../services/providers/base.js";
+import type { SessionData } from "../../types/tasks.js";
+import { isSessionActive } from "../../utils/index.js";
+import { recursiveSearch } from "../../utils/search.js";
+import { sessionTracker, type TrackedSession } from "../../utils/session-tracker.js";
+import { FilePickerView } from "../components/FilePickerView.js";
+import { SessionChip } from "../components/SessionChip.js";
+import { DashboardDialog } from "../dialogs/DashboardDialog.js";
+import { DiffViewDialog } from "../dialogs/DiffViewDialog.js";
+import { PRPreviewDialog } from "../dialogs/PRPreviewDialog.js";
+import { type FilePickerState, setupFilePicker } from "../file-picker-utils.js";
+import { THEME } from "../theme.js";
+import { ToyboxView } from "../views/ToyboxView.js";
 
 export interface DashboardUI {
   tabs: TabSelectRenderable | undefined;
@@ -88,7 +88,7 @@ export class DashboardController {
     if (!this.ui) return;
     const resolveBottom = (): number => {
       const height = this.ui?.inputContainer?.height;
-      return typeof height === 'number' ? height : 5;
+      return typeof height === "number" ? height : 5;
     };
     setupFilePicker(
       this.renderer,
@@ -97,7 +97,7 @@ export class DashboardController {
       this.pickerState,
       {
         bottom: resolveBottom,
-        width: '100%',
+        width: "100%",
       },
     );
   }
@@ -168,9 +168,9 @@ export class DashboardController {
     if (!this.ui) return;
 
     if (this.isInToybox) {
-      this.ui.footerLeft.content = '';
+      this.ui.footerLeft.content = "";
     } else {
-      const dialogHint = this.ui?.input.focused ? 'CTRL+S: Dialog | ' : '';
+      const dialogHint = this.ui?.input.focused ? "CTRL+S: Dialog | " : "";
       this.ui.footerLeft.content = `${dialogHint}CTRL+T: Toybox`;
     }
 
@@ -224,7 +224,7 @@ export class DashboardController {
       executor.stop();
     }
 
-    sessionData.status = 'CANCELLED';
+    sessionData.status = "CANCELLED";
 
     const chip = this.chips.find((c) => c.session.id === sessionData.id);
     if (chip) {
@@ -237,19 +237,19 @@ export class DashboardController {
   }
 
   private setupKeyboardNav() {
-    this.renderer.keyInput.on('keypress', (key: KeyEvent) => {
+    this.renderer.keyInput.on("keypress", (key: KeyEvent) => {
       if (this.hasActivePicker()) return;
 
       // Check if any "game" container is in renderer.root
       // This MUST happen before any other key handling to avoid leakage
       const rootChildren = this.renderer.root.getChildren();
       const hasGame = rootChildren.some(
-        (c) => c.id === 'snake-container' || c.id === 'doom-container',
+        (c) => c.id === "snake-container" || c.id === "doom-container",
       );
       const hasGameboy = isGameboyActive();
 
       // Show dashboard dialog with Ctrl+S - only when input is focused
-      if (key.ctrl && key.name === 's') {
+      if (key.ctrl && key.name === "s") {
         if (hasGameboy || hasGame || this.isInToybox) return;
 
         if (this.dashboardDialog.isOpen()) {
@@ -279,14 +279,14 @@ export class DashboardController {
 
       if (!this.ui?.mainContent.visible) return;
 
-      if (key.name === 'escape') {
+      if (key.name === "escape") {
         if (this.dashboardDialog.isOpen()) {
           this.dashboardDialog.hide();
           return;
         }
       }
 
-      if (key.name === 'tab' && this.hasActivePicker()) return;
+      if (key.name === "tab" && this.hasActivePicker()) return;
 
       if (!this.isListFocused || this.focusedChipIndex === -1) return;
 
@@ -294,15 +294,15 @@ export class DashboardController {
       if (!chip) return;
 
       if (
-        key.name === 'return' ||
-        key.name === 'linefeed' ||
-        key.name === 'enter' ||
-        key.name === 'space'
+        key.name === "return" ||
+        key.name === "linefeed" ||
+        key.name === "enter" ||
+        key.name === "space"
       ) {
         this.selectSession(chip.session);
-      } else if (key.name === 'up') {
+      } else if (key.name === "up") {
         this.navigateChips(-1);
-      } else if (key.name === 'down') {
+      } else if (key.name === "down") {
         this.navigateChips(1);
       }
     });
@@ -330,7 +330,7 @@ export class DashboardController {
     // Always update the selected session
     this.selectedSession = session;
     if (this.ui) {
-      this.ui.metadataLabel.content = session.isPrdMode ? 'Pickle PRD' : 'Pickle';
+      this.ui.metadataLabel.content = session.isPrdMode ? "Pickle PRD" : "Pickle";
     }
 
     // Update dashboard dialog
@@ -382,14 +382,14 @@ export class DashboardController {
   }
 
   public async ask(query: string): Promise<string> {
-    if (!this.ui) return 'n';
+    if (!this.ui) return "n";
 
     return new Promise((resolve) => {
       const originalPlaceholder = this.ui!.input.placeholder;
       const originalValue = this.ui!.input.value;
 
       this.ui!.input.placeholder = query;
-      this.ui!.input.value = '';
+      this.ui!.input.value = "";
       this.ui!.input.focus();
 
       const onEnter = (value: string) => {
@@ -473,7 +473,7 @@ export class DashboardController {
     this.isHomeHidden = true;
   }
 
-  public startDashboardSession(prompt: string, mode: 'pickle' | 'pickle-prd' = 'pickle') {
+  public startDashboardSession(prompt: string, mode: "pickle" | "pickle-prd" = "pickle") {
     if (!this.ui) return;
 
     this.ui.landingView.parent?.remove(this.ui.landingView.id);
@@ -485,12 +485,12 @@ export class DashboardController {
     this.ui.input.focus();
   }
 
-  async spawnSession(prompt: string, mode: 'pickle' | 'pickle-prd' = 'pickle') {
+  async spawnSession(prompt: string, mode: "pickle" | "pickle-prd" = "pickle") {
     if (!prompt.trim()) return;
 
     this.hideHomeView();
 
-    const isPrdMode = mode === 'pickle-prd';
+    const isPrdMode = mode === "pickle-prd";
     const cwd = process.cwd();
     const state = await createSession(cwd, prompt, isPrdMode);
 
@@ -498,14 +498,14 @@ export class DashboardController {
     const gitStatus = await getGitStatusInfo(cwd);
 
     if (this.ui) {
-      this.ui.metadataLabel.content = isPrdMode ? 'Pickle PRD' : 'Pickle';
+      this.ui.metadataLabel.content = isPrdMode ? "Pickle PRD" : "Pickle";
     }
 
     const session: SessionData = {
       id: state.session_dir,
       prompt,
-      engine: 'Gemini CLI',
-      status: 'Initializing...',
+      engine: "Gemini CLI",
+      status: "Initializing...",
       startTime: Date.now(),
       isPrdMode: isPrdMode,
       gitStatus,
@@ -555,8 +555,8 @@ export class DashboardController {
       .run(state)
       .then((result) => {
         this.activeExecutors.delete(session.id);
-        if (session.status.toLowerCase().includes('cancelled')) return;
-        session.status = 'Done';
+        if (session.status.toLowerCase().includes("cancelled")) return;
+        session.status = "Done";
         // Store worktree info if available
         if (result?.worktreeInfo) {
           session.worktreeInfo = result.worktreeInfo;
@@ -568,7 +568,7 @@ export class DashboardController {
       })
       .catch((err) => {
         this.activeExecutors.delete(session.id);
-        if (session.status.toLowerCase().includes('cancelled')) return;
+        if (session.status.toLowerCase().includes("cancelled")) return;
         session.status = `ERROR: ${err.message}`;
         chip.update(session);
         if (this.selectedSession?.id === session.id) {
@@ -626,7 +626,7 @@ export class DashboardController {
 
       this.renderer.requestRender();
     } catch (error) {
-      console.error('Failed to merge worktree:', error);
+      console.error("Failed to merge worktree:", error);
       // Could show error dialog here
     }
   }
@@ -658,7 +658,7 @@ export class DashboardController {
 
       this.renderer.requestRender();
     } catch (error) {
-      console.error('Failed to create PR:', error);
+      console.error("Failed to create PR:", error);
       throw error;
     }
   }
@@ -681,7 +681,7 @@ export class DashboardController {
       this.diffViewDialog.hide();
       this.renderer.requestRender();
     } catch (error) {
-      console.error('Failed to reject worktree:', error);
+      console.error("Failed to reject worktree:", error);
     }
   }
 }

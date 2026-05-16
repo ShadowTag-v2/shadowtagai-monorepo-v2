@@ -149,7 +149,7 @@ response = session.get('https://api.example.com/data')
 ```nginx
 server {
     listen 443 ssl http2;
-    server_name api.shadowtagai.com;
+    server_name api.pnkln.com;
 
     # TLS 1.3 ONLY
     ssl_protocols TLSv1.3;
@@ -191,7 +191,7 @@ server {
 # Redirect HTTP to HTTPS
 server {
     listen 80;
-    server_name api.shadowtagai.com;
+    server_name api.pnkln.com;
     return 301 https://$server_name$request_uri;
 }
 ```
@@ -207,7 +207,7 @@ server {
 sudo apt-get install certbot python3-certbot-nginx
 
 # Obtain certificate
-sudo certbot --nginx -d api.shadowtagai.com -d www.shadowtagai.com
+sudo certbot --nginx -d api.pnkln.com -d www.pnkln.com
 
 # Auto-renewal (runs twice daily)
 sudo certbot renew --dry-run
@@ -220,14 +220,14 @@ sudo certbot renew --dry-run
 
 ```bash
 # Create SSL certificate
-gcloud compute ssl-certificates create shadowtagai-cert \
+gcloud compute ssl-certificates create pnkln-cert \
   --certificate=/path/to/certificate.pem \
   --private-key=/path/to/private-key.pem
 
 # Create load balancer with TLS 1.3
-gcloud compute target-https-proxies create shadowtagai-https-proxy \
-  --ssl-certificates=shadowtagai-cert \
-  --url-map=shadowtagai-url-map \
+gcloud compute target-https-proxies create pnkln-https-proxy \
+  --ssl-certificates=pnkln-cert \
+  --url-map=pnkln-url-map \
   --ssl-policy=tls13-only
 
 # Create SSL policy (TLS 1.3 only)
@@ -244,14 +244,14 @@ gcloud compute ssl-policies create tls13-only \
 
 ```bash
 # Test TLS 1.3 connection
-openssl s_client -connect api.shadowtagai.com:443 -tls1_3
+openssl s_client -connect api.pnkln.com:443 -tls1_3
 
 # Expected output:
 # Protocol  : TLSv1.3
 # Cipher    : TLS_AES_256_GCM_SHA384
 
 # Test that TLS 1.2 is rejected
-openssl s_client -connect api.shadowtagai.com:443 -tls1_2
+openssl s_client -connect api.pnkln.com:443 -tls1_2
 # Should fail with: "SSL handshake failed"
 ```
 
@@ -259,7 +259,7 @@ openssl s_client -connect api.shadowtagai.com:443 -tls1_2
 
 ```bash
 # Test your domain
-curl -s "https://api.ssllabs.com/api/v3/analyze?host=api.shadowtagai.com" | jq
+curl -s "https://api.ssllabs.com/api/v3/analyze?host=api.pnkln.com" | jq
 
 # Expected grade: A+ with TLS 1.3
 ```
@@ -301,7 +301,7 @@ export async function testTlsVersion(hostname: string, port: number = 443): Prom
 }
 
 // Run test
-await testTlsVersion('api.shadowtagai.com');
+await testTlsVersion('api.pnkln.com');
 ```
 
 ---
@@ -348,7 +348,7 @@ const httpsAgent = new https.Agent({
   maxVersion: 'TLSv1.3'
 });
 
-const response = await fetch('https://internal-service.shadowtagai.com/api', {
+const response = await fetch('https://internal-service.pnkln.com/api', {
   agent: httpsAgent
 });
 ```

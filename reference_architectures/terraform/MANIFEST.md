@@ -1,50 +1,49 @@
-# Terraform Reference Architectures — Manifest
+# Terraform Reference Repos (shallow clones)
 
-> **Purpose**: Read-only shallow clones for pattern extraction, module design, and CI/CD reference.
-> **Source**: `Cor. Comprehensive Terraform Workflow` skill + user `/pickle` thread.
-> **Cloned**: 2026-04-21, `--depth 1`
+Cloned with `git clone --depth 1` for local study. Not committed to monorepo.
+Status: `reference_only` in `fold_in_checklist.yaml`.
 
-## Google Cloud Platform (8 repos)
+## GoogleCloudPlatform
+| Repo | Local Path | Primary Use |
+|---|---|---|
+| terraformer | googlecloudplatform/terraformer | Reverse-TF existing infra |
+| microservices-demo | googlecloudplatform/microservices-demo | GKE service mesh patterns |
+| gcp-hardening-toolkit | googlecloudplatform/gcp-hardening-toolkit | IAM least-priv + hardening |
+| cloud-foundation-fabric | googlecloudplatform/cloud-foundation-fabric | Official GCP modules (Cloud Run v2 source) |
+| terraform-google-vertex-ai | googlecloudplatform/terraform-google-vertex-ai | Vertex AI infra patterns |
+| genai-factory | googlecloudplatform/genai-factory | GenAI GCP patterns |
+| magic-modules | googlecloudplatform/magic-modules | Provider source + GCP resource specs |
+| click-to-deploy-solutions | googlecloudplatform/click-to-deploy-solutions | Quickstart blueprints |
 
-| Repo | Purpose |
-|------|---------|
-| `cloud-foundation-fabric` | GCP module gold standard — production-grade Terraform modules |
-| `gcp-hardening-toolkit` | Security hardening patterns for GCP infrastructure |
-| `microservices-demo` | GKE/Cloud Run microservice deployment patterns |
-| `terraformer` | Import existing GCP infra into Terraform state |
-| `terraform-google-vertex-ai` | Vertex AI Terraform modules (GenAI infra) |
-| `genai-factory` | GenAI application factory patterns |
-| `magic-modules` | Google provider auto-generation (understand provider internals) |
-| `click-to-deploy-solutions` | Ready-to-deploy GCP solutions (marketplace patterns) |
+## Gruntwork
+| Repo | Local Path | Primary Use |
+|---|---|---|
+| terragrunt-infrastructure-catalog-example | gruntwork/terragrunt-infrastructure-catalog-example | Catalog pattern (used in infrastructure-catalog-gcp-cloud-run) |
+| terragrunt-infrastructure-live-example | gruntwork/terragrunt-infrastructure-live-example | Live repo pattern |
+| terragrunt-infrastructure-live-stacks-example | gruntwork/terragrunt-infrastructure-live-stacks-example | Stacks pattern (2026) |
+| runbooks-infrastructure-live-example | gruntwork/runbooks-infrastructure-live-example | Runbook integration |
+| terragrunt | gruntwork/terragrunt | Terragrunt source + docs |
+| pipelines-workflows | gruntwork/pipelines-workflows | CI/CD pipeline patterns |
 
-## Gruntwork (6 repos)
+## HashiCorp
+| Repo | Local Path | Primary Use |
+|---|---|---|
+| terraform | hashicorp/terraform | Core TF source + provider API reference |
 
-| Repo | Purpose |
-|------|---------|
-| `terragrunt` | DRY wrapper for Terraform — core tool reference |
-| `terragrunt-infrastructure-catalog-example` | Reusable module catalog pattern |
-| `terragrunt-infrastructure-live-example` | Live environment configuration pattern |
-| `terragrunt-infrastructure-live-stacks-example` | Stacks-based multi-env pattern (newest) |
-| `runbooks-infrastructure-live-example` | Operational runbook patterns |
-| `pipelines-workflows` | CI/CD pipeline + workflow automation patterns |
+## Community
+| Repo | Local Path | Primary Use |
+|---|---|---|
+| devops-exercises | community/devops-exercises | IaC patterns + exercises |
+| 90DaysOfDevOps | community/90DaysOfDevOps | Terraform day-by-day learning |
+| terraform-zero-to-hero | community/terraform-zero-to-hero | Structured TF curriculum |
 
-## HashiCorp (1 repo)
-
-| Repo | Purpose |
-|------|---------|
-| `terraform` | Core Terraform source — understand internals, `terraform test` patterns |
-
-## Community (3 repos)
-
-| Repo | Purpose |
-|------|---------|
-| `devops-exercises` | DevOps/Terraform interview Q&A, concept reference |
-| `90DaysOfDevOps` | Comprehensive DevOps learning reference |
-| `terraform-zero-to-hero` | Beginner-to-advanced Terraform patterns |
-
-## Usage Rules
-
-1. **Read-only** — never modify source in these repos.
-2. **Pattern extraction** — copy patterns into `terraform/infrastructure-catalog-gcp-cloud-run/`.
-3. **Not committed** — `.gitignore` excludes all source. Only this MANIFEST is tracked.
-4. **Refresh** — `git -C <repo> pull --depth 1` to update any repo.
+## How to refresh
+```bash
+cd reference_architectures/terraform
+for d in googlecloudplatform gruntwork hashicorp community; do
+  for repo in $d/*/; do
+    echo "Updating $repo..."
+    git -C "$repo" fetch --depth 1 origin HEAD && git -C "$repo" reset --hard FETCH_HEAD
+  done
+done
+```

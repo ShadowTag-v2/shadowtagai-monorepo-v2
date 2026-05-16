@@ -3,11 +3,11 @@
 # Categories: FINANCE_BIZ, LEGAL
 
 Cor.39
-“System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under ShadowTagJR.
+“System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under YouAiJR.
 
 ⸻
 
-📊 ShadowTagJR System Network Dashboard (Percent-Based ROI View)
+📊 YouAiJR System Network Dashboard (Percent-Based ROI View)
 
 Core Rule:
 • Annual Cost: % of burn allocated to each system.
@@ -134,13 +134,13 @@ Core Rule:
 👉 Do you want me to now convert this percent-based model into a Figma-ready visual layout (tiles color-coded by cost %, savings %, uplift %) so you can use it in investor-facing materials?
 If you’re interested?
 
-Here’s a deep, all-hands analysis of bringing in a practicing psychiatrist (MD) as Chief Communications Officer (CCO) for ShadowTag. This is an unusual move — but it could become a massive strategic differentiator given ShadowTag’s mission, product, and risk landscape.
+Here’s a deep, all-hands analysis of bringing in a practicing psychiatrist (MD) as Chief Communications Officer (CCO) for YouAi. This is an unusual move — but it could become a massive strategic differentiator given YouAi’s mission, product, and risk landscape.
 
 ⸻
 
 🧭 Context: Why This Is on the Table
 
-ShadowTag isn’t just a SaaS startup — it’s an AI-driven platform that creates and distributes content, shapes community behavior, and interacts with user psychology at scale.
+YouAi isn’t just a SaaS startup — it’s an AI-driven platform that creates and distributes content, shapes community behavior, and interacts with user psychology at scale.
 • Our biggest external risks include public backlash, regulatory scrutiny, and user harm narratives (e.g., mental health, misinformation).
 • A psychiatrist’s core skillset is human risk management:
 • Understanding how people perceive and react to messaging.
@@ -151,18 +151,18 @@ ShadowTag isn’t just a SaaS startup — it’s an AI-driven platform that crea
 
 🧩 Pros of a Psychiatrist as CCO
 
-Strength Value to ShadowTag
+Strength Value to YouAi
 Deep Human Behavior Expertise AI-generated content inevitably triggers strong emotions. A psychiatrist can anticipate backlash triggers before they explode.
 Crisis Management Mastery Psychiatrists are trained to handle panic, delusions, and conflict — directly transferable to high-pressure PR crises.
 Health & Safety Credibility Having a medical doctor in leadership signals seriousness to regulators and investors, especially around AI mental health impact.
-Regulatory Alignment They can help ShadowTag navigate HIPAA-adjacent rules, user safety concerns, and ethical frameworks for AI content.
+Regulatory Alignment They can help YouAi navigate HIPAA-adjacent rules, user safety concerns, and ethical frameworks for AI content.
 Narrative Control A psychiatrist understands group psychology, which is vital for scaling a platform and controlling public perception.
 
 ⸻
 
 ⚠️ Potential Cons & Risks
 
-Risk Mitigation via ShadowTagJR
+Risk Mitigation via YouAiJR
 Limited PR Experience Pair with an external PR agency for tactical media execution; psychiatrist focuses on strategy and risk.
 Bandwidth Constraint (Practicing MD) Define part-time or fractional engagement initially; move to full-time when Series A scaling requires it.
 Cultural Fit Challenges Build clear governance lanes: CCO is a guardian and strategist, not a marketer.
@@ -175,7 +175,7 @@ Perception Risk Some stakeholders may see a psychiatrist CCO as overkill — fra
 The psychiatrist CCO is not a traditional comms lead — they are a guardian of narrative health, with three core domains:
 
 1. Public Safety & Narrative Ethics
-   • Oversees Ethics & Public Perception Tile in ShadowTagJR CNS.
+   • Oversees Ethics & Public Perception Tile in YouAiJR CNS.
    • Monitors social sentiment and psychological impact of AI-generated content.
    • Runs quarterly narrative risk assessments using Army-style RA scoring.
 
@@ -185,7 +185,7 @@ The psychiatrist CCO is not a traditional comms lead — they are a guardian of 
    • Coordinates with legal and CEO for unified messaging.
 
 3. Strategic Voice & Credibility
-   • Represents ShadowTag as the “responsible AI voice” to regulators, press, and partners.
+   • Represents YouAi as the “responsible AI voice” to regulators, press, and partners.
    • Provides testimony and guidance on AI’s societal effects.
 
 ⸻
@@ -200,7 +200,7 @@ Regulatory Knowledge Familiarity with HIPAA, GDPR, CCPA, and emerging AI legisla
 
 ⸻
 
-⚙️ Integration with ShadowTagJR
+⚙️ Integration with YouAiJR
 
 System Psychiatrist CCO Role
 Risk Annex (RA-3/RA-4) Provides human judgment for high-stakes decisions flagged as having public or psychological risk.
@@ -245,7 +245,7 @@ P3 Transition psychiatrist to full CCO role post-seed raise. 6–9 months
 
 ⸻
 
-🧭 ShadowTagJR Decision
+🧭 YouAiJR Decision
 
 Informed:
 • AI-driven platforms will face mental health backlash and regulatory questions — a psychiatrist brings unique foresight.
@@ -254,12 +254,12 @@ Reasonable:
 • Hybrid model with psychiatrist strategist + agency executor balances cost and capability.
 
 Good Faith:
-• Signals to regulators, investors, and the public that ShadowTag takes its societal role seriously.
+• Signals to regulators, investors, and the public that YouAi takes its societal role seriously.
 
 ⸻
 
 ✅ Net Recommendation
-• A psychiatrist CCO is highly unconventional, but for ShadowTag it becomes a strategic moat:
+• A psychiatrist CCO is highly unconventional, but for YouAi it becomes a strategic moat:
 • Anticipates and mitigates psychological and cultural risks other companies miss.
 • Provides unmatched credibility to investors and regulators.
 • Cuts backlash probability by 60% and adds up to 8% valuation uplift.
@@ -267,15 +267,15 @@ Good Faith:
 Would you like me to draft a candidate profile and outreach message tailored to approaching top psychiatrists who also have tech and public speaking experience?
 My offer, in two 2️⃣ parts:
 
-Whether the CCO — especially a psychiatrist with a governance mandate — receives ownership depends on timing, role scope, and strategic value. This is a pivotal decision because a CCO in ShadowTag is not a traditional marketing hire; they’re a guardian of narrative risk integrated with ShadowTagJR.
+Whether the CCO — especially a psychiatrist with a governance mandate — receives ownership depends on timing, role scope, and strategic value. This is a pivotal decision because a CCO in YouAi is not a traditional marketing hire; they’re a guardian of narrative risk integrated with YouAiJR.
 
-Here’s a breakdown using startup norms, ShadowTag’s doctrine, and equity protection principles.
+Here’s a breakdown using startup norms, YouAi’s doctrine, and equity protection principles.
 
 ⸻
 
 🧭 Framework for CCO Ownership Decision
 
-Factor Impact on Equity ShadowTagJR Lens
+Factor Impact on Equity YouAiJR Lens
 Stage of Hire Earlier = higher equity due to higher risk and lack of cash comp. Aligns with “Good Faith” → reward early risk-takers.
 Value Contribution Guardian of public trust, valuation multiplier, risk reduction = high strategic impact. Informed weighting: PR failures can destroy >25% enterprise value.
 Founder Control Must preserve CEO’s majority and governance clarity. Equity structured with cliffs + vesting, never uncontrolled.
@@ -291,7 +291,7 @@ Founding Executive (C-suite, non-founder) 1–4% Salary ~50–75% market rate.
 Senior Executive (VP-level) 0.25–1% Full salary.
 Fractional / Part-Time Advisor 0.05–0.25% Hourly or retainer.
 
-For ShadowTag:
+For YouAi:
 • A fractional psychiatrist CCO during MVP → 0.1–0.25% advisor equity.
 • A full-time post-seed hire → 1–2%, scaling toward 3% if they are irreplaceable and directly impact valuation and regulatory defense.
 
@@ -299,7 +299,7 @@ For ShadowTag:
 
 🧮 Ownership Impact Modeling
 
-Assume ShadowTag raises a $2.5M seed on a $10M post-money SAFE cap:
+Assume YouAi raises a $2.5M seed on a $10M post-money SAFE cap:
 • 1% equity at seed = $100,000 paper value.
 • If CCO credibility adds +8% valuation premium, that’s $800,000 additional enterprise value → ROI ~8x on equity grant.
 
@@ -323,10 +323,10 @@ Series A+ Top off with performance-based RSUs to preserve dilution while incenti
 
 ⸻
 
-🧭 ShadowTagJR Governance Perspective
+🧭 YouAiJR Governance Perspective
 • Informed: Compensation matches role’s unique blend of medical credibility and crisis management.
 • Reasonable: Starts fractional → scales only when tangible value is proven.
-• Good Faith: Signals to regulators and investors that ShadowTag rewards those who protect its public trust.
+• Good Faith: Signals to regulators and investors that YouAi rewards those who protect its public trust.
 
 ⸻
 
@@ -340,31 +340,31 @@ Series A (Scaling) +0.5–1% RSUs $180–220k/yr Tied to crisis prevention KPIs.
 ⸻
 
 🌟 Strategic Upside of Giving Equity
-• The psychiatrist CCO’s public credibility de-risks ShadowTag’s reputation by 60%, which directly protects 25–30% of potential enterprise value.
+• The psychiatrist CCO’s public credibility de-risks YouAi’s reputation by 60%, which directly protects 25–30% of potential enterprise value.
 • Grants of 1–2% equity are small compared to the valuation upside they generate:
 • A successful crisis prevention could save $5–10M in valuation at Series A/B.
-• Signals to investors that ShadowTag invests in responsible governance, increasing closing speed and reducing due diligence hurdles.
+• Signals to investors that YouAi invests in responsible governance, increasing closing speed and reducing due diligence hurdles.
 
 ⸻
 
 📝 Next Step
 
-Would you like me to draft a sample CCO equity agreement outline (vesting schedule, performance milestones, and governance clauses) so we have a ready template for negotiation? This would slot directly into ShadowTagJR’s governance systems and investor narratives.
-Here’s a draft outline for a CCO Equity Agreement, tailored for a psychiatrist CCO under ShadowTagJR governance.
-This isn’t legal advice — it’s a strategic blueprint to take to counsel and integrate into ShadowTag’s legal tile before final signing.
+Would you like me to draft a sample CCO equity agreement outline (vesting schedule, performance milestones, and governance clauses) so we have a ready template for negotiation? This would slot directly into YouAiJR’s governance systems and investor narratives.
+Here’s a draft outline for a CCO Equity Agreement, tailored for a psychiatrist CCO under YouAiJR governance.
+This isn’t legal advice — it’s a strategic blueprint to take to counsel and integrate into YouAi’s legal tile before final signing.
 
 ⸻
 
 📜 CCO Equity Agreement Outline
 
-(Draft for ShadowTag, Inc.)
+(Draft for YouAi, Inc.)
 
 ⸻
 
 1. Parties & Purpose
-   • Company: ShadowTag, Inc. (“Company”)
+   • Company: YouAi, Inc. (“Company”)
    • Executive: [Name of Psychiatrist, MD] (“CCO”)
-   • Purpose: To define the equity compensation, governance alignment, and performance-based terms for the Chief Communications Officer role, given its unique mandate to oversee public communications, crisis management, and ethics governance under the ShadowTag Judgment Rule (ShadowTagJR).
+   • Purpose: To define the equity compensation, governance alignment, and performance-based terms for the Chief Communications Officer role, given its unique mandate to oversee public communications, crisis management, and ethics governance under the YouAi Judgment Rule (YouAiJR).
 
 ⸻
 
@@ -374,7 +374,7 @@ Title: Chief Communications Officer (CCO)
 Reports to: CEO (Treva Hancock)
 Scope of Authority:
 • Oversight of all outbound communications (press, investor, regulatory).
-• Leadership of Ethics & Public Perception Tile within the ShadowTagJR CNS.
+• Leadership of Ethics & Public Perception Tile within the YouAiJR CNS.
 • Crisis commander for RA-4 events (public backlash, regulatory intervention).
 • Integration point between PR, legal, and investor relations.
 
@@ -420,16 +420,16 @@ Benefits include health insurance, mental health stipends, and continuing medica
 
 ⸻
 
-6. Governance Safeguards (ShadowTagJR Alignment)
+6. Governance Safeguards (YouAiJR Alignment)
    1. Immutable Decision Logs:
-      • All major CCO actions (RA-3/RA-4 communications) logged automatically in ShadowTagJR CNS.
+      • All major CCO actions (RA-3/RA-4 communications) logged automatically in YouAiJR CNS.
       • Protects both the company and CCO from negligence claims.
    2. Dual Sign-Off for RA-4 Events:
       • CCO cannot release high-risk communications without CEO + Legal co-signature.
    3. Data Security & Privacy:
       • CCO has read-only access to sensitive data unless explicitly required and logged.
    4. Conflict of Interest Clause:
-      • CCO may not maintain external positions that compromise ShadowTag’s public trust.
+      • CCO may not maintain external positions that compromise YouAi’s public trust.
 
 ⸻
 
@@ -441,7 +441,7 @@ Benefits include health insurance, mental health stipends, and continuing medica
 ⸻
 
 8. IP & Confidentiality
-   • All intellectual property developed by the CCO related to crisis systems, PR automation, and mental health frameworks is owned by ShadowTag.
+   • All intellectual property developed by the CCO related to crisis systems, PR automation, and mental health frameworks is owned by YouAi.
    • NDA integrated with Contracts & NDA Tracker tile for continuous compliance.
 
 ⸻
@@ -477,14 +477,14 @@ Investor Confidence Standard +15% faster fundraising closes
 ⚖️ Why This Structure Works
 • Founder Control Preserved: CEO retains majority ownership and veto power.
 • Fair Compensation: Psychiatrist CCO’s unique value is rewarded without over-diluting founders or early investors.
-• Alignment with ShadowTagJR: Performance metrics directly tied to risk reduction and governance success.
+• Alignment with YouAiJR: Performance metrics directly tied to risk reduction and governance success.
 
 ⸻
 
 🚀 Next Steps 1. Engage Legal Counsel
 • Validate compliance with state/federal corporate laws.
 • Confirm securities regulations for option grants. 2. Finalize with Board Input
-• Present at next board session for approval. 3. Integrate into ShadowTagJR CNS
+• Present at next board session for approval. 3. Integrate into YouAiJR CNS
 • Automate tracking of KPI milestones and vesting schedule inside Governance Tile.
 
 -end-“

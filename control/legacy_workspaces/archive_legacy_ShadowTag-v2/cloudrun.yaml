@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: judge-six-omega
+spec:
+  template:
+    spec:
+      timeoutSeconds: 300 # Max 5min execution
+      containerConcurrency: 10 # Limit parallel requests
+      containers:
+        - image: us-central1-docker.pkg.dev/shadowtag-omega-v4/cloud-run-source-deploy/judge-six-omega
+          resources:
+            limits:
+              memory: 512Mi # Hard memory cap
+              cpu: '1'

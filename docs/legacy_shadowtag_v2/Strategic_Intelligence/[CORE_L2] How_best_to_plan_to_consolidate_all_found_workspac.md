@@ -2,32 +2,32 @@
 
 # Categories: CORE_L2
 
-How best to plan to consolidate all found workspaces within vs code and antigravity. include searching your ijnternal timeline. as well as all of following into: "cd /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2"
+How best to plan to consolidate all found workspaces within vs code and antigravity. include searching your ijnternal timeline. as well as all of following into: "cd /Users/pikeymickey/aiyou-stack/ShadowTag-v2"
 
 “/Users/pikeymickey/Documents/GitHub/aider_ollama; ~/.antigravity;
-/.nofollow/users/pikeymickey/ShadowTag-v2-fastapi-services;
-~/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services;
-~/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/erik-hancock-llm-memory;
-/Users/Deleted Users/pikeymickey/ShadowTag-v2-fastapi-services;
-~/.claude-worktrees/ShadowTag-v2-fastapi-services/vigorous-englebart/pnkln/Docs/shadowtagai-v1,
-~ShadowTag-v2-stack/ShadowTag-v2/Shadowtag-Synch;
+/.nofollow/users/pikeymickey/aiyou-fastapi-services;
+~/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services;
+~/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services/erik-hancock-llm-memory;
+/Users/Deleted Users/pikeymickey/aiyou-fastapi-services;
+~/.claude-worktrees/aiyou-fastapi-services/vigorous-englebart/pnkln/Docs/shadowtagai-v1,
+~aiyou-stack/ShadowTag-v2/Shadowtag-Synch;
 ~/sync-antigravity-forks;
 ~/Documents/GKC/Code/Pipeline;
-~/ShadowTag-v2-fastapi-services;
-/Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services;
+~/aiyou-fastapi-services;
+/Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services;
 /Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/judge6-mcp;
 /Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/google-cloud-sdk;
 /Users/Deleted Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/google-cloud-sdk;
 /Users/Deleted Users/pikeymickey/Documents/GitHub;
 /Users/Deleted Users/pikeymickey/Documents/GKC/Code/Pipeline;
-~ShadowTag-v2-stack/ShadowTag-v2/;
-~ShadowTag-v2-stack/ShadowTag-v2/sync-antigravity-forks;
-/Users/Deleted Users/pikeymickey/ShadowTag-v2-fastapi-services;
+~aiyou-stack/ShadowTag-v2/;
+~aiyou-stack/ShadowTag-v2/sync-antigravity-forks;
+/Users/Deleted Users/pikeymickey/aiyou-fastapi-services;
 /Users/Deleted Users/pikeymickey/google-cloud-sdk 2/;
 /Users/Deleted Users/pikeymickey/mcp-servers/gemini-cli-mcp-server;
-/Users/Deleted Users/pikeymickey/ShadowTag-v2-stack;
+/Users/Deleted Users/pikeymickey/aiyou-stack;
 /Users/Deleted Users/pikeymickey/dotnet;
-/Users/Deleted Users/pikeymickey/ShadowTag-v2-policy/policy/config/.
+/Users/Deleted Users/pikeymickey/aiyou-policy/policy/config/.
 /Users/Deleted Users/pikeymickey/google-cloud-sdk;
 /Users/Deleted Users/pikeymickey/actions-runner;
 /Users/Deleted Users/pikeymickey/node_modules;
@@ -63,7 +63,7 @@ https://docs.cloud.google.com/integration-connectors/docs/quickstart-mysql-conne
 > https://github.com/lbjlaq/Antigravity-Manager.git; https://github.com/liuw1535/antigravity2api-nodejs.git;
 > https://github.com/study8677/antigravity-workspace-template; https://github.com/wusimpl/AntigravityQuotaWatcher;
 > https://github.com/GoogleCloudPlatform/generative-ai; https://github.com/gemini-3.1-familyjects/gemini;
-> https://github.com/zszszszsz/.config; https://github.com/gemini-3.1-familyjects/gemini engage the n-autoresearch/Kosmos/BioAgents and continue
+> https://github.com/zszszszsz/.config; https://github.com/gemini-3.1-familyjects/gemini engage the monkeys and continue
 
 “https://docs.cloud.google.com/dataflow/docs; https://docs.cloud.google.com/managed-service-for-apache-kafka/docs; https://docs.cloud.google.com/docs/data?hl=en#expandable-7; https://docs.cloud.google.com/blockchain-analytics/docs; https://docs.cloud.google.com/cortex/docs; https://developers.google.com/earth-engine, https://docs.cloud.google.com/run/docs/code-execution, https://docs.cloud.google.com/run/docs/browser-automation; https://docs.cloud.google.com/run/docs/triggering/websockets; https://docs.cloud.google.com/run/docs/browser-automation#headless-chrome; https://docs.cloud.google.com/run/docs/browser-automation#operating-system; https://docs.cloud.google.com/run/docs/ai/cloud-run-for-ai-assisted-developers; and https://docs.cloud.google.com/manufacturing-data-engine/docs”
 
@@ -96,13 +96,13 @@ Go to the Vertex AI Agent Builder console.
 Create a new App of type "Search".
 Choose GitHub as the data source.
 Authorize Google Cloud to access your GitHub account.
-Select your forked repositories (ShadowTag-v2-fastapi-services, etc.).
+Select your forked repositories (aiyou-fastapi-services, etc.).
 Wait for indexing to complete (usually 15-30 mins).
 Once indexed, the @ symbol in VS Code (Cloud Code) will automatically populate with your repo names.
 
 git apply <<'PATCH'
---- /Users/Deleted Users/pikeymickey/ShadowTag-v2-fastapi-services/agents/autoresearch.py
-+++ /Users/Deleted Users/pikeymickey/ShadowTag-v2-fastapi-services/agents/autoresearch.py
+--- /Users/Deleted Users/pikeymickey/aiyou-fastapi-services/agents/flying_monkeys.py
++++ /Users/Deleted Users/pikeymickey/aiyou-fastapi-services/agents/flying_monkeys.py
 @@
 
 - try:
@@ -300,9 +300,9 @@ Defines the reliability and safety targets.
 
 ### 📚 How to Use
 
-1.  **Navigate to Project Root**: `cd /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2`
+1.  **Navigate to Project Root**: `cd /Users/pikeymickey/aiyou-stack/ShadowTag-v2`
 2.  **Start the Mission Launcher**: `python3 pnkln_mission_start.py`
 3.  **Select a Mission**: Choose 1-4 to run the desired component.
 4.  **Monitor Safety**: Check `safety/monitoring` logs (if configured) to ensure operations stay within SLOs.
-    code /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2
-    antigravity /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2
+    code /Users/pikeymickey/aiyou-stack/ShadowTag-v2
+    antigravity /Users/pikeymickey/aiyou-stack/ShadowTag-v2

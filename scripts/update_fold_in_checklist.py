@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import argparse
@@ -8,8 +9,7 @@ from typing import Any
 try:
     import yaml
 except Exception as exc:
-    msg = "PyYAML is required. Install with: python3 -m pip install pyyaml"
-    raise SystemExit(msg) from exc
+    raise SystemExit("PyYAML is required. Install with: python3 -m pip install pyyaml") from exc
 
 
 TRUTHY_PRESENT_KEYS = {
@@ -55,8 +55,7 @@ def normalize_repo_items(data: Any) -> list[dict[str, Any]]:
         if isinstance(data.get("repositories"), list):
             return [item for item in data["repositories"] if isinstance(item, dict)]
 
-    msg = "Unsupported checklist schema: expected list or repos/repositories list"
-    raise SystemExit(msg)
+    raise SystemExit("Unsupported checklist schema: expected list or repos/repositories list")
 
 
 def write_back(data: Any, items: list[dict[str, Any]]) -> Any:
@@ -82,11 +81,9 @@ def main() -> int:
     root = Path(args.root).resolve()
 
     if not checklist_path.exists():
-        msg = f"Checklist not found: {checklist_path}"
-        raise SystemExit(msg)
+        raise SystemExit(f"Checklist not found: {checklist_path}")
     if not root.exists():
-        msg = f"Root not found: {root}"
-        raise SystemExit(msg)
+        raise SystemExit(f"Root not found: {root}")
 
     raw = load_yaml(checklist_path)
     items = normalize_repo_items(raw)
@@ -123,6 +120,12 @@ def main() -> int:
     new_data = write_back(raw, items)
     save_yaml(checklist_path, new_data)
 
+    print("CHECKLIST_UPDATE_COMPLETE")
+    print(f"checklist={checklist_path}")
+    print(f"root={root}")
+    print(f"repos_scanned={len(items)}")
+    print(f"fields_updated={updated}")
+    print(f"blocked_repos={blocked}")
     return 0
 
 

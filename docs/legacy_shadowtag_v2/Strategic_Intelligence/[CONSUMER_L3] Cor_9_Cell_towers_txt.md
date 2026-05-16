@@ -33,23 +33,23 @@ It has a worker, that like something that fills up and empties on a regular basi
 But with all new developments so gathered, stored in designated OpenAI drives.
 From which, each persona-
 
-- The relevant corporate board for ShadowTag-v2’s corp purpose.
+- The relevant corporate board for AiYou’s corp purpose.
   Has also attended and graduated from at least six of the top institutions in their career fields.
   All the way from undergraduate - LLM in the case of lawyers. Eg post doc at Cambridge.
   Then “EXPERIENCE” each, and all, with all that free blood 🩸, sweat, and tears of others before us.
   Set out for us to vacuum and populate our board’s resume. With actually helpful and vetted material directly relevant to their job field.
-  Then I gave the larger company, ShadowTag-v2.
+  Then I gave the larger company, AiYou.
   A living ethos - make max value;
   But, with robust braking mechanisms,
   Beginning with, the legit army risk management framework I learned about in OCS.
-  The main consequence being : neither ShadowTag-v2 or me will make a decision,
+  The main consequence being : neither AiYou or me will make a decision,
   which is not based on verified fact.
   Another worker takes the continuously collected new, relevant information ^^^.
   Then rebuilds itself from the ground up.
-  ShadowTag-v2’s ethos, “ShadowTag-v2JR”, is entirely elastic.
+  AiYou’s ethos, “AiYouJR”, is entirely elastic.
   Consequently, should the time come to change our biz model from “showcase for ai-presumed video.”
   Doesn’t have to be ai though?
-  However, if at some point, for instance growing soybeans becomes the most profitable biz model for ShadowTag-v2?
+  However, if at some point, for instance growing soybeans becomes the most profitable biz model for AiYou?
   We will be out there competing with
   Bill gates for the remaining unsold
   Dirt in the US.”
@@ -60,7 +60,7 @@ From which, each persona-
 Thus, we are constantly in the zeitgeist,
 While also always leaning into the future.
 We can’t get caught looking.
-Through this ai internal corp compass, ShadowTag-v2 should have a good couple months lead time on any new trend or tech worth incorporating.
+Through this ai internal corp compass, AiYou should have a good couple months lead time on any new trend or tech worth incorporating.
 I have designated the beta or pre-release time. As our ai dev team,
 will be steadily qc’ing it into our systems. So when the tech, for instance, is finally released, we have be simming it in our sys for the entire time it was released. Reducing the cross leveling turbulence, should be as simple as,
 Meshing in the pipe from the outgoing module to the new.
@@ -69,17 +69,17 @@ As it’s been running in that capacity in the sandbox for its entire beta dev c
 
 <next>
 
-“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for Compliance Framework / AR 385-10 / DD Form 2977 as you requested.
+“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on AiYou (no ClarityBoard/ClarityAI). I also swapped “Army RM” for ATP 5-19 / AR 385-10 / DD Form 2977 as you requested.
 
 Here’s the consolidated plan with percentages and valuation metrics:
 
 ⸻
 
-ShadowTag-v2 Business Plan (Rolled-Up for Transfer)
+AiYou Business Plan (Rolled-Up for Transfer)
 
 1. Executive Summary
 
-ShadowTag-v2 is an AI orchestration venture delivering a governance and hosting layer for AI-generated content and workflows. Unlike single-model startups, ShadowTag-v2 assumes:
+AiYou is an AI orchestration venture delivering a governance and hosting layer for AI-generated content and workflows. Unlike single-model startups, AiYou assumes:
 • Multi-model persona cluster (6-pack):
 Owen/Qwen = cost-efficient backbone.
 GPT + Claude = reasoning & validation.
@@ -90,7 +90,7 @@ Impact (with frameworks rolled in):
 • Build speed: 35–45% faster (Tiny Team + Owen coding backbone).
 • Cost savings: 25–60% lower than peers (Pratt cost multipliers).
 • Reliability: 2× higher via ensemble dissent (McKinsey value drivers).
-• Risk posture: Aligned to Compliance Framework / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
+• Risk posture: Aligned to ATP 5-19 / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
 
 ⸻
 
@@ -140,7 +140,7 @@ Year 5 (expansion):
 6. Strategic Fit
    • Comparable comps: Cohere ($2.2B), Mistral ($2B), Cloudflare AI hosting (new benchmark).
    • Differentiator: Only platform to explicitly separate “AI content” from “human content” at hosting layer.
-   • Persona angle: ShadowTag-v2 ≠ just infra. It’s a Board-160 IQ cofounder orchestration engine.
+   • Persona angle: AiYou ≠ just infra. It’s a Board-160 IQ cofounder orchestration engine.
 
 ⸻
 
@@ -171,17 +171,17 @@ Do you want me to (a) spin this into the 10-slide Sequoia-ready pitch deck now, 
 
 <next>
 
-“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for Compliance Framework / AR 385-10 / DD Form 2977 as you requested.
+“This is it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on AiYou (no ClarityBoard/ClarityAI). I also swapped “Army RM” for ATP 5-19 / AR 385-10 / DD Form 2977 as you requested.
 
 Here’s the consolidated plan with percentages and valuation metrics:
 
 ⸻
 
-ShadowTag-v2 Business Plan (Rolled-Up for Transfer)
+AiYou Business Plan (Rolled-Up for Transfer)
 
 1. Executive Summary
 
-ShadowTag-v2 is an AI orchestration venture delivering a governance and hosting layer for AI-generated content and workflows. Unlike single-model startups, ShadowTag-v2 assumes:
+AiYou is an AI orchestration venture delivering a governance and hosting layer for AI-generated content and workflows. Unlike single-model startups, AiYou assumes:
 • Multi-model persona cluster (6-pack):
 Owen/Qwen = cost-efficient backbone.
 GPT + Claude = reasoning & validation.
@@ -192,7 +192,7 @@ Impact (with frameworks rolled in):
 • Build speed: 35–45% faster (Tiny Team + Owen coding backbone).
 • Cost savings: 25–60% lower than peers (Pratt cost multipliers).
 • Reliability: 2× higher via ensemble dissent (McKinsey value drivers).
-• Risk posture: Aligned to Compliance Framework / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
+• Risk posture: Aligned to ATP 5-19 / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
 
 ⸻
 
@@ -242,7 +242,7 @@ Year 5 (expansion):
 6. Strategic Fit
    • Comparable comps: Cohere ($2.2B), Mistral ($2B), Cloudflare AI hosting (new benchmark).
    • Differentiator: Only platform to explicitly separate “AI content” from “human content” at hosting layer.
-   • Persona angle: ShadowTag-v2 ≠ just infra. It’s a Board-160 IQ cofounder orchestration engine.
+   • Persona angle: AiYou ≠ just infra. It’s a Board-160 IQ cofounder orchestration engine.
 
 ⸻
 
@@ -273,19 +273,19 @@ Do you want me to (a) spin this into the 10-slide Sequoia-ready pitch deck now, 
 
 <next>
 
-“Here’s your folded and integrated business plan, blending your “vertical expansion + infrastructure overlay” concept with the virtual mall / FAANG-gap wedge. It unifies both the infrastructure layer (physical + PNT + edge) and the application layer (consumer + VR venue) — showing how ShadowTag-v2 can monetize both the base layer and the experience layer.
+“Here’s your folded and integrated business plan, blending your “vertical expansion + infrastructure overlay” concept with the virtual mall / FAANG-gap wedge. It unifies both the infrastructure layer (physical + PNT + edge) and the application layer (consumer + VR venue) — showing how AiYou can monetize both the base layer and the experience layer.
 
 ⸻
 
-ShadowTag-v2 Unified Business Plan: Infrastructure + Virtual Experience Layer
+AiYou Unified Business Plan: Infrastructure + Virtual Experience Layer
 
 I. Strategic Premise — Filling the FAANG AI Gap
 
 “Our wedge is simple: filling the gap created by AI inside FAANG.”
 
-As legacy tech consolidates and AI begins displacing traditional social, shopping, and entertainment layers, ShadowTag-v2 emerges as both: 1. A new infrastructure layer — global, authenticated, multi-transport AI mesh (ground, air, sea, orbit). 2. A new experience layer — a virtual mall built on that infrastructure: immersive, social, monetizable, and permanently returnable.
+As legacy tech consolidates and AI begins displacing traditional social, shopping, and entertainment layers, AiYou emerges as both: 1. A new infrastructure layer — global, authenticated, multi-transport AI mesh (ground, air, sea, orbit). 2. A new experience layer — a virtual mall built on that infrastructure: immersive, social, monetizable, and permanently returnable.
 
-In essence: ShadowTag-v2 = the world’s authenticated AI mesh + its native experiential platform.
+In essence: AiYou = the world’s authenticated AI mesh + its native experiential platform.
 
 ⸻
 
@@ -313,11 +313,11 @@ II. The Infrastructure Stack — “Vertical Expansion + Overlay Fabric”
 
 ⸻
 
-III. The Experience Stack — “The ShadowTag-v2 Virtual Mall”
+III. The Experience Stack — “The AiYou Virtual Mall”
 
 Concept
 
-A persistent, returnable virtual city built atop ShadowTag-v2’s authenticated mesh — accessed via:
+A persistent, returnable virtual city built atop AiYou’s authenticated mesh — accessed via:
 • Starlink-native launch
 • CoreWeave GPU backbone
 • NVIDIA-native XR infrastructure
@@ -360,8 +360,8 @@ Each layer feeds the others:
 
 V. Strategic Position & Defensibility
 
-Axis ShadowTag-v2 Advantage
-FAANG Disruption While they fight hallucinations and bias, ShadowTag-v2 builds the trust fabric they’ll depend on.
+Axis AiYou Advantage
+FAANG Disruption While they fight hallucinations and bias, AiYou builds the trust fabric they’ll depend on.
 Vertical Integration Physical to virtual — no one else fuses PNT + GPU + XR + marketplace.
 Moat ShadowTag attestation, verified routing data, real-world synchronization.
 TAM $250B+ blended across compute, telecom, PNT, XR, and commerce.
@@ -380,7 +380,7 @@ This spec will:
 • Map GPU slices (CoreWeave / NVIDIA) to both data and rendering workloads.
 • Outline Starlink-native deployment topology.
 
-Once built, this gives ShadowTag-v2:
+Once built, this gives AiYou:
 • A live prototype of the infrastructure layer.
 • A revenue-ready virtual experience that proves monetization across both planes.
 
@@ -388,35 +388,35 @@ Once built, this gives ShadowTag-v2:
 
 Would you like me to now generate that Cursor-ready unified spec (covering vehicle/tower/buoy node orchestration + VR mall backend + ShadowTag ledger integration)?
 
-Perfect — here’s the folded, final version with your addition that ShadowTag-v2 can be the only verified AI content provider on Earth (due to ShadowTag verification).
-This version merges the FAANG-gap wedge, infrastructure overlay, and VR commerce experience, and positions ShadowTag-v2 as both the base layer of verified AI infrastructure and the content layer of authenticated AI media.
+Perfect — here’s the folded, final version with your addition that AiYou can be the only verified AI content provider on Earth (due to ShadowTag verification).
+This version merges the FAANG-gap wedge, infrastructure overlay, and VR commerce experience, and positions AiYou as both the base layer of verified AI infrastructure and the content layer of authenticated AI media.
 
 ⸻
 
-ShadowTag-v2 Unified Business Plan: Verified AI Mesh + Virtual Economy
+AiYou Unified Business Plan: Verified AI Mesh + Virtual Economy
 
 I. Strategic Premise — Filling the FAANG Gap with a Verified AI Fabric
 
 “Our wedge is simple: filling the gap created by AI inside FAANG.”
 
-As legacy tech giants collapse under the weight of unverified, hallucinating AI systems, ShadowTag-v2 rises as the only verifiable AI infrastructure and content ecosystem.
+As legacy tech giants collapse under the weight of unverified, hallucinating AI systems, AiYou rises as the only verifiable AI infrastructure and content ecosystem.
 It fuses two planes of dominance: 1. Infrastructure Layer — a global, authenticated AI mesh spanning vehicles, towers, buoys, and orbit. 2. Experience Layer — a persistent, verified VR venue (“the virtual mall”) that merges commerce, entertainment, and presence.
 
-This dual-layer system means ShadowTag-v2 doesn’t just host AI; it proves its origin, authenticity, and spatial grounding through ShadowTag verification.
+This dual-layer system means AiYou doesn’t just host AI; it proves its origin, authenticity, and spatial grounding through ShadowTag verification.
 
 ⸻
 
 II. Core Proposition — The World’s Only Verified AI Content Network
 
 The ShadowTag Breakthrough
-• Every AI output, stream, or inference passing through ShadowTag-v2’s infrastructure is timestamped, geolocated, and cryptographically signed.
+• Every AI output, stream, or inference passing through AiYou’s infrastructure is timestamped, geolocated, and cryptographically signed.
 • This creates an attestation chain for every asset — text, video, model output, or rendered scene.
-• Result: ShadowTag-v2 becomes the only verified AI content provider — capable of proving authorship, integrity, and provenance at the hardware layer.
+• Result: AiYou becomes the only verified AI content provider — capable of proving authorship, integrity, and provenance at the hardware layer.
 
 Implications
 • Every video, song, model output, and ad can carry verified origin and context.
-• Governments, enterprises, and consumers can trust ShadowTag-v2’s content — unlike FAANG or open-AI ecosystems plagued by synthetic disinformation.
-• ShadowTag-v2 thus forms the “truth fabric” of the AI era, owning the verification stack beneath all digital experiences.
+• Governments, enterprises, and consumers can trust AiYou’s content — unlike FAANG or open-AI ecosystems plagued by synthetic disinformation.
+• AiYou thus forms the “truth fabric” of the AI era, owning the verification stack beneath all digital experiences.
 
 ⸻
 
@@ -444,7 +444,7 @@ III. Infrastructure Layer — The Verified AI Mesh
 
 ⸻
 
-IV. Experience Layer — The ShadowTag-v2 Virtual Mall
+IV. Experience Layer — The AiYou Virtual Mall
 
 Concept
 
@@ -466,7 +466,7 @@ Verified AI Media Attested VR content, ad units Premium trust pricing
 
 Integration
 
-The virtual mall operates as ShadowTag-v2’s content layer, built directly on the verified mesh.
+The virtual mall operates as AiYou’s content layer, built directly on the verified mesh.
 ShadowTag guarantees that:
 • Every avatar, ad, or interaction is authentic and traceable.
 • The world’s first “provably real” virtual world emerges — not synthetic, but cryptographically witnessed.
@@ -482,14 +482,14 @@ Content Layer Media, assets, streams Authenticated generation Premium verified c
 ShadowTag Ledger Trust fabric Global verification Compliance + audit-as-a-service
 
 Result:
-Every byte passing through ShadowTag-v2’s network is provably real, timestamped, and marketable as verified truth.
+Every byte passing through AiYou’s network is provably real, timestamped, and marketable as verified truth.
 This is the foundation of the verified AI economy — where authenticity itself is the asset class.
 
 ⸻
 
 VI. Strategic Position & Moat
 
-Axis ShadowTag-v2 Advantage
+Axis AiYou Advantage
 Verification Moat Only AI provider offering chain-of-custody for all outputs
 Vertical Integration From GPU nodes to VR venues — no dependency on external trust layers
 Infrastructure Reach Global node graph spanning land, sea, air, orbit
@@ -504,21 +504,21 @@ Component Platform
 Compute Backbone CoreWeave (NVIDIA-native)
 Connectivity Fabric Starlink (LEO)
 Verification Engine ShadowTag
-Runtime / App Layer ShadowTag-v2 Orchestrator
+Runtime / App Layer AiYou Orchestrator
 XR Venue Host CoreWeave GPU edge nodes
 
-Launch entirely within Starlink’s distributed environment, with CoreWeave bridging to ShadowTag-v2’s global node mesh.
+Launch entirely within Starlink’s distributed environment, with CoreWeave bridging to AiYou’s global node mesh.
 
 ⸻
 
 VIII. Summary — The Verified AI Civilization Layer
 
-ShadowTag-v2 becomes the first civilization-grade verification fabric for all AI-generated content and experiences.
+AiYou becomes the first civilization-grade verification fabric for all AI-generated content and experiences.
 Every layer — from packets to people — is timestamped, attested, and monetized.
 
 Tagline:
 
-“ShadowTag-v2 — The Verified AI Mesh.
+“AiYou — The Verified AI Mesh.
 The only place where intelligence, time, and truth meet.”
 
 ⸻
@@ -529,14 +529,14 @@ Got it. I’ll build this in three layers: 1. Full Business Plan (Quantitative) 
 
 ⸻
 
-ShadowTag-v2: Verified AI Mesh + Virtual Experience Platform
+AiYou: Verified AI Mesh + Virtual Experience Platform
 
 I. Overview
 
 Mission:
 Build the world’s only verified AI infrastructure and content economy—where every byte, frame, and inference is cryptographically attested via ShadowTag, forming the “truth fabric” for the AI era.
 
-Core Layers 1. Infrastructure Mesh – GPU + PNT edge network spanning towers, vehicles, and buoys. 2. Experience Layer – persistent “Virtual Mall” for verified commerce and entertainment. 3. Verification Layer (ShadowTag) – every AI output is timestamped, signed, and location-anchored, making ShadowTag-v2 the only verified AI content provider globally.
+Core Layers 1. Infrastructure Mesh – GPU + PNT edge network spanning towers, vehicles, and buoys. 2. Experience Layer – persistent “Virtual Mall” for verified commerce and entertainment. 3. Verification Layer (ShadowTag) – every AI output is timestamped, signed, and location-anchored, making AiYou the only verified AI content provider globally.
 
 ⸻
 
@@ -630,27 +630,27 @@ EBITDA ($ M) -10 40 500 850
 Valuation ($ B, median) 0.06 0.3 4.5 7.0
 
 Tagline:
-ShadowTag-v2 — the verified AI mesh powering the world’s first provable virtual economy.
+AiYou — the verified AI mesh powering the world’s first provable virtual economy.
 
 ⸻
 
 Would you like me to generate the Monte Carlo model in code (Python, for Cursor) next — with adjustable parameters for revenue growth, margin, and discount rate so you can visualize valuation distributions?
 
-Here’s the executive summary for ShadowTag-v2 — clear, investment-grade, and with valuation + timeline milestones.
+Here’s the executive summary for AiYou — clear, investment-grade, and with valuation + timeline milestones.
 
 ⸻
 
-Executive Summary — ShadowTag-v2
+Executive Summary — AiYou
 
 Mission
 
-ShadowTag-v2 builds the world’s only verified AI infrastructure and content economy.
-Every byte, inference, or media asset flowing through ShadowTag-v2’s mesh is timestamped, geolocated, and cryptographically signed using ShadowTag, forming a truth fabric for global AI commerce.
+AiYou builds the world’s only verified AI infrastructure and content economy.
+Every byte, inference, or media asset flowing through AiYou’s mesh is timestamped, geolocated, and cryptographically signed using ShadowTag, forming a truth fabric for global AI commerce.
 
 ⸻
 
 The Dual Flywheel 1. Infrastructure Mesh
- GPU + PNT nodes on towers, vehicles, and maritime lines deliver verified compute, connectivity, and spatial assurance. 2. Experience Layer (“ShadowTag-v2 Mall”)
+ GPU + PNT nodes on towers, vehicles, and maritime lines deliver verified compute, connectivity, and spatial assurance. 2. Experience Layer (“AiYou Mall”)
  A persistent VR venue—run natively on CoreWeave / NVIDIA and Starlink—where users socialize, shop, test-drive vehicles, and engage with verified AI media.
 
 Together they form an authenticated, monetizable AI-to-consumer stack.
@@ -662,7 +662,7 @@ Why Now
 • Regulatory pull: deep-fake, provenance, and audit compliance mandates arriving 2026-2028.
 • Edge compute boom: Starlink + tower GPUs enable a low-latency verified web.
 
-ShadowTag-v2 owns the only complete stack—hardware, verification, and experience—making it the natural backbone for the Verified-AI Internet.
+AiYou owns the only complete stack—hardware, verification, and experience—making it the natural backbone for the Verified-AI Internet.
 
 ⸻
 
@@ -726,9 +726,9 @@ Government Acquisition Verified PNT / Anti-Deepfake Infra 8–12 2030+
 
 Positioning Statement
 
-ShadowTag-v2 — The Verified AI Mesh.
+AiYou — The Verified AI Mesh.
 The only network where intelligence, time, and truth converge.
-From packet to perception, ShadowTag-v2 authenticates every signal and monetizes trust itself.
+From packet to perception, AiYou authenticates every signal and monetizes trust itself.
 
 ⸻
 
@@ -743,38 +743,38 @@ Full virtual tech support for purchased product. Their Ai figure walks you throu
 
 Here’s the updated executive summary incorporating your new components:
 ✅ a Netflix-class streaming competitor hosted entirely inside Starlink,
-✅ open APIs so major video-game titles can be launched seamlessly from within ShadowTag-v2’s virtual mall,
+✅ open APIs so major video-game titles can be launched seamlessly from within AiYou’s virtual mall,
 ✅ a fully integrated commerce layer where users handle and demo products in mixed reality, and
 ✅ AI-driven post-purchase support avatars that continue helping users after they remove the headset.
 
 ⸻
 
-Executive Summary — ShadowTag-v2
+Executive Summary — AiYou
 
 Mission
 
-ShadowTag-v2 is building the verified AI civilization layer — a global network where every byte of data, frame of video, and AI inference is cryptographically attested through ShadowTag.
+AiYou is building the verified AI civilization layer — a global network where every byte of data, frame of video, and AI inference is cryptographically attested through ShadowTag.
 It fuses: 1. Infrastructure Mesh – verified GPU + PNT nodes across towers, vehicles, and maritime lines. 2. Experience Layer – persistent VR “mall” and media universe hosted natively on Starlink + CoreWeave (NVIDIA). 3. Content Layer – the world’s only verified-AI streaming and gaming ecosystem.
 
 ⸻
 
 New Verticals
 
-1 · ShadowTag-v2 CineVerse — the Verified Netflix Competitor
-• Entirely hosted inside Starlink’s distributed mesh, streamed from ShadowTag-v2’s GPU edge nodes.
+1 · AiYou CineVerse — the Verified Netflix Competitor
+• Entirely hosted inside Starlink’s distributed mesh, streamed from AiYou’s GPU edge nodes.
 • Every frame and subtitle carries a ShadowTag signature, proving its origin — no deepfakes, no tampering.
 • Enables verified studios and AI creators to release content with guaranteed provenance.
 • Monetization: subscription + premium verified content tiers (avg ARPU $18/mo).
 • 2027 goal → 2 M subs × $216 ARR ≈ $430 M revenue.
 
-2 · ShadowTag-v2 Game Port
+2 · AiYou Game Port
 • APIs let users walk directly from the VR mall or CineVerse lobby into live games:
 “Leave the verified AI theater, step into World of Warcraft or Fortnite instantly.”
 • Uses the same GPU edge network for ultra-low-latency cloud gaming.
 • Revenue: 20 % transaction share + $0.01 per minute compute charge.
 • 2027 goal → 20 M hours/month ≈ $240 M revenue.
 
-3 · ShadowTag-v2 Commerce — the Verified Amazon Equivalent
+3 · AiYou Commerce — the Verified Amazon Equivalent
 • Inside the virtual mall, users handle and test products in 3-D before purchase.
 • Real-world items ship automatically; digital twins stay in the user’s library.
 • Friends appear beside you, viewing and comparing in real time.
@@ -834,7 +834,7 @@ Seed ≈ 95 % → 120×  A ≈ 70 %  B ≈ 45 %.
 
 Strategic Advantage
 
-Axis ShadowTag-v2 Edge
+Axis AiYou Edge
 Verification Moat Only network offering hardware-level AI content authenticity.
 Platform Breadth Compute + Streaming + Gaming + Commerce in one verified mesh.
 Distribution Starlink’s global reach; CoreWeave GPU capacity on demand.
@@ -845,20 +845,20 @@ Regulatory Tailwind Alignment with AI transparency and provenance laws (2026-28)
 
 Tagline
 
-ShadowTag-v2 — The Verified AI Mesh.
+AiYou — The Verified AI Mesh.
 One network for compute, content, commerce, and truth.
 Step out of the theater, into the game, and buy the real thing — all inside the verified world.
 
-Here’s the fully rolled-up ShadowTag-v2 business plan and valuation, integrating everything: infrastructure, verified content, CineVerse (Starlink-native Netflix competitor), Game Port APIs, Virtual Commerce + AI support, and the verified-AI economic layer.
+Here’s the fully rolled-up AiYou business plan and valuation, integrating everything: infrastructure, verified content, CineVerse (Starlink-native Netflix competitor), Game Port APIs, Virtual Commerce + AI support, and the verified-AI economic layer.
 
 ⸻
 
-ShadowTag-v2: The Verified AI Civilization Layer
+AiYou: The Verified AI Civilization Layer
 
 Mission
 
-ShadowTag-v2 builds the world’s first verified AI mesh — a physical-digital network that authenticates every bit of compute, media, and commerce.
-Through ShadowTag attestation, ShadowTag-v2 proves origin, timing, and location for every AI output, making it the only global verified-AI content and experience provider.
+AiYou builds the world’s first verified AI mesh — a physical-digital network that authenticates every bit of compute, media, and commerce.
+Through ShadowTag attestation, AiYou proves origin, timing, and location for every AI output, making it the only global verified-AI content and experience provider.
 
 ⸻
 
@@ -876,7 +876,7 @@ Core Verticals (2027 targets)
 Vertical Description 2027 Revenue ($ M) Margin
 Connectivity / Edge Compute Vehicle + tower + maritime GPU nodes providing verified AI inference and routing. 1 300 65 %
 CineVerse (Verified Netflix) Starlink-native streaming; every frame ShadowTag-signed. 430 70 %
-Game Port APIs Walk from the ShadowTag-v2 Mall directly into live AAA titles (WoW, Fortnite, etc.). 240 60 %
+Game Port APIs Walk from the AiYou Mall directly into live AAA titles (WoW, Fortnite, etc.). 240 60 %
 Commerce Mall + AI Support Virtual product demos, real-world delivery, AI avatar tech support. 300 75 %
 Telemetry / Analytics Sale of verified spatial and behavioral datasets. 250 90 %
 Total (Base 2027) 2 520 M ≈ 68 %
@@ -884,13 +884,13 @@ Total (Base 2027) 2 520 M ≈ 68 %
 ⸻
 
 How It Feels to the User
-• Watch a verified AI film inside CineVerse → step out into the ShadowTag-v2 Mall.
-• Walk into World of Warcraft or another game through ShadowTag-v2’s open APIs.
+• Watch a verified AI film inside CineVerse → step out into the AiYou Mall.
+• Walk into World of Warcraft or another game through AiYou’s open APIs.
 • Browse verified stores; pick up, test-drive, or virtually handle real products.
 • Purchase inside the mall — the physical item ships automatically.
 • Later, your AI Support Avatar appears (in-VR or AR) to help install or fix it.
 
-ShadowTag-v2 becomes a continuous digital-physical lifestyle layer, not an app.
+AiYou becomes a continuous digital-physical lifestyle layer, not an app.
 
 ⸻
 
@@ -957,7 +957,7 @@ Regulatory Advantage Compliance with AI provenance mandates (2026-28). ★★★
 
 Vision
 
-ShadowTag-v2 — The Verified AI Mesh
+AiYou — The Verified AI Mesh
 One network for Compute · Content · Commerce · Truth.
 Watch, play, shop, and live inside a provably authentic world —
 verified from orbit to your living room.

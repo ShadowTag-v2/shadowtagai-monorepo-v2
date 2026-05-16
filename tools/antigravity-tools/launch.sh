@@ -85,7 +85,7 @@ launch_manager() {
 run_workspace() {
     echo -e "${YELLOW}Running workspace agent...${NC}"
     cd "$WORKSPACE_DIR"
-    export GOOGLE_API_KEY = "REDACTED_API_KEY"
+    export GOOGLE_API_KEY="AIzaSyAxgD_goF3I9hC_DaWGoIt7Cu7yB6PTGQg"
     python src/agent.py
 }
 

@@ -12,11 +12,9 @@
 ## 📦 Components Activated
 
 ### 1. **Gemini API Failover System** ✅
-
 **Location**: `src/pnkln-stack/services/gemini_failover.py`
 
 **Features**:
-
 - ✅ Multi-key rotation (GEMINI_API_KEYS environment variable)
 - ✅ Per-key quota tracking with Redis
 - ✅ Exponential backoff on rate limits (429 errors)
@@ -25,7 +23,6 @@
 - ✅ Health monitoring and metrics
 
 **Architecture**:
-
 ```
 API Keys (Primary) → Vertex AI (Fallback) → Error Handling
      ↓                      ↓
@@ -35,7 +32,6 @@ API Keys (Primary) → Vertex AI (Fallback) → Error Handling
 ```
 
 **Configuration**:
-
 ```bash
 # Option 1: Multiple API keys (recommended)
 export GEMINI_API_KEYS="key1,key2,key3"
@@ -48,7 +44,6 @@ export GCP_PROJECT_ID="your-project-id"
 ```
 
 **Usage**:
-
 ```python
 from src.pnkln-stack.services.gemini_failover import GeminiFailoverClient
 
@@ -64,7 +59,6 @@ metrics = client.get_metrics()
 ```
 
 **Failover Behavior**:
-
 1. **Rate Limit (429)**: Exponential backoff (1s, 2s, 4s, 8s...), rotate to next key
 2. **Quota Exceeded**: 1-hour backoff, rotate to next key
 3. **Circuit Breaker**: After 5 failures, open circuit for 10 minutes
@@ -74,14 +68,12 @@ metrics = client.get_metrics()
 ---
 
 ### 2. **https://github.com/karpathy/autoresearchs 650-Agent Swarm** ✅
-
 **Location**: `api/https://github.com/karpathy/autoresearchs_api.py`
 **Port**: 8888
 **Docs**: http://localhost:8888/docs
 
 **Squadron Structure**:
-
-- **HHT (90 agents)**: Headquarters, Judge 6, S-1 to S-6 Staff
+- **HHT (90 agents)**: Headquarters, Judge #6, S-1 to S-6 Staff
 - **AIR_CAV (120 agents)**: Aerial Scouts (Apache, Kiowa, Black Hawk)
 - **ALPHA (130 agents)**: Armor (M1 Abrams - Heavy Compute)
 - **BRAVO (130 agents)**: Stryker (Rapid Deployment)
@@ -91,7 +83,6 @@ metrics = client.get_metrics()
 **Total**: 650 agents | 139 vehicles | 0% error via consensus
 
 **Endpoints**:
-
 ```bash
 # Hunt mode - focused attack on target
 POST /hunt
@@ -135,7 +126,6 @@ GET /cost_stats
 ```
 
 **Starting the Server**:
-
 ```bash
 # Start https://github.com/karpathy/autoresearchs
 ./run_https://github.com/karpathy/autoresearchs_api.sh
@@ -147,11 +137,9 @@ python3 -m uvicorn api.https://github.com/karpathy/autoresearchs_api:app --host 
 ---
 
 ### 3. **System Status Dashboard** ✅
-
 **Location**: `antigravity_status.py`
 
 **Features**:
-
 - Real-time component health checks
 - https://github.com/karpathy/autoresearchs server status
 - Gemini API failover metrics
@@ -160,7 +148,6 @@ python3 -m uvicorn api.https://github.com/karpathy/autoresearchs_api:app --host 
 - Service health (Redis, PostgreSQL)
 
 **Usage**:
-
 ```bash
 # Single check
 python3 antigravity_status.py
@@ -173,7 +160,6 @@ python3 antigravity_status.py --watch
 ```
 
 **Sample Output**:
-
 ```
 🔍 Antigravity System Status Check
 ======================================================================
@@ -223,7 +209,6 @@ nano .env
 ```
 
 Add to `.env`:
-
 ```bash
 # Gemini API Failover
 GEMINI_API_KEYS=key1,key2,key3  # Comma-separated for rotation
@@ -300,7 +285,6 @@ curl http://localhost:8888/cost_stats | jq .
 ```
 
 Output:
-
 ```json
 {
   "gemini_tokens": 50000,
@@ -321,7 +305,6 @@ Output:
 ### Issue: "All API keys exhausted"
 
 **Solution**:
-
 1. Check API key quotas in Google AI Studio
 2. Verify Vertex AI fallback is configured:
    ```bash
@@ -339,7 +322,6 @@ Output:
 ### Issue: https://github.com/karpathy/autoresearchs not responding
 
 **Solution**:
-
 ```bash
 # Check if running
 ps aux | grep https://github.com/karpathy/autoresearchs
@@ -356,7 +338,6 @@ pkill -f https://github.com/karpathy/autoresearchs
 
 **Solution**:
 Adjust backoff parameters in `gemini_failover.py`:
-
 ```python
 client = GeminiFailoverClient(
     base_backoff=0.5,  # Reduce from 1.0
@@ -453,13 +434,11 @@ response = gemini.generate_text(
 ## 💰 Cost Optimization
 
 **Multi-Model Routing** (Claude Architect + Gemini Specialist):
-
 - Bulk reading tasks → Gemini 2.0 Flash ($0.075/1M tokens)
 - Reasoning/synthesis → Claude Opus 4.5 ($15/1M tokens)
 - **Savings**: 84% on bulk operations, 200x cost reduction
 
 **Quota Management**:
-
 - Automatic key rotation prevents quota exhaustion
 - Exponential backoff reduces wasted API calls
 - Circuit breaker prevents cascading failures

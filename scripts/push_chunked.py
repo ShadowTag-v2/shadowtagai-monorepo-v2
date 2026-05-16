@@ -16,114 +16,122 @@ CHUNK_SIZE = 500  # files per chunk commit
 
 
 def get_token():
-    """Generate a fresh GitHub App installation token."""
-    import json
-    import time
-    import urllib.request
+  """Generate a fresh GitHub App installation token."""
+  import json
+  import time
+  import urllib.request
 
-    import jwt
+  import jwt
 
-    with open(PEM_PATH, "rb") as f:
-        key = f.read()
-    now = int(time.time())
-    j = jwt.encode({"iat": now - 60, "exp": now + 600, "iss": APP_ID}, key, algorithm="RS256")
+  with open(PEM_PATH, "rb") as f:
+    key = f.read()
+  now = int(time.time())
+  j = jwt.encode(
+    {"iat": now - 60, "exp": now + 600, "iss": APP_ID}, key, algorithm="RS256"
+  )
 
-    req = urllib.request.Request(
-        "https://api.github.com/app/installations",
-        headers={"Authorization": f"Bearer {j}", "Accept": "application/vnd.github+json"},
-    )
-    install_id = json.loads(urllib.request.urlopen(req).read())[0]["id"]
+  req = urllib.request.Request(
+    "https://api.github.com/app/installations",
+    headers={"Authorization": f"Bearer {j}", "Accept": "application/vnd.github+json"},
+  )
+  install_id = json.loads(urllib.request.urlopen(req).read())[0]["id"]
 
-    req2 = urllib.request.Request(
-        f"https://api.github.com/app/installations/{install_id}/access_tokens",
-        method="POST",
-        headers={"Authorization": f"Bearer {j}", "Accept": "application/vnd.github+json"},
-    )
-    return json.loads(urllib.request.urlopen(req2).read())["token"]
+  req2 = urllib.request.Request(
+    f"https://api.github.com/app/installations/{install_id}/access_tokens",
+    method="POST",
+    headers={"Authorization": f"Bearer {j}", "Accept": "application/vnd.github+json"},
+  )
+  return json.loads(urllib.request.urlopen(req2).read())["token"]
 
 
 def run(cmd, **kwargs):
-    """Run a shell command and return output."""
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=REPO_DIR, **kwargs)  # nosec B602 — intentional shell for git/system ops
-    return result.stdout.strip(), result.returncode
+  """Run a shell command and return output."""
+  result = subprocess.run(
+    cmd, shell=True, capture_output=True, text=True, cwd=REPO_DIR, **kwargs
+  )  # nosec B602 — intentional shell for git/system ops
+  return result.stdout.strip(), result.returncode
 
 
 def manage_protection(token, action="delete") -> None:
-    """Drop or restore branch protection."""
-    import json
-    import urllib.request
+  """Drop or restore branch protection."""
+  import json
+  import urllib.request
 
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json",
-        "Content-Type": "application/json",
+  headers = {
+    "Authorization": f"Bearer {token}",
+    "Accept": "application/vnd.github+json",
+    "Content-Type": "application/json",
+  }
+  url = "https://api.github.com/repos/ShadowTag-v2/Monorepo-Uphillsnowball/branches/main/protection"
+
+  if action == "delete":
+    req = urllib.request.Request(url, method="DELETE", headers=headers)
+    with contextlib.suppress(Exception):
+      urllib.request.urlopen(req)
+  else:
+    protection = {
+      "required_status_checks": {
+        "strict": True,
+        "checks": [
+          {"context": "Judge 6 Governance", "app_id": 15368},
+          {"context": "execute_10x_matrix", "app_id": 15368},
+        ],
+      },
+      "enforce_admins": True,
+      "required_pull_request_reviews": None,
+      "restrictions": None,
     }
-    url = "https://api.github.com/repos/ShadowTag-v2/Monorepo-Uphillsnowball/branches/main/protection"
-
-    if action == "delete":
-        req = urllib.request.Request(url, method="DELETE", headers=headers)
-        with contextlib.suppress(Exception):
-            urllib.request.urlopen(req)
-    else:
-        protection = {
-            "required_status_checks": {
-                "strict": True,
-                "checks": [
-                    {"context": "Judge 6 Governance", "app_id": 15368},
-                    {"context": "execute_10x_matrix", "app_id": 15368},
-                ],
-            },
-            "enforce_admins": True,
-            "required_pull_request_reviews": None,
-            "restrictions": None,
-        }
-        req = urllib.request.Request(url, data=json.dumps(protection).encode(), method="PUT", headers=headers)
-        with contextlib.suppress(Exception):
-            urllib.request.urlopen(req)
+    req = urllib.request.Request(
+      url, data=json.dumps(protection).encode(), method="PUT", headers=headers
+    )
+    with contextlib.suppress(Exception):
+      urllib.request.urlopen(req)
 
 
 def main() -> None:
-    os.chdir(REPO_DIR)
+  os.chdir(REPO_DIR)
 
-    # Get list of all changed files
-    out, _ = run("git diff --name-only HEAD~1")
-    if not out:
-        out, _ = run("git diff --name-only origin/main...HEAD")
+  # Get list of all changed files
+  out, _ = run("git diff --name-only HEAD~1")
+  if not out:
+    out, _ = run("git diff --name-only origin/main...HEAD")
 
-    changed_files = [f for f in out.split("\n") if f.strip()]
-    total = len(changed_files)
+  changed_files = [f for f in out.split("\n") if f.strip()]
+  total = len(changed_files)
 
-    if total == 0:
-        token = get_token()
-        manage_protection(token, "delete")
-        push_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
-        out, rc = run(f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force')
-        manage_protection(token, "restore")
-        return
-
-    # Try direct push first with depth limit
+  if total == 0:
     token = get_token()
     manage_protection(token, "delete")
-
     push_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
-
-    # Set pack limits to prevent timeout
-    run("git config pack.windowMemory 256m")
-    run("git config pack.packSizeLimit 500m")
-    run("git config http.postBuffer 524288000")  # 500MB
-    run("git config sendpack.sideband false")
-
     out, rc = run(
-        f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force 2>&1',
-        timeout=600,
+      f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force'
     )
+    manage_protection(token, "restore")
+    return
 
-    if rc == 0:
-        manage_protection(token, "restore")
-    else:
-        manage_protection(token, "restore")
-        sys.exit(1)
+  # Try direct push first with depth limit
+  token = get_token()
+  manage_protection(token, "delete")
+
+  push_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
+
+  # Set pack limits to prevent timeout
+  run("git config pack.windowMemory 256m")
+  run("git config pack.packSizeLimit 500m")
+  run("git config http.postBuffer 524288000")  # 500MB
+  run("git config sendpack.sideband false")
+
+  out, rc = run(
+    f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force 2>&1',
+    timeout=600,
+  )
+
+  if rc == 0:
+    manage_protection(token, "restore")
+  else:
+    manage_protection(token, "restore")
+    sys.exit(1)
 
 
 if __name__ == "__main__":
-    main()
+  main()

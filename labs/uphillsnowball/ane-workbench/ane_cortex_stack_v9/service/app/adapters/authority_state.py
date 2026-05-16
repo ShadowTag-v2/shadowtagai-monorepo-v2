@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import json
@@ -48,14 +49,7 @@ class AuthorityState:
         return self.write(state)
 
 
-def persist_snapshot(
-    pg_dsn: str,
-    repo_id: str,
-    authority_kind: str,
-    subject: str,
-    content_json: str,
-    version_tag: str | None = None,
-):
+def persist_snapshot(pg_dsn: str, repo_id: str, authority_kind: str, subject: str, content_json: str, version_tag: str | None = None):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
         cur.execute(

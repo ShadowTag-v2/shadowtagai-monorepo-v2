@@ -1,5 +1,5 @@
-import { BoxRenderable, type CliRenderer, type KeyEvent, TextRenderable } from '@opentui/core';
-import { THEME } from '../theme.js';
+import { BoxRenderable, type CliRenderer, type KeyEvent, TextRenderable } from "@opentui/core";
+import { THEME } from "../theme.js";
 
 export interface FilePickerViewEvents {
   onSelect: (item: string, index: number) => void;
@@ -20,8 +20,8 @@ export class FilePickerView extends BoxRenderable {
     options: Record<string, unknown> = {},
   ) {
     super(renderer, {
-      id: 'file-picker',
-      flexDirection: 'column',
+      id: "file-picker",
+      flexDirection: "column",
       backgroundColor: THEME.bg,
       padding: 1,
       ...options,
@@ -46,9 +46,9 @@ export class FilePickerView extends BoxRenderable {
       const isSelected = i === this.selectedIndex;
       const container = new BoxRenderable(this.renderer, {
         id: `picker-item-${i}`,
-        width: '100%',
+        width: "100%",
         height: 1,
-        backgroundColor: isSelected ? '#ffcc80' : 'transparent',
+        backgroundColor: isSelected ? "#ffcc80" : "transparent",
         paddingLeft: 1,
         paddingRight: 1,
       });
@@ -56,7 +56,7 @@ export class FilePickerView extends BoxRenderable {
       const text = new TextRenderable(this.renderer, {
         id: `picker-item-text-${i}`,
         content: item,
-        fg: isSelected ? '#050f05' : THEME.text,
+        fg: isSelected ? "#050f05" : THEME.text,
       });
 
       container.add(text);
@@ -66,29 +66,29 @@ export class FilePickerView extends BoxRenderable {
 
     // Add decorative bars like the input box, matching the actual height
     const barHeight = displayItems.length;
-    const barContent = '┃\n'.repeat(barHeight).trimEnd();
+    const barContent = "┃\n".repeat(barHeight).trimEnd();
 
     // Remove old bars if they exist
-    this.remove('picker-decorative-bar-l');
-    this.remove('picker-decorative-bar-r');
+    this.remove("picker-decorative-bar-l");
+    this.remove("picker-decorative-bar-r");
 
     if (barHeight > 0) {
       this.add(
         new TextRenderable(this.renderer, {
-          id: 'picker-decorative-bar-l',
+          id: "picker-decorative-bar-l",
           content: barContent,
           fg: THEME.accent,
-          position: 'absolute',
+          position: "absolute",
           left: 0,
           top: 0,
         }),
       );
       this.add(
         new TextRenderable(this.renderer, {
-          id: 'picker-decorative-bar-r',
+          id: "picker-decorative-bar-r",
           content: barContent,
           fg: THEME.accent,
-          position: 'absolute',
+          position: "absolute",
           right: 0,
           top: 0,
         }),
@@ -99,27 +99,27 @@ export class FilePickerView extends BoxRenderable {
   private onKey = (key: KeyEvent) => {
     if (!this.visible) return;
 
-    if (key.name === 'up') {
+    if (key.name === "up") {
       this.navigate(-1);
-    } else if (key.name === 'down') {
+    } else if (key.name === "down") {
       this.navigate(1);
-    } else if (key.name === 'return' || key.name === 'enter' || key.name === 'tab') {
+    } else if (key.name === "return" || key.name === "enter" || key.name === "tab") {
       // Ensure we only select from the items we actually have
       const realIndex = this.selectedIndex;
       if (this.items[realIndex]) {
         this.events.onSelect(this.items[realIndex], realIndex);
       }
-    } else if (key.name === 'escape') {
+    } else if (key.name === "escape") {
       this.events.onCancel?.();
     }
   };
 
   private setupKeyboard() {
-    this.renderer.keyInput.on('keypress', this.onKey);
+    this.renderer.keyInput.on("keypress", this.onKey);
   }
 
   public destroy() {
-    this.renderer.keyInput.removeListener('keypress', this.onKey);
+    this.renderer.keyInput.removeListener("keypress", this.onKey);
   }
 
   private navigate(delta: number) {
@@ -141,11 +141,11 @@ export class FilePickerView extends BoxRenderable {
     if (!container) return;
 
     const isSelected = index === this.selectedIndex;
-    container.backgroundColor = isSelected ? '#ffcc80' : 'transparent';
+    container.backgroundColor = isSelected ? "#ffcc80" : "transparent";
 
     const text = container.getChildren()[0] as TextRenderable;
     if (text) {
-      text.fg = isSelected ? '#050f05' : THEME.text;
+      text.fg = isSelected ? "#050f05" : THEME.text;
     }
   }
 

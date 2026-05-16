@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-import * as fs from 'fs';
-import * as path from 'path';
-import * as os from 'os';
-import { spawn_cmd, printBanner, Style, getExtensionRoot } from '../services/pickle-utils.js';
+import * as fs from "fs";
+import * as os from "os";
+import * as path from "path";
+import { getExtensionRoot, printBanner, Style, spawn_cmd } from "../services/pickle-utils.js";
 
 async function main() {
   const ROOT_DIR = getExtensionRoot();
-  const JAR_ROOT = path.join(ROOT_DIR, 'jar');
+  const JAR_ROOT = path.join(ROOT_DIR, "jar");
 
   if (!fs.existsSync(JAR_ROOT)) {
-    console.log('Pickle Jar is empty. No tasks to run.');
+    console.log("Pickle Jar is empty. No tasks to run.");
     return;
   }
 
@@ -21,27 +21,27 @@ async function main() {
     const tasks = fs.readdirSync(dayPath);
     for (const taskId of tasks) {
       const taskPath = path.join(dayPath, taskId);
-      const metaPath = path.join(taskPath, 'meta.json');
+      const metaPath = path.join(taskPath, "meta.json");
 
       if (fs.existsSync(metaPath)) {
-        const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
-        if (meta.status === 'marinating') {
-          printBanner(`Opening Jar: ${taskId}`, 'MAGENTA');
+        const meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+        if (meta.status === "marinating") {
+          printBanner(`Opening Jar: ${taskId}`, "MAGENTA");
 
           // Resume logic here
-          const sessionDir = path.join(ROOT_DIR, 'sessions', taskId);
+          const sessionDir = path.join(ROOT_DIR, "sessions", taskId);
           if (fs.existsSync(sessionDir)) {
-            const statePath = path.join(sessionDir, 'state.json');
-            const state = JSON.parse(fs.readFileSync(statePath, 'utf-8'));
+            const statePath = path.join(sessionDir, "state.json");
+            const state = JSON.parse(fs.readFileSync(statePath, "utf-8"));
             state.active = true;
             fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
 
             // Execute loop
-            const cmd = ['gemini', '/pickle', '--resume', sessionDir];
+            const cmd = ["gemini", "/pickle", "--resume", sessionDir];
             await spawn_cmd(cmd, { cwd: meta.repo_path });
 
             // Update status
-            meta.status = 'consumed';
+            meta.status = "consumed";
             fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
           }
         }

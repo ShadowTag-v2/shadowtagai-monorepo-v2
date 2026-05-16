@@ -57,141 +57,141 @@ Bad (branch name): "Analyzed adam/background-summary branch diff"
 
 
 def build_summary_prompt(previous_summary: str | None = None) -> str:
-    """Build the summarization prompt, optionally including the previous summary."""
-    previous_line = ""
-    if previous_summary:
-        previous_line = f'\nPrevious: "{previous_summary}" — say something NEW.\n'
-    return SUMMARY_PROMPT.format(previous_line=previous_line)
+  """Build the summarization prompt, optionally including the previous summary."""
+  previous_line = ""
+  if previous_summary:
+    previous_line = f'\nPrevious: "{previous_summary}" — say something NEW.\n'
+  return SUMMARY_PROMPT.format(previous_line=previous_line)
 
 
 @dataclass
 class SummaryState:
-    """Tracks the state of a single agent's summarization loop."""
+  """Tracks the state of a single agent's summarization loop."""
 
-    task_id: str
-    agent_id: str
-    previous_summary: str | None = None
-    summary_count: int = 0
-    is_stopped: bool = False
-    _task: asyncio.Task[None] | None = field(default=None, repr=False)
+  task_id: str
+  agent_id: str
+  previous_summary: str | None = None
+  summary_count: int = 0
+  is_stopped: bool = False
+  _task: asyncio.Task[None] | None = field(default=None, repr=False)
 
 
 class AgentSummarizer:
-    """Manages periodic background summarization for one or more agents.
+  """Manages periodic background summarization for one or more agents.
 
-    Usage:
-        summarizer = AgentSummarizer(
-            on_summary=lambda tid, text: update_ui(tid, text),
-            get_transcript=lambda aid: fetch_transcript(aid),
-        )
-        handle = summarizer.start("task-1", "agent-1")
-        # ... later ...
-        handle.stop()
+  Usage:
+      summarizer = AgentSummarizer(
+          on_summary=lambda tid, text: update_ui(tid, text),
+          get_transcript=lambda aid: fetch_transcript(aid),
+      )
+      handle = summarizer.start("task-1", "agent-1")
+      # ... later ...
+      handle.stop()
+  """
+
+  def __init__(
+    self,
+    *,
+    on_summary: SummaryCallback | None = None,
+    get_transcript: TranscriptProvider | None = None,
+    interval: float = SUMMARY_INTERVAL_S,
+  ) -> None:
+    self._on_summary = on_summary
+    self._get_transcript = get_transcript
+    self._interval = interval
+    self._active: dict[str, SummaryState] = {}
+
+  @property
+  def active_count(self) -> int:
+    """Number of currently active summarization loops."""
+    return sum(1 for s in self._active.values() if not s.is_stopped)
+
+  def start(self, task_id: str, agent_id: str) -> SummaryState:
+    """Start periodic summarization for the given agent.
+
+    Returns a SummaryState handle. Call stop() on the state or use
+    stop_all() to shut down.
     """
+    state = SummaryState(task_id=task_id, agent_id=agent_id)
+    state._task = asyncio.create_task(
+      self._summary_loop(state),
+      name=f"agent-summary-{task_id}",
+    )
+    self._active[task_id] = state
+    logger.debug("Started summarization for task=%s agent=%s", task_id, agent_id)
+    return state
 
-    def __init__(
-        self,
-        *,
-        on_summary: SummaryCallback | None = None,
-        get_transcript: TranscriptProvider | None = None,
-        interval: float = SUMMARY_INTERVAL_S,
-    ) -> None:
-        self._on_summary = on_summary
-        self._get_transcript = get_transcript
-        self._interval = interval
-        self._active: dict[str, SummaryState] = {}
+  def stop(self, task_id: str) -> None:
+    """Stop summarization for a specific task."""
+    state = self._active.get(task_id)
+    if state and not state.is_stopped:
+      state.is_stopped = True
+      if state._task and not state._task.done():
+        state._task.cancel()
+      logger.debug("Stopped summarization for task=%s", task_id)
 
-    @property
-    def active_count(self) -> int:
-        """Number of currently active summarization loops."""
-        return sum(1 for s in self._active.values() if not s.is_stopped)
+  def stop_all(self) -> None:
+    """Stop all active summarization loops."""
+    for task_id in list(self._active):
+      self.stop(task_id)
 
-    def start(self, task_id: str, agent_id: str) -> SummaryState:
-        """Start periodic summarization for the given agent.
+  def get_latest_summary(self, task_id: str) -> str | None:
+    """Get the most recent summary for a task, or None."""
+    state = self._active.get(task_id)
+    return state.previous_summary if state else None
 
-        Returns a SummaryState handle. Call stop() on the state or use
-        stop_all() to shut down.
-        """
-        state = SummaryState(task_id=task_id, agent_id=agent_id)
-        state._task = asyncio.create_task(
-            self._summary_loop(state),
-            name=f"agent-summary-{task_id}",
+  async def _summary_loop(self, state: SummaryState) -> None:
+    """Internal loop: sleep → summarize → repeat until stopped."""
+    try:
+      while not state.is_stopped:
+        await asyncio.sleep(self._interval)
+        if state.is_stopped:
+          break
+        await self._run_single_summary(state)
+    except asyncio.CancelledError:
+      pass
+    except Exception:
+      logger.debug("Summary loop error for task=%s", state.task_id, exc_info=True)
+
+  async def _run_single_summary(self, state: SummaryState) -> None:
+    """Execute one summary cycle for the given state."""
+    if not self._get_transcript:
+      return
+
+    try:
+      transcript = self._get_transcript(state.agent_id)
+      if transcript is None:
+        return
+
+      # Check minimum transcript length
+      if isinstance(transcript, dict):
+        messages = transcript.get("messages", transcript)
+      else:
+        messages = getattr(transcript, "messages", transcript)
+      if isinstance(messages, (list, tuple)) and len(messages) < MIN_TRANSCRIPT_LENGTH:
+        logger.debug(
+          "Skipping summary for %s: not enough messages (%d)",
+          state.task_id,
+          len(messages),
         )
-        self._active[task_id] = state
-        logger.debug("Started summarization for task=%s agent=%s", task_id, agent_id)
-        return state
+        return
 
-    def stop(self, task_id: str) -> None:
-        """Stop summarization for a specific task."""
-        state = self._active.get(task_id)
-        if state and not state.is_stopped:
-            state.is_stopped = True
-            if state._task and not state._task.done():
-                state._task.cancel()
-            logger.debug("Stopped summarization for task=%s", task_id)
+      # Build the prompt (used by LLM inference in full implementation)
+      _prompt = build_summary_prompt(state.previous_summary)
 
-    def stop_all(self) -> None:
-        """Stop all active summarization loops."""
-        for task_id in list(self._active):
-            self.stop(task_id)
+      # In the full implementation, this would call the LLM.
+      # For the stub, we generate a placeholder that the caller
+      # can replace with actual inference.
+      summary_text = f"Processing task {state.task_id}"
 
-    def get_latest_summary(self, task_id: str) -> str | None:
-        """Get the most recent summary for a task, or None."""
-        state = self._active.get(task_id)
-        return state.previous_summary if state else None
+      if summary_text:
+        state.previous_summary = summary_text
+        state.summary_count += 1
+        if self._on_summary:
+          try:
+            self._on_summary(state.task_id, summary_text)
+          except Exception:
+            logger.debug("Summary callback error", exc_info=True)
 
-    async def _summary_loop(self, state: SummaryState) -> None:
-        """Internal loop: sleep → summarize → repeat until stopped."""
-        try:
-            while not state.is_stopped:
-                await asyncio.sleep(self._interval)
-                if state.is_stopped:
-                    break
-                await self._run_single_summary(state)
-        except asyncio.CancelledError:
-            pass
-        except Exception:
-            logger.debug("Summary loop error for task=%s", state.task_id, exc_info=True)
-
-    async def _run_single_summary(self, state: SummaryState) -> None:
-        """Execute one summary cycle for the given state."""
-        if not self._get_transcript:
-            return
-
-        try:
-            transcript = self._get_transcript(state.agent_id)
-            if transcript is None:
-                return
-
-            # Check minimum transcript length
-            if isinstance(transcript, dict):
-                messages = transcript.get("messages", transcript)
-            else:
-                messages = getattr(transcript, "messages", transcript)
-            if isinstance(messages, (list, tuple)) and len(messages) < MIN_TRANSCRIPT_LENGTH:
-                logger.debug(
-                    "Skipping summary for %s: not enough messages (%d)",
-                    state.task_id,
-                    len(messages),
-                )
-                return
-
-            # Build the prompt (used by LLM inference in full implementation)
-            _prompt = build_summary_prompt(state.previous_summary)
-
-            # In the full implementation, this would call the LLM.
-            # For the stub, we generate a placeholder that the caller
-            # can replace with actual inference.
-            summary_text = f"Processing task {state.task_id}"
-
-            if summary_text:
-                state.previous_summary = summary_text
-                state.summary_count += 1
-                if self._on_summary:
-                    try:
-                        self._on_summary(state.task_id, summary_text)
-                    except Exception:
-                        logger.debug("Summary callback error", exc_info=True)
-
-        except Exception:
-            logger.debug("Summary generation error for %s", state.task_id, exc_info=True)
+    except Exception:
+      logger.debug("Summary generation error for %s", state.task_id, exc_info=True)

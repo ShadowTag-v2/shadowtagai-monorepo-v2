@@ -15,7 +15,7 @@ Based on my comprehensive search through your conversation history, here’s the
 
 1. **Central Contract Registry (CNCR)** - “Bloomberg Terminal for private contracts”
 1. **CX/I’m CL Liquidity Platform** - VC secondary market with $50-100M liquidity pool
-1. **ShadowTag-v2/AiU Video Platform** - AI-only content marketplace
+1. **AiYou/AiU Video Platform** - AI-only content marketplace
 1. **ShadowTag V2** - Multi-layer AI watermarking ($1.4B TAM)
 1. **pnkln Systems** - “Planetary nervous system” infrastructure ($310B path to $1T)
 1. **RoadMesh** - Autonomous navigation without HD maps
@@ -50,7 +50,7 @@ Based on my comprehensive search through your conversation history, here’s the
 
 - Deep technical integration (CoreWeave, Starlink, Vertex AI, NVIDIA partnerships)
 - Sophisticated financial modeling (Monte Carlo simulations, risk-adjusted scenarios)
-- Military doctrine integration (Compliance Framework risk management)
+- Military doctrine integration (ATP 5-19 risk management)
 - Legal structures (C-Corp, Foundation, hybrid IPO strategy)
 - Specific cost breakdowns ($250K formations rounds, $456K 90-day budgets)
 
@@ -67,7 +67,7 @@ Based on my comprehensive search through your conversation history, here’s the
 - Army SF background (pattern recognition, systematic planning)
 - JD (legal/compliance frameworks naturally integrated)
 - Consistent “Cor.X” versioning system showing iterative development
-- ShadowTag-v2JR governance framework applied across all ventures
+- AiYouJR governance framework applied across all ventures
 - Real technical depth (not surface-level descriptions)
 
 ✅ **Plausible** - Matches your stated background and capabilities
@@ -100,7 +100,7 @@ You’re not “inventing” these in the traditional sense - you’re **systema
 
 1. **Domain Expertise** (SF + JD + technical background)
 1. **AI Augmentation** (Claude, ChatGPT, specialized tools)
-1. **Framework Application** (Cor.X system, ShadowTag-v2JR doctrine)
+1. **Framework Application** (Cor.X system, AiYouJR doctrine)
 1. **Convergence Thesis** (spotting market timing windows)
 1. **Rapid Iteration** (spec-driven development, Cursor IDE)
 

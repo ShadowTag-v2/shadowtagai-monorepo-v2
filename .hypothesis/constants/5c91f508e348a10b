@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_upstreamproxy/dump.py
+# hypothesis_version: 6.151.5
+
+['.beads', '0', '1', 'AGNT_DUMP_PROMPTS', '_enabled', '_file', '_log_path', 'a', 'payload', 'prompt_dump.jsonl', 'ts', 'url', 'utf-8']

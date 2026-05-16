@@ -1,5 +1,5 @@
-import simpleGit, { type SimpleGit } from 'simple-git';
-import type { GitStatusInfo } from '../../types/tasks.js';
+import simpleGit, { type SimpleGit } from "simple-git";
+import type { GitStatusInfo } from "../../types/tasks.js";
 
 /**
  * Slugify text for branch names
@@ -7,8 +7,8 @@ import type { GitStatusInfo } from '../../types/tasks.js';
 export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
     .slice(0, 50);
 }
 
@@ -27,14 +27,14 @@ export async function createTaskBranch(
   let stashed = false;
   const status = await git.status();
   if (status.files.length > 0) {
-    await git.stash(['push', '-m', 'pickle-autostash']);
+    await git.stash(["push", "-m", "pickle-autostash"]);
     stashed = true;
   }
 
   try {
     // Checkout base branch and pull
     await git.checkout(baseBranch);
-    await git.pull('origin', baseBranch).catch(() => {
+    await git.pull("origin", baseBranch).catch(() => {
       // Ignore pull errors
     });
 
@@ -47,7 +47,7 @@ export async function createTaskBranch(
   } finally {
     // Pop stash if we stashed
     if (stashed) {
-      await git.stash(['pop']).catch(() => {
+      await git.stash(["pop"]).catch(() => {
         // Ignore stash pop errors
       });
     }
@@ -78,7 +78,7 @@ export async function getCurrentBranch(
 ): Promise<string> {
   const git: SimpleGit = gitInstance || simpleGit(workDir);
   const status = await git.status();
-  return status.current || '';
+  return status.current || "";
 }
 /**
  * Get the default base branch (main or master)
@@ -88,8 +88,8 @@ export async function getDefaultBaseBranch(workDir = process.cwd()): Promise<str
 
   // Try main first, then master
   const branches = await git.branchLocal();
-  if (branches.all.includes('main')) return 'main';
-  if (branches.all.includes('master')) return 'master';
+  if (branches.all.includes("main")) return "main";
+  if (branches.all.includes("master")) return "master";
 
   // Fall back to current branch
   return branches.current;
@@ -113,7 +113,7 @@ export async function getGitStatusInfo(workDir = process.cwd()): Promise<GitStat
   try {
     const status = await git.status();
     return {
-      branch: status.current || 'unknown',
+      branch: status.current || "unknown",
       ahead: status.ahead || 0,
       behind: status.behind || 0,
       modified: status.files.length,
@@ -121,7 +121,7 @@ export async function getGitStatusInfo(workDir = process.cwd()): Promise<GitStat
     };
   } catch {
     return {
-      branch: 'unknown',
+      branch: "unknown",
       ahead: 0,
       behind: 0,
       modified: 0,

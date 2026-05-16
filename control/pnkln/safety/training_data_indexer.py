@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Training Data Safety Indexer
 Based on: Apertus LLM Training Data Indexing Research (arxiv:2510.09471v1)
@@ -25,7 +24,7 @@ PERFORMANCE TARGETS (from paper):
 
 INTEGRATION:
 - ShadowTag provenance verification
-- Judge 6 content classification
+- Judge #6 content classification
 - Kernel Chain audit trails
 """
 
@@ -163,12 +162,7 @@ class TrainingDataIndexer:
     - ~50 µs/doc storage latency = ~10k docs/sec theoretical max
     """
 
-    def __init__(
-        self,
-        es_host: str = "localhost",
-        es_port: int = 9200,
-        index_name: str = "pnkln_training_safety",
-    ):
+    def __init__(self, es_host: str = "localhost", es_port: int = 9200, index_name: str = "pnkln_training_safety"):
         self.es_host = es_host
         self.es_port = es_port
         self.index_name = index_name
@@ -242,11 +236,7 @@ class TrainingDataIndexer:
         return hashlib.sha256(content.encode()).hexdigest()
 
     async def scan_document(
-        self,
-        content: str,
-        doc_id: str,
-        language: str = "en",
-        categories: list[SafetyCategory] | None = None,
+        self, content: str, doc_id: str, language: str = "en", categories: list[SafetyCategory] | None = None
     ) -> SafetyScanResult:
         """
         Scan a document for safety issues.
@@ -319,16 +309,7 @@ class TrainingDataIndexer:
         }.get(category, 0.5)
 
         # Reduce severity for educational/research context
-        educational_markers = [
-            "research",
-            "study",
-            "analysis",
-            "history",
-            "definition",
-            "example",
-            "warning",
-            "avoid",
-        ]
+        educational_markers = ["research", "study", "analysis", "history", "definition", "example", "warning", "avoid"]
         context_lower = context.lower()
 
         for marker in educational_markers:
@@ -349,10 +330,7 @@ class TrainingDataIndexer:
             logger.warning("ES not connected, returning empty results")
             return []
 
-        query = {
-            "query": {"match_phrase": {"content": {"query": phrase, "slop": slop}}},
-            "size": limit,
-        }
+        query = {"query": {"match_phrase": {"content": {"query": phrase, "slop": slop}}}, "size": limit}
 
         result = await self._es_client.search(index=self.index_name, body=query)
 
@@ -491,7 +469,7 @@ class TrainingDataIndexer:
 
 class SafetyGate:
     """
-    Safety gate for Judge 6 pipeline.
+    Safety gate for Judge #6 pipeline.
 
     Blocks content that exceeds severity thresholds before
     it reaches governance evaluation.
@@ -519,7 +497,7 @@ class SafetyGate:
                 "passed": bool,
                 "blocked_reason": str or None,
                 "severity": float,
-                "hits": list[SafetyHit],
+                "hits": List[SafetyHit],
                 "requires_review": bool
             }
         """

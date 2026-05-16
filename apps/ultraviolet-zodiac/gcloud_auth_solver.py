@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""gcloud_auth_solver.py
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+gcloud_auth_solver.py
 ---------------------
 Implements the "Loop & Review" methodology for reliable GCloud Authentication.
 Optimized for headless-runner service account in ShadowTag Omega V4.
@@ -12,7 +14,7 @@ import sys
 import time
 
 # --- Configuration ---
-SA_EMAIL = "redacted@shadowtag-v4.local"
+SA_EMAIL = "headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com"
 KEY_FILE_PATH = os.path.expanduser("~/.gcp/headless-runner-key.json")
 
 # --- Environment Setup ---
@@ -65,8 +67,9 @@ def attempt_auth_strategy(strategy_name: str) -> bool:
     if result.returncode == 0:
         log(f"Strategy {strategy_name} check command executed successfully.")
         return True
-    log(f"Strategy {strategy_name} failed: {result.stderr}", "ERROR")
-    return False
+    else:
+        log(f"Strategy {strategy_name} failed: {result.stderr}", "ERROR")
+        return False
 
 
 def solve_auth():
@@ -84,16 +87,13 @@ def solve_auth():
         if attempt_auth_strategy(strategy):
             if verify_token():
                 log(f"✅ [SOLVER] Success via {strategy}.")
-                print(
-                    json.dumps({"status": "success", "method": strategy, "timestamp": time.time()}),
-                )
+                print(json.dumps({"status": "success", "method": strategy, "timestamp": time.time()}))
                 return
-            log("⚠️ [SOLVER] Critique: Strategy succeeded, but token is still invalid.")
+            else:
+                log("⚠️ [SOLVER] Critique: Strategy succeeded, but token is still invalid.")
 
     log("⛔ [SOLVER] All strategies exhausted. Auth is BROKEN.", "CRITICAL")
-    print(
-        json.dumps({"status": "failed", "error": "All strategies failed", "timestamp": time.time()}),
-    )
+    print(json.dumps({"status": "failed", "error": "All strategies failed", "timestamp": time.time()}))
     sys.exit(1)
 
 

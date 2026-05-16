@@ -1,15 +1,15 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import {
   beginSimulatedResourceUpdates,
   stopSimulatedResourceUpdates,
-} from '../resources/subscriptions.js';
+} from "../resources/subscriptions.js";
 
 // Tool configuration
-const name = 'toggle-subscriber-updates';
+const name = "toggle-subscriber-updates";
 const config = {
-  title: 'Toggle Subscriber Updates',
-  description: 'Toggles simulated resource subscription updates on or off.',
+  title: "Toggle Subscriber Updates",
+  description: "Toggles simulated resource subscription updates on or off.",
   inputSchema: {},
 };
 
@@ -47,7 +47,7 @@ export const registerToggleSubscriberUpdatesTool = (server: McpServer) => {
     }
 
     return {
-      content: [{ type: 'text', text: `${response}` }],
+      content: [{ type: "text", text: `${response}` }],
     };
   });
 };

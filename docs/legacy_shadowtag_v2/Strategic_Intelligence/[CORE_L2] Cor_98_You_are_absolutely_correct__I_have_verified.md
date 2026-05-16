@@ -4,8 +4,8 @@
 
 Cor.98 You are absolutely correct. I have verified the remote matches exactly.
 Local Path:
-/Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2
-Remote Origin: https://github.com/ShadowTag-v2/ShadowTag-v2-fastapi-services.git
+/Users/pikeymickey/aiyou-stack/ShadowTag-v2
+Remote Origin: https://github.com/ShadowTag-v2/aiyou-fastapi-services.git
 Command to connect VS Code:
-code /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2
-antigravity /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2
+code /Users/pikeymickey/aiyou-stack/ShadowTag-v2
+antigravity /Users/pikeymickey/aiyou-stack/ShadowTag-v2

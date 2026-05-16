@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 CHEAT SHEET FUSION - Jobs-Quality Prompt Engineering
 =====================================================
@@ -54,13 +53,13 @@ import json
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class Essential(StrEnum):
+class Essential(str, Enum):
     """The 10 essential prompt elements"""
 
     TONE = "tone"  # Voice/personality
@@ -597,13 +596,7 @@ async def example_cheat_sheet_fusion():
     print("=== Cheat Sheet Fusion Demo ===\n")
 
     # Create fusion engine
-    fusion = CheatSheetFusion(
-        source="youtube",
-        use_case="tier_1_intelligence",
-        dte_enabled=True,
-        evolution_rate=0.1,
-        target_accuracy=0.60,
-    )
+    fusion = CheatSheetFusion(source="youtube", use_case="tier_1_intelligence", dte_enabled=True, evolution_rate=0.1, target_accuracy=0.60)
 
     # Create initial variant from preset
     preset_essentials = PresetCheatSheets.youtube_tier_1_intelligence()

@@ -11,7 +11,7 @@ mkdir -p apps libs/utils infra/k8s infra/terraform infra/cloudbuild tools/script
 # 2. Migration List
 APPS=(
     "api" "voice_consensus" "transcode-service" "ungpt" "vertex-ai-agents"
-    "yougle-ai" "universal-copilot" "shadowtagai" "Cor.Claude_Code_6" "kosmos" "pnkln"
+    "yougle-ai" "universal-copilot" "shadowtagai" "judge6" "kosmos" "pnkln"
     "seatjudge-monorepo" "computer-use" "computer_use" "digital-freeway-api"
     "fast-api" "frontend" "hello-world" "humanfsd" "kosmos_agent" "kosmos_dev"
     "landing-pages" "media-edge" "nightly_intel_pipeline"

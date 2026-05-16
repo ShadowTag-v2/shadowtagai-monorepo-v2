@@ -191,7 +191,7 @@ if (await isModelBlocked(modelName)) {
 
 ```bash
 # Clone the mock setup (separate repo recommended)
-git clone https://github.com/shadowtagai/mock-universal-copilot
+git clone https://github.com/pnkln/mock-universal-copilot
 cd mock-universal-copilot
 
 # Install dependencies
@@ -364,7 +364,7 @@ When building AI-assisted coding features:
 ❌ **Bad:**
 ```typescript
 const openai = new OpenAI({
-  apiKey: "YOUR_API_KEY_HERE"  // Hardcoded!
+  apiKey: "sk-1234567890abcdef"  // Hardcoded!
 });
 ```
 
@@ -438,7 +438,7 @@ if (await getUserMonthlyCost(req.user.id) > BUDGET_LIMIT) {
 
 ---
 
-## Integration with ShadowTagAi Stack
+## Integration with Pnkln Stack
 
 ### Backend Service (Express + TypeScript)
 
@@ -614,6 +614,6 @@ if (userCost >= BUDGET_LIMITS[userTier]) {
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi AI Team (Erik)
+**Maintained By:** Pnkln AI Team (Erik)
 **Compliance:** TOS-compliant, no spoofing, no MITM
 **Cor Reference:** Cor. Spoofing (Architecture patterns for compliant AI assistance)

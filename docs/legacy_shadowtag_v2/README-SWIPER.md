@@ -11,19 +11,15 @@
 ### Key Innovations
 
 #### 🎬 Premium Beacons
-
 Time-collapsing movies that sync to your drive. Watch Part 1 en route to the store. Buy the product, unlock Part 2 for the ride home.
 
 #### 🛒 Shoppable Narratives
-
 Click products inside the movie to add-to-cart. Native shopping UX embedded in cinematic storytelling.
 
 #### 🗣️ Persuasion Layer
-
 Don't just persuade the shopper — persuade the whole household. Kids → Parents, Spouse → Spouse, Employee → Manager.
 
 #### 🤖 AI Personalization
-
 Three-stage evolution: Rules → Bandits → Generative. Every session improves conversion intelligence.
 
 ---
@@ -92,7 +88,6 @@ pnkln-stack-fastapi-services/
 ```
 
 **Key Files:**
-
 - `src/api/swiper.py` - Main API with all endpoints
 - `src/models/swiper.py` - Database models and request/response schemas
 - `src/services/ai_personalization.py` - Three-stage personalization engine
@@ -194,7 +189,6 @@ GET /analytics/videos/{video_id}
 ### Stage 1: Rules (✅ Implemented)
 
 **Simple, deterministic branching:**
-
 - Fast scrollers → shorter content
 - Mobile users → vertical format
 - Hover > 5s → detailed features
@@ -205,7 +199,6 @@ GET /analytics/videos/{video_id}
 ### Stage 2: Bandits (✅ Implemented)
 
 **Multi-armed bandit optimization:**
-
 - Learns which narrative arcs convert best
 - Balances exploration vs. exploitation
 - Builds conversion intelligence dataset
@@ -216,7 +209,6 @@ GET /analytics/videos/{video_id}
 ### Stage 3: Generative (✅ Framework Ready)
 
 **Fully AI-generated content:**
-
 - Custom voiceovers per user
 - Dynamic scene substitution
 - Personalized soundtracks
@@ -231,38 +223,32 @@ GET /analytics/videos/{video_id}
 ### Core Tables
 
 **videos**
-
 - Adaptive runtime ranges (min/max)
 - Premium Beacon settings (geofence, retailer)
 - Personalization stage (rules/bandits/generative)
 - Performance metrics
 
 **products**
-
 - Multi-retailer support
 - Dynamic pricing
 - Inventory sync
 
 **product_overlays**
-
 - Time-based appearance (start/end seconds)
 - Clickable hotspots (position, shape)
 - CTA customization
 
 **persuasion_points**
-
 - Target audience (parent, spouse, manager)
 - Delivery method (dialogue, voiceover, text)
 - Emphasis level (subtle, moderate, explicit)
 
 **user_interactions**
-
 - Granular event tracking (view, click, purchase)
 - Location context (for Premium Beacons)
 - Behavioral signals (scroll, hover)
 
 **video_analytics**
-
 - Time-series performance data
 - Runtime mode distribution
 - Persuasion effectiveness
@@ -273,32 +259,27 @@ GET /analytics/videos/{video_id}
 ## API Endpoints
 
 ### Videos
-
 - `POST /videos` - Create video
 - `GET /videos` - List videos (with filters)
 - `GET /videos/{id}` - Get video details
 - `POST /videos/play` - **Adaptive playback** ⭐
 
 ### Products
-
 - `POST /products` - Create product
 - `GET /products` - List products
 - `POST /products/overlays` - Add shoppable overlay
 
 ### Persuasion Layer
-
 - `POST /persuasion-points` - Add talking points
 - `GET /persuasion-points` - List points (filtered)
 
 ### Interactions & Analytics
-
 - `POST /interactions` - Log user action
 - `GET /interactions` - Query interactions
 - `GET /analytics/videos/{id}` - Video analytics
 - `GET /analytics/dashboard` - Platform overview
 
 ### Retailers
-
 - `POST /retailers` - Register retail partner
 - `GET /retailers` - List retailers
 - `GET /retailers/{id}/performance` - Retailer ROI
@@ -308,7 +289,6 @@ GET /analytics/videos/{video_id}
 ## Tech Stack
 
 **Backend:**
-
 - FastAPI (Python 3.11+)
 - SQLAlchemy + PostgreSQL
 - Redis (caching)
@@ -316,19 +296,16 @@ GET /analytics/videos/{video_id}
 - Google Cloud CDN (delivery)
 
 **AI/ML:**
-
 - Claude Agent SDK (recommendations, moderation)
 - Gemini 2.0 Pro (video analysis, insights)
 - Sentence Transformers (semantic search)
 
 **Video:**
-
 - FFmpeg (encoding)
 - HLS/DASH (adaptive streaming)
 - Remotion (future: programmatic generation)
 
 **Infrastructure:**
-
 - Google Kubernetes Engine (GKE)
 - Cloud CDN (low-latency delivery)
 - Prometheus + Grafana (monitoring)
@@ -386,13 +363,11 @@ CDN_BASE_URL=https://cdn.swiper.com
 ## Example Use Case: Premium Beacon
 
 ### Scenario
-
 **Family drives to Walmart, 45 minutes away, to buy a Superman doll.**
 
 ### Swiper Experience
 
 **1. Departure**
-
 ```
 🚗 Kids open Swiper app in backseat
 📍 App detects: "Walmart 45 mins away"
@@ -401,7 +376,6 @@ CDN_BASE_URL=https://cdn.swiper.com
 ```
 
 **2. En Route**
-
 ```
 🎥 Kids watch compressed Superman story
 🗣️ Persuasion: "This toy is safe and durable!"
@@ -409,7 +383,6 @@ CDN_BASE_URL=https://cdn.swiper.com
 ```
 
 **3. Arrival**
-
 ```
 🎬 Movie ends with cliffhanger
 🔒 "Buy Superman doll to unlock Part 2!"
@@ -417,14 +390,12 @@ CDN_BASE_URL=https://cdn.swiper.com
 ```
 
 **4. In-Store**
-
 ```
 🛒 Buys Superman doll ($29.99)
 📱 Scans receipt → Part 2 unlocked
 ```
 
 **5. Return Trip**
-
 ```
 🚗 Kids watch Part 2 (45 min)
 😊 Full story completed
@@ -432,7 +403,6 @@ CDN_BASE_URL=https://cdn.swiper.com
 ```
 
 ### Result
-
 - **User**: 90min entertainment, kids happy, worth $30
 - **Retailer**: Guaranteed store visit + purchase
 - **Brand**: IP monetized via film + merch
@@ -474,19 +444,15 @@ CDN_BASE_URL=https://cdn.swiper.com
 ## Competitive Advantages
 
 ### 1. Data Moat
-
 Every session = A/B test. Learns which arcs convert for which audiences. Competitors can't replicate without years of data.
 
 ### 2. Behavioral Moat
-
 Only platform targeting household decision chains. Psychology dataset of which talking points close deals.
 
 ### 3. Content Moat
-
 First-mover in time-collapsing branded entertainment. Retailer relationships + location data integration.
 
 ### 4. Technical Moat
-
 1:1 personalized narratives at scale. Requires deep AI integration + caching infra.
 
 ---
@@ -494,13 +460,11 @@ First-mover in time-collapsing branded entertainment. Retailer relationships + l
 ## Documentation
 
 ### Full Docs
-
 - **[Platform Overview](docs/swiper-platform.md)** - Complete vision, strategy, monetization
 - **[API Examples](docs/swiper-api-examples.md)** - Usage examples, code samples
 - **[API Reference](http://localhost:8000/docs)** - Interactive Swagger UI
 
 ### Code Documentation
-
 - `src/api/swiper.py` - Main API implementation
 - `src/models/swiper.py` - Database models
 - `src/services/ai_personalization.py` - AI engine
@@ -510,7 +474,6 @@ First-mover in time-collapsing branded entertainment. Retailer relationships + l
 ## Roadmap
 
 ### ✅ Phase 1: MVP (Completed)
-
 - Core FastAPI service
 - Database models
 - Rules-based personalization
@@ -519,7 +482,6 @@ First-mover in time-collapsing branded entertainment. Retailer relationships + l
 - Analytics tracking
 
 ### 🔲 Phase 2: Premium Beacons (Next)
-
 - Location geofencing
 - Time-collapsing algorithm
 - CarPlay / Android Auto
@@ -528,14 +490,12 @@ First-mover in time-collapsing branded entertainment. Retailer relationships + l
 - First pilot (Walmart/Target)
 
 ### 🔲 Phase 3: AI Advancement (Future)
-
 - Multi-armed bandit optimization
 - User segmentation
 - Arc performance dashboard
 - Data flywheel activation
 
 ### 🔲 Phase 4: Generative AI (Year 2+)
-
 - Claude/Gemini integration
 - Programmatic video generation
 - Voice cloning
@@ -592,8 +552,8 @@ Proprietary. © 2025 pnkln-stack Platform. All rights reserved.
 
 ---
 
-_Start the server: `python src/api/swiper.py`_
+*Start the server: `python src/api/swiper.py`*
 
-_Visit docs: http://localhost:8000/docs_
+*Visit docs: http://localhost:8000/docs*
 
-_Build the future: Create your first Premium Beacon!_
+*Build the future: Create your first Premium Beacon!*

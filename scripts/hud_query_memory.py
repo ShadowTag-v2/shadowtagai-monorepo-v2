@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""HUD Query Memory — Cor.Gemini Sovereign RAG v2
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+HUD Query Memory — Cor.Gemini Sovereign RAG v2
 Queries local ChromaDB + beads_index.sqlite using all-MiniLM-L6-v2.
 Fixes: explicit embed_fn binding (no SequentialMemoryService abstraction dead-end).
 
@@ -25,6 +27,7 @@ def _get_embedder():
     try:
         from sentence_transformers import SentenceTransformer
     except ImportError:
+        print("[ERROR] Run: pip install sentence-transformers", file=sys.stderr)
         sys.exit(1)
     return SentenceTransformer(EMBED_MODEL)
 
@@ -33,6 +36,7 @@ def _get_chroma_collection():
     try:
         import chromadb
     except ImportError:
+        print("[ERROR] Run: pip install chromadb", file=sys.stderr)
         sys.exit(1)
     client = chromadb.PersistentClient(path=str(CHROMA_PATH))
     return client.get_or_create_collection(COLLECTION_NAME)
@@ -44,6 +48,7 @@ def query_chroma(query: str, top_k: int) -> list[dict]:
     col = _get_chroma_collection()
     count = col.count()
     if count == 0:
+        print(f"[WARN] '{COLLECTION_NAME}' is empty — run: python scripts/reindex_monorepo.py", file=sys.stderr)
         return []
     n = min(top_k, count)
     results = col.query(query_embeddings=[vec], n_results=n, include=["documents", "metadatas", "distances"])
@@ -52,7 +57,6 @@ def query_chroma(query: str, top_k: int) -> list[dict]:
         results["documents"][0],
         results["metadatas"][0],
         results["distances"][0],
-        strict=False,
     ):
         hits.append(
             {
@@ -60,14 +64,14 @@ def query_chroma(query: str, top_k: int) -> list[dict]:
                 "source": meta.get("source", meta.get("filename", "unknown")),
                 "chunk": meta.get("chunk", 0),
                 "distance": round(float(dist), 4),
-            },
+            }
         )
     return hits
 
 
 def query_beads(query: str, top_k: int) -> list[dict]:
     """Full-text scan of beads_index.sqlite, corrected path binding."""
-    # Resolve path relative to monorepo root — fixes the stale ShadowTag-v2-stack path bug
+    # Resolve path relative to monorepo root — fixes the stale aiyou-stack path bug
     db_path = BEADS_DB
     if not db_path.exists():
         # Fallback: old location
@@ -92,7 +96,7 @@ def query_beads(query: str, top_k: int) -> list[dict]:
 
     # Fallback: keyword scan on beads_registry (path only)
     try:
-        term = query.split(maxsplit=1)[0] if query.split() else query
+        term = query.split()[0] if query.split() else query
         cur.execute(
             "SELECT filepath FROM beads_registry WHERE filepath LIKE ? LIMIT ?",
             (f"%{term}%", top_k),
@@ -116,22 +120,31 @@ def main() -> None:
     query = " ".join(args.query)
     top_k = args.top
 
+    print(f"\n[HUD] Query   : {query!r}")
+    print(f"[HUD] Chroma  : {CHROMA_PATH}")
+    print(f"[HUD] Beads   : {BEADS_DB}")
+    print(f"[HUD] Model   : {EMBED_MODEL}\n")
+
     if not args.beads_only:
         hits = query_chroma(query, top_k)
         if hits:
-            for _i, h in enumerate(hits, 1):  # noqa: B007
-                pass
+            print(f"=== ChromaDB ({len(hits)} results) ===")
+            for i, h in enumerate(hits, 1):
+                print(f"[{i}] dist={h['distance']}  chunk={h['chunk']}  {h['source']}")
+                print(f"     {h['text'][:200]}\n")
         else:
-            pass
+            print("=== ChromaDB: 0 results ===\n")
 
     if not args.chroma_only:
         hits = query_beads(query, top_k)
         if hits:
-            for _i, h in enumerate(hits, 1):
+            print(f"=== Beads SQLite ({len(hits)} results) ===")
+            for i, h in enumerate(hits, 1):
+                print(f"[{i}] {h['source']}")
                 if h["text"] != "(path match only)":
-                    pass
+                    print(f"     {h['text'][:200]}\n")
         else:
-            pass
+            print("=== Beads SQLite: 0 results ===\n")
 
 
 if __name__ == "__main__":

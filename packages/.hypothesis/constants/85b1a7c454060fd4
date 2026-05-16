@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_services/extract_memories.py
+# hypothesis_version: 6.151.5
+
+[0.0, 60.0, 1000, '.claude', 'Extraction error: %s', 'assistant', 'bash', 'coalesced', 'content', 'direct_write', 'file_edit', 'file_path', 'file_read', 'file_write', 'glob', 'grep', 'input', 'memory', 'name', 'subagent', 'throttled', 'tool_use', 'type', 'user', 'uuid']

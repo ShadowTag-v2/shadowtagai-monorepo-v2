@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from pathlib import Path
 
 from service.app.adapters.authority_state import AuthorityState
@@ -46,3 +47,5 @@ base = Path(".agent/memory")
     "# Common Tasks\n\n## Session bootstrap\nGET /api/hydrate-pack before any substantial reasoning.\n",
     encoding="utf-8",
 )
+
+print({"generated": str(base)})

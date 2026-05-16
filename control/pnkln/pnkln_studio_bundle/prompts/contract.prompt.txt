@@ -1,0 +1,3 @@
+Summarize positions into a two-party matrix with proposed resolutions. Output JSON fields: issues, party_a, party_b, deltas, proposed.
+Input:
+{{input}}

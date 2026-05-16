@@ -1,7 +1,7 @@
-# MBA Strategic Frameworks for ShadowTag-v2JR
+# MBA Strategic Frameworks for AiYouJR
 
 **Purpose:** Apply proven MBA frameworks to validate strategic decisions
-**Integration:** Used in ShadowTag-v2JR Reasons Gate + CRM-JR analysis
+**Integration:** Used in AiYouJR Reasons Gate + CRM-JR analysis
 **Source:** Harvard Business School, McKinsey, BCG, Blue Ocean Strategy
 
 ---
@@ -411,7 +411,7 @@ Revenue
 - Investment: 10% of resources
 - Examples: AI-powered contract intelligence, blockchain notarization
 
-### ShadowTagAi Portfolio Mapping
+### Pnkln Portfolio Mapping
 
 | Product/Feature | Horizon | Revenue (Current) | Revenue (Projected) | Investment | Strategic Role |
 |-----------------|---------|-------------------|---------------------|------------|----------------|
@@ -756,7 +756,7 @@ Need to decide on...?
 └─ Product pruning → BCG Matrix (stars vs dogs?)
 ```
 
-**Integration with ShadowTag-v2JR:**
+**Integration with AiYouJR:**
 
 1. **Purpose Gate** → Use Strategy Diamond (arenas, staging)
 2. **Reasons Gate** → Use VRIO, Value Stick, Three Horizons
@@ -766,5 +766,5 @@ Need to decide on...?
 
 **Last Updated:** 2025-11-15
 **Source:** Harvard Business School, McKinsey, Blue Ocean Strategy Institute
-**Integration:** ShadowTag-v2JR Reasons Gate + CRM-JR strategic analysis
-**Maintained By:** ShadowTagAi Strategy (Erik)
+**Integration:** AiYouJR Reasons Gate + CRM-JR strategic analysis
+**Maintained By:** Pnkln Strategy (Erik)

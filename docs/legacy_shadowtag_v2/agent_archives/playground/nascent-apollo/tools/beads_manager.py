@@ -1,6 +1,7 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 # --- V5 HIPPOCAMPUS: THE BEADS ENGINE ---
 # Purpose: Long-Term Memory & Decision Logging.
@@ -25,7 +26,7 @@ class BeadsEngine:
         Logs an action to the infinite tape.
         """
         event = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "action": action,
             "details": details,
             "agent_version": "Omega-V5",

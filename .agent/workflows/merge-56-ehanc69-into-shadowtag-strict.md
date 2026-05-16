@@ -14,10 +14,10 @@ CANONICAL PROJECT
 shadowtag-omega-v4
 
 CANONICAL MODEL FAMILY
-gemini-3.1-flash-lite-preview
+gemini-3.1-family
 
 PRIMARY OBJECTIVE
-Complete the fold-in of all 56 ehanc69 repos into the ShadowTagAI monorepo truthfully, without claiming completion early, and without creating a second source of truth.
+Complete the fold-in of all 56 ehanc69 repos into the ShadowTag monorepo truthfully, without claiming completion early, and without creating a second source of truth.
 
 NON-NEGOTIABLES
 
@@ -30,7 +30,7 @@ NON-NEGOTIABLES
    - raw codebase
 
 2. Workspace rule
-   - treat shadowtag-omega-v4/Monorepo-Uphillsnowball as the only valid workspace
+   - treat ShadowTag-v2/Monorepo-Uphillsnowball as the only valid workspace
    - do not use parent dirs, sibling dirs, or historical paths as implicit context
    - fail closed on path ambiguity
 

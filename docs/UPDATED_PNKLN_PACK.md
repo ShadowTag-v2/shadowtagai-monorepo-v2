@@ -1,4 +1,4 @@
-# UPDATED_PNKLN_PACK.md
+# UPDATED_pnkln_PACK.md
 
 ## Canonical surviving files
 
@@ -12,7 +12,7 @@
 - `.vscode/cline_mcp_settings.json`
 
 ### Product env templates
-- `apps/kovelai/.env.example`
+- `apps/counselconduit/.env.example`
 - `labs/uphillsnowball/.env.example`
 
 ### Runtime support
@@ -34,13 +34,12 @@ This pack supersedes:
 - older partial pnkln pack drafts
 - stale cross-thread MCP snippets
 - non-canonical repo-root interpretations
-- `ShadowTag-v2_stack` path references (real path is `aiyou_stack`)
-- `counselconduit` branding (renamed to `kovelai`)
 
 ## Current truth
 
-- four repos are canonical in `monorepo_manifest.yaml`
-- one MCP config is canonical (7 servers, latest-only pack)
+- `ShadowTag-v2/Monorepo-Uphillsnowball` is the one canonical root
+- the four `apps/aiyou_stack/*` repos are folded-in components, not canonical roots
+- one MCP config is canonical: `antigravity-mcp-config.json`
 - all secrets belong in `.env`
-- `kovelai` (formerly counselconduit) is the Google-native billing gateway
+- `counselconduit` is the Google-native MVP product path
 - `uphillsnowball` is the local Apple Silicon lab path

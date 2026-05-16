@@ -1,0 +1,11 @@
+(() => {}).length;
+typeof (() => {});
+export default (() => {})();
+(() => {})()``;
+(() => {})``;
+new (function () {})();
+() => {};
+a = function f() {} || b;
+(() => {}) && a;
+a + (() => {});
+new (function () {})();

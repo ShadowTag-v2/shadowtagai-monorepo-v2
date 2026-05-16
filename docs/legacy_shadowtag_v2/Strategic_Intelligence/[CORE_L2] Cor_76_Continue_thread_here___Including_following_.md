@@ -37,7 +37,7 @@ Deliverable: Investor-ready PDF artifact (Jobs-quality design)
 Priority: HIGH (ERCOT queue timing: file Q2 2025 for Q4 2026 sync)
 Option B: GKE Inference Deployment Scripts
 Task: Per Erik's original directive: GKE Inference Ref-Arch
-Scope: Terraform configs, Ray Serve/vLLM manifests, Judge 6 hybrid architecture, LangGraph state persistence
+Scope: Terraform configs, Ray Serve/vLLM manifests, Judge #6 hybrid architecture, LangGraph state persistence
 Time: 2-3 hours
 Context: pnkln Core Stack™ deployment on Vertex AI Workbench → GKE
 Option C: Sequential Execution (Erik's Original Plan)
@@ -52,10 +52,10 @@ Memory Edit #13 (Current):
 $190M pilot, DOE 80%@4.5%, $34/MWh arbitrage.
 6-pg manifesto skeleton done (Jobs). Awaiting prose or GKE next."
 What's In userMemories (Background Context):
-Erik's operational doctrine: JR (maximize value), YRM (Compliance Framework risk), Cor (unified brain), NS (nervous system)
+Erik's operational doctrine: JR (maximize value), YRM (ATP 5-19 risk), Cor (unified brain), NS (nervous system)
 pnkln Core Stack™ architecture priorities
 Google Hypercomputer LLM allocation (Gemini 40%, Claude 35%, GPT-5 15%, Grok 5%, others 5%)
-Judge 6 hybrid architecture (p99 ≤90ms latency SLA)
+Judge #6 hybrid architecture (p99 ≤90ms latency SLA)
 Bootstrap execution discipline ($0K starting capital)
 Google Drive access: DEGRADED (proceeding with conversation memory + GitHub sources)
 
@@ -101,7 +101,7 @@ Next action decision point (Option A/B/C)
 Step 2: Confirm Direction
 Ask Erik which path to execute:
 "Build the flesh" → Complete 6-page manifesto prose (90 min)
-"GKE deployment" → Build inference scripts + Judge 6 architecture (2-3 hrs)
+"GKE deployment" → Build inference scripts + Judge #6 architecture (2-3 hrs)
 "Sequential" → Gulfstream THEN GKE (Erik's original Option C)
 Step 3: Execute With Jobs-Grade Standards
 If building manifesto:
@@ -113,20 +113,20 @@ Deliverable: Clean PDF artifact with proper typography
 If building GKE deployment:
 Read the GitHub ref-arch doc FIRST
 Follow pnkln doctrine: JR-compliant decisions, YRM risk gates, p99 ≤90ms SLA
-Judge 6 hybrid architecture (Gemini fine-tune + PyTorch + rules engine)
+Judge #6 hybrid architecture (Gemini fine-tune + PyTorch + rules engine)
 LangGraph for state persistence only (NOT multi-agent orchestration)
 Deliverable: Working Terraform + K8s manifests + deployment SOP
 
 FINAL CONTEXT NOTES
 Erik's Communication Style:
 Direct, results-oriented, zero fluff
-Military precision (Compliance Framework risk management framework)
+Military precision (ATP 5-19 risk management framework)
 Expects tool usage WITHOUT asking permission first
 Values craftsmanship + execution speed ("ultrathink" philosophy)
 Bootstrap discipline: prove with minimal capital before scaling
 Key Phrases to Watch:
 "JR" = Business Judgment Rule (maximize value in every decision)
-"YRM" = Your Risk Management (Compliance Framework stratification: RA-1 → RA-4)
+"YRM" = Your Risk Management (ATP 5-19 stratification: RA-1 → RA-4)
 "Cor" = Cognitive core / unified brain (strategic framework documents)
 "NS" = Nervous system (mesh communication layer)
 "pnkln Core Stack™" = AI governance & orchestration platform
@@ -134,7 +134,7 @@ Key Phrases to Watch:
 Current Priorities (From userMemories):
 Gulfstream Subsea (business plan → capital raise)
 pnkln Core Stack™ deployment (Vertex AI Workbench → GKE)
-Judge 6 hybrid architecture (synchronous enforcement, p99 ≤90ms)
+Judge #6 hybrid architecture (synchronous enforcement, p99 ≤90ms)
 Google partnership strategy (Hypercomputer architecture)
 
 READY FOR TRANSFER
@@ -646,13 +646,13 @@ The Pods are 100+ feet down. This provides physical invulnerability to 99.9% of 
 
 We will design the "Atlas Gantry" ICS using CISA's "Seven Steps to Effectively Defend Industrial Control Systems" as our Bible.  
 
-Application Whitelisting: The Gantry's controller only runs pnkln's signed code, governed by Judge 6.
+Application Whitelisting: The Gantry's controller only runs pnkln's signed code, governed by Judge #6.
 Configuration/Patch Management: All patches are delivered physically to the Service Bay.
 Reduce Attack Surface: The ICS network is physically air-gapped. It never touches the internet.
 Defendable Environment: The HMI (the iPad) is on a separate, isolated network from the Gantry's PLC.
 Manage Authentication: Multi-factor authentication is required to even see the HMI's "CONFIRM" button.
 Secure Remote Access: We apply the "Jobs" principle: "No." There is no remote access. Period.
-Monitor & Respond: Our jr_engine (Compliance Framework) runs 24/7, monitoring the ICS for anomalous behavior.
+Monitor & Respond: Our jr_engine (ATP 5-19) runs 24/7, monitoring the ICS for anomalous behavior.
 
 4.3 The Atlas Frame (Seismic & Acoustic)
 
@@ -667,7 +667,7 @@ Acoustic Attack: New research shows a critical vulnerability in subsea data cent
 
 The Elegant Solution: The same seismic isolation system we designed for earthquakes will also dampen the high-frequency vibrations from an acoustic attack. We solved two "p99" threats with one beautiful, simple component.  
 
-Table 3: "Judge 6" Threat & Mitigation Matrix
+Table 3: "Judge #6" Threat & Mitigation Matrix
 ￼
 
  

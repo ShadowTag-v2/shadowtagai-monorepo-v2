@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Kosmos Smoke Test Template
 
 Component-level validation tests.
@@ -10,9 +11,7 @@ import os
 import sys
 
 # Add project root to path
-PROJECT_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
-)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 sys.path.insert(0, PROJECT_ROOT)
 
 
@@ -38,10 +37,7 @@ def test_workflow_initialization():
     try:
         from kosmos.workflow.research_loop import ResearchWorkflow
 
-        ResearchWorkflow(
-            research_objective="Test objective",
-            artifacts_dir="./test_artifacts",
-        )
+        ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
         print("  [OK] Workflow created")
         return True
     except Exception as e:
@@ -71,8 +67,9 @@ def test_provider_modules():
     if providers:
         print(f"  [OK] Loaded providers: {', '.join(providers)}")
         return True
-    print("  [WARN] No providers loaded")
-    return True  # Not critical
+    else:
+        print("  [WARN] No providers loaded")
+        return True  # Not critical
 
 
 def test_gap_modules():
@@ -117,8 +114,9 @@ async def test_simple_llm_call():
         if response and "test" in response.lower():
             print("  [OK] LLM responded")
             return True
-        print(f"  [WARN] Unexpected response: {response[:50]}...")
-        return True
+        else:
+            print(f"  [WARN] Unexpected response: {response[:50]}...")
+            return True
     except Exception as e:
         print(f"  [SKIP] LLM test skipped: {e}")
         return True  # Not critical for smoke test

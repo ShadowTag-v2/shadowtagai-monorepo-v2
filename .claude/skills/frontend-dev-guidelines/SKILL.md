@@ -1,6 +1,6 @@
 # Frontend Development Guidelines
 
-**Purpose:** Enforce React 19 + TypeScript + TanStack patterns for ShadowTagAi frontends
+**Purpose:** Enforce React 19 + TypeScript + TanStack patterns for Pnkln frontends
 **Enforcement:** `"suggest"`
 **Priority:** `"high"`
 **Version:** 1.0.0
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This skill provides best practices for building modern, performant React applications using ShadowTagAi's frontend stack.
+This skill provides best practices for building modern, performant React applications using Pnkln's frontend stack.
 
 **Tech Stack:**
 - **Framework:** React 19 with TypeScript 5+
@@ -466,5 +466,5 @@ describe('UserCard', () => {
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi Frontend Team
+**Maintained By:** Pnkln Frontend Team
 **Stack:** React 19 + TypeScript 5 + TanStack + MUI v7 + Vite

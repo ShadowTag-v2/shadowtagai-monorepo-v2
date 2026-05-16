@@ -1,0 +1,49 @@
+# Betterleaks Ignore List — V25 Pinnacle
+# Entries here are confirmed false positives from security scanning.
+#
+# Rationale: The Lighthouse HTML reports contain inline scripts with
+# Google Fonts URLs and measurement IDs that trip the "Generic API Key"
+# and "Google API Key" detectors. These are public browser identifiers,
+# not private credentials.
+
+# Lighthouse audit artifacts (HTML reports contain inline measurement IDs)
+.lighthouseci/**
+lighthouse-*.html
+.reports/lighthouse/**
+
+# Firebase config (apiKey is a public browser identifier per Firebase docs)
+# See: https://firebase.google.com/docs/web/setup#available-libraries
+apps/headfade/pwa/src/lib/firebase.ts:apiKey
+apps/headfade/pwa/src/lib/firebase.ts:messagingSenderId
+
+# VCR test cassettes (contain sanitized mock tokens)
+tests/vcr_cassettes/**
+
+# Skill/doc files that reference example API keys in documentation
+docs/OMNI_BOOT_V25.md
+docs/SYSTEM_OVERRIDE.md
+
+# Agent fold-in reports (contain obfuscated/scrambled keys from ingested repos)
+.agent/reports/**
+
+# Stitch SDK test stubs (non-secret test-key placeholders)
+.stitch-sdk/scripts/publish-readiness.ts
+
+# K8s secret templates/examples (contain "REPLACE_WITH" / "your_*_here" placeholders)
+apps/aiyou_stack/aiyou-fastapi-services/configs/secrets.example.yml
+apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/secrets.yaml.example
+apps/aiyou_stack/aiyou-fastapi-services/infra/k8s/secrets.yaml.template
+apps/aiyou_stack/aiyou-fastapi-services/infrastructure/k8s/secrets.yaml.example
+apps/aiyou_stack/aiyou-fastapi-services/infrastructure/k8s/secrets.yaml.template
+
+# K8s (root) and pipeline secret templates
+apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.example
+apps/aiyou_stack/aiyou-fastapi-services/k8s/secrets.yaml.template
+apps/aiyou_stack/aiyou-fastapi-services/nightly_intel_pipeline/kubernetes/secret.yaml.example
+apps/aiyou_stack/aiyou-fastapi-services/voice_consensus/k8s/05-secrets.yaml.template
+
+# Test config files (contain fake/placeholder API keys for test isolation)
+apps/aiyou_stack/aiyou-fastapi-services/tests/test_config.py
+
+# Virtual environments (contain external libraries with test/example keys in their source code)
+.venv-ml/**

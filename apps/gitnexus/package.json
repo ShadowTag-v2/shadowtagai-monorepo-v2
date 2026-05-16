@@ -4,10 +4,10 @@
   "description": "GitNexus codebase knowledge graph — folded into Monorepo-Uphillsnowball",
   "private": true,
   "scripts": {
-    "setup": "npm install && npx gitnexus setup ../../ --output .nexus",
-    "serve": "npx gitnexus serve --port 3742",
-    "mcp": "npx gitnexus mcp",
-    "index": "npx gitnexus analyze ../../ --langs ts,tsx,py,js"
+    "setup": "npm install && npx nexus setup ../../ --output .nexus",
+    "serve": "npx nexus serve --port 3742",
+    "mcp": "npx nexus mcp",
+    "index": "npx nexus analyze ../../ --langs ts,tsx,py,js"
   },
   "dependencies": {
     "gitnexus": "latest"

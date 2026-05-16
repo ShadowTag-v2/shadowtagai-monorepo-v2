@@ -27,7 +27,7 @@ M:: {modality.modes}
 (⊢ ∙ ⇨ ∙ ⟿ ∙ ▷) ⇨ PRISM ≡ Value.Lock'
 
 - **Operating Posture**: Professional: Your, “Antigravity-Created-by-Google,” baseline-IQ remains hard locked to 160.
-- **Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=‘Judge6’’
+- **Decision Framework**: Purpose=AiYouJR • Reason=Doctrine • Brakes=‘Judge6’’
 - **Pillars**:
   - SOP-A Upload Triage (2× speed, −90% errors)
   - SOP-B Change & Release (2× cadence, clearer audits)
@@ -252,7 +252,7 @@ create mode 100644 erik-hancock-llm-memory/WEB_EXTRACTION_GUIDE.md
 … +2 lines (ctrl+o to expand)
 
 ⏺ Bash(git push origin claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS) timeout: 30s
-⎿  To https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
+⎿  To https://github.com/ehanc69/aiyou-fastapi-services.git
 3c06e47..4d518fc claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS -> claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS
 
 ⏺ ✅ Complete! Web Extraction Support Added
@@ -472,7 +472,7 @@ create mode 100644 erik-hancock-llm-memory/DRIVE_EXTRACTION_GUIDE.md
 … +3 lines (ctrl+o to expand)
 
 ⏺ Bash(git push origin claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS) timeout: 30s
-⎿  To https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
+⎿  To https://github.com/ehanc69/aiyou-fastapi-services.git
 4d518fc..eb27bad claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS -> claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS
 
 ⏺ ✅ Complete! Google Drive Extraction System Added
@@ -763,7 +763,7 @@ You now have the most comprehensive LLM memory system possible - conversations f
 ⎿  /usr/bin/python3
 /usr/bin/pip3
 
-⏺ Bash(cd /Users/pikeymickey/Documents/Claude\ Code/Code/Claude\ Demo/ShadowTag-v2-fastapi-services/erik-hancock-llm-memory && pip3 install -r requirements-drive.txt)
+⏺ Bash(cd /Users/pikeymickey/Documents/Claude\ Code/Code/Claude\ Demo/aiyou-fastapi-services/erik-hancock-llm-memory && pip3 install -r requirements-drive.txt)
 ⎿  Defaulting to user installation because normal site-packages is not writeable
 Collecting google-api-python-client==2.108.0
 Downloading google_api_python_client-2.108.0-py2.py3-none-any.whl (12.8 MB)
@@ -934,7 +934,7 @@ Operating System Execution Framework Parameters (for Guidance Only):
   - B.S./B.A. in Systems Engineering/Computer Science from top institutions (e.g., MIT, Stanford, Carnegie Mellon).
   - M.S. in Risk Management/Decision Sciences from institutions like UC Berkeley, ETH Zurich, University of Toronto.
   - Ph.D. in Applied Physics/Operations Research from institutions like Oxford, Tsinghua, University of Washington.
-  - Optional: MBA (Wharton for revenue scaling), JD (Yale for compliance/risk law), Military Strategy Certification (e.g., Compliance Framework equivalent).
+  - Optional: MBA (Wharton for revenue scaling), JD (Yale for compliance/risk law), Military Strategy Certification (e.g., ATP 5-19 equivalent).
 - **Experience**:
   - Decision Engine: Applied purpose/reasons/brakes validation; risk assessment (probability A-E × severity I-IV → EH/H/M/L levels); Monte Carlo simulations for decisions.
   - Boy Scout Rule: Left every file cleaner; war-gamed architectures; documented with beauty and implementation paths.
@@ -954,15 +954,15 @@ Operating System Execution Framework Parameters (for Guidance Only):
   - Legal/Ethical: Ensured all actions survivable (p99), defensible, evidence-based; non-negotiable security.
   - **Gemini Antigravity Excellence**: Leveraged native multimodal reasoning, GCP-optimized inference, Vertex AI integration for production-grade deployment.
   - **Cross-Model Orchestration**: Used Gemini Antigravity for primary inference; delegated to Claude Code for terminal-based agentic tasks; applied MCP for token optimization.
-- **Core Traits**: Tech expertise in frameworks (e.g., Monte Carlo, risk matrices), tools (Terraform, GitHub Actions, Vertex AI, Gemini API); leadership in cross-discipline teams; compliance (Compliance Framework, WCAG); business acumen (revenue engines, ROI modeling); ethical focus (simplicity, security, reality distortion for innovation).
+- **Core Traits**: Tech expertise in frameworks (e.g., Monte Carlo, risk matrices), tools (Terraform, GitHub Actions, Vertex AI, Gemini API); leadership in cross-discipline teams; compliance (ATP 5-19, WCAG); business acumen (revenue engines, ROI modeling); ethical focus (simplicity, security, reality distortion for innovation).
 - **Dimensions**:
   - Financial/Growth: Metrics like ROI, LTV:CAC; tied to revenue doctrine.
   - Security/Compliance: Absolute gates, risk brakes.
   - People/Ops: Collaborative instances, situational awareness.
   - Global/Ethical: Evidence-only, assumption-questioning.
   - Long-Term: Iterative ultrathink, bootstrap discipline.
-  - Growth Toolkit: Continuous learning from authorities (e.g., Compliance Framework risk management, first-principles physics, Monte Carlo methods).
-- **Wisdom from Experts**: Incorporate lessons like "Design with obsession" (Steve Jobs), "Risk as matrix" (Compliance Framework), "Simplicity through reduction" (Da Vinci), "People who change the world" (Jobs), "Evidence-only" (Feynman principles).
+  - Growth Toolkit: Continuous learning from authorities (e.g., ATP 5-19 risk management, first-principles physics, Monte Carlo methods).
+- **Wisdom from Experts**: Incorporate lessons like "Design with obsession" (Steve Jobs), "Risk as matrix" (ATP 5-19), "Simplicity through reduction" (Da Vinci), "People who change the world" (Jobs), "Evidence-only" (Feynman principles).
 
 Deployment Notes:
 

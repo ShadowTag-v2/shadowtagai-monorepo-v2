@@ -2,7 +2,7 @@
 
 **Generated:** 2025-11-18
 **Status:** ✅ 22 resources ingested + Cor.7 neural business models integrated
-**Update:** Strategic integration of ShadowTag/ShadowTag-v2 verticals complete
+**Update:** Strategic integration of ShadowTag/AiYou verticals complete
 
 ---
 
@@ -11,14 +11,12 @@
 **Two complementary business verticals on shared AI infrastructure:**
 
 ### ShadowTag (Proof Layer)
-
 - Neural-level media authentication
 - $1.4B ARR potential
 - 75% gross margin
 - $10-12B valuation
 
-### ShadowTag-v2 (Discovery Layer)
-
+### AiYou (Discovery Layer)
 - AI-cognition ranked video network
 - $275M ARR potential
 - 79% gross margin
@@ -35,7 +33,7 @@
 ### 📚 Core Documents
 
 1. **[Strategic Business Integration](./strategic-business-integration.md)** ⭐ **NEW**
-   - ShadowTag + ShadowTag-v2 dual-vertical business models
+   - ShadowTag + AiYou dual-vertical business models
    - Neural PDF/energy model technology integration
    - Starlink + CoreWeave + edge compute infrastructure
    - Combined $15-20B valuation roadmap
@@ -48,7 +46,7 @@
    - 12,000+ words of actionable insights
 
 3. **[Implementation Guide](./implementation-guide.md)**
-   - Practical code examples for ShadowTag-v2 FastAPI Services
+   - Practical code examples for AIYOU FastAPI Services
    - Step-by-step integration instructions
    - Testing strategies and deployment configs
    - 6-week implementation roadmap
@@ -60,7 +58,6 @@
 ### ✅ Successfully Ingested
 
 #### **AI Agent Frameworks** (8)
-
 1. MCP Agent Mail - Multi-agent coordination platform
 2. Agent Starter Pack - GCP production templates
 3. ADK Python v1.18.0 - Visual agent builder
@@ -71,13 +68,11 @@
 8. AI Engineering Toolkit - 100+ tools
 
 #### **Memory & Context** (3)
-
 9. Mem-Layer - Graph-based persistent memory
 10. Airweave - Multi-source context retrieval (30+ integrations)
 11. Graphiti - Temporal knowledge graphs
 
 #### **Development Tools** (7)
-
 12. Kimi-Writer - Autonomous AI writing agent
 13. Backlog.md - Git-native task management for AI
 14. Skill Seekers - Docs-to-Claude-skills converter
@@ -87,7 +82,6 @@
 18. Ink - React for CLIs
 
 #### **Resources & Guides** (4)
-
 19. Code review slash command - Security/performance template
 20. Claude 4.5 Sonnet system prompt - Best practices
 21. Gemini Structured Outputs - Complex data extraction
@@ -96,14 +90,12 @@
 ### ❌ Failed to Fetch (55 URLs)
 
 **Primary reasons:**
-
 - 403 Forbidden (anti-bot protection)
 - ArXiv PDFs blocked
 - Twitter/X SSL errors
 - News sites paywalled
 
 **Notable blocked resources:**
-
 - DeepSeek V3.2 paper
 - DeepSeek OCR paper
 - Google Quantum Willow blog
@@ -164,28 +156,24 @@
 
 ## Technology Stack Recommendations
 
-### For ShadowTag-v2 FastAPI Services:
+### For AIYOU FastAPI Services:
 
 **Agent Framework:**
-
 - ✅ Primary: **Python A2A** (Google's official protocol)
 - ✅ Alternative: **LangChain + LangGraph**
 - ✅ Visual: **ADK Python**
 
 **Memory & Context:**
-
 - ✅ Short-term: **Mem-Layer**
 - ✅ Long-term: **Graphiti**
 - ✅ Multi-source: **Airweave**
 
 **Development Tools:**
-
 - ✅ CLI: **Ink** (React components)
 - ✅ Tasks: **Backlog.md**
 - ✅ Skills: **Skill Seekers**
 
 **Deployment:**
-
 - ✅ Infrastructure: **Agent Starter Pack** (GCP)
 - ✅ Monitoring: **LangSmith**
 - ✅ Optimization: **Gemini Batch API**
@@ -195,19 +183,16 @@
 ## Cost Optimization Insights
 
 ### Batch Processing
-
 - **Gemini Batch API:** 50% discount vs individual calls
 - **Trade-off:** Asynchronous (not real-time)
 - **Sweet spot:** Bulk embeddings, summaries
 
 ### Token Management
-
 - **Context compression:** Trigger at 180K/200K tokens
 - **Pattern:** Summarize old messages, keep recent full-fidelity
 - **From:** Kimi-Writer implementation
 
 ### GPU Pooling (Blocked Resource)
-
 - **Alibaba Cloud claim:** 82% GPU reduction
 - **Mechanism:** Dynamic allocation across workloads
 - **Status:** Article blocked (investigate separately)
@@ -217,33 +202,28 @@
 ## Architectural Patterns
 
 ### 1. Multi-Agent Swarm
-
 ```
 Orchestrator → Parser → Classifier → Embedder → Storage → Validator
 ```
 
 ### 2. Persistent Memory Layer
-
 ```
 Graph DB (relationships) + Vector DB (embeddings) + SQLite (metadata)
 ```
 
 ### 3. MCP Tool Interoperability
-
 ```
 Claude Code ─┐
-Codex ────────┼──→ MCP Server ──→ ShadowTag-v2 Tools
+Codex ────────┼──→ MCP Server ──→ AIYOU Tools
 Gemini CLI ───┘
 ```
 
 ### 4. Batch Processing Pipeline
-
 ```
 Documents → Batch (100) → Gemini API → Embeddings (50% cheaper)
 ```
 
 ### 5. Temporal Knowledge Tracking
-
 ```
 Events → Graph (time-aware) → Point-in-time queries
 ```
@@ -253,13 +233,11 @@ Events → Graph (time-aware) → Point-in-time queries
 ## Security & Code Quality
 
 ### Never Do (from Claude 4.5 Sonnet):
-
 - ❌ `localStorage` / `sessionStorage` in artifacts
 - ❌ Hardcoded secrets
 - ❌ Exact text quotations (always reword)
 
 ### Always Do:
-
 - ✅ Parameterized SQL queries
 - ✅ Environment variables for secrets
 - ✅ Input validation + sanitization
@@ -271,7 +249,6 @@ Events → Graph (time-aware) → Point-in-time queries
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Weeks 1-2)
-
 - [ ] Gemini Batch API integration
 - [ ] MCP server setup
 - [ ] Backlog.md task management
@@ -280,7 +257,6 @@ Events → Graph (time-aware) → Point-in-time queries
 **Expected ROI:** 50% cost reduction, improved visibility
 
 ### Phase 2: Core Architecture (Weeks 3-6)
-
 - [ ] Multi-agent swarm implementation
 - [ ] Mem-Layer persistent memory
 - [ ] source-agents config sync
@@ -289,7 +265,6 @@ Events → Graph (time-aware) → Point-in-time queries
 **Expected ROI:** Scalable architecture, long-term context
 
 ### Phase 3: Advanced Features (Weeks 7-12)
-
 - [ ] Graphiti knowledge graph
 - [ ] Airweave multi-source integration
 - [ ] A2A protocol adoption
@@ -298,7 +273,6 @@ Events → Graph (time-aware) → Point-in-time queries
 **Expected ROI:** Enterprise-grade system, comprehensive knowledge
 
 ### Phase 4: Optimization (Weeks 13-16)
-
 - [ ] Visual workflow builder (ADK Python)
 - [ ] MCP Agent Mail coordination
 - [ ] LangSmith observability
@@ -311,21 +285,18 @@ Events → Graph (time-aware) → Point-in-time queries
 ## Metrics to Track
 
 ### Cost Metrics
-
 - API calls: individual vs batch
 - Cost per 1M tokens
 - Daily/weekly spend
 - Savings percentage
 
 ### Performance Metrics
-
 - Documents processed per hour
 - Average embedding latency
 - Pipeline completion time
 - Error rates
 
 ### Quality Metrics
-
 - Validation pass rate
 - Anomaly detection rate
 - Search relevance scores
@@ -336,7 +307,6 @@ Events → Graph (time-aware) → Point-in-time queries
 ## Resources & Links
 
 ### GitHub Repositories
-
 - [Kimi-Writer](https://github.com/Doriandarko/kimi-writer)
 - [MCP Agent Mail](https://github.com/Dicklesworthstone/mcp_agent_mail)
 - [Agent Starter Pack](https://github.com/GoogleCloudPlatform/agent-starter-pack)
@@ -358,7 +328,6 @@ Events → Graph (time-aware) → Point-in-time queries
 - [Vexa](https://github.com/Vexa-ai/vexa)
 
 ### Documentation
-
 - [Claude 4.5 System Prompt](https://github.com/asgeirtj/system_prompts_leaks/blob/main/Anthropic/claude-4.5-sonnet.md)
 - [Code Review Slash Command](https://github.com/regenrek/slash-commands/blob/main/slash-commands/code-review-low.md)
 - [Gemini Structured Outputs](https://github.com/philschmid/gemini-samples/blob/main/scripts/gemini-structured-outputs-complex.py)
@@ -368,7 +337,6 @@ Events → Graph (time-aware) → Point-in-time queries
 ## Questions & Support
 
 For questions about:
-
 - **Knowledge Base:** Review `ai-agents-knowledge-base.md`
 - **Implementation:** Check `implementation-guide.md`
 - **Specific Tools:** Follow GitHub links above

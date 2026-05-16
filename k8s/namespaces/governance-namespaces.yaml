@@ -1,0 +1,32 @@
+---
+# Governance Namespace - Policy Enforcement
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: governance
+  labels:
+    app: aiyou-governance
+    tier: control-plane
+    managed-by: pnkln
+
+---
+# Monitoring Namespace - Observability
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    app: aiyou-governance
+    tier: observability
+    managed-by: pnkln
+
+---
+# Execution Namespace - Restricted Execution
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: execution
+  labels:
+    app: aiyou-governance
+    tier: workload
+    managed-by: pnkln

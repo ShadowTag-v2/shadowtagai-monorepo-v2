@@ -156,7 +156,7 @@ cat > "${OUT}" <<REPORT
 ---
 
 ## Examples to audit this week
-- Example canonical repo: apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
+- Example canonical repo: apps/aiyou_stack/aiyou-fastapi-services
 - Example unresolved repo count: ${UNRESOLVED}
 - Example denied-zone residue count: ${DENIED_COUNT}
 - Example green bazel-build: ${BAZEL_BUILD_JOB}

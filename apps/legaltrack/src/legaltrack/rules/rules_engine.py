@@ -1,4 +1,6 @@
-"""LegalTrack Rules Engine FastAPI Router
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+LegalTrack Rules Engine FastAPI Router
 ======================================
 Adopts the Zero-Touch (ZT.1) Deadline Management spec for GCP Cloud Run.
 Pattern: Agent-Drafted, Human-Verified.
@@ -11,7 +13,7 @@ import logging
 import os
 import sqlite3
 import uuid
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import APIRouter, Body, HTTPException, Path, Query, status
 from pydantic import UUID4, BaseModel, Field
@@ -55,7 +57,7 @@ def _get_conn() -> sqlite3.Connection:
     return conn
 
 
-def _row_to_dict(row: sqlite3.Row) -> dict[str, Any]:
+def _row_to_dict(row: sqlite3.Row) -> dict:
     d = dict(row)
     d["calculated_due_date"] = datetime.date.fromisoformat(d["calculated_due_date"])
     d["created_at"] = datetime.datetime.fromisoformat(d["created_at"])
@@ -73,10 +75,7 @@ class FilingIngestRequest(BaseModel):
     raw_text: str = Field(..., min_length=10, max_length=500_000)
     source: str = Field(..., description="email_webhook | manual_upload | api")
     jurisdiction: str = Field(default="FRCP")
-    trigger_date: datetime.date = Field(
-        ...,
-        description="The date the filing was served / received",
-    )
+    trigger_date: datetime.date = Field(..., description="The date the filing was served / received")
 
 
 class ExtractionResponse(BaseModel):
@@ -103,7 +102,7 @@ class RejectRequest(BaseModel):
     reason: str = Field(..., min_length=1)
 
 
-def _record_to_response(rec: dict[str, Any]) -> ExtractionResponse:
+def _record_to_response(rec: dict) -> ExtractionResponse:
     return ExtractionResponse(
         extraction_id=rec["extraction_id"],
         matter_id=rec["matter_id"],
@@ -136,14 +135,11 @@ async def ingest_filing(
     engine = JurisdictionEngine()
     rule = engine.resolve_rule("service_of_complaint", req.jurisdiction)
     if not rule:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unknown rule for jurisdiction {req.jurisdiction}",
-        )
+        raise HTTPException(status_code=400, detail=f"Unknown rule for jurisdiction {req.jurisdiction}")
 
     due_date = engine.calculate(req.trigger_date, rule.math)
     extraction_id = str(uuid.uuid4())
-    now = datetime.datetime.utcnow().isoformat()
+    now = datetime.datetime.now(timezone.utc).isoformat()
 
     conn = _get_conn()
     conn.execute(
@@ -169,10 +165,7 @@ async def ingest_filing(
         ),
     )
     conn.commit()
-    row = conn.execute(
-        "SELECT * FROM deadline_extractions WHERE extraction_id=?",
-        (extraction_id,),
-    ).fetchone()
+    row = conn.execute("SELECT * FROM deadline_extractions WHERE extraction_id=?", (extraction_id,)).fetchone()
     conn.close()
     return [_record_to_response(_row_to_dict(row))]
 
@@ -203,10 +196,7 @@ async def approve_extraction(
     req: Annotated[ApproveRequest, Body()],
 ) -> ExtractionResponse:
     conn = _get_conn()
-    row = conn.execute(
-        "SELECT * FROM deadline_extractions WHERE extraction_id=?",
-        (str(extraction_id),),
-    ).fetchone()
+    row = conn.execute("SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),)).fetchone()
     if not row:
         conn.close()
         raise HTTPException(status_code=404, detail="Extraction not found")
@@ -220,12 +210,7 @@ async def approve_extraction(
         (str(req.approver_id), req.notes, str(extraction_id)),
     )
     conn.commit()
-    rec = _row_to_dict(
-        conn.execute(
-            "SELECT * FROM deadline_extractions WHERE extraction_id=?",
-            (str(extraction_id),),
-        ).fetchone(),
-    )
+    rec = _row_to_dict(conn.execute("SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),)).fetchone())
     conn.close()
 
     # Gap 3 — wire approved deadline to Google Calendar
@@ -251,10 +236,7 @@ async def reject_extraction(
     req: Annotated[RejectRequest, Body()],
 ) -> ExtractionResponse:
     conn = _get_conn()
-    row = conn.execute(
-        "SELECT * FROM deadline_extractions WHERE extraction_id=?",
-        (str(extraction_id),),
-    ).fetchone()
+    row = conn.execute("SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),)).fetchone()
     if not row:
         conn.close()
         raise HTTPException(status_code=404, detail="Extraction not found")
@@ -268,12 +250,7 @@ async def reject_extraction(
         (str(req.rejector_id), req.reason, str(extraction_id)),
     )
     conn.commit()
-    rec = _row_to_dict(
-        conn.execute(
-            "SELECT * FROM deadline_extractions WHERE extraction_id=?",
-            (str(extraction_id),),
-        ).fetchone(),
-    )
+    rec = _row_to_dict(conn.execute("SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),)).fetchone())
     conn.close()
     return _record_to_response(rec)
 

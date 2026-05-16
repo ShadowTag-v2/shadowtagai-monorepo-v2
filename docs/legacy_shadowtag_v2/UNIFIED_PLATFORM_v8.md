@@ -1,15 +1,15 @@
-# AiU + ShadowTag-v2: Unified AI Governance & Intelligence Platform
+# AiU + AiYou: Unified AI Governance & Intelligence Platform
 
 ## Overview
 
-**AiU + ShadowTag-v2** is the world's first comprehensive AI governance and intelligence platform, combining:
+**AiU + AiYou** is the world's first comprehensive AI governance and intelligence platform, combining:
 
 ### 🆕 pnkln Core Stack™ Analysis
 
 Includes specialized agents for analyzing components of the pnkln Core Stack™ intelligence pipeline:
 
 - **Gemini Ingestion Layer Analyzer**: Intelligence collection pipeline analysis
-- **Judge 6 Analyzer**: Real-time validation system analysis
+- **Judge #6 Analyzer**: Real-time validation system analysis
 - **Component Comparison**: Migration and adaptation guidance
 - **Master Prompt Framework**: Generate specialized prompts for any component
 
@@ -21,8 +21,8 @@ See [pnkln_GUIDE.md](./pnkln_GUIDE.md) for comprehensive documentation.
 - **Tegu Computer Vision**: Machine learning toolbox for tower monitoring, vendor verification, and content moderation
 - **GAAS Autonomous Aviation**: FAA-certified autonomous flight system for infrastructure deployment
 - **ShadowTag**: Neural-level digital media authentication with cryptographic provenance
-- **ShadowTag-v2 Infrastructure**: Verified AI mesh with distributed edge computing
-- **ShadowTag-v2JR**: Claude Code development infrastructure with automated governance and security enforcement
+- **AiYou Infrastructure**: Verified AI mesh with distributed edge computing
+- **AiYouJR**: Claude Code development infrastructure with automated governance and security enforcement
 
 ---
 
@@ -30,7 +30,7 @@ See [pnkln_GUIDE.md](./pnkln_GUIDE.md) for comprehensive documentation.
 
 | Component                         | Valuation | Key Value Driver                                                    |
 | --------------------------------- | --------- | ------------------------------------------------------------------- |
-| **Core ShadowTag-v2 Infrastructure**     | $207B     | Verified AI mesh, CineVerse, GamePort, Commerce                     |
+| **Core AiYou Infrastructure**     | $207B     | Verified AI mesh, CineVerse, GamePort, Commerce                     |
 | **AiU Governance Layer**          | $50B      | Pre-execution compliance, regulatory moat                           |
 | **SHADOWTAGAI Ultrathink**        | $12B      | Gemini-native function calling, inference efficiency                |
 | **Cor.17 Infrastructure**         | $8B       | FastAPI microservices, scalable architecture                        |
@@ -38,7 +38,7 @@ See [pnkln_GUIDE.md](./pnkln_GUIDE.md) for comprehensive documentation.
 | **GAAS Autonomous Aviation**      | $10B      | DO-178C certified, autonomous infrastructure deployment             |
 | **Extended AiU Portfolio**        | $15B      | Swiper, GeoS, Verdict, VC Mirror, Tokable, Odor                     |
 | **Infrastructure Uplift**         | $15B      | Kubernetes, GCP, edge compute synergies                             |
-| **ShadowTag-v2JR Development Framework** | $20B      | 30% dev velocity increase, compliance automation, quality assurance |
+| **AiYouJR Development Framework** | $20B      | 30% dev velocity increase, compliance automation, quality assurance |
 | **Total**                         | **$345B** | Unified AI governance + intelligence + development ecosystem        |
 
 **Seed Investor Returns (2030)**: 5,750× MOIC, 230% IRR
@@ -118,14 +118,14 @@ Intelligent data collection and tier classification pipeline:
 - **Tier Classification**: Tier 1 (authoritative), Tier 2 (relevant), Tier 3 (general)
 - **Ethical Crawling**: robots.txt compliance, rate limiting, attribution
 - **Cost**: ~$77/month, ~45 minutes runtime per night
-- **Delivery**: Feeds Judge 6 and AM Briefing services
+- **Delivery**: Feeds Judge #6 and AM Briefing services
 
 #### pnkln stack Agents 🆕
 
 | Agent                         | Description                                         | Tags                                             |
 | ----------------------------- | --------------------------------------------------- | ------------------------------------------------ |
 | **Gemini Ingestion Analyzer** | Analyzes intelligence collection pipeline           | `pnkln`, `ingestion`, `ethics`, `intelligence`   |
-| **Judge 6 Analyzer**         | Analyzes real-time validation system                | `pnkln`, `validation`, `latency`, `enforcement`  |
+| **Judge #6 Analyzer**         | Analyzes real-time validation system                | `pnkln`, `validation`, `latency`, `enforcement`  |
 | **Component Comparison**      | Compares components and provides migration guidance | `pnkln`, `comparison`, `migration`, `adaptation` |
 
 ## Installation
@@ -211,9 +211,9 @@ Cryptographic provenance layer for digital media:
 - **Energy-Based Models**: Perceptual hash fusion
 - **Blockchain Receipts**: Immutable proof-of-authenticity
 - **Cross-Platform**: Video, images, audio, documents
-- **Valuation**: $10-12B standalone, part of ShadowTag-v2 ecosystem
+- **Valuation**: $10-12B standalone, part of AiYou ecosystem
 
-### 7. ShadowTag-v2JR Development Framework (NEW)
+### 7. AiYouJR Development Framework (NEW)
 
 Production-grade Claude Code infrastructure with automated governance:
 
@@ -234,15 +234,15 @@ Production-grade Claude Code infrastructure with automated governance:
 - **Test Coverage**: Minimum 98% coverage enforced
 - **PM2 Microservices**: 7-service architecture with one-command deployment
 
-**See:** [ShadowTag-v2JR_INFRASTRUCTURE.md](ShadowTag-v2JR_INFRASTRUCTURE.md) for complete documentation
+**See:** [AIYOUJR_INFRASTRUCTURE.md](AIYOUJR_INFRASTRUCTURE.md) for complete documentation
 
 ---
 
 ## Project Structure
 
 ```
-ShadowTag-v2-fastapi-services/
-├── .claude/                                 # ShadowTag-v2JR Development Infrastructure
+aiyou-fastapi-services/
+├── .claude/                                 # AiYouJR Development Infrastructure
 │   ├── skills/
 │   │   ├── security-enforcement/            # CRITICAL - Blocks insecure code
 │   │   │   ├── SKILL.md
@@ -250,7 +250,7 @@ ShadowTag-v2-fastapi-services/
 │   │   │       ├── encryption.md
 │   │   │       ├── secrets-management.md
 │   │   │       └── tls-config.md
-│   │   ├── ShadowTag-v2jr-judge/                   # HIGH - Strategic gates (Purpose • Reasons • Brakes)
+│   │   ├── aiyoujr-judge/                   # HIGH - Strategic gates (Purpose • Reasons • Brakes)
 │   │   │   ├── SKILL.md
 │   │   │   └── resources/
 │   │   │       ├── crm-jr-framework.md      # Enhanced decision framework
@@ -287,11 +287,11 @@ ShadowTag-v2-fastapi-services/
 │   │   └── tier-classification.md           # Tier 1/2/3 classification logic
 │   ├── research/
 │   │   ├── ai-agents-knowledge-base.md      # 22 AI/ML resources synthesis
-│   │   ├── strategic-business-integration.md # ShadowTag + ShadowTag-v2 dual vertical
+│   │   ├── strategic-business-integration.md # ShadowTag + AiYou dual vertical
 │   │   ├── implementation-guide.md          # Phase 0-3 implementation roadmap
 │   │   └── implementation-checklist.md      # DeepSeek OCR integration tasks
 │   ├── financials/
-│   │   └── AIU_ShadowTag-v2_UNIFIED_VALUATION.md   # Complete $345B valuation model
+│   │   └── AIU_AIYOU_UNIFIED_VALUATION.md   # Complete $345B valuation model
 │   └── prompts/
 │       └── gemini-ingestion-layer-analysis.md
 │
@@ -309,9 +309,9 @@ ShadowTag-v2-fastapi-services/
 │   │       └── autonomous_flight.py         # PX4 offboard control
 │   ├── api/
 │   │   └── ingestion.py                     # Gemini Ingestion Layer API
-│   └── ShadowTag-v2/                               # Main application package
+│   └── aiyou/                               # Main application package
 │       ├── main.py                          # FastAPI application entry
-│       └── services/                        # Core ShadowTag-v2 services
+│       └── services/                        # Core AiYou services
 │
 ├── k8s/                                     # Kubernetes deployments
 │   └── ingestion-cronjob.yaml               # GKE CronJob for ingestion
@@ -320,11 +320,11 @@ ShadowTag-v2-fastapi-services/
 ├── config/
 │   ├── ethical-crawling.yaml                # Ethical data collection config
 │   └── tier-classification.yaml             # Tier classification rules
-├── dev/                                     # ShadowTag-v2JR dev docs (auto-generated)
+├── dev/                                     # AiYouJR dev docs (auto-generated)
 │   ├── active/                              # Current work
 │   └── completed/                           # Archived tasks
 ├── BUILD_TEGU_GAAS.md                       # Tegu/GAAS build instructions
-├── ShadowTag-v2JR_INFRASTRUCTURE.md                # ShadowTag-v2JR development infrastructure guide
+├── AIYOUJR_INFRASTRUCTURE.md                # AiYouJR development infrastructure guide
 ├── ecosystem.config.js                      # PM2 microservices configuration
 ├── requirements.txt                         # Unified Python dependencies
 └── README.md                                # This file
@@ -349,8 +349,8 @@ ShadowTag-v2-fastapi-services/
 
 ```bash
 # Clone repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # Install Node.js dependencies (Agent SDK)
 npm install
@@ -373,15 +373,15 @@ cp .env.example .env
 alembic upgrade head
 
 # Start development server
-uvicorn src.ShadowTag-v2.main:app --reload
+uvicorn src.aiyou.main:app --reload
 ```
 
-### Quick Start: ShadowTag-v2JR Development Infrastructure
+### Quick Start: AiYouJR Development Infrastructure
 
 ```bash
 # 1. Verify Claude Code skills installation
 ls .claude/skills/
-# Should show: ShadowTag-v2jr-judge, backend-dev-guidelines, frontend-dev-guidelines,
+# Should show: aiyoujr-judge, backend-dev-guidelines, frontend-dev-guidelines,
 #              security-enforcement, shadowtagai-component-analysis, universal-copilot-patterns
 
 # 2. Test skill auto-activation
@@ -502,7 +502,7 @@ Tier-classified intelligence from 6+ sources:
 - Tier 2: Relevant (medium authority, high engagement)
 - Tier 3: General (broad collection for context)
 
-**Impact**: Feeds Judge 6 decision-making, AM Briefing generation
+**Impact**: Feeds Judge #6 decision-making, AM Briefing generation
 
 ### 3. Computer Vision + Autonomous Aviation (Tegu + GAAS)
 
@@ -525,7 +525,7 @@ Proof-of-authenticity for all digital media:
 
 **Impact**: $10-12B standalone valuation, regulatory compliance advantage
 
-### 5. Development Velocity Multiplier (ShadowTag-v2JR)
+### 5. Development Velocity Multiplier (AiYouJR)
 
 Automated governance and quality enforcement:
 
@@ -607,7 +607,7 @@ kubectl logs -f job/gemini-ingestion-<timestamp>
 
 ```bash
 # Build production image
-docker build -t aiu-ShadowTag-v2-platform:latest .
+docker build -t aiu-aiyou-platform:latest .
 
 # Deploy to Kubernetes
 kubectl apply -f k8s/
@@ -646,8 +646,8 @@ pnpm pm2:status
 ### Business & Strategy
 
 - [Executive Summary](docs/business-plan/EXECUTIVE_SUMMARY.md) - $345B unified platform vision
-- [Unified Valuation](docs/financials/AIU_ShadowTag-v2_UNIFIED_VALUATION.md) - Complete financial model
-- [Strategic Business Integration](docs/research/strategic-business-integration.md) - ShadowTag + ShadowTag-v2 dual vertical
+- [Unified Valuation](docs/financials/AIU_AIYOU_UNIFIED_VALUATION.md) - Complete financial model
+- [Strategic Business Integration](docs/research/strategic-business-integration.md) - ShadowTag + AiYou dual vertical
 
 ### Architecture & Implementation
 
@@ -662,11 +662,11 @@ pnpm pm2:status
 - [Implementation Guide](docs/research/implementation-guide.md) - Phase 0-3 roadmap
 - [Implementation Checklist](docs/research/implementation-checklist.md) - DeepSeek OCR integration
 
-### Development Infrastructure (ShadowTag-v2JR)
+### Development Infrastructure (AiYouJR)
 
-- [ShadowTag-v2JR Infrastructure](ShadowTag-v2JR_INFRASTRUCTURE.md) - Complete development framework guide
+- [AiYouJR Infrastructure](AIYOUJR_INFRASTRUCTURE.md) - Complete development framework guide
 - [Security Enforcement](.claude/skills/security-enforcement/SKILL.md) - Security standards and enforcement
-- [Strategic Gates](.claude/skills/ShadowTag-v2jr-judge/SKILL.md) - Purpose • Reasons • Brakes framework
+- [Strategic Gates](.claude/skills/aiyoujr-judge/SKILL.md) - Purpose • Reasons • Brakes framework
 - [SHADOWTAGAI Component Analysis](.claude/skills/shadowtagai-component-analysis/SKILL.md) - Gemini-powered system analysis
 - [Universal Copilot Patterns](.claude/skills/universal-copilot-patterns/SKILL.md) - Compliant AI-assisted coding
 
@@ -676,7 +676,7 @@ pnpm pm2:status
 
 ---
 
-## ShadowTag-v2JR Development Workflow
+## AiYouJR Development Workflow
 
 ### 1. Start a New Feature
 
@@ -702,10 +702,10 @@ cat dev/active/oauth-auth/oauth-auth-plan.md
 | Your Action                     | Skills Activated                              |
 | ------------------------------- | --------------------------------------------- |
 | "Create auth endpoint"          | security-enforcement + backend-dev-guidelines |
-| "Plan new feature"              | ShadowTag-v2jr-judge                                 |
+| "Plan new feature"              | aiyoujr-judge                                 |
 | "Add React component"           | frontend-dev-guidelines                       |
 | Edit `.env` file                | security-enforcement                          |
-| Edit `PLAN.md`                  | ShadowTag-v2jr-judge                                 |
+| Edit `PLAN.md`                  | aiyoujr-judge                                 |
 | "Analyze ingestion performance" | shadowtagai-component-analysis                |
 
 ### 3. Strategic Gates Example
@@ -737,12 +737,12 @@ CRM-JR Analysis:
 - ✅ AiU Digital Mall MVP
 - ✅ Gemini Ingestion Layer deployed
 - ✅ Tegu + GAAS integration complete
-- ✅ ShadowTag-v2JR development infrastructure operational
+- ✅ AiYouJR development infrastructure operational
 - 🔄 ShadowTag neural hash implementation
 
 ### Q1 2026: Integration
 
-- 🔜 Judge 6 + AiUCRM integration
+- 🔜 Judge #6 + AiUCRM integration
 - 🔜 AM Briefing + Gemini Ingestion integration
 - 🔜 CineVerse + Tegu content moderation
 - 🔜 Digital Mall + FaceNet vendor verification
@@ -753,7 +753,7 @@ CRM-JR Analysis:
 - 🔜 10,000 edge nodes deployed
 - 🔜 Autonomous tower deployment (GAAS)
 - 🔜 Full ShadowTag rollout across all verticals
-- 🔜 ShadowTag-v2JR driving 30% faster development velocity
+- 🔜 AiYouJR driving 30% faster development velocity
 - 🔜 Series A funding ($120M)
 
 ### 2027-2030: Market Dominance
@@ -773,7 +773,7 @@ CRM-JR Analysis:
 3. **Regulatory Advantage**: First-mover in EU AI Act compliance automation (2026-28)
 4. **Cross-Vertical Trust**: AiUCRM validation across aviation, healthcare, commerce, media
 5. **Infrastructure Ownership**: Distributed edge compute + autonomous deployment (GAAS)
-6. **Development Velocity**: ShadowTag-v2JR framework provides 30% faster, more secure development
+6. **Development Velocity**: AiYouJR framework provides 30% faster, more secure development
 
 ### Market Moats
 
@@ -781,7 +781,7 @@ CRM-JR Analysis:
 | --------------------- | -------- | -------------------------------------------------------------- |
 | Regulatory Compliance | ★★★★★    | Native EU AI Act, FAA, HIPAA, DoD RAI automation               |
 | Network Effects       | ★★★★★    | Each validated operation increases trust density               |
-| Technology Barrier    | ★★★★★    | Neural hash + AiUCRM + autonomous flight + ShadowTag-v2JR integration |
+| Technology Barrier    | ★★★★★    | Neural hash + AiUCRM + autonomous flight + AiYouJR integration |
 | Development Velocity  | ★★★★☆    | Automated governance accelerates feature delivery              |
 | Scale Economies       | ★★★★☆    | Distributed edge infrastructure reduces costs                  |
 | Switching Costs       | ★★★★☆    | Ecosystem lock-in across 7+ verticals                          |
@@ -796,10 +796,10 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Use ShadowTag-v2JR to create dev docs: `"Create dev docs for [feature name]"`
+3. Use AiYouJR to create dev docs: `"Create dev docs for [feature name]"`
 4. Ensure all strategic gates pass (Purpose • Reasons • Brakes)
 5. Ensure AiUCRM validation for new AI operations
-6. Add tests (minimum 98% coverage enforced by ShadowTag-v2JR)
+6. Add tests (minimum 98% coverage enforced by AiYouJR)
 7. Run pre-commit hooks (`pre-commit run --all-files`)
 8. Commit your changes (`git commit -m 'Add amazing feature'`)
 9. Push to the branch (`git push origin feature/amazing-feature`)
@@ -815,11 +815,11 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ## Contact
 
-**Project Website**: [www.ShadowTag-v2.ai](https://www.ShadowTag-v2.ai) _(to be launched)_
+**Project Website**: [www.aiyou.ai](https://www.aiyou.ai) _(to be launched)_
 
-**Development Team**: [team@ShadowTag-v2.ai](mailto:team@ShadowTag-v2.ai)
+**Development Team**: [team@aiyou.ai](mailto:team@aiyou.ai)
 
-**Investor Relations**: [investors@ShadowTag-v2.ai](mailto:investors@ShadowTag-v2.ai)
+**Investor Relations**: [investors@aiyou.ai](mailto:investors@aiyou.ai)
 
 ---
 
@@ -835,7 +835,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ---
 
-**AiU + ShadowTag-v2 — The Unified AI Governance & Intelligence Platform**
+**AiU + AiYou — The Unified AI Governance & Intelligence Platform**
 
 _Pre-execution compliance · Intelligent data collection · Computer vision · Autonomous aviation · Neural media authentication · Automated development governance_
 
@@ -851,7 +851,7 @@ A collection of FastAPI-based microservices for the AI You platform, featuring t
 
 ## Overview
 
-This repository is part of the **pnkln Core Stack™**, serving as the foundational intelligence collection system. The primary component, the **Gemini Ingestion Layer**, operates as a proactive collector that integrates with services across 4 namespaces and feeds data to downstream components including Judge 6 (validation layer).
+This repository is part of the **pnkln Core Stack™**, serving as the foundational intelligence collection system. The primary component, the **Gemini Ingestion Layer**, operates as a proactive collector that integrates with services across 4 namespaces and feeds data to downstream components including Judge #6 (validation layer).
 
 ### Key Components
 
@@ -922,8 +922,8 @@ This repository is part of the **pnkln Core Stack™**, serving as the foundatio
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-   cd ShadowTag-v2-fastapi-services
+   git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+   cd aiyou-fastapi-services
    ```
 
 2. **Install Python dependencies**
@@ -1014,7 +1014,7 @@ a multi-tenant SaaS application?
 ## Project Structure
 
 ```
-ShadowTag-v2-fastapi-services/
+aiyou-fastapi-services/
 ├── .github/
 │   └── workflows/                   # GitHub Actions workflows
 │       ├── claude.yml               # Main Claude assistant
@@ -1147,7 +1147,7 @@ The ingestion layer integrates with services across 4 namespaces:
 1. **Intelligence Namespace**: Primary consumer for analysis
 2. **Analytics Namespace**: Metrics aggregation and dashboards
 3. **Reporting Namespace**: Briefing delivery and reports
-4. **Validation Namespace** (Judge 6): Quality enforcement
+4. **Validation Namespace** (Judge #6): Quality enforcement
 
 **Data Flow:**
 
@@ -1190,13 +1190,13 @@ async for message in query(
 ### TypeScript Usage
 
 ```typescript
-import { query } from "@anthropic-ai/claude-agent-sdk";
+import { query } from '@anthropic-ai/claude-agent-sdk';
 
 const result = await query({
-  prompt: "Hello",
+  prompt: 'Hello',
   options: {
-    systemPrompt: { type: "preset", preset: "claude_code" },
-    settingSources: ["user", "project", "local"],
+    systemPrompt: { type: 'preset', preset: 'claude_code' },
+    settingSources: ['user', 'project', 'local'],
   },
 });
 ```
@@ -1300,7 +1300,7 @@ GitHub Actions workflows automatically:
 
 # ||||||| c348392b7
 
-# ShadowTag-v2 pnkln Core Stack™ API
+# AiYou pnkln Core Stack™ API
 
 **Intelligence Collection & Validation Pipeline for Verified AI Mesh**
 
@@ -1313,14 +1313,14 @@ GitHub Actions workflows automatically:
 
 ## 🎯 Overview
 
-The **pnkln Core Stack™** is ShadowTag-v2's intelligence collection and validation pipeline, implementing the foundational layers for verified AI operations across Defense, Aviation, and FAANG verticals.
+The **pnkln Core Stack™** is AiYou's intelligence collection and validation pipeline, implementing the foundational layers for verified AI operations across Defense, Aviation, and FAANG verticals.
 
 **pnkln Architecture:**
 
 - **P** — Preparation (Gemini Ingestion Layer)
 - **N** — Normalization (Data ETL)
 - **K** — Knowledge Graph (Entity Extraction)
-- **L** — Logic & Validation (Judge 6)
+- **L** — Logic & Validation (Judge #6)
 - **N** — Notarization (ShadowTag Attestation)
 
 This repository implements **P** (Ingestion) and **L** (Validation) as a FastAPI service deployable to Google Cloud Run.
@@ -1377,8 +1377,8 @@ curl -X POST http://localhost:8080/api/v1/agents/classify-debate \
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # 2. Install dependencies
 python -m venv venv
@@ -1449,11 +1449,11 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 - `GET /api/v1/ingestion/items/{id}` — Get processing status
 - `GET /api/v1/ingestion/sources` — List source health
 
-### 2. Judge 6 Validation (L — Logic & Validation)
+### 2. Judge #6 Validation (L — Logic & Validation)
 
-**Compliance Framework Compliance & JR Validation**
+**ATP 5-19 Compliance & JR Validation**
 
-- **Compliance Framework (NATO Intelligence Standards):**
+- **ATP 5-19 (NATO Intelligence Standards):**
   - Source Reliability (A-F scale)
   - Information Credibility (1-6 scale)
   - Timeliness, Completeness, Relevance checks
@@ -1500,10 +1500,10 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 │           │                         │                  │
 │           ▼                         ▼                  │
 │  ┌───────────────────┐  ┌──────────────────────────┐  │
-│  │ Gemini Ingestion  │  │ Judge 6 Validation      │  │
+│  │ Gemini Ingestion  │  │ Judge #6 Validation      │  │
 │  │ Service           │  │ Service                  │  │
 │  │                   │  │                          │  │
-│  │ • Crawler         │  │ • Compliance Framework Engine        │  │
+│  │ • Crawler         │  │ • ATP 5-19 Engine        │  │
 │  │ • Classifier      │  │ • JR Compliance Checker  │  │
 │  │ • Ethics Checker  │  │ • Quality Metrics        │  │
 │  └───────────────────┘  └──────────────────────────┘  │
@@ -1532,13 +1532,13 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 | **Source Diversity**   | 50-100 sources | ✅ Multi-source        |
 | **Cost per Item**      | ≤$0.10         | ✅ $0.0016 (Cloud Run) |
 
-### Judge 6 Validation
+### Judge #6 Validation
 
 | Metric                  | Target  | Status                   |
 | ----------------------- | ------- | ------------------------ |
 | **Latency (p99)**       | ≤90ms   | ✅ Hybrid Gemini+PyTorch |
 | **Throughput**          | 5K QPS  | ✅ Cloud Run autoscaling |
-| **Compliance Framework Coverage**   | ≥98%    | ✅ 127 rules             |
+| **ATP 5-19 Coverage**   | ≥98%    | ✅ 127 rules             |
 | **False Positive Rate** | ≤1.5%   | ✅ Historical: 1.4%      |
 | **False Negative Rate** | ≤0.5%   | ✅ Historical: 0.5%      |
 | **Cost per Validation** | ≤$0.005 | ✅ $0.0022               |
@@ -1551,7 +1551,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 
 | Vertical                | ARR Potential  | Status        | Unlock Requirement           |
 | ----------------------- | -------------- | ------------- | ---------------------------- |
-| **Defense & ISR**       | $100M-200M     | 🟡 Limited    | Compliance Framework compliance ✅       |
+| **Defense & ISR**       | $100M-200M     | 🟡 Limited    | ATP 5-19 compliance ✅       |
 | **Aviation Compliance** | $50M-100M      | 🟢 Ready      | FAA regulatory monitoring ✅ |
 | **FAANG (Limited)**     | $50M-100M      | 🟡 Partial    | Content verification APIs ⏳ |
 | **Total**               | **$200M-400M** | 🟢 Achievable | Cloud Run deployment ✅      |
@@ -1579,7 +1579,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 **AI/ML:**
 
 - Google Gemini 2.0 Pro (tier classification)
-- PyTorch (Compliance Framework rule matching)
+- PyTorch (ATP 5-19 rule matching)
 - BeautifulSoup4 (web scraping)
 
 **Infrastructure:**
@@ -1602,15 +1602,15 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 ### Core Documentation
 
 - [DEPLOYMENT.md](./DEPLOYMENT.md) — Complete deployment guide
-- [Gemini Ingestion Layer](./docs/cor8-ShadowTag-v2-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md) — Technical architecture
-- [Judge 6 Validation](./docs/cor8-ShadowTag-v2-global-edge-fabric/03-technical-architecture/judge-six-validation.md) — Validation system
-- [API Schemas](./docs/cor8-ShadowTag-v2-global-edge-fabric/09-implementation/api-schemas.md) — Complete API reference
+- [Gemini Ingestion Layer](./docs/cor8-aiyou-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md) — Technical architecture
+- [Judge #6 Validation](./docs/cor8-aiyou-global-edge-fabric/03-technical-architecture/judge-six-validation.md) — Validation system
+- [API Schemas](./docs/cor8-aiyou-global-edge-fabric/09-implementation/api-schemas.md) — Complete API reference
 
 ### Additional Resources
 
-- [Cor.8 Business Plan](./docs/cor8-ShadowTag-v2-global-edge-fabric/README.md) — Full business model
-- [Regulatory Compliance](./docs/cor8-ShadowTag-v2-global-edge-fabric/10-regulatory/compliance-checklists.md) — FAA, ISO, NIST checklists
-- [Defense & ISR Vertical](./docs/cor8-ShadowTag-v2-global-edge-fabric/05-verticals/defense-isr.md) — DoD use cases
+- [Cor.8 Business Plan](./docs/cor8-aiyou-global-edge-fabric/README.md) — Full business model
+- [Regulatory Compliance](./docs/cor8-aiyou-global-edge-fabric/10-regulatory/compliance-checklists.md) — FAA, ISO, NIST checklists
+- [Defense & ISR Vertical](./docs/cor8-aiyou-global-edge-fabric/05-verticals/defense-isr.md) — DoD use cases
 
 ---
 
@@ -1622,7 +1622,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 - ✅ Rate limiting (configurable per source)
 - ✅ PII scrubbing (regex + ML-based)
 - ✅ Transparent user agent
-- ✅ Opt-out mechanism (compliance@ShadowTag-v2.ai)
+- ✅ Opt-out mechanism (compliance@aiyou.ai)
 
 **ITAR/Export Control:**
 
@@ -1711,7 +1711,7 @@ curl -X POST http://localhost:8080/api/v1/validation/validate \
 ### Q1 2026: Production Hardening
 
 - [ ] Deploy to production Cloud Run
-- [ ] Integrate with Judge 6 validation queue
+- [ ] Integrate with Judge #6 validation queue
 - [ ] Launch AM Briefing to 50 beta users
 - [ ] Achieve ≥70% tier classification accuracy
 
@@ -1757,19 +1757,19 @@ This project is licensed under the MIT License - see [LICENSE](./LICENSE) file f
 
 ## 📞 Contact & Support
 
-- **Technical Support:** support@ShadowTag-v2.ai
-- **Compliance Questions:** compliance@ShadowTag-v2.ai
-- **Business Inquiries:** business@ShadowTag-v2.ai
+- **Technical Support:** support@aiyou.ai
+- **Compliance Questions:** compliance@aiyou.ai
+- **Business Inquiries:** business@aiyou.ai
 
-- **GitHub Issues:** [ehanc69/ShadowTag-v2-fastapi-services/issues](https://github.com/ehanc69/ShadowTag-v2-fastapi-services/issues)
-- **Documentation:** [Cor.8 Docs](./docs/cor8-ShadowTag-v2-global-edge-fabric/)
+- **GitHub Issues:** [ehanc69/aiyou-fastapi-services/issues](https://github.com/ehanc69/aiyou-fastapi-services/issues)
+- **Documentation:** [Cor.8 Docs](./docs/cor8-aiyou-global-edge-fabric/)
 
 ---
 
 ## 🙏 Acknowledgments
 
 - Google Gemini team for Gemini 2.0 Pro API
-- NATO for Compliance Framework intelligence standards
+- NATO for ATP 5-19 intelligence standards
 - U.S. Department of Defense for ITAR/JR compliance frameworks
 - FastAPI community for excellent async Python framework
 
@@ -1777,4 +1777,4 @@ This project is licensed under the MIT License - see [LICENSE](./LICENSE) file f
 
 **Built with ❤️ for the Verified AI Civilization Layer**
 
-\*"FAANG builds the experience. ShadowTag-v2 proves it's real."
+\*"FAANG builds the experience. AiYou proves it's real."

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_tools/web_search_tool.py
+# hypothesis_version: 6.151.5
+
+[500, 100000, "'query' required.", 'WEB_SEARCH_TOOL_NAME', 'Web Search', 'WebSearch', '[\\x00-\\x1f\\x7f-\\x9f]', '\\s+', 'allowed_domains', 'android', 'app engine', 'array', 'bigquery', 'blocked_domains', 'chrome devtools', 'cloud functions', 'cloud run', 'content', 'description', 'error', 'firebase', 'firestore', 'flutter', 'gcp', 'gemini api', 'gke', 'google cloud', 'items', 'kubernetes', 'object', 'properties', 'query', 'required', 'router', 'search_web', 'string', 'tensorflow', 'type', 'vertex ai', 'web.dev']

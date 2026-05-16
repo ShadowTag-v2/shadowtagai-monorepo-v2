@@ -57,15 +57,15 @@ Phase 11 integrates @omarsar0's pattern (Gemini leads design at ~$0.087/design) 
 
 Transfer Status: 95% Complete
 
-| Component                                                 | Status         | Location                                                   |
-| --------------------------------------------------------- | -------------- | ---------------------------------------------------------- |
-| https://github.com/karpathy/autoresearchs 650-Agent Swarm | ✅ OPERATIONAL | agents/autoresearch.py                                   |
-| Gemini API Failover                                       | ✅ DEPLOYED    | src/ShadowTag-v2/services/gemini_failover.py                      |
-| MCP 98% Compression                                       | ✅ ACHIEVED    | app/mcp_bridge.py                                          |
-| Judge#6 Binary (<35ms)                                    | ✅ 0ms LATENCY | erik-hancock-llm-memory/judge6/                            |
-| Antigravity Router                                        | ✅ INTEGRATED  | app/antigravity_handoff.py                                 |
-| FastAPI Endpoints                                         | ✅ Port 8888   | api/https://github.com/karpathy/autoresearchs_api.py       |
-| GKE Deployment                                            | ⚠️ PENDING     | cloudbuild\_https://github.com/karpathy/autoresearchs.yaml |
+| Component                     | Status         | Location                              |
+| ----------------------------- | -------------- | ------------------------------------- |
+| https://github.com/karpathy/autoresearchs 650-Agent Swarm | ✅ OPERATIONAL | agents/flying_monkeys.py              |
+| Gemini API Failover           | ✅ DEPLOYED    | src/aiyou/services/gemini_failover.py |
+| MCP 98% Compression           | ✅ ACHIEVED    | app/mcp_bridge.py                     |
+| Judge#6 Binary (<35ms)        | ✅ 0ms LATENCY | erik-hancock-llm-memory/judge6/       |
+| Antigravity Router            | ✅ INTEGRATED  | app/antigravity_handoff.py            |
+| FastAPI Endpoints             | ✅ Port 8888   | api/https://github.com/karpathy/autoresearchs_api.py              |
+| GKE Deployment                | ⚠️ PENDING     | cloudbuild_https://github.com/karpathy/autoresearchs.yaml         |
 
 ---
 
@@ -78,7 +78,7 @@ Immediate Handoff Actions
 
 export GEMINI_API_KEYS=key1,key2,key3
 export ANTHROPIC_API_KEY=sk-ant-... 2. Deploy to GKE:
-gcloud builds submit --config=cloudbuild\_https://github.com/karpathy/autoresearchs.yaml 3. Verify Status:
+gcloud builds submit --config=cloudbuild_https://github.com/karpathy/autoresearchs.yaml 3. Verify Status:
 python3 antigravity_status.py --watch
 curl http://localhost:8888/health
 

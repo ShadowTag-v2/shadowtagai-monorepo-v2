@@ -10,10 +10,10 @@ import {
   type TextChunk,
   TextRenderable,
   type Timeline,
-} from '@opentui/core';
-import type { SessionData } from '../../types/tasks.js';
-import { formatDuration, isSessionActive } from '../../utils/index.js';
-import { THEME } from '../theme.js';
+} from "@opentui/core";
+import type { SessionData } from "../../types/tasks.js";
+import { formatDuration, isSessionActive } from "../../utils/index.js";
+import { THEME } from "../theme.js";
 
 function interpolateColor(color1: string, color2: string, factor: number): string {
   const c1 = parseColor(color1);
@@ -61,7 +61,7 @@ export class SessionChip extends BoxRenderable {
   public isFocused = false;
   public isSelected = false;
   private visualTimeline: Timeline | null = null;
-  private currentBg: string = 'transparent';
+  private currentBg: string = "transparent";
   private onSelectCallback: (session: SessionData) => void;
   private onCancelCallback?: (session: SessionData) => void;
   private onReviewCallback?: (session: SessionData) => void;
@@ -75,13 +75,13 @@ export class SessionChip extends BoxRenderable {
   ) {
     super(renderer, {
       id: `session-${session.id}`,
-      width: '100%',
-      flexDirection: 'column',
+      width: "100%",
+      flexDirection: "column",
       paddingLeft: 1,
       paddingRight: 1,
       paddingTop: 0,
       paddingBottom: 0,
-      alignSelf: 'stretch',
+      alignSelf: "stretch",
     });
 
     this.renderer = renderer;
@@ -93,7 +93,7 @@ export class SessionChip extends BoxRenderable {
     // Set up mouse handlers directly on this component
     this.onMouse = (event: MouseEvent) => {
       switch (event.type) {
-        case 'up':
+        case "up":
           this.isPressed = false;
           this.updateVisuals(150);
           // Only select if the target is not the cancel or review button
@@ -101,17 +101,17 @@ export class SessionChip extends BoxRenderable {
             this.onSelectCallback(this.session);
           }
           break;
-        case 'over':
+        case "over":
           if (!this.isFocused) {
             this.isHovered = true;
             this.updateVisuals(200);
           }
           break;
-        case 'out':
+        case "out":
           this.isHovered = false;
           this.updateVisuals(200);
           break;
-        case 'down':
+        case "down":
           this.isPressed = true;
           this.updateVisuals(50);
           break;
@@ -121,22 +121,22 @@ export class SessionChip extends BoxRenderable {
     // Cancel button [X] - visible when session is active
     this.cancelButton = new TextRenderable(renderer, {
       id: `session-${session.id}-cancel`,
-      position: 'absolute',
+      position: "absolute",
       right: 1,
       top: 0,
-      content: '[X]',
+      content: "[X]",
       fg: THEME.dim,
       zIndex: 100,
     });
 
     this.cancelButton.onMouse = (event: MouseEvent) => {
-      if (event.type === 'over') {
+      if (event.type === "over") {
         this.cancelButton.fg = THEME.error;
         this.renderer.requestRender();
-      } else if (event.type === 'out') {
+      } else if (event.type === "out") {
         this.cancelButton.fg = THEME.dim;
         this.renderer.requestRender();
-      } else if ((event.type as any) === 'click' || event.type === 'up') {
+      } else if ((event.type as any) === "click" || event.type === "up") {
         if (this.onCancelCallback) {
           this.onCancelCallback(this.session);
         }
@@ -148,23 +148,23 @@ export class SessionChip extends BoxRenderable {
     // Review button [Review] - visible when session is done with worktree
     this.reviewButton = new TextRenderable(renderer, {
       id: `session-${session.id}-review`,
-      position: 'absolute',
+      position: "absolute",
       right: 1,
       top: 0,
-      content: ' [Review]', // leading space to give breathing room from status text
+      content: " [Review]", // leading space to give breathing room from status text
       fg: THEME.accent,
       zIndex: 100,
       visible: false,
     });
 
     this.reviewButton.onMouse = (event: MouseEvent) => {
-      if (event.type === 'over') {
+      if (event.type === "over") {
         this.reviewButton.fg = THEME.white;
         this.renderer.requestRender();
-      } else if (event.type === 'out') {
+      } else if (event.type === "out") {
         this.reviewButton.fg = THEME.accent;
         this.renderer.requestRender();
-      } else if ((event.type as any) === 'click' || event.type === 'up') {
+      } else if ((event.type as any) === "click" || event.type === "up") {
         if (this.onReviewCallback) {
           this.onReviewCallback(this.session);
         }
@@ -183,14 +183,14 @@ export class SessionChip extends BoxRenderable {
     // Status line: │   [STATUS] message
     this.statusLine = new TextRenderable(renderer, {
       id: `session-${session.id}-status`,
-      content: this.buildStatusContent('Ready.'),
+      content: this.buildStatusContent("Ready."),
       truncate: true,
     });
 
     // Info line: │   [INFO] message
     this.infoLine = new TextRenderable(renderer, {
       id: `session-${session.id}-info`,
-      content: this.buildInfoContent('Initializing model...'),
+      content: this.buildInfoContent("Initializing model..."),
       truncate: true,
     });
 
@@ -211,7 +211,7 @@ export class SessionChip extends BoxRenderable {
     // Connector lines to next chip (two │ lines for spacing)
     this.connectorLine = new TextRenderable(renderer, {
       id: `session-${session.id}-connector`,
-      content: '│\n│',
+      content: "│\n│",
       fg: THEME.dim,
     });
 
@@ -225,26 +225,26 @@ export class SessionChip extends BoxRenderable {
 
   private formatTime(timestamp: number): string {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString('en-US', {
+    return date.toLocaleTimeString("en-US", {
       hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
     });
   }
 
   private shortenPath(path?: string): string {
-    if (!path) return '~/project';
+    if (!path) return "~/project";
 
     // Get the last meaningful directory name
-    const segments = path.split('/').filter((s) => s.length > 0);
-    if (segments.length === 0) return '~/project';
+    const segments = path.split("/").filter((s) => s.length > 0);
+    if (segments.length === 0) return "~/project";
 
     // Get last segment (project folder name)
     const lastSegment = segments[segments.length - 1];
 
     // If it looks like a common folder name, try to get parent too
-    const commonFolders = ['src', 'lib', 'app', 'cli', 'dist', 'build'];
+    const commonFolders = ["src", "lib", "app", "cli", "dist", "build"];
     if (commonFolders.includes(lastSegment.toLowerCase()) && segments.length > 1) {
       return `~/${segments[segments.length - 2]}/${lastSegment}`;
     }
@@ -261,19 +261,19 @@ export class SessionChip extends BoxRenderable {
 
     // Timestamp (no prefix on header)
     chunks.push({ text: time, fg: parseColor(LOG_COLORS.timestamp), __isChunk: true });
-    chunks.push({ text: ' ', __isChunk: true });
+    chunks.push({ text: " ", __isChunk: true });
 
     // Git status: [branch +ahead -behind ~modified]
-    chunks.push({ text: '[', fg: parseColor(LOG_COLORS.gitBranch), __isChunk: true });
+    chunks.push({ text: "[", fg: parseColor(LOG_COLORS.gitBranch), __isChunk: true });
     chunks.push({
-      text: gs?.branch || 'main',
+      text: gs?.branch || "main",
       fg: parseColor(LOG_COLORS.gitBranch),
       __isChunk: true,
     });
 
     if (gs) {
       if (gs.ahead > 0) {
-        chunks.push({ text: ' +', fg: parseColor(LOG_COLORS.gitAhead), __isChunk: true });
+        chunks.push({ text: " +", fg: parseColor(LOG_COLORS.gitAhead), __isChunk: true });
         chunks.push({
           text: String(gs.ahead),
           fg: parseColor(LOG_COLORS.gitAhead),
@@ -281,7 +281,7 @@ export class SessionChip extends BoxRenderable {
         });
       }
       if (gs.behind > 0) {
-        chunks.push({ text: ' -', fg: parseColor(LOG_COLORS.gitBehind), __isChunk: true });
+        chunks.push({ text: " -", fg: parseColor(LOG_COLORS.gitBehind), __isChunk: true });
         chunks.push({
           text: String(gs.behind),
           fg: parseColor(LOG_COLORS.gitBehind),
@@ -289,7 +289,7 @@ export class SessionChip extends BoxRenderable {
         });
       }
       if (gs.modified > 0) {
-        chunks.push({ text: ' ~', fg: parseColor(LOG_COLORS.gitModified), __isChunk: true });
+        chunks.push({ text: " ~", fg: parseColor(LOG_COLORS.gitModified), __isChunk: true });
         chunks.push({
           text: String(gs.modified),
           fg: parseColor(LOG_COLORS.gitModified),
@@ -298,12 +298,12 @@ export class SessionChip extends BoxRenderable {
       }
     }
 
-    chunks.push({ text: ']', fg: parseColor(LOG_COLORS.gitBranch), __isChunk: true });
-    chunks.push({ text: ' ', __isChunk: true });
+    chunks.push({ text: "]", fg: parseColor(LOG_COLORS.gitBranch), __isChunk: true });
+    chunks.push({ text: " ", __isChunk: true });
 
     // Path
     chunks.push({ text: path, fg: parseColor(LOG_COLORS.path), __isChunk: true });
-    chunks.push({ text: ' > ', fg: parseColor(LOG_COLORS.path), __isChunk: true });
+    chunks.push({ text: " > ", fg: parseColor(LOG_COLORS.path), __isChunk: true });
 
     // Prompt
     chunks.push({ text: prompt, fg: parseColor(LOG_COLORS.prompt), __isChunk: true });
@@ -313,16 +313,16 @@ export class SessionChip extends BoxRenderable {
 
   private buildStatusContent(message: string): StyledText {
     const chunks: TextChunk[] = [];
-    chunks.push({ text: '│   ', fg: parseColor(THEME.dim), __isChunk: true });
-    chunks.push({ text: '[STATUS] ', fg: parseColor(LOG_COLORS.statusLabel), __isChunk: true });
+    chunks.push({ text: "│   ", fg: parseColor(THEME.dim), __isChunk: true });
+    chunks.push({ text: "[STATUS] ", fg: parseColor(LOG_COLORS.statusLabel), __isChunk: true });
     chunks.push({ text: message, fg: parseColor(LOG_COLORS.statusText), __isChunk: true });
     return new StyledText(chunks);
   }
 
   private buildInfoContent(message: string): StyledText {
     const chunks: TextChunk[] = [];
-    chunks.push({ text: '│   ', fg: parseColor(THEME.dim), __isChunk: true });
-    chunks.push({ text: '[INFO] ', fg: parseColor(LOG_COLORS.infoLabel), __isChunk: true });
+    chunks.push({ text: "│   ", fg: parseColor(THEME.dim), __isChunk: true });
+    chunks.push({ text: "[INFO] ", fg: parseColor(LOG_COLORS.infoLabel), __isChunk: true });
     chunks.push({ text: message, fg: parseColor(LOG_COLORS.statusText), __isChunk: true });
     return new StyledText(chunks);
   }
@@ -336,16 +336,16 @@ export class SessionChip extends BoxRenderable {
     let stepInfo = `Iteration ${iteration}: DRAFT PRD`;
     if (
       status &&
-      !status.toLowerCase().includes('initializing') &&
-      !status.toLowerCase().includes('done') &&
-      !status.toLowerCase().includes('error')
+      !status.toLowerCase().includes("initializing") &&
+      !status.toLowerCase().includes("done") &&
+      !status.toLowerCase().includes("error")
     ) {
       // Clean up the status to show just the relevant part
       stepInfo = status;
     }
 
-    chunks.push({ text: '│   ', fg: parseColor(THEME.dim), __isChunk: true });
-    chunks.push({ text: '[RUN    ] ', fg: parseColor(LOG_COLORS.runLabel), __isChunk: true });
+    chunks.push({ text: "│   ", fg: parseColor(THEME.dim), __isChunk: true });
+    chunks.push({ text: "[RUN    ] ", fg: parseColor(LOG_COLORS.runLabel), __isChunk: true });
     chunks.push({ text: stepInfo, fg: parseColor(LOG_COLORS.runText), __isChunk: true });
     return new StyledText(chunks);
   }
@@ -354,20 +354,20 @@ export class SessionChip extends BoxRenderable {
     const chunks: TextChunk[] = [];
     const durationMs = Date.now() - this.session.startTime;
     const isFinished = !isSessionActive(this.session.status);
-    const hasError = this.session.status.toLowerCase().includes('error');
+    const hasError = this.session.status.toLowerCase().includes("error");
 
     // Vertical line with corner: │   └─
-    chunks.push({ text: '│   └─', fg: parseColor(THEME.dim), __isChunk: true });
+    chunks.push({ text: "│   └─", fg: parseColor(THEME.dim), __isChunk: true });
 
     if (hasError) {
-      chunks.push({ text: '[Error]', fg: parseColor(LOG_COLORS.errorLabel), __isChunk: true });
+      chunks.push({ text: "[Error]", fg: parseColor(LOG_COLORS.errorLabel), __isChunk: true });
     } else if (isFinished) {
-      chunks.push({ text: '[Done]', fg: parseColor(LOG_COLORS.doneLabel), __isChunk: true });
+      chunks.push({ text: "[Done]", fg: parseColor(LOG_COLORS.doneLabel), __isChunk: true });
     } else {
-      chunks.push({ text: '[...]', fg: parseColor(LOG_COLORS.elapsed), __isChunk: true });
+      chunks.push({ text: "[...]", fg: parseColor(LOG_COLORS.elapsed), __isChunk: true });
     }
 
-    chunks.push({ text: ' Elapsed: ', fg: parseColor(LOG_COLORS.elapsed), __isChunk: true });
+    chunks.push({ text: " Elapsed: ", fg: parseColor(LOG_COLORS.elapsed), __isChunk: true });
     chunks.push({
       text: formatDuration(durationMs),
       fg: parseColor(LOG_COLORS.elapsed),
@@ -383,16 +383,16 @@ export class SessionChip extends BoxRenderable {
       this.visualTimeline = null;
     }
 
-    let targetBg = 'transparent';
+    let targetBg = "transparent";
 
     // Hover: green-tinted background
     if (this.isHovered) {
-      targetBg = '#0d1a0d';
+      targetBg = "#0d1a0d";
     }
 
     // Pressed: slightly brighter green tint
     if (this.isPressed) {
-      targetBg = '#1a2e1a';
+      targetBg = "#1a2e1a";
     }
 
     if (duration === 0) {
@@ -407,7 +407,7 @@ export class SessionChip extends BoxRenderable {
     this.visualTimeline.add(this, {
       duration,
       onUpdate: (anim) => {
-        if (startBg !== 'transparent' && targetBg !== 'transparent') {
+        if (startBg !== "transparent" && targetBg !== "transparent") {
           this.currentBg = interpolateColor(startBg, targetBg, anim.progress);
         } else {
           this.currentBg = anim.progress > 0.5 ? targetBg : startBg;
@@ -452,31 +452,31 @@ export class SessionChip extends BoxRenderable {
 
     // Determine status message based on session state
     const statusLower = session.status.toLowerCase();
-    let statusMessage = 'Ready.';
-    let infoMessage = 'Waiting...';
+    let statusMessage = "Ready.";
+    let infoMessage = "Waiting...";
 
     if (session.gitStatus) {
       const gs = session.gitStatus;
       if (gs.ahead > 0 && gs.isClean) {
-        statusMessage = `Branch is ahead by ${gs.ahead} commit${gs.ahead > 1 ? 's' : ''}, working tree clean.`;
+        statusMessage = `Branch is ahead by ${gs.ahead} commit${gs.ahead > 1 ? "s" : ""}, working tree clean.`;
       } else if (gs.ahead > 0) {
-        statusMessage = `Branch is ahead by ${gs.ahead} commit${gs.ahead > 1 ? 's' : ''}, ${gs.modified} file${gs.modified > 1 ? 's' : ''} modified.`;
+        statusMessage = `Branch is ahead by ${gs.ahead} commit${gs.ahead > 1 ? "s" : ""}, ${gs.modified} file${gs.modified > 1 ? "s" : ""} modified.`;
       } else if (gs.isClean) {
-        statusMessage = 'Working tree clean.';
+        statusMessage = "Working tree clean.";
       } else {
-        statusMessage = `${gs.modified} file${gs.modified > 1 ? 's' : ''} modified.`;
+        statusMessage = `${gs.modified} file${gs.modified > 1 ? "s" : ""} modified.`;
       }
     }
 
-    if (statusLower.includes('initializing')) {
-      infoMessage = 'Initializing model...';
-    } else if (statusLower.includes('error')) {
-      statusMessage = session.status.replace(/\s+/g, ' ').trim();
-      infoMessage = 'Error occurred';
-    } else if (statusLower.includes('done')) {
-      infoMessage = 'Task completed successfully.';
+    if (statusLower.includes("initializing")) {
+      infoMessage = "Initializing model...";
+    } else if (statusLower.includes("error")) {
+      statusMessage = session.status.replace(/\s+/g, " ").trim();
+      infoMessage = "Error occurred";
+    } else if (statusLower.includes("done")) {
+      infoMessage = "Task completed successfully.";
     } else {
-      infoMessage = 'Processing...';
+      infoMessage = "Processing...";
     }
 
     this.statusLine.content = this.buildStatusContent(statusMessage);
@@ -485,9 +485,9 @@ export class SessionChip extends BoxRenderable {
     this.doneLine.content = this.buildDoneContent();
 
     // Update button visibility
-    const completedLike = statusLower.includes('done') || statusLower.includes('task completed');
+    const completedLike = statusLower.includes("done") || statusLower.includes("task completed");
     const isFinished = !isSessionActive(session.status) || completedLike;
-    const isDone = completedLike || statusLower === 'done';
+    const isDone = completedLike || statusLower === "done";
     const hasWorktree = !!session.worktreeInfo;
 
     // Show cancel button only when session is active

@@ -1,5 +1,5 @@
-import { mock } from 'bun:test';
-import type { SessionData } from '../../types/tasks.ts';
+import { mock } from "bun:test";
+import type { SessionData } from "../../types/tasks.ts";
 
 export interface MockComponent {
   id: string;
@@ -81,7 +81,7 @@ export const createOpentuiMocks = () => {
         public renderer: MockRenderer,
         public options: MockRenderableOptions,
       ) {
-        this.id = options?.id || 'mock-box';
+        this.id = options?.id || "mock-box";
         if (options?.visible !== undefined) this.visible = options.visible;
         if (options?.opacity !== undefined) this.opacity = options.opacity;
         if (options?.backgroundColor !== undefined) this.backgroundColor = options.backgroundColor;
@@ -99,7 +99,7 @@ export const createOpentuiMocks = () => {
         public renderer: MockRenderer,
         public options: MockRenderableOptions,
       ) {
-        this.id = options?.id || 'mock-scrollbox';
+        this.id = options?.id || "mock-scrollbox";
         this.getChildren = mock(() => this.children);
         this.add = mock((child: MockComponent) => this.children.push(child));
         this.remove = mock((id: string) => {
@@ -113,32 +113,32 @@ export const createOpentuiMocks = () => {
     TextRenderable: class implements MockText {
       public id: string;
       public visible = true;
-      public fg = '';
-      public content: string = '';
+      public fg = "";
+      public content: string = "";
       constructor(
         public renderer: MockRenderer,
         public options: MockRenderableOptions,
       ) {
-        this.id = options?.id || 'mock-text';
-        this.content = options?.content || '';
-        this.fg = options?.fg || '';
+        this.id = options?.id || "mock-text";
+        this.content = options?.content || "";
+        this.fg = options?.fg || "";
       }
       onMouse = null;
     },
     DiffRenderable: class implements MockComponent {
       public id: string;
       public visible = true;
-      public diff: string = '';
-      public view: string = '';
-      public filetype: string = '';
-      public wrapMode: string = '';
+      public diff: string = "";
+      public view: string = "";
+      public filetype: string = "";
+      public wrapMode: string = "";
       constructor(
         public renderer: MockRenderer,
         public options: MockRenderableOptions,
       ) {
-        this.id = options?.id || 'mock-diff';
-        this.diff = options?.diff || '';
-        this.view = options?.view || 'unified';
+        this.id = options?.id || "mock-diff";
+        this.diff = options?.diff || "";
+        this.view = options?.view || "unified";
       }
       destroy = mock(() => {});
     },
@@ -151,7 +151,7 @@ export const createOpentuiMocks = () => {
         public renderer: MockRenderer,
         public options_init: MockRenderableOptions,
       ) {
-        this.id = options_init?.id || 'mock-select';
+        this.id = options_init?.id || "mock-select";
       }
       on = mock((event: string, handler: Function) => {
         if (!this.handlers[event]) this.handlers[event] = [];
@@ -169,12 +169,12 @@ export const createOpentuiMocks = () => {
       public id: string;
       public visible = true;
       public focused = false;
-      public value = '';
+      public value = "";
       constructor(
         public renderer: MockRenderer,
         public options: MockRenderableOptions,
       ) {
-        this.id = options?.id || 'mock-input';
+        this.id = options?.id || "mock-input";
       }
       focus = mock(() => {
         this.focused = true;
@@ -186,12 +186,12 @@ export const createOpentuiMocks = () => {
     MarkdownRenderable: class implements MockComponent {
       public id: string;
       public visible = true;
-      public content = '';
+      public content = "";
       constructor(
         public renderer: MockRenderer,
         public options: MockRenderableOptions,
       ) {
-        this.id = options?.id || 'mock-markdown';
+        this.id = options?.id || "mock-markdown";
       }
     },
     createTimeline: mock(() => ({
@@ -209,8 +209,8 @@ export const createOpentuiMocks = () => {
     parseColor: mock(() => ({})),
     SyntaxStyle: { fromStyles: mock(() => ({ destroy: mock(() => {}) })) },
     SelectRenderableEvents: {
-      SELECTION_CHANGED: 'selection_changed',
-      ITEM_SELECTED: 'item_selected',
+      SELECTION_CHANGED: "selection_changed",
+      ITEM_SELECTED: "item_selected",
     },
   };
   return mocks;
@@ -220,11 +220,11 @@ export const gitMock = {
   getChangedFiles: mock(
     async () => [] as Array<{ path: string; status: string; additions: number; deletions: number }>,
   ),
-  getFileDiff: mock(async () => ''),
-  getFileType: mock(() => 'typescript'),
-  getStatusIndicator: mock(() => 'M'),
-  getStatusColor: mock(() => '#ffffff'),
-  generatePRDescription: mock(async () => ({ title: '', body: '' })),
+  getFileDiff: mock(async () => ""),
+  getFileType: mock(() => "typescript"),
+  getStatusIndicator: mock(() => "M"),
+  getStatusColor: mock(() => "#ffffff"),
+  generatePRDescription: mock(async () => ({ title: "", body: "" })),
 };
 
 export const createMockRenderer = (): MockRenderer => {
@@ -257,11 +257,11 @@ export const createMockRenderer = (): MockRenderer => {
  */
 export const createMockSession = (overrides: Partial<SessionData> = {}): SessionData => {
   return {
-    id: 'sessions/test',
-    prompt: 'test prompt',
+    id: "sessions/test",
+    prompt: "test prompt",
     startTime: Date.now(),
-    status: 'Running',
-    engine: 'gemini',
+    status: "Running",
+    engine: "gemini",
     isPrdMode: false,
     iteration: 1,
     history: [],

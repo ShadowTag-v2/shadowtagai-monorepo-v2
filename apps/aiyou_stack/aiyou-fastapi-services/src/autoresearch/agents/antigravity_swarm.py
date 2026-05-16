@@ -22,6 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from agents.autoresearch import AgentUnit, minion  # noqa: E402
+
 from pnkln.core.judge_six_pipeline import JudgeSix  # noqa: E402
 
 if TYPE_CHECKING:

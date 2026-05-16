@@ -46,9 +46,12 @@ Sources → Multi-Agent Debate → Glicko-Rated Classification → Cheat Sheet F
 
 **Why Glicko-2 over Elo**:
 
+
 - Accounts for rating volatility (confidence intervals)
 
+
 - Handles infrequent competitions
+
 
 - Better for dynamic systems with evolving sources
 
@@ -307,11 +310,15 @@ class SourceRatingSystem:
 
 **Integration Points**:
 
+
 - **Ingestion**: Rate sources after each collection run
+
 
 - **Dashboard**: Display source rankings with confidence intervals
 
+
 - **Cost Optimization**: Prioritize high-rated, low-cost sources
+
 
 - **Alerting**: Alert when high-rated source degrades
 
@@ -584,11 +591,15 @@ class MultiAgentDebateSystem:
 
 **Integration Points**:
 
+
 - **TierClassifier**: Replace single-model with debate panel
+
 
 - **Dashboard**: Show agent rankings and debate statistics
 
+
 - **Performance**: Track debate rounds and consensus rates
+
 
 - **Cost**: Balance debate cost vs. classification accuracy
 
@@ -865,11 +876,15 @@ class BriefingGenerator:
 
 **Benefits**:
 
+
 - **+3.7% accuracy** (proven via DTE testing)
+
 
 - Adaptive to different audiences
 
+
 - Self-improving over time
+
 
 - Reproducible via version control
 
@@ -883,11 +898,15 @@ class BriefingGenerator:
 
 **Why GRPO over PPO**:
 
+
 - **Group-based advantages**: More stable than individual advantages
+
 
 - **Relative rewards**: Reduces variance in diverse scenarios
 
+
 - **Simpler implementation**: No value function needed
+
 
 - **Better for sparse rewards**: Intelligence quality is sparse signal
 
@@ -1212,9 +1231,12 @@ def compare_grpo_ppo(env, num_episodes=1000):
 
 **Benchmark Results** (from existing tests):
 
+
 - **GRPO**: Simpler, more stable with sparse rewards, 15% faster convergence
 
+
 - **PPO**: Higher final performance (+5%), but requires critic network
+
 
 - **Recommendation**: Use GRPO for intelligence policies (sparse rewards), PPO for dense reward tasks
 
@@ -1503,11 +1525,15 @@ We've identified {len(leaks)} critical revenue leaks in the funnel. If we fix th
 
 **Integration Points**:
 
+
 - **Dashboard**: Add revenue leaks section
+
 
 - **Alerting**: Alert on critical leaks (churn spike, conversion drop)
 
+
 - **API**: `GET /api/revenue/leaks` endpoint
+
 
 - **Weekly reports**: Auto-generate leak analysis every Monday
 
@@ -1521,9 +1547,12 @@ We've identified {len(leaks)} critical revenue leaks in the funnel. If we fix th
 
 **Why These Benchmarks**:
 
+
 - **HumanEval**: Code generation quality (for code intelligence)
 
+
 - **BigCodeBench**: Large-scale code tasks
+
 
 - **SWE-bench**: Real-world software engineering
 
@@ -1631,11 +1660,15 @@ class IntelligenceBenchmarkSuite:
 
 **Integration Points**:
 
+
 - **Dashboard**: Show benchmark scores over time
+
 
 - **DTE**: Use benchmarks for prompt evolution
 
+
 - **CI/CD**: Run benchmarks before deployment
+
 
 - **API**: `GET /api/benchmarks` endpoint
 
@@ -1776,27 +1809,33 @@ src/api/monetization_routes.py  - Add leak detection endpoint
 
 **Key Improvements**:
 
+
 1. **Quality**: Multi-agent validation (87% → 93% accuracy expected)
+
 
 2. **Optimization**: Glicko-2 source rankings (prioritize best sources)
 
+
 3. **Intelligence**: GRPO-trained policies (15% better decisions)
+
 
 4. **Revenue**: Leak detection (+$50-200k ARR from fixes)
 
+
 5. **Benchmarking**: Systematic quality tracking
+
 
 6. **Prompts**: DTE evolution (+3.7% accuracy proven)
 
 ### Performance Impact
 
-| Component          | Additional Overhead   | Impact                            |
-| ------------------ | --------------------- | --------------------------------- |
+| Component | Additional Overhead | Impact |
+|-----------|---------------------|--------|
 | Multi-agent debate | +2-5 seconds per item | Only for disputed classifications |
-| Glicko-2 updates   | <10ms per match       | Negligible                        |
-| GRPO training      | Offline (nightly)     | No runtime impact                 |
-| Leak detection     | <500ms per analysis   | Run weekly                        |
-| Benchmarks         | Offline (CI/CD)       | No runtime impact                 |
+| Glicko-2 updates | <10ms per match | Negligible |
+| GRPO training | Offline (nightly) | No runtime impact |
+| Leak detection | <500ms per analysis | Run weekly |
+| Benchmarks | Offline (CI/CD) | No runtime impact |
 
 **Total Runtime Impact**: <2% (debate is optional, only on disagreements)
 
@@ -1804,11 +1843,15 @@ src/api/monetization_routes.py  - Add leak detection endpoint
 
 **Leak Fixes** (conservative):
 
+
 - Trial conversion: +5% = +50 customers/mo = +$4,950 MRR
+
 
 - Churn reduction: -2% = Save 3 customers/mo = +$897 MRR
 
+
 - Pricing optimization: +$50/customer = +$7,500 MRR (for 150 customers)
+
 
 - Viral program: 0.5 → 1.0 coefficient = +25 customers/mo = +$2,475 MRR
 
@@ -1816,9 +1859,12 @@ src/api/monetization_routes.py  - Add leak detection endpoint
 
 **ROI on Development**:
 
+
 - Development time: ~1 week
 
+
 - Revenue impact: ~$190k ARR
+
 
 - **ROI: 190x** (if we value dev time at $1k/day = $7k/week)
 
@@ -1833,17 +1879,25 @@ src/api/monetization_routes.py  - Add leak detection endpoint
 
 ## Next Steps
 
+
+
 1. **Implement Glicko-2** - Start rating sources immediately
+
 
 2. **Launch debate system** - Test on 100 items, measure accuracy lift
 
+
 3. **Run leak analysis** - Generate first wealth report
+
 
 4. **DTE prompt evolution** - Evolve briefing prompts over 10 iterations
 
+
 5. **GRPO training** - Train source selection policy
 
+
 6. **Benchmark suite** - Establish baseline scores
+
 
 7. **Reality Distortion** - Set impossible 12-month goal
 

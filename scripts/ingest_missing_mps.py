@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import sys
 
@@ -44,11 +45,12 @@ def chunk_text(text: str, chunk_size: int = 1000):
     return [c for c in chunks if c.strip()]
 
 
-def execute_ingestion() -> None:
+def execute_ingestion():
+    print("🚀 [FAST-FOLLOW INGEST] Initiating...")
     # Force MPS on Apple Silicon
     try:
         model = SentenceTransformer("all-MiniLM-L6-v2", device="mps")
-    except Exception:
+    except:
         model = SentenceTransformer("all-MiniLM-L6-v2")
 
     def local_embed_fn(text: str):
@@ -60,27 +62,24 @@ def execute_ingestion() -> None:
     total_chunks = 0
 
     for thread in TARGET_THREADS:
+        print(f"\n🔍 Sweeping Thread: {thread}")
         files = get_files_recursively(thread)
+        print(f"   => Found {len(files)} target files.")
 
         for file in files:
             try:
                 with open(file, encoding="utf-8") as f:
                     content = f.read()
-            except Exception:
+            except:
                 continue
 
             chunks = chunk_text(content)
-            events = [
-                {
-                    "text": chunk,
-                    "timestamp": "legacy_ingest_patch",
-                    "node_type": "legacy_thread_docs",
-                }
-                for chunk in chunks
-            ]
+            events = [{"text": chunk, "timestamp": "legacy_ingest_patch", "node_type": "legacy_thread_docs"} for chunk in chunks]
             memory.persist_traversal(timeline_id="global_monorepo", events=events)
             total_chunks += len(chunks)
             total_files += 1
+
+    print("\n✅ Fast-Follow Complete.")
 
 
 if __name__ == "__main__":

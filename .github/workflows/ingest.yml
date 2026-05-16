@@ -13,23 +13,17 @@ on:
 
 env:
   # Repository references
-  POLICY_REPO: ehanc69/shadowtag-omega-v4-policy
+  POLICY_REPO: ehanc69/aiyou-policy
   POLICY_BRANCH: main
 
   # File paths
   POLICY_FILE_PATH: policy/config/strict_policy.yml
   LOCAL_POLICY_DIR: policy/config
 
-
-concurrency:
-  group: ingest-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   ingestion:
     name: Run Gemini Ingestion Layer
     runs-on: ubuntu-latest
-    timeout-minutes: 15
 
     steps:
       - name: Checkout repository

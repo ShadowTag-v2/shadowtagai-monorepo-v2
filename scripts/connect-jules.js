@@ -4,7 +4,7 @@ import { GoogleAuth } from 'google-auth-library';
 
 // Project Configuration
 const GCP_PROJECT_ID = 'shadowtag-omega-v4';
-const SERVICE_ACCOUNT = 'antigravity-stitch-bot@shadowtag-omega-v4.iam.gserviceaccount.com';
+const _SERVICE_ACCOUNT = 'antigravity-stitch-bot@shadowtag-omega-v4.iam.gserviceaccount.com';
 
 // Enterprise-Grade IAM Authentication via Workload Identity Federation
 const auth = new GoogleAuth({

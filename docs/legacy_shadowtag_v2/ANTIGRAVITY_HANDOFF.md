@@ -51,14 +51,14 @@ The Antigravity Handoff system provides **intelligent cross-model orchestration*
 
 ### Routing Logic
 
-| Task Type                | Primary Model           | Rationale                 | SLA        |
-| ------------------------ | ----------------------- | ------------------------- | ---------- |
-| **Production Inference** | Gemini 2.0 Flash        | Cost-efficient, fast      | p99 ≤100ms |
-| **Deep Analysis**        | Claude Sonnet 4.5       | Superior reasoning        | p95 ≤2s    |
-| **Code Refactoring**     | Claude                  | Best at large-scale edits | p95 ≤3s    |
-| **Judge#6 Binary**       | Gemini (MCP-compressed) | <35ms kernel chain        | p99 ≤90ms  |
-| **Artifact Creation**    | Claude                  | Better long-form docs     | p95 ≤4s    |
-| **Specialized Tasks**    | GPT-5 (15%)             | Specific capabilities     | p99 ≤500ms |
+| Task Type | Primary Model | Rationale | SLA |
+|-----------|---------------|-----------|-----|
+| **Production Inference** | Gemini 2.0 Flash | Cost-efficient, fast | p99 ≤100ms |
+| **Deep Analysis** | Claude Sonnet 4.5 | Superior reasoning | p95 ≤2s |
+| **Code Refactoring** | Claude | Best at large-scale edits | p95 ≤3s |
+| **Judge#6 Binary** | Gemini (MCP-compressed) | <35ms kernel chain | p99 ≤90ms |
+| **Artifact Creation** | Claude | Better long-form docs | p95 ≤4s |
+| **Specialized Tasks** | GPT-5 (15%) | Specific capabilities | p99 ≤500ms |
 
 ---
 
@@ -81,7 +81,7 @@ TOTAL:              100% ($60-65K/mo)
 **Target**: 95% token reduction
 **Reality**: 40-60% compression (still 2-3× improvement)
 
-### Compliance Framework Risk Scan
+### ATP 5-19 Risk Scan
 
 Military risk assessment framework adapted for AI governance:
 
@@ -100,7 +100,6 @@ OUTPUT: APPROVE/DENY (<35ms)
 ```
 
 **Example Compression**:
-
 ```python
 # Before MCP (50KB)
 policy_context = {
@@ -128,13 +127,13 @@ decision = 1  # APPROVE (14ms latency)
 
 ## Performance SLAs
 
-| Component             | SLA         | Consequence                        |
-| --------------------- | ----------- | ---------------------------------- |
-| **Judge#6 Binary**    | p99 ≤ 90ms  | Kill-switch after 1hr breach       |
-| **Kernel Chain**      | < 35ms      | Revert to full context             |
-| **Claude Deep**       | p95 ≤ 2s    | Route to Gemini fallback           |
-| **Gemini Production** | p99 ≤ 100ms | Route to Claude fallback           |
-| **Compliance Framework Scan**     | < 50ms      | Skip compression, use full context |
+| Component | SLA | Consequence |
+|-----------|-----|-------------|
+| **Judge#6 Binary** | p99 ≤ 90ms | Kill-switch after 1hr breach |
+| **Kernel Chain** | < 35ms | Revert to full context |
+| **Claude Deep** | p95 ≤ 2s | Route to Gemini fallback |
+| **Gemini Production** | p99 ≤ 100ms | Route to Claude fallback |
+| **ATP 5-19 Scan** | < 50ms | Skip compression, use full context |
 
 ---
 
@@ -143,21 +142,18 @@ decision = 1  # APPROVE (14ms latency)
 ### Operational Costs ($0K → $60-65K/mo)
 
 **Month 1-2** (Beachhead):
-
 - Usage: 10M decisions/year = ~833K/mo
 - Cost: $2,500/mo ($3/1K decisions)
 - Revenue: $3,000 MRR ($0.0003/decision × 10M)
 - **Burn**: -$500/mo
 
 **Month 3-6** (Scale):
-
 - Usage: 100M decisions/year = ~8.3M/mo
 - Cost: $25,000/mo
 - Revenue: $30,000 MRR
 - **Profit**: +$5,000/mo
 
 **Month 12+** (Revenue):
-
 - Usage: 1B decisions/year = ~83M/mo
 - Cost: $60,000/mo (economies of scale)
 - Revenue: $300,000 MRR
@@ -183,7 +179,7 @@ Daily cost limit: $2,500 (hard stop)
 - **Access Control**: RBAC enforced at API layer
 - **GCP Secret Manager**: API keys never in plaintext
 
-### Compliance Framework Risk Framework
+### ATP 5-19 Risk Framework
 
 Adapted from U.S. Army Field Manual 5-19 (Risk Management):
 
@@ -261,7 +257,6 @@ consensus = orchestrator.jury_deliberation(question, specialist_agents)
 ## API Endpoints
 
 ### POST /api/v1/decision
-
 **Execute decision with intelligent handoff**
 
 ```bash
@@ -276,7 +271,6 @@ curl -X POST http://localhost:8000/api/v1/decision \
 ```
 
 **Response**:
-
 ```json
 {
   "decision": "APPROVE",
@@ -289,7 +283,6 @@ curl -X POST http://localhost:8000/api/v1/decision \
 ```
 
 ### POST /api/v1/judge-six
-
 **Judge#6 binary decision (<35ms, $0.0003)**
 
 ```bash
@@ -302,10 +295,9 @@ curl -X POST http://localhost:8000/api/v1/judge-six \
 ```
 
 **Response**:
-
 ```json
 {
-  "decision": 1, // APPROVE
+  "decision": 1,  // APPROVE
   "latency_ms": 14,
   "cost_usd": 0.0003,
   "confidence": 0.94,
@@ -314,8 +306,7 @@ curl -X POST http://localhost:8000/api/v1/judge-six \
 ```
 
 ### POST /api/v1/atp-519
-
-**Compliance Framework compression (95% reduction target)**
+**ATP 5-19 compression (95% reduction target)**
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/atp-519 \
@@ -327,7 +318,6 @@ curl -X POST http://localhost:8000/api/v1/atp-519 \
 ```
 
 **Response**:
-
 ```json
 {
   "kernel": {...},  // 487 bytes
@@ -401,7 +391,6 @@ kubectl logs -n pnkln-core -l app=antigravity-handoff --tail=100 -f
 ## Critical Assumptions & Weaknesses
 
 ### Assumptions
-
 1. **Gemini Antigravity Stability**: Experimental model may be deprecated
 2. **GCP Hypercomputer Allocation**: Assumes quota holds at scale
 3. **Anthropic API SLAs**: Claude API remains stable
@@ -409,7 +398,6 @@ kubectl logs -n pnkln-core -l app=antigravity-handoff --tail=100 -f
 5. **Bootstrap Runway**: Extends to M3+ deployment
 
 ### Weaknesses
-
 1. **Fallback Latency Penalty**: Adds 50-100ms overhead
 2. **Cross-Model State**: Brittle synchronization
 3. **MCP Semantic Loss**: Edge cases may lose context
@@ -417,7 +405,6 @@ kubectl logs -n pnkln-core -l app=antigravity-handoff --tail=100 -f
 5. **Cost Model Scale**: Breaks at 1B+ decisions/year
 
 ### Critique
-
 - **FRAGILE**: Assumes Gemini function-calling API won't drift
 - **UNPROVEN**: SLA gates untested at production scale
 - **EXPENSIVE**: $60K/mo operational cost requires revenue scale

@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from service.app.adapters.json_memory import JsonMemoryStore
 
 store = JsonMemoryStore()

@@ -23,12 +23,12 @@ Or install from VSCode Marketplace: [Auto Run Command](https://marketplace.visua
 
 The `.vscode/settings.json` file contains 4 auto-run rules that execute when VSCode opens:
 
-| Rule                   | Condition                                             | Action                                        |
-| ---------------------- | ----------------------------------------------------- | --------------------------------------------- |
-| **Gemini API Auth**    | Project = `ShadowTag-v2-fastapi-services` + has orchestrator | Load `GEMINI_API_KEY` from GCP Secret Manager |
-| **Python Interpreter** | Project has orchestrator                              | Set Python interpreter for swarm              |
-| **Dependencies**       | Has `requirements.txt`                                | Install Gemini Antigravity packages           |
-| **Diagnostics**        | Python files open                                     | Enable Pyright for type checking              |
+| Rule | Condition | Action |
+|------|-----------|--------|
+| **Gemini API Auth** | Project = `aiyou-fastapi-services` + has orchestrator | Load `GEMINI_API_KEY` from GCP Secret Manager |
+| **Python Interpreter** | Project has orchestrator | Set Python interpreter for swarm |
+| **Dependencies** | Has `requirements.txt` | Install Gemini Antigravity packages |
+| **Diagnostics** | Python files open | Enable Pyright for type checking |
 
 ---
 
@@ -36,34 +36,35 @@ The `.vscode/settings.json` file contains 4 auto-run rules that execute when VSC
 
 ### On VSCode Start (Automatic)
 
-When you open `/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services`:
+When you open `/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services`:
+
+
 
 1. **5-second delay** (allows VSCode to fully load)
 
-2. **Rule evaluation**:
 
+2. **Rule evaluation**:
    ```
 
    ✓ hasFile: shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrator.py
-   ✓ isRootFolder: ShadowTag-v2-fastapi-services
+   ✓ isRootFolder: aiyou-fastapi-services
    → Execute shell commands
+
+ and VSCode commands
    ```
-
-and VSCode commands
-
-````
 
 
 3. **Environment setup**:
-```bash
-# Loads from GCP Secret Manager
-export GEMINI_API_KEY=$(gcloud secrets versions access latest \
-  --secret='gemini-api-key' \
-  --project='acquired-jet-478701-b3')
+   ```bash
+   # Loads from GCP Secret Manager
+   export GEMINI_API_KEY=$(gcloud secrets versions access latest \
+     --secret='gemini-api-key' \
+     --project='acquired-jet-478701-b3')
 
-# Sets GCP credentials
-export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/application_default_credentials.json
-````
+   # Sets GCP credentials
+   export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/application_default_credentials.json
+   ```
+
 
 4. **Dependency installation**:
    ```bash
@@ -106,11 +107,15 @@ python3 -m shadowtagai.agents.https://github.com/karpathy/autoresearchs_orchestr
 
 Starts 200-agent swarm with:
 
+
 - 120 specialists (60%)
+
 
 - 80 generalists (40%)
 
+
 - 8-hour shift rotation
+
 
 - Gemini Antigravity API integration
 
@@ -123,9 +128,12 @@ python3 -m shadowtagai.agents.gemini_antigravity_api
 
 Runs test suite:
 
+
 - PiCO trace generation
 
+
 - RLM (Recursive Language Model) query
+
 
 - Performance SLA validation (p99 ≤ 90ms)
 
@@ -138,13 +146,18 @@ python3 -c "from shadowtagai.agents.core.legal_whiteboard import Whiteboard; ...
 
 Displays:
 
+
 - Total agents
+
 
 - Level distribution (0-5)
 
+
 - Total tasks completed
 
+
 - Average success rate
+
 
 - Average knowledge nodes
 
@@ -157,9 +170,12 @@ python3 -c "from shadowtagai.agents.core.shift_management import ShiftManager; .
 
 Handoff process:
 
+
 - NIGHT (50 agents) → DAY (100 agents) → EVENING (50 agents)
 
+
 - 15-minute knowledge transfer overlap
+
 
 - Git commit with shift summary
 
@@ -172,9 +188,12 @@ gcloud builds submit --config=cloudbuild.yaml --project=acquired-jet-478701-b3
 
 Triggers Cloud Build:
 
+
 - Builds container image
 
+
 - Pushes to Artifact Registry (`shadowtagai-core`)
+
 
 - Deploys to GKE `autopilot-cluster-1`
 
@@ -187,9 +206,12 @@ python3 -c "from shadowtagai.agents.gemini_antigravity_api import ValueLock; ...
 
 Validates:
 
+
 - ROI Gate: ≥ 3.0×
 
+
 - LTV:CAC Gate: ≥ 4.0:1
+
 
 - p99 SLA: ≤ 90.0ms
 
@@ -203,11 +225,15 @@ Add to `.vscode/settings.json`:
 
 ```json
 {
-  "condition": ["isRootFolder: ShadowTag-v2-fastapi-services", "isLanguage: python"],
+  "condition": [
+    "isRootFolder: aiyou-fastapi-services",
+    "isLanguage: python"
+  ],
   "command": "echo '🐒 https://github.com/karpathy/autoresearchs agent file detected!'",
   "message": "Agent development mode activated",
   "shellCommand": true
 }
+
 ```
 
 ### Example: Auto-Format on Save for Agents
@@ -218,6 +244,7 @@ Add to `.vscode/settings.json`:
   "command": "editor.action.formatDocument",
   "message": "Auto-formatting agent code"
 }
+
 ```
 
 ### Example: Load Environment from .env File
@@ -229,6 +256,7 @@ Add to `.vscode/settings.json`:
   "message": "Loaded https://github.com/karpathy/autoresearchs environment",
   "shellCommand": true
 }
+
 ```
 
 ---
@@ -241,14 +269,16 @@ Add to `.vscode/settings.json`:
 
 **Solutions**:
 
+
 1. Check extension is installed: `code --list-extensions | grep auto-run-command`
 
-2. Verify condition matches:
 
+2. Verify condition matches:
    ```bash
-   pwd  # Should be in ShadowTag-v2-fastapi-services
+   pwd  # Should be in aiyou-fastapi-services
    ls shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrator.py  # Should exist
    ```
+
 
 3. Check VSCode Output panel: `View → Output → Auto Run Command`
 
@@ -258,19 +288,20 @@ Add to `.vscode/settings.json`:
 
 **Solutions**:
 
-1. Verify secret exists:
 
+1. Verify secret exists:
    ```bash
    gcloud secrets versions access latest \
      --secret='gemini-api-key' \
      --project='acquired-jet-478701-b3'
    ```
 
-2. Check GCP authentication:
 
+2. Check GCP authentication:
    ```bash
    gcloud auth application-default print-access-token
    ```
+
 
 3. Manual fallback:
    ```bash
@@ -283,13 +314,15 @@ Add to `.vscode/settings.json`:
 
 **Solutions**:
 
+
 1. Manual selection: `Cmd+Shift+P → Python: Select Interpreter`
 
-2. Verify Python path in `.vscode/settings.json`:
 
+2. Verify Python path in `.vscode/settings.json`:
    ```json
    "python.pythonPath": "/usr/local/bin/python3"
    ```
+
 
 3. Check virtual environment:
    ```bash
@@ -303,9 +336,12 @@ Add to `.vscode/settings.json`:
 
 **Solutions**:
 
+
 1. Reload VSCode: `Cmd+Shift+P → Developer: Reload Window`
 
+
 2. Verify `.vscode/tasks.json` exists
+
 
 3. Check JSON syntax: `jq . .vscode/tasks.json`
 
@@ -362,21 +398,31 @@ Update rule:
 
 ### ✅ DO:
 
+
+
 - Use GCP Secret Manager for API keys
+
 
 - Load credentials from `~/.config/gcloud/application_default_credentials.json`
 
+
 - Set `shellCommand: true` only for trusted commands
+
 
 - Review auto-run rules before committing
 
 ### ❌ DON'T:
 
+
+
 - Hardcode API keys in `.vscode/settings.json`
+
 
 - Run arbitrary shell commands without verification
 
+
 - Commit `.env` files with secrets
+
 
 - Use `always` condition for destructive operations
 
@@ -388,30 +434,42 @@ Update rule:
 
 ```json
 {
-  "condition": ["isRunningInContainer", "hasFile: Dockerfile"],
+  "condition": [
+    "isRunningInContainer",
+    "hasFile: Dockerfile"
+  ],
   "command": "echo 'Running in Docker container'",
   "shellCommand": true
 }
+
 ```
 
 ### Project-Specific Python Version
 
 ```json
 {
-  "condition": ["isRootFolder: ShadowTag-v2-fastapi-services", "hasFile: .python-version"],
+  "condition": [
+    "isRootFolder: aiyou-fastapi-services",
+    "hasFile: .python-version"
+  ],
   "command": "pyenv install $(cat .python-version) --skip-existing && pyenv local $(cat .python-version)",
   "shellCommand": true
 }
+
 ```
 
 ### Conditional GKE Deployment
 
 ```json
 {
-  "condition": ["hasFile: cloudbuild.yaml", "isRootFolder: ShadowTag-v2-fastapi-services"],
+  "condition": [
+    "hasFile: cloudbuild.yaml",
+    "isRootFolder: aiyou-fastapi-services"
+  ],
   "command": "echo '🚀 GKE deployment available. Run: gcloud builds submit'",
   "shellCommand": true
 }
+
 ```
 
 ---
@@ -420,13 +478,19 @@ Update rule:
 
 ### Agent-Specific Workflows
 
+
+
 1. **Open Project** → Auto-load Gemini API key
+
 
 2. **Edit Agent** → Auto-format with Black
 
+
 3. **Save Changes** → Auto-run linter (Ruff)
 
+
 4. **Run Tests** → Use `🧪 Test Gemini Antigravity API` task
+
 
 5. **Deploy** → Use `🚀 Deploy to GKE` task
 
@@ -438,7 +502,7 @@ Create cron rule (external to VSCode):
 
 # Run shift handoff every 8 hours
 
-0 */8 * * * cd /Users/pikeymickey/Documents/Claude\ Code/Code/Claude\ Demo/ShadowTag-v2-fastapi-services && python3 -m shadowtagai.agents.core.shift_management --handoff
+0 */8 * * * cd /Users/pikeymickey/Documents/Claude\ Code/Code/Claude\ Demo/aiyou-fastapi-services && python3 -m shadowtagai.agents.core.shift_management --handoff
 
 ```
 
@@ -455,13 +519,13 @@ watch -n 30 'python3 -c "from shadowtagai.agents.core.legal_whiteboard import Wh
 
 ## Manifest Summary
 
-| File                                                                           | Purpose                                                            |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `.vscode/settings.json`                                                        | Auto-run rules + Python/editor config                              |
-| `.vscode/tasks.json`                                                           | Predefined tasks for https://github.com/karpathy/autoresearchs ops |
-| `shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrator.py` | 200-agent swarm orchestrator                                       |
-| `shadowtagai/agents/gemini_antigravity_api.py`                                 | Gemini API client with PiCO/PRISM/Value.Lock                       |
-| `task.md`                                                                      | Development checklist                                              |
+| File | Purpose |
+|------|---------|
+| `.vscode/settings.json` | Auto-run rules + Python/editor config |
+| `.vscode/tasks.json` | Predefined tasks for https://github.com/karpathy/autoresearchs ops |
+| `shadowtagai/agents/https://github.com/karpathy/autoresearchs_orchestrator.py` | 200-agent swarm orchestrator |
+| `shadowtagai/agents/gemini_antigravity_api.py` | Gemini API client with PiCO/PRISM/Value.Lock |
+| `task.md` | Development checklist |
 
 ---
 
@@ -482,13 +546,19 @@ Validated via `🔍 Check Bootstrap Gates` task.
 
 ## Quick Start
 
+
+
 1. Install auto-run-command extension
 
-2. Open project: `/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services`
+
+2. Open project: `/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services`
+
 
 3. Wait 5 seconds for auto-setup
 
+
 4. Open terminal → verify `echo $GEMINI_API_KEY` is set
+
 
 5. Run task: `Cmd+Shift+P → Tasks: Run Task → 🐒 Start https://github.com/karpathy/autoresearchs Orchestrator`
 
@@ -498,11 +568,16 @@ Validated via `🔍 Check Bootstrap Gates` task.
 
 ## Support
 
+
+
 - **Auto-Run-Command Docs**: https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-auto-run-command
+
 
 - **VSCode Tasks**: https://code.visualstudio.com/docs/editor/tasks
 
+
 - **Gemini API**: https://cloud.google.com/gemini/docs
+
 
 - **GKE Deployment**: `cloudbuild.yaml` in project root
 

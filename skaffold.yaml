@@ -1,0 +1,89 @@
+# Skaffold configuration for pnkln orchestrator
+# Enables rapid local development and easy deployment
+
+apiVersion: skaffold/v4beta7
+kind: Config
+
+metadata:
+  name: pnkln-orchestrator
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# BUILD CONFIGURATION
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+build:
+  artifacts:
+    - image: pnkln-orchestrator
+      docker:
+        dockerfile: Dockerfile
+        buildArgs:
+          NODE_ENV: "{{.NODE_ENV}}"
+
+  # Use local Docker for dev, GCR for production
+  local:
+    push: false
+    useBuildkit: true
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DEPLOY CONFIGURATION
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+manifests:
+  kustomize:
+    paths:
+      - k8s/base
+
+deploy:
+  kubectl: {}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PORT FORWARDING (for local access)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+portForward:
+  - resourceType: service
+    resourceName: pnkln-orchestrator
+    namespace: pnkln-production
+    port: 80
+    localPort: 8080
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# FILE SYNC (hot reload for development)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+sync:
+  manual:
+    - src: "src/**/*.ts"
+      dest: /app/src
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PROFILES (different configurations for different environments)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+profiles:
+  # Development profile (local)
+  - name: dev
+    activation:
+      - command: dev
+    build:
+      local:
+        push: false
+    patches:
+      - op: replace
+        path: /build/artifacts/0/docker/buildArgs/NODE_ENV
+        value: development
+
+  # Production profile (GKE)
+  - name: production
+    activation:
+      - command: run
+    build:
+      googleCloudBuild:
+        projectId: YOUR_PROJECT_ID
+        diskSizeGb: 100
+        machineType: E2_HIGHCPU_8
+      artifacts:
+        - image: us-central1-docker.pkg.dev/YOUR_PROJECT_ID/pnkln/orchestrator
+          docker:
+            dockerfile: Dockerfile
+            buildArgs:
+              NODE_ENV: production
+    patches:
+      - op: replace
+        path: /build/artifacts/0/docker/buildArgs/NODE_ENV
+        value: production

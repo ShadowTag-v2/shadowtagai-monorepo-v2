@@ -1,0 +1,44 @@
+# pnkln — Code Roll-Up Package (for Google Sales: Nick)
+
+**Date:** 2025-10-29 19:20
+
+## Executive Summary
+pnkln is a Vertex AI-forward solution packaged for rapid evaluation and co-selling with Google Cloud. This bundle includes:
+- A single plain-text roll-up to paste all code and prompts.
+- Vertex AI Studio shell cell stubs (%%bash) for easy reproduction.
+- Prompt templates and security posture notes.
+
+> Goal for Nick: enable a fast technical review, confirm fit, and identify the shortest path to a joint demo.
+
+## What’s Inside
+1. **PNKLN_CODE_ROLLUP.txt** — the master, paste-ready text container with:
+   - Text Index to organize content as you paste it.
+   - Shell cell stubs for Studio/Workbench.
+   - Prompt templates, infra/test sections, and spec skeletons.
+
+## How to Use (Vertex AI Studio / Workbench)
+1. Open the text file, copy relevant **%%bash** cells into a Vertex AI Notebook or Studio.
+2. Set `PROJECT_ID` and `REGION` where indicated.
+3. Paste your real code into the matching sections (backend, API, agents, data, tests).
+4. Remove secrets; use **Secret Manager** + IAM least privilege.
+5. Run demos/evals; capture outputs for a brief demo recording (optional).
+
+## Key Differentiators
+- **Studio-native**: Ships with shell cells and prompt scaffolds tailored for Google’s tooling.
+- **Security-first defaults**: encryption in transit/at rest, Secret Manager, IAM least-privilege.
+- **Fast demo path**: minimal ceremony to stand up a walkthrough on GCP.
+
+## Compliance & Security (high level)
+- All customer data is treated as sensitive; do not include PII in shared artifacts.
+- Keys/tokens must live in **Secret Manager**; no plaintext in code or notebooks.
+- Enable audit logging; prefer service accounts scoped to least privilege.
+
+## Status / Next Steps
+- This package is ready for you to paste in the code and prompts you want to share.
+- After you populate sections, send both files to Nick.
+- If helpful, we can add a one-page architecture sketch and a short demo script.
+
+## Contact & Notes
+- Primary Contact: {YOU} (Founder)
+- Sharing scope: Google sales (Nick) under NDA or acceptable mutual confidentiality.
+- Replace all **TODO** markers before sharing externally.

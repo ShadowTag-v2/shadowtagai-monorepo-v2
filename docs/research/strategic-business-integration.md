@@ -1,4 +1,4 @@
-# ShadowTag + ShadowTag-v2 Strategic Business Integration
+# ShadowTag + AiYou Strategic Business Integration
 
 **Generated:** 2025-11-18
 **Purpose:** Synthesis of Cor.7 neural business models with AI agent infrastructure
@@ -11,7 +11,7 @@
 This document integrates two complementary business verticals built on a shared AI infrastructure foundation:
 
 1. **ShadowTag** - Neural-level digital media authentication (proof layer)
-2. **ShadowTag-v2** - AI-cognition ranked video network (discovery layer)
+2. **AiYou** - AI-cognition ranked video network (discovery layer)
 
 Both are enabled by the same underlying technology stack documented in the [AI Agents Knowledge Base](./ai-agents-knowledge-base.md), with additional neural network capabilities that create a "two-sided monopoly":
 
@@ -19,12 +19,12 @@ Both are enabled by the same underlying technology stack documented in the [AI A
 
 ### Combined Ecosystem Valuation
 
-| Metric              | ShadowTag | ShadowTag-v2 | Combined     |
-| ------------------- | --------- | ----- | ------------ |
-| 36-mo ARR           | $1.4B     | $275M | $1.675B      |
-| Cross-revenue       | +$40M     | —     | +$40M        |
-| Net margin          | 75%       | 50%   | ~70% blended |
-| Valuation potential | $10-12B   | $5-8B | **$15-20B**  |
+| Metric | ShadowTag | AiYou | Combined |
+|--------|-----------|--------|----------|
+| 36-mo ARR | $1.4B | $275M | $1.675B |
+| Cross-revenue | +$40M | — | +$40M |
+| Net margin | 75% | 50% | ~70% blended |
+| Valuation potential | $10-12B | $5-8B | **$15-20B** |
 
 ---
 
@@ -41,7 +41,6 @@ Both are enabled by the same underlying technology stack documented in the [AI A
 **Function:** Semantic + latent-density fingerprint per asset
 
 **Technical Implementation:**
-
 ```python
 # Integration with existing agent infrastructure
 from src.services.gemini_batch import GeminiBatchProcessor
@@ -112,7 +111,6 @@ class NeuralHashAgent(Agent):
 ```
 
 **Quantitative Gain:**
-
 - Metadata shrinkage: **60%**
 - Collision risk: **< 10^-9**
 - GPU cost: **$0.002/asset**
@@ -128,7 +126,6 @@ class NeuralHashAgent(Agent):
 **Cost:** $0.001/asset (CPU-only)
 
 **Integration Point:**
-
 ```python
 class ShadowTagEmbedAgent(Agent):
     """
@@ -178,7 +175,6 @@ class ShadowTagEmbedAgent(Agent):
 **Total Stack Cost:** ≈ $0.02/asset verified
 
 **Integration with Existing Infrastructure:**
-
 - Uses [Graphiti temporal knowledge graphs](./ai-agents-knowledge-base.md#23-graphiti---temporal-knowledge-graphs) for provenance tracking
 - [Mem-Layer](./ai-agents-knowledge-base.md#21-mem-layer---graph-based-persistent-memory) stores verification history
 - [MCP protocol](./implementation-guide.md#2-mcp-protocol-for-tool-interoperability) enables Claude/Codex verification queries
@@ -191,9 +187,9 @@ class BlockchainReceiptAgent(Agent):
     """
 
     async def process(self, message: AgentMessage) -> AgentMessage:
-        from src.services.memory import ShadowTag-v2Memory
+        from src.services.memory import AiyouMemory
 
-        memory = ShadowTag-v2Memory(scope="shadowtag_receipts")
+        memory = AiyouMemory(scope="shadowtag_receipts")
         watermarked_media = message.data["watermarked_media"]
         neural_fingerprint = message.data["neural_fingerprint"]
 
@@ -241,13 +237,13 @@ class BlockchainReceiptAgent(Agent):
 
 #### Target Segments (2025-2030 TAM)
 
-| Segment                                  | TAM   | Pricing     | Capture % | ARR @ Scale |
-| ---------------------------------------- | ----- | ----------- | --------- | ----------- |
-| Social platforms (TikTok, Meta, YouTube) | $4.2B | $0.02/asset | 20%       | **$840M**   |
-| News & media verification                | $1.1B | $0.05/asset | 10%       | **$110M**   |
-| Gov / defense / forensics                | $3.6B | $0.10/asset | 10%       | **$360M**   |
-| Insurance & supply-chain                 | $2.0B | $0.04/asset | 8%        | **$64M**    |
-| Healthcare imaging auth                  | $1.5B | $0.03/asset | 5%        | **$22M**    |
+| Segment | TAM | Pricing | Capture % | ARR @ Scale |
+|---------|-----|---------|-----------|-------------|
+| Social platforms (TikTok, Meta, YouTube) | $4.2B | $0.02/asset | 20% | **$840M** |
+| News & media verification | $1.1B | $0.05/asset | 10% | **$110M** |
+| Gov / defense / forensics | $3.6B | $0.10/asset | 10% | **$360M** |
+| Insurance & supply-chain | $2.0B | $0.04/asset | 8% | **$64M** |
+| Healthcare imaging auth | $1.5B | $0.03/asset | 5% | **$22M** |
 
 **5-Year Attainable ARR:** ≈ **$1.4B**
 **Gross Margin:** 75%
@@ -257,12 +253,12 @@ class BlockchainReceiptAgent(Agent):
 
 #### Unit Economics vs Competitors
 
-| Feature                 | Competitor Cost | ShadowTag | Δ Cost           | Scale Effect                    |
-| ----------------------- | --------------- | --------- | ---------------- | ------------------------------- |
-| Cloud moderation per GB | $0.12           | $0.04     | **-67%**         | $8M saved / 100M videos         |
-| Provenance certificate  | $0.10           | $0.012    | **-88%**         | $8.8M saved / 100M videos       |
-| False-positive rate     | 1/10^5          | 1/10^9    | **10^4× better** | $30M litigation risk avoided/yr |
-| Verification speed      | > 2s            | 0.5s      | **4× faster**    | Creator retention +20%          |
+| Feature | Competitor Cost | ShadowTag | Δ Cost | Scale Effect |
+|---------|----------------|-----------|--------|--------------|
+| Cloud moderation per GB | $0.12 | $0.04 | **-67%** | $8M saved / 100M videos |
+| Provenance certificate | $0.10 | $0.012 | **-88%** | $8.8M saved / 100M videos |
+| False-positive rate | 1/10^5 | 1/10^9 | **10^4× better** | $30M litigation risk avoided/yr |
+| Verification speed | > 2s | 0.5s | **4× faster** | Creator retention +20% |
 
 ---
 
@@ -270,12 +266,12 @@ class BlockchainReceiptAgent(Agent):
 
 **ShadowTag vs. Existing Solutions:**
 
-| Company                     | Core Tech                                                     | Pricing         | Weakness                           |
-| --------------------------- | ------------------------------------------------------------- | --------------- | ---------------------------------- |
-| Digimarc                    | Pixel watermark                                               | $0.10/asset     | No semantic proof                  |
-| Truepic                     | Image capture auth                                            | $0.08/asset     | Not AI-resilient                   |
-| Content Credentials (Adobe) | Metadata + signature                                          | Bundled         | Strippable metadata                |
-| **ShadowTag**               | **Neural semantic hash + audio/visual stego + chain receipt** | **$0.02/asset** | **End-to-end auth + 99% survival** |
+| Company | Core Tech | Pricing | Weakness |
+|---------|-----------|---------|----------|
+| Digimarc | Pixel watermark | $0.10/asset | No semantic proof |
+| Truepic | Image capture auth | $0.08/asset | Not AI-resilient |
+| Content Credentials (Adobe) | Metadata + signature | Bundled | Strippable metadata |
+| **ShadowTag** | **Neural semantic hash + audio/visual stego + chain receipt** | **$0.02/asset** | **End-to-end auth + 99% survival** |
 
 **Advantage:** 5× cheaper, 10^4× more collision-resistant, AI-proof
 
@@ -300,24 +296,24 @@ class BlockchainReceiptAgent(Agent):
 
 ---
 
-## Part II: ShadowTag-v2 - The Discovery Layer
+## Part II: AiYou - The Discovery Layer
 
 ### One-Liner
 
-**ShadowTag-v2 is the world's first video network ranked by AI cognition, not social influence.**
+**AiYou is the world's first video network ranked by AI cognition, not social influence.**
 Every clip is surfaced according to what the model presumes is interesting, beautiful, or informative—not who posted it.
 
 ### Strategic Position
 
 **Market Gap:** YouTube/TikTok rank by engagement metrics (likes, views, shares)
-**ShadowTag-v2 Innovation:** Rank by **neural energy models** and **latent density scoring**
+**AiYou Innovation:** Rank by **neural energy models** and **latent density scoring**
 
-| Legacy Platform | Bottleneck                                     | ShadowTag-v2 Advantage                                   | Quantified Gain              |
-| --------------- | ---------------------------------------------- | ------------------------------------------------- | ---------------------------- |
-| YouTube         | Creator visibility bound by opaque recommender | Open neural-rank transparency + provenance        | **+40% creator retention**   |
-| TikTok          | Human engagement ≠ content value               | AI-presumed feed trained on energy models         | **+25% avg session time**    |
-| X / Facebook    | Ad fatigue, trust erosion                      | ShadowTag provenance + "truth-verified" surfacing | **-60% moderation cost**     |
-| Twitch / Reels  | High infra cost per view                       | Edge-first inference (ReGate + NSA)               | **-45% streaming GPU hours** |
+| Legacy Platform | Bottleneck | AiYou Advantage | Quantified Gain |
+|----------------|------------|-----------------|-----------------|
+| YouTube | Creator visibility bound by opaque recommender | Open neural-rank transparency + provenance | **+40% creator retention** |
+| TikTok | Human engagement ≠ content value | AI-presumed feed trained on energy models | **+25% avg session time** |
+| X / Facebook | Ad fatigue, trust erosion | ShadowTag provenance + "truth-verified" surfacing | **-60% moderation cost** |
+| Twitch / Reels | High infra cost per view | Edge-first inference (ReGate + NSA) | **-45% streaming GPU hours** |
 
 **Global Social Video TAM (2025-2030):** ≈ **$160B**
 **1% Capture:** **$1.6B ARR potential**
@@ -329,13 +325,11 @@ Every clip is surfaced according to what the model presumes is interesting, beau
 #### Neural PDF + Energy-Based Ranking
 
 **From Cor.7 Neural:**
-
 - Latent PDF = smarter density model
 - Energy + density hybrid scoring
 - Continuous latent embedding across formats
 
-**Application to ShadowTag-v2:**
-
+**Application to AiYou:**
 ```python
 class NeuralRankingAgent(Agent):
     """
@@ -395,12 +389,12 @@ class NeuralRankingAgent(Agent):
 
 **Business Impact:**
 
-| Application               | Outcome                  | $ Impact            |
-| ------------------------- | ------------------------ | ------------------- |
-| Latent density scoring    | Fair AI-based ranking    | **+$60M ad uplift** |
-| Energy-weighted surfacing | Higher watch-time        | **+$80M revenue**   |
-| OOD anomaly check         | Deepfake prevention      | **-$10M liability** |
-| Calibration feedback      | Adaptive personalization | **+$25M LTV gain**  |
+| Application | Outcome | $ Impact |
+|-------------|---------|----------|
+| Latent density scoring | Fair AI-based ranking | **+$60M ad uplift** |
+| Energy-weighted surfacing | Higher watch-time | **+$80M revenue** |
+| OOD anomaly check | Deepfake prevention | **-$10M liability** |
+| Calibration feedback | Adaptive personalization | **+$25M LTV gain** |
 
 **Total Incremental Value:** ≈ **$155M/year**
 
@@ -408,13 +402,13 @@ class NeuralRankingAgent(Agent):
 
 ### Monetization Model
 
-| Stream                         | Unit                     | Price          | Year 3 Volume | ARR | GM % |
-| ------------------------------ | ------------------------ | -------------- | ------------- | --- | ---- |
-| Creator subscriptions          | $10/mo                   | 1M creators    | **$120M**     | 80% |
-| Ad revenue share               | CPM $4 (AI-verified ads) | 10B views      | **$40M**      | 75% |
-| Enterprise AI feed licensing   | $50K/license             | 500 partners   | **$25M**      | 78% |
-| **ShadowTag integration fees** | **$0.02/asset**          | **2B uploads** | **$40M**      | 80% |
-| Data insights API              | $0.001/query             | 50B queries    | **$50M**      | 85% |
+| Stream | Unit | Price | Year 3 Volume | ARR | GM % |
+|--------|------|-------|---------------|-----|------|
+| Creator subscriptions | $10/mo | 1M creators | **$120M** | 80% |
+| Ad revenue share | CPM $4 (AI-verified ads) | 10B views | **$40M** | 75% |
+| Enterprise AI feed licensing | $50K/license | 500 partners | **$25M** | 78% |
+| **ShadowTag integration fees** | **$0.02/asset** | **2B uploads** | **$40M** | 80% |
+| Data insights API | $0.001/query | 50B queries | **$50M** | 85% |
 
 **Total Year 3 ARR:** ≈ **$275M**
 **GM:** ≈ 79%
@@ -426,14 +420,12 @@ class NeuralRankingAgent(Agent):
 ### ShadowTag Synergy
 
 **Critical Integration:**
-
-- Each ShadowTag-v2 upload automatically passes through ShadowTag
+- Each AiYou upload automatically passes through ShadowTag
 - Generates blockchain receipt → $0.02 fee
-- At 2B uploads/yr, **ShadowTag earns $40M ARR just from ShadowTag-v2**
+- At 2B uploads/yr, **ShadowTag earns $40M ARR just from AiYou**
 
 **In Return:**
-
-- ShadowTag-v2 gains trust layer & fraud insurance
+- AiYou gains trust layer & fraud insurance
 - Reduces moderation spend by **$4M/yr**
 - Becomes the only "proof-of-origin" social feed
 
@@ -443,13 +435,13 @@ class NeuralRankingAgent(Agent):
 
 **Core Stack Savings (from [Implementation Guide](./implementation-guide.md)):**
 
-| Module                                    | Function                              | Cost vs Baseline             | Dollar Effect                        |
-| ----------------------------------------- | ------------------------------------- | ---------------------------- | ------------------------------------ |
-| Neural PDFs + Energy-based Ranking        | Feed scoring by latent likelihood     | 60% cheaper inference        | **Saves $18M / 100M monthly videos** |
-| Sparse Attention Kernels (NSA)            | Long-context transcripts & moderation | 50-70% GPU-hour reduction    | **Saves $6M/yr**                     |
-| Edge Pre-Ranking (ReGate)                 | On-device AI ranking & compression    | 10-50× latency gain          | **Keeps churn < 3%/mo**              |
-| ShadowTag Provenance                      | Fraud-proof upload fingerprinting     | -85% takedown/legal overhead | **Saves $4M/yr**                     |
-| Explainable Moderation (SAE + case-based) | AI reasons every action               | 100% auditable governance    | **Raises trust → +15% DAU**          |
+| Module | Function | Cost vs Baseline | Dollar Effect |
+|--------|----------|------------------|---------------|
+| Neural PDFs + Energy-based Ranking | Feed scoring by latent likelihood | 60% cheaper inference | **Saves $18M / 100M monthly videos** |
+| Sparse Attention Kernels (NSA) | Long-context transcripts & moderation | 50-70% GPU-hour reduction | **Saves $6M/yr** |
+| Edge Pre-Ranking (ReGate) | On-device AI ranking & compression | 10-50× latency gain | **Keeps churn < 3%/mo** |
+| ShadowTag Provenance | Fraud-proof upload fingerprinting | -85% takedown/legal overhead | **Saves $4M/yr** |
+| Explainable Moderation (SAE + case-based) | AI reasons every action | 100% auditable governance | **Raises trust → +15% DAU** |
 
 **➡️ Total Opex Saving:** ≈ **$30M/yr at 100M active users**
 
@@ -461,7 +453,7 @@ class NeuralRankingAgent(Agent):
 
 **From Cor.7 Business Models:**
 
-The ShadowTag and ShadowTag-v2 verticals are **enabled by a shared edge compute fabric**:
+The ShadowTag and AiYou verticals are **enabled by a shared edge compute fabric**:
 
 ```
 ┌────────────────────────────┐
@@ -472,7 +464,7 @@ The ShadowTag and ShadowTag-v2 verticals are **enabled by a shared edge compute 
            ▼
 ┌────────────────────────────┐
 │  Ground Station Gateways   │
-│  + ShadowTag-v2 Edge Integrator   │
+│  + AiYou Edge Integrator   │
 └──────────┬─────────────────┘
            │ Peering
            ▼
@@ -490,12 +482,12 @@ The ShadowTag and ShadowTag-v2 verticals are **enabled by a shared edge compute 
 
 #### Phase Rollout Economics
 
-| Phase       | Description                       | CAPEX  | ARR @ Stabilization | Payback |
-| ----------- | --------------------------------- | ------ | ------------------- | ------- |
-| **Phase 0** | Shadowtag + SafetyCase            | $0.35M | $20M/yr             | 1.8yr   |
-| **Phase 1** | Starlink ↔ CoreWeave bridge       | $17M   | $144M/yr            | 1.7yr   |
-| **Phase 2** | Regional edge clusters (200 PoPs) | $93M   | $780M/yr            | 1.7yr   |
-| **Phase 3** | Pole nodes (100K units)           | $1B    | $2.4B/yr            | 1.6yr   |
+| Phase | Description | CAPEX | ARR @ Stabilization | Payback |
+|-------|-------------|-------|---------------------|---------|
+| **Phase 0** | Shadowtag + SafetyCase | $0.35M | $20M/yr | 1.8yr |
+| **Phase 1** | Starlink ↔ CoreWeave bridge | $17M | $144M/yr | 1.7yr |
+| **Phase 2** | Regional edge clusters (200 PoPs) | $93M | $780M/yr | 1.7yr |
+| **Phase 3** | Pole nodes (100K units) | $1B | $2.4B/yr | 1.6yr |
 
 **Cumulative NPV (8% discount):** ≈ **$6.7B**
 **Exit Valuation:** ≈ **$12B**
@@ -507,7 +499,6 @@ The ShadowTag and ShadowTag-v2 verticals are **enabled by a shared edge compute 
 **1. Gemini Batch API Integration** ([Implementation Guide Section 1](./implementation-guide.md#1-gemini-batch-api-integration-50-cost-savings))
 
 **Applied to ShadowTag:**
-
 ```python
 # Batch process neural fingerprints
 processor = GeminiBatchProcessor()
@@ -522,8 +513,7 @@ batch_job = await processor.embed_documents_batch(
 # Combine with neural PDF for complete fingerprint
 ```
 
-**Applied to ShadowTag-v2:**
-
+**Applied to AiYou:**
 ```python
 # Batch cognitive ranking
 ranking_batch = await processor.embed_documents_batch(
@@ -539,7 +529,6 @@ ranking_batch = await processor.embed_documents_batch(
 **2. MCP Protocol** ([Implementation Guide Section 2](./implementation-guide.md#2-mcp-protocol-for-tool-interoperability))
 
 **ShadowTag MCP Tools:**
-
 ```python
 @self.tool(
     name="verify_shadowtag",
@@ -577,7 +566,7 @@ async def verify_shadowtag(asset_id: str, verification_type: str = "quick"):
 
 **3. Multi-Agent Swarm** ([Implementation Guide Section 3](./implementation-guide.md#3-multi-agent-swarm-architecture))
 
-**Extended Pipeline for ShadowTag + ShadowTag-v2:**
+**Extended Pipeline for ShadowTag + AiYou:**
 
 ```
 User Upload
@@ -594,7 +583,7 @@ Blockchain Receipt Agent (on-chain proof)  ← NEW
     ↓
 Embedder Agent (Gemini semantic embeddings)
     ↓
-Neural Ranking Agent (ShadowTag-v2 cognitive score)  ← NEW
+Neural Ranking Agent (AiYou cognitive score)  ← NEW
     ↓
 Storage Agent (vector DB + provenance graph)
     ↓
@@ -608,10 +597,9 @@ Validator Agent (quality check + fraud detection)
 **4. Persistent Memory** ([Implementation Guide Section 4](./implementation-guide.md#4-persistent-memory-with-mem-layer))
 
 **Applied to Provenance Tracking:**
-
 ```python
 # Track ShadowTag verification history
-memory = ShadowTag-v2Memory(scope="shadowtag_proofs")
+memory = AiyouMemory(scope="shadowtag_proofs")
 
 await memory.track_document(
     doc_id=asset_id,
@@ -624,7 +612,7 @@ await memory.track_document(
 # Cross-agent note
 await memory.leave_note_for_agent(
     from_agent="shadowtag_verifier",
-    to_agent="ShadowTag-v2_ranker",
+    to_agent="aiyou_ranker",
     message=f"Asset {asset_id} verified authentic, boost cognitive rank +10%"
 )
 
@@ -635,24 +623,23 @@ recent_verifications = await memory.query_recent_documents(
 )
 ```
 
-**Benefit:** Complete audit trail across both ShadowTag and ShadowTag-v2 verticals
+**Benefit:** Complete audit trail across both ShadowTag and AiYou verticals
 
 ---
 
 **5. Temporal Knowledge Graph** ([Knowledge Base Section 2.3](./ai-agents-knowledge-base.md#23-graphiti---temporal-knowledge-graphs))
 
 **Applied to Content Provenance:**
-
 ```python
 # Build provenance knowledge graph
 graphiti.add_episode(
-    entities=[asset_id, creator_id, "ShadowTag", "ShadowTag-v2"],
+    entities=[asset_id, creator_id, "ShadowTag", "AiYou"],
     relationships=[
         (asset_id, "created_by", creator_id),
         (asset_id, "verified_by", "ShadowTag"),
-        (asset_id, "ranked_by", "ShadowTag-v2"),
+        (asset_id, "ranked_by", "AiYou"),
         ("ShadowTag", "authenticates", asset_id),
-        ("ShadowTag-v2", "surfaces", asset_id)
+        ("AiYou", "surfaces", asset_id)
     ],
     timestamp=upload_timestamp
 )
@@ -677,19 +664,16 @@ provenance = graphiti.query(
 #### Phase 0: Foundation (Months 0-3)
 
 **ShadowTag MVP:**
-
 - Neural hash generation (Gemini + energy models)
 - Dual-layer embedding (DCT visual + ultrasonic audio)
 - Polygon + Arweave receipts
 
-**ShadowTag-v2 MVP:**
-
+**AiYou MVP:**
 - Neural ranking prototype
 - Energy-based feed scoring
 - Basic creator tools
 
 **Shared Infrastructure:**
-
 - MCP server (both verticals accessible via Claude/Codex)
 - Mem-Layer persistent memory
 - Gemini Batch API integration
@@ -703,18 +687,15 @@ provenance = graphiti.query(
 #### Phase 1: Starlink ↔ CoreWeave Bridge (Months 3-9)
 
 **Infrastructure:**
-
 - Gateway orchestration layer
 - Edge compute broker
 - Regional CoreWeave GPU pods
 
 **ShadowTag Scale:**
-
 - 10K creators using verification API
 - First enterprise license (news org)
 
-**ShadowTag-v2 Scale:**
-
+**AiYou Scale:**
 - 100K beta users
 - Neural feed operational
 
@@ -727,18 +708,15 @@ provenance = graphiti.query(
 #### Phase 2: Regional Edge Clusters (Months 9-18)
 
 **Infrastructure:**
-
 - 200 micro-PoPs
 - Billing & AI exchange APIs
 
 **ShadowTag Scale:**
-
 - 1M assets verified/month
 - 10 enterprise licenses
 - Marketplace analytics launched
 
-**ShadowTag-v2 Scale:**
-
+**AiYou Scale:**
 - 15M monthly active users
 - Ad network activated
 - Creator subscriptions @ $10/mo
@@ -753,19 +731,16 @@ provenance = graphiti.query(
 #### Phase 3: Pole-Level Digital Freeways (Months 18-30)
 
 **Infrastructure:**
-
 - 100K CoreWeave micro-nodes in utility poles
 - Sub-25ms inference latency globally
 - Digital freeway control tower (Tesla FSD integration)
 
 **ShadowTag Scale:**
-
 - $1.4B ARR across all verticals
 - De facto authenticity standard (ISO-like licensing)
 - Royalty model: $100M/yr passive income
 
-**ShadowTag-v2 Scale:**
-
+**AiYou Scale:**
 - 50M monthly active users
 - $275M ARR
 - Enterprise white-label feeds
@@ -780,10 +755,10 @@ provenance = graphiti.query(
 ### Financial Summary: Combined Ecosystem
 
 | Phase | Cumulative CAPEX | ARR @ Stabilization | Net Margin | Payback |
-| ----- | ---------------- | ------------------- | ---------- | ------- |
-| 0-1   | $17.35M          | $144M/yr            | 45%        | 1.8yr   |
-| 2     | $110.35M         | $780M/yr            | 55%        | 1.7yr   |
-| 3     | $1.11B           | $2.4B/yr            | 50%        | 1.6yr   |
+|-------|------------------|---------------------|------------|---------|
+| 0-1 | $17.35M | $144M/yr | 45% | 1.8yr |
+| 2 | $110.35M | $780M/yr | 55% | 1.7yr |
+| 3 | $1.11B | $2.4B/yr | 50% | 1.6yr |
 
 **Combined NPV (8% discount):** ≈ **$6.7B**
 **Exit Valuation (36 months):** **$12-15B**
@@ -800,7 +775,7 @@ provenance = graphiti.query(
 ```python
 class UnifiedOrchestrator(Orchestrator):
     """
-    Orchestrates both ShadowTag and ShadowTag-v2 workflows
+    Orchestrates both ShadowTag and AiYou workflows
     Shared infrastructure for cost efficiency
     """
 
@@ -812,7 +787,7 @@ class UnifiedOrchestrator(Orchestrator):
         self.agents[AgentRole.SHADOWTAG_EMBED] = ShadowTagEmbedAgent(self.mailbox)
         self.agents[AgentRole.BLOCKCHAIN_RECEIPT] = BlockchainReceiptAgent(self.mailbox)
 
-        # ShadowTag-v2 agents
+        # AiYou agents
         self.agents[AgentRole.NEURAL_RANKING] = NeuralRankingAgent(self.mailbox)
         self.agents[AgentRole.FEED_ORCHESTRATOR] = FeedOrchestratorAgent(self.mailbox)
 
@@ -825,7 +800,7 @@ class UnifiedOrchestrator(Orchestrator):
 
     async def process_upload(self, media_source: str, target_vertical: str):
         """
-        Process upload for either ShadowTag verification or ShadowTag-v2 ranking
+        Process upload for either ShadowTag verification or AiYou ranking
         Shared pipeline reduces duplicate work
         """
 
@@ -841,7 +816,7 @@ class UnifiedOrchestrator(Orchestrator):
 
         # Pipeline automatically routes through appropriate agents
         # ShadowTag: Parser → Classifier → Neural Hash → Embed → Receipt → Storage
-        # ShadowTag-v2: Parser → Classifier → Neural Rank → Feed → Storage
+        # AiYou: Parser → Classifier → Neural Rank → Feed → Storage
         # Shared: Embedder (Gemini), Validator
 ```
 
@@ -851,23 +826,22 @@ class UnifiedOrchestrator(Orchestrator):
 
 **Leveraging Gemini Batch API ([Implementation Guide](./implementation-guide.md#1-gemini-batch-api-integration-50-cost-savings)):**
 
-| Operation                       | Individual Cost | Batch Cost | Savings |
-| ------------------------------- | --------------- | ---------- | ------- |
-| Neural fingerprint (1M assets)  | $2,000          | $1,000     | **50%** |
-| Semantic embeddings (1M videos) | $25,000         | $12,500    | **50%** |
-| Cognitive ranking (1M items)    | $5,000          | $2,500     | **50%** |
+| Operation | Individual Cost | Batch Cost | Savings |
+|-----------|----------------|------------|---------|
+| Neural fingerprint (1M assets) | $2,000 | $1,000 | **50%** |
+| Semantic embeddings (1M videos) | $25,000 | $12,500 | **50%** |
+| Cognitive ranking (1M items) | $5,000 | $2,500 | **50%** |
 
 **Annual Savings at 100M Assets:**
-
 - ShadowTag: **$100K/month** → **$1.2M/yr**
-- ShadowTag-v2: **$1.25M/month** → **$15M/yr**
+- AiYou: **$1.25M/month** → **$15M/yr**
 - **Combined: $16.2M/yr cost avoidance**
 
 ---
 
 ### Edge Compute Distribution
 
-**Integration with Starlink + CoreWeave ([Cor.7 Infrastructure Models](https://github.com/ehanc69/ShadowTag-v2-fastapi-services)):**
+**Integration with Starlink + CoreWeave ([Cor.7 Infrastructure Models](https://github.com/ehanc69/aiyou-fastapi-services)):**
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -911,7 +885,7 @@ Gross Margin: 43% on infrastructure alone
    - Inter-satellite laser links operational
    - < 50ms global RTT achieved
 
-3. **Edge Orchestration Automation** (K8s + ShadowTag-v2JR)
+3. **Edge Orchestration Automation** (K8s + AiYouJR)
    - Kubernetes at edge matured
    - MCP protocol standardized interoperability
 
@@ -927,23 +901,23 @@ Gross Margin: 43% on infrastructure alone
 
 #### ShadowTag Competitors
 
-| Company                     | Core Tech            | Pricing     | Weakness            | ShadowTag Advantage                  |
-| --------------------------- | -------------------- | ----------- | ------------------- | ------------------------------------ |
-| Digimarc                    | Pixel watermark      | $0.10/asset | No semantic proof   | **Neural-level** fingerprinting      |
-| Truepic                     | Image capture auth   | $0.08/asset | Not AI-resilient    | **99% survival** through re-encoding |
-| Content Credentials (Adobe) | Metadata + signature | Bundled     | Strippable metadata | **On-chain** immutable receipts      |
+| Company | Core Tech | Pricing | Weakness | ShadowTag Advantage |
+|---------|-----------|---------|----------|---------------------|
+| Digimarc | Pixel watermark | $0.10/asset | No semantic proof | **Neural-level** fingerprinting |
+| Truepic | Image capture auth | $0.08/asset | Not AI-resilient | **99% survival** through re-encoding |
+| Content Credentials (Adobe) | Metadata + signature | Bundled | Strippable metadata | **On-chain** immutable receipts |
 
 **Moat:** 5× cheaper, 10^4× more collision-resistant, AI-proof
 
 ---
 
-#### ShadowTag-v2 Competitors
+#### AiYou Competitors
 
-| Platform     | Ranking Method     | Weakness                   | ShadowTag-v2 Advantage                 |
-| ------------ | ------------------ | -------------------------- | ------------------------------- |
-| YouTube      | Opaque recommender | Creator visibility lottery | **Transparent** neural ranking  |
-| TikTok       | Engagement metrics | Human engagement ≠ value   | **Cognitive** value scoring     |
-| X / Facebook | Social graph + ads | Trust erosion              | **Proof-verified** content only |
+| Platform | Ranking Method | Weakness | AiYou Advantage |
+|----------|----------------|----------|-----------------|
+| YouTube | Opaque recommender | Creator visibility lottery | **Transparent** neural ranking |
+| TikTok | Engagement metrics | Human engagement ≠ value | **Cognitive** value scoring |
+| X / Facebook | Social graph + ads | Trust erosion | **Proof-verified** content only |
 
 **Moat:** Only "proof-of-origin" social feed; impossible to fake ranking
 
@@ -954,7 +928,7 @@ Gross Margin: 43% on infrastructure alone
 **Network Effects:**
 
 1. **ShadowTag:** Every verified asset increases collision database → harder to forge
-2. **ShadowTag-v2:** More users → better energy models → better ranking → more users
+2. **AiYou:** More users → better energy models → better ranking → more users
 3. **Infrastructure:** More pole nodes → lower latency → better UX → more customers
 
 **Data Moats:**
@@ -977,12 +951,12 @@ Gross Margin: 43% on infrastructure alone
 
 **From Cor.7 Capital Models:**
 
-| Stage               | Source                                                                       | Target $     | Dilution | Timing  | Primary Use                              |
-| ------------------- | ---------------------------------------------------------------------------- | ------------ | -------- | ------- | ---------------------------------------- |
-| **Seed+**           | Strategic Angels (ex-SpaceX, CoreWeave, NVIDIA)                              | $35M         | 8-10%    | 0-3mo   | 2-city pilot, SOC 2, OEM/City LOIs       |
-| **Series A**        | Deep-tech VCs (Lux, DCVC, 8VC, Eclipse, Khosla)                              | $120M        | 15%      | 6-12mo  | Expand to 8K sites, 10 metros, 4 OEMs    |
-| **Series B**        | Sovereign/Infra/Strategics (BlackRock Infra, Starlink Infra Fund, CoreWeave) | $450M + debt | 12-14%   | 18-30mo | Full 25K-site rollout                    |
-| **Series C / Exit** | SpaceX × Tesla × CoreWeave JV or IPO                                         | EV $4-7B     | —        | 36-48mo | Partial liquidity / vertical integration |
+| Stage | Source | Target $ | Dilution | Timing | Primary Use |
+|-------|--------|----------|----------|--------|-------------|
+| **Seed+** | Strategic Angels (ex-SpaceX, CoreWeave, NVIDIA) | $35M | 8-10% | 0-3mo | 2-city pilot, SOC 2, OEM/City LOIs |
+| **Series A** | Deep-tech VCs (Lux, DCVC, 8VC, Eclipse, Khosla) | $120M | 15% | 6-12mo | Expand to 8K sites, 10 metros, 4 OEMs |
+| **Series B** | Sovereign/Infra/Strategics (BlackRock Infra, Starlink Infra Fund, CoreWeave) | $450M + debt | 12-14% | 18-30mo | Full 25K-site rollout |
+| **Series C / Exit** | SpaceX × Tesla × CoreWeave JV or IPO | EV $4-7B | — | 36-48mo | Partial liquidity / vertical integration |
 
 **Total Raise Pre-Liquidity:** ≈ $600M equity + $200-250M debt
 **Expected Ownership After Dilution:** **55-60% founder retention**
@@ -991,13 +965,13 @@ Gross Margin: 43% on infrastructure alone
 
 ### Exit Scenarios (5-Year Horizon)
 
-| Exit Type                                 | Valuation | Probability | Founder Retained (%) | Founder Take |
-| ----------------------------------------- | --------- | ----------- | -------------------- | ------------ |
-| Strategic Acquisition (SpaceX/Tesla/Meta) | $25B      | 40%         | 25%                  | **$6.25B**   |
-| IPO (AI Provenance Platform)              | $30B      | 30%         | 22%                  | **$6.6B**    |
-| Dual Split (ShadowTag + ShadowTag-v2 separate)   | $35B      | 20%         | 20%                  | **$7B**      |
-| Defensive Licensing Sale                  | $10B      | 8%          | 25%                  | **$2.5B**    |
-| IP-Only Buyout                            | $2B       | 2%          | 30%                  | **$0.6B**    |
+| Exit Type | Valuation | Probability | Founder Retained (%) | Founder Take |
+|-----------|-----------|-------------|----------------------|--------------|
+| Strategic Acquisition (SpaceX/Tesla/Meta) | $25B | 40% | 25% | **$6.25B** |
+| IPO (AI Provenance Platform) | $30B | 30% | 22% | **$6.6B** |
+| Dual Split (ShadowTag + AiYou separate) | $35B | 20% | 20% | **$7B** |
+| Defensive Licensing Sale | $10B | 8% | 25% | **$2.5B** |
+| IP-Only Buyout | $2B | 2% | 30% | **$0.6B** |
 
 **Weighted Expected Value:** ≈ **$6.4B founder outcome**
 
@@ -1008,14 +982,13 @@ Gross Margin: 43% on infrastructure alone
 **From Cor.7 First-Principles Economics:**
 
 | Year | Gross Revenue | Net Margin | Retained Earnings | Cumulative EV |
-| ---- | ------------- | ---------- | ----------------- | ------------- |
-| 1    | $60M          | 70%        | $42M              | $250M         |
-| 3    | $320M         | 72%        | $230M             | $900M         |
-| 5    | $1.1B         | 74%        | $820M             | $2.4B         |
-| 10   | $3.8B         | 76%        | $2.9B             | **$6.5B+**    |
+|------|---------------|------------|-------------------|---------------|
+| 1 | $60M | 70% | $42M | $250M |
+| 3 | $320M | 72% | $230M | $900M |
+| 5 | $1.1B | 74% | $820M | $2.4B |
+| 10 | $3.8B | 76% | $2.9B | **$6.5B+** |
 
 **Stochastic Metrics:**
-
 - Median EV after 30 months: ≈ **$900M**
 - 95% CI: $200M–$2.2B
 - Failure probability: **~10%**
@@ -1030,35 +1003,30 @@ Gross Margin: 43% on infrastructure alone
 **Based on existing [Implementation Guide](./implementation-guide.md):**
 
 #### Week 1-2: Foundation
-
 - [ ] Setup unified repository structure
 - [ ] Integrate Gemini Batch API for cost optimization
-- [ ] Configure MCP server for both ShadowTag and ShadowTag-v2 tools
+- [ ] Configure MCP server for both ShadowTag and AiYou tools
 - [ ] Initialize Backlog.md for task tracking
 
 #### Week 3-4: ShadowTag MVP
-
 - [ ] Implement Neural Hash Agent (energy-based fingerprinting)
 - [ ] Build ShadowTag Embed Agent (DCT visual + ultrasonic audio)
 - [ ] Deploy Blockchain Receipt Agent (Polygon + Arweave)
 - [ ] Setup Mem-Layer for provenance tracking
 
-#### Week 5-6: ShadowTag-v2 MVP
-
+#### Week 5-6: AiYou MVP
 - [ ] Implement Neural Ranking Agent (energy-based scoring)
 - [ ] Build Feed Orchestrator Agent
 - [ ] Integrate with ShadowTag verification pipeline
 - [ ] Deploy basic creator tools
 
 #### Week 7-8: Integration Testing
-
 - [ ] Multi-agent swarm orchestration (unified pipeline)
 - [ ] Persistent memory cross-agent communication
 - [ ] Temporal knowledge graph queries
 - [ ] MCP tool verification (Claude/Codex compatibility)
 
 #### Week 9-12: Pilot Launch
-
 - [ ] 2-metro infrastructure pilot (from Cor.7 roadmap)
 - [ ] First 250 edge sites operational
 - [ ] SOC 2 Type I compliance
@@ -1072,21 +1040,18 @@ Gross Margin: 43% on infrastructure alone
 ### Key Performance Indicators (KPIs)
 
 **ShadowTag Metrics:**
-
 - Assets verified/month
 - Verification cost/asset (target: < $0.02)
 - False positive rate (target: < 1/10^9)
 - Enterprise licenses (target: 10 by Month 12)
 
-**ShadowTag-v2 Metrics:**
-
+**AiYou Metrics:**
 - Monthly active users
 - Average session time (target: +25% vs. TikTok baseline)
 - Creator retention (target: +40% vs. YouTube)
 - Cognitive ranking accuracy (A/B test win rate)
 
 **Infrastructure Metrics:**
-
 - End-to-end latency (target: < 40ms)
 - GPU utilization (target: > 55%)
 - Cost per inference (target: $0.008 at pole-level)
@@ -1100,7 +1065,7 @@ Gross Margin: 43% on infrastructure alone
 
 **ShadowTag** supplies the **proof layer** of the internet: verifiable authenticity for every pixel and sound.
 
-**ShadowTag-v2** becomes the first **social layer** built entirely on that proof: an AI-judged showcase of authentic, high-trust video.
+**AiYou** becomes the first **social layer** built entirely on that proof: an AI-judged showcase of authentic, high-trust video.
 
 **Together, they create a two-sided monopoly:**
 
@@ -1111,9 +1076,9 @@ Gross Margin: 43% on infrastructure alone
 ### Why This Integration Works
 
 1. **Shared Infrastructure** reduces costs by 65% vs. building separate platforms
-2. **Network Effects** compound: ShadowTag verification → ShadowTag-v2 trust → more creators → more verifications
+2. **Network Effects** compound: ShadowTag verification → AiYou trust → more creators → more verifications
 3. **Defensive Moat** at every layer: neural PDFs, energy models, edge compute, provenance graphs
-4. **Regulatory Alignment** via ShadowTagJR governance framework (from Cor.7)
+4. **Regulatory Alignment** via YouAiJR governance framework (from Cor.7)
 5. **Capital Efficiency** through staged rollout: seed → infrastructure → scale → monopoly
 
 ---
@@ -1156,7 +1121,6 @@ Gross Margin: 43% on infrastructure alone
 ## Appendix: Cross-Reference Index
 
 ### From AI Agents Knowledge Base
-
 - [Multi-Agent Swarm Architecture](./ai-agents-knowledge-base.md#16-article-explainer---multi-agent-swarm-architecture)
 - [Mem-Layer Persistent Memory](./ai-agents-knowledge-base.md#21-mem-layer---graph-based-persistent-memory)
 - [Graphiti Temporal Knowledge Graphs](./ai-agents-knowledge-base.md#23-graphiti---temporal-knowledge-graphs)
@@ -1164,7 +1128,6 @@ Gross Margin: 43% on infrastructure alone
 - [Technology Stack Recommendations](./ai-agents-knowledge-base.md#7-technology-stack-recommendations)
 
 ### From Implementation Guide
-
 - [Gemini Batch API (50% Cost Savings)](./implementation-guide.md#1-gemini-batch-api-integration-50-cost-savings)
 - [MCP Protocol Setup](./implementation-guide.md#2-mcp-protocol-for-tool-interoperability)
 - [Multi-Agent Swarm Code](./implementation-guide.md#3-multi-agent-swarm-architecture)
@@ -1172,9 +1135,8 @@ Gross Margin: 43% on infrastructure alone
 - [Backlog.md Task Management](./implementation-guide.md#5-backlogmd-task-management)
 
 ### From Cor.7 Neural Source Material
-
 - ShadowTag Business Thesis (neural hash, dual-layer watermarking, blockchain receipts)
-- ShadowTag-v2 Business Thesis (AI-cognition ranking, energy-based models)
+- AiYou Business Thesis (AI-cognition ranking, energy-based models)
 - Starlink + CoreWeave Infrastructure (edge compute, pole-level deployment)
 - Neural PDF Technology (latent density models, energy-based scoring)
 - Financial Projections (Monte-Carlo simulations, exit scenarios)

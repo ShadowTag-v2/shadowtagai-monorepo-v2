@@ -29,7 +29,7 @@ KOSMOS CAVALRY SQUADRON (430 agents) - ATP 3-20.96 ALIGNED
 ═══════════════════════════════════════════════════════════════════════
 │
 ├── HHT (Headquarters & Headquarters Troop) ─────────────── 115 agents
-│   ├── Command Section: 10 (CDR, XO, 1SG, Judge 6)
+│   ├── Command Section: 10 (CDR, XO, 1SG, Judge #6)
 │   ├── S-1 Personnel: 10 (Agent lifecycle management)
 │   ├── S-2 Intelligence: 20 (IPB, threat assessment)
 │   ├── S-3 Operations: 20 (Planning, MDMP/RDSP)
@@ -64,9 +64,9 @@ KOSMOS CAVALRY SQUADRON (430 agents) - ATP 3-20.96 ALIGNED
 
 ## Live Services
 
-| Service                  | URL                                                               | Agents |
-| ------------------------ | ----------------------------------------------------------------- | ------ |
-| Antigravity Orchestrator | https://antigravity-orchestrator-215390634092.us-central1.run.app | 5,590  |
+| Service | URL | Agents |
+|---------|-----|--------|
+| Antigravity Orchestrator | https://antigravity-orchestrator-215390634092.us-central1.run.app | 5,590 |
 
 ## Quick Start
 
@@ -90,90 +90,116 @@ KOSMOS CAVALRY SQUADRON (430 agents) - ATP 3-20.96 ALIGNED
 
 ### 1. INTAKE (Gemini 2.5 Flash + Kosmos - 430 agents)
 
+
+
 - Breaks input into atomic tasks
+
 
 - Writes tests for each atom
 
+
 - Kosmos Cavalry reaches consensus BEFORE passing data
+
 
 - Tags with risk_level and JURA tier
 
 ### 2. RESEARCH (Perplexity + Kosmos - 430 agents)
 
+
+
 - Each LLM explains reasoning to the next (REASONING HANDOFF)
 
+
 - Perplexity: Research all sources
+
 
 - Zone/Area reconnaissance for comprehensive search
 
 ### 3. RESEARCH (SuperGrok + Kosmos - 430 agents)
 
+
+
 - X/Grokipedia specific research
 
+
 - Route/Force reconnaissance for targeted probing
+
 
 - Business acumen applied
 
 ### 4. EXECUTE (10× Gemini Code Assist + Kosmos - 4,300 agents)
 
+
+
 - 10 parallel Gemini Code Assist instances
 
+
 - Each with full Kosmos Cavalry (430 agents)
+
 
 - Screen/Guard/Cover security voting per risk level
 
 ### 5. VALIDATE (CodePMCS)
 
+
+
 - Code quality scanning
 
+
 - Auto-fix issues
+
 
 - Pipeline sync for new tech
 
 ### 6. DEPLOY (GitHub → Cloud Run)
 
+
+
 - Push to GitHub
+
 
 - Create PR
 
+
 - Trigger Cloud Build
+
 
 - Deploy to production
 
 ## Reconnaissance Task Differentiation (ATP Chapter 3)
 
-| Task Type | RECON Troop | Behavior                                         | ATP Reference    |
-| --------- | ----------- | ------------------------------------------------ | ---------------- |
-| **Zone**  | ALPHA       | Find ALL info: terrain, obstacles, enemy, routes | ATP 3-23 to 3-30 |
-| **Area**  | BRAVO       | Focus on specific NAI/reconnaissance objective   | ATP 3-31 to 3-34 |
-| **Route** | CHARLIE     | Linear path trafficability + lateral routes      | ATP 3-40 to 3-48 |
-| **Force** | CHARLIE     | Aggressive probing, test enemy strength          | ATP 3-49 to 3-51 |
+| Task Type | RECON Troop | Behavior | ATP Reference |
+|-----------|-------------|----------|---------------|
+| **Zone** | ALPHA | Find ALL info: terrain, obstacles, enemy, routes | ATP 3-23 to 3-30 |
+| **Area** | BRAVO | Focus on specific NAI/reconnaissance objective | ATP 3-31 to 3-34 |
+| **Route** | CHARLIE | Linear path trafficability + lateral routes | ATP 3-40 to 3-48 |
+| **Force** | CHARLIE | Aggressive probing, test enemy strength | ATP 3-49 to 3-51 |
 
 ## Security Task Voting (ATP Chapter 4)
 
-| Security   | MFRC Section | Engagement Criteria                         | Threshold     | ATP Reference    |
-| ---------- | ------------ | ------------------------------------------- | ------------- | ---------------- |
-| **Screen** | Screen (20)  | Observe only, report, minimal engagement    | 50% (LOW)     | ATP 4-17 to 4-37 |
-| **Guard**  | Guard (20)   | Fight for time, deny direct observation     | 75% (HIGH)    | ATP 4-38 to 4-64 |
-| **Cover**  | Cover (20)   | Battle positions, tactically self-contained | 90% (EXTREME) | ATP 4-65 to 4-70 |
+| Security | MFRC Section | Engagement Criteria | Threshold | ATP Reference |
+|----------|--------------|---------------------|-----------|---------------|
+| **Screen** | Screen (20) | Observe only, report, minimal engagement | 50% (LOW) | ATP 4-17 to 4-37 |
+| **Guard** | Guard (20) | Fight for time, deny direct observation | 75% (HIGH) | ATP 4-38 to 4-64 |
+| **Cover** | Cover (20) | Battle positions, tactically self-contained | 90% (EXTREME) | ATP 4-65 to 4-70 |
 
 ## Agent Count Summary
 
-| Stage                  | Agents    | Model            | ATP Troop Breakdown                              |
-| ---------------------- | --------- | ---------------- | ------------------------------------------------ |
-| Gemini Intake          | 430       | gemini-3.1-flash | HHT(115)+RECON(180)+SURV(60)+MFRC(60)+Mortar(15) |
-| Perplexity Research    | 430       | llama-3.1-sonar  | Same structure                                   |
-| SuperGrok Research     | 430       | grok-2-latest    | Same structure                                   |
-| 10× Gemini Code Assist | 4,300     | gemini-3.1-flash | Same structure × 10                              |
-| **TOTAL**              | **5,590** |                  | 13 Kosmos × 430 agents                           |
+| Stage | Agents | Model | ATP Troop Breakdown |
+|-------|--------|-------|---------------------|
+| Gemini Intake | 430 | gemini-3.1-flash | HHT(115)+RECON(180)+SURV(60)+MFRC(60)+Mortar(15) |
+| Perplexity Research | 430 | llama-3.1-sonar | Same structure |
+| SuperGrok Research | 430 | grok-2-latest | Same structure |
+| 10× Gemini Code Assist | 4,300 | gemini-3.1-flash | Same structure × 10 |
+| **TOTAL** | **5,590** | | 13 Kosmos × 430 agents |
 
 ## JURA Tier Routing
 
-| Tier  | Traffic | Security | Threshold | Use Case              |
-| ----- | ------- | -------- | --------- | --------------------- |
-| FREE  | 30%     | Screen   | 50%       | Simple, low risk      |
-| FLASH | 60%     | Guard    | 75%       | Standard, medium risk |
-| PRO   | 10%     | Cover    | 90%       | High risk, governance |
+| Tier | Traffic | Security | Threshold | Use Case |
+|------|---------|----------|-----------|----------|
+| FREE | 30% | Screen | 50% | Simple, low risk |
+| FLASH | 60% | Guard | 75% | Standard, medium risk |
+| PRO | 10% | Cover | 90% | High risk, governance |
 
 ## API Endpoints
 
@@ -223,10 +249,10 @@ cloudbuild-antigravity.yaml  # CI/CD
 
 ## Cost Comparison
 
-| Provider | Model            | Cost/1M Input | Cost/1M Output |
-| -------- | ---------------- | ------------- | -------------- |
-| Claude   | claude-sonnet-4  | $3.00         | $15.00         |
-| Gemini   | gemini-3.1-flash | $0.075        | $0.30          |
+| Provider | Model | Cost/1M Input | Cost/1M Output |
+|----------|-------|---------------|----------------|
+| Claude | claude-sonnet-4 | $3.00 | $15.00 |
+| Gemini | gemini-3.1-flash | $0.075 | $0.30 |
 
 **Token savings**: ~97% per token (vs Claude)
 **Previous architecture**: 8,450 agents with Claude Code
@@ -234,13 +260,13 @@ cloudbuild-antigravity.yaml  # CI/CD
 
 ## Success Metrics
 
-| Metric             | Target                   |
-| ------------------ | ------------------------ |
-| Code correctness   | 97%+                     |
-| Defect escape      | ≤3%                      |
-| Auto-merge success | 93%+                     |
-| MTTR               | ≤45 min                  |
-| Cost per commit    | ~$0.25 (down from $1.05) |
+| Metric | Target |
+|--------|--------|
+| Code correctness | 97%+ |
+| Defect escape | ≤3% |
+| Auto-merge success | 93%+ |
+| MTTR | ≤45 min |
+| Cost per commit | ~$0.25 (down from $1.05) |
 
 ## Environment Variables
 
@@ -255,12 +281,16 @@ CODEPMCS_URL          # CodePMCS service (optional)
 
 ## Sources
 
+
+
 - [ATP 3-20.96 Cavalry Squadron](https://armypubs.army.mil/) - Primary doctrine reference
 
+
 - [FM 3-21.31 SBCT RSTA](https://www.globalsecurity.org/military/library/policy/army/fm/3-21-31/) - RSTA foundation
+
 
 - [Kosmos AI Scientist](https://arxiv.org/pdf/2511.02824) - Autonomous agent architecture
 
 ---
 
-_Antigravity v2.0: ATP 3-20.96 Cavalry Squadron - Punch Perfect Monkey Code_
+*Antigravity v2.0: ATP 3-20.96 Cavalry Squadron - Punch Perfect Monkey Code*

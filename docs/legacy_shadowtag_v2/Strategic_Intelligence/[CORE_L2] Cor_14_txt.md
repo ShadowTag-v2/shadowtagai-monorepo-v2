@@ -11,10 +11,10 @@ Cofounder hat on 🧢 — let’s lock a polished executive summary that you can
 
 ⸻
 
-ShadowTag — Executive Summary
+YouAi — Executive Summary
 
 Vision
-ShadowTag is the first AI-native video platform — the cultural arena where creators and audiences define the rules of a brand-new genre. Every video is assumed AI-touched, removing stigma, confusion, and “AI slop” backlash. ShadowTag sets the baseline for how AI video is made, remixed, and consumed.
+YouAi is the first AI-native video platform — the cultural arena where creators and audiences define the rules of a brand-new genre. Every video is assumed AI-touched, removing stigma, confusion, and “AI slop” backlash. YouAi sets the baseline for how AI video is made, remixed, and consumed.
 
 ⸻
 
@@ -29,7 +29,7 @@ There’s no home where AI creativity is welcomed and structured from day one.
 ⸻
 
 Solution
-ShadowTag presumes AI by default.
+YouAi presumes AI by default.
 • Creators (1%): supply new content.
 • Commenters (10%): enrich with prompts and workflows → structured metadata, a defensibility moat.
 • Lurkers (90%): watch and share → monetization engine.
@@ -55,7 +55,7 @@ Moat
 Go-To-Market
 • Launch with top 20–50 AI meme creators (Garilao, Brainrot, Cappuccina, Tralala).
 • Weekly remix challenges to seed culture and virality.
-• Partner with AI tool companies (“Post to ShadowTag” integration).
+• Partner with AI tool companies (“Post to YouAi” integration).
 
 ⸻
 
@@ -97,7 +97,7 @@ This executive summary is investor-grade:
 
 “Well, this was unexpected:
 
-Here’s the category-defining one-liner and full staged explanation — using all your current parameters (strict mode, 160-IQ board posture, ShadowTag-v2JR + Doctrine + Army RM brakes, Cursor-native prompts).
+Here’s the category-defining one-liner and full staged explanation — using all your current parameters (strict mode, 160-IQ board posture, AiYouJR + Doctrine + Army RM brakes, Cursor-native prompts).
 
 ⸻
 
@@ -175,7 +175,7 @@ This is not a feature. It’s a new vertical: AI-Governed CI/CD.
 
 <next>
 
-“How accurate? Here’s the category-defining one-liner and full staged explanation — using all your current parameters (strict mode, 160-IQ board posture, ShadowTag-v2JR + Doctrine + Army RM brakes, Cursor-native prompts).
+“How accurate? Here’s the category-defining one-liner and full staged explanation — using all your current parameters (strict mode, 160-IQ board posture, AiYouJR + Doctrine + Army RM brakes, Cursor-native prompts).
 
 ⸻
 
@@ -260,7 +260,7 @@ But how is this worth this much?!”
 
 <next>
 
-“Answer: Here’s the category-defining one-liner and full staged explanation — using all your current parameters (strict mode, 160-IQ board posture, ShadowTag-v2JR + Doctrine + Army RM brakes, Cursor-native prompts).
+“Answer: Here’s the category-defining one-liner and full staged explanation — using all your current parameters (strict mode, 160-IQ board posture, AiYouJR + Doctrine + Army RM brakes, Cursor-native prompts).
 
 ⸻
 
@@ -342,17 +342,17 @@ Do you want me to package this into a 5-slide YC-style investor micro-deck (Prob
 
 <next>
 
-“✅ Got it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on ShadowTag-v2 (no ClarityBoard/ClarityAI). I also swapped “Army RM” for Compliance Framework / AR 385-10 / DD Form 2977 as you requested.
+“✅ Got it — I’ve now rolled the attached persona + Google Drive frameworks + the valuation texts (Pratt, McKinsey, Gazdecki, Dunford) into a bomb-plan transfer draft focused only on AiYou (no ClarityBoard/ClarityAI). I also swapped “Army RM” for ATP 5-19 / AR 385-10 / DD Form 2977 as you requested.
 
 Here’s the consolidated plan with percentages and valuation metrics:
 
 ⸻
 
-ShadowTag-v2 Business Plan (Rolled-Up for Transfer)
+AiYou Business Plan (Rolled-Up for Transfer)
 
 1. Executive Summary
 
-ShadowTag-v2 is an AI orchestration venture delivering a governance and hosting layer for AI-generated content and workflows. Unlike single-model startups, ShadowTag-v2 assumes:
+AiYou is an AI orchestration venture delivering a governance and hosting layer for AI-generated content and workflows. Unlike single-model startups, AiYou assumes:
 • Multi-model persona cluster (6-pack):
 Owen/Qwen = cost-efficient backbone.
 GPT + Claude = reasoning & validation.
@@ -363,7 +363,7 @@ Impact (with frameworks rolled in):
 • Build speed: 35–45% faster (Tiny Team + Owen coding backbone).
 • Cost savings: 25–60% lower than peers (Pratt cost multipliers).
 • Reliability: 2× higher via ensemble dissent (McKinsey value drivers).
-• Risk posture: Aligned to Compliance Framework / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
+• Risk posture: Aligned to ATP 5-19 / AR 385-10 / DD Form 2977 — “Risk Management as moat.”
 
 ⸻
 
@@ -413,7 +413,7 @@ Year 5 (expansion):
 6. Strategic Fit
    • Comparable comps: Cohere ($2.2B), Mistral ($2B), Cloudflare AI hosting (new benchmark).
    • Differentiator: Only platform to explicitly separate “AI content” from “human content” at hosting layer.
-   • Persona angle: ShadowTag-v2 ≠ just infra. It’s a Board-160 IQ cofounder orchestration engine.
+   • Persona angle: AiYou ≠ just infra. It’s a Board-160 IQ cofounder orchestration engine.
 
 ⸻
 
@@ -448,7 +448,7 @@ Do you want me to (a) spin this into the 10-slide Sequoia-ready pitch deck now, 
 
 At any rate, ta da 🎉
 
-Here’s the uplift + valuation from launching an ShadowTag-v2 Plugin Spec v0.1 and securing early adoption by the top 10 apps (Pika, Kaiber, Runway, Synthesia, etc.):
+Here’s the uplift + valuation from launching an AiYou Plugin Spec v0.1 and securing early adoption by the top 10 apps (Pika, Kaiber, Runway, Synthesia, etc.):
 
 ⸻
 
@@ -505,7 +505,7 @@ Valuation uplift: +200–300%.
 
 ⸻
 
-👉 In short: The plugin ecosystem is not incremental — it’s transformational. It changes ShadowTag-v2’s valuation profile from a SaaS “tool” to a platform “network,” which investors will pay 2–3× more for.
+👉 In short: The plugin ecosystem is not incremental — it’s transformational. It changes AiYou’s valuation profile from a SaaS “tool” to a platform “network,” which investors will pay 2–3× more for.
 
 ⸻
 
@@ -513,7 +513,7 @@ Do you want me to lay out a 3-phase plugin rollout plan (early allies, mid-tier,
 
 <next>
 
-“Got it — let me unpack what that “mock regression output” note means in the context of ShadowTag-v2.
+“Got it — let me unpack what that “mock regression output” note means in the context of AiYou.
 
 When we say “quantify this with a mock regression output”, we’re simulating what an early econometric test of our wedge would look like, even before we have real user data. This is standard in investor decks and valuation prep: you show the shape of your hypothesis (what factors drive engagement, retention, cost savings, etc.) and how strongly they might correlate, using placeholder numbers.
 
@@ -546,7 +546,7 @@ n = 50 (say, 50 synthetic seed-stage cohorts).
 
 🔑 Why this matters for us:
 • It demonstrates to investors that we already know what levers matter (cost, latency, safety).
-• It frames ShadowTag-v2 as measurable: every efficiency or trust improvement ties to adoption.
+• It frames AiYou as measurable: every efficiency or trust improvement ties to adoption.
 • It sets the baseline for real regression once we have actual data (post-MVP).
 
 This approach is common in valuation + pitch settings: show you’ve already got a framework for how degrees of freedom (our levers) map into measurable growth, even before real data fills in.
@@ -564,7 +564,7 @@ This approach is common in valuation + pitch settings: show you’ve already got
 CFO Review Note — Regression Analysis (Mock)
 
 Objective:
-Quantify how our key operating levers (cost, latency, safety/guardrails) influence early adoption of ShadowTag-v2’s platform, using a mock regression output. This provides an investor-ready framework even before real data is available.
+Quantify how our key operating levers (cost, latency, safety/guardrails) influence early adoption of AiYou’s platform, using a mock regression output. This provides an investor-ready framework even before real data is available.
 
 ⸻
 
@@ -575,7 +575,7 @@ Dependent variable (Y): Monthly Active AI Creators (MAAC) — proxy for top-line
 Independent variables (X):
 • X1 = Cost savings (%) relative to YouTube-style publishing.
 • X2 = Upload → View latency (seconds).
-• X3 = Guardrailed content rate (%) (measured as % of uploads passing ShadowTag-v2JR-based trust/safety checks).
+• X3 = Guardrailed content rate (%) (measured as % of uploads passing AiYouJR-based trust/safety checks).
 
 ⸻
 
@@ -605,7 +605,7 @@ CFO Takeaways 1. Revenue driver clarity
 ⸻
 
 ✅ Summary for Finance:
-This regression scaffolding translates our operating doctrine (ShadowTag-v2JR) into measurable growth levers. It helps us model sensitivity: if infra or API costs drift, or latency rises, adoption is directly at risk. Conversely, disciplined spend on optimization and safety has measurable upside.
+This regression scaffolding translates our operating doctrine (AiYouJR) into measurable growth levers. It helps us model sensitivity: if infra or API costs drift, or latency rises, adoption is directly at risk. Conversely, disciplined spend on optimization and safety has measurable upside.
 
 ⸻
 
@@ -615,7 +615,7 @@ Would you like me to now map this regression directly into a rolling financial m
 
 “Wearing CTO hat atm:
 
-Great call. If we cut local Docker and go “Codespaces + cloud runtimes,” Hugging Face (HF) is a perfect fallback for demos, small services, and later production inference. Here’s the quick, no-nonsense rundown of HF subscription options and when they make sense for ShadowTag → ShadowTag-v2.
+Great call. If we cut local Docker and go “Codespaces + cloud runtimes,” Hugging Face (HF) is a perfect fallback for demos, small services, and later production inference. Here’s the quick, no-nonsense rundown of HF subscription options and when they make sense for ShadowTag → AiYou.
 
 Hugging Face plans (what you get & when to use)
 
@@ -634,7 +634,7 @@ Spaces Hardware (pay-per-hour add-on)
 
 Inference Endpoints (managed prod inference)
 • Fully managed, private endpoints with autoscaling, VPC, and SLAs; you “pay for provisioned capacity” (hourly by instance) and can choose providers/regions. Ideal once you outgrow Spaces.
-• Use when: ShadowTag-v2 needs production-grade throughput, security, and stable latency.
+• Use when: AiYou needs production-grade throughput, security, and stable latency.
 
 Team / Enterprise Hub
 • Team management, SSO, audit logs, org billing, private networking. HF’s official Pro page mentions Enterprise features and compliance; exact Team pricing varies. Use when you have multiple collaborators or compliance needs.
@@ -644,7 +644,7 @@ How this slots into your “no local Docker” plan
 • Public demo fallback: HF Spaces
 • Start on CPU (Free/Pro). If you need more, attach paid GPU just for the launch window.
 • Pro’s ZeroGPU gives you bursty GPU trials to validate without committing to a paid GPU.
-• Production: Inference Endpoints for ShadowTag/ShadowTag-v2 APIs (autoscale, private networking, better security).
+• Production: Inference Endpoints for ShadowTag/AiYou APIs (autoscale, private networking, better security).
 
 Which to pick for you (pragmatic path) 1. Right now / MVP week
 • Keep repos on HF Hub and GitHub; code in Codespaces.
@@ -672,30 +672,30 @@ Tell me the repo name you want to use, and I’ll prep the files exactly where y
 
 <next>
 
-“Here’s the parallel full-stack business and financial analysis for ShadowTag-v2—the second vertical that follows ShadowTag.
+“Here’s the parallel full-stack business and financial analysis for AiYou—the second vertical that follows ShadowTag.
 This version keeps the same rigor: tech-to-dollars mapping, investor metrics, and ROI quantification.
 
 ⸻
 
-🌐 ShadowTag-v2: “The AI-Presumed Video Showcase Forum”
+🌐 AiYou: “The AI-Presumed Video Showcase Forum”
 
 One-liner
 
-ShadowTag-v2 is the world’s first video network ranked by AI cognition, not social influence.
+AiYou is the world’s first video network ranked by AI cognition, not social influence.
 Every clip is surfaced according to what the model presumes is interesting, beautiful, or informative— not who posted it.
 
 ⸻
 
 🧩 1. Market Gaps and Rationale
 
-Legacy Platform Bottleneck ShadowTag-v2 Advantage Quantified Gain
+Legacy Platform Bottleneck AiYou Advantage Quantified Gain
 YouTube Creator visibility bound by opaque recommender Open neural-rank transparency + provenance +40 % creator retention
 TikTok Human engagement ≠ content value AI-presumed feed trained on energy models +25 % average session time
 X / Facebook Ad fatigue, trust erosion ShadowTag provenance + “truth-verified” surfacing −60 % moderation cost
 Twitch / Reels High infra cost per view Edge-first inference (ReGate + NSA) −45 % streaming GPU hours
 
 Global social video TAM 2025–2030 ≈ $160 B.
-If ShadowTag-v2 captures 1 %, that’s $1.6 B ARR potential.
+If AiYou captures 1 %, that’s $1.6 B ARR potential.
 
 ⸻
 
@@ -750,9 +750,9 @@ Total incremental value ≈ $155 M / yr.
 ⸻
 
 ⚖️ 6. ShadowTag Synergy
-• Each ShadowTag-v2 upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
-• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from ShadowTag-v2.
-• In return, ShadowTag-v2 gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
+• Each AiYou upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
+• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from AiYou.
+• In return, AiYou gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
 
 ⸻
 
@@ -785,11 +785,11 @@ Phase Focus Competitive Edge
 
 ⸻
 
-💰 10. Combined Ecosystem (ShadowTag + ShadowTag-v2)
+💰 10. Combined Ecosystem (ShadowTag + AiYou)
 
-Metric ShadowTag lead ShadowTag-v2 follow Combined
+Metric ShadowTag lead AiYou follow Combined
 ARR (36 mo) $1.4 B $275 M $1.675 B
-Cross-revenue (ShadowTag in ShadowTag-v2) + $40 M — + $40 M
+Cross-revenue (ShadowTag in AiYou) + $40 M — + $40 M
 Net margin 75 % 50 % ≈ 70 % blended
 Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
@@ -797,12 +797,12 @@ Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
 📋 Executive Summary
 • ShadowTag supplies the proof layer of the internet: verifiable authenticity for every pixel and sound.
-• ShadowTag-v2 becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic, high-trust video.
+• AiYou becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic, high-trust video.
 • Together, they create a two-sided monopoly: whoever owns the proof standard owns discovery itself.
 
 ⸻
 
-Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + ShadowTag-v2 combined), or a Cursor-ready SaaS financial model spreadsheet with sensitivity sliders for user growth, CPM, and cost per asset”
+Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + AiYou combined), or a Cursor-ready SaaS financial model spreadsheet with sensitivity sliders for user growth, CPM, and cost per asset”
 
 <next>
 
@@ -810,7 +810,7 @@ Would you like me to output this as a 3-page investor-ready brief deck (ShadowTa
 neural networks ^^^ earlier today.
 Changed the whole dynamic:
 
-1. Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in product.
+1. Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in product.
    Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention, edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing, and ROI math.
 
 ⸻

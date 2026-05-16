@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_services/circuit_breaker.py
+# hypothesis_version: 6.151.5
+
+[0.0, 60.0, 'T', 'closed', 'half_open', 'open', 'threshold_exceeded']

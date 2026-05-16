@@ -1,67 +1,106 @@
-# Docker ignore file for Pnkln
-# Keep images minimal and secure
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
 
 # Python
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 *.so
 .Python
-env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
 venv/
 ENV/
+env/
 .venv
 
 # Testing
 .pytest_cache/
 .coverage
 htmlcov/
+.tox/
 *.cover
 
-# IDEs
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Git
-.git/
-.gitignore
-.gitattributes
-
-# Documentation (exclude from production image)
-docs/
+# Documentation
 *.md
-!README.md
+docs/
 
-# Node modules (if any)
+# Configs
+.env
+.env.local
+*.log
+
+# Node modules
 node_modules/
 package-lock.json
 
-# Logs
-*.log
+# Temp files
+tmp/
+temp/
+*.tmp
 
-# Environment files
-.env
-.env.local
-.env.*.local
+# Bazel symlinks (point to /private/var/tmp on macOS)
+bazel-*
 
-# Test files
-tests/
-test_*.py
-*_test.py
+# Large data directories
+data/
+*.lance
+*.jsonl
 
-# CI/CD
-.github/
-.gitlab-ci.yml
-.travis.yml
+# Models
+models/
+*.gguf
+*.bin
 
-# Development tools
-Makefile
-docker-compose.yml
-docker-compose.*.yml
+# Core (local-only MLX/ANE)
+core/
+
+# External repos
+external_repos/
+
+# Knowledge base
+knowledge/
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoints/
+
+# Artifacts
+.beads/
+.agents/
+
+# TypeScript/Frontend (not needed for Python API deploy)
+src/
+next.config.*
+tsconfig.*
+biome.json
+external_repos/
+geap/

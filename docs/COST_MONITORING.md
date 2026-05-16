@@ -8,15 +8,15 @@ The Gemini Ingestion Layer operates on a **$77/month budget** (~$2.57/day) to co
 
 ### Monthly Budget: $77
 
-| Component               | Monthly Cost | % of Budget | Notes                                                                |
-| ----------------------- | ------------ | ----------- | -------------------------------------------------------------------- |
-| **YouTube Data API v3** | $25          | 32%         | 10,000 quota units/day @ $0 (free tier), additional units @ $0.05/1k |
-| **Twitter/X API v2**    | $20          | 26%         | Basic tier: $100/month (negotiated discount to $20)                  |
-| **NewsAPI.org**         | $15          | 19%         | Developer plan: $449/month (using free tier + fallback)              |
-| **Gemini 2.0 Pro API**  | $12          | 16%         | Relevance scoring: ~30k requests @ $0.0004/request                   |
-| **GKE Compute**         | $3           | 4%          | CronJob runtime: ~45 min/day @ $0.10/hour                            |
-| **Database Storage**    | $2           | 3%          | PostgreSQL: 10GB @ $0.20/GB                                          |
-| **Buffer**              | $0           | 0%          | Remaining for overages                                               |
+| Component | Monthly Cost | % of Budget | Notes |
+|-----------|--------------|-------------|-------|
+| **YouTube Data API v3** | $25 | 32% | 10,000 quota units/day @ $0 (free tier), additional units @ $0.05/1k |
+| **Twitter/X API v2** | $20 | 26% | Basic tier: $100/month (negotiated discount to $20) |
+| **NewsAPI.org** | $15 | 19% | Developer plan: $449/month (using free tier + fallback) |
+| **Gemini 2.0 Pro API** | $12 | 16% | Relevance scoring: ~30k requests @ $0.0004/request |
+| **GKE Compute** | $3 | 4% | CronJob runtime: ~45 min/day @ $0.10/hour |
+| **Database Storage** | $2 | 3% | PostgreSQL: 10GB @ $0.20/GB |
+| **Buffer** | $0 | 0% | Remaining for overages |
 
 ### Cost Per Item Target: $0.0026
 
@@ -630,7 +630,6 @@ def generate_daily_cost_report(date: datetime.date) -> str:
 ```
 
 ## References
-
 - [Architecture Documentation](./ARCHITECTURE.md)
 - [Quality Gates](./QUALITY_GATES.md)
 - [API Pricing Documentation](https://cloud.google.com/pricing)

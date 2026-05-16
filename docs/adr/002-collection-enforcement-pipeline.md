@@ -6,13 +6,13 @@
 
 **Supersedes:** ADR-001 (extends enforcement-first architecture with upstream collection layer)
 
-**Decision Makers:** ShadowTagAi Engineering Team
+**Decision Makers:** Pnkln Engineering Team
 
 ---
 
 ## Context and Problem Statement
 
-ADR-001 established enforcement-first architecture (Judge 6 + JR Engine) for compliance validation. However, this addressed only the **downstream** enforcement problem. The **upstream** intelligence collection problem remained unsolved:
+ADR-001 established enforcement-first architecture (Judge #6 + JR Engine) for compliance validation. However, this addressed only the **downstream** enforcement problem. The **upstream** intelligence collection problem remained unsolved:
 
 - No standardized data collection pipeline
 - No ethical compliance validation for web crawling
@@ -30,7 +30,7 @@ Implement **dual-layer architecture** combining intelligence collection (upstrea
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              SHADOWTAGAI Core Stack Architecture               │
+│              PNKLN Core Stack Architecture               │
 │                                                          │
 │  LAYER 1: Gemini Ingestion (Collection - Upstream)      │
 │  ├─ Multi-source data collection                        │
@@ -39,7 +39,7 @@ Implement **dual-layer architecture** combining intelligence collection (upstrea
 │  ├─ Quality scoring (relevance/timeliness/completeness) │
 │  └─ AM briefing delivery                                │
 │                                                          │
-│  LAYER 2: Judge 6 + JR Engine (Enforcement - Downstream)│
+│  LAYER 2: Judge #6 + JR Engine (Enforcement - Downstream)│
 │  ├─ Purpose/Reasons/Brakes validation                   │
 │  ├─ GDPR/CAN-SPAM/HIPAA compliance                      │
 │  ├─ Content policy enforcement                          │
@@ -55,21 +55,20 @@ Implement **dual-layer architecture** combining intelligence collection (upstrea
 ## Architecture: Gemini Ingestion Layer
 
 ### Purpose
-
 Proactive intelligence collector (upstream of enforcement)
 
 ### Key Characteristics
 
-| Aspect              | Judge 6 (Downstream)           | Gemini Ingestion (Upstream)           |
-| ------------------- | ------------------------------- | ------------------------------------- |
-| **Function**        | Reactive validator              | Proactive collector                   |
-| **Architecture**    | Hybrid Gemini+PyTorch           | GKE CronJob Multi-Container           |
-| **Performance**     | p99 ≤90ms (real-time)           | ~45 min/night (batch)                 |
-| **Key Metrics**     | Latency, Throughput, Block Rate | Items/Day, Sources, Cost/Item, Scores |
-| **Integration**     | Calls Services in 4 Namespaces  | Called by Services in 4 Namespaces    |
-| **Unique Features** | Compliance Framework, JR Validation         | Ethical Crawling, Tier Classification |
-| **Cost Model**      | API Calls per Validation        | Monthly Operational ~$77              |
-| **Quality Focus**   | FP/FN Rates (accuracy)          | Relevance, Timeliness, Completeness   |
+| Aspect | Judge #6 (Downstream) | Gemini Ingestion (Upstream) |
+|--------|----------------------|----------------------------|
+| **Function** | Reactive validator | Proactive collector |
+| **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
+| **Performance** | p99 ≤90ms (real-time) | ~45 min/night (batch) |
+| **Key Metrics** | Latency, Throughput, Block Rate | Items/Day, Sources, Cost/Item, Scores |
+| **Integration** | Calls Services in 4 Namespaces | Called by Services in 4 Namespaces |
+| **Unique Features** | ATP 5-19, JR Validation | Ethical Crawling, Tier Classification |
+| **Cost Model** | API Calls per Validation | Monthly Operational ~$77 |
+| **Quality Focus** | FP/FN Rates (accuracy) | Relevance, Timeliness, Completeness |
 
 ### Quality Gates
 
@@ -87,19 +86,16 @@ quality_gates = {
 ### Tier Classification
 
 **Tier 1 (High-Value Authoritative):** 20% target
-
 - .gov, .edu, .mil domains
 - Major news: NYT, Reuters, Bloomberg
 - Academic: arXiv, Nature, Science
 
 **Tier 2 (Moderate-Value Verified):** 50% target
-
 - Established tech blogs: TechCrunch
 - Verified social: Twitter Blue, YouTube channels
 - Industry publications
 
 **Tier 3 (Low-Value General):** 30% acceptable
-
 - User-generated content
 - Forums, Reddit
 - Aggregators
@@ -111,7 +107,7 @@ ethical_validations = [
     'robots.txt_compliance',      # Respect site crawling rules
     'rate_limiting',              # <60 req/hour default
     'attribution',                # Source URL preservation
-    'transparency',               # SHADOWTAGAIBot user agent
+    'transparency',               # PNKLNBot user agent
     'privacy_respect',            # No personal data scraping
 ]
 ```
@@ -122,14 +118,14 @@ ethical_validations = [
 
 ### Required Source Types
 
-| Source Type    | Priority    | Example Sources  | Rate Limit |
-| -------------- | ----------- | ---------------- | ---------- |
-| **News**       | Required    | NYT, Reuters     | 30/hour    |
-| **Academic**   | Required    | arXiv, JSTOR     | 60/hour    |
-| **YouTube**    | Recommended | YouTube Data API | 100/hour   |
-| **Twitter**    | Recommended | Twitter API v2   | 180/hour   |
-| **Government** | Recommended | Federal Register | 60/hour    |
-| **RSS**        | Optional    | Various feeds    | Varies     |
+| Source Type | Priority | Example Sources | Rate Limit |
+|-------------|----------|-----------------|------------|
+| **News** | Required | NYT, Reuters | 30/hour |
+| **Academic** | Required | arXiv, JSTOR | 60/hour |
+| **YouTube** | Recommended | YouTube Data API | 100/hour |
+| **Twitter** | Recommended | Twitter API v2 | 180/hour |
+| **Government** | Recommended | Federal Register | 60/hour |
+| **RSS** | Optional | Various feeds | Varies |
 
 ### Source Type Requirements
 
@@ -144,7 +140,7 @@ ethical_validations = [
 ### Architecture
 
 ```python
-class IntelligenceAgent(ShadowTagAiAgent):
+class IntelligenceAgent(PnklnAgent):
     """
     Complete collection → enforcement pipeline
 
@@ -157,7 +153,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
     2. JR Engine Validation (Intent)
        └─ Validate collection purpose
 
-    3. Judge 6 Enforcement (Compliance)
+    3. Judge #6 Enforcement (Compliance)
        ├─ GDPR/CAN-SPAM checks
        └─ Content policy verification
 
@@ -192,23 +188,22 @@ class IntelligenceAgent(ShadowTagAiAgent):
 
 ### Gemini Ingestion Layer
 
-| Component              | Cost/Month                          |
-| ---------------------- | ----------------------------------- |
-| **Gemini API**         | ~$15-25 (1000 items/day × $0.50/1k) |
-| **GKE Infrastructure** | ~$50 (cron job + storage)           |
-| **Bandwidth**          | ~$2-5                               |
-| **Total**              | **~$77/month**                      |
+| Component | Cost/Month |
+|-----------|-----------|
+| **Gemini API** | ~$15-25 (1000 items/day × $0.50/1k) |
+| **GKE Infrastructure** | ~$50 (cron job + storage) |
+| **Bandwidth** | ~$2-5 |
+| **Total** | **~$77/month** |
 
 ### Combined Stack (Collection + Enforcement)
 
-| Layer                    | Cost/Month             |
-| ------------------------ | ---------------------- |
-| **Gemini Ingestion**     | $77                    |
-| **Judge 6 + JR Engine** | $1,000-1,600           |
-| **Total**                | **$1,077-1,677/month** |
+| Layer | Cost/Month |
+|-------|-----------|
+| **Gemini Ingestion** | $77 |
+| **Judge #6 + JR Engine** | $1,000-1,600 |
+| **Total** | **$1,077-1,677/month** |
 
 **Break-Even (with collection):**
-
 - Need: 4-6 customers @ $297/mo OR
 - 10,777-16,770 validated leads @ $0.10/lead
 
@@ -219,7 +214,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
 ### Pattern 1: Intelligence Agent (Full Pipeline)
 
 ```python
-from shadowtagai_agents import IntelligenceAgent, IntelligenceTask
+from pnkln_agents import IntelligenceAgent, IntelligenceTask
 
 agent = IntelligenceAgent()
 
@@ -243,7 +238,7 @@ result = agent.collect_intelligence(
 ### Pattern 2: Standalone Ingestion
 
 ```python
-from shadowtagai_agents import GeminiIngestionLayer, DEFAULT_SOURCES
+from pnkln_agents import GeminiIngestionLayer, DEFAULT_SOURCES
 
 ingestion = GeminiIngestionLayer()
 for source in DEFAULT_SOURCES:
@@ -260,7 +255,7 @@ result = ingestion.ingest(target_items=1000)
 ### Pattern 3: Enforcement-Only (ADR-001)
 
 ```python
-from shadowtagai_agents import ComplianceSDRAgent
+from pnkln_agents import ComplianceSDRAgent
 
 agent = ComplianceSDRAgent()
 
@@ -275,18 +270,18 @@ result = agent.generate_leads(
 
 ---
 
-## Comparison: Judge 6 vs Gemini Ingestion
+## Comparison: Judge #6 vs Gemini Ingestion
 
-### Adapted from Judge 6 Analysis Prompt
+### Adapted from Judge #6 Analysis Prompt
 
-| Dimension               | Judge 6 (Enforcement)    | Gemini Ingestion (Collection)     |
-| ----------------------- | ------------------------- | --------------------------------- |
-| **File References**     | judge_six.py              | Pipeline docs, architecture specs |
-| **Performance Metrics** | p99 ≤90ms (real-time)     | ~45 min/night (batch)             |
-| **Quality Gates**       | 98% Coverage (validation) | Items/Day, Sources, Cost, Scores  |
-| **Architecture**        | Hybrid Gemini+PyTorch     | GKE CronJob Multi-Container       |
-| **Cost Model**          | Per validation API call   | Monthly operational ~$77          |
-| **Confidence Target**   | ≥70% (production data)    | ≥60% (specs-only, pre-prod)       |
+| Dimension | Judge #6 (Enforcement) | Gemini Ingestion (Collection) |
+|-----------|----------------------|-------------------------------|
+| **File References** | judge_six.py | Pipeline docs, architecture specs |
+| **Performance Metrics** | p99 ≤90ms (real-time) | ~45 min/night (batch) |
+| **Quality Gates** | 98% Coverage (validation) | Items/Day, Sources, Cost, Scores |
+| **Architecture** | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
+| **Cost Model** | Per validation API call | Monthly operational ~$77 |
+| **Confidence Target** | ≥70% (production data) | ≥60% (specs-only, pre-prod) |
 
 ### New Sections (Gemini Ingestion Only)
 
@@ -400,21 +395,21 @@ def test_quality_gates():
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: shadowtagai-intelligence-collection
+  name: pnkln-intelligence-collection
 spec:
-  schedule: "0 2 * * *" # 2 AM daily
+  schedule: "0 2 * * *"  # 2 AM daily
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-            - name: intelligence-agent
-              image: gcr.io/shadowtagai/intelligence-agent:latest
-              env:
-                - name: TARGET_ITEMS
-                  value: "1000"
-                - name: RUNTIME_LIMIT_MINUTES
-                  value: "45"
+          - name: intelligence-agent
+            image: gcr.io/pnkln/intelligence-agent:latest
+            env:
+            - name: TARGET_ITEMS
+              value: "1000"
+            - name: RUNTIME_LIMIT_MINUTES
+              value: "45"
           restartPolicy: OnFailure
 ```
 
@@ -424,14 +419,14 @@ spec:
 
 ### Key Metrics
 
-| Metric                            | Target  | Alert Threshold    |
-| --------------------------------- | ------- | ------------------ |
-| **Items/Day**                     | ≥1000   | <500 (warning)     |
-| **Runtime**                       | ≤45 min | >60 min (critical) |
-| **Cost/Item**                     | ≤$0.10  | >$0.15 (warning)   |
-| **Relevance**                     | ≥0.7    | <0.5 (warning)     |
-| **Ethical Violations (Critical)** | 0       | >0 (critical)      |
-| **Tier 1 %**                      | ≥20%    | <10% (warning)     |
+| Metric | Target | Alert Threshold |
+|--------|--------|-----------------|
+| **Items/Day** | ≥1000 | <500 (warning) |
+| **Runtime** | ≤45 min | >60 min (critical) |
+| **Cost/Item** | ≤$0.10 | >$0.15 (warning) |
+| **Relevance** | ≥0.7 | <0.5 (warning) |
+| **Ethical Violations (Critical)** | 0 | >0 (critical) |
+| **Tier 1 %** | ≥20% | <10% (warning) |
 
 ---
 
@@ -458,8 +453,8 @@ spec:
 ## References
 
 - ADR-001: Enforcement-First Agent Architecture
-- Gemini Ingestion Layer Analysis Prompt (adapted from Judge 6 version)
-- Compliance Framework: US Army risk assessment methodology
+- Gemini Ingestion Layer Analysis Prompt (adapted from Judge #6 version)
+- ATP 5-19: US Army risk assessment methodology
 - robots.txt Standard: https://www.robotstxt.org/
 - GDPR: EU General Data Protection Regulation
 - CAN-SPAM: US email marketing law

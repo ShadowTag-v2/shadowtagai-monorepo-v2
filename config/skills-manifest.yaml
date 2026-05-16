@@ -1,0 +1,56 @@
+# skills-manifest.yaml
+# Managed by Antigravity God Mode (Omega Protocol Dominion)
+# Baseline doctrine derived from Cor.Bourne.2 and Uphillsnowball.5
+
+security_policy:
+  third_party_trust: none
+  required_gates:
+    - G1: Static Analysis
+    - G2: Semantic Classification
+    - G3: Sandbox Execution
+    - G4: Permission Validation
+
+domain_skills:
+  - id: visual-theorem-walkthrough
+    source: internal_paper_extraction
+    status: active_verified
+  - id: visual-layout-critic
+    source: internal_paper_extraction
+    status: active_verified
+  - id: visual-anchor-prompting
+    source: internal_paper_extraction
+    status: active_verified
+  - id: teachquiz-evaluator
+    source: internal_paper_extraction
+    status: active_verified
+  - id: storyboard-code-consistency-check
+    source: internal_paper_extraction
+    status: active_verified
+  - id: animation-autofix-loop
+    source: internal_paper_extraction
+    status: active_verified
+
+workflow_skills:
+  - id: brainstorming
+    source: superpowers_core
+    status: active_verified
+  - id: writing-plans
+    source: superpowers_core
+    status: active_verified
+  - id: systematic-debugging
+    source: superpowers_core
+    status: active_verified
+  - id: verification-before-completion
+    source: superpowers_core
+    status: active_verified
+  - id: requesting-code-review
+    source: superpowers_core
+    status: active_verified
+
+meta_skills:
+  - id: skill-refinery-pipeline
+    source: internal_paper_extraction
+    status: active_verified
+
+experimental_features:
+  ane_acceleration_mode: "background_only" # fallback to metal unconditionally if ANE hangs

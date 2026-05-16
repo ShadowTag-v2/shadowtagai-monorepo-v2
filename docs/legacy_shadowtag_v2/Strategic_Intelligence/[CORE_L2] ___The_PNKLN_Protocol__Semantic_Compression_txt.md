@@ -58,7 +58,7 @@ Bashfind . -type f -name "\*.py" | grep -E "(main|app|service)" | head -20
 
 (No content)
 
-Read/home/user/ShadowTag-v2-fastapi-services/README.md
+Read/home/user/aiyou-fastapi-services/README.md
 
 <tool_use_error>File does not exist.</tool_use_error>
 
@@ -74,11 +74,11 @@ Bashfind . -type f -name "\*.py" | head -20
 
 (No content)
 
-Read/home/user/ShadowTag-v2-fastapi-services/package.json
+Read/home/user/aiyou-fastapi-services/package.json
 
 Read 10 lines
 
-Read/home/user/ShadowTag-v2-fastapi-services/MIGRATION.md
+Read/home/user/aiyou-fastapi-services/MIGRATION.md
 
 Read 151 lines
 

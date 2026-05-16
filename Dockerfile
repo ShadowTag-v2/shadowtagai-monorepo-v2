@@ -1,47 +1,25 @@
-# ============================================
-# HEADFADE MCP - OPTIMIZED DOCKERFILE FOR CLOUD RUN
-# ============================================
+FROM python:3.11-slim
 
-FROM node:20-alpine AS builder
-
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
-COPY package*.json ./
-RUN npm ci --only=production
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy source
+# Copy requirements
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
 COPY . .
 
-# Build TypeScript
-RUN npm run build
-
-# ============================================
-# PRODUCTION IMAGE
-# ============================================
-FROM node:20-alpine
-
-WORKDIR /app
-
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
-# Copy built files from builder
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
-
-# Switch to non-root user
-USER nodejs
-
 # Expose port
-EXPOSE 8080
+EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:8080/health', (r) => { process.exit(r.statusCode === 200 ? 0 : 1); })"
-
-# Start the application
-CMD ["node", "dist/index.js"]
-```
+# Run the application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

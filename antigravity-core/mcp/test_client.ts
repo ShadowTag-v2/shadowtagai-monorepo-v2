@@ -37,9 +37,7 @@ async function main() {
       },
     });
     console.log('Result:', JSON.stringify(result, null, 2));
-  } catch (err) {
-    console.error('Error calling tool:', err);
-  }
+  } catch (_err) {}
 
   process.exit(0);
 }

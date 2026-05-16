@@ -1,0 +1,11 @@
+apiVersion: capsule.clastix.io/v1beta1
+kind: ResourcePool
+metadata:
+  name: tenant-a-pool
+spec:
+  nodeSelector:
+    pool: tenant-a
+  resourceQuota:
+    hard:
+      requests.cpu: '4'
+      limits.cpu: '8'

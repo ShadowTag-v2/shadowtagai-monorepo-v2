@@ -4,7 +4,10 @@ This guide details how to set up and connect to Google Cloud SQL (MySQL) for the
 
 ## 1. Prerequisites
 
+
+
 - **Google Cloud SDK (`gcloud`)**: Must be installed and authenticated.
+
 
 - **Cloud SQL Auth Proxy**: Recommended for secure local development without whitelisting IPs.
 
@@ -15,7 +18,7 @@ brew install cloud-sql-proxy
 
 ```
 
-_Or download specifically for your architecture from [Google Cloud Docs](https://cloud.google.com/sql/docs/mysql/connect-auth-proxy)._
+*Or download specifically for your architecture from [Google Cloud Docs](https://cloud.google.com/sql/docs/mysql/connect-auth-proxy).*
 
 ## 2. Gcloud Configuration
 
@@ -39,13 +42,16 @@ We've provided a script to simplify connections:
 
 ### Option B: Using Cloud SQL Auth Proxy Directly
 
-1. **Start the Proxy**:
 
+
+1. **Start the Proxy**:
    ```bash
    cloud-sql-proxy acquired-jet-478701-b3:us-central1:[INSTANCE_NAME]
    ```
 
-   _Replace `[INSTANCE_NAME]` with your actual Cloud SQL instance name._
+   *Replace `[INSTANCE_NAME]` with your actual Cloud SQL instance name.*
+
+
 
 2. **Connect via MySQL Client**:
    ```bash
@@ -63,9 +69,13 @@ gcloud sql connect [INSTANCE_NAME] --user=[USER] --quiet
 
 ## 4. Useful Commands
 
+
+
 - **List Instances**: `gcloud sql instances list`
 
+
 - **List Databases**: `gcloud sql databases list --instance=[INSTANCE_NAME]`
+
 
 - **Create Instance**:
   ```bash

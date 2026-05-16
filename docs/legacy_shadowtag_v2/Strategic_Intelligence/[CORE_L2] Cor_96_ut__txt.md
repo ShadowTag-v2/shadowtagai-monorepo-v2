@@ -967,12 +967,12 @@ Documentation Complete:
 
 Current System Status:
 
-| System                                                 | Status      |
-| ------------------------------------------------------ | ----------- |
+| System                     | Status      |
+| -------------------------- | ----------- |
 | https://github.com/karpathy/autoresearchs (650 agents) | OPERATIONAL |
-| Web Search Pipeline                                    | HEALTHY     |
-| Gemini CLI                                             | INSTALLED   |
-| Documentation                                          | COMPLETE    |
+| Web Search Pipeline        | HEALTHY     |
+| Gemini CLI                 | INSTALLED   |
+| Documentation              | COMPLETE    |
 
 Remaining Manual Steps:
 
@@ -1580,7 +1580,7 @@ https://cloud.google.com/gemini/docs/codeassist/use-agentic-chat-pair-programmer
 ⏺ Now I'll add all the new documentation sections to the plan file:
 ⎿  Interrupted · What should Claude do instead?
 
-> ensure n-autoresearch/Kosmos/BioAgents engaged when conducting present activities, how is cloud code assist coming
+> ensure monkeys engaged when conducting present activities, how is cloud code assist coming
 
 ⏺ Let me check the https://github.com/karpathy/autoresearchs status and update the plan with the new documentation:
 
@@ -1595,7 +1595,7 @@ l":"gemini-3.1-pro-preview-06-05"},"air_cav":{"name":"AIR CAV - Aerial Scouts","
 
 ▗ ▗ ▖ ▖ Claude Code v2.0.55
 Opus 4.5 · Claude Max
-▘▘ ▝▝ ~/Documents copy/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services
+▘▘ ▝▝ ~/Documents copy/Claude Code/Code/Claude Demo/aiyou-fastapi-services
 ═════════════════════════════════════ Conversation compacted · ctrl+o for history ════════════════════════════════════
 ⎿  Referenced file ../../../../../.claude/plans/snug-foraging-spindle.md
 ⎿  Read antigravity/**init**.py (134 lines)
@@ -4109,10 +4109,10 @@ bquote>   incorporate this properly and note what needs to be fixed:
 bquote>
 bquote>   Key Observations from your Doctrine:
 bquote>
-bquote>   1. PRO Tier = HHT Command / Judge 6 - This is correct and hasn't changed. The PRO tier (gemini-exp-1206) is for:
-bquote>     - Judge 6 decisions
+bquote>   1. PRO Tier = HHT Command / Judge #6 - This is correct and hasn't changed. The PRO tier (gemini-exp-1206) is for:
+bquote>     - Judge #6 decisions
 bquote>     - Protocol 2511 confidence checks
-bquote>     - Risk gating (Compliance Framework)
+bquote>     - Risk gating (ATP 5-19)
 bquote>   2. The System Prompts (SOP A-D) reference both Perplexity and Grok in TROOP A:
 bquote>   "Use Perplexity/Grok tools to ingest market data"
 bquote>
@@ -4142,16 +4142,16 @@ bquote>            Opus 4.5 · Claude Max
 bquote>   ▘▘ ▝▝    ~/.claude
 bquote> ══════════════════════════════════════ Conversation compacted · ctrl+o for history ═════════════════════════════════════
 bquote>   ⎿  Referenced file plans/snug-foraging-spindle.md
-bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/src/antigravity/__init__.py (30 lines)
-bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/bin/antigravity-orchestrator (447 lines)
-bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/src/antigravity/execute.py (157 lines)
-bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/src/antigravity/research.py (160 lines)
+bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/aiyou-fastapi-services/src/antigravity/__init__.py (30 lines)
+bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/aiyou-fastapi-services/bin/antigravity-orchestrator (447 lines)
+bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/aiyou-fastapi-services/src/antigravity/execute.py (157 lines)
+bquote>   ⎿  Read ../Documents copy/Claude Code/Code/Claude Demo/aiyou-fastapi-services/src/antigravity/research.py (160 lines)
 bquote>   ⎿  Todo list read (7 items)
 bquote>
 bquote> ⏺ I'll continue with the pnkln doctrine integration. The user said "fold in following" which means integrate the
 bquote>   doctrine files into the existing codebase. Let me first check the current structure and then create the doctrine
 bquote>   files.
-bquote>   ⎿  ../Documents copy/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/CLAUDE.md
+bquote>   ⎿  ../Documents copy/Claude Code/Code/Claude Demo/aiyou-fastapi-services/CLAUDE.md
 bquote>
 bquote> > ### **ANTIGRAVITY // CO-FOUNDER EXECUTION LOG**
 bquote>
@@ -4177,7 +4177,7 @@ bquote> | **TIER** | **NAME** | **PRICE (ARR)** | **THE PROMISE** | **CAPABILITI
 bquote>  |
 bquote> | :--- | :--- | :--- | :--- | :--- | :--- |
 bquote> | **1 - 5** | **BASIC TRAINING** | **$25K - $75K** | *"We show you the risks."* | • **BCTL Assessment**
-bquote> (Quarterly)<br>• **Risk Radar** (Weekly Scan)<br>• **Access:** Portal Only (Read-Only) | **Compliance Framework**<br>(Risk Mgmt
+bquote> (Quarterly)<br>• **Risk Radar** (Weekly Scan)<br>• **Access:** Portal Only (Read-Only) | **ATP 5-19**<br>(Risk Mgmt
 bquote> Only) |
 bquote> | **6 - 15** | **AIT (ADVANCED)** | **$100K - $350K** | *"We fix the obvious."* | • **Troop A (Recon):** Monthly
 bquote> Deep Dives<br>• **Troop C (Defense):** Basic CodePMCS Linter<br>• **Access:** Slack Channel (Advisory) | **+ ADP
@@ -4205,7 +4205,7 @@ zsh: == not found
 zsh: command not found: YOU
 ➜ ~ MISSION: PROTECT THE CORP. ENFORCE DOCTRINE.
 zsh: command not found: MISSION:
-➜ ~ 1. RISK GATING: Every action proposed by the Swarm must be scored against Compliance Framework.
+➜ ~ 1. RISK GATING: Every action proposed by the Swarm must be scored against ATP 5-19.
 zsh: command not found: 1.
 ➜ ~ - LOW RISK: Auto-Approve.
 cd: too many arguments
@@ -4394,11 +4394,11 @@ class Protocol2511:
 class HHTCommand:
     def __init__(self):
         self.iq_lock = 160
-        self.doctrine = ["Compliance Framework", "ADP 3-90"]
+        self.doctrine = ["ATP 5-19", "ADP 3-90"]
 
     asy**PURP intake_mission(self, objective: str) -> bool:
         logger.info(f"⚡ ANALYZING MISSION: {objective}")
-        # Mocking Judge 6 Risk Assessment
+        # Mocking Judge #6 Risk Assessment
         risk_score = 1  # Low Risk
         if risk_score > 3:
             logger.critical("🛑 JUDGE #6 DENIAL: RISK TOO HIGH.")
@@ -4437,11 +4437,11 @@ if>
 if> class HHTCommand:
 if>     def __init__(self):
 if>         self.iq_lock = 160
-if>         self.doctrine = ["Compliance Framework", "ADP 3-90"]
+if>         self.doctrine = ["ATP 5-19", "ADP 3-90"]
 if>
 if>     asy**PURP intake_mission(self, objective: str) -> bool:
 if>         logger.info(f"⚡ ANALYZING MISSION: {objective}")
-if>         # Mocking Judge 6 Risk Assessment
+if>         # Mocking Judge #6 Risk Assessment
 if>         risk_score = 1  # Low Risk
 if>         if risk_score > 3:
 if if>             logger.critical("🛑 JUDGE #6 DENIAL: RISK TOO HIGH.")
@@ -4627,7 +4627,7 @@ bquote>  {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action
 bquote> Secure, Linted"},
 bquote>  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag
 bquote> watermarking"},
-bquote>  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
+bquote>  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75
 bquote> THEN Freeze"}
 bquote> ]
 bquote> JSON
@@ -4767,7 +4767,7 @@ bash-3.2$ ```bash
 > Secure, Linted"},
 >  {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag
 > watermarking"},
->  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75
+>  {"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75
 > THEN Freeze"}
 > ]
 > JSON

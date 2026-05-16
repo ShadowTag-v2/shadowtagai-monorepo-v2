@@ -132,7 +132,7 @@ gcloud builds list --limit=3 --format="table(id, status, createTime, images)" --
 
 # --- 5. CLOUD RUN SERVER STATUS ---
 
-echo -e "\n[5] CHECKING FLYING n-autoresearch/Kosmos/BioAgents SERVER..."
+echo -e "\n[5] CHECKING FLYING MONKEYS SERVER..."
 SERVER_URL=$(gcloud run services describe https://github.com/karpathy/autoresearchs-server --region=us-central1 --project=acquired-jet-478701-b3 --format='value(status.url)' 2>/dev/null)
 
 if [ ! -z "$SERVER_URL" ]; then
@@ -201,13 +201,13 @@ If you encounter these specific errors, execute the prescribed fix autonomously.
 
 ### A. The "Hallucinated Path" Error
 
-**Error:** `fatal: pathspec 'src/ShadowTag-v2/mas/' did not match any files`
+**Error:** `fatal: pathspec 'src/aiyou/mas/' did not match any files`
 **Cause:** You are trying to add a directory that does not exist.
 **Fix:**
 
 1. Run `ls -F <parent_directory>` to see what actually exists.
 2. Adjust your `git add` command to match reality.
-3. If the folder is empty, Git ignores it. Create a `.keep` file: `touch src/ShadowTag-v2/mas/.keep`.
+3. If the folder is empty, Git ignores it. Create a `.keep` file: `touch src/aiyou/mas/.keep`.
 
 ### B. The "Lockout" Error
 
@@ -452,7 +452,7 @@ _Goal: Prevent repository corruption and "Phantom Path" hallucinations._
     - **Constraint:** If `git status` shows >50 changed files, STOP. Ask Judge 6 for approval.
 
 2.  **The "Phantom Path" Defense**
-    - **Error:** `fatal: pathspec 'src/ShadowTag-v2/mas/' did not match any files`
+    - **Error:** `fatal: pathspec 'src/aiyou/mas/' did not match any files`
     - **Protocol:** Never guess a directory structure.
     - **Action:** Before adding a folder, run `test -d <folder> && echo "Exists" || echo "Missing"`.
     - **Fix:** If a folder is missing but needed, run `mkdir -p <folder>` and `touch <folder>/.keep` so Git can track it.

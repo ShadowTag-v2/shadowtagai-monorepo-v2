@@ -1,0 +1,545 @@
+{
+  "bindings": [
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-vertex-nb.iam.gserviceaccount.com"],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-aiplatform.iam.gserviceaccount.com"],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:gkc-cloud-code-api@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:shadowtagai-orchestrator@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/aiplatform.user"
+    },
+    {
+      "members": ["serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/alloydb.admin"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-alloydb.iam.gserviceaccount.com"],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-apigee.iam.gserviceaccount.com"],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-apihub.iam.gserviceaccount.com"],
+      "role": "roles/apihub.admin"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-apihub.iam.gserviceaccount.com"],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gae-api-prod.google.com.iam.gserviceaccount.com"
+      ],
+      "role": "roles/appengineflex.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/artifactregistry.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:workstation-vm-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:kafka-worker-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:cloud-build-api@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/artifactregistry.writer"
+    },
+    {
+      "condition": {
+        "title": "push images"
+      },
+      "members": ["serviceAccount:cloud-build-api@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/artifactregistry.writer"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-pubsub.iam.gserviceaccount.com"],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": ["serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/billing.projectManager"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
+      ],
+      "role": "roles/binaryauthorization.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:gemini-antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/cloudaicompanion.codeRepositoryIndexesAdmin"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/cloudaicompanion.codeToolsAdmin"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/cloudaicompanion.codeToolsUser"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/cloudaicompanion.repositoryGroupsUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/cloudaicompanion.settingsAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:acquired-jet-478701-b3@appspot.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/cloudaicompanion.user"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/cloudasset.owner"
+    },
+    {
+      "members": [
+        "serviceAccount:sa-flyingmonkeys@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/cloudbuild.builds.editor"
+    },
+    {
+      "members": [
+        "serviceAccount:gkc-cloud-code-api@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:service-215390634092@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-clouddeploy.iam.gserviceaccount.com"],
+      "role": "roles/clouddeploy.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcf-admin-robot.iam.gserviceaccount.com"],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/cloudhub.operator"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-cloudkms.iam.gserviceaccount.com"],
+      "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:gemini-antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:acquired-jet-478701-b3@appspot.gserviceaccount.com"],
+      "role": "roles/cloudsql.client"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-cloudtasks.iam.gserviceaccount.com"],
+      "role": "roles/cloudtasks.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:shadowtagai-orchestrator@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudtrace.agent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@compute-system.iam.gserviceaccount.com"],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-gkenode.iam.gserviceaccount.com"],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": ["serviceAccount:cloud-build-api@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/container.developer"
+    },
+    {
+      "condition": {
+        "description": "deploy to gke",
+        "title": "deploy to gke"
+      },
+      "members": ["serviceAccount:cloud-build-api@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/container.developer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@container-analysis.iam.gserviceaccount.com"],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@containerregistry.iam.gserviceaccount.com"],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-containerscanning.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerscanning.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-dataform.iam.gserviceaccount.com"],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-datalabeling.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datalabeling.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-datamigration.iam.gserviceaccount.com"
+      ],
+      "role": "roles/datamigration.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/dataproc.editor"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@dataproc-accounts.iam.gserviceaccount.com"],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:cloud-build-api@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/developerconnect.readTokenAccessor"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-devconnect.iam.gserviceaccount.com"],
+      "role": "roles/developerconnect.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-cloudbuild.iam.gserviceaccount.com"],
+      "role": "roles/developerconnect.tokenAccessor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-discoveryengine.iam.gserviceaccount.com"
+      ],
+      "role": "roles/discoveryengine.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/discoveryengine.user"
+    },
+    {
+      "members": ["serviceAccount:215390634092@cloudservices.gserviceaccount.com"],
+      "role": "roles/editor"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@cloud-filer.iam.gserviceaccount.com"],
+      "role": "roles/file.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-firebasedataconnect.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebasedataconnect.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@firebase-rules.iam.gserviceaccount.com"],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-firestore.iam.gserviceaccount.com"],
+      "role": "roles/firestore.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/geminicloudassist.investigationAdmin"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/geminicloudassist.investigationCreator"
+    },
+    {
+      "members": [
+        "serviceAccount:gemini-antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/geminicloudassist.investigationOwner"
+    },
+    {
+      "members": [
+        "serviceAccount:gemini-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/geminicloudassist.user"
+    },
+    {
+      "members": [
+        "serviceAccount:gemini-antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.databasesAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:key-creation-account@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountApiKeyBindingAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:key-creation-account@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:sa-flyingmonkeys@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountKeyAdmin"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-lifesciences.iam.gserviceaccount.com"
+      ],
+      "role": "roles/lifesciences.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:215390634092-compute@developer.gserviceaccount.com",
+        "serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:shadowtagai-orchestrator@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.logWriter"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-logging.iam.gserviceaccount.com"],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-managedkafka.iam.gserviceaccount.com"
+      ],
+      "role": "roles/managedkafka.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@cloud-ml.google.com.iam.gserviceaccount.com"
+      ],
+      "role": "roles/ml.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:shadowtagai-orchestrator@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-notebooks.iam.gserviceaccount.com"],
+      "role": "roles/notebooks.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:gemini-antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:sa-flyingmonkeys@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:terraform-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:key-creation-account@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:sa-flyingmonkeys@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/publicca.externalAccountKeyCreator"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-pubsub.iam.gserviceaccount.com"],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-cloudbuild.iam.gserviceaccount.com",
+        "serviceAccount:kafka-worker-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.subscriber"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@cloud-redis.iam.gserviceaccount.com"],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/resourcemanager.organizationAdmin"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/run.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/run.viewer"
+    },
+    {
+      "members": ["user:founder@shadowtagai.com"],
+      "role": "roles/secretmanager.admin"
+    },
+    {
+      "condition": {
+        "expression": "request.time < timestamp(\"2026-01-03T20:53:17.363Z\")",
+        "title": "developer-connect-connection-setup"
+      },
+      "members": ["serviceAccount:service-215390634092@gcp-sa-devconnect.iam.gserviceaccount.com"],
+      "role": "roles/secretmanager.admin"
+    },
+    {
+      "condition": {
+        "expression": "request.time < timestamp(\"2026-01-06T05:33:26.790Z\")",
+        "title": "cloudbuild-connection-setup"
+      },
+      "members": ["serviceAccount:service-215390634092@gcp-sa-cloudbuild.iam.gserviceaccount.com"],
+      "role": "roles/secretmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:fleet-manager-pulse-997@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:shadowtagai-orchestrator@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@service-networking.iam.gserviceaccount.com"],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:key-creation-account@acquired-jet-478701-b3.iam.gserviceaccount.com"
+      ],
+      "role": "roles/serviceusage.apiKeysAdmin"
+    },
+    {
+      "members": ["serviceAccount:sa-flyingmonkeys@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/serviceusage.serviceUsageConsumer"
+    },
+    {
+      "members": [
+        "serviceAccount:215390634092-compute@developer.gserviceaccount.com",
+        "serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "serviceAccount:sa-flyingmonkeys@acquired-jet-478701-b3.iam.gserviceaccount.com",
+        "user:founder@shadowtagai.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": ["serviceAccount:antigravity-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-stream.iam.gserviceaccount.com"],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": ["serviceAccount:service-215390634092@gcp-sa-vpcaccess.iam.gserviceaccount.com"],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-215390634092@gcp-sa-workstations.iam.gserviceaccount.com"
+      ],
+      "role": "roles/workstations.serviceAgent"
+    },
+    {
+      "role": "roles/run.developer",
+      "members": ["serviceAccount:kafka-worker-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"]
+    },
+    {
+      "role": "roles/pubsub.publisher",
+      "members": ["serviceAccount:kafka-worker-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"]
+    },
+    {
+      "role": "roles/managedkafka.client",
+      "members": ["serviceAccount:kafka-worker-sa@acquired-jet-478701-b3.iam.gserviceaccount.com"]
+    }
+  ],
+  "etag": "BwZJgXXCQZA=",
+  "version": 3
+}

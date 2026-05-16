@@ -5,7 +5,7 @@
 
 ### **I. THE BUSINESS CORE**
 
-- **Thesis:** "Doctrine-as-a-Service." We sell rigid, compliant decisions (Judge 6) to high-risk verticals.
+- **Thesis:** "Doctrine-as-a-Service." We sell rigid, compliant decisions (Judge #6) to high-risk verticals.
 - **Asset:** **The Semantic Process**. A compiled, auditable C# graph that cannot "hallucinate" safety.
 - **Financials (Y5):** $3.36B ARR | 92% Margin | $1T Valuation Path.
 - **Verticals:**
@@ -20,7 +20,7 @@
 - **N (.NET 8):** The Host. Dynamic PGO enabled.
 - **K (Kernel Process):** Microsoft Semantic Kernel **Process Framework** (Code provided above).
   - _Inputs:_ Raw text/Data.
-  - _Logic:_ Compliance Framework Risk Matrix (RA-1 to RA-4).
+  - _Logic:_ ATP 5-19 Risk Matrix (RA-1 to RA-4).
   - _Controls:_ Human-in-the-Loop steps for RA-2+ risks.
 - **L (Liquid):** Flutter Frontend. Connects via gRPC.
 - **N (Nvidia):** Inference. Accessed via MCP Tool interface.
@@ -40,10 +40,10 @@
 **CONTEXT_LOAD**: Restore **pnkln-stack Ecosystem** State.
 **MODE**: .NET 8 Semantic Kernel | Process Framework | MCP.
 
-## 1. THE ENGINE: Judge 6 Process
+## 1. THE ENGINE: Judge #6 Process
 
 - A **C# Directed Graph** (Input -> Compress -> Risk -> Gate -> Enforce).
-- **Doctrine**: Compliance Framework (RA-1 to RA-4).
+- **Doctrine**: ATP 5-19 (RA-1 to RA-4).
 - **Architecture**: **P.N.K.L.N** (Postgres, .NET, Kernel, Liquid, Nvidia).
 
 ## 2. THE BUSINESS

@@ -1,8 +1,8 @@
 # Mac Local Deployment Guide
 
-**ShadowTagAi Agent Platform - macOS Setup**
+**Pnkln Agent Platform - macOS Setup**
 
-Complete guide for running the ShadowTagAi dual-layer intelligence pipeline locally on macOS (Apple Silicon M1/M2/M3 or Intel).
+Complete guide for running the Pnkln dual-layer intelligence pipeline locally on macOS (Apple Silicon M1/M2/M3 or Intel).
 
 ---
 
@@ -85,8 +85,8 @@ npm --version
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # 2. Create virtual environment
 python3 -m venv venv
@@ -122,12 +122,12 @@ pytest
 cd ~/Projects  # Or wherever you keep code
 
 # Clone the repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # Verify you're on the correct branch
 git branch
-# Should show: claude/shadowtagai-intelligence-pipeline-01DwB3v8zwZaHZC3HogNeRXt
+# Should show: claude/pnkln-intelligence-pipeline-01DwB3v8zwZaHZC3HogNeRXt
 ```
 
 ### Step 2: Create Virtual Environment
@@ -142,14 +142,13 @@ python3 -m venv venv
 source venv/bin/activate
 
 # You should see (venv) in your prompt:
-# (venv) user@macbook ShadowTag-v2-fastapi-services %
+# (venv) user@macbook aiyou-fastapi-services %
 
 # Verify Python is from venv
-which python  # Should show /path/to/ShadowTag-v2-fastapi-services/venv/bin/python
+which python  # Should show /path/to/aiyou-fastapi-services/venv/bin/python
 ```
 
 **Tip:** Add this alias to ~/.zshrc for quick activation:
-
 ```bash
 echo 'alias venv="source venv/bin/activate"' >> ~/.zshrc
 source ~/.zshrc
@@ -169,7 +168,6 @@ pip install -r requirements.txt
 ```
 
 **Apple Silicon (M1/M2/M3) Notes:**
-
 - PyTorch automatically installs ARM64-optimized builds
 - If you get errors with `torch`, install explicitly:
   ```bash
@@ -177,18 +175,17 @@ pip install -r requirements.txt
   ```
 
 **Intel Mac Notes:**
-
 - No special configuration needed
 - Dependencies install via standard PyPI
 
 ### Step 4: Install Package in Development Mode
 
 ```bash
-# Install shadowtagai_agents as editable package
+# Install pnkln_agents as editable package
 pip install -e .
 
 # Verify installation
-python -c "from shadowtagai_agents import IntelligenceAgent; print('✅ Import successful')"
+python -c "from pnkln_agents import IntelligenceAgent; print('✅ Import successful')"
 ```
 
 ### Step 5: Verify Installation
@@ -254,7 +251,7 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 # Reddit API (for tech news aggregation)
 # REDDIT_CLIENT_ID=your_reddit_client_id
 # REDDIT_CLIENT_SECRET=your_reddit_secret
-# REDDIT_USER_AGENT=SHADOWTAGAIBot/1.0
+# REDDIT_USER_AGENT=PNKLNBot/1.0
 
 # YouTube API (for video intelligence)
 # YOUTUBE_API_KEY=your_youtube_key
@@ -263,8 +260,8 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 # TWITTER_BEARER_TOKEN=your_twitter_token
 
 # --- Database (Future) ---
-# DATABASE_URL=sqlite:///./shadowtagai_agents.db  # Local SQLite for development
-# DATABASE_URL=postgresql://user:pass@localhost/shadowtagai_agents  # PostgreSQL
+# DATABASE_URL=sqlite:///./pnkln_agents.db  # Local SQLite for development
+# DATABASE_URL=postgresql://user:pass@localhost/pnkln_agents  # PostgreSQL
 
 # --- Monitoring (Optional) ---
 # SENTRY_DSN=your_sentry_dsn
@@ -272,7 +269,6 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 ```
 
 **Important Notes:**
-
 - Most features work without API keys in "mock mode"
 - For actual intelligence collection, you'll need Gemini API key
 - For compliance enforcement testing, Gemini API key is required
@@ -290,7 +286,6 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
    ```
 
 **Free Tier:**
-
 - 60 requests/minute
 - 1,500 requests/day
 - Sufficient for local testing ✅
@@ -305,7 +300,6 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
    ```
 
 **Costs:**
-
 - text-embedding-3-small: $0.02/1M tokens (~$0.20 for 10M tokens)
 - Budget for testing: $5-10 is plenty
 
@@ -317,7 +311,7 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
    ```bash
    REDDIT_CLIENT_ID=...
    REDDIT_CLIENT_SECRET=...
-   REDDIT_USER_AGENT=SHADOWTAGAIBot/1.0
+   REDDIT_USER_AGENT=PNKLNBot/1.0
    ```
 
 **Free:** No cost for API access
@@ -336,7 +330,7 @@ source venv/bin/activate
 python
 
 # Run example code
->>> from shadowtagai_agents import IntelligenceAgent, IntelligenceTask, DEFAULT_SOURCES
+>>> from pnkln_agents import IntelligenceAgent, IntelligenceTask, DEFAULT_SOURCES
 >>>
 >>> # Initialize agent
 >>> agent = IntelligenceAgent()
@@ -380,7 +374,7 @@ uvicorn src.main:app --reload --host 127.0.0.1 --port 8000
 source venv/bin/activate
 
 # Run Gemini analysis (requires Gemini API key)
-python shadowtagai_intelligence/scripts/run_gemini_analysis.py \
+python pnkln_intelligence/scripts/run_gemini_analysis.py \
     --project-id your-gcp-project \
     --output docs/analysis/report_$(date +%Y-%m-%d).md
 
@@ -398,7 +392,7 @@ pytest
 pytest -v
 
 # With coverage report
-pytest --cov=src/shadowtagai_agents --cov-report=html
+pytest --cov=src/pnkln_agents --cov-report=html
 
 # Open coverage report in browser
 open htmlcov/index.html
@@ -440,7 +434,7 @@ pytest tests/integration/test_intelligence_agent.py -v
 
 ```python
 # Create test file: test_manual.py
-from shadowtagai_agents import ComplianceSDRAgent
+from pnkln_agents import ComplianceSDRAgent
 
 # Initialize agent
 agent = ComplianceSDRAgent()
@@ -464,7 +458,6 @@ print(f"Cost: ${result.output.total_cost_usd:.2f}")
 ```
 
 Run:
-
 ```bash
 python test_manual.py
 ```
@@ -475,12 +468,11 @@ python test_manual.py
 
 ### Common Issues
 
-#### 1. `ModuleNotFoundError: No module named 'shadowtagai_agents'`
+#### 1. `ModuleNotFoundError: No module named 'pnkln_agents'`
 
 **Problem:** Package not installed or virtual environment not activated
 
 **Solution:**
-
 ```bash
 # Activate virtual environment
 source venv/bin/activate
@@ -489,7 +481,7 @@ source venv/bin/activate
 pip install -e .
 
 # Verify
-python -c "from shadowtagai_agents import IntelligenceAgent; print('OK')"
+python -c "from pnkln_agents import IntelligenceAgent; print('OK')"
 ```
 
 #### 2. `ImportError: cannot import name 'IntelligenceAgent'`
@@ -497,7 +489,6 @@ python -c "from shadowtagai_agents import IntelligenceAgent; print('OK')"
 **Problem:** Outdated installation or code changes not reflected
 
 **Solution:**
-
 ```bash
 # Reinstall package in editable mode
 pip install -e . --force-reinstall --no-deps
@@ -510,7 +501,6 @@ pip install -e . --force-reinstall --no-deps
 **Problem:** Pre-built wheels not available for ARM64
 
 **Solution:**
-
 ```bash
 # Install PyTorch explicitly with CPU support
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
@@ -524,7 +514,6 @@ conda install pytorch torchvision torchaudio -c pytorch
 **Problem:** Missing system dependencies
 
 **Solution:**
-
 ```bash
 # Install required system libraries
 brew install libffi openssl
@@ -538,7 +527,6 @@ pip install --upgrade google-cloud-storage google-cloud-bigquery google-cloud-ai
 **Problem:** PyTorch and transformers are 2GB+ each
 
 **Solution:**
-
 ```bash
 # Use faster mirror (optional)
 pip install -r requirements.txt --index-url https://pypi.tuna.tsinghua.edu.cn/simple
@@ -554,7 +542,6 @@ pip install -r requirements.txt  # Remaining packages
 **Problem:** Another service using port 8000
 
 **Solution:**
-
 ```bash
 # Find process using port 8000
 lsof -i :8000
@@ -573,7 +560,6 @@ uvicorn src.main:app --reload --port 8001
 ### Recommended Setup
 
 **Terminal 1: Code Editor**
-
 ```bash
 # Open project in VS Code
 code .
@@ -584,25 +570,23 @@ nano .
 ```
 
 **Terminal 2: Python Interpreter (REPL)**
-
 ```bash
 # Activate venv and start Python
 source venv/bin/activate
 python
 
 # Quick iteration on code
->>> from shadowtagai_agents import IntelligenceAgent
+>>> from pnkln_agents import IntelligenceAgent
 >>> agent = IntelligenceAgent()
 >>> # ... test code ...
 >>>
 >>> # Reload after code changes
 >>> import importlib
->>> import shadowtagai_agents
->>> importlib.reload(shadowtagai_agents)
+>>> import pnkln_agents
+>>> importlib.reload(pnkln_agents)
 ```
 
 **Terminal 3: Test Watcher (Optional)**
-
 ```bash
 # Install pytest-watch
 pip install pytest-watch
@@ -622,7 +606,7 @@ black src/ tests/
 ruff check src/ tests/
 
 # Type check with mypy
-mypy src/shadowtagai_agents/
+mypy src/pnkln_agents/
 
 # Run all quality checks
 black src/ && ruff check src/ && mypy src/ && pytest
@@ -631,7 +615,6 @@ black src/ && ruff check src/ && mypy src/ && pytest
 ### Hot Reload Development
 
 **For FastAPI endpoints:**
-
 ```bash
 # Run with auto-reload
 uvicorn src.main:app --reload --host 127.0.0.1 --port 8000
@@ -640,7 +623,6 @@ uvicorn src.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 **For Python API:**
-
 ```bash
 # Use iPython for better REPL experience
 pip install ipython
@@ -651,7 +633,7 @@ ipython
 %autoreload 2
 
 # Now imports will auto-reload on file changes
-from shadowtagai_agents import IntelligenceAgent
+from pnkln_agents import IntelligenceAgent
 # ... make code changes ...
 # ... re-run code - changes are reflected automatically ...
 ```
@@ -682,7 +664,6 @@ else:
 ### Memory Management
 
 **Monitor memory usage:**
-
 ```bash
 # Install memory_profiler
 pip install memory_profiler
@@ -695,7 +676,6 @@ python -m memory_profiler your_script.py
 ```
 
 **Reduce memory usage:**
-
 ```python
 # Use generators instead of lists for large datasets
 def process_items():
@@ -727,13 +707,13 @@ python intelligence_briefing_demo.py
 
 ### 3. Customize Configuration
 
-- Modify `src/shadowtagai_agents/config/revenue_model.py` for pricing
-- Adjust `src/shadowtagai_agents/config/constraints.py` for operational limits
-- Update `src/shadowtagai_agents/config/ingestion_config.py` for data sources
+- Modify `src/pnkln_agents/config/revenue_model.py` for pricing
+- Adjust `src/pnkln_agents/config/constraints.py` for operational limits
+- Update `src/pnkln_agents/config/ingestion_config.py` for data sources
 
 ### 4. Contribute
 
-- Submit issues: https://github.com/ehanc69/ShadowTag-v2-fastapi-services/issues
+- Submit issues: https://github.com/ehanc69/aiyou-fastapi-services/issues
 - Pull requests welcome!
 
 ---
@@ -763,7 +743,7 @@ pip install -r requirements.txt
 pip list
 
 # Show package details
-pip show shadowtagai-agents
+pip show pnkln-agents
 
 # Freeze current dependencies
 pip freeze > requirements-frozen.txt
@@ -782,7 +762,7 @@ pip install --upgrade -r requirements.txt
 git branch
 
 # Pull latest changes
-git pull origin claude/shadowtagai-intelligence-pipeline-01DwB3v8zwZaHZC3HogNeRXt
+git pull origin claude/pnkln-intelligence-pipeline-01DwB3v8zwZaHZC3HogNeRXt
 
 # Stash changes before pull
 git stash
@@ -798,10 +778,10 @@ git diff
 
 ```bash
 # Run Python with verbose imports
-python -v -c "from shadowtagai_agents import IntelligenceAgent"
+python -v -c "from pnkln_agents import IntelligenceAgent"
 
 # Enable debug logging
-export SHADOWTAGAI_DEBUG=true
+export PNKLN_DEBUG=true
 python your_script.py
 
 # Use pdb (Python debugger)
@@ -823,9 +803,9 @@ python -m pdb your_script.py
 
 ### Getting Help
 
-- **GitHub Issues:** https://github.com/ehanc69/ShadowTag-v2-fastapi-services/issues
-- **Discussions:** https://github.com/ehanc69/ShadowTag-v2-fastapi-services/discussions
-- **Email:** support@shadowtagai.ai (for enterprise customers)
+- **GitHub Issues:** https://github.com/ehanc69/aiyou-fastapi-services/issues
+- **Discussions:** https://github.com/ehanc69/aiyou-fastapi-services/discussions
+- **Email:** support@pnkln.ai (for enterprise customers)
 
 ---
 

@@ -1,5 +1,5 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { type Root, RootsListChangedNotificationSchema } from '@modelcontextprotocol/sdk/types.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { type Root, RootsListChangedNotificationSchema } from "@modelcontextprotocol/sdk/types.js";
 
 // Track roots by session id
 export const roots: Map<string | undefined, Root[]> = new Map<string | undefined, Root[]>();
@@ -33,15 +33,15 @@ export const syncRoots = async (server: McpServer, sessionId?: string) => {
       try {
         // Request the updated roots list from the client
         const response = await server.server.listRoots();
-        if (response && 'roots' in response) {
+        if (response && "roots" in response) {
           // Store the roots list for this client
           roots.set(sessionId, response.roots);
 
           // Notify the client of roots received
           await server.sendLoggingMessage(
             {
-              level: 'info',
-              logger: 'everything-server',
+              level: "info",
+              logger: "everything-server",
               data: `Roots updated: ${response?.roots?.length} root(s) received from client`,
             },
             sessionId,
@@ -49,9 +49,9 @@ export const syncRoots = async (server: McpServer, sessionId?: string) => {
         } else {
           await server.sendLoggingMessage(
             {
-              level: 'info',
-              logger: 'everything-server',
-              data: 'Client returned no roots set',
+              level: "info",
+              logger: "everything-server",
+              data: "Client returned no roots set",
             },
             sessionId,
           );

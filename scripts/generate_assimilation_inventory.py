@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 import time
 from pathlib import Path
@@ -23,35 +24,28 @@ def get_installation_token():
 
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers)
     if resp.status_code != 200:
-        msg = f"Failed to fetch installations: {resp.text}"
-        raise Exception(msg)
+        raise Exception(f"Failed to fetch installations: {resp.text}")
 
     installations = resp.json()
-    inst_id = next(
-        (inst["id"] for inst in installations if inst["account"]["login"].lower() == INSTALLATION_USER.lower()),
-        None,
-    )
+    inst_id = next((inst["id"] for inst in installations if inst["account"]["login"].lower() == INSTALLATION_USER.lower()), None)
 
     if not inst_id:
-        msg = f"Installation for {INSTALLATION_USER} not found."
-        raise Exception(msg)
+        raise Exception(f"Installation for {INSTALLATION_USER} not found.")
 
-    token_resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
+    token_resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
     if token_resp.status_code != 201:
-        msg = f"Failed to generate token: {token_resp.text}"
-        raise Exception(msg)
+        raise Exception(f"Failed to generate token: {token_resp.text}")
 
     return token_resp.json()["token"]
 
 
 def generate_inventory(token):
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
-    res = requests.get("https://api.github.com/installation/repositories?per_page=100", headers=headers, timeout=30)
+    res = requests.get("https://api.github.com/installation/repositories?per_page=100", headers=headers)
     if res.status_code != 200:
-        msg = f"Failed to fetch repositories: {res.text}"
-        raise Exception(msg)
+        raise Exception(f"Failed to fetch repositories: {res.text}")
 
     repos = res.json().get("repositories", [])
 
@@ -59,8 +53,8 @@ def generate_inventory(token):
     for repo in repos:
         name = repo["name"]
 
-        # Verify if it currently exists as a flat copy in apps/ShadowTag-v2_stack
-        canonical_path = f"apps/ShadowTag-v2_stack/{name}"
+        # Verify if it currently exists as a flat copy in apps/aiyou_stack
+        canonical_path = f"apps/aiyou_stack/{name}"
         abs_canonical = MONOREPO_ROOT / canonical_path
 
         # Determine status
@@ -79,7 +73,7 @@ def generate_inventory(token):
                 "status": status,
                 "build_wired": False,
                 "ci_wired": False,
-            },
+            }
         )
 
     INVENTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -90,8 +84,11 @@ def generate_inventory(token):
 
 
 if __name__ == "__main__":
+    print("Verifying Auth and Generating Inventory...")
     try:
         tkn = get_installation_token()
         inv = generate_inventory(tkn)
-    except Exception:
-        pass
+        print(f"SUCCESS: Inventory generated at {INVENTORY_PATH}")
+        print(f"Total target repositories discovered: {len(inv)}")
+    except Exception as e:
+        print(f"ERROR: {e}")

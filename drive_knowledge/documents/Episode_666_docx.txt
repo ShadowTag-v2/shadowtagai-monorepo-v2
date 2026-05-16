@@ -1,0 +1,367 @@
+“Episode 666 | Entering a Competitive Market, Books for SaaS Founders, and More Listener Questions with Derrick Reimer
+
+Startups For the Rest of Us 
+Episode 666 | Entering a Competitive Market, Books for SaaS Founders, and More Listener Questions with Derrick Reimer
+00:00 / 53:18 
+Apple Podcasts Google Podcasts Spotify Stitcher 
+RSS Feed
+Share 
+Link 
+Embed 
+Download file | Play in new window | Duration: 53:18 | Recorded on June 7, 2023
+In episode 666, Rob Walling chats with fan favorite Derrick Reimer, the founder of SavvyCal, as they answer listener questions. They cover topics ranging from idea validation in competitive spaces to book recommendations to development strategies for non-technical founders.
+Episode Sponsor:
+
+Find your perfect developer or a team at Lemon.io/startups
+The competition for incredible engineers and developers has never been more fierce. Lemon.io helps you cut through the noise and find great talent through its network of engineers in Europe and Latin America.
+They take care of the vetting, interviewing, and testing of candidates to make sure that you are working with someone who can hit the ground running.
+When it comes to hiring, the time it takes to write your job description, list the position, review resumes, schedule interviews, and make an offer can take weeks, if not months. With Lemon.io, you can cut down on a lot of that time by tapping into their wide network of developers who can get started in as early as a week.
+And for subscribers of Startups For the Rest of Us, you can get 15% off your first 4 week contract with a developer by visiting lemon.io/startups
+Topics we cover: 
+1:05 – How to validate ideas in competitive markets
+7:49 – How to manage stress when growing a small SaaS business
+15:48 – Finding a technical co-founder vs. outsourcing development
+28:24 – How to decide between doubling down on a current project or starting a new SaaS app
+34:15 – Tools for tracking traffic, conversions, and A/B test results
+40:21 – Recommended reading for SaaS startups
+Links from the Show:
+Derrick Reimer (@derrickreimer) I Twitter
+SavvyCal 
+The Mom Test by Rob Fitzpatrick
+Ruben Gamez (@earthlingworks) | Twitter
+Pieter Levels (@levelsio) | Twitter
+Danny Postma (@dannypostmaa) | Twitter
+Fathom Analytics, Mixpanel, Heap, Segmetrics.io, June
+Optimizely, VWO, Hotjar, Crazy Egg
+Obviously Awesome by April Dunford
+Traction by Gabriel Weinberg and Justin Mares
+Founding Sales by Peter R Kazanjy
+Lost and Founder by Rand Fishkin
+The 1-Page Marketing Plan by Allan Dib
+Demand-Side Sales 101 by Bob Moesta
+The SaaS Playbook by Rob Walling
+Getting Real by 37signals
+Derrick Reimer’s Books for Founders
+12 Books EVERY SaaS Founder Should Read This Year…
+If you have questions about starting or scaling a software business that you’d like for us to cover, please submit your question for an upcoming episode. We’d love to hear from you!
+Subscribe & Review: iTunes | Spotify | Stitcher
+Transcript
+Rob Walling:
+Welcome back to Startups For the Rest of Us, I’m Rob Walling. Today, I sit down with SavvyCal founder, Derrick Reimer, and we answer listener questions, questions about how to validate when entering a competitive space, we give book recommendations for SaaS founders, we talk about whether a non-technical founder should outsource development or try to find a co-founder, and there even might be an appearance from Rob GPT. So without further ado, let’s dive right into the questions.
+Derrick Reimer, thanks for coming back on the show.
+
+Derrick Reimer:
+Thanks for having me.
+
+Rob Walling:
+Got some good questions today, man, handpicked to fit your expertise, it’s almost like people knew you were going to be on the show or something.
+
+Derrick Reimer:
+Excited to dive in.
+
+Rob Walling:
+Yeah, it’s going to be good. Our first question is an audio question from Gabe about idea validation in a competitive market.
+
+Gabe:
+Hey Rob, my name’s Gabe. I’m listening each week from Denver, Colorado. I’m a developer, and I’m looking into getting into SaaS foundership, and I find your podcast and YouTube channel just incredibly helpful. So first off, big fan. Thanks. My question today is around idea validation, I think I’ve got an idea that might have some value, and I’m in the validation stage right now. I want to build a CRM tool for a small and medium-sized business niche that I’ve identified. And the space that I’m looking into doesn’t have any huge incumbents, nothing like Salesforce or anything like that, but there is still a fair amount of competition. How do you think about idea validation when exploring a space where there’s already clear competition? There’s definitely an established market here. And when that’s the case, what do you see as the validation goals I should be working towards? All right, thanks again. Bye.
+
+Rob Walling:
+It’s a good question, I bet it’s a pretty common one. You want to kick us off? What are your thoughts?
+
+Derrick Reimer:
+Sure, yeah, and I can definitely relate to this one a bit, I myself are in a decently competitive space, so I would say my biggest piece of advice is to start with a clear hypothesis about why the market needs another alternative, right? If it’s crowded already, then clearly buyers have a lot of different options, and it’s a tough road to try to just head into that and mostly have a set of undifferentiated features. So I think one, coming up with that hypothesis of what different needs to be out there? What is there demand for? And then try your best to disprove your hypothesis. Rather than trying to seek validation for it, try to seek the opposite. Try to find reasons why people don’t need this or why what they’re using right now isn’t just good enough.
+I would recommend reading The Mom Test by Rob Fitzpatrick. It’s a great primer on how to have these types of conversations with customers without picking up too many false signals, because people will want to be supportive of you, they’ll want to tell you what you want to hear, and that’s exactly not what you want to hear. You want to hear the raw truth from them.
+
+Rob Walling:
+Yes and on this one. So I think that if you enter a competitive space, the biggest question you have to ask is what you said, how am I going to be different? Because if there are other competitors, you not only have to be different, you have to be different enough and better enough that they will switch. So the big question I’d be thinking is if people are already using a CRM, switching costs are relatively high for CRMs. Now, that’s good once you have customers, it means your churn is going to be low. That’s bad. And you’re in a competitive space, it’s a hurdle to overcome. And so the biggest probably one or two questions I’d be thinking about is what do people hate about the bigger players? And I know you said there’s no massive incumbent, but there are competitors. I would be digging in everywhere, Capterra, Cora, private Slack groups, Facebook groups, wherever anybody hangs out in this space.
+And I would be trying to suss out, just by the conversation, maybe by questions. You don’t want to come out being too obvious, “Hey, what does everybody hate about this one?” And people are like “Ah, building a competitor.” But the idea is that if no one has an issue with your current competitors, why would they switch? Price isn’t enough, but if you want to do price, you’re going to get a lot of cheap demanding customers with high churn, right? Now, you can get some customers that way. Can you build a business doing that? Sure. Are you going to build a business that I would want to run that way? No. And so that’s what I’d be looking at, is what do folks hate about those larger competitors, or at least where… Maybe hate is a strong word, but what did they dislike? And then I think the other two things I’d be thinking about is I’d want to get some sense of the size of the market.
+Depends on how big of a business you want. And we don’t need $10 billion markets like Adventure, but there are some markets that are literally $10 million or $20 million, some SaaS markets. And that’s a really small market. I guess it also depends on your goals. If you want to build a $100,000 a year business, okay, 10 million is enough. I think most of us want to build that million dollar, 5 million dollar business. That is going to be really tough if the market is that small. So I’d be thinking, I don’t don’t know, 50, 100 million a year. There’s some number, I haven’t given it a ton of thought, but you don’t want to try to have to capture 50% of the market to achieve your goal. And you’re not going to get an absolute market size. Don’t go into MBA mode. Just get an idea of it. Who are the biggest incumbents? And do some Googling to see if they’ve ever said their revenue at any point, and then just add it up and multiply it by two.
+Just take a guess, and it gives you kind of an order of magnitude. Then the last thing I will say, it’s the question that everyone forgets, is how are you going to get customers? It’s that when Ruben Gomez went to do SignWell. He started SEO a year, at least a year before they launched the app. He got a domain, he started building templates for contracts. Or whatever he did for his SEO stuff, he had tens of thousands, if not more uniques a month before that app ever hit the ground. And SEO is just one play. If it’s going to be cold outbound, why not try cold outbound today without any product and just start doing the cold outbound, and saying, “I don’t have a product but I’m trying to solve. Does this pain point really bother you?” And if no one will reply to you today, why are they going to reply once you have a product? What do you think?
+
+Derrick Reimer:
+Yeah, no, that’s all really good stuff. I recall one app that I was trying to validate back in the day was for realtors. This is a common thing that a lot of us do. I was buying a house and realized how bad so many parts of the process seemed, to me at least. And I did. I made a spreadsheet of a hundred realtors and called them up. And it was a grueling process, and I got a lot of useful insight about the market, about how they think about things. I think I was thinking about a website builder for realtors or something. So I was like, all their websites suck, and they don’t hook an MLS and the prices are always out of date. And I learned why many of the things are stuck the way they are, and I learned about how realtors actually think about the value of their website. The answer is not very much. And so tons of things that I wouldn’t have learned if I had just assumed that they were thinking about the value of a website like I did. So I think those are all good points.
+
+Rob Walling:
+That saved you at least six months of building. You were going to build a Squarespace type, like a striped out Squarespace for realtors. And I remember it was pretty obvious. You’re like, I did these a hundred cold calls. And however many people you talk to, you’re like, “Yeah, this is… No, this is not going to work.” It was one, I found out it’s a market I really don’t want to work in, but two nobody’s going to pay what I need to be worth it.
+
+Derrick Reimer:
+Yep.Yep.
+
+Rob Walling:
+So thanks for the question, Gabe. I hope that was helpful. Our next question is another audio question from Michael, talks about when it’s worth it and how he’s stressed all the time.
+
+Michael:
+Hi Rob. Thank you so much for your podcast. I really enjoy listening to it, especially the Rob Solo Adventures. My name’s Michael. I’m a full-time student, and I created my own SaaS product like 16 months ago, and it’s currently hovering at about 1200 bucks a month. So my current problem is that I’m very anxious about everything, and I’m really stressed out about it. So every time I find new competitor or new competitor gets on the market, I like completely losing it. Or whenever somebody drops comment somewhere and the person isn’t completely satisfied, I’m also completely stressed out about it and worrying about it. So my question to you is, how do you know that it’s worth it? And when would you consider moving on to a new project or a new product? Because the thing is, if I’d made like 10K a month, it wouldn’t be a problem. I think so. I don’t know, but I think so.
+But currently, I’m only making like 1200 bucks a month and that’s not worth it for me, but the goal is that it’s worth it sometimes. So very interested in your opinion on whether to move on or not. Thank you so much in advance, and keep up the good work.
+
+Rob Walling:
+So Derek, as two people who definitely do not struggle with anxiety at all, nor have we in our life…
+
+Michael:
+Never.
+
+Rob Walling:
+Can you relate to Michael? And then do you have any advice for him?
+
+Derrick Reimer:
+Yes, I certainly can. Something that Michael said, I think this is paraphrase, “If I made 10K a month, this wouldn’t be a problem.” And I totally understand where the inclination is to feel that way, but afraid to say that’s probably not true. In fact, there’s probably going to be more anxiety once there’s more traction and you’re more on the radar of your competitors and you’re more in the game. It only gets more stressful. It’s not hopeless. You can learn to manage that. So it’s not like you’ll be stuck with crippling anxiety the entire time on your founder journey, but it’s a process and it’s one that I’m certainly going through all the time. I’m still constantly dealing with stressors in my business and having to try to… I think the big thing is trying to separate my anxiety or the way I feel about certain aspects of the business from my actual rational decision making.
+So I think this question is kind of centered around I’m feeling this anxiety. How do I know when I should quit? And I think I would not view anxiety in and of itself as a reason to move on from your product. Your mental state’s going to fluctuate a lot as a founder, and I think a big part of the game is trying to not be reactive to these emotions, but to separate, separate your rational decision making from how you’re feeling about things. And so I guess that’s encouragement to stick with it if this is what you desire. If you feel like you’re playing in a space that you’re optimistic about and you want to keep forging ahead, but you’re feeling anxious, this is my encouragement to you to stick with it. I would also say if you take a step back and really analyze your business and feel like you don’t have that drive or you’re just not interested in it, then that’s okay too, if you decide that that you’re done with it and if you’re struggling to get traction or whatever, whatever you’re contending with here.
+But yeah, I think in general I would just try to separate the anxiety from the rational side of things.
+
+Rob Walling:
+Yep, that’s it. And it’s easier said than done, but so are most of the hard things that you’ll do in life, especially as an entrepreneur. There’s an entire book written on this very topic called The Entrepreneur Guide to Keeping Your (beep) Together. It’s like $4 on Kindle. And my wife Dr. Sherry Walling wrote it. I contributed a small part of it as well, a lot of anecdotes and such, and it basically is around this topic. I absolutely have struggled with incredible amounts of anxiety most of my adult life. I figured out how to tame it about 10 years ago, took me a long time. And actually, I didn’t work on it before then. I just ignored it and pushed it down. Have I evaluated being on anti-anxiety meds? Yeah. Should I probably have been on them in my thirties? Yeah. I never did, but I think my quality of life would’ve been higher, in all honesty.
+I think that there’s a couple ways that I would think about this from a practical perspective. When I first listened to the voicemail and it said, if I was making 10K, it would be worth it, same thing you picked up on. I was like, record scratch. Nope, it’s only going to get worse. Not going to get better, period. If it was 10K, if it was a 100K, you would still hate it. Trust me. I’ve literally been there. Then I actually played this for Sherry just to say, “Oh, what do you think about this?” Right? She’s a psychologist. She’s a founder coach. Right when it hit the 10K line, she said, “Stop it.” And I paused it, and she said, “Yeah, that’s not going to fix it.” So it’s obvious the money isn’t going to make it better. The three things that I noted in my head are doing inner work to figure out how to deal with your own psychology, right? More than being half of a successful founder is managing your own psychology.
+That can mean seeing a therapist, which I have done for on and off for years. That can mean getting in a mastermind. It’s only every two weeks, so I might not carry you through, but it’s a sanity check. And then another way is to have a co-founder. And that’s easier said than done also, but I think having a co-founder who is the exact opposite… Don’t look for someone else anxious and stressed you. I will admit that being a co-founder with Einar on TinySeed, he is the exact opposite in those terms. He doesn’t get anxious about anything, which has its own issues, right? But early on, when we were trying to launch TinySeed, I’m like, “Oh my god, the terms, the thing.” And he is like, “Yeah man, we’ll figure it out. We’re really smart and we know what we’re doing.” In so many words, it’s like, “You need to chill out.”
+And pretty soon I started kind of modeling that in my own head, right? I was already doing better with all this, but being around someone day to day who I saw, oh, he just kind of shrug (beep) off and it always works. And then I thought to myself, so I don’t shrug (beep) off and it always works in general. I’m exaggerating, but it’s the same thing. So why the (beep) am I dealing with this anxiety every day when we are getting to the same outcomes? We are both having successes, yet I’m in this mental battle in my own head of someone said something negative about me on Twitter, someone, whatever it is. I get it. I still experience all that. Actually, I had someone post overnight on my, I think they DM’d me on my Kickstarter with kind of a rude entitled comment about how I didn’t understand da da da da.
+And I was just like, all right, I get to get up and I get to take this with me, I get to be angry or I get to be stressed, or I get to pick what I want to do, and that’s how I deal with it these days.
+
+Derrick Reimer:
+The point about masterminds, that just reminded me that this is something I’ve observed about myself. Honestly, I’m going through some things with my business right now that are really challenging, and I’m feeling, at times, low on energy or just frustrated and trying to figure out how to problem solve at a high level. And I often find that when I’m having conversations with fellow founders who may be struggling with maybe not the exact same thing, but something similar enough, and I start to think about rationally. I can remove the emotions a little bit more when I’m thinking about their problems, and I start to share some perspective. And then I realize that, oh, a lot of this perspective actually applies to me as well. I need to get out of my own head and just think step by step. And so I think there’s a benefit to being in community and sharing what you can to help others problem solve. You can often give yourself the gift of some clarity on things just by nature of helping other people.
+
+Rob Walling:
+Yeah. I like it. So thanks for the question, Michael. I hope that was helpful. Good luck too. I know it’s a tough place to be in, so I’m glad you wrote in. I’m sure there are a lot of other folks listening who share your sentiment. Our next question is from Greg about whether to find a technical co-founder or to outsource development.
+
+Greg:
+Hi, Rob, I’m Greg, and I live in Johannesburg, South Africa. I’ve been listening to your podcast for about five months now. Aside from enjoying it, I think it’s adding value to the way I think about startups. I’m a chartered accountant, which is equivalent of your CPA. And I’m not technical, so I’m not doing any development myself. So my question, and I know there’s a good chance you’ve answered this before, is do you think it’s better to get a technical co-founder or to outsource development? My gut says a technical co-founder because I feel like ongoing development in particular would be easier and more efficient, but I don’t know, and hence the question. But if you do recommend a technical co-founder, how do you find that person? Thanks for any advice, Rob.
+
+Rob Walling:
+So Derrick, technical co-founder or not, you are a developer, founder, so you don’t have to make this choice, but in his shoes, how would you think about it?
+
+Derrick Reimer:
+Yeah, and I’m curious to hear your perspective on this too because thinking through some different angles here. I would say if you can find that technical co-founder, I think that’s clearly the best option. It’s good to have someone who’s fully invested in the product and in the business and has that expertise, and can look over that side of things, for sure. I think there is kind of a big practical challenge in finding one of those. And so I wouldn’t be hesitant to play it up so much that to say that you have to find a technical co-founder, or else you shouldn’t proceed with starting your business. So a lot of things to consider if you are vetting someone as a technical co-founder. Do you work well together? Do you like each other? Do you know this person, or have you just met you want to give it some time first before you decide to partner up and go into business?
+Do you share the same goals? Are you aligned on what you want out of the business? And do you want to sell it? Do you want to run it for a long time? There’s so many things to consider, how do you split the equity, all of that. So I wouldn’t recommend rushing into any kind of co-founder relationship, and certainly there are other paths if you can’t find one. I would say if you don’t end up with a technical co-founder, then I would probably recommend working with an agency as opposed to just hiring and managing your own developers. I’ve seen this happen in multiple cases, where non-technical founder goes and finds their own developers, hires them. And if they get lucky and they happen to be really good at architecting a sound code base, then you might be fine.
+But if no one’s on team kind of looking over that, then you could find yourself in a place where you actually have a lot of spaghetti code, and you not being a developer, just aren’t able to keep tabs on that the same. So perhaps an agency where they can provide some oversight over the development process of your first version would be wise.
+
+Rob Walling:
+Yeah, it’s a marriage if you’re going to get the co-founder, right? And it’s hard to meet someone and then decide to start a company together right away. So it takes time. All things being equal, you’re going to give away the most equity to your co-founder. You could be a hundred percent and hire an agency. You could be 50-50 or some number in there. The problem is, I believe… I’m forgetting what the exact number is. I should look it up because I keep referencing it here, but the percentage of TinySeed companies that we have funded without a developer co-founder is somewhere in the 10 to 15% range. It’s very, very small. And even the number in the broader that about matches what’s in the broader MicroConf ecosystem based on the state of independent SaaS, and there’s a reason for that. It’s because just getting something built and getting it far enough to revenue without a technical co-founder is very expensive.
+And once you get there, as you said, almost always, I will say that this code is (beep). And I’ve seen it a dozen times at least, maybe 30 times. It’s a large number, where even today, as a former developer, if I hired an agency to build a product for me, I wouldn’t be able to QA the code quality. Now, I’d be able to QA the app quality, the functional layers and see when it’s breaking, but it’d be very time consuming for me, and it’s a tough one. I see the companies who don’t have a technical co-founder, where it’s just a subject matter expert, or a subject matter expert and a salesperson, for example. The number one issue for them constantly ongoing sometimes for years is the product. And then they try to find a new developer, and then well, “Ph, we hired juniors, so now we need a senior. Oh, and now the original agency that did it did this and they messed this up, so now we have to rewrite the whole code base.”
+I had a friend who rewrote the code base twice because the first agency screwed it up, and then he brought a senior contractor and who wrote the whole thing and then they had to rewrite the whole thing again once he then raised around and then had enough to hire. He was non-technical. So I’m telling the horror stories. I can’t tell, “You you should give away 50% of your company to someone.” I can’t give you that advice. What I can say is the people who don’t have a developer co-founder, over and over and over, I see the same thing, and they just struggle with the product side. Even I quote Craig Hewitt, non-technical founder of CAOs, which he has said is doing seven figures.
+And his biggest takeaway is if I did this again, I would either have a co-founder, or I would have enough money to hire someone that I basically know, that I would pay him a full salary, that I would swipe them away, a senior that’s in my country, or really close to me, in my time zones, and I would do it. And that’s been his learning from doing this for six, seven years. It would be tough
+
+Derrick Reimer:
+And I think that’s actually a good point. Another option, as opposed to the agency is if you have the cash or the ability to raise it or have, borrow it, or whatever to pay basically a senior level developer who you can even have someone who’s more technical help vet them, help interview them and see if they have good chops. So if you can hire that role, that might get you in a better spot as well
+
+Rob Walling:
+Because it’s ownership at that point. When you say outsource, it’s someone who just doesn’t care about your code or your business, in almost all cases. I’m generalizing. Of course, there are some contractors who are really good and really conscientious. A lot of them are dollars per hours, and they’re just trying to get the things shipped and get the money. I say this to someone who was a contractor for many years. And I always tried to be as conscientious as I could. I did have other priorities competing sometimes, and I worked with a lot of people who just didn’t care and were there for a paycheck, as with a lot of jobs. So that’s where outsourcing is, I think that’s going to be tough. But the moment you get someone who it’s like, “Hey, you’re going to be here with…” Even if it’s not 50-50, but it’s like I’ll pay you salary and you’ll get enough equity, few percentage points, whatever that number is, where they do have that “ownership” of it and they want to keep the code base really sparkling clean.
+For the second part of his question, which was, if I look for a co-founder, where do I find them? I went to ChatGPT. And not only did I ask ChatGPT, but then I took its answer and I ran it through the voice simulator in my own voice. So we’re about to roll that here. I want to caveat this in advance. I asked ChatGPT four of the questions from this episode, and a lot of the answers were just very generic, unusable. And I would turn them into audio and I was falling asleep because it was just boring and like, “Oh, and do this, and then test, and then…” Whatever. So for this clip, I took the best 800 word response. And these are the best 200 words, so let’s not assume that our job, Derrick, will be obsolete anytime soon.
+
+Derrick Reimer:
+Yeah. All right.
+
+Rob Walling:
+If you decide to pursue a technical co-founder, here are some approaches to finding the right person. Number one, networking. Attend industry events, meetups, or join online communities where technical professionals gather, cough, cough, MicroConf in-person events and MicroConf Connect, engage with potential co-founders, share your vision and look for individuals who align with your goals. Number two, co-founder matchmaking platforms. Platforms like Co-Founders Lab, Founder Dating, or AngelList can connect you with potential technical co-founders who are looking to join startups. Remember that finding a technical co-founder involves building a relationship based on trust, shared values, and a common vision. Take the time to evaluate potential candidates and ensure that they bring the necessary skills, expertise, and dedication to the table. All right, so first of all, amazing that ChatGPT did the cough, cough MicroConf thing. Isn’t that great? Totally, definitely did not add that in.
+
+Derrick Reimer:
+Yeah, that’s hilarious.
+
+Rob Walling:
+But here’s the thing. What was the trip is I was going to say go to in-person events and go to online communities. And of course, I was going to mention, since I run both of those for exactly this audience, go to an in-person MicroConf that’s a local air flagship and go to MicroConf Connect. And that really I think was the first point that ChatGPT made. The interesting thing is I didn’t know there were co-founder matchmaking services. Of course there are. Now that I’ve read it, I’m like, yeah, of course that should exists, but ChatGPT just whips it out, so to speak.
+
+Derrick Reimer:
+That’s good stuff. Yeah. And it’s a little bit of uncanny valley with the rob voice.
+
+Rob Walling:
+That’s creepy.
+
+Derrick Reimer:
+Yeah.
+
+Rob Walling:
+Figured you’d get a kick out of that. It’s like, is there a Rob really… Rob’s in front of me and he doesn’t have a cold today, so he doesn’t sound that way.
+
+Derrick Reimer:
+Yeah, that’s good.
+
+Rob Walling:
+I think the other thing, really the issue I have with the matchmaking services, I would love to believe that works. We’ve been asked to do that at MicroConf, to do… Because we do mastermind matchmaking. Why wouldn’t we do founder matchmaking? I’m just skeptical. It’s like matchmaking people for marriage.
+
+Derrick Reimer:
+Yeah.
+
+Rob Walling:
+It’s really hard to do.
+
+Derrick Reimer:
+I was going to say the same thing. There probably should be Hinge for founders, and maybe that probably exists, honestly…
+
+Rob Walling:
+What is Hinge?
+
+Derrick Reimer:
+… swiping on…
+
+Rob Walling:
+Is that like Tinder?
+
+Derrick Reimer:
+Hinge, it’s like Tinder. Yeah. You swipe left, swipe right.
+
+Rob Walling:
+How do you know what Hinge is?
+
+Derrick Reimer:
+I have a single friend.
+
+Rob Walling:
+Sure you do.
+
+Derrick Reimer:
+Yeah. That’s actually one of my favorite hobbies because she doesn’t like the process of online dating, and I love going through and swiping on profiles because…
+
+Rob Walling:
+That’s funny.
+
+Derrick Reimer:
+Yeah.
+
+Rob Walling:
+Yeah, finding co-founders is hard.
+
+Derrick Reimer:
+But yeah, it’s hard. Just finding a life partner, finding a co-founder is similarly complex and difficult. So it’s like, yeah, I guess in that sense probably try multiple different things and kind of see how far you get.
+
+Rob Walling:
+And what do you bring to the table. And in your case, you are an accountant in South Africa, so I think you have some budget. Subject matter expertise is, it’s a little bit, but that’s not much compared to a developer who’s going to put in hundreds of hours. Are you going to put in hundreds of hours too? That’s the thing when you start talking about this is if you don’t bring, “I know how to market. I have an MVP built in no code. I have 20 people on a wait list who told me they would buy that.” These are valuable things saying, oh, I know the business problem. I could do customer interviews and find that out. I’m not trying to downplay it too much, but I could talk to 10 accountants and probably find a problem. So it’s not worth, again, hundreds of hours of my time that I would otherwise be billing at 50, 100, $200 an hour. So thanks for the question, Greg. I hope that was helpful.
+Finding the perfect software engineer for your team can feel like looking for a needle in a haystack, and the process can quickly become overwhelming. But what if you had a partner who could provide you with over 1000 on demand vetted senior results-oriented developers who are passionate about helping you succeed, and all that at competitive rates, meet lemon.io, they only offer handpicked developers with three or more years of experience and strong proven portfolios. With lemon.io, you can have an engineer start working on your project within a week instead of months. Plus, you won’t waste your time on candidates who aren’t qualified. Lemon.io gives you easy access to global talent without scouring countless job boards, and it’s more affordable than hiring local talent. And if anything goes wrong, lemon.io offers swift replacements, so it’s kind of like hiring with a warranty. If you need to grow your engineering team or delegate some work, give lemon.io a try. Learn more by visiting lemon.io/startups and find your perfect developer or tech team in 48 hours or less. As a bonus for our podcast listeners, get a 15% discount on your first four weeks of working with a developer.
+Stop burning money, hire Dev smarter, visit lemon.io/startups. Next question is about what to double down on a game that this caller built, or to launch a SaaS app.
+
+Speaker 6:
+Hey Rob, this is [inaudible 00:28:26] from Budapest, Hungary, longtime listener and first time caller. I’m facing unique dilemma and [inaudible 00:28:31] sites. Last year, by working a full-time developer job, I accidentally entered the web team business by creating a simple movie team daily game just for fun. To my surprise, attractive clinic daily visitors and generated in of revenue to match budget salary, leading me to reside. Currently, the Dean’s popularity is gradually decreasing along with the whole daily trend, but I still have 10,000 daily users. Simultaneously, I’m excited about building a SaaS product and have some promising [inaudible 00:28:57] ideas, such as real feedback, ChatGPT conversational user feedback that I designed based on my own needs. So I’m at the decision point now. Should I take advantage of my current web game audience and explore related opportunities, or dive into the SaaS word, even if it means starting from zero? I will greatly appreciate your advice.
+
+Rob Walling:
+Derrick, as someone who has always longed to build a game to 20,000 daily active users or whatever he said, what are your thoughts on his predicament here?
+
+Derrick Reimer:
+Yeah. Well, first of all, congrats on getting something off the ground like that. That’s pretty cool. I would say though that I’m still always going to advocate for B2B SaaS over an ad-based website for consumers. And I think the big thing here is that is just… Games especially are so inherently like hype cycle driven. Even you look at some of the biggest game makers in the world kind of wildly fluctuate on their ability to even stay in business because it’s just so hit based, and it’s very difficult to engineer that, versus B2B SaaS, we have so many different playbooks and resources for identifying, validating marketing, growing your SaaS business, and honestly, most of those just would not apply to trying to build and get traction with the game. So I think for those reasons, I would strongly advocate SaaS over a game.
+
+Rob Walling:
+You wrote into a SaaS podcast, what’d you expect? Yeah, I can’t imagine building a game into a revenue stream. Hit based, which is what you said, is exactly how I think of games. It’s kind of saying, “I’m going to write songs for money.” It’s like cool, hope you get lucky. Talk about hard work and skill. To be good at writing songs, do you need a tremendous amount of hard work? Usually, you look at anybody, ed Sheeran, you look at the Lizzo documentary, Beyonce, whatever, there’s a bunch of Netflix documentaries I’ve been watching of them backstage, and they work their ass off. And these are hardworking people. Do they have skill? Hell, yes they do. And as someone myself who’s been in bands and played the guitar for 20 years and sang in bands, and still cannot stand how that my voice is not where I want it to be and these people are there, I know that they have some skill that I personally don’t think I will ever have.
+So they have hard work, they have skill. And guess what? They still need a (beep) load of luck to get where they are, and then to stay where they are, right? Because we hear so many people, you’re who come in with a big hit or two and then that hit base nature is tough. I think of games as the same thing. I love games. I play games. I never want to build games as a business myself. So I would be thinking about, how can I sell this thing to give me some runway? I know it’s not monetized, but 10,000 daily active users, that’s a number. It’s not zero. It’s like is there value here? Is there any type of strategic that would buy it? Because if you can get any type of money for it, I would be using that to try to propel me forward on my journey of SaaS. Now, is SaaS as interesting or exciting as building games?
+
+Derrick Reimer:
+No.
+
+Rob Walling:
+No, no way. But I look for repeatable, relatively predictable ways to build incredible businesses. And I could imagine myself building 50 games, and maybe zero of them working out. I think of the numbers are that bad. And my personality is one that I think if I build even starting out three, four, five SaaS apps, I think one of them can catch if I like… I’m not going to just build three and spray and pray. I don’t like that approach. But if I really follow them through, I think I’m going to catch something eventually that’s going to get me to a place where I quit the day job.
+
+Derrick Reimer:
+You look at some of the indie hackers right now, indie makers who are selling into consumer space, your Pieter Levels, Danny Postma, like doing the AI headshots type of stuff. And it’s fascinating to watch their journeys. And a lot of it is propelled, I think off of kind of decently large audiences on social media that you’re able to get big exposure that way. But still, the amount of revenue they’re able to retain is quite low. Churn is crazy high. And they’re constantly having to kind of reinvent what’s the next product, what’s the next little mini hype cycle to try to ride? And it honestly looks so exhausting. I’m happy that they’re achieving some success doing it, but I think it’s a really hard thing to replicate.
+
+Rob Walling:
+Yeah, a hamster wheel is what comes to mind of like, I got to build. I got to build. Ooh, and then I product hunted, and I need product hunt, I need Reddit, I need Hacker News, I need whatever other viral pop Twitter, because I have a hundred thousand, 200,000 followers. And then the moment that does down, it’s like, well, I can’t really SEO this. The average revenue per account is too low to do pay-per-click ads. I guess I’ll tweet about it again. You know what I mean? That’s the thing that I think about in terms of building those types of tools. That doesn’t mean you shouldn’t, but it’s certainly not for me. I always wanted… I shouldn’t say always actually… From 2005 till about 2010, 2011, I built little tools like that, and it was cool. I didn’t do it on the hype cycle thing like that, but that’s certainly the way to do it today.
+But then I matured or graduated into another form of thinking, which is I want to build a business that’s maybe five or 10 times bigger, but that’s sustainable, right? I want to build something that can be around for years and years and have true enterprise value, not just throw off a ton of cash. Cash is good, but I want to think about the next decade, not about the next 10 months. So thanks for the question. I hope that was helpful. Our next question is from anonymous, and they ask, “Do you have tools or techniques to track how much traffic came from which sources and what the conversion rates were?” Also, any for tracking results of AB testing. So let’s answer the first part of his question and then we will let ChatGPT weigh in one more time on the split testing tools.
+The reason I asked chat gpt on this when I asked the whole question and the first part, the answer was generic and stupid and it just wasn’t worth it, but I wasn’t sure these days what are the AB or split testing tools that people are still using and they’re still around because I haven’t done it in a few years.
+And so I looked at it and I was like, well, assuming it’s not an AI hallucination, I actually like its answer on this one. But what are your thoughts on that first part, which is how do you track? How many people are coming from where, and if they’re converting?
+
+Derrick Reimer:
+Yeah, and I think those are pretty standard features of pretty much any website analytics product. And there’s tons of those on the market today. There’s kind of the old standard of Google Analytics. I know that Google Analytics is going through a major upgrade cycle right now and people are losing their minds.
+
+Rob Walling:
+I’ve heard bad things. GA4, I still have… I keep getting emails because I have it on our media sites and TinySeed and all that and I just can’t bring myself to upgrade, and I heard it’s kind of a mess.
+
+Derrick Reimer:
+Yep, that’s what I hear. And every founder needs to decide how much they want to try to optimize their experience while also remaining GDPR compliant if that’s something that’s important to you. So there are kind of a set of tools out there that are kind of supposed to be more privacy centric. And the part I like about them is that the way they’re architected, you don’t technically have to put a cookie banner on your website if that’s the only thing that is tracking on there because they’re using technology that doesn’t require cookies and stays within the boundaries of GDPPR. So Fathom Analytics is the one that I use for that. You do give up a little bit of fidelity of data because they can’t remember who a visitor is for very long in order to remain GDPR compliant. So there are some trade offs there, but there’s a number of tools out there that you can explore in any website analytics tool worth their salt will have sources tracking and conversion rates and goals and all that kind of stuff.
+
+Rob Walling:
+I thought in three levels of kind of beginning table stakes, intermediate, and advanced. And beginning table stakes for me is a Google Analytics or a Fathom, as you just said. So we’re on the same page with that. The intermediate is more funnel tracking, which is mixed panel or heap. And there’s others, but those are the two that I hear about, a lot of TinySeed companies use them and then the kind of a really advanced platform that is built not only for tracking who comes from where and how they convert, but then it will track them all the way through their life as a customer. So it’ll literally say, “People who came from this particular Facebook ad in this two week period a year ago churned higher than this.” Really deep stuff that even… We didn’t have that at Drip. I couldn’t tell it all the way through. I always was guessing it averages, but SegMetrics. And it’s segmetrics.io. It’s a TinySeed company, and he built it for this reason, for people who are running…
+You’re running a hundred grand a month, 200 grand a month, million a month in ads. You have to track that because you can’t just go on averages, right? And it’s worth paying for it. So that’s my mental model, kind of the beginning, intermediate, and advanced as stands today.
+
+Derrick Reimer:
+Yeah, I’ll throw one more out there too, June for product analytics, there’s sort of a newer option, but trying to be what Mixpanel was back in the early days, I think Mixpanel has gotten a little, it’s an older product. It’s kind of grown in complexity over time, and June’s trying to breathe new life into the product analytics space. I’ve been enjoying that one.
+
+Rob Walling:
+And so for AB testing, also known as split testing, let’s hear from Rob GPT.
+On the topic of AB testing tools, when conducting AB tests to compare different versions of your website or landing pages, tools like Optimizely, Google Optimize, or VWO, visual website optimizer, can help you set up and track the results. These tools allow you to create variations, split your traffic and measure the performance of each version based on defined goals. You didn’t ask, but allow me to be obnoxiously verbose as AI is inclined to be. And talk about heat map and session recording tools. Tools like Hotjar and Crazy Egg provide heat maps and session recordings that show how users interact with your website. Heat maps visually represent where users click, scroll, or hover on your pages, while session recordings capture actual user sessions. The interesting thing I thought with ChatGPT is we really didn’t ask about heat mapping.
+I actually think that maybe with analytic, I kind of went a step further. I wouldn’t have brought heat mapping into this conversation. And maybe it’s more advanced, but I do think that the to… What do they say, crazy egg and Hotjar? It is good suggestions. Again, I handpick the best parts of a seven part answer. So what did you think? You agree with Rob GPT there?
+
+Derrick Reimer:
+Yeah, it seemed pretty on point. I was actually pleasantly surprised that the tooling I… Because haven’t done a lot of marketing website AB testing in the last couple of years either, and those tools are ones that I kind of recognize. Seems like the old standards are kind of still kicking out there.
+
+Rob Walling:
+Yeah. I think until… I just don’t know that there’s room for another player right now, until one of those kind of becomes crapified. Aged tools to usually do that, or they go to private equity or whatever, or there’s like enough, there’s enough room for innovation, or man, the UX is really bad, someone just needs a better UX version. It’s like it’s not there yet, but I do think we’ll get there eventually.
+
+Derrick Reimer:
+I feel like something like AI generated split test variations or something that might be what the next iteration looks like.
+
+Rob Walling:
+Yeah. And there are tools out there that do that. Actually, I was screwing around with one about a year ago before all the ChatGPT stuff.
+
+Derrick Reimer:
+Shouldn’t be surprised.
+
+Rob Walling:
+He grumbles under it, grumble, grumble. I know, I’m as tired of hearing about as everyone else I’m going to admit. All right, so thanks for the question. Hope that was helpful. Last one of the day, Derrick. I was going to cut a short, but man, books. I just can’t not talk about books, right? I have 843 books in my Audible account, and I’ve listened to at least all the grownup ones because there’s kid books in there. So this question is from Jessica, “Thanks for the great podcast… Someone who’s six months into the first startup has been a great resource and recent episodes. You’ve mentioned a few times that you are the type of person who likes to read whole books on new areas or skills as you’re trying to adopt them.
+The last example I can think of is marketing. Have you kept a running list of your favorite books on different topics related to SaaS startups? As an avid reader, I would probably read all the books on such a list. So why don’t we do this? We haven’t coordinated on this, but I’m going to assume you brought a list. So why don’t you go first with one book, and then I’ll do one, and we’ll just go back and forth until we’re out.
+
+Derrick Reimer:
+Cool. Yeah, so I’ll caveat that I just picked some books that are sort of on specific subject matters. And I am definitely a proponent of just in time learning, so I would say… I try not to just read 10 different books all on a bunch of different topics, and then hope I can apply them down the road. I would say do yourself a favor and read the book on positioning when you’re working on positioning for example. But that being said, since I just mentioned it, I’ll give this one as an example. Obviously Awesome by April Dunford. I heard her speak at a MicroConf a couple years ago, and she’s awesome. And that was around the time that she published her book, Obviously Awesome, on all about positioning and she has experiences ranging from… I think she worked at IBM or it’s a large database company or something, and has tons of experience kind of doing this at a smaller scale and at a really large scale. So highly recommend that for learning how to position your product.
+
+Rob Walling:
+And I totally cheated on this one because not four days ago of YouTube video that I recorded went live on the MicroConf YouTube channel microconf.com/youtube. The title was 12 books Every SaaS Founder Should Read this year. So I actually had already done a bunch of research for that. And what I did was I went to the books that I felt have really stuck around and impacted me over the long-term as a SaaS founder. Then I went to Twitter, because I have blind spots, and I asked. And I probably got 50 different suggestions for books. And some were great, and some were just not right. Some, I’m not going to recommend to people. And I combined that and called in, I called it down to 12 because I kind of thought once one a month for a year. I won’t go through all 12 here. We will obviously link that YouTube video up in the show notes.
+It’s a quick watch you can get through all, but the first one that I want to talk about is all… I almost guarantee this on your list too, but it’s Traction by Gabriel Weinberg and Justin [inaudible 00:42:38]. And it needs an update. The tactics in it are now outdated because it’s almost a 10 year old book I think. But it just gives you a way to think about when you have no idea how to market a B2B company. It’s a bunch of… It’s 20 chapters-ish and 20 marketing approaches. And they interviewed an expert in each one, and they said, “How do you do pay-per-click advertising or Facebook advertising?” Noah Kagan, who at the time was growing up absolutely with that, and he just weighed in with a bunch of things and asked him questions. They wrote the chapter. They asked me about growing your business through in-person events, because I was running MicroConf and I just know a lot about them.
+But it’s just continues to be a mainstay, maybe not for the details of how to do everything, but almost like a buffet of like, oh, so these are a bunch of the approaches that I could feasibly do. And then there’s more detail on those from a B2B SaaS perspective that I have added in a book that I will suggest in a second. I don’t want to go two in a row, but Traction by Gabriel Weinberg.
+
+Derrick Reimer:
+Yep, definitely on my list. And that’s one of the ones that sits on my shelf and I will revisit it every six to 12 months, as I’m thinking about has the nature of my business changed? Should I revisit some traction channels that maybe I experimented with a year or two ago, and now I should take another look at them? So yeah, it’s a great one. I think my next one is, I mentioned earlier in the episode, The Mom Test. This one came to me at a moment where I was just coming off of a failed product because I failed to have customer conversations that weren’t tainted by people wanting me to succeed but not giving me accurate information.
+So I was feeling quite disillusioned after that. And when I read this book, it sort of opened my eyes to all the different ways that you can ask questions of customers or potential customers in the wrong way, and then ways to think about framing those conversations so that you’re minimizing false signals. So The Mom Test, I think is just a invaluable resource. It’s very super actionable, very short, and gives you tactics you can start implementing on day one.
+
+Rob Walling:
+It’s become a staple in our spaces. The second book is if you want to learn sales as a founder, and it’s called Founding Sales by Pete Kazanjy. First time I’ve ever heard of this book is in the last six months, and I don’t even remember how we got connected, but I wound up interviewing Pete on this show. And so he sent me a copy of his book. And when I opened it, I was like 450 pages, ugh. Normally, that means… To me, that means padding. It means you’re not succinct enough. Turns out, no, what it actually means in his case is he just wrote a book that took you all the way from, I know nothing about sales, all the way to scaling a sales team and hiring sales leaders. So it’s this huge reference tone. So that’s what I like about it. If you don’t need to learn how to do sales and you’re doing low touch, no touch, don’t do it.
+But you just flip to any chapter and they’re titled, How to Do Sales as a Founder, How to Build Your Slide Deck for a Sales, How to Give a Demo as a Founder Doing Sales. And then it’s like, How to Hire Your First Sales Person, How to Scale a Sales team, How to Hire Sales Leadership, whatever. There’s like 13, 14 chapters, and they’re just so in depth because he was himself learning along the way. He was a non-sales founder of a SaaS company, and he was recording all of his stuff. And he has the crazy screenshots of terrible demo deck with bad graphics, and he’s like, But it sold things, so just iterate fast.” Anyways, Founding Sales is one that has quickly kind of become a staple in my arsenal.
+
+Derrick Reimer:
+I’d say my next one is Lost and Founder by Rand Fishkin. This one’s another kind of great look at a founder’s story as he sort of encountered what not to do when trying to grow and scale your business and how to deal with raising funding or not raising funding and the pitfalls that can come with that. And it’s a really kind of personal story from a really, really smart founder, founder of SEO Moz, and his experience doing that. So highly recommended for any founder thinking about level of ambition for your company and how you want to think about staying independent or raising outside investment or going full venture capital. Think he has a lot of wisdom on that and things to think about as trade offs.
+
+Rob Walling:
+My next one is another marketing book. The things that have had a lot of impact on me as a developer were things that were teaching me how to market, right? And one that came up more recently that I didn’t read back in the day, but that has been suggested to me by several TinySeed founders is called The One Page Marketing Plan. And what’s good about it, look, you can go to several other books over the last 10 years and cobble is together, but it just pulls a bunch of stuff into a succinct tone. And it’s not traction where it has these individual market, but it’s like high level thinking about marketing, but not so high level that it’s like, “Marketing is the approach to get people to consider demand for your…” Product. You know what I mean? It’s like I don’t need to read an MBA definition. It’s like in between in a good way, so One Page Marketing Plan.
+
+Derrick Reimer:
+I’m going to cheat and mention two books here because they’re quite related, and both things that I’ve diving into recently about specifically interviewing customers and learning about jobs to be done type things. So there’s Deploy Empathy from Michelle Hansen, is kind of a very… I would say it’s a very MicroConf friendly type of book because it is super tactical and she has scripts that you can use in specific cases if you’re having a conversation with a customer about why they switched or about why they canceled or about why they stick around if they’ve been around a long time. She has specific scripts you can use as kind of a starting place for jump starting those conversations. And so it gets down into hands-on stuff. It’s not just theoretical, I guess. Another book kind of along these lines is Demand Side Sales 101 from Bob Moesta, one of the OGs of jobs to ne done framework. And that one is also quite short, easy to read, and kind of frames selling your product through a jobs to be done mindset, as opposed to…
+The way that a lot of US software people imagine sales going, which is kind of a greasy, used car salesman type of approach, this is the complete opposite to that. So those are two recs.
+
+Rob Walling:
+Those are great ones. My last one, and of course I say last I have 10 more. We just have to stop the podcast at some time, right?
+
+Derrick Reimer:
+Yep.
+
+Rob Walling:
+Should we just do a whole episode of this? I bet people would like it.
+
+Derrick Reimer:
+I bet so.
+
+Rob Walling:
+This one kills me to mention because it’s my book, it’s The SaaS Playbook. And I always feel like it’s super G to mention your own book, but in terms of if you want to build a million dollar multimillion dollar sales company, I wrote it because there was nothing else on the market that said the stuff that I thought should be said, right? And so what was funny is when I was going to do my YouTube video, I went to Twitter and people started suggesting it. And I was like, ugh, I can’t really mention my own book.
+And then eventually, I was like, I guess I think I should. So I truly like it, or your money back. That’s just how I feel about it. It’s the best book I’ve ever written, and I hope that I like it. I did the Kickstarter. It’s done. You can go to saasplaybook.com. If you’re in the us, you can get a physical copy. If you’re anywhere out in the US, you can get electronic copies. If you really want a physical copy and you’re not in the US, then you’ll have to wait till the fall. That’s when it’ll be on Amazon. But right now, we’re in the middle of Kickstarter fulfillment, hard back books. There’s a bunch of stuff going on, and we just can’t fulfill one off… The ones being ordered on saasplaybook.com are literally shipping from my house.
+And I can’t deal with customs, and it’s like $27 to ship to countries that are not that far from us, to ship a book. It’s insane. So all that said, yeah, I’ve mentioned on the podcast here before, you don’t need to hear more about it. It’s kind of everything I know at this point about building these types of companies.
+
+Derrick Reimer:
+That’s awesome. And yeah, I can’t wait to add that one to my bookshelf. I’m sure it’ll be one of the ones that I’ll be referencing every X months to just kind of reevaluate the playbook. So I’m really glad that’s in the world.
+
+Rob Walling:
+How about you? You have any final books that wrap us up?
+
+Derrick Reimer:
+Yeah, it’s funny looking through my… I have this page on my website, derrickreimer.com/booksforfounders, and Start Small Stay Small is definitely on there too, as… That was your first book, right? Your very first? Yeah.
+
+Rob Walling:
+Yeah, it was. Yeah.
+
+Derrick Reimer:
+Yeah, and that one was super influential in my thinking about starting B2B SaaS companies. And I feel like SaaS Playbook is probably sort of a successor to that. I also really appreciate… I revisit this one every so often. It’s Getting Real by 37 Signals, and it’s one of… I think it might be their first book, and it’s just a bunch of short, little essays. And I feel like they’re just particularly talented at crystallizing ideas and thoughts in really effective ways. And so I just enjoy occasionally those and getting a little bit of renewed insight or renewed enthusiasm for running my own business.
+
+Rob Walling:
+Yeah. I love going back to books like that, that were formative. Getting Real was not formative for me. For some reason, I didn’t come across it back in the day, but there are books that I read back then that just blew my mind, changed the way I was thinking about entrepreneurship, about being a solo founder. And I’ll go back and read them years later, and I’ll either, I’ll do both of these things actually, I will pick up on things that I didn’t get, and I’m like, whoa, I didn’t think that was in this book, but now, since I understand where I am now, I understand it at a new level. Other times, I’ll look and be like, wow, super dated. This is so obvious. How did I not know this? And that will just show you how far you’ve come. I didn’t know it because it was 15 years ago and this was not common knowledge in the way that this particular book probably communicated it. So I bet there have to be some moments in Getting Real that are like that for you.
+
+Derrick Reimer:
+Yeah, totally.
+
+Rob Walling:
+Amazing, sir. Well, Jessica, those are some books we tossed out. Again, there’s like another seven or eight on the 12 Books every SaaS Founder Should Read This Year YouTube video, and derrickreimer.com, right on the homepage, if you scroll down, it says Books for Founders, and you can find out another handful there. Mr. Reimer, thank you so much for taking the time out of your day.
+
+Derrick Reimer:
+Thank you. It was a pleasure.
+
+Rob Walling:
+Yeah, it was great, man. So folks want to keep up with you on Twitter. You are @DerrickReimer. That’s R-E-I-M-E-R, and savvycal.com, the best scheduling link on the internet.”

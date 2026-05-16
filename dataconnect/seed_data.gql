@@ -1,4 +1,4 @@
-mutation @transaction {
+mutation MovieInsertMany @transaction {
   movie_insertMany(
     data: [
       {

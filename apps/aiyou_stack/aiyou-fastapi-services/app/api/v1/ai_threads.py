@@ -13,7 +13,6 @@ from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from src.shadowtag_v4.database import get_db
 
 from app.api.schemas.ai_threads import (
     BulkImportRequest,
@@ -39,6 +38,7 @@ from app.api.schemas.ai_threads import (
 )
 from app.services.scrape_job_service import ScrapeJobService
 from app.services.thread_service import ThreadService
+from src.shadowtag_v4.database import get_db
 
 router = APIRouter()
 

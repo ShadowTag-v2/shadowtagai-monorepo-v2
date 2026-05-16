@@ -20,7 +20,6 @@ from typing import Any
 from uuid import UUID
 
 from pnkln.core.judge_six_pipeline import JudgeSix
-
 from src.agents.debate import DebateOrchestrator
 from src.core.gemini_function_calling import FunctionTool, GeminiFunctionCaller
 from src.evolution.dte import DTEEvolver

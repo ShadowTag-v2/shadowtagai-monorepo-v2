@@ -1,5 +1,5 @@
 #!/bin/bash
-TARGET="/Users/pikeymickey/shadowtag-omega-v4-stack/shadowtag-omega-v4"
+TARGET="/Users/pikeymickey/aiyou-stack/ShadowTag-v2"
 export PIP_USER=false
 export PYTHONNOUSERSITE=1
 

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/circuit_breaker/metrics_exporter.py
+# hypothesis_version: 6.151.5
+
+[1000000000.0, 1000, 'backoff_multiplier', 'closed', 'consecutive_failures', 'counter', 'description', 'gauge', 'half_open', 'labels', 'name', 'open', 'seconds_until_probe', 'service', 'state', 'timestamp_ns', 'total_failures', 'total_successes', 'type', 'value']

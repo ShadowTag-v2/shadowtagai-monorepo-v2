@@ -11,7 +11,7 @@ UnGPT.1
 ````python
 # atomic_orchestrator.py
 # Vertex AI Workbench implementation for JR + Cor + NS integration
-# Implements AoT (Atom of Thoughts) with Compliance Framework risk isolation
+# Implements AoT (Atom of Thoughts) with ATP 5-19 risk isolation
 
 import asyncio
 import time
@@ -24,7 +24,7 @@ import google.generativeai as genai
 from datetime import datetime
 import hashlib
 
-# Compliance Framework Risk Classification
+# ATP 5-19 Risk Classification
 class RiskLevel(Enum):
     RA_1 = "routine"      # Normal operations
     RA_2 = "low"          # Minor impact if fails
@@ -38,9 +38,9 @@ class AtomicThread:
     Failure in one thread does not cascade to others.
     """
     thread_id: str
-    purpose: str  # ShadowTag-v2JR: What is this thread solving?
-    reasons: List[str]  # ShadowTag-v2JR: Why is this approach valid?
-    brakes: List[str]  # ShadowTag-v2JR: What constraints must be enforced?
+    purpose: str  # AiYouJR: What is this thread solving?
+    reasons: List[str]  # AiYouJR: Why is this approach valid?
+    brakes: List[str]  # AiYouJR: What constraints must be enforced?
     risk_level: RiskLevel
     prompt: str
     agent_type: str
@@ -51,7 +51,7 @@ class AtomicThread:
     token_usage: Dict[str, int] = field(default_factory=dict)
 
     def get_audit_trail(self) -> Dict[str, Any]:
-        """Generate audit trail for ShadowTag-v2JR compliance."""
+        """Generate audit trail for AiYouJR compliance."""
         return {
             "thread_id": self.thread_id,
             "purpose": self.purpose,
@@ -90,10 +90,10 @@ class JudgmentRuleDecomposer:
     ) -> DecompositionResult:
         """
         Decompose query into atomic threads using AoT framework.
-        Each thread gets Purpose, Reasons, Brakes per ShadowTag-v2JR doctrine.
+        Each thread gets Purpose, Reasons, Brakes per AiYouJR doctrine.
         """
 
-        decomposition_prompt = f"""You are a military-grade reasoning system (ShadowTag-v2JR Judge 6).
+        decomposition_prompt = f"""You are a military-grade reasoning system (AiYouJR Judge #6).
 Decompose this query into atomic, parallelizable reasoning threads.
 
 QUERY: {query}
@@ -178,7 +178,7 @@ Each thread's prompt should be self-contained with all necessary context.
 class AtomicThreadExecutor:
     """
     Concurrent execution engine for atomic threads.
-    Implements error isolation per Compliance Framework risk stratification.
+    Implements error isolation per ATP 5-19 risk stratification.
     """
 
     def __init__(
@@ -200,8 +200,8 @@ class AtomicThreadExecutor:
         start_time = time.time()
 
         try:
-            # Wrap prompt with ShadowTag-v2JR enforcement
-            enforced_prompt = f"""[ShadowTag-v2JR CONSTRAINTS]
+            # Wrap prompt with AiYouJR enforcement
+            enforced_prompt = f"""[AiYouJR CONSTRAINTS]
 PURPOSE: {thread.purpose}
 BRAKES: {', '.join(thread.brakes)}
 
@@ -301,7 +301,7 @@ class CorStitchingEngine:
     ) -> Dict[str, Any]:
         """
         Stitch thread results into unified response.
-        Maintains audit trail for ShadowTag-v2JR compliance.
+        Maintains audit trail for AiYouJR compliance.
         """
 
         # Separate successful and failed threads
@@ -397,7 +397,7 @@ class pnklnAtomicOrchestrator:
         output_format: str = "markdown_report"
     ) -> Dict[str, Any]:
         """
-        Full AoT pipeline with ShadowTag-v2JR enforcement.
+        Full AoT pipeline with AiYouJR enforcement.
 
         Returns:
             Dict with final_output, audit_trail, and execution_summary
@@ -558,7 +558,7 @@ def setup_pnkln_agents(gemini_config):
 
     risk_assessor = AssistantAgent(
         name="RiskAssessor",
-        system_message="You are a military-grade risk analyst. Use Compliance Framework methodology for risk stratification.",
+        system_message="You are a military-grade risk analyst. Use ATP 5-19 methodology for risk stratification.",
         llm_config=gemini_config
     )
 
@@ -569,7 +569,7 @@ def setup_pnkln_agents(gemini_config):
     }
 ```
 
-## Testing Framework (98% Coverage per ShadowTag-v2JR Judge 6)
+## Testing Framework (98% Coverage per AiYouJR Judge #6)
 
 ```python
 # test_atomic_orchestrator.py
@@ -581,7 +581,7 @@ from unittest.mock import Mock, patch
 class TestAtomicOrchestrator:
     """
     Test suite for atomic thread orchestrator.
-    Target: 98% coverage per ShadowTag-v2JR requirements.
+    Target: 98% coverage per AiYouJR requirements.
     """
 
     @pytest.mark.asyncio
@@ -630,8 +630,8 @@ class TestAtomicOrchestrator:
             assert t001_result.result is not None
 
     @pytest.mark.asyncio
-    async def test_compliance_framework_risk_stratification(self):
-        """Verify Compliance Framework risk levels are correctly assigned."""
+    async def test_atp_5_19_risk_stratification(self):
+        """Verify ATP 5-19 risk levels are correctly assigned."""
 
         decomposer = JudgmentRuleDecomposer()
 
@@ -654,7 +654,7 @@ class TestAtomicOrchestrator:
             assert result.threads[0].risk_level == RiskLevel.RA_1
 
     def test_audit_trail_completeness(self):
-        """Verify all ShadowTag-v2JR-required fields in audit trail."""
+        """Verify all AiYouJR-required fields in audit trail."""
 
         thread = AtomicThread(
             thread_id="T001",
@@ -700,7 +700,7 @@ os.environ["GOOGLE_API_KEY"] = "your-api-key-here"
 result = await main()
 ```
 
-This implementation gives you production-grade AoT reasoning with full ShadowTag-v2JR compliance, Compliance Framework risk isolation, and audit trails. Ready to integrate into your JR/Cor/NS stack.“
+This implementation gives you production-grade AoT reasoning with full AiYouJR compliance, ATP 5-19 risk isolation, and audit trails. Ready to integrate into your JR/Cor/NS stack.“
 
 “# Voice-Enabled Atomic Orchestrator for Mac/PC
 
@@ -1247,12 +1247,12 @@ pipwin install pyaudio
 
 ## Integration with Your pnkln stack
 
-Add ShadowTag-v2JR enforcement to voice input:
+Add AiYouJR enforcement to voice input:
 
 ```python
 def validate_voice_query(transcript: str) -> bool:
     """
-    ShadowTag-v2JR: Validate voice input before processing.
+    AiYouJR: Validate voice input before processing.
     Brakes: No PII, no unstructured rambling, must be actionable.
     """
 
@@ -1370,7 +1370,7 @@ First run will download ~150MB Whisper model. This is a **one-time delay of 30-6
 
 ---
 
-## Compliance Framework Failure Modes to Watch For
+## ATP 5-19 Failure Modes to Watch For
 
 **RA-2 (Low Risk) - Expected Issues:**
 

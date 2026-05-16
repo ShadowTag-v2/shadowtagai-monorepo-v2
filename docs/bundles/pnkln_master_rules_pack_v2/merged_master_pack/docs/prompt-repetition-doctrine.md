@@ -19,7 +19,6 @@ For non-reasoning tasks, prefer:
 ## When to use it
 
 Use repetition by default for:
-
 - extraction
 - classification
 - grounded retrieval QA without chain-of-thought prompting
@@ -31,7 +30,6 @@ Use repetition by default for:
 ## When not to use it blindly
 
 Avoid blind repetition when:
-
 - the model is already in explicit reasoning / thinking mode
 - the prompt is near the context window limit
 - the request is extremely long and prefill cost matters

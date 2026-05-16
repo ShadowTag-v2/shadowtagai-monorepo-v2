@@ -1,11 +1,10 @@
-# Judge 6 HITL System - Compliance Documentation
+# Judge #6 HITL System - Compliance Documentation
 
 **EU AI Act + California SB 53 Compliance**
 
 ## Executive Summary
 
-Judge 6 HITL System is designed to meet regulatory requirements for high-stakes AI decision-making systems under:
-
+Judge #6 HITL System is designed to meet regulatory requirements for high-stakes AI decision-making systems under:
 - **EU AI Act** (Regulation (EU) 2024/1689)
 - **California SB 53** (AI Transparency Requirements)
 
@@ -17,10 +16,9 @@ Judge 6 HITL System is designed to meet regulatory requirements for high-stakes 
 
 ### System Classification
 
-**Judge 6 Risk Classification**: **HIGH-RISK AI SYSTEM** (Article 6)
+**Judge #6 Risk Classification**: **HIGH-RISK AI SYSTEM** (Article 6)
 
 **Rationale**:
-
 - Makes decisions with significant legal/financial impact
 - Used in employment/credit decisions (indirectly via financial approvals)
 - Processes biometric data (FraudJudge identity verification)
@@ -31,7 +29,7 @@ Judge 6 HITL System is designed to meet regulatory requirements for high-stakes 
 ✅ **Implemented**:
 
 1. **Risk Identification** (Article 9.2.a):
-   - Compliance Framework risk matrix (Probability × Severity → Risk Level)
+   - ATP 5-19 risk matrix (Probability × Severity → Risk Level)
    - Systematic risk factor extraction per vertical
    - Documented in `src/risk_matrix/__init__.py`
 
@@ -58,7 +56,7 @@ Judge 6 HITL System is designed to meet regulatory requirements for high-stakes 
 ✅ **Implemented**:
 
 1. **Training Data Quality** (Article 10.3):
-   - Risk assessment based on documented Compliance Framework standards
+   - Risk assessment based on documented ATP 5-19 standards
    - No ML training on user data (rules-based + external fraud ML)
    - Audit trail validation prevents data drift
 
@@ -87,7 +85,7 @@ Judge 6 HITL System is designed to meet regulatory requirements for high-stakes 
 
 3. **Architecture**:
    - Multi-vertical judge system (Fin, Case, Law, Fraud)
-   - Compliance Framework risk assessment integration
+   - ATP 5-19 risk assessment integration
    - Semantic compression for audit trails (10:1 ratio)
 
 4. **Risk Management Measures**:
@@ -132,7 +130,7 @@ Judge 6 HITL System is designed to meet regulatory requirements for high-stakes 
 ✅ **Implemented**:
 
 1. **User Information** (Article 13.1):
-   - System clearly identified as "Judge 6 HITL System"
+   - System clearly identified as "Judge #6 HITL System"
    - Decision reasoning provided in `JudgeResponse.reasoning`
    - Next steps clearly communicated
 
@@ -211,7 +209,6 @@ Judge 6 HITL System is designed to meet regulatory requirements for high-stakes 
 2. **Model Cards** (per vertical):
 
 **FinJudge Model Card**:
-
 ```yaml
 Model Type: Rules-based decision system
 Purpose: Financial transaction risk assessment
@@ -230,7 +227,6 @@ Ethical Considerations:
 ```
 
 **LawJudge Model Card**:
-
 ```yaml
 Model Type: Compliance rules engine
 Purpose: Legal/regulatory compliance validation
@@ -257,7 +253,7 @@ Ethical Considerations:
      - System uptime
 
 4. **Training Data Description**:
-   - Compliance Framework risk matrix (public military standard)
+   - ATP 5-19 risk matrix (public military standard)
    - Financial thresholds (industry standard)
    - Regulatory requirements (public laws)
    - No proprietary training data
@@ -331,7 +327,6 @@ Ethical Considerations:
 **Objective**: Validate p99 latency ≤90ms
 
 **Method**:
-
 ```python
 import time
 from src.judges import JudgeFactory, JudgeRequest, JudgeType
@@ -359,7 +354,6 @@ validate_latency()
 ```
 
 **Acceptance Criteria**:
-
 - p50: ≤40ms
 - p99: ≤90ms ✅
 - p100 (max): <200ms
@@ -369,14 +363,12 @@ validate_latency()
 ### Decision Quality Metrics
 
 **Tracked Metrics**:
-
 1. **False Positive Rate**: Decisions BLOCKED that should have been ALLOWED
 2. **False Negative Rate**: Decisions ALLOWED that should have been BLOCKED
 3. **Human Override Rate**: % of BLOCK decisions overridden by humans
 4. **Audit Success Rate**: % of decisions surviving compliance audit
 
 **Target**:
-
 - False Positive Rate: <5%
 - False Negative Rate: <1% (conservative BLOCK preference)
 - Human Override Rate: <10%
@@ -408,13 +400,11 @@ validate_latency()
 ### EU AI Act Non-Compliance Penalties
 
 **Fine Structure** (Article 99):
-
 - **Prohibited AI practices**: €35M or 7% global revenue
 - **High-risk system violations**: €15M or 3% global revenue
 - **Incorrect information to authorities**: €7.5M or 1.5% global revenue
 
 **Our Risk Mitigation**:
-
 - ✅ No prohibited practices (no social scoring, etc.)
 - ✅ High-risk system compliance measures implemented
 - ✅ Transparent documentation and logging
@@ -424,13 +414,11 @@ validate_latency()
 ### California SB 53 Penalties
 
 **Penalties**:
-
 - Civil penalties for non-disclosure
 - Injunctive relief (system shutdown)
 - Reputational damage
 
 **Our Risk Mitigation**:
-
 - ✅ Model cards prepared
 - ✅ Performance metrics public
 - ✅ Transparency documentation complete
@@ -453,7 +441,6 @@ validate_latency()
 ### Audit Query Examples
 
 **Retrieve all high-risk decisions (last 30 days)**:
-
 ```sql
 SELECT * FROM audit_trails
 WHERE risk_level = 'extremely_high'
@@ -462,7 +449,6 @@ ORDER BY timestamp DESC;
 ```
 
 **Calculate decision distribution**:
-
 ```sql
 SELECT decision, COUNT(*) as count,
        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () as percentage
@@ -471,7 +457,6 @@ GROUP BY decision;
 ```
 
 **Identify high-override decisions**:
-
 ```sql
 SELECT request_id, decision, semantic_summary
 FROM audit_trails
@@ -484,12 +469,12 @@ WHERE approval_chain IS NOT NULL
 
 ## Conclusion
 
-Judge 6 HITL System is **designed for compliance** with EU AI Act and California SB 53 requirements. Key strengths:
+Judge #6 HITL System is **designed for compliance** with EU AI Act and California SB 53 requirements. Key strengths:
 
 ✅ **Transparency**: Full documentation, model cards, public metrics
 ✅ **Human Oversight**: HITL gates for all high-risk decisions
 ✅ **Audit Trails**: Immutable 7-year retention with semantic compression
-✅ **Risk Management**: Compliance Framework systematic risk assessment
+✅ **Risk Management**: ATP 5-19 systematic risk assessment
 ✅ **Performance**: Sub-90ms latency, validated quality metrics
 
 **Next Steps**: External legal audit + EU AI Act database registration before production deployment.

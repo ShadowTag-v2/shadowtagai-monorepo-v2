@@ -26,13 +26,13 @@ Usage::
 """
 
 from packages.terminal_notifier.notifier import (
-    NotificationChannel,
-    detect_terminal,
-    send_notification,
+  NotificationChannel,
+  detect_terminal,
+  send_notification,
 )
 
 __all__ = [
-    "NotificationChannel",
-    "detect_terminal",
-    "send_notification",
+  "NotificationChannel",
+  "detect_terminal",
+  "send_notification",
 ]

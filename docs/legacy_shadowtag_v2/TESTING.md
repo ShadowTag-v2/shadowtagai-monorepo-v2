@@ -3,7 +3,6 @@
 ## Code Validation
 
 All Python files have been validated for syntax correctness:
-
 - ✓ src/main.py
 - ✓ src/agents/growth_engineer_agent.py
 - ✓ src/services/agent_service.py
@@ -35,19 +34,16 @@ python -m src.main
 ### 4. Test Endpoints
 
 #### Health Check
-
 ```bash
 curl http://localhost:8000/health
 ```
 
 #### List Agents
-
 ```bash
 curl http://localhost:8000/api/v1/agents/
 ```
 
 #### Execute Growth Engineer
-
 ```bash
 curl -X POST "http://localhost:8000/api/v1/agents/growth_engineer/execute" \
   -H "Content-Type: application/json" \
@@ -58,7 +54,6 @@ curl -X POST "http://localhost:8000/api/v1/agents/growth_engineer/execute" \
 ```
 
 #### Analyze Metrics
-
 ```bash
 curl -X POST "http://localhost:8000/api/v1/growth/analyze" \
   -H "Content-Type: application/json" \
@@ -77,7 +72,6 @@ docker-compose up
 ```
 
 Then access:
-
 - API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
 - pgAdmin: http://localhost:5050
@@ -151,29 +145,23 @@ gcloud logging read "resource.type=cloud_run_revision" --limit 50
 ## Common Test Scenarios
 
 ### 1. Growth Metrics Analysis
-
 Test analyzing user growth metrics with AARRR framework
 
 ### 2. A/B Test Design
-
 Test creating statistically valid A/B tests
 
 ### 3. Viral Loop Analysis
-
 Test calculating viral coefficients and projections
 
 ### 4. Retention Analysis
-
 Test cohort retention analysis
 
 ### 5. Funnel Optimization
-
 Test conversion funnel analysis
 
 ## Expected Results
 
 All tests should:
-
 - Return 200 OK status
 - Include execution_id in response
 - Store results in database
@@ -182,26 +170,22 @@ All tests should:
 ## Troubleshooting Tests
 
 ### Import Errors
-
 ```bash
-export PYTHONPATH="${PYTHONPATH}:/home/user/ShadowTag-v2-fastapi-services"
+export PYTHONPATH="${PYTHONPATH}:/home/user/aiyou-fastapi-services"
 ```
 
 ### Database Errors
-
 ```bash
 # Reset database
 python -c "from src.database import reset_db; reset_db()"
 ```
 
 ### API Key Errors
-
 Ensure ANTHROPIC_API_KEY or Vertex AI credentials are set
 
 ## Next Steps
 
 After successful testing:
-
 1. Run full test suite
 2. Check code coverage (aim for >80%)
 3. Performance test under load

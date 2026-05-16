@@ -1,29 +1,50 @@
 {
-  "version": "2.0.0",
+  "version": "2.0",
   "tasks": [
     {
-      "label": "agent:use:grok-fast",
-      "type": "shell",
-      "command": "export LLM_PROVIDER=grok-fast && echo 'Switched to Grok-Fast defaults'",
-      "problemMatcher": []
+      "name": "router_start",
+      "command": "cd router && npm run dev",
+      "description": "Start multi-model router (:8787)"
     },
     {
-      "label": "agent:bulk-sweep",
-      "type": "shell",
-      "command": "python3 scripts/finish_changes.py --bulk",
-      "problemMatcher": []
+      "name": "ace_triple_pass",
+      "command": "cd tools/orchestrator && npm run triple:pass",
+      "description": "Run ACE-inspired opposing-chain workflow"
     },
     {
-      "label": "agent:validate",
-      "type": "shell",
-      "command": "npm run lint && cargo check",
-      "problemMatcher": []
+      "name": "ingest_moondream",
+      "command": "python -m ingestion.moondream_ingest",
+      "description": "Run Moondream vision ingestion"
     },
     {
-      "label": "slurm_github:handshake",
-      "type": "shell",
-      "command": "gh auth status && echo 'Handshake Complete.'",
-      "problemMatcher": []
+      "name": "computer_use_agent",
+      "command": "python -m computer_use.agent",
+      "description": "Run Gemini Computer-Use agent"
+    },
+    {
+      "name": "safety_verify",
+      "command": "python - <<'EOF'\nimport yaml, json, sys\nwith open('safety/risk_register.yaml') as f: yaml.safe_load(f)\nwith open('safety/monitoring/slos.json') as f: json.load(f)\nprint('✅ Safety framework valid')\nEOF",
+      "description": "Validate safety framework files"
+    },
+    {
+      "name": "test_python",
+      "command": "pytest -v --tb=short",
+      "description": "Run Python tests"
+    },
+    {
+      "name": "test_node",
+      "command": "npm test",
+      "description": "Run Node.js tests"
+    },
+    {
+      "name": "lint_python",
+      "command": "ruff check . --fix",
+      "description": "Lint and fix Python code with Ruff"
+    },
+    {
+      "name": "format_python",
+      "command": "ruff format .",
+      "description": "Format Python code with Ruff"
     }
   ]
 }

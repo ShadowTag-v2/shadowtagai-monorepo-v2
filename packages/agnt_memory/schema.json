@@ -1,0 +1,23 @@
+{
+  "name": "retain_epistemic_atom",
+  "description": "Saves operational knowledge into the memory store using the Memory Kernel 'Atom' schema (Markdown + YAML frontmatter).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "atom_type": {
+        "type": "string",
+        "enum": ["fact", "decision", "constraint", "belief", "conflict", "open_question"]
+      },
+      "confidence": {
+        "type": "number",
+        "description": "1.0 for hard constraints, 0.6 or lower for temporary hypotheses."
+      },
+      "ttl_days": {
+        "type": "integer",
+        "description": "0 for permanent facts, 30 for decaying beliefs."
+      },
+      "content": { "type": "string" }
+    },
+    "required": ["atom_type", "confidence", "ttl_days", "content"]
+  }
+}

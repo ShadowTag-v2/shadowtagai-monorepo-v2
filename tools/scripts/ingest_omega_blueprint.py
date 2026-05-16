@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import sqlite3
 import json
 import logging
@@ -77,7 +76,7 @@ class LocalVectorIngester:
 
                 chunk_id = f"chunk_{i}"
                 s_hash = hashlib.md5(chunk.encode()).hexdigest()
-                self.mock_embed(chunk)
+                vector = self.mock_embed(chunk)
 
                 cursor.execute(
                     "INSERT OR REPLACE INTO local_intelligence_feed (id, source_file, chunk_text, semantic_hash, metadata) VALUES (?, ?, ?, ?, ?)",

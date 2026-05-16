@@ -21,7 +21,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 **Price**: $0/month
 
 **Includes**:
-
 - ✅ 10 Gemini function calls/month
 - ✅ 5 kernel chain decisions/month
 - ✅ Open-source ESLint + Cursor rules
@@ -30,7 +29,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 - ✅ Public GitHub examples
 
 **Limits**:
-
 - ❌ No SLA guarantee
 - ❌ No memory persistence
 - ❌ No DTE evolution
@@ -47,7 +45,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 **Price**: $399/month
 
 **Everything in Free, plus**:
-
 - ✅ **Unlimited** Gemini function calls
 - ✅ **Unlimited** kernel chain decisions
 - ✅ **LLM Memory Persistence** (18,000% ROI)
@@ -61,12 +58,11 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
   - Cursor rules + ESLint hybrid
   - Pre-commit hooks
   - Monthly quality reports
-- ✅ **Judge 6 Validation** (JR Engine)
+- ✅ **Judge #6 Validation** (JR Engine)
 - ✅ **ShadowTag Watermarking** (cryptographic audit)
 - ✅ **Priority Support** (48-hour response)
 
 **Performance Targets**:
-
 - p99 latency: ≤90ms
 - Cost/decision: $0.0003
 - Token reduction: 98.5%
@@ -82,7 +78,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 **Price**: $999/month (up to 25 seats)
 
 **Everything in Individual, plus**:
-
 - ✅ **Team Dashboards**
   - Shared memory across team members
   - Collaborative code quality metrics
@@ -108,7 +103,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 - ✅ **Priority Support** (24-hour response)
 
 **Performance Targets**:
-
 - p99 latency: ≤75ms (tighter SLA)
 - Custom confidence thresholds
 - Team-wide memory sync
@@ -124,7 +118,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 **Price**: $5,000/month (unlimited seats)
 
 **Everything in Team, plus**:
-
 - ✅ **Unlimited Everything**
   - No rate limits
   - No usage caps
@@ -159,7 +152,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
   - Ongoing workshops
 
 **Performance Targets**:
-
 - p99 latency: ≤50ms (premium SLA)
 - 99.9% uptime guarantee
 - Sub-second failover
@@ -175,7 +167,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 ### High-Volume Kernel Chain
 
 **For Individual/Team tiers exceeding fair use**:
-
 - $0.0003 per decision (above 10M/month)
 - Billed monthly
 - No commitment required
@@ -183,21 +174,18 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 ### Premium Models
 
 **Access to higher-tier Gemini models**:
-
 - Gemini 1.5 Pro: +$0.0002 per call
 - Gemini 2.0 Ultra (when available): +$0.0005 per call
 
 ### Additional Storage
 
 **For memory persistence**:
-
 - $10/month per 10GB
 - Default: 1GB included
 
 ### Custom Benchmarking
 
 **DTE evolution on proprietary benchmarks**:
-
 - $500 per benchmark suite
 - Includes 10 evolution runs
 - Custom test case development
@@ -209,7 +197,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 ### Startup Program
 
 **For YC/TechStars/500 Startups companies**:
-
 - 50% off first 6 months (Individual or Team tier)
 - Free enterprise trial (3 months)
 - Dedicated startup advisor
@@ -219,7 +206,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 ### Academic Pricing
 
 **For .edu email addresses**:
-
 - Individual tier: $99/month (75% off)
 - Team tier: $299/month (70% off)
 - Free for course assignments (up to 50 students)
@@ -229,7 +215,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 ### Non-Profit Discount
 
 **For registered 501(c)(3) organizations**:
-
 - 40% off all tiers
 - Free setup and training
 
@@ -238,7 +223,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 ### Annual Prepay Discount
 
 **Save 20% with annual commitment**:
-
 - Individual: $3,830/year (vs $4,788)
 - Team: $9,590/year (vs $11,988)
 - Enterprise: $48,000/year (vs $60,000)
@@ -249,39 +233,39 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 
 ### vs AutoGen Multi-Agent
 
-| Feature                | AutoGen     | **Pinkln Individual** |
-| ---------------------- | ----------- | --------------------- |
-| **Monthly Cost**       | $300 (est.) | **$399**              |
-| **Latency (p99)**      | 1100ms      | **35ms**              |
-| **Cost/Task**          | $0.01       | **$0.0003**           |
-| **Self-Evolution**     | ❌          | **✅ +3.7%**          |
-| **SLA Guarantee**      | ❌          | **✅ <90ms**          |
-| **Crypto Audit**       | ❌          | **✅ ShadowTag**      |
-| **Memory Persistence** | ❌          | **✅ 18,000% ROI**    |
+| Feature | AutoGen | **Pinkln Individual** |
+|---------|---------|----------------------|
+| **Monthly Cost** | $300 (est.) | **$399** |
+| **Latency (p99)** | 1100ms | **35ms** |
+| **Cost/Task** | $0.01 | **$0.0003** |
+| **Self-Evolution** | ❌ | **✅ +3.7%** |
+| **SLA Guarantee** | ❌ | **✅ <90ms** |
+| **Crypto Audit** | ❌ | **✅ ShadowTag** |
+| **Memory Persistence** | ❌ | **✅ 18,000% ROI** |
 
 **Verdict**: Pinkln is 31× faster, 97% cheaper per task, with self-evolution AutoGen lacks.
 
 ### vs LangChain
 
-| Feature                  | LangChain   | **Pinkln Individual** |
-| ------------------------ | ----------- | --------------------- |
-| **Monthly Cost**         | $250 (est.) | **$399**              |
-| **Latency (p99)**        | 600ms       | **35ms**              |
-| **Architecture**         | Sequential  | **Parallel + Local**  |
-| **Performance Tracking** | ❌          | **✅ Glicko-2**       |
-| **Code Quality**         | ❌          | **✅ ESLint hybrid**  |
+| Feature | LangChain | **Pinkln Individual** |
+|---------|-----------|----------------------|
+| **Monthly Cost** | $250 (est.) | **$399** |
+| **Latency (p99)** | 600ms | **35ms** |
+| **Architecture** | Sequential | **Parallel + Local** |
+| **Performance Tracking** | ❌ | **✅ Glicko-2** |
+| **Code Quality** | ❌ | **✅ ESLint hybrid** |
 
 **Verdict**: 17× faster, with performance tracking and code quality built-in.
 
 ### vs CrewAI
 
-| Feature              | CrewAI      | **Pinkln Individual** |
-| -------------------- | ----------- | --------------------- |
-| **Monthly Cost**     | $350 (est.) | **$399**              |
-| **Latency (p99)**    | 800ms       | **35ms**              |
-| **Multi-Agent**      | ✅ (slow)   | **✅ (31× faster)**   |
-| **Glicko-2 Ratings** | ❌          | **✅**                |
-| **SLA Monitoring**   | ❌          | **✅**                |
+| Feature | CrewAI | **Pinkln Individual** |
+|---------|--------|----------------------|
+| **Monthly Cost** | $350 (est.) | **$399** |
+| **Latency (p99)** | 800ms | **35ms** |
+| **Multi-Agent** | ✅ (slow) | **✅ (31× faster)** |
+| **Glicko-2 Ratings** | ❌ | **✅** |
+| **SLA Monitoring** | ❌ | **✅** |
 
 **Verdict**: 23× faster multi-agent with Glicko-2 ratings.
 
@@ -293,7 +277,6 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 
 **Monthly Investment**: $399
 **Time Saved**: 2.7 hours/week
-
 - Memory loading: 5 sessions × 5 min = 25 min
 - Architecture lookup: 10 lookups × 10 min = 100 min
 - JR validation: 3 decisions × 13 min = 39 min
@@ -319,10 +302,9 @@ Complete pricing guide for the Pinkln Developer Intelligence Platform.
 **Payback Period**: 0.7 days (17 hours!)
 
 **Additional Enterprise Benefits**:
-
 - Reduced AWS/GCP costs (31× faster → less compute)
 - Lower headcount needs (67% faster code reviews)
-- Fewer production incidents (Judge 6 validation)
+- Fewer production incidents (Judge #6 validation)
 
 ---
 
@@ -345,7 +327,6 @@ python src/examples/basic_function_calling.py
 ### 2. Upgrade to Individual
 
 **Self-Serve Signup**: https://pnkln.ai/signup
-
 - Instant activation
 - Pay monthly or annually
 - Cancel anytime
@@ -353,7 +334,6 @@ python src/examples/basic_function_calling.py
 ### 3. Team/Enterprise
 
 **Schedule Demo**: https://cal.com/pnkln/platform-demo
-
 - 30-minute product overview
 - Custom ROI calculation
 - Pilot program discussion
@@ -408,7 +388,6 @@ python src/examples/basic_function_calling.py
 ## 🔐 Security & Compliance
 
 All tiers include:
-
 - ✅ TLS 1.3 encryption in transit
 - ✅ AES-256 encryption at rest
 - ✅ Ed25519 cryptographic signatures (ShadowTag)

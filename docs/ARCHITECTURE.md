@@ -1,10 +1,10 @@
 # System Architecture
 
-Complete technical architecture documentation for the shadowtagai orchestrator system.
+Complete technical architecture documentation for the pnkln orchestrator system.
 
 ## Overview
 
-The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration platform that combines multiple AI models (Claude via Vertex AI, Gemini, GPT) to deliver intelligent, revenue-optimized solutions.
+The pnkln orchestrator is a production-grade, GKE-native AI orchestration platform that combines multiple AI models (Claude via Vertex AI, Gemini, GPT) to deliver intelligent, revenue-optimized solutions.
 
 ## Architecture Diagram
 
@@ -34,7 +34,7 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
                                 │
                                 ▼
 ┌────────────────────────────────────────────────────────────────────────┐
-│              KUBERNETES DEPLOYMENT (shadowtagai-orchestrator)                 │
+│              KUBERNETES DEPLOYMENT (pnkln-orchestrator)                 │
 │              ┌──────────────────────────────────────────┐              │
 │              │          POD (3-50 replicas)             │              │
 │              │  ┌────────────────────────────────────┐  │              │
@@ -45,7 +45,7 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
 │              │  │  └─ /metrics (Prometheus)          │  │              │
 │              │  └────────────────────────────────────┘  │              │
 │              │  ┌────────────────────────────────────┐  │              │
-│              │  │  ShadowTagAi Core                        │  │              │
+│              │  │  Pnkln Core                        │  │              │
 │              │  │  ├─ IntentClassifier               │  │              │
 │              │  │  ├─ VertexOrchestrator             │  │              │
 │              │  │  └─ WealthEngine                   │  │              │
@@ -70,7 +70,6 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
 ### 1. Frontend Layer
 
 #### Global HTTPS Load Balancer
-
 - **Purpose**: Single global entry point with SSL termination
 - **Features**:
   - Managed SSL certificates (auto-renewal)
@@ -82,7 +81,6 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
 ### 2. Kubernetes Layer
 
 #### GKE Cluster
-
 - **Type**: Regional cluster with Workload Identity
 - **Configuration**:
   - Private cluster (private nodes, public endpoint)
@@ -102,7 +100,6 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
      - Auto-scaling: 1-5 nodes
 
 #### Deployment
-
 - **Replicas**: 3 minimum, 50 maximum (HPA controlled)
 - **Strategy**: RollingUpdate (maxSurge: 1, maxUnavailable: 0)
 - **Resources**:
@@ -114,7 +111,6 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
   - Startup: /health (max 5 minutes)
 
 #### Horizontal Pod Autoscaler (HPA)
-
 - **Metrics**:
   - CPU: Scale at 70% utilization
   - Memory: Scale at 80% utilization
@@ -127,7 +123,6 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
 ### 3. Application Layer
 
 #### Express.js Server
-
 - **Framework**: Express 4.x
 - **Middleware**:
   - Helmet (security headers)
@@ -143,19 +138,16 @@ The shadowtagai orchestrator is a production-grade, GKE-native AI orchestration 
 
 #### Core Modules
 
-##### 1. ShadowTagAi (Main Orchestrator)
-
-**File**: `src/core/shadowtagai.ts`
+##### 1. Pnkln (Main Orchestrator)
+**File**: `src/core/pnkln.ts`
 
 **Responsibilities**:
-
 - Coordinate all subsystems
 - Handle user requests end-to-end
 - Format responses
 - Error handling
 
 **Flow**:
-
 ```
 User Request
     ↓
@@ -171,32 +163,27 @@ Return to User
 ```
 
 ##### 2. Intent Classifier
-
 **File**: `src/core/intent-classifier.ts`
 
 **Purpose**: Determine which mode to use (THINK/BUILD/SCALE)
 
 **Algorithm**:
-
 1. Call Claude via Vertex AI with classification prompt
 2. Parse JSON response
 3. Fallback to heuristic if parsing fails
 4. Return: mode + confidence + reasoning
 
 **Modes**:
-
 - **THINK**: Strategic reasoning, analysis, recommendations
 - **BUILD**: Implementation, code generation, deployment
 - **SCALE**: Growth optimization, resource scaling
 
 ##### 3. Vertex Orchestrator
-
 **File**: `src/core/vertex-orchestrator.ts`
 
 **Purpose**: Interface with Claude via Vertex AI
 
 **Features**:
-
 - Workload Identity authentication (no keys!)
 - Automatic retry logic
 - Token usage tracking
@@ -207,13 +194,11 @@ Return to User
 **Max Tokens**: 20,000
 
 ##### 4. Wealth Engine
-
 **File**: `src/core/wealth-engine.ts`
 
 **Purpose**: Revenue optimization for every operation
 
 **Process**:
-
 ```
 BEFORE:
 - Scan for revenue opportunities
@@ -231,31 +216,26 @@ AFTER:
 ```
 
 **Business Rules**:
-
 - LTV:CAC ≥ 4:1
 - ROI ≥ 3× in 18 months
 - Confidence ≥ 70%
 
 ##### 5. Metrics System
-
 **File**: `src/utils/metrics.ts`
 
 **Prometheus Metrics**:
-
-- `shadowtagai_requests_total`: Counter (by mode, status)
-- `shadowtagai_request_duration_seconds`: Histogram (p50, p95, p99)
-- `shadowtagai_vertex_calls_total`: Counter (API calls)
-- `shadowtagai_vertex_tokens_total`: Counter (token usage)
-- `shadowtagai_revenue_dollars`: Gauge (cumulative revenue)
-- `shadowtagai_cost_dollars`: Gauge (cumulative cost)
-- `shadowtagai_profit_dollars`: Gauge (net profit)
+- `pnkln_requests_total`: Counter (by mode, status)
+- `pnkln_request_duration_seconds`: Histogram (p50, p95, p99)
+- `pnkln_vertex_calls_total`: Counter (API calls)
+- `pnkln_vertex_tokens_total`: Counter (token usage)
+- `pnkln_revenue_dollars`: Gauge (cumulative revenue)
+- `pnkln_cost_dollars`: Gauge (cumulative cost)
+- `pnkln_profit_dollars`: Gauge (net profit)
 
 ##### 6. Logging System
-
 **File**: `src/utils/logger.ts`
 
 **Features**:
-
 - Structured JSON logging
 - Winston library
 - GCP Cloud Logging integration
@@ -265,7 +245,6 @@ AFTER:
 ### 4. External Services
 
 #### Vertex AI (Claude)
-
 - **Authentication**: Workload Identity
 - **Region**: us-central1 (configurable)
 - **Model**: Claude Opus 4.1
@@ -278,20 +257,17 @@ AFTER:
 #### GCP Services
 
 ##### Secret Manager
-
 - **Purpose**: Secure secret storage
 - **Secrets**:
   - `anthropic-vertex-project-id`: Vertex AI project ID
 - **Access**: Via Workload Identity (no keys)
 
 ##### Cloud Monitoring
-
 - **Metrics**: Prometheus metrics via Managed Prometheus
 - **Dashboards**: Custom dashboard with 6+ charts
 - **Uptime Checks**: HTTP health endpoint monitoring
 
 ##### Cloud Logging
-
 - **Logs**:
   - Application logs (Winston)
   - Kubernetes logs (stdout/stderr)
@@ -300,9 +276,8 @@ AFTER:
 - **Sinks**: Optional long-term storage in GCS
 
 ##### Artifact Registry
-
 - **Purpose**: Container image storage
-- **Repository**: `us-central1-docker.pkg.dev/PROJECT_ID/shadowtagai`
+- **Repository**: `us-central1-docker.pkg.dev/PROJECT_ID/pnkln`
 - **Cleanup Policies**:
   - Keep 10 recent versions
   - Delete untagged images after 30 days
@@ -310,7 +285,6 @@ AFTER:
 ### 5. Security Architecture
 
 #### Network Security
-
 ```
 Internet
     ↓
@@ -326,7 +300,6 @@ Internet
 ```
 
 #### Pod Security
-
 - **Service Account**: Custom SA with minimal permissions
 - **Workload Identity**: No service account keys
 - **Security Context**:
@@ -336,7 +309,6 @@ Internet
   - Dropped all capabilities
 
 #### Network Policies
-
 - **Ingress**: Only from ingress controller
 - **Egress**: Only to:
   - DNS (port 53)
@@ -344,14 +316,12 @@ Internet
   - Vertex AI endpoints
 
 #### Binary Authorization
-
 - **Enabled**: All images must be signed/verified
 - **Policy**: Project-level enforcement
 
 ### 6. Observability
 
 #### Metrics Pipeline
-
 ```
 Application (Prometheus client)
     ↓
@@ -365,7 +335,6 @@ Custom Dashboards + Alerts
 ```
 
 #### Logging Pipeline
-
 ```
 Application (Winston)
     ↓
@@ -379,7 +348,6 @@ Cloud Logging
 ```
 
 #### Tracing Pipeline
-
 ```
 Application (Cloud Trace SDK)
     ↓
@@ -409,14 +377,12 @@ Deployment Complete
 ```
 
 **Environments**:
-
 - **Main branch**: Automatic deployment to production
 - **Pull requests**: Build + test only (no deployment)
 
 ### 8. Data Flow
 
 #### Request Flow
-
 ```
 1. User → Load Balancer → Ingress → Service → Pod
 2. Pod → IntentClassifier.classify() → Vertex AI
@@ -428,7 +394,6 @@ Deployment Complete
 ```
 
 #### Metrics Flow
-
 ```
 1. Application → Prometheus metrics (in-memory)
 2. GCP Managed Prometheus → Scrape /metrics (every 15s)
@@ -441,20 +406,17 @@ Deployment Complete
 ## Performance Characteristics
 
 ### Latency
-
 - **p50**: < 1 second
 - **p95**: < 3 seconds
 - **p99**: < 5 seconds
 
-_Depends on Vertex AI API latency_
+*Depends on Vertex AI API latency*
 
 ### Throughput
-
 - **Single pod**: ~10-20 requests/second
 - **Auto-scaled**: 100+ requests/second
 
 ### Availability
-
 - **Target SLA**: 99.9% (3 nines)
 - **Mechanisms**:
   - Multi-pod deployment (min 3 replicas)
@@ -463,7 +425,6 @@ _Depends on Vertex AI API latency_
   - Regional cluster (multi-zone)
 
 ### Cost Efficiency
-
 - **Spot VMs**: 60-90% cost reduction vs on-demand
 - **Auto-scaling**: Only pay for what you use
 - **Efficient caching**: Reduce redundant API calls
@@ -471,14 +432,12 @@ _Depends on Vertex AI API latency_
 ## Disaster Recovery
 
 ### Backup Strategy
-
 - **Infrastructure**: Terraform state in GCS
 - **Configuration**: Git repository
 - **Secrets**: Secret Manager (auto-replicated)
 - **Logs**: Cloud Logging (30-day retention + optional GCS sink)
 
 ### Recovery Procedures
-
 1. **Pod failure**: Automatic restart (Kubernetes)
 2. **Node failure**: Automatic rescheduling
 3. **Zone failure**: Multi-zone deployment handles
@@ -486,26 +445,22 @@ _Depends on Vertex AI API latency_
 5. **Complete disaster**: Rebuild from Terraform + Git
 
 ### RTO/RPO
-
 - **Recovery Time Objective (RTO)**: < 15 minutes
 - **Recovery Point Objective (RPO)**: < 5 minutes
 
 ## Scalability
 
 ### Horizontal Scaling
-
 - **Current**: 3-50 pods via HPA
 - **Future**: Can scale to 100s of pods
 - **Limitation**: Vertex AI quota
 
 ### Vertical Scaling
-
 - **Current**: 2 CPU / 4Gi RAM per pod
 - **Future**: Can increase to 8 CPU / 32Gi RAM
 - **Use Case**: Memory-intensive operations
 
 ### Geographic Scaling
-
 - **Current**: Single region (us-central1)
 - **Future**: Multi-region with global load balancing
 - **Regions**: us-east1, europe-west1, asia-east1
@@ -513,7 +468,6 @@ _Depends on Vertex AI API latency_
 ## Future Enhancements
 
 ### Planned
-
 1. **Multi-region deployment** for global availability
 2. **Request caching** for faster responses
 3. **Batch processing** for bulk operations
@@ -522,7 +476,6 @@ _Depends on Vertex AI API latency_
 6. **Custom model fine-tuning** for specialized tasks
 
 ### Under Consideration
-
 1. **Edge deployments** via Cloudflare Workers
 2. **Mobile SDK** for direct integration
 3. **A/B testing framework** for prompt optimization

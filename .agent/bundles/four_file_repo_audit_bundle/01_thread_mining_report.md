@@ -24,18 +24,18 @@ This is stated directly in `antigravity_handoff.txt`.
 
 ### Stale doctrine still exists in live-accessible repo content
 A surviving `GEMINI.md` still points at:
-- repository `ShadowTagAI-Omega`
-- root `/Users/pikeymickey/pnkln-stack/shadowtag-omega-v4/ShadowTagAI-Omega`
+- repository `ShadowTag-Omega`
+- root `/Users/pikeymickey/pnkln-stack/ShadowTag-v2/ShadowTag-Omega`
 - recursive agent model `gemini-2.5-pro`
 - deep research model `gemini-3-pro-interactions-exp`
 
 That is direct evidence of stale repo/root/model drift.
 
 ### Live code also contains stale model drift
-`apps/nascent-apollo/src/antigravity/autoresearch.py` still says:
+`apps/nascent-apollo/src/antigravity/flying_monkeys.py` still says:
 - “Migrated from v8 FULL to pure Gemini 1.5 Pro”
-- `MODEL_NAME = "gemini-3.1-flash-lite-preview"`
-- constructor default `model: str = "gemini-3.1-flash-lite-preview"`
+- `MODEL_NAME = "gemini-3.1-family"`
+- constructor default `model: str = "gemini-3.1-family"`
 
 So stale model drift is not only in docs; it is in code.
 
@@ -51,7 +51,7 @@ So stale model drift is not only in docs; it is in code.
    There are still references to old roots and old project ids like `shadowtag-omega-v2` in deployment code.
 
 4. **True naming rationalization**
-   The repo still mixes `ShadowTagAI`, `ShadowTagAI-Omega`, `pnkln`, `UphillSnowball`, `pnkln`, and product/lab/control-plane language in ways that increase ambiguity.
+   The repo still mixes `ShadowTag`, `ShadowTag-Omega`, `pnkln`, `UphillSnowball`, `pnkln`, and product/lab/control-plane language in ways that increase ambiguity.
 
 5. **Backups and recovered trees still pollute search space**
    Multiple `_PRE_OMEGA_BACKUP_*` trees are showing up in search results, and recovered docs are still close enough to live paths to confuse future passes.

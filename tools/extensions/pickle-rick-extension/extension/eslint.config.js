@@ -1,6 +1,6 @@
-import eslint from '@eslint/js';
-import prettierConfig from 'eslint-config-prettier';
-import tseslint from 'typescript-eslint';
+import eslint from "@eslint/js";
+import prettierConfig from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -8,18 +8,18 @@ export default tseslint.config(
   prettierConfig,
   {
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      'no-console': 'off',
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "no-console": "off",
     },
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.eslint.json',
+        project: "./tsconfig.eslint.json",
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   {
-    ignores: ['dist/**', 'node_modules/**', '*.js'],
+    ignores: ["dist/**", "node_modules/**", "*.js"],
   },
 );

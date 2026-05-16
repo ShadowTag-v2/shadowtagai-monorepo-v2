@@ -27,12 +27,11 @@ interface FeaturedItem {
 
 interface FeaturedCarouselProps {
   items: FeaturedItem[];
-  /** True when the user is signed in — gates the Cognitive Lock. */
   isAuthenticated?: boolean;
-  /** Called when an unauthenticated user tries to vote. */
   onAuthRequired?: () => void;
-  /** Forensic Elo rating to display in the HUD. */
   eloRating?: number;
+  heroLocked?: boolean;
+  onUnlockScroll?: () => void;
 }
 
 /**
@@ -57,29 +56,30 @@ export function FeaturedCarousel({
   isAuthenticated = false,
   onAuthRequired,
   eloRating,
+  heroLocked = false,
+  onUnlockScroll,
 }: FeaturedCarouselProps) {
   const outerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0); // 0–1 across ALL cards
   const [scrollDrivenIdx, setScrollDrivenIdx] = useState(0); // index from scroll position
 
   /* ── Turing Feed state machine ── */
-  const { autoScroll, revealState, setAutoScroll, handleVote, goToIndex } =
-    useTuringFeed({
-      count: items.length,
-      isAuthenticated,
-      onAuthRequired: onAuthRequired ?? (() => {}),
-      onVoteAccepted: (index, choice) => {
-        // Delegate to the item's own vote handler
-        items[index]?.onVote(choice);
-      },
-      onAdvance: (nextIdx) => {
-        // Programmatically scroll the outer container to the next card
-        const outer = outerRef.current;
-        if (!outer) return;
-        const outerTop = outer.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: outerTop + nextIdx * SCROLL_PER_CARD, behavior: 'smooth' });
-      },
-    });
+  const { autoScroll, revealState, setAutoScroll, handleVote, goToIndex } = useTuringFeed({
+    count: items.length,
+    isAuthenticated,
+    onAuthRequired: onAuthRequired ?? (() => {}),
+    onVoteAccepted: (index, choice) => {
+      // Delegate to the item's own vote handler
+      items[index]?.onVote(choice);
+    },
+    onAdvance: (nextIdx) => {
+      // Programmatically scroll the outer container to the next card
+      const outer = outerRef.current;
+      if (!outer) return;
+      const outerTop = outer.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: outerTop + nextIdx * SCROLL_PER_CARD, behavior: 'smooth' });
+    },
+  });
 
   /* ── Scroll listener — keeps scrollDrivenIdx in sync ── */
   useEffect(() => {
@@ -132,17 +132,19 @@ export function FeaturedCarousel({
     <section
       ref={outerRef}
       aria-label="Featured Videos Carousel"
-      style={{ height: `${SCROLL_PER_CARD * items.length + HEADER_H + 100}px` }}
+      style={{
+        height: heroLocked ? '100vh' : `${SCROLL_PER_CARD * items.length + HEADER_H + 100}px`,
+      }}
     >
-      {/* Inner sticky panel */}
+      {/* Inner sticky panel — fullscreen when heroLocked */}
       <div
         className="sticky w-full overflow-hidden"
         style={{
-          top: HEADER_H,
-          height: `calc(100vh - ${HEADER_H}px)`,
-          background: 'linear-gradient(160deg,#F8F7FF 0%,#F0EDFF 50%,#EAF4FF 100%)',
-          borderBottom: '1px solid #E5E0FF',
-          zIndex: 10,
+          top: heroLocked ? 0 : HEADER_H,
+          height: heroLocked ? '100vh' : `calc(100vh - ${HEADER_H}px)`,
+          background: 'linear-gradient(160deg,#0A1A2F 0%,#0C2D48 40%,#0E3A5A 100%)',
+          borderBottom: '1px solid #0A1A2F',
+          zIndex: heroLocked ? 60 : 10,
         }}
       >
         {/* ── Elo HUD + AutoScroll Toggle (top-right overlay) ── */}
@@ -152,33 +154,34 @@ export function FeaturedCarousel({
             <div
               className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold"
               style={{
-                background: 'linear-gradient(90deg,#7C3AED,#0891B2)',
-                color: 'white',
-                boxShadow: '0 2px 10px rgba(124,58,237,0.3)',
+                background: 'linear-gradient(90deg,#0891B2,#06B6D4)',
+                color: '#E8F7FA',
+                boxShadow: '0 2px 10px rgba(8,145,178,0.3)',
               }}
             >
               ⚡ Elo {eloRating.toLocaleString()}
             </div>
           )}
 
-          {/* Auto-Scroll toggle */}
-          <button
-            type="button"
-            aria-label={`Auto-Scroll: ${autoScroll ? 'ON' : 'OFF'}`}
-            aria-pressed={autoScroll}
-            data-testid="autoscroll-toggle"
-            onClick={() => setAutoScroll(!autoScroll)}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold transition-all duration-200 hover:scale-105"
-            style={{
-              background: autoScroll ? '#0E7490' : 'white',
-              border: `1px solid ${autoScroll ? '#0E7490' : '#D1D5DB'}`,
-              color: autoScroll ? 'white' : '#4B5563',
-              boxShadow: '0 1px 6px rgba(0,0,0,0.08)',
-            }}
-          >
-            <span style={{ fontSize: 14 }}>{autoScroll ? '⚡' : '✋'}</span>
-            Auto-Scroll: {autoScroll ? 'ON' : 'OFF'}
-          </button>
+          {!heroLocked && (
+            <button
+              type="button"
+              aria-label={`Auto-Scroll: ${autoScroll ? 'ON' : 'OFF'}`}
+              aria-pressed={autoScroll}
+              data-testid="autoscroll-toggle"
+              onClick={() => setAutoScroll(!autoScroll)}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold transition-all duration-200 hover:scale-105"
+              style={{
+                background: autoScroll ? '#0E7490' : '#0A1A2F',
+                border: `1px solid ${autoScroll ? '#0E7490' : '#0C2D48'}`,
+                color: '#E8F7FA',
+                boxShadow: '0 1px 6px rgba(0,0,0,0.3)',
+              }}
+            >
+              <span style={{ fontSize: 14 }}>{autoScroll ? '⚡' : '✋'}</span>
+              Auto-Scroll: {autoScroll ? 'ON' : 'OFF'}
+            </button>
+          )}
         </div>
 
         {/* Scroll-driven horizontal track */}
@@ -200,12 +203,15 @@ export function FeaturedCarousel({
               <div
                 key={item.id}
                 className="flex-shrink-0 flex flex-col lg:flex-row items-center justify-center gap-8 px-4 lg:px-16 py-10"
-                style={{ width: `${100 / items.length}%`, height: `calc(100vh - ${HEADER_H}px)` }}
+                style={{
+                  width: `${100 / items.length}%`,
+                  height: heroLocked ? '100vh' : `calc(100vh - ${HEADER_H}px)`,
+                }}
               >
                 {/* Player */}
                 <div
                   className="w-full max-w-[680px]"
-                  style={{ filter: 'drop-shadow(0 8px 32px rgba(124,58,237,0.12))' }}
+                  style={{ filter: 'drop-shadow(0 8px 32px rgba(8,145,178,0.12))' }}
                 >
                   <HeadFadePlayer
                     src={item.src}
@@ -223,27 +229,27 @@ export function FeaturedCarousel({
                   />
                 </div>
 
-                {/* Meta — right side (now light-mode) */}
-                <div className="flex flex-col gap-4 max-w-[340px]" style={{ color: '#0A2540' }}>
+                {/* Meta — right side (dark brand-tinted) */}
+                <div className="flex flex-col gap-4 max-w-[340px]" style={{ color: '#E8F7FA' }}>
                   <div className="flex items-center gap-2">
                     <span
                       className="px-2.5 py-1 rounded-full text-[11px] font-bold"
                       style={{
-                        background: 'linear-gradient(90deg,#7C3AED,#0891B2)',
-                        color: 'white',
+                        background: 'linear-gradient(90deg,#0891B2,#06B6D4)',
+                        color: '#E8F7FA',
                         animation: 'pulse 2s infinite',
                       }}
                     >
                       🤖 AI PRESUMED
                     </span>
-                    <span className="text-[12px]" style={{ color: '#4D627A' }}>
+                    <span className="text-[12px]" style={{ color: '#94C8D6' }}>
                       {item.views} views
                     </span>
                   </div>
-                  <h2 className="text-[24px] font-black leading-tight" style={{ color: '#0A2540' }}>
+                  <h2 className="text-[24px] font-black leading-tight" style={{ color: '#E8F7FA' }}>
                     {item.title}
                   </h2>
-                  <p className="text-[14px]" style={{ color: '#4D627A' }}>
+                  <p className="text-[14px]" style={{ color: '#94C8D6' }}>
                     by {item.author}
                   </p>
 
@@ -252,9 +258,9 @@ export function FeaturedCarousel({
                     <div
                       className="flex items-center gap-2 px-4 py-3 rounded-xl text-[13px] font-medium"
                       style={{
-                        background: 'rgba(124,58,237,0.08)',
-                        border: '1px solid rgba(124,58,237,0.2)',
-                        color: '#5B21B6',
+                        background: 'rgba(8,145,178,0.15)',
+                        border: '1px solid rgba(8,145,178,0.4)',
+                        color: '#67E8F9',
                       }}
                     >
                       🔒 Vote to advance — the truth is locked until you decide.
@@ -264,9 +270,9 @@ export function FeaturedCarousel({
                     <div
                       className="flex items-center gap-2 px-4 py-3 rounded-xl text-[13px] font-bold"
                       style={{
-                        background: 'rgba(5,150,105,0.08)',
-                        border: '1px solid rgba(5,150,105,0.25)',
-                        color: '#047857',
+                        background: 'rgba(5,150,105,0.15)',
+                        border: '1px solid rgba(5,150,105,0.35)',
+                        color: '#6EE7B7',
                       }}
                     >
                       ✓ You voted: {item.userVote === 'ai' ? '🤖 AI-Made' : '👤 Human'}
@@ -275,10 +281,10 @@ export function FeaturedCarousel({
 
                   {/* Card progress dots */}
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[11px] font-medium" style={{ color: '#9CA3AF' }}>
+                    <span className="text-[11px] font-medium" style={{ color: '#94C8D6' }}>
                       {i + 1} / {items.length}
                     </span>
-                    <span className="text-[11px]" style={{ color: '#D1D5DB' }}>
+                    <span className="text-[11px]" style={{ color: '#5A8A99' }}>
                       · vote or scroll to explore
                     </span>
                   </div>
@@ -297,7 +303,14 @@ export function FeaturedCarousel({
               aria-label={`Featured video ${i + 1}`}
               onClick={() => jumpToCard(i)}
               className="flex items-center justify-center transition-all duration-300"
-              style={{ minWidth: 44, minHeight: 44, padding: 0, background: 'transparent', border: 'none', cursor: 'pointer' }}
+              style={{
+                minWidth: 44,
+                minHeight: 44,
+                padding: 0,
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
               <span
                 className="rounded-full transition-all duration-300"
@@ -305,8 +318,8 @@ export function FeaturedCarousel({
                   width: i === activeIdx ? 24 : 8,
                   height: 8,
                   display: 'block',
-                  backgroundColor: i === activeIdx ? '#7C3AED' : 'rgba(124,58,237,0.2)',
-                  boxShadow: i === activeIdx ? '0 0 8px rgba(124,58,237,0.4)' : 'none',
+                  backgroundColor: i === activeIdx ? '#0891B2' : 'rgba(8,145,178,0.2)',
+                  boxShadow: i === activeIdx ? '0 0 8px rgba(8,145,178,0.4)' : 'none',
                 }}
               />
             </button>
@@ -318,25 +331,72 @@ export function FeaturedCarousel({
           className="absolute top-0 left-0 h-[3px] transition-[width] duration-100"
           style={{
             width: `${scrollProgress * 100}%`,
-            background: 'linear-gradient(90deg,#7C3AED,#0891B2)',
+            background: 'linear-gradient(90deg,#164E63,#0891B2)',
             borderRadius: '0 2px 2px 0',
           }}
         />
 
-        {/* ── Scroll hint arrow ── */}
-        <div
-          className="absolute bottom-16 right-8 flex flex-col items-center gap-1 text-[11px] font-medium"
-          style={{
-            color: '#9CA3AF',
-            animation: scrollProgress > 0.05 ? 'none' : 'bounce 1.5s infinite',
-          }}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <title>Scroll down</title>
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-          scroll
-        </div>
+        {/* ── TikTok-style SCROLL button (fullscreen lock) ── */}
+        {heroLocked ? (
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-40">
+            <button
+              type="button"
+              onClick={onUnlockScroll}
+              className="group flex items-center gap-2 px-8 py-3 rounded-full text-[15px] font-bold transition-all duration-300 hover:scale-110 active:scale-95"
+              style={{
+                background: 'linear-gradient(135deg, #0891B2, #06B6D4)',
+                color: '#E8F7FA',
+                boxShadow: '0 4px 24px rgba(6,182,212,0.4), 0 0 60px rgba(6,182,212,0.15)',
+                border: '1px solid rgba(103,232,249,0.3)',
+              }}
+              aria-label="Scroll down to explore more content"
+            >
+              <svg
+                className="w-5 h-5 transition-transform group-hover:translate-y-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+              Scroll Down
+            </button>
+            <span className="text-[11px] animate-pulse" style={{ color: '#5A8A99' }}>
+              Vote or explore the feed below
+            </span>
+          </div>
+        ) : (
+          <div
+            className="absolute bottom-16 right-8 flex flex-col items-center gap-1 text-[11px] font-medium"
+            style={{
+              color: '#5A8A99',
+              animation: scrollProgress > 0.05 ? 'none' : 'bounce 1.5s infinite',
+            }}
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <title>Scroll down</title>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+            scroll
+          </div>
+        )}
       </div>
     </section>
   );

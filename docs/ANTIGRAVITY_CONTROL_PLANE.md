@@ -15,19 +15,15 @@ That is the intended top-level entry for daily work.
 ## Sources of truth
 
 ### Workspace truth
-
 - `monorepo_manifest.yaml`
 
 ### MCP truth
-
 - `antigravity-mcp-config.json`
 
 ### Agent behavior truth
-
 - `AGENTS.md`
 
 ### Surviving pack truth
-
 - `docs/UPDATED_pnkln_PACK.md`
 
 ## Multi-root layout
@@ -44,14 +40,12 @@ The workspace is organized as one control plane with multiple live roots:
 ## Product split
 
 ### counselconduit
-
 Google-native MVP path.
 
 - project: `shadowtag-omega-v4`
 - model: `gemini-3.1-flash-lite-preview`
 
 ### uphillsnowball
-
 Apple Silicon local R&D path.
 
 - used for experimentation and method improvement
@@ -60,17 +54,14 @@ Apple Silicon local R&D path.
 ## Agent split
 
 ### Gemini Code Assist
-
 - trusted workspace
 - YOLO mode allowed inside canonical workspace root only
 
 ### Cline
-
 - auto-approve allowed for routine in-workspace actions
 - broader risky work should happen on disposable branches
 
 ### Pickle Rick
-
 - skills layer only
 - not a second control plane
 - must conform to `AGENTS.md`, `monorepo_manifest.yaml`, and `antigravity-mcp-config.json`

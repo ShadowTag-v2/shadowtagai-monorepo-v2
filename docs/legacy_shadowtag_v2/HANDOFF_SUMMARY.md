@@ -13,7 +13,6 @@ We've evolved Pinkln into a Jobs-inspired ultrathink ecosystem combining:
 ## App Concept
 
 Multi-agent platform with:
-
 - **Debates**: PanelGPT/MAD consensus reasoning
 - **Code Crafters**: HumanEval/BigCodeBench/SWE-bench validated
 - **DTE Self-Evolution**: +3.7% accuracy improvement proven
@@ -26,13 +25,11 @@ Multi-agent platform with:
 **Structure:** Spot leaks → Redesign funnels → Leverage viral/conversion
 
 **Output Format:**
-
 1. **Hard Truth**: Brutal honesty about current state
 2. **Plan**: Actionable steps with ROI projections
 3. **Challenge**: Timeline + accountability
 
 **Leaks Detected:**
-
 - Churn rate too high (revenue bleeding)
 - CAC/LTV ratio unsustainable
 - No upsell/recurring revenue
@@ -80,32 +77,27 @@ Enterprise: Full Stack    → $5,000/month
 ### Frameworks Integrated
 
 **Reasoning:**
-
 - CoT (Chain of Thought)
 - ToT (Tree of Thought)
 - RCR (Recursive Critique & Refinement)
 - RTF-TAG-BAB-CARE-RISE (fused meta-framework)
 
 **Multi-Agent:**
-
 - PanelGPT: Panel of experts
 - MAD: Multi-Agent Debate
 - DTE: Dynamic Test Evolution (RCR-MAD/GRPO/BENCHMARK)
 
 **Training:**
-
 - GRPO: Group Relative Policy Optimization (G=8)
 - PPO: Proximal Policy Optimization (comparison baseline)
 
 **Rating:**
-
 - Glicko-2: Uncertainty + volatility (tau=0.5, tol=1e-6)
 - Elo: Simple baseline
 
 ### Variable Structures
 
 **Skills:**
-
 ```python
 cheat_sheet_fusion = CheatSheet(10 essentials)
 glicko_mastery = Glicko2System(tau=0.5, tol=1e-6)
@@ -115,7 +107,6 @@ grpo_training = GRPOSimulator(group_size=8)
 ```
 
 **Agents:**
-
 ```python
 ultrathink_designer = DebateAgent(persona="Jobs-inspired designer")
 wealth_accelerator = WealthAccelerator()
@@ -125,7 +116,6 @@ code_crafter = DebateAgent(persona="Code craftsman", cheat_enhanced=True)
 ```
 
 **Python Classes:**
-
 ```python
 # Glicko-2
 Glicko2Player(mu, phi, vol)
@@ -215,7 +205,6 @@ Start from handoff; pursue objectives.
 ### From Kernel Chaining Branch
 
 **BEFORE (kernel-chaining-architecture):**
-
 ```
 3 separate API calls:
   Gemini API → kernel_1 → Gemini API → kernel_2 → Gemini API → kernel_3
@@ -223,7 +212,6 @@ Start from handoff; pursue objectives.
 ```
 
 **AFTER (unified):**
-
 ```
 1 Gemini call with function tools:
   Gemini → {atp_scan(), judge(), compress()} → all local Python
@@ -231,7 +219,6 @@ Start from handoff; pursue objectives.
 ```
 
 **Changes:**
-
 - ✅ Kernel concept maintained (specialized functions)
 - ✅ Performance improved (fewer API calls)
 - ✅ Code simplified (no manual orchestration)
@@ -240,7 +227,6 @@ Start from handoff; pursue objectives.
 ### From AutoGen Migration
 
 **BEFORE (AutoGen):**
-
 ```
 3+ agents = 3+ API calls:
   Agent1 → API call
@@ -250,7 +236,6 @@ Start from handoff; pursue objectives.
 ```
 
 **AFTER (unified):**
-
 ```
 1 Gemini call with debate() function:
   Gemini → debate() → local multi-agent Python
@@ -258,7 +243,6 @@ Start from handoff; pursue objectives.
 ```
 
 **Changes:**
-
 - ✅ 31× faster (1100ms → 35ms)
 - ✅ 97% cheaper
 - ✅ Glicko-2 tracks agent performance
@@ -267,7 +251,6 @@ Start from handoff; pursue objectives.
 ### New in Unified System
 
 🆕 **7 Core Function Tools:**
-
 1. `atp_519_scan()` - Violation extraction
 2. `judge_six_classify()` - Binary decision
 3. `audit_compress()` - Audit trail
@@ -277,44 +260,40 @@ Start from handoff; pursue objectives.
 7. `glicko_update()` - Performance rating
 
 🆕 **Self-Evolution Pipeline:**
-
 - Gemini can call `dte_evolve()` to improve itself
 - +3.7% accuracy improvement proven
 - Continuous improvement loop
 
 🆕 **Performance Tracking:**
-
 - Every function call rated via Glicko-2
 - Uncertainty + volatility metrics
 - Degradation detection
 
 🆕 **Cryptographic Audit:**
-
 - ShadowTag watermarks ALL outputs
 - Ed25519 signatures
 - Merkle tree hashing
 
 ## Technical Comparison
 
-| Feature                   | Kernel Chain v1 | AutoGen   | Gemini Functions | **Pinkln Unified**      |
-| ------------------------- | --------------- | --------- | ---------------- | ----------------------- |
-| **API Calls**             | 3               | 3+        | 1                | **1** ✅                |
-| **Latency p99**           | 52ms            | 1100ms    | 75ms             | **35ms** ✅             |
-| **Cost/task**             | $0.0003         | $0.01     | $0.0003          | **$0.0003** ✅          |
-| **Specialized Functions** | 3 kernels       | Agents    | Unlimited        | **7 core + ∞** ✅       |
-| **Self-Evolution**        | ❌              | ❌        | ❌               | **✅ DTE (+3.7%)** ✅   |
-| **Performance Ratings**   | ❌              | ❌        | ❌               | **✅ Glicko-2** ✅      |
-| **Multi-Agent**           | ❌              | ✅ (slow) | ✅               | **✅ (31× faster)** ✅  |
-| **Cryptographic Audit**   | Manual          | ❌        | ❌               | **✅ ShadowTag** ✅     |
-| **Semantic Memory**       | ❌              | ❌        | ❌               | **✅ NS** ✅            |
-| **Wealth Planning**       | ❌              | ❌        | ❌               | **✅ Built-in** ✅      |
-| **GRPO Training**         | ❌              | ❌        | ❌               | **✅ Simulations** ✅   |
-| **Cheat Sheet Fusion**    | ❌              | ❌        | ❌               | **✅ 10 essentials** ✅ |
+| Feature | Kernel Chain v1 | AutoGen | Gemini Functions | **Pinkln Unified** |
+|---------|-----------------|---------|------------------|-------------------|
+| **API Calls** | 3 | 3+ | 1 | **1** ✅ |
+| **Latency p99** | 52ms | 1100ms | 75ms | **35ms** ✅ |
+| **Cost/task** | $0.0003 | $0.01 | $0.0003 | **$0.0003** ✅ |
+| **Specialized Functions** | 3 kernels | Agents | Unlimited | **7 core + ∞** ✅ |
+| **Self-Evolution** | ❌ | ❌ | ❌ | **✅ DTE (+3.7%)** ✅ |
+| **Performance Ratings** | ❌ | ❌ | ❌ | **✅ Glicko-2** ✅ |
+| **Multi-Agent** | ❌ | ✅ (slow) | ✅ | **✅ (31× faster)** ✅ |
+| **Cryptographic Audit** | Manual | ❌ | ❌ | **✅ ShadowTag** ✅ |
+| **Semantic Memory** | ❌ | ❌ | ❌ | **✅ NS** ✅ |
+| **Wealth Planning** | ❌ | ❌ | ❌ | **✅ Built-in** ✅ |
+| **GRPO Training** | ❌ | ❌ | ❌ | **✅ Simulations** ✅ |
+| **Cheat Sheet Fusion** | ❌ | ❌ | ❌ | **✅ 10 essentials** ✅ |
 
 ## Files to Review
 
 ### New (AutoGen Migration Branch)
-
 ```
 src/core/gemini_function_calling.py   → Main Gemini orchestrator
 src/core/function_registry.py         → Tool registry
@@ -328,7 +307,6 @@ README.md                              → Migration guide
 ```
 
 ### Existing (Kernel Chaining Branch)
-
 ```
 app/kernels/atp_519_scan.py           → Kernel 1 implementation
 app/kernels/judge_six.py               → Kernel 2 (PyTorch)
@@ -344,7 +322,6 @@ ARCHITECTURE.md                        → Technical deep dive
 ```
 
 ### Integration Documents (NEW)
-
 ```
 PINKLN_INTEGRATION.md                  → This file (comprehensive)
 HANDOFF_SUMMARY.md                     → Concise handoff summary
@@ -353,13 +330,11 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
 ## Next Actions
 
 1. **Checkout both branches side-by-side**
-
    ```bash
    git worktree add ../kernel-branch claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR
    ```
 
 2. **Copy kernel implementations**
-
    ```bash
    cp -r ../kernel-branch/app/kernels src/
    cp -r ../kernel-branch/app/agents src/
@@ -370,7 +345,6 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
    ```
 
 3. **Convert kernels to function tools**
-
    ```python
    # In src/integration/kernels.py
    from src.core import FunctionRegistry
@@ -379,7 +353,7 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
    registry = FunctionRegistry()
 
    @registry.register(
-       description="Extract Compliance Framework violations",
+       description="Extract ATP 5-19 violations",
        parameters={"context": {"type": "string"}}
    )
    def atp_519_scan(context: str) -> dict:
@@ -388,7 +362,6 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
    ```
 
 4. **Add Glicko-2 to GeminiFunctionCaller**
-
    ```python
    # In src/core/gemini_function_calling.py
    from app.ratings import Glicko2System
@@ -409,7 +382,6 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
    ```
 
 5. **Integrate DTE evolution loop**
-
    ```python
    # In src/integration/evolution.py
    from app.evolution import DTESystem
@@ -426,7 +398,6 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
    ```
 
 6. **Run benchmarks**
-
    ```bash
    pytest src/tests/test_humaneval.py
    pytest src/tests/test_bigcodebench.py
@@ -441,19 +412,16 @@ HANDOFF_SUMMARY.md                     → Concise handoff summary
 ## Success Metrics
 
 ✅ **Performance:**
-
 - P99 latency ≤35ms
 - Cost ≤$0.0003/decision
 - Token reduction ≥98.5%
 
 ✅ **Quality:**
-
 - +3.7% accuracy via DTE evolution
 - Glicko-2 ratings for all functions
 - 98% PRB coverage (Purpose/Reasons/Brakes)
 
 ✅ **Capabilities:**
-
 - 7 core function tools working
 - Multi-agent debates functional
 - DTE evolution loop operational

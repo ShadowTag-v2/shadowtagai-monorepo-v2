@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/circuit_breaker/breaker.py
+# hypothesis_version: 6.151.5
+
+[0.0, 60.0, 'CircuitBreakerState', 'T', 'backoff_multiplier', 'closed', 'consecutive', 'consecutive_failures', 'effective_timeout_s', 'failure_mode', 'failure_threshold', 'half_open', 'open', 'reset_timeout_s', 'seconds_until_probe', 'service_name', 'sliding_window', 'state', 'total_failures', 'total_successes', 'window_failures', 'window_s']

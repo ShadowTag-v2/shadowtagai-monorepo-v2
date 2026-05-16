@@ -1,5 +1,5 @@
 {
-  "name": "shadowtag-omega-v4 Safety-Case SaaS Framework",
+  "name": "AiYou Safety-Case SaaS Framework",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
 
   "features": {

@@ -3,7 +3,6 @@
 ## Current truth vs intended truth
 
 ### Current declared monorepo truth
-
 The live monorepo documents still declare a **four-repo canonical merge at the canonical-root layer**:
 
 - `apps/pnkln-stack_stack/pnkln-stack-fastapi-services`
@@ -12,13 +11,11 @@ The live monorepo documents still declare a **four-repo canonical merge at the c
 - `apps/pnkln-stack_stack/nascent-apollo`
 
 They also define additional active monorepo roots such as:
-
 - `apps/counselconduit`
 - `labs/uphillsnowball`
 - `apps/shadowtag-web`
 
 ### Intended future truth
-
 Your intended operating model is stronger:
 
 - **Monorepo-Uphillsnowball becomes the only workspace**
@@ -27,7 +24,6 @@ Your intended operating model is stronger:
 - local checkouts exist only as indexed working copies and execution caches
 
 This means Antigravity should treat the monorepo as:
-
 - canonical workspace
 - canonical repo-root truth
 - eventual sink for all ehanc69 repos
@@ -48,7 +44,6 @@ Authority order:
 ## GitHub app operating model
 
 Use the GitHub app for:
-
 - listing all ehanc69 repos
 - repo freshness / default branch / commit SHAs
 - monorepo control-plane files
@@ -56,7 +51,6 @@ Use the GitHub app for:
 - file fetches for canonical docs
 
 Use local clones for:
-
 - SQLite scan / chunking
 - LanceDB indexing
 - code graph validation
@@ -77,20 +71,16 @@ Antigravity should operate as if:
 ## Required repo classes
 
 ### Class A — canonical monorepo truth
-
 - `ShadowTag-v2/Monorepo-Uphillsnowball`
 
 ### Class B — fold-in candidates from ehanc69
-
 All `ehanc69/*` repos should be tracked as fold-in candidates unless explicitly marked:
-
 - deprecated
 - reference-only
 - public demo only
 - superseded
 
 ### Class C — runtime dependencies
-
 - `maderix/ANE`
 - `patmakesapps/CortexLTM`
 - `patmakesapps/CortexUI`
@@ -103,7 +93,6 @@ All `ehanc69/*` repos should be tracked as fold-in candidates unless explicitly 
 - `prettier/prettier-vscode`
 
 ### Class D — reference/pattern repos
-
 - `GantisStorm/essentials-claude-code`
 - `miqcie/grepai-beads-helpers`
 - `JPM1118/Threadwork`
@@ -140,7 +129,6 @@ No repo should remain unclassified.
 If the monorepo docs still describe only four canonical roots, Antigravity must not pretend all repos are already folded in.
 
 Instead it should:
-
 - preserve current declared truth
 - preserve your intended future truth
 - create the delta as explicit work

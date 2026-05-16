@@ -29,7 +29,6 @@ This repository now contains a **production-ready** GKE inference deployment inf
 - **Monitoring**: BigQuery dataset for cost tracking
 
 **Key Features**:
-
 - ✅ Node Auto-provisioning for dynamic GPU scaling
 - ✅ Image streaming (gcfs_config) for fast container startup
 - ✅ GCS FUSE CSI driver for model weight streaming
@@ -40,14 +39,12 @@ This repository now contains a **production-ready** GKE inference deployment inf
 #### 2. Kubernetes Manifests (`k8s/base/`)
 
 **Namespaces** (`namespaces.yaml`):
-
-- `pnkln-stackjr-governance` - Judge 6 enforcement
+- `pnkln-stackjr-governance` - Judge #6 enforcement
 - `autogen-orchestration` - Multi-agent coordination
 - `cognitive-stack-v5` - LLM routing layer
 - `shadowtag-v2` - Watermarking security
 
 **GKE Inference Gateway** (`inference-gateway.yaml`):
-
 - ✅ Gateway API v1 with inference-aware routing
 - ✅ Prefix-aware load balancing (96% TTFT improvement)
 - ✅ KV cache-aware routing
@@ -55,7 +52,6 @@ This repository now contains a **production-ready** GKE inference deployment inf
 - ✅ Backend policies with session affinity
 
 **Disaggregated Serving** (`llm-disaggregated-serving.yaml`):
-
 - ✅ Separate prefill and decode deployments (60% throughput gain)
 - ✅ vLLM v0.8.0 with FP8 KV cache
 - ✅ AWQ quantization support
@@ -64,17 +60,15 @@ This repository now contains a **production-ready** GKE inference deployment inf
 - ✅ GCS FUSE volume mounts for models
 
 **Autoscaling** (`hpa.yaml`):
-
 - ✅ Custom metrics adapter configuration
 - ✅ HPA for prefill (3-20 pods)
 - ✅ HPA for decode (5-40 pods)
-- ✅ HPA for Judge 6 (3-10 pods)
+- ✅ HPA for Judge #6 (3-10 pods)
 - ✅ Metrics: GPU util, KV cache, P99 latency, QPS
 
 #### 3. Deployment Automation (`scripts/`)
 
 **Preflight Check** (`preflight.sh`):
-
 - GCP authentication validation
 - API enablement
 - IAM permission checks
@@ -83,7 +77,6 @@ This repository now contains a **production-ready** GKE inference deployment inf
 - Terraform state bucket setup
 
 **Full Deployment** (`deploy.sh`):
-
 - 3-phase automated deployment:
   1. Terraform infrastructure
   2. Kubernetes workloads
@@ -105,15 +98,15 @@ This repository now contains a **production-ready** GKE inference deployment inf
 
 ### Critical Enhancements Added
 
-| Original Plan         | Implemented Enhancement          | Impact                           |
-| --------------------- | -------------------------------- | -------------------------------- |
-| Standard LoadBalancer | **GKE Inference Gateway**        | -60% tail latency, -30% cost     |
-| Monolithic serving    | **Disaggregated prefill/decode** | +60% throughput                  |
-| Generic containers    | **vLLM with FP8 KV cache**       | 50% memory reduction             |
-| Manual node pools     | **Custom Compute Classes**       | -40% cost (intelligent fallback) |
-| CPU-based HPA         | **Custom metrics HPA**           | Better scaling accuracy          |
-| No quantization       | **AWQ/GPTQ support**             | 4x memory reduction              |
-| Standard cluster      | **Image streaming enabled**      | 5-10x faster startup             |
+| Original Plan | Implemented Enhancement | Impact |
+|---------------|------------------------|--------|
+| Standard LoadBalancer | **GKE Inference Gateway** | -60% tail latency, -30% cost |
+| Monolithic serving | **Disaggregated prefill/decode** | +60% throughput |
+| Generic containers | **vLLM with FP8 KV cache** | 50% memory reduction |
+| Manual node pools | **Custom Compute Classes** | -40% cost (intelligent fallback) |
+| CPU-based HPA | **Custom metrics HPA** | Better scaling accuracy |
+| No quantization | **AWQ/GPTQ support** | 4x memory reduction |
+| Standard cluster | **Image streaming enabled** | 5-10x faster startup |
 
 ### Cost Optimization
 
@@ -127,12 +120,12 @@ This repository now contains a **production-ready** GKE inference deployment inf
 
 ### Performance Improvements
 
-| Metric         | Original Target | Optimized Target | Improvement    |
-| -------------- | --------------- | ---------------- | -------------- |
-| P99 latency    | 90ms            | 36ms             | 60% better     |
-| Throughput     | Baseline        | +30%             | 30% increase   |
-| TTFT (prefix)  | Baseline        | 96% improvement  | Dramatic       |
-| Cache hit rate | Not specified   | 35%+             | New capability |
+| Metric | Original Target | Optimized Target | Improvement |
+|--------|----------------|------------------|-------------|
+| P99 latency | 90ms | 36ms | 60% better |
+| Throughput | Baseline | +30% | 30% increase |
+| TTFT (prefix) | Baseline | 96% improvement | Dramatic |
+| Cache hit rate | Not specified | 35%+ | New capability |
 
 ---
 
@@ -159,7 +152,7 @@ This repository now contains a **production-ready** GKE inference deployment inf
 
 #### 🔄 Partially Implemented (Hooks Provided)
 
-15. **Judge 6 Deployment** - Architecture defined, deployment pending
+15. **Judge #6 Deployment** - Architecture defined, deployment pending
 16. **AutoGen Integration** - Namespace created, deployment pending
 17. **ShadowTag v2** - Namespace created, deployment pending
 
@@ -228,13 +221,11 @@ Before running `./scripts/deploy.sh`, ensure:
 
 **Decision**: Standard GKE
 **Reasoning**:
-
-- Need for local NVMe SSDs (Judge 6 model caching)
+- Need for local NVMe SSDs (Judge #6 model caching)
 - Fine-grained GPU control
 - Custom node pool configurations
 
 **Trade-off**:
-
 - More operational overhead
 - But: Full control over node configurations
 
@@ -242,13 +233,11 @@ Before running `./scripts/deploy.sh`, ensure:
 
 **Decision**: Separate prefill and decode pools
 **Reasoning**:
-
 - Google's benchmarks show 60% throughput improvement
 - Different resource requirements for each phase
 - Better GPU utilization
 
 **Implementation**:
-
 - Prefill: 2x L4 GPUs per node, larger batches
 - Decode: 1x L4 GPU per node, more pods
 
@@ -256,13 +245,11 @@ Before running `./scripts/deploy.sh`, ensure:
 
 **Decision**: 100% spot instances for GPU pools
 **Reasoning**:
-
 - 60-91% cost savings
 - Acceptable for stateless inference workloads
 - Fast auto-provisioning handles preemptions
 
 **Mitigation**:
-
 - Multiple replicas for redundancy
 - Fast pod startup (image streaming)
 - Aggressive auto-scaling policies
@@ -271,14 +258,12 @@ Before running `./scripts/deploy.sh`, ensure:
 
 **Decision**: vLLM v0.8.0 (not TGI or Triton)
 **Reasoning**:
-
 - Best-in-class performance for LLMs
 - Native GKE support (Google partnership)
 - TPU/GPU fungibility
 - Active community and development
 
 **Optimizations Applied**:
-
 - FP8 KV cache (50% memory reduction)
 - AWQ quantization (4x model size reduction)
 - Prefix caching (35% API cost reduction)
@@ -288,7 +273,6 @@ Before running `./scripts/deploy.sh`, ensure:
 
 **Decision**: AWQ 4-bit quantization
 **Reasoning**:
-
 - 4x memory reduction
 - Minimal accuracy loss (<2%)
 - Wide model availability on HuggingFace
@@ -347,7 +331,6 @@ scripts/
 ### Immediate (Day 0-1)
 
 1. **Review Configuration**
-
    ```bash
    cd terraform
    cp terraform.tfvars.example terraform.tfvars
@@ -355,13 +338,11 @@ scripts/
    ```
 
 2. **Run Preflight**
-
    ```bash
    ./scripts/preflight.sh
    ```
 
 3. **Deploy Infrastructure**
-
    ```bash
    ./scripts/deploy.sh
    ```
@@ -375,13 +356,12 @@ scripts/
 ### Short-term (Week 1)
 
 5. **Upload Model Weights**
-
    ```bash
    gsutil -m cp -r /path/to/model/* \
        gs://pnkln-core-stack-model-weights/
    ```
 
-6. **Deploy Judge 6**
+6. **Deploy Judge #6**
    - Implement 3-layer hybrid enforcement
    - Configure Gemini API client
    - Deploy PyTorch neural layer
@@ -468,28 +448,24 @@ scripts/
 After deployment, verify these metrics:
 
 ### Performance
-
 - ✅ P99 latency ≤90ms (target: 36ms)
 - ✅ Throughput ≥1000 RPS
 - ✅ GPU utilization: 60-80%
 - ✅ Cache hit rate ≥30%
 
 ### Cost
-
 - ✅ Monthly spend: $48,000 ±10%
 - ✅ Cost per 1M tokens: <$50
 - ✅ Spot instance usage: ≥80%
 - ✅ Idle resource cost: <5%
 
 ### Reliability
-
 - ✅ Uptime: 99.9%
 - ✅ Error rate: <0.1%
 - ✅ Pod restart rate: <5/day
 - ✅ Failed requests: <0.01%
 
 ### Scalability
-
 - ✅ Auto-scale from 3 to 20+ pods
 - ✅ Scale-up time: <2 minutes
 - ✅ Handle 10x traffic spikes

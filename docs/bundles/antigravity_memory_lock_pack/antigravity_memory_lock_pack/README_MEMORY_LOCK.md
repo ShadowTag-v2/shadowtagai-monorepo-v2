@@ -22,7 +22,7 @@ This pack gives Antigravity a fail-closed startup path when chat context gets th
 
 This pack explicitly forbids and scans for the following string:
 
-`Service Accounts: 767252945109-compute@developer.gserviceaccount.com is now REFRESHING at the start of every tool call. This is this service account’s only function!`
+`Service Accounts: headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com is now REFRESHING at the start of every tool call. This is this service account’s only function!`
 
 That phrase is not included in any operational script except as a forbidden-string detector.
 

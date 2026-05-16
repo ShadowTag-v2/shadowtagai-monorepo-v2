@@ -6,22 +6,18 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
 
 ## Pre-Deployment Validation
 
-### 1. Repository: ShadowTag-v2-fastapi-services
+### 1. Repository: aiyou-fastapi-services
 
 - [ ] **Workflow file exists**
-
   ```bash
   ls -la .github/workflows/ingest.yml
   ```
-
   Expected: File exists with read permissions
 
 - [ ] **Workflow syntax is valid**
-
   ```bash
   ./scripts/verify-workflow.sh
   ```
-
   Expected: "All checks passed! Workflow is ready for deployment."
 
 - [ ] **URL format is correct**
@@ -38,19 +34,15 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
   - [ ] `POLICY_FILE_PATH` is set
 
 - [ ] **Retry logic is present**
-
   ```bash
   grep -c "MAX_RETRIES\|--retry" .github/workflows/ingest.yml
   ```
-
   Expected: Greater than 0
 
 - [ ] **File validation is present**
-
   ```bash
   grep -c "if \[ -f.*\]" .github/workflows/ingest.yml
   ```
-
   Expected: Greater than 0
 
 - [ ] **Debug output is present**
@@ -61,12 +53,12 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
 
 ---
 
-## Post-Deployment Validation (ShadowTag-v2-fastapi-services)
+## Post-Deployment Validation (aiyou-fastapi-services)
 
 ### 2. GitHub Actions Execution
 
 - [ ] **Workflow is visible in Actions tab**
-  - Visit: https://github.com/ehanc69/ShadowTag-v2-fastapi-services/actions
+  - Visit: https://github.com/ehanc69/aiyou-fastapi-services/actions
   - Verify "Ingestion (hourly)" workflow appears
 
 - [ ] **Manual trigger works**
@@ -107,40 +99,33 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
 ### 3. Pre-Deployment (mlops)
 
 - [ ] **Fix script runs successfully**
-
   ```bash
-  cd /home/user/ShadowTag-v2-fastapi-services
+  cd /home/user/aiyou-fastapi-services
   ./scripts/apply-fix-to-mlops.sh
   ```
-
   Expected: No errors, creates branch and commits
 
 - [ ] **Branch is created**
-
   ```bash
   cd ../mlops
   git branch | grep fix-ingestion-curl-404
   ```
-
   Expected: Branch exists
 
 - [ ] **Workflow file is updated**
-
   ```bash
   cat .github/workflows/ingest.yml | grep -c "refs/heads"
   ```
-
   Expected: 0 (no occurrences)
 
 - [ ] **Backup was created** (if previous workflow existed)
-
   ```bash
   ls -la .github/workflows/ingest.yml.backup
   ```
 
 - [ ] **Verification passes**
   ```bash
-  cd ../ShadowTag-v2-fastapi-services
+  cd ../aiyou-fastapi-services
   ./scripts/verify-workflow.sh ../mlops
   ```
   Expected: All checks passed
@@ -148,7 +133,6 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
 ### 4. Post-Deployment (mlops)
 
 - [ ] **Branch is pushed**
-
   ```bash
   cd ../mlops
   git branch -r | grep fix-ingestion-curl-404
@@ -179,12 +163,10 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
 ### 5. Hourly Schedule
 
 - [ ] **Cron expression is correct**
-
   ```yaml
   schedule:
-    - cron: "0 * * * *"
+    - cron: '0 * * * *'
   ```
-
   This runs at minute 0 of every hour
 
 - [ ] **First scheduled run executes**
@@ -217,27 +199,21 @@ Use this checklist to validate the ingestion workflow fix before and after deplo
 Test with temporarily modified URLs:
 
 - [ ] **Invalid repository**
-
   ```yaml
   POLICY_REPO: ehanc69/nonexistent-repo
   ```
-
   Expected: Clear 404 error with troubleshooting guidance
 
 - [ ] **Invalid branch**
-
   ```yaml
   POLICY_BRANCH: nonexistent-branch
   ```
-
   Expected: Clear error message
 
 - [ ] **Invalid file path**
-
   ```yaml
   POLICY_FILE_PATH: path/to/nonexistent/file.yml
   ```
-
   Expected: Clear error message
 
 - [ ] **URL with refs/heads (regression test)**
@@ -380,9 +356,9 @@ Test with temporarily modified URLs:
 
 ### 18. Deployment Complete
 
-Date: ******\_\_\_\_******
+Date: ________________
 
-Validated by: ******\_\_\_\_******
+Validated by: ________________
 
 - [ ] **All pre-deployment checks passed**
 - [ ] **All post-deployment checks passed**
@@ -391,13 +367,11 @@ Validated by: ******\_\_\_\_******
 - [ ] **Monitoring is in place**
 
 **Status:**
-
 - [ ] ✅ APPROVED - Ready for production
 - [ ] ⚠️ APPROVED WITH NOTES - See comments below
 - [ ] ❌ NOT APPROVED - Issues must be resolved
 
 **Notes:**
-
 ```
 [Add any notes, issues, or follow-up items here]
 
@@ -410,37 +384,31 @@ Validated by: ******\_\_\_\_******
 ## Appendix: Quick Test Commands
 
 ### Test URL Manually
-
 ```bash
-curl -fsSL "https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml" | head -20
+curl -fsSL "https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml" | head -20
 ```
 
 ### Verify No refs/heads
-
 ```bash
 grep -r "refs/heads" .github/workflows/ || echo "✓ No refs/heads found"
 ```
 
 ### Test with Verbose Output
-
 ```bash
-curl -v "https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml"
+curl -v "https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml"
 ```
 
 ### Validate YAML Syntax
-
 ```bash
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ingest.yml'))" && echo "✓ Valid YAML"
 ```
 
 ### Check Workflow Status
-
 ```bash
 gh run list --workflow=ingest.yml --limit 5
 ```
 
 ### Watch Live Execution
-
 ```bash
 gh run watch
 ```

@@ -18,7 +18,7 @@ EOF
 find apps libs -maxdepth 2 -mindepth 2 -type d | while read dir; do
     name=$(basename "$dir")
     req_file="$dir/requirements.txt"
-
+    
     # Generate Atomic Config if missing
     if [ ! -f "$dir/pyproject.toml" ]; then
         echo "   + Config: $name"

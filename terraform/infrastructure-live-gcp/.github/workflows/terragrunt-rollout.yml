@@ -1,0 +1,49 @@
+name: Cloud Deploy Canary Rollout (Terragrunt)
+on:
+  repository_dispatch:
+    types: [cloud-run-rollout]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: non-prod
+        type: choice
+        options: [non-prod, prod]
+      image_tag:
+        description: 'Full image tag'
+        required: true
+
+jobs:
+  rollout:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.client_payload.environment || inputs.environment }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.TF_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Create Cloud Deploy Release
+        run: |
+          ENV="${{ github.event.client_payload.environment || inputs.environment }}"
+          IMAGE="${{ github.event.client_payload.image_tag || inputs.image_tag }}"
+          gcloud deploy releases create "release-${{ github.sha }}" \
+            --project=${{ vars.GCP_PROJECT }} \
+            --region=us-central1 \
+            --delivery-pipeline="lawtrack-api-${ENV}-pipeline" \
+            --images="api=${IMAGE}"
+      - name: Slack Notification
+        if: always()
+        uses: slackapi/slack-github-action@v2
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: "#infra-deploys"
+            text: "${{ job.status == 'success' && '✅' || '❌' }} Cloud Run rollout ${{ job.status }}: ${{ github.event.client_payload.image_tag || inputs.image_tag }} → ${{ github.event.client_payload.environment || inputs.environment }}"

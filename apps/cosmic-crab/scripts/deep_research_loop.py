@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 # scripts/deep_research_loop.py
 import asyncio
 import logging
@@ -9,7 +10,8 @@ logger = logging.getLogger("DeepResearchLoop")
 
 
 class DeepResearchLoop:
-    """ShadowTag Omega V7 Deep Research Loop
+    """
+    ShadowTag Omega V7 Deep Research Loop
     Official Gemini Deep Research + Browser Fallback (9x 'yes').
     """
 
@@ -18,9 +20,7 @@ class DeepResearchLoop:
 
         api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("DEVELOPERKNOWLEDGE_API_KEY")
         if not api_key:
-            raise ValueError(
-                "Missing API Key! Please set GOOGLE_API_KEY or DEVELOPERKNOWLEDGE_API_KEY.",
-            )
+            raise ValueError("Missing API Key! Please set GOOGLE_API_KEY or DEVELOPERKNOWLEDGE_API_KEY.")
         self.client = genai.Client(api_key=api_key)
         self.browser = browser_agent
 
@@ -47,11 +47,7 @@ class DeepResearchLoop:
                         logger.info(f"💭 [THOUGHT] {chunk.delta.content.text}")
                 elif chunk.event_type == "interaction.complete":
                     logger.info("✅ [OFFICIAL] Research complete.")
-                    return {
-                        "status": "complete",
-                        "result": result_text,
-                        "source": "gemini_deep_research",
-                    }
+                    return {"status": "complete", "result": result_text, "source": "gemini_deep_research"}
 
         except Exception as e:
             logger.warning(f"⚠️ [OFFICIAL] Gemini API failed: {e}. Falling back to browser loop.")
@@ -62,11 +58,7 @@ class DeepResearchLoop:
             # Perform 9x yes logic
             await self.browser.open_url("https://www.google.com")
             # Simulation of steps from subagent...
-            return {
-                "status": "complete",
-                "result": "Synthesized browser context.",
-                "source": "browser_fallback",
-            }
+            return {"status": "complete", "result": "Synthesized browser context.", "source": "browser_fallback"}
 
         return {"status": "failed", "result": "All research paths exhausted."}
 

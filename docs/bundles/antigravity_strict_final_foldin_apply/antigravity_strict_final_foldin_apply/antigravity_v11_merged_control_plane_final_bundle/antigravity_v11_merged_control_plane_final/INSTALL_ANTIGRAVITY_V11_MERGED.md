@@ -1,7 +1,6 @@
 # Install Antigravity v11 Merged Control Plane
 
 ## Goal
-
 Make Antigravity local boot through a merged control plane:
 
 - repo-native pnkln control plane stays authoritative for workspace/root truth
@@ -35,7 +34,6 @@ Monorepo-Uphillsnowball/
 ```
 
 ## Startup law
-
 At every Antigravity/editor launch:
 
 1. Load `authority-current.json`
@@ -48,13 +46,11 @@ At every Antigravity/editor launch:
 8. Only then inspect code or do Git/GitHub operations
 
 ## The key distinction
-
 - memory decides what is true
 - monorepo control plane decides where live code truth lives
 - codebase decides what must change
 
 ## Recommended usage
-
 Run the merged setup from monorepo root:
 
 ```bash

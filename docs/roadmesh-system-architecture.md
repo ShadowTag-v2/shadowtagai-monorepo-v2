@@ -1,5 +1,4 @@
 # RoadMesh System Architecture
-
 ## Technical Data Flow: Sensors → Control Outputs
 
 **Version:** 1.0
@@ -13,7 +12,6 @@
 RoadMesh is a map-free autonomous navigation system using graph-based topology and foundation models. This document details the complete data flow from raw sensor inputs to vehicle control outputs, including compute requirements, latency budgets, and deployment architecture.
 
 **Key Performance Metrics:**
-
 - **End-to-End Latency:** <100ms (sensor → control)
 - **Data Throughput:** 500GB/hour per vehicle
 - **Compute:** 254 TOPS (edge) + 400 TFLOPS (cloud training)
@@ -54,13 +52,13 @@ RoadMesh is a map-free autonomous navigation system using graph-based topology a
 
 ### 2.1 Hardware Configuration
 
-| Sensor Type | Model/Spec         | Quantity | FOV        | Range | Data Rate                         | Purpose                    |
-| ----------- | ------------------ | -------- | ---------- | ----- | --------------------------------- | -------------------------- |
-| **LiDAR**   | 128-beam rotating  | 1        | 360° × 40° | 200m  | 2.4M pts/s @ 20Hz = 115 Mbps      | 3D structure, distance     |
-| **Camera**  | 8MP IMX728         | 8        | 120° each  | 150m  | 8 × 30fps × 8MP = 15.4 Gbps (raw) | Semantic, color, texture   |
-| **Radar**   | 4D imaging (77GHz) | 5        | 120° × 30° | 300m  | 5 × 20Hz × 512 targets = 40 Kbps  | Velocity, occluded objects |
-| **IMU**     | MEMS 6-axis        | 1        | N/A        | N/A   | 1 kHz = 48 Kbps                   | Ego-motion, orientation    |
-| **GNSS**    | RTK GPS            | 1        | N/A        | N/A   | 10 Hz = 1 Kbps                    | Global localization        |
+| Sensor Type | Model/Spec | Quantity | FOV | Range | Data Rate | Purpose |
+|-------------|------------|----------|-----|-------|-----------|---------|
+| **LiDAR** | 128-beam rotating | 1 | 360° × 40° | 200m | 2.4M pts/s @ 20Hz = 115 Mbps | 3D structure, distance |
+| **Camera** | 8MP IMX728 | 8 | 120° each | 150m | 8 × 30fps × 8MP = 15.4 Gbps (raw) | Semantic, color, texture |
+| **Radar** | 4D imaging (77GHz) | 5 | 120° × 30° | 300m | 5 × 20Hz × 512 targets = 40 Kbps | Velocity, occluded objects |
+| **IMU** | MEMS 6-axis | 1 | N/A | N/A | 1 kHz = 48 Kbps | Ego-motion, orientation |
+| **GNSS** | RTK GPS | 1 | N/A | N/A | 10 Hz = 1 Kbps | Global localization |
 
 **Total Raw Data Rate:** ~16 Gbps (compressed to 1.1 Gbps via H.265 + LZ4)
 
@@ -561,7 +559,6 @@ ControlCommand {
 ### 8.1 Vision-Language Model (VLM) Pipeline
 
 **Use Cases:**
-
 1. **Unusual object recognition** (e.g., "fallen tree", "police directing traffic")
 2. **Scene understanding** (e.g., "construction zone ahead")
 3. **Failure mode recovery** (e.g., "why can't I proceed?")
@@ -663,17 +660,16 @@ INTEGRATION:
 
 **Hardware:** NVIDIA Jetson Orin AGX (or equivalent)
 
-| Component   | Specification                | Allocation            | Power |
-| ----------- | ---------------------------- | --------------------- | ----- |
-| **GPU**     | 2048-core Ampere             | 180 TOPS (perception) | 35W   |
-| **DLA**     | 2× Deep Learning Accelerator | 50 TOPS (BEV fusion)  | 5W    |
-| **CPU**     | 12-core ARM Cortex-A78AE     | System overhead       | 10W   |
-| **Memory**  | 64 GB LPDDR5                 | 32 GB active          | -     |
-| **Storage** | 512 GB NVMe SSD              | Logs, models          | -     |
-| **Total**   | -                            | 254 TOPS              | 50W   |
+| Component | Specification | Allocation | Power |
+|-----------|--------------|------------|-------|
+| **GPU** | 2048-core Ampere | 180 TOPS (perception) | 35W |
+| **DLA** | 2× Deep Learning Accelerator | 50 TOPS (BEV fusion) | 5W |
+| **CPU** | 12-core ARM Cortex-A78AE | System overhead | 10W |
+| **Memory** | 64 GB LPDDR5 | 32 GB active | - |
+| **Storage** | 512 GB NVMe SSD | Logs, models | - |
+| **Total** | - | 254 TOPS | 50W |
 
 **Software Stack:**
-
 ```
 ┌─────────────────────────────────────┐
 │  Application (RoadMesh Stack)       │
@@ -692,23 +688,23 @@ INTEGRATION:
 
 **Training Infrastructure:**
 
-| Service           | Configuration            | Use Case            | Monthly Cost |
-| ----------------- | ------------------------ | ------------------- | ------------ |
-| **Vertex AI**     | TPU v5e Pod (256 chips)  | VLM fine-tuning     | $80,000      |
-| **Vertex AI**     | A100 GPU × 32            | Perception training | $35,000      |
-| **GCS**           | 500 TB standard          | Dataset storage     | $10,000      |
-| **BigQuery**      | 10 TB queries/month      | Data analytics      | $5,000       |
-| **GKE Autopilot** | 50 nodes (e2-standard-8) | Simulation cluster  | $8,000       |
-| **Total**         | -                        | -                   | **$138,000** |
+| Service | Configuration | Use Case | Monthly Cost |
+|---------|--------------|----------|--------------|
+| **Vertex AI** | TPU v5e Pod (256 chips) | VLM fine-tuning | $80,000 |
+| **Vertex AI** | A100 GPU × 32 | Perception training | $35,000 |
+| **GCS** | 500 TB standard | Dataset storage | $10,000 |
+| **BigQuery** | 10 TB queries/month | Data analytics | $5,000 |
+| **GKE Autopilot** | 50 nodes (e2-standard-8) | Simulation cluster | $8,000 |
+| **Total** | - | - | **$138,000** |
 
 **Inference Infrastructure (fleet-wide):**
 
-| Service           | Configuration       | Use Case            | Monthly Cost (1000 vehicles) |
-| ----------------- | ------------------- | ------------------- | ---------------------------- |
-| **Vertex AI**     | TPU v5 (inference)  | VLM queries (0.1Hz) | $15,000                      |
-| **Cloud Run**     | Autoscaling (0-100) | API endpoints       | $2,000                       |
-| **Cloud Storage** | 50 PB nearline      | Data lake           | $500,000                     |
-| **Total**         | -                   | -                   | **$517,000**                 |
+| Service | Configuration | Use Case | Monthly Cost (1000 vehicles) |
+|---------|--------------|----------|------------------------------|
+| **Vertex AI** | TPU v5 (inference) | VLM queries (0.1Hz) | $15,000 |
+| **Cloud Run** | Autoscaling (0-100) | API endpoints | $2,000 |
+| **Cloud Storage** | 50 PB nearline | Data lake | $500,000 |
+| **Total** | - | - | **$517,000** |
 
 ---
 
@@ -968,27 +964,27 @@ IF safety.watchdog_timeout > 500ms:
 
 ### 13.1 Accuracy Metrics
 
-| Module          | Metric                 | Value      | Industry Benchmark |
-| --------------- | ---------------------- | ---------- | ------------------ |
-| **Perception**  | 3D Object Detection AP | 72.3%      | 68-75% (SOTA)      |
-|                 | BEV Segmentation IoU   | 68.1%      | 62-70%             |
-|                 | Lane Detection F1      | 91.2%      | 88-93%             |
-| **Forecasting** | Trajectory ADE (8s)    | 1.8m       | 2.1-2.5m           |
-|                 | Occupancy IoU          | 45.3%      | 40-50%             |
-| **Planning**    | Success Rate           | 94.7%      | 90-95%             |
-|                 | Collision Rate         | 0.003/mile | <0.01/mile         |
-|                 | Comfort (jerk)         | 0.8 m/s³   | <1.0 m/s³          |
+| Module | Metric | Value | Industry Benchmark |
+|--------|--------|-------|--------------------|
+| **Perception** | 3D Object Detection AP | 72.3% | 68-75% (SOTA) |
+| | BEV Segmentation IoU | 68.1% | 62-70% |
+| | Lane Detection F1 | 91.2% | 88-93% |
+| **Forecasting** | Trajectory ADE (8s) | 1.8m | 2.1-2.5m |
+| | Occupancy IoU | 45.3% | 40-50% |
+| **Planning** | Success Rate | 94.7% | 90-95% |
+| | Collision Rate | 0.003/mile | <0.01/mile |
+| | Comfort (jerk) | 0.8 m/s³ | <1.0 m/s³ |
 
 ### 13.2 Computational Performance
 
-| Module       | Latency  | Throughput | Memory    | Power   |
-| ------------ | -------- | ---------- | --------- | ------- |
-| Perception   | 35ms     | 28 FPS     | 12 GB     | 35W     |
-| Graph Update | 8ms      | 125 Hz     | 2 GB      | 5W      |
-| Forecasting  | 22ms     | 45 Hz      | 4 GB      | 8W      |
-| Planning     | 35ms     | 28 Hz      | 1.5 GB    | 4W      |
-| Control      | 10ms     | 100 Hz     | 0.5 GB    | 1W      |
-| **TOTAL**    | **95ms** | **10 Hz**  | **20 GB** | **53W** |
+| Module | Latency | Throughput | Memory | Power |
+|--------|---------|------------|--------|-------|
+| Perception | 35ms | 28 FPS | 12 GB | 35W |
+| Graph Update | 8ms | 125 Hz | 2 GB | 5W |
+| Forecasting | 22ms | 45 Hz | 4 GB | 8W |
+| Planning | 35ms | 28 Hz | 1.5 GB | 4W |
+| Control | 10ms | 100 Hz | 0.5 GB | 1W |
+| **TOTAL** | **95ms** | **10 Hz** | **20 GB** | **53W** |
 
 ---
 
@@ -996,27 +992,27 @@ IF safety.watchdog_timeout > 500ms:
 
 ### 14.1 Hardware Cost (per vehicle)
 
-| Component        | Unit Cost | Quantity | Total       |
-| ---------------- | --------- | -------- | ----------- |
-| NVIDIA Orin AGX  | $1,200    | 1        | $1,200      |
-| LiDAR (128-beam) | $8,000    | 1        | $8,000      |
-| Camera (8MP)     | $150      | 8        | $1,200      |
-| Radar (77GHz)    | $300      | 5        | $1,500      |
-| IMU/GNSS         | $500      | 1        | $500        |
-| Cables, mounts   | $300      | 1        | $300        |
-| **TOTAL**        | -         | -        | **$12,700** |
+| Component | Unit Cost | Quantity | Total |
+|-----------|-----------|----------|-------|
+| NVIDIA Orin AGX | $1,200 | 1 | $1,200 |
+| LiDAR (128-beam) | $8,000 | 1 | $8,000 |
+| Camera (8MP) | $150 | 8 | $1,200 |
+| Radar (77GHz) | $300 | 5 | $1,500 |
+| IMU/GNSS | $500 | 1 | $500 |
+| Cables, mounts | $300 | 1 | $300 |
+| **TOTAL** | - | - | **$12,700** |
 
 **At Scale (100K units):** ~$6,500/vehicle (50% reduction)
 
 ### 14.2 Cloud Cost (per vehicle/month)
 
-| Service          | Usage               | Cost          |
-| ---------------- | ------------------- | ------------- |
-| Telemetry upload | 300 GB/month        | $6            |
-| Model download   | 20 GB/month         | $0.40         |
-| VLM queries      | 2,400 queries/month | $24           |
-| Storage (logs)   | 250 GB/month        | $5            |
-| **TOTAL**        | -                   | **$35/month** |
+| Service | Usage | Cost |
+|---------|-------|------|
+| Telemetry upload | 300 GB/month | $6 |
+| Model download | 20 GB/month | $0.40 |
+| VLM queries | 2,400 queries/month | $24 |
+| Storage (logs) | 250 GB/month | $5 |
+| **TOTAL** | - | **$35/month** |
 
 **Annual per vehicle:** $420
 **Fleet (1000 vehicles):** $420,000/year
@@ -1037,7 +1033,6 @@ IF safety.watchdog_timeout > 500ms:
 - ⏳ VLM integration (planned)
 
 **Test Metrics:**
-
 - Simulation miles: 1M+
 - Real-world miles: 5,000 (highway only)
 - Disengagement rate: 1 per 50 miles
@@ -1052,7 +1047,6 @@ IF safety.watchdog_timeout > 500ms:
 - ⏳ Safety certification (ISO 26262 ASIL-B)
 
 **Success Criteria:**
-
 - Disengagement rate: <1 per 500 miles
 - Zero critical failures
 - <100ms latency (99th percentile)
@@ -1072,45 +1066,45 @@ IF safety.watchdog_timeout > 500ms:
 
 ### 16.1 RoadMesh vs Waymo
 
-| Dimension           | Waymo                   | RoadMesh               | Advantage   |
-| ------------------- | ----------------------- | ---------------------- | ----------- |
-| **Map Dependency**  | HD maps ($1M+/mile)     | Map-free               | 🟢 RoadMesh |
-| **Scalability**     | Limited to mapped areas | Global                 | 🟢 RoadMesh |
-| **Hardware Cost**   | $150K+                  | $12K                   | 🟢 RoadMesh |
-| **Data Efficiency** | 20M+ miles              | <1M miles (sim + real) | 🟢 RoadMesh |
-| **Maturity**        | Production (robotaxi)   | Prototype              | 🔴 Waymo    |
+| Dimension | Waymo | RoadMesh | Advantage |
+|-----------|-------|----------|-----------|
+| **Map Dependency** | HD maps ($1M+/mile) | Map-free | 🟢 RoadMesh |
+| **Scalability** | Limited to mapped areas | Global | 🟢 RoadMesh |
+| **Hardware Cost** | $150K+ | $12K | 🟢 RoadMesh |
+| **Data Efficiency** | 20M+ miles | <1M miles (sim + real) | 🟢 RoadMesh |
+| **Maturity** | Production (robotaxi) | Prototype | 🔴 Waymo |
 
 ### 16.2 RoadMesh vs Tesla FSD
 
-| Dimension          | Tesla FSD         | RoadMesh         | Advantage   |
-| ------------------ | ----------------- | ---------------- | ----------- |
-| **Architecture**   | End-to-end neural | Modular (hybrid) | 🟡 Tied     |
-| **Sensors**        | Vision-only       | Multi-modal      | 🟢 RoadMesh |
-| **Representation** | Occupancy grid    | Graph topology   | 🟢 RoadMesh |
-| **Explainability** | Black box         | Interpretable    | 🟢 RoadMesh |
-| **Data**           | 1B+ fleet miles   | <1M miles        | 🔴 Tesla    |
+| Dimension | Tesla FSD | RoadMesh | Advantage |
+|-----------|-----------|----------|-----------|
+| **Architecture** | End-to-end neural | Modular (hybrid) | 🟡 Tied |
+| **Sensors** | Vision-only | Multi-modal | 🟢 RoadMesh |
+| **Representation** | Occupancy grid | Graph topology | 🟢 RoadMesh |
+| **Explainability** | Black box | Interpretable | 🟢 RoadMesh |
+| **Data** | 1B+ fleet miles | <1M miles | 🔴 Tesla |
 
 ### 16.3 RoadMesh vs Comma.ai
 
-| Dimension          | Comma.ai           | RoadMesh        | Advantage               |
-| ------------------ | ------------------ | --------------- | ----------------------- |
-| **Target**         | Consumer (L2)      | Tier-1/OEM (L4) | 🟡 Different markets    |
-| **Cost**           | $1,200             | $12,700         | 🔴 Comma.ai             |
-| **Capability**     | Highway assist     | Full autonomy   | 🟢 RoadMesh             |
-| **Business Model** | Direct-to-consumer | B2B licensing   | 🟡 Different strategies |
+| Dimension | Comma.ai | RoadMesh | Advantage |
+|-----------|----------|----------|-----------|
+| **Target** | Consumer (L2) | Tier-1/OEM (L4) | 🟡 Different markets |
+| **Cost** | $1,200 | $12,700 | 🔴 Comma.ai |
+| **Capability** | Highway assist | Full autonomy | 🟢 RoadMesh |
+| **Business Model** | Direct-to-consumer | B2B licensing | 🟡 Different strategies |
 
 ---
 
 ## 17. Technical Risks & Mitigation
 
-| Risk                      | Probability | Impact | Mitigation                                                                                    |
-| ------------------------- | ----------- | ------ | --------------------------------------------------------------------------------------------- |
-| **Latency regression**    | Medium      | High   | • Hardware profiling<br>• Algorithm optimization<br>• Fallback planners                       |
-| **Sensor failure**        | Low         | High   | • Redundant sensors<br>• Degraded mode operation<br>• Predictive maintenance                  |
-| **Graph topology errors** | Medium      | Medium | • Conservative expansion<br>• Human verification (fleet data)<br>• Graph pruning              |
-| **VLM hallucination**     | Medium      | Medium | • Output validation<br>• Confidence thresholds<br>• Rule-based override                       |
-| **Sim-to-real gap**       | High        | Medium | • Domain randomization<br>• Real-world fine-tuning<br>• Adversarial training                  |
-| **Compute cost overrun**  | Medium      | Medium | • Model compression (quantization)<br>• Cloud cost monitoring<br>• Efficient batch processing |
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| **Latency regression** | Medium | High | • Hardware profiling<br>• Algorithm optimization<br>• Fallback planners |
+| **Sensor failure** | Low | High | • Redundant sensors<br>• Degraded mode operation<br>• Predictive maintenance |
+| **Graph topology errors** | Medium | Medium | • Conservative expansion<br>• Human verification (fleet data)<br>• Graph pruning |
+| **VLM hallucination** | Medium | Medium | • Output validation<br>• Confidence thresholds<br>• Rule-based override |
+| **Sim-to-real gap** | High | Medium | • Domain randomization<br>• Real-world fine-tuning<br>• Adversarial training |
+| **Compute cost overrun** | Medium | Medium | • Model compression (quantization)<br>• Cloud cost monitoring<br>• Efficient batch processing |
 
 ---
 
@@ -1119,25 +1113,21 @@ IF safety.watchdog_timeout > 500ms:
 RoadMesh represents a paradigm shift in autonomous navigation:
 
 **Technical Innovation:**
-
 - Graph-based topology eliminates HD map dependency
 - Multi-modal fusion + foundation models for robust perception
 - Hierarchical planning with learned diffusion models
 
 **Business Advantage:**
-
 - 90% cost reduction vs Waymo approach ($12K vs $150K hardware)
 - Scalable to any geography (map-free)
 - Tier-1 supplier channel for rapid OEM adoption
 
 **Execution Readiness:**
-
 - Prototype validated (5K real-world miles)
 - Cloud infrastructure sized (Google Cloud partnership)
 - Series A roadmap defined ($15M target)
 
 **Next Steps:**
-
 1. Complete MVP (Q2 2025) → Tier-1 pilot
 2. Raise Series A (Q3 2025) → Scale team to 20 engineers
 3. Production deployment (Q1 2026) → First OEM integration
@@ -1146,17 +1136,17 @@ RoadMesh represents a paradigm shift in autonomous navigation:
 
 ## Appendix A: Acronyms & Terminology
 
-| Term     | Definition                                                |
-| -------- | --------------------------------------------------------- |
-| **BEV**  | Bird's Eye View (top-down representation)                 |
-| **GNN**  | Graph Neural Network                                      |
-| **VLM**  | Vision-Language Model (e.g., GPT-4V)                      |
-| **MPC**  | Model Predictive Control                                  |
-| **TOPS** | Tera Operations Per Second (AI compute metric)            |
-| **ADE**  | Average Displacement Error (trajectory prediction metric) |
-| **IoU**  | Intersection over Union (segmentation metric)             |
-| **NMS**  | Non-Maximum Suppression (duplicate removal)               |
-| **ASIL** | Automotive Safety Integrity Level (ISO 26262)             |
+| Term | Definition |
+|------|------------|
+| **BEV** | Bird's Eye View (top-down representation) |
+| **GNN** | Graph Neural Network |
+| **VLM** | Vision-Language Model (e.g., GPT-4V) |
+| **MPC** | Model Predictive Control |
+| **TOPS** | Tera Operations Per Second (AI compute metric) |
+| **ADE** | Average Displacement Error (trajectory prediction metric) |
+| **IoU** | Intersection over Union (segmentation metric) |
+| **NMS** | Non-Maximum Suppression (duplicate removal) |
+| **ASIL** | Automotive Safety Integrity Level (ISO 26262) |
 
 ---
 

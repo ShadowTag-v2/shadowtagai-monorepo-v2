@@ -1,24 +1,24 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult, ContentBlock } from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult, ContentBlock } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod";
 
 // Tool input schema
 const GetStructuredContentInputSchema = {
-  location: z.enum(['New York', 'Chicago', 'Los Angeles']).describe('Choose city'),
+  location: z.enum(["New York", "Chicago", "Los Angeles"]).describe("Choose city"),
 };
 
 // Tool output schema
 const GetStructuredContentOutputSchema = z.object({
-  temperature: z.number().describe('Temperature in celsius'),
-  conditions: z.string().describe('Weather conditions description'),
-  humidity: z.number().describe('Humidity percentage'),
+  temperature: z.number().describe("Temperature in celsius"),
+  conditions: z.string().describe("Weather conditions description"),
+  humidity: z.number().describe("Humidity percentage"),
 });
 
 // Tool configuration
-const name = 'get-structured-content';
+const name = "get-structured-content";
 const config = {
-  title: 'Get Structured Content Tool',
-  description: 'Returns structured content along with an output schema for client data validation',
+  title: "Get Structured Content Tool",
+  description: "Returns structured content along with an output schema for client data validation",
   inputSchema: GetStructuredContentInputSchema,
   outputSchema: GetStructuredContentOutputSchema,
 };
@@ -42,33 +42,33 @@ export const registerGetStructuredContentTool = (server: McpServer) => {
     // Get simulated weather for the chosen city
     let weather;
     switch (args.location) {
-      case 'New York':
+      case "New York":
         weather = {
           temperature: 33,
-          conditions: 'Cloudy',
+          conditions: "Cloudy",
           humidity: 82,
         };
         break;
 
-      case 'Chicago':
+      case "Chicago":
         weather = {
           temperature: 36,
-          conditions: 'Light rain / drizzle',
+          conditions: "Light rain / drizzle",
           humidity: 82,
         };
         break;
 
-      case 'Los Angeles':
+      case "Los Angeles":
         weather = {
           temperature: 73,
-          conditions: 'Sunny / Clear',
+          conditions: "Sunny / Clear",
           humidity: 48,
         };
         break;
     }
 
     const backwardCompatibleContentBlock: ContentBlock = {
-      type: 'text',
+      type: "text",
       text: JSON.stringify(weather),
     };
 

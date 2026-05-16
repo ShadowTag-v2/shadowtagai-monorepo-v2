@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import re
 
@@ -49,7 +50,7 @@ EXCLUDE_EXTS = {
 }
 
 
-def is_excluded(path, name, is_dir) -> bool:
+def is_excluded(path, name, is_dir):
     if is_dir and name in EXCLUDE_DIRS:
         return True
     if not is_dir:
@@ -59,7 +60,8 @@ def is_excluded(path, name, is_dir) -> bool:
     return False
 
 
-def scrub_workspaces() -> None:
+def scrub_workspaces():
+    print("[remediate] Starting workspace deletion protocol...")
     deleted = 0
     for root, dirs, files in os.walk(ROOT):
         dirs[:] = [d for d in dirs if not is_excluded(root, d, True)]
@@ -68,11 +70,15 @@ def scrub_workspaces() -> None:
                 if file == CANONICAL_WORKSPACE:
                     continue
                 path = os.path.join(root, file)
+                print(f"  - Deleting alternate root: {path}", flush=True)
                 os.remove(path)
                 deleted += 1
+    print(f"[remediate] Deletion complete. Neutralized {deleted} alternate operator entrypoints.\n", flush=True)
 
 
-def scrub_content() -> None:
+def scrub_content():
+    print("[remediate] Starting aggressive string replacement protocol...", flush=True)
+
     # Precise replacements
     naming_replacements = {
         re.compile(r"pnkln-stack", re.IGNORECASE): "pnkln-stack",
@@ -123,7 +129,13 @@ def scrub_content() -> None:
                     f.write(content)
                 mod_count += 1
 
+    print(
+        f"[remediate] Replacement protocol complete. Reprogrammed {mod_count} files to canonical alignment.\n",
+        flush=True,
+    )
+
 
 if __name__ == "__main__":
     scrub_workspaces()
     scrub_content()
+    print("[remediate] Programmatic phase 3.5 sweep strictly enforced and finalized.", flush=True)

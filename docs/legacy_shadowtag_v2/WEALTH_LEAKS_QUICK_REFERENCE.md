@@ -117,6 +117,7 @@ def compress_prompt(full_prompt, max_tokens=2000):
 ### 5. Auto-Scaling Configuration (**$91K/year**, 2-day setup)
 
 ```yaml
+
 # kubernetes/autoscaler.yaml
 
 apiVersion: autoscaling/v2
@@ -131,12 +132,15 @@ spec:
   minReplicas: 2
   maxReplicas: 10
   metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
+
+
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+
 ```
 
 **Effect**: Reduce idle capacity from 69% to 18%
@@ -297,18 +301,18 @@ class ContextManager:
 
 ## 📊 Money Leak Severity Matrix
 
-| Leak                  | Monthly Cost | Fix Time | Fix Difficulty | Priority    | Annual ROI |
-| --------------------- | ------------ | -------- | -------------- | ----------- | ---------- |
-| No caching            | $8,500       | 2 days   | Easy           | 🔴 CRITICAL | 51,000%    |
-| On-demand instances   | $17,200      | 1 hour   | Trivial        | 🔴 CRITICAL | 206,400%   |
-| Wrong model selection | $11,400      | 1 day    | Easy           | 🔴 CRITICAL | 456,000%   |
-| Large context windows | $9,200       | 2 weeks  | Medium         | 🟠 HIGH     | 552%       |
-| No prompt compression | $7,400       | 3 days   | Medium         | 🟠 HIGH     | 29,600%    |
-| Poor auto-scaling     | $7,600       | 2 days   | Medium         | 🟠 HIGH     | 45,600%    |
-| No batching           | $3,200       | 1 day    | Easy           | 🟡 MEDIUM   | 128,000%   |
-| Storage waste         | $1,200       | Ongoing  | Easy           | 🟡 MEDIUM   | ∞          |
-| Tool sprawl           | $1,200       | 1 week   | Hard           | 🟡 MEDIUM   | 1,200%     |
-| Bad retries           | $1,800       | 2 days   | Easy           | 🟡 MEDIUM   | 10,800%    |
+| Leak | Monthly Cost | Fix Time | Fix Difficulty | Priority | Annual ROI |
+|------|--------------|----------|----------------|----------|------------|
+| No caching | $8,500 | 2 days | Easy | 🔴 CRITICAL | 51,000% |
+| On-demand instances | $17,200 | 1 hour | Trivial | 🔴 CRITICAL | 206,400% |
+| Wrong model selection | $11,400 | 1 day | Easy | 🔴 CRITICAL | 456,000% |
+| Large context windows | $9,200 | 2 weeks | Medium | 🟠 HIGH | 552% |
+| No prompt compression | $7,400 | 3 days | Medium | 🟠 HIGH | 29,600% |
+| Poor auto-scaling | $7,600 | 2 days | Medium | 🟠 HIGH | 45,600% |
+| No batching | $3,200 | 1 day | Easy | 🟡 MEDIUM | 128,000% |
+| Storage waste | $1,200 | Ongoing | Easy | 🟡 MEDIUM | ∞ |
+| Tool sprawl | $1,200 | 1 week | Hard | 🟡 MEDIUM | 1,200% |
+| Bad retries | $1,800 | 2 days | Easy | 🟡 MEDIUM | 10,800% |
 
 ---
 
@@ -413,39 +417,53 @@ def track_daily_savings():
 ### Weekly Report Template
 
 ```markdown
+
 ## Week of [DATE]: Savings Report
 
 ### Implementations Completed
 
+
+
 - [x] Response caching (deployed Monday)
 
+
 - [x] Reserved instances (purchased Tuesday)
+
 
 - [ ] Model routing (in testing)
 
 ### Actual vs Projected Savings
 
-| Initiative | Projected   | Actual      | Variance |
-| ---------- | ----------- | ----------- | -------- |
-| Caching    | $8,500      | $7,200      | -15%     |
-| Reserved   | $17,200     | $17,200     | 0%       |
-| **Total**  | **$25,700** | **$24,400** | **-5%**  |
+| Initiative | Projected | Actual | Variance |
+|------------|-----------|--------|----------|
+| Caching | $8,500 | $7,200 | -15% |
+| Reserved | $17,200 | $17,200 | 0% |
+| **Total** | **$25,700** | **$24,400** | **-5%** |
 
 ### Next Week Priorities
 
+
+
 1. Deploy model routing (projected $11,400/mo)
 
+
 2. Implement prompt compression (projected $7,400/mo)
+
 
 3. Configure auto-scaling (projected $7,600/mo)
 
 ### Cumulative Savings
 
+
+
 - Month-to-date: $48,800
+
 
 - Projected monthly: $63,500
 
+
 - Annual run-rate: $762,000
+
 ```
 
 ---
@@ -454,13 +472,19 @@ def track_daily_savings():
 
 ### Week 1
 
+
+
 - [ ] Purchase reserved GPU instances (1 hour)
+
 
 - [ ] Deploy Redis caching layer (2 days)
 
+
 - [ ] Implement smart model routing (1 day)
 
+
 - [ ] Configure cost monitoring alerts (4 hours)
+
 
 - [ ] Set up daily metrics dashboard (1 day)
 
@@ -468,13 +492,19 @@ def track_daily_savings():
 
 ### Week 2-3
 
+
+
 - [ ] Implement prompt compression (3 days)
+
 
 - [ ] Configure auto-scaling (2 days)
 
+
 - [ ] Add request batching (1 day)
 
+
 - [ ] Optimize retry logic (2 days)
+
 
 - [ ] Run storage cleanup (ongoing)
 
@@ -482,13 +512,19 @@ def track_daily_savings():
 
 ### Week 4
 
+
+
 - [ ] Migrate monitoring tools (1 week)
+
 
 - [ ] Context window optimization (2 weeks, start now)
 
+
 - [ ] Review Week 1-3 actual savings
 
+
 - [ ] Adjust projections based on actuals
+
 
 - [ ] Plan Month 2 initiatives
 
@@ -536,11 +572,16 @@ def track_cost(func):
 
 ### 2. A/B Test Major Changes
 
+
+
 - Deploy to 10% of traffic first
+
 
 - Monitor for 48 hours
 
+
 - Compare costs and quality
+
 
 - Roll out to 100% if successful
 
@@ -569,11 +610,16 @@ class BudgetGuardian:
 
 ### 4. Automate Everything
 
+
+
 - Daily cost reports → Email
+
 
 - Budget alerts → Slack
 
+
 - Anomaly detection → PagerDuty
+
 
 - Weekly savings summary → Management dashboard
 
@@ -583,33 +629,49 @@ class BudgetGuardian:
 
 ### Month 1 Goals
 
+
+
 - [ ] Reduce API costs by 50% ($19,200 → $9,600/mo)
+
 
 - [ ] Achieve 30% cache hit rate
 
+
 - [ ] Deploy 3+ cost optimization features
 
+
 - [ ] Establish baseline metrics for all services
+
 
 - [ ] Document actual vs projected savings
 
 ### Month 2 Goals
 
+
+
 - [ ] Reduce API costs by 70% ($19,200 → $5,760/mo)
+
 
 - [ ] Achieve 75% GPU utilization (from 23%)
 
+
 - [ ] Complete infrastructure right-sizing
+
 
 - [ ] Eliminate all trivial wealth leaks (<$500/mo)
 
 ### Month 3 Goals
 
+
+
 - [ ] Reduce API costs by 80% ($19,200 → $3,840/mo)
+
 
 - [ ] All core optimizations in production
 
+
 - [ ] Cumulative savings > $150K
+
 
 - [ ] Revenue optimization initiatives launched
 

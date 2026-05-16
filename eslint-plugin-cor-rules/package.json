@@ -1,6 +1,7 @@
 {
   "name": "eslint-plugin-cor-rules",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "index.js",
-  "type": "commonjs"
+  "type": "commonjs",
+  "description": "Cor.Rules hybrid ESLint enforcement for Antigravity"
 }

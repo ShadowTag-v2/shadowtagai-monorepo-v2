@@ -1,5 +1,4 @@
 # 10x Velocity Principles
-
 1. Plan before code — always enter planning mode for non-trivial changes
 2. Atomic commits — one logical change per commit
 3. Idempotent scripts — all bootstrap scripts safe to re-run

@@ -72,7 +72,7 @@
       "platform": "GKE Native (NOT Vertex AI Workbench)",
       "cloud_provider": "Google Cloud EXCLUSIVE (never AWS/Azure)",
       "namespaces": [
-        "ShadowTag-v2jr-governance",
+        "aiyoujr-governance",
         "autogen-orchestration",
         "cognitive-stack-v5",
         "shadowtag-v2"

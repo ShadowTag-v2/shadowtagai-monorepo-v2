@@ -1,0 +1,213 @@
+# Judge #6 HITL System - Kubernetes Deployment
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-judges
+  labels:
+    app: judge-hitl
+    component: enforcement
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-config
+  namespace: pnkln-judges
+data:
+  LOG_LEVEL: "info"
+  TARGET_P99_LATENCY_MS: "90"
+  AUDIT_RETENTION_DAYS: "2555"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: judge-secrets
+  namespace: pnkln-judges
+type: Opaque
+data:
+  # Base64 encoded secrets (replace with actual values)
+  # GEMINI_API_KEY: <base64-encoded-key>
+  # DATABASE_URL: <base64-encoded-url>
+  gemini_api_key: ""  # Set during deployment
+  database_url: ""    # Set during deployment
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge-hitl
+  namespace: pnkln-judges
+  labels:
+    app: judge-hitl
+    version: v1.0.0
+spec:
+  replicas: 3  # Start with 3 replicas for HA
+  selector:
+    matchLabels:
+      app: judge-hitl
+  template:
+    metadata:
+      labels:
+        app: judge-hitl
+        version: v1.0.0
+    spec:
+      containers:
+      - name: judge-api
+        image: gcr.io/PROJECT_ID/judge-hitl:v1.0.0  # Replace PROJECT_ID
+        ports:
+        - name: http
+          containerPort: 8001
+          protocol: TCP
+        env:
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: judge-config
+              key: LOG_LEVEL
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: judge-secrets
+              key: gemini_api_key
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: judge-secrets
+              key: database_url
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /judges/health
+            port: 8001
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /judges/health
+            port: 8001
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-hitl-service
+  namespace: pnkln-judges
+  labels:
+    app: judge-hitl
+spec:
+  type: LoadBalancer  # Change to ClusterIP for internal-only
+  selector:
+    app: judge-hitl
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8001
+    protocol: TCP
+  sessionAffinity: None
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: judge-hitl-hpa
+  namespace: pnkln-judges
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: judge-hitl
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 60
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      selectPolicy: Max
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge-hitl-pdb
+  namespace: pnkln-judges
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: judge-hitl
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: judge-hitl-netpol
+  namespace: pnkln-judges
+spec:
+  podSelector:
+    matchLabels:
+      app: judge-hitl
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: pnkln-judges
+    ports:
+    - protocol: TCP
+      port: 8001
+  egress:
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS for external APIs
+    - protocol: TCP
+      port: 5432  # PostgreSQL

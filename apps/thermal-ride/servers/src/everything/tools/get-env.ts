@@ -1,11 +1,11 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 // Tool configuration
-const name = 'get-env';
+const name = "get-env";
 const config = {
-  title: 'Print Environment Tool',
-  description: 'Returns all environment variables, helpful for debugging MCP server configuration',
+  title: "Print Environment Tool",
+  description: "Returns all environment variables, helpful for debugging MCP server configuration",
   inputSchema: {},
 };
 
@@ -23,7 +23,7 @@ export const registerGetEnvTool = (server: McpServer) => {
     return {
       content: [
         {
-          type: 'text',
+          type: "text",
           text: JSON.stringify(process.env, null, 2),
         },
       ],

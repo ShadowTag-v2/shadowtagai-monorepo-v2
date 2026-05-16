@@ -30,146 +30,146 @@ _DEFAULT_SLA_MS = 35000
 
 
 class SwarmWhiteboard:
-    """Optimistic Concurrency Control to prevent hallucination collisions.
+  """Optimistic Concurrency Control to prevent hallucination collisions.
 
-    Uses Redis WATCH/MULTI/EXEC for atomic version-checked writes.
-    If two agents attempt to write the same issue simultaneously,
-    the slower agent gets a version conflict and must retry.
+  Uses Redis WATCH/MULTI/EXEC for atomic version-checked writes.
+  If two agents attempt to write the same issue simultaneously,
+  the slower agent gets a version conflict and must retry.
 
-    This prevents the most dangerous failure mode: two agents
-    independently modifying the same state, each believing their
-    view is current.
+  This prevents the most dangerous failure mode: two agents
+  independently modifying the same state, each believing their
+  view is current.
+
+  Args:
+      redis_url: Redis connection URL.
+  """
+
+  def __init__(self, redis_url: str = "redis://localhost:6379") -> None:
+    self.r = redis.Redis.from_url(redis_url, decode_responses=True)
+
+  def read_state(self, issue_id: str) -> dict:
+    """Read the current whiteboard state for an issue.
 
     Args:
-        redis_url: Redis connection URL.
+        issue_id: The issue identifier.
+
+    Returns:
+        Current state dict with version number.
     """
+    key = f"whiteboard:{issue_id}"
+    raw = self.r.get(key)
+    if raw is None:
+      return {"version": 0, "data": {}}
+    return json.loads(raw)
 
-    def __init__(self, redis_url: str = "redis://localhost:6379") -> None:
-        self.r = redis.Redis.from_url(redis_url, decode_responses=True)
+  def write_state(
+    self,
+    issue_id: str,
+    expected_version: int,
+    new_data: dict,
+  ) -> bool:
+    """Atomically write state with OCC version check.
 
-    def read_state(self, issue_id: str) -> dict:
-        """Read the current whiteboard state for an issue.
+    Uses Redis WATCH to detect concurrent modifications.
+    If another agent modified the state between our read and
+    write, the transaction fails.
 
-        Args:
-            issue_id: The issue identifier.
+    Args:
+        issue_id: The issue identifier.
+        expected_version: The version we expect (from our last read).
+        new_data: The new state data to write.
 
-        Returns:
-            Current state dict with version number.
-        """
-        key = f"whiteboard:{issue_id}"
-        raw = self.r.get(key)
-        if raw is None:
-            return {"version": 0, "data": {}}
-        return json.loads(raw)
+    Returns:
+        True if write succeeded, False if version conflict.
+    """
+    key = f"whiteboard:{issue_id}"
 
-    def write_state(
-        self,
-        issue_id: str,
-        expected_version: int,
-        new_data: dict,
-    ) -> bool:
-        """Atomically write state with OCC version check.
+    with self.r.pipeline() as pipe:
+      try:
+        pipe.watch(key)
+        raw = pipe.get(key)
+        current = json.loads(raw) if raw else {"version": 0}
 
-        Uses Redis WATCH to detect concurrent modifications.
-        If another agent modified the state between our read and
-        write, the transaction fails.
+        if current["version"] != expected_version:
+          logger.warning(
+            "⚠️ OCC CONFLICT: Issue %s. Expected v%d, got v%d. Agent must re-read and retry.",
+            issue_id,
+            expected_version,
+            current["version"],
+          )
+          return False
 
-        Args:
-            issue_id: The issue identifier.
-            expected_version: The version we expect (from our last read).
-            new_data: The new state data to write.
+        new_state = {
+          "version": current["version"] + 1,
+          "data": new_data,
+        }
 
-        Returns:
-            True if write succeeded, False if version conflict.
-        """
-        key = f"whiteboard:{issue_id}"
+        pipe.multi()
+        pipe.set(key, json.dumps(new_state))
+        pipe.execute()
 
-        with self.r.pipeline() as pipe:
-            try:
-                pipe.watch(key)
-                raw = pipe.get(key)
-                current = json.loads(raw) if raw else {"version": 0}
+        logger.info(
+          "✅ Whiteboard write: Issue %s → v%d",
+          issue_id,
+          new_state["version"],
+        )
+        return True
 
-                if current["version"] != expected_version:
-                    logger.warning(
-                        "⚠️ OCC CONFLICT: Issue %s. Expected v%d, got v%d. Agent must re-read and retry.",
-                        issue_id,
-                        expected_version,
-                        current["version"],
-                    )
-                    return False
+      except redis.WatchError:
+        logger.warning(
+          "⚠️ WATCH CONFLICT: Issue %s modified during transaction. Concurrent agent detected.",
+          issue_id,
+        )
+        return False
 
-                new_state = {
-                    "version": current["version"] + 1,
-                    "data": new_data,
-                }
+  def clear_issue(self, issue_id: str) -> None:
+    """Clear the whiteboard state for a completed issue.
 
-                pipe.multi()
-                pipe.set(key, json.dumps(new_state))
-                pipe.execute()
-
-                logger.info(
-                    "✅ Whiteboard write: Issue %s → v%d",
-                    issue_id,
-                    new_state["version"],
-                )
-                return True
-
-            except redis.WatchError:
-                logger.warning(
-                    "⚠️ WATCH CONFLICT: Issue %s modified during transaction. Concurrent agent detected.",
-                    issue_id,
-                )
-                return False
-
-    def clear_issue(self, issue_id: str) -> None:
-        """Clear the whiteboard state for a completed issue.
-
-        Args:
-            issue_id: The issue identifier.
-        """
-        self.r.delete(f"whiteboard:{issue_id}")
+    Args:
+        issue_id: The issue identifier.
+    """
+    self.r.delete(f"whiteboard:{issue_id}")
 
 
 async def ucmj_drag_race_sla(
-    agent_task: Callable[[], Coroutine[Any, Any, dict]],
-    timeout_ms: int = _DEFAULT_SLA_MS,
-    agent_name: str = "UNKNOWN",
+  agent_task: Callable[[], Coroutine[Any, Any, dict]],
+  timeout_ms: int = _DEFAULT_SLA_MS,
+  agent_name: str = "UNKNOWN",
 ) -> dict:
-    """Article 92: Failure to Obey — UCMJ timeout enforcement.
+  """Article 92: Failure to Obey — UCMJ timeout enforcement.
 
-    If an agent exceeds its SLA, it is court-martialed (replaced).
-    The mission continues without it.
+  If an agent exceeds its SLA, it is court-martialed (replaced).
+  The mission continues without it.
 
-    The 35-second default matches the C++ ZMQ IPC round-trip budget
-    for the Midas quant engine.
+  The 35-second default matches the C++ ZMQ IPC round-trip budget
+  for the Midas quant engine.
 
-    Args:
-        agent_task: Async callable that returns the agent's result.
-        timeout_ms: Maximum execution time in milliseconds.
-        agent_name: Agent identifier for logging.
+  Args:
+      agent_task: Async callable that returns the agent's result.
+      timeout_ms: Maximum execution time in milliseconds.
+      agent_name: Agent identifier for logging.
 
-    Returns:
-        Agent result on success, or ARTICLE_92_VIOLATION on timeout.
-    """
-    try:
-        result = await asyncio.wait_for(
-            agent_task(),
-            timeout=timeout_ms / 1000.0,
-        )
-        logger.info("✅ Agent %s completed within SLA (%dms).", agent_name, timeout_ms)
-        return result
+  Returns:
+      Agent result on success, or ARTICLE_92_VIOLATION on timeout.
+  """
+  try:
+    result = await asyncio.wait_for(
+      agent_task(),
+      timeout=timeout_ms / 1000.0,
+    )
+    logger.info("✅ Agent %s completed within SLA (%dms).", agent_name, timeout_ms)
+    return result
 
-    except TimeoutError:
-        logger.critical(
-            "⏰ UCMJ ARTICLE 92 VIOLATION: Agent %s exceeded %dms SLA. Court-martial initiated. Agent will be replaced.",
-            agent_name,
-            timeout_ms,
-        )
-        return {
-            "status": "HUNG",
-            "agent": agent_name,
-            "sla_ms": timeout_ms,
-            "directive": "REPLACE_AGENT",
-            "ucmj": "ARTICLE_92_VIOLATION",
-        }
+  except TimeoutError:
+    logger.critical(
+      "⏰ UCMJ ARTICLE 92 VIOLATION: Agent %s exceeded %dms SLA. Court-martial initiated. Agent will be replaced.",
+      agent_name,
+      timeout_ms,
+    )
+    return {
+      "status": "HUNG",
+      "agent": agent_name,
+      "sla_ms": timeout_ms,
+      "directive": "REPLACE_AGENT",
+      "ucmj": "ARTICLE_92_VIOLATION",
+    }

@@ -10,7 +10,7 @@ Cor.115
 
          | Component             | File                                     | Status             | Latency   |
          |-----------------------|------------------------------------------|--------------------|-----------|
-         | Judge 6 Core         | /src/pnkln/judge_six.py                  | ✅ Complete         | <90ms     |
+         | Judge #6 Core         | /src/pnkln/judge_six.py                  | ✅ Complete         | <90ms     |
          | Judge Lite            | /src/pnkln_agents/core/judge_six_lite.py | ✅ Complete         | <90ms p99 |
          | 21-Layer Architecture | /pnkln/governance/judge_architecture.py  | ✅ Complete         | Async     |
          | Jura Protocol         | /agents/jura_protocol.py                 | ✅ Complete         | <100ms    |
@@ -23,7 +23,7 @@ Cor.115
          |---------------------|-------|----------------------------------------------------------------|
          | MarketDemand        | 9     | EU AI Act, GDPR enforcement, every AI company needs compliance |
          | OfferMix            | 8     | API calls + Audit dashboards + On-prem deploy                  |
-         | TechLeverage        | 9     | Judge 6 runs <35ms, Perplexity MCP live                       |
+         | TechLeverage        | 9     | Judge #6 runs <35ms, Perplexity MCP live                       |
          | DistributionDensity | 7     | MCP = every Claude Code user; Perplexity Comet                 |
          | PricingPower        | 8     | Compliance = must-have (Free/Pro $99/Enterprise)               |
          | LaborTraining       | 8     | Self-serve API, labor ~0.15                                    |
@@ -50,7 +50,7 @@ Cor.115
 
          | Component             | File                                 | Status      | Completeness |
          |-----------------------|--------------------------------------|-------------|--------------|
-         | https://github.com/karpathy/autoresearchs Swarm   | /agents/autoresearch.py            | ✅ Working   | 90%          |
+         | https://github.com/karpathy/autoresearchs Swarm   | /agents/flying_monkeys.py            | ✅ Working   | 90%          |
          | Pipeline Orchestrator | /agents/pipeline_orchestrator.py     | 🔄 Partial  | 70%          |
          | Ray Orchestrator      | /src/serving/ray_orchestrator.py     | ⚠️ Scaffold | 30%          |
          | vLLM Backend          | /src/serving/vllm_backend.py         | ⚠️ Scaffold | 40%          |
@@ -91,7 +91,7 @@ Cor.115
 
          | Component        | File                          | Status                  |
          |------------------|-------------------------------|-------------------------|
-         | 600-Agent Swarm  | /agents/autoresearch.py     | ✅ Architecture complete |
+         | 600-Agent Swarm  | /agents/flying_monkeys.py     | ✅ Architecture complete |
          | Agent Registry   | /pnkln/agents/registry.yaml   | ✅ Complete              |
          | Skills Registry  | /pnkln/skills/registry.yaml   | ✅ Complete              |
          | Marketplace      | /marketplace/marketplace.json | ✅ Complete              |
@@ -212,7 +212,7 @@ Cor.115
                      └─ Result: Multi-LLM routing operational
 
          WEEK 2-6:   https://github.com/karpathy/autoresearchS (Agents) ━━━━━━━━━━━━━━━━━━━━━━━━━━
-                     ├─ Wire LLM execution into autoresearch.py
+                     ├─ Wire LLM execution into flying_monkeys.py
                      ├─ Agent-to-provider routing via Antigravity Router
                      ├─ DTE evolution loop completion
                      └─ Result: 600-agent swarm live on Pipeline
@@ -254,7 +254,7 @@ Cor.115
          ---
          Grounding Decision: ALWAYS GROUNDED
 
-         Per user decision: All Judge 6 queries will go through Vertex AI Search.
+         Per user decision: All Judge #6 queries will go through Vertex AI Search.
 
          Every governance query:
            Request → Vertex AI Search (doctrine retrieval) → Gemini → Grounded Response + Citations

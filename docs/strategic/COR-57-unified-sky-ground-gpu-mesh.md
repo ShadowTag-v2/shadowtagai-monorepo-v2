@@ -11,9 +11,9 @@
 
 ### Concept
 
-ShadowTag-v2 becomes the **universal compute substrate** — every satellite, tower, and vehicle becomes part of one self-balancing global GPU cloud.
+AiYou becomes the **universal compute substrate** — every satellite, tower, and vehicle becomes part of one self-balancing global GPU cloud.
 
-When Starlink satellites handle orbital AI inference and cellular towers manage terrestrial workloads, ShadowTag-v2 becomes the only entity bridging airspace and earth with verified AI infrastructure.
+When Starlink satellites handle orbital AI inference and cellular towers manage terrestrial workloads, AiYou becomes the only entity bridging airspace and earth with verified AI infrastructure.
 
 ### Core Integration
 
@@ -30,11 +30,11 @@ Integrating CoreWeave GPUs into both Starlink ground infrastructure and cellular
 
 ### Three-Layer Compute Mesh
 
-| Layer                 | Platform                      | Function                         | Customer Value                         |
-| --------------------- | ----------------------------- | -------------------------------- | -------------------------------------- |
-| **Orbital Layer**     | Starlink LEO satellites       | Edge inference + global backhaul | Low-latency, resilient global coverage |
-| **Terrestrial Layer** | CoreWeave GPUs in cell towers | City-level compute & AI routing  | Ultra-low latency inference            |
-| **User Layer**        | Vehicles, Teslas, phones      | End-user AI / data capture       | Real-time AI, verified local caching   |
+| Layer | Platform | Function | Customer Value |
+|-------|----------|----------|----------------|
+| **Orbital Layer** | Starlink LEO satellites | Edge inference + global backhaul | Low-latency, resilient global coverage |
+| **Terrestrial Layer** | CoreWeave GPUs in cell towers | City-level compute & AI routing | Ultra-low latency inference |
+| **User Layer** | Vehicles, Teslas, phones | End-user AI / data capture | Real-time AI, verified local caching |
 
 **Result**: Every antenna and device doubles as a compute node — creating a continuously synchronized, global mesh.
 
@@ -51,36 +51,36 @@ Integrating CoreWeave GPUs into both Starlink ground infrastructure and cellular
 
 ### Capital & Cost Structure (5-Year Plan)
 
-| Component                 | Unit Cost | Volume (Y5)    | CAPEX       | Notes                            |
-| ------------------------- | --------- | -------------- | ----------- | -------------------------------- |
-| CoreWeave tower GPUs      | $15,000   | 100,000 towers | $1.5B       | 1 GPU/node, shared w/ carriers   |
-| Starlink GPU integration  | $200,000  | 1,000 sats     | $200M       | Deep learning modules onboard    |
-| Interconnect (fiber + 5G) | $10,000   | 100,000        | $1B         | Includes local routing + install |
-| Software orchestration    | —         | —              | $100M       | ShadowTag-v2 orchestration + billing    |
-| **Total CAPEX (5 yrs)**   | —         | —              | **≈ $2.8B** | Amortized via leases & subsidies |
+| Component | Unit Cost | Volume (Y5) | CAPEX | Notes |
+|-----------|-----------|-------------|-------|-------|
+| CoreWeave tower GPUs | $15,000 | 100,000 towers | $1.5B | 1 GPU/node, shared w/ carriers |
+| Starlink GPU integration | $200,000 | 1,000 sats | $200M | Deep learning modules onboard |
+| Interconnect (fiber + 5G) | $10,000 | 100,000 | $1B | Includes local routing + install |
+| Software orchestration | — | — | $100M | AiYou orchestration + billing |
+| **Total CAPEX (5 yrs)** | — | — | **≈ $2.8B** | Amortized via leases & subsidies |
 
 ### Operating Model
 
-| Metric              | Value     | Description                       |
-| ------------------- | --------- | --------------------------------- |
-| Annual OPEX         | ≈ $400M   | Maintenance, bandwidth, licensing |
-| Avg. node uptime    | 99.98%    | 2-layer redundancy                |
-| Compute utilization | 70% avg.  | 24/7 task routing                 |
-| ROI period          | 2.4 years | Break-even by mid-Year 3          |
+| Metric | Value | Description |
+|--------|-------|-------------|
+| Annual OPEX | ≈ $400M | Maintenance, bandwidth, licensing |
+| Avg. node uptime | 99.98% | 2-layer redundancy |
+| Compute utilization | 70% avg. | 24/7 task routing |
+| ROI period | 2.4 years | Break-even by mid-Year 3 |
 
 ### Revenue Composition (Year 5)
 
-| Source                             | Annual Revenue | Margin  | Notes                            |
-| ---------------------------------- | -------------- | ------- | -------------------------------- |
-| Starlink inference traffic         | $2.1B          | 85%     | AI overlay + data compression    |
-| Cellular AI slices                 | $3.5B          | 90%     | Telecom AI resale & leasing      |
-| Defense-grade PNT contracts        | $1.2B          | 80%     | Dual-use infrastructure          |
-| Enterprise compute (CoreWeave API) | $2.4B          | 88%     | Enterprise inference workloads   |
-| Data resell (verified telemetry)   | $0.8B          | 75%     | Government + research + mobility |
-| **Total ARR**                      | **≈ $10B**     | **84%** | Blended margin                   |
+| Source | Annual Revenue | Margin | Notes |
+|--------|----------------|--------|-------|
+| Starlink inference traffic | $2.1B | 85% | AI overlay + data compression |
+| Cellular AI slices | $3.5B | 90% | Telecom AI resale & leasing |
+| Defense-grade PNT contracts | $1.2B | 80% | Dual-use infrastructure |
+| Enterprise compute (CoreWeave API) | $2.4B | 88% | Enterprise inference workloads |
+| Data resell (verified telemetry) | $0.8B | 75% | Government + research + mobility |
+| **Total ARR** | **≈ $10B** | **84%** | Blended margin |
 
 **Valuation @ 20× EBITDA = $160B**
-_+$60B uplift from tower-only deployments_
+*+$60B uplift from tower-only deployments*
 
 ---
 
@@ -95,8 +95,8 @@ _+$60B uplift from tower-only deployments_
 ### Economic Leverage
 
 1. **3 major providers**—SpaceX, AT&T, Verizon—become revenue-sharing partners, not vendors
-2. **AI workloads** from ChatGPT, Gemini, Anthropic can lease ShadowTag-v2's edge instantly via API
-3. **Governments** view ShadowTag-v2 as a sovereign-safe infrastructure layer, ensuring regulatory goodwill
+2. **AI workloads** from ChatGPT, Gemini, Anthropic can lease AiYou's edge instantly via API
+3. **Governments** view AiYou as a sovereign-safe infrastructure layer, ensuring regulatory goodwill
 
 ---
 
@@ -104,20 +104,20 @@ _+$60B uplift from tower-only deployments_
 
 ### Core Annual B2B Clients (Year 5)
 
-| Customer                  | Annual Spend | Description                                      |
-| ------------------------- | ------------ | ------------------------------------------------ |
-| SpaceX / Starlink         | $400M        | Starlink + ShadowTag-v2 hybrid AI routing               |
-| AT&T / Verizon / T-Mobile | $800M        | Tower GPU leases + co-branded AI services        |
-| U.S. DoD / DHS            | $1.2B        | Secure edge inference + resilient communications |
-| Automotive OEMs           | $1.5B        | Tesla, Rivian, Ford GPU-vehicle network          |
-| Enterprise SaaS           | $2.5B        | AI verification & data analytics                 |
-| **Aggregate**             | **≈ $6.4B**  | Core annual B2B clients by Y5                    |
+| Customer | Annual Spend | Description |
+|----------|--------------|-------------|
+| SpaceX / Starlink | $400M | Starlink + AiYou hybrid AI routing |
+| AT&T / Verizon / T-Mobile | $800M | Tower GPU leases + co-branded AI services |
+| U.S. DoD / DHS | $1.2B | Secure edge inference + resilient communications |
+| Automotive OEMs | $1.5B | Tesla, Rivian, Ford GPU-vehicle network |
+| Enterprise SaaS | $2.5B | AI verification & data analytics |
+| **Aggregate** | **≈ $6.4B** | Core annual B2B clients by Y5 |
 
 ---
 
 ## 🧭 Legal & Contractual Positioning
 
-### 1. ShadowTag-v2 as "Integrator of Record"
+### 1. AiYou as "Integrator of Record"
 
 - **Bridge contract** between SpaceX (network) + CoreWeave (compute) + telecoms (physical sites)
 - **Earns 10–15% brokerage** on all compute/bandwidth flows
@@ -131,7 +131,7 @@ _+$60B uplift from tower-only deployments_
 ### 3. Customer Legal Status
 
 - Each carrier signs **Infrastructure-as-a-Service (IaaS) lease**
-- **ShadowTag-v2 owns nodes**, customer rents capacity
+- **AiYou owns nodes**, customer rents capacity
 - **Retain all software and telemetry IP**
 
 ---
@@ -140,16 +140,16 @@ _+$60B uplift from tower-only deployments_
 
 ### Option Comparison
 
-| Option                                    | Rationale                                   | Value                     |
-| ----------------------------------------- | ------------------------------------------- | ------------------------- |
-| **IPO (Global AI Infra)**                 | World's first AI highway company            | $150–170B listing         |
-| **Private Retention (Panama Foundation)** | Maintain control + 80% tax efficiency       | $100B+ net worth retained |
-| **Strategic Sale (partial)**              | Sell to SpaceX or DoD contractor (Lockheed) | $50–80B buyout            |
+| Option | Rationale | Value |
+|--------|-----------|-------|
+| **IPO (Global AI Infra)** | World's first AI highway company | $150–170B listing |
+| **Private Retention (Panama Foundation)** | Maintain control + 80% tax efficiency | $100B+ net worth retained |
+| **Strategic Sale (partial)** | Sell to SpaceX or DoD contractor (Lockheed) | $50–80B buyout |
 
 ### Recommended Path
 
 - **Stay private** through Year 5, using Starlink + carrier leases to fund expansion
-- **Consider partial IPO** (ShadowTag-v2 Digital) at $100B+ for liquidity
+- **Consider partial IPO** (AiYou Digital) at $100B+ for liquidity
 
 ---
 
@@ -157,12 +157,12 @@ _+$60B uplift from tower-only deployments_
 
 ### Baseline vs. Integrated Architecture
 
-| Layer                | Baseline (Tower-only) | After Integration | Δ Value          |
-| -------------------- | --------------------- | ----------------- | ---------------- |
-| Infrastructure value | $40B                  | $100B             | +$60B            |
-| ARR                  | $5B                   | $10B              | +$5B             |
-| EBITDA               | $2.5B                 | $8.4B             | +$5.9B           |
-| Market valuation     | $75B                  | $160B             | **+$85B uplift** |
+| Layer | Baseline (Tower-only) | After Integration | Δ Value |
+|-------|-----------------------|-------------------|---------|
+| Infrastructure value | $40B | $100B | +$60B |
+| ARR | $5B | $10B | +$5B |
+| EBITDA | $2.5B | $8.4B | +$5.9B |
+| Market valuation | $75B | $160B | **+$85B uplift** |
 
 ---
 
@@ -170,10 +170,10 @@ _+$60B uplift from tower-only deployments_
 
 ### How to Lock in Providers and Clients
 
-Position ShadowTag-v2 as their **AI compliance shield**:
+Position AiYou as their **AI compliance shield**:
 
 - Every carrier, satellite operator, and government entity must ensure safe AI usage
-- ShadowTag-v2 provides the **verified control plane**
+- AiYou provides the **verified control plane**
 
 ### Legal Structure
 
@@ -189,28 +189,28 @@ Position ShadowTag-v2 as their **AI compliance shield**:
 
 ### 2025–2030 Projection
 
-| Metric              | Value                                     |
-| ------------------- | ----------------------------------------- |
-| Total ARR           | $10B+                                     |
-| EBITDA Margin       | 84%                                       |
-| Global Nodes        | 100k towers + 3k satellites + 3M vehicles |
-| Valuation (Private) | $160B                                     |
-| Annual Family Yield | $6–8B passive                             |
-| Strategic Control   | 100% infrastructure + IP ownership        |
+| Metric | Value |
+|--------|-------|
+| Total ARR | $10B+ |
+| EBITDA Margin | 84% |
+| Global Nodes | 100k towers + 3k satellites + 3M vehicles |
+| Valuation (Private) | $160B |
+| Annual Family Yield | $6–8B passive |
+| Strategic Control | 100% infrastructure + IP ownership |
 
 ---
 
-## 📈 ShadowTag-v2 Consolidated Valuation
+## 📈 AiYou Consolidated Valuation
 
 ### Multi-Segment Enterprise Value (Year 5)
 
-| Segment                                 | Description                                       | ARR (Yr 5)   | EBITDA Margin | Est. Valuation (20× EBITDA) |
-| --------------------------------------- | ------------------------------------------------- | ------------ | ------------- | --------------------------- |
-| **Infrastructure Mesh**                 | Starlink + CoreWeave + Telecom + Vehicles + Buoys | $10B         | 84%           | $168B                       |
-| **ShadowTag-v2 Digital**                       | Search / Mall / Media / VR Social                 | $6B          | 80%           | $96B                        |
-| **Defense & PNT**                       | Dual-use contracts / AI verification              | $2B          | 80%           | $32B                        |
-| **Family Foundation + Physical Assets** | Training complex / IP trust / real estate         | — (assets)   | —             | $10B                        |
-| **Total Enterprise Value (Yr 5)**       | —                                                 | **$18B ARR** | —             | **≈ $300–$310B**            |
+| Segment | Description | ARR (Yr 5) | EBITDA Margin | Est. Valuation (20× EBITDA) |
+|---------|-------------|------------|---------------|----------------------------|
+| **Infrastructure Mesh** | Starlink + CoreWeave + Telecom + Vehicles + Buoys | $10B | 84% | $168B |
+| **AiYou Digital** | Search / Mall / Media / VR Social | $6B | 80% | $96B |
+| **Defense & PNT** | Dual-use contracts / AI verification | $2B | 80% | $32B |
+| **Family Foundation + Physical Assets** | Training complex / IP trust / real estate | — (assets) | — | $10B |
+| **Total Enterprise Value (Yr 5)** | — | **$18B ARR** | — | **≈ $300–$310B** |
 
 ---
 
@@ -218,14 +218,14 @@ Position ShadowTag-v2 as their **AI compliance shield**:
 
 ### Private vs. Public Comparison
 
-| Metric                               | Private Control (Panama Foundation + LLC chain) | Public IPO (ShadowTag-v2 Digital only)                |
-| ------------------------------------ | ----------------------------------------------- | ---------------------------------------------- |
-| Annual Free Cash Flow (steady-state) | $6.8–$8.0B                                      | $4–$5B                                         |
-| Tax Exposure                         | < 5% effective (territorial + foundation)       | 20–25% effective                               |
-| Liquidity                            | Limited (secondary sales / credit lines)        | High (traded shares + options)                 |
-| Control                              | 100% family voting                              | 70% retained via super-voting shares           |
-| Valuation Ceiling                    | $310B (privately marked)                        | $150–$180B public float                        |
-| Public Goodwill / Trend Signal       | "Private AI sovereign cloud" (Elon-style moat)  | "Next Google meets Starlink" (street favorite) |
+| Metric | Private Control (Panama Foundation + LLC chain) | Public IPO (AiYou Digital only) |
+|--------|------------------------------------------------|--------------------------------|
+| Annual Free Cash Flow (steady-state) | $6.8–$8.0B | $4–$5B |
+| Tax Exposure | < 5% effective (territorial + foundation) | 20–25% effective |
+| Liquidity | Limited (secondary sales / credit lines) | High (traded shares + options) |
+| Control | 100% family voting | 70% retained via super-voting shares |
+| Valuation Ceiling | $310B (privately marked) | $150–$180B public float |
+| Public Goodwill / Trend Signal | "Private AI sovereign cloud" (Elon-style moat) | "Next Google meets Starlink" (street favorite) |
 
 ---
 
@@ -233,15 +233,15 @@ Position ShadowTag-v2 as their **AI compliance shield**:
 
 ### Investment Mode Comparison
 
-| Mode                                     | Market Trend       | Benchmarks                            | Commentary                                              |
-| ---------------------------------------- | ------------------ | ------------------------------------- | ------------------------------------------------------- |
-| **Private Mega-Foundations**             | 🔥 Rising          | SpaceX $180B private valuation        | Best for AI infra and dual-use projects needing secrecy |
-| **Public AI Platforms**                  | 🚀 High momentum   | NVIDIA >$2T cap / PLTR $100B target   | Great for liquidity + hype cycle capture                |
-| **Hybrid (Private Infra + Public Apps)** | ⭐ Optimal balance | OpenAI LLC + Microsoft deal structure | Keeps core closed while leveraging market capital       |
+| Mode | Market Trend | Benchmarks | Commentary |
+|------|--------------|------------|------------|
+| **Private Mega-Foundations** | 🔥 Rising | SpaceX $180B private valuation | Best for AI infra and dual-use projects needing secrecy |
+| **Public AI Platforms** | 🚀 High momentum | NVIDIA >$2T cap / PLTR $100B target | Great for liquidity + hype cycle capture |
+| **Hybrid (Private Infra + Public Apps)** | ⭐ Optimal balance | OpenAI LLC + Microsoft deal structure | Keeps core closed while leveraging market capital |
 
 ### 🟩 Most Trendy 2025–2026
 
-**Hybrid model** — Retain infrastructure under a Panama foundation (private), float ShadowTag-v2 Digital (public)
+**Hybrid model** — Retain infrastructure under a Panama foundation (private), float AiYou Digital (public)
 
 This mirrors SpaceX + Starlink or OpenAI + MS structure and is the current VC sweet spot.
 
@@ -251,14 +251,14 @@ This mirrors SpaceX + Starlink or OpenAI + MS structure and is the current VC sw
 
 ### Key Milestones (2025–2030)
 
-| Date        | Milestone                               | Valuation Jump               |
-| ----------- | --------------------------------------- | ---------------------------- |
-| **Q4 2025** | Pilot live (3 CoreWeave–Starlink sites) | Seed $50M → $500M            |
-| **Q2 2026** | Tower + vehicle mesh demo (1M users)    | $5B                          |
-| **Q4 2026** | Government contract + telecom alliances | $20B                         |
-| **Q1 2027** | Series C / Private valuation audit      | $60B                         |
-| **Q1 2028** | ShadowTag-v2 Digital IPO (Nasdaq)              | $150B float / $250B total    |
-| **2030**    | Global coverage + defense expansion     | $300B+ valuation; $8B/yr FCF |
+| Date | Milestone | Valuation Jump |
+|------|-----------|----------------|
+| **Q4 2025** | Pilot live (3 CoreWeave–Starlink sites) | Seed $50M → $500M |
+| **Q2 2026** | Tower + vehicle mesh demo (1M users) | $5B |
+| **Q4 2026** | Government contract + telecom alliances | $20B |
+| **Q1 2027** | Series C / Private valuation audit | $60B |
+| **Q1 2028** | AiYou Digital IPO (Nasdaq) | $150B float / $250B total |
+| **2030** | Global coverage + defense expansion | $300B+ valuation; $8B/yr FCF |
 
 ---
 
@@ -274,7 +274,7 @@ Complete pilot demo + legal entities → position for:
 ### Strategic Path Summary
 
 - **Private Path**: Keep entire AI infrastructure + control = ≈ $300B book value, $7B cash yield/year
-- **Public IPO Path**: List ShadowTag-v2 Digital at $150B cap, retain Infra = $250B aggregate wealth and high trend visibility
+- **Public IPO Path**: List AiYou Digital at $150B cap, retain Infra = $250B aggregate wealth and high trend visibility
 - **Hybrid (Recommended)**: Private Infra ($160B) + Public Digital ($150B) → $310B total, 80% control, tax < 8%
 
 ---

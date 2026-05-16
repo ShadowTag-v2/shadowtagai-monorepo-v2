@@ -8,14 +8,14 @@
 
 ### **Why Migrate?**
 
-| Factor                | AutoGen (GPT-4)         | Gemini 2.0 Pro          | Improvement                |
-| --------------------- | ----------------------- | ----------------------- | -------------------------- |
-| **Cost**              | $10/M input tokens      | $1.25/M input tokens    | **-87.5%** (8× cheaper)    |
-| **Context Window**    | 8K-32K tokens           | 1M tokens               | **31×-125× larger**        |
-| **Latency (p99)**     | 3421ms                  | 1234ms                  | **-64%** (2.8× faster)     |
-| **Accuracy**          | 83.7%                   | 87.4%                   | **+3.7%** (DTE-validated)  |
-| **Cloud Integration** | Cross-cloud (Azure/GCP) | Native GCP              | **No cross-cloud latency** |
-| **Function Calling**  | Custom code execution   | Native function calling | **Simpler, more secure**   |
+| Factor | AutoGen (GPT-4) | Gemini 2.0 Pro | Improvement |
+|--------|-----------------|----------------|-------------|
+| **Cost** | $10/M input tokens | $1.25/M input tokens | **-87.5%** (8× cheaper) |
+| **Context Window** | 8K-32K tokens | 1M tokens | **31×-125× larger** |
+| **Latency (p99)** | 3421ms | 1234ms | **-64%** (2.8× faster) |
+| **Accuracy** | 83.7% | 87.4% | **+3.7%** (DTE-validated) |
+| **Cloud Integration** | Cross-cloud (Azure/GCP) | Native GCP | **No cross-cloud latency** |
+| **Function Calling** | Custom code execution | Native function calling | **Simpler, more secure** |
 
 **Bottom Line:** Gemini is cheaper, faster, more accurate, and natively integrated with Google Cloud.
 
@@ -74,11 +74,15 @@ neutral.initiate_chat(
 
 **Problems:**
 
+
 - ❌ Requires OpenAI API (cross-cloud latency from GCP)
+
 
 - ❌ Complex orchestration (GroupChatManager, message passing)
 
+
 - ❌ Code execution security risks (arbitrary Python in `work_dir`)
+
 
 - ❌ Expensive ($10/M tokens)
 
@@ -114,11 +118,15 @@ print(f"Tier: {result.tier}, Confidence: {result.confidence}")
 
 **Advantages:**
 
+
 - ✅ Native GCP (no cross-cloud latency)
+
 
 - ✅ Simple API (3 lines to initialize, 1 async call to run)
 
+
 - ✅ Secure function calling (no arbitrary code execution)
+
 
 - ✅ Cheap ($1.25/M tokens, 8× less than GPT-4)
 
@@ -194,14 +202,15 @@ agent = GeminiAgent(
 ```json
 {
   "name": "check_source_reliability",
-  "description": "Check source reliability using Compliance Framework criteria",
+  "description": "Check source reliability using ATP 5-19 criteria",
   "parameters": {
     "type": "object",
     "properties": {
-      "domain": { "type": "string", "description": "Source domain" }
+      "domain": {"type": "string", "description": "Source domain"}
     }
   }
 }
+
 ```
 
 Gemini automatically calls this function when needed (no arbitrary code execution).
@@ -233,9 +242,13 @@ result = await chat.classify_with_debate(
 
 **How it works under the hood:**
 
+
+
 1. **Round 1:** Each agent proposes tier with reasoning
 
+
 2. **Round 2:** Agents see Round 1 proposals, refine their positions
+
 
 3. **Aggregation:** Weighted consensus based on agent confidence
 
@@ -266,18 +279,33 @@ result = await chat.classify_with_debate(
 
 **Voting Methods:**
 
+
+
 1. **weighted_confidence:** Weight each tier by agent confidence
+
+
    - Formula: `tier_final = Σ(tier_i × confidence_i) / Σ(confidence_i)`
+
 
    - Use case: Default (best accuracy)
 
+
+
 2. **majority_vote:** Simple majority rule
+
+
    - Formula: Most common tier wins
+
 
    - Use case: Speed (fastest)
 
+
+
 3. **neutral_arbiter:** Neutral agent has final say
+
+
    - Formula: Use neutral agent's proposal
+
 
    - Use case: Conservative (trust neutral most)
 
@@ -287,26 +315,31 @@ result = await chat.classify_with_debate(
 
 ### **Test Setup**
 
+
+
 - **Dataset:** 1,000 pre-labeled intelligence items (180 Tier 1, 520 Tier 2, 300 Tier 3)
+
 
 - **Agents:** 3 (skeptic, optimist, neutral)
 
+
 - **Rounds:** 2
+
 
 - **Voting:** Weighted confidence
 
 ### **Results**
 
-| Metric                      | AutoGen (GPT-4) | Gemini 2.0 Pro | Improvement |
-| --------------------------- | --------------- | -------------- | ----------- |
-| **Overall Accuracy**        | 83.7%           | 87.4%          | +3.7%       |
-| **Tier 1 Precision**        | 88%             | 91%            | +3.4%       |
-| **Tier 2 Precision**        | 82%             | 86%            | +4.9%       |
-| **Tier 3 Precision**        | 85%             | 88%            | +3.5%       |
-| **Cost per Classification** | $0.03           | $0.00375       | -87.5% (8×) |
-| **Latency p50**             | 1342ms          | 487ms          | -63.7%      |
-| **Latency p99**             | 3421ms          | 1234ms         | -63.9%      |
-| **Consensus Rate**          | 79%             | 82%            | +3.8%       |
+| Metric | AutoGen (GPT-4) | Gemini 2.0 Pro | Improvement |
+|--------|-----------------|----------------|-------------|
+| **Overall Accuracy** | 83.7% | 87.4% | +3.7% |
+| **Tier 1 Precision** | 88% | 91% | +3.4% |
+| **Tier 2 Precision** | 82% | 86% | +4.9% |
+| **Tier 3 Precision** | 85% | 88% | +3.5% |
+| **Cost per Classification** | $0.03 | $0.00375 | -87.5% (8×) |
+| **Latency p50** | 1342ms | 487ms | -63.7% |
+| **Latency p99** | 3421ms | 1234ms | -63.9% |
+| **Consensus Rate** | 79% | 82% | +3.8% |
 
 **DTE Validation:** +3.7% accuracy improvement confirmed through Deep Thinking Evaluation tests.
 
@@ -316,11 +349,11 @@ result = await chat.classify_with_debate(
 
 ### **Monthly Cost (50K classifications/month)**
 
-| Component          | AutoGen (GPT-4)           | Gemini 2.0 Pro           | Savings               |
-| ------------------ | ------------------------- | ------------------------ | --------------------- |
-| **API Calls**      | 50K × $0.03 = $1,500      | 50K × $0.00375 = $187.50 | **-$1,312.50**        |
-| **Infrastructure** | Azure OpenAI + GCP = $200 | GCP only = $100          | **-$100**             |
-| **Total Monthly**  | $1,700                    | $287.50                  | **-$1,412.50 (-83%)** |
+| Component | AutoGen (GPT-4) | Gemini 2.0 Pro | Savings |
+|-----------|-----------------|----------------|---------|
+| **API Calls** | 50K × $0.03 = $1,500 | 50K × $0.00375 = $187.50 | **-$1,312.50** |
+| **Infrastructure** | Azure OpenAI + GCP = $200 | GCP only = $100 | **-$100** |
+| **Total Monthly** | $1,700 | $287.50 | **-$1,412.50 (-83%)** |
 
 **Annual Savings:** $16,950
 
@@ -376,12 +409,12 @@ tools = [
 
 **Security Comparison:**
 
-| Risk                         | AutoGen                         | Gemini                          |
-| ---------------------------- | ------------------------------- | ------------------------------- |
+| Risk | AutoGen | Gemini |
+|------|---------|--------|
 | **Arbitrary Code Execution** | ❌ High (code_execution_config) | ✅ None (function calling only) |
-| **Prompt Injection**         | ❌ Medium (agent messages)      | ✅ Low (schema validation)      |
-| **API Key Exposure**         | ❌ Medium (cross-cloud)         | ✅ Low (Secret Manager)         |
-| **Data Exfiltration**        | ❌ High (file system access)    | ✅ None (no file system)        |
+| **Prompt Injection** | ❌ Medium (agent messages) | ✅ Low (schema validation) |
+| **API Key Exposure** | ❌ Medium (cross-cloud) | ✅ Low (Secret Manager) |
+| **Data Exfiltration** | ❌ High (file system access) | ✅ None (no file system) |
 
 ---
 
@@ -389,39 +422,58 @@ tools = [
 
 ### **Pre-Migration**
 
+
+
 - [ ] Audit current AutoGen usage (which agents, tools, workflows)
+
 
 - [ ] Measure baseline performance (accuracy, cost, latency)
 
+
 - [ ] Document custom agent personas and voting logic
+
 
 - [ ] Backup AutoGen configuration files
 
 ### **Migration**
 
+
+
 - [ ] Install `google-generativeai==0.3.1`
+
 
 - [ ] Set `GEMINI_API_KEY` in Secret Manager
 
+
 - [ ] Replace `AssistantAgent` with `GeminiAgent`
+
 
 - [ ] Replace `GroupChat` with `GeminiGroupChat`
 
+
 - [ ] Replace `code_execution_config` with function calling
 
+
 - [ ] Update voting logic (if custom)
+
 
 - [ ] Test with 100 sample items
 
 ### **Post-Migration**
 
+
+
 - [ ] A/B test: 20% Gemini, 80% AutoGen (1 week)
+
 
 - [ ] Compare accuracy, cost, latency
 
+
 - [ ] Full rollout if metrics improved
 
+
 - [ ] Decommission AutoGen infrastructure
+
 
 - [ ] Update documentation
 
@@ -490,6 +542,7 @@ curl -X POST http://localhost:8080/api/v1/agents/classify-debate \
   "reasoning": "Weighted consensus: 3 agents, avg tier 1.1 → Tier 1\n\nDebate Summary:\nRound 1:\n  Skeptic: Tier 2 (70%)...",
   "tags": ["aviation", "regulation", "DO-178D", "primary-source"]
 }
+
 ```
 
 ---
@@ -537,7 +590,7 @@ chat.agents["aviation_expert"] = domain_expert  # Add 4th agent
 
 ```
 
-### **3. Function Calling for Compliance Framework Tools**
+### **3. Function Calling for ATP 5-19 Tools**
 
 ```python
 
@@ -636,33 +689,49 @@ chat = GeminiGroupChat(
 
 **Your Current Setup:**
 
-- Monthly classifications: **\_** (e.g., 50,000)
+
+
+- Monthly classifications: _____ (e.g., 50,000)
+
 
 - Current cost per classification: $0.03 (AutoGen GPT-4)
 
-- Current monthly cost: **\_** × $0.03 = $**\_**
+
+- Current monthly cost: _____ × $0.03 = $_____
 
 **After Migration (Gemini):**
 
-- Monthly classifications: **\_** (same)
+
+
+- Monthly classifications: _____ (same)
+
 
 - New cost per classification: $0.00375 (Gemini 2.0 Pro)
 
-- New monthly cost: **\_** × $0.00375 = $**\_**
+
+- New monthly cost: _____ × $0.00375 = $_____
 
 **Savings:**
 
-- Monthly: $**\_** - $**\_** = $**\_**
 
-- Annual: $**\_** × 12 = $**\_**
 
-- 3-Year: $**\_** × 36 = $**\_**
+- Monthly: $_____ - $_____ = $_____
+
+
+- Annual: $_____ × 12 = $_____
+
+
+- 3-Year: $_____ × 36 = $_____
 
 **Example (50K classifications/month):**
 
+
+
 - **Before:** 50,000 × $0.03 = $1,500/month
 
+
 - **After:** 50,000 × $0.00375 = $187.50/month
+
 
 - **Savings:** $1,312.50/month = $15,750/year = **$47,250 over 3 years**
 
@@ -672,14 +741,14 @@ chat = GeminiGroupChat(
 
 ### **Migration Decision Matrix**
 
-| Factor            | AutoGen              | Gemini                  | Winner             |
-| ----------------- | -------------------- | ----------------------- | ------------------ |
-| Cost              | $0.03/classification | $0.00375/classification | **Gemini (8×)**    |
-| Accuracy          | 83.7%                | 87.4%                   | **Gemini (+3.7%)** |
-| Latency           | 3421ms p99           | 1234ms p99              | **Gemini (2.8×)**  |
-| Security          | Code execution risk  | Function calling only   | **Gemini**         |
-| Cloud Integration | Cross-cloud          | Native GCP              | **Gemini**         |
-| Setup Complexity  | 20+ lines            | 3 lines                 | **Gemini**         |
+| Factor | AutoGen | Gemini | Winner |
+|--------|---------|--------|--------|
+| Cost | $0.03/classification | $0.00375/classification | **Gemini (8×)** |
+| Accuracy | 83.7% | 87.4% | **Gemini (+3.7%)** |
+| Latency | 3421ms p99 | 1234ms p99 | **Gemini (2.8×)** |
+| Security | Code execution risk | Function calling only | **Gemini** |
+| Cloud Integration | Cross-cloud | Native GCP | **Gemini** |
+| Setup Complexity | 20+ lines | 3 lines | **Gemini** |
 
 **Recommendation:** ✅ **Migrate to Gemini immediately. No downside.**
 
@@ -687,9 +756,13 @@ chat = GeminiGroupChat(
 
 ## 📞 Support
 
+
+
 - **Technical Issues:** support@pnkln-stack.ai
 
+
 - **Migration Assistance:** migration@pnkln-stack.ai
+
 
 - **Documentation:** [Gemini Agents Guide](./app/services/gemini_agents.py)
 

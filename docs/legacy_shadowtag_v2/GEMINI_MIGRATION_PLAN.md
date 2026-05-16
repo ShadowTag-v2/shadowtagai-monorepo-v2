@@ -10,14 +10,12 @@
 ## Executive Summary
 
 ### Current State: AutoGen (Azure OpenAI)
-
 - **Model**: GPT-4 Turbo
 - **Cost**: $97,000/month (100K sessions)
 - **Latency**: P99 350ms
 - **Infrastructure**: Azure Kubernetes Service ($5K/month)
 
 ### Target State: Gemini 2.0 Flash
-
 - **Model**: Gemini 2.0 Flash
 - **Cost**: $1,025/month (same 100K sessions)
 - **Latency**: P99 <300ms (target)
@@ -87,25 +85,25 @@ TOTAL MONTHLY COST:                                         $1,025
 
 ### Risk Matrix
 
-| Risk                | Probability | Impact | Mitigation                   |
-| ------------------- | ----------- | ------ | ---------------------------- |
-| Quality degradation | Medium      | High   | A/B testing, gradual rollout |
-| Latency regression  | Low         | Medium | Pre-launch benchmarking      |
-| API rate limits     | Low         | High   | Quota increase request       |
-| Integration bugs    | Medium      | Medium | Parallel deployment          |
-| Creator resistance  | Low         | Low    | Communication campaign       |
+| Risk | Probability | Impact | Mitigation |
+|------|------------|--------|------------|
+| Quality degradation | Medium | High | A/B testing, gradual rollout |
+| Latency regression | Low | Medium | Pre-launch benchmarking |
+| API rate limits | Low | High | Quota increase request |
+| Integration bugs | Medium | Medium | Parallel deployment |
+| Creator resistance | Low | Low | Communication campaign |
 
 ### Quality Comparison
 
 **Benchmark Results** (internal testing):
 
-| Task Type        | GPT-4 Turbo | Gemini 2.0 Flash | Δ         |
-| ---------------- | ----------- | ---------------- | --------- |
-| Code generation  | 92% correct | 90% correct      | -2%       |
-| Reasoning (MMLU) | 86.4%       | 85.9%            | -0.5%     |
-| Math (GSM8K)     | 92.0%       | 91.7%            | -0.3%     |
-| Code (HumanEval) | 88.4%       | 86.2%            | -2.2%     |
-| **Average**      | **89.7%**   | **88.5%**        | **-1.2%** |
+| Task Type | GPT-4 Turbo | Gemini 2.0 Flash | Δ |
+|-----------|------------|------------------|---|
+| Code generation | 92% correct | 90% correct | -2% |
+| Reasoning (MMLU) | 86.4% | 85.9% | -0.5% |
+| Math (GSM8K) | 92.0% | 91.7% | -0.3% |
+| Code (HumanEval) | 88.4% | 86.2% | -2.2% |
+| **Average** | **89.7%** | **88.5%** | **-1.2%** |
 
 **Verdict**: Gemini 2.0 Flash is 1.2% worse on average, but within acceptable tolerance for 99% cost reduction.
 
@@ -163,7 +161,6 @@ TOTAL MONTHLY COST:                                         $1,025
 If critical issues arise:
 
 1. **Immediate Rollback** (< 5 minutes):
-
    ```bash
    # Flip traffic back to AutoGen
    kubectl patch deployment pnkln-inference \
@@ -180,7 +177,6 @@ If critical issues arise:
    - Resume gradual rollout from previous percentage
 
 **Rollback Criteria** (automatic):
-
 - Error rate >5% (vs. <1% baseline)
 - P99 latency >500ms (vs. 350ms baseline)
 - User complaints >10/hour (vs. <2/hour baseline)
@@ -345,14 +341,13 @@ async def test_gemini_quality(prompt, expected_quality):
 
     response = await router.generate(prompt)
 
-    # Evaluate response quality (using Judge 6 or human eval)
+    # Evaluate response quality (using Judge #6 or human eval)
     quality = evaluate_response(prompt, response)
 
     assert quality >= expected_quality, f"Quality {quality} below threshold {expected_quality}"
 ```
 
 Run test suite:
-
 ```bash
 pytest tests/test_gemini_migration.py -v
 # Expected: 95%+ pass rate
@@ -469,7 +464,6 @@ Must achieve ALL of the following by Week 6:
 **Impact**: High (all inference stops)
 
 **Mitigation**:
-
 1. **Keep AutoGen Warm** (Months 1-3):
    - Maintain Azure infrastructure
    - Send 1% traffic to AutoGen as health check
@@ -486,7 +480,6 @@ Must achieve ALL of the following by Week 6:
 **Impact**: High (if 10x increase, cost parity with GPT-4)
 
 **Mitigation**:
-
 1. **Negotiate Enterprise Contract**:
    - Lock in pricing for 12 months
    - Commit to $X/month minimum spend
@@ -545,14 +538,14 @@ Week 8:
 
 ## Team & Responsibilities
 
-| Role                 | Owner | Responsibilities                       |
-| -------------------- | ----- | -------------------------------------- |
-| **Engineering Lead** | TBD   | Technical implementation, code reviews |
-| **DevOps**           | TBD   | Infrastructure, deployment, monitoring |
-| **QA**               | TBD   | Test suite, quality validation, UAT    |
-| **Product**          | TBD   | Rollout decisions, stakeholder comms   |
-| **Data Science**     | TBD   | Quality metrics, A/B test analysis     |
-| **Support**          | TBD   | User feedback, issue triage            |
+| Role | Owner | Responsibilities |
+|------|-------|-----------------|
+| **Engineering Lead** | TBD | Technical implementation, code reviews |
+| **DevOps** | TBD | Infrastructure, deployment, monitoring |
+| **QA** | TBD | Test suite, quality validation, UAT |
+| **Product** | TBD | Rollout decisions, stakeholder comms |
+| **Data Science** | TBD | Quality metrics, A/B test analysis |
+| **Support** | TBD | User feedback, issue triage |
 
 ---
 
@@ -561,13 +554,12 @@ Week 8:
 ### Request Format
 
 **AutoGen (OpenAI)**:
-
 ```json
 {
   "model": "gpt-4-turbo",
   "messages": [
-    { "role": "system", "content": "You are a helpful assistant." },
-    { "role": "user", "content": "Write a function to reverse a string" }
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Write a function to reverse a string"}
   ],
   "temperature": 0.7,
   "max_tokens": 2000
@@ -575,13 +567,12 @@ Week 8:
 ```
 
 **Gemini**:
-
 ```json
 {
   "contents": [
     {
       "role": "user",
-      "parts": [{ "text": "Write a function to reverse a string" }]
+      "parts": [{"text": "Write a function to reverse a string"}]
     }
   ],
   "generationConfig": {
@@ -596,7 +587,6 @@ Week 8:
 ### Response Format
 
 **AutoGen (OpenAI)**:
-
 ```json
 {
   "id": "chatcmpl-abc123",
@@ -618,13 +608,12 @@ Week 8:
 ```
 
 **Gemini**:
-
 ```json
 {
   "candidates": [
     {
       "content": {
-        "parts": [{ "text": "def reverse_string(s):\n    return s[::-1]" }],
+        "parts": [{"text": "def reverse_string(s):\n    return s[::-1]"}],
         "role": "model"
       },
       "finishReason": "STOP"

@@ -1,0 +1,30 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-kustomization-capsule
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: tenant-namespace-match
+    match:
+      any:
+      - resources:
+          kinds:
+          - Kustomization
+          namespaces:
+          - "-flux-system"
+    validate:
+      message: "Kustomization targetNamespace must match tenant ns"
+      pattern:
+        spec:
+          targetNamespace: "{{request.object.metadata.namespace}}"
+  - name: flux-sa-only
+    match:
+      resources:
+        kinds:
+        - Kustomization
+    validate:
+      message: "Kustomization must use flux SA"
+      pattern:
+        spec:
+          serviceAccountName: "flux-*"

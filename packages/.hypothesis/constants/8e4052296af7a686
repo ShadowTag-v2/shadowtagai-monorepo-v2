@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/auto_dream/__init__.py
+# hypothesis_version: 6.151.5
+
+['AutoDreamConfig', 'AutoDreamResult', 'ConsolidationLock', 'check_dream_gates', 'record_consolidation']

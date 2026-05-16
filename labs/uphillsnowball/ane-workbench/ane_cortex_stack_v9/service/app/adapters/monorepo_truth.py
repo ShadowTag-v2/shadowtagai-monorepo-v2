@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import re
@@ -85,5 +86,5 @@ def load_monorepo_truth(manifest_path: str, merge_status_path: str, control_plan
         "canonical_repo_roots": roots,
         "merge_status": merge_status,
         "control_plane": control_plane,
-        "rule": "ShadowTag-v2/Monorepo-Uphillsnowball is the one canonical root. ShadowTag-v2_stack/* are folded-in components, not root peers.",
+        "rule": "ShadowTag-v2/Monorepo-Uphillsnowball is the one canonical root. aiyou_stack/* are folded-in components, not root peers.",
     }

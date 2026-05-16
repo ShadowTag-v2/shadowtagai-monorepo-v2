@@ -22,30 +22,30 @@ prompt = """
 """
 
 queries = [
-    "Find hotels in Basel with Basel in its name.",
-    "Can you book the Hilton Basel for me?",
-    "Oh wait, this is too expensive. Please cancel it and book the Hyatt Regency instead.",
-    "My check in dates would be from April 10, 2024 to April 19, 2024.",
+  "Find hotels in Basel with Basel in its name.",
+  "Can you book the Hilton Basel for me?",
+  "Oh wait, this is too expensive. Please cancel it and book the Hyatt Regency instead.",
+  "My check in dates would be from April 10, 2024 to April 19, 2024.",
 ]
 
 
 async def main():
-    # TODO(developer): replace this with another model if needed
-    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
-    # model = ChatAnthropic(model="claude-3-5-sonnet-20240620")
+  # TODO(developer): replace this with another model if needed
+  model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+  # model = ChatAnthropic(model="claude-3-5-sonnet-20240620")
 
-    # Load the tools from the Toolbox server
-    async with ToolboxClient("http://127.0.0.1:5000") as client:
-        tools = await client.aload_toolset()
+  # Load the tools from the Toolbox server
+  async with ToolboxClient("http://127.0.0.1:5000") as client:
+    tools = await client.aload_toolset()
 
-        agent = create_react_agent(model, tools, checkpointer=MemorySaver())
+    agent = create_react_agent(model, tools, checkpointer=MemorySaver())
 
-        config = {"configurable": {"thread_id": "thread-1"}}
-        for query in queries:
-            inputs = {"messages": [("user", prompt + query)]}
-            print(f"\n[INPUT] User: {query}")
-            response = agent.invoke(inputs, stream_mode="values", config=config)
-            print(f"[OUTPUT] AI: {response['messages'][-1].content}")
+    config = {"configurable": {"thread_id": "thread-1"}}
+    for query in queries:
+      inputs = {"messages": [("user", prompt + query)]}
+      print(f"\n[INPUT] User: {query}")
+      response = agent.invoke(inputs, stream_mode="values", config=config)
+      print(f"[OUTPUT] AI: {response['messages'][-1].content}")
 
 
 asyncio.run(main())

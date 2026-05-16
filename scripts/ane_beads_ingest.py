@@ -1,28 +1,22 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
-
 import sqlite3
-
 
 # --- ANE BYPASS INTEGRATION ---
 import sys
-
 from datetime import datetime
 
-sys.path.append(os.path.abspath("apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"))
+sys.path.append(os.path.abspath("apps/aiyou_stack/aiyou-fastapi-services"))
 try:
     from zero_cpu_router import dispatch_compute
 
     ANE_ENABLED = True
 except ImportError:
     ANE_ENABLED = False
+    print("Warning: ANE Router not found. Categorization will fall back to CPU.")
 
-INTEL_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem/recovered_intel")
-# Use physical mapping to the active root
-import pathlib  # noqa: E402
-
-
-ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
-BEADS_DB_PATH = os.path.join(ROOT_DIR, ".beads", "ane_memory_beads.sqlite")
+INTEL_DIR = os.path.abspath("apps/aiyou_ecosystem/recovered_intel")
+BEADS_DB_PATH = os.path.abspath("apps/aiyou_stack/aiyou-fastapi-services/tools/beads/integrations/beads-mcp/ane_memory_beads.sqlite")
 
 
 def initialize_beads_db():
@@ -51,7 +45,7 @@ def process_directory_via_ane(folder_path: str, folder_name: str) -> dict:
     try:
         root_files = os.listdir(folder_path)[:15]  # Top 15 files for context footprint
         payload_data = ",".join(root_files).lower()
-    except Exception:
+    except:
         payload_data = "empty"
 
     # Neural Engine Tensor Code
@@ -77,39 +71,36 @@ elif "code_tracker" in folder_name:
     summary = "Persistent file tracking and IDE active sessions."
 
 import json
-import logging
-
-logging.info(json.dumps({{"semantic_type": semantic_type, "neural_summary": summary}}))
+print(json.dumps({{"semantic_type": semantic_type, "neural_summary": summary}}))
 """
 
     result = dispatch_compute(
-        text=ane_eval_code,
-        prompt_description=f"bead_ingest_{folder_name[:10]}",
-        examples=[],
-        file_name=folder_name,
+        task_id=f"bead_ingest_{folder_name[:10]}",
+        python_code=ane_eval_code,
+        estimated_bytes=len(ane_eval_code.encode("utf-8")),
     )
 
-    if isinstance(result, list) and len(result) > 0:
-        result_dict = result[0]
-        if result_dict.get("attrs", {}).get("compute_target") == "ANE-NPU":
-            try:
-                import json
+    if result.get("source") == "ANE_EDGE":
+        try:
+            import json
 
-                return json.loads(result_dict.get("data"))
-            except Exception:
-                return {
-                    "semantic_type": "parse_error",
-                    "neural_summary": "Failed to decode ANE Tensor.",
-                }
+            return json.loads(result.get("data"))
+        except:
+            return {
+                "semantic_type": "parse_error",
+                "neural_summary": "Failed to decode ANE Tensor.",
+            }
 
     return {"semantic_type": "cpu_fallback", "neural_summary": "CPU processed."}
 
 
-def execute_ingestion() -> None:
+def execute_ingestion():
+    print("🧠 [ANE BEADS INGESTER] Initiating Memory Engram Formatting...")
     conn = initialize_beads_db()
     cursor = conn.cursor()
 
     if not os.path.exists(INTEL_DIR):
+        print("🔴 Recovered Intel directory not found. Did extraction finish?")
         return
 
     for folder_name in os.listdir(INTEL_DIR):
@@ -117,6 +108,7 @@ def execute_ingestion() -> None:
         if not os.path.isdir(folder_path):
             continue
 
+        print(f"    🔍 Analyzing {folder_name} via ANE...")
         insights = process_directory_via_ane(folder_path, folder_name)
 
         try:
@@ -133,10 +125,12 @@ def execute_ingestion() -> None:
                 ),
             )
             conn.commit()
-        except Exception:
-            pass
+            print(f"    ✅ Bead Written: {insights.get('semantic_type')} -> {insights.get('neural_summary')}")
+        except Exception as e:
+            print(f"    ❌ Failed to write bead for {folder_name}: {e}")
 
     conn.close()
+    print("\n✅ [ANE BEADS INGESTER] Complete. Legacy Intelligence successfully mapped to memory_beads UUIDs.")
 
 
 if __name__ == "__main__":

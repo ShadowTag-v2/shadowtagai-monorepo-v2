@@ -1,0 +1,12 @@
+---
+description: canonical workspace and execution rules
+globs: ["**/*"]
+---
+
+# workspace rules
+- Treat `monorepo_manifest.yaml` as canonical workspace truth.
+- Treat `workspace-mcp-config.json` as canonical MCP truth.
+- Never create a second source-of-truth MCP config.
+- Put all API keys in `.env`, never inline in JSON.
+- `product_app` is the business-facing MVP path.
+- `research_lab` is the local lab path.

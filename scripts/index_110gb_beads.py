@@ -1,17 +1,13 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
-
 import os
-
 import sqlite3
-
 import subprocess
-
 import sys
-
 from datetime import datetime
 
 # Try to load the ANE Router
-sys.path.append(os.path.abspath("apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"))
+sys.path.append(os.path.abspath("apps/aiyou_stack/aiyou-fastapi-services"))
 try:
     from zero_cpu_router import dispatch_compute
 
@@ -19,12 +15,8 @@ try:
 except ImportError:
     ANE_ENABLED = False
 
-import pathlib
-
-
-ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
-BEADS_DIR = os.path.join(ROOT_DIR, ".beads")
-INDEX_DB = os.path.join(BEADS_DIR, "beads_index.sqlite")
+BEADS_DIR = "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.beads"
+INDEX_DB = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.beads/beads_index.sqlite"
 
 
 def init_db():
@@ -33,7 +25,7 @@ def init_db():
     c = conn.cursor()
     c.execute(
         """CREATE TABLE IF NOT EXISTS beads_registry
-                 (filepath TEXT UNIQUE, size_bytes INT, biome_status TEXT, ane_semantic_class TEXT, last_indexed TIMESTAMP)""",
+                 (filepath TEXT UNIQUE, size_bytes INT, biome_status TEXT, ane_semantic_class TEXT, last_indexed TIMESTAMP)"""
     )
     conn.commit()
     return conn
@@ -49,7 +41,7 @@ def biome_check(filepath: str) -> str:
         result = subprocess.run(["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True)
         return "PASS" if result.returncode == 0 else "FAIL_SYNTAX"
     except Exception as e:
-        return f"ERROR: {e!s}"
+        return f"ERROR: {str(e)}"
 
 
 def ane_semantic_scan(filepath: str, filename: str) -> str:
@@ -67,8 +59,6 @@ def ane_semantic_scan(filepath: str, filename: str) -> str:
 
     ane_code = f"""
 import json
-import logging
-
 filename = "{filename}"
 if "master" in filename.lower() or "doctrine" in filename.lower():
     cat = "CORE_SYSTEM_RULES"
@@ -76,24 +66,23 @@ elif "architecture" in filename.lower():
     cat = "SYSTEM_TOPOLOGY"
 else:
     cat = "UNCATEGORIZED_INTELLIGENCE"
-logging.info(json.dumps({{"category": cat}}))
+print(json.dumps({{"category": cat}}))
 """
-    result = dispatch_compute(text=ane_code, prompt_description=f"bead_{filename[:10]}", examples=[], file_name=filename)
-    if isinstance(result, list) and len(result) > 0:
-        result_dict = result[0]
-        if result_dict.get("attrs", {}).get("compute_target") == "ANE-NPU":
-            try:
-                return json.loads(result_dict.get("text")).get("category", "UNKNOWN")
-            except Exception:
-                return "ANE_DECODE_ERROR"
+    result = dispatch_compute(f"bead_{filename[:10]}", ane_code, len(ane_code))
+    if result.get("source") == "ANE_EDGE":
+        try:
+            return json.loads(result.get("data")).get("category", "UNKNOWN")
+        except:
+            return "ANE_DECODE_ERROR"
     return "UNKNOWN"
 
 
-def index_library() -> None:
+def index_library():
+    print("🧠 [BEADS INDEXER] Initializing 110GB Grounding Library Scan...")
     conn = init_db()
     c = conn.cursor()
 
-    for root, _dirs, files in os.walk(BEADS_DIR):
+    for root, dirs, files in os.walk(BEADS_DIR):
         for file in files:
             # Skip massive WAL files or internal DB locks to prevent blocking
             if file.endswith((".db-wal", ".db-shm", ".lock", ".sock", ".pid")):
@@ -101,6 +90,8 @@ def index_library() -> None:
 
             filepath = os.path.join(root, file)
             size = os.path.getsize(filepath)
+
+            print(f"  🔍 Scanning Object: {file} ({size} bytes)...")
 
             biome_status = biome_check(filepath)
             ane_class = ane_semantic_scan(filepath, file)
@@ -114,9 +105,10 @@ def index_library() -> None:
             conn.commit()
 
             if biome_status == "FAIL_SYNTAX":
-                pass
+                print(f"     ⚠️ Biome flagged syntax corruption in {file}.")
 
     conn.close()
+    print("✅ [BEADS INDEXER] 110GB Library successfully mapped and categorized.")
 
 
 if __name__ == "__main__":

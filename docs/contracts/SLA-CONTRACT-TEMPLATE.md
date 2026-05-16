@@ -48,11 +48,11 @@ When SLA breaches occur that do NOT qualify for force majeure exclusion, the fol
 
 ### Monthly Credit Schedule
 
-| Breach Scenario                   | Remedy                                                                   |
-| --------------------------------- | ------------------------------------------------------------------------ |
-| Month 1 breach (first occurrence) | 10% monthly fee credit                                                   |
-| Month 2 consecutive breach        | 25% monthly fee credit                                                   |
-| Month 3 consecutive breach        | Customer may terminate contract without penalty + 25% final month credit |
+| Breach Scenario | Remedy |
+|----------------|---------|
+| Month 1 breach (first occurrence) | 10% monthly fee credit |
+| Month 2 consecutive breach | 25% monthly fee credit |
+| Month 3 consecutive breach | Customer may terminate contract without penalty + 25% final month credit |
 
 ### Important Terms
 
@@ -154,13 +154,11 @@ In the event of conflict between this SLA section and other contract terms, this
 ## Contact for SLA Issues
 
 **SLA Escalation Contact**:
-
 - Email: sla-team@pnkln.com
 - Phone: [24/7 SLA hotline]
 - Slack Connect: [Enterprise customers only]
 
 **Response Time for SLA Inquiries**:
-
 - Critical (ongoing breach): 15 minutes
 - High (potential breach): 2 hours
 - Normal (monthly report questions): 1 business day
@@ -184,7 +182,6 @@ In the event of conflict between this SLA section and other contract terms, this
 **Result**: ✅ SLA MET (87ms < 90ms threshold)
 
 **Force Majeure Events**:
-
 - Oct 15, 14:00-18:00 UTC: Anthropic API outage (4 hours)
 - Requests during this period: 500,000
 - Excluded from calculation: Yes (single provider outage, failover successful)
@@ -197,13 +194,13 @@ In the event of conflict between this SLA section and other contract terms, this
 
 To minimize correlated failure risk, Pnkln uses the following infrastructure diversity:
 
-| Component       | Provider        | Region       | Backup                |
-| --------------- | --------------- | ------------ | --------------------- |
-| Primary Compute | AWS             | us-east-1    | GCP us-central1       |
-| LLM - Gemini    | Google Cloud    | Multi-region | N/A (fails to Claude) |
-| LLM - Claude    | Anthropic       | Multi-region | N/A (fails to GPT-5)  |
-| LLM - GPT-5     | OpenAI/Azure    | Multi-region | N/A (fails to Local)  |
-| Local Inference | On-prem PyTorch | Edge nodes   | Redundant clusters    |
-| Database        | AWS RDS         | Multi-AZ     | Cross-region replica  |
+| Component | Provider | Region | Backup |
+|-----------|----------|--------|--------|
+| Primary Compute | AWS | us-east-1 | GCP us-central1 |
+| LLM - Gemini | Google Cloud | Multi-region | N/A (fails to Claude) |
+| LLM - Claude | Anthropic | Multi-region | N/A (fails to GPT-5) |
+| LLM - GPT-5 | OpenAI/Azure | Multi-region | N/A (fails to Local) |
+| Local Inference | On-prem PyTorch | Edge nodes | Redundant clusters |
+| Database | AWS RDS | Multi-AZ | Cross-region replica |
 
 This diversity ensures that no single infrastructure provider failure can trigger SLA breach.

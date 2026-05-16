@@ -64,79 +64,79 @@
 # ─── Scoring Function ───────────────────────────────────────
 
 SEVERITY_LEVELS = {
-    "catastrophic": 4,  # Loss of privilege, data breach, legal liability
-    "critical": 3,  # Service outage, billing error, compliance gap
-    "moderate": 2,  # Degraded service, minor data inconsistency
-    "negligible": 1,  # Cosmetic, logging gap, non-functional
+  "catastrophic": 4,  # Loss of privilege, data breach, legal liability
+  "critical": 3,  # Service outage, billing error, compliance gap
+  "moderate": 2,  # Degraded service, minor data inconsistency
+  "negligible": 1,  # Cosmetic, logging gap, non-functional
 }
 
 PROBABILITY_LEVELS = {
-    "frequent": 4,  # Happens on most requests
-    "likely": 3,  # Happens weekly
-    "occasional": 2,  # Happens monthly
-    "unlikely": 1,  # Rare edge case
+  "frequent": 4,  # Happens on most requests
+  "likely": 3,  # Happens weekly
+  "occasional": 2,  # Happens monthly
+  "unlikely": 1,  # Rare edge case
 }
 
 RISK_MATRIX = {
-    (4, 4): "EXTREMELY_HIGH",
-    (4, 3): "EXTREMELY_HIGH",
-    (4, 2): "HIGH",
-    (4, 1): "HIGH",
-    (3, 4): "EXTREMELY_HIGH",
-    (3, 3): "HIGH",
-    (3, 2): "HIGH",
-    (3, 1): "MEDIUM",
-    (2, 4): "HIGH",
-    (2, 3): "MEDIUM",
-    (2, 2): "MEDIUM",
-    (2, 1): "LOW",
-    (1, 4): "MEDIUM",
-    (1, 3): "LOW",
-    (1, 2): "LOW",
-    (1, 1): "LOW",
+  (4, 4): "EXTREMELY_HIGH",
+  (4, 3): "EXTREMELY_HIGH",
+  (4, 2): "HIGH",
+  (4, 1): "HIGH",
+  (3, 4): "EXTREMELY_HIGH",
+  (3, 3): "HIGH",
+  (3, 2): "HIGH",
+  (3, 1): "MEDIUM",
+  (2, 4): "HIGH",
+  (2, 3): "MEDIUM",
+  (2, 2): "MEDIUM",
+  (2, 1): "LOW",
+  (1, 4): "MEDIUM",
+  (1, 3): "LOW",
+  (1, 2): "LOW",
+  (1, 1): "LOW",
 }
 
 
 def score_risk(severity: str, probability: str) -> dict:
-    """Score a risk using the ATP 5-19 matrix.
+  """Score a risk using the ATP 5-19 matrix.
 
-    Args:
-        severity: One of 'catastrophic', 'critical', 'moderate', 'negligible'
-        probability: One of 'frequent', 'likely', 'occasional', 'unlikely'
+  Args:
+      severity: One of 'catastrophic', 'critical', 'moderate', 'negligible'
+      probability: One of 'frequent', 'likely', 'occasional', 'unlikely'
 
-    Returns:
-        dict with risk_level, severity_score, probability_score, action
-    """
-    sev = SEVERITY_LEVELS.get(severity.lower(), 0)
-    prob = PROBABILITY_LEVELS.get(probability.lower(), 0)
+  Returns:
+      dict with risk_level, severity_score, probability_score, action
+  """
+  sev = SEVERITY_LEVELS.get(severity.lower(), 0)
+  prob = PROBABILITY_LEVELS.get(probability.lower(), 0)
 
-    if sev == 0 or prob == 0:
-        return {"error": f"Invalid severity '{severity}' or probability '{probability}'"}
+  if sev == 0 or prob == 0:
+    return {"error": f"Invalid severity '{severity}' or probability '{probability}'"}
 
-    level = RISK_MATRIX.get((sev, prob), "UNKNOWN")
+  level = RISK_MATRIX.get((sev, prob), "UNKNOWN")
 
-    actions = {
-        "EXTREMELY_HIGH": "BLOCK — do not proceed. CTO approval + full mitigation required.",
-        "HIGH": "CTO review required. Implement all controls before proceeding.",
-        "MEDIUM": "Tech Lead review. Implement primary controls.",
-        "LOW": "Developer can accept. Document and proceed.",
-    }
+  actions = {
+    "EXTREMELY_HIGH": "BLOCK — do not proceed. CTO approval + full mitigation required.",
+    "HIGH": "CTO review required. Implement all controls before proceeding.",
+    "MEDIUM": "Tech Lead review. Implement primary controls.",
+    "LOW": "Developer can accept. Document and proceed.",
+  }
 
-    return {
-        "risk_level": level,
-        "severity": severity,
-        "severity_score": sev,
-        "probability": probability,
-        "probability_score": prob,
-        "action": actions.get(level, "UNKNOWN"),
-    }
+  return {
+    "risk_level": level,
+    "severity": severity,
+    "severity_score": sev,
+    "probability": probability,
+    "probability_score": prob,
+    "action": actions.get(level, "UNKNOWN"),
+  }
 
 
 if __name__ == "__main__":
-    # Example: Prompt injection on model routing
-    result = score_risk("critical", "likely")
-    print(f"Risk: {result['risk_level']} — {result['action']}")
+  # Example: Prompt injection on model routing
+  result = score_risk("critical", "likely")
+  print(f"Risk: {result['risk_level']} — {result['action']}")
 
-    # Example: Cosmetic UI bug
-    result = score_risk("negligible", "unlikely")
-    print(f"Risk: {result['risk_level']} — {result['action']}")
+  # Example: Cosmetic UI bug
+  result = score_risk("negligible", "unlikely")
+  print(f"Risk: {result['risk_level']} — {result['action']}")

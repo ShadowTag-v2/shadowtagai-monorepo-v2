@@ -2,7 +2,7 @@
 
 **Option 2: Hybrid Approach (Cloud Run Serverless)**
 
-This guide covers deploying the pnkln Core Stack™ (Gemini Ingestion Layer + Judge 6 Validation) to Google Cloud Run.
+This guide covers deploying the pnkln Core Stack™ (Gemini Ingestion Layer + Judge #6 Validation) to Google Cloud Run.
 
 ---
 
@@ -48,7 +48,10 @@ gcloud services enable \
 
 ### API Keys
 
+
+
 1. **Gemini API Key:** Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+
 
 2. Store in Secret Manager:
    ```bash
@@ -296,21 +299,32 @@ Optimized Monthly: ~$450/month ✅
 
 ### Cost Optimization Strategies
 
-1. **Reduce Min Instances to 0:**
 
+
+1. **Reduce Min Instances to 0:**
    ```bash
    gcloud run services update pnkln-api \
      --region=us-central1 \
      --min-instances=0  # Accept 2-3s cold starts
    ```
 
+
+
 2. **Implement Result Caching:**
+
+
    - Cache validation results for 30 days (15% reduction in Gemini calls)
+
 
    - Cost savings: ~$280/month
 
+
+
 3. **Use Cloud Run Jobs for Batch:**
+
+
    - For nightly ingestion (non-latency-critical), use Cloud Run Jobs instead of always-on service
+
 
    - Cost savings: ~$50/month
 
@@ -403,7 +417,10 @@ gcloud alpha monitoring policies create \
 
 ### 3. Custom Metrics Dashboard
 
+
+
 - **Grafana Dashboard:** Import template from `/monitoring/grafana-dashboard.json`
+
 
 - **Cloud Monitoring:** View at [GCP Console](https://console.cloud.google.com/monitoring)
 
@@ -420,29 +437,38 @@ name: Deploy to Cloud Run
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Build and Push to GCR
-        run: |
-          gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/pnkln-api
+    - uses: actions/checkout@v3
 
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy pnkln-api \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/pnkln-api \
-            --region us-central1 \
-            --platform managed
+
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+
+
+    - name: Build and Push to GCR
+      run: |
+        gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/pnkln-api
+
+
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy pnkln-api \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/pnkln-api \
+          --region us-central1 \
+          --platform managed
+
 ```
 
 ---
@@ -473,9 +499,12 @@ gcloud run services update pnkln-api \
 
 **Solution:**
 
+
 - Implement exponential backoff in `app/services/ingestion_service.py`
 
+
 - Add result caching to reduce API calls
+
 
 - Request quota increase: [Quota Console](https://console.cloud.google.com/iam-admin/quotas)
 
@@ -497,17 +526,26 @@ gcloud run services update pnkln-api \
 
 ## 📚 Additional Resources
 
+
+
 - **Cor.8 Documentation:** [/docs/cor8-pnkln-stack-global-edge-fabric/](./docs/cor8-pnkln-stack-global-edge-fabric/)
+
 
 - **Gemini Ingestion Layer:** [gemini-ingestion-layer.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md)
 
-- **Judge 6 Validation:** [judge-six-validation.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/judge-six-validation.md)
+
+- **Judge #6 Validation:** [judge-six-validation.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/judge-six-validation.md)
+
 
 - **API Schemas:** [api-schemas.md](./docs/cor8-pnkln-stack-global-edge-fabric/09-implementation/api-schemas.md)
 
+
+
 - **Cloud Run Docs:** https://cloud.google.com/run/docs
 
+
 - **Gemini API:** https://ai.google.dev/docs
+
 
 - **Vertex AI:** https://cloud.google.com/vertex-ai/docs
 
@@ -515,20 +553,36 @@ gcloud run services update pnkln-api \
 
 ## 🎯 Next Steps
 
+
+
 1. **Deploy Nightly Ingestion CronJob:**
+
+
    - Use Cloud Run Jobs or Cloud Scheduler to trigger ingestion at 23:00 UTC
+
 
    - See [cloud-scheduler-config.yaml](./cloud-scheduler-config.yaml)
 
+
+
 2. **Integrate with ShadowTag:**
+
+
    - Add attestation layer for L2/L4 cryptographic signing
+
 
    - See [shadowtag-verification.md](./docs/cor8-pnkln-stack-global-edge-fabric/03-technical-architecture/shadowtag-verification.md)
 
+
+
 3. **Scale to Production:**
+
+
    - Transition to GKE for higher throughput (Option 1)
 
+
    - Implement distributed tracing with Cloud Trace
+
 
    - Add Redis caching for validation results
 

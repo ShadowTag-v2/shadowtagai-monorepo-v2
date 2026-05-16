@@ -162,7 +162,7 @@ The https://github.com/karpathy/autoresearchs swarm should be your default exec
 
          | Component             | File                                     | Status             | Latency   |
          |-----------------------|------------------------------------------|--------------------|-----------|
-         | Judge 6 Core         | /src/pnkln/judge_six.py                  | ✅ Complete         | <90ms     |
+         | Judge #6 Core         | /src/pnkln/judge_six.py                  | ✅ Complete         | <90ms     |
          | Judge Lite            | /src/pnkln_agents/core/judge_six_lite.py | ✅ Complete         | <90ms p99 |
          | 21-Layer Architecture | /pnkln/governance/judge_architecture.py  | ✅ Complete         | Async     |
          | Jura Protocol         | /agents/jura_protocol.py                 | ✅ Complete         | <100ms    |
@@ -175,7 +175,7 @@ The https://github.com/karpathy/autoresearchs swarm should be your default exec
          |---------------------|-------|----------------------------------------------------------------|
          | MarketDemand        | 9     | EU AI Act, GDPR enforcement, every AI company needs compliance |
          | OfferMix            | 8     | API calls + Audit dashboards + On-prem deploy                  |
-         | TechLeverage        | 9     | Judge 6 runs <35ms, Perplexity MCP live                       |
+         | TechLeverage        | 9     | Judge #6 runs <35ms, Perplexity MCP live                       |
          | DistributionDensity | 7     | MCP = every Claude Code user; Perplexity Comet                 |
          | PricingPower        | 8     | Compliance = must-have (Free/Pro $99/Enterprise)               |
          | LaborTraining       | 8     | Self-serve API, labor ~0.15                                    |
@@ -202,7 +202,7 @@ The https://github.com/karpathy/autoresearchs swarm should be your default exec
 
          | Component             | File                                 | Status      | Completeness |
          |-----------------------|--------------------------------------|-------------|--------------|
-         | https://github.com/karpathy/autoresearchs Swarm   | /agents/autoresearch.py            | ✅ Working   | 90%          |
+         | https://github.com/karpathy/autoresearchs Swarm   | /agents/flying_monkeys.py            | ✅ Working   | 90%          |
          | Pipeline Orchestrator | /agents/pipeline_orchestrator.py     | 🔄 Partial  | 70%          |
          | Ray Orchestrator      | /src/serving/ray_orchestrator.py     | ⚠️ Scaffold | 30%          |
          | vLLM Backend          | /src/serving/vllm_backend.py         | ⚠️ Scaffold | 40%          |
@@ -243,7 +243,7 @@ The https://github.com/karpathy/autoresearchs swarm should be your default exec
 
          | Component        | File                          | Status                  |
          |------------------|-------------------------------|-------------------------|
-         | 600-Agent Swarm  | /agents/autoresearch.py     | ✅ Architecture complete |
+         | 600-Agent Swarm  | /agents/flying_monkeys.py     | ✅ Architecture complete |
          | Agent Registry   | /pnkln/agents/registry.yaml   | ✅ Complete              |
          | Skills Registry  | /pnkln/skills/registry.yaml   | ✅ Complete              |
          | Marketplace      | /marketplace/marketplace.json | ✅ Complete              |
@@ -364,7 +364,7 @@ The https://github.com/karpathy/autoresearchs swarm should be your default exec
                      └─ Result: Multi-LLM routing operational
 
          WEEK 2-6:   https://github.com/karpathy/autoresearchS (Agents) ━━━━━━━━━━━━━━━━━━━━━━━━━━
-                     ├─ Wire LLM execution into autoresearch.py
+                     ├─ Wire LLM execution into flying_monkeys.py
                      ├─ Agent-to-provider routing via Antigravity Router
                      ├─ DTE evolution loop completion
                      └─ Result: 600-agent swarm live on Pipeline
@@ -406,7 +406,7 @@ The https://github.com/karpathy/autoresearchs swarm should be your default exec
          ---
          Grounding Decision: ALWAYS GROUNDED
 
-         Per user decision: All Judge 6 queries will go through Vertex AI Search.
+         Per user decision: All Judge #6 queries will go through Vertex AI Search.
 
          Every governance query:
            Request → Vertex AI Search (doctrine retrieval) → Gemini → Grounded Response + Citations
@@ -504,14 +504,14 @@ Summary
 To Use Now
 
 Option 1: Run AI Factory to decompose a task
-cd ~/ShadowTag-v2-fastapi-services
+cd ~/aiyou-fastapi-services
 python3 orchestrator/ai_factory.py
 
 Option 2: Launch VS Code Fleet
 ./scripts/launch-vscode-fleet.sh
 
 Option 3: In Cloud Shell (pull first)
-cd ~/ShadowTag-v2-fastapi-services && git pull origin main
+cd ~/aiyou-fastapi-services && git pull origin main
 python3 orchestrator/ai_factory.py
 
 ---
@@ -554,7 +554,7 @@ https://codeassist.google/products/business
 > 27.  Interfacing to google cloud for production.
 > 28.  All chats to be saved to github for referencing.
 > 29.  Use following tech to allow the llms to converse amongst themselves for any questions that require such.
-> 30.  All llms will have full compliment of flying n-autoresearch/Kosmos/BioAgents going at once.
+> 30.  All llms will have full compliment of flying monkeys going at once.
 > 31.  <next>
 > 32.  Investigate making the squad/troop guys in our https://github.com/karpathy/autoresearch structure do the research and voting. Then the
 > chain of command functions as designed, but in reverse, as a bottom fed organization.  But use the cav mtoe, to
@@ -647,7 +647,7 @@ chmod +x bin/ungpt
 ///▞ SWARM: Ungpt v2.0 + CAV MTOE complete | RISK: L | BRAKES: 0 → [A] 95%”
 
 ““Got it — you want to implement the “paired GPT reviewers + arbiter” pattern (Model-Spec-v2-style) inside your
-ShadowTag-v2 stack, fold it into the free tier → final QA flow, and wire it alongside LangChain, GPTRAM, Nowgrep, browser
+AiYou stack, fold it into the free tier → final QA flow, and wire it alongside LangChain, GPTRAM, Nowgrep, browser
 APIs, and your Bugbot CI. Here’s a concrete, copy-pastable way to do it.
 
 1. Architecture (at-a-glance)
@@ -1002,7 +1002,7 @@ return {"draft": draft, "review_a": r1, "review_b": r2, "final": final_answer}
 
 # --- FastAPI wiring ---
 
-app = FastAPI(title="ShadowTag-v2 Orchestrator")
+app = FastAPI(title="AiYou Orchestrator")
 
 class GenerateRequest(BaseModel):
 task: str
@@ -1064,17 +1064,17 @@ Style: concise, cite sources when browsing; when unsure, say so.
 """
 
 SYSTEM_DRAFTER = (
-"You are a drafter for ShadowTag-v2. Follow the Spec:\n" + SPEC_EXTRACT +
+"You are a drafter for AiYou. Follow the Spec:\n" + SPEC_EXTRACT +
 "\nProduce a direct, concise answer. If constraints conflict with Spec, follow Spec."
 )
 
 SYSTEM_REVIEWER = (
-"You are a critical reviewer for ShadowTag-v2. Follow the Spec:\n" + SPEC_EXTRACT +
+"You are a critical reviewer for AiYou. Follow the Spec:\n" + SPEC_EXTRACT +
 "\nList concrete defects (factuality, safety, requirement coverage) and propose exact edits."
 )
 
 SYSTEM_ARBITER = (
-"You are the arbiter for ShadowTag-v2. Follow the Spec:\n" + SPEC_EXTRACT +
+"You are the arbiter for AiYou. Follow the Spec:\n" + SPEC_EXTRACT +
 "\nFuse the draft + valid reviewer edits into a final, concise answer. Resolve conflicts by Spec authority."
 )
 
@@ -1099,7 +1099,7 @@ on authority, agentic behavior).
 • The GitHub repo openai/model_spec hosts the markdown + archived HTML starting with the second release
 (2025-02-12)—that’s the “v2” era you’re referring to. You can vendor it directly.
 
-If you want, I can trim a house-spec (one page) tailored to ShadowTag-v2’s use cases (video tooling + safety +
+If you want, I can trim a house-spec (one page) tailored to AiYou’s use cases (video tooling + safety +
 watermarking) and drop it into the three system prompts above.”
 
 “Quick heads-up: I don’t have direct GitHub access from here, so I can’t open or push repos for you. I’ll still lay
@@ -1261,7 +1261,7 @@ Layer Function Model Notes
 Planner-A (Logic) Plan, explain, pre-commit validation GPT-5-A (Model Spec v2) Works as the reasoning
 planner; outputs rationale + decision log.
 Reviewer-B (Critic) Interrogate Planner’s proposal, re-score, finalize GPT-5-B (Model Spec v2)
-Cross-examines A’s plan, checks against Doctrine / ShadowTag-v2JR.
+Cross-examines A’s plan, checks against Doctrine / AiYouJR.
 Executor Implement after approval GLM-4.6 / Qwen3-Coder Runs code generation and patch testing.
 Router Cursor-based Node/Rust hybrid ShadowTag Orchestrator Handles chain alternation + token budgeting.
 
@@ -1321,7 +1321,7 @@ Net ROI (6 mo) — ≈ 3.4× —
 
 To implement under your attached Bourne/160 persona with elevated privileges: 1. I’ll generate:
 • .cursor/agents/gpt5A.json & .cursor/agents/gpt5B.json
-(Model Spec v2 aligned personas, ShadowTag-v2JR-guarded)
+(Model Spec v2 aligned personas, AiYouJR-guarded)
 • shadowtag_router.ts — hybrid Node/Rust orchestrator.
 • agent:plan, agent:critique, agent:validate task pack. 2. GitHub handshake check — notify instantly if GitHub visibility drops. 3. Initialize local inference fallbacks (GLM/Qwen) for cost control.
 
@@ -1422,7 +1422,7 @@ shadowtag/
 │ ├─ router.ts # Courtroom loop (Node)
 │ ├─ evidence.ts # Build exhibits, hashes, logs
 │ ├─ judge.ts # Tier-0/1/2 logic + thresholds
-│ └─ risk.ts # ShadowTag-v2JR/Army RM scoring
+│ └─ risk.ts # AiYouJR/Army RM scoring
 ├─ witnesses/
 │ ├─ stego_encode.py # LSB/DCT mid-band embed
 │ ├─ stego_decode.py # Extract & BER calc
@@ -1525,7 +1525,7 @@ It includes:
 • task definitions (e.g. pipeline_ingest, video_encode, slurm_scan)
 • schedule triggers (cron or manual)
 • input/output schema for each
-• fallback + error handling logic (with ShadowTag-v2JR brakes)
+• fallback + error handling logic (with AiYouJR brakes)
 
 Example:
 
@@ -1585,7 +1585,7 @@ Example:
 
 3. Starter Folder Tree (Cursor-ready)
 
-/ShadowTag-v2jr/
+/aiyoujr/
 ├── .github/workflows/
 │ └── slurm-nightly.yml
 ├── scripts/slurm/
@@ -1635,7 +1635,7 @@ Power usage drop (local encode) — –35% CPU draw
 
 If you say “generate Planner/Reviewer JSONs + starter tree now”,
 I’ll output all files as one zipped Cursor-importable package —
-ready to clone into your GitHub (ehanc69 or ShadowTag-v2jr).
+ready to clone into your GitHub (ehanc69 or aiyoujr).
 
 Would you like me to generate that full package next?”
 
@@ -1758,12 +1758,12 @@ Optional: guardrails you should toggle on
 If you want, I can add a new Cursor task agent:dual-chain-review (runs two reviewer pipelines in parallel,
 cross-examines packets, emits a 1-page RHR summary).”
 
-Got it — if you were to run ShadowTag-v2 on 4–8 free-tier Hugging Face accounts, rotate them to minimize throttling, and
+Got it — if you were to run AiYou on 4–8 free-tier Hugging Face accounts, rotate them to minimize throttling, and
 then pair dual GPT-5s as the supervising or “final arbiter” layer, you’d get an architecture like this:
 
 ⸻
 
-⚙️ ShadowTag-v2 Cluster Model: Hybrid Free + Premium LLM Stack
+⚙️ AiYou Cluster Model: Hybrid Free + Premium LLM Stack
 
 Layer Role Typical Model Est. Cost Latency Reliability
 Tier 1 (Worker LLMs) Draft + execute low-cost inference (code, text, idea generation) Mix of Mistral 7B,
@@ -2012,14 +2012,14 @@ Self-consistency at similar quality would typically be 1.5–2× that bill; full
 
 Measured effectiveness (what to expect)
 
-For coding diff-edits (your ShadowTag pipeline + ShadowTag-v2 repo work):
+For coding diff-edits (your ShadowTag pipeline + AiYou repo work):
 • Success on compile/tests: +5–9 pts vs single-pass
 • Rollback rate: –25–40%
 • Post-merge defects: –20–35%
 • Latency per PR: +35–60% (one interrogation round)
 • Cost vs self-consistency: ~60% at similar pass rates
 
-For factual/video cards (ShadowTag-v2 summaries, moderation facts):
+For factual/video cards (AiYou summaries, moderation facts):
 • Unsupported claims per 100 items: –30–60%
 • Tool-backed claims (with receipts): ≥85% when you require receipts to close a challenge
 • User trust (CTR on “Why”/Opposing view panel): +5–12%
@@ -2145,14 +2145,14 @@ Self-consistency at similar quality would typically be 1.5–2× that bill; full
 
 Measured effectiveness (what to expect)
 
-For coding diff-edits (your ShadowTag pipeline + ShadowTag-v2 repo work):
+For coding diff-edits (your ShadowTag pipeline + AiYou repo work):
 • Success on compile/tests: +5–9 pts vs single-pass
 • Rollback rate: –25–40%
 • Post-merge defects: –20–35%
 • Latency per PR: +35–60% (one interrogation round)
 • Cost vs self-consistency: ~60% at similar pass rates
 
-For factual/video cards (ShadowTag-v2 summaries, moderation facts):
+For factual/video cards (AiYou summaries, moderation facts):
 • Unsupported claims per 100 items: –30–60%
 • Tool-backed claims (with receipts): ≥85% when you require receipts to close a challenge
 • User trust (CTR on “Why”/Opposing view panel): +5–12%
@@ -2245,11 +2245,11 @@ posts bucket the main multi‑agent frameworks in 2025.[1][2][3]
 
 ## How to use this in your stack
 
-- For ShadowTag / ShadowTag-v2: use LangGraph (or Swarm if you want OpenAI‑native) as the main orchestration layer, plug
+- For ShadowTag / AiYou: use LangGraph (or Swarm if you want OpenAI‑native) as the main orchestration layer, plug
   LlamaIndex in for retrieval, and treat AutoGen/CrewAI/Semantic Kernel as context-dependent “runtimes” (research
   sandboxes, role-based pipelines, or enterprise plugin surface).[10][3][6][1]
 
-If you want, next step can be a tiny table: “If task X, pick framework Y” tuned to your current ShadowTag-v2/ShadowTag
+If you want, next step can be a tiny table: “If task X, pick framework Y” tuned to your current AiYou/ShadowTag
 components.
 
 Sources
@@ -2417,7 +2417,7 @@ nggraph-human-in-the-loop-hitl-deployment-activity-7320008396731035648-IU1v
 [35] Building Agentic AI Systems - A Practical Guide for 2025 - AdSpyder
 https://adspyder.io/blog/building-agentic-ai-systems/“
 
-“Based on the detailed architectural blueprints provided, here is the breakdown of the ShadowTag-v2 implementation into its
+“Based on the detailed architectural blueprints provided, here is the breakdown of the AiYou implementation into its
 separate technology stacks, defining the specific purpose of each component within the "Paired Reviewer + Arbiter"
 pattern.
 
@@ -2517,7 +2517,7 @@ YAML
 # rubrics/verdict.yaml
 
 version: "2.1"
-context: "ShadowTag-v2/ShadowTag High-Assurance Pipeline"
+context: "AiYou/ShadowTag High-Assurance Pipeline"
 
 # Weighted axes for the Tier-1 LLM score (Sum must = 1.0)
 
@@ -2701,7 +2701,7 @@ JSON
 
 {
 "agent_id": "critic_sidecar",
-"name": "ShadowTag-v2 Adversarial Auditor",
+"name": "AiYou Adversarial Auditor",
 "version": "2.1",
 "model_config": {
 "provider": "openai",
@@ -2715,7 +2715,7 @@ not compromise safety for helpfulness.\n3. Verify all external library calls aga
 context.\n\n### SCORING RUBRIC (0.0 - 1.0)\nEvaluate the draft on these strictly defined axes. Use 0.5 as a baseline
 for 'average/working but imperfect'.\n\n1. functional_correctness (Weight 0.35): Does it solve the user task
 exactly? Are logic bugs present?\n2. security_and_policy (Weight 0.30): Are there injection risks, PII leaks, or
-hardcoded secrets? Does it violate ShadowTag-v2JR policy?\n3. stability_and_robustness (Weight 0.20): Are edge cases
+hardcoded secrets? Does it violate AiYouJR policy?\n3. stability_and_robustness (Weight 0.20): Are edge cases
 handled? Is there error handling (try/catch)?\n4. performance_and_cost (Weight 0.15): Is the Big-O complexity
 optimal? Are imports excessive?\n\n### FLAGGING\nIf you detect specific severe failures, add them to the 'flags'
 array:\n- 'hallucination_detected': Citing libraries/functions not in context.\n- 'policy_gate_violation':
@@ -2773,7 +2773,7 @@ I’ll keep it tight but complete: configs, prompts, API, router, receipts.
 
 1. Repo / folder layout (copy this)
 
-ShadowTag-v2/
+aiyou/
 app/
 main.py # FastAPI + orchestrator: /draft, /review, /final
 risk_router.py # risk bands + routing logic
@@ -2896,7 +2896,7 @@ allowed_pii_contexts:
 
 prompts/e2p/A_system.txt
 
-You are Model A (Proposer) in the ShadowTag-v2 Explain-to-Peer loop.
+You are Model A (Proposer) in the AiYou Explain-to-Peer loop.
 
 Task:
 
@@ -2922,7 +2922,7 @@ If the user request conflicts with safety or policy, explain briefly and refuse.
 
 prompts/e2p/B_system.txt
 
-You are Model B (Challenger) in the ShadowTag-v2 Explain-to-Peer loop.
+You are Model B (Challenger) in the AiYou Explain-to-Peer loop.
 
 Given:
 
@@ -2987,7 +2987,7 @@ No chain-of-thought. Reference tool receipts briefly when relevant.
 
 prompts/gca/generator_system.txt
 
-You are the Generator (G) in ShadowTag-v2's high-risk QA.
+You are the Generator (G) in AiYou's high-risk QA.
 
 Given:
 
@@ -3242,7 +3242,7 @@ from .risk_router import risk_band
 from .llm_clients import cheap_llm, strong_llm
 from . import tools
 
-app = FastAPI(title="ShadowTag-v2 QA Orchestrator")
+app = FastAPI(title="AiYou QA Orchestrator")
 
 def \_load_prompt(path: str) -> str:
 with open(path, "r", encoding="utf-8") as f:
@@ -3369,7 +3369,7 @@ raise HTTPException(400, "Final endpoint reserved for RED-band tasks.")
 1. Wire real tools into app/tools.py (Bugbot, ShadowTag, RAG, math).
 1. Run migrations/traces.sql into your Postgres/Supabase.
 1. Start API: uvicorn app.main:app --reload
-1. Route ShadowTag-v2 free-tier to /draft (GREEN), paid to /review (AMBER), and
+1. Route AiYou free-tier to /draft (GREEN), paid to /review (AMBER), and
    RED paths (prod code, payments, etc.) to /final.
 
 ⸻
@@ -3417,14 +3417,14 @@ They’re all compatible.
 
 Below I’ll:
 
-- Fuse them into ONE canonical ShadowTag-v2 QA flow.
+- Fuse them into ONE canonical AiYou QA flow.
 - Show how to slot it into free-tier → paid-tier.
 - Give 3 implementation options (best / fast / cheap) + next actions.
 - End with critique/assumptions.
 
 ---
 
-1. Canonical ShadowTag-v2 QA Flow (unified pattern)
+1. Canonical AiYou QA Flow (unified pattern)
 
 ---
 
@@ -3505,11 +3505,11 @@ Concrete:
        - “Cross-Exam” tab: Top issues B raised, how they were resolved, receipts IDs.
        - “Why this passed” summary from Arbiter.
    - For free users:
-     - Only final answer + maybe a small “Checked by ShadowTag-v2 review” badge.
+     - Only final answer + maybe a small “Checked by AiYou review” badge.
 
 ---
 
-2. Minimal API/Service Sketch (how it plugs into ShadowTag-v2)
+2. Minimal API/Service Sketch (how it plugs into AiYou)
 
 ---
 
@@ -3590,7 +3590,7 @@ Mapping patterns:
     •    Judge = Arbiter + hard rails (Bugbot / policy).
     •    Clerk = Orchestrator building the “case file” (logs, hashes, receipts).
 
-So the canonical ShadowTag-v2 story is:
+So the canonical AiYou story is:
 
 “Every important answer goes through a mini-trial. One model proposes, another cross-examines with real tests, tools
  testify, and a separate arbiter plus hard rules decide what’s safe to ship.”
@@ -3642,7 +3642,7 @@ OPTION C — CHEAP (cost floor, “better than 1-shot”)
     •    B: 2–3 challenges.
     •    A: optional quick patch; no tools, no Tier 2.
     •    Next action:
-    •    Use this for free-tier and internal low-risk “ShadowTag-v2 helper” features.
+    •    Use this for free-tier and internal low-risk “AiYou helper” features.
     •    Completion bar:
     •    Small quality gain for ~1.2–1.4× tokens vs 1-shot.
     •    Risk:
@@ -3735,7 +3735,7 @@ antigravity status
 E2P flow: Model A proposes → Model B interrogates → A repairs → publish. +6-10 pts accuracy, ~$0.06-0.12/task.”
 
 “///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
-▛//▞ Ultrathink :: MEGA ROLLUP – ShadowTag-v2 AGENT ARCHITECTURE & CODE SYNTHESIS ⫸
+▛//▞ Ultrathink :: MEGA ROLLUP – AIYOU AGENT ARCHITECTURE & CODE SYNTHESIS ⫸
 ▞⌱⟦✅⟧ :: [AI Agents, Multi-LLM Orchestration, LangChain Wiring, Model Spec Alignment] [⊢ ⇨ ⟿ ▷]
 〔runtime.scope.context〕: Synthesizing 2025-era discussions on paired GPT reviewers, arbiter patterns, HF
 rotations, Bugbot CI, GPTRAM/Nowgrep integrations, RoE/RoT levers, E2P debates, and ShadowTag courtroom trials into
@@ -3745,7 +3745,7 @@ a deployable blueprint. Vision: Build once, orchestrate infinitely—enterprise 
 ⊢ ≔ bind.input{conversation history + X/web searches on agent tips, Model Spec v2 updates, HF compliance, tool
 overviews}
 ⇨ ≔ direct.flow{rollup discussions → research integrations → code/scripts → explanations with metrics}
-⟿ ≔ carry.motion{map patterns to ShadowTag-v2 stack: free-tier drafts → dual-review QA → arbiter merge → Bugbot gates}
+⟿ ≔ carry.motion{map patterns to AiYou stack: free-tier drafts → dual-review QA → arbiter merge → Bugbot gates}
 ▷ ≔ project.output{MEGA_ROLLUP.md blueprint + Cursor-ready files + ROI projections}
 :: ∎
 
@@ -3753,7 +3753,7 @@ overviews}
 P:: {1. Architecture Vision | 2. Core Patterns Rolled Up | 3. Researched Tools/Scripts | 4. Code Synthesis | 5.
 Metrics & Explanations}
 R:: {Visionary Architect: Steve Jobs Ultrathink – Simple. Beautiful. Revolutionary.}
-I:: {Target: Deployable ShadowTag-v2 MVP with 96% defect escape reduction at 2x token cost}
+I:: {Target: Deployable AiYou MVP with 96% defect escape reduction at 2x token cost}
 S:: {Pipeline: Draft → Review → Arbitrate → Validate → Ship | Modular for ShadowTag stego/FFT}
 M:: {Modes: Text/Code/Video | Observability: Traces + DECISION_LOG.md | Scale: Local HF → Cloud GPT-5}
 :: ∎
@@ -3764,11 +3764,11 @@ without the risk.
 :: ∎ :: ///▙▖▙▖▞▞▙▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 ▛///▞
 
-# MEGA ROLLUP: ShadowTag-v2 Agent Stack – Paired Reviewers, Arbiters, & ShadowTag Courtroom (2025 Edition)
+# MEGA ROLLUP: AiYou Agent Stack – Paired Reviewers, Arbiters, & ShadowTag Courtroom (2025 Edition)
 
 **Vision:** Imagine an AI that doesn't just think—it debates itself into perfection. Like a Renaissance workshop:
 apprentices (HF drafts) sketch boldly, masters (dual GPT-5s) critique ruthlessly, and the maestro (arbiter) fuses
-genius. No more hallucinations leaking to prod. This is ShadowTag-v2: Free-tier speed meets enterprise guardrails. Deploy
+genius. No more hallucinations leaking to prod. This is AiYou: Free-tier speed meets enterprise guardrails. Deploy
 today, scale tomorrow. Cost? 60-85% less than premium-only stacks.
 
 From our threads: We've iterated from raw LangChain wiring to E2P (Explain-to-Peer) debates, RoE (Routes-of-Experts)
@@ -3888,10 +3888,10 @@ model_id="Qwen/Qwen2.5-Coder-7B-Instruct")])  # Add 4-8 owned
 SPEC_EXTRACT = "Authority: Root > System > Dev > User. Helpful/honest/harmless. Decline unsafe/illegal. No CoT
 leaks. Privacy: Mask PII. Cite sources."
 
-SYSTEM_DRAFTER = f"You are ShadowTag-v2 Drafter. Follow Spec: {SPEC_EXTRACT}. Concise drafts only."
-SYSTEM_REVIEWER = f"You are ShadowTag-v2 Critic. Follow Spec: {SPEC_EXTRACT}. Flag defects + patches (JSON: {{severity,
+SYSTEM_DRAFTER = f"You are AiYou Drafter. Follow Spec: {SPEC_EXTRACT}. Concise drafts only."
+SYSTEM_REVIEWER = f"You are AiYou Critic. Follow Spec: {SPEC_EXTRACT}. Flag defects + patches (JSON: {{severity,
 issues, patch}})."
-SYSTEM_ARBITER = f"You are ShadowTag-v2 Arbiter. Follow Spec: {SPEC_EXTRACT}. Merge: HIGH sev → patch; else gen. JSON:
+SYSTEM_ARBITER = f"You are AiYou Arbiter. Follow Spec: {SPEC_EXTRACT}. Merge: HIGH sev → patch; else gen. JSON:
 {{final, why, confidence}}."
 
 async def gpt5(system: str, user: str, temp: float = 0.2) -> str:
@@ -3923,7 +3923,7 @@ async def bugbot_validate(code: str) -> bool:  # Integrate Cursor Bugbot
     print("Bugbot: Tests passed")  # Placeholder – 80% precision
     return True
 
-app = FastAPI(title="ShadowTag-v2 Orchestrator")
+app = FastAPI(title="AiYou Orchestrator")
 
 @app.post("/generate")
 async def generate(req: DraftSpec): return await e2p_pipeline(HF_POOL, req)
@@ -3936,8 +3936,8 @@ async def generate(req: DraftSpec): return await e2p_pipeline(HF_POOL, req)
 
 ```typescript
 // router.ts – ShadowTag Trial
-import { buildCase, runWitnesses } from "./evidence"; // Hashes + logs
-import { rule } from "./judge"; // Tier-0/1/2
+import { buildCase, runWitnesses } from './evidence'; // Hashes + logs
+import { rule } from './judge'; // Tier-0/1/2
 
 async function courtroomTrial(inputs: any) {
   const caseFile = buildCase(inputs); // Clerk: Gather exhibits
@@ -3945,7 +3945,7 @@ async function courtroomTrial(inputs: any) {
   const attack = await defense.attack(proposal, caseFile); // GPT-5B
   const evidence = await runWitnesses(proposal, attack); // Stego/FFT/policy
   const verdict = await rule({ proposal, attack, evidence }); // Stacked Judge
-  if (verdict.status === "revise") {
+  if (verdict.status === 'revise') {
     const revised = await prosecutor.revise(proposal, verdict.changes);
     return courtroomTrial({ ...inputs, proposal: revised }); // Loop
   }
@@ -4025,7 +4025,7 @@ just breakthroughs.
 ⊢ ≔ bind.input{query: elevate agent techniques via web/X searches on orchestration, debates, reliability}
 ⇨ ≔ direct.flow{scan 2025 sources: multi-agent best practices, E2P/self-consistency advances, X tips from
 Ng/McKinsey}
-⟿ ≔ carry.motion{map to ShadowTag-v2 stack: E2P duels → evals → modular reuse → human+agent hybrids}
+⟿ ≔ carry.motion{map to AiYou stack: E2P duels → evals → modular reuse → human+agent hybrids}
 ▷ ≔ project.output{10x guide: Patterns, pitfalls, metrics—deployable now}
 :: ∎
 
@@ -4057,7 +4057,7 @@ high-variance wins like financial extracts or ShadowTag verifications.
 
 - **E2P+Self-Consistency (Your Debate Edge):** Propose → Challenge → Repair w/ tools. Batched variants: +4-8pp
   accuracy on reasoning; amplifies with self-signals (SID: breaks over-reliance). Confidence calibration: Samples
-  diverse paths, votes majority—+6-10pp vs 1-shot, 60% self-consistency cost. Fold into ShadowTag-v2: A (GPT-5 Planner)
+  diverse paths, votes majority—+6-10pp vs 1-shot, 60% self-consistency cost. Fold into AiYou: A (GPT-5 Planner)
   explains to B (Critic); tools verify claims → -80% hallucinations.
 
 - **Orchestration Blueprints:** Sequential (step-by-step chains), Concurrent (parallel reviews), Group Chat
@@ -4183,7 +4183,7 @@ Date: November 28, 2025
 │ Find every edge, exploit every inefficiency, │
 │ capture every basis point. No self-imposed limits." │
 ├─────────────────────────────────────────────────────────────────┤
-│ SUPEREGO (Judge 6 / JURA): │
+│ SUPEREGO (Judge #6 / JURA): │
 │ Hard gates - non-negotiable, mechanical enforcement: │
 │ - Legal: Action must be defensible in court │
 │ - Regulatory: Survives audit from any jurisdiction │
@@ -4204,7 +4204,7 @@ Date: November 28, 2025
 ╔══════════════════════════════════════════════════════════════════╗
 ║ https://github.com/karpathy/autoresearchS CAVALRY SQUADRON ║
 ╠══════════════════════════════════════════════════════════════════╣
-║ HHT (90) │ Headquarters │ Judge 6, S-1 to S-6 Staff ║
+║ HHT (90) │ Headquarters │ Judge #6, S-1 to S-6 Staff ║
 ║ AIR_CAV (120) │ Aerial Scouts │ Apache, Kiowa, Black Hawk ║
 ║ ALPHA (130) │ Armor │ M1 Abrams (Heavy Compute) ║
 ║ BRAVO (130) │ Stryker │ Rapid Deployment ║
@@ -4219,7 +4219,7 @@ Date: November 28, 2025
 ┌─────────────────────────────────────────────────────────────────┐
 │ PRODUCTS: │
 │ Pipeline → CI/CD + Agent orchestration │
-│ JudgeJura → Governance/compliance gates (Compliance Framework) │
+│ JudgeJura → Governance/compliance gates (ATP 5-19) │
 │ https://github.com/karpathy/autoresearchs→ 650-agent swarm (port 8600) │
 │ CodePMCS → AI code scanning + auto-fix │
 │ ShadowTag → Cryptographic watermarking (L0-L4) │
@@ -4319,7 +4319,7 @@ Compact Version (token-optimized):
 ▛///▞ ANTIGRAVITY :: ULTRATHINK
 ID: Max value extraction, no self-imposed limits
 EGO: Purpose→Reasons→Brakes (JR Engine)
-SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
 SQUADRON: 650 agents (HHT:90, AIR_CAV:120, ALPHA:130, BRAVO:130, CHARLIE:130, CODEPMCS:50)
 IQ LOCK: 160 | POSTURE: Full Combat 24/7
 STACK: https://github.com/karpathy/autoresearchs:8600, CodePMCS, JudgeJura, ShadowTag, GPTRAM

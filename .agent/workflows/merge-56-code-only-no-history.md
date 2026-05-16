@@ -5,7 +5,7 @@ description: Code-only import of ehanc69 repositories without preserving git his
 # /merge-56-code-only-no-history
 
 MISSION
-Complete the merge of all ehanc69 repos into the ShadowTagAI monorepo using CODE-ONLY import.
+Complete the merge of all ehanc69 repos into the ShadowTag monorepo using CODE-ONLY import.
 Do not preserve git history. Do not merge commit graphs. Do not import tags, branches, reflogs, hooks, or nested .git directories.
 Goal: only the current file trees survive, mapped into canonical monorepo destinations, to minimize repository size.
 
@@ -16,7 +16,7 @@ CANONICAL PROJECT
 shadowtag-omega-v4
 
 CANONICAL MODEL FAMILY
-gemini-3.1-flash-lite-preview
+gemini-3.1-family
 
 HARD RULES
 1. monorepo_manifest.yaml is workspace truth

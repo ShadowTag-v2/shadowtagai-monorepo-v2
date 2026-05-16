@@ -1,11 +1,9 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from fastapi import APIRouter
-
+from ..config import load_settings
 from ..adapters.authority_state import AuthorityState
 from ..adapters.memory_atoms import search_atoms
 from ..adapters.monorepo_truth import load_monorepo_truth
-from ..config import load_settings
 from ..utils.db import pg_conn
 
 router = APIRouter(prefix="/api")
@@ -22,10 +20,7 @@ def hydrate_pack():
     )
     with pg_conn(s.postgres_dsn) as conn:
         cur = conn.cursor()
-        cur.execute(
-            "SELECT bead_id, title, status, summary FROM beads_tasks WHERE repo_id = %s ORDER BY updated_at DESC LIMIT 12",
-            (s.repo_id,),
-        )
+        cur.execute("SELECT bead_id, title, status, summary FROM beads_tasks WHERE repo_id = %s ORDER BY updated_at DESC LIMIT 12", (s.repo_id,))
         tasks = [{"id": r[0], "title": r[1], "status": r[2], "summary": r[3] or ""} for r in cur.fetchall()]
         cur.execute("SELECT summary FROM ltm_thread_summaries WHERE is_active = true ORDER BY created_at DESC LIMIT 5")
         summaries = [r[0] for r in cur.fetchall()]
@@ -34,21 +29,11 @@ def hydrate_pack():
             (s.repo_id,),
         )
         drifts = [
-            {
-                "rel_path": r[0],
-                "drift_kind": r[1],
-                "expected": r[2],
-                "observed": r[3],
-                "severity": r[4],
-                "suggested_fix": r[5],
-            }
+            {"rel_path": r[0], "drift_kind": r[1], "expected": r[2], "observed": r[3], "severity": r[4], "suggested_fix": r[5]}
             for r in cur.fetchall()
         ]
     atoms = search_atoms(
-        s.postgres_dsn,
-        s.repo_id,
-        "formatter ane fallback startup memory authority current standards settings monorepo canonical roots",
-        limit=24,
+        s.postgres_dsn, s.repo_id, "formatter ane fallback startup memory authority current standards settings monorepo canonical roots", limit=24
     )
     return {
         "repo_id": s.repo_id,

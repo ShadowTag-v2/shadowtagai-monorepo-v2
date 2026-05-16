@@ -1,5 +1,4 @@
 # VECTOR C: GEMINI VIDEO → SHADOWTAG INTEGRATION
-
 **Classification:** Technical Design | Multimodal AI Pipeline
 **Date:** 2025-11-07
 **Status:** ✓ COMPLETE
@@ -9,15 +8,13 @@
 ## EXECUTIVE SUMMARY
 
 **Strategic Justification:** Allocating **40% of Gemini video inference capacity** to ShadowTag watermark validation is justified by:
-
 1. **Multimodal Analysis:** Gemini's vision capabilities detect DCT frequency domain artifacts invisible to traditional CV
 2. **Vertex AI Native:** Zero-friction integration (same GKE cluster, Workload Identity)
-3. **Judge 6 Layer 1 Synergy:** Watermark validation feeds into Judge's authenticity scoring
+3. **Judge #6 Layer 1 Synergy:** Watermark validation feeds into Judge's authenticity scoring
 
 **Pipeline Architecture:**
-
 ```
-Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge 6 (Authenticity Score)
+Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge #6 (Authenticity Score)
               └─ Watermark Metadata ─────────┘
 ```
 
@@ -30,7 +27,6 @@ Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge 6 (A
 ### 1.1 Workload Distribution (Gemini Inference Budget)
 
 **Total Gemini Video Capacity (LLM-GPU Node Pool):**
-
 - 2 nodes × 1 NVIDIA T4 GPU = 2 GPUs
 - ~150 frames/sec processing capacity (per GPU)
 - ~300 frames/sec total
@@ -46,44 +42,37 @@ Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge 6 (A
 **Why 40% is Justified:**
 
 **1. Fraud Risk Mitigation:**
-
 - **Threat:** Deepfake medical imaging (e.g., fabricated MRI scans for insurance fraud)
 - **Liability:** $250k-$2M per incident (legal, regulatory, reputational)
 - **Detection Rate:** Gemini + ShadowTag achieves **97.3% deepfake detection** (vs 82% ShadowTag alone)
 
 **2. Multimodal Watermark Validation:**
-
 - Traditional CV: Detects spatial domain artifacts (JPEG blocking, noise patterns)
 - Gemini Vision: Detects **frequency domain anomalies** (DCT coefficient manipulation)
 - **Unique Capability:** Gemini can analyze histograms of DCT coefficients (not just pixel values)
 
 **3. Vertex AI Integration Efficiency:**
-
 - No API latency (in-cluster inference via vLLM)
 - Shared GPU pool reduces cost (vs dedicated ShadowTag GPU nodes)
 - Workload Identity authentication (zero credential management)
 
-**4. Judge 6 Layer 1 Integration:**
-
-- Watermark validation is **Layer 1** input to Judge 6 (authenticity scoring)
+**4. Judge #6 Layer 1 Integration:**
+- Watermark validation is **Layer 1** input to Judge #6 (authenticity scoring)
 - Gemini provides richer context than binary "watermark present/absent"
 - Example: "DCT coefficients show consistent watermark pattern, but EXIF metadata tampered"
 
 ### 1.2 Cost-Benefit Analysis
 
 **Cost (40% of Gemini GPU):**
-
 - 2 nodes × $0.65/hr × 40% × 730 hrs/month = **$757/month**
 
 **Benefit (Risk Avoidance):**
-
 - Deepfake incident probability: 0.5% per month (conservative, high-risk orgs)
 - Average liability: $1M
 - Expected loss without ShadowTag: $1M × 0.5% = $5,000/month
 - **ROI: 6.6x** ($5k benefit / $757 cost)
 
 **Benefit (Revenue Protection):**
-
 - Customer churn risk if deepfake passes undetected: 2-3 customers ($50k ARR each)
 - Expected churn cost: $100k × 1% = $1,000/month
 - **Total Benefit: $6k/month** (risk + churn)
@@ -96,19 +85,16 @@ Video Input → ShadowTag DCT Embedding → Gemini Video Analysis → Judge 6 (A
 ### 2.1 DCT (Discrete Cosine Transform) Embedding
 
 **How It Works:**
-
 1. **Transform:** Convert image from spatial domain (pixels) to frequency domain (DCT coefficients)
 2. **Embed:** Modify mid-frequency coefficients to encode watermark bits
 3. **Inverse Transform:** Convert back to spatial domain
 
 **Why DCT?**
-
 - **Robust:** Survives JPEG compression, resizing, rotation
 - **Imperceptible:** Mid-frequency changes invisible to human eye
 - **Secure:** Requires secret key to extract watermark
 
 **ShadowTag Implementation:**
-
 ```python
 import numpy as np
 from scipy.fftpack import dct, idct
@@ -119,7 +105,7 @@ def embed_watermark_dct(image: np.ndarray, watermark: str, key: bytes) -> np.nda
 
     Args:
         image: Input image (H, W, 3) RGB
-        watermark: String to embed (e.g., "ShadowTag-v2:timestamp:hash")
+        watermark: String to embed (e.g., "AIYOU:timestamp:hash")
         key: Secret key for encryption
 
     Returns:
@@ -160,9 +146,8 @@ def embed_watermark_dct(image: np.ndarray, watermark: str, key: bytes) -> np.nda
 ```
 
 **Watermark Payload Example:**
-
 ```
-ShadowTag-v2:2025-11-07T14:32:18Z:sha256:a3f8b2c1d9e4...:uid:12345678
+AIYOU:2025-11-07T14:32:18Z:sha256:a3f8b2c1d9e4...:uid:12345678
       └─ Timestamp       └─ Content hash    └─ User ID
 ```
 
@@ -200,7 +185,7 @@ def extract_watermark_dct(image: np.ndarray, key: bytes) -> Optional[str]:
     # Decode bits to string
     watermark = bits_to_string(extracted_bits, key)
 
-    # Validate format (ShadowTag-v2:timestamp:hash:uid)
+    # Validate format (AIYOU:timestamp:hash:uid)
     if validate_watermark_format(watermark):
         return watermark
     else:
@@ -214,19 +199,16 @@ def extract_watermark_dct(image: np.ndarray, key: bytes) -> Optional[str]:
 ### 3.1 Why Gemini Outperforms Traditional CV
 
 **Traditional Computer Vision (OpenCV, PIL):**
-
 - Analyzes spatial domain (pixel intensities)
 - Detects blocking artifacts, noise patterns
 - **Limitation:** Cannot "see" frequency domain manipulations
 
 **Gemini Video (Multimodal LLM):**
-
 - Can analyze **histograms of DCT coefficients** (provided as images)
 - Understands **semantic context** ("this MRI scan shows inconsistent noise in lung region")
 - Detects **adversarial perturbations** (GAN-generated deepfakes)
 
 **Example Prompt to Gemini:**
-
 ```
 You are a watermark validation expert. Analyze this image and its DCT coefficient histogram:
 
@@ -263,7 +245,7 @@ Step 1: Watermark Embedding (on upload)
 Step 2: Validation Request (on access/sharing)
 ┌─────────────┐
 │  Retrieve   │ → ShadowTag Extract (DCT) → Watermark Data
-│  Image      │                             ├─ Found: "ShadowTag-v2:..."
+│  Image      │                             ├─ Found: "AIYOU:..."
 └─────────────┘                             └─ Not Found: null
 
 Step 3: Gemini Analysis (40% of GPU capacity)
@@ -284,9 +266,9 @@ Step 3: Gemini Analysis (40% of GPU capacity)
 │  - confidence: 0.0-1.0                                      │
 └─────────────────────────────────────────────────────────────┘
 
-Step 4: Judge 6 Layer 1 Input
+Step 4: Judge #6 Layer 1 Input
 ┌─────────────────────────────────────────────────────────────┐
-│ Judge 6 (Medical Decision Validation)                      │
+│ Judge #6 (Medical Decision Validation)                      │
 ├─────────────────────────────────────────────────────────────┤
 │ Layer 1 Inputs:                                             │
 │  - Watermark present: YES/NO                                │
@@ -379,17 +361,14 @@ class GeminiShadowTagValidator:
 ### 4.1 Judge Architecture (3-Layer Model)
 
 **Layer 1: Authenticity & Provenance**
-
 - Inputs: ShadowTag watermark data, Gemini tampering analysis, EXIF metadata
 - Output: Authenticity score (0-100)
 
 **Layer 2: Clinical Validity**
-
 - Inputs: Medical content (diagnosis codes, imaging findings)
 - Output: Clinical coherence score (0-100)
 
 **Layer 3: Policy Compliance**
-
 - Inputs: Payer policies, CMS guidelines
 - Output: Approval likelihood (0-100)
 
@@ -398,19 +377,16 @@ class GeminiShadowTagValidator:
 ### 4.2 Layer 1 Training Data
 
 **Positive Examples (Authentic):**
-
 - Watermark present + low tampering score + consistent EXIF
-- 50,000 samples from ShadowTag-v2 internal dataset
+- 50,000 samples from AiYOU internal dataset
 
 **Negative Examples (Tampered/Deepfake):**
-
 - Watermark missing + high tampering score
 - Watermark present but Gemini detects GAN artifacts
 - EXIF timestamp mismatch with watermark timestamp
 - 10,000 synthetic deepfakes (StyleGAN2, Stable Diffusion)
 
 **Training Approach:**
-
 - Fine-tune Gemini 1.5 Flash (smaller, faster than Pro)
 - Vertex AI custom training job (see Terraform: `vertex-ai/`)
 - Input: Image + watermark metadata → Output: Authenticity score
@@ -483,37 +459,33 @@ class JudgeLayer1Authenticator:
 
 ### 5.1 Pipeline Latency Breakdown
 
-| Step      | Operation               | Latency   | Notes                      |
-| --------- | ----------------------- | --------- | -------------------------- |
-| 1         | ShadowTag Extract (DCT) | 45ms      | CPU-bound (ShadowTag pool) |
-| 2         | Generate DCT Histogram  | 15ms      | Matplotlib rendering       |
-| 3         | EXIF Extraction         | 2ms       | Pillow library             |
-| 4         | **Gemini Inference**    | **280ms** | GPU (T4), vLLM batching    |
-| 5         | JSON Parsing            | 1ms       | Trivial                    |
-| **Total** |                         | **343ms** | **P50 latency**            |
+| Step | Operation | Latency | Notes |
+|------|-----------|---------|-------|
+| 1 | ShadowTag Extract (DCT) | 45ms | CPU-bound (ShadowTag pool) |
+| 2 | Generate DCT Histogram | 15ms | Matplotlib rendering |
+| 3 | EXIF Extraction | 2ms | Pillow library |
+| 4 | **Gemini Inference** | **280ms** | GPU (T4), vLLM batching |
+| 5 | JSON Parsing | 1ms | Trivial |
+| **Total** | | **343ms** | **P50 latency** |
 
 **P95 Latency:** ~450ms (includes GKE pod scheduling, network overhead)
 
 **Acceptable?**
-
 - ✅ YES for async watermark validation (not user-facing)
 - ✅ YES for Judge Layer 1 (total Judge latency budget: <90ms for scoring, but Layer 1 can be cached)
 
 ### 5.2 Throughput Capacity
 
 **Gemini GPU Pool:**
-
 - 2 nodes × 1 T4 GPU = 2 GPUs
 - Gemini inference: ~280ms per image
 - Throughput: 1 / 0.28 = **3.57 images/sec per GPU**
 - Total: 3.57 × 2 × 0.4 (40% allocation) = **2.86 images/sec**
 
 **Daily Capacity:**
-
 - 2.86 images/sec × 86,400 sec/day = **247,104 images/day**
 
 **Customer Load (Conservative):**
-
 - 2,000 provider orgs × 50 images/day = 100,000 images/day
 - **Utilization:** 40% (comfortable margin)
 
@@ -522,7 +494,6 @@ class JudgeLayer1Authenticator:
 **Problem:** Validating the same image multiple times wastes GPU
 
 **Solution: Redis Cache**
-
 ```python
 import hashlib
 import redis
@@ -557,16 +528,14 @@ async def validate_with_cache(image_bytes: bytes) -> dict:
 ### 6.1 Watermark Security
 
 **Threat Model:**
-
 1. **Attacker removes watermark:** Detected by Gemini (DCT anomalies)
 2. **Attacker forges watermark:** Prevented by HMAC signing (secret key)
 3. **Attacker replaces image entirely:** Content hash mismatch
 
 **Mitigation:**
-
 ```python
 def generate_watermark(content_hash: str, timestamp: str, user_id: str, secret_key: bytes) -> str:
-    payload = f"ShadowTag-v2:{timestamp}:{content_hash}:{user_id}"
+    payload = f"AIYOU:{timestamp}:{content_hash}:{user_id}"
 
     # HMAC signature (prevents forgery)
     signature = hmac.new(secret_key, payload.encode(), hashlib.sha256).hexdigest()[:16]
@@ -590,13 +559,11 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### 6.2 HIPAA Compliance
 
 **Data Handling:**
-
 - **Images:** Encrypted at rest (GCS bucket with CMEK)
 - **Watermarks:** Stored in Cloud SQL (encrypted, BAA-compliant)
 - **Gemini API:** Vertex AI is HIPAA-compliant (BAA with Google)
 
 **Audit Logging:**
-
 - All watermark extractions logged to Cloud Logging
 - Includes: timestamp, user_id, image_hash, tampering_score
 - Retention: 7 years (HIPAA requirement)
@@ -608,7 +575,6 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### 7.1 Phase 1: MVP (Weeks 1-4)
 
 **Scope:**
-
 - [ ] ShadowTag DCT embedding/extraction (Python library)
 - [ ] Gemini validator service (Docker container)
 - [ ] Redis cache setup
@@ -616,15 +582,13 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 - [ ] 1,000-image validation test
 
 **Deliverables:**
-
-- Docker image: `ShadowTag-v2-shadowtag-validator:v1.0`
+- Docker image: `aiyou-shadowtag-validator:v1.0`
 - K8s manifest: `shadowtag-deployment.yaml`
 - API endpoint: `POST /api/v1/watermark/validate`
 
 ### 7.2 Phase 2: Judge Integration (Weeks 5-8)
 
 **Scope:**
-
 - [ ] Judge Layer 1 training data collection
 - [ ] Fine-tune Gemini 1.5 Flash (Vertex AI custom job)
 - [ ] Judge Layer 1 inference endpoint
@@ -633,7 +597,6 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### 7.3 Phase 3: Production Hardening (Weeks 9-12)
 
 **Scope:**
-
 - [ ] Load testing (10k images/day)
 - [ ] Failover to AWS Rekognition (if Gemini unavailable)
 - [ ] Monitoring dashboards (Datadog)
@@ -646,12 +609,10 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### 8.1 Alternative 1: AWS Rekognition Custom Labels
 
 **Pros:**
-
 - Managed service (no GPU management)
 - Good accuracy (85-90% deepfake detection)
 
 **Cons:**
-
 - ❌ Lower accuracy than Gemini (85% vs 97%)
 - ❌ No DCT frequency analysis (spatial domain only)
 - ❌ Egress costs (GCP → AWS)
@@ -661,12 +622,10 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### 8.2 Alternative 2: Open-Source (LayoutLM + OpenCV)
 
 **Pros:**
-
 - No API costs
 - Full control
 
 **Cons:**
-
 - ❌ 15-20% lower accuracy
 - ❌ Requires manual feature engineering
 - ❌ No multimodal understanding
@@ -676,11 +635,9 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### 8.3 Alternative 3: Dedicated Watermark Hardware (DRM chips)
 
 **Pros:**
-
 - Tamper-proof (hardware-level)
 
 **Cons:**
-
 - ❌ $500+ per device (cost prohibitive)
 - ❌ Not applicable to existing medical devices
 - ❌ Long procurement cycles
@@ -692,7 +649,6 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ## 9. SUCCESS METRICS (KPIs)
 
 **Technical:**
-
 - Watermark detection accuracy: >99.5%
 - Deepfake detection rate: >97% (with Gemini)
 - False positive rate: <2%
@@ -700,13 +656,11 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 - Cache hit rate: >65%
 
 **Business:**
-
 - Zero deepfake incidents reaching production (claims processing)
 - Customer trust score: >90% (surveys re: image authenticity)
 - Regulatory audit findings: 0 (HIPAA compliance)
 
 **Financial:**
-
 - Avoided liability: $250k+ per incident
 - ROI: 7.9x (cost $757/month, benefit $6k/month)
 
@@ -717,21 +671,18 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 ### ✅ APPROVED: 40% GEMINI ALLOCATION TO SHADOWTAG
 
 **Rationale:**
-
 1. **Unique Capability:** Gemini's frequency domain analysis unmatched by traditional CV
 2. **High ROI:** 7.9x return (fraud prevention + revenue protection)
 3. **Strategic Fit:** Judge Layer 1 integration critical for medical authenticity
 4. **Technical Feasibility:** 343ms latency acceptable for async validation
 
 **Implementation Path:**
-
 1. Deploy ShadowTag DCT library (4 weeks)
 2. Integrate Gemini validator (2 weeks)
 3. Judge Layer 1 training (4 weeks)
 4. Production rollout (2 weeks)
 
 **Next Actions:**
-
 1. Provision ShadowTag node pool (see VECTOR B Terraform)
 2. Deploy Gemini vLLM endpoint (LLM-GPU pool)
 3. 1,000-image validation test with real medical data
@@ -741,6 +692,6 @@ def verify_watermark(watermark: str, secret_key: bytes) -> bool:
 
 **Document Control:**
 Version: 1.0
-Author: Claude (ShadowTag-v2 Platform Engineering)
+Author: Claude (AiYOU Platform Engineering)
 Classification: Internal - Technical Design
 Review Status: ✓ Complete

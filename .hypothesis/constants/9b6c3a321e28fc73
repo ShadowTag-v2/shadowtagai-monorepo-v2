@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/git_ops.py
+# hypothesis_version: 6.151.5
+
+[128, 500, 1024, 20000, '--', '--abbrev-ref', '--no-optional-locks', '--porcelain', '--symbolic-full-name', '--verify', '.', '.7z', '.a', '.avi', '.bin', '.bmp', '.bz2', '.class', '.dat', '.db', '.dll', '.dylib', '.exe', '.gif', '.git', '.gz', '.ico', '.jar', '.jpeg', '.jpg', '.mov', '.mp3', '.mp4', '.o', '.ogg', '.otf', '.pdf', '.png', '.pyc', '.pyo', '.rar', '.so', '.sqlite', '.sqlite3', '.tar', '.ttf', '.wav', '.webp', '.woff', '.woff2', '.xz', '.zip', '/', ':', '@{u}', 'HEAD', 'HEAD branch: (\\S+)', 'commondir', 'get-url', 'git', 'git/', 'gitdir', 'gitdir:', 'list', 'localhost', 'objects', 'origin', 'origin/main', 'origin/master', 'origin/staging', 'refs', 'remote', 'rev-parse', 'show', 'status', 'worktree', 'worktree ', 'worktrees']

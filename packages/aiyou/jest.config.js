@@ -1,0 +1,10 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
+  moduleNameMapper: {
+    "^@shared/(.*)$": "<rootDir>/../shared/src/$1",
+    "^@shadowtag/(.*)$": "<rootDir>/../shadowtag/src/$1",
+  },
+  testMatch: ["<rootDir>/tests/**/*.spec.ts"],
+};

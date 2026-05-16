@@ -13,7 +13,7 @@
 Includes specialized agents for analyzing components of the pnkln Core Stack™ intelligence pipeline:
 
 - **Gemini Ingestion Layer Analyzer**: Intelligence collection pipeline analysis
-- **Judge 6 Analyzer**: Real-time validation system analysis
+- **Judge #6 Analyzer**: Real-time validation system analysis
 - **Component Comparison**: Migration and adaptation guidance
 - **Master Prompt Framework**: Generate specialized prompts for any component
 
@@ -122,14 +122,14 @@ Intelligent data collection and tier classification pipeline:
 - **Tier Classification**: Tier 1 (authoritative), Tier 2 (relevant), Tier 3 (general)
 - **Ethical Crawling**: robots.txt compliance, rate limiting, attribution
 - **Cost**: ~$77/month, ~45 minutes runtime per night
-- **Delivery**: Feeds Judge 6 and AM Briefing services
+- **Delivery**: Feeds Judge #6 and AM Briefing services
 
 #### pnkln stack Agents 🆕
 
 | Agent                         | Description                                         | Tags                                             |
 | ----------------------------- | --------------------------------------------------- | ------------------------------------------------ |
 | **Gemini Ingestion Analyzer** | Analyzes intelligence collection pipeline           | `pnkln`, `ingestion`, `ethics`, `intelligence`   |
-| **Judge 6 Analyzer**         | Analyzes real-time validation system                | `pnkln`, `validation`, `latency`, `enforcement`  |
+| **Judge #6 Analyzer**         | Analyzes real-time validation system                | `pnkln`, `validation`, `latency`, `enforcement`  |
 | **Component Comparison**      | Compares components and provides migration guidance | `pnkln`, `comparison`, `migration`, `adaptation` |
 
 ## Installation
@@ -506,7 +506,7 @@ Tier-classified intelligence from 6+ sources:
 - Tier 2: Relevant (medium authority, high engagement)
 - Tier 3: General (broad collection for context)
 
-**Impact**: Feeds Judge 6 decision-making, AM Briefing generation
+**Impact**: Feeds Judge #6 decision-making, AM Briefing generation
 
 ### 3. Computer Vision + Autonomous Aviation (Tegu + GAAS)
 
@@ -746,7 +746,7 @@ CRM-JR Analysis:
 
 ### Q1 2026: Integration
 
-- 🔜 Judge 6 + AiUCRM integration
+- 🔜 Judge #6 + AiUCRM integration
 - 🔜 AM Briefing + Gemini Ingestion integration
 - 🔜 CineVerse + Tegu content moderation
 - 🔜 Digital Mall + FaceNet vendor verification
@@ -855,7 +855,7 @@ A collection of FastAPI-based microservices for the AI You platform, featuring t
 
 ## Overview
 
-This repository is part of the **pnkln Core Stack™**, serving as the foundational intelligence collection system. The primary component, the **Gemini Ingestion Layer**, operates as a proactive collector that integrates with services across 4 namespaces and feeds data to downstream components including Judge 6 (validation layer).
+This repository is part of the **pnkln Core Stack™**, serving as the foundational intelligence collection system. The primary component, the **Gemini Ingestion Layer**, operates as a proactive collector that integrates with services across 4 namespaces and feeds data to downstream components including Judge #6 (validation layer).
 
 ### Key Components
 
@@ -1151,7 +1151,7 @@ The ingestion layer integrates with services across 4 namespaces:
 1. **Intelligence Namespace**: Primary consumer for analysis
 2. **Analytics Namespace**: Metrics aggregation and dashboards
 3. **Reporting Namespace**: Briefing delivery and reports
-4. **Validation Namespace** (Judge 6): Quality enforcement
+4. **Validation Namespace** (Judge #6): Quality enforcement
 
 **Data Flow:**
 
@@ -1194,13 +1194,13 @@ async for message in query(
 ### TypeScript Usage
 
 ```typescript
-import { query } from "@anthropic-ai/claude-agent-sdk";
+import { query } from '@anthropic-ai/claude-agent-sdk';
 
 const result = await query({
-  prompt: "Hello",
+  prompt: 'Hello',
   options: {
-    systemPrompt: { type: "preset", preset: "claude_code" },
-    settingSources: ["user", "project", "local"],
+    systemPrompt: { type: 'preset', preset: 'claude_code' },
+    settingSources: ['user', 'project', 'local'],
   },
 });
 ```
@@ -1324,7 +1324,7 @@ The **pnkln Core Stack™** is pnkln's intelligence collection and validation pi
 - **P** — Preparation (Gemini Ingestion Layer)
 - **N** — Normalization (Data ETL)
 - **K** — Knowledge Graph (Entity Extraction)
-- **L** — Logic & Validation (Judge 6)
+- **L** — Logic & Validation (Judge #6)
 - **N** — Notarization (ShadowTag Attestation)
 
 This repository implements **P** (Ingestion) and **L** (Validation) as a FastAPI service deployable to Google Cloud Run.
@@ -1453,11 +1453,11 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 - `GET /api/v1/ingestion/items/{id}` — Get processing status
 - `GET /api/v1/ingestion/sources` — List source health
 
-### 2. Judge 6 Validation (L — Logic & Validation)
+### 2. Judge #6 Validation (L — Logic & Validation)
 
-**Compliance Framework Compliance & JR Validation**
+**ATP 5-19 Compliance & JR Validation**
 
-- **Compliance Framework (NATO Intelligence Standards):**
+- **ATP 5-19 (NATO Intelligence Standards):**
   - Source Reliability (A-F scale)
   - Information Credibility (1-6 scale)
   - Timeliness, Completeness, Relevance checks
@@ -1504,10 +1504,10 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 │           │                         │                  │
 │           ▼                         ▼                  │
 │  ┌───────────────────┐  ┌──────────────────────────┐  │
-│  │ Gemini Ingestion  │  │ Judge 6 Validation      │  │
+│  │ Gemini Ingestion  │  │ Judge #6 Validation      │  │
 │  │ Service           │  │ Service                  │  │
 │  │                   │  │                          │  │
-│  │ • Crawler         │  │ • Compliance Framework Engine        │  │
+│  │ • Crawler         │  │ • ATP 5-19 Engine        │  │
 │  │ • Classifier      │  │ • JR Compliance Checker  │  │
 │  │ • Ethics Checker  │  │ • Quality Metrics        │  │
 │  └───────────────────┘  └──────────────────────────┘  │
@@ -1536,13 +1536,13 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 | **Source Diversity**   | 50-100 sources | ✅ Multi-source        |
 | **Cost per Item**      | ≤$0.10         | ✅ $0.0016 (Cloud Run) |
 
-### Judge 6 Validation
+### Judge #6 Validation
 
 | Metric                  | Target  | Status                   |
 | ----------------------- | ------- | ------------------------ |
 | **Latency (p99)**       | ≤90ms   | ✅ Hybrid Gemini+PyTorch |
 | **Throughput**          | 5K QPS  | ✅ Cloud Run autoscaling |
-| **Compliance Framework Coverage**   | ≥98%    | ✅ 127 rules             |
+| **ATP 5-19 Coverage**   | ≥98%    | ✅ 127 rules             |
 | **False Positive Rate** | ≤1.5%   | ✅ Historical: 1.4%      |
 | **False Negative Rate** | ≤0.5%   | ✅ Historical: 0.5%      |
 | **Cost per Validation** | ≤$0.005 | ✅ $0.0022               |
@@ -1555,7 +1555,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 
 | Vertical                | ARR Potential  | Status        | Unlock Requirement           |
 | ----------------------- | -------------- | ------------- | ---------------------------- |
-| **Defense & ISR**       | $100M-200M     | 🟡 Limited    | Compliance Framework compliance ✅       |
+| **Defense & ISR**       | $100M-200M     | 🟡 Limited    | ATP 5-19 compliance ✅       |
 | **Aviation Compliance** | $50M-100M      | 🟢 Ready      | FAA regulatory monitoring ✅ |
 | **FAANG (Limited)**     | $50M-100M      | 🟡 Partial    | Content verification APIs ⏳ |
 | **Total**               | **$200M-400M** | 🟢 Achievable | Cloud Run deployment ✅      |
@@ -1583,7 +1583,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 **AI/ML:**
 
 - Google Gemini 2.0 Pro (tier classification)
-- PyTorch (Compliance Framework rule matching)
+- PyTorch (ATP 5-19 rule matching)
 - BeautifulSoup4 (web scraping)
 
 **Infrastructure:**
@@ -1607,7 +1607,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
 
 - [DEPLOYMENT.md](./DEPLOYMENT.md) — Complete deployment guide
 - [Gemini Ingestion Layer](./docs/cor8-pnkln-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md) — Technical architecture
-- [Judge 6 Validation](./docs/cor8-pnkln-global-edge-fabric/03-technical-architecture/judge-six-validation.md) — Validation system
+- [Judge #6 Validation](./docs/cor8-pnkln-global-edge-fabric/03-technical-architecture/judge-six-validation.md) — Validation system
 - [API Schemas](./docs/cor8-pnkln-global-edge-fabric/09-implementation/api-schemas.md) — Complete API reference
 
 ### Additional Resources
@@ -1715,7 +1715,7 @@ curl -X POST http://localhost:8080/api/v1/validation/validate \
 ### Q1 2026: Production Hardening
 
 - [ ] Deploy to production Cloud Run
-- [ ] Integrate with Judge 6 validation queue
+- [ ] Integrate with Judge #6 validation queue
 - [ ] Launch AM Briefing to 50 beta users
 - [ ] Achieve ≥70% tier classification accuracy
 
@@ -1773,7 +1773,7 @@ This project is licensed under the MIT License - see [LICENSE](./LICENSE) file f
 ## 🙏 Acknowledgments
 
 - Google Gemini team for Gemini 2.0 Pro API
-- NATO for Compliance Framework intelligence standards
+- NATO for ATP 5-19 intelligence standards
 - U.S. Department of Defense for ITAR/JR compliance frameworks
 - FastAPI community for excellent async Python framework
 

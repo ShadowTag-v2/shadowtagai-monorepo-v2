@@ -4,8 +4,8 @@ from models import User, Repo
 
 
 def main():
-    user = User()
-    user.save()
+  user = User()
+  user.save()
 
-    repo = Repo()
-    repo.persist()
+  repo = Repo()
+  repo.persist()

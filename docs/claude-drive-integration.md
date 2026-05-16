@@ -2,7 +2,7 @@
 
 ## The core issue: Claude's Drive connector doesn't search folders
 
-**Claude.ai's Google Drive integration is fundamentally document-based, not folder-based.** The connector cannot browse or search folders to enumerate files. Instead, you must explicitly add individual Google Docs through direct selection, which explains why searching for your "ShadowTag-v2_Phase_Docs" folder returns zero results. This limitation stems from OAuth scope restrictions and the integration's architecture.
+**Claude.ai's Google Drive integration is fundamentally document-based, not folder-based.** The connector cannot browse or search folders to enumerate files. Instead, you must explicitly add individual Google Docs through direct selection, which explains why searching for your "AiYou_Phase_Docs" folder returns zero results. This limitation stems from OAuth scope restrictions and the integration's architecture.
 
 The integration is currently in **beta status**, available exclusively to **paid subscribers** (Pro, Team, or Enterprise plans), and supports **only Google Docs** up to 10MB with text-only extraction. Mobile and desktop platforms offer the same core functionality, but the iOS app lacks access to desktop connector management features available in the web/desktop versions.
 
@@ -75,7 +75,6 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 **Core Google Drive integration functionality is consistent** across web, desktop, and iOS platforms. All versions allow adding Google Docs through the "+" button interface with OAuth authentication. However, significant differences exist in connector management and advanced features.
 
 **iOS mobile app capabilities:**
-
 - ✅ Google Workspace integrations (Drive, Gmail, Calendar)
 - ✅ Voice mode with conversational document access
 - ✅ Native iOS app integrations (Messages, Mail, Reminders, Maps)
@@ -84,7 +83,6 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 - ❌ No desktop extensions (Apple Notes, Chrome, local file access)
 
 **Desktop and web capabilities:**
-
 - ✅ All mobile features plus additional connector management
 - ✅ MCP connector configuration and advanced integrations
 - ✅ Desktop extensions for local applications
@@ -105,22 +103,19 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 ### Method 1: Add individual documents from your folder (recommended)
 
 **Step 1: Prepare your documents**
-
 1. Open drive.google.com in a browser
-2. Navigate to your "ShadowTag-v2_Phase_Docs" folder
+2. Navigate to your "AiYou_Phase_Docs" folder
 3. Verify documents are Google Docs format (not .docx, .pdf, or other formats)
 4. Convert if needed: Open .docx files → File → Save as Google Docs
 5. Check each document is under 10MB
 6. Confirm you have view/edit permissions
 
 **Step 2: Get document URLs**
-
 1. Open each Google Doc you want Claude to access
 2. Copy the full URL from browser address bar
 3. Alternatively, right-click document → Get link → Copy link
 
 **Step 3: Add to Claude via iOS app**
-
 1. Open Claude.ai iOS app
 2. Start a new chat or open existing conversation
 3. Tap the **"+"** button in the chat interface
@@ -133,7 +128,6 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 8. Send your message - Claude now has access to that specific document
 
 **Step 4: Repeat for additional documents**
-
 - Each document from your folder must be added individually
 - Claude will sync the latest version automatically
 - Documents remain accessible in that conversation/project
@@ -141,21 +135,18 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 ### Method 2: Add documents to Claude Projects (for persistent access)
 
 **Step 1: Create or open a private project**
-
 1. In Claude.ai (web or app), navigate to Projects
 2. Create a new private project or open existing one
 3. Only private projects support Drive integration
 
 **Step 2: Add documents to project knowledge**
-
 1. Click **"Add Content"** in project knowledge section
 2. Select **"Google Drive"**
 3. Authenticate if first time
-4. Paste document URLs from your "ShadowTag-v2_Phase_Docs" folder
+4. Paste document URLs from your "AiYou_Phase_Docs" folder
 5. Each added document becomes part of project knowledge base
 
 **Benefits of Projects approach:**
-
 - Documents persist across all chats within the project
 - Automatic syncing with latest Drive versions
 - Build knowledge base from multiple documents in your folder
@@ -164,7 +155,6 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 ### Method 3: Use "recently accessed" list
 
 **If you frequently work with documents in your folder:**
-
 1. Open each document in drive.google.com or Google Docs app
 2. View or edit them to add to "recent" list
 3. In Claude, click "+" → "Add from Google Drive"
@@ -187,12 +177,11 @@ With **`drive.readonly` or `drive` scopes**: User authorizes app → App can enu
 
 ### Why you're seeing 0 results
 
-Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mobile app but Claude returns 0 results), the issue is **not a configuration problem but a fundamental design limitation**.
+Based on your description ("AiYou_Phase_Docs" folder visible in Drive mobile app but Claude returns 0 results), the issue is **not a configuration problem but a fundamental design limitation**.
 
 **Root causes for 0 results:**
 
-**Primary cause**: Claude's Drive integration doesn't search folders or perform Drive-wide queries. When you search for "ShadowTag-v2_Phase_Docs" or any folder name, it returns 0 results because:
-
+**Primary cause**: Claude's Drive integration doesn't search folders or perform Drive-wide queries. When you search for "AiYou_Phase_Docs" or any folder name, it returns 0 results because:
 - The search only queries recently accessed Google Docs
 - It cannot enumerate folder contents
 - Folder names aren't searchable entities in the integration
@@ -201,25 +190,21 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 **Secondary causes to verify:**
 
 **File format mismatch**: Only Google Docs are supported
-
 - Check if documents in your folder are .docx, .pdf, or other formats
 - Convert to Google Docs: Open file → File → Save as Google Docs
 - .docx files, even in Drive, won't appear in Claude's interface
 
 **Permission issues**: You must have explicit access
-
 - Verify you can open documents by visiting drive.google.com
 - Check sharing settings show you as owner or viewer/editor
 - For work/school accounts, IT may have restricted permissions
 
 **Authentication state**: Connection may need refresh
-
 - Go to Claude Settings → Integrations
 - Verify Google Drive shows as "Connected"
 - If disconnected, reconnect via Settings
 
 **File size limitations**: Documents over 10MB excluded
-
 - Check document sizes in Drive
 - Large documents won't appear in selectable lists
 - Compress or split documents if needed
@@ -227,7 +212,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 ### Systematic troubleshooting steps
 
 **Step 1: Verify integration is properly connected**
-
 1. Open Claude.ai iOS app
 2. Go to Settings (profile icon)
 3. Tap "Integrations"
@@ -237,7 +221,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 5. If not connected or showing error, proceed to Step 2
 
 **Step 2: Disconnect and reconnect authentication**
-
 1. In Settings → Integrations → Google Drive
 2. Tap the menu button (...)
 3. Select **"Disconnect"**
@@ -248,7 +231,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 8. Review and approve permissions
 
 **Step 3: Revoke and re-grant from Google side**
-
 1. Visit **myaccount.google.com/connections** in browser
 2. Navigate to "Have access to your Google Account"
 3. Search for "Claude for Google Drive"
@@ -259,9 +241,8 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 8. Re-authenticate through Drive integration
 
 **Step 4: Verify document accessibility**
-
 1. Open drive.google.com in mobile browser
-2. Navigate to "ShadowTag-v2_Phase_Docs" folder
+2. Navigate to "AiYou_Phase_Docs" folder
 3. Open a specific document
 4. Verify it's Google Docs format (not .docx or other)
 5. Copy the document's full URL
@@ -270,7 +251,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 8. If document appears, the connection works - issue is search limitation
 
 **Step 5: Check for account restrictions**
-
 1. If using work/school Google Workspace account:
    - Contact IT administrator
    - Ask if third-party app access is enabled for Drive
@@ -279,7 +259,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 2. For personal accounts, this typically isn't an issue
 
 **Step 6: Test with different document**
-
 1. Create a new Google Doc in your Drive root (not in folder)
 2. Title it "Claude Test Document"
 3. Add some text content
@@ -289,7 +268,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 7. Issue is specifically with folder-based access, not overall connectivity
 
 **Step 7: Verify subscription status**
-
 1. Confirm you have active paid subscription:
    - Claude Pro ($20/month)
    - Claude Team
@@ -306,7 +284,6 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 **Search tool reliability**: Multiple user reports document ~50% failure rates with search functionality across Claude Code and other search tools, with issues particularly affecting file enumeration and pattern matching.
 
 **If troubleshooting steps don't resolve the issue**, the problem may be:
-
 - Platform-wide technical issue (check status.anthropic.com)
 - Beta integration limitation rather than configuration error
 - Fundamental design constraint requiring workflow adaptation
@@ -318,14 +295,12 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 ### How to check what permissions Claude actually has
 
 **Step 1: Access Google Account connections**
-
 1. Visit **myaccount.google.com/connections** in any browser
 2. Sign in with the Google Account connected to Claude
 3. Navigate to **"Have access to your Google Account"** section
 4. Look for "Claude for Google Drive" in the app list
 
 **Step 2: Review granted permissions**
-
 1. Click on "Claude for Google Drive" entry
 2. View the permissions details panel showing:
    - **Access granted date**: When you authorized the app
@@ -338,13 +313,11 @@ Based on your description ("ShadowTag-v2_Phase_Docs" folder visible in Drive mob
 While Google's consumer interface doesn't display raw OAuth scope URLs, you can infer capabilities:
 
 **If permissions show**: "See and download all your Google Drive files"
-
 - Likely scope: `drive.readonly` (full read access)
 - **Should support**: File enumeration, folder browsing, Drive-wide search
 - **Your situation**: If Claude had this scope but still returns 0 results, indicates technical bug
 
 **If permissions show**: "See, edit, create, and delete only the specific Google Drive files you use with this app"
-
 - Likely scope: `drive.file` (per-file access)
 - **Limitation**: Cannot enumerate files, cannot search Drive, cannot browse folders
 - **Your situation**: This explains 0 search results - integration lacks enumeration capabilities by design
@@ -354,14 +327,12 @@ While Google's consumer interface doesn't display raw OAuth scope URLs, you can 
 ### The technical reality of OAuth scopes
 
 **What `drive.file` scope allows:**
-
 - Access files created by the app
 - Access files explicitly opened through the app via Google Picker
 - Access files when user provides direct URL
 - Read file content and metadata for authorized files
 
 **What `drive.file` scope does NOT allow:**
-
 - List all files in Drive
 - Search Drive by filename, content, or folder
 - Enumerate folder contents
@@ -369,14 +340,12 @@ While Google's consumer interface doesn't display raw OAuth scope URLs, you can 
 - Access files not explicitly authorized
 
 **What `drive.readonly` scope allows:**
-
 - All of the above restrictions removed
 - Full read-only access to entire Drive
 - File enumeration and search capabilities
 - Folder browsing and recursive access
 
 **Why Claude likely uses `drive.file`:**
-
 1. **Security and privacy**: Least-privilege principle - only access what users explicitly share
 2. **Google verification requirements**: `drive.readonly` requires extensive security assessment
 3. **User trust**: Per-file authorization provides clear user control
@@ -412,35 +381,31 @@ While Google's consumer interface doesn't display raw OAuth scope URLs, you can 
 
 ---
 
-## Recommended workflow for your "ShadowTag-v2_Phase_Docs" folder
+## Recommended workflow for your "AiYou_Phase_Docs" folder
 
 Given the technical constraints identified, here's the most efficient approach:
 
 ### One-time setup process
 
 **Step 1: Document inventory**
-
-1. Open your "ShadowTag-v2_Phase_Docs" folder at drive.google.com
+1. Open your "AiYou_Phase_Docs" folder at drive.google.com
 2. Create a list of all important documents you want Claude to access
 3. Verify each is Google Docs format (convert if needed)
 4. Check file sizes are under 10MB
 
 **Step 2: Gather document URLs**
-
 1. Open each document from your list
 2. Copy the full URL (format: `docs.google.com/document/d/[DOCUMENT_ID]/edit`)
 3. Save URLs in a temporary note or document for reference
 4. Alternatively, create a Google Doc with links to all other docs in the folder
 
 **Step 3: Create a Claude Project for this folder's content**
-
 1. Go to claude.ai (web or app)
-2. Create a new private project: "ShadowTag-v2 Phase Documentation"
+2. Create a new private project: "AiYou Phase Documentation"
 3. Add description indicating it contains docs from your Drive folder
 4. This becomes your permanent workspace for these documents
 
 **Step 4: Bulk add documents to project**
-
 1. In project knowledge, click "Add Content" → "Google Drive"
 2. Paste first document URL → add to project
 3. Repeat for each document from your folder
@@ -450,21 +415,18 @@ Given the technical constraints identified, here's the most efficient approach:
 ### Ongoing usage
 
 **For daily work:**
-
-- Start chats within your "ShadowTag-v2 Phase Documentation" project
+- Start chats within your "AiYou Phase Documentation" project
 - All documents from the folder are automatically available as context
 - Claude can reference and analyze content across all added documents
 - Updates to Drive documents sync automatically
 
 **When adding new documents to the folder:**
-
 1. Create/add the new Google Doc in Drive
 2. Copy its URL
 3. Add to your Claude Project knowledge base
 4. Now accessible in all future project chats
 
 **For quick one-off questions:**
-
 - In any chat, use "+" → paste document URL directly
 - Don't need to use the project if only referencing one document
 
@@ -473,7 +435,7 @@ Given the technical constraints identified, here's the most efficient approach:
 If you prefer not to use Projects:
 
 1. Create a new Google Doc: "Claude Access Index"
-2. Add links to all documents in your "ShadowTag-v2_Phase_Docs" folder
+2. Add links to all documents in your "AiYou_Phase_Docs" folder
 3. Add this index document to Claude once via URL
 4. When you need a specific document, ask Claude to reference the index
 5. Manually add the specific document URL for that conversation
@@ -486,15 +448,13 @@ This provides a searchable catalog within Claude while working around the folder
 
 **The core issue is architectural, not configurational.** Claude.ai's Google Drive integration uses OAuth scopes that prioritize security and user control over convenience. The `drive.file` scope (or equivalent restricted scope) prevents file enumeration and folder searching, requiring explicit per-document authorization through direct URLs or recent file selection.
 
-**Your "ShadowTag-v2_Phase_Docs" folder returns 0 results because:**
-
+**Your "AiYou_Phase_Docs" folder returns 0 results because:**
 1. Claude cannot search folder names or enumerate folder contents
 2. OAuth scope lacks Drive-wide search capabilities
 3. The integration is document-centric by design, not folder-aware
 4. This is consistent across iOS, desktop, and web platforms
 
 **No configuration changes will enable folder browsing.** The limitation is fundamental to the OAuth permission model Claude uses. Instead, adapt your workflow to explicitly add individual documents through:
-
 - Direct URL pasting (most reliable)
 - Selection from recently accessed documents
 - Building a Project knowledge base with all folder documents

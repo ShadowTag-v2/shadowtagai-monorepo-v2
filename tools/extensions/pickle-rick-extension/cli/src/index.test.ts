@@ -1,6 +1,6 @@
-import { describe, expect, mock, test } from 'bun:test';
+import { describe, expect, mock, test } from "bun:test";
 
-mock.module('commander', () => ({
+mock.module("commander", () => ({
   program: {
     name: mock(() => ({
       description: mock(() => ({
@@ -18,10 +18,10 @@ mock.module('commander', () => ({
   },
 }));
 
-import './index.js';
+import "./index.js";
 
-describe('CLI Entry Point', () => {
-  test('index.ts should load without errors', () => {
+describe("CLI Entry Point", () => {
+  test("index.ts should load without errors", () => {
     // If we got here, it loaded
     expect(true).toBe(true);
   });

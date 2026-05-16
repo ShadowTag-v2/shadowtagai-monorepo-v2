@@ -1,0 +1,395 @@
+# Judge #6 Kernel Chain API Deployment
+# FastAPI service running 3-kernel decision pipeline
+# (ATP_519_scan → judge_six_classify → audit_compress)
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-judge-six
+  labels:
+    app: pnkln-core-stack
+    component: judge-six-api
+    tier: enforcement
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gemini-credentials
+  namespace: pnkln-judge-six
+type: Opaque
+stringData:
+  api-key: "YOUR_GEMINI_API_KEY_HERE"  # Replace with actual key
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-six-config
+  namespace: pnkln-judge-six
+data:
+  # Gemini API Configuration
+  GEMINI_MODEL: "gemini-2.0-flash-exp"
+  GEMINI_TEMPERATURE: "0.1"
+  GEMINI_MAX_TOKENS: "2500"
+
+  # Performance Thresholds
+  MAX_LATENCY_P99_MS: "90"
+  MAX_COST_PER_DECISION: "0.001"
+  CONFIDENCE_THRESHOLD: "0.85"
+
+  # Kernel Configuration
+  KERNEL_1_TIMEOUT_MS: "40"
+  KERNEL_2_TIMEOUT_MS: "12"
+  KERNEL_3_TIMEOUT_MS: "5"
+
+  # ATP 5-19 Configuration
+  ATP_519_CATEGORIES: "44"
+  RISK_TIER_THRESHOLDS: "0.0,2.0,5.0,10.0,20.0"
+
+  # Monitoring
+  ENABLE_PROMETHEUS: "true"
+  ENABLE_STRUCTURED_LOGGING: "true"
+  LOG_LEVEL: "INFO"
+
+  # PyTorch Configuration
+  PYTORCH_DEVICE: "cpu"
+  PYTORCH_NUM_THREADS: "4"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge-six-api
+  namespace: pnkln-judge-six
+  labels:
+    app: judge-six-api
+    version: v1.0.0
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: judge-six-api
+  template:
+    metadata:
+      labels:
+        app: judge-six-api
+        version: v1.0.0
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: judge-six-service-account
+
+      # Security Context
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      containers:
+      - name: api
+        image: gcr.io/YOUR_PROJECT_ID/pnkln-judge-six-api:latest
+        imagePullPolicy: Always
+
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+
+        # Environment Variables
+        env:
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gemini-credentials
+              key: api-key
+
+        # ConfigMap Environment Variables
+        envFrom:
+        - configMapRef:
+            name: judge-six-config
+
+        # Resource Limits
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+
+        # Liveness Probe
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        # Readiness Probe
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+        # Startup Probe (for slow PyTorch model loading)
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 12  # 60 seconds total
+
+        # Volume Mounts
+        volumeMounts:
+        - name: pytorch-models
+          mountPath: /app/models
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+
+      # Volumes
+      volumes:
+      - name: pytorch-models
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+
+      # Topology Spread
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: judge-six-api
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-six-api-service
+  namespace: pnkln-judge-six
+  labels:
+    app: judge-six-api
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  type: LoadBalancer
+  selector:
+    app: judge-six-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8000
+    protocol: TCP
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-six-api-internal
+  namespace: pnkln-judge-six
+  labels:
+    app: judge-six-api
+spec:
+  type: ClusterIP
+  selector:
+    app: judge-six-api
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: judge-six-api-hpa
+  namespace: pnkln-judge-six
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: judge-six-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30
+      - type: Pods
+        value: 2
+        periodSeconds: 30
+      selectPolicy: Max
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: judge-six-service-account
+  namespace: pnkln-judge-six
+  labels:
+    app: judge-six-api
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: judge-six-role
+  namespace: pnkln-judge-six
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: judge-six-rolebinding
+  namespace: pnkln-judge-six
+subjects:
+- kind: ServiceAccount
+  name: judge-six-service-account
+  namespace: pnkln-judge-six
+roleRef:
+  kind: Role
+  name: judge-six-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge-six-api-pdb
+  namespace: pnkln-judge-six
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: judge-six-api
+
+---
+# NetworkPolicy: Allow ingress from ingestion layer
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: judge-six-api-netpol
+  namespace: pnkln-judge-six
+spec:
+  podSelector:
+    matchLabels:
+      app: judge-six-api
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app: pnkln-core-stack
+    ports:
+    - protocol: TCP
+      port: 8000
+  - from:  # Allow LoadBalancer traffic
+    ports:
+    - protocol: TCP
+      port: 8000
+  egress:
+  - to:  # Allow Gemini API calls
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443
+  - to:  # Allow DNS
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: UDP
+      port: 53
+
+---
+# ConfigMap for health check endpoints
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-six-health-config
+  namespace: pnkln-judge-six
+data:
+  health.py: |
+    # Health check implementation
+    # This is loaded by the FastAPI app
+
+    from fastapi import APIRouter
+    from pydantic import BaseModel
+
+    router = APIRouter()
+
+    class HealthResponse(BaseModel):
+        status: str
+        version: str
+        kernels: dict
+
+    @router.get("/health")
+    async def health():
+        return HealthResponse(
+            status="healthy",
+            version="1.0.0",
+            kernels={
+                "atp_519_scan": "ready",
+                "judge_six_classify": "ready",
+                "audit_compress": "ready"
+            }
+        )
+
+    @router.get("/ready")
+    async def ready():
+        # Check if PyTorch model is loaded
+        # Check if Gemini API is reachable
+        return {"status": "ready"}

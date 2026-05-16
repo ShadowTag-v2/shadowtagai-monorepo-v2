@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
 import time
 
@@ -11,7 +12,8 @@ logger = logging.getLogger("SentinelLoop")
 
 
 class SentinelController:
-    """ShadowTag Omega V7 OODA Loop Controller
+    """
+    ShadowTag Omega V7 OODA Loop Controller
     Observe, Orient, Decide, Act.
     """
 

@@ -1,0 +1,24 @@
+id: swap-navbar
+language: tsx
+rule:
+  pattern: |
+    export default function NavigationBar() {
+      $$$
+    }
+fix: |
+  export default function NavigationBar() {
+    return (
+      <nav className="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-md border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+          <div className="flex-shrink-0 flex items-center">
+            <span className="text-white font-bold text-xl tracking-tight">ShadowTag</span>
+          </div>
+          <div className="flex space-x-6">
+            <a href="/research" className="text-gray-300 hover:text-white transition-colors duration-200">Intelligence</a>
+            <a href="/cockpit" className="text-gray-300 hover:text-white transition-colors duration-200">The Cockpit</a>
+            <a href="/login" className="px-4 py-2 rounded-md bg-white text-black font-medium hover:bg-gray-200 transition-colors">Engage</a>
+          </div>
+        </div>
+      </nav>
+    );
+  }

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:earlyMondays",
+    ":automergeMinor",
+    ":automergeDigest",
+    ":label(dependencies)",
+    ":prConcurrentLimit10"
+  ],
+  "description": "ShadowTag Monorepo Renovate Configuration — Jules-Integrated",
+  "enabledManagers": [
+    "npm",
+    "pip_requirements",
+    "pip-compile",
+    "pyproject",
+    "nuget",
+    "dockerfile",
+    "docker-compose",
+    "github-actions",
+    "gomod",
+    "homebrew",
+    "bazel",
+    "terraform"
+  ],
+  "packageRules": [
+    {
+      "description": "Group all Python dependencies",
+      "matchManagers": ["pip_requirements", "pip-compile", "pyproject"],
+      "groupName": "python-deps",
+      "automerge": false
+    },
+    {
+      "description": "Group all npm dependencies",
+      "matchManagers": ["npm"],
+      "groupName": "npm-deps",
+      "automerge": false
+    },
+    {
+      "description": "Group all .NET/NuGet dependencies",
+      "matchManagers": ["nuget"],
+      "groupName": "dotnet-deps",
+      "automerge": false
+    },
+    {
+      "description": "Auto-merge GitHub Actions minor updates",
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Auto-merge Docker digest updates",
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "matchUpdateTypes": ["digest", "pin"],
+      "automerge": true
+    },
+    {
+      "description": "Group Terraform providers",
+      "matchManagers": ["terraform"],
+      "groupName": "terraform-providers",
+      "automerge": false
+    },
+    {
+      "description": "Require Jules review for major version bumps",
+      "matchUpdateTypes": ["major"],
+      "labels": ["major-upgrade", "jules-review"],
+      "automerge": false,
+      "prBodyNotes": ["⚠️ Major version bump — Jules swarm PR review required"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true,
+    "schedule": ["at any time"]
+  },
+  "prBodyDefinitions": {
+    "Package": "{{{depName}}}",
+    "Type": "{{{depType}}}",
+    "Update": "{{{updateType}}}",
+    "Current value": "{{{currentValue}}}",
+    "New value": "{{{newValue}}}",
+    "Change": "{{{displayFrom}}} → {{{displayTo}}}"
+  },
+  "postUpdateOptions": ["npmDedupe"],
+  "ignorePaths": ["archive/**", "_archive_*/**", "external_repos/**", "third_party/**", "labs/**"],
+  "ignoreDeps": ["python"]
+}

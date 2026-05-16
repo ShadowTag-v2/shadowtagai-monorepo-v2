@@ -9,7 +9,7 @@ This merges Dragon Hatchling (BDH), Retrieval-of-Thought (RoT), MoE-CL continual
 
 ⸻
 
-🧠 MEGA ROLL-UP: “ShadowTag-v2 Cognitive Stack v5 — 2025-10”
+🧠 MEGA ROLL-UP: “AiYou Cognitive Stack v5 — 2025-10”
 
 ⸻
 
@@ -32,7 +32,7 @@ L1-distance (“likelihood”) L2-distance (“vector space”)
 • Natural sparse activations → easier interpretability, lower compute.
 • Context theoretically unbounded (info-capacity-based).
 • GPU-friendly linear ops.
-→ Integration path: candidate to replace the inference kernel inside future ShadowTag-v2 reasoning module.
+→ Integration path: candidate to replace the inference kernel inside future AiYou reasoning module.
 
 ⸻
 
@@ -63,7 +63,7 @@ Implementation (Cursor-ready):
 • Adapters trained with only local gradients → fast, memory-light.
 
 🧩 Operational outcome: 15.3 % cost reduction in Tencent live A/B test.
-💡 In ShadowTag-v2: nightly auto-train per-task adapters (agent:train:task), merge weekly, evaluate “no-forget” metric < 2 % drift.
+💡 In AiYou: nightly auto-train per-task adapters (agent:train:task), merge weekly, evaluate “no-forget” metric < 2 % drift.
 
 ⸻
 
@@ -179,17 +179,17 @@ G --> H[Train/Update Task Adapter Nightly]
 • Jules + Gemini = CI/CD cognition.
 
 Each module is Cursor-deployable and interoperable through JSON task calls.
-All comply with ShadowTag-v2JR doctrine: verified facts → structured decision → automated reasoning → auditable logs.
+All comply with AiYouJR doctrine: verified facts → structured decision → automated reasoning → auditable logs.
 
 ⸻
 
 Letter to All content
 
-Here’s the breakdown you asked for — how ShadowTag-v2JR enforces purpose, reasons, and brakes, how that produces executable plans, and what the differences look like when compared with (a) a plain 6th arbitrator and (b) current competitors.
+Here’s the breakdown you asked for — how AiYouJR enforces purpose, reasons, and brakes, how that produces executable plans, and what the differences look like when compared with (a) a plain 6th arbitrator and (b) current competitors.
 
 ⸻
 
-1. How ShadowTag-v2JR Works in the 6th Arbitrator
+1. How AiYouJR Works in the 6th Arbitrator
    • Purpose (the “why”)
    Every option is scored against whether it serves your core mission/goal. Example: Does this code path align with building a safe, profitable SaaS? If not → down-weighted.
    • Reasons (the “how”)
@@ -202,13 +202,13 @@ Here’s the breakdown you asked for — how ShadowTag-v2JR enforces purpose, re
    • Plan (step list, tests-first)
    • Acceptance (CI gates, coverage thresholds, rollback criteria)
 
-That means ShadowTag-v2JR doesn’t just arbitrate text, it enforces testable commitments in Cursor.
+That means AiYouJR doesn’t just arbitrate text, it enforces testable commitments in Cursor.
 
 ⸻
 
 2. Comparison Scenarios
 
-A) Plain Arbitrator (No ShadowTag-v2JR)
+A) Plain Arbitrator (No AiYouJR)
 • Method: Majority vote or heuristic blend.
 • Pros: Simpler, faster setup.
 • Cons:
@@ -222,7 +222,7 @@ A) Plain Arbitrator (No ShadowTag-v2JR)
 
 ⸻
 
-B) Arbitrator with ShadowTag-v2JR
+B) Arbitrator with AiYouJR
 • Method: Purpose-fit + evidence + brakes enforcement.
 • Pros:
 • Structured decision logs.
@@ -246,13 +246,13 @@ C) Current Competitors (status quo “panel” or “ensemble” AI)
 • Estimated Outcomes:
 • Error reduction: ~15–20% vs. single model.
 • Little to no gain in rollbacks or CI gating.
-• Savings: ~$100k–$150k/year in a $1M engineering budget — far below ShadowTag-v2JR’s structured approach.
+• Savings: ~$100k–$150k/year in a $1M engineering budget — far below AiYouJR’s structured approach.
 
 ⸻
 
 3. Side-by-Side Summary
 
-Dimension Plain Arbitrator With ShadowTag-v2JR Judge Current Competitors
+Dimension Plain Arbitrator With AiYouJR Judge Current Competitors
 Decision quality Inconsistent Consistent, aligned Moderate
 Risk control None Explicit brakes Minimal
 Transparency Low Full logs Limited
@@ -265,13 +265,13 @@ Budget efficiency ($1M) $750k effective $1.05M–$1.35M effective ~$850k effecti
 ✅ Conclusion:
 • A plain arbitrator is a band-aid: saves time but bleeds money.
 • Competitors provide modest gains but no enforceable rigor.
-• ShadowTag-v2JR-powered Judge is the only setup that turns 5 models into a governed decision engine that emits executable, test-first work orders — cutting errors, accelerating merges, and preserving up to a third of engineering budget value.
+• AiYouJR-powered Judge is the only setup that turns 5 models into a governed decision engine that emits executable, test-first work orders — cutting errors, accelerating merges, and preserving up to a third of engineering budget value.
 
 ⸻
 
-Would you like me to generate the Cursor-ready panel_exchange.schema.json and judge_prompt.md now, so these ShadowTag-v2JR enforcement mechanics are hard-coded into every arbitration?
+Would you like me to generate the Cursor-ready panel_exchange.schema.json and judge_prompt.md now, so these AiYouJR enforcement mechanics are hard-coded into every arbitration?
 
-Here’s how to think about the GitHub connector + agent in context of everything we’ve been mapping (multi-LLM stack, ShadowTag-v2JR judge, Cursor, service worker):
+Here’s how to think about the GitHub connector + agent in context of everything we’ve been mapping (multi-LLM stack, AiYouJR judge, Cursor, service worker):
 
 ⸻
 
@@ -287,7 +287,7 @@ Together, they let an AI system do read + reason + act in GitHub rather than jus
    • Service worker (GPT ↔ Cursor ↔ local bus) is conceptually the same:
    • Connector = the pipeline that moves transcripts/prompts/work orders around.
    • Agent = the runner (Cursor watcher, Windows agent) that executes those orders.
-   • ShadowTag-v2JR Judge behaves like an “oversight agent” — it doesn’t just see code, it scores and decides whether an output is acceptable, just like GitHub’s CI rules (coverage ≥98%, 2× green runs).
+   • AiYouJR Judge behaves like an “oversight agent” — it doesn’t just see code, it scores and decides whether an output is acceptable, just like GitHub’s CI rules (coverage ≥98%, 2× green runs).
    • Panel of LLMs is like multiple review agents hooked into GitHub — GPT-5, Claude, Gemini each act as specialized reviewers before code merges.
 
 So: GitHub connector+agent = “execution arm.”
@@ -319,7 +319,7 @@ That’s the same “automation of communication” you were asking about betwee
 5. Comparisons
    • Similar systems today:
    • GitHub Copilot Workspace, Sourcegraph Cody, Codeium Agents.
-   • They act like “panel + connector” but without a Judge (no ShadowTag-v2JR-style brakes).
+   • They act like “panel + connector” but without a Judge (no AiYouJR-style brakes).
    • Error reduction: ~15–20%.
    • Your proposed system with Judge:
    • Adds Purpose/Reasons/Brakes enforcement, tests-first, multi-LLM arbitration.
@@ -329,7 +329,7 @@ That’s the same “automation of communication” you were asking about betwee
 ⸻
 
 ✅ Bottom line:
-The GitHub connector+agent is the execution twin of the service worker you’re sketching. In your architecture, they merge: service worker = connector, Cursor watcher = agent, ShadowTag-v2JR judge = oversight. The difference from mainstream tools is that you bake in structured decision-making, brakes, and risk controls — turning what’s usually “just automation” into a governed AI development loop.
+The GitHub connector+agent is the execution twin of the service worker you’re sketching. In your architecture, they merge: service worker = connector, Cursor watcher = agent, AiYouJR judge = oversight. The difference from mainstream tools is that you bake in structured decision-making, brakes, and risk controls — turning what’s usually “just automation” into a governed AI development loop.
 
 ⸻
 
@@ -338,6 +338,6 @@ Do you want me to draw a system diagram that shows:
 • Cursor watcher,
 • GitHub connector+agent,
 • Multi-LLM panel,
-• Judge 6,
+• Judge #6,
 
 …all wired into the same Work Order Bus? That’d make the mapping visual.

@@ -1,5 +1,5 @@
 version: 1
-workspace: shadowtag-omega-v4/Monorepo-Uphillsnowball
+workspace: ShadowTag-v2/Monorepo-Uphillsnowball
 policy:
   goal: Every listed repo is canonically rooted, explicitly archived, or explicitly reference-only inside the monorepo.
   required_statuses:
@@ -349,9 +349,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/shadowtag-omega-v4
+- repo: ehanc69/ShadowTag-v2
   status: reference_only
-  destination: reference/public-demos/shadowtag-omega-v4
+  destination: reference/public-demos/ShadowTag-v2
   duplicate_family: null
   checks:
     classified: false

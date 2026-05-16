@@ -4,7 +4,7 @@ set -euo pipefail
 # Default to 'code' if no argument, but allow 'cursor'
 CLI=${1:-code}
 
-echo "📦 Installing ShadowTag-v2 Stack v5 Extensions via $CLI..."
+echo "📦 Installing AiYou Stack v5 Extensions via $CLI..."
 
 exts=(
   "dbaeumer.vscode-eslint"           # Linting

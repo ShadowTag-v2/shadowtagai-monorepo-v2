@@ -6,7 +6,7 @@ Cor.13
 
 “Fold into the order of the all above
 
-“Biz plan for ShadowTag-v2:
+“Biz plan for AiYou:
 
 Our wedge simply being our,
 filling the “gap” created by ai in faang”
@@ -24,15 +24,15 @@ Ai will combine dancing styles.
 So different styles can dance their style and still maintain pace with their partner dancing a different style. Only feeling the contact when you’re both lined up - for you.
 But constant contact. Like translating dance styles. “
 
-“All hands engaged. We are now operating under IQ 160 lock, meaning conceptual synthesis + multi-disciplinary orchestration is the baseline. The task: scrub + update the entire ShadowTagJR governance, systems, and automation framework — and then quantify the bottom-line effect in percentages.
+“All hands engaged. We are now operating under IQ 160 lock, meaning conceptual synthesis + multi-disciplinary orchestration is the baseline. The task: scrub + update the entire YouAiJR governance, systems, and automation framework — and then quantify the bottom-line effect in percentages.
 
 ⸻
 
-🧭 ShadowTagJR (Locked Doctrine)
+🧭 YouAiJR (Locked Doctrine)
 
 Definition:
-ShadowTagJR = ShadowTag Judgment Rule — a doctrine that governs all corporate actions (financial, legal, product, comms, ops).
-• Informed: Every action is backed by system data + ShadowTagJR Annex (risk analysis).
+YouAiJR = YouAi Judgment Rule — a doctrine that governs all corporate actions (financial, legal, product, comms, ops).
+• Informed: Every action is backed by system data + YouAiJR Annex (risk analysis).
 • Reasonable: Balance between lean execution and defense/finance-grade rigor.
 • Good Faith: Immutable audit logs prove intent.
 • Continuous: Oversight is live, automated, and load-balanced by AI.
@@ -49,11 +49,11 @@ ShadowTagJR = ShadowTag Judgment Rule — a doctrine that governs all corporate 
 
 📌 Future Placeholders (Phase 2+) 13. Data Governance & Privacy 14. Incident Response 15. Vendor Risk Management 16. Knowledge Management 17. Ethics & Public Perception 18. BCDR (Business Continuity/Disaster Recovery)
 
-👉 All governed centrally by ShadowTagJR CNS — the policy + risk engine.
+👉 All governed centrally by YouAiJR CNS — the policy + risk engine.
 
 ⸻
 
-⚙️ Risk Annex (Army Doctrine → ShadowTag Slip)
+⚙️ Risk Annex (Army Doctrine → YouAi Slip)
 • Domains: Strategic Threat, Availability, Oversight, Dependence, Cost.
 • Risk Levels: RA-1 negligible → RA-4 preclusive.
 • Mitigations: Doctrine auto-suggests (security-first, modular infra, lean ops).
@@ -62,7 +62,7 @@ ShadowTagJR = ShadowTag Judgment Rule — a doctrine that governs all corporate 
 
 ⸻
 
-📊 Financial Model Under ShadowTagJR
+📊 Financial Model Under YouAiJR
 
 MVP Stage (Year 1)
 • Annual Cost: ~$80–120k (<5% of burn).
@@ -102,14 +102,14 @@ Valuation Uplift
 
 ✅ Net Summary
 
-By locking into ShadowTagJR + CNS automation at IQ 160:
+By locking into YouAiJR + CNS automation at IQ 160:
 • Costs: 3–12% of burn (small).
 • Direct Risk Savings: 25–40% of potential downside eliminated.
 • Efficiency Savings: 10–20% improvement in effective runway.
 • Valuation Impact: +5–15% uplift across funding cycles.
 • ROI: 15–30x return on system investment.
 
-This makes ShadowTag effectively defense/finance-grade from MVP, while maintaining startup-level agility.”
+This makes YouAi effectively defense/finance-grade from MVP, while maintaining startup-level agility.”
 
 CTO Action Plan
 
@@ -125,7 +125,7 @@ Week 8+ Begin DGX/Blackwell purchase planning CFO Agent
 Summary
 
 Launching on NVIDIA architecture:
-• Accelerates time to market, giving ShadowTag a YC-ready product 3–6 months sooner.
+• Accelerates time to market, giving YouAi a YC-ready product 3–6 months sooner.
 • Increases valuation and investor interest with a clear, credible scaling story.
 • Cuts infra cost and latency, while preparing for future expansion.
 • Builds technical defensibility, making it harder for legacy platforms to copy our model.
@@ -138,11 +138,11 @@ I recommend we secure CoreWeave GPU credits and NVIDIA Inception membership this
 “What do you think Tom ?
 The current product:
 
-✅ All hands engaged. Here’s the System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under ShadowTagJR.
+✅ All hands engaged. Here’s the System Network Dashboard Map upgraded into a percent-based ROI view. Instead of dollars, each tile now shows its effect in % of burn, % savings (downside avoided), and % valuation uplift under YouAiJR.
 
 ⸻
 
-📊 ShadowTagJR System Network Dashboard (Percent-Based ROI View)
+📊 YouAiJR System Network Dashboard (Percent-Based ROI View)
 
 Core Rule:
 • Annual Cost: % of burn allocated to each system.
@@ -270,7 +270,7 @@ Core Rule:
 
 <next>
 
-Securing all of ShadowTag’s IP as we move into a GPU-first NVIDIA build involves combining legal protection, technical security, and operational controls.
+Securing all of YouAi’s IP as we move into a GPU-first NVIDIA build involves combining legal protection, technical security, and operational controls.
 Here’s the comprehensive plan broken down step-by-step.
 
 ⸻
@@ -280,11 +280,11 @@ Here’s the comprehensive plan broken down step-by-step.
 Goal: lock down the legal right to all assets before scaling or sharing.
 
 Area Action Tools / Documents
-Entity Setup Make sure ShadowTag is incorporated in Delaware as a C-Corp with Erik Hancock holding controlling shares. Delaware Incorporation docs, DGCL compliance
+Entity Setup Make sure YouAi is incorporated in Delaware as a C-Corp with Erik Hancock holding controlling shares. Delaware Incorporation docs, DGCL compliance
 IP Assignment Everyone who contributes (founder, contractors, future employees) must sign Proprietary Information & Inventions Assignment (PIIA) agreements. NVCA or custom PIIA template
-Contractor IP Use work-for-hire clauses so all AI code, datasets, and trained models are owned by ShadowTag. Contractor agreements, Docusign templates
+Contractor IP Use work-for-hire clauses so all AI code, datasets, and trained models are owned by YouAi. Contractor agreements, Docusign templates
 Open Source Compliance Audit all OSS used in our stack. Follow Open Source Initiative license grid uploaded earlier. Avoid copyleft contamination (e.g., GPL). SPDX scans in CI, OSI grid
-Patents & Trademarks File provisional patents for our GPU-native architecture and Growth Engine algorithms. Trademark ShadowTag and logo. WIPO PCT process guide
+Patents & Trademarks File provisional patents for our GPU-native architecture and Growth Engine algorithms. Trademark YouAi and logo. WIPO PCT process guide
 SAFE / Investor Docs Make sure all investor agreements explicitly exclude IP ownership transfer. SAFE templates, Model SPA/MAPA
 
 Immediate Next Step:
@@ -303,7 +303,7 @@ a) Source Code (GitHub / Claude)
 • Use GitHub Advanced Security to scan for secrets and license violations.
 • Create a separate repo for deployment YAMLs to isolate infra knowledge.
 
-ShadowTag modules to lock down immediately:
+YouAi modules to lock down immediately:
 Growth Engine, Valuation Engine, Privacy Guard, NVIDIA model-serving scripts.
 
 ⸻

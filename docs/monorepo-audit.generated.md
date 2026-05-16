@@ -1,7 +1,7 @@
 # Monorepo Audit Report
 
 ## Audit date
-`2026-04-09`
+`2026-03-21`
 
 ## Auditor
 Generated from local audit scripts
@@ -18,8 +18,7 @@ Canonicalization, live tree cleanliness, GitHub governance scaffolding, build/CI
 
 ### Unresolved entries
 ```
-55:    status: unresolved
-62:    status: unresolved
+none
 ```
 
 ### Findings
@@ -32,19 +31,47 @@ Canonicalization, live tree cleanliness, GitHub governance scaffolding, build/CI
 
 ### Denied-zone residue in live trees
 ```
-apps/aiyou-web-dashboard/node_modules/character-entities-legacy
-apps/aiyou-web-dashboard/node_modules/mdast-util-mdx-jsx/node_modules/character-entities-legacy
-apps/aiyou_stack/aiyou-fastapi-services/apps/omega-ui/node_modules/character-entities-legacy
-apps/aiyou_stack/aiyou-fastapi-services/apps/omega-ui/node_modules/mdast-util-mdx-jsx/node_modules/character-entities-legacy
-apps/aiyou_stack/aiyou-fastapi-services/apps/omega-ui/node_modules/stringify-entities/node_modules/character-entities-legacy
-apps/aiyou_stack/nascent-apollo/libs/arsenal_recovered
-libs/cyberpunk_stack/openclaw/dist/extensions/diffs/node_modules/character-entities-legacy
-libs/cyberpunk_stack/openclaw/node_modules/character-entities-legacy
+apps/aiyou_stack/.quarantine/aiyou-fastapi-services-legacy
+apps/aiyou_stack/.quarantine/aiyou-fastapi-services-legacy/aiyou-fastapi-services-legacy
+apps/aiyou_stack/aiyou-fastapi-services/_PRE_OMEGA_BACKUP_1768415640
+apps/aiyou_stack/aiyou-fastapi-services/_PRE_OMEGA_BACKUP_1768415766
+apps/aiyou_stack/aiyou-fastapi-services/_PRE_OMEGA_BACKUP_1768415932
+apps/aiyou_stack/codex/codex-rs/execpolicy-legacy
+apps/pnkln_stack/.quarantine/pnkln-fastapi-services-legacy
+apps/pnkln_stack/.quarantine/pnkln-fastapi-services-legacy/pnkln-fastapi-services-legacy
+apps/pnkln_stack/codex/codex-rs/execpolicy-legacy
+apps/pnkln_stack/pnkln-fastapi-services/_PRE_OMEGA_BACKUP_1768415640
+apps/pnkln_stack/pnkln-fastapi-services/_PRE_OMEGA_BACKUP_1768415766
+apps/pnkln_stack/pnkln-fastapi-services/_PRE_OMEGA_BACKUP_1768415932
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/character-entities-legacy@1.1.4/node_modules/character-entities-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/character-entities-legacy@3.0.0/node_modules/character-entities-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/ts-jest@29.4.5_@babel+core@7.28.5_@jest+transform@30.2.0_@jest+types@30.2.0_babel-jest@_503c0f083ff2b5e752a2c02d03bda892/node_modules/ts-jest/presets/default-esm-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/ts-jest@29.4.5_@babel+core@7.28.5_@jest+transform@30.2.0_@jest+types@30.2.0_babel-jest@_503c0f083ff2b5e752a2c02d03bda892/node_modules/ts-jest/presets/default-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/ts-jest@29.4.5_@babel+core@7.28.5_@jest+transform@30.2.0_@jest+types@30.2.0_babel-jest@_503c0f083ff2b5e752a2c02d03bda892/node_modules/ts-jest/presets/js-with-babel-esm-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/ts-jest@29.4.5_@babel+core@7.28.5_@jest+transform@30.2.0_@jest+types@30.2.0_babel-jest@_503c0f083ff2b5e752a2c02d03bda892/node_modules/ts-jest/presets/js-with-babel-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/ts-jest@29.4.5_@babel+core@7.28.5_@jest+transform@30.2.0_@jest+types@30.2.0_babel-jest@_503c0f083ff2b5e752a2c02d03bda892/node_modules/ts-jest/presets/js-with-ts-esm-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/deer-flow/web/node_modules/.pnpm/ts-jest@29.4.5_@babel+core@7.28.5_@jest+transform@30.2.0_@jest+types@30.2.0_babel-jest@_503c0f083ff2b5e752a2c02d03bda892/node_modules/ts-jest/presets/js-with-ts-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/langgraph/libs/cli/js-examples/node_modules/ts-jest/presets/default-esm-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/langgraph/libs/cli/js-examples/node_modules/ts-jest/presets/default-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/langgraph/libs/cli/js-examples/node_modules/ts-jest/presets/js-with-babel-esm-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/langgraph/libs/cli/js-examples/node_modules/ts-jest/presets/js-with-babel-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/langgraph/libs/cli/js-examples/node_modules/ts-jest/presets/js-with-ts-esm-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/langgraph/libs/cli/js-examples/node_modules/ts-jest/presets/js-with-ts-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/Piped/node_modules/.pnpm/@vitejs+plugin-legacy@7.2.1_terser@5.43.1_vite@7.1.5_jiti@2.5.1_lightningcss@1.30.1_terser@5.43.1_yaml@2.8.1_/node_modules/@vitejs/plugin-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/spring-ai-alibaba/spring-ai-alibaba-studio/agent-chat-ui/node_modules/.pnpm/character-entities-legacy@1.1.4/node_modules/character-entities-legacy
+apps/pnkln_stack/pnkln-fastapi-services/vendor/spring-ai-alibaba/spring-ai-alibaba-studio/agent-chat-ui/node_modules/.pnpm/character-entities-legacy@3.0.0/node_modules/character-entities-legacy
+libs/terraform/internal/command/testdata/backend-changed-with-legacy
+libs/terraform/internal/command/testdata/backend-new-legacy
+libs/terraform/internal/command/testdata/backend-plan-legacy
+libs/terraform/internal/command/testdata/backend-unchanged-with-legacy
+libs/terraform/internal/command/testdata/backend-unset-with-legacy
+libs/terraform/internal/command/testdata/init-get-provider-detected-legacy
+libs/terraform/internal/command/testdata/plan-out-backend-legacy
 ```
 
 ### Nested repo markers
 ```
-libs/autoresearch_sources/n-autoresearch/.git
+none
 ```
 
 ### Findings
@@ -56,7 +83,7 @@ libs/autoresearch_sources/n-autoresearch/.git
 ## 3. GitHub governance audit
 
 - CODEOWNERS present: `yes`
-- Workflow present: `yes`
+- Workflow present: `no`
 
 ### Notes
 - Local files can confirm governance scaffolding exists.
@@ -94,7 +121,7 @@ none
 
 ## 6. Workspace / tooling audit
 
-- Workspace file present: `yes`
+- Workspace file present: `no`
 - Pyright config present: `yes`
 - Antigravity prompt present: `yes`
 

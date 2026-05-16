@@ -11,15 +11,22 @@
 
 Before starting, ensure you have:
 
+
+
 - [ ] macOS 12+ (Monterey or later)
+
 
 - [ ] Homebrew installed
 
+
 - [ ] Google Cloud account with billing enabled
+
 
 - [ ] GitHub account
 
+
 - [ ] 10GB free disk space
+
 
 - [ ] Internet connection
 
@@ -638,21 +645,28 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
 
 ### Cost Saving Tips for Mac Local Dev
 
+
+
 1. **Use Gemini 2.0 Flash** (already configured)
+
+
    - Cost: $0.075/1M input tokens (vs $1.25 for Pro)
+
 
    - Savings: 94% cheaper for most tasks
 
-2. **Limit API calls during development**
 
+
+2. **Limit API calls during development**
    ```bash
    # In .env, set conservative budgets:
    DAILY_BUDGET=5.0
    SESSION_BUDGET=1.0
    ```
 
-3. **Run services only when needed**
 
+
+3. **Run services only when needed**
    ```bash
    # Stop PostgreSQL when not in use
    brew services stop postgresql@15
@@ -665,6 +679,8 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
    brew services start redis
    ```
 
+
+
 4. **Use local caching aggressively**
    ```bash
    # Redis cache reduces Gemini API calls
@@ -674,12 +690,12 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
 
 ### Expected Monthly Costs (Local Mac)
 
-| Service              | Cost           | Notes                   |
-| -------------------- | -------------- | ----------------------- |
-| Gemini 2.0 Flash API | $3-8           | For development/testing |
-| GCS Storage          | $0.50          | ~10GB data              |
-| BigQuery             | $0.50          | Minimal queries         |
-| **Total**            | **$4-9/month** | vs $77-92 on GCP        |
+| Service | Cost | Notes |
+|---------|------|-------|
+| Gemini 2.0 Flash API | $3-8 | For development/testing |
+| GCS Storage | $0.50 | ~10GB data |
+| BigQuery | $0.50 | Minimal queries |
+| **Total** | **$4-9/month** | vs $77-92 on GCP |
 
 ---
 
@@ -916,41 +932,61 @@ gcloud billing budgets list --billing-account=BILLING_ACCOUNT_ID
 
 ### Week 1: Get Comfortable
 
+
+
 - [ ] Run Nightly Intel Pipeline daily
+
 
 - [ ] Test different governance frameworks
 
+
 - [ ] Explore TypeScript agents
+
 
 - [ ] Monitor costs (should be <$10)
 
 ### Week 2: Integrate MCP (Optional)
 
+
+
 - [ ] Review: `mcp-validation/IMMEDIATE_NEXT_STEPS.md`
+
 
 - [ ] Deploy MCP server to GKE
 
+
 - [ ] Run 72-hour validation sprint
+
 
 - [ ] Decision: GO/NO-GO on MCP integration
 
 ### Week 3: Build Custom Agents
 
+
+
 - [ ] Create your first custom TypeScript agent
+
 
 - [ ] Add to agent registry
 
+
 - [ ] Test via FastAPI endpoint
+
 
 - [ ] Share with team
 
 ### Month 2: Advanced Features
 
+
+
 - [ ] Implement A2A protocol for multi-agent coordination
+
 
 - [ ] Deploy Google Agent Starter Pack templates
 
+
 - [ ] Setup ADK Visual Builder
+
 
 - [ ] Integrate MCP Agent Mail
 
@@ -1008,27 +1044,40 @@ tail -f /opt/homebrew/var/log/postgresql@15.log
 
 ### Important URLs
 
+
+
 - **FastAPI Docs**: http://localhost:8000/docs
+
 
 - **Health Check**: http://localhost:8000/health
 
+
 - **Agent Registry**: http://localhost:8000/api/v1/agents/list
 
+
 - **PostgreSQL**: localhost:5432
+
 
 - **Redis**: localhost:6379
 
 ### Important Files
 
+
+
 - **Environment Config**: `.env`
+
 
 - **Python Dependencies**: `requirements.txt`
 
+
 - **TypeScript Config**: `package.json`
+
 
 - **Agent Manifests**: `agents/*/manifest.json`
 
+
 - **FastAPI Main**: `app/main.py`
+
 
 - **Intel Pipeline**: `nightly_intel_pipeline/main.py`
 
@@ -1079,21 +1128,31 @@ pnkln-stack-fastapi-services/
 
 After completing this guide, you should be able to:
 
+
+
 - [x] Run FastAPI server locally on Mac
+
 
 - [x] Execute Nightly Intel Pipeline
 
+
 - [x] Test Gemini 2.0 Flash integration
+
 
 - [x] Query TypeScript agents via API
 
+
 - [x] Extract and install LLM memory
+
 
 - [x] Monitor costs (<$10/month)
 
+
 - [x] Develop new features locally
 
+
 - [x] Run tests and CI checks
+
 
 - [x] Push changes to GitHub
 
@@ -1107,21 +1166,28 @@ After completing this guide, you should be able to:
 
 **Documentation**:
 
+
 - Main Guide: `docs/MAC_DEPLOYMENT.md`
 
+
 - Integration Guide: `docs/LATEST_TECH_INTEGRATION_RECOMMENDATIONS.md`
+
 
 - Session Summary: `docs/SESSION_SUMMARY_2025-11-18.md`
 
 **Issues**:
 
+
 - GitHub: https://github.com/ShadowTag-v2/pnkln-stack-fastapi-services/issues
+
 
 - Check existing issues before creating new ones
 
 **Community**:
 
+
 - Review `CONTRIBUTING.md` for contribution guidelines
+
 
 - Check `CHANGELOG.md` for recent updates
 

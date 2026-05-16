@@ -15,12 +15,12 @@ mkdir -p "$OUT_DIR"
 cd "$ROOT"
 
 mapfile -t MCP_FILES < <(
-  find "$ROOT" -type f \( \
+  find "$ROOT" -type d \( -name ".git" -o -name ".venv" -o -name "node_modules" \) -prune -o -type f \( \
     -name "antigravity-mcp-config.json" -o \
     -name "mcp_config.json" -o \
     -name ".mcp.json" -o \
     -name "cline_mcp_settings.json" \
-  \) | sort
+  \) -print | sort
 )
 
 mapfile -t SETTINGS_INLINE_MCP < <(
@@ -30,6 +30,9 @@ mapfile -t SETTINGS_INLINE_MCP < <(
     --glob '!**/.venv/**' \
     --glob '!**/dist/**' \
     --glob '!**/build/**' \
+    --glob '!**/.lancedb/**' \
+    --glob '!**/data/**' \
+    --max-columns=500 \
     '"mcpServers"\s*:|mcp-remote|experimental:mcp|MCP-Protocol-Version|stitch\.googleapis\.com/mcp|developers\.google\.com/.*/mcp' \
     "$ROOT" || true
 )
@@ -41,6 +44,9 @@ mapfile -t INLINE_SECRET_CANDIDATES < <(
     --glob '!**/.venv/**' \
     --glob '!**/dist/**' \
     --glob '!**/build/**' \
+    --glob '!**/.lancedb/**' \
+    --glob '!**/data/**' \
+    --max-columns=500 \
     -e 'AIza[0-9A-Za-z\-_]{20,}' \
     -e 'ghp_[A-Za-z0-9]{20,}' \
     -e 'github_pat_[A-Za-z0-9_]{20,}' \
@@ -64,11 +70,11 @@ classify_file() {
 
 {
   echo "# MCP Surfaces Canonicalization Report"
-  echo ""
+  echo
   echo "## Canonical Truth"
   echo "- canonical MCP: \`$CANONICAL_MCP\`"
   echo "- expected project anchor: \`$EXPECTED_PROJECT\`"
-  echo ""
+  echo
   echo "## Discovered MCP Files"
   if [[ ${#MCP_FILES[@]} -eq 0 ]]; then
     echo "- none"
@@ -79,21 +85,21 @@ classify_file() {
       echo "- \`${rel}\` → **$(classify_file "$f")**"
     done
   fi
-  echo ""
+  echo
   echo "## Inline MCP Definitions Outside Canonical File"
   if [[ ${#SETTINGS_INLINE_MCP[@]} -eq 0 ]]; then
     echo "- none"
   else
     printf '%s\n' "${SETTINGS_INLINE_MCP[@]}" | sed 's/^/- /'
   fi
-  echo ""
+  echo
   echo "## Inline Secret Candidates"
   if [[ ${#INLINE_SECRET_CANDIDATES[@]} -eq 0 ]]; then
     echo "- none"
   else
     printf '%s\n' "${INLINE_SECRET_CANDIDATES[@]}" | sed 's/^/- /'
   fi
-  echo ""
+  echo
   echo "## Required Outcome"
   echo "- only \`antigravity-mcp-config.json\` may remain a live MCP truth surface"
   echo "- adapter and retired files must be note-only stubs"

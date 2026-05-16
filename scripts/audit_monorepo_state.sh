@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
-# Monorepo state audit — timeout-guarded to prevent hangs in CI/agent shells.
 set -euo pipefail
 
-# Configurable timeout (default 30s per command)
-AUDIT_TIMEOUT="${AUDIT_TIMEOUT:-30}"
-
-ROOT="${MONOREPO_ROOT:-/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball}"
+ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
 cd "${ROOT}"
 
 echo "== Monorepo State Audit =="
@@ -31,9 +27,9 @@ for p in \
   "archive" \
   "tools/legacy" \
   "docs/legacy_shadowtag_v2" \
-  "apps/ShadowTag-v2_ecosystem/raw_ingest" \
-  "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services" \
-  "apps/ShadowTag-v2_stack/cosmic-crab-payload"
+  "apps/aiyou_ecosystem/raw_ingest" \
+  "apps/aiyou_stack/aiyou-fastapi-services" \
+  "apps/aiyou_stack/cosmic-crab-payload"
 do
   if [ -e "$p" ]; then
     echo "present: $p"
@@ -44,16 +40,16 @@ done
 echo
 
 echo "== 3. Denied-zone residue in live tree =="
-timeout "${AUDIT_TIMEOUT}" find apps libs -maxdepth 5 -type d \( -name "node_modules" -o -name ".venv" -o -name ".git" \) -prune -o -type d \( \
+find apps libs -type d \( -name "node_modules" -o -name ".venv" -o -name ".git" \) -prune -o -type d \( \
   -name "_PRE_OMEGA_BACKUP_*" -o \
   -name "ShadowTag-Omega" -o \
   -name "arsenal_recovered" -o \
   -name "*-legacy" \
-\) -print 2>/dev/null | sort || echo "(timed out or empty)"
+\) -print 2>/dev/null | sort || true
 echo
 
 echo "== 4. Nested repo markers =="
-timeout "${AUDIT_TIMEOUT}" find apps libs -maxdepth 5 -type d \( -name "node_modules" -o -name ".venv" \) -prune -o -type d -name ".git" -print 2>/dev/null | sort || echo "(timed out or empty)"
+find apps libs -type d \( -name "node_modules" -o -name ".venv" \) -prune -o -type d -name ".git" -print 2>/dev/null | sort || true
 echo
 
 echo "== 5. Python config =="
@@ -98,11 +94,11 @@ done
 echo
 
 echo "== 8. Quick repo stats =="
-echo "Python files under apps: $(timeout "${AUDIT_TIMEOUT}" find apps -name node_modules -prune -o -name .venv -prune -o -type f -name '*.py' -print 2>/dev/null | wc -l | tr -d ' ')"
-echo "Python files under libs: $(timeout "${AUDIT_TIMEOUT}" find libs -name node_modules -prune -o -name .venv -prune -o -type f -name '*.py' -print 2>/dev/null | wc -l | tr -d ' ')"
-echo "BUILD.bazel files: $(timeout "${AUDIT_TIMEOUT}" find . -maxdepth 6 -name node_modules -prune -o -name .venv -prune -o -type f -name 'BUILD.bazel' -print 2>/dev/null | wc -l | tr -d ' ')"
-echo "Proto files: $(timeout "${AUDIT_TIMEOUT}" find contracts proto -maxdepth 4 -name node_modules -prune -o -name .venv -prune -o -type f -name '*.proto' -print 2>/dev/null | wc -l | tr -d ' ')"
+echo "Python files under apps: $(find apps -name node_modules -prune -o -name .venv -prune -o -type f -name '*.py' -print 2>/dev/null | wc -l | tr -d ' ')"
+echo "Python files under libs: $(find libs -name node_modules -prune -o -name .venv -prune -o -type f -name '*.py' -print 2>/dev/null | wc -l | tr -d ' ')"
+echo "BUILD.bazel files: $(find . -name node_modules -prune -o -name .venv -prune -o -type f -name 'BUILD.bazel' -print 2>/dev/null | wc -l | tr -d ' ')"
+echo "Proto files: $(find contracts proto -name node_modules -prune -o -name .venv -prune -o -type f -name '*.proto' -print 2>/dev/null | wc -l | tr -d ' ')"
 echo
 
 echo "== 9. Git working tree =="
-timeout "${AUDIT_TIMEOUT}" git status --short 2>/dev/null || echo "(git status timed out)"
+git status --short || true

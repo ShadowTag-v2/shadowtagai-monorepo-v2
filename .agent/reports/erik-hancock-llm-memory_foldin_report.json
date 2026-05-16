@@ -25,7 +25,7 @@
       "kind": "stale_model",
       "severity": "high",
       "path": "drive_knowledge/documents/text_txt.txt",
-      "detail": "Stale model reference; migrate to gemini-3.1-flash-lite-preview: gemini-2.5-computer-use-preview-10-2025"
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-computer-use-preview-10-2025"
     },
     {
       "kind": "stale_naming",

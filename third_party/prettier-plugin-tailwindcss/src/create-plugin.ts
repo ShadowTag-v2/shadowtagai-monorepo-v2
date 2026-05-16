@@ -1,0 +1,256 @@
+import { isAbsolute } from "path";
+import type { Parser, ParserOptions, Plugin, Printer } from "prettier";
+import { getTailwindConfig } from "./config";
+import { createMatcher } from "./options";
+import { loadIfExists, maybeResolve } from "./resolve";
+import type { PluginLoad, TransformOptions } from "./transform";
+import type { TransformerEnv } from "./types";
+
+export function createPlugin(transforms: TransformOptions<any>[]) {
+  // Prettier parsers and printers may be async functions at definition time.
+  // They'll be awaited when the plugin is loaded but must also be swapped out
+  // with the resolved value before returning as later Prettier internals
+  // assume that parsers and printers are objects and not functions.
+  type Init<T> = (() => Promise<T | undefined>) | T | undefined;
+
+  const parsers: Record<string, Init<Parser<any>>> = Object.create(null);
+  const printers: Record<string, Init<Printer<any>>> = Object.create(null);
+
+  for (const opts of transforms) {
+    for (const [name, meta] of Object.entries(opts.parsers)) {
+      parsers[name] = async () => {
+        const plugin = await loadPlugins(meta.load ?? opts.load ?? []);
+        const original = plugin.parsers?.[name];
+        if (!original) return;
+
+        parsers[name] = await createParser({
+          name,
+          original,
+          opts,
+        });
+
+        return parsers[name];
+      };
+    }
+
+    for (const [name, _meta] of Object.entries(opts.printers ?? {})) {
+      printers[name] = async () => {
+        const plugin = await loadPlugins(opts.load ?? []);
+        const original = plugin.printers?.[name];
+        if (!original) return;
+
+        printers[name] = createPrinter({
+          original,
+          opts,
+        });
+
+        return printers[name];
+      };
+    }
+  }
+
+  return { parsers, printers };
+}
+
+async function createParser({
+  name,
+  original,
+  opts,
+}: {
+  name: string;
+  original: Parser<any>;
+  opts: TransformOptions<any>;
+}) {
+  const parser: Parser<any> = { ...original };
+
+  async function load(options: ParserOptions<any>) {
+    const parser: Parser<any> = { ...original };
+
+    for (const pluginName of opts.compatible || []) {
+      const plugin = await findEnabledPlugin(options, pluginName);
+      if (plugin?.parsers?.[name]) Object.assign(parser, plugin.parsers[name]);
+    }
+
+    return parser;
+  }
+
+  parser.preprocess = async (code: string, options: ParserOptions) => {
+    const parser = await load(options);
+    return parser.preprocess ? parser.preprocess(code, options) : code;
+  };
+
+  parser.parse = async (code, options) => {
+    const original = await load(options);
+
+    // @ts-expect-error: `options` is passed twice for compat with older plugins that were written
+    // for Prettier v2 but still work with v3.
+    //
+    // Currently only the Twig plugin requires this.
+    const ast = await original.parse(code, options, options);
+
+    const env = await loadTailwindCSS({ opts, options });
+
+    transformAst({
+      ast,
+      env,
+      opts,
+      options,
+    });
+
+    options.__tailwindcss__ = env;
+
+    return ast;
+  };
+
+  return parser;
+}
+
+function createPrinter({
+  original,
+  opts,
+}: {
+  original: Printer<any>;
+  opts: TransformOptions<any>;
+}) {
+  const printer: Printer<any> = { ...original };
+
+  const reprint = opts.reprint;
+
+  // Hook into the preprocessing phase to load the config
+  if (reprint) {
+    printer.print = new Proxy(original.print, {
+      apply(target, thisArg, args) {
+        const [path, options] = args as Parameters<typeof original.print>;
+        const env = options.__tailwindcss__ as TransformerEnv;
+        reprint(path, { ...env, options: options });
+        return Reflect.apply(target, thisArg, args);
+      },
+    });
+
+    if (original.embed) {
+      printer.embed = new Proxy(original.embed, {
+        apply(target, thisArg, args) {
+          const [path, options] = args as Parameters<typeof original.embed>;
+          const env = options.__tailwindcss__ as TransformerEnv;
+          reprint(path, { ...env, options: options as any });
+          return Reflect.apply(target, thisArg, args);
+        },
+      });
+    }
+  }
+
+  return printer;
+}
+
+async function loadPlugins<T>(fns: PluginLoad[]) {
+  const plugin: Plugin<T> = {
+    parsers: Object.create(null),
+    printers: Object.create(null),
+    options: Object.create(null),
+    defaultOptions: Object.create(null),
+    languages: [],
+  };
+
+  for (const source of fns) {
+    const loaded = await loadPlugin(source);
+    Object.assign(plugin.parsers!, loaded.parsers ?? {});
+    Object.assign(plugin.printers!, loaded.printers ?? {});
+    Object.assign(plugin.options!, loaded.options ?? {});
+    Object.assign(plugin.defaultOptions!, loaded.defaultOptions ?? {});
+
+    plugin.languages = [...(plugin.languages ?? []), ...(loaded.languages ?? [])];
+  }
+
+  return plugin;
+}
+
+const EMPTY_PLUGIN: Plugin<any> = {
+  parsers: {},
+  printers: {},
+  languages: [],
+  options: {},
+  defaultOptions: {},
+};
+
+async function loadPlugin(source: PluginLoad): Promise<Plugin<any>> {
+  if ("importer" in source && typeof source.importer === "function") {
+    return normalizePlugin(await source.importer());
+  }
+
+  return source;
+}
+
+function normalizePlugin(source: unknown): Plugin<any> {
+  if (source === null || typeof source !== "object") return EMPTY_PLUGIN;
+  const maybeModule = source as { default?: unknown };
+  const plugin = maybeModule.default;
+  return (plugin && typeof plugin === "object" ? plugin : source) as Plugin<any>;
+}
+
+function findEnabledPlugin(options: ParserOptions<any>, name: string) {
+  for (let plugin of options.plugins) {
+    if (plugin instanceof URL) {
+      if (plugin.protocol !== "file:") continue;
+      if (plugin.hostname !== "") continue;
+
+      plugin = plugin.pathname;
+    }
+
+    if (typeof plugin !== "string") {
+      if (!plugin.name) {
+        continue;
+      }
+      plugin = plugin.name;
+    }
+
+    if (
+      plugin === name ||
+      (isAbsolute(plugin) && plugin.includes(name) && maybeResolve(name) === plugin)
+    ) {
+      return loadIfExists<Plugin<any>>(name);
+    }
+  }
+}
+
+async function loadTailwindCSS<T = any>({
+  options,
+  opts,
+}: {
+  options: ParserOptions<T>;
+  opts: TransformOptions<T>;
+}): Promise<TransformerEnv> {
+  const parsers = opts.parsers;
+  const parser = options.parser as string;
+
+  const context = await getTailwindConfig(options);
+
+  const matcher = createMatcher(options, parser, {
+    staticAttrs: new Set(parsers[parser]?.staticAttrs ?? opts.staticAttrs ?? []),
+    dynamicAttrs: new Set(parsers[parser]?.dynamicAttrs ?? opts.dynamicAttrs ?? []),
+    functions: new Set(),
+    staticAttrsRegex: [],
+    dynamicAttrsRegex: [],
+    functionsRegex: [],
+  });
+
+  return {
+    context,
+    matcher,
+    options,
+    changes: [],
+  };
+}
+
+function transformAst<T = any>({
+  ast,
+  env,
+  opts,
+}: {
+  ast: T;
+  env: TransformerEnv;
+  options: ParserOptions<T>;
+  opts: TransformOptions<T>;
+}) {
+  const transform = opts.transform;
+  if (transform) transform(ast, env);
+}

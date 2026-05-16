@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from 'bun:test';
-import * as git from '../../services/git/index.js';
-import { createMockRenderer } from '../mock-factory.ts';
-import { PRPreviewDialog } from './PRPreviewDialog.ts';
+import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test";
+import * as git from "../../services/git/index.js";
+import { createMockRenderer } from "../mock-factory.ts";
+import { PRPreviewDialog } from "./PRPreviewDialog.ts";
 
-describe('PRPreviewDialog', () => {
+describe("PRPreviewDialog", () => {
   let mockRenderer: any;
   let events: any;
   let spies: any[] = [];
@@ -17,9 +17,9 @@ describe('PRPreviewDialog', () => {
 
     // Use spyOn instead of global mock.module to avoid polluting other tests
     spies = [
-      spyOn(git, 'generatePRDescription').mockResolvedValue({
-        title: 'Test Title',
-        body: 'Test Body',
+      spyOn(git, "generatePRDescription").mockResolvedValue({
+        title: "Test Title",
+        body: "Test Body",
       }),
     ];
   });
@@ -28,26 +28,26 @@ describe('PRPreviewDialog', () => {
     spies.forEach((spy) => spy.mockRestore());
   });
 
-  test('should initialize and setup UI', () => {
+  test("should initialize and setup UI", () => {
     const dialog = new PRPreviewDialog(mockRenderer, events);
     expect(dialog).toBeDefined();
     expect(dialog.isOpen()).toBe(false);
   });
 
-  test('should show and load PR description', async () => {
+  test("should show and load PR description", async () => {
     const dialog = new PRPreviewDialog(mockRenderer, events);
 
     const mockSession = {
-      id: 'test-session',
+      id: "test-session",
       worktreeInfo: {
-        branchName: 'feature',
-        baseBranch: 'main',
+        branchName: "feature",
+        baseBranch: "main",
       },
     };
 
     await dialog.show(mockSession as any);
     expect(dialog.isOpen()).toBe(true);
     // titleInput.value should be set to the title from generatePRDescription
-    expect((dialog as any).titleInput.value).toBe('Test Title');
+    expect((dialog as any).titleInput.value).toBe("Test Title");
   });
 });

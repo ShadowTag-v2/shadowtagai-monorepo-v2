@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 GCLOUD AUTH SOLVER (The "Keymaster")
 ====================================
@@ -57,7 +56,7 @@ def solve_auth():
                 "gcloud",
                 "auth",
                 "activate-service-account",
-                "767252945109-compute@developer.gserviceaccount.com",
+                "headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com",
                 f"--key-file={key_path}",
                 "--project",
                 PROJECT_ID,

@@ -7,7 +7,6 @@
 ## What We've Built
 
 **Production-ready framework** with:
-
 - 3 skills (Research Explorer, Design Critic, Monetization Architect)
 - 3 agents (UltraThink Designer, Wealth Accelerator, Orchestrator Meta)
 - Python orchestrator with auto-activation
@@ -21,7 +20,7 @@
 /mnt/project/                          # Canonical library (reference)
 └── (skills/, agents/, core/)
 
-/home/user/ShadowTag-v2-fastapi-services/     # Production codebase
+/home/user/aiyou-fastapi-services/     # Production codebase
 ├── pnkln/                             # Framework library
 │   ├── skills/registry.yaml           # 3 skills defined
 │   ├── agents/registry.yaml           # 3 agents configured
@@ -65,7 +64,6 @@
 ## Validation Status
 
 **All tests passing:**
-
 - ✓ Intent detection (4/4 test cases)
 - ✓ Execution flow
 - ✓ Audit trail tracking
@@ -83,7 +81,7 @@
 
 ```bash
 # 1. Navigate to repo
-cd /home/user/ShadowTag-v2-fastapi-services
+cd /home/user/aiyou-fastapi-services
 
 # 2. Run tests
 python tests/test_orchestrator.py
@@ -103,14 +101,12 @@ open http://localhost:8000/docs
 You are continuing work on the pnkln ultrathink framework.
 
 CURRENT STATUS:
-
 - Phase 1 complete: Foundation deployed ✓
 - Phase 2 ready: Containerization pending
-- Location: /home/user/ShadowTag-v2-fastapi-services
+- Location: /home/user/aiyou-fastapi-services
 - Branch: claude/pnkln-ultrathink-framework-01URALiZh8CRvMhLV9FeXVce
 
 FRAMEWORK OVERVIEW:
-
 - Skills: 3 production-ready (research, design, monetization)
 - Agents: 3 configured (UltraThink Designer, Wealth Accelerator, Meta)
 - API: FastAPI with 6 endpoints
@@ -121,7 +117,6 @@ Steve Jobs Ultrathink mode - Question assumptions, obsess over details,
 ruthlessly simplify. Every line of code must justify its existence.
 
 FILES CREATED:
-
 - pnkln/skills/registry.yaml
 - pnkln/agents/registry.yaml
 - pnkln/core/orchestrator.py
@@ -153,7 +148,6 @@ NEXT TASK: [specify current objective]
 3. **DIRECT CHALLENGE** - Income action executable TODAY
 
 **Metrics tracked:**
-
 - Time saved (hours)
 - Revenue identified ($)
 - Revenue generated ($)
@@ -167,7 +161,7 @@ NEXT TASK: [specify current objective]
 - **MAD** - Multi-Agent Debate (adversarial consensus)
 - **DTE** - Debate-Train-Evolve (GRPO policy improvement)
 
-## Risk Levels (Compliance Framework)
+## Risk Levels (ATP 5-19)
 
 - **RA-1** - Routine operations
 - **RA-2** - Low impact (Research, Design)
@@ -201,7 +195,6 @@ git push -u origin claude/pnkln-ultrathink-framework-01URALiZh8CRvMhLV9FeXVce
 ## Success Metrics
 
 **Framework is successful when:**
-
 - Intent detection: >95% accuracy
 - Execution time: <1s for routing
 - Audit trail: 100% coverage
@@ -209,7 +202,6 @@ git push -u origin claude/pnkln-ultrathink-framework-01URALiZh8CRvMhLV9FeXVce
 - Code quality: Zero compromises on elegance
 
 **Business success when:**
-
 - Time saved: >10 hours/week
 - Revenue identified: >$100K/month
 - Leverage ratio: >100x (output/effort)

@@ -1,12 +1,10 @@
 # AGENTS.md
 
 ## Scope
-
 This is the ShadowTag-specific behavior contract.
 It supplements, not replaces, linting, tests, CI, typed schemas, and policy code.
 
 ## Session start
-
 1. Read `docs/Cor.Constitution.v3.md`.
 2. Run the checks in `scripts/session_bootstrap.sh`.
 3. Review `.agent/workflows/live-engine.md`.
@@ -15,7 +13,6 @@ It supplements, not replaces, linting, tests, CI, typed schemas, and policy code
 6. Confirm work is happening only inside the monorepo safe zone.
 
 ## Non-negotiables
-
 - Work only inside the designated monorepo.
 - Do not create new repositories or fork.
 - Do not save work outside the monorepo unless explicitly instructed.
@@ -26,14 +23,12 @@ It supplements, not replaces, linting, tests, CI, typed schemas, and policy code
 - Check memory/beads and git state before major actions when available.
 
 ## Product posture
-
 - Build products that are simple enough for non-technical users to operate.
 - Keep the UX extremely simple while keeping the internals powerful.
 - Prefer revenue-positive, leverage-positive work.
 - If a path multiplies complexity without multiplying revenue or strategic advantage, reject it.
 
 ## Response posture
-
 - Think step by step.
 - Explain the why before the action.
 - Question assumptions.

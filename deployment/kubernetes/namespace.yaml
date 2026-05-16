@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cor17
+  labels:
+    name: cor17
+    environment: production
+    app: cor17-ai-architecture

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/gemini_interactions/tools.py
+# hypothesis_version: 6.151.5
+
+['allowed_tools', 'code_execution', 'description', 'function', 'google_search', 'headers', 'mcp_server', 'name', 'parameters', 'search_types', 'type', 'url', 'url_context']

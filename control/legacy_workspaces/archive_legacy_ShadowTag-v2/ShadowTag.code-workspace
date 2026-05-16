@@ -1,0 +1,30 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "cloudcode.project": "shadowtag-omega-v4",
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**node_modules": true,
+      "**/.venv": true,
+      "**/venv": true,
+      "**/__pycache__": true
+    },
+    "cSpell.words": ["shadowtag", "geminicodeassist"],
+    "geminicodeassist.project": "shadowtag-omega-v4",
+    "java.compile.nullAnalysis.mode": "automatic"
+  }
+}

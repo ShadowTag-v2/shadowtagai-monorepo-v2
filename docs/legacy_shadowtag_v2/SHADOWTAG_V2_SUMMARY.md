@@ -6,32 +6,47 @@ Successfully folded in "updates beyond this thread" from `erik-hancock-llm-memor
 
 ### ShadowTagAI Architecture (`src/shadowtagai/`)
 
-- **Monte Carlo Valuation (`mcarlo_val`)**: Monte Carlo simulation engine.
 
-- **Odor Dome (`odor_sim`)**: Fluid dynamics/odor simulation.
 
-- **Verdict (`verdict`)**: Task flow verdict engine.
+* **Monte Carlo Valuation (`mcarlo_val`)**: Monte Carlo simulation engine.
 
-- **Swiper (`swiper_plan`)**: Commerce planning engine.
 
-- **Tokable (`tokable_script`)**: Creator script engine.
+* **Odor Dome (`odor_sim`)**: Fluid dynamics/odor simulation.
 
-- **VC Mirror (`vcmirror`)**: Investor thesis extraction.
 
-- **Geos (`geos_skim`)**: Geospatial summary engine.
+* **Verdict (`verdict`)**: Task flow verdict engine.
 
-- **Core Prompts**: System prompts extracted from memory.
+
+* **Swiper (`swiper_plan`)**: Commerce planning engine.
+
+
+* **Tokable (`tokable_script`)**: Creator script engine.
+
+
+* **VC Mirror (`vcmirror`)**: Investor thesis extraction.
+
+
+* **Geos (`geos_skim`)**: Geospatial summary engine.
+
+
+* **Core Prompts**: System prompts extracted from memory.
 
 ### Integration
 
-- **Flying n-autoresearch/Kosmos/BioAgents**: Updated `agents/autoresearch.py` to register all above tools (with Google MCP tools).
 
-- **Docs**: Updated `GEMINI.md`.
+
+* **Flying Monkeys**: Updated `agents/flying_monkeys.py` to register all above tools (with Google MCP tools).
+
+
+* **Docs**: Updated `GEMINI.md`.
 
 ## 🎯 Verification
 
-- `scripts/verify_shadowtag_integration.py`: ✅ SUCCESS
 
-- ShadowTag tools registered dynamically into `https://github.com/karpathy/autoresearchs` tool registry.
+
+* `scripts/verify_shadowtag_integration.py`: ✅ SUCCESS
+
+
+* ShadowTag tools registered dynamically into `https://github.com/karpathy/autoresearchs` tool registry.
 
 **Status: ✅ COMPLETE**

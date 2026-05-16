@@ -82,7 +82,7 @@ WITHOUT PIPELINE:
 WITH PIPELINE:
 ├─ Detection: Oct 31, 2024 (proactive, 90-day lead)
 ├─ Implementation: Nov-Dec 2025 (controlled)
-├─ Risk: Compliance Framework RA-4 → RA-1 (mitigated)
+├─ Risk: ATP 5-19 RA-4 → RA-1 (mitigated)
 └─ Competitive: Demo compliance in sales → +15% win rate
 
 QUANTIFIED ADVANTAGE:
@@ -144,7 +144,7 @@ import random
 from datetime import datetime, timedelta
 
 class EthicalScraper:
-    """Compliance Framework RA-1 compliant scraper with robots.txt respect"""
+    """ATP 5-19 RA-1 compliant scraper with robots.txt respect"""
 
     def __init__(self, config):
         self.config = config
@@ -156,7 +156,7 @@ class EthicalScraper:
         """
         Fetch URL with full ethical compliance
 
-        Compliance Framework Risk Mitigation:
+        ATP 5-19 Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
         - RA-1 (Low): Compliant, throttled, respectful
         """
@@ -325,8 +325,8 @@ metadata:
   name: nightly-intel-pipeline
   namespace: intelligence-pipeline
 spec:
-  schedule: "0 2 * * *" # 2 AM PST
-  timeZone: "America/Los_Angeles"
+  schedule: '0 2 * * *' # 2 AM PST
+  timeZone: 'America/Los_Angeles'
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 7
   failedJobsHistoryLimit: 3
@@ -350,21 +350,21 @@ spec:
 
               env:
                 - name: PROJECT_ID
-                  value: "PROJECT_ID"
+                  value: 'PROJECT_ID'
                 - name: BIGQUERY_DATASET
-                  value: "pnkln_intelligence"
+                  value: 'pnkln_intelligence'
                 - name: GCS_BUCKET
-                  value: "PROJECT_ID-pnkln-intelligence"
+                  value: 'PROJECT_ID-pnkln-intelligence'
 
                 # Ethical scraping config
                 - name: SCRAPER_USER_AGENT
-                  value: "pnkln-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)"
+                  value: 'pnkln-Intelligence-Bot/1.0 (+https://pnkln.ai/bot-policy)'
                 - name: SCRAPER_CONTACT
-                  value: "intelligence@pnkln.ai"
+                  value: 'intelligence@pnkln.ai'
                 - name: RESPECT_ROBOTS_TXT
-                  value: "true"
+                  value: 'true'
                 - name: DEFAULT_CRAWL_DELAY
-                  value: "3.0"
+                  value: '3.0'
 
               # API Keys from Secret
               envFrom:
@@ -373,13 +373,13 @@ spec:
 
               resources:
                 requests:
-                  cpu: "2"
-                  memory: "8Gi"
+                  cpu: '2'
+                  memory: '8Gi'
                 limits:
-                  cpu: "4"
-                  memory: "16Gi"
+                  cpu: '4'
+                  memory: '16Gi'
 
-              command: ["/bin/bash", "-c"]
+              command: ['/bin/bash', '-c']
               args:
                 - |
                   #!/bin/bash
@@ -422,7 +422,7 @@ spec:
 GATE A (Month 6 → $750K ARR)
 ├─ Intel Pipeline Contribution: +$112K (15% win rate boost)
 ├─ Proof Point: "90-day regulatory head-start" in pitch
-└─ Compliance Framework RA-2 → RA-1 (compliance risk mitigated)
+└─ ATP 5-19 RA-2 → RA-1 (compliance risk mitigated)
 
 GATE B (Month 12 → $2.5M ARR)
 ├─ Intel Pipeline Contribution: +$375K (RFP positioning)

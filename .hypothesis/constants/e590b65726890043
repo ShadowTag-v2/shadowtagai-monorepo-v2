@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/aiyou-core/session_ingress.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1000.0, 100, 500, 8000, ',', '.head_uuid', '.tmp', ':', 'a+', 'compacted_at', 'compaction', 'compaction_marker', 'content', 'entry_count', 'first_entry', 'head_uuid', 'last_entry', 'metadata', 'role', 'role_distribution', 'session_id', 'size_bytes', 'system', 'time_span_seconds', 'timestamp', 'transcript.jsonl', 'type', 'uuid']

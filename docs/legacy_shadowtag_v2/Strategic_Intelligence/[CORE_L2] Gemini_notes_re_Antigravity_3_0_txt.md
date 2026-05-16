@@ -346,7 +346,7 @@ Status:
 GitHubAppAuthenticator: Class added.
 Computer Use: Patterns extracting.
 Next: Connect 
-autoresearch.py to use these.
+flying_monkeys.py to use these.
 [Antigravity Core Refactor]
 [NEW] 
 jetski_protocol.md
@@ -365,7 +365,7 @@ jetski_protocol.md.
 Include the reconstructed "Soul" system prompt.
 Implement the 12 "Arsenal" tools using Playwright (or similar).
 [MODIFY] 
-autoresearch.py
+flying_monkeys.py
 Update to use the new 
 SwarmOrchestrator core.
 Register JetskiBrowserAgent as the primary web researcher/actor.
@@ -449,7 +449,7 @@ Status:
 GitHubAppAuthenticator: Class added.
 Computer Use: Patterns extracting.
 Next: Connect 
-autoresearch.py to use these.
+flying_monkeys.py to use these.
 [Antigravity Core Refactor]
 [NEW] 
 jetski_protocol.md
@@ -468,7 +468,7 @@ jetski_protocol.md.
 Include the reconstructed "Soul" system prompt.
 Implement the 12 "Arsenal" tools using Playwright (or similar).
 [MODIFY] 
-autoresearch.py
+flying_monkeys.py
 Update to use the new 
 SwarmOrchestrator core.
 Register JetskiBrowserAgent as the primary web researcher/actor.
@@ -483,7 +483,7 @@ This is Judge 6.
 Protocol: SOP-001 (God Mode)
 Objective: Implement Jetski Protocol & Swarm Architecture.
 Status: APPROVED.
-The system has analyzed your request. You are upgrading the autoresearch from a script to a Swarm. You are also fixing the critical Git blocker.
+The system has analyzed your request. You are upgrading the flying_monkeys from a script to a Swarm. You are also fixing the critical Git blocker.
 Here is the Direct Write Payload.
 
 1. The Fix (Git Hygiene)
@@ -564,7 +564,7 @@ import json
 import os
 from playwright.sync_api import sync_playwright
 from libs.steel.swarm import Agent
-from libs.ShadowTag-v2.services.embeddings import EmbeddingService # For memory if needed
+from libs.aiyou.services.embeddings import EmbeddingService # For memory if needed
 
 class JetskiBrowserAgent(Agent):
 def **init**(self):
@@ -624,11 +624,11 @@ self.dom_cache = {} # Map[Index, ElementHandle]
         self.page.screenshot(path=path)
         print(f"📸 Screenshot saved: {path}")
 
-5. The Integration (autoresearch.py)
+5. The Integration (flying_monkeys.py)
    Context: Updating the CLI to use the new Swarm.
    Python
 
-# autoresearch.py (Update)
+# flying_monkeys.py (Update)
 
 from libs.steel.swarm import SwarmOrchestrator
 from agents.jetski_agent import JetskiBrowserAgent
@@ -656,7 +656,7 @@ if **name** == "**main**":
 main() 6. Verification
 To verify the "Jetski" capabilities:
 Install: pip install playwright && playwright install chromium
-Run: python3 autoresearch.py
+Run: python3 flying_monkeys.py
 Command: "Go to https://www.google.com/search?q=google.com and search for Antigravity"
 Result: The Swarm should detect "search", route to "Jetski", and the Jetski agent should initialize the headless browser.
 Antigravity v2 is now Swarm-Enabled.
@@ -2435,9 +2435,9 @@ ingestion.py (GCS upload)
 Phase 8: Technical Debt & Verification
  Install sentence-transformers dependency
  Update 
-ShadowTag-v2/config.py to Pydantic v2
+aiyou/config.py to Pydantic v2
  Update 
-ShadowTag-v2/database.py to Pydantic v2
+aiyou/database.py to Pydantic v2
  Replace on_event with lifespan in 
 app/main.py
  Verify all tests pass
@@ -2454,7 +2454,7 @@ ingest_knowledge_base.py SDK error (ASCII Sanitization applied)
  Refactor Judge Pipeline to use Cloud Database
  Ingest Git Repositories
  Configure Gemini File Search / Vector Store
- Activate Flying n-autoresearch/Kosmos/BioAgents Squadron
+ Activate Flying Monkeys Squadron
 
 This is Judge 6.
 Protocol: Strategic Assessment

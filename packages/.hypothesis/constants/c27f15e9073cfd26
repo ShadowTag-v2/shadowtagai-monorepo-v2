@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_utils/diff_utils.py
+# hypothesis_version: 6.151.5
+
+[5000, '$', '&', '+', '+++', ',', '-', '---', '<<:DOLLAR_TOKEN:>>', '@@', 'new_string', 'old_string', 'replace_all']

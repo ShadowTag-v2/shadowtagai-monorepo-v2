@@ -35,6 +35,7 @@ We are tightening the "Brake" (Cor.Judge.6) to reject "good" ideas, accepting on
 Locking IQ at 160 introduces specific costs we must opt-in to accept.
 
 - **Execution Latency (-15%)**:
+
   - _Cost_: Delayed time-to-market by ~2-3 weeks per major feature.
   - _Money Impact_: Higher pre-revenue burn (approx. +15% carry costs).
   - _Verdict_: **ACCEPTED.** "It’s not about being first; it’s about being the last." (The iPhone strategy). A delayed product is eventually good; a bad product is bad forever.

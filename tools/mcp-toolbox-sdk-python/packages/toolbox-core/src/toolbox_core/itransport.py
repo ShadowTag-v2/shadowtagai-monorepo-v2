@@ -21,36 +21,40 @@ from .protocol import ManifestSchema
 
 
 class ITransport(ABC):
-    """Defines the contract for a 'smart' transport that handles both
-    protocol formatting and network communication.
-    """
+  """Defines the contract for a 'smart' transport that handles both
+  protocol formatting and network communication.
+  """
 
-    @property
-    @abstractmethod
-    def base_url(self) -> str:
-        """The base URL for the transport."""
-        pass
+  @property
+  @abstractmethod
+  def base_url(self) -> str:
+    """The base URL for the transport."""
+    pass
 
-    @abstractmethod
-    async def tool_get(self, tool_name: str, headers: Mapping[str, str] | None = None) -> ManifestSchema:
-        """Gets a single tool from the server."""
-        pass
+  @abstractmethod
+  async def tool_get(
+    self, tool_name: str, headers: Mapping[str, str] | None = None
+  ) -> ManifestSchema:
+    """Gets a single tool from the server."""
+    pass
 
-    @abstractmethod
-    async def tools_list(
-        self,
-        toolset_name: str | None = None,
-        headers: Mapping[str, str] | None = None,
-    ) -> ManifestSchema:
-        """Lists available tools from the server."""
-        pass
+  @abstractmethod
+  async def tools_list(
+    self,
+    toolset_name: str | None = None,
+    headers: Mapping[str, str] | None = None,
+  ) -> ManifestSchema:
+    """Lists available tools from the server."""
+    pass
 
-    @abstractmethod
-    async def tool_invoke(self, tool_name: str, arguments: dict, headers: Mapping[str, str]) -> str:
-        """Invokes a specific tool on the server."""
-        pass
+  @abstractmethod
+  async def tool_invoke(
+    self, tool_name: str, arguments: dict, headers: Mapping[str, str]
+  ) -> str:
+    """Invokes a specific tool on the server."""
+    pass
 
-    @abstractmethod
-    async def close(self):
-        """Closes any underlying connections."""
-        pass
+  @abstractmethod
+  async def close(self):
+    """Closes any underlying connections."""
+    pass

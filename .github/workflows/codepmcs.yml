@@ -21,16 +21,10 @@ permissions:
   pull-requests: write
   security-events: write
 
-
-concurrency:
-  group: codepmcs-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   scan:
     name: CodePMCS Code Quality Scan
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -137,8 +131,7 @@ jobs:
 
   auto-fix:
     name: CodePMCS Auto-Fix
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: self-hosted
     needs: scan
     if: |
       (github.event_name == 'workflow_dispatch' && github.event.inputs.auto_fix == 'true') ||

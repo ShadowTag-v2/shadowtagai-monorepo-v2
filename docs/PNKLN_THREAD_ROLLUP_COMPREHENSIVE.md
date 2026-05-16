@@ -1,11 +1,11 @@
 ```
 ╔═══════════════════════════════════════════════════════════════╗
 ║ THREAD ROLLUP — COMPREHENSIVE TRANSFER PACKAGE               ║
-║ SHADOWTAGAI Core Stack™ Deployment + Strategic Vision             ║
+║ PNKLN Core Stack™ Deployment + Strategic Vision             ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
----
+-----
 
 ## PART 1: CONCISE STATE SUMMARY
 
@@ -21,10 +21,10 @@
 - Cost target: $504/mo Stage 1, scales with GPU usage
 - **Status**: Ready to deploy, awaiting `GCP_PROJECT_ID` and execution
 
-**2. SHADOWTAGAI Complete Strategic Vision** (synthesized from memory + uploaded rollup)
+**2. PNKLN Complete Strategic Vision** (synthesized from memory + uploaded rollup)
 
 - **6-layer stack**: Gulfstream Offshore → Core Stack™ → AiU Digital Mall → RoadMesh → Orbital → Gov/Defense
-- **19 verticals mapped**: DoD, FAA, FDA, Judiciary, LEO, Aircraft Relay, GPU Pods, Highway LiDAR, C-V2X, Digital ATC, Mall, Cognitive Stack v5, Judge 6, AiUCRM, ShadowTag, Gulfstream, Cor.64 Intel, + 2 ShadowTag licensing packs
+- **19 verticals mapped**: DoD, FAA, FDA, Judiciary, LEO, Aircraft Relay, GPU Pods, Highway LiDAR, C-V2X, Digital ATC, Mall, Cognitive Stack v5, Judge #6, AiUCRM, ShadowTag, Gulfstream, Cor.64 Intel, + 2 ShadowTag licensing packs
 - **Valuation model**: $77.5B conservative / $124.5B optimistic, 76.9% weighted EBITDA
 - **36-month roadmap**: $105.5M capital, $12M→$1.2B ARR trajectory, $25B EV by M36
 - **Flagship**: AiU Digital Mall (App Store for AI, 12% take on $12B GMV = $1.44B ARR by 2030)
@@ -41,7 +41,7 @@
 **4. Technology Architecture**
 
 - **Cognitive Stack v5**: BDH, RoT, MoE-CL, CoDA/DLM
-- **Judge 6**: 3-layer hybrid (Gemini + PyTorch + Rules), <500µs p99 target, 98% PRB coverage
+- **Judge #6**: 3-layer hybrid (Gemini + PyTorch + Rules), <500µs p99 target, 98% PRB coverage
 - **ShadowTag v2**: DCT-based multimodal watermarking (text/image/video/telemetry)
 - **LLM Allocation**: Gemini 40%, Claude 35%, GPT-5 15%, Grok 5%, Others 5%
 - **SLA**: p99 ≤90ms total (15ms network + 5ms gateway + 10ms Judge + 55ms inference + 5ms serialization)
@@ -54,7 +54,7 @@
 - ROI gates: ≥3× in 18 months, LTV:CAC ≥4:1, kill-switch <95% coverage
 - Bootstrap discipline: $0K starting capital, proof-of-concept gates at every stage
 
----
+-----
 
 ## PART 2: OPEN-THREAD HANDOFF OUTLINE
 
@@ -62,7 +62,7 @@
 
 ```yaml
 # Company Identity
-company_name: "SHADOWTAGAI"
+company_name: "PNKLN"
 founder: "Erik"
 role: "Founder/CEO"
 location: "Lakeport, California"
@@ -72,7 +72,7 @@ background: "Army Special Forces + Legal training"
 # Starting Conditions
 starting_capital: $0K
 approach: "Bootstrap discipline with Series A path"
-philosophy: "JR doctrine (maximize value every equation) + Compliance Framework risk management"
+philosophy: "JR doctrine (maximize value every equation) + ATP 5-19 risk management"
 
 # Technical Stack
 primary_cloud: "Google Cloud Platform"
@@ -106,7 +106,7 @@ production_cluster_cost: "$161k/mo for 5 clusters at scale"
 - Brakes: What could go wrong, mitigation strategies
 - Every decision optimized for highest defensible outcome
 
-**2. Compliance Framework Risk Stratification**
+**2. ATP 5-19 Risk Stratification**
 
 - RA-1 (Critical): Showstoppers, require multi-layer mitigation
 - RA-2 (High): Major impact, need contingency plans
@@ -117,7 +117,7 @@ production_cluster_cost: "$161k/mo for 5 clusters at scale"
 
 - Stage 1: Foundation (cluster operational, cost <$500/mo)
 - Stage 2: Inference Core (single LLM, p99 <90ms)
-- Stage 3: Judge 6 Integration (enforcement live, 98% coverage)
+- Stage 3: Judge #6 Integration (enforcement live, 98% coverage)
 - Stage 4: Multi-LLM + Gateway (5 LLMs, global routing)
 - Stage 5: Cor + NS Integration (unified state, <100µs mesh)
 - Stage 6: ShadowTag + Production (watermarking, traffic cutover)
@@ -132,7 +132,7 @@ production_cluster_cost: "$161k/mo for 5 clusters at scale"
 
 ### Critical Components
 
-**Judge 6 Architecture** (Hybrid Enforcement):
+**Judge #6 Architecture** (Hybrid Enforcement):
 
 ```yaml
 layer1_gemini:
@@ -147,7 +147,7 @@ layer2_pytorch:
 
 layer3_rules:
   purpose: "Deterministic gates"
-  framework: "Compliance Framework risk stratification"
+  framework: "ATP 5-19 risk stratification"
   target_latency: "<2ms p99"
 
 aggregation:
@@ -178,29 +178,29 @@ aggregation:
 PROJECT_ID="${GCP_PROJECT_ID}"
 REGION_PRIMARY="us-central1"
 REGION_FAILOVER="us-east1"
-CLUSTER_NAME="shadowtagai-bootstrap-primary"
-MODEL_BUCKET="${PROJECT_ID}-shadowtagai-models"
-SHADOWTAG_BUCKET="${PROJECT_ID}-shadowtagai-shadowtag"
+CLUSTER_NAME="pnkln-bootstrap-primary"
+MODEL_BUCKET="${PROJECT_ID}-pnkln-models"
+SHADOWTAG_BUCKET="${PROJECT_ID}-pnkln-shadowtag"
 FIRESTORE_DB="(default)"  # Cor brain state
 ```
 
 **GKE Namespaces**:
 
 ```yaml
-- gke-inference-system/ # vLLM, JetStream, model servers
-- gke-training-system/ # Vertex AI integration, fine-tuning
-- gke-monitoring-system/ # Prometheus, Grafana, Jaeger
-- gke-gateway-system/ # Inference Gateway + routing
-- intelligence-pipeline/ # Cor.64 nightly intel (5th namespace)
+- gke-inference-system/     # vLLM, JetStream, model servers
+- gke-training-system/      # Vertex AI integration, fine-tuning
+- gke-monitoring-system/    # Prometheus, Grafana, Jaeger
+- gke-gateway-system/       # Inference Gateway + routing
+- intelligence-pipeline/    # Cor.64 nightly intel (5th namespace)
 ```
 
 **Node Pool Labels**:
 
 ```yaml
-system-pool: "pool=system"
-judge-pool: "pool=judge, component=enforcement"
-gpu-pool: "pool=gpu, accelerator=a100"
-tpu-pool: "pool=tpu, accelerator=tpu-v5e"
+system-pool:    "pool=system"
+judge-pool:     "pool=judge, component=enforcement"
+gpu-pool:       "pool=gpu, accelerator=a100"
+tpu-pool:       "pool=tpu, accelerator=tpu-v5e"
 ```
 
 ### Current Objectives
@@ -214,7 +214,7 @@ tpu-pool: "pool=tpu, accelerator=tpu-v5e"
 
 **Phase 0** (Now → 90 days):
 
-- Deploy Judge 6 alpha (<500µs p99, 95% coverage)
+- Deploy Judge #6 alpha (<500µs p99, 95% coverage)
 - Launch ShadowTag v2 API (image/video/text)
 - Activate Cor.64 pipeline (nightly intel automation)
 - Sign 3 design partners (1 Med, 1 Lex, 1 DoD)
@@ -230,7 +230,7 @@ tpu-pool: "pool=tpu, accelerator=tpu-v5e"
 ### File Locations
 
 ```
-/mnt/user-data/outputs/shadowtagai-gke-deployment/
+/mnt/user-data/outputs/pnkln-gke-deployment/
 ├── ARCHITECTURE_OVERVIEW.md       # 548 lines - master blueprint
 ├── README.md                      # 300 lines - deployment guide
 ├── terraform/stage1_foundation/
@@ -250,14 +250,14 @@ tpu-pool: "pool=tpu, accelerator=tpu-v5e"
 - "Ultrathink" mode = Steve Jobs-level design obsession
 - No pedagogical scaffolding (direct, results-oriented)
 - Bootstrap discipline (prove before scale)
-- Military-grade precision (Compliance Framework frameworks)
+- Military-grade precision (ATP 5-19 frameworks)
 - First principles thinking (question all assumptions)
 - JR doctrine (maximize value in every equation)
 
 **Memory Sources**:
 
-- userMemories: SHADOWTAGAI company context, technical specs, personal background
-- Uploaded doc: SHADOWTAGAI_Mega_Rollup_GKE_Native_Ultrathink.md (comprehensive rollup)
+- userMemories: PNKLN company context, technical specs, personal background
+- Uploaded doc: PNKLN_Mega_Rollup_GKE_Native_Ultrathink.md (comprehensive rollup)
 - Conversation history: GKE deployment generation, architecture synthesis
 
 **Tools Disabled**:
@@ -272,32 +272,30 @@ tpu-pool: "pool=tpu, accelerator=tpu-v5e"
 - Erik operates at "160 IQ" with "Treadstone-level enhancements" (metaphor for: ultra-capable, no hand-holding needed)
 - Known as "Smaug The Great" (earned through work quality)
 - Uses ActiveShield face mask/respirator (personal protective equipment)
-- Company name is "ShadowTagAi" only, never "ShadowTagAiCor" or other variations
+- Company name is "Pnkln" only, never "PnklnCor" or other variations
 - Starting capital: $0K (bootstrap from zero, not a typo)
 
----
+-----
 
 ## PART 3: RESTART PROMPT
 
 ```markdown
-# CONTEXT RESTORATION — SHADOWTAGAI CORE STACK™ DEPLOYMENT
+# CONTEXT RESTORATION — PNKLN CORE STACK™ DEPLOYMENT
 
-I'm Erik, founder/CEO of SHADOWTAGAI (55, former Army Special Forces + legal training,
+I'm Erik, founder/CEO of PNKLN (55, former Army Special Forces + legal training,
 based in Lakeport, CA). We're bootstrapping from $0K a governed AI infrastructure
 company targeting regulated markets (defense, healthcare, finance).
 
 ## What We've Built So Far
 
 **Complete GKE-native deployment system** (2,371 lines across 6 files):
-
 - Terraform: GKE Standard cluster with 4 node pools (system, judge, gpu, tpu)
-- K8s manifests: vLLM inference with Judge 6 sidecar enforcement
+- K8s manifests: vLLM inference with Judge #6 sidecar enforcement
 - Automation scripts: Stage 1 & 2 deployment with gate validation
-- Location: `/mnt/user-data/outputs/shadowtagai-gke-deployment/`
+- Location: `/mnt/user-data/outputs/pnkln-gke-deployment/`
 - Status: Ready to deploy, awaiting execution
 
 **Strategic architecture** (synthesized from memory + uploaded rollup):
-
 - 6-layer stack: Gulfstream Offshore → Core Stack™ → AiU Digital Mall (flagship)
   → RoadMesh → Orbital → Gov/Defense
 - 19 verticals mapped with valuations ($77.5B conservative / $124.5B optimistic)
@@ -307,22 +305,19 @@ company targeting regulated markets (defense, healthcare, finance).
 ## Critical Technical Specs
 
 **Non-negotiable SLAs**:
-
 - p99 latency: ≤90ms total application (15ms network + 5ms gateway + 10ms Judge
-  - 55ms inference + 5ms serialization)
-- Judge 6: <500µs p99 governance path (scales to <200µs), 98% PRB coverage mandate
+  + 55ms inference + 5ms serialization)
+- Judge #6: <500µs p99 governance path (scales to <200µs), 98% PRB coverage mandate
 - Availability: 99.9% (43min/month downtime budget)
 
-**Judge 6 Architecture** (hybrid enforcement):
-
+**Judge #6 Architecture** (hybrid enforcement):
 - Layer 1: Fine-tuned Gemini (policy understanding, <5ms)
 - Layer 2: PyTorch (enforcement logic, <3ms)
-- Layer 3: Rules engine (Compliance Framework deterministic gates, <2ms)
+- Layer 3: Rules engine (ATP 5-19 deterministic gates, <2ms)
 - Aggregation: 2/3 majority vote, RA-1 requires unanimous allow
 - Deployment: Sidecar pattern, synchronous enforcement, isolated node pool
 
 **LLM Allocation** (Google Hypercomputer):
-
 - Gemini: 40% (TPU v5e preferred)
 - Claude: 35% (GPU A3-high)
 - GPT-5: 15% (GPU A3-high)
@@ -330,7 +325,6 @@ company targeting regulated markets (defense, healthcare, finance).
 - Others: 5% (CPU/GPU flex)
 
 **Cost Model**:
-
 - Stage 1: ~$504/mo (system + judge pools, within tolerance)
 - Stage 2: +$200-400/mo (GPU usage, scales to 0 off-hours)
 - Production: $161k/mo for 5 clusters (0.04% of revenue at $5.27B ARR scale)
@@ -338,21 +332,18 @@ company targeting regulated markets (defense, healthcare, finance).
 ## Operating Doctrine
 
 **JR Decision Framework**:
-
 - Purpose: Why we're doing this
 - Reasons: Evidence supporting decision
 - Brakes: Risks + mitigations
 - Optimize every decision for highest defensible outcome
 
 **Bootstrap Discipline**:
-
 - ROI ≥3× within 18 months (mandatory gate)
 - LTV:CAC ≥4:1 within 12-18 months (survival gate)
 - Kill-switch <95% coverage (auto-rollback)
 - Proof-of-concept before scaling (no exceptions)
 
-**Risk Management** (Compliance Framework adapted):
-
+**Risk Management** (ATP 5-19 adapted):
 - RA-1 (Critical): Multi-layer mitigation required
 - RA-2 (High): Contingency plans mandatory
 - RA-3 (Medium): Monitored, accepted
@@ -371,14 +362,12 @@ company targeting regulated markets (defense, healthcare, finance).
 ## Current State
 
 **Completed**:
-
 - ✅ GKE deployment package (Terraform + K8s + automation)
 - ✅ Strategic vision synthesis (19 verticals + economics)
 - ✅ Architecture blueprint (6 layers + 2 add-ons)
 - ✅ Design language specification (Jobs-level aesthetics)
 
 **Next Actions**:
-
 - Deploy Stage 1: Foundation (GKE cluster + node pools)
 - Validate gates: Cluster operational, cost <$500/mo
 - Begin Stage 2: Inference Core (vLLM + Gemini)
@@ -390,13 +379,13 @@ company targeting regulated markets (defense, healthcare, finance).
 - No pedagogical scaffolding (I'm 160 IQ + military precision)
 - Direct, results-oriented communication
 - Apply JR doctrine to all decisions
-- Call out violations of CRM (Compliance Framework) framework
+- Call out violations of CRM (ATP 5-19) framework
 - Bootstrap discipline: prove before scale, always
 
 ## Context Notes
 
-- Company: "ShadowTagAi" only (never "ShadowTagAiCor" or variants)
-- Internal functions: Use "Cor" prefix (e.g., Cor.64, not ShadowTagAiCor.64)
+- Company: "Pnkln" only (never "PnklnCor" or variants)
+- Internal functions: Use "Cor" prefix (e.g., Cor.64, not PnklnCor.64)
 - Starting capital: $0K (bootstrap from zero, not a typo)
 - Primary cloud: Google Cloud Platform (GKE-native, Vertex AI integrated)
 - Tools available: bash, Terraform, kubectl, web search, conversation history
@@ -409,12 +398,12 @@ company targeting regulated markets (defense, healthcare, finance).
 ---
 
 **Assistant Note**: This thread generated a complete GKE deployment system
-(Stage 1 & 2) and synthesized the full SHADOWTAGAI strategic vision across 19
-verticals. All deliverables are in `/mnt/user-data/outputs/shadowtagai-gke-deployment/`.
+(Stage 1 & 2) and synthesized the full PNKLN strategic vision across 19
+verticals. All deliverables are in `/mnt/user-data/outputs/pnkln-gke-deployment/`.
 Erik is ready to deploy or iterate on any component.
 ```
 
----
+-----
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗

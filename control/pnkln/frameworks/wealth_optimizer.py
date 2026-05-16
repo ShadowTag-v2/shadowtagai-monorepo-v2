@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 WEALTH OPTIMIZER - Jobs-Obsessed Financial Engineering
 =======================================================
@@ -47,13 +46,13 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class WealthLens(StrEnum):
+class WealthLens(str, Enum):
     """The 3 wealth analysis lenses"""
 
     LEAKS = "leaks"  # Waste detection
@@ -61,7 +60,7 @@ class WealthLens(StrEnum):
     LEVERAGE = "leverage"  # Compounding effects
 
 
-class LeakSeverity(StrEnum):
+class LeakSeverity(str, Enum):
     """Severity of detected leak"""
 
     CRITICAL = "critical"  # >20% waste
@@ -370,10 +369,7 @@ class WealthOptimizer:
                 cost_per_month=duplicate_cost,
                 percentage_of_total=0.10,
                 description=f"Estimated {estimated_duplicates} duplicate items per day. No deduplication layer implemented.",
-                evidence={
-                    "estimated_duplicates": estimated_duplicates,
-                    "total_items": result.total_items,
-                },
+                evidence={"estimated_duplicates": estimated_duplicates, "total_items": result.total_items},
             )
             leaks.append(leak)
 
@@ -405,10 +401,7 @@ class WealthOptimizer:
                     "Monitor Tier 1 ratio improvement over 2 weeks",
                     "Fully deprecate sources with <20% Tier 1 ratio after validation",
                 ],
-                risks=[
-                    "May lose unique insights from deprecated sources",
-                    "Top sources might not scale linearly",
-                ],
+                risks=["May lose unique insights from deprecated sources", "Top sources might not scale linearly"],
             )
             redesigns.append(redesign)
 
@@ -455,10 +448,7 @@ class WealthOptimizer:
                     "Offer custom source integrations ($2500 setup fee)",
                     "Upsell to existing customers with high Tier 1 usage",
                 ],
-                risks=[
-                    "May cannibalize standard tier revenue",
-                    "Higher support burden for SLA guarantees",
-                ],
+                risks=["May cannibalize standard tier revenue", "Higher support burden for SLA guarantees"],
             )
             redesigns.append(redesign)
 

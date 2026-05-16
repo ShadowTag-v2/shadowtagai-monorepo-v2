@@ -1,14 +1,14 @@
-import { describe, expect, test } from 'bun:test';
-import { Direction, SnakeGame } from './SnakeGame.js';
+import { describe, expect, test } from "bun:test";
+import { Direction, SnakeGame } from "./SnakeGame.js";
 
-describe('SnakeGame', () => {
-  test('constructor should throw for invalid dimensions', () => {
+describe("SnakeGame", () => {
+  test("constructor should throw for invalid dimensions", () => {
     expect(() => new SnakeGame(0, 0)).toThrow();
     expect(() => new SnakeGame(-1, 10)).toThrow();
     expect(() => new SnakeGame(5, 5)).toThrow(); // Too small for initial snake
   });
 
-  test('initial snake should be within bounds', () => {
+  test("initial snake should be within bounds", () => {
     const game = new SnakeGame(10, 10);
     const snake = game.getSnake();
     expect(snake.length).toBe(3);
@@ -20,12 +20,12 @@ describe('SnakeGame', () => {
     });
   });
 
-  test('generateFood should not hang on full board', () => {
+  test("generateFood should not hang on full board", () => {
     const game = new SnakeGame(10, 10);
     expect(game.getFood()).toBeDefined();
   });
 
-  test('generateFood should return -1, -1 if no space is left', () => {
+  test("generateFood should return -1, -1 if no space is left", () => {
     // This is hard to test without reflection or a very small board
     // Let's use the smallest possible board
     const game = new SnakeGame(10, 10);

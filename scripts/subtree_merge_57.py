@@ -1,26 +1,17 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
+from collections.abc import Iterable
 from pathlib import Path
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from collections.abc import Iterable
-
-DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/shadowtag-omega-v4-stack")
-DEFAULT_DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
-EXCLUDE_DIRS = {
-    ".git",
-    "__pycache__",
-    ".pytest_cache",
-    ".mypy_cache",
-    ".ruff_cache",
-    "node_modules",
-    ".DS_Store",
-}
+DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/aiyou-stack")
+DEFAULT_DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/aiyou_stack")
+EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "node_modules", ".DS_Store"}
 
 
 def iter_sources(root: Path) -> Iterable[Path]:
@@ -69,16 +60,14 @@ def main() -> int:
     dst_root = Path(args.dst_root).expanduser().resolve()
 
     if not src_root.exists():
-        msg = f"missing src root: {src_root}"
-        raise SystemExit(msg)
+        raise SystemExit(f"missing src root: {src_root}")
 
     results = []
 
     if args.one:
         src = src_root / args.one
         if not src.exists():
-            msg = f"missing requested source: {src}"
-            raise SystemExit(msg)
+            raise SystemExit(f"missing requested source: {src}")
         dst = dst_root / args.one
         results.append(copy_tree(src, dst))
     else:
@@ -87,6 +76,18 @@ def main() -> int:
             if src.is_dir():
                 results.append(copy_tree(src, dst))
 
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "src_root": str(src_root),
+                "dst_root": str(dst_root),
+                "merged_count": len(results),
+                "results": results,
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

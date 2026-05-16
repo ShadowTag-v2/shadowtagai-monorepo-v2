@@ -1,0 +1,23 @@
+{
+  "router": {
+    "model": "gemini-3.1-flash-exp",
+    "temperature": 0.7,
+    "max_iterations": 5
+  },
+  "workers": {
+    "coder": {
+      "enabled": true,
+      "timeout": 300
+    },
+    "reviewer": {
+      "enabled": true,
+      "timeout": 120
+    },
+    "researcher": {
+      "enabled": true,
+      "timeout": 180
+    }
+  },
+  "parallel_execution": false,
+  "log_level": "INFO"
+}

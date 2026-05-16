@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_bridge/bounded_set.py
+# hypothesis_version: 6.151.5
+
+['_capacity', '_ring', '_set', '_write_idx']

@@ -1,7 +1,7 @@
 # ShadowTag Laws (V7)
 
 ## 1. The Prime Directive
-- **Sovereignty:** All code, data, and compute must remain within the ShadowTag perimeter (Omega/ShadowTag-v2). No external leaks.
+- **Sovereignty:** All code, data, and compute must remain within the ShadowTag perimeter (Omega/AiYou). No external leaks.
 
 ## 2. The Boy Scout Rule (Ultrathink)
 - Leave every file cleaner than you found it.

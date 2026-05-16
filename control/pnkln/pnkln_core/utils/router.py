@@ -1,6 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-
 def route_task(task_description: str) -> str:
     """Routes a task description to the appropriate agent or category.
 

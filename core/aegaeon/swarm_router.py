@@ -1,18 +1,21 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+core/aegaeon/swarm_router.py
+7-instance Gemini Swarm Router — token-level auto-scaling (Aegaeon decode disaggregation).
 
-"""swarm_router.py — Aegaeon 7-Instance Gemini Swarm Router
+Architecture:
+  Instances 1-5  (Fast Path)  — extraction, PR formatting, lint checks
+  Instances 6-7  (Heavy Lift) — architectural anomaly detection, escalation
 
-Routes inference requests through a shared Gemini Context Cache.
-Two tiers:
-  - Fast Path (Semaphore 5): extraction, PR formatting, simple Q&A
-  - Heavy Lift (Semaphore 2): architectural anomaly detection, escalation
-
-All instances share one cached_content=cache_name for ~90% cost reduction (Gemini 2.5+ pricing).
+All instances share a single Context Cache ID → zero redundant prefill cost.
+Only the unique delta (diff / query, typically <1 000 tokens) is billed at full rate.
 
 Usage:
-    from core.aegaeon.swarm_router import SwarmRouter
-    router = SwarmRouter()
-    result = await router.route("fast", "Summarize the Cor_Claude_Code_6 pipeline")
+  router = SwarmRouter()
+  results = await router.dispatch([
+      SwarmTask("format_pr", "diff: ...", tier=SwarmTier.FAST),
+      SwarmTask("arch_review", "module: ...", tier=SwarmTier.HEAVY),
+  ])
 """
 
 from __future__ import annotations
@@ -20,92 +23,98 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any
 
-from dotenv import load_dotenv
+from .context_cache import AegaeonContextCache
 
-load_dotenv()
+logger = logging.getLogger("aegaeon.swarm_router")
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [SWARM] %(message)s")
-logger = logging.getLogger(__name__)
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
+FAST_PATH_SLOTS = 5
+HEAVY_LIFT_SLOTS = 2
+TOTAL_SLOTS = FAST_PATH_SLOTS + HEAVY_LIFT_SLOTS
 
-# Concurrency limits
-FAST_PATH_CONCURRENCY = 5
-HEAVY_LIFT_CONCURRENCY = 2
+
+class SwarmTier(str, Enum):
+    FAST = "fast"  # instances 1-5: high-speed extraction / PR formatting
+    HEAVY = "heavy"  # instances 6-7: deep architectural / security analysis
+
+
+@dataclass
+class SwarmTask:
+    name: str
+    prompt: str
+    tier: SwarmTier = SwarmTier.FAST
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class SwarmResult:
+    task_name: str
+    tier: SwarmTier
+    text: str
+    error: str | None = None
 
 
 class SwarmRouter:
-    """Async Gemini swarm router with shared context cache.
+    """Routes tasks to a pooled set of gemini-3.1-flash-lite-preview instances."""
 
-    Args:
-        cache_name: Gemini cached content resource name.
-        model: Model ID for generation.
-    """
-
-    def __init__(
-        self,
-        cache_name: str | None = None,
-        model: str = "models/gemini-3.1-flash-lite-preview",
-    ):
-        self._cache_name = cache_name
-        self._model = model
-        self._fast_sem = asyncio.Semaphore(FAST_PATH_CONCURRENCY)
-        self._heavy_sem = asyncio.Semaphore(HEAVY_LIFT_CONCURRENCY)
-        self._client = None
-
-    def _get_client(self):
-        """Lazy-load Gemini client."""
-        if self._client is None:
+    def __init__(self, cache: AegaeonContextCache | None = None) -> None:
+        try:
             from google import genai
 
-            api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-            if not api_key:
-                raise RuntimeError("No GEMINI_API_KEY or GOOGLE_API_KEY in environment")
-            self._client = genai.Client(api_key=api_key)
-        return self._client
+            self._client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        except ImportError as exc:
+            raise RuntimeError("Install google-genai: pip install google-genai") from exc
 
-    async def route(self, tier: str, prompt: str) -> str:
-        """Route a prompt through the appropriate tier.
+        self._cache = cache or AegaeonContextCache()
+        self._fast_sem = asyncio.Semaphore(FAST_PATH_SLOTS)
+        self._heavy_sem = asyncio.Semaphore(HEAVY_LIFT_SLOTS)
 
-        Args:
-            tier: "fast" or "heavy"
-            prompt: User prompt text.
+    # ── Public API ──────────────────────────────────────────────────────────
 
-        Returns:
-            Generated response text.
-        """
-        sem = self._fast_sem if tier == "fast" else self._heavy_sem
-        tier_label = "FAST" if tier == "fast" else "HEAVY"
+    async def dispatch(self, tasks: list[SwarmTask]) -> list[SwarmResult]:
+        """Dispatch all tasks concurrently against the shared context slab."""
+        cache_name = self._cache.get_or_build()
+        logger.info(
+            "Dispatching %d tasks (cache=%s) — %d fast / %d heavy",
+            len(tasks),
+            cache_name,
+            sum(1 for t in tasks if t.tier == SwarmTier.FAST),
+            sum(1 for t in tasks if t.tier == SwarmTier.HEAVY),
+        )
+        coros = [self._run_task(t, cache_name) for t in tasks]
+        return list(await asyncio.gather(*coros))
 
+    async def run_one(self, task: SwarmTask) -> SwarmResult:
+        cache_name = self._cache.get_or_build()
+        return await self._run_task(task, cache_name)
+
+    # ── Private ─────────────────────────────────────────────────────────────
+
+    async def _run_task(self, task: SwarmTask, cache_name: str) -> SwarmResult:
+        sem = self._fast_sem if task.tier == SwarmTier.FAST else self._heavy_sem
         async with sem:
-            logger.info("[%s] Processing: %s...", tier_label, prompt[:60])
-            return await asyncio.to_thread(self._generate, prompt)
+            return await asyncio.to_thread(self._generate, task, cache_name)
 
-    def _generate(self, prompt: str) -> str:
-        """Synchronous generation call (run in thread)."""
-        client = self._get_client()
-
-        generate_kwargs: dict = {
-            "model": self._model,
-            "contents": prompt,
-        }
-
-        # Attach cached context if available
-        if self._cache_name:
-            generate_kwargs["config"] = {"cached_content": self._cache_name}
-
+    def _generate(self, task: SwarmTask, cache_name: str) -> SwarmResult:
         try:
-            response = client.models.generate_content(**generate_kwargs)
-            return response.text
-        except Exception as e:
-            logger.error("Generation failed: %s", e)
-            return f"[ERROR] {e}"
+            from google.genai import types
 
-    async def batch_fast(self, prompts: list[str]) -> list[str]:
-        """Run multiple prompts through the fast path concurrently."""
-        tasks = [self.route("fast", p) for p in prompts]
-        return await asyncio.gather(*tasks)
-
-    async def batch_heavy(self, prompts: list[str]) -> list[str]:
-        """Run multiple prompts through the heavy lift path."""
-        tasks = [self.route("heavy", p) for p in prompts]
-        return await asyncio.gather(*tasks)
+            response = self._client.models.generate_content(
+                model=MODEL,
+                contents=task.prompt,
+                config=types.GenerateContentConfig(
+                    cached_content=cache_name,
+                    temperature=0.2 if task.tier == SwarmTier.FAST else 0.4,
+                    max_output_tokens=2048 if task.tier == SwarmTier.FAST else 4096,
+                ),
+            )
+            text = response.text or ""
+            logger.debug("[%s/%s] → %d chars", task.tier, task.name, len(text))
+            return SwarmResult(task_name=task.name, tier=task.tier, text=text)
+        except Exception as exc:
+            logger.error("[%s/%s] failed: %s", task.tier, task.name, exc)
+            return SwarmResult(task_name=task.name, tier=task.tier, text="", error=str(exc))

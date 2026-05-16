@@ -1,19 +1,16 @@
 # ADR 001: DeepSeek OCR (3B) Evaluation - Decision to Defer
 
 ## Status
-
 **DEFERRED** until scale justifies custom OCR models
 
 ## Date
-
 2025-11-07
 
 ## Context
 
-Evaluated DeepSeek OCR (3B) as a potential component for the ShadowTagAi Core Stack, specifically for document processing capabilities within the AiURCM compliance automation pipeline.
+Evaluated DeepSeek OCR (3B) as a potential component for the Pnkln Core Stack, specifically for document processing capabilities within the AiURCM compliance automation pipeline.
 
 ### Technology Overview
-
 - **Model**: DeepSeek OCR (3B parameters)
 - **Capabilities**: Lightweight vision-language model for optical character recognition
 - **Key Features**:
@@ -27,7 +24,6 @@ Evaluated DeepSeek OCR (3B) as a potential component for the ShadowTagAi Core St
 Evaluated four potential integration vectors:
 
 #### 1. AiURCM Compliance Automation (65% ROI probability)
-
 - **Use Case**: Ingest legacy compliance documents at scale
 - **Markets**: Pharma (FDA), Finance (SEC), Defense (contract T&Cs)
 - **Revenue Hook**: "Cut compliance review time 80%"
@@ -35,21 +31,18 @@ Evaluated four potential integration vectors:
 - **Alternative**: Google Document AI (compliance-ready, native GCP integration)
 
 #### 2. ShadowTag Video Pipeline (45% ROI probability)
-
 - **Use Case**: Extract text from watermarked video frames
 - **Revenue Hook**: Enhanced watermark enforcement for enterprise customers
 - **Blocker**: DCT watermarks are frequency-domain, not text-based. Wrong tool for core use case.
 - **Potential**: Could detect visible overlay text ("DRAFT", "CONFIDENTIAL")
 
 #### 3. Digital Freeway Edge OCR (25% ROI probability)
-
 - **Use Case**: Vehicle dashcam → road sign reading → routing
 - **Revenue Hook**: Premium navigation accuracy
 - **Blocker**: Year 10+ roadmap, not MVP. Tesla already has superior in-vehicle vision models.
 
 #### 4. Internal Cost Optimization (10% ROI probability)
-
-- **Use Case**: ShadowTagAi internal document processing
+- **Use Case**: Pnkln internal document processing
 - **Revenue Hook**: None. Cost avoidance only.
 - **Blocker**: Premature optimization for bootstrapped startup.
 
@@ -73,7 +66,7 @@ Evaluated four potential integration vectors:
    - ROI: **NEGATIVE** until Year 2+
 
 5. **Critical Path Conflict**: Distracts from actual revenue-generating work:
-   - Judge 6 deployment on GKE
+   - Judge #6 deployment on GKE
    - LangGraph orchestration
    - NS mesh architecture
    - Revenue model validation
@@ -81,20 +74,17 @@ Evaluated four potential integration vectors:
 ## Consequences
 
 ### Positive
-
 - Maintain focus on core value proposition
 - Avoid premature optimization
 - Use proven, compliance-ready tooling
 - Faster time-to-market for MVP
 
 ### Negative
-
 - Miss potential cost optimization opportunity (minimal at current scale)
 - Dependency on Google Document AI pricing
 - Less technical differentiation in OCR pipeline
 
 ### Neutral
-
 - Archive reference architecture for future use
 - Establish pattern for technology evaluation
 - Document decision rationale for investors/team
@@ -112,7 +102,7 @@ Re-evaluate DeepSeek OCR (or similar lightweight vision models) when:
 
 ```bash
 # Archive reference
-mkdir -p ~/shadowtagai/research/edge-ai-patterns
+mkdir -p ~/pnkln/research/edge-ai-patterns
 # Store DeepSeek notebook link as reference
 
 # Document in research log
@@ -130,13 +120,11 @@ echo "Revisit: When doc processing >$50K/year at Google pricing" >> docs/researc
 ## Lessons Learned
 
 **The Steve Jobs Question**: "Does this make the product 10x better for customers?"
-
-- **Answer**: No. Customers buy governance, not OCR. OCR is a feature. Judge 6 is the product.
+- **Answer**: No. Customers buy governance, not OCR. OCR is a feature. Judge #6 is the product.
 
 **Cool tech doesn't pay the bills. Customers solving urgent problems pay the bills.**
 
 This decision establishes a pattern:
-
 1. Evaluate technology against revenue pathways
 2. Assess opportunity cost vs. critical path
 3. Choose "good enough" proven solutions for MVP
@@ -145,4 +133,4 @@ This decision establishes a pattern:
 
 ---
 
-**Next Action**: Focus on GKE inference architecture for Judge 6 deployment.
+**Next Action**: Focus on GKE inference architecture for Judge #6 deployment.

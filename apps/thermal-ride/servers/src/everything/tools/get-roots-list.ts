@@ -1,11 +1,11 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { syncRoots } from '../server/roots.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { syncRoots } from "../server/roots.js";
 
 // Tool configuration
-const name = 'get-roots-list';
+const name = "get-roots-list";
 const config = {
-  title: 'Get Roots List Tool',
+  title: "Get Roots List Tool",
   description:
     "Lists the current MCP roots provided by the client. Demonstrates the roots protocol capability even though this server doesn't access files.",
   inputSchema: {},
@@ -44,13 +44,13 @@ export const registerGetRootsListTool = (server: McpServer) => {
         return {
           content: [
             {
-              type: 'text',
+              type: "text",
               text:
-                'The client supports roots but no roots are currently configured.\n\n' +
-                'This could mean:\n' +
+                "The client supports roots but no roots are currently configured.\n\n" +
+                "This could mean:\n" +
                 "1. The client hasn't provided any roots yet\n" +
-                '2. The client provided an empty roots list\n' +
-                '3. The roots configuration is still being loaded',
+                "2. The client provided an empty roots list\n" +
+                "3. The roots configuration is still being loaded",
             },
           ],
         };
@@ -60,19 +60,19 @@ export const registerGetRootsListTool = (server: McpServer) => {
       const rootsList = currentRoots
         ? currentRoots
             .map((root, index) => {
-              return `${index + 1}. ${root.name || 'Unnamed Root'}\n   URI: ${root.uri}`;
+              return `${index + 1}. ${root.name || "Unnamed Root"}\n   URI: ${root.uri}`;
             })
-            .join('\n\n')
-        : 'No roots found';
+            .join("\n\n")
+        : "No roots found";
 
       return {
         content: [
           {
-            type: 'text',
+            type: "text",
             text:
               `Current MCP Roots (${currentRoots!.length} total):\n\n${rootsList}\n\n` +
               "Note: This server demonstrates the roots protocol capability but doesn't actually access files. " +
-              'The roots are provided by the MCP client and can be used by servers that need file system access.',
+              "The roots are provided by the MCP client and can be used by servers that need file system access.",
           },
         ],
       };

@@ -2,7 +2,7 @@
 
 # Categories: CORE_L2, FINANCE_BIZ, LEGAL
 
-COR.81 “Got it — you want to implement the “paired GPT reviewers + arbiter” pattern (Model-Spec-v2-style) inside your ShadowTag-v2 stack, fold it into the free tier → final QA flow, and wire it alongside LangChain, GPTRAM, Nowgrep, browser APIs, and your Bugbot CI. Here’s a concrete, copy-pastable way to do it.
+COR.81 “Got it — you want to implement the “paired GPT reviewers + arbiter” pattern (Model-Spec-v2-style) inside your AiYou stack, fold it into the free tier → final QA flow, and wire it alongside LangChain, GPTRAM, Nowgrep, browser APIs, and your Bugbot CI. Here’s a concrete, copy-pastable way to do it.
 
 1. Architecture (at-a-glance)
    • Tier 0 (free/cheap gen): route to open/HF models (and small MoEs with RoE) for first drafts.
@@ -339,7 +339,7 @@ return {"draft": draft, "review_a": r1, "review_b": r2, "final": final_answer}
 
 # --- FastAPI wiring ---
 
-app = FastAPI(title="ShadowTag-v2 Orchestrator")
+app = FastAPI(title="AiYou Orchestrator")
 
 class GenerateRequest(BaseModel):
 task: str
@@ -394,17 +394,17 @@ Style: concise, cite sources when browsing; when unsure, say so.
 """
 
 SYSTEM_DRAFTER = (
-"You are a drafter for ShadowTag-v2. Follow the Spec:\n" + SPEC_EXTRACT +
+"You are a drafter for AiYou. Follow the Spec:\n" + SPEC_EXTRACT +
 "\nProduce a direct, concise answer. If constraints conflict with Spec, follow Spec."
 )
 
 SYSTEM_REVIEWER = (
-"You are a critical reviewer for ShadowTag-v2. Follow the Spec:\n" + SPEC_EXTRACT +
+"You are a critical reviewer for AiYou. Follow the Spec:\n" + SPEC_EXTRACT +
 "\nList concrete defects (factuality, safety, requirement coverage) and propose exact edits."
 )
 
 SYSTEM_ARBITER = (
-"You are the arbiter for ShadowTag-v2. Follow the Spec:\n" + SPEC_EXTRACT +
+"You are the arbiter for AiYou. Follow the Spec:\n" + SPEC_EXTRACT +
 "\nFuse the draft + valid reviewer edits into a final, concise answer. Resolve conflicts by Spec authority."
 )
 
@@ -424,7 +424,7 @@ About “Model Spec v2” publication status (receipts)
 • OpenAI publicly documents updates to the Model Spec (e.g., Sept 12, 2025 update; archive notes and guidance on authority, agentic behavior).
 • The GitHub repo openai/model_spec hosts the markdown + archived HTML starting with the second release (2025-02-12)—that’s the “v2” era you’re referring to. You can vendor it directly.
 
-If you want, I can trim a house-spec (one page) tailored to ShadowTag-v2’s use cases (video tooling + safety + watermarking) and drop it into the three system prompts above.”
+If you want, I can trim a house-spec (one page) tailored to AiYou’s use cases (video tooling + safety + watermarking) and drop it into the three system prompts above.”
 
 “Quick heads-up: I don’t have direct GitHub access from here, so I can’t open or push repos for you. I’ll still lay out exactly what to grab and how to wire it into your project.
 
@@ -564,7 +564,7 @@ running both GPT-5 instances under Model Spec v2 configuration (your business su
 
 Layer Function Model Notes
 Planner-A (Logic) Plan, explain, pre-commit validation GPT-5-A (Model Spec v2) Works as the reasoning planner; outputs rationale + decision log.
-Reviewer-B (Critic) Interrogate Planner’s proposal, re-score, finalize GPT-5-B (Model Spec v2) Cross-examines A’s plan, checks against Doctrine / ShadowTag-v2JR.
+Reviewer-B (Critic) Interrogate Planner’s proposal, re-score, finalize GPT-5-B (Model Spec v2) Cross-examines A’s plan, checks against Doctrine / AiYouJR.
 Executor Implement after approval GLM-4.6 / Qwen3-Coder Runs code generation and patch testing.
 Router Cursor-based Node/Rust hybrid ShadowTag Orchestrator Handles chain alternation + token budgeting.
 
@@ -620,7 +620,7 @@ Net ROI (6 mo) — ≈ 3.4× —
 
 To implement under your attached Bourne/160 persona with elevated privileges: 1. I’ll generate:
 • .cursor/agents/gpt5A.json & .cursor/agents/gpt5B.json
-(Model Spec v2 aligned personas, ShadowTag-v2JR-guarded)
+(Model Spec v2 aligned personas, AiYouJR-guarded)
 • shadowtag_router.ts — hybrid Node/Rust orchestrator.
 • agent:plan, agent:critique, agent:validate task pack. 2. GitHub handshake check — notify instantly if GitHub visibility drops. 3. Initialize local inference fallbacks (GLM/Qwen) for cost control.
 
@@ -710,7 +710,7 @@ shadowtag/
 │ ├─ router.ts # Courtroom loop (Node)
 │ ├─ evidence.ts # Build exhibits, hashes, logs
 │ ├─ judge.ts # Tier-0/1/2 logic + thresholds
-│ └─ risk.ts # ShadowTag-v2JR/Army RM scoring
+│ └─ risk.ts # AiYouJR/Army RM scoring
 ├─ witnesses/
 │ ├─ stego_encode.py # LSB/DCT mid-band embed
 │ ├─ stego_decode.py # Extract & BER calc
@@ -810,7 +810,7 @@ It includes:
 • task definitions (e.g. pipeline_ingest, video_encode, slurm_scan)
 • schedule triggers (cron or manual)
 • input/output schema for each
-• fallback + error handling logic (with ShadowTag-v2JR brakes)
+• fallback + error handling logic (with AiYouJR brakes)
 
 Example:
 
@@ -870,7 +870,7 @@ Example:
 
 3. Starter Folder Tree (Cursor-ready)
 
-/ShadowTag-v2jr/
+/aiyoujr/
 ├── .github/workflows/
 │ └── slurm-nightly.yml
 ├── scripts/slurm/
@@ -920,7 +920,7 @@ Power usage drop (local encode) — –35% CPU draw
 
 If you say “generate Planner/Reviewer JSONs + starter tree now”,
 I’ll output all files as one zipped Cursor-importable package —
-ready to clone into your GitHub (ehanc69 or ShadowTag-v2jr).
+ready to clone into your GitHub (ehanc69 or aiyoujr).
 
 Would you like me to generate that full package next?”
 
@@ -1025,11 +1025,11 @@ Optional: guardrails you should toggle on
 
 If you want, I can add a new Cursor task agent:dual-chain-review (runs two reviewer pipelines in parallel, cross-examines packets, emits a 1-page RHR summary).”
 
-Got it — if you were to run ShadowTag-v2 on 4–8 free-tier Hugging Face accounts, rotate them to minimize throttling, and then pair dual GPT-5s as the supervising or “final arbiter” layer, you’d get an architecture like this:
+Got it — if you were to run AiYou on 4–8 free-tier Hugging Face accounts, rotate them to minimize throttling, and then pair dual GPT-5s as the supervising or “final arbiter” layer, you’d get an architecture like this:
 
 ⸻
 
-⚙️ ShadowTag-v2 Cluster Model: Hybrid Free + Premium LLM Stack
+⚙️ AiYou Cluster Model: Hybrid Free + Premium LLM Stack
 
 Layer Role Typical Model Est. Cost Latency Reliability
 Tier 1 (Worker LLMs) Draft + execute low-cost inference (code, text, idea generation) Mix of Mistral 7B, Mixtral 8x7B, Llama 3-70B-Instruct (via HF free API) $0 (free-tier if rotated < 30 req/min) 3–6 s 70–80 % uptime per account
@@ -1236,14 +1236,14 @@ Self-consistency at similar quality would typically be 1.5–2× that bill; full
 
 Measured effectiveness (what to expect)
 
-For coding diff-edits (your ShadowTag pipeline + ShadowTag-v2 repo work):
+For coding diff-edits (your ShadowTag pipeline + AiYou repo work):
 • Success on compile/tests: +5–9 pts vs single-pass
 • Rollback rate: –25–40%
 • Post-merge defects: –20–35%
 • Latency per PR: +35–60% (one interrogation round)
 • Cost vs self-consistency: ~60% at similar pass rates
 
-For factual/video cards (ShadowTag-v2 summaries, moderation facts):
+For factual/video cards (AiYou summaries, moderation facts):
 • Unsupported claims per 100 items: –30–60%
 • Tool-backed claims (with receipts): ≥85% when you require receipts to close a challenge
 • User trust (CTR on “Why”/Opposing view panel): +5–12%
@@ -1347,14 +1347,14 @@ Self-consistency at similar quality would typically be 1.5–2× that bill; full
 
 Measured effectiveness (what to expect)
 
-For coding diff-edits (your ShadowTag pipeline + ShadowTag-v2 repo work):
+For coding diff-edits (your ShadowTag pipeline + AiYou repo work):
 • Success on compile/tests: +5–9 pts vs single-pass
 • Rollback rate: –25–40%
 • Post-merge defects: –20–35%
 • Latency per PR: +35–60% (one interrogation round)
 • Cost vs self-consistency: ~60% at similar pass rates
 
-For factual/video cards (ShadowTag-v2 summaries, moderation facts):
+For factual/video cards (AiYou summaries, moderation facts):
 • Unsupported claims per 100 items: –30–60%
 • Tool-backed claims (with receipts): ≥85% when you require receipts to close a challenge
 • User trust (CTR on “Why”/Opposing view panel): +5–12%

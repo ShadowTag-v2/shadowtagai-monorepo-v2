@@ -21,7 +21,6 @@ Currently, the API does not require authentication. In production, implement app
 Check service health status.
 
 **Response:**
-
 ```json
 {
   "status": "healthy"
@@ -37,7 +36,6 @@ Check service health status.
 Create a new checkpoint.
 
 **Request Body:**
-
 ```json
 {
   "session_id": "string",
@@ -49,7 +47,6 @@ Create a new checkpoint.
 ```
 
 **Response:** `201 Created`
-
 ```json
 {
   "id": "uuid",
@@ -67,7 +64,6 @@ Create a new checkpoint.
 ```
 
 **Example:**
-
 ```bash
 curl -X POST http://localhost:8000/api/v1/checkpoints \
   -H "Content-Type: application/json" \
@@ -86,11 +82,9 @@ curl -X POST http://localhost:8000/api/v1/checkpoints \
 Get checkpoint details by ID.
 
 **Parameters:**
-
 - `checkpoint_id` (path) - Checkpoint identifier
 
 **Response:** `200 OK`
-
 ```json
 {
   "id": "uuid",
@@ -108,11 +102,9 @@ Get checkpoint details by ID.
 ```
 
 **Errors:**
-
 - `404 Not Found` - Checkpoint not found
 
 **Example:**
-
 ```bash
 curl http://localhost:8000/api/v1/checkpoints/{checkpoint_id}
 ```
@@ -124,13 +116,11 @@ curl http://localhost:8000/api/v1/checkpoints/{checkpoint_id}
 List all checkpoints for a session.
 
 **Parameters:**
-
 - `session_id` (path) - Session identifier
 - `limit` (query, optional) - Maximum results (default: 100)
 - `offset` (query, optional) - Results to skip (default: 0)
 
 **Response:** `200 OK`
-
 ```json
 {
   "checkpoints": [
@@ -154,7 +144,6 @@ List all checkpoints for a session.
 ```
 
 **Example:**
-
 ```bash
 curl "http://localhost:8000/api/v1/checkpoints/sessions/session_123?limit=10&offset=0"
 ```
@@ -166,11 +155,9 @@ curl "http://localhost:8000/api/v1/checkpoints/sessions/session_123?limit=10&off
 Restore a checkpoint.
 
 **Parameters:**
-
 - `checkpoint_id` (path) - Checkpoint identifier
 
 **Request Body:**
-
 ```json
 {
   "restore_code": true,
@@ -179,7 +166,6 @@ Restore a checkpoint.
 ```
 
 **Response:** `200 OK`
-
 ```json
 {
   "id": "uuid",
@@ -191,12 +177,10 @@ Restore a checkpoint.
 ```
 
 **Errors:**
-
 - `404 Not Found` - Checkpoint not found or expired
 - `500 Internal Server Error` - Restore failed
 
 **Example:**
-
 ```bash
 curl -X POST http://localhost:8000/api/v1/checkpoints/{checkpoint_id}/restore \
   -H "Content-Type: application/json" \
@@ -210,11 +194,9 @@ curl -X POST http://localhost:8000/api/v1/checkpoints/{checkpoint_id}/restore \
 Get all file snapshots for a checkpoint.
 
 **Parameters:**
-
 - `checkpoint_id` (path) - Checkpoint identifier
 
 **Response:** `200 OK`
-
 ```json
 [
   {
@@ -230,7 +212,6 @@ Get all file snapshots for a checkpoint.
 ```
 
 **Example:**
-
 ```bash
 curl http://localhost:8000/api/v1/checkpoints/{checkpoint_id}/files
 ```
@@ -242,17 +223,14 @@ curl http://localhost:8000/api/v1/checkpoints/{checkpoint_id}/files
 Delete a checkpoint.
 
 **Parameters:**
-
 - `checkpoint_id` (path) - Checkpoint identifier
 
 **Response:** `204 No Content`
 
 **Errors:**
-
 - `404 Not Found` - Checkpoint not found
 
 **Example:**
-
 ```bash
 curl -X DELETE http://localhost:8000/api/v1/checkpoints/{checkpoint_id}
 ```
@@ -264,11 +242,9 @@ curl -X DELETE http://localhost:8000/api/v1/checkpoints/{checkpoint_id}
 Get checkpoint statistics for a session.
 
 **Parameters:**
-
 - `session_id` (path) - Session identifier
 
 **Response:** `200 OK`
-
 ```json
 {
   "session_id": "session_123",
@@ -281,7 +257,6 @@ Get checkpoint statistics for a session.
 ```
 
 **Example:**
-
 ```bash
 curl http://localhost:8000/api/v1/checkpoints/sessions/session_123/stats
 ```
@@ -293,7 +268,6 @@ curl http://localhost:8000/api/v1/checkpoints/sessions/session_123/stats
 Clean up expired checkpoints.
 
 **Response:** `200 OK`
-
 ```json
 {
   "message": "Cleaned up 5 expired checkpoints",
@@ -302,7 +276,6 @@ Clean up expired checkpoints.
 ```
 
 **Example:**
-
 ```bash
 curl -X POST http://localhost:8000/api/v1/checkpoints/cleanup
 ```
@@ -376,7 +349,6 @@ List endpoints support pagination:
 - `offset` - Number of results to skip (default: 0)
 
 Example:
-
 ```bash
 curl "http://localhost:8000/api/v1/checkpoints/sessions/session_123?limit=20&offset=40"
 ```

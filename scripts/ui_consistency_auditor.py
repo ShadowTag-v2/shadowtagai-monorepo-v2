@@ -20,124 +20,126 @@ SCAN_DIRS = ["apps/", "frontend/", "packages/", "libs/"]
 EXTENSIONS = {".tsx", ".jsx", ".ts", ".js", ".html"}
 
 RULES = [
-    {
-        "id": "ORPHAN_ONCLICK",
-        "desc": "Empty onClick handler",
-        "pattern": re.compile(r"onClick=\{[\s]*\}"),
-        "severity": "HIGH",
-    },
-    {
-        "id": "PLACEHOLDER_HREF",
-        "desc": 'Placeholder href="#"',
-        "pattern": re.compile(r'href=["\']#["\']'),
-        "severity": "MEDIUM",
-    },
-    {
-        "id": "INLINE_BUTTON_STYLE",
-        "desc": "Inline style on <button>",
-        "pattern": re.compile(r"<button\s+style=\{\{"),
-        "severity": "LOW",
-    },
-    {
-        "id": "CONSOLE_LOG",
-        "desc": "Console.log in production code",
-        "pattern": re.compile(r"console\.(log|debug|info)\("),
-        "severity": "MEDIUM",
-    },
-    {
-        "id": "MAP_NO_KEY",
-        "desc": "Array .map() without key prop",
-        "pattern": re.compile(r"\.map\([^)]*\)\s*=>\s*\(\s*<(?!Fragment)[A-Z]\w+[^>]*(?!key=)"),
-        "severity": "HIGH",
-    },
-    {
-        "id": "TODO_FIXME",
-        "desc": "TODO/FIXME left in code",
-        "pattern": re.compile(r"(?://|#|/\*)\s*(TODO|FIXME|HACK|XXX)", re.IGNORECASE),
-        "severity": "LOW",
-    },
+  {
+    "id": "ORPHAN_ONCLICK",
+    "desc": "Empty onClick handler",
+    "pattern": re.compile(r"onClick=\{[\s]*\}"),
+    "severity": "HIGH",
+  },
+  {
+    "id": "PLACEHOLDER_HREF",
+    "desc": 'Placeholder href="#"',
+    "pattern": re.compile(r'href=["\']#["\']'),
+    "severity": "MEDIUM",
+  },
+  {
+    "id": "INLINE_BUTTON_STYLE",
+    "desc": "Inline style on <button>",
+    "pattern": re.compile(r"<button\s+style=\{\{"),
+    "severity": "LOW",
+  },
+  {
+    "id": "CONSOLE_LOG",
+    "desc": "Console.log in production code",
+    "pattern": re.compile(r"console\.(log|debug|info)\("),
+    "severity": "MEDIUM",
+  },
+  {
+    "id": "MAP_NO_KEY",
+    "desc": "Array .map() without key prop",
+    "pattern": re.compile(
+      r"\.map\([^)]*\)\s*=>\s*\(\s*<(?!Fragment)[A-Z]\w+[^>]*(?!key=)"
+    ),
+    "severity": "HIGH",
+  },
+  {
+    "id": "TODO_FIXME",
+    "desc": "TODO/FIXME left in code",
+    "pattern": re.compile(r"(?://|#|/\*)\s*(TODO|FIXME|HACK|XXX)", re.IGNORECASE),
+    "severity": "LOW",
+  },
 ]
 
 SKIP_DIRS = {
-    "node_modules",
-    ".venv",
-    "venv",
-    "__pycache__",
-    ".git",
-    "archive",
-    "target",
-    ".mypy_cache",
-    ".ruff_cache",
-    ".pytest_cache",
-    "dist",
-    "build",
-    "coverage",
-    ".next",
+  "node_modules",
+  ".venv",
+  "venv",
+  "__pycache__",
+  ".git",
+  "archive",
+  "target",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".pytest_cache",
+  "dist",
+  "build",
+  "coverage",
+  ".next",
 }
 
 
 def scan_file(filepath: str) -> list[dict]:
-    """Scan a single file for rule violations."""
-    findings = []
-    try:
-        with open(filepath, errors="ignore") as f:
-            for lineno, line in enumerate(f, 1):
-                for rule in RULES:
-                    if rule["pattern"].search(line):
-                        findings.append(
-                            {
-                                "file": filepath,
-                                "line": lineno,
-                                "rule": rule["id"],
-                                "desc": rule["desc"],
-                                "severity": rule["severity"],
-                                "snippet": line.strip()[:120],
-                            },
-                        )
-    except OSError, UnicodeDecodeError:
-        pass
-    return findings
+  """Scan a single file for rule violations."""
+  findings = []
+  try:
+    with open(filepath, errors="ignore") as f:
+      for lineno, line in enumerate(f, 1):
+        for rule in RULES:
+          if rule["pattern"].search(line):
+            findings.append(
+              {
+                "file": filepath,
+                "line": lineno,
+                "rule": rule["id"],
+                "desc": rule["desc"],
+                "severity": rule["severity"],
+                "snippet": line.strip()[:120],
+              },
+            )
+  except (OSError, UnicodeDecodeError):
+    pass
+  return findings
 
 
 def main() -> None:
-    all_findings = []
-    scanned = 0
+  all_findings = []
+  scanned = 0
 
-    for scan_dir in SCAN_DIRS:
-        if not os.path.isdir(scan_dir):
-            continue
-        for root, dirs, files in os.walk(scan_dir):
-            # Prune excluded directories
-            dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
-            for fname in files:
-                ext = Path(fname).suffix
-                if ext not in EXTENSIONS:
-                    continue
-                filepath = os.path.join(root, fname)
-                findings = scan_file(filepath)
-                all_findings.extend(findings)
-                scanned += 1
+  for scan_dir in SCAN_DIRS:
+    if not os.path.isdir(scan_dir):
+      continue
+    for root, dirs, files in os.walk(scan_dir):
+      # Prune excluded directories
+      dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+      for fname in files:
+        ext = Path(fname).suffix
+        if ext not in EXTENSIONS:
+          continue
+        filepath = os.path.join(root, fname)
+        findings = scan_file(filepath)
+        all_findings.extend(findings)
+        scanned += 1
 
-    # Group by severity
-    high = [f for f in all_findings if f["severity"] == "HIGH"]
-    med = [f for f in all_findings if f["severity"] == "MEDIUM"]
-    low = [f for f in all_findings if f["severity"] == "LOW"]
+  # Group by severity
+  high = [f for f in all_findings if f["severity"] == "HIGH"]
+  med = [f for f in all_findings if f["severity"] == "MEDIUM"]
+  low = [f for f in all_findings if f["severity"] == "LOW"]
 
-    if high:
-        for _f in high[:50]:
-            pass
+  if high:
+    for _f in high[:50]:
+      pass
 
-    if med:
-        for _f in med[:50]:
-            pass
+  if med:
+    for _f in med[:50]:
+      pass
 
-    if low:
-        for _f in low[:30]:
-            pass
+  if low:
+    for _f in low[:30]:
+      pass
 
-    if not all_findings:
-        pass
+  if not all_findings:
+    pass
 
 
 if __name__ == "__main__":
-    main()
+  main()

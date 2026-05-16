@@ -41,7 +41,6 @@ pwd
 ```
 
 **If Python is too old**:
-
 ```bash
 # Install Python 3.11 via Homebrew
 brew install python@3.11
@@ -80,7 +79,6 @@ pip install -r requirements.txt
 ```
 
 **If you see errors about missing system libraries**:
-
 ```bash
 # Install system dependencies via Homebrew
 brew install postgresql      # For asyncpg
@@ -91,7 +89,6 @@ brew install libmagic       # For python-magic
 ```
 
 **For Apple Silicon (M1/M2/M3) specific issues**:
-
 ```bash
 # If numpy/scikit-learn fail to install
 pip install --no-cache-dir numpy scikit-learn
@@ -119,7 +116,6 @@ code .env  # If using VS Code
 ```
 
 **Key settings for local testing**:
-
 ```bash
 # Already set correctly in .env:
 API_HOST=0.0.0.0
@@ -142,7 +138,6 @@ python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 **You should see**:
-
 ```
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process [12345] using StatReload
@@ -176,7 +171,6 @@ uvicorn app.main:app --host 127.0.0.1 --port 8000
 Open your browser to: **http://localhost:8000**
 
 You should see:
-
 ```json
 {
   "service": "pnkln-stack-governance-service",
@@ -205,7 +199,6 @@ curl http://localhost:8000/health
 ```
 
 **Response**:
-
 ```json
 {
   "status": "healthy",
@@ -222,13 +215,11 @@ curl http://localhost:8000/health
 Open in browser: **http://localhost:8000/docs**
 
 This gives you **Swagger UI** where you can:
-
 - See all 49 API endpoints
 - Test them interactively
 - View request/response schemas
 
 **Try this**:
-
 1. Go to http://localhost:8000/docs
 2. Expand `Governance` section
 3. Click on `POST /api/v1/governance/eu-ai-act`
@@ -252,12 +243,15 @@ curl -X POST http://localhost:8000/api/v1/governance/eu-ai-act \
 ```
 
 **Expected Response**:
-
 ```json
 {
   "system_name": "Video Recommender",
   "risk_level": "limited",
-  "requirements": ["Transparency obligations", "Technical documentation", "Data governance"],
+  "requirements": [
+    "Transparency obligations",
+    "Technical documentation",
+    "Data governance"
+  ],
   "compliance_deadline": "2026-08-02",
   "assessment_id": "..."
 }
@@ -272,7 +266,6 @@ curl -X GET http://localhost:8000/api/v1/pinkln/agents
 ```
 
 **Expected Response**:
-
 ```json
 {
   "agents": [
@@ -575,7 +568,6 @@ python -m uvicorn app.main:app --reload > server.log 2>&1
 When you start the server, you get:
 
 ✅ **49 API Endpoints** across 7 domains:
-
 - Governance (8 endpoints): EU AI Act, DSA, NIST RMF, ISO 42001
 - Adtech (6 endpoints): VAST, OM SDK, Privacy Sandbox
 - Content (5 endpoints): C2PA provenance
@@ -585,7 +577,6 @@ When you start the server, you get:
 - Pinkln (10 endpoints): Ultrathink agents
 
 ✅ **5 Pinkln Agents** (IQ 160):
-
 - Ultrathink Designer (Glicko-2: 1550)
 - Wealth Accelerator (1600)
 - Deep Reasoning (1650)
@@ -593,14 +584,12 @@ When you start the server, you get:
 - Code Crafter (1700)
 
 ✅ **Core Framework**:
-
 - DTE self-evolution
 - Glicko-2 ratings
 - OpenTelemetry observability
 - Rate limiting middleware
 
 ✅ **LLM Efficiency** (when configured with API keys):
-
 - Native Gemini function calling
 - GPU pooling support
 - Model registry & router
@@ -622,7 +611,6 @@ echo "ANTHROPIC_API_KEY=your-claude-api-key" >> .env
 ```
 
 **Get API keys**:
-
 - Gemini: https://makersuite.google.com/app/apikey
 - Claude: https://console.anthropic.com/
 
@@ -631,15 +619,12 @@ echo "ANTHROPIC_API_KEY=your-claude-api-key" >> .env
 ## 📖 API Documentation
 
 ### **Swagger UI** (Interactive)
-
 http://localhost:8000/docs
 
 ### **ReDoc** (Pretty Documentation)
-
 http://localhost:8000/redoc
 
 ### **OpenAPI JSON**
-
 http://localhost:8000/openapi.json
 
 ---
@@ -647,7 +632,6 @@ http://localhost:8000/openapi.json
 ## 🚀 Next Steps After Testing
 
 ### **1. Load Testing**
-
 ```bash
 pip install locust
 locust -f load_testing/pnkln_load_tests_enhanced.py
@@ -655,7 +639,6 @@ locust -f load_testing/pnkln_load_tests_enhanced.py
 ```
 
 ### **2. Run Examples**
-
 ```bash
 python examples/benchmark.py        # Performance benchmarks
 python examples/client.py           # API client demo
@@ -663,9 +646,7 @@ python examples/ingestion_demo.py   # Ingestion workflow
 ```
 
 ### **3. Deploy to Production**
-
 See `DEPLOYMENT_READY.md` for:
-
 - Docker deployment
 - GKE deployment
 - Vertex AI deployment
@@ -694,13 +675,11 @@ After starting the server, verify:
 1. **Use httpie for prettier curl**: `brew install httpie` then `http POST localhost:8000/api/v1/governance/eu-ai-act system_name=Test`
 
 2. **Auto-format JSON responses**: Add `| jq` to curl commands
-
    ```bash
    curl http://localhost:8000/health | jq
    ```
 
 3. **Keep server running in background**:
-
    ```bash
    nohup python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > server.log 2>&1 &
    ```
@@ -722,7 +701,7 @@ After starting the server, verify:
 
 **Happy Testing! 🎉**
 
-_Platform: pnkln-stack Governance Service + LLM Efficiency Optimizations_
-_Total Value: $54.3M/year (50 employees)_
-_Endpoints: 49 production APIs_
-_Agents: 5 Pinkln Ultrathink (IQ 160)_
+*Platform: pnkln-stack Governance Service + LLM Efficiency Optimizations*
+*Total Value: $54.3M/year (50 employees)*
+*Endpoints: 49 production APIs*
+*Agents: 5 Pinkln Ultrathink (IQ 160)*

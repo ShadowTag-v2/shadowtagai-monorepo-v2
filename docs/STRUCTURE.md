@@ -29,12 +29,10 @@ Monorepo-Uphillsnowball/
 ```
 
 ## Naming Conventions
-
 - app namespaces: lowercase_snake_case
 - scripts: verb_noun.sh pattern
 - docs: UPPER_SNAKE_CASE.md for governance, Title_Case.md for guides
 
 ## Fold-in Policy
-
 All external repos must be folded into apps/pnkln-stack_stack/ or third_party/
 with --exclude='.git' to strip history, then committed atomically.

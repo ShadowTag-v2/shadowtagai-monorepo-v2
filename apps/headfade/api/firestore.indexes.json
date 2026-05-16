@@ -1,0 +1,37 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "human_deception_index",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "video_id", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "human_deception_index",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "juked", "order": "ASCENDING" },
+        { "fieldPath": "timestamp", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "human_telemetry",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "videoId", "order": "ASCENDING" },
+        { "fieldPath": "votedAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "forensic_verdicts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "videoId", "order": "ASCENDING" },
+        { "fieldPath": "analyzedAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

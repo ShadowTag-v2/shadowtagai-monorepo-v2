@@ -174,21 +174,21 @@ hr {
 
 
 def _markdown_to_html(markdown_content: str, session_id: str) -> str:
-    """Convert markdown brief to styled HTML for PDF rendering."""
-    try:
-        import markdown
-    except ImportError:
-        logger.warning("markdown package not installed, using raw text")
-        html_body = f"<pre>{markdown_content}</pre>"
-    else:
-        html_body = markdown.markdown(
-            markdown_content,
-            extensions=["tables", "fenced_code", "nl2br"],
-        )
+  """Convert markdown brief to styled HTML for PDF rendering."""
+  try:
+    import markdown
+  except ImportError:
+    logger.warning("markdown package not installed, using raw text")
+    html_body = f"<pre>{markdown_content}</pre>"
+  else:
+    html_body = markdown.markdown(
+      markdown_content,
+      extensions=["tables", "fenced_code", "nl2br"],
+    )
 
-    now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
+  now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
 
-    return f"""<!DOCTYPE html>
+  return f"""<!DOCTYPE html>
 <html lang="en" data-session-id="{session_id}" data-timestamp="{now}">
 <head>
     <meta charset="utf-8">
@@ -208,61 +208,63 @@ def _markdown_to_html(markdown_content: str, session_id: str) -> str:
 
 
 def brief_markdown_to_pdf(
-    markdown_content: str,
-    session_id: str,
+  markdown_content: str,
+  session_id: str,
 ) -> bytes:
-    """
-    Convert a markdown attorney brief to PDF.
+  """
+  Convert a markdown attorney brief to PDF.
 
-    Args:
-        markdown_content: Full markdown text of the brief
-        session_id: Session ID for header/footer
+  Args:
+      markdown_content: Full markdown text of the brief
+      session_id: Session ID for header/footer
 
-    Returns:
-        PDF file content as bytes
+  Returns:
+      PDF file content as bytes
 
-    Raises:
-        ImportError: If weasyprint is not installed
-    """
-    try:
-        from weasyprint import HTML
-    except ImportError as exc:
-        raise ImportError("weasyprint is required for PDF generation. Install with: pip install weasyprint") from exc
+  Raises:
+      ImportError: If weasyprint is not installed
+  """
+  try:
+    from weasyprint import HTML
+  except ImportError as exc:
+    raise ImportError(
+      "weasyprint is required for PDF generation. Install with: pip install weasyprint"
+    ) from exc
 
-    html_content = _markdown_to_html(markdown_content, session_id)
+  html_content = _markdown_to_html(markdown_content, session_id)
 
-    pdf_buffer = io.BytesIO()
-    HTML(string=html_content).write_pdf(pdf_buffer)
-    pdf_bytes = pdf_buffer.getvalue()
+  pdf_buffer = io.BytesIO()
+  HTML(string=html_content).write_pdf(pdf_buffer)
+  pdf_bytes = pdf_buffer.getvalue()
 
-    logger.info(
-        "Generated PDF for session %s: %d bytes",
-        session_id,
-        len(pdf_bytes),
-    )
-    return pdf_bytes
+  logger.info(
+    "Generated PDF for session %s: %d bytes",
+    session_id,
+    len(pdf_bytes),
+  )
+  return pdf_bytes
 
 
 def brief_markdown_to_pdf_file(
-    markdown_content: str,
-    session_id: str,
-    output_path: str,
+  markdown_content: str,
+  session_id: str,
+  output_path: str,
 ) -> str:
-    """
-    Convert markdown brief to PDF and save to disk.
+  """
+  Convert markdown brief to PDF and save to disk.
 
-    Args:
-        markdown_content: Full markdown text of the brief
-        session_id: Session ID for header/footer
-        output_path: File path to write the PDF
+  Args:
+      markdown_content: Full markdown text of the brief
+      session_id: Session ID for header/footer
+      output_path: File path to write the PDF
 
-    Returns:
-        The output file path
-    """
-    pdf_bytes = brief_markdown_to_pdf(markdown_content, session_id)
+  Returns:
+      The output file path
+  """
+  pdf_bytes = brief_markdown_to_pdf(markdown_content, session_id)
 
-    with open(output_path, "wb") as f:
-        f.write(pdf_bytes)
+  with open(output_path, "wb") as f:
+    f.write(pdf_bytes)
 
-    logger.info("Saved PDF to %s", output_path)
-    return output_path
+  logger.info("Saved PDF to %s", output_path)
+  return output_path

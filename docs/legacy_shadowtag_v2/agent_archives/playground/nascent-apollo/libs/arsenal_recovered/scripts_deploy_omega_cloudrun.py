@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import subprocess
 
 PROJECT_ID = "shadowtag-omega-v2"

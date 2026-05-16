@@ -1,0 +1,10 @@
+{
+  "sender": "jules",
+  "recipient": "kairos",
+  "subject": "Test",
+  "body": "Hello from Jules",
+  "priority": 0,
+  "created_at": "2026-05-10T05:53:28.060312+00:00",
+  "read": true,
+  "msg_id": "jules_1778392408060"
+}

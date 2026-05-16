@@ -7,6 +7,6 @@
   "lab_path": "labs/uphillsnowball",
   "brain_dir": "/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50",
   "forbidden_strings": [
-    "Service Accounts: 767252945109-compute@developer.gserviceaccount.com is now REFRESHING at the start of every tool call. This is this service account\u2019s only function!"
+    "Service Accounts: headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com is now REFRESHING at the start of every tool call. This is this service account\u2019s only function!"
   ]
 }

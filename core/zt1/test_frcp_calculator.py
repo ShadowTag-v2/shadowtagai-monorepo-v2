@@ -1,7 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import datetime
-
 from frcp_calculator import FRCPDeadlineCalculator
 
 # --- Test Architect Validation Gates (Gemini 3.1 Pro Native) ---

@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: pnkln-cert
+  namespace: pnkln-production
+spec:
+  domains:
+    - api.pnkln.io

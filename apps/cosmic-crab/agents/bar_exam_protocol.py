@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 # agents/bar_exam_protocol.py
 import logging
 
@@ -11,7 +12,8 @@ logger = logging.getLogger("BarExamProtocol")
 
 
 class BarExamProtocol:
-    """ShadowTag Omega V7 Bar Exam Protocol
+    """
+    ShadowTag Omega V7 Bar Exam Protocol
     Promotes agents through capability tiers using Gemini Thinking validation.
     """
 
@@ -20,9 +22,7 @@ class BarExamProtocol:
 
         api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("DEVELOPERKNOWLEDGE_API_KEY")
         if not api_key:
-            raise ValueError(
-                "Missing API Key! Please set GOOGLE_API_KEY or DEVELOPERKNOWLEDGE_API_KEY.",
-            )
+            raise ValueError("Missing API Key! Please set GOOGLE_API_KEY or DEVELOPERKNOWLEDGE_API_KEY.")
         self.client = genai.Client(api_key=api_key)
 
     async def evaluate_agent(self, agent_id: str, challenge: str):
@@ -33,9 +33,7 @@ class BarExamProtocol:
             response = self.client.models.generate_content(
                 model="gemini-3.1-flash-thinking-exp-01-21",  # Using a thinking model
                 contents=f"Evaluate this agent's response to the challenge '{challenge}' for doctrinal correctness.",
-                config=types.GenerateContentConfig(
-                    thinking_config=types.ThinkingConfig(include_thoughts=True),
-                ),
+                config=types.GenerateContentConfig(thinking_config=types.ThinkingConfig(include_thoughts=True)),
             )
 
             # Extract thoughts if available
@@ -47,11 +45,7 @@ class BarExamProtocol:
             logger.info("🧠 THINKING TRACE CAPTURED.")
 
             # Record evaluation in whiteboard
-            whiteboard.record_bead(
-                insight=f"Agent {agent_id} passed doctrinal challenge.",
-                source="bar_exam",
-                thinking_trace=thoughts,
-            )
+            whiteboard.record_bead(insight=f"Agent {agent_id} passed doctrinal challenge.", source="bar_exam", thinking_trace=thoughts)
             return True
         except Exception as e:
             logger.error(f"❌ [BAR EXAM] Evaluation failed: {e}")

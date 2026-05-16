@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import subprocess
 import sys
 
@@ -24,24 +25,32 @@ if isinstance(encoded_jwt, bytes):
 
 headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github+json"}
 
-resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
+print("Fetching installation ID...")
+resp = requests.get("https://api.github.com/app/installations", headers=headers)
 resp.raise_for_status()
 data = resp.json()
 if not data:
+    print("No installations found for this App!")
     sys.exit(1)
 
 install_id = data[0]["id"]
+print(f"Installation ID: {install_id}")
 
-resp = requests.post(f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers, timeout=30)
+print("Fetching access token...")
+resp = requests.post(f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers)
 resp.raise_for_status()
 token = resp.json()["token"]
 
+print("Configuring git remote with token...")
 cmd = f"git remote set-url origin https://x-access-token:{token}@github.com/ehanc69/Monorepo-Uphillsnowball.git"
-subprocess.run(cmd, shell=True, check=True)  # nosec B602 — intentional shell for git/system ops
+subprocess.run(cmd, shell=True, check=True)
 
-subprocess.run("python3 scripts/finish_changes.py", shell=True)  # nosec B602 — intentional shell for git/system ops
+print("Calling egress scripts...")
+subprocess.run("python3 scripts/finish_changes.py", shell=True)
 
-try:  # noqa: SIM105
-    subprocess.run("python3 scripts/omega-loopin.py", shell=True, check=True)  # nosec B602 — intentional shell for git/system ops
+try:
+    subprocess.run("python3 scripts/omega-loopin.py", shell=True, check=True)
 except Exception:
     pass
+
+print("GitHub App Sync complete.")

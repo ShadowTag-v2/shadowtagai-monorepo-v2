@@ -113,7 +113,9 @@ def main() -> None:
 
     # Lazy imports to avoid loading heavy deps for --help
     from scripts.intelligence_pipeline.codebase_embedder import run_codebase_embedder
-    from scripts.intelligence_pipeline.cross_domain_matcher import run_cross_domain_matcher
+    from scripts.intelligence_pipeline.cross_domain_matcher import (
+        run_cross_domain_matcher,
+    )
     from scripts.intelligence_pipeline.domain_tagger import run_domain_tagger
     from scripts.intelligence_pipeline.gap_analyzer import run_gap_analyzer
     from scripts.intelligence_pipeline.github_sync import run_github_sync

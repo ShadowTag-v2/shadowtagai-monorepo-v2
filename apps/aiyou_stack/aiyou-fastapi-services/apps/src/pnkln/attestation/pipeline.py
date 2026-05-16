@@ -14,7 +14,6 @@ from pathlib import Path
 from typing import Any
 
 from pnkln.core.judge_six_pipeline import get_judge
-
 from src.pnkln.neural_hash import get_neural_hash
 
 logger = logging.getLogger(__name__)

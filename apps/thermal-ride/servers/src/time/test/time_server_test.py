@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from unittest.mock import patch
 from zoneinfo import ZoneInfo
 
@@ -470,7 +471,7 @@ def test_get_local_tz_with_override():
 
 def test_get_local_tz_with_invalid_override():
     """Test that invalid timezone override raises an error."""
-    with pytest.raises(Exception):  # ZoneInfo will raise an exception  # noqa: B017
+    with pytest.raises(Exception):  # ZoneInfo will raise an exception
         get_local_tz("Invalid/Timezone")
 
 

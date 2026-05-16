@@ -1,0 +1,69 @@
+/**
+ * Agent Configuration
+ * Global configuration for agent behavior and constraints
+ */
+
+import type { AgentCategory, AgentConfig as IAgentConfig } from "../types/agent.types";
+
+export class AgentConfig implements IAgentConfig {
+  enabledCategories: AgentCategory[] = [
+    "product-strategy",
+    "development",
+    "design-ux",
+    "quality-testing",
+    "operations",
+    "business-analytics",
+    "ai-innovation",
+  ];
+
+  defaultConstraints = {
+    maxTokens: 100000,
+    timeoutMs: 300000, // 5 minutes
+  };
+
+  customPrompts: Record<string, string> = {};
+
+  featureFlags: Record<string, boolean> = {
+    enableParallelExecution: true,
+    enableCaching: true,
+    enableTelemetry: false,
+    enableDebugMode: false,
+  };
+
+  constructor(overrides?: Partial<IAgentConfig>) {
+    if (overrides) {
+      Object.assign(this, overrides);
+    }
+  }
+
+  /**
+   * Enable specific categories
+   */
+  enableCategories(categories: AgentCategory[]): void {
+    this.enabledCategories = categories;
+  }
+
+  /**
+   * Set custom prompt for an agent
+   */
+  setCustomPrompt(agentId: string, prompt: string): void {
+    this.customPrompts[agentId] = prompt;
+  }
+
+  /**
+   * Set feature flag
+   */
+  setFeatureFlag(flag: string, enabled: boolean): void {
+    this.featureFlags[flag] = enabled;
+  }
+
+  /**
+   * Update default constraints
+   */
+  updateConstraints(constraints: Partial<typeof this.defaultConstraints>): void {
+    Object.assign(this.defaultConstraints, constraints);
+  }
+}
+
+// Export default configuration
+export const defaultConfig = new AgentConfig();

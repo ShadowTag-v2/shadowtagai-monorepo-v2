@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/prevent_sleep/sleep_guard.py
+# hypothesis_version: 6.151.5
+
+[300, '-i', '-t', 'Darwin', 'caffeinate']

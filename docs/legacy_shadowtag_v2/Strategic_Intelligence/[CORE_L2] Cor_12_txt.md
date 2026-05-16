@@ -168,7 +168,7 @@ Tractable
 ⸻
 
 Cut-to-the-chase plan
-• Start aftermarket: ship an ShadowTag-v2 “edge puck” (Orin NX + PC5 + ShadowTag TEE) with OTA updates.
+• Start aftermarket: ship an AiYou “edge puck” (Orin NX + PC5 + ShadowTag TEE) with OTA updates.
 • Pilot two corridors with 200–500 vehicles + 10–20 roadside units.
 • Prove three numbers: 1. ≤90 ms median alert latency, 2. ≥60% reduction in staged violations, 3. ≥10% throughput lift during peak.
 • Use those results to secure OEM JVs and insurer credits.

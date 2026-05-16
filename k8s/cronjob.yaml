@@ -1,0 +1,110 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion-layer
+  namespace: intelligence
+  labels:
+    app: gemini-ingestion
+    component: data-collection
+    tier: backend
+spec:
+  # Run daily at 2 AM UTC
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid  # Don't run concurrent jobs
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      # 60-minute timeout (max runtime)
+      activeDeadlineSeconds: 3600
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            app: gemini-ingestion
+            component: cronjob
+        spec:
+          restartPolicy: OnFailure
+
+          # Service account for GCP access
+          serviceAccountName: gemini-ingestion-sa
+
+          # Multi-container pod
+          containers:
+          # Main ingestion container
+          - name: ingestion
+            image: gcr.io/pnkln-project/gemini-ingestion:latest
+            imagePullPolicy: IfNotPresent
+
+            command:
+              - python
+              - -m
+              - gemini_ingestion_layer.main
+
+            env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-api-keys
+                  key: api-key
+
+            - name: GCS_BUCKET
+              value: "pnkln-ingestion-data"
+
+            - name: BQ_DATASET
+              value: "pnkln_ingestion"
+
+            - name: BRIEFING_RECIPIENTS
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: briefing-recipients
+
+            # Resource limits based on PNKLN Core Stack
+            resources:
+              requests:
+                cpu: "1000m"      # 1 CPU
+                memory: "2Gi"     # 2GB RAM
+              limits:
+                cpu: "2000m"      # 2 CPU max
+                memory: "4Gi"     # 4GB RAM max
+
+            volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+
+          # Prometheus metrics sidecar
+          - name: metrics-exporter
+            image: prom/pushgateway:latest
+            ports:
+            - containerPort: 9091
+              name: metrics
+
+            resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "200m"
+                memory: "256Mi"
+
+          volumes:
+          - name: config
+            configMap:
+              name: ingestion-config
+
+          # Node selection
+          nodeSelector:
+            workload-type: batch
+            cloud.google.com/gke-nodepool: default-pool
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gemini-ingestion-sa
+  namespace: intelligence
+  annotations:
+    iam.gke.io/gcp-service-account: gemini-ingestion@pnkln-project.iam.gserviceaccount.com

@@ -18,7 +18,7 @@ cat > "$MONOREPO/docs/governance/GUARDRAILS.md" << 'EOF'
 7. Commit every fold-in with atomic message
 
 ## Folder Conventions
-- apps/ShadowTag-v2_stack/  → primary app namespace
+- apps/aiyou_stack/  → primary app namespace
 - memory/            → knowledge and memory files
 - docs/              → governance, reports, bundles
 - scripts/           → bootstrap and utility scripts

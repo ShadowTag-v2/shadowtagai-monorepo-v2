@@ -1,11 +1,8 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
-
-import re
 from pathlib import Path
 from typing import Any
-
+import re
 import yaml
 
 
@@ -30,9 +27,9 @@ def read_manifest(path: str) -> dict[str, Any]:
             root = item.get("path") or item.get("root") or item.get("live_root")
             if root:
                 canonical_roots.append(root)
-    # fallback heuristic: look for apps/ShadowTag-v2_stack/... paths in raw yaml
+    # fallback heuristic: look for apps/aiyou_stack/... paths in raw yaml
     if not canonical_roots:
-        canonical_roots = re.findall(r"apps/ShadowTag-v2_stack/[A-Za-z0-9_\-]+", raw)
+        canonical_roots = re.findall(r"apps/aiyou_stack/[A-Za-z0-9_\-]+", raw)
     return {"canonical_roots": canonical_roots, "raw": data or raw}
 
 
@@ -58,7 +55,7 @@ def summarize_merge_status(path: str) -> dict[str, Any]:
 
 def summarize_control_plane(path: str) -> dict[str, Any]:
     raw = _safe_read(path)
-    roots = re.findall(r"apps/ShadowTag-v2_stack/[A-Za-z0-9_\-]+", raw)
+    roots = re.findall(r"apps/aiyou_stack/[A-Za-z0-9_\-]+", raw)
     return {
         "canonical_roots": sorted(list(dict.fromkeys(roots))),
         "raw_excerpt": raw[:4000],

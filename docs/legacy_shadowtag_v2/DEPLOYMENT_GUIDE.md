@@ -6,10 +6,10 @@ This guide provides step-by-step instructions for deploying the ingestion workfl
 
 ## Quick Reference
 
-| Repository                             | Status                | Action Required        |
-| -------------------------------------- | --------------------- | ---------------------- |
-| `ehanc69/pnkln-stack-fastapi-services` | ✅ **Fixed & Merged** | Test the workflow      |
-| `ehanc69/mlops`                        | ⚠️ **Needs Fix**      | Apply fix using script |
+| Repository | Status | Action Required |
+|------------|--------|-----------------|
+| `ehanc69/pnkln-stack-fastapi-services` | ✅ **Fixed & Merged** | Test the workflow |
+| `ehanc69/mlops` | ⚠️ **Needs Fix** | Apply fix using script |
 
 ---
 
@@ -27,7 +27,6 @@ chmod +x scripts/verify-workflow.sh
 ```
 
 **Expected Output:**
-
 ```
 ✅ Workflow file exists and is readable
 ✅ URL format is correct (no refs/heads/)
@@ -39,7 +38,6 @@ chmod +x scripts/verify-workflow.sh
 ### Step 2: Test the Workflow in GitHub Actions
 
 #### Option A: Manual Trigger
-
 1. Go to https://github.com/ehanc69/pnkln-stack-fastapi-services/actions
 2. Select **Ingestion (hourly)** workflow
 3. Click **Run workflow**
@@ -48,7 +46,6 @@ chmod +x scripts/verify-workflow.sh
 6. Monitor the execution
 
 #### Option B: Wait for Scheduled Run
-
 - The workflow runs hourly (at minute 0 of every hour)
 - Check the Actions tab after the next hour
 
@@ -57,7 +54,6 @@ chmod +x scripts/verify-workflow.sh
 Look for these indicators in the workflow logs:
 
 ✅ **Success Indicators:**
-
 ```
 ✓ Successfully downloaded policy configuration
 ✓ Policy file validated (non-empty)
@@ -66,7 +62,6 @@ Lines: XXX
 ```
 
 ❌ **Failure Indicators:**
-
 ```
 curl: (22) The requested URL returned error: 404
 Process completed with exit code 22
@@ -93,7 +88,6 @@ chmod +x scripts/apply-fix-to-mlops.sh
 ```
 
 The script will:
-
 1. Clone or use existing mlops repository
 2. Create a new fix branch
 3. Copy the fixed workflow file
@@ -146,13 +140,11 @@ cp /home/user/pnkln-stack-fastapi-services/.github/workflows/ingest.yml \
 **Or manually edit the existing workflow:**
 
 Find this line (around line 29):
-
 ```yaml
 https://raw.githubusercontent.com/ehanc69/pnkln-stack-policy/refs/heads/main/policy/config/strict_policy.yml
 ```
 
 Change to:
-
 ```yaml
 https://raw.githubusercontent.com/ehanc69/pnkln-stack-policy/main/policy/config/strict_policy.yml
 ```
@@ -232,7 +224,6 @@ gh run watch --repo ehanc69/mlops
 #### 3. Check the Logs
 
 Look for:
-
 - ✅ No `curl: (22)` errors
 - ✅ `Successfully downloaded policy configuration`
 - ✅ File size and line count displayed
@@ -258,13 +249,13 @@ Verify the `strict_policy.yml` file was downloaded correctly.
 
 Test the workflow under different conditions:
 
-| Scenario            | Test Method                             | Expected Result              |
-| ------------------- | --------------------------------------- | ---------------------------- |
-| **Scheduled Run**   | Wait for hourly cron                    | ✅ Runs automatically        |
-| **Manual Trigger**  | Actions UI → Run workflow               | ✅ Runs on-demand            |
-| **Network Failure** | Simulate by blocking connection         | ✅ Retries with backoff      |
-| **Invalid URL**     | Temporarily change to bad URL           | ✅ Clear error message       |
-| **Missing File**    | Temporarily change to non-existent file | ✅ 404 with helpful guidance |
+| Scenario | Test Method | Expected Result |
+|----------|-------------|-----------------|
+| **Scheduled Run** | Wait for hourly cron | ✅ Runs automatically |
+| **Manual Trigger** | Actions UI → Run workflow | ✅ Runs on-demand |
+| **Network Failure** | Simulate by blocking connection | ✅ Retries with backoff |
+| **Invalid URL** | Temporarily change to bad URL | ✅ Clear error message |
+| **Missing File** | Temporarily change to non-existent file | ✅ 404 with helpful guidance |
 
 ### Simulate Network Failure (Optional)
 
@@ -354,14 +345,12 @@ Create a status badge in your README:
 #### Issue: "curl: (22) The requested URL returned error: 404"
 
 **Diagnosis:**
-
 ```bash
 # Check the URL in the workflow logs
 # Look for: "Policy URL: https://..."
 ```
 
 **Solution:**
-
 1. Verify URL does NOT contain `/refs/heads/`
 2. Correct format: `https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}`
 3. Test URL manually: `curl -I <URL>`
@@ -369,14 +358,12 @@ Create a status badge in your README:
 #### Issue: "Downloaded file is empty or missing"
 
 **Diagnosis:**
-
 ```bash
 # Check workflow logs for file size
 # Look for: "File size: 0 bytes"
 ```
 
 **Solution:**
-
 1. Verify the file exists in the target repository
 2. Check file path is correct (case-sensitive)
 3. Ensure branch name is correct
@@ -387,7 +374,6 @@ Create a status badge in your README:
 Repository is private and requires authentication.
 
 **Solution:**
-
 ```yaml
 # Add authentication to curl command
 - name: Download policy
@@ -405,7 +391,6 @@ Repository is private and requires authentication.
 Check cron expression and repository settings.
 
 **Solution:**
-
 1. Verify cron expression: https://crontab.guru/
 2. Ensure Actions are enabled in repository settings
 3. Check if workflow file is in the default branch

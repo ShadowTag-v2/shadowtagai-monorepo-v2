@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from google import genai
 from google.genai import types
 
@@ -11,7 +12,7 @@ SYSTEM = (
     "If the candidate says 'IDK' and the gold is blank, treat as 'YES'."
 )
 
-PROMPT_TMPL = "Question: {question}\nGold answer: {gold}\nCandidate answer: {pred}\nRespond strictly with YES or NO."
+PROMPT_TMPL = "Question: {question}\n" "Gold answer: {gold}\n" "Candidate answer: {pred}\n" "Respond strictly with YES or NO."
 
 
 def _postprocess(text: str | None) -> str:

@@ -37,8 +37,8 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 │  │ LAYER 2: DECISION FRAMEWORK (Pinkln Ultrathink)           │ │
 │  │                                                            │ │
 │  │  • Gemini function calling orchestration                  │ │
-│  │  • Compliance Framework risk management                               │ │
-│  │  • Judge 6 approval gates                                │ │
+│  │  • ATP 5-19 risk management                               │ │
+│  │  • Judge #6 approval gates                                │ │
 │  │  • Multi-agent debates (PanelGPT/MAD)                     │ │
 │  │  • Glicko-2 performance ratings                           │ │
 │  │                                                            │ │
@@ -75,27 +75,25 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 ## 📊 Performance Metrics (Integrated System)
 
 ### Core Metrics
-
-| Metric                        | Target       | Current                 | Status |
-| ----------------------------- | ------------ | ----------------------- | ------ |
-| **Gesture Detection Latency** | <100ms       | 45ms (Gemini 2.0)       | ✅     |
-| **AI Art Generation**         | <100ms       | 75ms (Gemini Functions) | ✅     |
-| **Decision Framework**        | <50ms        | 35ms (Pinkln Unified)   | ✅✅   |
-| **Memory Persistence**        | <10ms lookup | 5ms (Redis)             | ✅✅   |
-| **Concurrent Streams**        | 10,000       | Validated (load tests)  | ✅     |
-| **NFT Minting**               | <5min        | 2-3min (Polygon)        | ✅     |
-| **Platform Uptime**           | >99.9%       | GKE HA (3+ replicas)    | ✅     |
+| Metric | Target | Current | Status |
+|--------|--------|---------|--------|
+| **Gesture Detection Latency** | <100ms | 45ms (Gemini 2.0) | ✅ |
+| **AI Art Generation** | <100ms | 75ms (Gemini Functions) | ✅ |
+| **Decision Framework** | <50ms | 35ms (Pinkln Unified) | ✅✅ |
+| **Memory Persistence** | <10ms lookup | 5ms (Redis) | ✅✅ |
+| **Concurrent Streams** | 10,000 | Validated (load tests) | ✅ |
+| **NFT Minting** | <5min | 2-3min (Polygon) | ✅ |
+| **Platform Uptime** | >99.9% | GKE HA (3+ replicas) | ✅ |
 
 ### Cost Efficiency
-
-| Component                | Cost per Decision | Volume             | Monthly Cost  |
-| ------------------------ | ----------------- | ------------------ | ------------- |
-| **Gesture Detection**    | $0.0001           | 10M frames/mo      | $1,000        |
-| **AI Art Generation**    | $0.0003           | 10M frames/mo      | $3,000        |
-| **Decision Framework**   | $0.0003           | 100k decisions/mo  | $30           |
-| **Memory Persistence**   | $0.00001          | 10M lookups/mo     | $100          |
-| **Infrastructure (GKE)** | -                 | Base + autoscaling | $5,000        |
-| **Total**                | -                 | 10k creators       | **$9,130/mo** |
+| Component | Cost per Decision | Volume | Monthly Cost |
+|-----------|------------------|--------|--------------|
+| **Gesture Detection** | $0.0001 | 10M frames/mo | $1,000 |
+| **AI Art Generation** | $0.0003 | 10M frames/mo | $3,000 |
+| **Decision Framework** | $0.0003 | 100k decisions/mo | $30 |
+| **Memory Persistence** | $0.00001 | 10M lookups/mo | $100 |
+| **Infrastructure (GKE)** | - | Base + autoscaling | $5,000 |
+| **Total** | - | 10k creators | **$9,130/mo** |
 
 **Revenue (10k creators)**: $340k/mo
 **Gross Margin**: 97.3% ✅✅
@@ -106,7 +104,7 @@ Tokable v2.0 integrates four powerful systems into a unified platform:
 
 ### 1. Tokable ↔ Pinkln Ultrathink
 
-**Use Case**: Every creator revenue decision goes through Judge 6
+**Use Case**: Every creator revenue decision goes through Judge #6
 
 ```python
 # In src/api/tokable.py
@@ -132,8 +130,7 @@ async def send_tip(request: SendTipRequest):
 ```
 
 **Benefits**:
-
-- **Fraud prevention**: Compliance Framework risk assessment on all transactions
+- **Fraud prevention**: ATP 5-19 risk assessment on all transactions
 - **Compliance**: Automated KYC/AML checks
 - **Performance**: 35ms decision latency vs. 1100ms (31× faster)
 
@@ -175,7 +172,6 @@ async def generate_art(gesture_data, creator_id):
 ```
 
 **Benefits**:
-
 - **Personalization**: Each creator's AI art evolves with their style
 - **Fan retention**: Remember fan preferences (favorite creators, tipping patterns)
 - **Revenue optimization**: Surface high-value NFTs to likely buyers
@@ -214,7 +210,6 @@ async def validate_tokable_scale():
 ```
 
 **Benefits**:
-
 - **Confidence**: Proof of scalability before launch
 - **SLA validation**: <100ms latency, >99% uptime
 - **Cost modeling**: Accurate GKE resource requirements
@@ -230,7 +225,7 @@ async def validate_tokable_scale():
 
 # Tokable API (3-20 replicas, HPA)
 - Tokable streaming API
-- Pinkln Judge 6 validation
+- Pinkln Judge #6 validation
 - LLM memory lookups
 - Load testing endpoints
 
@@ -257,21 +252,19 @@ async def validate_tokable_scale():
 
 ### Revenue Opportunities (Enhanced by Integration)
 
-| Revenue Stream        | Base (Tokable Only) | + Pinkln (Fraud ↓)    | + Memory (Personalization ↑)    | + Load Test (Confidence ↑) | **Total**  |
-| --------------------- | ------------------- | --------------------- | ------------------------------- | -------------------------- | ---------- |
-| **Tips**              | $150/creator/mo     | +5% (fraud reduction) | +10% (personalization)          | +0%                        | **+15.8%** |
-| **NFT Sales**         | $20/creator/mo      | +2% (compliance)      | +20% (targeted recommendations) | +0%                        | **+22.4%** |
-| **Subscriptions**     | $10/creator/mo      | +0%                   | +15% (retention)                | +0%                        | **+15%**   |
-| **Total per Creator** | $180/mo             | $189/mo               | $219/mo                         | $219/mo                    | **+21.7%** |
+| Revenue Stream | Base (Tokable Only) | + Pinkln (Fraud ↓) | + Memory (Personalization ↑) | + Load Test (Confidence ↑) | **Total** |
+|----------------|---------------------|-------------------|----------------------------|---------------------------|-----------|
+| **Tips** | $150/creator/mo | +5% (fraud reduction) | +10% (personalization) | +0% | **+15.8%** |
+| **NFT Sales** | $20/creator/mo | +2% (compliance) | +20% (targeted recommendations) | +0% | **+22.4%** |
+| **Subscriptions** | $10/creator/mo | +0% | +15% (retention) | +0% | **+15%** |
+| **Total per Creator** | $180/mo | $189/mo | $219/mo | $219/mo | **+21.7%** |
 
 **At 10k Creators**:
-
 - Base Tokable: $1.8M/mo revenue
 - Integrated Platform: $2.19M/mo revenue
 - **Additional $390k/mo** (+21.7%) from integration
 
 **ROI on Integration**:
-
 - Integration cost: ~$100k engineering (already sunk)
 - Monthly benefit: $390k additional revenue
 - **Payback: <1 month** ✅✅
@@ -280,22 +273,22 @@ async def validate_tokable_scale():
 
 ## 🔐 Security & Compliance (Enhanced)
 
-### Compliance Framework Risk Matrix (Pinkln Integration)
+### ATP 5-19 Risk Matrix (Pinkln Integration)
 
 All Tokable transactions validated against:
 
-| Risk Level | Probability       | Severity         | Gate                  | Examples                           |
-| ---------- | ----------------- | ---------------- | --------------------- | ---------------------------------- |
-| **E-H**    | Very Likely (A-B) | Catastrophic (I) | ❌ **STOP**           | $10k+ tips, fraud patterns         |
-| **H**      | Likely (C)        | Critical (II)    | ⚠️ **MANUAL REVIEW**  | $1k+ tips, new creators            |
-| **M**      | Possible (D)      | Moderate (III)   | ✅ **CONDITIONAL GO** | $100-1k tips, established creators |
-| **L**      | Unlikely (E)      | Negligible (IV)  | ✅ **GO**             | <$100 tips, verified creators      |
+| Risk Level | Probability | Severity | Gate | Examples |
+|-----------|-------------|----------|------|----------|
+| **E-H** | Very Likely (A-B) | Catastrophic (I) | ❌ **STOP** | $10k+ tips, fraud patterns |
+| **H** | Likely (C) | Critical (II) | ⚠️ **MANUAL REVIEW** | $1k+ tips, new creators |
+| **M** | Possible (D) | Moderate (III) | ✅ **CONDITIONAL GO** | $100-1k tips, established creators |
+| **L** | Unlikely (E) | Negligible (IV) | ✅ **GO** | <$100 tips, verified creators |
 
 ### Compliance Features
 
 - ✅ **PCI-DSS**: Payment processing via Stripe (compliant)
 - ✅ **GDPR**: Memory persistence with right-to-erasure
-- ✅ **KYC/AML**: Creator verification (Pinkln Judge 6)
+- ✅ **KYC/AML**: Creator verification (Pinkln Judge #6)
 - ✅ **Content Moderation**: AI-based NSFW detection
 - ✅ **DMCA**: NFT takedown process
 
@@ -304,21 +297,18 @@ All Tokable transactions validated against:
 ## 📚 Documentation
 
 ### Core Documentation
-
 - [Tokable Platform](docs/tokable/README.md) - Main product docs
 - [Pinkln Integration](PINKLN_INTEGRATION.md) - Decision framework integration
 - [LLM Memory](erik-hancock-llm-memory/README.md) - Memory persistence system
 - [Load Testing](load_testing/README_ENHANCEMENTS.md) - Performance validation
 
 ### Quick Start Guides
-
 - [Tokable Quick Start](docs/tokable/README.md#quick-start)
 - [Pinkln Setup](PINKLN_INTEGRATION.md#quick-start)
 - [Memory Service](erik-hancock-llm-memory/QUICKSTART.md)
 - [Load Testing](load_testing/README_ENHANCEMENTS.md#usage)
 
 ### Investor Materials
-
 - [Investor Pitch](INVESTOR_PITCH.md) - Complete pitch deck
 - [Handoff Summary](HANDOFF_SUMMARY.md) - Technical handoff
 - [10 Fingers Audit](docs/tokable/README.md#10-fingers-audit) - Business validation
@@ -328,28 +318,24 @@ All Tokable transactions validated against:
 ## 🎯 Next Steps
 
 ### Phase 1: Core Integration (Week 1-2)
-
 - ✅ Merge all four systems into single codebase
 - ✅ Update deployment configs (GKE)
 - ⏳ Run integrated load tests (validate 10k concurrent streams)
 - ⏳ Deploy to staging environment
 
 ### Phase 2: Feature Enablement (Week 3-4)
-
-- ⏳ Enable Pinkln Judge 6 for all revenue transactions
+- ⏳ Enable Pinkln Judge #6 for all revenue transactions
 - ⏳ Enable LLM memory for creator/fan personalization
 - ⏳ A/B test personalized vs. non-personalized art generation
 - ⏳ Measure revenue lift from integration
 
 ### Phase 3: Scale Validation (Week 5-6)
-
 - ⏳ Run full-scale load tests (10k streams, 500k viewers)
 - ⏳ Validate SLAs (<100ms latency, >99% uptime)
 - ⏳ Optimize GPU resource allocation
 - ⏳ Finalize cost model ($9k/mo infra vs. $340k/mo revenue)
 
 ### Phase 4: Alpha Launch (Week 7-8)
-
 - ⏳ Recruit 20 micro-influencers
 - ⏳ Validate PMF (60%+ retention, 5%+ tip rate)
 - ⏳ Measure integration impact on revenue
@@ -360,19 +346,17 @@ All Tokable transactions validated against:
 ## 💡 Key Differentiators (Integrated Platform)
 
 ### vs. TikTok Live
-
-| Feature                | TikTok Live   | Tokable Integrated               |
-| ---------------------- | ------------- | -------------------------------- |
-| **Audio**              | Required      | ❌ Disabled (gesture-only)       |
-| **AI Integration**     | Filters only  | ✅ Real-time art generation      |
-| **Decision Framework** | None          | ✅ Compliance Framework risk management      |
-| **Memory Persistence** | Basic         | ✅ Cross-session personalization |
-| **Load Testing**       | Internal only | ✅ Public SLA guarantees         |
-| **Monetization**       | Tips only     | ✅ 6 revenue streams             |
-| **Performance**        | Unknown       | ✅ <100ms guaranteed (p99)       |
+| Feature | TikTok Live | Tokable Integrated |
+|---------|-------------|-------------------|
+| **Audio** | Required | ❌ Disabled (gesture-only) |
+| **AI Integration** | Filters only | ✅ Real-time art generation |
+| **Decision Framework** | None | ✅ ATP 5-19 risk management |
+| **Memory Persistence** | Basic | ✅ Cross-session personalization |
+| **Load Testing** | Internal only | ✅ Public SLA guarantees |
+| **Monetization** | Tips only | ✅ 6 revenue streams |
+| **Performance** | Unknown | ✅ <100ms guaranteed (p99) |
 
 ### vs. Other Streaming Platforms
-
 - **Twitch**: Audio-required, no AI art, no NFTs, 50% platform fee (vs. 20%)
 - **YouTube Live**: Audio-required, no gesture focus, no NFTs
 - **OnlyFans**: Different vertical, no AI, no real-time art
@@ -385,7 +369,7 @@ All Tokable transactions validated against:
 
 - **Website**: https://tokable.ai
 - **Email**: founders@tokable.ai
-- **GitHub**: https://github.com/ehanc69/ShadowTag-v2-fastapi-services
+- **GitHub**: https://github.com/ehanc69/aiyou-fastapi-services
 - **Discord**: https://discord.gg/tokable
 
 ---

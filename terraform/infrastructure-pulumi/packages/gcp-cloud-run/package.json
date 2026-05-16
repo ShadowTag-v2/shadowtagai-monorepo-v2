@@ -1,0 +1,16 @@
+{
+  "name": "@antigravity/gcp-cloud-run",
+  "version": "1.3.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@pulumi/gcp": "^8.0.0",
+    "@pulumi/pulumi": "^3.150.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

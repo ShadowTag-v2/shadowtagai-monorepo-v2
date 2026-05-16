@@ -27,10 +27,7 @@ REPOS = [
     ("ehanc69/pnkln-stack-evals", "evals/pnkln-stack-evals"),
     ("ehanc69/pnkln-stack-governance", "governance/pnkln-stack-governance"),
     ("ehanc69/pnkln-stack-ui-kit", "apps/pnkln-stack_stack/pnkln-stack-ui-kit"),
-    (
-        "ehanc69/pnkln-stack-offline-appliance",
-        "apps/pnkln-stack_stack/pnkln-stack-offline-appliance",
-    ),
+    ("ehanc69/pnkln-stack-offline-appliance", "apps/pnkln-stack_stack/pnkln-stack-offline-appliance"),
     ("ehanc69/pnkln-stack-risk-engine", "infra/pnkln-stack-risk-engine"),
     ("ehanc69/pnkln-stack-indexer", "packages/pnkln-stack-indexer"),
     ("ehanc69/pnkln-stack-codesmith", "packages/pnkln-stack-codesmith"),
@@ -71,11 +68,7 @@ for git_source, dest_path in REPOS:
 
     print(f"[{repo_name}] Cloning...")
     if not os.path.exists(clone_path):
-        res = subprocess.run(
-            ["git", "clone", f"https://github.com/{git_source}.git", clone_path],
-            capture_output=True,
-            env=env,
-        )
+        res = subprocess.run(["git", "clone", f"https://github.com/{git_source}.git", clone_path], capture_output=True, env=env)
         if res.returncode != 0:
             markdown_table += f"| {repo_name} | BLOCKED | {dest_path} | - | Clone failed (Private/Missing) | Fail |\n"
             continue
@@ -105,7 +98,7 @@ for git_source, dest_path in REPOS:
                 if rep_data.get("blocked"):
                     blockers = str(rep_data.get("block_reasons", "Unknown block"))
                     status = "blocked"
-            except Exception:
+            except:
                 pass
 
     if status == "blocked":

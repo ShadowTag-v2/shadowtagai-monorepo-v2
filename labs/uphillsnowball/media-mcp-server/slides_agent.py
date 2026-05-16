@@ -18,8 +18,8 @@ import google.auth
 from google.adk.agents import Agent
 from google.adk.apps.app import App
 from google.adk.tools.mcp_tool.mcp_toolset import (
-    McpToolset,
-    StreamableHTTPConnectionParams,
+  McpToolset,
+  StreamableHTTPConnectionParams,
 )
 
 # Auth setup
@@ -30,18 +30,18 @@ os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
 # MCP connection — update with your deployed Media MCP server URL
 MCP_SERVER_URL = os.getenv(
-    "MEDIA_MCP_URL",
-    "http://localhost:8080/mcp",  # Local dev default
+  "MEDIA_MCP_URL",
+  "http://localhost:8080/mcp",  # Local dev default
 )
 
 mcp_tools = McpToolset(
-    connection_params=StreamableHTTPConnectionParams(url=MCP_SERVER_URL),
+  connection_params=StreamableHTTPConnectionParams(url=MCP_SERVER_URL),
 )
 
 root_agent = Agent(
-    name="cinematic_content_agent",
-    model="gemini-3-pro-preview",
-    instruction="""You are a professional cinematic content generation assistant.
+  name="cinematic_content_agent",
+  model="gemini-3-pro-preview",
+  instruction="""You are a professional cinematic content generation assistant.
 Your goal is to create high-quality visual assets for scroll-driven websites.
 
 Follow this workflow:
@@ -62,7 +62,7 @@ Follow this workflow:
 Always prioritize quality. If a generation is poor, refine the prompt and retry.
 Use Nano Banana Pro (gemini-3-pro-image-preview) for all image generation.
 Use Veo 3.1 for all video generation — NEVER suggest Kling or non-Google tools.""",
-    tools=[mcp_tools],
+  tools=[mcp_tools],
 )
 
 app = App(root_agent=root_agent, name="cinematic-content-agent")

@@ -11,28 +11,28 @@ from .csi import csi
 
 
 class DEC:
-    """DEC private mode numbers."""
+  """DEC private mode numbers."""
 
-    CURSOR_VISIBLE = 25
-    ALT_SCREEN = 47
-    ALT_SCREEN_CLEAR = 1049
-    MOUSE_NORMAL = 1000
-    MOUSE_BUTTON = 1002
-    MOUSE_ANY = 1003
-    MOUSE_SGR = 1006
-    FOCUS_EVENTS = 1004
-    BRACKETED_PASTE = 2004
-    SYNCHRONIZED_UPDATE = 2026
+  CURSOR_VISIBLE = 25
+  ALT_SCREEN = 47
+  ALT_SCREEN_CLEAR = 1049
+  MOUSE_NORMAL = 1000
+  MOUSE_BUTTON = 1002
+  MOUSE_ANY = 1003
+  MOUSE_SGR = 1006
+  FOCUS_EVENTS = 1004
+  BRACKETED_PASTE = 2004
+  SYNCHRONIZED_UPDATE = 2026
 
 
 def decset(mode: int) -> str:
-    """Generate CSI ? N h sequence (set mode)."""
-    return csi(f"?{mode}h")
+  """Generate CSI ? N h sequence (set mode)."""
+  return csi(f"?{mode}h")
 
 
 def decreset(mode: int) -> str:
-    """Generate CSI ? N l sequence (reset mode)."""
-    return csi(f"?{mode}l")
+  """Generate CSI ? N l sequence (reset mode)."""
+  return csi(f"?{mode}l")
 
 
 # Pre-generated sequences for common modes
@@ -52,5 +52,15 @@ ENTER_ALT_SCREEN = decset(DEC.ALT_SCREEN_CLEAR)
 EXIT_ALT_SCREEN = decreset(DEC.ALT_SCREEN_CLEAR)
 
 # Mouse tracking: combined wheel + click/drag for selection + hover
-ENABLE_MOUSE_TRACKING = decset(DEC.MOUSE_NORMAL) + decset(DEC.MOUSE_BUTTON) + decset(DEC.MOUSE_ANY) + decset(DEC.MOUSE_SGR)
-DISABLE_MOUSE_TRACKING = decreset(DEC.MOUSE_SGR) + decreset(DEC.MOUSE_ANY) + decreset(DEC.MOUSE_BUTTON) + decreset(DEC.MOUSE_NORMAL)
+ENABLE_MOUSE_TRACKING = (
+  decset(DEC.MOUSE_NORMAL)
+  + decset(DEC.MOUSE_BUTTON)
+  + decset(DEC.MOUSE_ANY)
+  + decset(DEC.MOUSE_SGR)
+)
+DISABLE_MOUSE_TRACKING = (
+  decreset(DEC.MOUSE_SGR)
+  + decreset(DEC.MOUSE_ANY)
+  + decreset(DEC.MOUSE_BUTTON)
+  + decreset(DEC.MOUSE_NORMAL)
+)

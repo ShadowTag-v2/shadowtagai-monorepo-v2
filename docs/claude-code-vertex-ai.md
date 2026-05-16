@@ -6,11 +6,11 @@
 
 Before configuring Claude Code with Vertex AI, ensure you have:
 
-- A Google Cloud Platform (GCP) account with billing enabled
-- A GCP project with Vertex AI API enabled
-- Access to desired Claude models (e.g., Claude Sonnet 4.5)
-- Google Cloud SDK (`gcloud`) installed and configured
-- Quota allocated in desired GCP region
+* A Google Cloud Platform (GCP) account with billing enabled
+* A GCP project with Vertex AI API enabled
+* Access to desired Claude models (e.g., Claude Sonnet 4.5)
+* Google Cloud SDK (`gcloud`) installed and configured
+* Quota allocated in desired GCP region
 
 ## Region Configuration
 
@@ -115,7 +115,7 @@ Assign the required IAM permissions:
 
 The `roles/aiplatform.user` role includes the required permissions:
 
-- `aiplatform.endpoints.predict` - Required for model invocation and token counting
+* `aiplatform.endpoints.predict` - Required for model invocation and token counting
 
 For more restrictive permissions, create a custom role with only the permissions above.
 
@@ -137,23 +137,23 @@ Claude Sonnet 4 and Sonnet 4.5 support the [1M token context window](https://doc
 
 If you encounter quota issues:
 
-- Check current quotas or request quota increase through [Cloud Console](https://cloud.google.com/docs/quotas/view-manage)
+* Check current quotas or request quota increase through [Cloud Console](https://cloud.google.com/docs/quotas/view-manage)
 
 If you encounter "model not found" 404 errors:
 
-- Confirm model is Enabled in [Model Garden](https://console.cloud.google.com/vertex-ai/model-garden)
-- Verify you have access to the specified region
-- If using `CLOUD_ML_REGION=global`, check that your models support global endpoints in [Model Garden](https://console.cloud.google.com/vertex-ai/model-garden) under "Supported features". For models that don't support global endpoints, either:
-  - Specify a supported model via `ANTHROPIC_MODEL` or `ANTHROPIC_SMALL_FAST_MODEL`, or
-  - Set a regional endpoint using `VERTEX_REGION_<MODEL_NAME>` environment variables
+* Confirm model is Enabled in [Model Garden](https://console.cloud.google.com/vertex-ai/model-garden)
+* Verify you have access to the specified region
+* If using `CLOUD_ML_REGION=global`, check that your models support global endpoints in [Model Garden](https://console.cloud.google.com/vertex-ai/model-garden) under "Supported features". For models that don't support global endpoints, either:
+  * Specify a supported model via `ANTHROPIC_MODEL` or `ANTHROPIC_SMALL_FAST_MODEL`, or
+  * Set a regional endpoint using `VERTEX_REGION_<MODEL_NAME>` environment variables
 
 If you encounter 429 errors:
 
-- For regional endpoints, ensure the primary model and small/fast model are supported in your selected region
-- Consider switching to `CLOUD_ML_REGION=global` for better availability
+* For regional endpoints, ensure the primary model and small/fast model are supported in your selected region
+* Consider switching to `CLOUD_ML_REGION=global` for better availability
 
 ## Additional resources
 
-- [Vertex AI documentation](https://cloud.google.com/vertex-ai/docs)
-- [Vertex AI pricing](https://cloud.google.com/vertex-ai/pricing)
-- [Vertex AI quotas and limits](https://cloud.google.com/vertex-ai/docs/quotas)
+* [Vertex AI documentation](https://cloud.google.com/vertex-ai/docs)
+* [Vertex AI pricing](https://cloud.google.com/vertex-ai/pricing)
+* [Vertex AI quotas and limits](https://cloud.google.com/vertex-ai/docs/quotas)

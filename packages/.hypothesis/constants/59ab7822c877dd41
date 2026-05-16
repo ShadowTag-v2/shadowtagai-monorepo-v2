@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/context_compactor/cache_break_detector.py
+# hypothesis_version: 6.151.5
+
+[100.0, 100, 'image_block_removal', 'max_tokens_change', 'message_content_edit', 'message_deletion', 'message_insertion', 'model_switch', 'role_change', 'stop_sequence_change', 'system', 'system_prompt_change', 'temperature_change', 'tool']

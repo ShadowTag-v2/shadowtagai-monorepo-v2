@@ -3,10 +3,13 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    include: [
-      'tests/unit/**/*.test.ts',
-      'tests/integration/**/*.test.ts',
-      'tests/utils/**/*.test.ts',
+    include: ['tests/**/*.test.ts', 'tests/**/*.spec.ts'],
+    exclude: [
+      'tests/e2e/**',
+      'tests/playwright/**',
+      'tests/gemini_bridge.spec.ts',
+      'tests/semantic_routing.test.ts',
+      'node_modules/**',
     ],
   },
   resolve: {

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "antigravity_local_operator_invariants",
+  "purpose": "Canonical startup invariants for GitHub auth, git transport, clone/sync policy, and hydration order.",
+  "settings": {
+    "github_control_plane": "github_app",
+    "git_remote_preference": "https",
+    "git_https_repair_command": "gh auth login && gh auth setup-git",
+    "git_push_precondition": "valid_auth_and_correct_remote",
+    "local_clone_role": "indexed_working_copy",
+    "github_app_role": "freshness_and_repo_truth",
+    "monorepo_primary_workspace": "ShadowTag-v2",
+    "monorepo_primary_remote": "https://github.com/ShadowTag-v2/ShadowTag-v2.git",
+    "fallback_backend": "metal",
+    "default_inference_backend": "ane"
+  },
+  "startup_contract": {
+    "hydrate_before_reasoning": true,
+    "ignore_codebase_as_authority": true,
+    "upgrade_codebase_from_memory": true,
+    "load_github_git_invariants_before_repo_actions": true
+  },
+  "procedures": [
+    "Load authority memory first",
+    "Load operator invariants second",
+    "Load monorepo control-plane truth third",
+    "Load active tasks and drift reports fourth",
+    "Only then inspect code or perform Git/GitHub operations",
+    "If remote uses HTTPS and auth fails, repair with gh auth login && gh auth setup-git or switch remote to SSH",
+    "Use GitHub app for repo freshness and truth; use local clones for indexing and execution only"
+  ]
+}

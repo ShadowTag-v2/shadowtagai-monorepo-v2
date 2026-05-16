@@ -1,9 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
-
 from typing import Any
-
 from ..utils.db import pg_conn
 
 
@@ -29,18 +26,7 @@ def insert_atom(
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING atom_id
             """,
-            (
-                repo_id,
-                atom_kind,
-                subject,
-                predicate,
-                object_text,
-                canonical_weight,
-                validity,
-                source_type,
-                source_ref,
-                tags or [],
-            ),
+            (repo_id, atom_kind, subject, predicate, object_text, canonical_weight, validity, source_type, source_ref, tags or []),
         )
         return str(cur.fetchone()[0])
 

@@ -64,7 +64,6 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 ### Production Code (autogen-to-gemini)
 
 **What it provides**:
-
 - ✅ Working Gemini function calling implementation
 - ✅ Kernel functions (ATP_519, judge_six, audit_compress)
 - ✅ Pinkln ecosystem (Judge Six, COR, NS, ShadowTag)
@@ -72,7 +71,6 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 - ✅ Performance: p99 ~85ms (within SLA)
 
 **What it's missing**:
-
 - ❌ SLA contracts (legal protection)
 - ❌ Insurance/reserves (financial protection)
 - ❌ Failover logic (if Gemini down)
@@ -81,7 +79,6 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 ### Strategic Framework (SLA Moat)
 
 **What it provides**:
-
 - ✅ COR.54 analysis (SLA liability risk)
 - ✅ Force majeure contracts (legal protection)
 - ✅ Insurance + reserves (financial protection)
@@ -89,7 +86,6 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 - ✅ Competitive positioning (vs Vertex AI)
 
 **What it's missing**:
-
 - ❌ Production implementation (was mock code)
 - ❌ Native Gemini function calling
 - ❌ Working examples
@@ -97,7 +93,6 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 ### Unified System (merged)
 
 **What we now have**:
-
 - ✅ Production-ready Gemini implementation
 - ✅ SLA contracts and financial protection
 - ✅ Failover logic (enhanced Gemini → Claude → GPT-5)
@@ -110,20 +105,19 @@ This repository combines TWO powerful approaches into a unified AI decision syst
 
 ### SLA Moat Concept → Production Implementation
 
-| SLA Moat Concept             | Production Implementation | Location                                  |
-| ---------------------------- | ------------------------- | ----------------------------------------- |
-| **Glicko-2 dynamic ranking** | ✅ Implemented            | `src/ratings/glicko2.py`                  |
-| **DTE self-evolution**       | ✅ Implemented            | `src/evolution/dte.py`                    |
-| **MAD multi-agent debates**  | ✅ Implemented            | `src/agents/debate.py`                    |
-| **Cheat Sheet Fusion**       | ✅ In progress            | `src/pnkln/judge_six.py`                  |
-| **4-layer failover**         | ⚠️ Enhance Gemini         | `src/core/gemini_function_calling.py`     |
-| **Judge 6**                 | ✅ Implemented            | `src/pnkln/judge_six.py`                  |
-| **Integrated system**        | ✅ Implemented            | `src/integration/unified_orchestrator.py` |
+| SLA Moat Concept | Production Implementation | Location |
+|------------------|---------------------------|----------|
+| **Glicko-2 dynamic ranking** | ✅ Implemented | `src/ratings/glicko2.py` |
+| **DTE self-evolution** | ✅ Implemented | `src/evolution/dte.py` |
+| **MAD multi-agent debates** | ✅ Implemented | `src/agents/debate.py` |
+| **Cheat Sheet Fusion** | ✅ In progress | `src/pnkln/judge_six.py` |
+| **4-layer failover** | ⚠️  Enhance Gemini | `src/core/gemini_function_calling.py` |
+| **Judge #6** | ✅ Implemented | `src/pnkln/judge_six.py` |
+| **Integrated system** | ✅ Implemented | `src/integration/unified_orchestrator.py` |
 
 **Status**:
-
 - ✅ **7 of 7 concepts implemented** in production code
-- ⚠️ **1 enhancement needed**: Add Claude/GPT-5 failover to Gemini
+- ⚠️  **1 enhancement needed**: Add Claude/GPT-5 failover to Gemini
 
 ---
 
@@ -168,12 +162,10 @@ User Request → Gemini times out or errors
 ### 1. Gemini Function Calling Simplifies Failover
 
 **Old approach** (SLA Moat original):
-
 - 4 separate LLM API calls: Gemini → Claude → GPT-5 → Local
 - Each is a full conversation with context
 
 **New approach** (production + enhanced):
-
 - 1 Gemini call with local function tools (primary path)
 - Failover to Claude/GPT-5 **only** if Gemini API entirely down
 - Local functions execute without LLM (deterministic, fast)
@@ -185,7 +177,6 @@ User Request → Gemini times out or errors
 **Technical excellence** (production code) gets us in the door.
 
 **Strategic framework** (docs) closes enterprise deals:
-
 - CTO reads: `src/examples/full_pnkln_stack.py` - "This works!"
 - Legal reads: `docs/contracts/SLA-CONTRACT-TEMPLATE.md` - "This is defensible"
 - CFO reads: `docs/strategy/COR-54-SLA-LIABILITY.md` - "Risk is capped"
@@ -196,13 +187,11 @@ User Request → Gemini times out or errors
 ### 3. Both Branches Were Right
 
 **autogen-to-gemini** was right: Native Gemini function calling is the future
-
 - Simpler than multi-agent orchestration
 - Faster (1 API call vs 3+)
 - Cheaper (70% token reduction)
 
 **SLA Moat** was right: Can't offer SLAs without risk mitigation
-
 - Force majeure contracts (legal protection)
 - Insurance + reserves (financial protection)
 - Failover architecture (technical protection)
@@ -214,7 +203,7 @@ User Request → Gemini times out or errors
 ## Directory Structure
 
 ```
-ShadowTag-v2-fastapi-services/
+aiyou-fastapi-services/
 ├── docs/                                  # Strategic Framework
 │   ├── strategy/
 │   │   ├── COR-54-SLA-LIABILITY.md       # SLA risk analysis
@@ -338,21 +327,18 @@ python src/tests/test_pnkln_integration.py
 ## What's Next
 
 ### Week 2: Production Deployment
-
 - [ ] Deploy to staging
 - [ ] Run load testing (1K, 10K, 100K req/sec)
 - [ ] Validate p99≤90ms under production traffic
 - [ ] Monitor real-world performance
 
 ### Month 2: Enhancement
-
 - [ ] Add Claude/GPT-5 failover to `src/core/gemini_function_calling.py`
 - [ ] Enhance `src/agents/debate.py` with Glicko-weighted voting
 - [ ] Run first DTE evolution iteration (weekly)
 - [ ] Fine-tune based on real production data
 
 ### Quarter 1: Monetization
-
 - [ ] Launch Glicko-Rated Strategy Marketplace ($3M ARR)
 - [ ] Publish DTE-evolved cheat sheets ($10K/customer)
 - [ ] Scale MAD-as-a-Service (1M calls/month, $1.2M ARR)
@@ -363,21 +349,18 @@ python src/tests/test_pnkln_integration.py
 ## Documentation Map
 
 **For Engineers**:
-
 - Start: `README.md` (quick start)
 - Deep dive: `PINKLN_INTEGRATION.md` (architecture)
 - Examples: `src/examples/*.py` (working code)
 - Tests: `src/tests/*.py` (validation)
 
 **For Leadership**:
-
 - Start: `INVESTOR_PITCH.md` (business case)
 - Strategy: `docs/strategy/COR-54-SLA-LIABILITY.md` (risk analysis)
 - Contracts: `docs/contracts/SLA-CONTRACT-TEMPLATE.md` (legal template)
 - Roadmap: `docs/implementation/SLA-MOAT-ROADMAP.md` (4-week plan)
 
 **For Integration**:
-
 - This file: `docs/UNIFIED_ARCHITECTURE.md` (how pieces fit)
 - Merge details: `MERGE_STRATEGY.md` (how we got here)
 - Month 1: `MONTH_1_INTEGRATION_COMPLETE.md` (deliverables)
@@ -388,7 +371,6 @@ python src/tests/test_pnkln_integration.py
 ## Success Metrics
 
 **Technical**:
-
 - ✅ p50 latency: 45ms (Gemini 2.0 Flash)
 - ✅ p95 latency: 75ms
 - ✅ p99 latency: 85ms (within 90ms SLA)
@@ -396,7 +378,6 @@ python src/tests/test_pnkln_integration.py
 - ✅ Working examples: 4 demos + 3 test suites
 
 **Strategic**:
-
 - ✅ SLA contracts: Force majeure template ready
 - ✅ Financial protection: $5M E&O insurance planned
 - ✅ Competitive positioning: vs Vertex AI documented
@@ -404,7 +385,6 @@ python src/tests/test_pnkln_integration.py
 - ✅ Investor materials: Pitch deck complete
 
 **Integration**:
-
 - ✅ Both architectures merged successfully
 - ✅ No code conflicts (production + strategic complement)
 - ✅ All examples working

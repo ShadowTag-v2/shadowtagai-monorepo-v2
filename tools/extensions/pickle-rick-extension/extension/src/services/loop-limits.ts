@@ -1,6 +1,6 @@
-import type { State } from '../types/index.js';
+import type { State } from "../types/index.js";
 
-export type LimitReason = 'jar-complete' | 'time-limit' | 'iteration-limit';
+export type LimitReason = "jar-complete" | "time-limit" | "iteration-limit";
 
 export interface LimitEvaluation {
   exceeded: boolean;
@@ -24,8 +24,8 @@ export function evaluateLoopLimits(
   if (state.jar_complete) {
     return {
       exceeded: true,
-      reason: 'jar-complete',
-      message: 'Jar processing complete',
+      reason: "jar-complete",
+      message: "Jar processing complete",
     };
   }
 
@@ -38,7 +38,7 @@ export function evaluateLoopLimits(
     if (elapsedSeconds >= maxTimeSeconds) {
       return {
         exceeded: true,
-        reason: 'time-limit',
+        reason: "time-limit",
         message: `Time limit exceeded (${elapsedSeconds}/${maxTimeSeconds}s)`,
         elapsedSeconds,
         maxTimeSeconds,
@@ -54,7 +54,7 @@ export function evaluateLoopLimits(
   if (maxIterations > 0 && iteration > maxIterations) {
     return {
       exceeded: true,
-      reason: 'iteration-limit',
+      reason: "iteration-limit",
       message: `Iteration limit exceeded (${iteration}/${maxIterations})`,
     };
   }

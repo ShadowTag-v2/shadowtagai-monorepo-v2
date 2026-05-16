@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 # setup_vertex_agent_resources.py
 
 import os

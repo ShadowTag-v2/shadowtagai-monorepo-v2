@@ -1,7 +1,7 @@
 # GEMINI CLI TUI RENDERING - PLATFORM INTEGRATION ANALYSIS
 
 **Integration Date:** 2025-11-17
-**Component:** Terminal User Interface (TUI) for Judge 6 + Complete Platform
+**Component:** Terminal User Interface (TUI) for Judge #6 + Complete Platform
 **Status:** NEW CAPABILITY - Developer Experience Enhancement
 **Value Impact:** Developer productivity +2×, Governance transparency +100%
 
@@ -13,34 +13,47 @@
 
 **WHY IT MATTERS:**
 
+
 - **Developer Productivity:** CLI-first developers avoid context switching to web dashboard
+
 
 - **Governance Transparency:** All 21 Judge Architecture layers visible in terminal
 
+
 - **Real-time Feedback:** See multi-agent debates, regulatory scans, risk assessments live
+
 
 - **Adoption:** CLI tools have 3× higher adoption among technical teams vs web dashboards
 
 **INTEGRATION WITH EXISTING PLATFORM:**
 This TUI layer sits **on top of** all backend systems we've integrated:
 
+
 - AutoGen Branch: Visualize multi-agent debates in real-time
+
 
 - Judge Architecture (21 layers): Interactive governance validation
 
+
 - LLM Memory Persistence: Memory sync status + 4-LLM orchestration progress
+
 
 - Roll-in Plugins: TUI rendering for `/analyze-ingestion` command
 
-- PiCO PRISM: Compliance Framework risk matrix heatmaps
+
+- PiCO PRISM: ATP 5-19 risk matrix heatmaps
 
 **VALUE IMPACT:**
 
+
 - Developer onboarding: 3-5 days → 2-3 days (TUI makes governance intuitive)
+
 
 - Decision validation: 30 sec (web) → 5 sec (CLI) = **6× faster**
 
+
 - Adoption rate: 3× higher (CLI users prefer terminal over web)
+
 
 - Cost: $0 (MIT licensed Ink/Blessed, free npm hosting)
 
@@ -62,18 +75,22 @@ Web Dashboard
 │ ├─ Judge Architecture (21 Governance Layers)           │
 │ ├─ LLM Memory Persistence (4-LLM Orchestration)        │
 │ ├─ Roll-in Plugins (Gemini Ingestion Analysis)         │
-│ └─ PiCO PRISM (Compliance Framework Risk Assessment)               │
+│ └─ PiCO PRISM (ATP 5-19 Risk Assessment)               │
 └─────────────────────────────────────────────────────────┘
 
 ```
 
 **Pain Points:**
 
+
 - Context switching penalty (terminal → browser → terminal): 30 sec avg
+
 
 - Web dashboard requires authentication, network latency
 
+
 - No real-time streaming (must refresh page for updates)
+
 
 - CLI-first developers resist web tools (60% prefer terminal)
 
@@ -104,7 +121,7 @@ Developer (stays in terminal)
 │ │   → TUI: Memory sync + orchestration progress        │
 │ ├─ Roll-in Plugins (Gemini Ingestion Analysis)         │
 │ │   → TUI: /analyze-ingestion heatmaps                 │
-│ └─ PiCO PRISM (Compliance Framework Risk Assessment)               │
+│ └─ PiCO PRISM (ATP 5-19 Risk Assessment)               │
 │     → TUI: Risk matrix + Monte Carlo visualization     │
 └─────────────────────────────────────────────────────────┘
 
@@ -112,11 +129,15 @@ Developer (stays in terminal)
 
 **Benefits:**
 
+
 - Zero context switching (terminal-native)
+
 
 - Real-time streaming (see decisions as they happen)
 
+
 - Offline capable (local caching)
+
 
 - 6× faster validation (5 sec vs 30 sec)
 
@@ -199,9 +220,12 @@ const MultiAgentDebate = ({ decision }) => {
 
 **Value Impact:**
 
+
 - Decision transparency: Developers see WHY each agent voted (reasoning visible)
 
+
 - Confidence in automation: Real-time validation builds trust
+
 
 - Debugging: Immediately spot disagreements (e.g., Diversity Advocate dissent)
 
@@ -302,15 +326,18 @@ const JudgeArchitectureScanner = ({ decision }) => {
 
 **Value Impact:**
 
+
 - Governance transparency: See exactly which layer failed (not just final verdict)
 
+
 - Debugging: Identify specific blocker (e.g., "DSA 'Why this?' UI missing")
+
 
 - Trust: Developers understand decision rationale (not black box)
 
 ---
 
-### Compliance Framework Risk Matrix Heatmap
+### ATP 5-19 Risk Matrix Heatmap
 
 **Use Case:** Visualize probability × severity → risk level (EH/H/M/L)
 
@@ -337,7 +364,7 @@ const RiskMatrixHeatmap = ({ risk }) => {
 
   return (
     <Box flexDirection="column">
-      <Text bold>Compliance Framework Risk Matrix</Text>
+      <Text bold>ATP 5-19 Risk Matrix</Text>
       <Box>
         <Text>
           ┌─────────────────┐
@@ -388,7 +415,7 @@ const MemorySyncStatus = () => {
 
       <Box marginTop={1} borderStyle="round" borderColor="cyan">
         <Text>
-          pnkln Memory Loaded: Judge 6, ShadowTag 2.0, Cor/NS, Judge Architecture (21 layers)
+          pnkln Memory Loaded: Judge #6, ShadowTag 2.0, Cor/NS, Judge Architecture (21 layers)
         </Text>
       </Box>
     </Box>
@@ -466,9 +493,12 @@ const FourLLMOrchestration = ({ query }) => {
 
 **Value Impact:**
 
+
 - Transparency: See which LLM is processing each thread
 
+
 - Quality confidence: 3 rounds × 3 LLMs = 9 validations visible
+
 
 - Cost awareness: Show token usage per LLM (Gemini 40%, GPT-5 15%, etc.)
 
@@ -643,33 +673,52 @@ const MonteCarloSimulation = ({ params }) => {
 
 **Before TUI (Web Dashboard):**
 
+
 - Decision validation workflow:
+
+
   1. Terminal → Browser (context switch): 10 sec
+
 
   2. Load web dashboard: 3 sec
 
+
   3. Enter decision details: 5 sec
+
 
   4. Submit + wait for results: 8 sec
 
+
   5. Review verdict: 3 sec
 
+
   6. Browser → Terminal (context switch): 1 sec
+
+
   - **Total: 30 seconds per validation**
 
 **After TUI (Terminal-Native):**
 
+
 - Decision validation workflow:
+
+
   1. Type command: `judge6 scan "Launch new API feature"` (2 sec)
 
+
   2. Real-time streaming results: 3 sec
+
+
   - **Total: 5 seconds per validation**
 
 **Productivity Impact:**
 
+
 - **6× faster** validation (30 sec → 5 sec)
 
+
 - **Zero context switching** (stay in terminal)
+
 
 - **100 decisions/day** → **600 decisions/day** (theoretical max, practical ~300/day)
 
@@ -707,17 +756,20 @@ Annual value (per developer):
 
 **CLI vs Web Dashboard Adoption (Historical Data):**
 
-| Metric                   | Web Dashboard                      | CLI Tool              | TUI CLI (Projected)              |
-| ------------------------ | ---------------------------------- | --------------------- | -------------------------------- |
-| **Initial adoption**     | 40% (reluctance to leave terminal) | 75% (terminal-native) | **85%** (interactive + visual)   |
-| **Daily active usage**   | 30% (must remember URL)            | 60% (muscle memory)   | **80%** (persistent in terminal) |
-| **Power user retention** | 50% (GUI friction)                 | 80% (scriptable)      | **90%** (scriptable + visual)    |
+| Metric | Web Dashboard | CLI Tool | TUI CLI (Projected) |
+|--------|--------------|----------|---------------------|
+| **Initial adoption** | 40% (reluctance to leave terminal) | 75% (terminal-native) | **85%** (interactive + visual) |
+| **Daily active usage** | 30% (must remember URL) | 60% (muscle memory) | **80%** (persistent in terminal) |
+| **Power user retention** | 50% (GUI friction) | 80% (scriptable) | **90%** (scriptable + visual) |
 
 **Projected Impact:**
 
+
 - **3× higher adoption** among CLI-first developers
 
+
 - **Perfect retention** (terminal tools become muscle memory)
+
 
 - **Viral growth** (developers demo TUI to teammates, "this is cool" factor)
 
@@ -727,29 +779,40 @@ Annual value (per developer):
 
 **Development Costs:**
 
+
 - Week 1: Ink setup + basic UI (40 hours × $80/hour = $3,200)
 
-- Week 2: Judge 6 + AutoGen integration (40 hours × $80/hour = $3,200)
+
+- Week 2: Judge #6 + AutoGen integration (40 hours × $80/hour = $3,200)
+
 
 - Week 3: Polish + testing (40 hours × $80/hour = $3,200)
+
 
 - **Total: $9,600 one-time**
 
 **Operational Costs:**
 
+
 - Ink/Blessed: **$0** (MIT licensed)
+
 
 - npm hosting: **$0** (public package)
 
+
 - CloudFlare Workers (CLI API backend): **$5/month** (10M requests)
+
 
 - **Total: $5/month**
 
 **Revenue (Upsell Opportunities):**
 
+
 - CLI tool: **Free** (adoption tool, developer marketing)
 
+
 - Web dashboard upgrade: **$49/month** (teams want canvas view + sharing)
+
 
 - Enterprise tier: **$499/month** (SSO + compliance exports + audit logs)
 
@@ -786,35 +849,48 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 **Day 1-2: Ink Setup + Basic UI**
 
+
 - [ ] Create `judge6-cli/` directory structure
+
 
 - [ ] Install dependencies: `npm install ink ink-text-input ink-spinner`
 
+
 - [ ] Build basic TUI shell (header + content + input)
+
 
 - [ ] Test alternate screen buffer (verify flicker-free)
 
-**Day 3-4: Judge 6 API Integration**
+**Day 3-4: Judge #6 API Integration**
+
 
 - [ ] Connect to Judge Architecture backend (`/api/v1/judge/validate`)
 
+
 - [ ] Stream results via Server-Sent Events (SSE)
+
 
 - [ ] Display 21-layer validation in real-time
 
-**Day 5: Compliance Framework Risk Matrix**
+**Day 5: ATP 5-19 Risk Matrix**
+
 
 - [ ] Build ASCII heatmap component
 
+
 - [ ] Highlight current risk position (probability × severity)
+
 
 - [ ] Show recommended action (REJECT/ESCALATE/MONITOR/ACCEPT)
 
 **Day 6-7: AutoGen Multi-Agent Debate**
 
+
 - [ ] Stream debate rounds from `/api/v1/debate/stream`
 
+
 - [ ] Display agent votes with reasoning
+
 
 - [ ] Show weighted consensus calculation
 
@@ -824,35 +900,48 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 **Day 8-9: Mouse Navigation + Sticky Headers**
 
+
 - [ ] Enable mouse support in Ink
+
 
 - [ ] Click navigation between layers
 
+
 - [ ] Sticky header (always visible)
+
 
 - [ ] Anchored prompt (bottom of screen)
 
 **Day 10-11: LLM Memory + 4-LLM Orchestration**
 
+
 - [ ] Memory sync status dashboard
 
+
 - [ ] 4-LLM orchestration progress (Grok → Sonnet → 3-LLM)
+
 
 - [ ] Real-time token usage display
 
 **Day 12-13: PiCO PRISM Monte Carlo**
 
+
 - [ ] Progress bar for 10K simulations
 
+
 - [ ] ROI percentiles visualization (p10/p50/p90/p99)
+
 
 - [ ] Success rate + recommendation display
 
 **Day 14: Flicker Testing**
 
+
 - [ ] Test on iTerm2, Wezterm, Ghostty, VSCode, Windows Terminal
 
+
 - [ ] Verify zero flicker across all terminals
+
 
 - [ ] Benchmark: 1000 decisions/sec rendering (stress test)
 
@@ -862,33 +951,45 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 **Day 15-16: npm Package Setup**
 
+
 - [ ] Create `@pnkln/judge6-cli` package
 
+
 - [ ] Write `package.json` with proper bin scripts
+
 
 - [ ] Test global install: `npm install -g @pnkln/judge6-cli`
 
 **Day 17-18: GKE Integration**
 
-- [ ] CLI talks to Judge 6 service via gRPC
+
+- [ ] CLI talks to Judge #6 service via gRPC
+
 
 - [ ] Authentication (API keys + OAuth)
+
 
 - [ ] Rate limiting (prevent abuse)
 
 **Day 19-20: Documentation**
 
+
 - [ ] Usage guide (all commands)
 
+
 - [ ] Demo video (record TUI in action)
+
 
 - [ ] Troubleshooting FAQ
 
 **Day 21: Launch**
 
+
 - [ ] Publish to npm
 
+
 - [ ] Announce on Twitter/LinkedIn
+
 
 - [ ] Internal rollout (50 developers)
 
@@ -898,15 +999,15 @@ ROI: $470,760 / $9,660 (dev + annual ops) = 48.7× (>>3× bootstrap gate)
 
 ### Target Terminals (80% Coverage)
 
-| Terminal                     | Alternate Buffer  | Mouse      | Unicode | Priority                 |
-| ---------------------------- | ----------------- | ---------- | ------- | ------------------------ |
-| **iTerm2** (macOS)           | ✅                | ✅         | ✅      | **P0** (15% Mac devs)    |
-| **Wezterm** (cross-platform) | ✅                | ✅         | ✅      | **P0** (GPU-accelerated) |
-| **Ghostty** (new)            | ✅                | ✅         | ✅      | **P0** (fast, modern)    |
-| **VSCode** (integrated)      | ✅                | ⚠️ Limited | ✅      | **P0** (50% devs)        |
-| **Windows Terminal**         | ✅                | ✅         | ✅      | **P1** (Windows support) |
-| **macOS Terminal**           | ✅                | ❌         | ✅      | **P2** (no mouse)        |
-| **tmux/screen**              | ⚠️ Nested buffers | ❌         | ✅      | **P3** (conflicts)       |
+| Terminal | Alternate Buffer | Mouse | Unicode | Priority |
+|----------|------------------|-------|---------|----------|
+| **iTerm2** (macOS) | ✅ | ✅ | ✅ | **P0** (15% Mac devs) |
+| **Wezterm** (cross-platform) | ✅ | ✅ | ✅ | **P0** (GPU-accelerated) |
+| **Ghostty** (new) | ✅ | ✅ | ✅ | **P0** (fast, modern) |
+| **VSCode** (integrated) | ✅ | ⚠️ Limited | ✅ | **P0** (50% devs) |
+| **Windows Terminal** | ✅ | ✅ | ✅ | **P1** (Windows support) |
+| **macOS Terminal** | ✅ | ❌ | ✅ | **P2** (no mouse) |
+| **tmux/screen** | ⚠️ Nested buffers | ❌ | ✅ | **P3** (conflicts) |
 
 **Testing Matrix:**
 
@@ -940,66 +1041,101 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 **R001: TUI Complexity Not Justified (Probability: MEDIUM, Impact: HIGH)**
 
+
 - **Description:** Developers prefer simple JSON output over interactive TUI
 
+
 - **Mitigation:**
+
+
   - A/B test: 50% get TUI, 50% get JSON output (`judge6 scan --json`)
+
 
   - Measure adoption: TUI users vs JSON users (30-day retention)
 
+
   - If TUI retention <50% of JSON users → kill TUI, JSON-only
+
 
 - **Kill Switch Trigger:** TUI adoption <100 downloads in Month 1
 
 **R002: Ink Bundle Size Complaints (Probability: LOW, Impact: MEDIUM)**
 
+
 - **Description:** Ink adds 5MB to CLI bundle → slow npm install
 
+
 - **Mitigation:**
+
+
   - Lazy load Ink (only when TUI mode enabled)
+
 
   - Offer lightweight version (`judge6-lite`) without TUI
 
+
   - If complaints >10% of users → switch to Blessed (smaller bundle)
+
 
 - **Kill Switch Trigger:** Bundle size complaints >10% of users
 
 **R003: Alternate Buffer Confusion (Probability: LOW, Impact: LOW)**
 
+
 - **Description:** Users lose terminal history when alternate buffer exits
 
+
 - **Mitigation:**
+
+
   - Add `--no-alternate-buffer` flag (inline rendering)
+
 
   - Document expected behavior (exit restores history)
 
+
   - If confusion >20% of support tickets → default to inline mode
+
 
 - **Kill Switch Trigger:** Support tickets >20% buffer-related
 
 **R004: Mouse Support Breaks on VSCode (Probability: MEDIUM, Impact: MEDIUM)**
 
+
 - **Description:** VSCode terminal has limited mouse support (no click navigation)
 
+
 - **Mitigation:**
+
+
   - Fallback to keyboard-only navigation (arrow keys)
+
 
   - Display help text: "Mouse not supported in VSCode, use arrow keys"
 
+
   - If VSCode users >50% of total → prioritize keyboard over mouse
+
 
 - **Kill Switch Trigger:** VSCode compatibility issues block >30% users
 
 **R005: Terminal Compatibility Issues (Probability: LOW, Impact: HIGH)**
 
+
 - **Description:** TUI broken on certain terminals (e.g., old tmux versions)
 
+
 - **Mitigation:**
+
+
   - Detect terminal capabilities (via `$TERM` environment variable)
+
 
   - Gracefully degrade to JSON output on unsupported terminals
 
+
   - Display error: "TUI not supported on $TERM, use --json flag"
+
 
 - **Kill Switch Trigger:** Compatibility issues >15% of users
 
@@ -1011,19 +1147,26 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 **Investment:**
 
+
 - Development: $9,600 (3 weeks × $3,200/week)
 
+
 - Annual operations: $60 (CloudFlare Workers)
+
 
 - **Total 18-month cost:** $9,600 + $90 = $9,690
 
 **Return (18 months, 50 developers):**
 
+
 - Productivity savings: $432,000/year × 1.5 years = $648,000
+
 
 - Upsell revenue (web dashboard): $8,820/year × 1.5 years = $13,230
 
+
 - Upsell revenue (enterprise): $29,940/year × 1.5 years = $44,910
+
 
 - **Total 18-month return:** $648,000 + $13,230 + $44,910 = $706,140
 
@@ -1035,17 +1178,23 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 **CAC (Customer Acquisition Cost):**
 
+
 - CLI tool is free (adoption tool, no CAC)
 
+
 - Web dashboard: Marketing spend = $0 (organic from CLI users)
+
 
 - **Effective CAC:** $0 (CLI-to-paid conversion funnel)
 
 **LTV (Lifetime Value, 12 months):**
 
+
 - Web dashboard: $49/mo × 12 mo × 30% conversion × 50 devs = $8,820
 
+
 - Enterprise: $499/mo × 12 mo × 10% conversion × 50 devs = $29,940
+
 
 - **Total LTV:** $8,820 + $29,940 = $38,760
 
@@ -1061,9 +1210,12 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 **Measured Latency:**
 
+
 - Ink rendering: ~16ms per frame (60 FPS)
 
+
 - Blessed rendering: ~8ms per frame (120 FPS)
+
 
 - Raw ANSI: ~2ms per frame (500 FPS)
 
@@ -1075,21 +1227,29 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 **Security Considerations:**
 
+
 - **No secrets in CLI:** API keys via environment variables only
 
-- **HTTPS only:** All API calls to Judge 6 backend over TLS
+
+- **HTTPS only:** All API calls to Judge #6 backend over TLS
+
 
 - **No telemetry:** CLI doesn't track usage without opt-in
+
 
 - **Audit logs:** All decisions logged server-side (immutable)
 
 **Security Validation:**
 
+
 - [ ] Audit CLI source code (no secrets hardcoded)
+
 
 - [ ] Verify TLS certificate pinning (prevent MITM)
 
+
 - [ ] Test: API key rotation (CLI handles gracefully)
+
 
 - [ ] Penetration test: Attempt to extract API keys from CLI binary
 
@@ -1133,10 +1293,10 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 ║ ├─ Judge Architecture: 21-layer interactive validation   ║
 ║ ├─ LLM Memory: Sync status + 4-LLM orchestration         ║
 ║ ├─ Roll-in Plugins: /analyze-ingestion TUI rendering     ║
-║ └─ PiCO PRISM: Compliance Framework risk matrix + Monte Carlo        ║
+║ └─ PiCO PRISM: ATP 5-19 risk matrix + Monte Carlo        ║
 ╠═══════════════════════════════════════════════════════════╣
 ║ NEXT ACTIONS (IMMEDIATE):                                 ║
-║ 1. Week 1: Ink setup + Judge 6 integration              ║
+║ 1. Week 1: Ink setup + Judge #6 integration              ║
 ║ 2. Week 2: AutoGen + LLM Memory + PiCO PRISM components  ║
 ║ 3. Week 3: npm publish + internal rollout (50 developers)║
 ║ 4. Month 1: Measure adoption vs JSON output (A/B test)   ║
@@ -1155,31 +1315,43 @@ tmux new-session -d -s test "judge6 scan 'Test decision'"
 
 **BEFORE GEMINI CLI TUI:**
 
+
 - Platform architecture complete (AutoGen, Judge, Memory, Plugins, PiCO PRISM)
 
+
 - **Gap:** All governance tools web-only (requires browser context switch)
+
 
 - **Pain:** 30 sec per validation, 40% adoption among CLI-first developers
 
 **AFTER GEMINI CLI TUI:**
 
+
 - **NEW CAPABILITY:** Terminal-native interface for all governance systems
+
 
 - **Developer productivity:** 6× faster validation (30 sec → 5 sec)
 
+
 - **Adoption:** 3× higher (85% vs 40% for web dashboard)
 
+
 - **Value unlock:** $648K annual productivity gain (50 developers)
+
 
 - **Integration:** Unified TUI for AutoGen debates, Judge Architecture validation, LLM Memory sync, Ingestion analysis, PiCO PRISM risk assessment
 
 **VALUE IMPACT ON TOTAL PLATFORM:**
 
+
 - Original valuation (AutoGen + Judge + Memory): $82M-$98M
+
 
 - **TUI addition:** +$648K annual productivity (capitalized at 10× = +$6.5M)
 
+
 - **Developer adoption multiplier:** 3× (increases platform stickiness)
+
 
 - **Total valuation:** $88M-$104M (+7% from TUI layer)
 
@@ -1191,4 +1363,4 @@ The Gemini CLI TUI rendering implementation is a **Developer Experience (DX) mul
 
 **This is the "last mile" integration** that ties together AutoGen, Judge Architecture, LLM Memory, Roll-in Plugins, and PiCO PRISM into a unified terminal experience. Without TUI, developers resist governance tools. With TUI, governance becomes muscle memory.
 
-**Next Action:** Begin Week 1 implementation (Ink setup + Judge 6 integration).
+**Next Action:** Begin Week 1 implementation (Ink setup + Judge #6 integration).

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+node scripts/github-visibility.cjs || { echo "Pre-commit blocked: GitHub not visible."; exit 1; }
+

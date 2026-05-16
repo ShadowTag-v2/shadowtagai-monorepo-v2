@@ -1,2 +1,4 @@
 #!/usr/bin/env sh
-./scripts/dead-code-audit.sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx lint-staged --quiet

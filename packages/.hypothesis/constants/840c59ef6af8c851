@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/gemini_interactions/client.py
+# hypothesis_version: 6.151.5
+
+[2.0, 'GEMINI_API_KEY', 'api_key', 'arguments', 'auto', 'call_id', 'completion_tokens', 'content', 'content.delta', 'content.start', 'content.stop', 'delta', 'error', 'event_id', 'event_type', 'function_call', 'function_result', 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-3-pro-preview', 'generation_config', 'id', 'in_progress', 'include_input', 'index', 'input', 'interaction', 'interaction.complete', 'interaction.start', 'last_event_id', 'model', 'name', 'outputs', 'prompt_tokens', 'response_format', 'response_modalities', 'result', 'status', 'store', 'stream', 'system_instruction', 'text', 'thinking_summaries', 'thought_summary', 'tools', 'total_tokens', 'type', 'unknown', 'usage']

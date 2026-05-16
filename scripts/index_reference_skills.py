@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 
 ROOT = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
@@ -30,3 +31,5 @@ with open(output_path, "w") as f:
                 f.write(f"- `{item}`\n")
     else:
         f.write("*No reference directory found.*\n")
+
+print("[indexer] Reference index generated at docs/REFERENCE_INDEX.md")

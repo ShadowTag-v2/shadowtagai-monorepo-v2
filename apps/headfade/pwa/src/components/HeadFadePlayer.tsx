@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { RevealState } from '@/hooks/useTuringFeed';
 
 export interface AdSlot {
@@ -201,7 +201,9 @@ export function HeadFadePlayer({
       aria-label="Video player"
       className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden group select-none"
       onMouseMove={resetControlsTimer}
-      onMouseLeave={() => { if (playing) setShowControls(false); }}
+      onMouseLeave={() => {
+        if (playing) setShowControls(false);
+      }}
     >
       {/* Main video */}
       <video
@@ -230,7 +232,9 @@ export function HeadFadePlayer({
             animation: 'headfade-flash-in 200ms ease-out',
           }}
         >
-          <span className="text-5xl" aria-hidden="true">{revealState === 'correct' ? '✅' : '❌'}</span>
+          <span className="text-5xl" aria-hidden="true">
+            {revealState === 'correct' ? '✅' : '❌'}
+          </span>
           <span
             className="text-[18px] font-black text-white"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
@@ -283,11 +287,22 @@ export function HeadFadePlayer({
                 aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark video'}
                 onClick={onBookmark}
                 className="p-2.5 rounded-full transition-colors"
-                style={{ backgroundColor: isBookmarked ? '#7C3AED' : 'rgba(0,0,0,0.45)' }}
+                style={{ backgroundColor: isBookmarked ? '#0891B2' : 'rgba(0,0,0,0.45)' }}
               >
-                <svg className="w-4 h-4 text-white" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="w-4 h-4 text-white"
+                  fill={isBookmarked ? 'currentColor' : 'none'}
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <title>{isBookmarked ? 'Remove bookmark' : 'Bookmark'}</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                  />
                 </svg>
               </button>
             )}
@@ -302,8 +317,16 @@ export function HeadFadePlayer({
           className="pointer-events-auto absolute inset-0 flex items-center justify-center"
         >
           {!playing && (
-            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(124,58,237,0.85)' }}>
-              <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: 'rgba(8,145,178,0.85)' }}
+            >
+              <svg
+                className="w-7 h-7 text-white ml-1"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
                 <title>Play</title>
                 <path d="M8 5v14l11-7z" />
               </svg>
@@ -312,7 +335,10 @@ export function HeadFadePlayer({
         </button>
 
         {/* Bottom bar: vote + scrub + mute */}
-        <div className="pointer-events-auto flex flex-col gap-2 p-3" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)' }}>
+        <div
+          className="pointer-events-auto flex flex-col gap-2 p-3"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)' }}
+        >
           {/* Vote buttons — ghost opacity until voted */}
           <div className="flex gap-2">
             <button
@@ -323,9 +349,9 @@ export function HeadFadePlayer({
               onClick={onVoteAI}
               className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[11px] font-bold transition-all duration-200"
               style={{
-                backgroundColor: userVote === 'ai' ? '#7C3AED' : 'rgba(124,58,237,0.18)',
+                backgroundColor: userVote === 'ai' ? '#0891B2' : 'rgba(8,145,178,0.18)',
                 color: '#fff',
-                border: `1px solid ${userVote === 'ai' ? '#7C3AED' : 'rgba(167,139,250,0.45)'}`,
+                border: `1px solid ${userVote === 'ai' ? '#0891B2' : 'rgba(103,232,249,0.45)'}`,
                 backdropFilter: 'blur(4px)',
                 opacity: userVote === null ? 0.7 : 1,
               }}
@@ -354,12 +380,22 @@ export function HeadFadePlayer({
           {/* Vote result bar — only shown after voting */}
           {userVote && (
             <div className="flex flex-col gap-0.5">
-              <div className="flex w-full h-[4px] rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                <div className="h-full transition-[width] duration-500 rounded-full" style={{ width: `${aiPct}%`, backgroundColor: '#A78BFA' }} />
+              <div
+                className="flex w-full h-[4px] rounded-full overflow-hidden"
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+              >
+                <div
+                  className="h-full transition-[width] duration-500 rounded-full"
+                  style={{ width: `${aiPct}%`, backgroundColor: '#67E8F9' }}
+                />
               </div>
               <div className="flex justify-between text-[10px] text-white/80">
-                <span>🤖 {aiPct}% · {voteAI.toLocaleString()}</span>
-                <span>👤 {humanPct}% · {voteHuman.toLocaleString()}</span>
+                <span>
+                  🤖 {aiPct}% · {voteAI.toLocaleString()}
+                </span>
+                <span>
+                  👤 {humanPct}% · {voteHuman.toLocaleString()}
+                </span>
               </div>
             </div>
           )}
@@ -374,14 +410,26 @@ export function HeadFadePlayer({
               style={{ backgroundColor: 'transparent', padding: '12px 0', border: 'none' }}
               onClick={seek as unknown as React.MouseEventHandler<HTMLButtonElement>}
               onKeyDown={(e) => {
-                if (e.key === 'ArrowRight' && videoRef.current) videoRef.current.currentTime = Math.min(videoRef.current.duration, videoRef.current.currentTime + 5);
-                if (e.key === 'ArrowLeft' && videoRef.current) videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 5);
+                if (e.key === 'ArrowRight' && videoRef.current)
+                  videoRef.current.currentTime = Math.min(
+                    videoRef.current.duration,
+                    videoRef.current.currentTime + 5,
+                  );
+                if (e.key === 'ArrowLeft' && videoRef.current)
+                  videoRef.current.currentTime = Math.max(0, videoRef.current.currentTime - 5);
               }}
             >
-              <div className="absolute left-0 right-0 h-[4px] rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.3)', top: '50%', transform: 'translateY(-50%)' }}>
+              <div
+                className="absolute left-0 right-0 h-[4px] rounded-full"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.3)',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              >
                 <div
                   className="h-full rounded-full transition-[width] duration-100"
-                  style={{ width: `${progress}%`, backgroundColor: '#7C3AED' }}
+                  style={{ width: `${progress}%`, backgroundColor: '#0891B2' }}
                 />
               </div>
             </button>
@@ -393,12 +441,28 @@ export function HeadFadePlayer({
               className="p-2 rounded-full"
               style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
             >
-              <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg
+                className="w-3.5 h-3.5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
                 <title>{muted ? 'Unmute' : 'Mute'}</title>
                 {muted ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M12 6v12m-5.657-5.657A4 4 0 016.343 12M9 9l6 6" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15.536 8.464a5 5 0 010 7.072M12 6v12m-5.657-5.657A4 4 0 016.343 12M9 9l6 6"
+                  />
                 )}
               </svg>
             </button>

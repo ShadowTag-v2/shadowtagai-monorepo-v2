@@ -1,0 +1,14 @@
+#main-container {
+    align: center middle;
+}
+
+.title {
+    text-align: center;
+    text-style: bold;
+    margin-bottom: 2;
+}
+
+#status {
+    text-align: center;
+    color: $accent;
+}

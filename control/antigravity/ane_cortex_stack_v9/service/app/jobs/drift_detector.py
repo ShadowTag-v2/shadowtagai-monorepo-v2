@@ -1,13 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
-
-import json
 from pathlib import Path
-
-from ..adapters.authority_state import AuthorityState, record_authority_event
 from ..config import load_settings
+from ..adapters.authority_state import AuthorityState, record_authority_event
 from ..utils.db import pg_conn
+import json
 
 
 def detect_drift():
@@ -57,15 +54,7 @@ def detect_drift():
                 INSERT INTO drift_reports (repo_id, rel_path, drift_kind, expected, observed, severity, suggested_fix)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """,
-                (
-                    s.repo_id,
-                    f["rel_path"],
-                    f["drift_kind"],
-                    f["expected"],
-                    f["observed"],
-                    f["severity"],
-                    f["suggested_fix"],
-                ),
+                (s.repo_id, f["rel_path"], f["drift_kind"], f["expected"], f["observed"], f["severity"], f["suggested_fix"]),
             )
     if findings:
         record_authority_event(s.postgres_dsn, s.repo_id, "drift_detected", "repo drift", json.dumps(findings))

@@ -46,11 +46,11 @@ Freed:   10% capacity for future updates
   └─ #9: GPU latency SOP - consolidated into new SLA entry
 
 ✓ CONSOLIDATED (1 entry):
-  └─ Judge 6: Improved precision, added "synchronous validation"
+  └─ Judge #6: Improved precision, added "synchronous validation"
 
 ✓ ADDED (2 entries):
   ├─ #15: GKE Inference Ref Arch (4 namespaces, $60-65K/mo)
-  └─ #16: p99 ≤90ms THE SLA + Judge 6 critical path enforcement
+  └─ #16: p99 ≤90ms THE SLA + Judge #6 critical path enforcement
 ```
 
 **OPTIMIZED MEMORY STATE:**
@@ -69,12 +69,12 @@ ARCHITECTURE DOCS (Cor Series):
 
 TECHNICAL STACK (Implementation):
 ├─ #7:  Cognitive Stack v5 (RoT, MoE-CL, CoDA/DLM, Qwen3-VL)
-├─ #8:  Judge 6: 98% coverage, synchronous, auto-rollback <95%
+├─ #8:  Judge #6: 98% coverage, synchronous, auto-rollback <95%
 ├─ #12: ShadowTag v2.0: DCT watermark, MUST stay in Core Stack
 ├─ #13: Google Hypercomputer: 40/35/15/5/5 LLM allocation
-├─ #14: Tech priorities: AutoGen, Judge 6, ShadowTag, LangGraph
+├─ #14: Tech priorities: AutoGen, Judge #6, ShadowTag, LangGraph
 ├─ #15: GKE: 4 namespaces on Vertex AI, $60-65K/mo
-└─ #16: SLA: p99 ≤90ms, Judge 6 critical path, 98% gate
+└─ #16: SLA: p99 ≤90ms, Judge #6 critical path, 98% gate
 
 EXCLUSIONS & CLARIFICATIONS:
 ├─ #10: ActiveShield = ONLY physical face mask (not a company)
@@ -86,7 +86,7 @@ EXCLUSIONS & CLARIFICATIONS:
 ✅ **Eliminated contradictions:** Removed “skip flagging violations” (actually should flag per CRM-JR)
 ✅ **Removed redundancy:** Consolidated GPU latency details into crisp SLA statement
 ✅ **Added critical context:** GKE deployment architecture + non-negotiable SLA requirements
-✅ **Improved precision:** Judge 6 now explicitly “synchronous validation in critical path”
+✅ **Improved precision:** Judge #6 now explicitly “synchronous validation in critical path”
 ✅ **Better organization:** Clear hierarchy (strategic → architectural → technical → exclusions)
 
 **PERMANENT DELETION LOG:**

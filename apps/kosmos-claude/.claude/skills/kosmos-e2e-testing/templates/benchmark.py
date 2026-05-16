@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Kosmos Model Benchmark Template
 
 Compare performance across different providers.
@@ -51,7 +52,6 @@ async def benchmark_provider(provider: str, prompts: list) -> dict:
 
     Returns:
         Benchmark results
-
     """
     from config_manager import switch_provider
     from kosmos.core.llm import get_client
@@ -86,7 +86,7 @@ async def benchmark_provider(provider: str, prompts: list) -> dict:
                     "tokens": tokens,
                     "tokens_per_second": tokens / elapsed if elapsed > 0 else 0,
                     "success": True,
-                },
+                }
             )
 
             results["total_time"] += elapsed
@@ -98,7 +98,7 @@ async def benchmark_provider(provider: str, prompts: list) -> dict:
                     "name": prompt_data["name"],
                     "error": str(e),
                     "success": False,
-                },
+                }
             )
 
     # Calculate averages
@@ -129,9 +129,7 @@ def print_results(all_results: list):
         else:
             success_count = sum(1 for p in result["prompts"] if p.get("success"))
             total = len(result["prompts"])
-            print(
-                f"{result['provider']:<20} {result['avg_time']:.2f}s{'':<6} {result['avg_tps']:.1f}{'':<6} {success_count}/{total}",
-            )
+            print(f"{result['provider']:<20} {result['avg_time']:.2f}s{'':<6} {result['avg_tps']:.1f}{'':<6} {success_count}/{total}")
 
     # Detailed results
     print("\n" + "-" * 70)
@@ -143,21 +141,16 @@ def print_results(all_results: list):
         for result in all_results:
             if "error" in result:
                 continue
-            prompt_result = next(
-                (p for p in result["prompts"] if p["name"] == prompt["name"]),
-                None,
-            )
+            prompt_result = next((p for p in result["prompts"] if p["name"] == prompt["name"]), None)
             if prompt_result and prompt_result.get("success"):
                 print(
                     f"  {result['provider']:<18}: "
                     f"{prompt_result['time']:.2f}s, "
                     f"{prompt_result['tokens']} tokens, "
-                    f"{prompt_result['tokens_per_second']:.1f} tok/s",
+                    f"{prompt_result['tokens_per_second']:.1f} tok/s"
                 )
             elif prompt_result:
-                print(
-                    f"  {result['provider']:<18}: ERROR - {prompt_result.get('error', 'unknown')}",
-                )
+                print(f"  {result['provider']:<18}: ERROR - {prompt_result.get('error', 'unknown')}")
 
 
 async def main():

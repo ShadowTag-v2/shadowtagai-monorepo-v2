@@ -1,0 +1,3 @@
+name: dev-infra
+runtime: nodejs
+description: GCP Cloud Run serverless — dev environment

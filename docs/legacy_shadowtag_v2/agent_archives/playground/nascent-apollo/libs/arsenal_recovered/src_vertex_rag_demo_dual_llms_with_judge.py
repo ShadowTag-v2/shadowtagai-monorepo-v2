@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 ##############################################################################
 # Copyright 2025 Google LLC
 #
@@ -127,7 +128,7 @@ def create_gemini_client() -> genai.Client:
         st.session_state["location"] = location
 
         if not project or not location:
-            raise ValueError("Vertex AI requires GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION environment variables set.")
+            raise ValueError("Vertex AI requires GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION " "environment variables set.")
         log_debug(f"Creating Vertex AI client for project {project} in {location}")
         return genai.Client(
             vertexai=True,
@@ -325,7 +326,7 @@ def generate_gemini_response(prompt: str, model_config: dict[str, Any], col: st.
     try:
         # Initialize or retrieve the client/chat object
         if session_key not in st.session_state:
-            log_debug(f"Setting genai model to {model_config['name']}")
+            log_debug(f'Setting genai model to {model_config["name"]}')
             client = create_gemini_client()
 
             ### Use this if you are using a chat model. Otherwise, comment it out.
@@ -861,12 +862,12 @@ def get_relevant_docs(search_query: str, llm: VertexAI) -> list[str]:
         documents_content = []
         if results and "source_documents" in results:
             for i, doc in enumerate(results["source_documents"]):
-                header = f"{'-' * 20} Document {i + 1} {'-' * 20}\n"
+                header = f"{'-'*20} Document {i+1} {'-'*20}\n"
                 doc_content = getattr(doc, "page_content", "")
                 # Maybe add metadata if useful? e.g., doc.metadata.get('source')
                 documents_content.append(header + doc_content)
                 # Limit logging of content length
-                log_debug(f"Retrieved Doc {i + 1}: {len(doc_content)} chars")
+                log_debug(f"Retrieved Doc {i+1}: {len(doc_content)} chars")
                 log_debug(f"First 200 chars in doc: {doc_content[:200]}")
 
         log_debug(f"Retrieved {len(documents_content)} documents.")
@@ -913,7 +914,7 @@ def judge_responses(
         {left_context}
 
         Response A (Model on the Left):
-        {left_response["text"]}
+        {left_response['text']}
 
         Response from model on the right:
         QUESTION:
@@ -923,7 +924,7 @@ def judge_responses(
         {right_context}
 
         Response B (Model on the Right):
-        {right_response["text"]}
+        {right_response['text']}
 
         Which one accurately responds to the question using the source of truth? Make sure your verdict is based on each model's strict adherence to the source of truth.
         """
@@ -1058,8 +1059,9 @@ def main(args: argparse.Namespace):  # <-- Pass parsed args to main
                 right_context = []
                 right_final_query = user_question
             else:
-                with right_col, st.spinner("Retrieving context for Right Model..."):
-                    right_context = get_relevant_docs(right_rephrased, retriever_llm)
+                with right_col:
+                    with st.spinner("Retrieving context for Right Model..."):
+                        right_context = get_relevant_docs(right_rephrased, retriever_llm)
                 right_final_query = right_rephrased
 
             # Display retrieved context (optional, can be verbose)

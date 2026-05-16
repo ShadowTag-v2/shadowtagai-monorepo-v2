@@ -1,4 +1,4 @@
-# Quick Start Guide - Judge 6 Validation Sprint
+# Quick Start Guide - Judge #6 Validation Sprint
 
 **Time to first results: ~30 minutes**
 
@@ -76,7 +76,6 @@ chmod +x infrastructure/pnkln-gke-bootstrap.sh
 ```
 
 **What this does:**
-
 - ✓ Enables required GCP APIs
 - ✓ Creates VPC network and subnets
 - ✓ Deploys GKE Autopilot cluster with GPU support
@@ -87,7 +86,7 @@ chmod +x infrastructure/pnkln-gke-bootstrap.sh
 
 ---
 
-## Step 4: Deploy Judge 6 (3 minutes)
+## Step 4: Deploy Judge #6 (3 minutes)
 
 ```bash
 # Apply all Kubernetes manifests
@@ -114,9 +113,8 @@ kubectl get svc -n pnkln-core
 ```
 
 **What this does:**
-
 - ✓ Creates pnkln-core namespace
-- ✓ Deploys Judge 6 with 3 layers (Gemini, PyTorch, Rules)
+- ✓ Deploys Judge #6 with 3 layers (Gemini, PyTorch, Rules)
 - ✓ Configures HorizontalPodAutoscaler
 - ✓ Sets up PodDisruptionBudget for HA
 
@@ -147,9 +145,8 @@ kubectl get prometheusrule -n pnkln-monitoring
 ```
 
 **What this does:**
-
 - ✓ Installs Prometheus + Grafana stack
-- ✓ Configures ServiceMonitor for Judge 6
+- ✓ Configures ServiceMonitor for Judge #6
 - ✓ Sets up SLA alerting rules
 
 ---
@@ -258,18 +255,14 @@ cat validation_results.json
 ## Step 9: Make Decision
 
 ### If SLA Compliant (p99 ≤ 90ms):
-
 ✅ **PROCEED** to Week 2 customization
-
 ```bash
 # Continue with architecture customization
 # See docs/VALIDATION_SPRINT.md#phase-5
 ```
 
 ### If SLA Breach (p99 > 90ms):
-
 ❌ **ABORT** and pivot to ground-up build
-
 ```bash
 # Document learnings
 # Clean up resources
@@ -281,7 +274,6 @@ gcloud container clusters delete pnkln-core-stack --region=$GCP_REGION
 ## Cleanup (When Done)
 
 ### Quick Cleanup (keep cluster, remove apps)
-
 ```bash
 kubectl delete namespace pnkln-core
 kubectl delete namespace pnkln-monitoring
@@ -289,7 +281,6 @@ kubectl delete namespace pnkln-workload
 ```
 
 ### Full Cleanup (delete everything)
-
 ```bash
 # Delete cluster
 gcloud container clusters delete $CLUSTER_NAME --region=$GCP_REGION

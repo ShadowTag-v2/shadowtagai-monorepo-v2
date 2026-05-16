@@ -11,14 +11,14 @@
 
 The evolution represents a **paradigm shift** from a business-centric AI agent platform to a **reasoning-optimization research platform**:
 
-| Dimension         | pnkln-stackJR Framework         | Pinkln Platform                    |
-| ----------------- | ------------------------------- | ---------------------------------- |
-| **Purpose**       | AI Agent-as-a-Service (SaaS)    | Multi-agent reasoning research     |
-| **Revenue Model** | Vertical SaaS ($500-$3K/mo)     | API/Strategies monetization        |
-| **Core Metrics**  | MRR, LTV:CAC, customers         | Glicko-2 ratings, benchmark scores |
-| **Architecture**  | PRISM kernel + verticals        | DTE + kernel chaining + panels     |
-| **Optimization**  | Business growth (12-month plan) | Reasoning quality (continuous)     |
-| **Target Users**  | B2B companies                   | Researchers, developers, investors |
+| Dimension | pnkln-stackJR Framework | Pinkln Platform |
+|-----------|------------------|----------------|
+| **Purpose** | AI Agent-as-a-Service (SaaS) | Multi-agent reasoning research |
+| **Revenue Model** | Vertical SaaS ($500-$3K/mo) | API/Strategies monetization |
+| **Core Metrics** | MRR, LTV:CAC, customers | Glicko-2 ratings, benchmark scores |
+| **Architecture** | PRISM kernel + verticals | DTE + kernel chaining + panels |
+| **Optimization** | Business growth (12-month plan) | Reasoning quality (continuous) |
+| **Target Users** | B2B companies | Researchers, developers, investors |
 
 ---
 
@@ -202,33 +202,47 @@ GRPO Training Loop:
 
 **OLD: Business Frameworks**
 
-- Compliance Framework (Military risk management)
+
+- ATP 5-19 (Military risk management)
+
 
 - Purpose/Reason/Brakes (Decision protocol)
 
+
 - Boy Scout Rule (Code quality)
 
+
 - Reality Distortion Field (Vision)
+
 
 - Bootstrap Discipline (ROI ≥3×, LTV:CAC ≥4:1)
 
 **NEW: Reasoning Frameworks**
 
+
 - **CoT** (Chain-of-Thought): Step-by-step reasoning
+
 
 - **ToT** (Tree-of-Thoughts): Branch exploration
 
+
 - **RCR** (Recursive Criticism & Revision): Self-critique loops
+
 
 - **RTF-TAG-BAB-CARE-RISE**: Fused meta-prompt framework
 
+
 - **Cheat Sheet Fusion**: 21→10 essentials (tone/format/act/objective/context/keywords/examples/audience/citations/call)
+
 
 - **PanelGPT/MAD**: Multi-agent debate
 
+
 - **DTE**: Dynamic temperature evolution (self-improvement)
 
+
 - **Glicko-2**: Rating system (vs Elo, handles RD/volatility)
+
 
 - **GRPO/PPO**: Policy optimization comparisons
 
@@ -240,9 +254,12 @@ GRPO Training Loop:
 
 **Why Glicko-2?**
 
+
 - Handles rating deviation (RD) - uncertainty in skill
 
+
 - Models volatility - degree of consistency
+
 
 - Better for sparse competitions (vs Elo's assumption of regular play)
 
@@ -320,9 +337,12 @@ L_GRPO = -mean([
 
 **Why GRPO?**
 
+
 - Reduces variance (group-relative vs absolute rewards)
 
+
 - Simpler (no clipping, no value function)
+
 
 - Better for reasoning tasks (relative quality matters)
 
@@ -334,78 +354,116 @@ L_GRPO = -mean([
 
 ```yaml
 CheatSheetFusion:
-  v1_baseline: # 21 elements (verbose)
+  v1_baseline:  # 21 elements (verbose)
+
+
     - Tone
+
 
     - Style
 
+
     - Format
+
 
     - Act (role)
 
+
     - Task
+
 
     - Objective
 
+
     - Context
+
 
     - Input
 
+
     - Output
+
 
     - Keywords
 
+
     - Examples
+
 
     - Steps
 
+
     - Audience
+
 
     - Length
 
+
     - Citations
+
 
     - Constraints
 
+
     - Edge cases
+
 
     - Success criteria
 
+
     - Failure modes
+
 
     - Call to action
 
+
     - Follow-up
 
-  v2_evolved: # 10 essentials (DTE-optimized, +3.7% accuracy)
+  v2_evolved:  # 10 essentials (DTE-optimized, +3.7% accuracy)
+
+
     - Tone
+
 
     - Format
 
+
     - Act
+
 
     - Objective
 
+
     - Context
+
 
     - Keywords
 
+
     - Examples
+
 
     - Audience
 
+
     - Citations
 
+
     - Call
+
 ```
 
 **DTE Process**:
 
+
 1. Baseline: Test 21-element prompts on HumanEval → 89.0% accuracy
+
 
 2. Mutation: Remove 11 redundant elements
 
+
 3. Test: 10-element prompts on HumanEval → 92.7% accuracy (+3.7%)
+
 
 4. Iterate: Continue until convergence
 
@@ -453,9 +511,12 @@ Wealth-Planning Model:
 
 **Response Structure** (maintained):
 
+
 1. **Hard truth**: Current revenue leaks (e.g., "Glicko ratings unused")
 
+
 2. **Action plan**: Immediate revenue boosts (e.g., "API launch in Week 1")
+
 
 3. **Challenge**: Quick income action (e.g., "Sell 5 consulting sessions")
 
@@ -537,19 +598,27 @@ DevelopmentConstraints(
 
 **Removed from Pinkln:**
 
+
 - ❌ Vertical-specific agents (Sales, Content, Support, etc.)
+
 
 - ❌ Customer-facing SaaS pricing tiers
 
+
 - ❌ MRR/LTV:CAC financial tracking
+
 
 - ❌ Kill-switch gates (Month 3/6/12)
 
+
 - ❌ Go-to-market phases (Week 1-12 plan)
+
 
 - ❌ Pilot/customer acquisition focus
 
+
 - ❌ Stripe billing integration
+
 
 - ❌ Landing page/marketing funnel
 
@@ -557,23 +626,33 @@ DevelopmentConstraints(
 
 **New in Pinkln:**
 
+
 - ✅ **Glicko-2 rating system** (mu, phi, vol, tol parameter)
+
 
 - ✅ **DTE self-evolution** (dynamic temperature, benchmark-driven)
 
+
 - ✅ **GRPO training** (G=8 groups, relative advantages)
+
 
 - ✅ **Panel debate framework** (MAD, multi-agent consensus)
 
+
 - ✅ **Benchmark suite** (HumanEval, BigCodeBench, SWE-bench)
+
 
 - ✅ **Cheat sheet fusion** (21→10 elements, +3.7% gain)
 
+
 - ✅ **CoT/ToT/RCR chains** (reasoning frameworks)
+
 
 - ✅ **Wealth acceleration model** (API/strategies monetization)
 
+
 - ✅ **Compound memory** (skills/agents/frameworks persistence)
+
 
 - ✅ **Investor materials** (Glicko code, GRPO sims, cheat sheets)
 
@@ -628,9 +707,12 @@ DevelopmentConstraints(
 
 **Synergy**:
 
+
 - Tier 1 intelligence → Panel debates (high-quality reasoning inputs)
 
+
 - Tier 2 intelligence → Code crafting (standard training data)
+
 
 - Tier 3 intelligence → Background context (episodic memory)
 
@@ -638,7 +720,9 @@ DevelopmentConstraints(
 
 **Option 1: Parallel Deployment**
 
+
 - pnkln-stackJR: Customer-facing SaaS (revenue generation)
+
 
 - Pinkln: Research platform (IP development)
 
@@ -664,6 +748,7 @@ Revenue Model:
 ### 9.1 OLD: pnkln-stackJR Restart
 
 ```markdown
+
 # CONTEXT RESTORATION BLOCK
 
 **Project**: AI Agent Business Plan Execution
@@ -675,9 +760,13 @@ Building portfolio of AI agents for B2B automation. Target: $120K MRR in 12 mont
 
 ## What's Been Done
 
+
+
 - ✅ Business plan (6 verticals, $120K MRR target)
 
+
 - ✅ Tech architecture (Python, LangGraph, GPT-4)
+
 
 - ✅ Unit economics (LTV:CAC 4:1, 75% margin)
 
@@ -691,11 +780,13 @@ Building portfolio of AI agents for B2B automation. Target: $120K MRR in 12 mont
 
 What do you need me to do next?
 Options: Build MVP / Draft landing page / Write X thread / Stripe integration
+
 ```
 
 ### 9.2 NEW: Pinkln Restart
 
 ```markdown
+
 # CONTEXT RESTORATION BLOCK
 
 **Project**: Pinkln Multi-Agent Reasoning Platform
@@ -709,11 +800,16 @@ Benchmarked: HumanEval/BigCodeBench/SWE-bench. Monetize: API/strategies.
 
 ## What's Been Done
 
+
+
 - ✅ Cheat sheet evolved (21→10, +3.7% accuracy via DTE)
+
 
 - ✅ GRPO simulation (G=8, relative advantages vs PPO clipped loss)
 
+
 - ✅ Glicko-2 implementation (mu/phi/vol + tol parameter)
+
 
 - ✅ Panel debate framework (MAD, RCR-enhanced)
 
@@ -725,13 +821,19 @@ Benchmarked: HumanEval/BigCodeBench/SWE-bench. Monetize: API/strategies.
 
 ## Frameworks Active
 
+
+
 - CoT/ToT/RCR (reasoning chains)
+
 
 - RTF-TAG-BAB-CARE-RISE (meta-prompt fusion)
 
+
 - MAD (multi-agent debate)
 
+
 - DTE (self-evolution)
+
 
 - GRPO (training optimization)
 
@@ -740,15 +842,21 @@ Benchmarked: HumanEval/BigCodeBench/SWE-bench. Monetize: API/strategies.
 What do you need me to do next?
 Options:
 
+
 1. Deep-dive DTE evolution loop (code implementation)
+
 
 2. Run HumanEval benchmark (target: 92.7%+)
 
+
 3. Design Glicko API tiers (Free/Pro/Enterprise)
+
 
 4. Write investor demo (panel debate showcase)
 
+
 5. Simulate GRPO training (G=8, compare vs PPO)
+
 ```
 
 ---
@@ -759,93 +867,126 @@ Options:
 
 **If Continuing pnkln-stackJR**:
 
+
 1. ✅ Keep business framework (already committed)
+
 
 2. Build Sales Automation Agent MVP
 
+
 3. Validate customer demand (5 pilots, $10K MRR)
+
 
 4. Track kill-switches (Month 3 gate)
 
 **If Pivoting to Pinkln**:
 
+
 1. Create new branch: `claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR`
+
 
 2. Implement Glicko-2 (with tol parameter)
 
+
 3. Build DTE evolution engine
 
+
 4. Run HumanEval benchmark baseline
+
 
 5. Design Panel Debate framework (MAD)
 
 **Hybrid Approach** (RECOMMENDED):
 
+
 1. Keep pnkln-stackJR for revenue (customer-facing SaaS)
+
 
 2. Build Pinkln as R&D platform (IP development)
 
+
 3. Use Pinkln to power pnkln-stackJR agents (DTE-evolved prompts)
 
+
 4. Dual monetization:
+
+
    - pnkln-stackJR: $500-$3K/mo SaaS subscriptions
+
 
    - Pinkln: $99-$10K/mo API/consulting
 
 ### 10.2 Decision Matrix
 
-| Criteria        | pnkln-stackJR Only | Pinkln Only     | Hybrid        |
-| --------------- | ------------------ | --------------- | ------------- |
-| Time to revenue | Fast (Week 3)      | Slow (Month 6+) | Fast (Week 3) |
-| IP value        | Low                | High            | High          |
-| Technical risk  | Low                | High            | Medium        |
-| Differentiation | Medium             | High            | High          |
-| Investor appeal | Medium             | High            | Very High     |
-| **VERDICT**     | ⚠️ Safe            | ⚠️ Risky        | ✅ **BEST**   |
+| Criteria | pnkln-stackJR Only | Pinkln Only | Hybrid |
+|----------|-------------|------------|--------|
+| Time to revenue | Fast (Week 3) | Slow (Month 6+) | Fast (Week 3) |
+| IP value | Low | High | High |
+| Technical risk | Low | High | Medium |
+| Differentiation | Medium | High | High |
+| Investor appeal | Medium | High | Very High |
+| **VERDICT** | ⚠️ Safe | ⚠️ Risky | ✅ **BEST** |
 
 ### 10.3 Implementation Roadmap (Hybrid)
 
 **Week 1-4**: pnkln-stackJR MVP + Pinkln Foundation
 
+
 - Build Sales Agent (pnkln-stackJR vertical 1)
 
+
 - Implement Glicko-2 rating system (Pinkln core)
+
 
 - Land 3 paying pilots ($1.5K/mo each = $4.5K MRR)
 
 **Week 5-8**: Pinkln DTE Evolution
 
+
 - Build DTE engine (self-improvement loop)
+
 
 - Run HumanEval baseline (target: 85%+)
 
+
 - Evolve cheat sheets (21→10 elements)
+
 
 - Use evolved prompts in pnkln-stackJR Sales Agent (+3.7% conversion)
 
 **Week 9-12**: Panel Debates + GRPO Training
 
+
 - Implement MAD framework (multi-agent debates)
+
 
 - GRPO training loop (G=8 groups)
 
+
 - Benchmark: HumanEval 92.7%, BigCodeBench 78%+
+
 
 - Launch Pinkln API beta (Glicko ratings)
 
 **Month 4-6**: Dual Monetization
 
+
 - pnkln-stackJR: 20 customers, $35K MRR (4 verticals live)
 
+
 - Pinkln: 10 API customers, $5K MRR (Pro tier)
+
 
 - Total: $40K MRR, dual revenue streams
 
 **Month 7-12**: Scale Both
 
+
 - pnkln-stackJR: 60 customers, $120K MRR (kill-switch cleared)
 
+
 - Pinkln: 50 API customers, $25K MRR (investor demos)
+
 
 - Total: $145K MRR, validated IP
 
@@ -940,39 +1081,55 @@ Before deploying Pinkln, validate:
 
 **Technical**:
 
+
 - [ ] Glicko-2 implementation (tol parameter tested)
+
 
 - [ ] DTE evolution loop (convergence proven on HumanEval)
 
+
 - [ ] GRPO training (G=8, loss < PPO baseline)
+
 
 - [ ] Panel debate consensus (agreement ≥75%)
 
+
 - [ ] Cheat sheet fusion (+3.7% accuracy replicated)
+
 
 - [ ] Benchmarks: HumanEval 85%+, BigCodeBench 75%+, SWE-bench 60%+
 
 **Business**:
 
+
 - [ ] pnkln-stackJR revenue: $10K+ MRR (Month 3 kill-switch cleared)
+
 
 - [ ] Pinkln API pricing: Free/Pro/Enterprise tiers designed
 
+
 - [ ] Investor materials: Glicko code + GRPO sims + cheat sheets packaged
 
+
 - [ ] Wealth leaks identified: 3+ monetization gaps closed
+
 
 - [ ] Evidence-only decisions: n≥10 benchmark runs (not user interviews)
 
 **Constraints**:
 
+
 - [ ] All functions ≤20 lines (Pinkln code)
+
 
 - [ ] Test coverage 80%+ (pytest on evolution/rating modules)
 
+
 - [ ] Monospace output (all technical content)
 
+
 - [ ] Boy Scout commits (code cleaner than found)
+
 
 - [ ] Security absolute (100% operational gate)
 
@@ -984,32 +1141,43 @@ Before deploying Pinkln, validate:
 
 **The Opportunity**: Hybrid approach leverages both:
 
+
 - pnkln-stackJR = Revenue engine ($120K MRR, proven vertical SaaS)
+
 
 - Pinkln = IP moat (Glicko-2, DTE, GRPO, benchmarks)
 
 **The Risk**: Splitting focus dilutes execution. Mitigate via:
 
+
 1. Phase Pinkln build (Weeks 5-8, after pnkln-stackJR MVP shipped)
 
+
 2. Use Pinkln to improve pnkln-stackJR (DTE-evolved prompts → +3.7% conversions)
+
 
 3. Separate teams (if funded) or sequential builds (if bootstrap)
 
 **The Verdict**:
 ✅ **Proceed with Hybrid**
 
+
 - Week 1-4: pnkln-stackJR MVP (revenue validation)
 
+
 - Week 5-12: Pinkln foundation (IP development)
+
 
 - Month 4+: Dual monetization ($145K MRR combined by Month 12)
 
 **Next Action**: Choose path:
 
+
 1. Continue pnkln-stackJR only (safe, lower ceiling)
 
+
 2. Pivot to Pinkln only (risky, higher ceiling)
+
 
 3. **Build Hybrid** (RECOMMENDED - balanced risk/reward)
 

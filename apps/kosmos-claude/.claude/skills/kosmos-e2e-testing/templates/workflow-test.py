@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Kosmos ResearchWorkflow Test Template
 
 Focused testing of the ResearchWorkflow component.
@@ -22,16 +23,12 @@ async def test_workflow_basic(artifacts_dir: str) -> dict:
 
     Returns:
         Test result dictionary
-
     """
     from kosmos.workflow.research_loop import ResearchWorkflow
 
     print("Test: Basic workflow execution")
 
-    workflow = ResearchWorkflow(
-        research_objective="What is machine learning?",
-        artifacts_dir=artifacts_dir,
-    )
+    workflow = ResearchWorkflow(research_objective="What is machine learning?", artifacts_dir=artifacts_dir)
 
     start = time.time()
     result = await workflow.run(num_cycles=1, tasks_per_cycle=1)
@@ -52,10 +49,7 @@ async def test_workflow_multi_cycle(artifacts_dir: str) -> dict:
 
     print("Test: Multi-cycle execution")
 
-    workflow = ResearchWorkflow(
-        research_objective="Compare transformer architectures for NLP",
-        artifacts_dir=artifacts_dir,
-    )
+    workflow = ResearchWorkflow(research_objective="Compare transformer architectures for NLP", artifacts_dir=artifacts_dir)
 
     start = time.time()
     result = await workflow.run(num_cycles=2, tasks_per_cycle=2)
@@ -76,10 +70,7 @@ async def test_workflow_interruption(artifacts_dir: str) -> dict:
 
     print("Test: Interruption handling")
 
-    workflow = ResearchWorkflow(
-        research_objective="Test interruption handling",
-        artifacts_dir=artifacts_dir,
-    )
+    workflow = ResearchWorkflow(research_objective="Test interruption handling", artifacts_dir=artifacts_dir)
 
     # Start and cancel after short time
     start = time.time()
@@ -118,10 +109,7 @@ async def test_workflow_artifact_generation(artifacts_dir: str) -> dict:
         shutil.rmtree(artifacts_path)
     artifacts_path.mkdir(parents=True, exist_ok=True)
 
-    workflow = ResearchWorkflow(
-        research_objective="What are recent advances in AI safety?",
-        artifacts_dir=artifacts_dir,
-    )
+    workflow = ResearchWorkflow(research_objective="What are recent advances in AI safety?", artifacts_dir=artifacts_dir)
 
     start = time.time()
     await workflow.run(num_cycles=1, tasks_per_cycle=2)
@@ -211,7 +199,7 @@ async def main():
                     "name": test_func.__name__,
                     "success": False,
                     "error": str(e),
-                },
+                }
             )
 
     # Summary

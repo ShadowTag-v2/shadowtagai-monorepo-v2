@@ -1,6 +1,6 @@
 # Mac Local Deployment - Quick Start Guide
 
-**Platform**: SHADOWTAGAI Intelligence Pipeline v0.2.0
+**Platform**: PNKLN Intelligence Pipeline v0.2.0
 **Last Updated**: 2025-11-18
 **Model**: Gemini 2.0 Flash Experimental (15-20% cost reduction)
 **Time to Deploy**: 30 minutes
@@ -103,12 +103,12 @@ gcloud --version
 
 ```bash
 # Clone the repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # Check current branch
 git branch
-# Should show: claude/shadowtagai-intelligence-pipeline-01DwB3v8zwZaHZC3HogNeRXt
+# Should show: claude/pnkln-intelligence-pipeline-01DwB3v8zwZaHZC3HogNeRXt
 ```
 
 ### Step 2: Create Python Virtual Environment
@@ -125,7 +125,7 @@ pip install --upgrade pip setuptools wheel
 
 # Verify virtual environment
 which python
-# Expected: /Users/yourname/ShadowTag-v2-fastapi-services/venv/bin/python
+# Expected: /Users/yourname/aiyou-fastapi-services/venv/bin/python
 ```
 
 ### Step 3: Install Python Dependencies
@@ -201,7 +201,7 @@ GEMINI_FLASH_MODEL=gemini-2.0-flash-exp
 # ============================================================================
 # Database Configuration (Local PostgreSQL)
 # ============================================================================
-DATABASE_URL=postgresql+asyncpg://ShadowTag:ShadowTag_password@localhost:5432/ShadowTag_governance
+DATABASE_URL=postgresql+asyncpg://youai:youai_password@localhost:5432/youai_governance
 REDIS_URL=redis://localhost:6379/0
 
 # ============================================================================
@@ -209,7 +209,7 @@ REDIS_URL=redis://localhost:6379/0
 # ============================================================================
 ENVIRONMENT=development
 DEBUG=true
-SERVICE_NAME=ShadowTag-governance-service
+SERVICE_NAME=youai-governance-service
 API_HOST=0.0.0.0
 API_PORT=8000
 
@@ -286,14 +286,14 @@ gsutil ls
 ```bash
 # Create database and user
 psql postgres << EOF
-CREATE DATABASE ShadowTag_governance;
-CREATE USER ShadowTag WITH PASSWORD 'ShadowTag_password';
-GRANT ALL PRIVILEGES ON DATABASE ShadowTag_governance TO ShadowTag;
+CREATE DATABASE youai_governance;
+CREATE USER youai WITH PASSWORD 'youai_password';
+GRANT ALL PRIVILEGES ON DATABASE youai_governance TO youai;
 \q
 EOF
 
 # Verify database created
-psql -U ShadowTag -d ShadowTag_governance -c "SELECT version();"
+psql -U youai -d youai_governance -c "SELECT version();"
 ```
 
 ### Step 2: Run Database Migrations
@@ -333,7 +333,7 @@ brew services list | grep redis
 
 ## Part 5: Test the Platform (5 minutes)
 
-### Test 1: Start ShadowTag Governance Service
+### Test 1: Start YouAi Governance Service
 
 ```bash
 # Activate virtual environment
@@ -372,7 +372,7 @@ curl -X POST http://localhost:8000/api/v1/governance/assess \
 
 ```bash
 # In a new terminal, activate environment
-cd /Users/yourname/ShadowTag-v2-fastapi-services
+cd /Users/yourname/aiyou-fastapi-services
 source venv/bin/activate
 
 # Run intelligence pipeline
@@ -459,7 +459,7 @@ gcloud billing projects link YOUR_PROJECT_ID --billing-account=BILLING_ACCOUNT_I
 # Set up budget alerts (HIGHLY RECOMMENDED)
 gcloud billing budgets create \
   --billing-account=BILLING_ACCOUNT_ID \
-  --display-name="SHADOWTAGAI Local Dev Budget" \
+  --display-name="PNKLN Local Dev Budget" \
   --budget-amount=300USD \
   --threshold-rule=percent=50 \
   --threshold-rule=percent=80 \
@@ -476,7 +476,6 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
    - Savings: 94% cheaper for most tasks
 
 2. **Limit API calls during development**
-
    ```bash
    # In .env, set conservative budgets:
    DAILY_BUDGET=5.0
@@ -484,7 +483,6 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
    ```
 
 3. **Run services only when needed**
-
    ```bash
    # Stop PostgreSQL when not in use
    brew services stop postgresql@15
@@ -506,12 +504,12 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
 
 ### Expected Monthly Costs (Local Mac)
 
-| Service              | Cost           | Notes                   |
-| -------------------- | -------------- | ----------------------- |
-| Gemini 2.0 Flash API | $3-8           | For development/testing |
-| GCS Storage          | $0.50          | ~10GB data              |
-| BigQuery             | $0.50          | Minimal queries         |
-| **Total**            | **$4-9/month** | vs $77-92 on GCP        |
+| Service | Cost | Notes |
+|---------|------|-------|
+| Gemini 2.0 Flash API | $3-8 | For development/testing |
+| GCS Storage | $0.50 | ~10GB data |
+| BigQuery | $0.50 | Minimal queries |
+| **Total** | **$4-9/month** | vs $77-92 on GCP |
 
 ---
 
@@ -521,7 +519,7 @@ gcloud billing accounts describe BILLING_ACCOUNT_ID
 
 ```bash
 # 1. Start your day
-cd /Users/yourname/ShadowTag-v2-fastapi-services
+cd /Users/yourname/aiyou-fastapi-services
 source venv/bin/activate
 
 # 2. Start databases
@@ -774,8 +772,8 @@ tail -f /opt/homebrew/var/log/postgresql@15.log
 ### Directory Structure
 
 ```
-ShadowTag-v2-fastapi-services/
-├── app/                          # FastAPI ShadowTag Governance Service
+aiyou-fastapi-services/
+├── app/                          # FastAPI YouAi Governance Service
 │   ├── api/v1/                   # API endpoints
 │   ├── services/                 # Business logic
 │   │   └── vertex_ai_client.py   # Gemini 2.0 Flash client
@@ -835,24 +833,21 @@ After completing this guide, you should be able to:
 ## Support
 
 **Documentation**:
-
 - Main Guide: `docs/MAC_DEPLOYMENT.md`
 - Integration Guide: `docs/LATEST_TECH_INTEGRATION_RECOMMENDATIONS.md`
 - Session Summary: `docs/SESSION_SUMMARY_2025-11-18.md`
 
 **Issues**:
-
-- GitHub: https://github.com/ehanc69/ShadowTag-v2-fastapi-services/issues
+- GitHub: https://github.com/ehanc69/aiyou-fastapi-services/issues
 - Check existing issues before creating new ones
 
 **Community**:
-
 - Review `CONTRIBUTING.md` for contribution guidelines
 - Check `CHANGELOG.md` for recent updates
 
 ---
 
 **Last Updated**: 2025-11-18
-**Platform Version**: SHADOWTAGAI Intelligence Pipeline v0.2.0
+**Platform Version**: PNKLN Intelligence Pipeline v0.2.0
 **Model**: Gemini 2.0 Flash Experimental
 **Status**: ✅ Production Ready for Local Development

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import shutil
 from pathlib import Path
 
@@ -56,7 +57,7 @@ def test_git_branch_local(test_repository):
 
 def test_git_branch_remote(test_repository):
     result = git_branch(test_repository, "remote")
-    assert result.strip() == ""  # Should be empty if no remote branches
+    assert "" == result.strip()  # Should be empty if no remote branches
 
 
 def test_git_branch_all(test_repository):

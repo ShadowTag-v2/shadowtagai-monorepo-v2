@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from ..adapters.authority_state import AuthorityState
 from ..adapters.json_memory import JsonMemoryStore
 from ..adapters.memory_atoms import search_atoms
@@ -68,15 +69,7 @@ def build_prompt_context(query: str, authority, atoms, exact, semantic, memory, 
     return "\n".join(parts)
 
 
-def collect_context(
-    sqlite_db: str,
-    lancedb_root: str,
-    pg_dsn: str,
-    repo_id: str,
-    query: str,
-    authority_state_path: str,
-    limit: int = 8,
-):
+def collect_context(sqlite_db: str, lancedb_root: str, pg_dsn: str, repo_id: str, query: str, authority_state_path: str, limit: int = 8):
     authority = AuthorityState(authority_state_path).read()
     atoms = search_atoms(pg_dsn, repo_id, query, limit=10)
     exact = exact_search(sqlite_db, query, limit)

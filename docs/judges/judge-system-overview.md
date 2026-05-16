@@ -1,17 +1,16 @@
-# Judge 6 HITL System - Complete Overview
+# Judge #6 HITL System - Complete Overview
 
 **Binary enforcement engine for high-stakes decision-making with Human-in-the-Loop gates**
 
 ## Executive Summary
 
-Judge 6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk actions across four verticals (Financial, Legal Case, Legal Compliance, Fraud) with integrated Compliance Framework risk assessment and sub-90ms latency targets.
+Judge #6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk actions across four verticals (Financial, Legal Case, Legal Compliance, Fraud) with integrated ATP 5-19 risk assessment and sub-90ms latency targets.
 
-**Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Army RM
+**Decision Framework**: Purpose=AiYouJR • Reason=Doctrine • Brakes=Army RM
 
 **Key Capabilities**:
-
 - **Binary decisions**: ALLOW or BLOCK (no ambiguity)
-- **Compliance Framework risk matrix**: Probability (A-E) × Severity (I-IV) → Risk Level (EH/H/M/L)
+- **ATP 5-19 risk matrix**: Probability (A-E) × Severity (I-IV) → Risk Level (EH/H/M/L)
 - **HITL gates**: Automated routing to appropriate approval authority (CFO, Legal, etc.)
 - **Semantic compression**: 10:1 audit trail compression while preserving decision-critical info
 - **Sub-90ms latency**: Target p50≈30ms, p99≤90ms for real-time enforcement
@@ -23,7 +22,7 @@ Judge 6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk 
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Judge 6 HITL System                          │
+│                   Judge #6 HITL System                          │
 │                                                                 │
 │  ┌────────────────────┐         ┌────────────────────┐         │
 │  │   FastAPI Layer    │         │   Gemini 2.0 Flash │         │
@@ -56,7 +55,7 @@ Judge 6 is a **binary ALLOW/BLOCK enforcement system** that evaluates high-risk 
 │     │                               │                          │
 │     ▼                               ▼                          │
 │  ┌──────────────┐         ┌─────────────────────┐             │
-│  │ Compliance Framework     │         │ Semantic Compression│             │
+│  │ ATP 5-19     │         │ Semantic Compression│             │
 │  │ Risk Matrix  │         │  (10:1 ratio)       │             │
 │  │              │         │                     │             │
 │  │ P(A-E) ×     │         │ Audit Trail Storage │             │
@@ -73,7 +72,7 @@ Every judge follows this flow (implemented in `BaseJudge.judge()`):
 1. **Start latency timer** (p99 ≤90ms target)
 2. **Evaluate action** (vertical-specific logic)
 3. **Extract risk factors** (probability, severity, rationale, mitigations)
-4. **Perform Compliance Framework risk assessment** (matrix lookup)
+4. **Perform ATP 5-19 risk assessment** (matrix lookup)
 5. **Determine approval gate** (based on risk level + amount)
 6. **Generate semantic audit trail** (10:1 compression)
 7. **Return binary decision** (ALLOW or BLOCK)
@@ -86,7 +85,6 @@ Every judge follows this flow (implemented in `BaseJudge.judge()`):
 **Primary Use Case**: $50K+ wire transfers requiring CFO approval
 
 **Evaluates**:
-
 - Wire transfers
 - Payment authorizations
 - Contract financial approvals
@@ -94,7 +92,6 @@ Every judge follows this flow (implemented in `BaseJudge.judge()`):
 - Capital expenditures
 
 **Decision Logic**:
-
 - Amount thresholds ($50K CFO approval)
 - Vendor verification status (approved/new/unverified)
 - Purchase order validation
@@ -102,7 +99,6 @@ Every judge follows this flow (implemented in `BaseJudge.judge()`):
 - Pattern anomaly detection
 
 **Example**:
-
 ```python
 request = JudgeRequest(
     request_id="req_fin_001",
@@ -130,7 +126,6 @@ response = judge.judge(request)
 **Primary Use Cases**: Case acceptance, settlement authorization, litigation strategy
 
 **Evaluates**:
-
 - Case acceptance (new client/matter intake)
 - Settlement proposals ($100K+ threshold)
 - Litigation strategy changes
@@ -138,7 +133,6 @@ response = judge.judge(request)
 - Motion filings
 
 **Decision Logic**:
-
 - Case value assessment
 - Conflict of interest check
 - Risk/reward analysis (probability of success)
@@ -146,7 +140,6 @@ response = judge.judge(request)
 - Statute of limitations urgency
 
 **Example**:
-
 ```python
 context = {
     "case_value_usd": 500000,
@@ -166,7 +159,6 @@ context = {
 **Primary Use Cases**: EU AI Act compliance, GDPR, CA SB 53, export control
 
 **Evaluates**:
-
 - Regulatory compliance (EU AI Act, GDPR, CCPA)
 - Contract legal review
 - Policy adherence
@@ -174,7 +166,6 @@ context = {
 - Export control compliance
 
 **Decision Logic**:
-
 - Regulatory framework identification
 - High-risk AI system classification (EU AI Act)
 - Documentation validation (legal review, DPIA)
@@ -182,7 +173,6 @@ context = {
 - Export license validation
 
 **High-Risk AI Systems** (EU AI Act):
-
 - Biometric identification
 - Critical infrastructure
 - Law enforcement
@@ -190,7 +180,6 @@ context = {
 - Employment decisions
 
 **Example**:
-
 ```python
 context = {
     "compliance_area": "eu_ai_act",
@@ -210,7 +199,6 @@ context = {
 **Primary Use Cases**: Payment fraud, account takeover, identity verification
 
 **Evaluates**:
-
 - Payment fraud indicators (ML fraud score)
 - Account security anomalies
 - Identity verification failures
@@ -218,7 +206,6 @@ context = {
 - Vendor fraud risk
 
 **Decision Logic**:
-
 - Fraud score assessment (0.0-1.0, ML-based in production)
 - Behavioral anomaly detection (velocity checks)
 - Geographic risk factors (geo-mismatch)
@@ -226,13 +213,11 @@ context = {
 - Multi-indicator analysis
 
 **Thresholds**:
-
 - High fraud: ≥0.7 → BLOCK
 - Medium fraud: 0.4-0.7 → Additional verification
 - Low fraud: <0.4 → Monitor
 
 **Example**:
-
 ```python
 context = {
     "fraud_score": 0.75,           # ← HIGH
@@ -249,14 +234,14 @@ context = {
 
 **See**: [FraudJudge Specifications](./fraud-judge-spec.md)
 
-## Compliance Framework Risk Matrix Integration
+## ATP 5-19 Risk Matrix Integration
 
 All judges use the **Army Techniques Publication 5-19** risk assessment matrix.
 
 ### Risk Matrix Lookup
 
 | **Probability** ↓ × **Severity** → | **I (Catastrophic)** | **II (Critical)** | **III (Moderate)** | **IV (Negligible)** |
-| ---------------------------------- | -------------------- | ----------------- | ------------------ | ------------------- |
+|------------------------------------|----------------------|-------------------|--------------------|---------------------|
 | **A** (Almost Certain, >90%)       | **EH**               | **EH**            | **H**              | **M**               |
 | **B** (Likely, 70-90%)             | **EH**               | **H**             | **H**              | **M**               |
 | **C** (Possible, 30-70%)           | **EH**               | **H**             | **M**              | **L**               |
@@ -264,7 +249,6 @@ All judges use the **Army Techniques Publication 5-19** risk assessment matrix.
 | **E** (Rare, <10%)                 | **M**                | **M**             | **L**              | **L**               |
 
 **Risk Levels**:
-
 - **EH** (Extremely High): Requires immediate action, highest authority approval (C-Suite + Board)
 - **H** (High): Requires action, senior authority approval (Senior Executive)
 - **M** (Medium): Monitor closely, moderate authority approval (Department Head)
@@ -292,7 +276,6 @@ Target: **10:1 compression ratio** while preserving decision-critical informatio
 ### Example Compression
 
 **Original Context** (850 bytes):
-
 ```json
 {
   "amount_usd": 50000,
@@ -310,7 +293,6 @@ Target: **10:1 compression ratio** while preserving decision-critical informatio
 ```
 
 **Semantic Summary** (62 bytes):
-
 ```
 wire→$50K→new_vendor→no_PO→high_risk→CFO_gate→BLOCK
 ```
@@ -324,7 +306,6 @@ action→amount→vendor_status→PO_status→risk_level→approval_gate→decis
 ```
 
 **Components**:
-
 - **Action**: Abbreviated action type (wire, contract, legal, fraud)
 - **Amount**: Formatted amount ($50K, $2.5M)
 - **Context**: Key decision factors (new_vendor, PO_123456, fraud_high)
@@ -338,11 +319,11 @@ action→amount→vendor_status→PO_status→risk_level→approval_gate→decis
 
 ### Latency Requirements
 
-| **Metric**      | **Target** | **Measurement**                        |
-| --------------- | ---------- | -------------------------------------- |
-| p50 latency     | ~30ms      | Median decision time                   |
-| **p99 latency** | **≤90ms**  | **99th percentile (HARD REQUIREMENT)** |
-| Max latency     | <200ms     | Absolute ceiling                       |
+| **Metric** | **Target** | **Measurement** |
+|------------|------------|-----------------|
+| p50 latency | ~30ms | Median decision time |
+| **p99 latency** | **≤90ms** | **99th percentile (HARD REQUIREMENT)** |
+| Max latency | <200ms | Absolute ceiling |
 
 **Measurement Method**: `time.perf_counter()` start/end around `judge.judge()` call.
 
@@ -364,14 +345,12 @@ action→amount→vendor_status→PO_status→risk_level→approval_gate→decis
 ### EU AI Act Compliance
 
 **Article 9**: High-risk AI systems require:
-
-- ✅ Risk assessment (Compliance Framework matrix)
+- ✅ Risk assessment (ATP 5-19 matrix)
 - ✅ Human oversight (HITL gates)
 - ✅ Technical documentation (audit trails)
 - ✅ Transparency (semantic summaries)
 
 **Article 12**: Logging requirements:
-
 - ✅ Immutable audit trails
 - ✅ 7-year retention (2555 days)
 - ✅ Decision rationale preservation
@@ -381,7 +360,6 @@ action→amount→vendor_status→PO_status→risk_level→approval_gate→decis
 ### California SB 53
 
 **Transparency Requirements**:
-
 - ✅ AI system documentation (Judge specs)
 - ✅ Performance metrics (latency, accuracy)
 - ✅ Model cards (risk assessment methodology)
@@ -423,7 +401,6 @@ if validate_params(function_call.args):
 **POST** `/judges/evaluate`
 
 Request:
-
 ```json
 {
   "request_id": "req_20251117_fin_001",
@@ -436,7 +413,6 @@ Request:
 ```
 
 Response:
-
 ```json
 {
   "decision": "BLOCK",
@@ -523,7 +499,7 @@ kubectl expose deployment judge-hitl --type=LoadBalancer --port=8001
 
 ## References
 
-- **Compliance Framework**: Army Techniques Publication 5-19 (Risk Management)
+- **ATP 5-19**: Army Techniques Publication 5-19 (Risk Management)
 - **EU AI Act**: Regulation (EU) 2024/1689
 - **CA SB 53**: California Senate Bill 53 (AI Transparency)
 - **Source Code**: `/src/judges/`, `/src/risk_matrix/`, `/src/utils/`
@@ -532,4 +508,4 @@ kubectl expose deployment judge-hitl --type=LoadBalancer --port=8001
 
 **Status**: ✅ Pilot Ready (v1.0.0)
 **Last Updated**: 2025-11-17
-**Maintainer**: ShadowTag-v2 Judge Team
+**Maintainer**: AiYou Judge Team

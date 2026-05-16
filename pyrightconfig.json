@@ -1,1 +1,57 @@
-{ "extraPaths": ["./external_repos/corp-monorepo"] }
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/pyright/main/packages/pyright/schema/pyrightconfig.schema.json",
+  "venvPath": ".",
+  "venv": ".venv",
+  "include": ["apps/counselconduit", "labs/uphillsnowball", "shared"],
+  "exclude": [
+    "**/.git",
+    "**/__pycache__",
+    "**/.pytest_cache",
+    "**/.mypy_cache",
+    "**/.ruff_cache",
+    "**/.venv",
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/coverage",
+    "**/.next",
+    "external_memory",
+    "archive",
+    "repos",
+    "**/*legacy*",
+    "apps/aiyou_stack/aiyou-fastapi-services/external_memory",
+    "apps/aiyou_stack/aiyou-fastapi-services/external_repos",
+    "apps/aiyou_stack/aiyou-fastapi-services/raw_ingest",
+    "apps/aiyou_stack/aiyou-fastapi-services/drive_ingest",
+    "apps/aiyou_stack/aiyou-fastapi-services/formatted_docs",
+    "apps/aiyou_stack/aiyou-fastapi-services/full_drive_link",
+    "apps/aiyou_stack/aiyou-fastapi-services/local_ingest",
+    "apps/aiyou_stack/aiyou-fastapi-services/repos"
+  ],
+  "ignore": ["shared/artifacts", "**/*.ipynb"],
+  "executionEnvironments": [
+    {
+      "root": "apps/counselconduit",
+      "extraPaths": ["shared"]
+    },
+    {
+      "root": "labs/uphillsnowball",
+      "extraPaths": ["shared"]
+    },
+    {
+      "root": "shared"
+    }
+  ],
+  "typeCheckingMode": "basic",
+  "useLibraryCodeForTypes": true,
+  "autoImportCompletions": true,
+  "reportMissingImports": "warning",
+  "reportMissingTypeStubs": "none",
+  "reportUnusedImport": "warning",
+  "reportUnusedVariable": "warning",
+  "reportDuplicateImport": "warning",
+  "reportWildcardImportFromLibrary": "warning",
+  "reportGeneralTypeIssues": "warning",
+  "pythonVersion": "3.11",
+  "pythonPlatform": "Darwin"
+}

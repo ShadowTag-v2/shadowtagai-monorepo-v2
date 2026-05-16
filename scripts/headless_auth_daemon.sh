@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Sovereign State Protocol — Headless Auth Daemon (Zero Prompts)
-# Requires: keys/service-account.json (SA: 767252945109-compute@developer.gserviceaccount.com)
+# Requires: keys/service-account.json (SA: headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com)
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"

@@ -1,0 +1,70 @@
+/**
+ * Claude Code Agents - Main Entry Point
+ * Comprehensive agent system for development workflows
+ */
+
+export * as AIInnovation from "./agents/ai-innovation";
+export * as BusinessAnalytics from "./agents/business-analytics";
+export * as DesignUX from "./agents/design-ux";
+export * as Development from "./agents/development";
+export * as Operations from "./agents/operations";
+// Export all agent categories
+export * as ProductStrategy from "./agents/product-strategy";
+export * as QualityTesting from "./agents/quality-testing";
+// Export registry
+export { AgentRegistry, agentRegistry } from "./agents/registry";
+// Export configuration
+export { AgentConfig } from "./config/agent-config";
+// Export types
+export * from "./types/agent.types";
+
+import type { AgentCategory } from "./types/agent.types";
+
+// Export base agent
+export { BaseAgent } from "./utils/base-agent";
+
+/**
+ * Get an agent by ID
+ * @example
+ * const agent = getAgent('product-strategist');
+ * const result = await agent.execute({ projectPath: '/path/to/project', userQuery: 'Analyze my features' });
+ */
+export function getAgent(id: string) {
+  return agentRegistry.getAgent(id);
+}
+
+/**
+ * Search for agents by query
+ * @example
+ * const agents = searchAgents('performance');
+ */
+export function searchAgents(query: string) {
+  return agentRegistry.searchAgents(query);
+}
+
+/**
+ * Get all agents in a category
+ * @example
+ * const agents = getAgentsByCategory('development');
+ */
+export function getAgentsByCategory(category: string) {
+  return agentRegistry.getAgentsByCategory(category as AgentCategory);
+}
+
+/**
+ * Get all available agents
+ */
+export function getAllAgents() {
+  return agentRegistry.getAllAgents();
+}
+
+/**
+ * Get agent statistics
+ */
+export function getAgentStats() {
+  return {
+    totalAgents: agentRegistry.getAgentCount(),
+    totalCategories: agentRegistry.getCategoryCount(),
+    categories: agentRegistry.listCategories(),
+  };
+}

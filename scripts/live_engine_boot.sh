@@ -5,7 +5,7 @@ echo "Initializing Antigravity Velocity Engine Protocol..."
 # Force Global Context Exports
 export GCP_PROJECT_ID="shadowtag-omega-v4"
 export BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/7752040e-c13e-48ec-ab23-bda36d0e0873"
-export EXTERNAL_SDKS="/Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/libs"
+export EXTERNAL_SDKS="/Users/pikeymickey/aiyou-stack/ShadowTag-v2/libs"
 
 # Bind the headless GCP Authentication logic loop
 nohup /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python scripts/omega_auth_daemon.py > /tmp/velocity_daemon.log 2>&1 &

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""scripts/gemini_agent_swarm.py
-Gemini Agent Swarm — replaces n-autoresearch/Kosmos/BioAgents with a Gemini-native multi-agent loop.
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+scripts/gemini_agent_swarm.py
+Gemini Agent Swarm — replaces flyingmonkeys with a Gemini-native multi-agent loop.
 
 Architectural lineage:
   karpathy/autoresearch   →  agentic research loop: query → synthesize → re-query
@@ -25,62 +27,25 @@ import argparse
 import asyncio
 import json
 import logging
-import os
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from core.aegaeon import SwarmRouter, SwarmTask, SwarmTier  # noqa: E402
-from core.rag_evolve import search_corpus  # type: ignore[import]  # noqa: E402
+from core.aegaeon import SwarmRouter, SwarmTask, SwarmTier
+from core.rag_evolve import search_corpus  # type: ignore[import]
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("gemini_agent_swarm")
-
-# ── Prompt Repetition (arXiv 2512.14982) ────────────────────────────────────
-# Zero-cost accuracy boost (1-8%) for non-reasoning models.
-# Repeat the instruction at the end of the prompt to reduce drift.
-
-_NON_REASONING_MODELS = {
-    "gemini-3.1-flash-lite-preview",
-    "gpt-4.1",
-    "gpt-4o-mini",
-    "claude-3.5-haiku",
-    "pplx-api",
-}
-
-# Read from env — defaults to gemini-3.1-flash-lite-preview
-_ACTIVE_MODEL = os.environ.get("SWARM_MODEL", "gemini-3.1-flash-lite-preview")
-
-
-def _apply_prompt_repetition(prompt: str, role: str) -> str:
-    """Apply prompt repetition if active model is non-reasoning.
-
-    Repeats the core instruction block at the end of the prompt,
-    separated by a delimiter, to reduce attention drift in flash/lite models.
-    """
-    if _ACTIVE_MODEL not in _NON_REASONING_MODELS:
-        return prompt
-    return (
-        f"{prompt}\n\n---\n\n"
-        f"[INSTRUCTION REPEAT — {role.upper()}]\n"
-        f"{prompt.split(chr(10), 1)[0]}\n"
-        f"Respond precisely and completely to the task above."
-    )
-
 
 # ── Agent role prompts ──────────────────────────────────────────────────────
 
 _RESEARCH_TMPL = """\
 ROLE: Research Agent (autoresearch pattern)
 TASK: Gather supporting evidence for the following query from the Antigravity corpus.
-
-CORPUS HITS (LOCAL LANCEDB/FTS5):
+CORPUS HITS (FTS5):
 {corpus_hits}
-
-GITNEXUS AST MONOREPO GRAPH:
-{ast_context}
 
 QUERY: {query}
 
@@ -141,26 +106,9 @@ async def run_swarm(query: str) -> dict:
     hits = search_corpus(query, top_k=8)
     corpus_text = "\n".join(f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits)
 
-    # Extract actual GitNexus localized structural intelligence
-    import subprocess
-
-    try:
-        ast_result = subprocess.check_output(
-            ["npx", "gitnexus", "query", query],
-            cwd="apps/gitnexus",
-            stderr=subprocess.DEVNULL,
-            timeout=10,
-        ).decode()
-    except Exception:
-        ast_result = "[AST Nexus: Local graph compilation unavailable or timed out.]"
-
-    research_prompt = _apply_prompt_repetition(
-        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result),
-        "research",
-    )
     research_task = SwarmTask(
         "research",
-        research_prompt,
+        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)"),
         tier=SwarmTier.FAST,
     )
     [research_result] = await router.dispatch([research_task])
@@ -168,22 +116,14 @@ async def run_swarm(query: str) -> dict:
     evidence_str = json.dumps(research_data.get("evidence", []), indent=2)
 
     # Phase 2 — Synthesize (Fast Path) + Critique (Heavy Lift): parallel
-    synth_prompt = _apply_prompt_repetition(
-        _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
-        "synthesize",
-    )
-    crit_prompt = _apply_prompt_repetition(
-        _CRITIQUE_TMPL.format(recommendation=evidence_str),
-        "critique",
-    )
     synth_task = SwarmTask(
         "synthesize",
-        synth_prompt,
+        _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
         tier=SwarmTier.FAST,
     )
     crit_task = SwarmTask(
         "critique_preliminary",
-        crit_prompt,
+        _CRITIQUE_TMPL.format(recommendation=evidence_str),
         tier=SwarmTier.HEAVY,
     )
     synth_result, _ = await router.dispatch([synth_task, crit_task])
@@ -191,28 +131,20 @@ async def run_swarm(query: str) -> dict:
     recommendation = synth_data.get("recommendation", synth_result.text[:500])
 
     # Phase 3 — Final critique + architect directive: parallel
-    final_crit_prompt = _apply_prompt_repetition(
-        _CRITIQUE_TMPL.format(recommendation=recommendation),
-        "critique",
-    )
     final_crit_task = SwarmTask(
         "critique_final",
-        final_crit_prompt,
+        _CRITIQUE_TMPL.format(recommendation=recommendation),
         tier=SwarmTier.HEAVY,
     )
     [crit_result] = await router.dispatch([final_crit_task])
     crit_data = _safe_json(crit_result.text)
 
-    arch_prompt = _apply_prompt_repetition(
+    arch_task = SwarmTask(
+        "architect",
         _ARCHITECT_TMPL.format(
             recommendation=recommendation,
             verdict=crit_data.get("verdict", "unknown"),
         ),
-        "architect",
-    )
-    arch_task = SwarmTask(
-        "architect",
-        arch_prompt,
         tier=SwarmTier.HEAVY,
     )
     [arch_result] = await router.dispatch([arch_task])
@@ -242,40 +174,13 @@ def _safe_json(text: str) -> dict:
 
 async def _loop(query: str, interval: int) -> None:
     logger.info("Starting continuous swarm loop (interval=%ds)", interval)
-
-    import subprocess
-    import sys
-
-    sys.path.insert(0, str(REPO_ROOT / "scripts"))
-    try:
-        from omega_auto_dispatcher import dispatch_payload_by_id
-    except ImportError:
-
-        def dispatch_payload_by_id(pid: int) -> None:
-            logger.debug("omega_auto_dispatcher unavailable; skipping payload %s", pid)
-
     while True:
         try:
-            git_status = subprocess.run(
-                ["git", "status", "--porcelain"],
-                capture_output=True,
-                text=True,
-                check=False,
-            )
-            if git_status.stdout.strip():
-                logger.info("YOLO MODE: Swarm detected architectural drift. Firing Payload 4 (Boy Scout Sweep).")
-                dispatch_payload_by_id(4)
-
             result = await run_swarm(query)
             directive = result.get("architect_directive", {}).get("summary", "")
             logger.info("Loop result: %s", directive)
-
-            if directive and ("vector" in directive.lower() or "ingest" in directive.lower()):
-                logger.info("YOLO MODE: Architecture blueprint requested ingest. Firing Payload 2 (Vector Sync).")
-                dispatch_payload_by_id(2)
-
         except Exception as exc:
-            logger.exception("Swarm iteration failed: %s", exc)
+            logger.error("Swarm iteration failed: %s", exc)
         await asyncio.sleep(interval)
 
 
@@ -296,4 +201,4 @@ if __name__ == "__main__":
             Path(args.out).write_text(output)
             logger.info("Result written to %s", args.out)
         else:
-            pass
+            print(output)

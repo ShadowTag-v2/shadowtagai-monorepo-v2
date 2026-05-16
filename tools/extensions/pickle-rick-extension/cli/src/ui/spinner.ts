@@ -1,4 +1,4 @@
-import { logError, logInfo, logSuccess } from './logger.js';
+import { logError, logInfo, logSuccess } from "./logger.js";
 
 export class ProgressSpinner {
   private active = false;
@@ -7,7 +7,7 @@ export class ProgressSpinner {
   constructor(label: string, activeSettings?: string[]) {
     this.currentLabel = label;
     if (activeSettings && activeSettings.length > 0) {
-      this.currentLabel += ` [${activeSettings.join(', ')}]`;
+      this.currentLabel += ` [${activeSettings.join(", ")}]`;
     }
   }
 
@@ -20,21 +20,21 @@ export class ProgressSpinner {
     process.stdout.write(`\r${this.currentLabel}: ${step}`);
   }
 
-  success(msg = 'Done') {
+  success(msg = "Done") {
     this.active = false;
-    process.stdout.write('\n'); // Clear line end
+    process.stdout.write("\n"); // Clear line end
     logSuccess(`${this.currentLabel}: ${msg}`);
   }
 
-  error(msg = 'Failed') {
+  error(msg = "Failed") {
     this.active = false;
-    process.stdout.write('\n'); // Clear line end
+    process.stdout.write("\n"); // Clear line end
     logError(`${this.currentLabel}: ${msg}`);
   }
 
   stop() {
     if (this.active) {
-      process.stdout.write('\n');
+      process.stdout.write("\n");
       this.active = false;
     }
   }

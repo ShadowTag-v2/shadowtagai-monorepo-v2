@@ -7,15 +7,13 @@ The ingestion workflow was failing with a `curl: (22) The requested URL returned
 ## Root Cause
 
 **Incorrect URL Format (causes 404):**
-
 ```
-https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/refs/heads/main/policy/config/strict_policy.yml
+https://raw.githubusercontent.com/ehanc69/aiyou-policy/refs/heads/main/policy/config/strict_policy.yml
 ```
 
 **Correct URL Format:**
-
 ```
-https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml
+https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml
 ```
 
 ### The Problem
@@ -33,16 +31,14 @@ https://raw.githubusercontent.com/{owner}/{repo}/{branch-or-commit}/{file-path}
 ### Examples
 
 ✅ **Correct:**
-
-- `https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml`
-- `https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/v1.0.0/policy/config/strict_policy.yml`
-- `https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/abc123def456/policy/config/strict_policy.yml`
+- `https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml`
+- `https://raw.githubusercontent.com/ehanc69/aiyou-policy/v1.0.0/policy/config/strict_policy.yml`
+- `https://raw.githubusercontent.com/ehanc69/aiyou-policy/abc123def456/policy/config/strict_policy.yml`
 
 ❌ **Incorrect:**
-
-- `https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/refs/heads/main/policy/config/strict_policy.yml`
-- `https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/refs/tags/v1.0.0/policy/config/strict_policy.yml`
-- `https://github.com/ehanc69/ShadowTag-v2-policy/blob/main/policy/config/strict_policy.yml` (not raw URL)
+- `https://raw.githubusercontent.com/ehanc69/aiyou-policy/refs/heads/main/policy/config/strict_policy.yml`
+- `https://raw.githubusercontent.com/ehanc69/aiyou-policy/refs/tags/v1.0.0/policy/config/strict_policy.yml`
+- `https://github.com/ehanc69/aiyou-policy/blob/main/policy/config/strict_policy.yml` (not raw URL)
 
 ## Fix Implemented
 
@@ -60,18 +56,16 @@ Created `.github/workflows/ingest.yml` with:
 ### 2. Key Features
 
 **Retry Logic:**
-
 ```yaml
 # Retry up to 4 times with exponential backoff
 MAX_RETRIES=4
-RETRY_DELAY=2 # Initial delay: 2s, then 4s, 8s, 16s
+RETRY_DELAY=2  # Initial delay: 2s, then 4s, 8s, 16s
 ```
 
 **URL Construction:**
-
 ```yaml
 # Environment variables for easy configuration
-POLICY_REPO: ehanc69/ShadowTag-v2-policy
+POLICY_REPO: ehanc69/aiyou-policy
 POLICY_BRANCH: main
 POLICY_FILE_PATH: policy/config/strict_policy.yml
 
@@ -80,7 +74,6 @@ POLICY_URL="https://raw.githubusercontent.com/${POLICY_REPO}/${POLICY_BRANCH}/${
 ```
 
 **Robust Curl Command:**
-
 ```bash
 curl -fsSL \
   --retry 3 \
@@ -99,7 +92,7 @@ The workflow provides detailed error messages if the download fails:
 
 ```
 Please verify:
-  1. The repository 'ehanc69/ShadowTag-v2-policy' exists and is accessible
+  1. The repository 'ehanc69/aiyou-policy' exists and is accessible
   2. The branch 'main' exists
   3. The file path 'policy/config/strict_policy.yml' is correct
   4. The URL format is: https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}
@@ -115,11 +108,11 @@ To test the workflow manually:
 ```bash
 # Test the curl command locally
 curl -fsSL \
-  https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml
+  https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml
 
 # Test with verbose output
 curl -v \
-  https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml
+  https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml
 ```
 
 ### GitHub Actions Testing
@@ -134,20 +127,18 @@ curl -v \
 If you have existing workflows using the incorrect URL format:
 
 ### Before (Broken):
-
 ```yaml
 - name: Download policy
   run: |
     curl -fsSL -o policy/config/strict_policy.yml \
-      https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/refs/heads/main/policy/config/strict_policy.yml
+      https://raw.githubusercontent.com/ehanc69/aiyou-policy/refs/heads/main/policy/config/strict_policy.yml
 ```
 
 ### After (Fixed):
-
 ```yaml
 - name: Download policy
   env:
-    POLICY_URL: https://raw.githubusercontent.com/ehanc69/ShadowTag-v2-policy/main/policy/config/strict_policy.yml
+    POLICY_URL: https://raw.githubusercontent.com/ehanc69/aiyou-policy/main/policy/config/strict_policy.yml
   run: |
     echo "Downloading from: ${POLICY_URL}"
 
@@ -169,14 +160,12 @@ If you have existing workflows using the incorrect URL format:
 ### 1. Always Use Raw URLs for Direct Downloads
 
 When downloading files directly with `curl`, use the raw URL format:
-
 - ✅ `https://raw.githubusercontent.com/...`
 - ❌ `https://github.com/.../blob/...`
 
 ### 2. Add Debugging Output
 
 Always log the URL being used:
-
 ```bash
 echo "Downloading from: ${URL}"
 ```
@@ -184,7 +173,6 @@ echo "Downloading from: ${URL}"
 ### 3. Implement Retry Logic
 
 Network requests can fail transiently:
-
 ```bash
 curl --retry 3 --retry-delay 2 "${URL}"
 ```
@@ -192,7 +180,6 @@ curl --retry 3 --retry-delay 2 "${URL}"
 ### 4. Validate Downloaded Files
 
 Check if the file exists and is non-empty:
-
 ```bash
 if [ ! -s "${FILE_PATH}" ]; then
   echo "Error: File is empty or missing"
@@ -203,7 +190,6 @@ fi
 ### 5. Use Environment Variables
 
 Make URLs configurable:
-
 ```yaml
 env:
   REPO: owner/repo
@@ -214,11 +200,10 @@ env:
 ### 6. Prefer GitHub Actions
 
 For files in the same repository, use `actions/checkout`:
-
 ```yaml
 - uses: actions/checkout@v4
   with:
-    repository: ehanc69/ShadowTag-v2-policy
+    repository: ehanc69/aiyou-policy
     ref: main
     path: policy
 ```
@@ -226,9 +211,8 @@ For files in the same repository, use `actions/checkout`:
 ### 7. Use Release Assets API
 
 For release assets, use the GitHub API:
-
 ```bash
-gh release download v1.0.0 --pattern '*.yml' --repo ehanc69/ShadowTag-v2-policy
+gh release download v1.0.0 --pattern '*.yml' --repo ehanc69/aiyou-policy
 ```
 
 ## Alternative Solutions
@@ -236,12 +220,11 @@ gh release download v1.0.0 --pattern '*.yml' --repo ehanc69/ShadowTag-v2-policy
 ### Option 1: Use actions/checkout
 
 Instead of `curl`, checkout the entire repository:
-
 ```yaml
 - name: Checkout policy repository
   uses: actions/checkout@v4
   with:
-    repository: ehanc69/ShadowTag-v2-policy
+    repository: ehanc69/aiyou-policy
     ref: main
     path: policy-repo
 
@@ -251,20 +234,17 @@ Instead of `curl`, checkout the entire repository:
 ```
 
 **Pros:**
-
 - No URL construction needed
 - Handles authentication automatically
 - More reliable for large files
 
 **Cons:**
-
 - Downloads entire repository (slower)
 - Uses more disk space
 
 ### Option 2: Use GitHub CLI
 
 Use `gh` to download specific files:
-
 ```yaml
 - name: Download policy file
   env:
@@ -272,18 +252,16 @@ Use `gh` to download specific files:
   run: |
     gh api \
       -H "Accept: application/vnd.github.v3.raw" \
-      /repos/ehanc69/ShadowTag-v2-policy/contents/policy/config/strict_policy.yml?ref=main \
+      /repos/ehanc69/aiyou-policy/contents/policy/config/strict_policy.yml?ref=main \
       > policy/config/strict_policy.yml
 ```
 
 **Pros:**
-
 - Handles authentication
 - More robust error handling
 - Can access private repositories
 
 **Cons:**
-
 - Requires GitHub CLI
 - More complex syntax
 
@@ -292,7 +270,6 @@ Use `gh` to download specific files:
 To verify the fix is working:
 
 1. **Check workflow runs:**
-
    ```bash
    # View recent workflow runs
    gh run list --workflow=ingest.yml
@@ -313,7 +290,6 @@ To verify the fix is working:
 ## Related Issues
 
 This fix addresses:
-
 - `curl: (22) The requested URL returned error: 404`
 - `Process completed with exit code 22`
 - GitHub Actions workflow failures in ingestion pipeline

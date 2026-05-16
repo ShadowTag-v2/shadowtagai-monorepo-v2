@@ -7,23 +7,23 @@ cd "$ROOT"
 echo "Phase 1 & 2: Structural Extraction and Archiving"
 
 # 1. create archive/
-mkdir -p archive/backups/ShadowTag-v2-fastapi-services archive/legacy archive/recovered archive/imports
+mkdir -p archive/backups/aiyou-fastapi-services archive/legacy archive/recovered archive/imports
 
-# Base path for ShadowTag-v2-fastapi-services
-FASTAPI_DIR="apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
+# Base path for aiyou-fastapi-services
+FASTAPI_DIR="apps/aiyou_stack/aiyou-fastapi-services"
 
 # 2. move _PRE_OMEGA_BACKUP_*
 if ls "$FASTAPI_DIR"/libs/_PRE_OMEGA_BACKUP_* 1> /dev/null 2>&1; then
     echo "Moving backup fragments..."
-    mv "$FASTAPI_DIR"/libs/_PRE_OMEGA_BACKUP_* archive/backups/ShadowTag-v2-fastapi-services/
+    mv "$FASTAPI_DIR"/libs/_PRE_OMEGA_BACKUP_* archive/backups/aiyou-fastapi-services/
 fi
 
-# 3. move repos/ShadowTag-v2-fastapi-services-legacy/
-if [ -d "$FASTAPI_DIR/repos/ShadowTag-v2-fastapi-services-legacy" ]; then
+# 3. move repos/aiyou-fastapi-services-legacy/
+if [ -d "$FASTAPI_DIR/repos/aiyou-fastapi-services-legacy" ]; then
     echo "Moving legacy nested repo..."
-    mkdir -p archive/legacy/ShadowTag-v2-fastapi-services-legacy
-    mv "$FASTAPI_DIR"/repos/ShadowTag-v2-fastapi-services-legacy/* archive/legacy/ShadowTag-v2-fastapi-services-legacy/ || true
-    rm -rf "$FASTAPI_DIR"/repos/ShadowTag-v2-fastapi-services-legacy
+    mkdir -p archive/legacy/aiyou-fastapi-services-legacy
+    mv "$FASTAPI_DIR"/repos/aiyou-fastapi-services-legacy/* archive/legacy/aiyou-fastapi-services-legacy/ || true
+    rm -rf "$FASTAPI_DIR"/repos/aiyou-fastapi-services-legacy
 fi
 
 # 4. move ShadowTag-Omega/
@@ -42,12 +42,12 @@ if [ -d "$FASTAPI_DIR/libs/arsenal_recovered" ]; then
     rm -rf "$FASTAPI_DIR"/libs/arsenal_recovered
 fi
 
-# 6. move apps/ShadowTag-v2_ecosystem/raw_ingest/
-if [ -d "apps/ShadowTag-v2_ecosystem/raw_ingest" ]; then
+# 6. move apps/aiyou_ecosystem/raw_ingest/
+if [ -d "apps/aiyou_ecosystem/raw_ingest" ]; then
     echo "Moving raw_ingest..."
     mkdir -p archive/imports/raw_ingest
-    mv apps/ShadowTag-v2_ecosystem/raw_ingest/* archive/imports/raw_ingest/ || true
-    rm -rf apps/ShadowTag-v2_ecosystem/raw_ingest
+    mv apps/aiyou_ecosystem/raw_ingest/* archive/imports/raw_ingest/ || true
+    rm -rf apps/aiyou_ecosystem/raw_ingest
 fi
 
 echo "Successfully moved all non-canonical artifacts into archive/"

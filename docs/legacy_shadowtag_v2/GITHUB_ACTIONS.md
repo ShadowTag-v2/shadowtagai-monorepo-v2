@@ -72,7 +72,6 @@ The fastest way to set up is using Claude Code terminal:
 ```
 
 This command will:
-
 1. Guide you through GitHub app setup
 2. Configure required secrets automatically
 3. Create the workflow file in your repository
@@ -126,11 +125,10 @@ Specify a particular Claude model:
 - uses: anthropics/claude-code-action@v2
   with:
     anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-    model: "claude-sonnet-4-5-20250929"
+    model: 'claude-sonnet-4-5-20250929'
 ```
 
 Available models:
-
 - `claude-sonnet-4-5-20250929` (latest, recommended)
 - `claude-opus-4-5-20250514`
 - `claude-haiku-4-5-20250514`
@@ -168,19 +166,16 @@ Provide project-specific guidance for Claude:
 Simply mention @claude in any PR or issue comment to get assistance:
 
 **Example: Asking a question**
-
 ```
 @claude What's the purpose of the UserService class in app/services/user.py?
 ```
 
 **Example: Requesting a review**
-
 ```
 @claude Can you review this PR and check for security issues?
 ```
 
 **Example: Requesting changes**
-
 ```
 @claude Please add error handling to the database connection logic in app/db.py
 ```
@@ -200,13 +195,11 @@ Claude can automatically review PRs:
 **Automatic Review**: Configure your workflow to trigger on PR events (already configured in this repo)
 
 **Manual Review**: Comment on a PR:
-
 ```
 @claude Please review this PR
 ```
 
 Claude will:
-
 - Analyze all changed files
 - Check for bugs and security issues
 - Suggest improvements
@@ -222,9 +215,9 @@ Review only certain files or directories:
 on:
   pull_request:
     paths:
-      - "app/**"
-      - "tests/**"
-      - "requirements.txt"
+      - 'app/**'
+      - 'tests/**'
+      - 'requirements.txt'
 ```
 
 ### Scheduled Maintenance
@@ -234,7 +227,7 @@ Run Claude on a schedule for maintenance tasks:
 ```yaml
 on:
   schedule:
-    - cron: "0 0 * * 0" # Weekly on Sunday
+    - cron: '0 0 * * 0'  # Weekly on Sunday
   workflow_dispatch:
 
 jobs:
@@ -295,13 +288,11 @@ Create separate workflows for different purposes:
 #### Claude doesn't respond to mentions
 
 **Possible causes:**
-
 - Workflow file has syntax errors
 - API key is not configured correctly
 - GitHub Actions is disabled
 
 **Solutions:**
-
 1. Check workflow run logs in Actions tab
 2. Verify `ANTHROPIC_API_KEY` secret exists
 3. Ensure Actions is enabled in repository settings
@@ -311,7 +302,6 @@ Create separate workflows for different purposes:
 **Cause:** Insufficient workflow permissions
 
 **Solution:** Add required permissions to workflow:
-
 ```yaml
 permissions:
   contents: write
@@ -325,7 +315,6 @@ permissions:
 **Cause:** Too many requests to Anthropic API
 
 **Solutions:**
-
 - Reduce trigger frequency
 - Use path filters to limit when workflow runs
 - Consider using scheduled workflows instead of on every event
@@ -333,7 +322,6 @@ permissions:
 #### Claude makes incorrect changes
 
 **Solutions:**
-
 - Provide more detailed custom instructions
 - Be more specific in your requests
 - Review and refine prompts in issue descriptions
@@ -409,7 +397,7 @@ name: Security Review
 
 on:
   schedule:
-    - cron: "0 0 * * 1" # Monday at midnight
+    - cron: '0 0 * * 1'  # Monday at midnight
   workflow_dispatch:
 
 permissions:

@@ -1,6 +1,6 @@
 # pnkln Core Stack™: Integrated Analysis Framework
 
-**Purpose**: Document how Judge 6 and Gemini Ingestion Layer prompts work together for comprehensive pnkln stack analysis
+**Purpose**: Document how Judge #6 and Gemini Ingestion Layer prompts work together for comprehensive pnkln stack analysis
 **Date**: 2025-11-14
 **Framework**: Gemini 2.0 Pro analytical prompts
 
@@ -11,7 +11,7 @@
 The pnkln Core Stack™ employs **two complementary analysis prompts** to evaluate different layers of the intelligence pipeline:
 
 1. **Gemini Ingestion Layer Prompt**: Analyzes upstream collection (batch processing, sources, ethical crawling)
-2. **Judge 6 Prompt**: Analyzes midstream validation (real-time enforcement, Compliance Framework frameworks)
+2. **Judge #6 Prompt**: Analyzes midstream validation (real-time enforcement, ATP 5-19 frameworks)
 
 Together, they enable **end-to-end pipeline health assessment** from raw data collection through validation to downstream delivery.
 
@@ -41,13 +41,13 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 ┌─────────────────────────▼───────────────────────────────────────┐
 │ Layer 3: ENFORCEMENT (Midstream Validation)                     │
 │ ─────────────────────────────────────────────────────────────── │
-│ ✦ JUDGE #6: Compliance Framework Risk Enforcement Engine                   │
+│ ✦ JUDGE #6: ATP 5-19 Risk Enforcement Engine                   │
 │   • Real-time content validation (p99 ≤90ms)                   │
 │   • ALLOW / BLOCK / FLAG_FOR_REVIEW decisions                  │
 │   • False positive/negative optimization                        │
 │   • Hybrid Gemini + PyTorch architecture                        │
 │                                                                 │
-│ Analyzed by: Judge 6 v2 Prompt                                │
+│ Analyzed by: Judge #6 v2 Prompt                                │
 │ Metrics: Latency, throughput, FP/FN rates, block accuracy      │
 └─────────────────────────┬───────────────────────────────────────┘
                           │
@@ -91,7 +91,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 **Mission**: Acquire high-quality intelligence from diverse sources at scale
 
 **Responsibilities**:
-
 - ✅ Poll configured sources overnight (YouTube, Twitter, News, Web)
 - ✅ Extract and parse raw data (videos, tweets, articles, web pages)
 - ✅ Classify items into Tier 1/2/3 based on intelligence value
@@ -101,7 +100,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 - ✅ Operate within $77/month cost budget
 
 **Success Criteria**:
-
 - Runtime ≤45 minutes/night
 - ≥4 active sources contributing
 - 20-30% Tier 1, 50-60% Tier 2, 10-20% Tier 3 distribution
@@ -109,7 +107,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 - Briefing ready by 6 AM
 
 **Failure Modes**:
-
 - Source API quota exhaustion → No data from that source
 - Network timeouts → Incomplete ingestion run
 - Cost spike → Budget overrun
@@ -117,28 +114,25 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 
 ---
 
-### Layer 3: Judge 6 (Enforcement)
+### Layer 3: Judge #6 (Enforcement)
 
-**Mission**: Validate intelligence quality and enforce Compliance Framework risk frameworks
+**Mission**: Validate intelligence quality and enforce ATP 5-19 risk frameworks
 
 **Responsibilities**:
-
 - ✅ Receive raw intelligence items from Ingestion Layer
-- ✅ Evaluate each item against Compliance Framework categories (Benign, Misinfo, Harmful)
+- ✅ Evaluate each item against ATP 5-19 categories (Benign, Misinfo, Harmful)
 - ✅ Make binary decisions (ALLOW, BLOCK, FLAG_FOR_REVIEW)
 - ✅ Filter out misinformation, harmful instructions, policy violations
 - ✅ Enrich allowed items with policy citations and justifications
 - ✅ Respond within p99 ≤90ms latency SLA
 
 **Success Criteria**:
-
 - p99 latency ≤90ms
 - False negative rate ≤2% (harmful content allowed)
 - False positive rate ≤5% (benign content blocked)
 - Throughput handles ingestion volume (items/day)
 
 **Failure Modes**:
-
 - Latency breach → SLA violation, cascading delays
 - High FN rate → Harmful intel reaches consumers (safety risk)
 - High FP rate → Good intel discarded (quality loss)
@@ -153,7 +147,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 **Trigger**: GKE CronJob (e.g., 11 PM PST nightly)
 
 **Process**:
-
 ```
 1. Poll Sources (parallel)
    ├─ YouTube API: Fetch videos matching search criteria
@@ -186,12 +179,11 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 
 ---
 
-### 2. Real-Time Validation (Judge 6)
+### 2. Real-Time Validation (Judge #6)
 
 **Trigger**: Downstream consumer requests validated intelligence
 
 **Process**:
-
 ```
 1. Receive Item Request
    └─ Consumer service queries: "Get Tier 1 items on [topic]"
@@ -199,8 +191,8 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 2. Fetch from Staging
    └─ BigQuery: SELECT * FROM raw_intelligence WHERE tier=1 AND topic LIKE '%[topic]%'
 
-3. Validate Each Item (Judge 6)
-   ├─ Analyze content against Compliance Framework
+3. Validate Each Item (Judge #6)
+   ├─ Analyze content against ATP 5-19
    ├─ Classify: Benign (A), Misinformation (B), Harmful (C)
    └─ Decide: ALLOW | BLOCK | FLAG_FOR_REVIEW
 
@@ -223,15 +215,13 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 ### 3. Downstream Consumption (Analytics, Dashboards)
 
 **Consumers**:
-
 - **Analytics Dashboards**: Trend analysis, topic clustering
 - **AM Briefing Delivery**: Email/Slack summaries to stakeholders
 - **Alerting Systems**: Trigger notifications on high-priority intel
 - **Strategic Tools**: Feed decision-making models
 
 **Requirements**:
-
-- Validated intelligence only (Judge 6 passed)
+- Validated intelligence only (Judge #6 passed)
 - Tier classifications preserved
 - Metadata complete (source, timestamp, relevance score)
 
@@ -239,10 +229,9 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 
 ## Integration Points & Handoffs
 
-### Handoff 1: Ingestion → Judge 6
+### Handoff 1: Ingestion → Judge #6
 
 **Data Contract**:
-
 ```json
 {
   "item_id": "uuid",
@@ -260,46 +249,39 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 }
 ```
 
-**Critical Fields for Judge 6**:
-
-- `content`: Text to analyze for Compliance Framework violations
+**Critical Fields for Judge #6**:
+- `content`: Text to analyze for ATP 5-19 violations
 - `tier`: Prioritize Tier 1 for faster validation
 - `source`: Context for credibility assessment
 
 **Failure Scenario**:
-
-- Missing `content` → Judge 6 cannot validate → FLAG_FOR_REVIEW
+- Missing `content` → Judge #6 cannot validate → FLAG_FOR_REVIEW
 - Missing `tier` → Default to Tier 3 (low priority) → Delayed validation
 
 ---
 
-### Handoff 2: Judge 6 → Consumers
+### Handoff 2: Judge #6 → Consumers
 
 **Data Contract**:
-
 ```json
 {
   "item_id": "uuid",
   "decision": "ALLOW",
-  "policy_citation": "Compliance Framework.A.1 (Benign Intent)",
+  "policy_citation": "ATP-5-19.A.1 (Benign Intent)",
   "justification": "Standard news article, no risk factors",
   "validation_timestamp": "ISO8601",
   "confidence_score": 0.92,
-  "original_item": {
-    /* Ingestion data */
-  }
+  "original_item": { /* Ingestion data */ }
 }
 ```
 
 **Critical Fields for Consumers**:
-
 - `decision == "ALLOW"`: Only allowed items passed
 - `policy_citation`: Audit trail for compliance
 - `confidence_score`: Consumer can filter low-confidence items
 
 **Failure Scenario**:
-
-- Judge 6 down → No validation → Consumers see stale data or nothing
+- Judge #6 down → No validation → Consumers see stale data or nothing
 - High FP rate → Too many BLOCK decisions → Consumers starve
 
 ---
@@ -308,17 +290,16 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 
 **pnkln stack Deployment**: 4 Kubernetes namespaces
 
-| Namespace         | Components                           | Role                     |
-| ----------------- | ------------------------------------ | ------------------------ |
-| **ingestion-ns**  | Gemini Ingestion Layer (GKE CronJob) | Data collection          |
-| **validation-ns** | Judge 6 (Deployment + Service)      | Content validation       |
-| **analytics-ns**  | Dashboards, trend analysis           | Intelligence consumption |
-| **delivery-ns**   | AM Briefing generator, alerting      | Stakeholder delivery     |
+| Namespace | Components | Role |
+|-----------|------------|------|
+| **ingestion-ns** | Gemini Ingestion Layer (GKE CronJob) | Data collection |
+| **validation-ns** | Judge #6 (Deployment + Service) | Content validation |
+| **analytics-ns** | Dashboards, trend analysis | Intelligence consumption |
+| **delivery-ns** | AM Briefing generator, alerting | Stakeholder delivery |
 
 **Service Mesh**: Assumed (Istio, Linkerd, or native GKE networking)
 
 **Communication Patterns**:
-
 ```
 1. delivery-ns → ingestion-ns
    Trigger: "Start nightly ingestion job"
@@ -338,7 +319,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 ```
 
 **Network Policies**:
-
 - `ingestion-ns` can write to BigQuery (egress to GCP APIs)
 - `validation-ns` can read from BigQuery, write to consumers (ingress from analytics/delivery-ns)
 - `analytics-ns` and `delivery-ns` cannot directly access `ingestion-ns` (enforce validation layer)
@@ -352,7 +332,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 **Prompt**: `prompts/ingestion-layer/v1/gemini-ingestion-layer-analysis.md`
 
 **Input Artifacts**:
-
 - GKE CronJob YAML configuration
 - Source integration documentation (YouTube API, Twitter API)
 - Ethical crawling policies
@@ -361,7 +340,6 @@ Together, they enable **end-to-end pipeline health assessment** from raw data co
 - AM Briefing template
 
 **Run Analysis**:
-
 ```bash
 # Load prompt and artifacts
 gemini analyze \
@@ -371,7 +349,6 @@ gemini analyze \
 ```
 
 **Expected Output**: 10-section analysis report with:
-
 - Architecture strengths/concerns
 - Metrics evaluation (items/day, sources, cost)
 - Ethical compliance assessment (robots.txt, ToS)
@@ -382,20 +359,18 @@ gemini analyze \
 
 ---
 
-### Step 2: Analyze Judge 6 Validation
+### Step 2: Analyze Judge #6 Validation
 
 **Prompt**: `prompts/judge/v2/variants/variant-b-reconstructed.md` (or variant-a)
 
 **Input Artifacts**:
-
 - `judge_six.py` source code
-- Compliance Framework framework documentation
+- ATP 5-19 framework documentation
 - Test coverage reports
 - Performance benchmarks (latency, throughput)
 - False positive/negative rate logs
 
 **Run Analysis**:
-
 ```bash
 gemini analyze \
   --prompt prompts/judge/v2/variants/variant-b-reconstructed.md \
@@ -404,7 +379,6 @@ gemini analyze \
 ```
 
 **Expected Output**: Pattern-integrated analysis with:
-
 - Scratchpad reasoning for decision logic
 - Accuracy assessment (10-15% improvement over v1 expected)
 - Latency profile (p99 compliance)
@@ -418,56 +392,49 @@ gemini analyze \
 **Objective**: Evaluate end-to-end pipeline health
 
 **Process**:
-
 1. Load both analysis reports
-2. Identify handoff points (Ingestion → Judge 6)
+2. Identify handoff points (Ingestion → Judge #6)
 3. Validate data contract alignment
 4. Assess failure propagation risks
 5. Optimize cross-layer performance
 
 **Integration Questions**:
 
-| Question                 | Ingestion Analysis       | Judge 6 Analysis          | Combined Insight             |
-| ------------------------ | ------------------------ | -------------------------- | ---------------------------- |
-| **Data Contract Match?** | Output schema documented | Input schema documented    | ✅ Fields align              |
-| **Latency Budget?**      | 45 min collection        | <90ms validation           | ✅ Total <46 min acceptable  |
-| **Failure Resilience?**  | Source outage handling   | Validation service HA      | ⚠️ No fallback if both fail  |
-| **Cost Allocation?**     | $77/month ingestion      | $X/month validation        | ✅ Combined within budget    |
-| **Tier Propagation?**    | Tier 1/2/3 assigned      | Tier-aware prioritization? | ⚠️ Judge 6 may ignore tiers |
+| Question | Ingestion Analysis | Judge #6 Analysis | Combined Insight |
+|----------|-------------------|-------------------|------------------|
+| **Data Contract Match?** | Output schema documented | Input schema documented | ✅ Fields align |
+| **Latency Budget?** | 45 min collection | <90ms validation | ✅ Total <46 min acceptable |
+| **Failure Resilience?** | Source outage handling | Validation service HA | ⚠️ No fallback if both fail |
+| **Cost Allocation?** | $77/month ingestion | $X/month validation | ✅ Combined within budget |
+| **Tier Propagation?** | Tier 1/2/3 assigned | Tier-aware prioritization? | ⚠️ Judge #6 may ignore tiers |
 
 **Combined Report Template**:
-
 ```markdown
 # pnkln End-to-End Pipeline Analysis
 
 ## Executive Summary
-
-[Synthesis of Ingestion + Judge 6 findings]
+[Synthesis of Ingestion + Judge #6 findings]
 
 ## Data Flow Validation
-
-- Ingestion Output → Judge 6 Input: [ALIGNED / MISMATCHED]
+- Ingestion Output → Judge #6 Input: [ALIGNED / MISMATCHED]
 - Missing Fields: [List]
 - Schema Versioning: [Documented / Ad-hoc]
 
 ## Performance Budget
-
 - Collection: 45 min (Ingestion)
-- Validation: 90ms (Judge 6)
+- Validation: 90ms (Judge #6)
 - Total Latency: [Acceptable / At Risk]
 
 ## Failure Modes
-
-| Scenario         | Ingestion Impact | Judge 6 Impact     | Consumer Impact        |
-| ---------------- | ---------------- | ------------------- | ---------------------- |
-| YouTube API down | -30% volume      | Validates remaining | Partial data           |
-| Judge 6 crash   | No impact        | No validation       | Stale/unvalidated data |
-| Both fail        | No data          | No validation       | Pipeline dead          |
+| Scenario | Ingestion Impact | Judge #6 Impact | Consumer Impact |
+|----------|------------------|------------------|-----------------|
+| YouTube API down | -30% volume | Validates remaining | Partial data |
+| Judge #6 crash | No impact | No validation | Stale/unvalidated data |
+| Both fail | No data | No validation | Pipeline dead |
 
 ## Recommendations
-
-1. **CRITICAL**: Implement fallback validation for Judge 6 downtime
-2. **HIGH**: Add tier awareness to Judge 6 prioritization logic
+1. **CRITICAL**: Implement fallback validation for Judge #6 downtime
+2. **HIGH**: Add tier awareness to Judge #6 prioritization logic
 3. **MEDIUM**: Cache validated items for 24h to survive short outages
 ```
 
@@ -480,7 +447,6 @@ gemini analyze \
 **Dashboard**: `pnkln Ingestion Health`
 
 **Panels**:
-
 1. **Daily Items Ingested** (line chart)
    - Y-axis: Count
    - Series: Total, by-source (YouTube, Twitter, News, Web)
@@ -510,12 +476,11 @@ gemini analyze \
 
 ---
 
-### Judge 6 Metrics
+### Judge #6 Metrics
 
-**Dashboard**: `Judge 6 Validation Health`
+**Dashboard**: `Judge #6 Validation Health`
 
 **Panels**:
-
 1. **Latency Heatmap** (p50/p95/p99)
    - Y-axis: Milliseconds
    - Target lines: p99 ≤90ms
@@ -534,7 +499,7 @@ gemini analyze \
    - Y-axis: Items/sec validated
    - Alert: Cannot keep up with ingestion volume
 
-5. **Compliance Framework Category Breakdown** (stacked bar)
+5. **ATP 5-19 Category Breakdown** (stacked bar)
    - Bars: Benign (A), Misinformation (B), Harmful (C)
    - Insights: Trend shifts (e.g., spike in misinformation)
 
@@ -545,11 +510,9 @@ gemini analyze \
 **Dashboard**: `pnkln End-to-End Pipeline`
 
 **Panels**:
-
 1. **Pipeline Flow Sankey Diagram**
-
    ```
-   Sources → Ingestion → Judge 6 → Consumers
+   Sources → Ingestion → Judge #6 → Consumers
      (volume at each stage, dropoffs visualized)
    ```
 
@@ -560,12 +523,11 @@ gemini analyze \
    - Total: <60 min end-to-end
 
 3. **Quality Funnel**
-
    ```
    Items Ingested: 1000
      ├─ Failed Completeness: -50 (95% pass)
      ├─ Failed Relevance: -150 (80% pass)
-     ├─ Blocked by Judge 6: -100 (BLOCK decisions)
+     ├─ Blocked by Judge #6: -100 (BLOCK decisions)
      └─ Delivered to Consumers: 700 (70% yield)
    ```
 
@@ -582,44 +544,38 @@ gemini analyze \
 **Detection**: Ingestion logs show 403 errors from YouTube API
 
 **Impact**:
-
 - Ingestion: -30% volume (assumes YouTube contributes 30%)
-- Judge 6: Validates remaining 70%, no direct impact
+- Judge #6: Validates remaining 70%, no direct impact
 - Consumers: Partial data, missing video intelligence
 
 **Mitigation**:
-
 1. **Immediate**: Shift to Twitter/News focus (rebalance sources)
 2. **Short-term**: Request quota increase from Google
 3. **Long-term**: Implement quota monitoring, fallback to web scraping YouTube public pages (if ToS-compliant)
 
 **Prompt Analysis Follow-Up**:
-
 - Re-run Ingestion prompt with "YouTube down" scenario
 - Evaluate source diversity under degraded mode
 - Assess if 70% volume meets minimum quality thresholds
 
 ---
 
-### Scenario 2: Judge 6 Service Crash
+### Scenario 2: Judge #6 Service Crash
 
 **Detection**: Validation API returns 5xx errors, p99 latency spikes to ∞
 
 **Impact**:
-
 - Ingestion: Continues collection, raw data piles up
-- Judge 6: No validation, all items unvalidated
+- Judge #6: No validation, all items unvalidated
 - Consumers: Stale data or unvalidated (risky to serve)
 
 **Mitigation**:
-
 1. **Immediate**: Auto-restart (Kubernetes liveness probe)
 2. **Fallback**: Serve cached validated items from previous runs (24h TTL)
 3. **Emergency**: FLAG_FOR_REVIEW all items, queue for batch validation when service recovers
 
 **Prompt Analysis Follow-Up**:
-
-- Re-run Judge 6 prompt with high-availability requirements
+- Re-run Judge #6 prompt with high-availability requirements
 - Design multi-instance deployment (3+ replicas)
 - Implement circuit breaker for degraded mode
 
@@ -632,19 +588,16 @@ gemini analyze \
 **Root Cause**: Classification logic too lenient, low-quality sources added
 
 **Impact**:
-
 - Ingestion: High volume, low value
-- Judge 6: Wasted validation compute on junk
+- Judge #6: Wasted validation compute on junk
 - Consumers: Noisy results, low signal-to-noise ratio
 
 **Mitigation**:
-
 1. **Immediate**: Tighten Tier 1/2 criteria (raise engagement thresholds)
 2. **Short-term**: Audit recent source additions, remove low-quality sources
 3. **Long-term**: ML-based tier classification (train on historical high-value items)
 
 **Prompt Analysis Follow-Up**:
-
 - Re-run Ingestion prompt focusing on Tier Classification Metrics section
 - Evaluate classification logic for drift risks
 - Recommend automated tier quality monitoring
@@ -658,19 +611,16 @@ gemini analyze \
 **Root Cause**: API call surge (e.g., Twitter API pricing change), storage growth
 
 **Impact**:
-
 - Ingestion: Budget blown, unsustainable
-- Judge 6: No direct impact (unless validation costs included)
+- Judge #6: No direct impact (unless validation costs included)
 - Consumers: Risk of pipeline shutdown to control costs
 
 **Mitigation**:
-
 1. **Immediate**: Throttle ingestion (reduce frequency, limit items/source)
 2. **Short-term**: Renegotiate API contracts, switch to cheaper alternatives
 3. **Long-term**: Implement cost-per-item alerts, auto-scale down if approaching budget
 
 **Prompt Analysis Follow-Up**:
-
 - Re-run Ingestion prompt with cost sensitivity analysis
 - Evaluate 2x volume scalability (as originally specified)
 - Recommend cost optimization strategies (caching, incremental crawling)
@@ -684,13 +634,11 @@ gemini analyze \
 **Goal**: Maintain consistency across all pnkln component prompts
 
 **Action**:
-
 - Extract common sections (Architecture, Metrics, Integration) into reusable templates
 - Create domain-specific overlays (Ingestion, Validation, Analytics)
 - Version control prompt templates in this repo
 
 **Benefits**:
-
 - Faster prompt creation for new components
 - Consistent analytical rigor across stack
 - Easier cross-component comparisons
@@ -702,7 +650,6 @@ gemini analyze \
 **Goal**: Run Gemini analysis prompts on every major deployment
 
 **Action**:
-
 ```yaml
 # .github/workflows/gemini-analysis.yml
 name: pnkln stack Analysis
@@ -728,7 +675,6 @@ jobs:
 ```
 
 **Benefits**:
-
 - Catch regressions before production
 - Track architectural drift over time
 - Build historical analysis database
@@ -740,25 +686,21 @@ jobs:
 **Goal**: Improve prompt accuracy based on production feedback
 
 **Action**:
-
 - Post-deployment, compare Gemini predictions to actual metrics
 - Identify low-confidence sections that were accurate (raise confidence calibration)
 - Identify high-confidence sections that were wrong (fix prompt assumptions)
 - Iterate prompt every quarter based on learnings
 
 **Example**:
-
 ```markdown
 ## Prompt v1.1 Changelog (2025-12-01)
 
 ### Accuracy Improvements
-
 - Section 6 (Tier Classification): Predicted 25% Tier 1, actual was 18%
   - Fix: Lower Tier 1 estimate to 15-20% range
   - Confidence: Raised from 60% → 65% after validation
 
 ### New Failure Modes Added
-
 - Added "API pricing change" to Cost Model Analysis (missed in v1.0)
 ```
 
@@ -769,20 +711,18 @@ jobs:
 **Goal**: Enable Gemini to analyze multiple components simultaneously
 
 **Action**:
-
 - Create meta-prompt: "Analyze pnkln end-to-end pipeline"
-- Loads Ingestion + Judge 6 prompts as sub-prompts
+- Loads Ingestion + Judge #6 prompts as sub-prompts
 - Synthesizes combined report with integration analysis
 - Flags handoff mismatches automatically
 
 **Pseudo-Code**:
-
 ```python
 meta_prompt = """
 You are analyzing the pnkln Core Stack end-to-end.
 
 1. Run Ingestion Layer Analysis (prompt A)
-2. Run Judge 6 Analysis (prompt B)
+2. Run Judge #6 Analysis (prompt B)
 3. Synthesize:
    - Data contract alignment
    - Latency budget validation
@@ -799,14 +739,13 @@ Output: Combined report with integration health grade (A-F)
 
 The **pnkln Core Stack™ Integrated Analysis Framework** provides:
 
-✅ **Layered Analysis**: Separate prompts for Collection (Ingestion) and Enforcement (Judge 6)
+✅ **Layered Analysis**: Separate prompts for Collection (Ingestion) and Enforcement (Judge #6)
 ✅ **End-to-End Coverage**: From raw sources through validation to consumption
 ✅ **Consistent Rigor**: Shared analytical structure, adapted per domain
 ✅ **Actionable Insights**: Risk registers, prioritized recommendations, confidence levels
 ✅ **Production-Ready**: Designed for real-world deployment with SLA constraints
 
 **Next Steps**:
-
 1. ✅ Prompts created and documented
 2. ⏳ Run test analyses on sample artifacts
 3. ⏳ Deploy to pre-production, validate predictions
@@ -822,6 +761,6 @@ The **pnkln Core Stack™ Integrated Analysis Framework** provides:
 ## References
 
 - **Gemini Ingestion Layer Prompt**: `/prompts/ingestion-layer/v1/`
-- **Judge 6 Prompt**: `/prompts/judge/v2/`
+- **Judge #6 Prompt**: `/prompts/judge/v2/`
 - **Comparison Analysis**: `/docs/JUDGE-6-TO-INGESTION-LAYER-COMPARISON.md`
-- **Compliance Framework Framework**: `/docs/Compliance Framework-FRAMEWORK.md`
+- **ATP 5-19 Framework**: `/docs/ATP-5-19-FRAMEWORK.md`

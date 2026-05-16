@@ -3,7 +3,6 @@
 ## arXiv 2512.14982 — Prompt Repetition Improves Non-Reasoning LLMs
 
 ### Added from the paper
-
 - `docs/prompt-repetition-doctrine.md`
 - `docs/prompt-repetition-benchmark-plan.md`
 - `prompts/non-reasoning-repeat-template.md`
@@ -12,7 +11,6 @@
 - `scripts/prompt_repeat_examples.py`
 
 ### Practical changes
-
 - defines when repetition is the default
 - defines when to avoid blind repetition
 - includes x2 and x3 variants
@@ -24,7 +22,6 @@
 This upgraded pack incorporates the monorepo/control-plane bash pack as actual files under `operations/`, but makes it brand-agnostic.
 
 ### Preserved ideas
-
 - one canonical workspace manifest
 - one canonical MCP config
 - adapter config demotion
@@ -37,7 +34,6 @@ This upgraded pack incorporates the monorepo/control-plane bash pack as actual f
 - thread audit protocol and next-order checklist
 
 ### Brand-agnostic mapping
-
 - `CounselConduit` -> `product_app`
 - `uphillsnowball` -> `research_lab`
 - `antigravity-mcp-config.json` -> `workspace-mcp-config.json`

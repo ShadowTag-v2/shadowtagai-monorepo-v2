@@ -1,21 +1,21 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
-import '../test-setup.js';
-import { createMockRenderer } from '../mock-factory.ts';
+import { beforeEach, describe, expect, mock, test } from "bun:test";
+import "../test-setup.js";
+import { createMockRenderer } from "../mock-factory.ts";
 
-mock.module('../file-picker-utils.js', () => ({
+mock.module("../file-picker-utils.js", () => ({
   setupFilePicker: mock(() => () => {}),
 }));
 
-import { createLandingView } from './LandingView.js';
+import { createLandingView } from "./LandingView.js";
 
-describe('LandingView', () => {
+describe("LandingView", () => {
   let mockRenderer: any;
 
   beforeEach(() => {
     mockRenderer = createMockRenderer();
   });
 
-  test('should create landing view', async () => {
+  test("should create landing view", async () => {
     const onEnter = mock(() => {});
     const view = await createLandingView(mockRenderer, onEnter);
     expect(view.root).toBeDefined();

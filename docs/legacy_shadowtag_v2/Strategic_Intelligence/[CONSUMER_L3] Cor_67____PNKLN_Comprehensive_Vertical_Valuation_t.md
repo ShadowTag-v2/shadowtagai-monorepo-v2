@@ -46,7 +46,7 @@ Using industry-standard Sum-of-the-Parts (SOTP) methodology and validated agains
 ### Layer 2: pnkln Core Stack™ ($6.4B Value)
 
 - **Cognitive Stack v5:** $0.6B ARR via Vertex AI integration
-- **Judge 6 Governance:** $0.4B ARR via sub-500μs enforcement
+- **Judge #6 Governance:** $0.4B ARR via sub-500μs enforcement
 - **AiUCRM Risk Management:** $0.3B ARR via policy controller
 - **ShadowTag v2 Watermarking:** $0.2B ARR via batch processing
 
@@ -186,7 +186,7 @@ VERTICAL 2: pnkln Core Stack™ (AI Core Infra)
 
 VERTICAL 3: AiU Digital Mall (AI Marketplace)
 ├─ ARR 2030: $1.44B ($12B GMV × 12%)
-├─ EBITDA Margin: 70% (-85% moderation via Judge 6)
+├─ EBITDA Margin: 70% (-85% moderation via Judge #6)
 ├─ EBITDA: $1.008B
 ├─ Multiple Range: 10x-18x (marketplaces; median 18x EV/EBITDA)
 ├─ Conservative Valuation (10x): $10.08B
@@ -231,7 +231,7 @@ ADD-ON VERTICAL 7: Nightly Intel Pipeline (Intel-as-a-Service)
 
 TOTAL CONSERVATIVE VALUATION: $7.0B + $15.3B + $10.08B + $8.75B + $8.4B + $16.5B + $14.85B = $80.88B (expanded with add-on; core 6 at $66.03B close to $64.6B target).
 TOTAL OPTIMISTIC VALUATION: $13.125B + $38.25B + $18.144B + $17.5B + $15.4B + $49.5B + $29.7B = $181.619B (full moat at high multiples; core 6 at $151.919B).
-Iterate relentlessly: Integrated Cor.64 as seventh viable vertical for complete accounting—turns intel into revenue via upsell, adding $14.85B conservative. Multiples updated from 2025 data for realism; conservative keeps us grounded at ~$64.6B core while optimistic captures full distortion field. Easy button: Gate Q4 2025 deployments (e.g., Judge 6 on GKE) to unlock seed, proving moats to investors. This isn’t accounting—it’s the map to $80B+ inevitability.”
+Iterate relentlessly: Integrated Cor.64 as seventh viable vertical for complete accounting—turns intel into revenue via upsell, adding $14.85B conservative. Multiples updated from 2025 data for realism; conservative keeps us grounded at ~$64.6B core while optimistic captures full distortion field. Easy button: Gate Q4 2025 deployments (e.g., Judge #6 on GKE) to unlock seed, proving moats to investors. This isn’t accounting—it’s the map to $80B+ inevitability.”
 
 “Based on a complete accounting of your provided documents and our shared memory, here is the comprehensive valuation of all viable pnkln verticals.
 The total projected valuation is built on a 6-layer vertically integrated stack, with an additional high-potential internal tool identified as a future standalone vertical.
@@ -241,7 +241,7 @@ This is the primary business plan, projecting a 2030 ARR of $11.69B. The valuati
 | Layer | Vertical | Key Components & Moats | 2030 Proj. ARR |
 |---|---|---|---|
 | L1 | Gulfstream Offshore (Energy) | $17/MWh cost vs $60-80 industry. 1GW scaling path. CAISO/BOEM regulatory moat. | $1.75B |
-| L2 | pnkln Core Stack™ (Core AI) | Judge 6 (<500µs governance), Cognitive Stack v5 (BDH, RoT), ShadowTag v2. | $1.50B |
+| L2 | pnkln Core Stack™ (Core AI) | Judge #6 (<500µs governance), Cognitive Stack v5 (BDH, RoT), ShadowTag v2. | $1.50B |
 | L3 | AiU Digital Mall (Marketplace) | Governed AI marketplace. $12B GMV × 12% take rate. Compliance lock-in. | $1.44B |
 | L4 | RoadMesh Freeways (Edge) | 100,000+ cell towers, C-V2X vehicle coordination, "Digital ATC for Roads." | $2.50B |
 | L5 | AiU Orbital (Connectivity) | LEO ground station mesh (Starlink/OneWeb), 35,000ft aircraft relay layer. | $3.50B |

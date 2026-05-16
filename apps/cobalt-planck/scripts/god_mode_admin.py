@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import argparse
 import os
 import subprocess
@@ -72,9 +73,7 @@ class GodModeEngine:
             while not self.stop_event.is_set():
                 time.sleep(0.1)
             return
-        print(
-            f"God Mode Engine 3.0. Project: {self.project_id}. Commands: /omega-loop, /status, /help, /exit",
-        )
+        print(f"God Mode Engine 3.0. Project: {self.project_id}. Commands: /omega-loop, /status, /help, /exit")
         while not self.stop_event.is_set():
             try:
                 line = input("god-mode> ").strip()
@@ -89,7 +88,7 @@ class GodModeEngine:
                     print("Commands: /omega-loop, /status, /help, /exit")
                 elif line == "/exit":
                     self.stop_event.set()
-            except KeyboardInterrupt, EOFError:
+            except (KeyboardInterrupt, EOFError):
                 self.stop_event.set()
                 break
 

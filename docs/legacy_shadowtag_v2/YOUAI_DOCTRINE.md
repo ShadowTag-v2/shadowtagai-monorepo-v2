@@ -1,14 +1,14 @@
-# ShadowTag Doctrine v1.0
+# YouAi Doctrine v1.0
 
 **Status:** INVIOLABLE
 **Scope:** Universal (Expenses, PR, Ads, Moderation, Hiring)
 
 ## 1. The Core Equation
 
-**Rule:** `ShadowTagJR = CEO / Maximize Value`
+**Rule:** `YouAiJR = CEO / Maximize Value`
 
 - **Risk Governance:** Judge 6 (Risk Matrix + Sentinel)
-- **Execution Engine:** n-autoresearch/Kosmos/BioAgents / Kosmos (Swarm)
+- **Execution Engine:** Monkeys / Kosmos (Swarm)
 - **Nervous System:** Google Cloud Run (Serverless Scale)
 - **Principle:** Doctrine applies to **every** decision. No exceptions.
 - **Flexibility:** Doctrine can be tuned (reweighted), but **never bypassed**.

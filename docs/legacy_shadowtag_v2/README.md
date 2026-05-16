@@ -20,12 +20,12 @@ This documentation captures the comprehensive business and technical architectur
 
 ### Projected Outcomes
 
-| Metric                       | 36-Month Target | 10-Year Target               |
-| ---------------------------- | --------------- | ---------------------------- |
-| Combined ARR                 | $1.675 B        | $3.8 B                       |
-| Enterprise Valuation         | $15–20 B        | $6.5 B+ (post-consolidation) |
-| Founder Wealth (Median)      | $575 M          | $575 M+                      |
-| Probability of ≥ $1B Outcome | 0.71            | 0.85                         |
+| Metric | 36-Month Target | 10-Year Target |
+|--------|-----------------|----------------|
+| Combined ARR | $1.675 B | $3.8 B |
+| Enterprise Valuation | $15–20 B | $6.5 B+ (post-consolidation) |
+| Founder Wealth (Median) | $575 M | $575 M+ |
+| Probability of ≥ $1B Outcome | 0.71 | 0.85 |
 
 ---
 
@@ -34,7 +34,6 @@ This documentation captures the comprehensive business and technical architectur
 ### 1. Business Plans
 
 #### [ShadowTag Business Thesis](./business-plans/shadowtag-business-thesis.md)
-
 **Neural-level media authentication and verification platform**
 
 - **One-liner:** Authenticates digital media at the neural level through steganographic watermarks, energy-based neural fingerprints, and blockchain receipts
@@ -43,7 +42,6 @@ This documentation captures the comprehensive business and technical architectur
 - **Exit Valuation:** $20–30B range
 
 **Key Sections:**
-
 - Core Stack & Technical Moat
 - Market Sizing & Pricing Models
 - Industry Vertical Licensing ($100M/vertical model)
@@ -51,7 +49,6 @@ This documentation captures the comprehensive business and technical architectur
 - Financial Projections & ROI
 
 #### [pnkln-stack Platform Vision](./business-plans/pnkln-stack-platform-vision.md)
-
 **AI-presumed video showcase and virtual world platform**
 
 - **One-liner:** World's first video network ranked by AI cognition, not social influence
@@ -60,7 +57,6 @@ This documentation captures the comprehensive business and technical architectur
 - **Standalone Valuation:** $5–8B (integrated: $15–20B with ShadowTag)
 
 **Key Sections:**
-
 - Market Gaps & Competitive Advantages
 - Neural PDF/Energy Model Integration
 - Monetization Streams & Economics
@@ -71,7 +67,6 @@ This documentation captures the comprehensive business and technical architectur
 ### 2. Technical Architecture
 
 #### [Edge Infrastructure Integration](./technical-architecture/edge-infrastructure-integration.md)
-
 **Starlink × CoreWeave × pnkln-stack orchestration layer**
 
 - **Vision:** Become "Layer 0.5" of the AI internet—middleware between satellite networks and edge GPU compute
@@ -80,7 +75,6 @@ This documentation captures the comprehensive business and technical architectur
 - **Strategic Outcome:** $11B/yr revenue potential as exclusive LEO→Edge GPU integrator
 
 **Key Sections:**
-
 - Carrier-Agnostic Architecture
 - Phase 3: Pole-Edge Integration (Digital Backbone)
 - Digital-Freeway Economics (FSD + Traffic Control)
@@ -90,16 +84,15 @@ This documentation captures the comprehensive business and technical architectur
 
 **Phase Breakdown:**
 
-| Phase | Description                 | CapEx | ARR      | Payback |
-| ----- | --------------------------- | ----- | -------- | ------- |
-| 0–1   | Sky ↔ Cloud Orchestration   | $15M  | $20M/yr  | 1.8y    |
-| 2     | Regional Edge Clusters      | $100M | $780M/yr | 1.7y    |
-| 3     | Pole-Level Digital Freeways | $1B   | $2.4B/yr | 1.6y    |
+| Phase | Description | CapEx | ARR | Payback |
+|-------|-------------|-------|-----|---------|
+| 0–1 | Sky ↔ Cloud Orchestration | $15M | $20M/yr | 1.8y |
+| 2 | Regional Edge Clusters | $100M | $780M/yr | 1.7y |
+| 3 | Pole-Level Digital Freeways | $1B | $2.4B/yr | 1.6y |
 
 ### 3. Governance
 
 #### [pnkln-stackJR CNS Dashboard](./governance/pnkln-stackjr-cns-dashboard.md)
-
 **Central Nervous System for risk management and operational oversight**
 
 - **Purpose:** Comprehensive real-time visibility into all critical business systems
@@ -107,27 +100,23 @@ This documentation captures the comprehensive business and technical architectur
 - **Valuation Impact:** +5–15% premium at fundraising/exit
 
 **System Categories:**
-
 - Audit Systems (Quarterly Audit, Compliance Tracker)
 - Core Ops (Inventory, Supply Chain, Financial Runway, Growth Metrics)
 - Security + Risk (Security Radar, IT Threats, Phishing Protection, IP Threats, Insider Threats, Contracts)
 - Phase 2+ (Data Governance, Incident Response, Vendor Risk, Knowledge Management, Ethics, BCDR)
 
 **Key Metrics:**
-
 - **Total System Cost:** 8–18% of burn (staged by maturity)
 - **Downside Savings:** 25–50% of potential losses avoided
 - **Valuation Uplift:** +5–15% at fundraising/exit
 
 **pnkln-stackJR Integration:**
-
 - Gemini CLI Extension
 - RMF Control Layer (NIST 800-53 rev5, Army RM doctrine)
 - Automated audit trails and compliance proofs
 - Revenue model: $4.4M ARR potential at scale
 
 #### [CCO Equity Agreement Outline](./governance/cco-equity-agreement-outline.md)
-
 **Strategic rationale and structure for Psychiatrist as Chief Communications Officer**
 
 - **Unique Proposition:** First tech platform with psychiatrist (MD) as CCO
@@ -135,13 +124,11 @@ This documentation captures the comprehensive business and technical architectur
 - **Equity Structure:** 1.5% base + up to 1% performance RSUs
 
 **Key Rationale:**
-
 - AI platforms face unique mental health and narrative risks
 - Psychiatrist brings crisis de-escalation and regulatory credibility
 - Integration with pnkln-stackJR CNS for Ethics & Public Perception oversight
 
 **Role Domains:**
-
 1. Public Safety & Narrative Ethics
 2. Crisis Response Commander (RA-4 events)
 3. Strategic Voice & Regulatory Credibility
@@ -152,30 +139,30 @@ This documentation captures the comprehensive business and technical architectur
 
 ### Combined Ecosystem Economics (36-Month Projection)
 
-| Component                                | ARR         | Margin           | Valuation   |
-| ---------------------------------------- | ----------- | ---------------- | ----------- |
-| ShadowTag (lead vertical)                | $1.4B       | 75%              | $10–12B     |
-| pnkln-stack (social platform)            | $275M       | 50%              | $5–8B       |
-| Cross-revenue (ShadowTag in pnkln-stack) | +$40M       | 80%              | —           |
-| **Total**                                | **$1.715B** | **~70% blended** | **$15–20B** |
+| Component | ARR | Margin | Valuation |
+|-----------|-----|--------|-----------|
+| ShadowTag (lead vertical) | $1.4B | 75% | $10–12B |
+| pnkln-stack (social platform) | $275M | 50% | $5–8B |
+| Cross-revenue (ShadowTag in pnkln-stack) | +$40M | 80% | — |
+| **Total** | **$1.715B** | **~70% blended** | **$15–20B** |
 
 ### Infrastructure Integration (Pole-Edge Phase 3)
 
-| Scope      | Poles   | CapEx | Monthly Revenue | 12-Month EBITDA |
-| ---------- | ------- | ----- | --------------- | --------------- |
-| Pilot      | 1,000   | $5.2M | $2M             | $17M            |
-| Metro      | 10,000  | $52M  | $20M            | $170M           |
-| Nationwide | 100,000 | $520M | $200M           | $1.7B           |
+| Scope | Poles | CapEx | Monthly Revenue | 12-Month EBITDA |
+|-------|-------|-------|-----------------|------------------|
+| Pilot | 1,000 | $5.2M | $2M | $17M |
+| Metro | 10,000 | $52M | $20M | $170M |
+| Nationwide | 100,000 | $520M | $200M | $1.7B |
 
 ### Digital-Freeway Platform Revenue (Phase 1)
 
-| Revenue Stream                | Annual Revenue |
-| ----------------------------- | -------------- |
-| City SaaS (lane-mile pricing) | $316M          |
-| OEM/Fleet APIs                | $48M           |
-| Insurer Risk Scores           | $5.3M          |
-| Data Marketplace              | $22M           |
-| **Total Platform Revenue**    | **$420M/yr**   |
+| Revenue Stream | Annual Revenue |
+|----------------|----------------|
+| City SaaS (lane-mile pricing) | $316M |
+| OEM/Fleet APIs | $48M |
+| Insurer Risk Scores | $5.3M |
+| Data Marketplace | $22M |
+| **Total Platform Revenue** | **$420M/yr** |
 
 **Operating Costs:** $310M/yr
 **EBITDA:** $110M/yr
@@ -187,21 +174,21 @@ This documentation captures the comprehensive business and technical architectur
 
 ### Optimal Release Order
 
-| Phase | Description                 | Time  | Capital | ROI                           |
-| ----- | --------------------------- | ----- | ------- | ----------------------------- |
-| 0     | Foundation + Shadowtag AI   | 3 mo  | $250K   | Credibility + early revenue   |
-| 1     | Sky ↔ Cloud Orchestration   | 6 mo  | $12M    | 145% (18 mo)                  |
-| 2     | Regional Edge Clusters      | 8 mo  | $85M    | Revenue break-even @ month 18 |
-| 3     | Pole-Level Digital Freeways | 12 mo | $1B     | 68% IRR, $12B exit valuation  |
+| Phase | Description | Time | Capital | ROI |
+|-------|-------------|------|---------|-----|
+| 0 | Foundation + Shadowtag AI | 3 mo | $250K | Credibility + early revenue |
+| 1 | Sky ↔ Cloud Orchestration | 6 mo | $12M | 145% (18 mo) |
+| 2 | Regional Edge Clusters | 8 mo | $85M | Revenue break-even @ month 18 |
+| 3 | Pole-Level Digital Freeways | 12 mo | $1B | 68% IRR, $12B exit valuation |
 
 ### Fundraising Architecture
 
-| Stage           | Source                                | Target   | Dilution | Primary Use                              |
-| --------------- | ------------------------------------- | -------- | -------- | ---------------------------------------- |
-| Seed+ / Bridge  | Strategic Angels + AI infra investors | $35M     | 8–10%    | 2-city pilot, 250 sites, SOC 2           |
-| Series A        | Deep-tech VCs + Mobility funds        | $120M    | 15%      | 8,000 sites, 10 metros, 4 OEMs           |
-| Series B        | Sovereign / Infra / Strategics        | $450M    | 12–14%   | 25k-site rollout, SaaS scaling           |
-| Series C / Exit | SpaceX × Tesla × CoreWeave JV or IPO  | EV $4–7B | —        | Partial liquidity / vertical integration |
+| Stage | Source | Target | Dilution | Primary Use |
+|-------|--------|--------|----------|-------------|
+| Seed+ / Bridge | Strategic Angels + AI infra investors | $35M | 8–10% | 2-city pilot, 250 sites, SOC 2 |
+| Series A | Deep-tech VCs + Mobility funds | $120M | 15% | 8,000 sites, 10 metros, 4 OEMs |
+| Series B | Sovereign / Infra / Strategics | $450M | 12–14% | 25k-site rollout, SaaS scaling |
+| Series C / Exit | SpaceX × Tesla × CoreWeave JV or IPO | EV $4–7B | — | Partial liquidity / vertical integration |
 
 **Total Raise:** ~$600M equity + $200–250M debt
 **Founder Retention:** 55–60% at IPO-readiness
@@ -228,13 +215,13 @@ All matured simultaneously in mid-2024 → late-2025:
 
 ### Competitive Moats
 
-| Moat                           | Description                                        | Defensibility                                         |
-| ------------------------------ | -------------------------------------------------- | ----------------------------------------------------- |
-| Neural Fingerprinting IP       | Latent density + energy model verification         | 10⁴× better collision resistance than competitors     |
-| First-Mover Edge Integration   | API integrations with Starlink + CoreWeave         | 18–24 month lead time for competitors to replicate    |
-| Jurisdiction-Aware Routing     | Unique IP for compliance-driven edge orchestration | Regulatory approval cycles create 12–18 month barrier |
-| Billing Flywheel               | Every packet through system generates revenue      | Network effects compound with scale                   |
-| Physical Presence (Pole Nodes) | 100k micro-edge installations                      | Massive capital barrier ($520M) to competitive entry  |
+| Moat | Description | Defensibility |
+|------|-------------|---------------|
+| Neural Fingerprinting IP | Latent density + energy model verification | 10⁴× better collision resistance than competitors |
+| First-Mover Edge Integration | API integrations with Starlink + CoreWeave | 18–24 month lead time for competitors to replicate |
+| Jurisdiction-Aware Routing | Unique IP for compliance-driven edge orchestration | Regulatory approval cycles create 12–18 month barrier |
+| Billing Flywheel | Every packet through system generates revenue | Network effects compound with scale |
+| Physical Presence (Pole Nodes) | 100k micro-edge installations | Massive capital barrier ($520M) to competitive entry |
 
 ---
 
@@ -243,17 +230,14 @@ All matured simultaneously in mid-2024 → late-2025:
 ### Army RM Applied (NIST 800-53 Integration)
 
 **Operational Risk:**
-
 - Redundant provenance checkpoints per node
 - 99.9% data integrity SLA
 
 **Financial Risk:**
-
 - 18-month runway buffer at current burn
 - Multiple revenue streams reduce concentration risk
 
 **Strategic Risk:**
-
 - Portfolio diversification across autonomous verticals
 - Each vertical capable of sustaining revenue independently
 
@@ -317,7 +301,6 @@ All matured simultaneously in mid-2024 → late-2025:
 ### Version Control
 
 All documents in this repository follow semantic versioning:
-
 - **Major version:** Fundamental business model changes
 - **Minor version:** New sections or significant updates
 - **Patch version:** Clarifications, corrections, formatting
@@ -385,4 +368,4 @@ This documentation contains proprietary business strategies, financial projectio
 
 ---
 
-_For questions or updates to this documentation, please contact the repository maintainers through official channels._
+*For questions or updates to this documentation, please contact the repository maintainers through official channels.*

@@ -13,7 +13,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODEL_PATH="${1:-${ROOT}/apps/ShadowTag-v2_stack/mlx-models/gemma-2-9b-it-4bit}"
+MODEL_PATH="${1:-${ROOT}/apps/aiyou_stack/mlx-models/gemma-2-9b-it-4bit}"
 BEADS_INDEX="${2:-${ROOT}/.beads/index.json}"
 SLAB_DIR="/tmp/kv_cache_slabs"
 SLAB_PATH="${SLAB_DIR}/beads_slab.bin"

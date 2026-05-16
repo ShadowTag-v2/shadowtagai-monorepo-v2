@@ -1,11 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from vertexai.preview.language_models import ChatModel, ChatSession
 
 
 def get_chat_session() -> ChatSession:
-    """Initializes and returns a new Gemini 3.1 Flash Lite chat session."""
-    model = ChatModel.from_pretrained("gemini-3.1-flash-lite-preview")
+    """Initializes and returns a new Gemini 1.5 Pro chat session."""
+    model = ChatModel.from_pretrained("gemini-3.1-family")
     chat = model.start_chat()
     return chat
 

@@ -1,6 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-"""Pnkln Evolution Layer - Self-improving AI"""
+"""pnkln Evolution Layer - Self-improving AI"""
 
 from .dte import DebateRound, DTESystem, EvolutionResult, EvolutionStrategy, create_dte_system
 

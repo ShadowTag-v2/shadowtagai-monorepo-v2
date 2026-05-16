@@ -21,6 +21,8 @@ from typing import Any, TypeVar, overload
 
 T = TypeVar("T")
 
+T = TypeVar("T")
+
 # Maximum NFKC normalization iterations before we treat input as hostile.
 _MAX_ITERATIONS = 10
 
@@ -40,44 +42,48 @@ _DANGEROUS_CATEGORIES = frozenset({"Cf", "Co", "Cn"})
 
 
 def _strip_dangerous_categories(text: str) -> str:
-    """Remove characters in Cf/Co/Cn Unicode categories."""
-    return "".join(ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES)
+  """Remove characters in Cf/Co/Cn Unicode categories."""
+  return "".join(
+    ch for ch in text if unicodedata.category(ch) not in _DANGEROUS_CATEGORIES
+  )
 
 
 def partially_sanitize_unicode(prompt: str) -> str:
-    """Iteratively sanitize a string against Unicode hidden-character attacks.
+  """Iteratively sanitize a string against Unicode hidden-character attacks.
 
-    Applies NFKC normalization and removes characters in dangerous Unicode
-    categories (Cf, Co, Cn) plus explicit fallback ranges for zero-width
-    spaces, directional overrides, BOM, and BMP private-use area.
+  Applies NFKC normalization and removes characters in dangerous Unicode
+  categories (Cf, Co, Cn) plus explicit fallback ranges for zero-width
+  spaces, directional overrides, BOM, and BMP private-use area.
 
-    Raises ``ValueError`` if the sanitization loop does not converge within
-    ``_MAX_ITERATIONS`` passes — this should only happen on adversarially
-    crafted input.
-    """
-    current = prompt
-    previous = ""
+  Raises ``ValueError`` if the sanitization loop does not converge within
+  ``_MAX_ITERATIONS`` passes — this should only happen on adversarially
+  crafted input.
+  """
+  current = prompt
+  previous = ""
 
-    for _iteration in range(_MAX_ITERATIONS):
-        previous = current
+  for _iteration in range(_MAX_ITERATIONS):
+    previous = current
 
-        # NFKC normalization — decomposes composed sequences.
-        current = unicodedata.normalize("NFKC", current)
+    # NFKC normalization — decomposes composed sequences.
+    current = unicodedata.normalize("NFKC", current)
 
-        # Primary: strip dangerous Unicode property classes.
-        current = _strip_dangerous_categories(current)
+    # Primary: strip dangerous Unicode property classes.
+    current = _strip_dangerous_categories(current)
 
-        # Fallback: explicit ranges.
-        current = _ZWSP_AND_MARKS.sub("", current)
-        current = _DIRECTIONAL_FMT.sub("", current)
-        current = _DIRECTIONAL_ISO.sub("", current)
-        current = _BOM.sub("", current)
-        current = _BMP_PRIVATE.sub("", current)
+    # Fallback: explicit ranges.
+    current = _ZWSP_AND_MARKS.sub("", current)
+    current = _DIRECTIONAL_FMT.sub("", current)
+    current = _DIRECTIONAL_ISO.sub("", current)
+    current = _BOM.sub("", current)
+    current = _BMP_PRIVATE.sub("", current)
 
-        if current == previous:
-            return current
+    if current == previous:
+      return current
 
-    raise ValueError(f"Unicode sanitization did not converge after {_MAX_ITERATIONS} iterations for input: {prompt[:100]!r}")
+  raise ValueError(
+    f"Unicode sanitization did not converge after {_MAX_ITERATIONS} iterations for input: {prompt[:100]!r}"
+  )
 
 
 # ── Recursive sanitizer ──────────────────────────────────────────────────────
@@ -96,23 +102,26 @@ def recursively_sanitize_unicode(value: dict[str, Any]) -> dict[str, Any]: ...
 
 
 @overload
-def recursively_sanitize_unicode[T](value: T) -> T: ...
+def recursively_sanitize_unicode(value: T) -> T: ...
 
 
 def recursively_sanitize_unicode(value: Any) -> Any:
-    """Recursively sanitize all strings in a nested data structure.
+  """Recursively sanitize all strings in a nested data structure.
 
-    Walks dicts (sanitizing both keys and values), lists, and bare strings.
-    Non-string primitives (int, float, bool, None) are returned unchanged.
-    """
-    if isinstance(value, str):
-        return partially_sanitize_unicode(value)
+  Walks dicts (sanitizing both keys and values), lists, and bare strings.
+  Non-string primitives (int, float, bool, None) are returned unchanged.
+  """
+  if isinstance(value, str):
+    return partially_sanitize_unicode(value)
 
-    if isinstance(value, list):
-        return [recursively_sanitize_unicode(item) for item in value]
+  if isinstance(value, list):
+    return [recursively_sanitize_unicode(item) for item in value]
 
-    if isinstance(value, dict):
-        return {recursively_sanitize_unicode(k): recursively_sanitize_unicode(v) for k, v in value.items()}
+  if isinstance(value, dict):
+    return {
+      recursively_sanitize_unicode(k): recursively_sanitize_unicode(v)
+      for k, v in value.items()
+    }
 
-    # Primitives pass through unchanged.
-    return value
+  # Primitives pass through unchanged.
+  return value

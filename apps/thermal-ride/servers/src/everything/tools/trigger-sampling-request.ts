@@ -1,22 +1,22 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   type CallToolResult,
   type CreateMessageRequest,
   CreateMessageResultSchema,
-} from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod';
+} from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod";
 
 // Tool input schema
 const TriggerSamplingRequestSchema = z.object({
-  prompt: z.string().describe('The prompt to send to the LLM'),
-  maxTokens: z.number().default(100).describe('Maximum number of tokens to generate'),
+  prompt: z.string().describe("The prompt to send to the LLM"),
+  maxTokens: z.number().default(100).describe("Maximum number of tokens to generate"),
 });
 
 // Tool configuration
-const name = 'trigger-sampling-request';
+const name = "trigger-sampling-request";
 const config = {
-  title: 'Trigger Sampling Request Tool',
-  description: 'Trigger a Request from the Server for LLM Sampling',
+  title: "Trigger Sampling Request Tool",
+  description: "Trigger a Request from the Server for LLM Sampling",
   inputSchema: TriggerSamplingRequestSchema,
 };
 
@@ -46,18 +46,18 @@ export const registerTriggerSamplingRequestTool = (server: McpServer) => {
 
       // Create the sampling request
       const request: CreateMessageRequest = {
-        method: 'sampling/createMessage',
+        method: "sampling/createMessage",
         params: {
           messages: [
             {
-              role: 'user',
+              role: "user",
               content: {
-                type: 'text',
+                type: "text",
                 text: `Resource ${name} context: ${prompt}`,
               },
             },
           ],
-          systemPrompt: 'You are a helpful test server.',
+          systemPrompt: "You are a helpful test server.",
           maxTokens,
           temperature: 0.7,
         },
@@ -70,7 +70,7 @@ export const registerTriggerSamplingRequestTool = (server: McpServer) => {
       return {
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `LLM sampling result: \n${JSON.stringify(result, null, 2)}`,
           },
         ],

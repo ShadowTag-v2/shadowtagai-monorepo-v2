@@ -1,4 +1,4 @@
-# ShadowTag-v2JR Judge Skill
+# AiYouJR Judge Skill
 
 **Purpose:** Enforce strategic decision gates before feature implementation
 **Enforcement:** `"suggest"` - Shows warnings but doesn't block (human decides)
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This skill enforces the ShadowTag-v2JR decision framework (Purpose • Reasons • Brakes) to ensure every feature serves strategic goals and meets financial thresholds. It acts as your "160-IQ board" that automatically validates decisions before implementation.
+This skill enforces the AiYouJR decision framework (Purpose • Reasons • Brakes) to ensure every feature serves strategic goals and meets financial thresholds. It acts as your "160-IQ board" that automatically validates decisions before implementation.
 
 **Auto-Activation Triggers:**
 - Keywords: `feature`, `implement`, `build`, `architecture`, `plan`, `deploy`
@@ -51,11 +51,11 @@ This skill enforces the ShadowTag-v2JR decision framework (Purpose • Reasons �
 
 ## Gate 1: Purpose
 
-**Question:** Does this serve ShadowTagAi's strategic goals?
+**Question:** Does this serve Pnkln's strategic goals?
 
 ### Checklist
 
-- [ ] Aligns with **ActiveShield** exit (Y5-Y7) OR **SHADOWTAGAI Holdings** long-term strategy
+- [ ] Aligns with **ActiveShield** exit (Y5-Y7) OR **PNKLN Holdings** long-term strategy
 - [ ] Documented in Cor.X framework (specify which: Cor.17, Cor.21, etc.)
 - [ ] Classification: **Mission-critical** / **High-value** / **Nice-to-have**
 
@@ -64,12 +64,12 @@ This skill enforces the ShadowTag-v2JR decision framework (Purpose • Reasons �
 ```markdown
 ✅ PASS: "Implement ShadowTag cryptographic signing for ActiveShield"
 - Aligns with: ActiveShield security vertical (core product)
-- Cor.X Reference: Cor.17 (SHADOWTAGAI Core Stack)
+- Cor.X Reference: Cor.17 (PNKLN Core Stack)
 - Classification: Mission-critical
 
-✅ PASS: "Add OAuth 2.0 authentication for SHADOWTAGAI API"
-- Aligns with: SHADOWTAGAI Holdings long-term (platform security)
-- Cor.X Reference: Cor.34 (ShadowTag/AiY architecture)
+✅ PASS: "Add OAuth 2.0 authentication for PNKLN API"
+- Aligns with: PNKLN Holdings long-term (platform security)
+- Cor.X Reference: Cor.34 (YouAi/AiY architecture)
 - Classification: Mission-critical
 
 ⚠️ CONDITIONAL: "Build internal admin dashboard for team metrics"
@@ -231,7 +231,7 @@ Probability = 782 / 1000 = 78.2% ✅ PASS (≥70%)
 
 2. **Database Rollback (if needed)**
    - Run migration: `npm run db:migrate:rollback`
-   - Restore backup: `pg_restore -d shadowtagai_prod backup_2025_11_14.sql`
+   - Restore backup: `pg_restore -d pnkln_prod backup_2025_11_14.sql`
    - Verify: `SELECT count(*) FROM users WHERE version='old'`
 
 3. **Cleanup (< 1 hour)**
@@ -401,7 +401,7 @@ Load these files for specific topics:
 - **[resources/monte-carlo-templates.md](resources/monte-carlo-templates.md)** - Scenario modeling spreadsheets (Base/Best/Worst cases)
 
 **When to Use Each:**
-- **Standard Features (<$50k):** Use ShadowTag-v2JR gates only (Purpose • Reasons • Brakes)
+- **Standard Features (<$50k):** Use AiYouJR gates only (Purpose • Reasons • Brakes)
 - **Strategic Decisions (>$50k):** Use CRM-JR framework (full analysis with mental models)
 - **Complex Decisions:** Add MBA frameworks (VRIO for competitive advantage, Value Stick for pricing, Blue Ocean for positioning)
 
@@ -409,7 +409,7 @@ Load these files for specific topics:
 
 ## Integration with Dev Docs
 
-Every large feature should have dev docs with ShadowTag-v2JR gates embedded:
+Every large feature should have dev docs with AiYouJR gates embedded:
 
 ```bash
 # Generate dev docs with gates
@@ -464,6 +464,6 @@ Track these to measure gate effectiveness:
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi Strategy Team (Erik)
-**Framework:** ShadowTag-v2JR (Purpose • Reasons • Brakes)
+**Maintained By:** Pnkln Strategy Team (Erik)
+**Framework:** AiYouJR (Purpose • Reasons • Brakes)
 **Compliance:** Army RM Stage IV, Cor.X Strategic Frameworks

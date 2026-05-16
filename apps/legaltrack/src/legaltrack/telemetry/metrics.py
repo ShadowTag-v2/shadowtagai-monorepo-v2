@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
 from typing import Any
 
@@ -5,7 +6,8 @@ logger = logging.getLogger(__name__)
 
 
 class ROIProjector:
-    """Autopilot Telemetry Engine for tracking latency, cost, and firm-wide ROI.
+    """
+    Autopilot Telemetry Engine for tracking latency, cost, and firm-wide ROI.
     Validates the 97% cost reduction and 31x speed increase claims.
     """
 
@@ -16,7 +18,9 @@ class ROIProjector:
         self.model_cost_accrued = 0.0
 
     def log_processing_event(self, tokens_used: int, latency_ms: int, estimated_human_minutes: int):
-        """Record a successful Zero-Touch extraction and compute ROI."""
+        """
+        Record a successful Zero-Touch extraction and compute ROI.
+        """
         self.total_events_processed += 1
 
         # GCP Vertex / Gemini Flash rough cost per 1M tokens ($0.15 input / $0.60 output)
@@ -28,12 +32,12 @@ class ROIProjector:
         hours_saved = estimated_human_minutes / 60.0
         self.total_hours_saved += hours_saved
 
-        logger.info(
-            f"Processed Event in {latency_ms}ms. Tokens: {tokens_used}. Saved {estimated_human_minutes}m of human time.",
-        )
+        logger.info(f"Processed Event in {latency_ms}ms. Tokens: {tokens_used}. Saved {estimated_human_minutes}m of human time.")
 
     def get_roi_report(self) -> dict[str, Any]:
-        """Generates the financial snapshot to prove the platform's value."""
+        """
+        Generates the financial snapshot to prove the platform's value.
+        """
         gross_value_created = self.total_hours_saved * self.hourly_lawyer_rate
         net_value = gross_value_created - self.model_cost_accrued
 

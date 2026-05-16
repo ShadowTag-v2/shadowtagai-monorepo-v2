@@ -1,18 +1,18 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod";
 
 // Tool input schema
 const GetSumSchema = z.object({
-  a: z.number().describe('First number'),
-  b: z.number().describe('Second number'),
+  a: z.number().describe("First number"),
+  b: z.number().describe("Second number"),
 });
 
 // Tool configuration
-const name = 'get-sum';
+const name = "get-sum";
 const config = {
-  title: 'Get Sum Tool',
-  description: 'Returns the sum of two numbers',
+  title: "Get Sum Tool",
+  description: "Returns the sum of two numbers",
   inputSchema: GetSumSchema,
 };
 
@@ -36,7 +36,7 @@ export const registerGetSumTool = (server: McpServer) => {
     return {
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `The sum of ${validatedArgs.a} and ${validatedArgs.b} is ${sum}.`,
         },
       ],

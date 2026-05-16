@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/speculation_engine/orchestrator.py
+# hypothesis_version: 6.151.5
+
+[0.0, 30.0, 300.0, 100, 120, 1000, '_cow_overlay', '_speculation', 'analyze', 'assistant', 'audit', 'benchmark', 'boundary', 'compare', 'complete', 'content', 'cow_phase_complete', 'default', 'engine_state', 'evaluate', 'executing', 'failed', 'files_written', 'generation_time_ms', 'idle', 'investigate', 'landscape', 'merged_files', 'messages', 'metadata', 'objective', 'overlay_active', 'phase', 'phase_complete', 'phase_start', 'phases_speculated', 'pipelined_suggestion', 'plan_cancelled', 'plan_confirmed', 'plan_mode_entered', 'plan_mode_exited', 'plan_revised', 'query_required', 'research', 'researching', 'reset', 'role', 'session_id', 'status', 'suggestion', 'survey', 'synthesizing', 'time_saved_ms', 'timeout', 'to_phase', 'total_time_saved_ms', 'trend', 'user', 'value']

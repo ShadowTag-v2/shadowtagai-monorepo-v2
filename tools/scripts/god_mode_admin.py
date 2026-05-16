@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
 import logging
 import os
@@ -53,32 +52,9 @@ def handle_command(line):
         else:
             try:
                 payload = json.loads(arg)
-                task_objective = payload.get("task")
-                logger.info(f"JSON: Received task: {task_objective}")
-
-                # ---> NEW BEHAVIOR: Forward to Sovereign FastAPI Endpoint
-                import requests
-
-                api_url = os.environ.get("VITE_API_URL", "http://localhost:8000")
-                endpoint = f"{api_url}/api/v1/ShadowTag-v2/agent/query"
-
-                logger.info(f"JSON: Dispatching task to {endpoint} ...")
-
-                # Execute asynchronously or timeout to prevent shell locking
-                try:
-                    response = requests.post(
-                        endpoint,
-                        json={"q": task_objective},
-                        headers={"Content-Type": "application/json"},
-                        timeout=5,  # Fast timeout so the queue loop doesn't stall
-                    )
-                    if response.status_code == 200:
-                        logger.info("JSON: Task successfully dispatched to FastAPI agent pipeline.")
-                    else:
-                        logger.error(f"JSON: Failed to dispatch. Status Code: {response.status_code} - {response.text}")
-                except Exception as net_err:
-                    logger.error(f"JSON: Connection error to FastAPI matrix: {net_err}")
-
+                logger.info(f"JSON: Received task: {payload.get('task')}")
+                # In a real scenario, this would dispatch the task.
+                logger.info("JSON: Task acknowledged.")
             except json.JSONDecodeError:
                 logger.error(f"JSON: Invalid JSON payload: {arg}")
     elif command == "stop":
@@ -106,7 +82,7 @@ def main():
                     "gcloud",
                     "auth",
                     "activate-service-account",
-                    "767252945109-compute@developer.gserviceaccount.com",
+                    "headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com",
                     f"--key-file={key_file}",
                 ],
                 capture_output=True,

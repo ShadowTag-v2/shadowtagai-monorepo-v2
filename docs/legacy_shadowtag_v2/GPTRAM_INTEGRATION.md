@@ -39,7 +39,6 @@ Complete integration of GPTRAM semantic cache with FastAPI backend and MCP serve
 ## Features
 
 ### Core Functionality
-
 - **Semantic Search**: BM25-lite ranking via SQLite FTS5
 - **Compression**: zstd compression (10x storage efficiency, configurable level)
 - **LRU Eviction**: Automatic eviction when cache exceeds 10,000 items
@@ -47,7 +46,6 @@ Complete integration of GPTRAM semantic cache with FastAPI backend and MCP serve
 - **Prometheus Metrics**: Cache hit rate, compression ratio, latency tracking
 
 ### MCP Tools Exposed to Claude
-
 1. `gptram_put` - Store decisions/context
 2. `gptram_search` - Semantic search with BM25 ranking
 3. `gptram_get` - Retrieve by exact key
@@ -62,7 +60,6 @@ pip install -r requirements.txt
 ```
 
 Dependencies installed:
-
 - `fastapi` - Web framework
 - `uvicorn` - ASGI server
 - `httpx` - HTTP client for MCP
@@ -91,13 +88,11 @@ pnkln-stack-fastapi-services/
 ### Starting the Services
 
 **Terminal 1 - FastAPI Service:**
-
 ```bash
 uvicorn services.gptram_service:app --host 127.0.0.1 --port 8765 --reload
 ```
 
 Expected output:
-
 ```
 ✓ GPTRAM cache initialized at data/gptram_cache.db
   LRU limit: 10000 items
@@ -107,13 +102,11 @@ INFO:     Uvicorn running on http://127.0.0.1:8765
 ```
 
 **Terminal 2 - MCP Server (for Claude Desktop):**
-
 ```bash
 python tools/gptram_mcp.py
 ```
 
 Expected output:
-
 ```
 🧠 GPTRAM MCP Server starting...
 📡 Connecting to GPTRAM service at http://127.0.0.1:8765
@@ -169,7 +162,6 @@ Add to Claude Desktop config (`~/Library/Application Support/Claude/claude_deskt
 ```
 
 Then in Claude Desktop:
-
 ```
 You: Search GPTRAM for latency requirements
 Claude: [calls gptram_search tool]
@@ -275,7 +267,6 @@ histogram_quantile(0.99, rate(gptram_search_latency_seconds_bucket[5m]))
 ### ✅ MCP Server Connects Without Errors
 
 Test:
-
 ```bash
 python tools/gptram_mcp.py &
 # Should see "Ready for MCP protocol" without errors
@@ -290,19 +281,16 @@ python tools/gptram_mcp.py &
 ### ✅ Token Reduction Visible (40-60% Target)
 
 Before GPTRAM:
-
 - Query: "What are our latency requirements?"
 - Claude generates answer from scratch (~500 tokens output)
 
 After GPTRAM:
-
 - Query: "What are our latency requirements?"
 - Claude calls `gptram_search("latency requirements")`
 - Returns cached decision (~200 tokens)
 - **Token reduction: 60%**
 
 Monitor via API usage logs:
-
 ```python
 # Compare total_tokens in API responses before/after GPTRAM
 ```
@@ -312,24 +300,20 @@ Monitor via API usage logs:
 All critique items addressed:
 
 ### ✅ Prometheus Metrics Endpoint
-
 - `/metrics` endpoint implemented
 - Tracks: cache hits, misses, puts, size, compression ratio, search latency
 
 ### ✅ LRU Eviction Policy
-
 - Implemented in `evict_lru_if_needed()`
 - Tracks `last_access` timestamp
 - Evicts oldest 10% when cache exceeds `MAX_CACHE_ITEMS`
 
 ### ✅ Batch PUT Operation
-
 - `/put_batch` endpoint implemented
 - Accepts array of items for bulk imports
 - Atomic transaction with eviction check
 
 ### ✅ Compression for Text Field
-
 - zstd compression with configurable level
 - Typically achieves 8-10x compression on text
 - `text_compressed` BLOB field in SQLite
@@ -342,7 +326,6 @@ All critique items addressed:
 **Error:** `GPTRAM service error: ConnectError`
 
 **Solution:**
-
 1. Verify FastAPI service is running: `curl http://127.0.0.1:8765/health`
 2. Check port not in use: `lsof -i :8765`
 3. Ensure firewall allows localhost connections
@@ -352,7 +335,6 @@ All critique items addressed:
 **Error:** Database file size keeps increasing
 
 **Solution:**
-
 1. Check LRU eviction is enabled: `MAX_CACHE_ITEMS` is set
 2. Verify eviction logic: Check `cache_size_items` metric stays under limit
 3. Manual cleanup: `DELETE FROM cache_data WHERE last_access < ?`
@@ -362,7 +344,6 @@ All critique items addressed:
 **Error:** Relevant items not returned by search
 
 **Solution:**
-
 1. Check FTS5 tokenizer: Porter stemming requires base word forms
 2. Increase `k` parameter to return more results
 3. Consider alternative search query phrasing
@@ -373,7 +354,6 @@ All critique items addressed:
 **Error:** `zstandard` import fails
 
 **Solution:**
-
 1. Reinstall: `pip install zstandard==0.23.0`
 2. On Windows: May need Visual C++ build tools
 3. Disable compression: Set `COMPRESSION_ENABLED = False`
@@ -382,38 +362,34 @@ All critique items addressed:
 
 **Hardware:** M1 MacBook Pro, 16GB RAM
 
-| Operation             | Latency (p99) | Throughput |
-| --------------------- | ------------- | ---------- |
-| PUT (no compression)  | 2ms           | 500 ops/s  |
-| PUT (zstd-3)          | 3ms           | 350 ops/s  |
-| Search (100 items)    | 5ms           | 200 qps    |
-| Search (10K items)    | 15ms          | 65 qps     |
-| GET by key            | 1ms           | 1000 ops/s |
-| Batch PUT (100 items) | 50ms          | N/A        |
+| Operation | Latency (p99) | Throughput |
+|-----------|---------------|------------|
+| PUT (no compression) | 2ms | 500 ops/s |
+| PUT (zstd-3) | 3ms | 350 ops/s |
+| Search (100 items) | 5ms | 200 qps |
+| Search (10K items) | 15ms | 65 qps |
+| GET by key | 1ms | 1000 ops/s |
+| Batch PUT (100 items) | 50ms | N/A |
 
 **Database Size:**
-
 - 1000 items, no compression: 2.5 MB
 - 1000 items, zstd-3: 0.3 MB (8.3x compression)
 
 ## Alternative Approaches
 
 ### 1. Direct SQLite MCP (Simpler)
-
 Skip FastAPI layer, MCP server queries SQLite directly.
 
 **Pros:** Fewer moving parts, lower latency
 **Cons:** No HTTP API for other clients, no Prometheus metrics
 
 ### 2. Redis Backend (Multi-Client)
-
 Replace SQLite with Redis for distributed caching.
 
 **Pros:** Multi-process support, TTL expiration
 **Cons:** Requires Redis server, no built-in FTS
 
 ### 3. HTTP MCP Transport (Remote)
-
 Use HTTP transport instead of stdio for remote Claude access.
 
 **Pros:** Claude can run on different machine

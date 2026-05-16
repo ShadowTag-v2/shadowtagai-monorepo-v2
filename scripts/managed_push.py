@@ -1,4 +1,6 @@
-"""managed_push.py — Resumable, self-healing GitHub push daemon for Monorepo-Uphillsnowball.
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+managed_push.py — Resumable, self-healing GitHub push daemon for Monorepo-Uphillsnowball.
 
 Features:
   - Checkpoint file: survives restarts, picks up at last committed batch
@@ -14,7 +16,6 @@ Run once:
 Or let launchd manage it (see scripts/com.antigravity.push.plist).
 """
 
-import contextlib
 import json
 import logging
 import os
@@ -54,14 +55,14 @@ log = logging.getLogger("antigravity.push")
 
 # ── Git helpers ───────────────────────────────────────────────────────────────
 def run(cmd: str, check: bool = False) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, shell=True, capture_output=True, text=True, check=check)  # nosec B602 — intentional shell for git/system ops
+    return subprocess.run(cmd, shell=True, capture_output=True, text=True, check=check)
 
 
 # ── GitHub App token ──────────────────────────────────────────────────────────
 class TokenManager:
     """Issues and caches GitHub App installation tokens, proactively refreshes."""
 
-    def __init__(self, app_id: str, pem_path: str, owner: str) -> None:
+    def __init__(self, app_id: str, pem_path: str, owner: str):
         self.app_id = app_id
         self.pem_path = pem_path
         self.owner = owner
@@ -126,7 +127,7 @@ def load_checkpoint() -> int:
     try:
         with open(CHECKPOINT_FILE) as f:
             return json.load(f).get("next_batch", 0)
-    except FileNotFoundError, json.JSONDecodeError:
+    except (FileNotFoundError, json.JSONDecodeError):
         return 0
 
 
@@ -136,8 +137,10 @@ def save_checkpoint(batch_index: int) -> None:
 
 
 def clear_checkpoint() -> None:
-    with contextlib.suppress(FileNotFoundError):
+    try:
         os.remove(CHECKPOINT_FILE)
+    except FileNotFoundError:
+        pass
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────

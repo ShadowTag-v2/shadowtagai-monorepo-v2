@@ -1,8 +1,8 @@
-# Original Path: AiU + ShadowTag-v2 Unified Platform: Business Plan & Operational Status/AiU + ShadowTag-v2 Unified Platform: Business Plan & Operational Status.txt
+# Original Path: AiU + AiYou Unified Platform: Business Plan & Operational Status/AiU + AiYou Unified Platform: Business Plan & Operational Status.txt
 
 # Categories: CONSUMER_L3, CORE_L2, DEFENSE_L6, FINANCE_BIZ, INFRA_L4_L5, LEGAL
 
-AiU + ShadowTag-v2 Unified Platform: Business Plan & Operational Status
+AiU + AiYou Unified Platform: Business Plan & Operational Status
 Date: December 14, 2025 Status: 🟢 SYSTEMS ACTIVE (Pre-Revenue / Deployment Phase) Valuation Target: $421.5B (2030)
 
 🟢 Real-Time Operational Status
@@ -23,7 +23,7 @@ Date: December 14, 2025 Status: 🟢 SYSTEMS ACTIVE (Pre-Revenue / Deployment
    Payment Rails: Stripe integration pending (2-week sprint)
 
 🎯 Executive Summary
-AiU + ShadowTag-v2 is the world's first production-ready pre-execution AI governance platform. Unlike reactive moderation (detecting harm after it happens), we govern AI before it executes.
+AiU + AiYou is the world's first production-ready pre-execution AI governance platform. Unlike reactive moderation (detecting harm after it happens), we govern AI before it executes.
 The Problem
 Governments: Post-hoc regulation fails (fines come too late).
 Legal Tech: Zero-touch deadline tracking ($8B)
@@ -43,7 +43,7 @@ Revenue-First Architecture: 4-Layer Monetization (Governance, Content, Services,
 Key Metrics
 Infrastructure Cost: $77/month (GKE Autopilot Native) - Proven
 GPU Cost Savings: 82% (Aegaeon Pooling) - Validated SOSP'24
-Development Velocity: +30% (ShadowTag-v2JR Agents) - Active Now
+Development Velocity: +30% (AiYouJR Agents) - Active Now
 
 💰 Revenue Model (The JURA Protocol)
 Our JURA Protocol routes requests to the most cost-effective model based on complexity, enforcing high margins.
@@ -328,7 +328,7 @@ AiY's existing defense-grade AI governance kernel (AiJR, COR, NS) directly maps 
 | Division | ARR | EBITDA Margin | Valuation | % of Total EV |
 |----------|-----|---------------|-----------|---------------|
 | **Infrastructure Mesh** | $10B | 84% | $168B | 54.2% |
-| **ShadowTag-v2 Digital** | $6B | 80% | $96B | 31.0% |
+| **AiYou Digital** | $6B | 80% | $96B | 31.0% |
 | **Defense & PNT** | $2B | 80% | $32B | 10.3% |
 | **Foundation Assets** | - | - | $10B | 3.2% |
 | **TOTAL** | **$18B** | **~84%** | **$310B** | **100%** |
@@ -602,7 +602,7 @@ print(f"Payback Period: {results['returns']['payback_period_months']:.1f} months
 
 ## Contact & Next Steps
 
-**Repository**: https://github.com/ShadowTag-v2/ShadowTag-v2-fastapi-services
+**Repository**: https://github.com/ShadowTag-v2/aiyou-fastapi-services
 **Branch**: `claude/satellite-gpu-edge-mesh-01WY8me7g4XjaAF51wSdPcVu`
 
 ### Immediate Next Actions

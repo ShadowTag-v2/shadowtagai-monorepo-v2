@@ -1,18 +1,18 @@
 #!/usr/bin/env node
-import { spawn } from 'node:child_process';
-import { appendFileSync, existsSync } from 'node:fs';
-import * as os from 'node:os';
-import { join } from 'node:path';
+import { spawn } from "node:child_process";
+import { appendFileSync, existsSync } from "node:fs";
+import * as os from "node:os";
+import { join } from "node:path";
 
-const EXTENSION_DIR = join(os.homedir(), '.gemini/extensions/pickle-rick');
-const HANDLERS_DIR = join(EXTENSION_DIR, 'extension', 'hooks', 'handlers');
-const LOG_PATH = join(EXTENSION_DIR, 'debug.log');
+const EXTENSION_DIR = join(os.homedir(), ".gemini/extensions/pickle-rick");
+const HANDLERS_DIR = join(EXTENSION_DIR, "extension", "hooks", "handlers");
+const LOG_PATH = join(EXTENSION_DIR, "debug.log");
 // Prevent EPIPE errors from crashing the dispatcher when Gemini closes the pipe
 const handleEpipe = (err) => {
-  if (err.code === 'EPIPE') process.exit(0);
+  if (err.code === "EPIPE") process.exit(0);
 };
-process.stdout.on('error', handleEpipe);
-process.stderr.on('error', handleEpipe);
+process.stdout.on("error", handleEpipe);
+process.stderr.on("error", handleEpipe);
 function log(message) {
   try {
     const timestamp = new Date().toISOString();
@@ -26,12 +26,12 @@ function logError(message) {
   log(`ERROR: ${message}`);
 }
 function allow() {
-  console.log(JSON.stringify({ decision: 'allow' }));
+  console.log(JSON.stringify({ decision: "allow" }));
 }
 function findExecutable(name) {
-  const pathEnv = process.env.PATH || '';
-  const paths = pathEnv.split(process.platform === 'win32' ? ';' : ':');
-  const extensions = process.platform === 'win32' ? ['.exe', '.cmd', '.bat', '.ps1', ''] : [''];
+  const pathEnv = process.env.PATH || "";
+  const paths = pathEnv.split(process.platform === "win32" ? ";" : ":");
+  const extensions = process.platform === "win32" ? [".exe", ".cmd", ".bat", ".ps1", ""] : [""];
   for (const p of paths) {
     for (const ext of extensions) {
       const fullPath = join(p, name + ext);
@@ -43,35 +43,35 @@ function findExecutable(name) {
 async function main() {
   const args = process.argv.slice(2);
   if (args.length < 1) {
-    console.error('Usage: dispatch_hook <hook_name> [args...]');
+    console.error("Usage: dispatch_hook <hook_name> [args...]");
     process.exit(1);
   }
   const [hookName, ...extraArgs] = args;
   log(`Dispatching hook: ${hookName} (cwd: ${process.cwd()})`);
-  const isWindows = process.platform === 'win32';
+  const isWindows = process.platform === "win32";
   let scriptPath;
   let cmd;
   let cmdArgs;
   const jsPath = join(HANDLERS_DIR, `${hookName}.js`);
   if (existsSync(jsPath)) {
     scriptPath = jsPath;
-    cmd = 'node';
+    cmd = "node";
     cmdArgs = [scriptPath, ...extraArgs];
   } else if (isWindows) {
-    const HOOKS_DIR = join(EXTENSION_DIR, 'hooks');
+    const HOOKS_DIR = join(EXTENSION_DIR, "hooks");
     scriptPath = join(HOOKS_DIR, `${hookName}.ps1`);
-    const exe = findExecutable('pwsh') || findExecutable('powershell');
+    const exe = findExecutable("pwsh") || findExecutable("powershell");
     if (!exe) {
-      logError('PowerShell not found.');
+      logError("PowerShell not found.");
       allow();
       process.exit(0);
     }
     cmd = exe;
-    cmdArgs = ['-ExecutionPolicy', 'Bypass', '-File', scriptPath, ...extraArgs];
+    cmdArgs = ["-ExecutionPolicy", "Bypass", "-File", scriptPath, ...extraArgs];
   } else {
-    const HOOKS_DIR = join(EXTENSION_DIR, 'hooks');
+    const HOOKS_DIR = join(EXTENSION_DIR, "hooks");
     scriptPath = join(HOOKS_DIR, `${hookName}.sh`);
-    cmd = 'bash';
+    cmd = "bash";
     cmdArgs = [scriptPath, ...extraArgs];
   }
   if (!existsSync(scriptPath)) {
@@ -79,7 +79,7 @@ async function main() {
     allow();
     process.exit(0);
   }
-  let inputData = '';
+  let inputData = "";
   if (!process.stdin.isTTY) {
     try {
       const chunks = [];
@@ -95,10 +95,10 @@ async function main() {
   try {
     const child = spawn(cmd, cmdArgs, {
       env: { ...process.env, EXTENSION_DIR },
-      stdio: ['pipe', 'pipe', 'pipe'],
+      stdio: ["pipe", "pipe", "pipe"],
     });
-    child.stdin?.on('error', (err) => {
-      if (err.code === 'EPIPE') {
+    child.stdin?.on("error", (err) => {
+      if (err.code === "EPIPE") {
         // Ignore EPIPE on stdin
         return;
       }
@@ -108,15 +108,15 @@ async function main() {
       try {
         child.stdin?.write(inputData);
       } catch (err) {
-        if (err.code !== 'EPIPE') throw err;
+        if (err.code !== "EPIPE") throw err;
       }
     }
     child.stdin?.end();
-    let stdout = '';
-    let stderr = '';
-    child.stdout?.on('data', (data) => (stdout += data.toString()));
-    child.stderr?.on('data', (data) => (stderr += data.toString()));
-    child.on('close', (code) => {
+    let stdout = "";
+    let stderr = "";
+    child.stdout?.on("data", (data) => (stdout += data.toString()));
+    child.stderr?.on("data", (data) => (stderr += data.toString()));
+    child.on("close", (code) => {
       if (stdout) process.stdout.write(stdout);
       if (stderr) process.stderr.write(stderr);
       if (!stdout.trim()) {
@@ -127,7 +127,7 @@ async function main() {
       }
       process.exit(code ?? 0);
     });
-    child.on('error', (err) => {
+    child.on("error", (err) => {
       logError(`Failed to start child process: ${err}`);
       allow();
       process.exit(0);

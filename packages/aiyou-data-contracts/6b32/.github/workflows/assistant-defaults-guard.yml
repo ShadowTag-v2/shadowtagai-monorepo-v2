@@ -5,8 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate .ShadowTag-v2/assistant.defaults.json exists
+      - name: Validate .aiyou/assistant.defaults.json exists
         shell: bash
         run: |
-          test -f .ShadowTag-v2/assistant.defaults.json || { echo "missing defaults"; exit 1; }
-          jq . .ShadowTag-v2/assistant.defaults.json >/dev/null 2>&1 || { echo "invalid json"; exit 1; }
+          test -f .aiyou/assistant.defaults.json || { echo "missing defaults"; exit 1; }
+          jq . .aiyou/assistant.defaults.json >/dev/null 2>&1 || { echo "invalid json"; exit 1; }

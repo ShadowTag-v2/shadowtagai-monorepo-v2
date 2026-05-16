@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from service.app.adapters.authority_promotions import propose_promotion
 from service.app.config import load_settings
 

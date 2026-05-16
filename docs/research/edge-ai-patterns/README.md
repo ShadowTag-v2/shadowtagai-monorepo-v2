@@ -1,13 +1,11 @@
 # Edge AI Patterns - Reference Archive
 
 ## Purpose
-
-Archive promising edge AI architectures and deployment patterns for future reference when ShadowTagAi reaches scale justification.
+Archive promising edge AI architectures and deployment patterns for future reference when Pnkln reaches scale justification.
 
 ## Decision Criteria for Edge AI Adoption
 
 Evaluate edge AI models when:
-
 1. **Cost Threshold**: Cloud inference costs >$50K/year
 2. **Latency Requirements**: Real-time (<100ms) inference needed
 3. **Privacy Requirements**: Data cannot leave device/premises
@@ -17,7 +15,6 @@ Evaluate edge AI models when:
 ## Reference Architectures
 
 ### DeepSeek OCR (3B) - November 2025
-
 - **Model Type**: Vision-Language Model (VLM) for OCR
 - **Parameters**: 3B (edge-deployable)
 - **Key Insights**:
@@ -31,7 +28,6 @@ Evaluate edge AI models when:
   - ShadowTag: Visible watermark/overlay text detection
   - Internal: Cost optimization for high-volume doc processing
 - **Learned Patterns**:
-
   ```python
   # Model serving optimization
   - Quantization strategies (INT8, FP16)
@@ -48,21 +44,18 @@ Evaluate edge AI models when:
 ## Comparable Technologies
 
 ### Google Gemini Nano
-
 - **Size**: 1.8B - 3.25B parameters
 - **Deployment**: Android on-device, Chrome browser
 - **Use Case**: Privacy-preserving inference, offline capability
 - **Advantage**: First-party Google support, proven at scale
 
 ### PaliGemma (Google)
-
 - **Type**: Vision-Language Model
 - **Deployment**: Vertex AI, self-hosted
 - **Use Case**: Image understanding, OCR, VQA
 - **Advantage**: Fine-tuning support, GCP native
 
 ### Microsoft Phi-3 Vision
-
 - **Size**: 4.2B parameters
 - **Deployment**: ONNX Runtime, cloud/edge
 - **Use Case**: Multimodal understanding at small scale
@@ -102,19 +95,16 @@ class EdgeAIEvaluation:
 ## Learning Resources
 
 ### Model Optimization
-
 - [TensorRT Optimization Guide](https://docs.nvidia.com/deeplearning/tensorrt/)
 - [ONNX Runtime Performance Tuning](https://onnxruntime.ai/docs/performance/)
 - [Vertex AI Model Deployment](https://cloud.google.com/vertex-ai/docs/predictions/deploy-model)
 
 ### Edge Deployment
-
 - [Google Edge TPU](https://coral.ai/docs/)
 - [NVIDIA Jetson](https://developer.nvidia.com/embedded/jetson)
 - [AWS Panorama](https://aws.amazon.com/panorama/)
 
 ### Quantization & Compression
-
 - [Post-Training Quantization](https://www.tensorflow.org/lite/performance/post_training_quantization)
 - [Knowledge Distillation](https://arxiv.org/abs/1503.02531)
 - [Pruning Techniques](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html)

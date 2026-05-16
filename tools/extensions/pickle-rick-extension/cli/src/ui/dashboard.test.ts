@@ -1,15 +1,15 @@
-import { describe, expect, mock, test } from 'bun:test';
-import { createMockRenderer } from './mock-factory.ts';
+import { describe, expect, mock, test } from "bun:test";
+import { createMockRenderer } from "./mock-factory.ts";
 
 // Mock views, controllers, and components
-mock.module('./views/LandingView.js', () => ({
+mock.module("./views/LandingView.js", () => ({
   createLandingView: async () => ({
     root: { visible: false, focus: mock(() => {}) },
     input: { focus: mock(() => {}) },
   }),
 }));
 
-mock.module('./controllers/DashboardController.js', () => ({
+mock.module("./controllers/DashboardController.js", () => ({
   DashboardController: class {
     spawnSession = mock(() => {});
     hasActivePicker = () => false;
@@ -17,9 +17,9 @@ mock.module('./controllers/DashboardController.js', () => ({
   },
 }));
 
-mock.module('./components/MultiLineInput.js', () => ({
+mock.module("./components/MultiLineInput.js", () => ({
   MultiLineInputRenderable: class {
-    id = '';
+    id = "";
     focus = mock(() => {});
     on = mock(() => {});
     constructor(_1: never, opts: { id: string }) {
@@ -27,15 +27,15 @@ mock.module('./components/MultiLineInput.js', () => ({
     }
   },
   MultiLineInputEvents: {
-    SUBMIT: 'submit',
-    INPUT: 'input',
+    SUBMIT: "submit",
+    INPUT: "input",
   },
 }));
 
-import { createDashboard } from './dashboard.js';
+import { createDashboard } from "./dashboard.js";
 
-describe('Dashboard', () => {
-  test('createDashboard should initialize without crashing', async () => {
+describe("Dashboard", () => {
+  test("createDashboard should initialize without crashing", async () => {
     const mockRenderer = createMockRenderer();
     const dashboard = await createDashboard(mockRenderer as any);
     expect(dashboard.root).toBeDefined();

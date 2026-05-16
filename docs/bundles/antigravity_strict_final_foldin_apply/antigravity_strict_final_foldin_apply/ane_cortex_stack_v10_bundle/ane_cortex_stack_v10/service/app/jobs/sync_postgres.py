@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 
 from ..utils.db import pg_conn, sqlite_conn

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
+import sys
 
 DB_ROOT = Path("./data/localdb")
 
@@ -22,18 +21,7 @@ def cmd_stats() -> int:
     files = []
     if exists:
         files = sorted(str(p.relative_to(DB_ROOT)) for p in DB_ROOT.rglob("*"))
-    print(
-        json.dumps(
-            {
-                "status": "ok",
-                "action": "stats",
-                "path": str(DB_ROOT),
-                "exists": exists,
-                "file_count": len(files),
-                "files": files[:100],
-            }
-        )
-    )
+    print(json.dumps({"status": "ok", "action": "stats", "path": str(DB_ROOT), "exists": exists, "file_count": len(files), "files": files[:100]}))
     return 0
 
 

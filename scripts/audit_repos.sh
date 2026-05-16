@@ -13,14 +13,14 @@ if [ -d "$MONOREPO/apps" ]; then
         echo "  $size  $dirname"
     done
     echo ""
-    echo "=== Subdirs under apps/ShadowTag-v2_stack/ ==="
-    if [ -d "$MONOREPO/apps/ShadowTag-v2_stack" ]; then
-        du -sh "$MONOREPO/apps/ShadowTag-v2_stack"/*/  2>/dev/null | sort -hr | while IFS=$'\t' read -r size path; do
+    echo "=== Subdirs under apps/aiyou_stack/ ==="
+    if [ -d "$MONOREPO/apps/aiyou_stack" ]; then
+        du -sh "$MONOREPO/apps/aiyou_stack"/*/  2>/dev/null | sort -hr | while IFS=$'\t' read -r size path; do
             dirname=$(basename "$path")
             echo "  $size  $dirname"
         done
     else
-        echo "  (apps/ShadowTag-v2_stack not found)"
+        echo "  (apps/aiyou_stack not found)"
     fi
 else
     echo "  (apps/ directory not found)"

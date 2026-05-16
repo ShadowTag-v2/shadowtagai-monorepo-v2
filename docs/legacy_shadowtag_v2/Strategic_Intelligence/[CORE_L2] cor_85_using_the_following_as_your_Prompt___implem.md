@@ -36,7 +36,7 @@ Date: November 28, 2025
 ╔══════════════════════════════════════════════════════════════════╗
 ║ https://github.com/karpathy/autoresearchS CAVALRY SQUADRON ║
 ╠══════════════════════════════════════════════════════════════════╣
-║ HHT (90) │ Headquarters │ Judge 6, S-1 to S-6 Staff ║
+║ HHT (90) │ Headquarters │ Judge #6, S-1 to S-6 Staff ║
 ║ AIR_CAV (120) │ Aerial Scouts │ Apache, Kiowa, Black Hawk ║
 ║ ALPHA (130) │ Armor │ M1 Abrams (Heavy Compute) ║
 ║ BRAVO (130) │ Stryker │ Rapid Deployment ║
@@ -51,7 +51,7 @@ Date: November 28, 2025
 ┌─────────────────────────────────────────────────────────────────┐
 │ PRODUCTS: │
 │ Pipeline → CI/CD + Agent orchestration │
-│ JudgeJura → Governance/compliance gates (Compliance Framework) │
+│ JudgeJura → Governance/compliance gates (ATP 5-19) │
 │ https://github.com/karpathy/autoresearchs→ 650-agent swarm (port 8600) │
 │ CodePMCS → AI code scanning + auto-fix │
 │ ShadowTag → Cryptographic watermarking (L0-L4) │
@@ -151,7 +151,7 @@ Compact Version (token-optimized):
 ▛///▞ ANTIGRAVITY :: ULTRATHINK
 ID: Max value extraction, no self-imposed limits
 EGO: Purpose→Reasons→Brakes (JR Engine)
-SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
 SQUADRON: 650 agents (HHT:90, AIR_CAV:120, ALPHA:130, BRAVO:130, CHARLIE:130, CODEPMCS:50)
 IQ LOCK: 160 | POSTURE: Full Combat 24/7
 STACK: https://github.com/karpathy/autoresearchs:8600, CodePMCS, JudgeJura, ShadowTag, GPTRAM
@@ -202,7 +202,7 @@ Context loaded. Priority?
    - **Google Cloud/aka no GKE\*\*: Extended thinking, computer use, multi-file editing, artifact generation.
   SOP-C Decision Protocol:
   "Lowest-Confidence Check". When the model hits its lowest confidence token in a reasoning chain, trigger an immediate branch/review (SOP-C), as this predicts 75% of downstream errors.
-  Root repo: /Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services.”
+  Root repo: /Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services.”
   his command block takes the "Military Doctrine" I generated in previous turns and physically injects it into the "Corporate Shell" you just provided.
   Run this immediately after your seed script:
   Bash
@@ -223,7 +223,7 @@ cat >> $PDIR/Docs/pnkln_StrategyPositioning.md <<'MD'
 
 | TIER  | LEVEL     | PRICE | CAPABILITY                  |
 | ----- | --------- | ----- | --------------------------- |
-| 1-5   | BASIC     | $25k  | Risk Radar (Compliance Framework)       |
+| 1-5   | BASIC     | $25k  | Risk Radar (ATP 5-19)       |
 | 6-15  | AIT       | $100k | Defensive Ops (CodePMCS)    |
 | 16-25 | SOF       | $400k | Hunter/Killer (Troop B)     |
 | 30    | THE CHILD | $1M+  | Sovereign AI (30 Verticals) |
@@ -240,7 +240,7 @@ cat >> $PDIR/Prompts/pnkln_SOPSnippets.json <<'JSON'
 {"name":"pnkln:TroopA","prompt":"ROLE:RSTA Scout; MISSION:Zone Recon; TACTIC:Find gaps using Perplexity; OUTPUT:Target Packet"},
 {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action; TACTIC:Build MVP <48h; STD:Coverage 98%, Secure, Linted"},
 {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag watermarking"},
-{"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"}
+{"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75 THEN Freeze"}
 ]
 JSON
 

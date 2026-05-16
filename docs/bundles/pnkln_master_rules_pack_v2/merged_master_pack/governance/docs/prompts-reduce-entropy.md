@@ -2,7 +2,6 @@
 
 Reduce entropy in this repo without broad rewrites.
 Priorities:
-
 1. remove duplication
 2. standardize inconsistent patterns
 3. move business logic out of UI
@@ -12,7 +11,6 @@ Priorities:
 7. preserve behavior while simplifying the system
 
 Return:
-
 - proposed reductions
 - smallest safe diff plan
 - risks

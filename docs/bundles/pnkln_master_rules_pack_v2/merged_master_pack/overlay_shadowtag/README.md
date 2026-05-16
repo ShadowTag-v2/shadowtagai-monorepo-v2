@@ -5,7 +5,6 @@ This pack is the ShadowTag-specific companion to the portable brand-agnostic pac
 It is intentionally opinionated and repo-specific.
 
 ## Included
-
 - repo-specific constitution and operating posture
 - session bootstrap and workflow files
 - ShadowTag runtime/profile config
@@ -13,7 +12,6 @@ It is intentionally opinionated and repo-specific.
 - research and doctrine rules
 
 ## Intentionally omitted or redacted
-
 - private keys, API keys, passwords, raw credentials
 - abusive or degrading persona instructions
 - medical or drug-use instructions
@@ -21,8 +19,6 @@ It is intentionally opinionated and repo-specific.
 - instructions that would force unsafe, deceptive, or policy-violating behavior
 
 ## Companion pack
-
 Use this together with the portable baseline if you want:
-
 - portable governance in one pack
 - ShadowTag-specific doctrine in this pack

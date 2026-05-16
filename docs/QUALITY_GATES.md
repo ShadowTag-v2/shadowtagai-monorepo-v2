@@ -9,7 +9,6 @@ Quality gates ensure the Gemini Ingestion Layer maintains high standards for dat
 ### 1. Volume & Coverage Gates
 
 #### Gate 1.1: Minimum Daily Items
-
 - **Threshold**: ≥100 items/day
 - **Evaluation**: After collection stage
 - **Action on failure**:
@@ -18,7 +17,6 @@ Quality gates ensure the Gemini Ingestion Layer maintains high standards for dat
 - **Rationale**: Ensures sufficient data volume for downstream intelligence analysis
 
 #### Gate 1.2: Source Diversity
-
 - **Threshold**: ≥4 active sources per day
 - **Evaluation**: After collection stage
 - **Action on failure**:
@@ -27,7 +25,6 @@ Quality gates ensure the Gemini Ingestion Layer maintains high standards for dat
 - **Rationale**: Prevents over-reliance on single source, ensures diverse perspectives
 
 #### Gate 1.3: Source Balance
-
 - **Threshold**: Each source contributes ≥5% of daily volume
 - **Evaluation**: After collection stage
 - **Action on failure**:
@@ -126,7 +123,6 @@ class VolumeGate:
 ### 2. Quality & Relevance Gates
 
 #### Gate 2.1: Average Relevance Score
-
 - **Threshold**: ≥0.70 average relevance
 - **Evaluation**: After Gemini scoring
 - **Action on failure**:
@@ -135,7 +131,6 @@ class VolumeGate:
 - **Rationale**: Ensures ingested data is relevant to intelligence goals
 
 #### Gate 2.2: Tier Distribution
-
 - **Threshold**:
   - Tier 1: 15-25% (target: 20%)
   - Tier 2: 45-55% (target: 50%)
@@ -147,7 +142,6 @@ class VolumeGate:
 - **Rationale**: Maintains balance between high-value and supplementary content
 
 #### Gate 2.3: Low-Quality Item Threshold
-
 - **Threshold**: <10% of items with relevance <0.60
 - **Evaluation**: After Gemini scoring
 - **Action on failure**:
@@ -232,7 +226,6 @@ class QualityGate:
 ### 3. Cost Efficiency Gates
 
 #### Gate 3.1: Cost Per Item
-
 - **Threshold**: ≤$0.0026 per item (target)
 - **Evaluation**: After collection and cost tracking
 - **Action on failure**:
@@ -242,7 +235,6 @@ class QualityGate:
 - **Rationale**: Maintains budget sustainability ($77/month for ~30k items)
 
 #### Gate 3.2: Daily Budget
-
 - **Threshold**: ≤$2.57 per day (=$77/30)
 - **Evaluation**: After collection
 - **Action on failure**:
@@ -251,7 +243,6 @@ class QualityGate:
 - **Rationale**: Prevents monthly budget overrun
 
 #### Gate 3.3: Monthly Projection
-
 - **Threshold**: ≤$90 projected monthly cost (with 15% buffer)
 - **Evaluation**: Rolling 7-day average
 - **Action on failure**:
@@ -339,7 +330,6 @@ class CostGate:
 ### 4. Timeliness Gates
 
 #### Gate 4.1: Runtime Efficiency
-
 - **Threshold**: ≤45 minutes total runtime
 - **Evaluation**: After pipeline completion
 - **Action on failure**:
@@ -348,7 +338,6 @@ class CostGate:
 - **Rationale**: Ensures briefing delivery by 6:00 AM
 
 #### Gate 4.2: Per-Source Timeout
-
 - **Threshold**: ≤5 minutes per source
 - **Evaluation**: Per source collector
 - **Action on failure**:
@@ -357,7 +346,6 @@ class CostGate:
 - **Rationale**: Prevents single source from blocking entire pipeline
 
 #### Gate 4.3: Briefing Delivery Time
-
 - **Threshold**: Generated and stored by 6:00 AM local time
 - **Evaluation**: After delivery stage
 - **Action on failure**:
@@ -367,7 +355,6 @@ class CostGate:
 ### 5. Completeness Gates
 
 #### Gate 5.1: Source Attempt Completeness
-
 - **Threshold**: All configured sources attempted
 - **Evaluation**: After collection stage
 - **Action on failure**:
@@ -375,7 +362,6 @@ class CostGate:
 - **Rationale**: Ensures no source is silently ignored
 
 #### Gate 5.2: Briefing Sections
-
 - **Threshold**: All required sections present in briefing
 - **Evaluation**: After briefing generation
 - **Required sections**:
@@ -392,7 +378,6 @@ class CostGate:
 ### 6. Ethical Compliance Gates
 
 #### Gate 6.1: Robots.txt Compliance
-
 - **Threshold**: 100% of crawled URLs checked against robots.txt
 - **Evaluation**: During collection
 - **Action on failure**:
@@ -401,7 +386,6 @@ class CostGate:
 - **Rationale**: Legal and ethical requirement
 
 #### Gate 6.2: Rate Limiting Compliance
-
 - **Threshold**: No more than 1 request/second per domain
 - **Evaluation**: Real-time during collection
 - **Action on failure**:
@@ -410,7 +394,6 @@ class CostGate:
 - **Rationale**: Prevents overwhelming target servers
 
 #### Gate 6.3: User-Agent Transparency
-
 - **Threshold**: All requests include proper bot User-Agent
 - **Evaluation**: Code review and runtime checks
 - **Action on failure**:
@@ -619,7 +602,6 @@ class QualityGateConfig:
 ```
 
 ## References
-
 - [Architecture Documentation](./ARCHITECTURE.md)
 - [Cost Monitoring Guide](./COST_MONITORING.md)
 - [Ethical Compliance Standards](./ETHICAL_COMPLIANCE.md)

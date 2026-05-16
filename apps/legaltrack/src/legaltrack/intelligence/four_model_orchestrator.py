@@ -1,12 +1,14 @@
-import asyncio
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
+import asyncio
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class FourModelOrchestrator:
-    """Superpowers Marketplace Engine. ($87M Value Add).
+    """
+    Superpowers Marketplace Engine. ($87M Value Add).
     Simultaneously invokes and consensus-checks across 4 elite reasoning models.
     "Simple can be harder than complex." - We hide the multi-cloud complexity behind a single async interface.
     """
@@ -32,7 +34,8 @@ class FourModelOrchestrator:
         return "DeepSeek Output: Rule 12(b)(6)"
 
     async def run_consensus(self, strict_prompt: str) -> dict[str, Any]:
-        """Executes the 4-model multi-agent debate (MAD) asynchronously.
+        """
+        Executes the 4-model multi-agent debate (MAD) asynchronously.
         Highest confidence answer wins.
         """
         logger.info(f"Initiating 4-Model Orchestration for prompt hash: {hash(strict_prompt)}")
@@ -49,11 +52,6 @@ class FourModelOrchestrator:
 
         return {
             "consensus": consensus_reached,
-            "raw_outputs": {
-                "gemini": results[0],
-                "gpt-4": results[1],
-                "claude": results[2],
-                "deepseek": results[3],
-            },
+            "raw_outputs": {"gemini": results[0], "gpt-4": results[1], "claude": results[2], "deepseek": results[3]},
             "selected_truth": results[0],  # Prefer native Gemini for downstream speed
         }

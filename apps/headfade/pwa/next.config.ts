@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const config: NextConfig = {
   output: 'export',
+  trailingSlash: true,
   reactStrictMode: true,
   transpilePackages: ['@packages/ui'],
   images: {
@@ -12,7 +13,7 @@ const config: NextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
 };
 
 export default config;

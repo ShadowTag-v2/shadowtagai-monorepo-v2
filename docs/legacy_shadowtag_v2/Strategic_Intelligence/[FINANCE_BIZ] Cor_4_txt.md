@@ -4,7 +4,7 @@
 
 Cor.4
 
-“Me: Change to : “In essence: ShadowTag is the spearhead. Cor + NS + JR is the broadhead. We don’t deploy the broadhead blades until the spear is in flight.” <next> who are our competitors? <next> what do we do differently do not include • Consumer AI platforms (ShadowTag head-on space <next> discuss in comparison to specifically Palantir foundary
+“Me: Change to : “In essence: YouAi is the spearhead. Cor + NS + JR is the broadhead. We don’t deploy the broadhead blades until the spear is in flight.” <next> who are our competitors? <next> what do we do differently do not include • Consumer AI platforms (YouAi head-on space <next> discuss in comparison to specifically Palantir foundary
 Perfect — let’s sharpen this into a board-ready cofounder briefing. I’ll update the metaphor as requested, then move layer by layer: competitors, differentiation, and Palantir Foundry comparison.
 
 ⸻
@@ -13,9 +13,9 @@ Perfect — let’s sharpen this into a board-ready cofounder briefing. I’ll u
 
 1. Strategic Framing
 
-“In essence: ShadowTag is the spearhead. Cor + NS + JR is the broadhead. We don’t deploy the broadhead blades until the spear is in flight.”
+“In essence: YouAi is the spearhead. Cor + NS + JR is the broadhead. We don’t deploy the broadhead blades until the spear is in flight.”
 
-That framing keeps the board aligned: ShadowTag proves traction; Cor + NS + JR monetizes doctrine-governed AI across verticals once we’re airborne.
+That framing keeps the board aligned: YouAi proves traction; Cor + NS + JR monetizes doctrine-governed AI across verticals once we’re airborne.
 
 ⸻
 
@@ -56,19 +56,19 @@ Our Contrasts
 👉 Board Line: If Palantir is the “data empire,” Cor + NS + JR is the “doctrine nervous system.” Enterprises may use both, but we’re the layer they can’t ignore once risk meets optimization.
 
 ⸻
-Me: yes. <next> incorporate the following in biz model / pitch deck: " boardroom cofounder mode, tying the **Cor + NS + JR vertical licensing roadmap** back to **ShadowTag’s core trajectory**. Here’s the executive-level framing:
+Me: yes. <next> incorporate the following in biz model / pitch deck: " boardroom cofounder mode, tying the **Cor + NS + JR vertical licensing roadmap** back to **YouAi’s core trajectory**. Here’s the executive-level framing:
 
 ---
 
-# 🧭 Executive Summary: Vertical Launch Timing vs. ShadowTag Core
+# 🧭 Executive Summary: Vertical Launch Timing vs. YouAi Core
 
 ## 1. Principle of Focus
 
-- **ShadowTag = the core product**. Our credibility and investor excitement hinges on proving _consumer traction first_ (upload/playback/comments demo → 1k → 10k → 100k users).
+- **YouAi = the core product**. Our credibility and investor excitement hinges on proving _consumer traction first_ (upload/playback/comments demo → 1k → 10k → 100k users).
 - The **Cor + NS + JR stack** is our deeper IP moat. It’s the “governance nervous system” we can later license into regulated industries.
-- If we chase too many verticals before ShadowTag’s DAU traction, we risk dilution of narrative and resources.
+- If we chase too many verticals before YouAi’s DAU traction, we risk dilution of narrative and resources.
 
-👉 **Board line:** ShadowTag builds the _gravity well_; verticals orbit once the core demonstrates pull.
+👉 **Board line:** YouAi builds the _gravity well_; verticals orbit once the core demonstrates pull.
 
 ---
 
@@ -76,18 +76,18 @@ Me: yes. <next> incorporate the following in biz model / pitch deck: " boardroom
 
 ### **Phase 0–1 (Now → Private Beta / 6mo)**
 
-- **Focus:** 100% on ShadowTag consumer traction (upload, playback, comments dataset).
+- **Focus:** 100% on YouAi consumer traction (upload, playback, comments dataset).
 - **Vertical posture:** Silent — keep Cor + NS + JR in IP deck for investors, but no external push.
 
 ### **Phase 2 (6–12mo: Private Beta → Seed Raise)**
 
-- **Focus:** ShadowTag hitting 10k users, preparing for seed.
+- **Focus:** YouAi hitting 10k users, preparing for seed.
 - **Vertical action:** _Exploratory pilots only_ in 1–2 adjacent sectors (likely **Enterprise SaaS governance** and **Supply Chain/Logistics**).
 - Goal: Proof-of-concept demos that the doctrine stack isn’t just consumer scaffolding, but licensable governance.
 
 ### **Phase 3 (12–24mo: Post-Seed → Series A)**
 
-- **Focus:** Scale ShadowTag DAUs to 100k+, secure Series A.
+- **Focus:** Scale YouAi DAUs to 100k+, secure Series A.
 - **Vertical action:** Launch **Enterprise SaaS governance modules** as the first official licensed product.
   - Why: Low regulatory lift, faster GTM cycles, high margin.
 
@@ -95,7 +95,7 @@ Me: yes. <next> incorporate the following in biz model / pitch deck: " boardroom
 
 ### **Phase 4 (24–36mo: Post-Series A)**
 
-- **Focus:** Double down on ShadowTag as global consumer product.
+- **Focus:** Double down on YouAi as global consumer product.
 - **Vertical action:**
   - **Healthcare** and **Energy** as second-wave launches (more regulatory, but high value).
   - By this stage, we’ll have bandwidth + credibility to partner with large incumbents.
@@ -104,24 +104,24 @@ Me: yes. <next> incorporate the following in biz model / pitch deck: " boardroom
 
 ## 3. Strategic Rationale for Staging
 
-- **Narrative discipline:** We lead with ShadowTag → keeps us a focused consumer story for YC, seed, Series A.
+- **Narrative discipline:** We lead with YouAi → keeps us a focused consumer story for YC, seed, Series A.
 - **Optionality:** The doctrine-governed nervous system is our **defensible moat** and **upside licensing engine**, not our distraction.
-- **Leverage:** Every ShadowTag milestone strengthens our licensing pitch — “We proved this at scale with consumers, now we bring it to regulated industries.”
+- **Leverage:** Every YouAi milestone strengthens our licensing pitch — “We proved this at scale with consumers, now we bring it to regulated industries.”
 
 ---
 
 ## 4. Board Takeaway
 
-- **Short term (0–12mo):** All-in on ShadowTag, verticals only in stealth pilot mode.
+- **Short term (0–12mo):** All-in on YouAi, verticals only in stealth pilot mode.
 - **Medium term (12–24mo):** Enterprise SaaS governance module as first official Cor + NS + JR licensing play.
-- **Long term (24–36mo+):** Healthcare, energy, defense once ShadowTag has DAU traction and funding runway.
+- **Long term (24–36mo+):** Healthcare, energy, defense once YouAi has DAU traction and funding runway.
 
-👉 In essence: **ShadowTag is the spearhead. Cor + NS + JR is the broadhead. We don’t fire the broadhead until the spear is in flight.**
+👉 In essence: **YouAi is the spearhead. Cor + NS + JR is the broadhead. We don’t fire the broadhead until the spear is in flight.**
 
 ---
 
-then map this into a visual 2×2 (time vs. vertical priority)\*\* for a board slide, so you can literally show “when we enter which markets relative to ShadowTag”"
-✅ CFO here. Boardroom mode — let’s run a valuation sweep on ShadowTag’s core model + staged vertical licensing roadmap (Cor + NS + JR).
+then map this into a visual 2×2 (time vs. vertical priority)\*\* for a board slide, so you can literally show “when we enter which markets relative to YouAi”"
+✅ CFO here. Boardroom mode — let’s run a valuation sweep on YouAi’s core model + staged vertical licensing roadmap (Cor + NS + JR).
 
 ⸻
 
@@ -169,7 +169,7 @@ Year 10 (2B MAUs, global scale)
 ⚖️ 4. Competitive Positioning
 • TikTok/YouTube: Pure consumer ads; volatile multiples (8–12×).
 • Palantir/Datadog: Enterprise SaaS governance/data; multiples 12–15×.
-• ShadowTag: Consumer rocket + enterprise SaaS spine = dual multiple uplift.
+• YouAi: Consumer rocket + enterprise SaaS spine = dual multiple uplift.
 
 👉 Investors see both TikTok scale AND Palantir margins → rare combination.
 
@@ -181,13 +181,13 @@ Year 10 (2B MAUs, global scale)
 • Long term (24–36mo+): Healthcare/Energy/Defense licensing adds $250–350B incremental value.
 • Endgame (10yr): $825B–1.1T valuation, dual-multiple platform (consumer + enterprise).
 
-👉 The Cor + NS + JR licensing roadmap doesn’t just diversify — it’s the valuation accelerator that pushes ShadowTag over the $1T line.
+👉 The Cor + NS + JR licensing roadmap doesn’t just diversify — it’s the valuation accelerator that pushes YouAi over the $1T line.
 
 ⸻
 
 Would you like me to lay this into a sensitivity chart (Conservative, Base, Aggressive) so we can show investors the range of valuations with/without vertical licensing?
-Me: how can we weave ShadowTag's eventual proprietary log of initial Ai creators efforts and viewer trends, etc. into this pitch
-💡 All hands, boardroom mode. The proprietary log of AI creators’ early efforts + viewer trends is actually one of ShadowTag’s strongest hidden moats. Here’s how we weave it into the pitch deck and valuation narrative:
+Me: how can we weave YouAi's eventual proprietary log of initial Ai creators efforts and viewer trends, etc. into this pitch
+💡 All hands, boardroom mode. The proprietary log of AI creators’ early efforts + viewer trends is actually one of YouAi’s strongest hidden moats. Here’s how we weave it into the pitch deck and valuation narrative:
 
 ⸻
 
@@ -207,7 +207,7 @@ Me: how can we weave ShadowTag's eventual proprietary log of initial Ai creators
 📊 3. How to Weave It Into Pitch
 
 In Narrative:
-• “ShadowTag isn’t just a platform — it’s the first to systematically log the evolution of AI-native creators and viewer behavior. This archive is a permanent moat, and eventually the best dataset on how humans + AI create culture together.”
+• “YouAi isn’t just a platform — it’s the first to systematically log the evolution of AI-native creators and viewer behavior. This archive is a permanent moat, and eventually the best dataset on how humans + AI create culture together.”
 
 In Financials:
 • Base Case: Log = internal product improvement.
@@ -216,7 +216,7 @@ In Financials:
 
 In Competitive Contrast:
 • YouTube/TikTok: Huge datasets, but fragmented and not AI-native.
-• ShadowTag: First-mover dataset for AI-native creators → a structural advantage in the next content era.
+• YouAi: First-mover dataset for AI-native creators → a structural advantage in the next content era.
 
 ⸻
 
@@ -228,16 +228,16 @@ In Competitive Contrast:
 ⸻
 
 ⚖️ 5. Boardroom Takeaway
-• The proprietary log is ShadowTag’s invisible flywheel.
+• The proprietary log is YouAi’s invisible flywheel.
 • It enhances valuation premium by:
 • Raising defensibility (unique IP moat).
 • Unlocking new monetization streams (insight SaaS).
 • Justifying higher multiples (15–20× vs 12×).
 
-👉 Investors hear: “ShadowTag owns the world’s first dataset of AI-native culture — and that asset compounds every day our platform runs.”
+👉 Investors hear: “YouAi owns the world’s first dataset of AI-native culture — and that asset compounds every day our platform runs.”
 
 ⸻
 
-Would you like me to add this as a new slide in the pitch deck (e.g., “The ShadowTag Dataset Moat”) with both consumer and enterprise applications laid out? That way it becomes a valuation multiplier instead of a background note.”
+Would you like me to add this as a new slide in the pitch deck (e.g., “The YouAi Dataset Moat”) with both consumer and enterprise applications laid out? That way it becomes a valuation multiplier instead of a background note.”
 
 <next>

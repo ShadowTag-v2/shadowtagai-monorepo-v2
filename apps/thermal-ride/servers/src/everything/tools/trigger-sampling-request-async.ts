@@ -1,21 +1,21 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult, CreateMessageRequest } from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult, CreateMessageRequest } from "@modelcontextprotocol/sdk/types.js";
+import { z } from "zod";
 
 // Tool input schema
 const TriggerSamplingRequestAsyncSchema = z.object({
-  prompt: z.string().describe('The prompt to send to the LLM'),
-  maxTokens: z.number().default(100).describe('Maximum number of tokens to generate'),
+  prompt: z.string().describe("The prompt to send to the LLM"),
+  maxTokens: z.number().default(100).describe("Maximum number of tokens to generate"),
 });
 
 // Tool configuration
-const name = 'trigger-sampling-request-async';
+const name = "trigger-sampling-request-async";
 const config = {
-  title: 'Trigger Async Sampling Request Tool',
+  title: "Trigger Async Sampling Request Tool",
   description:
-    'Trigger an async sampling request that the CLIENT executes as a background task. ' +
-    'Demonstrates bidirectional MCP tasks where the server sends a request and the client ' +
-    'executes it asynchronously, allowing the server to poll for progress and results.',
+    "Trigger an async sampling request that the CLIENT executes as a background task. " +
+    "Demonstrates bidirectional MCP tasks where the server sends a request and the client " +
+    "executes it asynchronously, allowing the server to poll for progress and results.",
   inputSchema: TriggerSamplingRequestAsyncSchema,
 };
 
@@ -60,21 +60,21 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
       const request: CreateMessageRequest & {
         params: { task?: { ttl: number } };
       } = {
-        method: 'sampling/createMessage',
+        method: "sampling/createMessage",
         params: {
           task: {
             ttl: 300000, // 5 minutes
           },
           messages: [
             {
-              role: 'user',
+              role: "user",
               content: {
-                type: 'text',
+                type: "text",
                 text: `Resource ${name} context: ${prompt}`,
               },
             },
           ],
-          systemPrompt: 'You are a helpful test server.',
+          systemPrompt: "You are a helpful test server.",
           maxTokens,
           temperature: 0.7,
         },
@@ -107,13 +107,13 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
       );
 
       // Check if client returned CreateTaskResult (has task object)
-      const isTaskResult = 'task' in samplingResponse && samplingResponse.task;
+      const isTaskResult = "task" in samplingResponse && samplingResponse.task;
       if (!isTaskResult) {
         // Client executed synchronously - return the direct response
         return {
           content: [
             {
-              type: 'text',
+              type: "text",
               text: `[SYNC] Client executed synchronously:\n${JSON.stringify(
                 samplingResponse,
                 null,
@@ -134,9 +134,9 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
       let taskStatusMessage: string | undefined;
 
       while (
-        taskStatus !== 'completed' &&
-        taskStatus !== 'failed' &&
-        taskStatus !== 'cancelled' &&
+        taskStatus !== "completed" &&
+        taskStatus !== "failed" &&
+        taskStatus !== "cancelled" &&
         attempts < MAX_POLL_ATTEMPTS
       ) {
         // Wait before polling
@@ -146,7 +146,7 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
         // Get task status from client
         const pollResult = await extra.sendRequest(
           {
-            method: 'tasks/get',
+            method: "tasks/get",
             params: { taskId },
           },
           z
@@ -160,7 +160,7 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
         taskStatus = pollResult.status;
         taskStatusMessage = pollResult.statusMessage;
         statusMessages.push(
-          `Poll ${attempts}: ${taskStatus}${taskStatusMessage ? ` - ${taskStatusMessage}` : ''}`,
+          `Poll ${attempts}: ${taskStatus}${taskStatusMessage ? ` - ${taskStatusMessage}` : ""}`,
         );
       }
 
@@ -169,9 +169,9 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
         return {
           content: [
             {
-              type: 'text',
+              type: "text",
               text: `[TIMEOUT] Task timed out after ${MAX_POLL_ATTEMPTS} poll attempts\n\nProgress:\n${statusMessages.join(
-                '\n',
+                "\n",
               )}`,
             },
           ],
@@ -179,14 +179,14 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
       }
 
       // Check for failure/cancellation
-      if (taskStatus === 'failed' || taskStatus === 'cancelled') {
+      if (taskStatus === "failed" || taskStatus === "cancelled") {
         return {
           content: [
             {
-              type: 'text',
+              type: "text",
               text: `[${taskStatus.toUpperCase()}] ${
-                taskStatusMessage || 'No message'
-              }\n\nProgress:\n${statusMessages.join('\n')}`,
+                taskStatusMessage || "No message"
+              }\n\nProgress:\n${statusMessages.join("\n")}`,
             },
           ],
         };
@@ -195,7 +195,7 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
       // Fetch the final result
       const result = await extra.sendRequest(
         {
-          method: 'tasks/result',
+          method: "tasks/result",
           params: { taskId },
         },
         z.any(),
@@ -205,9 +205,9 @@ export const registerTriggerSamplingRequestAsyncTool = (server: McpServer) => {
       return {
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `[COMPLETED] Async sampling completed!\n\n**Progress:**\n${statusMessages.join(
-              '\n',
+              "\n",
             )}\n\n**Result:**\n${JSON.stringify(result, null, 2)}`,
           },
         ],

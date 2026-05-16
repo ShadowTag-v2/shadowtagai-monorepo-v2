@@ -1,0 +1,26 @@
+# FILE: deploy_core.yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: antigravity-core
+  labels:
+    env: production
+    app: antigravity
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"  # Cost = $0 when idle
+        autoscaling.knative.dev/maxScale: "100"
+    spec:
+      containers:
+      - image: us-central1-docker.pkg.dev/shadowtag-omega-v2/core/api:latest
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "2Gi"
+        env:
+        - name: GOOGLE_CLOUD_PROJECT
+          value: "shadowtag-omega-v2"
+        - name: LOG_LEVEL
+          value: "INFO"

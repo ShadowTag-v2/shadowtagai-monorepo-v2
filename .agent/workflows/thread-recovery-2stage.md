@@ -6,7 +6,7 @@
 
 Separate discovery from regeneration.
 
-Do not proceed directly to rewriting.
+Do not proceed directly to rewriting.  
 Audit first. Rebuild second.
 
 ---
@@ -62,11 +62,11 @@ Recover everything left on the table in the thread before changing any final out
 
 ### Stage 1 Output Format
 
-A. Recovery findings
-B. Complete task ledger
-C. Missing or incomplete items
-D. Newly recovered material
-E. Distinctions and changed assumptions
+A. Recovery findings  
+B. Complete task ledger  
+C. Missing or incomplete items  
+D. Newly recovered material  
+E. Distinctions and changed assumptions  
 F. What must be preserved, corrected, expanded, or replaced
 
 ### Critical Rule
@@ -102,8 +102,8 @@ Rebuild the work from first principles using the reconciled truth from Stage 1.
 
 ### Stage 2 Output Format
 
-A. Revised plan
-B. Regenerated answers
+A. Revised plan  
+B. Regenerated answers  
 C. Full updated code
 
 ### Critical Rule

@@ -5,7 +5,6 @@ Complete documentation for the KERNEL Prompt Engineering Framework and its appli
 ## Quick Navigation
 
 ### Core Framework
-
 - **[KERNEL Framework](frameworks/KERNEL.md)** - Complete framework specification
   - Six principles (K-E-R-N-E-L)
   - Measured impact metrics
@@ -14,16 +13,14 @@ Complete documentation for the KERNEL Prompt Engineering Framework and its appli
   - KERNEL checklist
 
 ### Prompts & Examples
-
 - **[Gemini Ingestion Layer Analysis](prompts/gemini-ingestion-layer.md)** - Production prompt example
   - KERNEL-compliant structure
-  - Evolution from Judge 6
+  - Evolution from Judge #6
   - Six analysis dimensions
   - Implementation notes
   - Integration with PNKLN Core Stack™
 
 ### Implementation
-
 - **Python Package** - `src/prompt_engineering/`
   - `kernel_validator.py` - Validation engine
   - `prompt_analyzer.py` - Quality analysis
@@ -33,27 +30,22 @@ Complete documentation for the KERNEL Prompt Engineering Framework and its appli
 ### Getting Started
 
 #### 1. Learn KERNEL
-
 Start with [KERNEL.md](frameworks/KERNEL.md) to understand the six principles and see examples.
 
 #### 2. See Real Application
-
 Review [gemini-ingestion-layer.md](prompts/gemini-ingestion-layer.md) for a complete production example.
 
 #### 3. Install Tools
-
 ```bash
 pip install -e .
 ```
 
 #### 4. Validate Your Prompts
-
 ```bash
 kernel validate --file your_prompt.txt
 ```
 
 #### 5. Run Examples
-
 ```bash
 python examples/example_usage.py
 ```
@@ -73,26 +65,24 @@ docs/
 
 ### KERNEL Principles
 
-| Principle                    | Description                           | Impact                  |
-| ---------------------------- | ------------------------------------- | ----------------------- |
-| **K** - Keep it Simple       | One clear goal, concise context       | -70% tokens, 3x faster  |
-| **E** - Easy to Verify       | Clear success criteria                | 85% vs 41% success rate |
-| **R** - Reproducible         | No temporal references                | 94% consistency         |
-| **N** - Narrow Scope         | One prompt = one goal                 | 89% vs 41% satisfaction |
-| **E** - Explicit Constraints | Define what NOT to do                 | -91% unwanted outputs   |
-| **L** - Logical Structure    | Context → Task → Constraints → Output | Standardized format     |
+| Principle | Description | Impact |
+|-----------|-------------|--------|
+| **K** - Keep it Simple | One clear goal, concise context | -70% tokens, 3x faster |
+| **E** - Easy to Verify | Clear success criteria | 85% vs 41% success rate |
+| **R** - Reproducible | No temporal references | 94% consistency |
+| **N** - Narrow Scope | One prompt = one goal | 89% vs 41% satisfaction |
+| **E** - Explicit Constraints | Define what NOT to do | -91% unwanted outputs |
+| **L** - Logical Structure | Context → Task → Constraints → Output | Standardized format |
 
 ### Framework Benefits
 
 **For Developers**:
-
 - Faster prompt iteration (67% time reduction)
 - Higher first-try success (72% → 94%)
 - Lower token costs (58% reduction)
 - Reproducible results across models
 
 **For Organizations**:
-
 - Standardized prompt quality
 - Measurable improvements
 - Model-agnostic approach
@@ -101,7 +91,6 @@ docs/
 ## Use Cases
 
 ### 1. Prompt Validation
-
 Ensure prompts meet KERNEL standards before deployment.
 
 **Tools**: `KernelValidator`, `kernel validate` CLI
@@ -109,7 +98,6 @@ Ensure prompts meet KERNEL standards before deployment.
 **Documentation**: [KERNEL.md](frameworks/KERNEL.md) - KERNEL Checklist section
 
 ### 2. Quality Analysis
-
 Analyze prompt efficiency and get optimization suggestions.
 
 **Tools**: `PromptAnalyzer`, `kernel analyze` CLI
@@ -117,7 +105,6 @@ Analyze prompt efficiency and get optimization suggestions.
 **Documentation**: [README.md](../README.md) - Use Cases section
 
 ### 3. Performance Tracking
-
 Track metrics before/after KERNEL adoption.
 
 **Tools**: `PromptMetrics`, `MetricsTracker`
@@ -125,7 +112,6 @@ Track metrics before/after KERNEL adoption.
 **Documentation**: [KERNEL.md](frameworks/KERNEL.md) - Measured Impact section
 
 ### 4. Production Systems
-
 Apply KERNEL to complex, multi-dimensional analysis prompts.
 
 **Example**: [Gemini Ingestion Layer](prompts/gemini-ingestion-layer.md)
@@ -157,7 +143,6 @@ KERNEL is integrated across PNKLN components:
 ### Claude Agent SDK
 
 Framework integrates with Claude Agent SDK for:
-
 - Automated prompt validation
 - Quality gating in CI/CD
 - Runtime prompt optimization
@@ -168,18 +153,17 @@ See: [MIGRATION.md](../MIGRATION.md) for SDK integration details
 
 ### Real-World Results (1000 Prompts Analyzed)
 
-| Metric            | Before KERNEL | After KERNEL | Improvement      |
-| ----------------- | ------------- | ------------ | ---------------- |
-| First-try success | 72%           | 94%          | +22 pp           |
-| Revisions needed  | 3.2           | 0.4          | -87%             |
-| Token usage       | Baseline      | -58%         | 58% reduction    |
-| Time to result    | Baseline      | -67%         | 67% faster       |
-| Accuracy          | Baseline      | +340%        | 340% improvement |
+| Metric | Before KERNEL | After KERNEL | Improvement |
+|--------|---------------|--------------|-------------|
+| First-try success | 72% | 94% | +22 pp |
+| Revisions needed | 3.2 | 0.4 | -87% |
+| Token usage | Baseline | -58% | 58% reduction |
+| Time to result | Baseline | -67% | 67% faster |
+| Accuracy | Baseline | +340% | 340% improvement |
 
 ### Cost Savings
 
 Based on Gemini 2.0 Pro pricing ($3/1M input, $15/1M output):
-
 - **Token reduction**: 58% fewer tokens → 58% cost reduction
 - **Revision reduction**: 87% fewer revisions → 87% fewer API calls
 - **Combined**: ~70-80% total cost reduction
@@ -231,21 +215,18 @@ VERIFICATION: [How to validate success]
 ## Resources
 
 ### Internal Documentation
-
 - [KERNEL Framework](frameworks/KERNEL.md) - Full specification
 - [Gemini Ingestion Layer](prompts/gemini-ingestion-layer.md) - Production example
 - [README](../README.md) - Installation and quick start
 - [MIGRATION](../MIGRATION.md) - Claude Agent SDK migration notes
 
 ### Code Examples
-
 - [Example Usage](../examples/example_usage.py) - Python API examples
 - [Tests](../tests/test_kernel_validator.py) - Unit tests and patterns
 
 ### External Resources
-
 - [Claude Agent SDK Docs](https://docs.claude.com/en/api/agent-sdk/overview)
-- [PNKLN Core Stack™](https://github.com/ehanc69/ShadowTag-v2-fastapi-services)
+- [PNKLN Core Stack™](https://github.com/ehanc69/aiyou-fastapi-services)
 
 ## Version History
 
@@ -269,7 +250,6 @@ When adding new documentation:
 ## Support
 
 For questions or issues:
-
 - Review [KERNEL.md](frameworks/KERNEL.md) for framework details
 - Check [examples](../examples/example_usage.py) for code patterns
 - See [tests](../tests/) for validation examples

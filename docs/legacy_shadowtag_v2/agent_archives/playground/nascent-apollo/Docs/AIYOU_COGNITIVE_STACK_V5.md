@@ -1,4 +1,4 @@
-# ShadowTag-v2 Cognitive Stack v5 — 2025-10
+# AiYou Cognitive Stack v5 — 2025-10
 **"The Mega Roll-Up"**
 
 ## 1. FOUNDATIONAL ARCHITECTURES
@@ -22,7 +22,7 @@
 *   **Concept:** Bidirectional, parallel token generation.
 *   **Role:** High-throughput bulk generator (Synthetic Data / Code).
 
-## 2. DECISION ENGINE: ShadowTag-v2JR (The 6th Arbitrator)
+## 2. DECISION ENGINE: AiYouJR (The 6th Arbitrator)
 
 **The Logic:**
 1.  **Purpose (Why):** Alignment with ShadowTag mission.

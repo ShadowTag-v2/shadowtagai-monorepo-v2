@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
 from typing import Any
 
@@ -5,11 +6,12 @@ logger = logging.getLogger("tesla_api")
 
 
 class TeslaController:
-    """Wrapper around the unofficial Tesla Owner API (or Fleet API)
+    """
+    Wrapper around the unofficial Tesla Owner API (or Fleet API)
     used by the CEOTrack (Schiznit) prodding engine.
     """
 
-    def __init__(self, api_key: str | None = None, active_vin: str | None = None):
+    def __init__(self, api_key: str = None, active_vin: str = None):
         self.api_key = api_key
         self.vin = active_vin
         self.base_url = "https://owner-api.teslamotors.com/api/1"
@@ -30,12 +32,7 @@ class TeslaController:
         logger.info(f"Preconditioning cabin of {self.vin} to {target_temp_c}°C...")
         return True
 
-    async def set_navigation_target(
-        self,
-        address: str,
-        latitude: float | None = None,
-        longitude: float | None = None,
-    ) -> bool:
+    async def set_navigation_target(self, address: str, latitude: float = None, longitude: float = None) -> bool:
         """Pushes navigation data directly into the car's FSD interface."""
         logger.info(f"Pushing destination '{address}' to {self.vin} FSD...")
         return True

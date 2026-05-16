@@ -13,7 +13,7 @@ interface Workflow {
 }
 
 export default function MicroLicensingMarketplace() {
-  const [workflows, setWorkflows] = useState<Workflow[]>([
+  const [workflows, _setWorkflows] = useState<Workflow[]>([
     {
       id: 'wf-001',
       title: 'Cyberpunk Neon Dreams',
@@ -89,6 +89,7 @@ export default function MicroLicensingMarketplace() {
               </div>
 
               <button
+                type="button"
                 onClick={() => handlePurchase(workflow)}
                 disabled={purchaseMutation.isPending}
                 className="w-full py-3 bg-white text-black font-semibold rounded-xl hover:bg-zinc-200 transition disabled:opacity-50"

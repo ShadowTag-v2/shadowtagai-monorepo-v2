@@ -29,7 +29,7 @@ Separation_of_Concerns:
 
 Quality_Gate:
   - 95%+ compliance threshold
-  - Aligns with Judge 6 98% coverage doctrine
+  - Aligns with Judge #6 98% coverage doctrine
   - Integration-first (80/20 rule)
 
 Swappable_Module:
@@ -151,10 +151,10 @@ RECOMMENDED = [
 
 ### Enforcement Levels
 
-| Enforcement     | Meaning     | Can Skip? | Impact                     |
-| --------------- | ----------- | --------- | -------------------------- |
-| **Mandatory**   | Must pass   | No        | Compliance < 95% if failed |
-| **Recommended** | Should pass | Yes       | Minor score penalty        |
+| Enforcement | Meaning | Can Skip? | Impact |
+|-------------|---------|-----------|--------|
+| **Mandatory** | Must pass | No | Compliance < 95% if failed |
+| **Recommended** | Should pass | Yes | Minor score penalty |
 
 ---
 
@@ -192,13 +192,13 @@ def self_verify_and_correct(test_suite):
 
 ### Correction Strategies
 
-| Violation                  | Automatic Correction               |
-| -------------------------- | ---------------------------------- |
-| R3: Bad naming             | Rename to `test_should_X_when_Y`   |
-| R4: No assertions          | Inject `assert result is not None` |
-| R5: No cleanup             | Add `teardown()` block             |
-| R7: Missing edge case      | Generate edge case test            |
-| R10: Low integration ratio | Add integration tests              |
+| Violation | Automatic Correction |
+|-----------|---------------------|
+| R3: Bad naming | Rename to `test_should_X_when_Y` |
+| R4: No assertions | Inject `assert result is not None` |
+| R5: No cleanup | Add `teardown()` block |
+| R7: Missing edge case | Generate edge case test |
+| R10: Low integration ratio | Add integration tests |
 
 ---
 
@@ -250,7 +250,9 @@ ESCALATION_TRIGGERS = {
       "suggestion": "Use pattern: test_should_{action}_when_{condition}"
     }
   ],
-  "corrections_applied": ["Renamed test_payment to test_should_process_payment_when_valid_card"],
+  "corrections_applied": [
+    "Renamed test_payment to test_should_process_payment_when_valid_card"
+  ],
   "execution_time_ms": 4523,
   "escalation_triggered": false,
   "judge6_integration": {
@@ -269,27 +271,27 @@ ESCALATION_TRIGGERS = {
   - Compliance audits
   - Quality trend analysis
   - Debugging escalations
-  - Judge 6 enforcement correlation
+  - Judge #6 enforcement correlation
 
 ---
 
-## Judge 6 Integration
+## Judge #6 Integration
 
 ### Doctrine Alignment
 
-| Judge 6 Doctrine       | TDD Agent Implementation                   |
-| ----------------------- | ------------------------------------------ |
-| **98% coverage target** | R1: Coverage Completeness (15% weight)     |
-| **p99 ≤90ms latency**   | TIMEOUT = 90s constraint                   |
-| **Quality gate**        | 95% compliance threshold                   |
-| **Integration-first**   | R10: 80/20 rule (10% weight)               |
-| **Boy Scout Rule**      | Automatic corrections (cleaner than found) |
+| Judge #6 Doctrine | TDD Agent Implementation |
+|-------------------|-------------------------|
+| **98% coverage target** | R1: Coverage Completeness (15% weight) |
+| **p99 ≤90ms latency** | TIMEOUT = 90s constraint |
+| **Quality gate** | 95% compliance threshold |
+| **Integration-first** | R10: 80/20 rule (10% weight) |
+| **Boy Scout Rule** | Automatic corrections (cleaner than found) |
 
 ### 3-Layer Hybrid Integration
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Judge 6                              │
+│                    Judge #6                              │
 │  (Gemini + PyTorch + Rules, p99≤90ms, 98% coverage)     │
 └─────────────────────────────────────────────────────────┘
                          ↓
@@ -308,7 +310,7 @@ ESCALATION_TRIGGERS = {
 └─────────────────────────────────────────────────────────┘
 ```
 
-**No circular dependency between Judge 6 and TDD agents.**
+**No circular dependency between Judge #6 and TDD agents.**
 
 ---
 
@@ -316,16 +318,16 @@ ESCALATION_TRIGGERS = {
 
 ### Old vs New: By The Numbers
 
-| Metric                      | Old (3-agent) | New (1-agent) | Improvement |
-| --------------------------- | ------------- | ------------- | ----------- |
-| **Agents**                  | 3             | 1             | **-67%**    |
-| **Coordination overhead**   | ~500ms/iter   | 0ms           | **-100%**   |
-| **Total latency (4 iters)** | ~2000ms       | ~500ms        | **-75%**    |
-| **Failure points**          | 3             | 1             | **-67%**    |
-| **Logs to correlate**       | 3             | 1             | **-67%**    |
-| **Deadlock risk**           | High          | None          | **-100%**   |
-| **Quality gate**            | 95%           | 95%           | **0%** ✓    |
-| **Coverage target**         | 98%           | 98%           | **0%** ✓    |
+| Metric | Old (3-agent) | New (1-agent) | Improvement |
+|--------|---------------|---------------|-------------|
+| **Agents** | 3 | 1 | **-67%** |
+| **Coordination overhead** | ~500ms/iter | 0ms | **-100%** |
+| **Total latency (4 iters)** | ~2000ms | ~500ms | **-75%** |
+| **Failure points** | 3 | 1 | **-67%** |
+| **Logs to correlate** | 3 | 1 | **-67%** |
+| **Deadlock risk** | High | None | **-100%** |
+| **Quality gate** | 95% | 95% | **0%** ✓ |
+| **Coverage target** | 98% | 98% | **0%** ✓ |
 
 ### Cost-Benefit
 
@@ -352,7 +354,6 @@ ROI: ✓✓✓ JUSTIFIED for bootstrap constraints
 **"Leave code cleaner than found"** - applied at test level:
 
 ### Before (uncompliant test)
-
 ```python
 def test_payment():
     result = process_payment(card, 100)
@@ -362,7 +363,6 @@ def test_payment():
 ```
 
 ### After (auto-corrected by agent)
-
 ```python
 def test_should_process_payment_when_valid_card():
     """Verify payment processing with valid card"""
@@ -390,10 +390,10 @@ def test_should_process_payment_when_valid_card():
 
 ```typescript
 // Current: Rule-based corrections
-corrections = apply_rule_based_fixes(violations);
+corrections = apply_rule_based_fixes(violations)
 
 // Future: LLM-enhanced corrections
-corrections = await llm_suggest_fixes(violations, context);
+corrections = await llm_suggest_fixes(violations, context)
 ```
 
 **Doctrine:** Ship TODAY with rules. Enhance tomorrow with LLM if ROI ≥3×.
@@ -425,8 +425,8 @@ Add R11: Mutation coverage to ensure tests actually catch bugs.
 - [x] Add timeout constraint (90s SLA)
 - [x] Add fail-fast logic (10 violations)
 - [x] Implement self-correction strategies
-- [x] Generate audit trail (/logs/tdd-guard-\*.json)
-- [x] Integrate Judge 6 constraints (98% coverage, p99≤90ms)
+- [x] Generate audit trail (/logs/tdd-guard-*.json)
+- [x] Integrate Judge #6 constraints (98% coverage, p99≤90ms)
 - [x] Write usage examples
 - [x] Document architecture
 - [ ] Add TypeScript compilation config
@@ -441,10 +441,10 @@ Add R11: Mutation coverage to ensure tests actually catch bugs.
 
 ```yaml
 namespaces:
-  - ShadowTag-v2jr-governance # Judge 6 enforcement
-  - autogen-orchestration # TDD agents (this)
-  - cognitive-stack-v5 # LLM inference
-  - shadowtag-v2 # Watermarking
+  - aiyoujr-governance      # Judge #6 enforcement
+  - autogen-orchestration   # TDD agents (this)
+  - cognitive-stack-v5      # LLM inference
+  - shadowtag-v2            # Watermarking
 ```
 
 **TDD agents deploy to:** `autogen-orchestration`
@@ -453,9 +453,9 @@ namespaces:
 
 ```yaml
 agent_pod:
-  cpu: 500m # 0.5 vCPU
-  memory: 1Gi # 1GB RAM
-  replicas: 3 # HA
+  cpu: 500m           # 0.5 vCPU
+  memory: 1Gi         # 1GB RAM
+  replicas: 3         # HA
   latency_target: 90ms p99
 ```
 
@@ -466,16 +466,14 @@ agent_pod:
 **One agent. Two phases. Zero coordination overhead.**
 
 By embedding guard validation directly into the red-phase, we eliminated:
-
 - 3-agent circular dependency
 - 500ms coordination overhead
 - Deadlock risk
 - Complex debugging
 
 While maintaining:
-
 - 95% compliance gate
-- 98% coverage target (Judge 6)
+- 98% coverage target (Judge #6)
 - 80/20 integration ratio
 - Boy Scout Rule enforcement
 
@@ -483,6 +481,6 @@ While maintaining:
 
 ---
 
-_"Simplicity is the ultimate sophistication."_ - Steve Jobs
+*"Simplicity is the ultimate sophistication."* - Steve Jobs
 
-_"Real artists ship. With 95% compliance."_ - pnkln Doctrine
+*"Real artists ship. With 95% compliance."* - pnkln Doctrine

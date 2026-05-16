@@ -7,7 +7,6 @@ This guide will walk you through building your first production-ready Claude age
 ## Prerequisites
 
 ### Software Requirements
-
 - Node.js 18+ (for TypeScript/JavaScript) OR Python 3.9+
 - Git
 - Text editor or IDE
@@ -28,8 +27,8 @@ This guide will walk you through building your first production-ready Claude age
 
 ```bash
 # Clone the repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # Choose your path:
 
@@ -53,13 +52,11 @@ set ANTHROPIC_API_KEY=your-key-here
 ### 3. Run Your First Agent
 
 **TypeScript:**
-
 ```bash
 npx tsx examples/typescript/workflow/simple-validation.ts
 ```
 
 **Python:**
-
 ```bash
 python examples/python/workflow/simple_validation.py
 ```
@@ -77,7 +74,6 @@ We'll build a simple but production-ready coding assistant agent.
 Use the [Decision Tree](../framework/decision-tree.md) to choose the right pattern.
 
 For a coding assistant that helps with code review and refactoring:
-
 - ✅ Dynamic decision-making required
 - ✅ Single agent can handle it
 - **Pattern**: Single-Agent
@@ -87,7 +83,6 @@ For a coding assistant that helps with code review and refactoring:
 Create `my-coding-agent.ts` (or `.py`):
 
 **TypeScript:**
-
 ```typescript
 import { query } from "@anthropic-ai/claude-agent-sdk";
 
@@ -167,8 +162,8 @@ Provide:
     options: {
       systemPrompt: codingAgentPrompt,
       maxTokens: 4000,
-      model: "claude-sonnet-4.5-20250514",
-    },
+      model: "claude-sonnet-4.5-20250514"
+    }
   });
 
   return result;
@@ -186,8 +181,7 @@ reviewCode(testCode).then(console.log);
 ```
 
 **Python:**
-
-````python
+```python
 from claude_agent_sdk import query, ClaudeAgentOptions
 
 coding_agent_prompt = """
@@ -256,37 +250,34 @@ Review this code for bugs, security issues, and improvements:
 
 ```python
 {code}
-````
+```
 
 Provide:
-
 1. Critical issues (must fix)
 2. High priority improvements
 3. Medium priority suggestions
 4. Low priority enhancements
-   """,
-   options=ClaudeAgentOptions(
-   system_prompt=coding_agent_prompt,
-   max_tokens=4000,
-   model="claude-sonnet-4.5-20250514"
-   )
-   ):
-   result = message
-   return result
+        """,
+        options=ClaudeAgentOptions(
+            system_prompt=coding_agent_prompt,
+            max_tokens=4000,
+            model="claude-sonnet-4.5-20250514"
+        )
+    ):
+        result = message
+    return result
 
 # Test it
-
 test_code = """
 def process_user(user):
-sql = "SELECT \* FROM users WHERE id = " + str(user['id'])
-return db.query(sql)
+    sql = "SELECT * FROM users WHERE id = " + str(user['id'])
+    return db.query(sql)
 """
 
 import asyncio
 result = asyncio.run(review_code(test_code))
 print(result)
-
-````
+```
 
 ### Step 3: Run and Test
 
@@ -296,7 +287,7 @@ npx tsx my-coding-agent.ts
 
 # Python
 python my-coding-agent.py
-````
+```
 
 You should see a detailed code review identifying the SQL injection vulnerability!
 
@@ -305,7 +296,6 @@ You should see a detailed code review identifying the SQL injection vulnerabilit
 Let's add a tool to read files from the codebase:
 
 **TypeScript:**
-
 ```typescript
 import { tool } from "@anthropic-ai/claude-agent-sdk";
 import { readFile } from "fs/promises";
@@ -318,10 +308,10 @@ const readCodeFileTool = tool({
     properties: {
       filePath: {
         type: "string",
-        description: "Path to the file to read (e.g., 'src/utils/validator.ts')",
-      },
+        description: "Path to the file to read (e.g., 'src/utils/validator.ts')"
+      }
     },
-    required: ["filePath"],
+    required: ["filePath"]
   },
   execute: async ({ filePath }) => {
     // Security: restrict to src/ directory
@@ -331,7 +321,7 @@ const readCodeFileTool = tool({
 
     const content = await readFile(filePath, "utf-8");
     return { filePath, content, lines: content.split("\n").length };
-  },
+  }
 });
 
 // Add to query options
@@ -340,8 +330,8 @@ const result = await query({
   options: {
     systemPrompt: codingAgentPrompt,
     tools: [readCodeFileTool],
-    maxTokens: 4000,
-  },
+    maxTokens: 4000
+  }
 });
 ```
 
@@ -370,8 +360,8 @@ If ANY check fails, provide an improved review.
     `,
     options: {
       systemPrompt: codingAgentPrompt,
-      maxTokens: 2000,
-    },
+      maxTokens: 2000
+    }
   });
 
   // If validation suggests improvements, use them
@@ -398,7 +388,7 @@ function log(event: string, details: any): void {
   const entry: LogEntry = {
     timestamp: new Date().toISOString(),
     event,
-    details,
+    details
   };
   console.log(JSON.stringify(entry));
 }
@@ -456,7 +446,6 @@ Before deploying to production:
 ### Issue: "API Key not found"
 
 **Solution:**
-
 ```bash
 # Verify key is set
 echo $ANTHROPIC_API_KEY  # Linux/Mac
@@ -469,7 +458,6 @@ export ANTHROPIC_API_KEY='your-key-here'
 ### Issue: "Module not found"
 
 **Solution:**
-
 ```bash
 # Reinstall dependencies
 npm install  # TypeScript
@@ -479,7 +467,6 @@ pip install -r requirements.txt  # Python
 ### Issue: "Rate limit exceeded"
 
 **Solution:**
-
 ```typescript
 // Add retry logic with exponential backoff
 async function queryWithRetry(prompt, options, maxRetries = 3) {
@@ -488,7 +475,7 @@ async function queryWithRetry(prompt, options, maxRetries = 3) {
       return await query({ prompt, options });
     } catch (error) {
       if (error.message.includes("rate_limit") && i < maxRetries - 1) {
-        await sleep(Math.pow(2, i) * 1000); // 1s, 2s, 4s
+        await sleep(Math.pow(2, i) * 1000);  // 1s, 2s, 4s
         continue;
       }
       throw error;
@@ -502,22 +489,19 @@ async function queryWithRetry(prompt, options, maxRetries = 3) {
 ## Resources
 
 ### Official Documentation
-
 - [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
 - [Building Effective Agents](https://anthropic.com/research/building-effective-agents)
 - [Prompt Engineering](https://docs.claude.com/en/docs/build-with-claude/prompt-engineering)
 
 ### Framework Resources
-
 - [Master Prompt](../framework/master-prompt.md)
 - [Decision Tree](../framework/decision-tree.md)
 - [Patterns](../framework/patterns.md)
 - [Components](../framework/components.md)
 
 ### Community
-
-- [GitHub Issues](https://github.com/ehanc69/ShadowTag-v2-fastapi-services/issues)
-- [Discussions](https://github.com/ehanc69/ShadowTag-v2-fastapi-services/discussions)
+- [GitHub Issues](https://github.com/ehanc69/aiyou-fastapi-services/issues)
+- [Discussions](https://github.com/ehanc69/aiyou-fastapi-services/discussions)
 
 ---
 

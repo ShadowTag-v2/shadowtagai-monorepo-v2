@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/rate_limit_messages.py
+# hypothesis_version: 6.151.5
+
+[0.7, 100, 3600, 86400, ' limit', '%Y-%m-%d %H:%M UTC', 'Opus limit', 'Sonnet limit', "You're close to", "You've hit your", "You've used", 'allowed', 'allowed_warning', 'enterprise', 'error', 'extra usage', 'five_hour', 'free', 'in <1m', 'now', 'out_of_credits', 'overage', 'pro', 'rejected', 'session limit', 'seven_day', 'seven_day_opus', 'seven_day_sonnet', 'team', 'warning', 'weekly limit']

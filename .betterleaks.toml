@@ -67,6 +67,71 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
     # OpenClaw Discord: bundled SDK dist (NOT our Discord app)
     '''libs/cyberpunk_stack/openclaw/dist/''',
+    # ── Vendored / cached / archived paths (synced from .gitleaks.toml 2026-05-09) ──
+    '''.venv-3\\.14-bak/''',
+    '''_archive_redundant_''',
+    '''turbopack/''',
+    '''\.sst$''',
+    '''scratch/repos/''',
+    '''apps/.*/out/''',
+    '''apps/.*/public/dev/cache/''',
+    # Documentation (contains referenced API keys in audit reports)
+    '''docs/AUDIT_REPORT\.md''',
+    '''docs/overview\.txt''',
+    # Legacy server session logs (archived terminal captures, contain rotated PATs)
+    '''apps/aiyou_stack/.*/server_log_.*\.txt''',
+    # Conflict resolution utility scripts (contain marker patterns as regex strings)
+    '''resolve_json\.py''',
+    '''resolve_validate\.py''',
+    '''resolve_yaml\.py''',
+    '''scripts/resolve_conflicts\.py''',
+    # Firebase client config (publishable keys, safe to commit)
+    '''apps/.*/\.env\.local''',
+    '''apps/.*/src/lib/firebase\.ts''',
+    # Test files with mock/fixture secrets
+    '''tests/test_block_allow_engine\.py''',
+    '''tests/test_secret_scanner\.py''',
+    '''tests/test_vcr_fixtures\.py''',
+    '''tests/unit/''',
+    # ── HeadFade PWA firebase config (publishable keys, not secrets) ──
+    '''apps/headfade/pwa/''',
+    # ── .gitleaks.toml contains regex patterns that match detection rules ──
+    '''\.gitleaks\.toml''',
+    # ── Backed-up virtualenv (not committed source) ──
+    '''\.venv-.*-bak/''',
+
+    # ── Vendored / cached / archived paths ──
+    '''\.venv-3\.14-bak/''',
+    '''_archive_redundant_''',
+    '''turbopack/''',
+    '''\.sst$''',
+    '''scratch/repos/''',
+    '''apps/.*/out/''',
+    '''apps/.*/public/dev/cache/''',
+    # Documentation (contains referenced API keys in audit reports)
+    '''docs/AUDIT_REPORT\.md''',
+    '''docs/overview\.txt''',
+    # Legacy server session logs
+    '''apps/aiyou_stack/.*/server_log_.*\.txt''',
+    # Conflict resolution utility scripts
+    '''resolve_json\.py''',
+    '''resolve_validate\.py''',
+    '''resolve_yaml\.py''',
+    '''scripts/resolve_conflicts\.py''',
+    # Firebase client config (publishable keys, safe to commit)
+    '''apps/.*/\.env\.local''',
+    '''apps/.*/src/lib/firebase\.ts''',
+    # Test files with mock/fixture secrets
+    '''tests/test_block_allow_engine\.py''',
+    '''tests/test_secret_scanner\.py''',
+    '''tests/test_vcr_fixtures\.py''',
+    '''tests/unit/''',
+    # HeadFade PWA firebase config (publishable keys)
+    '''apps/headfade/pwa/''',
+    # .gitleaks.toml contains regex patterns that match detection rules
+    '''\.gitleaks\.toml''',
+    # Backed-up virtualenvs
+    '''\.venv-.*-bak/''',
 
     # Migrated from .betterleaksignore (False Positives)
     '''\.semgrep/rules/llm-owasp\.yaml''',
@@ -104,14 +169,25 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
     '''scripts/source_pre_commit\.sh''',
     '''scripts/vault/zero_trust_pipeline\.py''',
     '''apps/kovelai/agent/iam_mappings\.sh''',
+    # ── gcloud SDK installer artifacts (10 false positives — bundled Google API key patterns) ──
+    '''Installation directory.*google-cloud-sdk/''',
   ]
 
   # Specific third-party test secrets (confirmed false positives)
   regexes = [
-    # Odoo payment_stripe test key — NOT acct_1Syh9JEHnWpykeMi
-    '''sk_test_KJtHgNwt2KS3xM7QJPr4O5E8''',
+    # Odoo payment_stripe test key removed
     # OpenTofu doc example vault token
     '''s\.Fg8wA4nDrP08TirpjE''',
+    # ── VCR scrubbed token placeholders (synced from .gitleaks.toml 2026-05-09) ──
+    '''\[SCRUBBED\]''',
+    '''sk-abc123xyz456''',
+    '''AIzaSyAbc123''',
+    '''secret-key-value''',
+    '''ya29\.abc''',
+    '''hunter2''',
+    '''GOCSPX-abc123xyz456''',
+    '''my-secret-api-key-value''',
+    '''real-api-key-123''',
   ]
 
 # Allow Stripe publishable keys (public by design)
@@ -140,6 +216,12 @@ title = "Monorepo-Uphillsnowball Betterleaks Config"
   id = "github-token"
   description = "GitHub Personal Access Token or App Token"
   regex = '''(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,}'''
+
+# Detect GitHub classic PATs (github_pat_ prefix)
+[[rules]]
+  id = "github-classic-pat"
+  description = "GitHub Classic Personal Access Token (NEVER commit)"
+  regex = '''github_pat_[A-Za-z0-9_]{36,}'''
 
 # Detect generic high-entropy secrets
 [[rules]]

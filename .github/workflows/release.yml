@@ -11,37 +11,18 @@ on:
         required: true
         type: string
 
-
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     permissions:
       contents: write
       packages: write
 
     steps:
-      # GitHub App token ensures release events trigger downstream
-      # deployment workflows (GITHUB_TOKEN push events are suppressed).
-      - name: Generate Short-Lived Token
-        id: get_app_token
-        uses: peter-murray/workflow-application-token-action@v4
-        with:
-          application_id: ${{ secrets.GH_APP_ID }}
-          application_private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          organization: ShadowTag-v2
-          permissions: "contents:write,packages:write"
-          revoke_token: true
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.get_app_token.outputs.token }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -72,7 +53,7 @@ jobs:
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ steps.get_app_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
@@ -93,7 +74,6 @@ jobs:
   notify:
     name: Notify Release
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     needs: release
     steps:
       - name: Send notification

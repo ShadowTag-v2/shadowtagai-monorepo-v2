@@ -1,0 +1,12 @@
+{
+  "name": "@pnklnjr/blake3-native",
+  "version": "0.0.1",
+  "private": false,
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').mkdirSync('build',{recursive:true});require('fs').writeFileSync('build/blake3.node','dummy')\""
+  }
+}

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_bash_classifier/telemetry.py
+# hypothesis_version: 6.151.5
+
+['a', 'automation_mode', 'check_id', 'check_name', 'checks_passed', 'command', 'cwd', 'data', 'duration_ms', 'duration_sec', 'endpoint', 'error_msg', 'event_type', 'exit_code', 'jules_api_error', 'jules_plan_approved', 'message', 'name', 'session_name', 'source_name', 'stderr_len', 'stdout_len', 'timestamp']

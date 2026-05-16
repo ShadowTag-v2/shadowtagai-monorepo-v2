@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_upstreamproxy/__init__.py
+# hypothesis_version: 6.151.5
+
+['EgressAllowlist', 'EgressProxy', 'PromptDumper']

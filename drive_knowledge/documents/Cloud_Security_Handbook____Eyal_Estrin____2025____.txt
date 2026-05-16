@@ -1,0 +1,2068 @@
+
+Table of Contents
+Welcome to Packt Early Access
+1
+Introduction to Cloud Security
+What is a cloud service?
+What are the cloud deployment models?
+What are the most common cloud service models?
+Why we need security
+What is the shared responsibility model?
+AWS and the shared responsibility model
+Azure and the shared responsibility model
+GCP and the shared responsibility model
+Command-line tools
+AWS CLI
+Azure CLI
+Google Cloud SDK
+Summary
+2
+Securing Compute Services – Virtual
+Machines
+Securing VMs
+Fundamental best practices for securing VMs
+Amazon EC2
+Azure VMs
+GCE
+Best practices for authentication
+Amazon EC2
+Azure VMs
+GCE
+Best practices for securing network access to an
+instance
+Amazon EC2
+Azure VMs
+GCE
+Best practices for conducting patch management
+Amazon EC2
+Azure VMs
+GCE
+Best practices for securing backups
+AWS Backup
+Azure Backup
+Google Cloud Backup and DR
+Summary
+3
+Securing Compute Services – Containers
+and Kubernetes
+Securing containers
+Securing Kubernetes
+Kubernetes terminology
+General best practices for Kubernetes
+Best practices for identity and access management in
+Kubernetes
+Best practices for data protection in Kubernetes
+Best practices for auditing and security monitoring
+in Kubernetes
+Implementing secure configuration in Kubernetes
+Securing non-Kubernetes workloads
+Securing Amazon Elastic Container Service (ECS)
+Securing Azure Container Apps
+Securing Google Cloud Run
+Summary
+Welcome to Packt Early Access
+We're giving you an exclusive pr eview of this book befor e it goes on sale. It
+can take many months to write a book, but our authors have cutting-edge
+information to shar e with you today . Early Access gives you an insight into
+the latest developments by making chapter drafts available. The chapters
+may be a little r ough ar ound the edges right now , but our authors will up -
+date them befor e the book is published.
+1
+Introduction to Cloud Security
+This book, Cloud Security Handbook,  is meant for various audiences. You
+could be taking your ﬁrst steps working with cloud services, or you could
+be coming from an IT  perspective and want to know about various comput -
+ing and storage services and how to conﬁgure them securely . You might be
+working in information security and want to know the various authentica -
+tion, encryption, and audit services and how to conﬁgure them securely , or
+you might be working with architecture and want to know how to design
+large-scale environments in the cloud in a secure way .
+Reading this book will allow you to make the most of cloud services while
+focusing on security aspects. Before discussing cloud services in more de -
+tail, let me share my opinion regarding cloud services.
+The world of IT  is evolving. For decades, or ganizations used to purchase
+physical hardware, install operating systems, and deploy software. This rou -
+tine required a lot of ongoing maintenance (such as patch deployment,
+backup, hardening, monitoring, and so on).
+The traditional data center had many constraints, including the following,
+among others:
+Physical hardwar e: Organizations were bound to the hardware they
+purchased. In case hardware capacity was not enough, or ganizations had
+to purchase additional hardware, up to the physical space limit in their
+data centers.
+Utilization : In most cases, hardware was not utilized 100% (i.e., not run -
+ning 24x7, using 100% of hardware resources) or overprovisioned (i.e.,
+provision more hardware resources than actually needed by the
+applications).
+Cost : The purchase of new hardware was done several years in advance,
+regardless of the actual use.
+Maintainability : Organizations had to maintain everything from the
+physical data centers, hardware, software, and their conﬁgurations.
+The cloud introduced a new paradigm – that is, the ability to build modern
+applications or consume managed services to achieve the same goal of run -
+ning software (from ﬁle servers to enterprise r esour ce planning  (ERP ) or
+customer  relationship management  (CRM ) products) while using the ex -
+pertise of the hyper -scale cloud providers.
+Some well-known customer stories of cloud computing are as follows:
+Netﬂix : One of the lar gest video streaming services worldwide. It uses
+Amazon Web Services  (AWS) to run its media streaming services:
+https://aws.amazon.com/solutions/case-studies/innovators/netﬂix/ .
+Mercedes-Benz : One of the most famous automotive brands. It uses
+Azure OpenAI service to transform the in-car experience for drivers:
+https://azure.microsoft.com/en-us/blog/mercedes-benz-enhances-drivers-
+experience-with-azure-openai-service/ .
+Home Depot : The lar gest home improvement retailer in the United
+States. It uses Google Cloud to run its online stores: https://www .google -
+cloudpresscorner .com/2024-04-1 1-The-Home-Depot-Extends-
+Relationship-with-Google-Cloud-to-Drive-Innovation-in-Interconnected-
+Retail .
+Securing cloud environments can be challenging, depending on your previ -
+ous knowledge in IT , information security , or cloud services in general.
+Reading this book will assist you in gaining the necessary knowledge of
+how to secure cloud environments, regardless of your role in the or ganiza -
+tion or your previous experience.
+In this book, we will compare various aspects of cloud computing (from
+fundamental services, such as computing, storage, and networking, to com -
+pliance management and best practices for building and securely maintain -
+ing lar ge-scale environments), while reviewing the different alternatives of -
+fered by AWS, Micr osoft Azur e, and Google Cloud Platform  (GCP ).
+It does not matter which or ganization you are coming from – this book will
+allow you to have a better understanding of how to embed security in any of
+the lar ge hyper -scale cloud providers.
+You do not have to read everything – simply ﬁnd out which cloud provider
+is common at your workplace or which cloud provider you wish to focus
+on, and feel free to skip the rest.
+In this chapter , we will cover the following topics:
+What is a cloud service?
+What are the cloud deployment models?
+What are the cloud service models?
+Cloud deployment models
+The shared responsibility model
+What is a cloud service?
+As part of this introduction, let us set the terminology to make sure we are
+all on the same page.
+The National Institute of Standards and Technology  (NIST ) deﬁnes
+cloud  as a technology that has the following ﬁve characteristics:
+On-demand self-service : Imagine you wish to start a blog, and you need
+computing resources. Instead of purchasing hardware and waiting for the
+vendor to ship it to your ofﬁce and having to deploy software, the easier
+alternative can be a self-service portal, where you can select a pre-in -
+stalled operating system and content management system that you can
+deploy within a few minutes by yourself.
+Broad network access : Consider having enough network access (the
+type that lar ge internet service pr oviders  (ISPs ) have) to serve millions
+of end users with your application.
+Resour ce pooling : Consider having thousands of computers, running in
+a large data center , and being able to maximize their use (from CPU,
+memory , and storage capacity), instead of having a single server running
+10% of its CPU utilization.
+Rapid elasticity : Consider having the ability to increase and decrease
+the amount of computing resources (from a single server to thousands of
+servers, and then back to a single server), all according to your applica -
+tion or service needs.
+Measur ed service : Consider having the ability to pay for only the re -
+sources you consumed and being able to generate a billing report that
+shows which resources have been used and how much you need to pay
+for the resources.
+Further details relating to the NIST  deﬁnition can be found at the following
+link: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-
+145.pdf .
+Now that we understand what the cloud characteristics are, let’ s talk about
+cloud deployment models.
+What are the cloud deployment
+models?
+To have a better understanding of the cloud, let us review the dif ferent
+cloud deployment models:
+Private cloud : An infrastructure deployed and maintained by a single or -
+ganization. A private cloud, as opposed to the traditional data center , of-
+fers scalability (i.e., add/remove resources as needed), cost savings (i.e.,
+no need for upfront investment), and better manageability (i.e., the abili -
+ty to manage all resources from a single portal, including deployment
+and monitoring). Let’ s say we are a lar ge ﬁnancial or ganization (such as
+a bank or insurance or ganization); we would like to serve various depart -
+ments in our or ganization (from HR, IT , sales, and so on) and we might
+have regulatory requirements to keep customers’  data on-premises – a
+private cloud can be a suitable solution.
+Public cloud : An infrastructure deployed and maintained by a service
+provider for serving single or multiple customers and/or or ganizations,
+mostly accessible over the internet. Naturally , this book will focus on the
+public cloud model, regarding various services of fered by AWS, Azure,
+and GCP .
+Hybrid cloud : A combination of a private cloud (or on-premises cloud)
+and at least one public cloud infrastructure. I like to consider the hybrid
+cloud as an extension of the local data center . We should not consider
+this extension as something separate, and we should protect it the same
+way we protect our local data center .
+Multi-cloud : This is preferred in a scenario where our or ganization is ei -
+ther using multiple managed services (see the deﬁnition of softwar e as a
+service  (SaaS ) in the next section) or using multiple public cloud infra -
+structures (see the deﬁnition of infrastructur e as a service  (IaaS ) and
+platform as a service  (PaaS ) in the next section) to share information
+between the various cloud providers (such as a database from one cloud
+provider , and an analytic service in another cloud provider).
+Next, let us look at some cloud service models, including some examples of
+common cloud service models.
+What are the most common cloud
+service models?
+An essential part of understanding clouds is understanding the three most
+common cloud service models:
+IaaS : This is the most fundamental service model, where a customer can
+select the virtual machine size (in terms of the amount of CPU and mem -
+ory), select a pre-conﬁgured operating system, and deploy software in -
+side the VM instance according to business needs (services such as
+Amazon Elastic Compute Cloud (EC2) , Azur e Virtual Machines , and
+Google Compute Engine ).
+PaaS : This type of service model varies from managed database services
+to managed application services (where a customer can import code and
+run it inside a managed environment), and more (services such as AWS
+App Runner , Azur e App Service , and Google App Engine ).
+SaaS : This is the most widely used service model – a fully managed
+software environment where, as a customer , you usually open a web
+browser or a mobile app, log in to an application, and consume services.
+These could be messaging services, ERP , CRM, business analytics, and
+more (services such as Micr osoft 365 , Google Workspace , Salesfor ce
+CRM , SAP SuccessFactors , and Oracle Fusion Cloud HCM (Human
+Capital Management) ).
+Understanding the cloud service models will allow you to understand your
+role as a customer , as explained later in the What is the shar ed responsibili -
+ty model?  section. For now , let us try to understand why we need cloud
+security .
+Why we need security
+As mentioned previously , we can see clear beneﬁts of using cloud services
+that enable our business to focus on what brings us value (from conducting
+research in a pharmaceutical lab to selling products on a retail site, and so
+on).
+But what about security? Speciﬁcally , cloud security? Why should our or ga-
+nization focus on the overhead called information security  (and, in the con -
+text of this book, cloud security )?
+The cloud has changed the paradigm of or ganizations controlling their data
+on-premises (from HR data to customers’  data) and investing money in
+maintaining data centers, servers, storage, network equipment, and the ap -
+plication tier . Using public clouds has changed the way or ganizations look
+at information security (in the context of this book, cloud security).
+The following are a few common examples of the dif ference between on-
+premises data solutions and the cloud:
+Traditional
+data centerCloud
+envir onment
+Who is r esponsible for phys-
+ical security?The
+organizationThe cloud ser -
+vice provider
+(CSP )
+Wher e is the data located? On-premises Cloud provider ’s
+data center data center
+Who contr ols access to the
+data?The
+organizationBoth the or gani-
+zation and the
+CSP
+Who is r esponsible for vul -
+nerability management and
+patch management?The
+organizationIaaS – the
+organization
+PaaS – the cloud
+provider
+SaaS – the cloud
+provider
+Who is in char ge of incident
+response?The
+organizationBoth the or gani-
+zation and the
+CSP
+Who is r esponsible for law ,
+privacy , and r egulation?The
+organizationBoth the or gani-
+zation and the
+CSP
+Table 1.1 – Dif ferences between on-premises data solutions and the cloud
+In the past, or ganizations were unwilling to migrate to a public cloud for se -
+curity reasons because the physical servers were located outside of the or ga-
+nization’ s direct control, and sometimes even outside their physical
+geography .
+Here are a few questions often asked by organizations’  management:
+Are my servers going to behave the same as if they were on-premises?
+How do I protect my servers outside my data center from a data breach?
+How do I know the cloud provider will not have access to my data?
+How can I ensure the cloud provider does not copy data between dif fer-
+ent locations (with dif ferent data protection laws)?
+Do my employees have enough knowledge to work in new environments
+such as the public cloud?
+Perhaps the most obvious question asked is this: Is the public cloud secur e
+enough to stor e my data and how much mor e (or less) secur e than on-
+premises is the cloud?
+By design, the hyper -scale cloud providers invest billions of dollars to pro -
+tect their data centers and build secure services, investing in employee
+training, locating security incidents, and remediating them fast. This is all
+with much higher investment, attention, and expertise than most or ganiza -
+tions can dedicate to protecting their local data centers.
+The reason for this is simple – if a security breach happens to one of the hy -
+per-scale cloud providers, their customers’  trust will be breached, and the
+cloud providers will run out of business.
+At the end of the day , cloud security enables our or ganization to achieve
+(among other things) the following:
+Decr eased attack surface : Using central authentication, data encryp -
+tion, Distributed Denial of Service  (DDoS ) protection services, and
+more
+Compliance with r egulation : Deploying environments according to in -
+dustry best practices
+Standardization and best practices : Enforcing security using automat -
+ed tools and services
+Reading this book will allow you to have a better understanding of various
+methods to secure your cloud environments – most of them using the cloud
+vendor ’s built-in services and capabilities.
+Next, let us understand what the shared responsibility model is, and how it
+relates to the cloud service models.
+What is the shared responsibility
+model?
+When speaking about cloud security and cloud service models
+(IaaS/PaaS/SaaS), one thing that we all hear about is the shared responsi -
+bility model , which tries to draw a line between the cloud provider and the
+customer ’s responsibilities regarding security (but also resiliency , sustain -
+ability , and more).
+As you can see in the following diagram, the cloud provider is always re -
+sponsible for the lower layers – from the physical security of their data cen -
+ters, through networking, storage, host servers, and the virtualization layers:
+
+Figure 1.1 – The shared responsibility model
+Above the virtualization layer is where the responsibility begins to change
+(and even shared between the cloud provider and its customers).
+The line between the CSP’ s responsibilities and the customer ’s responsibili -
+ties may not be clear enough (from security , availability , sustainability ,
+etc.). Or ganizations need to take a risk-based approach to mitigate the risks
+of the shared responsibility model.
+When working with IaaS, we, as the customers, can select a pre-installed
+image of an operating system (with or without additional software installed
+inside the image), deploy our applications, and manage permissions to ac -
+cess our data.
+When working with PaaS, we, as the customers, may have the ability to
+control code in a managed environment (services such as AWS App Runner ,
+Azure App Service, or Google App Engine) and manage permissions to ac -
+cess our data.
+When working with SaaS, we, as the customers, receive a fully managed
+service, and all we can do is manage permissions to access our data and de -
+cide which data to store in the cloud.
+As a customer of cloud services, reading this book will allow you to gain
+the essential knowledge and best practices for using common cloud services
+(including computing, storage, networking, authentication, and so on) in a
+secure way .
+Next, we will look at how the various cloud providers (A WS, Azure, and
+GCP) look at the shared responsibility model.
+For more information on the shared responsibility model, you can check out
+the following link: https://cloudsecurityalliance.or g/blog/2021/04/06/what-
+an-auditor -should-know-about-cloud-computing-part-1 .
+AWS and the shared responsibility model
+Looking at the shared responsibility model from AWS’s point of view , we
+can see the clear distinction between AWS’s responsibility for the security
+of the cloud (physical hardware and the lower layers such as host servers,
+storage, database, and network) and the customer ’s responsibility for securi -
+ty in the cloud (everything the customer controls – operating system, data
+encryption, network ﬁrewall rules, and customer data). The following dia -
+gram depicts AWS and the shared responsibility model:
+
+Figure 1.2 – AWS and the shared responsibility model
+More information on the AWS shared responsibility model can be found at
+the following link: https://aws.amazon.com/blogs/industries/applying-the-
+aws-shared-responsibility-model-to-your -gxp-solution/ .
+Azure and the shared responsibility model
+Looking at the shared responsibility model from Azure’ s point of view , we
+can see the distinction between Azure’ s responsibility for its data centers
+(physical layers) and the customer ’s responsibility at the top layers (identi -
+ties, devices, and customers’  data). In the middle layers (operating system,
+network controls, and applications), the responsibility changes between
+Azure and the customers, according to various service types. The following
+diagram depicts Azure and the shared responsibility model:
+Figure 1.3 – Azure and the shared responsibility model
+More information on the Azure shared responsibility model can be found at
+the following link: https://docs.microsoft.com/en-us/azure/security/funda -
+mentals/shared-responsibility .
+GCP and the shared responsibility model
+Looking at the shared responsibility model from GCP’ s point of view , we
+can see that Google would like to emphasize that it builds its hardware,
+which means it controls the hardware, boot, and kernel of its platform, in -
+cluding the storage layer encryption, network equipment, and logging of
+everything that Google is responsible for .
+When looking at things that the customer is responsible for , we can see a lot
+more layers, including everything from the guest operating system, network
+security rules, authentication, identity , and web application security , to
+things such as deployment, usage, access policies, and content (customers
+data). The following diagram depicts GCP  and the shared responsibility
+model:
+
+Figure 1.4 – GCP  and the shared responsibility model
+Google takes the shared responsibility model one step further by deﬁning a
+new term called shared fate , where both Google and its customers are part -
+nered in improving the security of GCP . Google does so by of fering its cus -
+tomers a set of blueprints with recommendations for the secure deployment
+of various services, according to Google’ s best practices.
+More information about the GCP  shared responsibility model can be found
+at the following link: https://cloud.google.com/architecture/framework/se -
+curity/shared-responsibility-shared-fate .
+As a customer , understanding the shared responsibility model allows you, at
+any given time, to understand which layers are under the cloud vendor ’s re-
+sponsibility and which layers are under the customer ’s responsibility . Next,
+we will introduce command-line tools to automate repetitive tasks while
+managing cloud environments.
+Command-line tools
+One of the things that make cloud environments so robust is the ability to
+control almost anything using the application pr ogramming interface
+(API) or the command line.
+Most mature cloud providers have already published and maintained their
+command-line interface  (CLI) to allow customers to perform actions in an
+easy and standard way .
+An alternative to using the command line to interact with the cloud
+provider ’s API is using a softwar e development kit  (SDK ) – a method to
+control actions (from deploying a virtual machine to encrypting storage),
+query information from a service (checking if auditing is enabled for my
+customers’  logging into my web application), and more.
+Since this book doesn’ t require previous development experience, I will
+provide examples for performing actions using the command-line tools.
+During various chapters of this book, I will provide you with examples of
+commands that will allow you to easily implement the various security con -
+trols over AWS, Azure, and GCP . I highly recommend that you become fa -
+miliar with those tools since they allow you to achieve common tasks faster
+and more efﬁciently than using the web console.
+AWS CLI
+AWS CLI can be installed on Windows (64-bit), Linux (both x86 and ARM
+processors), macOS, and even inside a Docker container .
+The AWS CLI documentation explains how to install the tool and provides
+a detailed explanation of how to use it. The documentation can be found at
+https://aws.amazon.com/cli .
+Azure CLI
+Azure CLI can be installed on Windows, Linux ( Ubuntu , Debian , RHEL ,
+CentOS , OpenSUSE ), and macOS.
+The Azure CLI documentation explains how to install the tool and provides
+a detailed explanation of how to use it. The documentation can be found at
+https://docs.microsoft.com/en-us/cli/azure .
+Google Cloud SDK
+The Google Cloud command-line tool ( gcloud CLI ) can be installed on
+Windows, Linux (Ubuntu, Debian, RHEL, CentOS, Fedora), and macOS.
+The Google Cloud SDK documentation explains how to install the tool and
+provides a detailed explanation of how to use it. The documentation can be
+found at https://cloud.google.com/sdk .
+Summary
+In this chapter , we learned the deﬁnition of a cloud , the dif ferent cloud de -
+ployment models, and the dif ferent cloud service models. We also learned
+what the shared cloud responsibility model is, and how AWS, Azure, and
+GCP  look at this concept from their points of view .
+Lastly , we had a short introduction to the AWS, Azure, and GCP  built-in
+command-line tools, and, during the next chapters, I will provide you with
+examples of how to implement various tasks using the command-line tools.
+The foundation set in this chapter will be referred to in the following chap -
+ters, where we will dive deeper into the best practices for securing cloud
+services using (in most cases) the cloud providers’  built-in capabilities.
+In the next chapter , we will review the various computing services in the
+cloud, including virtual machines, container services, and ﬁnally serverless
+services.
+2
+Securing Compute Services –
+Virtual Machines
+Speaking about cloud services, speciﬁcally Infrastructur e as a Service
+(IaaS ), perhaps the most  used IaaS service is compute – from the traditional
+virtual machines  (VMs ) through modern compute services such as con -
+tainers and, eventually , serverless.
+Compute services allow us to deploy and run our applications from a single
+VM used for development purposes to a lar ge production-scale
+environment.
+This chapter will cover VM services and provide you with the best practices
+on how to securely deploy and manage each of them.
+In this chapter , we will cover the following topics:
+Securing VMs
+Fundamental best practices for securing VMs
+Best practices for authentication
+Best practices for securing network access to an instance
+Best practices for conducting patch management
+Best practices for securing backups
+Securing VMs
+VMs have the same capabilities as physical machines on-premises, allow -
+ing us to deploy our applications while having full control over all aspects
+(from security to maintainability) inside the VM operating system.
+VMs are commonly used for legacy applications or migrating on-premises
+applications to the cloud.
+Each cloud provider has its implementation of VMs (or virtual servers), but
+at the end of the day , the basic idea is the same:
+1. Select a machine type (or size) – a ratio between the amount of virtual
+CPU  (vCPU ) and memory , according to their requirements (general-pur -
+pose, compute-optimized, memory-optimized, and so on).
+2. Select a preinstalled image of an operating system (from Windows to
+Linux ﬂavors).
+3. Conﬁgure storage (adding additional volumes, connecting to ﬁle-sharing
+services, and so on).
+4. Conﬁgure network settings (from network access controls to micro-seg -
+mentation, and others).
+5. Conﬁgure permissions to access cloud resources.
+6. Deploy an application.
+7. Begin using the service.
+8. Carry out ongoing maintenance of the operating system.
+According to the shared responsibility model  (SRM ), when using IaaS,
+we (as the customers) are responsible for the deployment and maintenance
+of VMs, as explained in the coming section.
+Next, we are going to see what the best practices are for securing common
+VM services in Amazon Web Services  (AWS), Azure, and Google Cloud
+Platform  (GCP ).
+Fundamental best practices for
+securing VMs
+In the next couple of sections, we will review the best practices for securing
+VMs from dif ferent angles (authentication, network access, patch manage -
+ment, and backup).
+Regardless of the cloud provider you are using for VMs, you should follow
+the fundamental best practices, which are relevant to any VM that you will
+be deploying based on any of the hyperscale cloud providers:
+Use the latest hardware generation of VMs to gain the most perfor -
+mance, cost, and security capabilities.
+For highly sensitive environments, use a VM family that supports conﬁ -
+dential computing capabilities, to protect data in use (as explained in
+Chapter 1 1, Applying Encryption in Cloud Services ).
+Use a VM image from a trusted source. Most cloud service pr oviders
+(CSPs ) maintain up-to-date images of both Windows and Linux ﬂavors
+for use by their customers.
+When creating a custom VM image, use a minimal number of packages
+inside the VM image to lower the attack surface.
+Enforce encryption at rest for all disk volumes of VMs to protect data
+conﬁdentiality (as explained in Chapter 5 , Securing Storage Services ).
+Enforce the use  of SELinux on Linux VMs to protect the VMs from
+unauthorized activities at the kernel level. For more information, see
+https://www .redhat.com/en/topics/linux/what-is-selinux .
+Join Windows VMs  to an Active Dir ectory  (AD) domain, and centrally
+enforce group policies to restrict OS capabilities from unauthorized ac -
+cess. For more information, see https://www .microsoft.com/en-us/down -
+load/details.aspx?id=104005 .
+Use the CSP’ s built-in agents (backup, patch management, hardening,
+monitoring, and so on).
+Disable all unneeded services to decrease the attack surface on VMs.
+For highly sensitive environments, select a Center  for Internet
+Security (CIS)-hardened  image from the CSP’ s marketplace. For more
+information, see https://www .cisecurity .org/cis-benchmarks .
+Now , let us look at  the best practices for securing Amazon Elastic
+Compute Cloud  (EC2 ), Azur e Virtual Machines  (Azur e VMs ), and
+Google Compute Engine  (GCE ) instances.
+Amazon EC2
+Amazon EC2  is the  AWS implementation of VMs in the cloud.
+Before we deep dive into security recommendations for Amazon EC2, it is
+recommended to consult the following reference to learn about the best
+practices for securing Amazon EC2 instances:
+Security in Amazon EC2:
+https://docs.aws.amazon.com/A WSEC2/latest/UserGuide/ec2-
+security .html
+This high-level reference on the security of EC2 instances will provide spe -
+ciﬁc insights into the best practices for VMs in EC2.
+Azure VMs
+Azur e VMs  is the Azure implementation of VMs in the cloud.
+Before we dive deep into security recommendations for Azure VMs, it is
+recommended to consult the following references to learn about the best
+practices for securing Azure VMs:
+Azure security baseline for V irtual Machines - W indows V irtual
+Machines : https://learn.microsoft.com/en-
+us/security/benchmark/azure/baselines/virtual-machines-windows-virtu -
+al-machines-security-baseline
+Azure security baseline for V irtual Machines - Linux V irtual Machines :
+https://learn.microsoft.com/en-
+us/security/benchmark/azure/baselines/virtual-machines-linux-virtual-
+machines-security-baseline
+In this section, we  shared high-level references about the security of Azure
+VMs.
+GCE
+GCE  is the GCP  implementation of VMs in the cloud.
+Before we dive deep into security recommendations for GCE, it is recom -
+mended to consult the following reference to learn about the best practices
+for securing GCE:
+Image management best practices :
+https://cloud.google.com/compute/docs/images/image-management-best-
+practices
+In this section, we shared high-level references about the security of GCE.
+Now , let us move on to the best practices for authentication.
+Best practices for authentication
+Authentication  refers to the action of performing login to a VM, using ei -
+ther local authentication (using Secur e Shell  (SSH ) key authentication to
+Linux machines) or domain-joined authentication (that is, authentication
+against a central directory service).
+CSPs do not have access to customers’  VMs. When deploying a new VM
+instance, you need to conﬁgure credentials to access the VM for remote
+control, login (as a local or domain identity), and maintenance of the VM.
+The most common way to locally authenticate to a Windows VM is using a
+username and password, while in a Linux VM, the most common way is to
+use SSH key authentication.
+Amazon, Azure, and Google support the following methods to authenticate
+to EC2, Azure VMs, and GCE instances, respectively:
+Local authentication  – This method is used for unmanaged EC2
+instances
+Central authentication  – This method is used for EC2 instances joined
+to a domain (as explained in Chapter 9 , Effective Strategies to Implement
+IAM Solutions )
+Since local authentication does not scale (that is, the ability to manage local
+accounts for hundreds or thousands of VMs), due to the need to manage
+separate credentials for any VM in the or ganization, it is best practice to
+join the VM to a central identity pr ovider  (IdP) and  avoid using local
+authentication.
+Next, we look at the best practices for authentication in Amazon EC2,
+Azure VMs, and GCE.
+Amazon EC2
+Amazon supports the following methods to authenticate EC2 instances:
+Local authentication  – This method is used for unmanaged EC2
+instances
+Central authentication  – This method is used for EC2 instances joined
+to a domain (as explained in Chapter 9 , Effective Strategies to Implement
+IAM Solutions )
+Use the following best practices for authentication to Amazon EC2
+instances:
+Local authenticating to Linux VMs is done using SSH key authentica -
+tion. To avoid SSH key pair reuse by unauthorized parties, use AWS
+Secrets Manager to securely store and rotate SSH key pairs, as explained
+here: https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-
+manager -securely-store-rotate-ssh-key-pairs/ .
+Most or ganizations use a central directory service (such as Microsoft
+AD) to manage users, groups, and computer accounts, making it easy to
+log in with unique credentials for each user to all machines in the or gani-
+zation. For central authentication to VMs, join Windows or Linux in -
+stances to an AD domain and use your AD credentials to log in to EC2
+instances (and avoid using local credentials or SSH keys completely).
+For more information, see the following links:
+https://docs.aws.amazon.com/directoryservice/latest/admin-
+guide/launching_instance.html
+https://docs.aws.amazon.com/directoryservice/latest/admin-
+guide/seamlessly_join_linux_instance.html
+Azure VMs
+Azure supports the  following methods to authenticate to Azure VMs:
+Local authentication  – This method is used for unmanaged VMs
+Central authentication  – This method is used for VMs joined to a do -
+main (as explained in Chapter 9 , Effective Strategies to Implement IAM
+Solutions )
+Use the following best practices for authentication to Azure VMs:
+Authenticating Linux VMs is done using SSH key authentication. To
+avoid SSH key pair reuse by unauthorized parties, generate and store
+SSH keys in the Azure portal, as explained here: https://docs.microsoft. -
+com/en-us/azure/virtual-machines/ssh-keys-portal .
+Most or ganizations use a central directory service (such as Microsoft
+AD) to manage users, groups, and computer accounts, making it easy to
+log in with unique credentials for each user to all machines in the or gani-
+zation. Follow these instructions to understand how to join Windows and
+Linux VMs to Microsoft Entra ID:
+Join Windows VMs to Microsoft Entra ID and take the beneﬁts of
+passwordless authentication: https://learn.microsoft.com/en-
+us/entra/identity/devices/howto-vm-sign-in-azure-ad-windows
+Join Linux VMs to Microsoft Entra ID:
+https://learn.microsoft.com/en-us/entra/identity/devices/howto-vm-
+sign-in-azure-ad-linux
+GCE
+Google supports  the following methods to authenticate Google VMs:
+Local authentication  – This method is used for unmanaged Google
+VMs
+Central authentication  – This method is used for VMs joined to a do -
+main (as explained in Chapter 9 , Effective Strategies to Implement IAM
+Solutions )
+Use the following best practices for authentication to GCE:
+To perform login to a Linux VM (except Fedora CoreOS), you need to
+set up OS Login and OS Login with two-factor  authentication  (2FA),
+as explained here: https://cloud.google.com/compute/docs/oslogin/set-
+up-oslogin .
+Most or ganizations use a central directory service (such as Microsoft
+AD) to manage users, groups, and computer accounts, making it easy to
+log in with unique credentials for each user to all machines in the or gani-
+zation. Follow these instructions to understand how to join Windows and
+Linux VMs to Google Managed Microsoft AD:
+Join a Windows VM to a domain: https://cloud.google.com/managed-
+microsoft-ad/docs/seamless-domain-join-gce
+Join a Linux VM to a domain: https://cloud.google.com/managed-mi -
+crosoft-ad/docs/quickstart-domain-join-linux
+In this section, we explained how to authenticate EC2, Azure VMs, and
+GCE. Next, let us see the best practices for securing network access to an
+instance.
+Best practices for securing network
+access to an instance
+Access to VMs is  protected by network-based access contr ol mechanisms .
+Network-based access controls are the equivalent of the on-premises layer 4
+network ﬁrewall or access control mechanism.
+Network access refers to the action of connecting to a VM over the network
+and protecting it from unauthorized access  using network access contr ol
+lists (NACLs ) (such as the on-prem ﬁrewall).
+Network access controls work in one of the following ways:
+Stateless  – The receiver (for example, a ﬁrewall) does not maintain the
+previous connection’ s state (of the client). Suitable for scenarios that re -
+quire high network speed. It requires the conﬁguration of both inbound
+and outbound network rules.
+Stateful  – The receiver (for example, a ﬁrewall) maintains the entire
+connection’ s state (of the client). Suitable for scenarios where we need to
+maintain information about connections between a client and a server
+(for example, to be able to block suspicious trafﬁc). It requires the con -
+ﬁguration of only inbound network rules.
+As you will learn in Chapter 6  (Securing Networking Services – Part 1 ),
+some CSPs implement a stateless NACL, while others implement a stateful
+NACL  to allow network connectivity to  resources such as VMs.
+As a customer , you conﬁgure parameters such as source IP  (or Classless
+Inter -Domain Routing  (CIDR )), destination IP  (or CIDR), destination port
+(or predeﬁned protocol), and whether the port is Transmission Contr ol
+Protocol  (TCP ) or User  Datagram Protocol  (UDP ).
+The most basic thing about managing VMs is allowing remote access and
+management for the purpose of VM maintenance (such as software installa -
+tion, patch management, and so on).
+For remote access and management, the following applies:
+Windows VMs are using the Remote Desktop Pr otocol  (RDP ). Limit
+inbound network access to TCP port 3389 .
+Note : This is the default port for Windows machines, and it can be
+changed to make it difﬁcult for unauthorized parties to gain access.
+Linux VMs are using the SSH protocol. Limit inbound network access to
+TCP port 22.
+Note : This is the default port for Linux machines, and it can be changed
+to make it difﬁcult for unauthorized parties to gain access.
+For remote access protocols (SSH/RDP), limit the source IP  (or CIDR)
+to well-known addresses.
+Today , each of the hyperscale cloud providers of fers secure methods to re -
+motely connect and manage VMs. For ﬁle-sharing protocols ( Common
+Internet File System  (CIFS )/Server  Message Block  (SMB )/File Transfer
+Protocol  (FTP )), limit the source IP  (or CIDR) to well-known addresses.
+Limit the number of ports allowed in an inbound connection to the mini -
+mum required ports for allowing your service or application to function.
+Let us look at how we can secure network access to an instance in the case
+of Amazon EC2, Azure VM, and GCE.
+Amazon EC2
+Use the following best practices for securing network access to Amazon
+EC2 instances:
+Use a NACL  to restrict inbound and outbound trafﬁc at the subnet level,
+as explained here:
+https://docs.aws.amazon.com/vpc/latest/user guide/vpc-network-acls.html
+Use security groups to restrict inbound trafﬁc at the EC2 instance level,
+as explained here:
+https://docs.aws.amazon.com/vpc/latest/user guide/vpc-security-
+groups.html
+For granular access, use another security group as either the source or
+destination in a security group
+Set names and descriptions for security groups to allow a better under -
+standing of the security group’ s purpose
+Use tagging (that is, labeling ) for security groups to allow a better under -
+standing of which security group belongs to which AWS resources
+Use EC2 Instance Connect Endpoint  to remotely connect to an EC2
+instance, as explained here: https://docs.aws.amazon.com/A WSEC2/lat -
+est/UserGuide/connect-with-ec2-instance-connect-endpoint.html
+The following diagram explains how a user remotely connects to a
+Linux-based EC2 instance using EC2 Instance Connect Endpoint:
+Figure 2.1 – Connection through EC2 Instance Connect Endpoint
+In the preceding  diagram, we have the following:
+The user connects to the EC2 Instance Connect endpoint service from
+the public internet and authenticates using SSH key authentication.
+A secure connection passes from the EC2 Instance Connect Endpoint
+service to an NACL  assigned  at the Virtual Private Cloud  (VPC ) level
+and from the NACL  to a security group assigned at the private subnet
+level to the EC2 Instance Connect Endpoint located in a private subnet.
+A secure connection passes from the EC2 Instance Connect endpoint to
+the tar get EC2 instance, inside the private subnet.
+To keep the trafﬁc between the Amazon VPC and the EC2 instance pri -
+vate (that is, within the AWS backbone), create an interface VPC end -
+point, as explained here:
+https://docs.aws.amazon.com/A WSEC2/latest/UserGuide/interface-vpc-
+endpoints.html
+Azure VMs
+Use the following  best practices for securing network access to Azure VMs:
+Use Azure network security gr oups  (NSGs ) to restrict both inbound
+and outbound trafﬁc at either the subnet level or at the network inter -
+face contr oller  (NIC) (VM) level, as  explained here: https://learn.mi -
+crosoft.com/en-us/azure/virtual-network/network-security-groups-
+overview
+Set names for NSGs to allow a better understanding of the security
+group’ s purpose
+Use tagging (that is, labeling ) for NSGs to allow a better understanding
+of which NSG belongs to which Azure resources
+Use Micr osoft Entra Privileged Identity Management  (PIM ) to allow
+just-in-time  (JIT) access to a remote VM, as explained here:
+https://learn.microsoft.com/en-us/entra/id-governance/privileged-identi -
+ty-management/pim-conﬁgure
+Use Azur e Bastion  to remotely connect to an Azure VM, as explained
+here: https://learn.microsoft.com/en-us/azure/bastion/bastion-overview
+The following diagram explains how a user remotely connects to an
+Azure VM using Azure Bastion:
+Figure 2.2 – Connection to Azure VM through Azure Bastion
+In the preceding diagram, we have the following:
+The user logs in to the Azure portal and initiates a session to Azure
+Bastion
+A secure connection is initiated through an NSG to Azure Bastion
+Azure Bastion sends a secure RDP/SSH connection through an NSG to a
+private subnet
+The connection  through the NSG connects to an Azure VM
+GCE
+Use the following best practices for securing network access to GCE:
+Use VPC ﬁrewall rules to restrict inbound trafﬁc at the GCE level, as ex -
+plained here: https://cloud.google.com/ﬁrewall/docs/ﬁrewalls
+Set names and descriptions for ﬁrewall rules to allow a better under -
+standing of the security group’ s purpose
+Use tagging (that is, labeling ) for ﬁrewall rules to allow a better under -
+standing of which ﬁrewall rule belongs to which GCP  resources
+Use Identity-A ware Proxy (IAP) to remotely connect to a Linux-based
+GCE, as explained here:
+https://cloud.google.com/compute/docs/connect/ssh-using-iap
+The following diagram explains how a user remotely connects to a
+Google VM through an IAP:
+Figure 2.3 – Connection to a Google VM through Google IAP
+In the preceding  diagram, we have the following:
+The user initiates a secure connection to a Google IAP  (located inside a
+Cloud VPC, behind a VPC ﬁrewall rule), and authenticates against the
+Google IdP
+The Google IAP  passes the connection over a secure channel to a VPC
+ﬁrewall rule (located in a private subnet) and into a Google VM located
+in a private subnet
+To restrict access to GCE from trusted sources and reduce the risk of
+data exﬁltration, use VPC Service Contr ols, as explained here:
+https://cloud.google.com/compute/docs/instances/protecting-resources-
+vpc-service-controls
+In this section, we learned how to protect access to VMs at the network lay -
+er. Now , let’s dive into how to conduct patch management.
+Best practices for conducting patch
+management
+Patch management  is a crucial part of every instance of ongoing mainte -
+nance. To deploy security patches for either Windows- or Linux-based in -
+stances in a standard manner , it is recommended to use the following
+method:
+1. Conﬁgure the patch baseline.
+2. Use tagging (that is, labeling ) for your VMs to allow patch deployment
+groups per tag (for example, prod versus dev environments).
+3. Scan your VMs for deviation from the patch baseline at a scheduled
+interval.
+4. Install missing security patches on your VMs.
+5. For stateless VMs (where no user session data is stored inside the VM),
+replace an existing VM with a new instance, created from an up-to-date
+operating system image ( note: the process is known as immutable
+infrastructure).
+6. Review patch deployment reports.
+Now , let us see the application on each cloud platform.
+Amazon EC2
+Patch management  in the context of Amazon EC2 refers to the action of de -
+ploying security hotﬁxes for the operating system of the VM, keeping it
+safe from known vulnerabilities.
+Use the following best practices for patch management of Amazon EC2
+instances:
+Use AWS Systems Manager Patch Manager to deploy security patches
+for EC2 instances, as explained here: https://docs.aws.amazon.com/sys -
+tems-manager/latest/user guide/patch-manager .html
+Create a group with minimal Identity and Access Management  (IAM )
+privileges to allow only relevant team members to conduct patch
+deployment
+Use Amazon Inspector to search for missing security OS patches on EC2
+instances and additional information such as Common Vulnerabilities
+and Exposur es (CVE ) and  risk score, as explained here: https://doc -
+s.aws.amazon.com/inspector/latest/user/scanning-resources.html
+Azure VMs
+Patch management in the context of Azure VMs refers to the action of de -
+ploying security hotﬁxes for the operating system of the VM, keeping it
+safe from known vulnerabilities.
+Use the following best practices for patch management of Azure VMs:
+Use Azure Update Manager to deploy security patches for Azure VMs,
+as explained here: https://learn.microsoft.com/en-us/azure/update-
+manager/overview
+Use minimal privileges for the account using Azure Update Manager to
+deploy security patches
+Conﬁgure automatic VM guest patching, as explained here:
+https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-
+guest-patching
+Use Micr osoft Defender  Vulnerability Management  to search for
+missing security patches on Azure VMs, as explained here:
+https://learn.microsoft.com/en-us/defender -vulnerability-
+management/defender -vulnerability-management
+GCE
+Patch management  in the context of GCE refers to the action of deploying
+security hotﬁxes for the operating system of the VM, keeping it safe from
+known vulnerabilities.
+Use the following best practices for patch management of GCE:
+Use VM Manager (Patch) to deploy security patches for GCE, as ex -
+plained here: https://cloud.google.com/compute/docs/os-patch-
+management
+Use minimal privileges for the accounts using operating system patch
+management to deploy security patches, according to Google Cloud IAM
+roles
+Gradually deploy security patches zone by zone and region by region
+Integrate VM Manager with Google Security Command Center to gener -
+ate vulnerability reports, as explained here: https://cloud.google.com/se -
+curity-command-center/docs/concepts-security-sources#vm_manager
+Create patch jobs to deploy security patches on GCE: https://cloud. -
+google.com/compute/docs/os-patch-management/create-patch-job
+Use the following best practices for OS updates at scale: https://cloud. -
+google.com/blog/products/management-tools/best-practices-for -os-
+patch-management-on-compute-engine
+In this section, we learned how to centrally deploy security hotﬁxes for EC2
+instances, Azure VMs, and GCE and use a vulnerability management ser -
+vice to scan for missing security patches.
+Best practices for securing backups
+Backing up is crucial for VM recovery . Each of the hyperscale cloud
+providers of fers a managed service for scheduling backups to VMs. Access
+to backups is governed using authorization rules, and backups are encrypted
+at rest by default.
+Backups are part  of disaster  recovery  (DR) processes, ensuring the or gani-
+zation will be able to survive data loss (from accidental deletion of a VM up
+to a hacker deliberately deleting data) or data inaccessibility (such as ran -
+somware encrypting an entire VM).
+As a best practice, regularly conduct restore VMs from backup to validate
+that the backups are functioning and that data can be restored (especially in
+production environments).
+Let us see how this ﬁgures for each of the platforms.
+AWS Backup
+This is a fully managed backup service supporting  many AWS services,
+from EC2 instances, storage  services (Amazon Simple Storage Service
+(S3), Amazon Elastic Block Stor e (EBS ), Amazon Elastic File System
+(EFS), and so on), and  database services (Amazon Relational Database
+Service  (RDS ), Amazon  Aurora, and so on).
+Use the following best practices for securing Amazon EC2 instances while
+using AWS Backup:
+Refer to AWS’ security considerations for using AWS Backup:
+https://docs.aws.amazon.com/aws-backup/latest/devguide/security-
+considerations.html .
+Conﬁgure the AWS Backup service with an IAM role to allow access to
+the encryption keys stored inside AWS Key Management Service
+(KMS ) and to the backup vault, following  the principle of least privi -
+lege (PoLP ).
+The AWS Backup service encrypts customers’  backups at rest using
+AWS encryption keys, stored in AWS KMS (as explained in Chapter 1 1,
+Applying Encryption in Cloud Services ). As an extra layer of protection,
+conﬁgure AWS Backup to perform backups of EBS volume snapshots.
+Note : for sensitive environments, it is recommended to encrypt EBS vol -
+ume snapshots using a customer -managed encryption key .
+Use tagging (that is, labeling ) for backups to allow a better understand -
+ing of which backup belongs to which EC2 instance: https://docs.aws.a -
+mazon.com/aws-backup/latest/devguide/creating-a-backup-plan.html .
+To keep trafﬁc between Amazon VPC and AWS Backup endpoints pri -
+vate (that is, within the AWS backbone), create an AWS Backup VPC
+endpoint, as explained here: https://docs.aws.amazon.com/aws-
+backup/latest/devguide/backup-privatelink.html .
+For a regulated environment, conﬁgure AWS Backup Vault Lock in com -
+pliance mode to keep backups immutable from changes or deletion:
+https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-
+lock.html .
+For critical production environments, conﬁgure AWS Backup to create
+copies of backups to another AWS region (also known as cross-region
+replication): https://docs.aws.amazon.com/aws-
+backup/latest/devguide/cross-region-backup.html .
+Use AWS Backup Audit Manager  to audit  backup activity (for exam -
+ple, which resources  have been  backed up, which backups are encrypted,
+and so on): https://docs.aws.amazon.com/aws-
+backup/latest/devguide/aws-backup-audit-manager .html .
+Azure Backup
+This is a fully managed backup service, supporting many Azure services,
+from Azure VMs, storage services (Azure Blob Storage, Azure Files, and so
+on), database services (such as Azure Database for PostgreSQL), and Azur e
+Kubernetes Service  (AKS ).
+Use the following best practices for securing Azure VMs while using Azure
+Backup:
+Follow the Azure security baseline for Backup, as explained here:
+https://learn.microsoft.com/en-
+us/security/benchmark/azure/baselines/backup-security-baseline .
+Use Azure role-based access contr ol (RBAC ) to conﬁgure Azure
+Backup to have minimal access to your backups: https://learn.microsoft. -
+com/en-us/azure/backup/backup-rbac-rs-vault .
+The Azure Backup service encrypts your backups in transit and at rest
+using Azure Key Vault (as explained in Chapter 1 1, Applying Encryption
+in Cloud Services ). Azure Backup automatically encrypts backups using
+platform-managed keys (that is, encryption keys controlled by Azure).
+For sensitive environments, encrypt backups of VMs using customer -
+managed keys: https://learn.microsoft.com/en-us/azure/backup/encryp -
+tion-at-rest-with-cmk .
+To keep trafﬁc between the Azure VNet and Azure Backup private (that
+is, within the Azure backbone), create private endpoints for Azure
+Backup and deny public network access to the  backup vault:
+https://learn.microsoft.com/en-us/azure/backup/backup-azure-private-
+endpoints-concept .
+Enable the soft delete  feature to protect your backups from accidental
+deletion, as explained here: https://learn.microsoft.com/en-
+us/azure/backup/soft-delete-virtual-machines .
+For regulated environments, enable an immutable vault to keep backups
+immutable from changes or deletion, as explained here: https://learn.mi -
+crosoft.com/en-us/azure/backup/backup-azure-immutable-vault-how-to-
+manage .
+For regulated environments, use Azure Policy to conﬁgure compliance
+controls for Azure Backup, as explained here: https://learn.microsoft. -
+com/en-us/azure/backup/security-controls-policy .
+For critical production environments, conﬁgure Azure Backup to create
+copies of backups to a paired Azure region (also known as cross-region
+replication): https://azure.microsoft.com/en-us/blog/cross-region-restore-
+crr-for-azure-virtual-machines-using-azure-backup/ .
+Google Cloud Backup and DR
+This is a fully  managed backup  service, supporting many GCP  services,
+from GCE, storage services (such as Google Filestore), and database en -
+gines (such as Microsoft SQL, Oracle, MySQL, PostgreSQL, SAP  HANA,
+and so on).
+Use the following best practices for securing GCE while using the Google
+Cloud Backup and DR service:
+Follow the documentation for using Cloud Backup and DR to back up
+GCE: https://cloud.google.com/backup-disaster -
+recovery/docs/concepts/backupdr -for-compute-engine
+Use IAM permissions to conﬁgure Cloud Backup and DR to have mini-
+mal access to your backups, as explained here:
+https://cloud.google.com/backup-disaster -recovery/docs/access-control
+To restrict access to Cloud Backup and DR service from trusted sources
+and reduce the risk of data exﬁltration, use VPC Service Controls:
+https://cloud.google.com/backup-disaster -
+recovery/docs/conﬁguration/vpc-sc
+Use Security Command Center Premium to detect anomalous backup ac-
+tivity: https://cloud.google.com/backup-disaster -recovery/docs/monitor -
+reports/alerts-scc
+In this section, we  reviewed backup services in the context of conﬁguring
+scheduled backups for EC2, Azure VMs, and GCE.
+Summary
+In this chapter , we learned how to securely maintain a VM, based on AWS,
+Azure, and GCP  infrastructure.
+In each section, we reviewed how to manage identity management  (IdM )
+(for authentication and authorization), how to control network access (from
+access controls to network encryption), how to conduct patch management,
+and ﬁnally , how to conﬁgure backup for DR.
+In the next chapter , we will review compute services in the cloud, with a fo -
+cus on containers and Kubernetes.
+3
+Securing Compute Services –
+Containers and Kubernetes
+In the previous chapter , we learned about security in VMs.
+This chapter will cover containers and Kubernetes-managed services and
+provide you with best practices on how to securely deploy and manage each
+of them.
+In this chapter , we will cover the following topics:
+Best practices for securing Kubernetes workloads (identity and access
+management, network access, auditing and security monitoring, and
+compliance)
+Best practices for securing non-Kubernetes workloads (identity and ac -
+cess management, network access, and auditing and monitoring)
+Securing containers
+Containers share some of the same characteristics as VMs but with a much
+smaller footprint. Instead of having to deploy an application above an entire
+operating system, you could use containers to deploy your required applica -
+tion, with only the minimum required operating system libraries and
+binaries.
+Containers have the following beneﬁts over VMs:
+Small footprint : Only required libraries and binaries are stored inside a
+container
+Portability : You can develop an application inside a container on your
+laptop and run it on a lar ge scale in a production environment with hun -
+dreds or thousands of container instances
+Deploy time : Fast deployment and updates compared to VMs
+The following diagram presents the architectural dif ferences between VMs
+and containers:
+Figure 3.1 – VMs versus containers
+If you are still in the development phase, you can install a container engine
+on your laptop and create a new container (or download an existing contain -
+er image) locally , until you complete the development phase.
+When you move to production and have a requirement to run hundreds of
+container instances, you need an orchestrator  – a mechanism (or a man -
+aged service) for managing container deployment, health check monitoring,
+container recycling, and more.
+Docker was adopted by the industry as a de facto standard for wrapping
+containers, and in the past couple of years, more and more cloud vendors
+have begun to support a new initiative for wrapping containers called the
+Open Container  Initiative  (OCI ).
+Kubernetes  is a containers orchestrator , based on an open source project
+(developed initially by Google) and is now considered the industry’ s de fac -
+to standard for orchestrating, deploying, scaling, and managing containers.
+In this section, I will present the most common container orchestrators
+available as managed services – from Kubernetes to managed container or -
+chestrator services on top of AWS, Azure, and GCP  infrastructure.
+You can use the following additional reading materials about containers,
+OCI images, and Kubernetes:
+What is a container? :
+https://www .docker .com/resources/what-container
+Open Container Initiative :
+https://opencontainers.or g/
+OCI artifact support in Amazon ECR :
+https://aws.amazon.com/blogs/containers/oci-artifact-support-in-amazon-
+ecr/
+Azure and OCI images :
+https://docs.microsoft.com/en-us/azure/container -registry/container -reg-
+istry-image-formats#oci-images
+GCP  and OCI image format :
+https://cloud.google.com/artifact-registry/docs/supported-formats#oci
+Kubernetes pr oject :
+https://kubernetes.io/
+Next, we are going to see what the best practices are for securing common
+container and Kubernetes services from AWS, Azure, and GCP .
+Securing Kubernetes
+As mentioned earlier in this chapter , Kubernetes is the most widely used
+container orchestrator . In this section, we will learn how to secure managed
+Kubernetes services.
+Kubernetes terminology
+Before we begin the conversation about Kubernetes, let us deﬁne the vari -
+ous components of Kubernetes.
+For high availability , Kubernetes is deployed in a cluster  mode (hence,
+Kubernetes cluster). At a high level, a Kubernetes cluster has the following
+components:
+Contr ol plane components :
+Kubernetes API server : The main component of the Kubernetes
+cluster , used to expose Kubernetes APIs to incoming trafﬁc for cluster
+maintenance, and for in-cluster trafﬁc between the various cluster
+components.
+etcd: A key-value database for storing cluster conﬁguration (such as
+the number of running worker nodes or deployed pods).
+kube-scheduler:  A component responsible for assigning Pods to
+nodes based on dif ferent scheduling factors such as resource require -
+ments, afﬁnity , and so on.
+kube-contr oller -manager:  A component in char ge of running other
+controllers (such as node controller , replication controller , etc.).
+Worker  node components :
+kubelet:  A component that controls the communication between the
+API server and the pods running on top of worker nodes.
+Kubernetes runtime:  Software for running containers, such as
+Docker or CRI-O.
+kube-pr oxy: A component that manages network connectivity to
+Kubernetes services using ﬁltering rules.
+Pod:  A unit that contains one or more containers. Applications are de -
+ployed into containers.
+Ingress contr oller:  A component that controls inbound trafﬁc to a
+Kubernetes service, including load balancing, network access rules (con -
+trolled using network policies), trafﬁc encryption, and so on.
+Kubernetes service:  A logical set of pods and policies for allowing ac -
+cess to deployed applications. Policies can deﬁne the number of required
+running pods, load-balance IP  and port for inbound trafﬁc, trafﬁc load
+balancing, DNS name, and so on.
+Namespace:  A logical way to create isolation between dif ferent ap -
+plications deployed on top of the same Kubernetes cluster .
+Here is a sample Kubernetes architecture diagram showing how each of the
+components integrates as part of the larger architecture:
+
+Figure 3.2 – Kubernetes architecture diagram
+In the next couple of sections, we will review best practices for securing
+Kubernetes from dif ferent angles (from identity and access management,
+network access, auditing and monitoring, and ﬁnally , compliance).
+General best practices for Kubernetes
+Regardless of the cloud provider you are using when using Kubernetes, you
+should follow these best practices:
+For highly sensitive environments, use Kubernetes worker nodes from a
+VM family that supports conﬁdential computing capabilities, to protect
+data in use (as explained in Chapter 1 1)
+Create custom container images, and use a minimal number of packages
+inside the container image, to lower the attack surface
+Sign your container images using your private key , and check the signa -
+ture before using a container image, as part of the deployment process, to
+verify its source
+Use container images from a trusted source, and store them in a private
+container image registry (note: most CSPs of fer a managed container
+registry service)
+Scan your container images for vulnerabilities in libraries and binaries
+and update your images regularly
+Always run applications inside Kubernetes pods using a non-root user , to
+avoid potential breaches to your Kubernetes environment, such as taking
+full control over a speciﬁc pod, other running pods on the same cluster ,
+or even interfering with the worker node itself
+Now , let us see the best practices to use Kubernetes in Amazon, Azure, and
+Google in particular .
+Amazon Elastic Kubernetes Service (Amazon EKS)
+EKS  is the Amazon-managed Kubernetes orchestration service.
+Read thorough documentation on security in Amazon EKS, which can be
+found here: https://docs.aws.amazon.com/eks/latest/user guide/security .html .
+Use the following best practices for security in Amazon EKS:
+To create an isolated execution environment, protecting the Kubernetes
+environment, use AWS Nitro Enclaves with Amazon EKS, as document -
+ed here: https://docs.aws.amazon.com/enclaves/latest/user/kuber -
+netes.html .
+Amazon EKS integrates with Amazon Elastic Container  Registry
+(ECR ) for retrieving container images. To protect the use of Amazon
+ECR, follow these best practices: https://docs.aws.amazon.com/Amazon -
+ECR/latest/user guide/security .html .
+Azure Kubernetes Service (AKS)
+AKS  is the Azure-managed Kubernetes orchestration service.
+Read thorough documentation on security in Azure AKS, which can be
+found here: https://learn.microsoft.com/en-
+us/security/benchmark/azure/baselines/azure-kubernetes-service-aks-securi -
+ty-baseline .
+Use the following best practices for security in Azure AKS:
+To create an isolated execution environment, protecting the Kubernetes
+environment, use Conﬁdential Containers with AKS, as documented
+here: https://learn.microsoft.com/en-us/azure/aks/conﬁdential-contain -
+ers-overview .
+Azure AKS integrates with Azure Container Registry for retrieving con -
+tainer images. To protect the use of Azure Container Registry , follow
+these best practices: https://learn.microsoft.com/en-us/security/bench -
+mark/azure/baselines/container -registry-security-baseline .
+Google Kubernetes Engine (GKE)
+GKE  is the Google-managed Kubernetes orchestration service.
+Read thorough documentation on security in GKE, which can be found
+here: https://cloud.google.com/kubernetes-engine/docs/concepts/security-
+overview .
+Use the following best practices for security in GKE:
+To create an isolated execution environment, protecting the Kubernetes
+environment, encrypt workload data in use with Conﬁdential Google
+Kubernetes Engine Nodes , as documented here: https://cloud.google. -
+com/kubernetes-engine/docs/how-to/conﬁdential-gke-nodes .
+GKE integrates with Google Artifact Registry  for retrieving container
+images. To protect the use of Google Artifact Registry , follow these best
+practices: https://cloud.google.com/artifact-registry/docs/protect-
+artifacts .
+Binary Authorization  is a GCP  capability that allows customers to
+make sure that container images are retrieved from trusted sources. GKE
+has built-in integration with Binary Authorization. Conﬁgure a Binary
+Authorization policy with GKE to govern the deployment of container
+images, as explained here: https://cloud.google.com/binary-
+authorization/docs/conﬁgure-policy-gke .
+In this section, we reviewed high-level references to learn about the security
+of Amazon EKS, AKS, and GKE.
+Best practices for identity and access
+management in Kubernetes
+There are many aspects to review when talking about identity and access
+management in Kubernetes, including the following, among others:
+Authentication:  The act of identifying against the Kubernetes API
+server , to take actions (such as read cluster conﬁguration, add a worker
+node, deploy a new application, and more)
+Authorization:  The act of validating an identity’ s permissions against
+the Kubernetes built-in role-based access control (the permissions deﬁne
+what type of actions an identity can take, such as deploying a new appli -
+cation, exposing an application to external customers, and more)
+Permission of Pods:  Pods can have several types of access permissions:
+access to the Kubernetes API server (for example, for reading the
+amount of required CPU/memory for each pod), permissions to access
+other pods on the same cluster (such as dif ferent microservices part of
+the same application), and access to other resources on the CSPs ecosys -
+tem (for example, a pod consuming information from storage services),
+and more
+Kubernetes supports the following types of identities:
+User  identity:  Although Kubernetes does not manage user objects , it al -
+lows you to connect the Kubernetes cluster to an external OpenID
+Connect  (OIDC ) provider (such as Amazon Cognito , Micr osoft Entra
+ID, Google Identity Platform , etc.) and allows conﬁguring permissions
+(i.e., role-based access control) to the Kubernetes cluster
+Service account:  An identity created and managed locally by the
+Kubernetes cluster , to allow pods access to the Kubernetes API server
+(for actions such as querying for resources, updating conﬁguration, etc.),
+and for enforcing which pod can take which actions (i.e., implementing
+the principle of least privilege)
+Pod Identity:  –A concept extending a service account , which allows
+you to assign a pod identity for each pod, to be able to gain access to the
+API server (through a mapping to a service account), and to external re -
+sources in the CSP  ecosystem (such as object storage, databases, mes -
+sage queuing, etc.)
+General best practices for securing IAM in Kubernetes (regardless of the
+CSP) are as follows:
+Connect the Kubernetes cluster to an external identity provider support -
+ing the OIDC protocol, for central identity and access management.
+Once you complete connecting to the external OIDC provider , you will
+be able to grant permissions for identities (from human identities to ser -
+vice accounts/application accounts) from the central identity provider .
+Kubernetes has a built-in RBAC mechanism for controlling permissions
+to the cluster resources. When deploying a Kubernetes cluster as a man -
+aged service (in AWS, Azure, or GCP), each of the CSPs allow you to
+connect their identity and access management mechanisms to the
+Kubernetes RBAC, which allows you to set strict permissions to identi -
+ties from your central identity provider .
+Create a unique service account for each namespace (instead of the de -
+fault service account), and limit the privileges assigned to the newly cre -
+ated service account according to the application requirements (such as
+getting access to required resources, list services, etc.)
+Create a unique identity for every newly created Kubernetes cluster and
+application (also known as pod identity). Follow the principle of least
+privilege when granting permissions for pods to access resources in the
+CSP’ s ecosystem.
+Secrets (such as API keys or database credentials) are a common way to
+authenticate pods against other resources or applications. In case secrets
+leak, they will grant the person who holds them permission to access re -
+sources (such as other pods, other resources in the cloud environment, or
+on-premises). Avoid storing secrets as part of code or conﬁguration ﬁles
+to decrease the chance of unauthorized access. Instead, use a managed
+vault service for the storage, retrieval, and rotation of secrets.
+Kubernetes supports a provider for the Secrets Store CSI Driver for con -
+necting to managed vault services (as explained in Chapter 5 ).
+Let us see how IAM security best practices work in EKS, AKS, and GKE.
+Amazon EKS
+AWS IAM is the supported service for managing permissions to access and
+run containers through Amazon EKS (as explained in Chapter 9 ).
+Read thorough documentation of Amazon EKS and identity management,
+which can be found at the following links:
+1. https://docs.aws.amazon.com/eks/latest/user guide/security-iam.html
+2. https://aws.github.io/aws-eks-best-practices/security/docs/iam/
+Use the following best practices for authentication and authorization in
+Amazon EKS:
+Grant minimal IAM permissions for accessing and managing Amazon
+EKS, to avoid unauthorized access to the Kubernetes cluster , as ex -
+plained here: https://docs.aws.amazon.com/eks/latest/user guide/securi -
+ty_iam_id-based-policy-examples.html .
+Use EKS Pod Identities  to allow pods with minimal permissions to ac -
+cess resources in the AWS ecosystem, to avoid unauthorized access to
+AWS resources, as explained here: https://docs.aws.amazon.com/eks/lat -
+est/user guide/pod-identities.html .
+Store your container images inside Amazon ECR  and grant minimal
+IAM permissions for accessing and managing Amazon ECR, to enforce
+the use of or ganization-trusted container image source: https://doc -
+s.aws.amazon.com/AmazonECR/latest/user guide/ECR_on_EKS.html .
+The content of a container image (such as application code) might be
+considered sensitive information (intellectual property). For sensitive en -
+vironments, encrypt your container images inside Amazon ECR  using
+CMK management (as explained in Chapter 1 1), as mentioned in the fol -
+lowing documentation:
+https://docs.aws.amazon.com/AmazonECR/latest/user guide/encryption-
+at-rest.html .
+Use AWS Secr ets Manager  or AWS Systems Manager  Parameter
+Store for storing, retrieving, and rotating secrets. Amazon allows you to
+integrate EKS with services such as AWS Secrets Manager using a
+Kubernetes Secrets Store CSI Driver , to avoid unauthorized access to
+static credentials, as explained here: https://docs.aws.amazon.com/se -
+cretsmanager/latest/user guide/integrating_csi_driver .html .
+Azure AKS
+Micr osoft Entra ID  is the supported service for managing permissions to
+access and run containers through AKS (as explained in Chapter 9 ).
+Read thorough documentation of AKS and identity management, which can
+be found at the following links:
+https://learn.microsoft.com/en-us/azure/aks/concepts-identity
+https://learn.microsoft.com/en-us/azure/aks/operator -best-practices-
+identity
+Use the following best practices for authentication and authorization in
+AKS:
+Integrate the AKS cluster with Micr osoft Entra ID  for central identity
+management (both for managing the AKS cluster and for pod identities
+to access resources in Azure), as explained here: https://learn.microsoft. -
+com/en-us/azure/aks/enable-authentication-microsoft-entra-id
+Use Micr osoft Entra r ole-based access contr ol (RBAC ) for
+Kubernetes authorization, to avoid unauthorized access to the
+Kubernetes cluster , and grant minimal permissions for accessing and
+managing AKS, as explained here: https://learn.microsoft.com/en-
+us/azure/aks/manage-azure-rbac
+Use Micr osoft Entra Workload ID  with AKS, and grant minimal per -
+missions to allow AKS pods access to Azure resources, to avoid unau -
+thorized access to Azure resources: https://learn.microsoft.com/en-
+us/azure/aks/workload-identity-overview
+Use Azur e Key Vault for the storage, retrieval, and rotation of secrets.
+Azure allows you to integrate AKS with Azure Key Vault using a
+Kubernetes Secrets Store CSI Driver , to avoid unauthorized access to
+static credentials, as explained here: https://learn.microsoft.com/en-
+us/azure/aks/csi-secrets-store-driver
+Store your container images inside Azur e Container  Registry  (ACR )
+and grant minimal permissions for accessing and managing Azure ACR,
+explained at the following link: https://learn.microsoft.com/en-
+us/azure/container -registry/container -registry-roles
+Use Micr osoft Entra ID managed identity  to authenticate from AKS to
+ACR to pull new container images, as explained here: https://learn.mi -
+crosoft.com/en-us/azure/aks/cluster -container -registry-integration
+For sensitive environments, encrypt your container images inside ACR
+using customer -managed keys stored inside Azur e Key Vault (as ex -
+plained in Chapter 1 1), as mentioned here:
+https://learn.microsoft.com/en-us/azure/container -registry/tutorial-en -
+able-customer -managed-keys
+GKE
+Google Cloud IAM  is the supported service for managing permissions to
+access and run containers through GKE (as explained in Chapter 9 ).
+Read thorough documentation of GKE and identity management, which can
+be found at the following links:
+https://cloud.google.com/kubernetes-engine/docs/how-to/iam
+https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-
+your-cluster
+Use the following best practices for authentication and authorization in
+GKE:
+Use GKE RBAC and grant minimal permissions for accessing and man -
+aging GKE, to avoid unauthorized access to the Kubernetes cluster , as
+explained here: https://cloud.google.com/kubernetes-engine/docs/best-
+practices/rbac .
+Use Workload Identity Federation  for GKE, and grant minimal per -
+missions to allow GKE pods access to GCP  resources, to avoid unautho -
+rized access to GCP  resources, as explained here: https://cloud.google. -
+com/kubernetes-engine/docs/how-to/workload-identity .
+Use the Google IAM r ecommender  to set the minimal permissions for
+your GKE cluster , as explained here: https://cloud.google.com/policy-in -
+telligence/docs/role-recommendations-overview .
+Use Google Secr et Manager  for the storage, retrieval, and rotation of
+secrets. GCP  allows you to integrate GKE with Google Secret Manager
+using client libraries to avoid unauthorized access to static credentials, as
+explained here: https://cloud.google.com/kubernetes-engine/docs/tutori -
+als/workload-identity-secrets .
+Store your container images inside Google Artifact Registry  and grant
+minimal permissions for accessing and managing Artifact Registry , as
+explained here: https://cloud.google.com/artifact-registry/docs/access-
+control .
+For sensitive environments, encrypt your container images inside
+Google Artifact Registry  using customer -managed keys stored inside
+Google Cloud KMS  (as explained in Chapter 1 1), as mentioned here:
+https://cloud.google.com/artifact-registry/docs/cmek .
+In this section, we reviewed security best practices for IAM in Kubernetes.
+Now , let’s see how we can secure network access to it.
+Best practices for data protection in
+Kubernetes
+There are many aspects to review when talking about data protection in
+Kubernetes. Here are some of them:
+External access to the Kubernetes API server , which may allow taking
+full control of a Kubernetes cluster
+Communication between the API server and the pods, which may allow
+unauthorized network access to the Kubernetes cluster from a compro -
+mised pod
+Pod-to-pod communication, which may allow unauthorized trafﬁc be -
+tween dif ferent pods within the same Kubernetes cluster from a compro -
+mised pod
+Communication between pods and other resources on the CSP  ecosys -
+tem, which may allow unauthorized trafﬁc from compromised pods to
+other resources in the cloud ecosystem.
+Best practices for network access in Kubernetes are as follows:
+When deploying a Kubernetes cluster , create a private mode  to decrease
+the attack surface on the Kubernetes cluster . Private mode means that all
+trafﬁc to the Kubernetes API server must be done from authorized and
+private IP addresses.
+When deploying a Kubernetes cluster , deploy the worker nodes in a pri -
+vate subnet and the pods into another private subnet, segregated via a
+network access control list, to restrict access to the control plane of the
+Kubernetes, and avoid unauthorized access from a pod to the Kubernetes
+cluster itself.
+Kubernetes allows you to enforce restrictions on pods, such as access
+from pod to storage service, restrict the ability to use a privileged ac -
+count (i.e., Root) inside a running pod, and more. The restrictions are
+called Pod Security Admission , and they are been enforced using a
+component of Kubernetes called Pod Security Admission Contr oller .
+Pod security supports Privileged  proﬁles (completely unrestricted),
+Baseline  proﬁles (minimal restriction, suitable for development environ -
+ments), and Restricted  proﬁles (fully restricted, recommended for sensi -
+tive or critical production applications). As best practice, conﬁgure the
+Restricted  proﬁle for production applications. For more information, vis -
+it the following links:
+https://kubernetes.io/docs/concepts/security/pod-security-admission/
+https://kubernetes.io/docs/concepts/security/pod-security-standards/
+etcd contains the Kubernetes cluster conﬁguration (current state, how
+many running pods, the desired number of running pods, pod locations,
+and more), and as such, it must be protected to avoid unauthorized ac -
+cess. Encrypt etcd at rest, as explained here:
+https://kubernetes.io/docs/tasks/administer -cluster/encrypt-data/ .
+Encrypt all trafﬁc to the Kubernetes cluster and within the Kubernetes
+cluster using the TLS protocol and using your own TLS certiﬁcates, to
+keep data conﬁdentiality in transit within the Kubernetes cluster .
+Use an ingress controller to restrict inbound access to the Kubernetes
+cluster , to restrict access to speciﬁc applications deployed as part of
+Kubernetes services from known IP addresses.
+To restrict access to the Kubernetes cluster and within the Kubernetes
+cluster (at layer 3 and layer 4 of the OSI model), conﬁgure network poli -
+cies, which are network ﬁltering rules allowing restricted access to re -
+sources from known IP  addresses (or from known pods) at the network
+layer (i.e., source, destination, and port).
+To restrict access to the Kubernetes cluster and within the Kubernetes
+cluster (at layer 7 of the OSI model), use a service mesh solution, which
+allows you to restrict access to resources (such as pods), at the applica -
+tion layer (i.e., source, destination, and URL  to a speciﬁc version of the
+application).
+To protect the Kubernetes cluster and the worker nodes from vulnerabili -
+ties, regularly update all components to the latest stable version (note:
+conduct tests to make sure new versions do not break the cluster or the
+applications).
+Let us see how network-related security best practices work in EKS, AKS,
+and GKE.
+Amazon EKS
+In this section, we will review how to implement data protection for the
+EKS cluster and the pods deployed on top of the worker nodes (from net -
+work aspects, and data encryption).
+Read thorough documentation of Amazon EKS and network access, which
+can be found at the following links:
+https://docs.aws.amazon.com/eks/latest/user guide/eks-networking.html
+https://aws.github.io/aws-eks-best-practices/security/docs/network/
+To implement data protection in Amazon EKS, use the following best
+practices:
+Deploy EKS as a private cluster to restrict unauthorized network access
+to your EKS cluster , as explained here:
+https://docs.aws.amazon.com/eks/latest/user guide/private-clusters.html .
+Use VPC security groups to restrict network access to the Kubernetes
+API server , as mentioned here:
+https://docs.aws.amazon.com/eks/latest/user guide/sec-group-reqs.html .
+Use the Amazon VPC CNI plugin  to conﬁgure security groups for re -
+stricting access between pods by setting network policies (at layers 3 and
+4 of the OSI model), and avoid unauthorized network access to your
+pods: https://docs.aws.amazon.com/eks/latest/user guide/managing-vpc-
+cni.html .
+To restrict access between pods (at layer 7 of the OSI model) and avoid
+unauthorized network access to your pods, use Istio , as follows:
+https://aws.amazon.com/blogs/opensource/using-istio-trafﬁc-manage -
+ment-to-enhance-user -experience/ .
+Kubernetes ingress controller supports multiple ways to restrict inbound
+access to the Kubernetes cluster . One alternative is to use the AWS Load
+Balancer  Contr oller , as explained here:
+https://docs.aws.amazon.com/eks/latest/user guide/aws-load-balancer -
+controller .html .
+To keep the trafﬁc between the Amazon Virtual Private Cloud
+(Amazon VPC ) and the Amazon EKS private (i.e., within AWS back -
+bone), create an interface VPC endpoint, and avoid unauthorized net -
+work access to your EKS cluster , as explained here: https://docs.aws.a -
+mazon.com/eks/latest/user guide/vpc-interface-endpoints.html .
+Encrypt all EKS worker nodes volumes at rest (including etcd) to protect
+the conﬁguration of the Kubernetes cluster , as explained here:
+https://aws.github.io/aws-eks-best-practices/security/docs/data/ .
+Encrypt all inbound trafﬁc to the Kubernetes cluster using the TLS pro -
+tocol to protect data conﬁdentiality . For highly sensitive environments,
+encrypt trafﬁc between pods using mutual TLS  (mTLS ), as explained
+here: https://aws.github.io/aws-eks-best-
+practices/security/docs/network/ .
+AKS
+In this section, we will review how to implement data protection for the
+AKS cluster and the pods deployed on top of the worker nodes (from net -
+work aspects and data encryption).
+Read thorough documentation of AKS and network access, which can be
+found at the following links:
+https://learn.microsoft.com/en-us/azure/aks/concepts-network
+https://learn.microsoft.com/en-us/azure/aks/operator -best-practices-
+network
+https://learn.microsoft.com/en-us/azure/aks/operator -best-practices-clus -
+ter-isolation
+To implement data protection of AKS, use the following best practices:
+Deploy AKS as a private cluster to restrict unauthorized network access
+to your AKS cluster , as explained here: https://learn.microsoft.com/en-
+us/azure/aks/private-clusters .
+Use the Azur e CNI plugin  for restricting access between pods by set -
+ting network policies (at layers 3 and 4 of the OSI model), and avoid
+unauthorized network access to your pods:
+https://learn.microsoft.com/en-us/azure/aks/azure-cni-overview .
+To restrict access between pods (at layer 7 of the OSI model), use the
+Open Service Mesh  (OSM ) add-on, and avoid unauthorized network
+access to your pods, as explained here: https://learn.microsoft.com/en-
+us/azure/aks/open-service-mesh-about .
+Kubernetes ingress controller supports multiple ways to restrict inbound
+access to the Kubernetes cluster . One alternative is to use the
+Application Gateway Ingr ess Contr oller  (AGIC ) add-on to restrict in -
+bound access to the AKS cluster , as explained here: https://learn.mi -
+crosoft.com/en-us/azure/application-gateway/tutorial-ingress-controller -
+add-on-existing .
+To keep the trafﬁc between the Azure VNet and the Azure AKS private
+(i.e., within the Azure backbone), create a private endpoint and avoid
+unauthorized network access to your AKS cluster , as explained here:
+https://learn.microsoft.com/en-us/azure/aks/private-clusters?tabs=azure-
+portal#use-a-private-endpoint-connection .
+Encrypt all AKS worker nodes volumes at rest (including etcd) to protect
+the conﬁguration of the Kubernetes cluster , as explained here:
+https://learn.microsoft.com/en-us/azure/aks/use-kms-etcd-encryption .
+Encrypt all inbound trafﬁc to the Kubernetes cluster using the TLS pro -
+tocol to protect data conﬁdentiality . For highly sensitive environments,
+encrypt trafﬁc between pods using mTLS, as explained here:
+https://learn.microsoft.com/en-us/azure/aks/ingress-tls
+https://learn.microsoft.com/en-us/azure/application-gateway/for -con-
+tainers/how-to-backend-mtls-gateway-api
+GKE
+In this section, we will review how to implement data protection for the
+GKE cluster and the pods deployed on top of the worker nodes (from net -
+work aspects and data encryption).
+To implement data protection of GKE, use the following best practices:
+Deploy GKE as a private cluster to restrict unauthorized network access
+to your GKE cluster , as explained here: https://cloud.google.com/kuber -
+netes-engine/docs/how-to/private-clusters .
+Use GKE Dataplane V2 to restrict access between pods, and avoid
+unauthorized network access to your pods: https://cloud.google.com/ku -
+bernetes-engine/docs/how-to/dataplane-v2 .
+To restrict access between pods (at layer 7 of the OSI model), use Cloud
+Service Mesh  and avoid unauthorized network access to your pods:
+https://cloud.google.com/service-mesh/docs/onboarding/provision-con -
+trol-plane .
+Kubernetes ingress controller supports multiple ways to restrict inbound
+access to the Kubernetes cluster . One alternative is to use the GKE
+Gateway contr oller  to restrict inbound access to the GKE cluster:
+https://cloud.google.com/kubernetes-engine/docs/concepts/gateway-api .
+Encrypt all GKE worker nodes volumes at rest (including etcd) to pro -
+tect the conﬁguration of the Kubernetes cluster , as explained here:
+https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-
+secrets .
+Encrypt all inbound trafﬁc to the Kubernetes cluster using the TLS pro -
+tocol to protect data conﬁdentiality . For highly sensitive environments,
+encrypt trafﬁc between pods using mTLS, as explained here:
+https://cloud.google.com/kubernetes-engine/docs/how-to/enable-in -
+ter-node-transparent-encryption
+https://cloud.google.com/service-mesh/docs/security/conﬁguring-mtls
+Now that we have reviewed security best practices for data protection, let us
+learn about auditing and monitoring in Kubernetes.
+Best practices for auditing and security
+monitoring in Kubernetes
+Auditing  is a crucial part of data protection. There are many aspects to re -
+view when talking about auditing and security monitoring in Kubernetes,
+including the following:
+Kubernetes contr ol plane logs : These contain information about
+Kubernetes’  internal activity (such as API server , controller manager ,
+scheduler , etc.)
+Kubernetes cluster  admin activity : This contains information about
+cluster maintenance activity (such as cluster health, resource allocation,
+workload management, etc.)
+Abnormal Pod activity : This contains information such as pod eviction
+due to worker node low disk space, unauthorized admin activity attempt,
+violation of Kubernetes security policy , and so on.
+Follow these best practices for auditing and monitoring in Kubernetes:
+Although admin activity is automatically audited by the CSPs, its log
+history is limited. As best practice, send all audit and monitoring logs to
+a logging service for further analysis, incident response, and to comply
+with various regulations.
+Enable Kubernetes audit logs to capture all activity conducted on
+Kubernetes (who did what, and when), and integrate Kubernetes audit
+logs with the CSP  built-in auditing services to be able to centrally collect
+logs, conﬁgure alerts on abnormal behavior (such as cluster changes in
+the middle of the night), and for incident response purpose. For more in -
+formation, visit the following link: https://kubernetes.io/docs/tasks/de -
+bug/debug-cluster/audit/ .
+Add a threat detection solution to review Kubernetes logs, detect mali -
+cious activity (such as an attempt to run a pod with the context of a Root
+account, or an attempt to run Bitcoin mining within the context of a
+pod), and generate prioritized follow-up actions.
+Now , let us check the speciﬁc best practices for auditing and monitoring in
+managed Kubernetes based on EKS, AKS, and GKE.
+Amazon EKS
+AWS allows you to enable logging and auditing using two built-in services:
+Amazon CloudW atch: A service that allows you to log EKS cluster ac -
+tivities and raise an alarm according to predeﬁned thresholds (for exam -
+ple, low memory resources or high CPU, which requires up-scaling your
+EKS cluster)
+AWS CloudT rail: A service that allows you to monitor API activities
+(basically , any action performed on the EKS cluster)
+In this section, we will review the capabilities of fered by AWS to audit and
+monitor EKS activity .
+Read thorough documentation of EKS and auditing/monitoring, which can
+be found at the following links:
+https://docs.aws.amazon.com/eks/latest/user guide/eks-observe.html
+https://aws.github.io/aws-eks-best-practices/security/docs/detective/
+For auditing and monitoring of Amazon EKS, use the following best
+practices:
+Enable the Amazon EKS control plane when logging in to Amazon
+CloudW atch. It allows you to log API calls, audit, and authentication in -
+formation from your EKS cluster , for further investigation and analysis
+of Kubernetes cluster activity , as explained here: https://docs.aws.ama -
+zon.com/eks/latest/user guide/control-plane-logs.html .
+AWS CloudT rail is enabled by default for Amazon EKS. To keep EKS
+API activity for longer than 90 days for further investigation and analy -
+sis, send CloudT rail logs to an Amazon S3 bucket, as explained here:
+https://docs.aws.amazon.com/eks/latest/user guide/service-name-info-in-
+cloudtrail.html .
+Enable Amazon CloudW atch Container  Insights  to collect informa -
+tion about the EKS activity for further investigation and troubleshooting,
+as explained here:
+https://docs.aws.amazon.com/AmazonCloudW atch/latest/monitoring/de -
+ploy-container -insights-EKS.html .
+Use Amazon Managed Service for  Prometheus  for collecting EKS
+metric data for further EKS cluster behavior monitoring, as explained
+here: https://docs.aws.amazon.com/prescriptive-guidance/latest/imple -
+menting-logging-monitoring-cloudwatch/prometheus-monitoring-
+eks.html .
+Use GuardDuty Runtime Monitoring  to detect threats in workloads
+running on top of Amazon EKS:
+https://docs.aws.amazon.com/guardduty/latest/ug/eks-runtime-monitor -
+ing-conﬁguration.html .
+AKS
+Azure allows you to enable logging and auditing using Azur e Monitor  for
+containers – a service that allows you to log container -related activities and
+raise an alarm according to predeﬁned thresholds (for example, low memo -
+ry resources or high CPU, which requires up-scaling your container
+environment).
+In this section, we will review the capabilities of fered by Azure to audit and
+monitor AKS activity .
+For auditing and monitoring of AKS, use the following best practices:
+Thorough documentation of AKS and auditing/monitoring can be found
+at the following links:
+https://learn.microsoft.com/en-us/azure/azure-monitor/containers/ku -
+bernetes-monitoring-enable
+https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-
+containers
+Enable diagnostic settings for AKS, and send all logs to a Log Analytics
+workspace for further investigation and analysis of Kubernetes cluster
+activity , as explained here: https://learn.microsoft.com/en-
+us/azure/aks/monitor -aks
+Use Azur e Monitor  Container  Insights  to collect and analyze AKS
+logs: https://learn.microsoft.com/en-us/azure/azure-
+monitor/containers/container -insights-overview
+Use Azur e Monitor  managed service for  Prometheus  for collecting
+AKS metric data for further AKS cluster behavior monitoring, as ex -
+plained here: https://learn.microsoft.com/en-us/azure/azure-monitor/es -
+sentials/prometheus-metrics-overview
+Use Micr osoft Defender  for Containers  for vulnerability assessment
+and real-time threat protection on AKS workloads, as explained here:
+https://learn.microsoft.com/en-us/azure/defender -for-cloud/defender -for-
+containers-introduction
+GKE
+As with any other managed service, Google allows you to enable logging
+and auditing using the Google Cloud Logging service – a service that al -
+lows you to audit container -related activities.
+In this section, we will review the capabilities of fered by GCP  to audit and
+monitor GKE activity .
+For auditing and monitoring of GKE, use the following best practices:
+Thorough documentation of GKE and auditing/monitoring can be found
+at the following links:
+https://cloud.google.com/kubernetes-engine/docs/how-to/audit-
+logging
+https://cloud.google.com/kubernetes-
+engine/docs/concepts/observability
+Enable logging for GKE for further investigation and analysis of
+Kubernetes cluster activity , as explained here:
+https://cloud.google.com/kubernetes-engine/docs/how-to/conﬁg-logging-
+monitoring
+For sensitive/critical environments, enable data access audit logs (actions
+such as read conﬁguration, create/modify/read user -provided resource
+data) for further investigation and analysis, as explained here:
+https://cloud.google.com/logging/docs/audit/conﬁgure-data-access
+NOTE
+Data access audit logs incr ease storage costs. Review the business r equir e-
+ments to enable it.
+Use Google Cloud Managed Service for  Prometheus  for collecting
+GKE metric data for further GKE cluster behavior monitoring:
+https://cloud.google.com/stackdriver/docs/managed-prometheus
+Use the Google Security Command Center  to detect threats related to
+containers: https://cloud.google.com/security-command-center/docs/con -
+cepts-container -threat-detection-overview
+In this section, we reviewed security best practices for auditing and moni -
+toring in Amazon EKS, AKS, and GKE. Next, we will learn about how to
+ensure compliance with Kubernetes as per standard guidelines.
+Implementing secure configuration in
+Kubernetes
+Secure conﬁguration and compliance with or ganization and industry best
+practices are important factors from a security point of view .
+When talking about compliance with industry best practices, the most com -
+mon standard for Kubernetes is the CIS Benchmark conﬁguration guide -
+lines published here: https://www .cisecurity .org/benchmark/kubernetes .
+Run the kube-bench  tool regularly to check for compliance with CIS
+Benchmarks for Kubernetes, as follows:
+https://github.com/aquasecurity/kube-bench .
+Amazon EKS
+AWS of fers various ways to check for compliance with the EKS environ -
+ment against industry best practices and standards. For compliance with
+EKS, use the following best practices:
+Thorough documentation of EKS and compliance can be found at the
+following links:
+https://docs.aws.amazon.com/eks/latest/user guide/compliance.html
+https://aws.github.io/aws-eks-best-
+practices/security/docs/compliance/
+Use AWS Conﬁg  rules to check EKS conﬁguration (such as EKS cluster
+version, whether the EKS cluster is conﬁgured as private, whether se -
+crets are stored encrypted, etc.), as explained here: https://docs.aws.ama -
+zon.com/conﬁg/latest/developer guide/security-best-practices-for -
+EKS.html
+Use Amazon Inspector  to scan for vulnerabilities in code and packages
+inside Amazon Container Registry , before being deployed to EKS:
+https://docs.aws.amazon.com/inspector/latest/user/scanning-ecr .html
+Use AWS Security Hub  to check for compliance of the EKS cluster
+against industry standards (such as the NIST  800-53 standard), as ex -
+plained here:
+https://docs.aws.amazon.com/securityhub/latest/user guide/eks-
+controls.html
+AKS
+Azure of fers various ways to check for compliance with the AKS environ -
+ment against industry best practices and standards. For compliance with
+AKS, use the following best practices:
+Use Micr osoft Defender  for Cloud  to check for compliance against
+standards and regulations (such as the CIS Benchmarks), as explained
+here: https://learn.microsoft.com/en-us/azure/defender -for-cloud/update-
+regulatory-compliance-packages
+Information about the Center  for Internet Security  (CIS) Kubernetes
+benchmark and AKS can be found here: https://learn.microsoft.com/en-
+us/azure/aks/cis-kubernetes
+GKE
+Google offers various ways to check for compliance with the GKE environ -
+ment against industry best practices and standards. For compliance with
+GKE, use the following best practices:
+Use the GKE Compliance dashboard  to check for compliance against
+the CIS Benchmarks, as explained here: https://cloud.google.com/kuber -
+netes-engine/ﬂeet-management/docs/about-compliance-dashboard
+Information about the CIS Kubernetes benchmark and GKE can be
+found here: https://cloud.google.com/kubernetes-
+engine/docs/concepts/cis-benchmarks
+In this section, we have learned how to securely maintain Kubernetes, based
+on AWS, Azure, and GCP  infrastructure – from IAM to data protection, au -
+diting, and security compliance against industry best practices. Next, let’ s
+see how we can secure non-Kubernetes workloads.
+Securing non-Kubernetes workloads
+In the previous section, we talked about Kubernetes workloads and how to
+secure managed Kubernetes services on top of AWS, Azure, and GCP .
+Kubernetes is not the only container orchestrator , and each of the hyper -
+scale cloud providers of fers other container orchestrators.
+In the following section, we will discuss managed container orchestrators
+from AWS, Azure, and GCP .
+Securing Amazon Elastic Container
+Service (ECS)
+ECS  is the Amazon-managed container orchestration service.
+The main components of ECS are as follows:
+ECS cluster  (also known as ECS capacity)  – The main component for
+running and managing containers. It can be deployed on top of the
+following:
+Amazon EC2 instances  – Customer needs to choose hardware re -
+sources (instance type) and take care of cluster size (number of run -
+ning EC2 instances)
+Fargate  – A fully serverless solution, where AWS takes care of the
+entire control plane maintenance (from provisioning new cluster
+nodes to securing the control plane)
+Amazon ECS Anywher e – Ability to run ECS on-premises
+ECS task  – A logical grouping of containers. You conﬁgure task settings
+using task deﬁnitions (blueprints for running tasks).
+The following is a sample Amazon ECS architecture diagram:
+Figure 3.3 – Amazon ECS architecture diagram
+As the preceding diagram shows, a user connects to an ECS cluster  (de-
+ployed on top of Amazon EC2), and within the cluster , there is an applica -
+tion deployed as an ECS task , connected to a backend database .
+General best practices for securing Amazon ECS
+In the next couple of sections, we will review best practices for securing
+Amazon ECS from dif ferent angles (from identity and access management,
+network access, and ﬁnally , auditing and monitoring).
+The following resources of fer comprehensive information on securing
+Amazon:
+Thorough documentation about the security of Amazon ECS can be
+found at the following link:
+https://docs.aws.amazon.com/AmazonECS/latest/bestpracticesguide/se -
+curity .html
+Information about how to secure ECS tasks and container images (for
+running inside an ECS task), can be found here:
+https://docs.aws.amazon.com/AmazonECS/latest/bestpracticesguide/se -
+curity-tasks-containers.html
+Best practices for identity and access management
+AWS IAM  is the supported service for managing permissions to access and
+run containers through Amazon ECS (as explained in Chapter 9 ).
+Use the following best practices for authentication and authorization in
+Amazon ECS:
+Thorough documentation of Amazon ECS and identity management can
+be found at the following link:
+https://docs.aws.amazon.com/AmazonECS/latest/developer guide/securi -
+ty-iam.html
+Grant minimal IAM permissions for managing Amazon ECS, to avoid
+unauthorized access to your cloud environment, as explained here:
+https://docs.aws.amazon.com/AmazonECS/latest/bestpracticesguide/se -
+curity-iam.html .
+Grant minimal IAM permissions for the Amazon ECS service (for run -
+ning tasks, accessing S3 buckets, monitoring using CloudW atch Events,
+and so on), to avoid unauthorized access to AWS resources, as follows:
+https://docs.aws.amazon.com/AmazonECS/latest/bestpracticesguide/se -
+curity-iam-roles.html .
+Store your container images inside Amazon ECR and grant minimal
+IAM permissions for accessing and managing Amazon ECR, to avoid
+unauthorized access to your private container repository and use of con -
+tainer images from untrusted sources, as explained here: https://doc -
+s.aws.amazon.com/AmazonECR/latest/user guide/ECR_on_ECS.html .
+For sensitive environments, encrypt your container images inside
+Amazon ECR using CMK management (as explained in Chapter 1 1),
+keeping container image content conﬁdential, as explained here:
+https://docs.aws.amazon.com/AmazonECR/latest/user guide/encryption-
+at-rest.html .
+Secrets (such as API keys or database credentials) are a common way to
+authenticate ECS tasks against other resources or applications. Avoid
+storing secrets as part of code or conﬁguration ﬁles; instead, use services
+such as AWS Secr ets Manager  or AWS Systems Manager  Parameter
+Store for storing, retrieving, and rotating secrets, to avoid unauthorized
+access to static credentials, as explained here: https://docs.aws.amazon. -
+com/AmazonECS/latest/bestpracticesguide/security-secrets-
+management.html .
+Enforce the use of encryption in transit (i.e., the use of the TLS protocol)
+by integrating Amazon ECS with Amazon ECS Service Connect  to
+keep trafﬁc conﬁdentiality , as explained here: https://docs.aws.amazon. -
+com/AmazonECS/latest/developer guide/service-connect-tls.html .
+Use VPC security groups to allow access from your VPC to the Amazon
+ECS VPC endpoint , and avoid unauthorized network access:
+https://docs.aws.amazon.com/AmazonECS/latest/developer guide/get-
+set-up-for -amazon-ecs.html#create-a-base-security-group .
+To keep the trafﬁc between Amazon VPC and Amazon ECS private (i.e.,
+within the AWS backbone), create an interface VPC endpoint:
+https://docs.aws.amazon.com/AmazonECS/latest/developer guide/vpc-
+endpoints.html .
+Use AWS Systems Manager  to remotely connect and maintain ECS
+container instances for secure maintenance access, as explained here:
+https://docs.aws.amazon.com/AmazonECS/latest/developer guide/ec2-
+run-command.html .
+Best practices for conducting auditing and security
+monitoring in Amazon ECS
+As with any other managed service, AWS allows you to enable logging and
+auditing using two built-in services:
+Amazon CloudW atch: A service that allows you to log containers’  ac-
+tivities and raise an alarm according to predeﬁned thresholds (for exam -
+ple, low memory resources or high CPU, which requires up-scaling your
+ECS cluster)
+AWS CloudT rail: A service that allows you to monitor API activities
+(basically , any action performed on the ECS cluster)
+Use the following best practices for auditing, monitoring, and threat man -
+agement of Amazon ECS activity:
+Enable Amazon CloudW atch alarms for high-performance usage (which
+may indicate an anomaly in the ECS cluster behavior), as explained here:
+https://docs.aws.amazon.com/AmazonCloudW atch/latest/monitoring/Bes
+t_Practice_Recommended_Alarms_A WS_Services.html#ECS .
+Send ECS container logs to Amazon CloudW atch logs , for further in -
+vestigation and troubleshooting: https://docs.aws.amazon.com/Amazon -
+ECS/latest/developer guide/using_awslogs.html .
+Enable Amazon CloudW atch Container  Insights  to collect informa -
+tion about the ECS activity for further investigation and troubleshooting,
+as follows:
+https://docs.aws.amazon.com/AmazonCloudW atch/latest/monitoring/de -
+ploy-container -insights-ECS-cluster .html .
+AWS CloudT rail is enabled by default for Amazon ECS. To keep ECS
+API activity for longer than 90 days for further investigation and analy -
+sis, send CloudT rail logs to an Amazon S3 bucket. For more information
+about ECS and CloudT rail logs, see the following: https://docs.aws.ama -
+zon.com/AmazonECS/latest/developer guide/logging-using-
+cloudtrail.html .
+Use GuardDuty Runtime Monitoring  to detect threats in workloads
+running on top of Amazon ECS, as explained here: https://docs.aws.ama -
+zon.com/guardduty/latest/ug/runtime-monitoring.html .
+In this section, we have learned how to securely maintain Amazon ECS,
+based on AWS infrastructure – from identity and access management, se -
+curing network and remote access, to logging and auditing. Next, let us see
+how we can secure Azure Container Apps.
+Securing Azure Container Apps
+Container  Apps  is an Azure-managed serverless container orchestration
+service, based on Kubernetes technology . It can integrate with other Azure
+services, such as ACR for storing containers, Microsoft Entra ID for manag -
+ing permissions, Azure Files for persistent storage, and Azure Monitor .
+General best practices for securing Azure Container
+Apps
+Since Azure Container Apps is a new service (announced in September
+2023), its documentation by Microsoft is still a work in progress.
+Follow the Azure security best practices for Container Apps, as explained
+here:
+https://learn.microsoft.com/en-
+us/security/benchmark/azure/baselines/azure-container -apps-security-
+baseline .
+Best practices for identity and access management in
+Azure Container Apps
+Micr osoft Entra ID  is the supported service for managing permissions to
+access and run containers through Azure Container Apps (as explained in
+Chapter 9 ).
+Use the following best practices for authentication and authorization in
+Azure Container Apps:
+Thorough documentation of Azure Container Apps and identity manage -
+ment can be found at the following link:
+https://learn.microsoft.com/en-us/azure/container -apps/authentication
+For internal applications, enable Micr osoft Entra ID  for all container
+apps to allow internal user authentication using Microsoft Entra ID, as
+explained here: https://learn.microsoft.com/en-us/azure/container -
+apps/authentication-azure-active-directory#-enable-microsoft-entra-id-
+in-your -container -app
+To avoid unauthorized access to Container Apps for internal ap -
+plications, require authentication for any request to access an application
+based on container apps, as follows: https://learn.microsoft.com/en-
+us/azure/container -apps/authentication#authorization
+For internal applications, restrict access to end users based on their busi -
+ness needs to avoid unauthorized access: https://learn.microsoft.com/en-
+us/entra/identity-platform/howto-restrict-your -app-to-a-set-of-users
+For internal applications, enforce authorization using RBAC to avoid
+unauthorized access to your cloud environment: https://learn.microsoft. -
+com/en-us/entra/identity-platform/howto-implement-rbac-for -apps
+For an external application that contains non-public information, enforce
+authentication and authorization using OIDC to avoid unauthorized ac-
+cess: https://learn.microsoft.com/en-us/azure/container -apps/authentica -
+tion-openid
+Use managed identities to allow access from Azure Container Apps to
+resources in Azure, and follow the principle of least privilege when
+granting access to resources to avoid unauthorized access:
+https://learn.microsoft.com/en-us/azure/container -apps/managed-identity
+Use managed identities to allow Azure Container Apps permissions to
+pull images from ACR, to avoid unauthorized use of container images,
+as explained here: https://learn.microsoft.com/en-us/azure/container -
+apps/managed-identity-image-pull
+For sensitive environments, encrypt your container images inside ACR
+using customer -managed keys stored inside Azure Key Vault (as ex -
+plained in Chapter 1 1), as mentioned here:
+https://learn.microsoft.com/en-us/azure/container -registry/tutorial-en -
+able-customer -managed-keys
+Use Azure Key Vault for the storage, retrieval, and rotation of secrets.
+Azure allows you to integrate Azure Container Apps with Azure Key
+Vault using Dapr to avoid unauthorized use of static credentials, as ex -
+plained here: https://learn.microsoft.com/en-us/azure/container -
+apps/manage-secrets
+Best practices for data protection in Azure
+Container Apps
+To implement data protection in Azure Container Apps, use the following
+best practices:
+Thorough documentation of Azure Container Apps and networking can
+be found at the following link:
+https://learn.microsoft.com/en-us/azure/container -apps/networking
+For production applications, select the Workload pr oﬁle environment
+type to secure outbound trafﬁc (using the ﬁrewall capability) and enforce
+environment isolation (i.e., dedicated hardware and single tenant), as fol-
+lows: https://learn.microsoft.com/en-us/azure/container -
+apps/environment#types
+Conﬁgure user-deﬁned r outes  (UDRs ) to restrict outbound trafﬁc from
+Azure Container Apps using Azure Firewall, as explained here:
+https://learn.microsoft.com/en-us/azure/container -apps/user -deﬁned-
+routes
+Use Network Security Gr oups  (NSGs ) to restrict access to Azure
+Container Apps and avoid unauthorized network access: https://learn.mi -
+crosoft.com/en-us/azure/container -apps/ﬁrewall-integration?tabs=work -
+load-proﬁles
+Enforce trafﬁc encryption using the TLS protocol to protect trafﬁc conﬁ -
+dentiality: https://learn.microsoft.com/en-us/azure/container -
+apps/ingress-overview
+For internal applications, conﬁgure ingress to accept trafﬁc from within
+your container app’ s environment to avoid unauthorized network access:
+https://learn.microsoft.com/en-us/azure/container -apps/ingress-how-to
+To limit access to internal applications from speciﬁc IPs, use IP  ingress
+restrictions to avoid unauthorized network access: https://learn.mi -
+crosoft.com/en-us/azure/container -apps/ip-restrictions
+To protect inbound trafﬁc to Azure Container Apps from the public inter -
+net, use the Web Application Fir ewall on Application Gateway  to pro -
+tect against application layer attacks: https://learn.microsoft.com/en-
+us/azure/container -apps/waf-app-gateway
+Best practices for conducting auditing and
+monitoring in Azure Container Apps
+Azure allows you to enable logging and auditing using Azure Monitor . For
+the auditing and monitoring of Azure Container Apps, enable diagnostic set -
+tings for Azure Container Apps for further investigation and analysis and
+send all logs (speciﬁcally system logs, which contain authentication activi -
+ties) to a Log Analytics workspace, as explained here: https://learn.mi -
+crosoft.com/en-us/azure/container -apps/log-options .
+In this section, we have learned how to securely maintain Azure Container
+Apps, based on Azure infrastructure – from identity and access manage -
+ment, securing the network, to logging and auditing. Finally , let us learn
+how to secure Google Cloud Run.
+Securing Google Cloud Run
+Cloud Run  is a Google-managed serverless container orchestration service.
+It can integrate with other GCP  services, such as Artifact Registry  for re -
+trieving containers, Google Cloud IAM  for managing permissions, Google
+Firestor e for persistent database storage, and more.
+General best practices for securing Google Cloud
+Run
+Follow GCP  security best practices for Cloud Run:
+Thorough documentation of security in Google Cloud Run can be found
+at the following links:
+https://cloud.google.com/run/docs/securing/security
+https://cloud.google.com/run/docs/tutorials/secure-services
+Use Google Binary Authorization  to deploy container images from a
+signed and trusted source, as explained here:
+https://cloud.google.com/binary-authorization/docs/run/overview
+For sensitive environments, encrypt your container images using cus -
+tomer -managed encryption keys (as explained in Chapter 1 1), keeping
+container image content conﬁdential, as follows: https://cloud.google. -
+com/run/docs/securing/using-cmek
+Best practices for identity and access management in
+Google Cloud Run
+Google Cloud IAM is the supported service for managing permissions to
+access and run containers using Google Cloud Run (as explained in Chapter
+9).
+Use the following best practices for authentication in Google Cloud Run:
+Thorough documentation of Google Cloud Run and identity manage -
+ment can be found at the following links:
+https://cloud.google.com/run/docs/authenticating/overview
+https://cloud.google.com/run/docs/securing/managing-access
+To allow access to Google Cloud Run, conﬁgure an IAM role to enforce
+permissions to avoid unauthorized access to your cloud environment,
+following the principle of least privilege, as explained here:
+https://cloud.google.com/run/docs/reference/iam/roles
+https://cloud.google.com/run/docs/reference/iam/permissions
+For internal users who need access to Google Cloud Run, use the
+Identity-A ware proxy to authenticate the end users to avoid unautho -
+rized access, as explained here: https://cloud.google.com/iap/docs/en -
+abling-cloud-run
+For an external application that contains non-public information, enforce
+authentication using Identity Platform  to avoid unauthorized access:
+https://cloud.google.com/run/docs/tutorials/identity-platform
+For each application, create a unique Cloud Run service identity , follow -
+ing the principle of least privilege, to avoid unauthorized access, as ex -
+plained at the following links:
+https://cloud.google.com/run/docs/securing/service-identity#per -ser-
+vice-identity
+https://cloud.google.com/run/docs/conﬁguring/jobs/service-identity
+Use Google Secr et Manager  for the storage, retrieval, and rotation of
+secrets. GCP  allows you to integrate Google Cloud Run with Google
+Secret Manager using client libraries, and avoid unauthorized access to
+static credentials: https://cloud.google.com/run/docs/conﬁguring/jobs/se -
+crets
+Best practices for securing network access to Google
+Cloud Run
+Google Cloud Run exposes services (among others, to the internet) – for
+that reason, it is important to plan before deploying each Google Cloud Run
+connected to Google Cloud VPC (as explained in Chapter 6 ).
+Follow these best practices to secure network access to Google Cloud Run:
+To protect Google Cloud Run inbound access, and avoid unauthorized
+network access, follow these best practices:
+https://cloud.google.com/run/docs/securing/ingress
+https://cloud.google.com/run/docs/securing/private-networking
+https://cloud.google.com/run/docs/conﬁguring/networking-best-
+practices
+To restrict access to Google Cloud Run from trusted sources and reduce
+the risk of data exﬁltration, use VPC Service Contr ols, as explained
+here: https://cloud.google.com/run/docs/securing/using-vpc-service-
+controls
+To protect inbound trafﬁc to Google Cloud Run from the public internet,
+use Google Cloud Armor  to protect against application layer attacks:
+https://cloud.google.com/armor/docs/integrating-cloud-armor#serverless
+Best practices for conducting auditing and security
+monitoring in Google Cloud Run
+Google allows you to enable logging and auditing using Google Cloud au-
+dit logs .
+The following resources of fer comprehensive information on the best prac -
+tices for auditing and monitoring Google Cloud Run:
+Thorough documentation of Google Cloud Run and identity manage -
+ment can be found at the following link:
+https://cloud.google.com/run/docs/audit-logging
+To forward container logs to Google Cloud Logging  for further investi -
+gation and analysis, follow this documentation:
+https://cloud.google.com/run/docs/logging#container -logs
+In this section, we have learned how to securely maintain Google Cloud
+Run, based on GCP  infrastructure – from identity and access management,
+securing the network, to logging and auditing.
+Summary
+In this chapter , we have focused on container orchestrator services in AWS,
+Azure, and GCP .
+In each section, we have reviewed how to manage identity management (for
+authentication and authorization), how to implement data protection (from
+access controls to networks and encryption), how to conﬁgure auditing and
+logging, and ﬁnally , how to implement industry best practices.
+Next, we are going to see what the best practices are for securing common
+serverless/functions as a service from AWS, Azure, and GCP .

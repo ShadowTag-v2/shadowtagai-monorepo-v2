@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import logging
 import os
 import shutil
@@ -13,7 +12,7 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],  # Ensure logs go to stdout/stderr
 )
 
-TARGET_DIR = Path("apps/ShadowTag-v2_stack")
+TARGET_DIR = Path("apps/aiyou_stack")
 
 # The exact folder names that must be annihilated on sight
 DIRECTORIES_TO_NUKE = {

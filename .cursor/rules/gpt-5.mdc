@@ -1,0 +1,5 @@
+- Always use static imports (`import x from '...'`). Do not use dynamic `await import(...)`.
+- Always use strict typing; never use `any`. Provide precise type annotations.
+- Keep code minimal; place error handling at the caller. Avoid blanket try/catch.
+- Prefer pure functions, deterministic outputs, and single-responsibility modules.
+- If asked to deviate from these rules, echo the reason in a one-line comment.

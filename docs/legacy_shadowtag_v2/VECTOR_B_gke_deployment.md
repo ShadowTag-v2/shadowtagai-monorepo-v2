@@ -1,5 +1,4 @@
 # VECTOR B: GKE DEPLOYMENT INFRASTRUCTURE
-
 **Classification:** Infrastructure as Code | Production-Ready
 **Date:** 2025-11-07
 **Status:** ✓ COMPLETE
@@ -8,10 +7,9 @@
 
 ## EXECUTIVE SUMMARY
 
-Complete Terraform infrastructure for **ShadowTag-v2 Platform** on Google Kubernetes Engine (GKE), architected for **ultra-low latency** workloads (NS mesh <100μs), **GPU-accelerated inference** (Gemini video), and **async document processing** (TensorLake).
+Complete Terraform infrastructure for **AiYOU Platform** on Google Kubernetes Engine (GKE), architected for **ultra-low latency** workloads (NS mesh <100μs), **GPU-accelerated inference** (Gemini video), and **async document processing** (TensorLake).
 
 **Deployment Structure:**
-
 ```
 infrastructure/terraform/
 ├── bootstrap/         # Service accounts, APIs, IAM (COMPLETE)
@@ -28,17 +26,16 @@ infrastructure/terraform/
 
 ### 1.1 Node Pool Allocation Strategy
 
-| Pool           | Machine Type            | Min | Max | Latency Budget | Workload                     |
-| -------------- | ----------------------- | --- | --- | -------------- | ---------------------------- |
-| **Judge**      | n2-standard-8           | 2   | 10  | <90ms (P95)    | Medical decision validation  |
-| **LLM-GPU**    | n1-standard-8 + T4      | 1   | 5   | ~500ms         | Gemini video, vLLM inference |
-| **Cor**        | n2-standard-4           | 2   | 8   | ~200ms         | Coordination, orchestration  |
-| **NS-Mesh**    | n2-highcpu-8            | 3   | 12  | <100μs (P99)   | Neural Signal routing        |
-| **ShadowTag**  | c2-standard-8           | 2   | 8   | ~150ms         | DCT watermark ops            |
-| **TensorLake** | n1-standard-8 (preempt) | 3   | 20  | Async (2-10s)  | Document extraction          |
+| Pool | Machine Type | Min | Max | Latency Budget | Workload |
+|------|-------------|-----|-----|----------------|----------|
+| **Judge** | n2-standard-8 | 2 | 10 | <90ms (P95) | Medical decision validation |
+| **LLM-GPU** | n1-standard-8 + T4 | 1 | 5 | ~500ms | Gemini video, vLLM inference |
+| **Cor** | n2-standard-4 | 2 | 8 | ~200ms | Coordination, orchestration |
+| **NS-Mesh** | n2-highcpu-8 | 3 | 12 | <100μs (P99) | Neural Signal routing |
+| **ShadowTag** | c2-standard-8 | 2 | 8 | ~150ms | DCT watermark ops |
+| **TensorLake** | n1-standard-8 (preempt) | 3 | 20 | Async (2-10s) | Document extraction |
 
 **Total Capacity (Max Scale):**
-
 - 63 nodes
 - 392 vCPUs (CPU)
 - 5 NVIDIA T4 GPUs
@@ -47,20 +44,17 @@ infrastructure/terraform/
 ### 1.2 Latency Optimization Decisions
 
 **NS Mesh Pool (Ultra-Critical):**
-
 - `n2-highcpu-8`: CPU-optimized for routing logic
 - `pd-ssd`: SSD disks mandatory (no PD-balanced)
 - `min_nodes=3`: Pre-warmed capacity (no cold starts)
 - Higher minimum prevents autoscaling delays
 
 **Judge Pool (Critical):**
-
 - `n2-standard-8`: Balanced compute/memory for inference
 - `pd-ssd`: Fast model loading from disk cache
 - Taint isolation: Prevents noisy neighbors
 
 **TensorLake Pool (Cost-Optimized):**
-
 - `preemptible=true`: 70% cost savings (safe for async queue)
 - `pd-balanced`: Cheaper disks (latency not critical)
 - Can tolerate node preemption (jobs requeue)
@@ -90,7 +84,6 @@ terraform apply -var="project_id=your-gcp-project" \
 ```
 
 **Output:**
-
 - ✅ 18 GCP APIs enabled
 - ✅ 5 service accounts created
 - ✅ IAM bindings configured
@@ -110,7 +103,7 @@ terraform init
 
 terraform plan -var="project_id=your-gcp-project" \
                -var="environment=prod" \
-               -var="cluster_name=ShadowTag-v2-platform"
+               -var="cluster_name=aiyou-platform"
 
 terraform apply -var="project_id=your-gcp-project" \
                 -var="environment=prod" \
@@ -118,7 +111,6 @@ terraform apply -var="project_id=your-gcp-project" \
 ```
 
 **Output:**
-
 - ✅ Regional GKE cluster (3 zones)
 - ✅ VPC with private Google access
 - ✅ Cloud NAT for egress
@@ -146,7 +138,6 @@ terraform apply -var="project_id=your-gcp-project" \
 ```
 
 **Output:**
-
 - ✅ Judge pool (n2-standard-8)
 - ✅ LLM-GPU pool (n1-standard-8 + T4)
 - ✅ Cor pool (n2-standard-4)
@@ -174,7 +165,6 @@ terraform apply -var="project_id=your-gcp-project" \
 ```
 
 **Output:**
-
 - ✅ Workload Identity bindings (3 K8s SA → GCP SA)
 - ✅ GCS bucket for Vertex AI artifacts
 - ✅ Tensorboard instance (Judge training)
@@ -192,19 +182,18 @@ terraform apply -var="project_id=your-gcp-project" \
 
 **Node Pool Costs (Sustained Use Discount Applied):**
 
-| Pool       | Machine Type   | Nodes (Avg) | Hours/Month | Unit Cost | Total  |
-| ---------- | -------------- | ----------- | ----------- | --------- | ------ |
-| Judge      | n2-standard-8  | 4           | 2,880       | $0.39/hr  | $4,492 |
-| LLM-GPU    | n1-std-8 + T4  | 2           | 1,440       | $0.65/hr  | $1,872 |
-| Cor        | n2-standard-4  | 3           | 2,160       | $0.19/hr  | $823   |
-| NS-Mesh    | n2-highcpu-8   | 5           | 3,600       | $0.36/hr  | $2,592 |
-| ShadowTag  | c2-standard-8  | 3           | 2,160       | $0.45/hr  | $1,944 |
-| TensorLake | n1-std-8 (pre) | 8           | 5,760       | $0.12/hr  | $1,382 |
+| Pool | Machine Type | Nodes (Avg) | Hours/Month | Unit Cost | Total |
+|------|-------------|-------------|-------------|-----------|-------|
+| Judge | n2-standard-8 | 4 | 2,880 | $0.39/hr | $4,492 |
+| LLM-GPU | n1-std-8 + T4 | 2 | 1,440 | $0.65/hr | $1,872 |
+| Cor | n2-standard-4 | 3 | 2,160 | $0.19/hr | $823 |
+| NS-Mesh | n2-highcpu-8 | 5 | 3,600 | $0.36/hr | $2,592 |
+| ShadowTag | c2-standard-8 | 3 | 2,160 | $0.45/hr | $1,944 |
+| TensorLake | n1-std-8 (pre) | 8 | 5,760 | $0.12/hr | $1,382 |
 
 **Subtotal (Compute):** $13,105/month
 
 **Storage & Networking:**
-
 - Persistent disks (SSD + balanced): ~$800/month
 - Cloud NAT: ~$150/month
 - Load balancer: ~$200/month
@@ -214,7 +203,6 @@ terraform apply -var="project_id=your-gcp-project" \
 **Subtotal (Storage/Network):** $1,300/month
 
 **Total Services:**
-
 - Memorystore Redis (6GB): ~$200/month
 - Cloud SQL (optional): ~$150/month
 - Monitoring & Logging: ~$300/month
@@ -226,7 +214,6 @@ terraform apply -var="project_id=your-gcp-project" \
 ### 3.2 Development Environment (Monthly)
 
 **Scaled-Down Configuration:**
-
 - Judge: 1 node (vs 4)
 - LLM-GPU: 0 nodes (use Vertex AI API)
 - Cor: 1 node (vs 3)
@@ -239,26 +226,21 @@ terraform apply -var="project_id=your-gcp-project" \
 ### 3.3 Cost Optimization Strategies
 
 **1. Preemptible Nodes (Already Applied):**
-
 - TensorLake pool: 70% savings ($4,600 → $1,382/month)
 
 **2. Spot VMs (Future):**
-
 - Replace preemptible with Spot (same savings, longer runtime)
 
 **3. Committed Use Discounts:**
-
 - 1-year commit: 25% discount
 - 3-year commit: 52% discount
 - **Savings:** $3,700/month (1-year) or $7,800/month (3-year)
 
 **4. Right-Sizing:**
-
 - Monitor CPU/memory utilization (first 30 days)
 - Downgrade under-utilized pools (e.g., Cor: n2-std-4 → n2-std-2)
 
 **5. Autoscaling Tuning:**
-
 - Aggressive scale-down for non-critical pools
 - Judge/NS-Mesh: Keep higher minimums (latency SLA)
 
@@ -271,7 +253,7 @@ terraform apply -var="project_id=your-gcp-project" \
 ### 4.1 VPC Design
 
 ```
-VPC: ShadowTag-v2-vpc-prod
+VPC: aiyou-vpc-prod
 ├─ Subnet: gke-subnet-prod (10.0.0.0/20)
 │  ├─ Primary Range: Node IPs (10.0.0.0/20)
 │  ├─ Secondary Range: Pods (10.4.0.0/14)
@@ -283,13 +265,11 @@ VPC: ShadowTag-v2-vpc-prod
 ```
 
 **IP Address Allocation:**
-
 - Nodes: 4,096 IPs (10.0.0.0/20)
 - Pods: 262,144 IPs (10.4.0.0/14)
 - Services: 4,096 IPs (10.8.0.0/20)
 
 **Private Cluster Configuration:**
-
 - Nodes: Private IPs only (no public IPs)
 - Control Plane: Public endpoint (restricted by authorized networks)
 - Egress: Via Cloud NAT
@@ -297,36 +277,30 @@ VPC: ShadowTag-v2-vpc-prod
 ### 4.2 Firewall Rules
 
 **1. Allow Internal Traffic:**
-
 - Source: 10.0.0.0/20, 10.4.0.0/14, 10.8.0.0/20
 - Ports: All (TCP/UDP/ICMP)
 - Purpose: Pod-to-pod, pod-to-service
 
 **2. Allow GCP Health Checks:**
-
 - Source: 35.191.0.0/16, 130.211.0.0/22
 - Ports: All TCP
 - Purpose: Load balancer health probes
 
 **3. Implicit Deny:**
-
 - All other ingress traffic blocked
 
 ### 4.3 Service Mesh Considerations (Future)
 
 **Option A: Istio (Heavy):**
-
 - Full service mesh capabilities
 - Adds ~10-20ms latency per hop
 - ❌ NOT suitable for NS mesh (<100μs budget)
 
 **Option B: Linkerd (Lighter):**
-
 - ~2-5ms latency overhead
 - ⚠️ Borderline for NS mesh
 
 **Option C: No Service Mesh:**
-
 - Native K8s networking (ClusterIP, NodePort)
 - ✅ RECOMMENDED for NS mesh (zero mesh overhead)
 - Use Envoy/Nginx as edge proxy only
@@ -353,14 +327,12 @@ metadata:
 ```
 
 **IAM Binding (Already in Terraform):**
-
 ```hcl
 member = "serviceAccount:your-project.svc.id.goog[judge-system/judge-workload-sa]"
 role   = "roles/iam.workloadIdentityUser"
 ```
 
 **Benefits:**
-
 - No service account keys (no credential leakage)
 - Fine-grained IAM permissions per workload
 - Automatic credential rotation
@@ -368,17 +340,15 @@ role   = "roles/iam.workloadIdentityUser"
 ### 5.2 Binary Authorization
 
 **Policy Enforcement:**
-
 - Only signed container images allowed
 - Signature verification via Artifact Registry
 - Blocks unsigned/untrusted images
 
 **Setup Required (Post-Deployment):**
-
 ```bash
 # Create attestor
-gcloud container binauthz attestors create ShadowTag-v2-attestor \
-  --attestation-authority-note=ShadowTag-v2-note \
+gcloud container binauthz attestors create aiyou-attestor \
+  --attestation-authority-note=aiyou-note \
   --attestation-authority-note-project=your-project
 
 # Configure policy
@@ -388,20 +358,17 @@ gcloud container binauthz policy import policy.yaml
 ### 5.3 Secrets Encryption
 
 **Application-Layer Encryption:**
-
 - GKE Secrets encrypted with KMS key (`gke-secrets-prod`)
 - Key rotation: Automatic (90 days)
 - Access: Restricted to GKE service account
 
 **Runtime Secrets:**
-
 - Use Secret Manager (NOT Kubernetes Secrets)
 - Inject via CSI driver or environment variables
 
 ### 5.4 Shielded Nodes
 
 **Enabled on All Pools:**
-
 - Secure Boot: Verified bootloader/kernel
 - Integrity Monitoring: TPM-based measurements
 - Blocks bootkits, rootkits
@@ -413,13 +380,11 @@ gcloud container binauthz policy import policy.yaml
 ### 6.1 Cloud Monitoring Integration
 
 **Enabled Metrics:**
-
 - System components (kubelet, kube-proxy, etc.)
 - Workload metrics (custom via Prometheus)
 - Managed Prometheus (GMP) enabled
 
 **Custom Metrics for Latency SLOs:**
-
 ```yaml
 # Example: NS mesh routing latency
 apiVersion: monitoring.googleapis.com/v1
@@ -427,20 +392,18 @@ kind: ServiceLevelObjective
 metadata:
   name: ns-mesh-latency-slo
 spec:
-  goal: 0.99 # 99% of requests
+  goal: 0.99  # 99% of requests
   metric: custom.googleapis.com/ns_mesh_routing_latency_us
-  threshold: 100 # <100μs
+  threshold: 100  # <100μs
 ```
 
 ### 6.2 Logging Configuration
 
 **Enabled Logs:**
-
 - System components (control plane, node logs)
 - Workload logs (stdout/stderr from pods)
 
 **Log Aggregation:**
-
 - Cloud Logging (Stackdriver)
 - Retention: 30 days (default)
 - Export to BigQuery for long-term analysis (optional)
@@ -448,7 +411,6 @@ spec:
 ### 6.3 Alerting Policies (To Be Created)
 
 **Critical Alerts:**
-
 1. NS mesh latency > 100μs (P99)
 2. Judge latency > 90ms (P95)
 3. TensorLake queue depth > 500 jobs
@@ -456,7 +418,6 @@ spec:
 5. GPU utilization < 20% (cost waste alert)
 
 **Setup:**
-
 ```bash
 gcloud alpha monitoring policies create \
   --notification-channels=CHANNEL_ID \
@@ -482,7 +443,7 @@ ENVIRONMENT="prod"
 REGION="us-central1"
 
 echo "═══════════════════════════════════════════"
-echo "  ShadowTag-v2 PLATFORM - GKE DEPLOYMENT"
+echo "  AIYOU PLATFORM - GKE DEPLOYMENT"
 echo "═══════════════════════════════════════════"
 
 # Step 1: Bootstrap
@@ -519,7 +480,7 @@ terraform apply -var="project_id=$PROJECT_ID" \
                 -auto-approve
 
 echo "✅ Deployment complete!"
-echo "Cluster: ShadowTag-v2-platform-$ENVIRONMENT"
+echo "Cluster: aiyou-platform-$ENVIRONMENT"
 echo "Region: $REGION"
 ```
 
@@ -527,7 +488,7 @@ echo "Region: $REGION"
 
 ```bash
 # Get cluster credentials
-gcloud container clusters get-credentials ShadowTag-v2-platform-prod \
+gcloud container clusters get-credentials aiyou-platform-prod \
   --region us-central1 \
   --project your-gcp-project
 
@@ -543,7 +504,6 @@ kubectl get namespaces
 ### 8.1 Kubernetes Manifests (Next Step)
 
 **Required Deployments:**
-
 1. Namespaces (judge-system, gemini-video, tensorlake, etc.)
 2. Service Accounts (with Workload Identity annotations)
 3. Deployments/StatefulSets
@@ -553,7 +513,6 @@ kubectl get namespaces
 7. Network Policies
 
 **Example Namespace:**
-
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -608,19 +567,19 @@ spec:
   minReplicas: 3
   maxReplicas: 20
   metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 70
-    - type: Pods
-      pods:
-        metric:
-          name: judge_inference_latency_p95
-        target:
-          type: AverageValue
-          averageValue: "90000000" # 90ms in nanoseconds
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Pods
+    pods:
+      metric:
+        name: judge_inference_latency_p95
+      target:
+        type: AverageValue
+        averageValue: "90000000"  # 90ms in nanoseconds
 ```
 
 ---
@@ -630,12 +589,10 @@ spec:
 ### 9.1 Backup Strategy
 
 **GKE Configuration:**
-
 - Terraform state: Stored in GCS (versioned)
 - Cluster config: Exported via `gcloud container clusters describe`
 
 **Application State:**
-
 - PostgreSQL/CloudSQL: Automated daily backups (7-day retention)
 - Redis: RDB snapshots every 6 hours
 - TensorLake results cache: Ephemeral (acceptable data loss)
@@ -647,12 +604,10 @@ spec:
 
 **Phase 1 (Current):** Single region (`us-central1`)
 **Phase 2:** Multi-region active-passive
-
 - Primary: `us-central1`
 - DR: `us-east1` (cold standby)
 
 **Phase 3:** Multi-region active-active
-
 - Traffic split: 70% us-central1, 30% us-east1
 - Cross-region load balancing
 
@@ -663,23 +618,19 @@ spec:
 ### 10.1 Infrastructure KPIs
 
 **Availability:**
-
 - GKE control plane uptime: >99.95% (SLA)
 - Node pool availability: >99.5%
 
 **Performance:**
-
 - NS mesh P99 latency: <100μs ✓
 - Judge P95 latency: <90ms ✓
 - TensorLake job completion rate: >99.5% ✓
 
 **Cost:**
-
 - Monthly spend: <$15k (prod)
 - Cost per 1k requests: <$0.50
 
 **Security:**
-
 - Zero unpatched CVEs (Critical/High)
 - Binary Authorization enforcement: 100%
 
@@ -699,14 +650,12 @@ spec:
 **✅ INFRASTRUCTURE COMPLETE**
 
 All Terraform modules deployed and ready for Kubernetes workload deployment. Next steps:
-
 1. Deploy K8s manifests (namespaces, deployments, services)
 2. Install TensorLake workers + RabbitMQ queue
 3. Deploy NS mesh router (Rust/Go microservice)
 4. Latency validation tests
 
 **Files Created:**
-
 - `/infrastructure/terraform/bootstrap/main.tf`
 - `/infrastructure/terraform/base-platform/main.tf`
 - `/infrastructure/terraform/node-pools/main.tf`

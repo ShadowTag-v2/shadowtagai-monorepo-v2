@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/circuit_breaker/health_endpoint.py
+# hypothesis_version: 6.151.5
+
+[200, 404, 503, 8081, '--port', '/', '/health', '0.0.0.0', 'Content-Type', 'Port to listen on', '__main__', 'application/json', 'http_reason', 'http_status', 'open', 'summary', 'utf-8']

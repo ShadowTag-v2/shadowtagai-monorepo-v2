@@ -2,7 +2,7 @@
 
 **Generated:** 2025-11-18
 **Source:** [Strategic Business Integration](./strategic-business-integration.md) (35,000 words)
-**Purpose:** Actionable task breakdown for ShadowTag + ShadowTag-v2 execution
+**Purpose:** Actionable task breakdown for ShadowTag + AiYou execution
 
 ---
 
@@ -10,7 +10,7 @@
 
 **Budget:** $350,000
 **Timeline:** 3 months
-**Goal:** Working proof-of-concept for both ShadowTag and ShadowTag-v2
+**Goal:** Working proof-of-concept for both ShadowTag and AiYou
 
 ### Critical Path
 
@@ -19,7 +19,7 @@ Week 1-2: Foundation Setup
     ↓
 Week 3-4: ShadowTag MVP
     ↓
-Week 5-6: ShadowTag-v2 MVP
+Week 5-6: AiYou MVP
     ↓
 Week 7-8: Integration Testing
     ↓
@@ -33,7 +33,6 @@ Week 9-12: Pilot Launch
 ### Week 1-2: Foundation Setup
 
 #### Infrastructure
-
 - [ ] **Setup unified repository structure**
   - [ ] Create `src/specs/` directory for Markdown specifications
   - [ ] Create `src/services/` for generated Python code
@@ -58,10 +57,10 @@ Week 9-12: Pilot Launch
 
 - [ ] **MCP Server Setup**
   - [ ] Create `src/mcp/server.py` (from [Implementation Guide §2](./implementation-guide.md#2-mcp-protocol-for-tool-interoperability))
-  - [ ] Implement `ShadowTag-v2MCPServer` class
+  - [ ] Implement `AiyouMCPServer` class
   - [ ] Register initial tools: `ingest_document`, `search_documents`
   - [ ] Test with Claude Code client
-  - [ ] **Expected:** Claude/Codex can call ShadowTag-v2 tools via MCP
+  - [ ] **Expected:** Claude/Codex can call AIYOU tools via MCP
 
 - [ ] **Backlog.md Task Tracking**
   - [ ] Install backlog CLI: `npm install -g backlog-md`
@@ -78,7 +77,6 @@ Week 9-12: Pilot Launch
   - [ ] **Expected:** Claude Code has access to API docs context
 
 **Deliverables (Week 2):**
-
 - Working Gemini Batch API integration
 - MCP server operational
 - Task tracking system live
@@ -143,7 +141,7 @@ Week 9-12: Pilot Launch
 - [ ] **Mem-Layer Persistent Memory** (from [Implementation Guide §4](./implementation-guide.md#4-persistent-memory-with-mem-layer))
   - [ ] Install: `pip install mem-layer`
   - [ ] Create `src/services/memory.py`
-  - [ ] Implement `ShadowTag-v2Memory` class
+  - [ ] Implement `AiyouMemory` class
   - [ ] Track document processing history
   - [ ] Enable cross-agent notes
   - [ ] **Test:** Query documents processed in last 24 hours
@@ -158,7 +156,6 @@ Week 9-12: Pilot Launch
   - [ ] **Test:** Point-in-time provenance query
 
 **Deliverables (Week 4):**
-
 - Neural fingerprinting operational
 - Watermarking with 99% survival rate
 - Blockchain receipts working
@@ -169,7 +166,7 @@ Week 9-12: Pilot Launch
 
 ---
 
-### Week 5-6: ShadowTag-v2 MVP
+### Week 5-6: AiYou MVP
 
 #### Core Components
 
@@ -190,26 +187,26 @@ Week 9-12: Pilot Launch
   - [ ] **Target:** +25% average session time vs. TikTok baseline
 
 - [ ] **FastAPI Service**
-  - [ ] Create `src/specs/ShadowTag-v2-api.md`
-  - [ ] Generate `src/services/ShadowTag-v2.py`
+  - [ ] Create `src/specs/aiyou-api.md`
+  - [ ] Generate `src/services/aiyou.py`
   - [ ] Endpoints:
-    - [ ] `POST /ShadowTag-v2/upload` - Upload + auto-ShadowTag
-    - [ ] `GET /ShadowTag-v2/feed` - Personalized cognitive feed
-    - [ ] `GET /ShadowTag-v2/rank` - Neural ranking for content
-    - [ ] `POST /ShadowTag-v2/creator` - Creator subscription
+    - [ ] `POST /aiyou/upload` - Upload + auto-ShadowTag
+    - [ ] `GET /aiyou/feed` - Personalized cognitive feed
+    - [ ] `GET /aiyou/rank` - Neural ranking for content
+    - [ ] `POST /aiyou/creator` - Creator subscription
   - [ ] Add OpenAPI documentation
   - [ ] **Test:** Feed ranking vs. chronological ordering
 
 #### Integration
 
 - [ ] **ShadowTag Synergy** (from [Strategic Integration §II.6](./strategic-business-integration.md#shadowtag-synergy))
-  - [ ] Auto-verify every ShadowTag-v2 upload via ShadowTag
+  - [ ] Auto-verify every AiYou upload via ShadowTag
   - [ ] Generate blockchain receipt → $0.02 fee
   - [ ] Track in Graphiti: (upload) -[verified_by]→ (ShadowTag)
   - [ ] **Target:** 100% upload provenance coverage
 
 - [ ] **Content Database**
-  - [ ] Create `data/ShadowTag-v2.db`
+  - [ ] Create `data/aiyou.db`
   - [ ] Tables: `videos`, `rankings`, `creators`, `feeds`
   - [ ] Indexes on `cognitive_rank`, `upload_time`, `creator_id`
 
@@ -220,7 +217,6 @@ Week 9-12: Pilot Launch
   - [ ] Export analytics (views, rank trajectory)
 
 **Deliverables (Week 6):**
-
 - AI-cognition ranking operational
 - Feed generation working
 - ShadowTag integration complete (100% upload verification)
@@ -254,7 +250,7 @@ Week 9-12: Pilot Launch
   - [ ] Throughput: Test parallel processing
     - [ ] **Target:** 100 assets/hour with single GPU
   - [ ] Cost tracking: Monitor actual vs. projected costs
-    - [ ] **Target:** $0.02/asset total (ShadowTag + ShadowTag-v2)
+    - [ ] **Target:** $0.02/asset total (ShadowTag + AiYou)
 
 - [ ] **Error Handling**
   - [ ] Test batch API failure → fallback to individual calls
@@ -269,7 +265,6 @@ Week 9-12: Pilot Launch
   - [ ] Input sanitization (XSS prevention)
 
 **Deliverables (Week 8):**
-
 - End-to-end pipeline operational
 - Performance meets targets
 - Error handling robust
@@ -319,7 +314,6 @@ Week 9-12: Pilot Launch
     - [ ] Error rate > 5%
 
 **Deliverables (Week 12):**
-
 - 250 edge sites operational
 - 200 beta creators onboarded
 - 3 partnership LOIs signed
@@ -332,14 +326,14 @@ Week 9-12: Pilot Launch
 
 ## 💰 Phase 0 Financial Summary
 
-| Item                | Budget    | Timeline     | Deliverable                       |
-| ------------------- | --------- | ------------ | --------------------------------- |
-| Foundation Setup    | $25K      | Weeks 1-2    | Dev environment + tooling         |
-| ShadowTag MVP       | $75K      | Weeks 3-4    | Neural fingerprinting operational |
-| ShadowTag-v2 MVP           | $100K     | Weeks 5-6    | AI-cognition feed working         |
-| Integration Testing | $50K      | Weeks 7-8    | End-to-end pipeline validated     |
-| Pilot Launch        | $100K     | Weeks 9-12   | 250 sites + 200 creators          |
-| **Total**           | **$350K** | **12 weeks** | **$1.5M ARR run-rate**            |
+| Item | Budget | Timeline | Deliverable |
+|------|--------|----------|-------------|
+| Foundation Setup | $25K | Weeks 1-2 | Dev environment + tooling |
+| ShadowTag MVP | $75K | Weeks 3-4 | Neural fingerprinting operational |
+| AiYou MVP | $100K | Weeks 5-6 | AI-cognition feed working |
+| Integration Testing | $50K | Weeks 7-8 | End-to-end pipeline validated |
+| Pilot Launch | $100K | Weeks 9-12 | 250 sites + 200 creators |
+| **Total** | **$350K** | **12 weeks** | **$1.5M ARR run-rate** |
 
 **Payback:** ~4 months at $1.5M ARR
 **IRR:** ~200% (Phase 0 → Phase 1 bridge financing)
@@ -377,7 +371,6 @@ Week 9-12: Pilot Launch
   - [ ] **Goal:** Raise $120M at 15% dilution
 
 **Deliverables (Month 9):**
-
 - 8,000 sites operational across 10 metros
 - $144M ARR run-rate
 - 4 OEM partnerships
@@ -398,7 +391,7 @@ Week 9-12: Pilot Launch
 
 - [ ] **Enterprise Sales**
   - [ ] Sign 10 enterprise ShadowTag licenses ($100M/yr each)
-  - [ ] Launch ShadowTag-v2 creator subscriptions ($10/mo)
+  - [ ] Launch AiYou creator subscriptions ($10/mo)
   - [ ] **Target:** 1M paying creators
 
 - [ ] **Fundraising**
@@ -407,7 +400,6 @@ Week 9-12: Pilot Launch
   - [ ] **Goal:** Raise $450M + $200M debt
 
 **Deliverables (Month 18):**
-
 - 200 micro-PoPs operational
 - $780M ARR run-rate
 - Break-even on operating cash flow
@@ -437,7 +429,6 @@ Week 9-12: Pilot Launch
   - [ ] Strategic acquirer outreach (SpaceX, Tesla, Meta)
 
 **Deliverables (Month 30):**
-
 - $2.4B ARR run-rate
 - 100K pole nodes operational
 - $12-15B valuation
@@ -447,22 +438,21 @@ Week 9-12: Pilot Launch
 
 ## 🎯 Success Metrics (By Phase)
 
-| Metric                 | Phase 0 (12 wks) | Phase 1 (9 mo) | Phase 2 (18 mo) | Phase 3 (30 mo) |
-| ---------------------- | ---------------- | -------------- | --------------- | --------------- |
-| **Sites Deployed**     | 250              | 8,000          | 25,000          | 100,000         |
-| **ARR**                | $1.5M            | $144M          | $780M           | $2.4B           |
-| **Creators**           | 200              | 10K            | 100K            | 1M              |
-| **Assets Verified/mo** | 10K              | 1M             | 10M             | 100M            |
-| **Latency (P95)**      | < 100ms          | < 50ms         | < 30ms          | < 25ms          |
-| **Cost/Asset**         | $0.025           | $0.02          | $0.018          | $0.015          |
-| **Gross Margin**       | 45%              | 55%            | 60%             | 65%             |
+| Metric | Phase 0 (12 wks) | Phase 1 (9 mo) | Phase 2 (18 mo) | Phase 3 (30 mo) |
+|--------|------------------|----------------|-----------------|-----------------|
+| **Sites Deployed** | 250 | 8,000 | 25,000 | 100,000 |
+| **ARR** | $1.5M | $144M | $780M | $2.4B |
+| **Creators** | 200 | 10K | 100K | 1M |
+| **Assets Verified/mo** | 10K | 1M | 10M | 100M |
+| **Latency (P95)** | < 100ms | < 50ms | < 30ms | < 25ms |
+| **Cost/Asset** | $0.025 | $0.02 | $0.018 | $0.015 |
+| **Gross Margin** | 45% | 55% | 60% | 65% |
 
 ---
 
 ## 🧰 Tools & Infrastructure Tracking
 
 ### Development Tools
-
 - [x] Gemini Batch API integration (50% cost savings)
 - [ ] MCP server operational (Claude/Codex/Gemini CLI)
 - [ ] Backlog.md task management (Git-native)
@@ -470,7 +460,6 @@ Week 9-12: Pilot Launch
 - [ ] Code review slash commands (security/performance)
 
 ### Agent Infrastructure
-
 - [ ] Multi-agent swarm orchestrator
 - [ ] Mem-Layer persistent memory
 - [ ] Graphiti temporal knowledge graph
@@ -478,14 +467,12 @@ Week 9-12: Pilot Launch
 - [ ] LangChain integration (optional orchestration layer)
 
 ### Edge Compute
-
 - [ ] Starlink ground station integration
 - [ ] CoreWeave GPU pod deployment
 - [ ] Pole-level micro-nodes (Phase 3)
 - [ ] Digital freeway control tower (Phase 3)
 
 ### Monitoring & Observability
-
 - [ ] Prometheus metrics
 - [ ] Grafana dashboards
 - [ ] LangSmith debugging (optional)
@@ -497,31 +484,27 @@ Week 9-12: Pilot Launch
 ## 🚨 Risk Mitigation Checklist
 
 ### Technical Risks
-
 - [ ] **GPU availability:** Pre-negotiate CoreWeave capacity reservations
 - [ ] **Starlink access:** Backup plan with OneWeb or Kuiper if SpaceX unavailable
 - [ ] **Blockchain congestion:** Multi-chain strategy (Polygon + Arbitrum + Optimism)
 - [ ] **OOM errors:** Context compression at 180K/200K tokens (from Kimi-Writer)
 
 ### Business Risks
-
 - [ ] **Permitting delays:** Pre-lease towerco agreements, city DOT partnerships
 - [ ] **OEM reluctance:** Strict privacy guardrails, GDPR/CCPA compliance
 - [ ] **Regulatory intervention:** SOC 2 + ISO 27001 proactive certification
 - [ ] **Competitor emergence:** File patents on neural fingerprinting + energy-based ranking
 
 ### Financial Risks
-
 - [ ] **Fundraising delays:** Bridge financing from angels/strategic investors
 - [ ] **Cost overruns:** 20% contingency buffer in each phase budget
-- [ ] **Revenue shortfall:** Diversify revenue streams (ShadowTag licenses + ShadowTag-v2 subs + data analytics)
+- [ ] **Revenue shortfall:** Diversify revenue streams (ShadowTag licenses + AiYou subs + data analytics)
 
 ---
 
 ## 📋 Dependencies & Blockers
 
 ### External Dependencies
-
 1. **Gemini API Access:** Required for batch processing
    - **Status:** Publicly available
    - **Blocker:** None
@@ -539,7 +522,6 @@ Week 9-12: Pilot Launch
    - **Blocker:** None (testnet → mainnet)
 
 ### Internal Dependencies
-
 1. **Team Hiring:**
    - [ ] CTO (AI/ML background)
    - [ ] Lead Engineer (FastAPI + async Python)
@@ -556,21 +538,18 @@ Week 9-12: Pilot Launch
 ## ✅ Daily/Weekly Habits
 
 ### Daily Standups (15 min)
-
 - [ ] Review Backlog.md tasks
 - [ ] Update task status (in_progress → completed)
 - [ ] Identify blockers
 - [ ] Assign new tasks
 
 ### Weekly Reviews (1 hour)
-
 - [ ] Review cost metrics (actual vs. target $0.02/asset)
 - [ ] Review latency metrics (P95 < target)
 - [ ] Review error rates (< 5% threshold)
 - [ ] Update strategic roadmap if needed
 
 ### Monthly Board Updates (2 hours)
-
 - [ ] ARR run-rate vs. target
 - [ ] Sites deployed vs. plan
 - [ ] Partnerships signed
@@ -581,13 +560,11 @@ Week 9-12: Pilot Launch
 ## 🔗 Cross-References
 
 ### Primary Documents
-
 - [Strategic Business Integration](./strategic-business-integration.md) - Complete business case (35K words)
 - [AI Agents Knowledge Base](./ai-agents-knowledge-base.md) - Technical synthesis (23 resources)
 - [Implementation Guide](./implementation-guide.md) - Code examples and patterns
 
 ### Specific Sections
-
 - Gemini Batch API: [Implementation Guide §1](./implementation-guide.md#1-gemini-batch-api-integration-50-cost-savings)
 - MCP Protocol: [Implementation Guide §2](./implementation-guide.md#2-mcp-protocol-for-tool-interoperability)
 - Multi-Agent Swarm: [Implementation Guide §3](./implementation-guide.md#3-multi-agent-swarm-architecture)

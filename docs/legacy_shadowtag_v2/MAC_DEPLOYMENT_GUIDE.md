@@ -8,19 +8,28 @@ Complete guide for running the ShadowTagAi dual-layer intelligence pipeline loca
 
 ## Table of Contents
 
+
+
 1. [Prerequisites](#prerequisites)
+
 
 2. [Quick Start (5 Minutes)](#quick-start-5-minutes)
 
+
 3. [Detailed Setup](#detailed-setup)
+
 
 4. [Configuration](#configuration)
 
+
 5. [Running the Platform](#running-the-platform)
+
 
 6. [Testing](#testing)
 
+
 7. [Troubleshooting](#troubleshooting)
+
 
 8. [Development Workflow](#development-workflow)
 
@@ -30,13 +39,19 @@ Complete guide for running the ShadowTagAi dual-layer intelligence pipeline loca
 
 ### System Requirements
 
+
+
 - **macOS:** 12.0 (Monterey) or later
+
 
 - **Processor:** Apple Silicon (M1/M2/M3) or Intel
 
+
 - **RAM:** 8GB minimum, 16GB recommended
 
+
 - **Disk Space:** 15GB free (for dependencies and data)
+
 
 - **Python:** 3.10, 3.11, or 3.12
 
@@ -225,7 +240,9 @@ pip install -r requirements.txt
 
 **Apple Silicon (M1/M2/M3) Notes:**
 
+
 - PyTorch automatically installs ARM64-optimized builds
+
 
 - If you get errors with `torch`, install explicitly:
   ```bash
@@ -234,7 +251,9 @@ pip install -r requirements.txt
 
 **Intel Mac Notes:**
 
+
 - No special configuration needed
+
 
 - Dependencies install via standard PyPI
 
@@ -363,9 +382,12 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 
 **Important Notes:**
 
+
 - Most features work without API keys in "mock mode"
 
+
 - For actual intelligence collection, you'll need Gemini API key
+
 
 - For compliance enforcement testing, Gemini API key is required
 
@@ -373,11 +395,16 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 
 #### Gemini API (Required for Enforcement)
 
+
+
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
+
 
 2. Click "Get API key"
 
+
 3. Create new project or select existing
+
 
 4. Copy API key to `.env`:
    ```bash
@@ -386,17 +413,24 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 
 **Free Tier:**
 
+
 - 60 requests/minute
 
+
 - 1,500 requests/day
+
 
 - Sufficient for local testing ✅
 
 #### OpenAI API (Optional - for embeddings)
 
+
+
 1. Go to [OpenAI Platform](https://platform.openai.com/api-keys)
 
+
 2. Create API key
+
 
 3. Add to `.env`:
    ```bash
@@ -405,15 +439,21 @@ ALLOWED_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 
 **Costs:**
 
+
 - text-embedding-3-small: $0.02/1M tokens (~$0.20 for 10M tokens)
+
 
 - Budget for testing: $5-10 is plenty
 
 #### Reddit API (Optional - for news collection)
 
+
+
 1. Go to [Reddit Apps](https://www.reddit.com/prefs/apps)
 
+
 2. Create "script" application
+
 
 3. Copy credentials to `.env`:
    ```bash
@@ -930,23 +970,34 @@ python intelligence_briefing_demo.py
 
 ### 2. Read Documentation
 
+
+
 - **Architecture Decision Records:** `docs/adr/`
 
+
 - **Cost Analysis:** `docs/COST_REVENUE_ANALYSIS.md`
+
 
 - **Deployment Guide:** `docs/deployment.md`
 
 ### 3. Customize Configuration
 
+
+
 - Modify `src/shadowtagai_agents/config/revenue_model.py` for pricing
 
+
 - Adjust `src/shadowtagai_agents/config/constraints.py` for operational limits
+
 
 - Update `src/shadowtagai_agents/config/ingestion_config.py` for data sources
 
 ### 4. Contribute
 
+
+
 - Submit issues: https://github.com/ShadowTag-v2/pnkln-stack-fastapi-services/issues
+
 
 - Pull requests welcome!
 
@@ -1055,17 +1106,25 @@ python -m pdb your_script.py
 
 ### Local Development Issues
 
+
+
 - **Documentation:** Read `README.md` and `docs/` directory
 
+
 - **Tests:** Run `pytest -v` to verify installation
+
 
 - **Logs:** Check console output for error messages
 
 ### Getting Help
 
+
+
 - **GitHub Issues:** https://github.com/ShadowTag-v2/pnkln-stack-fastapi-services/issues
 
+
 - **Discussions:** https://github.com/ShadowTag-v2/pnkln-stack-fastapi-services/discussions
+
 
 - **Email:** support@shadowtagai.ai (for enterprise customers)
 

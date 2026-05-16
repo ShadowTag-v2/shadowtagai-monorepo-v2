@@ -1,10 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import sys
 
-from config.prompts import EXECUTIVE_PROMPT
 from pnkln_core.services.vertex_ai import run_task
 from pnkln_core.utils.router import route_task
+
+from config.prompts import EXECUTIVE_PROMPT
 
 
 def main():

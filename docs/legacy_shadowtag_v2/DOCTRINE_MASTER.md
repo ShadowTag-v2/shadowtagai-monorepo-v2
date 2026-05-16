@@ -14,7 +14,7 @@ The highest level of abstraction. Defines the "Maximize Value" algorithm, the ce
 ### [Cor.2: pnkln-stack Risk Engine (YRM) v1.0](./cor2_risk_engine.md)
 
 **Risk Management & Governance**
-Based on Compliance Framework. Defines the 5-step risk loop, risk matrices, and automated control tiers (Red/Orange/Yellow/Green).
+Based on ATP 5-19. Defines the 5-step risk loop, risk matrices, and automated control tiers (Red/Orange/Yellow/Green).
 
 ### [Cor.8: Master Plan](./cor8_master_plan.md)
 
@@ -52,9 +52,11 @@ The path to $1T valuation, EBITDA targets, and investor readiness.
 
 ### [Agent Swarm Configuration](../infrastructure/k8s/agent_swarm.yaml)
 
-**Flying n-autoresearch/Kosmos/BioAgents**
+**Flying Monkeys**
 Kubernetes deployment for 200-agent swarm with 4-hour shifts.
 
 ## Change Log
+
+
 
 - **2025-11-22**: Initial Master Index creation. Recovered/Recreated core doctrine files.

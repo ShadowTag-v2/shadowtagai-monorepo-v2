@@ -1,0 +1,91 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-image'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/plan-mode-service:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/plan-mode-service:latest'
+      - '-f'
+      - 'deployment/gke/Dockerfile'
+      - '.'
+
+  # Push the container image to GCR
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-image'
+    args:
+      - 'push'
+      - '--all-tags'
+      - 'gcr.io/$PROJECT_ID/plan-mode-service'
+
+  # Create/update ConfigMap with plan mode template
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'update-configmap'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment/gke/configmap.yaml'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_GKE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
+
+  # Deploy to GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'deploy-to-gke'
+    args:
+      - 'apply'
+      - '-f'
+      - 'deployment/gke/deployment.yaml'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_GKE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
+
+  # Update deployment with new image
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'set-image'
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/plan-mode-service'
+      - 'plan-mode-api=gcr.io/$PROJECT_ID/plan-mode-service:$COMMIT_SHA'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_GKE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
+
+  # Wait for rollout to complete
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'wait-rollout'
+    args:
+      - 'rollout'
+      - 'status'
+      - 'deployment/plan-mode-service'
+      - '--timeout=5m'
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_GKE_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
+
+  # Run smoke tests
+  - name: 'gcr.io/cloud-builders/curl'
+    id: 'smoke-test'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        SERVICE_IP=$(kubectl get svc plan-mode-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        curl -f http://$SERVICE_IP/health || exit 1
+
+images:
+  - 'gcr.io/$PROJECT_ID/plan-mode-service:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/plan-mode-service:latest'
+
+options:
+  machineType: 'N1_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _GKE_CLUSTER: 'plan-mode-cluster'
+  _GKE_REGION: 'us-central1'
+
+timeout: '1200s'

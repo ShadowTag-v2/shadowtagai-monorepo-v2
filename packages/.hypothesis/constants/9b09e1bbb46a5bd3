@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_utils/circular_buffer.py
+# hypothesis_version: 6.151.5
+
+['T', '_buffer', '_capacity', '_head', '_size']

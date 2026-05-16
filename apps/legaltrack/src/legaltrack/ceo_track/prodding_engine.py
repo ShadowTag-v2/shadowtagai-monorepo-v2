@@ -1,20 +1,17 @@
-import os
-
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from fastapi import APIRouter, BackgroundTasks
-
 from ..models import CEOTrackSchedule
 from .integrations.tesla_api import TeslaController
 
 router = APIRouter()
 
-tesla = TeslaController(
-    api_key=os.getenv("TESLA_API_KEY", ""),
-    active_vin=os.getenv("TESLA_ACTIVE_VIN", ""),
-)
+tesla = TeslaController(api_key="TBD", active_vin="TBD")
 
 
 async def _orchestrate_departure(schedule: CEOTrackSchedule):
-    """The background loop for Schiznit hardware prodding prior to an external meeting."""
+    """
+    The background loop for Schiznit hardware prodding prior to an external meeting.
+    """
     # 15 mins prior: Wake up car and start pre-conditioning
     await tesla.wake_vehicle()
     await tesla.precondition_cabin(target_temp_c=21.0)
@@ -31,10 +28,12 @@ async def _orchestrate_departure(schedule: CEOTrackSchedule):
 
 @router.post("/schiznit/nudge")
 async def trigger_schiznit_nudge(schedule: CEOTrackSchedule, background_tasks: BackgroundTasks):
-    """CEOTrack "Schiznit" Orchestrator.
+    """
+    CEOTrack "Schiznit" Orchestrator.
     Monitors the CEO's active schedule and sends dynamic API pushes
     (to phone, smart home, or Tesla FSD).
     """
+
     action_plan = []
 
     if schedule.location == "Office" and not schedule.is_completed:
@@ -47,8 +46,4 @@ async def trigger_schiznit_nudge(schedule: CEOTrackSchedule, background_tasks: B
         # Fire off the physical hardware prodding loop asynchronously
         background_tasks.add_task(_orchestrate_departure, schedule)
 
-    return {
-        "status": "active_prodding",
-        "task": schedule.task_name,
-        "actions_dispatched": action_plan,
-    }
+    return {"status": "active_prodding", "task": schedule.task_name, "actions_dispatched": action_plan}

@@ -15,7 +15,6 @@ Swiper is brilliantly inventive ✅ — merging **adtech + streaming + commerce*
 #### 1. **Premium Beacons: Time-Collapsing Movies**
 
 **How It Works:**
-
 - A retailer (Walmart, toy store, etc.) sponsors a time-collapsing branded film tied to a product (e.g., Superman doll)
 - When a user is **en route to the store**:
   - The movie auto-adjusts its length (AI compresses or expands story beats) so it **ends just as the user arrives**
@@ -25,14 +24,12 @@ Swiper is brilliantly inventive ✅ — merging **adtech + streaming + commerce*
   - Full loop = buy the doll, watch the whole Superman adventure
 
 **Why Users Love It:**
-
 - **Entertainment value**: Kills boring drive time with free, personalized content
 - **Novelty**: First time ads feel like a gift instead of spam
 - **Fairness**: User only gets full content if they make the purchase → feels like earning something
 - **Safety**: CarPlay/Android Auto integration = passive, hands-off playback
 
 **Why Retailers & Brands Love It:**
-
 - **Captive audience**: Drivers literally watch the branded story on the way to buy
 - **Dynamic urgency**: The collapsing timer syncs with physical distance → gamifies arrival
 - **Conversion boost**: Completing the narrative is an incentive to actually buy
@@ -41,7 +38,6 @@ Swiper is brilliantly inventive ✅ — merging **adtech + streaming + commerce*
 #### 2. **Interactive Premium Content**
 
 **User-Controlled Runtime:**
-
 - Instead of Swiper guessing attention span, the shopper gets control:
   - **"Short Cut"** (30s pitch)
   - **"Extended Story"** (3–5 min film)
@@ -49,13 +45,11 @@ Swiper is brilliantly inventive ✅ — merging **adtech + streaming + commerce*
 - **Psychology**: Choice creates buy-in → less resistance
 
 **Premium Studio Content:**
-
 - Retailers/brands create entire films around product lines
 - Think Nike doc-style short films, LEGO mini-episodes, Apple launch narratives
 - Adaptive **and** shoppable
 
 **Shoppable Narrative:**
-
 - During the movie, **products appear in-context**
 - Shopper can **click directly inside the video** (on an item, character, or scene) to add-to-cart
 - **Example**:
@@ -75,20 +69,18 @@ Movies don't just persuade the shopper — they persuade the **whole household**
 **How It Works:**
 Swiper embeds **talking points** targeted at different decision-makers:
 
-| Target Audience        | Persuasion Points                         | Example                                               |
-| ---------------------- | ----------------------------------------- | ----------------------------------------------------- |
-| **Kids → Parents**     | Safety, durability, educational value     | "This toy is safe, lasts forever, builds creativity"  |
-| **Spouse → Spouse**    | Energy efficiency, value, premium quality | "Saves money long-term, looks great, trusted brand"   |
-| **Employee → Manager** | Productivity, ROI, scalability            | "Boosts team output, pays for itself, easy to deploy" |
+| Target Audience | Persuasion Points | Example |
+|----------------|-------------------|---------|
+| **Kids → Parents** | Safety, durability, educational value | "This toy is safe, lasts forever, builds creativity" |
+| **Spouse → Spouse** | Energy efficiency, value, premium quality | "Saves money long-term, looks great, trusted brand" |
+| **Employee → Manager** | Productivity, ROI, scalability | "Boosts team output, pays for itself, easy to deploy" |
 
 **Narrative Integration:**
-
 - **Subtle**: Character dialogue naturally emphasizes these points
 - **Moderate**: Voiceover or text overlays
 - **Explicit**: End cards with "3 reasons to buy"
 
 **Strategic Impact:**
-
 - **Defensibility**: It's not just "interactive video" — it's a behavioral science engine
 - **Valuation Multiplier**: Proprietary psychology + data moat
 - **Exit Logic**: Amazon/Walmart can copy format — but not the dataset of which persuasion points close which audiences
@@ -104,7 +96,6 @@ Swiper's personalization evolves in three stages:
 **Inputs:** On-page signals (scroll depth, hover time, device type, add-to-cart event)
 
 **Mechanics:**
-
 - Scroll fast → shorten runtime, bring CTA forward
 - Hover linger → unlock deeper feature clip
 - Mobile device → vertical TikTok-style cut
@@ -121,7 +112,6 @@ Swiper's personalization evolves in three stages:
 **Inputs:** Shopper session history + retailer's 1st-party data
 
 **Mechanics:**
-
 - Multi-armed bandit model picks clips based on success rates
 - Example: Gen Z shoppers → sustainability arc
 - Example: Parents → safety/durability arc
@@ -137,7 +127,6 @@ Swiper's personalization evolves in three stages:
 **Inputs:** Shopper identity + deep behavior + contextual signals
 
 **Mechanics:**
-
 - AI voiceover tailored to interest ("As a runner, you'll love…")
 - Dynamic scene substitution (same demo, but with local products)
 - Personalized soundtrack/visual overlays (sports fan → team colors)
@@ -150,22 +139,20 @@ Swiper's personalization evolves in three stages:
 
 ## 🎯 Swiper vs. TikTok / Reels / YouTube Shorts
 
-| Dimension          | TikTok / Reels / Shorts               | Swiper                                       |
-| ------------------ | ------------------------------------- | -------------------------------------------- |
-| **Runtime**        | Fixed (15-60s)                        | Flexible (30s - 120min adaptive)             |
-| **Narrative**      | Compressed, meme-driven               | Cinematic story arcs                         |
-| **Interactivity**  | Likes, comments, shares               | **In-video shopping + branching storylines** |
-| **Commerce Fit**   | Entertainment-first, layered commerce | **Commerce-first narrative**                 |
-| **Psychology**     | Swipe addiction (shallow engagement)  | **Narrative lock-in** (invested completion)  |
-| **Role in Funnel** | Discovery + impulse                   | **Consideration + conversion**               |
+| Dimension | TikTok / Reels / Shorts | Swiper |
+|-----------|-------------------------|--------|
+| **Runtime** | Fixed (15-60s) | Flexible (30s - 120min adaptive) |
+| **Narrative** | Compressed, meme-driven | Cinematic story arcs |
+| **Interactivity** | Likes, comments, shares | **In-video shopping + branching storylines** |
+| **Commerce Fit** | Entertainment-first, layered commerce | **Commerce-first narrative** |
+| **Psychology** | Swipe addiction (shallow engagement) | **Narrative lock-in** (invested completion) |
+| **Role in Funnel** | Discovery + impulse | **Consideration + conversion** |
 
 **Key Distinction:**
-
 - **TikTok/Reels**: Shoppers stumble into products via entertainment (awareness)
 - **Swiper**: Shoppers arrive with intent, content deepens it into purchase (closing engine)
 
 **Strategic Positioning:**
-
 - Use TikTok to get people interested → **Swiper to seal the deal**
 - TikTok = discovery. **Swiper = closing engine** → higher ROAS
 
@@ -174,27 +161,22 @@ Swiper's personalization evolves in three stages:
 ## 💰 Monetization Model
 
 ### 1. **Retail Sponsorship**
-
 - Walmart pays for Superman doll campaign
 - Swiper takes % of media + item sales
 
 ### 2. **Ad CPMs**
-
 - Premium beacons charge **$20–$40 CPM** per viewing session
 - Higher than standard video ads due to captive + contextual audience
 
 ### 3. **Rev-Share with Studios**
-
 - Studios license IP (DC Comics, Disney, etc.)
 - Share streaming + merch revenue
 
 ### 4. **Engagement Data**
-
 - "Completion rates, arrival rates, purchase rates" → **ultra-valuable analytics**
 - Sell aggregated insights back to brands and retailers
 
 ### Revenue Impact
-
 - **Expands TAM** into retail media networks (fastest-growing segment, **$140B+ by 2026**)
 - **Expands into streaming ad budgets** ($500B global)
 - **Potential valuation uplift**: +25–40% in aggressive cases
@@ -207,17 +189,14 @@ Swiper's personalization evolves in three stages:
 ### Disruption Targets
 
 #### 1. **Billboards**
-
 - Static, interruptive, no engagement tracking
 - Swiper: Dynamic, entertaining, full attribution
 
 #### 2. **In-Car Entertainment**
-
 - Spotify, SiriusXM, Netflix downloads = passive content
 - Swiper: Commerce-linked, location-aware, rewarded viewing
 
 #### 3. **Product Page Ads**
-
 - Banners, static images, boring videos
 - Swiper: Interactive movies, shoppable hotspots, household persuasion
 
@@ -236,7 +215,6 @@ Swiper's personalization evolves in three stages:
 ### Tech Stack
 
 **Backend:**
-
 - **FastAPI** (Python 3.11+)
 - **SQLAlchemy** + **PostgreSQL** (video metadata, products, users, interactions)
 - **Redis** (caching, session state)
@@ -244,25 +222,21 @@ Swiper's personalization evolves in three stages:
 - **Google Cloud CDN** (global video delivery)
 
 **AI/ML:**
-
 - **Claude Agent SDK** (content moderation, recommendations, caption generation)
 - **Gemini 2.0 Pro** (video analysis, product matching, user insights)
 - **Sentence Transformers** (semantic search, tier classification)
 
 **Video Pipeline:**
-
 - **FFmpeg** (encoding, transcoding)
 - **HLS/DASH** (adaptive streaming)
 - **Remotion** (programmatic video generation - future)
 
 **Analytics:**
-
 - **ClickHouse** (time-series analytics)
 - **Prometheus** + **Grafana** (monitoring)
 - **Google Analytics 4** (user behavior)
 
 **Infrastructure:**
-
 - **Google Kubernetes Engine (GKE)** (container orchestration)
 - **Cloud CDN** (low-latency video delivery)
 - **Cloud Secret Manager** (credentials)
@@ -270,39 +244,33 @@ Swiper's personalization evolves in three stages:
 ### Database Schema Highlights
 
 **Videos:**
-
 - Adaptive runtime ranges (min/max duration)
 - Premium Beacon settings (geofence, retailer)
 - Personalization stage (rules/bandits/generative)
 - Narrative arc definitions
 
 **Products:**
-
 - Multi-retailer support
 - Dynamic pricing + inventory sync
 - Affiliate link management
 
 **Product Overlays:**
-
 - Time-based appearance (start/end seconds)
 - Clickable hotspots (position, shape, coordinates)
 - CTA customization
 
 **Persuasion Points:**
-
 - Target audience (parent, spouse, manager, etc.)
 - Delivery method (dialogue, voiceover, text)
 - Emphasis level (subtle, moderate, explicit)
 
 **User Interactions:**
-
 - Granular event tracking (view, click, purchase, seek, pause)
 - Location context (lat/lon for Premium Beacons)
 - Behavioral signals (scroll speed, hover time)
 - Session metadata
 
 **Analytics:**
-
 - Time-series video performance
 - Runtime mode distribution
 - Persuasion effectiveness by target
@@ -313,7 +281,6 @@ Swiper's personalization evolves in three stages:
 ## 🚀 Implementation Roadmap
 
 ### Phase 1: MVP (Months 1-3)
-
 - ✅ Core FastAPI service
 - ✅ Database models (videos, products, overlays, users)
 - ✅ Rules-based personalization
@@ -324,7 +291,6 @@ Swiper's personalization evolves in three stages:
 - 🔲 CDN integration
 
 ### Phase 2: Premium Beacons (Months 4-6)
-
 - 🔲 Location-based geofencing
 - 🔲 Time-collapsing algorithm (dynamic runtime)
 - 🔲 CarPlay / Android Auto integration
@@ -333,7 +299,6 @@ Swiper's personalization evolves in three stages:
 - 🔲 First pilot with major retailer (Walmart, Target)
 
 ### Phase 3: Persuasion Layer (Months 7-9)
-
 - ✅ Persuasion point system
 - 🔲 Household type detection
 - 🔲 A/B testing framework
@@ -341,7 +306,6 @@ Swiper's personalization evolves in three stages:
 - 🔲 Talking point library (templates per category)
 
 ### Phase 4: AI Personalization - Stage 2 (Months 10-12)
-
 - 🔲 Multi-armed bandit implementation
 - 🔲 Conversion history database
 - 🔲 User segmentation engine
@@ -349,7 +313,6 @@ Swiper's personalization evolves in three stages:
 - 🔲 Data flywheel activation (every session improves model)
 
 ### Phase 5: Scale & Generative AI (Year 2+)
-
 - 🔲 Claude/Gemini integration for generative narratives
 - 🔲 Programmatic video generation (Remotion)
 - 🔲 Voice cloning for personalized voiceovers
@@ -361,34 +324,29 @@ Swiper's personalization evolves in three stages:
 ## 📈 Success Metrics
 
 ### Engagement Metrics
-
 - **View Duration**: Avg. watch time vs. video length
 - **Completion Rate**: % who watch to end
 - **Runtime Mode Distribution**: Which lengths users choose
 - **Interaction Rate**: Clicks, swipes, pauses per session
 
 ### Conversion Metrics
-
 - **Product Click-Through Rate (CTR)**: Overlay clicks / views
 - **Add-to-Cart Rate**: % who click → add product
 - **Purchase Conversion Rate**: % who complete checkout
 - **Revenue Per View (RPV)**: Total revenue / total views
 
 ### Premium Beacon Metrics
-
 - **Drive-to-Store Rate**: % who actually arrive at geofence
 - **Arrival Accuracy**: Movie end time vs. actual arrival (sync quality)
 - **Post-Purchase Unlock Rate**: % who buy to get Part 2
 - **Round-Trip Engagement**: Part 1 + Part 2 completion
 
 ### Persuasion Layer Metrics
-
 - **Conversion Lift by Target**: Parent/Spouse/Manager persuasion effectiveness
 - **Talking Point Impressions**: How often each point is shown
 - **Household Purchase Rate**: Family vs. individual conversion rates
 
 ### AI Personalization Metrics
-
 - **Arc Performance**: Conversion rate by narrative arc
 - **Segment Learning Rate**: How fast bandit converges
 - **Personalization ROI**: Cost of AI vs. conversion lift
@@ -398,7 +356,6 @@ Swiper's personalization evolves in three stages:
 ## 🎬 Example User Journey: Premium Beacon
 
 ### Setup
-
 - **User**: Sarah, mom with 2 kids (ages 6, 8)
 - **Destination**: Walmart, 45 minutes away
 - **Product**: Superman Action Figure ($29.99)
@@ -406,7 +363,6 @@ Swiper's personalization evolves in three stages:
 ### Journey
 
 **1. Departure (Home)**
-
 ```
 🚗 Sarah's kids open Swiper app in the backseat
 📍 App detects: "Walmart is 45 mins away"
@@ -415,7 +371,6 @@ Swiper's personalization evolves in three stages:
 ```
 
 **2. En Route**
-
 ```
 🎥 Kids watch compressed Superman story
 🗣️ Persuasion Layer activates:
@@ -425,7 +380,6 @@ Swiper's personalization evolves in three stages:
 ```
 
 **3. Arrival (Walmart Parking Lot)**
-
 ```
 🎬 Movie ends with cliffhanger: "To be continued..."
 🔒 Unlock message: "Visit the toy aisle and get your Superman doll to unlock Part 2!"
@@ -433,7 +387,6 @@ Swiper's personalization evolves in three stages:
 ```
 
 **4. In-Store**
-
 ```
 🛒 Sarah buys Superman Action Figure ($29.99)
 📱 Scans receipt in Swiper app
@@ -441,7 +394,6 @@ Swiper's personalization evolves in three stages:
 ```
 
 **5. Return Trip**
-
 ```
 🚗 Kids watch Part 2 on the way home (45 min)
 😊 Full story completed
@@ -453,7 +405,6 @@ Swiper's personalization evolves in three stages:
 ```
 
 **Result:**
-
 - **User (Sarah)**: Kids entertained for 90min total drive time. Worth the $30.
 - **Retailer (Walmart)**: Drove in-store visit + guaranteed purchase
 - **Brand (DC Comics)**: Monetized IP via film + merchandise tie-in
@@ -464,25 +415,21 @@ Swiper's personalization evolves in three stages:
 ## 💡 Competitive Moats
 
 ### 1. **Data Moat (Stage 2 Bandits)**
-
 - Every session = A/B test
 - Learns which arcs convert for which audiences
 - Competitors can't replicate without years of data
 
 ### 2. **Behavioral Moat (Persuasion Layer)**
-
 - Only platform targeting household decision chains
 - Psychology dataset: which talking points close deals
 - Unique value prop retailers can't get elsewhere
 
 ### 3. **Content Moat (Premium Beacons)**
-
 - First-mover in time-collapsing branded entertainment
 - Retailer relationships + location data integration
 - Cultural phenomenon: "Remember the Walmart Superman movie?"
 
 ### 4. **Technical Moat (Generative AI)**
-
 - 1:1 personalized narratives at scale
 - Requires deep AI integration + caching infra
 - High barrier to entry for late followers
@@ -494,25 +441,21 @@ Swiper's personalization evolves in three stages:
 ### Target Markets (Launch Order)
 
 #### 1. **Toys & Kids Products** (Year 1)
-
 - **Why**: Family purchases = prime for persuasion layer
 - **Partners**: Hasbro, LEGO, Disney Store, Walmart toy aisles
 - **Use Case**: Premium Beacons for drive-to-store + post-purchase unlocks
 
 #### 2. **Home Goods & Electronics** (Year 1-2)
-
 - **Why**: High-consideration purchases benefit from longer narratives
 - **Partners**: Best Buy, Home Depot, IKEA
 - **Use Case**: Online product page hold (keep user engaged while deciding)
 
 #### 3. **Fashion & Beauty** (Year 2)
-
 - **Why**: Visual storytelling + impulse buys
 - **Partners**: Sephora, Nike, Nordstrom
 - **Use Case**: Shoppable short-form content (TikTok-style with native checkout)
 
 #### 4. **B2B / Corporate** (Year 3)
-
 - **Why**: Manager persuasion layer + high AOV
 - **Partners**: Office supply, industrial equipment, SaaS trials
 - **Use Case**: Employee → manager pitch videos with ROI talking points
@@ -522,19 +465,15 @@ Swiper's personalization evolves in three stages:
 ## 🏆 Why Swiper Wins
 
 ### User Perspective
-
 > "I got 90 minutes of free entertainment for my kids during a boring drive. All I had to do was buy a toy I was already considering. That's a gift, not an ad."
 
 ### Retailer Perspective
-
 > "Swiper drove a family to my store, kept them engaged the entire drive, and guaranteed a purchase on arrival. My old billboards couldn't do any of that."
 
 ### Brand Perspective
-
 > "We monetized our IP twice: streaming revenue + merchandise sales. And Swiper gave us attribution data we've never had before."
 
 ### Investor Perspective
-
 > "Swiper isn't just another ad platform. It's a behavioral science engine wrapped in entertainment. The data moat compounds every session, and no competitor can replicate the persuasion layer dataset. This is a category-defining company."
 
 ---
@@ -542,25 +481,21 @@ Swiper's personalization evolves in three stages:
 ## 📞 Next Steps
 
 ### For Retailers
-
 1. **Schedule Demo**: See Premium Beacons in action
 2. **Pilot Program**: 30-day test with one product line
 3. **Data Sharing**: Integrate your product catalog + store locations
 
 ### For Brands / Studios
-
 1. **Content Partnership**: License IP for shoppable narratives
 2. **Co-Creation**: Build branded long-form features together
 3. **Revenue Share**: Align on streaming + merchandise split
 
 ### For Developers
-
 1. **API Access**: Integrate Swiper into your commerce platform
 2. **SDK Download**: Embed shoppable videos in your app
 3. **Documentation**: [API Docs](/docs) | [GitHub](https://github.com/swiper-platform)
 
 ### For Investors
-
 1. **Pitch Deck**: Request full investor presentation
 2. **Data Room**: Access to financial model + metrics dashboard
 3. **Advisory**: Join our board of advisors
@@ -591,4 +526,4 @@ Swiper's personalization evolves in three stages:
 
 ---
 
-_Built with ❤️ by the Swiper team. Powered by FastAPI, Claude Agent SDK, and Gemini 2.0 Pro._
+*Built with ❤️ by the Swiper team. Powered by FastAPI, Claude Agent SDK, and Gemini 2.0 Pro.*

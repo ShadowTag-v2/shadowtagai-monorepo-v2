@@ -10,7 +10,7 @@ Change all scripts to google vertex Ai studio native shell cells suitable for Ve
 
 Change all naming conventions to pnkln
 
-pnkln meaning no more ShadowTag-v2 or ShadowTag.
+pnkln meaning no more AiYou or YouAi.
 
 Include all suggested, or optional, but un-actioned scripts.
 

@@ -70,7 +70,6 @@ Recommended fields:
 ```
 
 Allowed statuses
-
 - active: Current truth. Returned by default.
 - historical: Past but still meaningful context.
 - reference_only: Keep for intent or background, not for direct execution.
@@ -79,7 +78,6 @@ Allowed statuses
 - archived: Moved out of the active working set.
 
 Allowed types
-
 - system_directive
 - control_plane_operation
 - code_artifact
@@ -98,13 +96,11 @@ Allowed types
 Retrieval precedence
 
 Default retrieval order:
-
 1. active
 2. historical
 3. reference_only
 
 Never return by default:
-
 - superseded
 - quarantined
 - archived
@@ -114,7 +110,6 @@ Supersession rules
 A bead may supersede one or more older beads.
 
 Rules:
-
 1. New truth must explicitly list old bead IDs in supersedes.
 2. Superseded beads should have status changed to superseded.
 3. Query results must prefer the newest active bead in a family.
@@ -125,20 +120,17 @@ Atomicity rules
 One bead should contain one coherent unit of memory.
 
 Good:
-
 - one prompt
 - one decision
 - one config artifact
 - one merge finding
 
 Bad:
-
 - giant mixed blob containing prose, code, shell, strategy, and deployment notes all at once
 
 Ingestion rules
 
 When new thread material arrives:
-
 1. split large content into atomic units
 2. classify each bead
 3. set status
@@ -150,7 +142,6 @@ When new thread material arrives:
 Query rules
 
 All query tools should support:
-
 - filter by status
 - filter by type
 - filter by tags
@@ -159,7 +150,6 @@ All query tools should support:
 - supersession resolution
 
 pnkln policy
-
 - `AGENTS.md` outranks imported prompt packs
 - `monorepo_manifest.yaml` is workspace truth
 - `antigravity-mcp-config.json` is MCP truth

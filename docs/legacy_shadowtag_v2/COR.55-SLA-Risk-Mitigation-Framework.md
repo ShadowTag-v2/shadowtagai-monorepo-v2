@@ -1,5 +1,4 @@
 # COR.55: SLA RISK MITIGATION FRAMEWORK
-
 ## ALIGNING pnkln'S P99≤90MS COMMITMENT WITH THIRD-PARTY API REALITIES
 
 **CLASSIFICATION**: Strategic/Legal
@@ -38,11 +37,11 @@ LEGAL EXPOSURE:     Customer breach claims if SLA missed
 
 ### 1.1 DUAL EXECUTION PATTERNS IN pnkln stack
 
-Based on Gemini Ingestion Layer vs Judge 6 analysis, pnkln operates **TWO DISTINCT architectural patterns** with different SLA implications:
+Based on Gemini Ingestion Layer vs Judge #6 analysis, pnkln operates **TWO DISTINCT architectural patterns** with different SLA implications:
 
 ```
 ┌───────────────────────────────────────────────────────────┐
-│ PATTERN A: REAL-TIME ENFORCEMENT (Judge 6)               │
+│ PATTERN A: REAL-TIME ENFORCEMENT (Judge #6)               │
 ├───────────────────────────────────────────────────────────┤
 │ Architecture:  Hybrid Gemini + PyTorch + Hard Rules       │
 │ Latency Target: p99 ≤90ms (contractual)                   │
@@ -107,15 +106,15 @@ increases exponentially up to 32 seconds."
 ┌──────┬─────────────────┬───────────────┬──────────────────┐
 │ TIER │ WORKLOAD TYPE   │ SLA COMMITMENT│ ARCHITECTURE     │
 ├──────┼─────────────────┼───────────────┼──────────────────┤
-│ T1   │ CRITICAL        │ p99 ≤90ms     │ Judge 6 Hybrid: │
+│ T1   │ CRITICAL        │ p99 ≤90ms     │ Judge #6 Hybrid: │
 │      │ Real-time       │ 99.95% uptime │ • PyTorch local  │
 │      │ User-facing     │ Max 4.3h/yr   │ • Gemini (40%)   │
 │      │                 │ downtime      │ • Hard rules     │
 │      │                 │               │ • AUTO FALLBACK  │
 │      │ Examples:       │               │   to local if    │
-│      │ • Compliance Framework scan │               │   Gemini >50ms   │
+│      │ • ATP 5-19 scan │               │   Gemini >50ms   │
 │      │ • JR validation │               │                  │
-│      │ • Judge 6 gate │               │                  │
+│      │ • Judge #6 gate │               │                  │
 ├──────┼─────────────────┼───────────────┼──────────────────┤
 │ T2   │ HIGH PRIORITY   │ p95 ≤200ms    │ Gemini-primary:  │
 │      │ Near real-time  │ 99.9% uptime  │ • Gemini (60%)   │
@@ -173,7 +172,7 @@ increases exponentially up to 32 seconds."
 └─────────────────────────────────────────────────────────┘
 ```
 
-**RATIONALE**: Graduated tiers allow aggressive p99≤90ms marketing for critical paths (Judge 6) while avoiding over-commitment on batch workloads where it's architecturally inappropriate.
+**RATIONALE**: Graduated tiers allow aggressive p99≤90ms marketing for critical paths (Judge #6) while avoiding over-commitment on batch workloads where it's architecturally inappropriate.
 
 ---
 
@@ -205,7 +204,7 @@ increases exponentially up to 32 seconds."
 │ 2. INTELLIGENT ROUTING: Requests routed to fastest      │
 │    available provider in real-time (Cor brain <1ms)    │
 │                                                         │
-│ 3. AUTOMATIC FALLBACK: If primary API >50ms, Judge 6   │
+│ 3. AUTOMATIC FALLBACK: If primary API >50ms, Judge #6   │
 │    downgrades to local-only execution (deterministic)   │
 │                                                         │
 │ SLA EXCLUSIONS (Force Majeure):                         │
@@ -311,7 +310,7 @@ KEY ARCHITECTURAL COMPONENTS:
 ├─ Cor brain: <1ms routing decision (event-driven)
 ├─ NS service mesh: <100μs inter-service latency (Istio)
 ├─ PyTorch local: ~30-50ms inference (CPU-only, fallback)
-├─ Hard rules: <500μs Compliance Framework scan (deterministic)
+├─ Hard rules: <500μs ATP 5-19 scan (deterministic)
 └─ Circuit breaker: Auto-disable slow providers for 60s
 ```
 
@@ -321,17 +320,17 @@ KEY ARCHITECTURAL COMPONENTS:
 ┌─────────────────────────────────────────────────────────┐
 │ LOCAL EXECUTION LAYER (Zero Third-Party Dependency)     │
 ├─────────────────────────────────────────────────────────┤
-│ Model:     DistilBERT fine-tuned on Compliance Framework corpus     │
+│ Model:     DistilBERT fine-tuned on ATP 5-19 corpus     │
 │ Size:      266MB (fits in GKE pod memory)               │
 │ Latency:   p99 ~45ms (single CPU core)                  │
 │ Accuracy:  92% vs Gemini's 97% (acceptable degradation) │
 │ Cost:      $0 per inference (already in memory)         │
 │                                                         │
 │ TRAINING PIPELINE:                                      │
-│ 1. Collect 10K+ Gemini Compliance Framework decisions (labels)      │
+│ 1. Collect 10K+ Gemini ATP 5-19 decisions (labels)      │
 │ 2. Fine-tune DistilBERT on governance patterns          │
 │ 3. Validate against held-out test set (F1 ≥0.90)        │
-│ 4. Deploy to GKE as sidecar container in Judge 6 pod   │
+│ 4. Deploy to GKE as sidecar container in Judge #6 pod   │
 │ 5. Re-train monthly with production data (drift correct)│
 │                                                         │
 │ ACTIVATION TRIGGERS:                                    │
@@ -530,8 +529,8 @@ MONTHLY BURN IMPACT:
 │    │ with 4-tier SLA table            │ Legal    │        │
 ├────┼──────────────────────────────────┼──────────┼────────┤
 │ T1 │ Implement PyTorch local fallback │ Eng Lead │ Week 2 │
-│    │ in Judge 6 (DistilBERT fine-    │          │        │
-│    │ tuning on Compliance Framework corpus)       │          │        │
+│    │ in Judge #6 (DistilBERT fine-    │          │        │
+│    │ tuning on ATP 5-19 corpus)       │          │        │
 ├────┼──────────────────────────────────┼──────────┼────────┤
 │ T2 │ Add latency-based routing to Cor │ Eng      │ Week 2 │
 │    │ brain (<5ms decision tree)       │          │        │
@@ -596,7 +595,7 @@ Based on your Ingestion Layer analysis, **NOT ALL pnkln COMPONENTS should carry 
 ┌─────────────────────────────────────────────────────────┐
 │ COMPONENT-SPECIFIC SLA MAPPING                          │
 ├─────────────────────────────────────────────────────────┤
-│ Judge 6 (Enforcement):                                 │
+│ Judge #6 (Enforcement):                                 │
 │ ├─ Tier: 1 (Critical)                                   │
 │ ├─ SLA: p99≤90ms latency, 99.95% uptime                 │
 │ ├─ Rationale: User-facing validation, real-time gate    │
@@ -783,7 +782,7 @@ NEW TAGLINE (COR.54 v1.1):
 │    │ (token costs rise)   │ (Medium)    │ Add SLA cred.│
 │    │                      │             │ ~$700/mo risk│
 ├────┼──────────────────────┼─────────────┼──────────────┤
-│ R7 │ Compliance Framework rejected in │ D×IV = L    │ UNCHANGED    │
+│ R7 │ ATP 5-19 rejected in │ D×IV = L    │ UNCHANGED    │
 │    │ favor of ISO-only    │ (Low)       │ SOC2 mapping │
 └────┴──────────────────────┴─────────────┴──────────────┘
 
@@ -840,7 +839,7 @@ NEW RISK (COR.55-specific):
 │ COR.55 IMPLEMENTATION COMPLETE WHEN:                    │
 ├─────────────────────────────────────────────────────────┤
 │ ✅ Legal approval of contract language                  │
-│ ✅ PyTorch local fallback deployed to prod Judge 6     │
+│ ✅ PyTorch local fallback deployed to prod Judge #6     │
 │ ✅ Grafana SLA dashboard accessible to ≥1 pilot customer│
 │ ✅ Load test confirms p99≤90ms during simulated Gemini  │
 │    outage (with PyTorch fallback active)                │
@@ -894,7 +893,7 @@ CORE FINDINGS:
 │    Without fallback + force majeure, contractual risk   │
 │                                                         │
 │ 3. FOUR-TIER MODEL ALIGNS WITH ARCHITECTURE             │
-│    Judge 6 (Tier 1) ≠ Ingestion Layer (Tier 4)        │
+│    Judge #6 (Tier 1) ≠ Ingestion Layer (Tier 4)        │
 │    Different workloads need different SLAs              │
 │                                                         │
 │ 4. PYTORCH LOCAL FALLBACK ENABLES GUARANTEE             │

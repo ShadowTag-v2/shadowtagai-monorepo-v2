@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import logging
 import os
 import subprocess
@@ -15,7 +14,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - [%(levelname)s] - 
 APP_ID = "3018080"
 PEM_PATH = "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-08.private-key.pem"
 TARGET_ORG = "ehanc69"
-TARGET_DIR = Path("apps/ShadowTag-v2_stack")
+TARGET_DIR = Path("apps/aiyou_stack")
 
 
 def main():

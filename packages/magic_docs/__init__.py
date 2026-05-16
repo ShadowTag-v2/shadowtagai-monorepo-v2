@@ -23,17 +23,17 @@ Design invariants (from Claude Code source):
 """
 
 from packages.magic_docs.detector import (
-    clear_tracked_magic_docs,
-    detect_magic_doc_header,
-    get_tracked_magic_docs,
-    register_magic_doc,
+  clear_tracked_magic_docs,
+  detect_magic_doc_header,
+  get_tracked_magic_docs,
+  register_magic_doc,
 )
 from packages.magic_docs.updater import update_magic_docs
 
 __all__ = [
-    "clear_tracked_magic_docs",
-    "detect_magic_doc_header",
-    "get_tracked_magic_docs",
-    "register_magic_doc",
-    "update_magic_docs",
+  "clear_tracked_magic_docs",
+  "detect_magic_doc_header",
+  "get_tracked_magic_docs",
+  "register_magic_doc",
+  "update_magic_docs",
 ]

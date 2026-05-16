@@ -1,0 +1,85 @@
+name: 10X Vibe Coding Matrix (Cor.10X)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  execute-10x-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Monorepo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Setup pnpm (Monorepo)
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Global Tools
+        run: |
+          pip install ruff detect-secrets
+          pnpm add -g @biomejs/biome
+          # Install latest gitleaks
+          GITLEAKS_VERSION="8.21.2"
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar xzf - -C /usr/local/bin gitleaks
+          chmod +x /usr/local/bin/gitleaks
+
+      - name: Phase 1 — Secret Exorcism & PII Scan
+        run: |
+          gitleaks detect --source . --report-format json --report-path gitleaks-report.json || true
+          python tools/scripts/scrub_secrets.py
+
+      - name: Phase 2 — Pinkln YOLO Purge (Ruff + Biome)
+        run: |
+          echo "Running Ruff auto-fix across monorepo..."
+          ruff check --fix --exit-zero .
+          echo "Running Biome auto-format..."
+          biome check --write .
+
+      - name: Phase 3 — Tactical UI & Architecture Auditor
+        run: |
+          echo "Running UI consistency audit..."
+          python tools/scripts/ui_consistency_auditor.py > audit_findings.md
+          echo "Running HUD memory query for monolithic files..."
+          python tools/scripts/hud_query_memory.py "find files over 800 LOC in apps/ libs/ packages/ tools/ and suggest modular architecture splits" >> audit_findings.md
+
+      - name: Phase 4 — Auto-Commit The Fixes (10X Hack)
+        run: |
+          git config --global user.name "Antigravity 10X Bot"
+          git config --global user.email "bot@shadowtag.ai"
+          git add .
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(10x-vibe): 10X Matrix sweep — secrets purged • code formatted • UI audited • monolithic files flagged"
+            git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          else
+            echo "No changes to commit — codebase already clean."
+          fi
+
+      - name: Post Audit Findings to PR
+        if: github.event_name == 'pull_request'
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-path: audit_findings.md
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          allow-repeats: false

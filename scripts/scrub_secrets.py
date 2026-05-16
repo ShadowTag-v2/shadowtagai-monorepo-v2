@@ -1,8 +1,9 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import re
 
 
-def scrub_file(filepath) -> None:
+def scrub_file(filepath):
     if not os.path.exists(filepath):
         return
     with open(filepath) as f:
@@ -19,6 +20,7 @@ def scrub_file(filepath) -> None:
 
     with open(filepath, "w") as f:
         f.write(content)
+    print(f"Scrubbed {filepath}")
 
 
 scrub_file("docs/AUDIT_REPORT.md")

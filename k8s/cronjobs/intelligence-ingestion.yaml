@@ -1,0 +1,351 @@
+---
+# Intelligence Ingestion Layer - GKE CronJob Configuration
+# Part of PNKLN Core Stack™
+#
+# This CronJob runs nightly to ingest intelligence data from multiple sources
+# Target runtime: ~45 minutes
+# Cost: ~$77/month
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: intelligence-ingestion
+  namespace: intelligence
+  labels:
+    app: pnkln-intelligence
+    component: ingestion
+    tier: data-collection
+spec:
+  # Run nightly at 2 AM UTC
+  schedule: "0 2 * * *"
+
+  # Concurrency policy: Forbid (don't run if previous job still running)
+  concurrencyPolicy: Forbid
+
+  # Keep last 3 successful and 1 failed job for debugging
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  # Job deadline: 60 minutes (15 min buffer over 45 min target)
+  startingDeadlineSeconds: 3600
+
+  jobTemplate:
+    metadata:
+      labels:
+        app: pnkln-intelligence
+        component: ingestion
+    spec:
+      # Timeout after 1 hour
+      activeDeadlineSeconds: 3600
+
+      # Backoff limit for retries
+      backoffLimit: 2
+
+      template:
+        metadata:
+          labels:
+            app: pnkln-intelligence
+            component: ingestion
+        spec:
+          restartPolicy: OnFailure
+
+          # Service account for PNKLN Core Stack
+          serviceAccountName: pnkln-intelligence-sa
+
+          # Init container: Check dependencies
+          initContainers:
+          - name: dependency-check
+            image: gcr.io/pnkln-core/intelligence-init:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Checking dependencies..."
+              # Check if required services are available
+              nc -zv analysis-service.analysis.svc.cluster.local 8080
+              nc -zv alerting-service.alerting.svc.cluster.local 8080
+              nc -zv reporting-service.reporting.svc.cluster.local 8080
+              nc -zv briefing-service.briefing.svc.cluster.local 8080
+              echo "All dependencies ready"
+            env:
+            - name: TIMEOUT
+              value: "30"
+
+          # Main containers: Multi-container pod
+          containers:
+
+          # Container 1: Ingestion
+          - name: ingestion
+            image: gcr.io/pnkln-core/intelligence-ingestion:latest
+            imagePullPolicy: Always
+
+            command:
+            - node
+            - /app/agents/intelligence/tools/sources/multi-source-ingest.js
+
+            env:
+            - name: NODE_ENV
+              value: "production"
+            - name: RUNTIME_TARGET
+              value: "45min"
+            - name: ETHICAL_CRAWLING
+              value: "true"
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-api-key
+                  key: api-key
+            - name: YOUTUBE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: youtube-api-key
+                  key: api-key
+            - name: TWITTER_BEARER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-token
+                  key: bearer-token
+            - name: NEWS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: news-api-key
+                  key: api-key
+
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "500m"
+              limits:
+                memory: "1Gi"
+                cpu: "1000m"
+
+            volumeMounts:
+            - name: data-volume
+              mountPath: /data
+            - name: config
+              mountPath: /config
+
+          # Container 2: Classification
+          - name: classification
+            image: gcr.io/pnkln-core/intelligence-classification:latest
+            imagePullPolicy: Always
+
+            command:
+            - node
+            - /app/agents/intelligence/tools/classification/tier-classifier.js
+
+            env:
+            - name: NODE_ENV
+              value: "production"
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-api-key
+                  key: api-key
+            - name: TIER_DISTRIBUTION
+              value: "0.20,0.50,0.30"  # Tier 1/2/3
+
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+            volumeMounts:
+            - name: data-volume
+              mountPath: /data
+            - name: config
+              mountPath: /config
+
+          # Container 3: Validation (Judge #6)
+          - name: validation
+            image: gcr.io/pnkln-core/intelligence-validation:latest
+            imagePullPolicy: Always
+
+            command:
+            - node
+            - /app/agents/intelligence/tools/validation/judge-six-validator.js
+
+            env:
+            - name: NODE_ENV
+              value: "production"
+            - name: STRICT_MODE
+              value: "false"
+            - name: CONFIDENCE_THRESHOLD
+              value: "0.60"
+            - name: MIN_DAILY_ITEMS
+              value: "500"
+            - name: TARGET_DAILY_ITEMS
+              value: "1000"
+
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+            volumeMounts:
+            - name: data-volume
+              mountPath: /data
+            - name: config
+              mountPath: /config
+
+          # Shared volumes
+          volumes:
+          - name: data-volume
+            emptyDir:
+              sizeLimit: 10Gi
+          - name: config
+            configMap:
+              name: intelligence-config
+
+          # Node affinity: Run on spot instances for cost savings
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                preference:
+                  matchExpressions:
+                  - key: cloud.google.com/gke-preemptible
+                    operator: In
+                    values:
+                    - "true"
+
+---
+# ConfigMap for intelligence layer configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: intelligence-config
+  namespace: intelligence
+data:
+  sources.json: |
+    {
+      "sources": [
+        {
+          "type": "youtube",
+          "enabled": true,
+          "maxResults": 100
+        },
+        {
+          "type": "twitter",
+          "enabled": true,
+          "maxResults": 100
+        },
+        {
+          "type": "reddit",
+          "enabled": true,
+          "limit": 100
+        },
+        {
+          "type": "rss",
+          "enabled": true,
+          "feeds": [
+            "https://news.ycombinator.com/rss",
+            "https://lobste.rs/rss",
+            "https://www.theverge.com/rss/index.xml"
+          ]
+        },
+        {
+          "type": "news",
+          "enabled": true,
+          "pageSize": 100
+        }
+      ]
+    }
+
+  quality-gates.json: |
+    {
+      "items": {
+        "minDaily": 500,
+        "targetDaily": 1000,
+        "minQuality": 0.60
+      },
+      "sources": {
+        "minSources": 5,
+        "maxSourcePercent": 0.40,
+        "minSourcePercent": 0.05
+      },
+      "costs": {
+        "maxPerItem": 0.005,
+        "maxMonthly": 100,
+        "targetPerItem": 0.0025
+      },
+      "scores": {
+        "minRelevance": 0.60,
+        "minTimeliness": 0.50,
+        "minCredibility": 0.65,
+        "minCompleteness": 0.70
+      }
+    }
+
+  ethical-crawling.json: |
+    {
+      "robotsTxt": {
+        "enabled": true,
+        "cacheTime": 3600,
+        "respectCrawlDelay": true
+      },
+      "rateLimiting": {
+        "enabled": true,
+        "defaultDelay": 1000,
+        "perSourceLimits": {
+          "twitter": 2000,
+          "youtube": 1500,
+          "news": 500
+        }
+      },
+      "transparency": {
+        "userAgent": "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)",
+        "contactEmail": "bot@pnkln.ai",
+        "policyUrl": "https://pnkln.ai/bot-policy"
+      }
+    }
+
+---
+# Service Account for PNKLN Intelligence Layer
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pnkln-intelligence-sa
+  namespace: intelligence
+  labels:
+    app: pnkln-intelligence
+
+---
+# RBAC Role for Intelligence Layer
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pnkln-intelligence-role
+  namespace: intelligence
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "create"]
+
+---
+# Role Binding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pnkln-intelligence-rolebinding
+  namespace: intelligence
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pnkln-intelligence-role
+subjects:
+- kind: ServiceAccount
+  name: pnkln-intelligence-sa
+  namespace: intelligence

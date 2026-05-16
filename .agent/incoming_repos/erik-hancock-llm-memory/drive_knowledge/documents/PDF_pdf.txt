@@ -1,0 +1,1423 @@
+Aegaeon: E!ective GPU Pooling for Concurrent LLM
+Serving on the Market
+Yuxing Xiang1,2Xue Li2Kun Qian2Yufan Yang2
+Diwen Zhu2Wenyuan Yu2Ennan Zhai2Xuanzhe Liu1Xin Jin1Jingren Zhou2
+1School of Computer Science, Peking University2Alibaba Group
+Abstract
+Model markets ( e.g., Hugging Face) feature a wide variety
+of models with unique characteristics and varying levels
+of popularity. Serving sporadic and unpredictable requests
+in concurrent inference workloads with dedicated GPU in-
+stances results in substantial resource waste. While existing
+multi-model serving solutions use GPU pooling and server-
+less computing to improve resource e!ciency, their e"ective-
+ness is limited to supporting at most two or three models per
+GPU, which is inadequate for fully utilizing GPU resources.
+We propose Aegaeon, a multi-model serving system that
+performs model auto-scaling at the token granularity to
+achieve e"ective GPU pooling. Aegaeon schedules multi-
+model requests and makes auto-scaling decisions on a per-
+token basis to maximize service quality. It reduces auto-
+scaling overhead by 97% through component reuse, explicit
+memory management, and #ne-grained KV cache synchro-
+nization. Experiments show that Aegaeon sustains 2–2.5 →
+higher request arrival rates or 1.5–9 →more goodput com-
+pared to existing solutions. Aegaeon has been beta deployed
+in our model marketplace and currently serves tens of mod-
+els. Deployment results show that Aegaeon reduces the num-
+ber of GPUs required for serving these models from 1,192 to
+213, highlighting an 82% GPU resource saving.
+CCS Concepts: •Computer systems organization ↑
+Real-time systems ;•Computing methodologies ↑Nat-
+ural language processing ;Distributed computing method-
+ologies .
+Keywords: Multi-Model Serving; Large Language Models;
+Serverless Computing; GPU Pooling
+Permission to make digital or hard copies of all or part of this work for
+personal or classroom use is granted without fee provided that copies
+are not made or distributed for pro#t or commercial advantage and that
+copies bear this notice and the full citation on the #rst page. Copyrights
+for components of this work owned by others than the author(s) must
+be honored. Abstracting with credit is permitted. To copy otherwise, or
+republish, to post on servers or to redistribute to lists, requires prior speci#c
+permission and/or a fee. Request permissions from permissions@acm.org.
+SOSP ’25, Seoul, Republic of Korea
+©2025 Copyright held by the owner/author(s). Publication rights licensed
+to ACM.
+ACM ISBN 979-8-4007-1870-0/25/10
+h!ps://doi.org/10.1145/3731569.3764815ACM Reference Format:
+Yuxing Xiang, Xue Li, Kun Qian, Yufan Yang, Diwen Zhu, Wenyuan
+Yu, Ennan Zhai, Xuanzhe Liu, Xin Jin, and Jingren Zhou. 2025.
+Aegaeon: E"ective GPU Pooling for Concurrent LLM Serving on
+the Market. In ACM SIGOPS 31st Symposium on Operating Systems
+Principles (SOSP ’25), October 13–16, 2025, Seoul, Republic of Korea .
+ACM, New York, NY, USA, 16 pages. h!ps://doi.org/10.1145/3731569.
+3764815
+1 Introduction
+The rapid advancement of large language models (LLMs) and
+their surging adoption in recent years have brought about an
+unprecedented variety of models on the market. For example,
+Hugging Face [ 7], the largest model marketplace, currently
+hosts over one million models, ranging from proprietary
+models [ 10,19,37] trained by large companies to numerous
+#ne-tuned models tailored for speci#c domains. As a leading
+cloud inference service provider, we face highly concurrent
+LLM serving workloads at Alibaba Cloud Model Studio [ 5],
+a model market that handles thousands of di"erent models.
+Serving such workloads poses substantial challenges to
+resource e!ciency due to the prevalence of sporadic model
+invocations. As shown in Figure 1(a), the workloads are
+heavily skewed, containing a long tail (more than 90%) of
+infrequently invoked models. Reserving full GPU instances
+for these models leads to allocating 17.7% of our GPUs to
+serve only 1.35% of requests (averaging fewer than 0.2 re-
+quests per second per GPU). In addition, the “hot” models
+(e.g.,DeepSeek [ 19], Llama [ 30], and Qwen [ 37]) are prone to
+request bursts that can overload their provisioned resources
+from time to time, translating to a similar intermittent invo-
+cation pattern that requires more reserved GPUs, as depicted
+in Figure 1(b). These sporadic requests mark high resource
+waste: assuming an ideal scenario, if all requests belonged
+to a single model, the typical achievable arrival rate could
+be several requests per second per GPU instance [ 25], trans-
+lating to over 10 →unexplored space for optimization.
+Filling this utilization gap requires us to better saturate
+each GPU by enabling it to serve requests from multiple
+models. As such, we aim to conduct e"ective GPU pooling .
+By sharing a GPU between as many models as possible with-
+out violating the service-level objective (SLO), GPU pooling
+promises great reductions in operational expenses (OPEX)
+for concurrent LLM serving.
+1030
+
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+
+	"#"#(%"&	$(&'%!'	" "&	"	%$(&'&	"&(a)	
+
+(b)
+Figure 1. Concurrent LLM serving workloads. (a)CDF of model
+invocations. Less-used models (average arrival rate < 1.16) are in
+the tail (marked in green). (b)Request rate $uctuation for a top
+model (270B, TP=8) on a cluster with over 2K GPUs. Request bursts
+may exceed reserved resources (marked in orange).
+TTFTAGPUPDDD···DDPD···DDPD···DDPPrefillDDecodeModelAModelBModelCTimelineTTFTBTTFTcTTFTcTTFTBTTFTAGPUPDDDDPD···DDPD···DModel A ArrivalModel B ArrivalModel C Arrival···DDModel A ArrivalModel B ArrivalModel C Arrival(a)Request-level auto-scaling.TTFTAGPUPDDD···DDPD···DDPD···DDPPrefillDDecodeModelAModelBModelCTimelineTTFTBTTFTcTTFTcTTFTBTTFTAGPUPDDDDPD···DDPD···DModel A ArrivalModel B ArrivalModel C Arrival···DDModel A ArrivalModel B ArrivalModel C Arrival
+(b)Token-level auto-scaling (ours).
+Figure 2. Di"erent auto-scaling granularities for sharing one GPU
+instance between three models.
+Previous work on GPU pooling falls under two main ap-
+proaches: multiplexing andauto-scaling . The multiplexing ap-
+proach places multiple model instances (optionally sharded
+with model parallelism [ 41]) on each GPU to allow tempo-
+ral [28] or spatial [ 20] sharing of resources. However, it is
+hard-limited to supporting at most two to three models per
+GPU due to inadequate GPU memory capacity ( e.g.,each 80-
+GB GPU accommodates only up to two 14B models with FP16
+weights). It is far from our target pooling e"ectiveness. Mean-
+while, the auto-scaling approach ( e.g., ServerlessLLM [ 21],
+BlitzScale [ 49] and ParaServe [ 31] for serverless inference)
+shows the potential for more aggressive GPU pooling by
+adapting model placement over time and scaling model in-
+stances from o"-device storage ( e.g., host memory, SSDs),
+thus overcoming the stringent GPU memory limitation.
+However, as per our analysis in § 3.1, the e"ectiveness of
+existing auto-scaling solutions remains bounded by the ratio
+ofactive models in the workload ( i.e.,models with at least
+one active request to be served). Unfortunately, the long
+execution time of LLM requests renders a large portion of
+models active, even when the model invocations are sporadic
+(Theorem 3.1). For example, at a total arrival rate of only 3.7
+requests per second, 46.55 out of 100 models are active on
+average. This reveals a fundamental drawback of existing
+solutions: they scale at the request granularity . As illustrated
+in Figure 2(a), when all GPU instances are occupied by active
+models, the execution of new model requests must waitfor the scaling down of currently active models, which is
+executed after the long request service time. Reserving fewer
+GPU instances than the number of active models thus results
+in substantial head-of-line (HOL) blocking and severe SLO
+violations for the waiting models, restricting the pooling
+e"ectiveness to still 100/46.55<3models per GPU.
+To overcome the aforementioned limits on GPU pooling
+e"ectiveness, this paper proposes a token-level auto-scaling
+solution, Aegaeon. Figure 2(b)demonstrates our approach.
+In essence, by preemptively scaling down active models and
+scaling up pending models for newly arrived requests in an
+SLO-aware manner, Aegaeon alleviates HOL blocking and
+achieves truly e"ective GPU pooling, supporting up to seven
+models per GPU (§7). To practically build this solution, we
+further address two technical challenges.
+Challenge #1: Token-level scheduling. Conducting auto-
+scaling at the token level necessitates scheduling policies that
+tackle a complex interaction between token-level execution
+times and auto-scaling latencies, all while satisfying SLO
+requirements. Optimally solving this problem is intractable
+in real time, while heuristics can hardly balance the diverse
+per-token SLOs and the penalties caused by auto-scaling
+latencies for making wrong decisions.
+We propose a token-level scheduler to jointly schedule the
+processing of requests and auto-scaling decisions. Given that
+the #rst token and subsequent tokens have vastly di"erent
+execution times and SLOs, the pre#ll and decoding phases are
+scheduled and served in disaggregation [ 52]. For the pre#ll
+phase, a grouped #rst-come-#rst-serve (FCFS) scheduler is
+proposed to minimize the Time-To-First-Token (TTFT) for
+each request. For the decoding phase, a weighted round-
+robin scheduler minimizes the number of tokens violating
+the Time-Between-Tokens (TBT) SLOs.
+Challenge #2: Auto-scaling cost optimization. While
+auto-scaling acceleration has been widely studied in the lit-
+erature [ 21,49], in our comprehensive investigations, none of
+the existing solutions can support token-level auto-scaling,
+which involves a sequence of critical procedures ( i.e.,KV
+cache swap-out, garbage collection, engine reinitialization,
+KV cache swap-in, and others) beyond existing considera-
+tions. This sequence can take tens of seconds if left unopti-
+mized, making the token-level scheme impractical.
+Aegaeon presents a series of in-depth optimizations to
+achieve e!cient token-level auto-scaling. First, we perform
+a comprehensive study of the initialization steps of inference
+engines, identifying and leveraging opportunities for com-
+ponent reuse in engine reinitialization. Second, we conduct
+explicit memory management for GPU and host memory,
+accelerating model loading via caching and prefetching, and
+eliminating fragmentation and garbage collection overhead.
+Third, we implement a #ne-grained synchronization mecha-
+nism for transferring KV cache, allowing for better execution
+overlapping and decoupling.
+1031
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea
+Evaluation. We conduct thorough experiments to validate
+the performance of Aegaeon, showing that it sustains 2–2.5 →
+higher request arrival rates or 1.5–9 →more goodput com-
+pared to ServerlessLLM [ 21] and MuxServe [ 20], supporting
+up to seven models per GPU. Aegaeon has been beta de-
+ployed in Alibaba Cloud Model Studio for over three months,
+currently serving tens of models that range from 1.8B to
+72B parameters. It reduces the number of GPUs required for
+serving these models from 1,192 to 213, highlighting an 82%
+GPU resource saving.
+In summary, we make the following contributions:
+•Aegaeon is the #rst work to reveal the excessive costs
+associated with serving concurrent LLM workloads on
+the market, supported by comprehensive statistics and
+analysis in a production environment (§ 3).
+•Aegaeon is the #rst model-serving solution for multiple
+LLMs that performs token-level auto-scaling, with distinct
+scheduling strategies for the pre#ll and decoding phases
+to optimize SLO attainment at the token level (§ 4).
+•Aegaeon is the #rst study to holistically optimize the pre-
+emptive auto-scaling process for LLM inference, reducing
+97% of overhead through full-stack optimizations (§ 5).
+•The e"ectiveness of Aegaeon is validated through real-
+world production deployment, demonstrating its ability to
+signi#cantly reduce OPEX (§ 7).
+2 Background
+In this section, we #rst describe the basic inference process
+of an LLM and its requirements for service quality. Next, we
+present the de#ning characteristics of concurrent inference
+workloads, which are now common in production settings.
+Finally, we review the literature on existing LLM serving sys-
+tems, focusing on their limitations for concurrently serving
+multiple LLMs on the market.
+2.1 Basic LLM Inference
+The inference work$ow of an LLM request consists of two
+types of token generation jobs: pre!ll anddecoding . In the
+pre!ll phase, a forward pass of the model processes all tokens
+in the user prompt, generating one output token. Following
+this, each step in the decoding phase processes only the new
+token generated in the previous step. This auto-regressive
+process continues until the output ends with an EOS token or
+reaches a prede#ned maximum length. During both phases,
+intermediate states (referred to as the KV cache [ 25]) are
+generated for every token in each transformer layer, which
+are saved and reused in subsequent decoding steps.
+SLO de"nition. Due to their distinct computational charac-
+teristics [ 52], pre#ll and decoding jobs exhibit diverse execu-
+tion times and commonly require two basic metrics for de#n-
+ing their overall service-level objectives (SLOs): (𝐿)TTFT,
+which measures the latency to produce the initial output to-
+ken, and (𝐿𝐿)TBT, which gauges the latency to generate eachRequestArrival···Deadline MetDeadline MissedToken DeadlineToken GenerationTTFTDeadlineTBTDeadlineBufferedOutputFigure 3. Overall token generation process of a request. SLO at-
+tainment is de#ned as the percentage of token generation times
+that meet their deadlines, i.e.,the proportion of the green area.
+subsequent token. The step-by-step nature of LLM inference
+results in an indirect mapping between the measured metrics
+and the perceived user experience. For example, suppose a
+signi#cant delay occurs when generating a sequence of to-
+kens, as illustrated in Figure 3. A delay before the #rst token
+(i.e.,a large TTFT) leads to a noticeable stall for the user,
+whereas a delay before the last token ( i.e.,a single large TBT)
+can be masked by bu"ering the output of previous tokens.
+This paper aligns with the evolving perspective in recent
+works [ 13,29] and quanti#es SLOs as the ability to meet
+generation deadlines ( i.e.,the target TTFT and TBT metrics)
+on a per-token basis. Speci#cally, we de#ne SLO attainment
+asthe percentage of token generation times that meet their
+deadlines , which better re$ects the end-user experience.
+2.2 Concurrent LLM Serving on the Market
+Given the popularity and rapid advancement of LLMs, model
+markets now host a wide variety of models, giving rise to
+concurrent inference requests for di"erent models. In our
+production setting, requests made to the same model are
+treated as one workload , sharing identical SLOs. Each request
+arrives with a prompt paired with its target model and is then
+processed by GPU instances running dedicated inference
+engines [ 25,52] for the corresponding models.
+Model invocations are unpredictable. We observe signif-
+icant sporadic patterns in terms of model invocations within
+our concurrent LLM serving workloads. To begin with, as
+shown in Figure 1(a), our workloads are heavily skewed , with
+94.1% of the models receiving only 1.35% of the requests. As
+a result, a remarkable proportion (up to 17.7%) of our GPU in-
+stances constantly receive sporadic “cold” model invocations,
+causing signi#cant resource wastage.
+Furthermore, as shown in Figure 1(b), serving “hot” mod-
+els is also burdened by short-term bursty workloads [ 50].
+These bursts overload the reserved resources for “hot” mod-
+els, while serving them with extra dedicated GPU instances
+causes similar resource wastage.
+Beyond single-model serving. Prior studies have proposed
+various optimizations for single-model serving [ 14,23,25,
+34,47,52], many of which are deployed in our production en-
+vironment, delivering decent throughput ( e.g.,up to several
+1032
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+requests per second (RPS) per GPU). On the one hand, this
+highlights the substantial resource waste in concurrent LLM
+serving, which is currently achieving less than 0.1 RPS per
+GPU. On the other hand, directly applying these solutions is
+inadequate. Since the sporadic invocations cannot saturate
+any dedicated GPU with one model, we are incentivized to
+conduct e"ective GPU pooling , sharing each GPU between
+as many models as possible without violating SLOs.
+2.3 Current Solutions
+To this end, existing solutions for GPU pooling fall under
+two main approaches: multiplexing andauto-scaling .
+Multiplexing. This approach requires placing multiple mod-
+els (optionally sharded through model parallelism [ 41] across
+devices) on each GPU. Resource sharing is then achieved
+through temporal [ 28] or spatial [ 20] multiplexing ( e.g.,via
+NVIDIA MPS [ 8]). The e"ectiveness of multiplexing for GPU
+pooling is hard-limited by GPU memory capacity; e.g., at
+most two 14B models with FP16 weights #t on an NVIDIA
+A100 GPU with 80GB VRAM. In fact, model parameters in
+our workloads average 25.1 GB, meaning that multiplexing
+typically supports only two to three models per GPU. This
+level of pooling still underutilizes GPU instances.
+Auto-scaling. Meanwhile, auto-scaling [ 21,31,35,49] adapts
+the model placement on GPU instances on demand, scaling
+down unused models and scaling up requested models by
+loading weights from host memory or SSDs. While this ap-
+proach is far less constrained by memory limitations (tens of
+models can be stored in o"-device storage), its e"ectiveness
+is not fully realized due to the coarse granularity of the auto-
+scaling actions, i.e.,scaling only at the end of requests. In
+practice, existing auto-scaling solutions underperform due
+to head-of-line (HOL) blocking in aggressive GPU pooling
+scenarios, as we elaborate next.
+3 Aegaeon Overview
+Given a list of 𝑀models to be served, our goal is to mini-
+mize the number of GPU instances 𝑁required to meet the
+SLOs for all models through auto-scaling, thus maximizing
+resource usage. The strawman strategy, i.e.,no auto-scaling
+at all, reserves at least one dedicated instance for each model,
+leading to 𝑁=𝑂(𝑀).
+3.1 Tradeo! Analysis
+To improve upon this, existing auto-scaling solutions allow
+for switching the served model on a single GPU instance.
+They enable more e!cient resource usage by making use of
+the idle time on dedicated instances.
+Active model count. The e"ectiveness of these solutions is
+captured by the statistic 𝑃—the active model count —which
+quanti#es the number of models that have at least one re-
+quest being served at a given time. By utilizing idle GPU				
+	Figure 4. Active model count over time ( 𝑀=100,𝑄=0.037,
+𝑅=16.79s). The estimated value is E[𝑃]=46.55.
+time, the system can reliably reserve GPUs for only the ac-
+tive models, leading to 𝑁=𝑂(𝑃). The following theorem
+characterizes the active model count 𝑃as a random variable:
+Theorem 3.1. Suppose the request arrival rate for each model
+follows a Poisson process with rate 𝑄, and the average time to
+serve a request is 𝑅. The expected active model count E[𝑃]is
+given by:
+E[𝑃]=𝑀·(1↓𝑆↓𝐿𝑀) (1)
+Consider the real-world scenario shown in the left part of
+Figure 1, where the arrival rate 𝑄=0.037and the average
+service time 𝑅=16.79s. The expected active model count
+isE[𝑃]=0.4655 ·𝑀. Figure 4simulates the active model
+count over time with 𝑀=100, con#rming that the value
+$uctuates around E[𝑃]=46.55. The proof of Theorem 3.1
+is provided in Appendix A.1.
+This analysis reveals a major drawback of existing auto-
+scaling solutions: due to the typically long service time of
+LLM requests, the expected active model count E[𝑃]can
+be large even when the aggregate arrival rate 𝑀𝑄is low.
+As a result, the achieved pooling e!ciency remains on par
+with multiplexing: serving 𝑀𝑄=3.7requests per second in
+total still demands E[𝑃]=46.55reserved GPU instances,
+corresponding to merely 100/46.55<3models per GPU.
+Head-of-line blocking. What limits existing solutions from
+achieving e"ective GPU pooling, in essence, is the fact that
+they conduct scaling only at the request granularity . Fig-
+ure2(a)illustrates the strategy in existing systems when con-
+currently serving three models on one GPU. Since the pre#ll
+and decoding jobs of di"erent models cannot be batched,
+requests for models B and C must wait until the comple-
+tion of preceding requests. This leads to severe head-of-line
+(HOL) blocking, as the waiting time for fully executing other
+LLM requests results in prohibitively long TTFT and SLO
+violations for the waiting models.
+Our approach. We propose a token-level auto-scaling ap-
+proach (Figure 2(b)), Aegaeon, that overcomes the limits on
+pooling e!ciency found in current solutions. Our strategy
+mitigates HOL blocking by preemptively scaling down active
+models and scaling up pending models, thus better satisfying
+request SLOs. With #ne-grained execution control over mul-
+tiple requests at the token level, Aegaeon pushes the number
+1033
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea
+GPU
+DRAM(Node 1)DecodeInstance1GPU
+PrefillInstance1GPU
+DecodeInstance2……
+RedisRequestARequestBRequestC①②③⑤⑥⑧Memory ManagementUnified CPU KV Cache
+RemoteRegistryGPU
+DRAM(Node 2)ModelCache
+U.CacheModelCacheProxy Layer(LoadBalancer)DataRequestPreemptive Auto-ScalingStatusSyncRemoteLoadingScheduler④⑦⑨Scheduler (§4)SchedulerPreemptive Auto-Scaling(§5) ……VRAMBufferVRAMBufferVRAMBuffer
+Figure 5. System overview of Aegaeon.
+of reserved instances 𝑁below E[𝑃], achieving resource ef-
+#ciency closer to the single-model serving scenario.
+3.2 Challenges
+Despite its potential, e!ciently implementing the token-level
+approach presents two key challenges.
+Challenge #1: Scheduling the auto-scaling. The inclu-
+sion of token-level auto-scaling complicates an already large
+decision space for scheduling requests from di"erent models.
+The scheduler must frequently determine the next batch of
+generation jobs from many running requests and whether
+to scale the models, all while considering the diverse exe-
+cution times and deadlines of each token (§ 2.1) as well as
+the auto-scaling overhead. While token-level scheduling has
+been studied in single-model serving [ 44,50], the scheduling
+decision is even more critical in our setting for two reasons.
+First, requests from di"erent models cannot be batched to-
+gether, resulting in a higher number of smaller batches to
+be scheduled. Second, the overhead associated with auto-
+scaling magni#es the penalties for incorrect decisions.
+Challenge #2: Optimizing auto-scaling costs. E"ective
+GPU pooling requires performing token-level auto-scaling as
+quickly as possible. However, existing optimizations for auto-
+scaling speed [ 21,31,49] focus on “fresh” scale-ups, whereas
+we face a more complex sequence of successive scale-downs
+and scale-ups, which also involves the management of in-
+termediate KV cache. If left unoptimized, scaling down and
+then scaling up a vLLM [ 25] instance with a 13B model takes
+tens of seconds, risks causing memory fragmentation, and
+requires blocking synchronization. This level of overhead
+would render the token-level approach impractical.
+3.3 System Overview
+To address these challenges, we build Aegaeon, a system that
+implements the token-level auto-scaling approach to achieve
+high GPU utilization for serving concurrent LLM workloads.
+Figure 5shows the architecture of Aegaeon and illustrates
+the process of serving multiple models.TBTR3TBTR1GPU 0PiRi PrefillModelAModelBModelCGPU 1P1P2P4D1P3D2D2D2P5D45P6···R1, R2R3, R4R5R6D45TBTR1RequestArrivalKVCacheTransferDiRi DecodingSwitchingSLO Violation
+(a)Pre#ll-prioritized scheduling.TTFTR3GPU 0GPU 1P1D1D1D1P3P5P4D1D1D1P2D2D2D2D2D2D2D2D2D2P6TTFTR6R1, R2R3, R4R5R6(b)Decoding-prioritized scheduling.GPU 0GPU 1P1P2P3···P6···D1D1D2D2D1D345D345P5P4R1, R2R3, R4R5R6Prefill instanceDecoding instance(c)Disaggregated scheduling.
+Figure 6. Exemplar token-level schedules on two GPUs. Pre#ll-
+#rst scheduling (a) and decoding-#rst scheduling (b) both lead to
+SLO violations. Disaggregated scheduling (c) separates pre#ll and
+decoding jobs to enable balanced token generation.
+To execute inference requests, Aegaeon #rst dispatches
+them via the proxy layer, which synchronizes the request
+metadata with the underlying serving instances via a shared-
+memory mechanism ( e.g.,Redis [ 11]) to ensure load balanc-
+ing and fault tolerance. Aegaeon can dispatch requests for
+di"erent models to the same instance, as shown by ✁,✂,
+and✃in Figure 5. Each instance in Aegaeon contains one
+or more GPUs hosted on a physical node, conducting either
+pre#ll or decoding jobs (requiring ✄,☎, and ✆in Figure 5).
+Once requests are sent to an instance, Aegaeon schedules
+their execution, guided by a token-level scheduler (§ 4). This
+capability makes preemptive auto-scaling a critical opera-
+tion, as indicated by ✇,✈, and ✉. To accelerate this process,
+Aegaeon employs full-stack optimizations (details in § 5).
+4 Token-Level Scheduling
+To balance the auto-scaling overhead and request SLOs at the
+token level, Aegaeon schedules both the request execution
+and the auto-scaling decisions in unison to maximize request
+SLO attainment. Essentially, given a list of requests, a set of
+GPU instances, and the target TTFT and TBT, Aegaeon picks
+the next batch of token generation jobs ( i.e.,pre#ll or one
+step of decoding) for each GPU instance, optionally initiat-
+ing preemptive auto-scaling if any scheduled job requires a
+di"erent model than the currently active one.
+1034
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+Algorithm 1 Grouped Pre#ll-Phase Scheduling
+Input: Pre#ll instances I𝐿.
+1:𝐿Event: On arrival of request 𝑁:
+2:min_load ↔↗
+3:𝑂↘↔I 𝐿[0]
+4:for all instance 𝑂inI𝐿do
+5: for all group 𝑃in𝑂.job_queue do
+6: if𝑃.model =𝑁.model and𝑃.size<MAX _GPSIZE then
+7: Add 𝑁to group 𝑃# Prioritize existing groups
+8: return
+9: load ↔Total time to execute all groups in 𝑂≃
+10: ifload <min_load then
+11: min_load ↔load # Pick the least loaded instance
+12: 𝑂↘↔𝑂
+13:Make a group with 𝑁and append to 𝑂↘.job_queue
+14:𝐿Event: On selecting a batch for pre"ll instance 𝑂𝐿execution:
+15:Select one request from the front group of 𝑂𝐿.job_queue
+4.1 Disaggregating Pre"ll and Decoding
+As discussed in § 3.2, scheduling at the token level is challeng-
+ing due to the auto-scaling overhead. Particularly, we #nd
+that uni!ed scheduling policies—those that schedule both
+pre#ll and decoding jobs on the same GPU instance—are ei-
+ther intractable or ine!cient for Aegaeon. On the one hand,
+optimally formulating and solving the problem as an integer
+linear programming (ILP) problem is infeasible in real time
+due to its complexity [ 50]. On the other hand, heuristics that
+prioritize one job over the other lead to unpredictable perfor-
+mance: pre#ll-#rst scheduling tends to harm TBT when there
+are bursts in request arrivals (Figure 6(a)), while decoding-
+#rst scheduling compromises TTFT when request lengths are
+exceedingly long (Figure 6(b)). Both phenomena are preva-
+lent in real-world inference workloads [ 43,45], making uni-
+#ed scheduling highly workload-sensitive.
+Existing work [ 34,52] has shown that disaggregating the
+pre#ll and decoding phases is e"ective in addressing interfer-
+ence between these jobs in single-model serving. Following a
+similar philosophy, we adopt disaggregated scheduling in Ae-
+gaeon as illustrated in Figure 6(c), which achieves balanced
+scheduling despite the bursty pre#ll jobs and long decoding
+jobs. Speci#cally, Aegaeon splits its GPU pool into two parti-
+tions: one dedicated to pre#ll and the other to decoding. At
+request arrival, Aegaeon #rst schedules the pre#ll execution
+using instances from the pre#ll partition (pre#ll instances)
+and then schedules subsequent decoding jobs using instances
+from the decoding partition (decoding instances).
+4.2 Pre"ll-Phase Scheduling
+For the pre#ll phase, we observe that the auto-scaling over-
+head is typically comparable to executing a batch of pre#ll
+jobs. For example, scaling up a 13B model (assuming the
+FP16/BF16 data type) via PCIe 4.0 takes at least 26GB/32GBps =
+0.8125 seconds, while the time for a pre#ll batch regularly
+falls below one second on contemporary GPUs. As such,
+frequent auto-scaling would signi#cantly increase TTFT.Algorithm 2 Batched Decoding-Phase Scheduling
+Input: Decoding instances I𝑀.
+1:𝐿Event: On arrival of request 𝑁:
+2:Dispatch as in Algorithm 1, deriving max batch sizes from the KV cache
+capacity on GPU, using work list sizes for load
+3:𝐿Event: Always on decoding instance 𝑂𝑀:
+4:while True do
+5: # Start of a round
+6: Reorder 𝑂𝑀.work _listto group batches with the same model
+7: Assign time quota 𝑄𝑁to the 𝑂-th batch in 𝑂𝑀.work _list
+8: n_turn ↔Number of batches in 𝑂𝑀.work _list
+9: for all index 𝑅in1⇐n_turn do
+10: # Start of a turn
+11: Decode the 𝑂-th batch in 𝑂𝑀.work _listfor𝑄𝑁seconds
+To mitigate this issue, Aegaeon adopts a grouped schedul-
+ing policy for pre#ll jobs, as outlined in Algorithm 1. The key
+idea is to group requests for the same model to minimize ex-
+cessive preemptive auto-scaling while maintaining a general
+FCFS order to avoid starvation. Each pre#ll instance main-
+tains a job queue comprising grouped jobs, where each group
+contains no more than MAX _GPSIZE jobs of the same model.
+We set MAX _GPSIZE to 8 in our implementation through a
+simple grid search—larger values behave identically because
+groups seldom grow past that size, and smaller values can
+still cause excessive scaling under high load.
+Upon receiving a pre#ll job, Aegaeon prioritizes adding the
+job to an existing group if it #ts (lines 6–8). Otherwise, a new
+group is created and appended to the least loaded job queue
+(lines 10–13), where the load of a job queue is de#ned as the
+total time required to #nish all pending groups, including
+execution and auto-scaling time. The estimation for both
+values is described in Appendix A.2, and a detailed analysis
+of auto-scaling time is provided in § 5. Jobs are then executed
+from the front of the job queue (line 15). Note that we limit
+the batch size on pre#ll instances to one. This is because
+the execution time of a pre#ll batch scales approximately
+linearly with the number of pre#lled tokens, and smaller
+batches reduce overall waiting time without signi#cantly
+impacting throughput. Moreoever, this helps eagerly send
+requests to the decoding phase and reduce TBT. In addition,
+the checks on line 6 use the accumulative size for group 𝑇
+(i.e.,executing a request on line 15 does not decrease 𝑇.size),
+ensuring that we do not deviate from FCFS too much.
+4.3 Decoding-Phase Scheduling
+The scheduling of decoding jobs in Aegaeon is based on
+a unique property of LLM inference: request execution is
+iterative, and the stream of output tokens can be bu"ered
+(as discussed in § 2.1) to hide user-perceivable stalls. Let 𝑈
+denote the time needed for executing a decoding step and 𝑉
+denote its deadline ( i.e.,the target TBT). Intuitively, for every
+consecutive 𝑊decoded steps, the request can tolerate a delay
+of𝑊(𝑉↓𝑈)without risking SLO violations. Since 𝑈is typically
+small ( e.g., tens of milliseconds) and 𝑉is relatively loose
+1035
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of KoreaInferenceScaleDownKVoutgcDistExecinitModelinProfileKVinitKVinInferenceMiscScaleUpTimeStagesInference EngineWorkerDistributed Executor (e.g., Ray and NCCL)Profiling & Opt. (e.g. peak mem util.)GPU KV CacheOther Components: Scheduler, Log …CPU KV CacheTokenizer, Comm GroupModel WeightsCost: !!Inference EngineInitialization
+Figure 7. Left: default preemptive auto-scaling process for an inference engine. Middle and Right : typical composition of an LLM inference
+engine, and the latency breakdown of its initialization (both before andafter our optimization).
+(e.g.,100 ms for a chatbot application), Aegaeon exploits the
+earned slack time for auto-scaling and serving other requests.
+Aegaeon schedules decoding jobs using a weighted round-
+robin scheme, as described in Algorithm 2. Each decoding
+instance maintains a rotating work list of decoding batches,
+each containing requests for the same model and a time
+quota. Newly pre#lled requests are dispatched with a similar
+mechanism as in Algorithm 1, but the load is calculated with
+work list sizes, and batch size limits are derived from the KV
+cache capacity on the GPU (line 2). Execution of the work
+list is organized in rounds. At the beginning of each round
+(lines 5–8), Aegaeon assigns a time quota 𝑋𝑂to the 𝐿-th batch
+according to the following formula:
+𝑋𝑂=𝑌
+𝑊𝑂·(𝑍↓ω𝑅1
+𝑆𝑂)(2)
+where 𝑊𝑅=𝑉/𝑈𝑅,𝑌is the sum of auto-scaling overhead for
+all models in the work list, and
+𝑍=max(𝑌
+min 𝑅(𝑊𝑅)·QMAX+ω𝑅1
+𝑊𝑅,0.5) (3)
+is the reciprocal of the estimated SLO attainment for the
+round. QMAXrepresents the maximum quota and is empiri-
+cally set to 4 seconds. We #nd Aegaeon to be robust under
+alternative settings. Then, Aegaeon reorders the list so that
+batches sharing the same model (which may occur if a single
+batch requires more KV cache space than is available on the
+GPU) are placed adjacently. Lastly, the batches are decoded
+in a round-robin fashion (lines 9–11), with batch 𝐿being
+decoded for exactly 𝑋𝑂time (referred to as a “turn").
+The intuition behind these equations is straightforward:
+Equation (2) assigns quota to each batch to allow for a bu"ered
+window that equals 1/𝑍times the total round time. In other
+words, batches in the round will consistently achieve an SLO
+attainment of min(1,1/𝑍), and thus we want to minimize 𝑍.
+However, an extremely small 𝑍is not ideal either, as it leads
+to large quota 𝑋𝑂and causes longer stalls for new decode
+batches. Thus, we require 𝑍⇒0.5in Equation (3) to guaran-
+tee a minimum duration for each turn, where the 0.5 bound
+allows Aegaeon to pick smaller, more $exible 𝑋𝑂when SLOs
+are con#dently satis#ed (1
+𝑇=200% ).
+To see these equations in action, assume the work list
+contains three batches, 𝑉=0.1,𝑈𝑂=0.025,𝑌=3, and QMAX =
+3, all in seconds. Then, 𝑊𝑂=4,𝑍=1/4+3/4=1, and𝑋𝑂=3
+4·(1↓3/4)=3. Executing each batch for 3 seconds leads
+to 120 tokens decoded, and the round #nishes in 12 seconds.
+Since outputting 120 tokens at an interval of 0.1 seconds also
+takes exactly 12 seconds, all batches will always meet their
+token-level deadlines with this schedule.
+5 E#cient Preemptive Auto-Scaling
+While the token-level scheduler tackles the decision-making
+for preemptive auto-scaling, it remains essential for Aegaeon
+to actually conduct it with minimal costs. The left side of
+Figure 7characterizes the default process of preemptive auto-
+scaling as a lengthy sequence of multiple stages ( 𝑅0). First,
+after the last inference step, the old instance must save all its
+KV cache ( e.g.,o%oading it to host memory) due to VRAM re-
+strictions. Next, the new instance is spun up, reclaiming the
+allocated VRAM with a pass of garbage collection and then
+reinitializing the inference engine with new con#gurations.
+Finally, the KV cache for the new jobs1is brought back before
+inference can resume. As mentioned in § 3.2, existing solu-
+tions only focus on model-loading acceleration without con-
+sidering other stages in the entire preemptive auto-scaling
+procedure, leading to limited performance gains.
+Aegaeon presents a set of techniques for holistically opti-
+mizing each of these stages, which we organize into three
+aspects: eliminating the engine (re)initialization overhead
+(§5.1), reducing memory ine!ciencies (§ 5.2), and decoupling
+KV cache transfer with #ne-grained synchronization (§ 5.3).
+5.1 (Re)initialization Breakdown and Component
+Reuse
+As shown on the left side of Figure 7, a remarkable portion of
+the scale-up sequence is spent (re)initializing the inference
+engine. Indeed, existing LLM inference engines are complex
+systems with numerous components, typically optimized for
+inference performance rather than initialization speed. The
+middle part of Figure 7shows the composition of a typical
+LLM inference engine (vLLM [ 25]), revealing several key
+factors that contribute to this overhead:
+•Distributed executor. Inference engines support model
+parallelism via distributed executors ( e.g., Ray [ 32] and
+NCCL [ 9]), whose initialization takes tens of seconds.
+1Only for decoding instances.
+1036
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+Table 1. The shape and size of KV cache for di"erent models in
+vLLM. Listed values pertain to a single token in 16-bit precision.
+Model KV Cache Shape KV Cache Size
+Qwen-7B [ 38] (32,2,32,128) 512 KB
+InternLM2.5-7B-chat [ 26](32,2,8,128) 128 KB
+LLaMA-13B [ 42] (40,2,40,128) 800 KB
+Qwen-72B [ 38] (80,2,64,128) 2560 KBInferenceKVoutgcModelinKVinInferenceTimeStagesCost: !!
+(a)InferenceKVoutModelinKVinInferenceTimeDefault Stream
+Prefetch Stream
+Cost: !!(b)
+Figure 8. Preemptive scaling with optimizations in § 5.1and § 5.2.
+(a)w/ component reuse; (b)also w/ explicit memory management.
+•Pro"ling and optimization. Some engines perform pro-
+#ling and optimization ( e.g.,deciding the allocation size
+for the KV cache), which can take several seconds.
+•Model weights loading. Loading model weights (even
+when cached in host memory) onto GPUs is time-consuming,
+and latency increases with model size. Although modern
+PCIe buses o"er decent theoretical bandwidth ( e.g., 32
+GB/s for PCIe 4.0), inference engines often fail to fully
+utilize this bandwidth. For example, loading a LLaMA-13B
+model (with a TP degree of 2) via PCIe 4.0 takes around
+4.6 seconds in our microbenchmark (right side of Figure 7),
+achieving only 2.83 GB/s bandwidth.
+•KV cache initialization. Inference engines usually pin
+CPU memory speci#cally for KV cache storage to achieve
+better performance. However, pinning memory pages in-
+troduces several seconds of initialization overhead.
+•Other components. Initialization of other components,
+such as schedulers, may also contribute to the overhead.
+In total, an unoptimized initialization process can take
+up to 26.9 seconds for a 13B model. Notably, much of this
+latency is notrelated to loading model weights, requiring
+further optimizations unexplored by existing solutions.
+Component reuse. We observe that the initialization of
+these components, while time-consuming, can be safely
+reused across the serving of di"erent models. As such, Ae-
+gaeon initializes the inference engine and workers only once
+per instance, caching every component except for the model
+weights and the KV cache, both of which require model-
+speci#c handling. Additionally, Aegaeon performs relevant
+pro#ling ( e.g.,for KV cache size) and caches tokenizers be-
+forehand. Finally, Aegaeon leverages a pre-allocated memory
+pool for storing the KV cache in host memory (detailed in
+§5.2), eliminating the need for pinning memory pages during
+auto-scaling. In total, component reuse reduces the scale-
+up overhead from 𝑅0(left of Figure 7) to𝑅1in Figure 8(a),
+removing over 80% of the auto-scaling latency.
+GPU #1 (VRAM)Model Classes
+CPU (DRAM)Misce.g.activation...PCIe1. Monkey-patch
+Stage Buffer #1 (2 GB)
+Model Cache(640 GB)Unified CPU KV Cache(320 GB)3.a. Direct load3.b. Prefetch3.b. CopySelf-Managed BufferTensor Libaegaeon.Parameterlm_head.weightlayers.0. attn.k.weight...torch.nn.Parameter
+Page-LockedBump AllocatedPython ClassModel Weights(14 GB)PrefetchedWeights(28 GB, optional)Unified GPUKV Cache(30 GB)
+2. AllocateUnified KV CacheAllocated Slabw/ Free BlocksUnallocatedSlabFullSlaballoc(         x 3)?free(                  )?Figure 9. Explicitly managed memory in Aegaeon, with exemplar
+memory sizes in brackets. Relevant steps for scaling up a model
+and operations on the uni#ed KV cache are also illustrated.
+5.2 Explicit Memory Management
+Another notable ine!ciency unique to preemptive auto-
+scaling is memory fragmentation in both device and host
+memory ( i.e.,VRAM and DRAM). On the GPU, the caching
+allocators in tensor libraries ( e.g.,PyTorch [ 33]) often require
+proactive defragmentation ( i.e.,calling gc.collect() and
+then torch.cuda.empty_cache() ) to avoid out-of-memory
+errors when initializing LLM weights back-to-back on the
+same GPU. As for host memory, the wastage comes from
+storing the o%oaded KV cache for the preempted requests,
+which is complicated by the fact that the shape of the KV
+cache (dependent on hyperparameters such as the number
+of layers, attention heads, etc.) varies across di"erent models,
+as shown in Table 1. Naively pre-allocating #xed blocks for
+all shapes would lead to signi#cant fragmentation, especially
+as we aim to support many models on the same GPU node.
+Memory fragmentation poses two critical obstacles to
+further optimizing preemptive auto-scaling in Figure 8(a):
+(𝐿)VRAM fragmentation, as mentioned, demands a time-
+consuming garbage collection stage (several seconds); (𝐿𝐿)
+DRAM fragmentation hinders the optimization of model-
+loading speed, which also uses host memory [ 21] as cache
+and page-locked staging bu"ers for model weights. Memory
+pressure in DRAM can lead to poor caching e!ciency and
+increased auto-scaling time.
+Aegaeon performs explicit memory management for both
+VRAM and DRAM to minimize fragmentation. Figure 9demon-
+strates our approach. In summary, the following optimiza-
+tions (on top of component reuse) bring down the auto-
+scaling overhead to 𝑅2, as shown in Figure 8(b).
+Self-managed VRAM bu!er. To reduce VRAM fragmen-
+tation, we opt for completely self-managed allocations for
+both model weights and KV cache on the GPU. At startup,
+Aegaeon requests all the necessary VRAM for weights and
+1037
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea
+KV cache as a self-managed bu"er in one allocation, leaving
+around 10% free memory for tensor libraries to manage acti-
+vations and other intermediate results. This bu"er operates
+with bump allocation ;i.e.,allocations are made consecutively
+by bumping up a pointer, and deallocations can be done in-
+stantly by simply resetting that pointer. During each model
+scale-up, Aegaeon monkey-patches (step 1 in Figure 9) the
+relevant Python classes with custom wrapper classes ( e.g.,
+overriding the torch.nn.Parameter class after module im-
+port), which are backed by allocations from the self-managed
+bu"er (step 2). Consequently, Aegaeon bypasses the tensor
+library’s allocation mechanism and avoids the need for in-
+voking garbage collection.
+Quick model loading. Aegaeon accelerates model loading
+by caching2the raw tensor chunks from model checkpoints
+in a shared host memory region, called the Model Cache .
+Moreover, each GPU is associated with a dedicated page-
+locked Stage Bu"er for staging memory copies between the
+device and the host. For the ideal scenario where the scaled-
+up model is cached in host memory, Aegaeon directly copies
+the weights from the Model Cache onto GPUs via the Stage
+Bu"er in a multi-threaded, chunked, and pipelined manner
+(step 3.a in Figure 9), achieving loading times comparable
+to state-of-the-art solutions [ 21,31] (under one second, as
+shown in the right of Figure 7).
+In practice, Aegaeon further reduces this overhead by op-
+tionally prefetching the next required model in a separate
+CUDA stream (see also Figure 8(b)), guided by the token-
+level schedule. If su!cient VRAM is available, the prefetched
+model is allocated right after the running model in the self-
+managed bu"er, and moved to the start of the bu"er during
+the actual scale-up with a cheap on-device copy (step 3.b in
+Figure 9). Note that once this copy #nishes, Aegaeon can re-
+sume the scale-up normally and may even start prefetching
+the next model if possible. Prefetching is particularly e"ec-
+tive for decoding instances: since the time slice for each turn
+often completely hides the prefetching overhead, Aegaeon
+can achieve near-instant model loading.
+Uni"ed KV cache. To address memory fragmentation when
+storing KV cache of several di"erent shapes, Aegaeon draws
+from classical memory management techniques and adopts
+slab allocation to build uni!ed KV caches for every possible
+shape. Every KV cache region ( i.e.,in VRAM or DRAM)
+is divided into #xed-size chunks, called slabs . Each slab is
+assigned to a shape, serving as a pool of KV cache blocks
+for that speci#c shape. As illustrated in the bottom half of
+Figure 9, upon allocation, Aegaeon #rst uses free blocks
+from existing slabs of the same shape. If no free blocks are
+available, Aegaeon acquires new slabs for that shape. Upon
+deallocation, Aegaeon releases blocks back to their respective
+slabs and reclaims slabs that contain no occupied blocks.
+2Otherwise, the model is fetched from a remote registry.…InferenceKVoutModelinKTimeDefault StreamKV-In StreamKV-Out StreamVinDecode{R1}KVR1KVR2KVR3Decode{R1,R2,R3}KVR4DecodingInstancePrefill{R1}KVR1PrefillInstanceTime
+Prefetch StreamCost: !!R1EventsUnifiedCPUCacheRxRxRyRyR1R1RxP->CC->D①②③④⑤⑥⑦
+①④ cudaEventRecord/cudaIpc*②⑤ memcpy(async)③cudaStreamWaitEvent⑥ cudaEventQuery⑦ model forward⑧ movelist reclaim⑧Ry…C->DRxP->CDaemonThread
+Figure 10. E!cient scaling in Aegaeon, with #ne-grained KV cache
+synchronization. Dotted boxes indicate non-critical operations, and
+striped boxes indicate cache blocks in move lists.
+This method strikes a balance between management over-
+head and memory fragmentation, customizable with the slab
+size. As demonstrated in § 7.3, slab allocation leads to e!cient
+cache memory utilization in real-world workloads.
+5.3 Fine-Grained KV Cache Synchronization
+To push the preemptive auto-scaling speed to the extreme, we
+need to further overlap the KV cache transfer stages in Fig-
+ure8(b)(i.e.,moving KV cache in and out of device memory),
+assigning them to separate CUDA streams for asynchronous
+execution. However, doing so naively is prone to data races
+because of the following inherent data dependencies:
+☛Inference requires the KV cache to be on GPUs.
+☞A new transfer requires the source blocks (as in the uni#ed
+KV cache) to #nish their last transfer.
+✌A new transfer requires the target blocks to be free from
+any past transfers.
+The upper right side of Figure 10illustrates a complex
+scenario involving all three dependencies, where a decoding
+instance demands the KV cache for a batch ( 𝑎1,𝑎2, and 𝑎3)
+that is still being o%oaded by a pre#ll instance. As indicated
+by the two blue barriers, decoding for 𝑎1cannot begin before
+its KV cache is fully swapped in (rule ☛), and the swapping-
+in cannot begin before the pre#ll instance #nishes swapping
+out #rst (rule ☞). Further, when choosing the target blocks
+for swapping out to the uni#ed CPU cache, we must avoid
+those that are still accessed by ongoing transfers (rule ✌). For
+example, assume that the request 𝑎𝑈has been swapped to
+another decoding instance, eventually freeing up its blocks
+on the CPU. However, its blocks are still avoided when allo-
+cating for 𝑎1since the asynchronous transfer for 𝑎𝑈may not
+have completed yet. In all cases, any violation of the rules
+can cause a data race and corrupt the inference results.
+To properly overlap the KV cache transfers while respect-
+ing these data dependencies, Aegaeon implements #ne-grained
+synchronization for each transfer without choking the entire
+data plane. This is achieved by individually tracking the state
+of transfers using CUDA events , which are API constructs that
+1038
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+Table 2. CUDA event APIs used in Aegaeon.
+API Description
+cudaEventRecord(event, stream) Capture the current work in stream into event .
+cudaEventQuery(event) Query the completion status of the work captured in event .
+cudaStreamWaitEvent(stream, event) Make all future work submitted to stream wait for the work captured in event .
+cudaIpcGetEventHandle(handle, event) Get a handle for event for interprocess access.
+cudaIpcOpenEventHandle(event, handle) Reconstruct event from an interprocess handle.
+can be shared across CUDA streams and enforce speci#c exe-
+cution order with minimal synchronization overhead. Table 2
+summarizes the various CUDA event APIs used in Aegaeon.
+When initiating a KV cache transfer for a request, Aegaeon
+records it ( cudaEventRecord ) as an event, which can then
+be used to query the status of the transfer ( cudaEventQuery )
+or wait for its completion ( cudaStreamWaitEvent ). Events
+are also passed between instances via interprocess commu-
+nication (IPC) for synchronizing di"erent instances.
+Overlapping KV cache swap-in. We demonstrate the #ne-
+grained synchronization in action by walking through the
+swap-in process for 𝑎1in the running example in Figure 10.
+First, the pre#ll instance creates the swap-out event (step
+✁) and launches a memory copy (step ✂). Next, before try-
+ing to swap in 𝑎1, the decoding instance #rst checks for
+its transfer event, pausing the swap-in CUDA stream with
+cudaStreamWaitEvent (step ✄). After that, swap-in pro-
+ceeds with the event creation and memory copy (steps ✇
+and☎). As for the actual inference, Aegaeon queries the sta-
+tus of each request in the batch with cudaEventQuery (step
+✃) and starts decoding as soon as one of them ( 𝑎1in this
+case) is fully loaded (step ✈). Note how the synchronization
+a"ects only necessary streams, making it #ne-grained and
+e!cient when applied to multiple instances.
+Overlapping KV cache swap-out. Handling KV cache
+swap-out is straightforward in Aegaeon thanks to the uni#ed
+GPU caches for di"erent cache shapes (§ 5.2), which allows
+the o%oading of KV cache to be conceptually decoupled from
+preemptive auto-scaling and thus fully overlapped (see the
+left side of Figure 10). However, the aforementioned caveat re-
+mains when choosing the target blocks due to rule ✌. In light
+of this, Aegaeon collects the relevant CPU blocks and their
+corresponding events in dedicated move lists , representing
+unsafe sections of the CPU cache that are actively accessed
+by memory copies. Allocations in the CPU cache neglect
+blocks in the move lists, enforcing rule ✌. Meanwhile, a dae-
+mon thread periodically queries ( cudaEventQuery ) events
+in the move lists to reclaim the blocks once the transfers
+complete (step ✆). This design e"ectively removes the syn-
+chronization for rule ✌from the critical path of auto-scaling,
+reducing the overall overhead.
+In conclusion, our full-stack optimizations enable highly
+e!cient preemptive auto-scaling in Aegaeon, reducing la-
+tency by up to 97% (from 𝑅0in Figure 7to𝑅3in Figure 10).We verify in § 7.3that Aegaeon achieves sub-second scaling
+speed with minimal KV cache block transfer overhead.
+6 Implementation
+Aegaeon is implemented as a distributed LLM serving system.
+We implement the scheduler and scaling-e!cient inference
+engine in 5,700 lines of Python and CUDA/C++ code.
+The control plane of Aegaeon is built on asyncio [ 6],
+which ensures concurrency when orchestrating instances.
+The data plane uses Ray [ 32] for data distribution. Aegaeon
+uses vLLM [ 25] as the model execution backend to lever-
+age its broad support for LLM architectures and modern
+optimizations such as continuous batching [ 47], FlashAtten-
+tion [ 18], and PagedAttention [ 25],etc.
+7 Evaluation
+We evaluate Aegaeon using realistic workloads with diverse
+LLMs and application scenarios, showing that Aegaeon con-
+sistently outperforms state-of-the-art systems across all se-
+tups (§ 7.2). Additionally, we analyze the e"ectiveness of our
+techniques (§ 7.3) and explore Aegaeon under alternative se-
+tups (§ 7.4). We conclude by discussing our ongoing e"orts
+to deploy Aegaeon in production at Alibaba Cloud Model
+(§7.5).
+7.1 Experimental Setup
+Testbed. Our testbed consists of two nodes with 16 GPUs in
+total, where each node is equipped with eight NVIDIA H800
+80GB GPUs connected via NVLINK, 2TB of DDR5 memory,
+and 192 Intel Xeon Platinum 8469C CPUs.
+Models. We adopt LLMs from several families, including
+Qwen [ 38], Llama [ 42], InternLM [ 26], Yi [ 12],etc.We pri-
+marily select models ranging from 6B to 14B parameters,
+representing the majority of models on the market. § 7.4eval-
+uates Aegaeon with larger models.
+Datasets and workloads. We use ShareGPT [ 3] as the
+main dataset. To represent the various applications sup-
+ported by di"erent LLMs, we create two alternative datasets,
+ShareGPT-ix2 and ShareGPT-ox2, by scaling the input and
+output lengths of ShareGPT by 2→, respectively. We follow
+existing approaches to synthesize workloads with scaled
+Poisson processes and random sampling from the datasets.
+The deployment evaluation (§ 7.5) includes real workloads.
+1039
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea
+!$%%  %!$				'###'%#"
+$! #'#$$#'#$$&(#'
+(a)RPS = 0.1 (b)RPS = 0.5 (c)40 models
+Figure 11. End-to-end SLO attainment under varying RPS with the ShareGPT dataset.
+
+	
+	
+
+	
+
+!! "!
+(a)RPS = 0.1, ShareGPT-ix2 (b)RPS = 0.1, ShareGPT-ox2 (c)RPS = 0.5, ShareGPT-ix2 (d)RPS = 0.5, ShareGPT-ox2
+Figure 12. End-to-end SLO attainment under varying RPS with alternative datasets. x-axis : number of models.
+Metrics. We report the SLO attainment as de#ned in § 2.1,
+setting TTFT to 10s and TBT to 100ms according to our
+internal criterion for our online inference service, and also
+in alignment with industrial practices [ 36]. We also include
+results in alternative setups with stricter SLOs (down to 2s
+TTFT and 20ms TBT).
+Baselines. We compare Aegaeon against ServerlessLLM [ 21]
+and MuxServe [ 20], two state-of-the-art solutions that adopt
+auto-scaling or multiplexing for concurrent LLM serving.
+In the absence of auto-scaling systems with more advanced
+scheduling policies, we extend ServerlessLLM with request-
+level Shortest Job First (SJF) scheduling based on oracle in-
+formation for output lengths, referred to as ServerlessLLM+.
+7.2 End-to-End Performance
+This section compares the end-to-end performance of Ae-
+gaeon against baselines across various workloads. For all
+experiments, we assign six GPUs as pre#ll instances, and the
+remaining ten GPUs as decoding instances.
+Limitation of multiplexing. We #rst note that in every
+setup, MuxServe’s placement optimizer refuses to place more
+than two models on the same GPU due to insu!cient GPU
+memory capacity. As a result, MuxServe ends up serving at
+most 32 models in all sub#gures of Figure 11and Figure 12,
+marking its intrinsic limitation in achieving e"ective GPU
+pooling. Meanwhile, the auto-scaling solutions can support
+more models, which we examine next.
+Load tolerance. Figure 11presents the SLO attainment
+of Aegaeon under varying numbers of models and request
+arrival rates. In (a) and (b), we #x the RPS to 0.1 and 0.5
+	
+
+ ! (a)0.5→SLO (b)0.3→SLO (c)0.2→SLO
+Figure 13. End-to-end SLO attainment under stricter SLOs.
+and increase the number of models in the workloads. In (c),
+we #x the number of models to 40 while increasing the per-
+model RPS. Vertical lines indicate the maximum goodput
+while meeting the 90% overall SLO requirement.
+For RPS = 0.1, Aegaeon sustains 2→higher goodput com-
+pared to ServerlessLLM. Notably, Aegaeon supports up to
+70 models with only 10 decoding instances, e"ectively serv-
+ingseven models per GPU . Meanwhile, ServerlessLLM su"ers
+from long waiting times as requests to di"erent models queue
+up, leading to low SLO attainment. While ServerlessLLM+
+can mitigate this queuing with oracle-guided scheduling, its
+performance inevitably degrades with more (active) mod-
+els. These results validate that our token-level approach en-
+ables signi#cantly better resource utilization compared with
+request-level solutions.
+For RPS = 0.5, Aegaeon’s advantage is even more pro-
+nounced, delivering a 2.5→higher request rate compared to
+ServerlessLLM. This is to be expected, as HOL blocking be-
+tween models is aggravated when arrival rates increase. We
+also note that ServerlessLLM outperforms ServerlessLLM+
+in this scenario, as prioritizing shorter requests is not neces-
+sarily optimal when it leads to overly frequent auto-scaling,
+1040
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+
+.	
+.	
+.	
+
+.	.	*+(%'$.		
+		*&/)#'-&)"$$"*"& )"$$.+*"'&'"& "*"& '"& .+*"'&'&*)'$,)!*,)!Figure 14. Request latency breakdown across
+various setups.	
+			
+	
+	Figure 15. Left: CDF of auto-scaling latency. Right : CDF of
+per-request KV cache management overhead.	
+"#	 "$'%&($ !&&"!Figure 16. Fragmentation in
+the uni#ed CPU cache.
+which limits the amount of useful work done by the system.
+Lastly, the #nal sub#gure shows that Aegaeon remains ef-
+fective over a wide range of arrival rates ( 0.05⇐0.75), while
+the alternatives are quickly penalized by HOL blocking.
+Dataset tolerance. Figure 12further evaluates Aegaeon on
+alternative datasets. For longer output lengths, Aegaeon de-
+livers up to 2.5→higher goodput compared to ServerlessLLM,
+highlighting a greater performance gain due to increased
+HOL blocking from longer decoding times. All systems ex-
+perience a slight performance drop when increasing input
+lengths, while ServerlessLLM and ServerlessLLM+ su"er the
+most due to not handling the exacerbated HOL blocking.
+Serving stricter SLOs. Figure 13shows the performance
+of Aegaeon with stricter SLOs, where we keep the settings
+from Figure 11(a) while reducing the target TTFT and TBT to
+0.5→,0.3→, and 0.2→(down to 2s and 20ms), respectively. In
+the #rst two scenarios, Aegaeon remains advantageous over
+both ServerlessLLM and MuxServe, supporting at least 50%
+and 12.5% more models, respectively. Indeed, stricter SLOs
+reduce slack time and limit GPU pooling opportunities, as
+shown in the third (strictest) setup where Aegaeon no longer
+outperforms MuxServe. Nonetheless, Aegaeon’s token-level
+scheduling still delivers better performance in this case when
+compared to request-level auto-scaling ( i.e.,ServerlessLLM).
+In general, we observe that Aegaeon stays robust across
+various SLO and dataset con#gurations, and is thus applica-
+ble to a wide range of workloads ( e.g.,chatbots and search rec-
+ommendation, where 3s TTFT and 30ms TBT are adequate).
+It is also common for cloud model service providers to de-
+liberately set their SLOs looser than the inference costs [ 36]
+to accommodate bursty tra!c, under which Aegaeon per-
+forms well. Meanwhile, the static multiplexing approach has
+a place in extremely latency-sensitive scenarios (represented
+by Figure 13(c)), as it involves no auto-scaling cost.
+7.3 E!ectiveness Breakdown
+To understand Aegaeon’s e"ectiveness in more detail, we
+conduct a latency breakdown of request execution. In Ae-
+gaeon, each request #rst undergoes pre#ll waiting (in job
+queues) and pre#ll execution, followed by a cycle of decoding
+waiting (in work lists) and decoding execution until comple-
+tion. The management of the KV cache may introduce extra
+		     		
+
+"! 	
+		!!! !!Figure 17.Left: Serving on a 4→A10 GPU node, setting RPS = 0.1and increasing the model count.StrictandLooserepresent scalingTBT to 0.5→and 2→, respectively.Right: Serving 72B models withTP = 4 on an 8→H800 GPU node, setting the model count to 4 andincreasing RPS.StrictandLooserepresent scaling TTFT.latency overhead, which we capture as control overhead(tracking indices in the uni#ed cache, manipulating events)and data overhead (explicit waiting time for KV cache trans-fer). We report the ratio of the total time spent in each stageand overhead term across all requests to characterize theoverall serving process.Token-level scheduling.Figure14shows the latency break-down of Aegaeon across various setups using the ShareGPTdataset. The results highlight two observations:(𝐿)For thepre#ll stage, the grouped FCFS scheduler maintains a con-trolled pre#ll waiting time as the aggregate arrival rate in-creases, indicating a good balance between serving and scal-ing models.(𝐿𝐿)For the decoding stage, the batched round-robin scheduler achieves concurrent serving of multiple mod-els by distributing the decoding waiting time throughout theentire request execution process without violating the SLO.Auto-scaling speed.Figure15shows the CDF of auto-scaling latencies on the left. For each tested model size, oure!cient auto-scaling achieves near-instantaneous scalingin about 50% of cases, thanks to model prefetching. In caseswhere the scaling overhead is not completely hidden, Ae-gaeon conducts the preemptive scaling in under one second.Further, as shown on the right side of Figure15, Aegaeon’s#ne-grained KV cache synchronization achieves a small per-request KV cache transfer overhead (less than one second intotal), demonstrating the e"ectiveness of our optimizations.Memory fragmentation.Figure16illustrates the overalland per-shape memory fragmentation during serving, cal-culated as the ratio of unused memory to peak allocated1041
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea
+	
+	! 
+Figure 18. GPU utilization before and after deploying Aegaeon, during a 70-hour period.
+memory. Thanks to slab allocation, Aegaeon achieves pro-
+portional memory utilization across di"erent block shapes,
+keeping overall fragmentation below 20%.
+7.4 Sensitive Analysis
+This section evaluates Aegaeon under alternative hardware
+and model setups, verifying that our design generalizes to
+di"erent scenarios.
+Lower-end hardware. While our token-level auto-scaling
+approach is more e"ective with high-end GPUs (where un-
+derutilization is more signi#cant), Aegaeon can also be de-
+ployed on less powerful GPU clusters. Figure 17(left) shows
+the SLO attainment of Aegaeon on a 4xA10 GPU node, mea-
+sured while serving workloads of 6B and 7B models using the
+ShareGPT dataset. We assign two pre#ll and two decoding
+instances and disable model prefetching because the GPU
+memory on A10 GPUs (24 GB) cannot accommodate the
+weights of two models. The results show that Aegaeon can
+still maintain a decent SLO attainment on lower-end hard-
+ware, enabling the concurrent serving of multiple models.
+Additionally, we report the SLO attainment with TBT set
+to0.5→and2→, referred to as Strict andLoose , respectively.
+Aegaeon can sustain much better goodput in the Loose set-
+ting, as the longer TBT tolerates more aggressive resource
+sharing without violating SLOs.
+Larger models. Aegaeon is capable of serving larger mod-
+els via model parallelism. Figure 17(right) shows the SLO
+attainment of Aegaeon on an 8xH800 GPU node serving
+72B models using the ShareGPT dataset. We set TP = 4, cor-
+responding to two instances—one for pre#ll and one for
+decoding—and also report the SLO attainment with scaled
+TTFT. The results demonstrate that Aegaeon can e"ectively
+serve larger models with similar performance gains.
+7.5 Production Deployment
+Setup. Aegaeon has been in beta deployment in Alibaba
+Cloud Model Studio, a cutting-edge AI model service plat-
+form that enables API access to a diverse model market-
+place for cloud users and application developers. Our cur-
+rent deployment runs in a cross-region cluster comprising
+213 H20 GPUs, serving twenty-eight 1.8–7B models (TP=1)
+and nineteen 32–72B models (TP=4). To support such mixedparallelism, we host multiple Aegaeon deployments in the
+cluster, one for each parallelism con#guration. The arrival
+rates vary from 0.01 to 1.13, averaging 0.037. These models
+were originally served by a total of 1,192 H20 GPUs, high-
+lighting an 82% resource saving. To ensure SLO compliance
+and enhance user experience, our production deployment
+typically utilizes redundant resources that exceed the mini-
+mum requirements. This redundancy is necessary to handle
+peak loads and provide fault tolerance. As a result, both the
+baseline (without Aegaeon) and Aegaeon experience lower
+resource utilization compared to the results presented in
+previous sections. Nevertheless, the relative performance
+improvement achieved with Aegaeon remains signi#cant.
+Performance gain. Figure 18illustrates GPU utilization
+before and after deploying Aegaeon during a 70-hour pe-
+riod. “Before (low load)” and “Before (high load)” indicate
+the GPU utilization of a single instance serving the models
+with the lowest and highest load, respectively. In contrast,
+“After (Aegaeon)” re$ects the GPU utilization recorded post-
+deployment of Aegaeon. The results demonstrate that Ae-
+gaeon signi#cantly enhances GPU utilization, increasing it
+from an average of 13.3% ⇐33.9% to 48.1%. At the same time,
+there are no observable SLO violations or service disruptions
+during the monitored period. This improvement shows that
+Aegaeon can e"ectively reduce GPU demand, thereby cut-
+ting operational expenses. We have ongoing plans to expand
+the deployment of Aegaeon to more instances and larger
+clusters for further production use and cost savings.
+8 Related Work
+LLM inference systems. Signi#cant e"orts have been made
+to optimize LLM inference systems, focusing on reducing
+latency and increasing throughput. These optimizations in-
+clude scheduling [ 14,23,44,47], memory management [ 15,
+25,40], caching [ 4,22,51], and resource e!ciency [ 28,46],
+among others. Aegaeon is both orthogonal and complemen-
+tary to these works, as it speci#cally focuses on concurrently
+serving LLMs on the market.
+Serverless LLM serving with auto-scaling. The server-
+less computing paradigm has been explored for DNN infer-
+ence [ 1,2,17,27,39,48,50] as well as LLM serving [ 21,31,49],
+with a primary focus on optimizing the cold scale-up speed
+1042
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+for inference services. However, none of these studies have
+explored the token-level auto-scaling strategy, which is cru-
+cial to Aegaeon’s e"ectiveness.
+Model multiplexing. This approach achieves resource shar-
+ing through temporal [ 28] or spatial [ 20] multiplexing. As
+evaluated, Aegaeon outperforms these works in our target
+scenario by supporting many more models per GPU. More-
+over, Aegaeon can potentially incorporate multiplexing by
+dynamically switching colocated models and orchestrating
+their execution with our SLO-aware scheduling.
+Disaggregating pre"ll and decoding. The idea of separat-
+ing pre#ll and decoding stages in LLM inference has been
+adopted in many recent studies [ 20,24,34,36,52]. Built upon
+this concept, Aegaeon further investigates distinct schedul-
+ing strategies for both stages to fully leverage GPUs in our
+multi-model setting.
+Leveraging secondary storage. One approach to manag-
+ing the intense GPU memory demand in LLM serving is
+o%oading [ 7,16,40], where parts of the model weights and
+KV cache are temporarily transferred to secondary storage,
+such as CPU memory or disk. While there are studies that
+utilize secondary storage to accelerate model loading [ 21,35],
+Aegaeon distinguishes itself from these solutions by acknowl-
+edging and thoroughly optimizing the new ine!ciencies in
+the preemptive auto-scaling process.
+9 Conclusion
+This paper presents Aegaeon, a system that pools GPU re-
+sources to concurrently serve numerous LLMs on the market.
+By enabling highly e!cient auto-scaling at the token level,
+Aegaeon achieves 2 ⇐2.5→higher request arrival rates or
+1.5⇐9→higher goodput compared to alternative solutions.
+Aegaeon has been deployed in production serving tens of
+models, reducing overall GPU usage by 82%.
+Acknowledgments. We sincerely thank our anonymous
+shepherd and reviewers for their insightful feedback. This
+work was supported in part by the National Key Research and
+Development Program of China under Grant 2022YFB4500700,
+the Scienti#c Research Innovation Capability Support Project
+for Young Faculty under Grant ZYGXQNJSKYCXNLZCXM-
+I1, the Fundamental Research Funds for the Central Uni-
+versities, Peking University, and the National Natural Sci-
+ence Foundation of China under Grant 62172008 and Grant
+62325201. Xin Jin and Xue Li are the corresponding authors.
+Yuxing Xiang, Xuanzhe Liu, and Xin Jin are also with the
+Key Laboratory of High Con#dence Software Technologies
+(Peking University), Ministry of Education.
+References
+[1]2023. Azure ML. h!ps://learn.microso#.com/en-us/azure/machine-
+learning .[2]2023. KServe: Standardized Distributed Generative and Predictive
+AI Inference Platform for Scalable, Multi-Framework Deployment on
+Kubernetes. h!ps://github.com/kserve/kserve .
+[3]2023. ShareGPT Dataset. h!ps://huggingface.co/datasets/
+anon8231489123/ShareGPT_Vicuna_unfiltered .
+[4]2023. TensorRT-LLM. h!ps://github.com/NVIDIA/TensorRT-LLM .
+[5]2024. Alibaba Cloud Model Studio. h!ps://www.aliyun.com/product/
+bailian .
+[6]2024. asyncio — Asynchronous I/O. h!ps://docs.python.org/3/library/
+asyncio.html .
+[7]2024. HuggingFace: The AI community building the future. h!ps:
+//huggingface.co/ .
+[8]2024. Multi-Process Service (MPS). h!ps://docs.nvidia.com/deploy/
+mps.
+[9]2024. NCCL: Optimized Primitives for Inter-GPU Communication.
+h!ps://developer.nvidia.com/nccl .
+[10] 2024. OpenAI’s GPT-4o model. h!ps://openai.com/index/hello-gpt-
+4o/.
+[11] 2024. Redis: An In-memory Database that Persists on Disk. h!ps:
+//github.com/redis/redis .
+[12] 01.AI. 2024. Yi: Open Foundation Models by 01.AI. In arXiv .
+[13] Amey Agrawal, Anmol Agarwal, Nitin Kedia, Jayashree Mohan, Souvik
+Kundu, Nipun Kwatra, Ramachandran Ramjee, and Alexey Tumanov.
+2024. Etalon: Holistic Performance Evaluation Framework for LLM
+Inference Systems. In arXiv .
+[14] Amey Agrawal, Nitin Kedia, Ashish Panwar, Jayashree Mohan, Nipun
+Kwatra, Bhargav S. Gulavani, Alexey Tumanov, and Ramachandran
+Ramjee. 2024. Taming Throughput-Latency Tradeo" in LLM Inference
+with Sarathi-Serve. In USENIX OSDI .
+[15] Keivan Alizadeh, Seyed Iman Mirzadeh, Dmitry Belenko, S. Khatam-
+ifard, Minsik Cho, Carlo C Del Mundo, Mohammad Rastegari, and
+Mehrdad Farajtabar. 2024. LLM in a $ash: E!cient Large Language
+Model Inference with Limited Memory. In Association for Computa-
+tional Linguistics (ACL) .
+[16] Reza Yazdani Aminabadi, Samyam Rajbhandari, Ammar Ahmad Awan,
+Cheng Li, Du Li, Elton Zheng, Olatunji Ruwase, Shaden Smith, Minjia
+Zhang, Je" Rasley, and Yuxiong He. 2022. DeepSpeed Inference: En-
+abling E!cient Inference of Transformer Models at Unprecedented
+Scale. In ACM SC .
+[17] Seungbeom Choi, Sunho Lee, Yeonjae Kim, Jongse Park, Youngjin
+Kwon, and Jaehyuk Huh. 2022. Serving Heterogeneous Machine Learn-
+ing Models on Multi-GPU Servers with Spatio-Temporal Sharing. In
+USENIX ATC .
+[18] Tri Dao, Daniel Y. Fu, Stefano Ermon, Atri Rudra, and Christopher Ré.
+2022. FlashAttention: Fast and Memory-E!cient Exact Attention with
+IO-Awareness. In Neural Information Processing Systems .
+[19] DeepSeek-AI. 2024. DeepSeek-V3 Technical Report. In arXiv .
+[20] Jiangfei Duan, Runyu Lu, Haojie Duanmu, Xiuhong Li, Xingcheng
+Zhang, Dahua Lin, Ion Stoica, and Hao Zhang. 2024. MuxServe: Flexible
+Spatial-Temporal Multiplexing for Multiple LLM Serving. In Interna-
+tional Conference on Machine Learning (ICML) .
+[21] Yao Fu, Leyang Xue, Yeqi Huang, Andrei-Octavian Brabete, Dmitrii
+Ustiugov, Yuvraj Patel, and Luo Mai. 2024. ServerlessLLM: Low-
+Latency Serverless Inference for Large Language Models. In USENIX
+OSDI .
+[22] In Gim, Guojun Chen, Seung seob Lee, Nikhil Sarda, Anurag Khandel-
+wal, and Lin Zhong. 2024. Prompt Cache: Modular Attention Reuse
+for Low-Latency Inference. In Conference on Machine Learning and
+Systems .
+[23] Connor Holmes, Masahiro Tanaka, Michael Wyatt, Ammar Ahmad
+Awan, Je" Rasley, Samyam Rajbhandari, Reza Yazdani Aminabadi,
+Heyang Qin, Arash Bakhtiari, Lev Kurilenko, and Yuxiong He. 2024.
+DeepSpeed-FastGen: High-throughput Text Generation for LLMs via
+MII and DeepSpeed-Inference. In arXiv .
+1043
+E"ective GPU Pooling for Concurrent LLM Serving SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea
+[24] Cunchen Hu, Heyang Huang, Liangliang Xu, Xusheng Chen, Chenxi
+Wang, Jiang Xu, Shuang Chen, Hao Feng, Sa Wang, Yungang Bao,
+Ninghui Sun, and Yizhou Shan. 2025. Shu%eInfer: Disaggregate LLM
+Inference for Mixed Downstream Workloads. In ACM Transactions on
+Architecture and Code Optimization .
+[25] Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin
+Zheng, Cody Hao Yu, Joseph Gonzalez, Hao Zhang, and Ion Stoica.
+2023. E!cient Memory Management for Large Language Model Serv-
+ing with PagedAttention. In ACM SOSP .
+[26] Shanghai AI Laboratory. 2024. InternLM2 Technical Report. In arXiv .
+[27] Jie Li, Laiping Zhao, Yanan Yang, Kunlin Zhan, and Keqiu Li. 2022.
+Tetris: Memory-e!cient Serverless Inference through Tensor Sharing.
+InUSENIX ATC .
+[28] Zhuohan Li, Lianmin Zheng, Yinmin Zhong, Vincent Liu, Ying Sheng,
+Xin Jin, Yanping Huang, Zhifeng Chen, Hao Zhang, Joseph E. Gonzalez,
+and Ion Stoica. 2023. AlpaServe: Statistical Multiplexing with Model
+Parallelism for Deep Learning Serving. In USENIX OSDI .
+[29] Jiachen Liu, Zhiyu Wu, Jae-Won Chung, Fan Lai, Myungjin Lee, and
+Mosharaf Chowdhury. 2024. Andes: De#ning and Enhancing Quality-
+of-Experience in LLM-Based Text Streaming Services. In arXiv .
+[30] Llama Team. 2024. The Llama 3 Herd of Models. In arXiv .
+[31] Chiheng Lou, Sheng Qi, Chao Jin, Dapeng Nie, Haoran Yang, Xuanzhe
+Liu, and Xin Jin. 2025. Towards Swift Serverless LLM Cold Starts with
+ParaServe. In arXiv .
+[32] Philipp Moritz, Robert Nishihara, Stephanie Wang, Alexey Tumanov,
+Richard Liaw, Eric Liang, Melih Elibol, Zongheng Yang, William Paul,
+Michael I. Jordan, and Ion Stoica. 2018. Ray: A Distributed Framework
+for Emerging AI Applications. In USENIX OSDI .
+[33] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Brad-
+bury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein,
+Luca Antiga, Alban Desmaison, Andreas Köpf, Edward Yang, Zach
+DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit
+Steiner, Lu Fang, Junjie Bai, and Soumith Chintala. 2019. PyTorch: An
+Imperative Style, High-Performance Deep Learning Library. In Neural
+Information Processing Systems .
+[34] Pratyush Patel, Esha Choukse, Chaojie Zhang, Aashaka Shah, Íñigo
+Goiri, Saeed Maleki, and Ricardo Bianchini. 2024. Splitwise: E!cient
+Generative LLM Inference Using Phase Splitting. In ACM/IEEE ISCA .
+[35] Archit Patke, Dhemath Reddy, Saurabh Jha, Haoran Qiu, Christian
+Pinto, Shengkun Cui, Chandra Narayanaswami, Zbigniew Kalbarczyk,
+and Ravishankar Iyer. 2024. QLM: Queue Management for Large Lan-
+guage Model Serving. In International Workshop on Cloud Intelligence
+(AIOps) .
+[36] Ruoyu Qin, Zheming Li, Weiran He, Jialei Cui, Feng Ren, Mingxing
+Zhang, Yongwei Wu, Weimin Zheng, and Xinran Xu. 2025. Mooncake:
+Trading More Storage for Less Computation — A KVCache-centric
+Architecture for Serving LLM Chatbot. In USENIX FAST .
+[37] Qwen Team. [n. d.]. Qwen2.5: A Party of Foundation Models. h!ps:
+//qwenlm.github.io/blog/qwen2.5/ .
+[38] Qwen Team. 2023. Qwen Technical Report. In arXiv .
+[39] Francisco Romero, Qian Li, Neeraja J. Yadwadkar, and Christos
+Kozyrakis. 2021. INFaaS: Automated Model-less Inference Serving. In
+USENIX ATC .
+[40] Ying Sheng, Lianmin Zheng, Binhang Yuan, Zhuohan Li, Max Ryabinin,
+Beidi Chen, Percy Liang, Christopher Ré, Ion Stoica, and Ce Zhang.
+2023. FlexGen: High-Throughput Generative Inference of Large Lan-
+guage Models with a Single GPU. In International Conference on Ma-
+chine Learning (ICML) .
+[41] Mohammad Shoeybi, Mostofa Patwary, Raul Puri, Patrick LeGresley,
+Jared Casper, and Bryan Catanzaro. 2020. Megatron-LM: Training
+Multi-Billion Parameter Language Models Using Model Parallelism.
+InarXiv .
+[42] Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-
+Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, EricHambro, Faisal Azhar, Aurelien Rodriguez, Armand Joulin, Edouard
+Grave, and Guillaume Lample. 2023. LLaMA: Open and E!cient
+Foundation Language Models. In arXiv .
+[43] Yuxin Wang, Yuhan Chen, Zeyu Li, Xueze Kang, Yuchu Fang, Yeju
+Zhou, Yang Zheng, Zhenheng Tang, Xin He, Rui Guo, Xin Wang,
+Qiang Wang, Amelie Chi Zhou, and Xiaowen Chu. 2025. BurstGPT: A
+Real-World Workload Dataset to Optimize LLM Serving Systems.
+[44] Bingyang Wu, Yinmin Zhong, Zili Zhang, Shengyu Liu, Fangyue Liu,
+Yuanhang Sun, Gang Huang, Xuanzhe Liu, and Xin Jin. 2024. Fast
+Distributed Inference Serving for Large Language Models. In arXiv .
+[45] Yuxing Xiang, Xue Li, Kun Qian, Wenyuan Yu, Ennan Zhai, and Xin
+Jin. 2025. ServeGen: Workload Characterization and Generation of
+Large Language Model Serving in Production. In arXiv .
+[46] Yuhang Yao, Han Jin, Alay Dilipbhai Shah, Shanshan Han, Zijian
+Hu, Yide Ran, Dimitris Stripelis, Zhaozhuo Xu, Salman Avestimehr,
+and Chaoyang He. 2024. ScaleLLM: A Resource-Frugal LLM Serving
+Framework by Optimizing End-to-End E!ciency. In Empirical Methods
+in Natural Language Processing .
+[47] Gyeong-In Yu, Joo Seong Jeong, Geon-Woo Kim, Soojeong Kim, and
+Byung-Gon Chun. 2022. Orca: A Distributed Serving System for
+Transformer-Based Generative Models. In USENIX OSDI .
+[48] Minchen Yu, Zhifeng Jiang, Hok Chun Ng, Wei Wang, Ruichuan Chen,
+and Bo Li. 2021. Gillis: Serving Large Neural Networks in Serverless
+Functions with Automatic Model Partitioning. In IEEE ICDCS .
+[49] Dingyan Zhang, Haotian Wang, Yang Liu, Xingda Wei, Yizhou Shan,
+Rong Chen, and Haibo Chen. 2025. BlitzScale: Fast and Live Large
+Model Autoscaling with O(1) Host Caching. In USENIX OSDI .
+[50] Hong Zhang, Yupeng Tang, Anurag Khandelwal, and Ion Stoica. 2023.
+SHEPHERD: Serving DNNs in the Wild. In USENIX NSDI .
+[51] Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, Chuyue Sun, Je"
+Huang, Cody Hao Yu, Shiyi Cao, Christos Kozyrakis, Ion Stoica,
+Joseph E. Gonzalez, Clark Barrett, and Ying Sheng. 2024. SGLang:
+E!cient Execution of Structured Language Model Programs. In arXiv .
+[52] Yinmin Zhong, Shengyu Liu, Junda Chen, Jianbo Hu, Yibo Zhu, Xu-
+anzhe Liu, Xin Jin, and Hao Zhang. 2024. DistServe: Disaggregating
+Pre#ll and Decoding for Goodput-optimized Large Language Model
+Serving. In USENIX OSDI .
+1044
+SOSP ’25, October 13–16, 2025, Seoul, Republic of Korea Y. Xiang et al.
+A Appendix
+A.1 Active Model Analysis
+Theorem A.1. Suppose the request arrival rate for each model
+follows a Poisson process with rate 𝑄, and the average time to
+serve a request is 𝑅. The expected active model count E[𝑃]is
+given by:
+E[𝑃]=𝑀·(1↓𝑆↓𝐿𝑀)
+Proof For each model 𝐿(𝐿=1,2,...,𝑀 ), de#ne the indicator
+random variable 𝑏𝑂as:
+𝑏𝑂=/b√︂aceleftigg
+1if model 𝐿is active at a given time ,
+0otherwise .
+The total number of active models at that time is 𝑃=/√︄ummationtext.𝑉
+𝑂=1𝑏𝑂.
+By linearity of expectation:
+E[𝑃]=𝑉/√︄ummationdi√︄√︁lay.
+𝑂=1E[𝑏𝑂]
+Since request arrivals are independent, E[𝑏𝑂]=E[𝑏1]for
+all𝐿. Therefore:
+E[𝑃]=𝑀·E[𝑏1]
+For a single model, 𝑏1=1if there exists at least one request
+in the interval [𝑈↓𝑅,𝑈]. The number of such requests follows
+a Poisson distribution with parameter 𝑄𝑅. Thus:
+E[𝑏1]=P(𝑏1=1)
+=1↓P(no requests in [𝑈↓𝑅,𝑈])
+=1↓𝑆↓𝐿𝑀
+Substituting back:
+E[𝑃]=𝑀·/√︁a√︂enleftig
+1↓𝑆↓𝐿𝑀/√︁a√︂en√︂ightig
+This concludes the proof.
+A.2 Latency Estimation
+Model switching latency. Given the e!cient model swith-
+cing optimizations in Aegaeon (§ 5), the switching latency
+for a model is reduced to the time required to load the model
+weights. As such, we simply estimate it with the model size
+divided by the PCIe bandwidth, corrected with a pro#led
+constant factor 𝑐(0.625 in our evalutation) to take account
+of the PCIe ine!ciencies:
+𝑅switch =Model Size
+PCIe Bandwidth·𝑐 (4)
+Token generation latency. To accurately estimate the exe-
+cution time of a pre#ll or decoding step, we #t an analytical
+model derived from the required computation and memory
+access in each phase using pro#led data, and predict the
+token generation latency with the model. Our modeling is
+adopted from existing works [ 52]:
+𝑅pre!ll =𝑑1·(4𝑈𝑒2+2𝑈𝑒𝑃)+𝑑2·3𝑒𝑈2
+𝑓+𝑑3 (5)Table 1. Symbols used in the latency modeling.
+Symbol Meaning
+𝑊 hidden size of the LLM
+𝑋 FFN intermediate size
+𝑌𝑂 input length of the 𝑅-th request in the batch
+𝑍 number of tokens in the batch ( 𝑍=/√︄ummationtext.𝑃↓1
+𝑁=0𝑌𝑁)
+𝑍2 squared sum of the input lengths ( 𝑍2=/√︄ummationtext.𝑃↓1
+𝑁=0𝑌2
+𝑁)
+𝑎 block size in the FlashAttention [ 18] kernel
+𝑅decoding =𝑑4·(4𝑒2+2𝑒𝑃)+𝑑5·3𝑒𝑈 (6)
+where 𝑑1,𝑑2,𝑑3,𝑑4, and 𝑑5are constants derived from pro-
+#ling and interpolation, and the other symbols are de#ned
+in Table 1. Results show that this modeling achieves an R-
+squared score of over 0.9 across all models in our evaluation.
+1045

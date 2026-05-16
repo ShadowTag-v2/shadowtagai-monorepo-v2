@@ -7,7 +7,7 @@ We are folding the Antigravity Omega Protocol (Structure & RLM) into the Judge 6
 This script establishes the Four Corners of the Singularity on your machine:
 North (Structure): A Google-Style Monorepo (uv workspace).
 East (The Brain): The RLM v3 "Grad Student" (Recursive Agent).
-South (The Law): Judge 6 Sentinel (Compliance Framework Risk Matrix + Grounding).
+South (The Law): Judge 6 Sentinel (ATP 5-19 Risk Matrix + Grounding).
 West (The Interface): Warpgrep & Antigravity Deployment.
 🦍 The Antigravity Singularity Protocol
 Run this block. It constructs the entire ecosystem from zero.
@@ -60,11 +60,11 @@ TOML
 # ==============================================================================
 
 echo ">>> [2/8] 🧠 Implanting RLM v3 (The Grad Student)..."
-mkdir -p libs/ShadowTag-v2/core
+mkdir -p libs/aiyou/core
 
 # The REPL (The Agent's Hands)
 
-cat <<PYTHON > libs/ShadowTag-v2/core/repl.py
+cat <<PYTHON > libs/aiyou/core/repl.py
 import io, contextlib, traceback
 class PythonREPL:
 def **init**(self): self.locals = {}
@@ -79,7 +79,7 @@ PYTHON
 
 # The Agent Logic (The Recursive Mind)
 
-cat <<PYTHON > libs/ShadowTag-v2/core/agent.py
+cat <<PYTHON > libs/aiyou/core/agent.py
 import re, os, sys
 from google import genai
 from .repl import PythonREPL
@@ -122,20 +122,20 @@ self.history = []
 
 PYTHON
 
-cat <<TOML > libs/ShadowTag-v2/pyproject.toml
+cat <<TOML > libs/aiyou/pyproject.toml
 [project]
-name = "ShadowTag-v2"
+name = "aiyou"
 version = "1.0.0"
 dependencies = []
 TOML
 
 # ==============================================================================
 
-# CORNER 3: THE LAW (Judge 6 Sentinel & Compliance Framework)
+# CORNER 3: THE LAW (Judge 6 Sentinel & ATP 5-19)
 
 # ==============================================================================
 
-echo ">>> [3/8] ⚖️ Codifying Judge 6 Sentinel (Compliance Framework)..."
+echo ">>> [3/8] ⚖️ Codifying Judge 6 Sentinel (ATP 5-19)..."
 
 # This is the FULL Judge 6 Logic (Risk Matrix + Grounding)
 
@@ -149,7 +149,7 @@ except: class Fore: RED=GREEN=YELLOW=CYAN=MAGENTA=BLUE=""
 PROJECT_ID = "$PROJECT_ID"
 REGION = "$REGION"
 
-# --- RISK MATRIX (Compliance Framework) ---
+# --- RISK MATRIX (ATP 5-19) ---
 
 HAZARD_DATABASE = [
 {"pattern": "sk-", "severity": "I", "name": "API Key Leak"},
@@ -236,7 +236,7 @@ echo ">>> 🌀 Warping to RLM..."
 uv run python3 -c "
 import sys, os
 sys.path.append(os.path.abspath('libs'))
-from ShadowTag-v2.core.agent import GradStudentAgent
+from aiyou.core.agent import GradStudentAgent
 agent = GradStudentAgent()
 print(agent.solve('\$QUERY', '\$TARGET'))
 "
@@ -346,7 +346,7 @@ cat <<PYTHON > apps/server/main.py
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(**file**), '../../libs')))
 from fastapi import FastAPI
-from ShadowTag-v2.core.agent import GradStudentAgent
+from aiyou.core.agent import GradStudentAgent
 app = FastAPI()
 @app.get("/")
 def read_root(): return {"Hello": "Antigravity"}
@@ -362,7 +362,7 @@ echo ">>> [8/8] ✅ SINGULARITY ACHIEVED."
 echo "----------------------------------------------------------------"
 echo "📂 Repo: $REPO_NAME/"
 echo "⚖️ Judge: tools/judge6_sentinel.py (Active Risk Matrix)"
-echo "🧠 Brain: libs/ShadowTag-v2/ (RLM v3)"
+echo "🧠 Brain: libs/aiyou/ (RLM v3)"
 echo "🛠️ Tool: tools/warpgrep 'Find the bug' ."
 echo "🚀 Deploy: ./scripts/launch_antigravity.sh production"
 echo "----------------------------------------------------------------"
@@ -379,7 +379,7 @@ chmod +x antigravity_singularity.sh
    libs/: Where your shared intelligence lives.
    pyproject.toml: The uv workspace that binds them.
 2. The Brain (East)
-   You have the RLM v3 "Grad Student" installed in libs/ShadowTag-v2.
+   You have the RLM v3 "Grad Student" installed in libs/aiyou.
    This is not a chatbot. It is a Python REPL agent.
    It is accessible via the CLI tool tools/warpgrep.
    Try it: tools/warpgrep "Find all functions that use recursion" .

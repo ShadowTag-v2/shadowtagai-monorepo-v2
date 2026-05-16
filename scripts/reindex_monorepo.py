@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Reindex Monorepo — Cor.Gemini Sovereign RAG v2
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+Reindex Monorepo — Cor.Gemini Sovereign RAG v2
 Crawls apps/ libs/ control/ scripts/ src/ and ingests code chunks into:
   - .chroma_db  (ChromaDB PersistentClient, collection=coryay_knowledge)
-  - data/beads_index.sqlite  (registry + FTS5).
+  - data/beads_index.sqlite  (registry + FTS5)
 
 Fixes:
   - Explicit all-MiniLM-L6-v2 embed_fn (no HTTP abstraction dead-end)
   - Symlink-safe os.path.realpath + os.path.exists guard (no silent crash)
-  - Correct path binding to monorepo root (not stale ShadowTag-v2-stack path)
+  - Correct path binding to monorepo root (not stale aiyou-stack path)
   - Drops & rebuilds beads_registry so stale paths are purged
 
 Usage: python scripts/reindex_monorepo.py [--dry-run] [--dirs apps libs]
@@ -16,11 +18,10 @@ Usage: python scripts/reindex_monorepo.py [--dry-run] [--dirs apps libs]
 from __future__ import annotations
 
 import argparse
-import contextlib
 import os
 import sqlite3
 import sys
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 
 MONOREPO_ROOT = Path(__file__).parent.parent
@@ -30,20 +31,7 @@ COLLECTION_NAME = "coryay_knowledge"
 EMBED_MODEL = "all-MiniLM-L6-v2"
 CHUNK_SIZE = 8_000  # chars — stays under MiniLM token limit
 BATCH_SIZE = 50  # vectors per ChromaDB upsert (low memory profile for M1)
-TEXT_EXTS = {
-    ".py",
-    ".md",
-    ".ts",
-    ".tsx",
-    ".js",
-    ".jsx",
-    ".txt",
-    ".yaml",
-    ".yml",
-    ".toml",
-    ".sql",
-    ".sh",
-}
+TEXT_EXTS = {".py", ".md", ".ts", ".tsx", ".js", ".jsx", ".txt", ".yaml", ".yml", ".toml", ".sql", ".sh"}
 SKIP_DIRS = {
     "node_modules",
     "__pycache__",
@@ -86,7 +74,9 @@ def get_embedder():
     try:
         from sentence_transformers import SentenceTransformer
     except ImportError:
+        print("[ERROR] pip install sentence-transformers", file=sys.stderr)
         sys.exit(1)
+    print(f"[INDEX] Loading {EMBED_MODEL}...")
     return SentenceTransformer(EMBED_MODEL)
 
 
@@ -94,12 +84,15 @@ def get_collection(recreate: bool = False):
     try:
         import chromadb
     except ImportError:
+        print("[ERROR] pip install chromadb", file=sys.stderr)
         sys.exit(1)
     CHROMA_PATH.mkdir(parents=True, exist_ok=True)
     client = chromadb.PersistentClient(path=str(CHROMA_PATH))
     if recreate:
-        with contextlib.suppress(Exception):
+        try:
             client.delete_collection(COLLECTION_NAME)
+        except Exception:
+            pass
     return client.get_or_create_collection(COLLECTION_NAME)
 
 
@@ -124,7 +117,7 @@ def flush_batch(
     collection.upsert(embeddings=vecs, documents=texts, metadatas=metas, ids=ids)
     conn.executemany(
         "INSERT INTO beads_fts(content, file_path) VALUES (?, ?)",
-        [(t, m["source"]) for t, m in zip(texts, metas, strict=False)],
+        [(t, m["source"]) for t, m in zip(texts, metas)],
     )
     conn.commit()
     return len(texts)
@@ -144,7 +137,9 @@ def crawl(
     for d in target_dirs:
         root_path = MONOREPO_ROOT / d
         if not root_path.exists():
+            print(f"[SKIP] {d}/ not found")
             continue
+        print(f"[SCAN] {root_path}")
         for dirpath, dirnames, files in os.walk(root_path, followlinks=False):
             dirnames[:] = [dn for dn in dirnames if dn not in SKIP_DIRS and not dn.startswith(".")]
             for fname in files:
@@ -162,7 +157,7 @@ def crawl(
                 # Register in SQLite
                 conn.execute(
                     "INSERT OR REPLACE INTO beads_registry(filepath, size_bytes, last_indexed) VALUES (?,?,?)",
-                    (str(fpath.relative_to(MONOREPO_ROOT)), size, datetime.utcnow().isoformat()),
+                    (str(fpath.relative_to(MONOREPO_ROOT)), size, datetime.now(UTC).isoformat()),
                 )
 
                 if fpath.suffix not in TEXT_EXTS or size > 500_000:
@@ -182,6 +177,7 @@ def crawl(
                         flush_batch(model, collection, conn, texts_buf, metas_buf, dry_run)
                         texts_buf.clear()
                         metas_buf.clear()
+                        print(f"   flushed batch — total chunks: {indexed}")
 
     # Final flush
     flush_batch(model, collection, conn, texts_buf, metas_buf, dry_run)
@@ -196,12 +192,23 @@ def main() -> None:
     parser.add_argument("--recreate", action="store_true", help="Delete and recreate ChromaDB collection")
     args = parser.parse_args()
 
+    print(f"[INDEX] Monorepo root : {MONOREPO_ROOT}")
+    print(f"[INDEX] Chroma path   : {CHROMA_PATH}")
+    print(f"[INDEX] Beads DB      : {BEADS_DB}")
+    print(f"[INDEX] Dirs          : {args.dirs}")
+    print(f"[INDEX] Dry run       : {args.dry_run}\n")
+
     conn = init_sqlite()
     model = get_embedder()
     collection = get_collection(recreate=args.recreate)
 
-    _scanned, _indexed = crawl(args.dirs, model, collection, conn, args.dry_run)
+    scanned, indexed = crawl(args.dirs, model, collection, conn, args.dry_run)
     conn.close()
+
+    print(f"\n[DONE] Scanned {scanned} files, indexed {indexed} chunks")
+    print(f"[DONE] ChromaDB collection '{COLLECTION_NAME}': {collection.count()} vectors")
+    print(f"[DONE] Beads DB: {BEADS_DB}")
+    print('\n[QUERY] python scripts/hud_query_memory.py "your search query"')
 
 
 if __name__ == "__main__":

@@ -1,11 +1,9 @@
 # Monorepo 10/10 Checklist
 
 ## Goal
-
 Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source monorepo.
 
 ## Definition of done
-
 - [ ] Every shared repo is either canonical or archived
 - [ ] No repo remains unresolved in `monorepo_manifest.yaml`
 - [ ] `main` is protected and requires `bazel-build` and `bazel-test`
@@ -22,7 +20,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 ---
 
 ## Phase 0 — Freeze and protect
-
 - [ ] Freeze new ingestion into live code paths
 - [ ] Commit `.github/CODEOWNERS`
 - [ ] Commit `.github/workflows/main.yml`
@@ -39,7 +36,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 - [ ] Require branch to be up to date before merge
 
 ### Evidence
-
 - PR / commit:
 - GitHub ruleset screenshot or note:
 - Validation command:
@@ -48,27 +44,24 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 ---
 
 ## Phase 1 — Canonicalization decisions
-
-- [ ] Canonical namespace fixed to `apps/ShadowTag-v2_stack`
-- [ ] `ShadowTag-v2-fastapi-services` status verified
+- [ ] Canonical namespace fixed to `apps/aiyou_stack`
+- [ ] `aiyou-fastapi-services` status verified
 - [ ] `cosmic-crab-payload` status verified
 - [x] `Pipeline` resolved to canonical or archived
 - [x] `nascent-apollo` resolved to canonical or archived
 - [ ] `monorepo_manifest.yaml` updated
 
 ### Repo state table
-
-| Repo                   | Status    | Canonical path                  | Archived paths                      | Notes                                   |
-| ---------------------- | --------- | ------------------------------- | ----------------------------------- | --------------------------------------- |
-| ShadowTag-v2-fastapi-services |           |                                 |                                     |                                         |
-| cosmic-crab-payload    |           |                                 |                                     |                                         |
-| Pipeline               | canonical | apps/ShadowTag-v2_stack/Pipeline       | archive/recovered/arsenal_recovered | Fully canonicalized and active.         |
-| nascent-apollo         | canonical | apps/ShadowTag-v2_stack/nascent-apollo |                                     | Live canonical root for nascent-apollo. |
+| Repo | Status | Canonical path | Archived paths | Notes |
+|---|---|---|---|---|
+| aiyou-fastapi-services |  |  |  |  |
+| cosmic-crab-payload |  |  |  |  |
+| Pipeline | canonical | apps/aiyou_stack/Pipeline | archive/recovered/arsenal_recovered | Fully canonicalized and active. |
+| nascent-apollo | canonical | apps/aiyou_stack/nascent-apollo | | Live canonical root for nascent-apollo. |
 
 ---
 
 ## Phase 2 — Live tree surgery
-
 - [ ] Move `_PRE_OMEGA_BACKUP_*` out of live code
 - [ ] Move `repos/*-legacy` out of live code
 - [ ] Move `ShadowTag-Omega` out of live code
@@ -81,16 +74,14 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
   - [ ] `archive/imports`
 
 ### Move log
-
-| From | To  | Reason | Validated | Safe to delete later |
-| ---- | --- | ------ | --------- | -------------------- |
-|      |     |        |           |                      |
-|      |     |        |           |                      |
+| From | To | Reason | Validated | Safe to delete later |
+|---|---|---|---|---|
+|  |  |  |  |  |
+|  |  |  |  |  |
 
 ---
 
 ## Phase 3 — Build graph hardening
-
 - [ ] Each canonical repo root has explicit build ownership
 - [ ] Archive and denied zones excluded from active build/test paths
 - [ ] `bazel build //...` passes
@@ -98,7 +89,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 - [ ] CI failures map only to live code, not archive debris
 
 ### Evidence
-
 - Last green `bazel-build`:
 - Last green `bazel-test`:
 - Notes:
@@ -106,7 +96,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 ---
 
 ## Phase 4 — `third_party` and contract layer
-
 - [ ] Top-level `third_party/` policy created
 - [ ] Shared contract root chosen:
   - [ ] `proto/`
@@ -117,7 +106,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 - [ ] Ad hoc vendor universes removed or justified
 
 ### Evidence
-
 - Contract root path:
 - Example migrated service:
 - Example generated/shared contract:
@@ -126,7 +114,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 ---
 
 ## Phase 5 — Tooling unification
-
 - [ ] VS Code workspace points only at canonical root
 - [ ] Search excludes match denied zones
 - [ ] Watcher excludes match denied zones
@@ -137,7 +124,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 - [ ] No symlink-jungle pyright warnings
 
 ### Evidence
-
 - Basedpyright source file count:
 - Python interpreter:
 - RAG/index validation:
@@ -146,7 +132,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 ---
 
 ## Phase 6 — Refactorability proof
-
 - [ ] Perform one repo-wide refactor
 - [ ] Build passes after refactor
 - [ ] Tests pass after refactor
@@ -155,7 +140,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 - [ ] Final audit completed
 
 ### Refactor proof
-
 - Refactor description:
 - Paths touched:
 - PR / commit:
@@ -164,7 +148,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 ---
 
 ## Final acceptance checklist
-
 - [ ] Zero unresolved repos
 - [ ] Zero live backup trees
 - [ ] Zero live recovered trees
@@ -179,7 +162,6 @@ Turn `Monorepo-Uphillsnowball` into a fully canonical, Google-style open-source 
 - [ ] repo-wide refactor proven safe
 
 ## Final signoff
-
 - Date:
 - Owner:
 - Remaining non-blocking improvements:

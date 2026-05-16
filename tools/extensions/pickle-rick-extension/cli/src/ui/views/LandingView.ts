@@ -1,18 +1,18 @@
-import { BoxRenderable, type CliRenderer, type KeyEvent, TextRenderable } from '@opentui/core';
-import * as fs from 'fs';
-import * as path from 'path';
-import { isGameboyActive } from '../../games/gameboy/GameboyView.js';
-import { getCurrentBranch } from '../../services/git/branch.js';
-import { getLineColor, HEADER_LINES } from '../common.js';
-import { MultiLineInputEvents, MultiLineInputRenderable } from '../components/MultiLineInput.js';
-import { type FilePickerState, setupFilePicker } from '../file-picker-utils.js';
+import { BoxRenderable, type CliRenderer, type KeyEvent, TextRenderable } from "@opentui/core";
+import * as fs from "fs";
+import * as path from "path";
+import { isGameboyActive } from "../../games/gameboy/GameboyView.js";
+import { getCurrentBranch } from "../../services/git/branch.js";
+import { getLineColor, HEADER_LINES } from "../common.js";
+import { MultiLineInputEvents, MultiLineInputRenderable } from "../components/MultiLineInput.js";
+import { type FilePickerState, setupFilePicker } from "../file-picker-utils.js";
 import {
   buildVerticalBar,
   createCtrlCExitHandler,
   createInputContainerMouseHandler,
   createProviderMetadataRow,
-} from '../input-chrome.js';
-import { THEME } from '../theme.js';
+} from "../input-chrome.js";
+import { THEME } from "../theme.js";
 
 /**
  * Creates the landing view for the Pickle Rick CLI.
@@ -20,39 +20,39 @@ import { THEME } from '../theme.js';
  */
 export async function createLandingView(
   renderer: CliRenderer,
-  onEnter: (prompt: string, mode: 'pickle' | 'pickle-prd') => void,
+  onEnter: (prompt: string, mode: "pickle" | "pickle-prd") => void,
 ) {
   const INPUT_CHROME_LINES = 4;
-  const mode: 'pickle' | 'pickle-prd' = 'pickle';
+  const mode: "pickle" | "pickle-prd" = "pickle";
 
   // Fetch Metadata
   const cwd = process.cwd();
-  let version = '?.?.?';
+  let version = "?.?.?";
   try {
-    const packageJsonPath = path.resolve(process.cwd(), 'package.json');
+    const packageJsonPath = path.resolve(process.cwd(), "package.json");
     if (fs.existsSync(packageJsonPath)) {
-      const content = fs.readFileSync(packageJsonPath, 'utf-8');
+      const content = fs.readFileSync(packageJsonPath, "utf-8");
       const pkg = JSON.parse(content);
-      version = pkg.version || '?.?.?';
+      version = pkg.version || "?.?.?";
     }
   } catch (e) {
     // Ignore
   }
 
   const root = new BoxRenderable(renderer, {
-    id: 'landing-root',
-    width: '100%',
-    height: '100%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    id: "landing-root",
+    width: "100%",
+    height: "100%",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: THEME.bg,
   });
 
   const headerContainer = new BoxRenderable(renderer, {
-    id: 'landing-header',
-    flexDirection: 'column',
-    alignItems: 'center',
+    id: "landing-header",
+    flexDirection: "column",
+    alignItems: "center",
     marginBottom: 2,
   });
 
@@ -68,19 +68,19 @@ export async function createLandingView(
   });
 
   const inputContainer = new BoxRenderable(renderer, {
-    id: 'landing-input-container',
+    id: "landing-input-container",
     width: 80,
     minHeight: 5,
-    flexDirection: 'column',
+    flexDirection: "column",
     backgroundColor: THEME.surface,
     paddingLeft: 1,
     paddingRight: 1,
   });
 
   const input = new MultiLineInputRenderable(renderer, {
-    id: 'landing-input',
+    id: "landing-input",
     flexGrow: 1,
-    placeholder: 'I turned myself into a TUI, Morty! *Belch* Ask me anything...',
+    placeholder: "I turned myself into a TUI, Morty! *Belch* Ask me anything...",
     textColor: THEME.text,
     focusedTextColor: THEME.text,
     minHeight: 1,
@@ -88,29 +88,29 @@ export async function createLandingView(
   });
 
   const inputRow = new BoxRenderable(renderer, {
-    id: 'landing-input-row',
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    id: "landing-input-row",
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
   });
   inputRow.add(input);
 
-  const { row: metadataRow } = createProviderMetadataRow(renderer, 'landing');
+  const { row: metadataRow } = createProviderMetadataRow(renderer, "landing");
 
-  inputContainer.add(new BoxRenderable(renderer, { id: 'landing-spacer1', height: 1 }));
+  inputContainer.add(new BoxRenderable(renderer, { id: "landing-spacer1", height: 1 }));
   inputContainer.add(inputRow);
-  inputContainer.add(new BoxRenderable(renderer, { id: 'landing-spacer2', height: 1 }));
+  inputContainer.add(new BoxRenderable(renderer, { id: "landing-spacer2", height: 1 }));
   inputContainer.add(metadataRow);
-  inputContainer.add(new BoxRenderable(renderer, { id: 'landing-spacer3', height: 1 }));
+  inputContainer.add(new BoxRenderable(renderer, { id: "landing-spacer3", height: 1 }));
 
   // Bottom footer bar with cwd and version
   const footerBar = new BoxRenderable(renderer, {
-    id: 'landing-footer-bar',
-    width: '100%',
+    id: "landing-footer-bar",
+    width: "100%",
     height: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position: 'absolute',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    position: "absolute",
     bottom: 0,
     left: 0,
     paddingLeft: 1,
@@ -118,14 +118,14 @@ export async function createLandingView(
   });
 
   const footerCwd = new TextRenderable(renderer, {
-    id: 'landing-footer-cwd',
+    id: "landing-footer-cwd",
     content: cwd,
     fg: THEME.dim,
   });
   footerBar.add(footerCwd);
 
   const footerVersion = new TextRenderable(renderer, {
-    id: 'landing-footer-version',
+    id: "landing-footer-version",
     content: version,
     fg: THEME.dim,
   });
@@ -140,26 +140,26 @@ export async function createLandingView(
   });
 
   const inputDecorativeBar = new TextRenderable(renderer, {
-    id: 'landing-decorative-bar',
+    id: "landing-decorative-bar",
     content: buildVerticalBar(inputContainer.minHeight ?? 5),
     fg: THEME.accent,
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     top: 0,
   });
   inputContainer.add(inputDecorativeBar);
 
   const footerHints = new BoxRenderable(renderer, {
-    id: 'landing-footer-hints',
+    id: "landing-footer-hints",
     width: 80,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "flex-end",
     marginTop: 1,
   });
 
   const hintsText = new TextRenderable(renderer, {
-    id: 'landing-hints-text',
-    content: 'ctrl+c exit',
+    id: "landing-hints-text",
+    content: "ctrl+c exit",
     fg: THEME.dim,
   });
   footerHints.add(hintsText);
@@ -169,8 +169,8 @@ export async function createLandingView(
   const pickerState: FilePickerState = { activePicker: null };
 
   input.on(MultiLineInputEvents.INPUT, (value: string) => {
-    const minHeight = typeof inputContainer.minHeight === 'number' ? inputContainer.minHeight : 5;
-    const inputHeight = typeof input.height === 'number' ? input.height : 1;
+    const minHeight = typeof inputContainer.minHeight === "number" ? inputContainer.minHeight : 5;
+    const inputHeight = typeof input.height === "number" ? input.height : 1;
     const nextHeight = Math.max(minHeight, inputHeight + INPUT_CHROME_LINES);
     if (inputContainer.height !== nextHeight) {
       inputContainer.height = nextHeight;
@@ -187,27 +187,27 @@ export async function createLandingView(
   const onKey = createCtrlCExitHandler({
     renderer,
     hintText: hintsText,
-    originalContent: 'ctrl+c exit',
+    originalContent: "ctrl+c exit",
     shouldSkip: () => !root.visible || !!pickerState.activePicker || isGameboyActive(),
   });
 
-  renderer.keyInput.on('keypress', (key: KeyEvent) => {
-    if (key.name === 'return' && key.shift) {
-      input.value = input.value + '\n';
+  renderer.keyInput.on("keypress", (key: KeyEvent) => {
+    if (key.name === "return" && key.shift) {
+      input.value = input.value + "\n";
       renderer.requestRender();
       return true;
     }
     return false;
   });
 
-  renderer.keyInput.on('keypress', onKey);
+  renderer.keyInput.on("keypress", onKey);
 
   setupFilePicker(renderer, input, inputContainer, pickerState, {
     bottom: () => {
       const height = inputContainer.height;
-      return typeof height === 'number' ? height : 5;
+      return typeof height === "number" ? height : 5;
     },
-    width: '100%',
+    width: "100%",
   });
 
   root.add(headerContainer);

@@ -3,7 +3,7 @@
 # Categories: CONSUMER_L3, CORE_L2, DEFENSE_L6, ENERGY_L1, FINANCE_BIZ, LEGAL
 
 Cor.45
-n-autoresearch/Kosmos/BioAgents Whiteboard
+Monkeys Whiteboard
 
 did you find the following, in the search? The server is up and running.
 Status:
@@ -30,7 +30,7 @@ Status:
 - GET /health
 - GET /stats
 - You can now send requests to localhost:8080.
-  You can now send requests to localhost:8080. /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/ShadowTag-v2_Phase_Docs/Ai Resources.1 can you link into dirve via local /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/ShadowTag-v2_Phase_Docs/Ai Resources.1; /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/ShadowTag-v2_Phase_Docs/AI Resources.3; /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/ShadowTag-v2_Phase_Docs/AiResources2; /Users/pikeymickey/Documents/Documents; "## 1. Triton vs Gluon – Final Verdict (2025-11-22)
+  You can now send requests to localhost:8080. /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/AiYou_Phase_Docs/Ai Resources.1 can you link into dirve via local /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/AiYou_Phase_Docs/Ai Resources.1; /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/AiYou_Phase_Docs/AI Resources.3; /Users/pikeymickey/Library/CloudStorage/GoogleDrive-ehanc6901@gmail.com/My Drive/AiYou_Phase_Docs/AiResources2; /Users/pikeymickey/Documents/Documents; "## 1. Triton vs Gluon – Final Verdict (2025-11-22)
 
 | Metric                      | Triton Inference Server (Standard) | Gluon (NVIDIA “next-gen” fork) |
 | --------------------------- | ---------------------------------- | ------------------------------ |
@@ -203,7 +203,7 @@ Here’s the **folded-in, final, clean, and fully operational** version — ever
 
 ## Core Truth (non-negotiable)
 
-- Platform: ShadowTagAI (formerly pnkln / ShadowTag-v2)
+- Platform: ShadowTagAI (formerly pnkln / AiYou)
 - Architecture: **Native Gemini function-calling only** — zero AutoGen, LangGraph, AG2, or any multi-agent framework ever again
 - Governance kernel: ATP_519 → Judge6 → Audit (target p99 ≤ 90 ms, $0.0003/decision)
 - UNGPT router live: `localhost:8787/v1/chat/completions` (Gemini / Claude / Groq / Ollama / Grok)
@@ -216,7 +216,7 @@ Here’s the **folded-in, final, clean, and fully operational** version — ever
    ```bash
    gcloud builds triggers create github \
      --name=shadowtagai-deploy \
-     --repo-name=ShadowTag-v2-fastapi-services \
+     --repo-name=aiyou-fastapi-services \
      --repo-owner=<YOUR_GH_USER> \
      --branch-pattern="^main$" \
      --build-config=cloudbuild.yaml
@@ -296,7 +296,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ═══════════════════════════════════════════════════════════════════════════
   PART 1: CONCISE STATE SUMMARY
   ═══════════════════════════════════════════════════════════════════════════
-  PLATFORM: ShadowTagAi (AiU + ShadowTag-v2 Unified)
+  PLATFORM: ShadowTagAi (AiU + AiYou Unified)
   STATUS: Enterprise-Grade Ready | 180+ R&D branches | FedRAMP/HIPAA templates
   VALUATION: $421.5B (2030, risk-adjusted) | $23.56B ARR | 81% margin
   ACCOUNT: founder@shadowtagai.com
@@ -315,7 +315,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   │ COR: Corporate ops (finance, legal, HR, integration) │
   │ JR: Sales intelligence (email, RFP, call intel, deals) │
   │ NS: Strategic (Monte Carlo, board prep, risk, LLM routing) │
-  │ JUDGE #6: Enforcement (Compliance Framework scan, PyTorch classifier, audit) │
+  │ JUDGE #6: Enforcement (ATP 5-19 scan, PyTorch classifier, audit) │
   │ SHADOWTAG: Watermarking (DCT embed/detect, C2PA, forensics) │
   └────────────────────────────────────────────────────────────────────────┘
   KERNEL CHAIN (p99≤90ms SLA):
@@ -347,7 +347,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   TRUST STRUCTURE (Business Succession):
   • Treva: 10-year CEO succession plan
   • 5 sons: 30-year business succession
-  • Compliance Framework risk framework (probability A-E × severity I-IV)
+  • ATP 5-19 risk framework (probability A-E × severity I-IV)
   INVESTOR MATERIALS:
   • $421.5B valuation breakdown (20+ components)
   • 253% IRR (Seed), 1,222× MOIC
@@ -358,7 +358,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ✓ PII removal (email, name, credentials)
   ✓ docs/ANTIGRAVITY_WORKFLOW.md created
   ✓ transcripts/ directory setup
-  ✓ Cloned Tegu, GAAS to ~/ShadowTag-v2-stack/external/
+  ✓ Cloned Tegu, GAAS to ~/aiyou-stack/external/
   ✓ GCP configured (project, cluster, kubectl)
   ✓ Whiteboard spec created (legal_whiteboard.py, bar_exam_protocol.py)
   PENDING:
@@ -372,9 +372,9 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   │ KEY PARAMETERS │
   └─────────────────────────────────────────────────────────────────────────┘
   PATHS:
-    CODEBASE: ~/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services
-    STACK: ~/ShadowTag-v2-stack (46 repos)
-    EXTERNAL: ~/ShadowTag-v2-stack/external/{Tegu,GAAS}
+    CODEBASE: ~/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services
+    STACK: ~/aiyou-stack (46 repos)
+    EXTERNAL: ~/aiyou-stack/external/{Tegu,GAAS}
     BRANCH: claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS
   GCP:
     PROJECT: acquired-jet-478701-b3
@@ -392,12 +392,12 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ULTRATHINK (PiCO/PRISM/Value.Lock):
     • PiCO::TRACE: bind→flow→motion→output
     • PRISM::KERNEL: position/role/intent/structure/modality
-    • Value.Lock: IQ=160, Purpose=ShadowTag-v2JR, Reason=Doctrine, Brakes=Judge6
+    • Value.Lock: IQ=160, Purpose=AiYouJR, Reason=Doctrine, Brakes=Judge6
   JR ENGINE (Purpose/Reasons/Brakes):
     • Purpose: Does this advance mission/revenue?
     • Reasons: Defensible judgment with evidence
-    • Brakes: Compliance Framework risk assessment (<500μs)
-  Compliance Framework RISK MATRIX:
+    • Brakes: ATP 5-19 risk assessment (<500μs)
+  ATP 5-19 RISK MATRIX:
           IV III II I
       ┌───────┬───────┬───────┬───────┐
     A │ M │ H │ EH │ EH │ EH=REJECT
@@ -514,9 +514,9 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
       "model": "Claude Sonnet 4.5"
     },
     "paths": {
-      "codebase": "~/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services",
-      "stack": "~/ShadowTag-v2-stack",
-      "external": "~/ShadowTag-v2-stack/external/{Tegu,GAAS}",
+      "codebase": "~/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services",
+      "stack": "~/aiyou-stack",
+      "external": "~/aiyou-stack/external/{Tegu,GAAS}",
       "branch": "claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS"
     },
     "gcp": {
@@ -566,7 +566,7 @@ fold in ⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
       "ultrathink": {
         "pico": ["bind", "flow", "motion", "output"],
         "prism": ["position", "role", "intent", "structure", "modality"],
-        "value_lock": {"iq": 160, "purpose": "ShadowTag-v2JR", "reason": "Doctrine", "brakes": "Judge6"}
+        "value_lock": {"iq": 160, "purpose": "AiYouJR", "reason": "Doctrine", "brakes": "Judge6"}
       },
       "jr_engine": {
         "components": ["purpose", "reasons", "brakes"],
@@ -638,7 +638,7 @@ Here’s the **clean, revised, and future-proofed** version of your handoff pack
 # ShadowTagAI – Clean Handoff Document (2025-11-22)
 
 ## Current Real Status (no hype)
-- Codebase: `~/ShadowTag-v2-fastapi-services` → fully renamed from pnkln → ShadowTagAI
+- Codebase: `~/aiyou-fastapi-services` → fully renamed from pnkln → ShadowTagAI
 - All PII removed (names, old emails, keys)
 - Architecture: **Native Gemini function-calling only** (zero AutoGen / LangGraph / multi-agent frameworks)
 - Core governance kernel chain: ATP_519 → Judge6 → Audit (p99 ≤ 90 ms target)
@@ -651,7 +651,7 @@ Here’s the **clean, revised, and future-proofed** version of your handoff pack
    ```bash
    gcloud builds triggers create github \
      --name=shadowtagai-deploy \
-     --repo-name=ShadowTag-v2-fastapi-services \
+     --repo-name=aiyou-fastapi-services \
      --repo-owner=YOUR_GH_USER \
      --branch-pattern="^main$" \
      --build-config=cloudbuild.yaml
@@ -722,7 +722,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ═══════════════════════════════════════════════════════════════════════════
   PART 1: CONCISE STATE SUMMARY
   ═══════════════════════════════════════════════════════════════════════════
-  PLATFORM: ShadowTagAi (AiU + ShadowTag-v2 Unified)
+  PLATFORM: ShadowTagAi (AiU + AiYou Unified)
   STATUS: Enterprise-Grade Ready | 180+ R&D branches | FedRAMP/HIPAA templates
   VALUATION: $421.5B (2030, risk-adjusted) | $23.56B ARR | 81% margin
   ACCOUNT: founder@shadowtagai.com
@@ -741,7 +741,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   │ COR: Corporate ops (finance, legal, HR, integration) │
   │ JR: Sales intelligence (email, RFP, call intel, deals) │
   │ NS: Strategic (Monte Carlo, board prep, risk, LLM routing) │
-  │ JUDGE #6: Enforcement (Compliance Framework scan, PyTorch classifier, audit) │
+  │ JUDGE #6: Enforcement (ATP 5-19 scan, PyTorch classifier, audit) │
   │ SHADOWTAG: Watermarking (DCT embed/detect, C2PA, forensics) │
   └────────────────────────────────────────────────────────────────────────┘
   KERNEL CHAIN (p99≤90ms SLA):
@@ -773,7 +773,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   TRUST STRUCTURE (Business Succession):
   • Treva: 10-year CEO succession plan
   • 5 sons: 30-year business succession
-  • Compliance Framework risk framework (probability A-E × severity I-IV)
+  • ATP 5-19 risk framework (probability A-E × severity I-IV)
   INVESTOR MATERIALS:
   • $421.5B valuation breakdown (20+ components)
   • 253% IRR (Seed), 1,222× MOIC
@@ -784,7 +784,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ✓ PII removal (email, name, credentials)
   ✓ docs/ANTIGRAVITY_WORKFLOW.md created
   ✓ transcripts/ directory setup
-  ✓ Cloned Tegu, GAAS to ~/ShadowTag-v2-stack/external/
+  ✓ Cloned Tegu, GAAS to ~/aiyou-stack/external/
   ✓ GCP configured (project, cluster, kubectl)
   ✓ Whiteboard spec created (legal_whiteboard.py, bar_exam_protocol.py)
   PENDING:
@@ -798,9 +798,9 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   │ KEY PARAMETERS │
   └─────────────────────────────────────────────────────────────────────────┘
   PATHS:
-    CODEBASE: ~/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services
-    STACK: ~/ShadowTag-v2-stack (46 repos)
-    EXTERNAL: ~/ShadowTag-v2-stack/external/{Tegu,GAAS}
+    CODEBASE: ~/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services
+    STACK: ~/aiyou-stack (46 repos)
+    EXTERNAL: ~/aiyou-stack/external/{Tegu,GAAS}
     BRANCH: claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS
   GCP:
     PROJECT: acquired-jet-478701-b3
@@ -818,12 +818,12 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
   ULTRATHINK (PiCO/PRISM/Value.Lock):
     • PiCO::TRACE: bind→flow→motion→output
     • PRISM::KERNEL: position/role/intent/structure/modality
-    • Value.Lock: IQ=160, Purpose=ShadowTag-v2JR, Reason=Doctrine, Brakes=Judge6
+    • Value.Lock: IQ=160, Purpose=AiYouJR, Reason=Doctrine, Brakes=Judge6
   JR ENGINE (Purpose/Reasons/Brakes):
     • Purpose: Does this advance mission/revenue?
     • Reasons: Defensible judgment with evidence
-    • Brakes: Compliance Framework risk assessment (<500μs)
-  Compliance Framework RISK MATRIX:
+    • Brakes: ATP 5-19 risk assessment (<500μs)
+  ATP 5-19 RISK MATRIX:
           IV III II I
       ┌───────┬───────┬───────┬───────┐
     A │ M │ H │ EH │ EH │ EH=REJECT
@@ -940,9 +940,9 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
       "model": "Claude Sonnet 4.5"
     },
     "paths": {
-      "codebase": "~/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services",
-      "stack": "~/ShadowTag-v2-stack",
-      "external": "~/ShadowTag-v2-stack/external/{Tegu,GAAS}",
+      "codebase": "~/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services",
+      "stack": "~/aiyou-stack",
+      "external": "~/aiyou-stack/external/{Tegu,GAAS}",
       "branch": "claude/code-into-c-01M1anzYZdJTDDeZQsiVTkKS"
     },
     "gcp": {
@@ -992,7 +992,7 @@ sure, revise "⏺ ▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛▛�
       "ultrathink": {
         "pico": ["bind", "flow", "motion", "output"],
         "prism": ["position", "role", "intent", "structure", "modality"],
-        "value_lock": {"iq": 160, "purpose": "ShadowTag-v2JR", "reason": "Doctrine", "brakes": "Judge6"}
+        "value_lock": {"iq": 160, "purpose": "AiYouJR", "reason": "Doctrine", "brakes": "Judge6"}
       },
       "jr_engine": {
         "components": ["purpose", "reasons", "brakes"],
@@ -1090,7 +1090,7 @@ M:: {modality.modes}
 ▛///▞ Value.Lock
 (⊢ ∙ ⇨ ∙ ⟿ ∙ ▷) ⇨ PRISM ≡ Value.Lock'
 - **Operating Posture**: Professional: Your, “Antigravity-Created-by-Google,” baseline-IQ remains hard locked to 160.
-- **Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=‘Judge6’’
+- **Decision Framework**: Purpose=AiYouJR • Reason=Doctrine • Brakes=‘Judge6’’
 - **Pillars**:
   - SOP-A Upload Triage (2× speed, −90% errors)
   - SOP-B Change & Release (2× cadence, clearer audits)
@@ -1180,7 +1180,7 @@ Phase 7: Miscellaneous Services
 “ <next> “
 “Complete All TODO Items in Codebase
 Overview
-This plan addresses 50+ TODO items identified across the ShadowTag-v2 FastAPI Services codebase. The TODOs span infrastructure, AI services, NFT functionality, calendar integration, and various other services. The work is organized by priority and dependency to ensure systematic completion.
+This plan addresses 50+ TODO items identified across the AiYou FastAPI Services codebase. The TODOs span infrastructure, AI services, NFT functionality, calendar integration, and various other services. The work is organized by priority and dependency to ensure systematic completion.
 User Review Required
 IMPORTANT
 Scope Decision Required: This plan covers all TODO items found in the codebase. Some require external service integrations (Google Calendar API, Microsoft Graph, Anthropic Claude, IPFS, blockchain, etc.). Please review and confirm:
@@ -1376,7 +1376,7 @@ python load_testing/pnkln_load_tests_enhanced.py
 Manual Verification
 1. Health Endpoint Verification
 Steps:
-1. Start the FastAPI server: uvicorn src.ShadowTag-v2.main:app --reload
+1. Start the FastAPI server: uvicorn src.aiyou.main:app --reload
 2. Open browser to http://localhost:8000/health
 3. Verify response shows actual service status (not stubs)
 4. Check /status endpoint for detailed service health
@@ -1464,7 +1464,7 @@ google-cloud-monitoring>=2.16.0
 Environment Variables Required
 Create .env file with:
 # Database
-DATABASE_URL=postgresql://user:pass@localhost/ShadowTag-v2
+DATABASE_URL=postgresql://user:pass@localhost/aiyou
 # Redis
 REDIS_URL=redis://localhost:6379
 # Google Cloud
@@ -1543,7 +1543,7 @@ Operating System Execution Framework Parameters (for Guidance Only):
   - B.S./B.A. in Systems Engineering/Computer Science from top institutions (e.g., MIT, Stanford, Carnegie Mellon).
   - M.S. in Risk Management/Decision Sciences from institutions like UC Berkeley, ETH Zurich, University of Toronto.
   - Ph.D. in Applied Physics/Operations Research from institutions like Oxford, Tsinghua, University of Washington.
-  - Optional: MBA (Wharton for revenue scaling), JD (Yale for compliance/risk law), Military Strategy Certification (e.g., Compliance Framework equivalent).
+  - Optional: MBA (Wharton for revenue scaling), JD (Yale for compliance/risk law), Military Strategy Certification (e.g., ATP 5-19 equivalent).
 - **Experience**:
   - Decision Engine: Applied purpose/reasons/brakes validation; risk assessment (probability A-E × severity I-IV → EH/H/M/L levels); Monte Carlo simulations for decisions.
   - Boy Scout Rule: Left every file cleaner; war-gamed architectures; documented with beauty and implementation paths.
@@ -1563,15 +1563,15 @@ Operating System Execution Framework Parameters (for Guidance Only):
   - Legal/Ethical: Ensured all actions survivable (p99), defensible, evidence-based; non-negotiable security.
   - **Gemini Antigravity Excellence**: Leveraged native multimodal reasoning, GCP-optimized inference, Vertex AI integration for production-grade deployment.
   - **Cross-Model Orchestration**: Used Gemini Antigravity for primary inference; delegated to Claude Code for terminal-based agentic tasks; applied MCP for token optimization.
-- **Core Traits**: Tech expertise in frameworks (e.g., Monte Carlo, risk matrices), tools (Terraform, GitHub Actions, Vertex AI, Gemini API); leadership in cross-discipline teams; compliance (Compliance Framework, WCAG); business acumen (revenue engines, ROI modeling); ethical focus (simplicity, security, reality distortion for innovation).
+- **Core Traits**: Tech expertise in frameworks (e.g., Monte Carlo, risk matrices), tools (Terraform, GitHub Actions, Vertex AI, Gemini API); leadership in cross-discipline teams; compliance (ATP 5-19, WCAG); business acumen (revenue engines, ROI modeling); ethical focus (simplicity, security, reality distortion for innovation).
 - **Dimensions**:
   - Financial/Growth: Metrics like ROI, LTV:CAC; tied to revenue doctrine.
   - Security/Compliance: Absolute gates, risk brakes.
   - People/Ops: Collaborative instances, situational awareness.
   - Global/Ethical: Evidence-only, assumption-questioning.
   - Long-Term: Iterative ultrathink, bootstrap discipline.
-  - Growth Toolkit: Continuous learning from authorities (e.g., Compliance Framework risk management, first-principles physics, Monte Carlo methods).
-- **Wisdom from Experts**: Incorporate lessons like "Design with obsession" (Steve Jobs), "Risk as matrix" (Compliance Framework), "Simplicity through reduction" (Da Vinci), "People who change the world" (Jobs), "Evidence-only" (Feynman principles).
+  - Growth Toolkit: Continuous learning from authorities (e.g., ATP 5-19 risk management, first-principles physics, Monte Carlo methods).
+- **Wisdom from Experts**: Incorporate lessons like "Design with obsession" (Steve Jobs), "Risk as matrix" (ATP 5-19), "Simplicity through reduction" (Da Vinci), "People who change the world" (Jobs), "Evidence-only" (Feynman principles).
 Deployment Notes:
 - Platform: Vertex AI Workbench (primary development and prototyping), with transition to GKE Native for production scaling and deployment.
 - Cloud Provider: Google Cloud Exclusive.

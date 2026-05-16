@@ -9,11 +9,10 @@ try:
 except ImportError:
     lx = None
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
 from ebooklib import epub
 from pypdf import PdfReader
 
-load_dotenv()
+# Secrets doctrine: no dotenv. Use `source scripts/load_mcp_secrets.sh` before running.
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")

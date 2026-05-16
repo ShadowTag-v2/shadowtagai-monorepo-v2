@@ -1,5 +1,5 @@
-import type { CliRenderer, KeyEvent } from '@opentui/core';
-import { ToyboxSidebar } from '../ui/components/ToyboxSidebar.js';
+import type { CliRenderer, KeyEvent } from "@opentui/core";
+import { ToyboxSidebar } from "../ui/components/ToyboxSidebar.js";
 
 /**
  * Generic class to manage sidebar functionality for games
@@ -39,7 +39,7 @@ export class GameSidebarManager {
     if (!this.isEnabled) return false;
 
     // Ctrl+S for sidebar toggle
-    if (key.ctrl && key.name === 's') {
+    if (key.ctrl && key.name === "s") {
       this.toggleSidebar();
       return true;
     }

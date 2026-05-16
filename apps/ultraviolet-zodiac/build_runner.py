@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import subprocess
 import sys
@@ -16,12 +17,7 @@ def run_build():
 
     # Run in background
     process = subprocess.Popen(
-        ["cargo", "build", "--release", "-p", "biome_cli"],
-        cwd=biome_dir,
-        env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
+        ["cargo", "build", "--release", "-p", "biome_cli"], cwd=biome_dir, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
     )
 
     start_time = time.time()

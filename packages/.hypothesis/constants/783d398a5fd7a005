@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/aiyou-core/messaging.py
+# hypothesis_version: 6.151.5
+
+[65536, 86400, '*.json', '.beads/messages', '_', 'answer', 'completed', 'conflict', 'critical', 'description', 'file', 'high', 'low', 'normal', 'priority', 'query', 'question', 'response', 'summary', 'task', 'task_handoff', 'timestamp', 'utf-8', '…']

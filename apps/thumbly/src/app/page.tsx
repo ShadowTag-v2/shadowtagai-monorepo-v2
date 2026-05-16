@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { CheckCircle2, Image as ImageIcon, Sparkles, Zap } from 'lucide-react';
-import Link from 'next/link';
+import { motion } from "framer-motion";
+import { CheckCircle2, Image as ImageIcon, Sparkles, Zap } from "lucide-react";
+import Link from "next/link";
 
 export default function ThumblyLanding() {
   return (

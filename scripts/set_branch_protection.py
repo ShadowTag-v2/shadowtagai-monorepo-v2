@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import time
 
 import jwt
@@ -15,13 +16,14 @@ def generate_jwt(app_id, pem_path):
     with open(pem_path, "rb") as pem_file:
         signing_key = serialization.load_pem_private_key(pem_file.read(), password=None)
     payload = {"iat": int(time.time()) - 60, "exp": int(time.time()) + (10 * 60), "iss": app_id}
-    return jwt.encode(payload, signing_key, algorithm="RS256")
+    encoded_jwt = jwt.encode(payload, signing_key, algorithm="RS256")
+    return encoded_jwt
 
 
 def get_installation_id(encoded_jwt, owner):
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/orgs/{owner}/installation"
-    response = requests.get(url, headers=headers, timeout=30)
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
     return response.json()["id"]
 
@@ -29,12 +31,12 @@ def get_installation_id(encoded_jwt, owner):
 def get_installation_token(encoded_jwt, installation_id):
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
-    response = requests.post(url, headers=headers, timeout=30)
+    response = requests.post(url, headers=headers)
     response.raise_for_status()
     return response.json()["token"]
 
 
-def set_branch_protection(token, owner, repo, branch) -> None:
+def set_branch_protection(token, owner, repo, branch):
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github.v3+json",
@@ -50,11 +52,13 @@ def set_branch_protection(token, owner, repo, branch) -> None:
         },
         "restrictions": None,
     }
-    response = requests.put(url, headers=headers, json=payload, timeout=30)
+    print(f"Applying protection to {branch}...")
+    response = requests.put(url, headers=headers, json=payload)
     if response.status_code == 200:
-        pass
+        print("Branch protection rules applied successfully!")
     else:
-        pass
+        print(f"Failed to set branch protection: {response.status_code}")
+        print(response.json())
 
 
 if __name__ == "__main__":

@@ -16,24 +16,24 @@ workspace:
   source_of_truth: monorepo_manifest.yaml
 
 repo_roots:
-  ShadowTag-v2-fastapi-services:
+  aiyou-fastapi-services:
     status: canonical
-    canonical_path: apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
+    canonical_path: apps/aiyou_stack/aiyou-fastapi-services
     notes: Primary live backend root.
 
   cosmic-crab-payload:
     status: canonical
-    canonical_path: apps/ShadowTag-v2_stack/cosmic-crab-payload
+    canonical_path: apps/aiyou_stack/cosmic-crab-payload
     notes: Canonical payload/runtime support root.
 
   Pipeline:
     status: canonical
-    canonical_path: apps/ShadowTag-v2_stack/Pipeline
+    canonical_path: apps/aiyou_stack/Pipeline
     notes: Live canonical root for Pipeline.
 
   nascent-apollo:
     status: canonical
-    canonical_path: apps/ShadowTag-v2_stack/nascent-apollo
+    canonical_path: apps/aiyou_stack/nascent-apollo
     notes: Live canonical root for nascent-apollo.
 
 control_plane:
@@ -71,10 +71,10 @@ cat > "$ROOT/docs/MERGE_STATUS.md" <<'EOF'
 The four-repo merge has been resolved at the manifest level.
 
 ### Canonical
-- `ShadowTag-v2-fastapi-services` → `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services`
-- `cosmic-crab-payload` → `apps/ShadowTag-v2_stack/cosmic-crab-payload`
-- `Pipeline` → `apps/ShadowTag-v2_stack/Pipeline`
-- `nascent-apollo` → `apps/ShadowTag-v2_stack/nascent-apollo`
+- `aiyou-fastapi-services` → `apps/aiyou_stack/aiyou-fastapi-services`
+- `cosmic-crab-payload` → `apps/aiyou_stack/cosmic-crab-payload`
+- `Pipeline` → `apps/aiyou_stack/Pipeline`
+- `nascent-apollo` → `apps/aiyou_stack/nascent-apollo`
 
 ## Meaning
 
@@ -511,10 +511,10 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 ## Merge truth
 
 All four repo roots must remain canonical:
-- `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services`
-- `apps/ShadowTag-v2_stack/cosmic-crab-payload`
-- `apps/ShadowTag-v2_stack/Pipeline`
-- `apps/ShadowTag-v2_stack/nascent-apollo`
+- `apps/aiyou_stack/aiyou-fastapi-services`
+- `apps/aiyou_stack/cosmic-crab-payload`
+- `apps/aiyou_stack/Pipeline`
+- `apps/aiyou_stack/nascent-apollo`
 
 ## Guardrails
 

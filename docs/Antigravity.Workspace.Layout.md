@@ -134,34 +134,26 @@ pnkln/
 ## 2. Antigravity agent lanes
 
 ### Lane A — Thread mining and planning
-
 Writes only to:
-
 - `artifacts/plans/`
 - `docs/Ops/Decision-Log.md`
 - `docs/Architecture-Map.md`
 
 ### Lane B — Product and UX
-
 Writes only to:
-
 - `apps/web/`
 - `packages/ui/`
 - `docs/Product/`
 
 ### Lane C — API and jobs
-
 Writes only to:
-
 - `apps/api/`
 - `apps/worker/`
 - `packages/security/`
 - `packages/policy-engine/`
 
 ### Lane D — Retrieval, prompts, and evals
-
 Writes only to:
-
 - `packages/rag/`
 - `packages/prompts/`
 - `packages/evals/`
@@ -169,9 +161,7 @@ Writes only to:
 - `services/retrieval/`
 
 ### Lane E — Infra and release
-
 Writes only to:
-
 - `infra/`
 - `.github/`
 - `manifests/`
@@ -180,7 +170,6 @@ Writes only to:
 ## 3. Required artifacts for major Antigravity runs
 
 Every major run should produce these, with timestamps in filenames when useful:
-
 - `artifacts/plans/current-plan.md`
 - `artifacts/audits/security-audit.md`
 - `artifacts/audits/architecture-audit.md`
@@ -281,7 +270,6 @@ DELIVERABLES:
 ## 8. Approximate 300-file-equivalent architecture, grouped
 
 This layout is intentionally sparse at the top level and dense in module expansion. Antigravity can fan this out into roughly 300 implementation files across:
-
 - 40–60 web feature files
 - 30–50 API/service files
 - 20–30 worker and job files

@@ -1,0 +1,13 @@
+[project]
+name = "shadowtag-omega"
+version = "2026.01.14"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi", "uvicorn", "google-cloud-aiplatform", "google-auth", "google-generativeai",
+    "colorama", "requests", "rich", "apache-airflow", "pydantic", "pandas", "ast-grep-cli",
+    "torch", "transformers", "llmlingua", "zstandard", "google-genai"
+]
+[tool.uv.workspace]
+members = ["apps/*", "libs/*"]
+[tool.ruff]
+line-length = 88

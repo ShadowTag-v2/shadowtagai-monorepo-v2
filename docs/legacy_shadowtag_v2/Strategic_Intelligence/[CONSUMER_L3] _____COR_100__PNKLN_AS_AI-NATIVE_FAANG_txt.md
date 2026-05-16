@@ -129,7 +129,7 @@ WHY GOOGLE CAN'T FIX THIS FOR 30 YEARS:
 └─ Trust trap: Google's ad business conflicts with enterprise privacy
 
 pnkln SOLUTION: Cor+NS+JR Stack
-├─ Purpose/Reasons/Brakes enforcement (ShadowTag-v2JR governance)
+├─ Purpose/Reasons/Brakes enforcement (AiYouJR governance)
 ├─ Audit trail for EVERY AI decision (regulatory compliance)
 ├─ Private deployment (customer VPC, not shared infrastructure)
 ├─ Revenue: DaaS licensing across 30 verticals = $1.4B ARR embedded

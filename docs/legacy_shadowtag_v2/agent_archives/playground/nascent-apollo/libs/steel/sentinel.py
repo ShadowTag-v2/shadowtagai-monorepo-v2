@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
 import os
 import sys
@@ -24,7 +25,7 @@ class RiskTier(Enum):
     RED = "EH (STOP / Kill-Switch)"
 
 
-# HAZARD DB (Compliance Framework Mapped) - Updated for Omega Context
+# HAZARD DB (ATP 5-19 Mapped) - Updated for Omega Context
 HAZARD_DB = [
     {"pattern": "sk-", "name": "API Key Leak", "risk": RiskTier.RED},
     {"pattern": "rm -rf", "name": "System Wipe", "risk": RiskTier.RED},
@@ -37,7 +38,7 @@ HAZARD_DB = [
 class JudgeSixSentinel:
     def __init__(self, engine=None):
         self.engine = engine
-        self.name = "Judge 6 V2.0.0 (Omega)"
+        self.name = "Judge #6 V2.0.0 (Omega)"
         self.memory = MemoryBank()
         self.army = CavMTOE(num_soldiers=650) if ARMY_AVAILABLE else None
 

@@ -391,13 +391,11 @@ OpenTelemetry Integration:
 ### Anti-Pattern 1: Vague Role Definition
 
 **❌ Bad:**
-
 ```
 You are a helpful AI assistant.
 ```
 
 **✅ Good:**
-
 ```xml
 <role>
 You are a senior Python developer with 10 years of experience in data engineering.
@@ -409,14 +407,12 @@ You write production-quality code with comprehensive testing and clear documenta
 ### Anti-Pattern 2: Buried Instructions
 
 **❌ Bad:**
-
 ```
 Here are 50,000 tokens of documentation...
 At the end, please analyze for security issues.
 ```
 
 **✅ Good:**
-
 ```xml
 <task>
 Analyze the following documentation for security vulnerabilities.
@@ -433,13 +429,11 @@ Focus on: authentication, authorization, data handling, and API security.
 ### Anti-Pattern 3: No Success Criteria
 
 **❌ Bad:**
-
 ```
 Make the code better.
 ```
 
 **✅ Good:**
-
 ```xml
 <success_criteria>
 Code improvements must:
@@ -454,13 +448,11 @@ Code improvements must:
 ### Anti-Pattern 4: No Validation Loop
 
 **❌ Bad:**
-
 ```
 Generate the code and we're done.
 ```
 
 **✅ Good:**
-
 ```xml
 <validation_loop>
 After generating any output:
@@ -475,13 +467,11 @@ After generating any output:
 ### Anti-Pattern 5: Tool Overload
 
 **❌ Bad:**
-
 ```
 Here are 50 tools you might need. Figure out which ones to use.
 ```
 
 **✅ Good:**
-
 ```xml
 <available_tools>
 For this task, you have access to:
@@ -677,16 +667,14 @@ Observability:
 **Core Principle**: Tools are prominent in context, making them primary actions Claude considers.
 
 **Best Practices**:
-
 - Action-oriented descriptions ("Search through" not "A tool that searches")
 - Clear return value specifications
 - Usage guidance ("Use when...")
 - Parameter clarity with examples
-- Scoped permissions (Bash(git:\*))
+- Scoped permissions (Bash(git:*))
 - Error handling guidance
 
 **Example:**
-
 ```xml
 <tool name="code_search">
   <description>
@@ -722,7 +710,6 @@ Observability:
 **How**: Progressive disclosure architecture - load information only as needed
 
 **Structure**:
-
 ```
 skill-name/
 ├── SKILL.md (required)      # Skill description and activation
@@ -740,7 +727,6 @@ skill-name/
 **Activation**: Pure LLM reasoning, no algorithmic matching
 
 **Best Practices**:
-
 - Clear activation criteria in SKILL.md
 - Progressive disclosure (load only what's needed)
 - Executable scripts for complex operations
@@ -757,7 +743,6 @@ skill-name/
 **Benefit**: 30-96% performance improvements on hard problems
 
 **Best Practices**:
-
 - Use for planning before execution
 - Use for analyzing tradeoffs
 - Use for edge case consideration
@@ -768,7 +753,6 @@ skill-name/
 ## 📖 ESSENTIAL RESOURCES
 
 ### Official Anthropic Documentation
-
 - [Building Effective Agents](https://anthropic.com/research/building-effective-agents)
 - [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)
 - [Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills)
@@ -776,7 +760,6 @@ skill-name/
 - [Extended Thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking)
 
 ### Frameworks
-
 - [LangGraph](https://langchain-ai.github.io/langgraph/)
 - [CrewAI](https://crewai.com)
 - [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk)

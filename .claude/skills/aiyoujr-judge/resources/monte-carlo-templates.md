@@ -1,6 +1,6 @@
 # Monte Carlo Scenario Analysis Templates
 
-**Purpose:** Generate probability-weighted financial projections for ShadowTag-v2JR Reasons Gate
+**Purpose:** Generate probability-weighted financial projections for AiYouJR Reasons Gate
 **Tool:** Google Sheets formulas (no special software required)
 **Output:** Base/Best/Worst scenarios + probability-weighted NPV
 
@@ -8,7 +8,7 @@
 
 ## Overview
 
-Monte Carlo simulation models uncertainty by running thousands of scenarios with varying inputs. For ShadowTagAi, we use a simplified 3-scenario approach that's fast enough for decision-making but rigorous enough for Army RM Stage IV compliance.
+Monte Carlo simulation models uncertainty by running thousands of scenarios with varying inputs. For Pnkln, we use a simplified 3-scenario approach that's fast enough for decision-making but rigorous enough for Army RM Stage IV compliance.
 
 **Three Scenarios:**
 1. **Base Case** (50% probability) - Realistic assumptions
@@ -293,7 +293,7 @@ To de-risk high-impact variables:
 - [ ] **Avg Revenue:** Survey existing customers for pricing sensitivity
 - [ ] **Dev Timeline:** Use experienced contractor (reduce uncertainty)
 
-## ShadowTag-v2JR Decision
+## AiYouJR Decision
 
 ### Reasons Gate: ✅ PASS
 
@@ -413,6 +413,6 @@ Validated: Pre-sold to 20 beta customers
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi Finance Team (Erik)
-**Framework:** ShadowTag-v2JR Reasons Gate
+**Maintained By:** Pnkln Finance Team (Erik)
+**Framework:** AiYouJR Reasons Gate
 **Discount Rate:** 15% (standard for bootstrapped startups)

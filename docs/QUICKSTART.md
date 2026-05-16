@@ -1,4 +1,4 @@
-# ShadowTag-v2 Governance System - Quickstart Guide
+# AiYou Governance System - Quickstart Guide
 
 **Get your agent-based governance running in 15 minutes.**
 
@@ -15,7 +15,7 @@
 
 ```bash
 # Clone repository
-cd ShadowTag-v2-fastapi-services
+cd aiyou-fastapi-services
 
 # Create virtual environment
 python -m venv venv
@@ -276,15 +276,14 @@ time curl -X POST \
 
 - [Architecture Documentation](./architecture.md)
 - [API Reference](./api.md)
-- [Compliance Framework Risk Framework](./atp-5-19.md)
+- [ATP 5-19 Risk Framework](./atp-5-19.md)
 - [Deployment Runbooks](./runbooks/)
 - [Main README](../README.md)
 
 ## Support
 
 For issues, questions, or contributions:
-
-- GitHub Issues: [ehanc69/ShadowTag-v2-fastapi-services](https://github.com/ehanc69/ShadowTag-v2-fastapi-services)
+- GitHub Issues: [ehanc69/aiyou-fastapi-services](https://github.com/ehanc69/aiyou-fastapi-services)
 - Documentation: Full docs in `/docs` directory
 
 ---

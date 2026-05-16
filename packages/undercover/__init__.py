@@ -29,30 +29,30 @@ from typing import Any
 from .repo_classification import get_repo_class, is_internal_repo
 
 __all__ = [
-    "is_undercover",
-    "get_undercover_instructions",
-    "should_show_auto_notice",
-    # Re-exports from repo_classification
-    "get_repo_class",
-    "is_internal_repo",
+  "is_undercover",
+  "get_undercover_instructions",
+  "should_show_auto_notice",
+  # Re-exports from repo_classification
+  "get_repo_class",
+  "is_internal_repo",
 ]
 
 # --- Environment helpers ---
 
 
 def _is_env_truthy(key: str) -> bool:
-    """Return ``True`` if env var *key* is set to a truthy value."""
-    val = os.environ.get(key, "").strip().lower()
-    return val in {"1", "true", "yes", "on"}
+  """Return ``True`` if env var *key* is set to a truthy value."""
+  val = os.environ.get(key, "").strip().lower()
+  return val in {"1", "true", "yes", "on"}
 
 
 def _is_feature_enabled() -> bool:
-    """Return ``True`` if undercover mode is available in this build.
+  """Return ``True`` if undercover mode is available in this build.
 
-    Maps to the ``process.env.USER_TYPE === 'ant'`` gate in the TS source.
-    For the AGNT framework, set ``AGNT_UNDERCOVER_ENABLED=1`` to enable.
-    """
-    return _is_env_truthy("AGNT_UNDERCOVER_ENABLED")
+  Maps to the ``process.env.USER_TYPE === 'ant'`` gate in the TS source.
+  For the AGNT framework, set ``AGNT_UNDERCOVER_ENABLED=1`` to enable.
+  """
+  return _is_env_truthy("AGNT_UNDERCOVER_ENABLED")
 
 
 # --- Per-session state ---
@@ -61,49 +61,49 @@ _has_seen_auto_notice: bool = False
 
 
 def mark_auto_notice_seen() -> None:
-    """Record that the one-time auto-undercover notice was shown."""
-    global _has_seen_auto_notice
-    _has_seen_auto_notice = True
+  """Record that the one-time auto-undercover notice was shown."""
+  global _has_seen_auto_notice
+  _has_seen_auto_notice = True
 
 
 # --- Public API ---
 
 
 def is_undercover() -> bool:
-    """Return ``True`` if undercover mode is currently active.
+  """Return ``True`` if undercover mode is currently active.
 
-    Activation rules:
-    1. Feature gate (``AGNT_UNDERCOVER_ENABLED``) must be truthy.
-    2. ``AGNT_UNDERCOVER=1`` forces ON regardless of repo class.
-    3. Otherwise auto: active UNLESS the repo is classified ``'internal'``.
-       ``'external'``, ``'none'``, and ``None`` (check not yet run) all
-       resolve to ON.
-    4. There is **no force-OFF** — if we cannot confirm internal, we stay
-       undercover.
-    """
-    if not _is_feature_enabled():
-        return False
+  Activation rules:
+  1. Feature gate (``AGNT_UNDERCOVER_ENABLED``) must be truthy.
+  2. ``AGNT_UNDERCOVER=1`` forces ON regardless of repo class.
+  3. Otherwise auto: active UNLESS the repo is classified ``'internal'``.
+     ``'external'``, ``'none'``, and ``None`` (check not yet run) all
+     resolve to ON.
+  4. There is **no force-OFF** — if we cannot confirm internal, we stay
+     undercover.
+  """
+  if not _is_feature_enabled():
+    return False
 
-    if _is_env_truthy("AGNT_UNDERCOVER"):
-        return True
+  if _is_env_truthy("AGNT_UNDERCOVER"):
+    return True
 
-    # Auto: active unless positively confirmed internal.
-    return get_repo_class() != "internal"
+  # Auto: active unless positively confirmed internal.
+  return get_repo_class() != "internal"
 
 
 def get_undercover_instructions() -> str:
-    """Return the safety instructions injected when undercover.
+  """Return the safety instructions injected when undercover.
 
-    These instructions are appended to commit/PR system prompts to prevent
-    the agent from leaking internal model codenames or attribution.
+  These instructions are appended to commit/PR system prompts to prevent
+  the agent from leaking internal model codenames or attribution.
 
-    Returns:
-        The full instruction block if undercover is enabled, else ``""``.
-    """
-    if not _is_feature_enabled():
-        return ""
+  Returns:
+      The full instruction block if undercover is enabled, else ``""``.
+  """
+  if not _is_feature_enabled():
+    return ""
 
-    return """## UNDERCOVER MODE — CRITICAL
+  return """## UNDERCOVER MODE — CRITICAL
 
 You are operating UNDERCOVER in a PUBLIC/OPEN-SOURCE repository. Your commit
 messages, PR titles, and PR bodies MUST NOT contain ANY organisation-internal
@@ -134,30 +134,30 @@ BAD (never write these):
 
 
 def should_show_auto_notice() -> bool:
-    """Check whether to show the one-time explainer dialog.
+  """Check whether to show the one-time explainer dialog.
 
-    Returns ``True`` when undercover is active via auto-detection (not forced
-    via ``AGNT_UNDERCOVER=1``) and the user hasn't seen the notice before.
-    """
-    if not _is_feature_enabled():
-        return False
-    # If forced via env, user already knows — don't nag.
-    if _is_env_truthy("AGNT_UNDERCOVER"):
-        return False
-    if not is_undercover():
-        return False
-    return not _has_seen_auto_notice
+  Returns ``True`` when undercover is active via auto-detection (not forced
+  via ``AGNT_UNDERCOVER=1``) and the user hasn't seen the notice before.
+  """
+  if not _is_feature_enabled():
+    return False
+  # If forced via env, user already knows — don't nag.
+  if _is_env_truthy("AGNT_UNDERCOVER"):
+    return False
+  if not is_undercover():
+    return False
+  return not _has_seen_auto_notice
 
 
 def get_config() -> dict[str, Any]:
-    """Return a snapshot of the current undercover configuration.
+  """Return a snapshot of the current undercover configuration.
 
-    Useful for diagnostics and the /status CLI command.
-    """
-    return {
-        "feature_enabled": _is_feature_enabled(),
-        "forced_on": _is_env_truthy("AGNT_UNDERCOVER"),
-        "repo_class": get_repo_class(),
-        "is_undercover": is_undercover(),
-        "has_seen_auto_notice": _has_seen_auto_notice,
-    }
+  Useful for diagnostics and the /status CLI command.
+  """
+  return {
+    "feature_enabled": _is_feature_enabled(),
+    "forced_on": _is_env_truthy("AGNT_UNDERCOVER"),
+    "repo_class": get_repo_class(),
+    "is_undercover": is_undercover(),
+    "has_seen_auto_notice": _has_seen_auto_notice,
+  }

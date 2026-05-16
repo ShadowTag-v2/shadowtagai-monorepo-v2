@@ -46,19 +46,28 @@ This document outlines how to fold economic optimizations from multiple proposed
 
 ### Economic Impact
 
+
+
 - **Savings**: $238,000/year
 
+
 - **Investment**: $45,000
+
 
 - **ROI**: 428%
 
 ### What It Optimizes
 
+
+
 - Redundant API calls through request deduplication
+
 
 - Token usage via context pruning
 
+
 - Execution time via parallel processing
+
 
 - Reliability through automatic fallbacks
 
@@ -66,9 +75,12 @@ This document outlines how to fold economic optimizations from multiple proposed
 
 **Connects To**:
 
+
 - `pnkln-intelligence-pipeline`: Provides execution layer
 
+
 - `llm-serving-efficiency`: Optimizes individual kernel calls
+
 
 - `autogen-to-gemini-migration`: Benefits from cheaper underlying API
 
@@ -127,17 +139,25 @@ class KernelChainMetrics:
 
 ### Economic Impact
 
+
+
 - **Savings**: $197,000/year (after 80/20 hybrid)
 
+
 - **Investment**: $58,000
+
 
 - **ROI**: 326%
 
 ### What It Optimizes
 
+
+
 - API costs (87.5% reduction on input tokens)
 
+
 - Latency (50% faster)
+
 
 - Context capacity (8x larger windows)
 
@@ -145,9 +165,12 @@ class KernelChainMetrics:
 
 **Connects To**:
 
+
 - `kernel-chaining-architecture`: Uses Gemini for 80% of kernels
 
+
 - `pnkln-intelligence-pipeline`: Routing layer decides Gemini vs GPT-4
+
 
 - `llm-serving-efficiency`: Comparative benchmarking
 
@@ -217,9 +240,13 @@ class MigrationMetrics:
 
 ### Economic Validation
 
+
+
 - **Target**: 80% Gemini, 20% GPT-4
 
+
 - **Acceptable quality drop**: <2% (from benchmarks)
+
 
 - **Break-even**: If quality drops >5%, reduce Gemini to 60%
 
@@ -229,17 +256,25 @@ class MigrationMetrics:
 
 ### Economic Impact
 
+
+
 - **Revenue**: $96K (Y1) → $972K (Y2) → $3.74M (Y3)
 
+
 - **Investment**: $120,000
+
 
 - **ROI**: 1,960% over 3 years
 
 ### What It Creates
 
+
+
 - New revenue stream from agent marketplace
 
+
 - Platform fees (25% on sales, 20% on subscriptions)
+
 
 - Ecosystem growth driver
 
@@ -247,15 +282,20 @@ class MigrationMetrics:
 
 **Connects To**:
 
+
 - `pnkln-intelligence-pipeline`: Hosts and executes marketplace agents
 
+
 - `encode-cor7-neural`: Provides reasoning compression for agents
+
 
 - `kernel-chaining-architecture`: Agents use kernel chains
 
 **Dependencies**:
 
+
 - `pnkln-intelligence-pipeline` (execution)
+
 
 - Payment processing infrastructure
 
@@ -347,17 +387,23 @@ class SellerIncentives:
 
 **Prevent Low-Quality Agent Spam**:
 
+
 1. Certification fee: $500 per agent (refunded after 100 sales)
 
+
 2. Quality threshold: <3.5 stars → delisting
+
 
 3. Cost ceiling: Agents can't cost >2x platform average
 
 **Seller Revenue Share**:
 
+
 - 75% to seller (one-time sales)
 
+
 - 80% to seller (subscriptions - encourage recurring)
+
 
 - Featured placement: $200/mo additional fee
 
@@ -367,21 +413,31 @@ class SellerIncentives:
 
 ### Economic Impact
 
+
+
 - **Savings**: $264,000/year
 
+
 - **Investment**: $67,000
+
 
 - **ROI**: 290%
 
 ### What It Optimizes
 
+
+
 - Smart routing to cheapest viable model
+
 
 - Batch processing to reduce overhead
 
+
 - Response caching (30% hit rate)
 
+
 - Rate limiting for cost control
+
 
 - Real-time cost monitoring
 
@@ -389,13 +445,18 @@ class SellerIncentives:
 
 **Connects To**:
 
+
 - **ALL BRANCHES**: Central orchestration layer
+
 
 - `kernel-chaining-architecture`: Executes chains
 
+
 - `autogen-to-gemini-migration`: Performs model routing
 
+
 - `add-superpowers-marketplace`: Hosts marketplace agents
+
 
 - `llm-serving-efficiency`: Uses optimized inference
 
@@ -503,21 +564,31 @@ class CostMonitor:
 
 ### Economic Impact
 
+
+
 - **Savings**: $194,400/year (if self-hosting)
 
+
 - **Investment**: $85,000
+
 
 - **ROI**: 129%
 
 ### What It Optimizes
 
+
+
 - Model quantization (4x throughput increase)
+
 
 - Speculative decoding
 
+
 - Flash Attention (66% latency reduction)
 
+
 - KV cache optimization
+
 
 - Continuous batching
 
@@ -525,9 +596,12 @@ class CostMonitor:
 
 **Connects To**:
 
+
 - `pnkln-intelligence-pipeline`: Uses optimized inference
 
+
 - `add-superpowers-marketplace`: Lower costs → lower fees
+
 
 - `kernel-chaining-architecture`: Faster kernel execution
 
@@ -625,17 +699,25 @@ model = AutoModelForCausalLM.from_pretrained(
 
 ### Economic Impact
 
+
+
 - **Savings**: $118,560/year
 
+
 - **Investment**: $38,000
+
 
 - **ROI**: 174%
 
 ### What It Optimizes
 
+
+
 - Chain-of-Reasoning token usage (65% reduction)
 
+
 - Maintains 94% reasoning quality
+
 
 - Compresses multi-step reasoning into learned embeddings
 
@@ -643,9 +725,12 @@ model = AutoModelForCausalLM.from_pretrained(
 
 **Connects To**:
 
+
 - `kernel-chaining-architecture`: Compresses chain reasoning
 
+
 - `pnkln-intelligence-pipeline`: Preprocessing layer
+
 
 - `add-superpowers-marketplace`: Reasoning-heavy agents benefit
 
@@ -847,31 +932,31 @@ git merge claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR
 
 ### Cost Reduction Targets
 
-| Timeframe | Target Savings     | Actual | Status     |
-| --------- | ------------------ | ------ | ---------- |
-| Week 1    | $37K/mo            | TBD    | 🟡 Pending |
-| Month 1   | $67K/mo            | TBD    | 🟡 Pending |
-| Month 3   | $142K/mo           | TBD    | 🟡 Pending |
-| Month 6   | $191K/mo           | TBD    | 🟡 Pending |
-| Month 12  | $191K/mo sustained | TBD    | 🟡 Pending |
+| Timeframe | Target Savings | Actual | Status |
+|-----------|---------------|--------|--------|
+| Week 1 | $37K/mo | TBD | 🟡 Pending |
+| Month 1 | $67K/mo | TBD | 🟡 Pending |
+| Month 3 | $142K/mo | TBD | 🟡 Pending |
+| Month 6 | $191K/mo | TBD | 🟡 Pending |
+| Month 12 | $191K/mo sustained | TBD | 🟡 Pending |
 
 ### Revenue Growth Targets
 
-| Timeframe | Target Revenue | Actual | Status     |
-| --------- | -------------- | ------ | ---------- |
-| Month 6   | $32K           | TBD    | 🟡 Pending |
-| Month 12  | $96K           | TBD    | 🟡 Pending |
-| Year 2    | $972K          | TBD    | 🟡 Pending |
-| Year 3    | $3.74M         | TBD    | 🟡 Pending |
+| Timeframe | Target Revenue | Actual | Status |
+|-----------|----------------|--------|--------|
+| Month 6 | $32K | TBD | 🟡 Pending |
+| Month 12 | $96K | TBD | 🟡 Pending |
+| Year 2 | $972K | TBD | 🟡 Pending |
+| Year 3 | $3.74M | TBD | 🟡 Pending |
 
 ### Quality Maintenance
 
-| Metric            | Threshold | Current | Status     |
-| ----------------- | --------- | ------- | ---------- |
-| Response quality  | >90%      | TBD     | 🟡 Pending |
-| Latency (p95)     | <3.0s     | TBD     | 🟡 Pending |
-| Error rate        | <1%       | TBD     | 🟡 Pending |
-| User satisfaction | >4.2/5    | TBD     | 🟡 Pending |
+| Metric | Threshold | Current | Status |
+|--------|-----------|---------|--------|
+| Response quality | >90% | TBD | 🟡 Pending |
+| Latency (p95) | <3.0s | TBD | 🟡 Pending |
+| Error rate | <1% | TBD | 🟡 Pending |
+| User satisfaction | >4.2/5 | TBD | 🟡 Pending |
 
 ---
 
@@ -883,19 +968,26 @@ git merge claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR
 
 **Actions**:
 
+
 1. Audit metrics collection (is tracking accurate?)
+
 
 2. Check cache hit rate (should be 30%, might be lower initially)
 
+
 3. Verify reserved instances are active
+
 
 4. Review model routing logic
 
 **Rollback triggers**:
 
+
 - Quality drops >5%
 
+
 - User complaints increase >20%
+
 
 - Error rate increases >2%
 
@@ -905,11 +997,15 @@ git merge claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR
 
 **Actions**:
 
+
 1. Seed marketplace with 20 high-quality internal agents
+
 
 2. Reduce platform fee from 25% to 20%
 
+
 3. Increase seller marketing support
+
 
 4. Add "featured agent" promotion program
 
@@ -917,15 +1013,22 @@ git merge claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR
 
 ## Next Steps
 
+
+
 1. **This Week**: Create all branches, set up tracking
+
 
 2. **Week 2**: Implement Phase 1 quick wins
 
+
 3. **Week 3**: Deploy kernel chaining MVP
+
 
 4. **Month 2**: Begin Gemini migration testing
 
+
 5. **Month 3**: Launch intelligence pipeline
+
 
 6. **Month 6**: Marketplace beta
 

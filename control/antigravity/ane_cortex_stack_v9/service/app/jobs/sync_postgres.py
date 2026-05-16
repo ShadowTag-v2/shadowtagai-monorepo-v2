@@ -1,8 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
-
-from ..utils.db import pg_conn, sqlite_conn
+from ..utils.db import sqlite_conn, pg_conn
 
 
 def sync_doc_registry(sqlite_db: str, pg_dsn: str, repo_id: str):

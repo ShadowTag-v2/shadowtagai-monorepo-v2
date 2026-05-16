@@ -1,0 +1,6 @@
+[install.scopes]
+"@google" = { url = "https://us-central1-npm.pkg.dev/shadowtag-omega-v4/mcp-registry/", token = "$GOOGLE_ADC_TOKEN" }
+"@google-labs-code" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
+"@stitch" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
+"@firebase" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }
+"@pyrex41" = { url = "https://npm.pkg.github.com/", token = "$GITHUB_TOKEN" }

@@ -17,7 +17,6 @@ The Gemini Ingestion Layer adheres to strict ethical standards for web data coll
 ### Implementation
 
 **Fetching robots.txt**:
-
 ```python
 import urllib.robotparser
 
@@ -29,7 +28,7 @@ def check_robots_permission(url: str) -> bool:
     try:
         rp.set_url(robots_url)
         rp.read()
-        return rp.can_fetch("SHADOWTAGAI-Ingestion-Bot", url)
+        return rp.can_fetch("PNKLN-Ingestion-Bot", url)
     except Exception as e:
         # Default to disallow on error
         logger.warning(f"robots.txt fetch failed for {robots_url}: {e}")
@@ -37,13 +36,11 @@ def check_robots_permission(url: str) -> bool:
 ```
 
 **Caching Strategy**:
-
 - Cache robots.txt for 24 hours
 - Respect `Cache-Control` headers if present
 - Refresh on cache miss or expiration
 
 **Crawl-delay Compliance**:
-
 - Extract `Crawl-delay` directive for our User-Agent
 - Apply delay between requests to same domain
 - Default to 1 second if not specified
@@ -60,13 +57,11 @@ def check_robots_permission(url: str) -> bool:
 ### Per-Domain Limits
 
 **Default Rates**:
-
 - **Tier 1 Sources**: 1 request per 2 seconds (30/min)
 - **Tier 2 Sources**: 1 request per 5 seconds (12/min)
 - **Tier 3 Sources**: 1 request per 10 seconds (6/min)
 
 **Adaptive Throttling**:
-
 ```python
 class AdaptiveRateLimiter:
     def __init__(self, domain: str, initial_delay: float = 2.0):
@@ -92,7 +87,6 @@ class AdaptiveRateLimiter:
 ```
 
 **429 Response Handling**:
-
 ```python
 async def handle_rate_limit_response(response, limiter):
     """Handle 429 Too Many Requests."""
@@ -108,13 +102,11 @@ async def handle_rate_limit_response(response, limiter):
 ### Global Rate Limiting
 
 **Distributed Limiting** (across containers):
-
 - Shared Redis counter for per-domain request tracking
 - Atomic increment/decrement operations
 - TTL-based sliding windows
 
 **Circuit Breaker**:
-
 - Opens after 5 consecutive failures
 - Half-open after 5 minutes (test with 1 request)
 - Closes after 3 consecutive successes
@@ -124,30 +116,27 @@ async def handle_rate_limit_response(response, limiter):
 ### Standard User-Agent
 
 ```
-SHADOWTAGAI-Ingestion-Bot/1.0 (+https://shadowtagai.ai/bot; contact@shadowtagai.ai)
+PNKLN-Ingestion-Bot/1.0 (+https://pnkln.ai/bot; contact@pnkln.ai)
 ```
 
 **Components**:
-
-- **Bot Name**: `SHADOWTAGAI-Ingestion-Bot`
+- **Bot Name**: `PNKLN-Ingestion-Bot`
 - **Version**: `1.0`
-- **Info URL**: `https://shadowtagai.ai/bot` (purpose, policies)
-- **Contact**: `contact@shadowtagai.ai` (for concerns)
+- **Info URL**: `https://pnkln.ai/bot` (purpose, policies)
+- **Contact**: `contact@pnkln.ai` (for concerns)
 
 ### Headers
 
 **Standard Request Headers**:
-
 ```http
-User-Agent: SHADOWTAGAI-Ingestion-Bot/1.0 (+https://shadowtagai.ai/bot; contact@shadowtagai.ai)
-From: contact@shadowtagai.ai
+User-Agent: PNKLN-Ingestion-Bot/1.0 (+https://pnkln.ai/bot; contact@pnkln.ai)
+From: contact@pnkln.ai
 Accept: application/json, text/html, */*
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
 ```
 
 **Purpose Declaration**:
-
 - Include purpose in info page
 - Opt-out instructions on info page
 - Response to concerns within 24 hours
@@ -157,7 +146,6 @@ Connection: keep-alive
 ### Pre-Collection Review
 
 **Checklist for New Sources**:
-
 - [ ] Read and understand Terms of Service (ToS)
 - [ ] Verify no explicit "no automated access" clause
 - [ ] Check for API availability (prefer APIs over scraping)
@@ -166,7 +154,6 @@ Connection: keep-alive
 - [ ] Assess risk of ToS violation
 
 **Red Flags** (Do Not Collect):
-
 - Explicit prohibition of bots/scrapers
 - Paywall circumvention required
 - Authentication/login wall (public only)
@@ -176,14 +163,12 @@ Connection: keep-alive
 ### API-First Approach
 
 **Preference Order**:
-
 1. **Official API** (preferred)
 2. **RSS/Atom Feeds** (semi-structured)
 3. **Structured Data** (JSON-LD, microdata)
 4. **HTML Scraping** (last resort)
 
 **API Usage**:
-
 - Always use official APIs when available
 - Respect rate limits in API documentation
 - Include API key in headers (not URL params)
@@ -194,7 +179,6 @@ Connection: keep-alive
 ### PII Avoidance
 
 **Do NOT Collect**:
-
 - Email addresses (unless public org contacts)
 - Phone numbers
 - Physical addresses (unless org locations)
@@ -203,7 +187,6 @@ Connection: keep-alive
 - Health information
 
 **Scrubbing Pipeline**:
-
 ```python
 import re
 
@@ -223,13 +206,11 @@ def scrub_pii(text: str) -> str:
 ### Data Retention
 
 **Retention Policy**:
-
 - **Tier 1**: 90 days in GCS, metadata permanent
 - **Tier 2**: 30 days in GCS, metadata permanent
 - **Tier 3**: 14 days in GCS, metadata permanent
 
 **Deletion Process**:
-
 - Automated deletion via GCS lifecycle policies
 - Manual deletion requests processed within 7 days
 - Audit log of all deletions
@@ -237,14 +218,12 @@ def scrub_pii(text: str) -> str:
 ### GDPR Compliance
 
 **User Rights**:
-
 - **Right to Access**: Provide data on request
 - **Right to Erasure**: Delete data within 7 days
 - **Right to Object**: Stop collection from specific sources
 - **Right to Portability**: Export in JSON format
 
 **Legal Basis**:
-
 - Legitimate interest (public data intelligence)
 - No consent required (public sources only)
 - DPA registration (if applicable)
@@ -254,7 +233,6 @@ def scrub_pii(text: str) -> str:
 ### Do NOT Collect
 
 **Prohibited Content**:
-
 - Child sexual abuse material (CSAM)
 - Illegal content (piracy, hacking, etc.)
 - Private/leaked data (hacked databases)
@@ -263,7 +241,6 @@ def scrub_pii(text: str) -> str:
 - Copyrighted content without fair use justification
 
 **Filtering**:
-
 - Blacklist of known illegal/harmful sources
 - Content-based filtering (keyword blacklist)
 - Manual review queue for edge cases
@@ -272,14 +249,12 @@ def scrub_pii(text: str) -> str:
 ### Fair Use Justification
 
 **Criteria for Fair Use**:
-
 - **Purpose**: News monitoring, intelligence gathering (transformative)
 - **Nature**: Publicly available factual content
 - **Amount**: Snippets, metadata, headlines (not full reproduction)
 - **Effect**: No market substitution (not replacing original)
 
 **Documentation**:
-
 - Cite Fair Use (17 U.S.C. § 107) in info page
 - Limit content to 200-word excerpts
 - Always link to original source
@@ -290,7 +265,6 @@ def scrub_pii(text: str) -> str:
 ### Compliance Metrics
 
 **Tracked Metrics**:
-
 - robots.txt violations (target: 0)
 - Rate limit hits (429 responses)
 - ToS violation reports
@@ -299,7 +273,6 @@ def scrub_pii(text: str) -> str:
 - Blocked source attempts
 
 **Dashboards**:
-
 - Real-time compliance status
 - Violation trends over time
 - Source-by-source compliance breakdown
@@ -308,14 +281,12 @@ def scrub_pii(text: str) -> str:
 ### Alerts
 
 **Immediate Alerts** (PagerDuty):
-
 - robots.txt violation detected
 - DMCA/legal request received
 - PII detected in ingested data
 - Prohibited content flagged
 
 **Warning Alerts** (Email):
-
 - High rate limit hit rate (>10/hour)
 - Source ToS change detected
 - Unusual traffic patterns
@@ -324,7 +295,6 @@ def scrub_pii(text: str) -> str:
 ### Incident Response
 
 **Violation Response Plan**:
-
 1. **Detect**: Automated monitoring, manual reports
 2. **Halt**: Immediately stop collection from source
 3. **Investigate**: Root cause analysis
@@ -333,7 +303,6 @@ def scrub_pii(text: str) -> str:
 6. **Prevent**: Update checks, add tests, improve monitoring
 
 **Legal Request Process**:
-
 1. Receive request (DMCA, cease-and-desist, etc.)
 2. Acknowledge within 4 hours
 3. Consult legal counsel
@@ -349,9 +318,9 @@ def scrub_pii(text: str) -> str:
 
 ```yaml
 ethical_crawling:
-  user_agent: "SHADOWTAGAI-Ingestion-Bot/1.0 (+https://shadowtagai.ai/bot; contact@shadowtagai.ai)"
-  contact_email: "contact@shadowtagai.ai"
-  info_url: "https://shadowtagai.ai/bot"
+  user_agent: "PNKLN-Ingestion-Bot/1.0 (+https://pnkln.ai/bot; contact@pnkln.ai)"
+  contact_email: "contact@pnkln.ai"
+  info_url: "https://pnkln.ai/bot"
 
   robots_txt:
     enabled: true
@@ -405,14 +374,12 @@ ethical_crawling:
 ## Training & Awareness
 
 **Developer Training**:
-
 - Annual ethical crawling training
 - ToS review for new sources
 - Incident response drills
 - GDPR/privacy law updates
 
 **Documentation**:
-
 - This ethical guidelines doc
 - Source-specific crawling notes
 - Legal precedent library

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/deep_research/state_machine.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.1, 300.0, 1800.0, 120, 1000, 'aborted', 'answer_query', 'complete', 'completed_default', 'consecutive_failures', 'current_phase', 'duration_ms', 'error', 'executing', 'failed', 'from', 'get_documents', 'grep_search', 'idle', 'lighthouse_audit', 'list_dir', 'objective', 'phase', 'planning', 'read_url_content', 'replace_file_content', 'researching', 'run_command', 'search_documents', 'search_web', 'sequential_thinking', 'session_id', 'status', 'success', 'synthesizing', 'take_screenshot', 'to', 'total_queries', 'total_timeout', 'transitions', 'verifying', 'view_file', 'write_to_file']

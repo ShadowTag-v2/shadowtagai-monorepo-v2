@@ -1,3 +1,4 @@
+
 # Implementation Guide: ShadowTag + pnkln-stack Phase 0
 
 Implementation of dual-vertical AI ecosystem based on research in `docs/research/`.
@@ -85,7 +86,6 @@ python examples/run_mcp_server.py
 ```
 
 Server runs on `http://localhost:8000`
-
 - Docs: http://localhost:8000/docs
 - Health: http://localhost:8000/mcp/health
 
@@ -94,7 +94,6 @@ Server runs on `http://localhost:8000`
 ### ShadowTag Tools
 
 **Upload & Authenticate Media**
-
 ```bash
 POST /mcp/tools/shadowtag/upload
 {
@@ -106,7 +105,6 @@ POST /mcp/tools/shadowtag/upload
 ```
 
 Response:
-
 ```json
 {
   "asset_id": "asset_abc123",
@@ -120,7 +118,6 @@ Response:
 ```
 
 **Verify Authentication**
-
 ```bash
 POST /mcp/tools/shadowtag/verify?asset_id=asset_abc123
 ```
@@ -128,7 +125,6 @@ POST /mcp/tools/shadowtag/verify?asset_id=asset_abc123
 ### pnkln-stack Tools
 
 **Ingest & Rank Content**
-
 ```bash
 POST /mcp/tools/pnkln-stack/ingest
 {
@@ -140,7 +136,6 @@ POST /mcp/tools/pnkln-stack/ingest
 ```
 
 Response:
-
 ```json
 {
   "content_id": "content_123",
@@ -155,7 +150,6 @@ Response:
 ```
 
 **Get Ranked Feed**
-
 ```bash
 GET /mcp/tools/pnkln-stack/feed?tier=tier_a&limit=50
 ```
@@ -167,7 +161,6 @@ GET /mcp/tools/pnkln-stack/feed?tier=tier_a&limit=50
 **File:** `src/agents/neural_hash.py`
 
 **Features:**
-
 - **Semantic embedding** via Gemini (768-dim vectors)
 - **Latent density model** (energy-based PDF)
 - **Perceptual hashing** (DCT-based for images/video)
@@ -177,7 +170,6 @@ GET /mcp/tools/pnkln-stack/feed?tier=tier_a&limit=50
 **Cost:** $0.002 per asset (with batch API)
 
 **Usage:**
-
 ```python
 from src.agents.neural_hash import NeuralHashAgent
 
@@ -193,7 +185,6 @@ match = await agent.verify_fingerprint(original_fp, candidate_asset)
 **File:** `src/services/shadowtag_watermark.py`
 
 **Features:**
-
 - **Visual watermarking** (DCT frequency domain)
 - **Audio watermarking** (20-22 kHz ultrasonic)
 - **99% survival rate** through compression/editing
@@ -202,7 +193,6 @@ match = await agent.verify_fingerprint(original_fp, candidate_asset)
 **Cost:** $0.001 per asset
 
 **Usage:**
-
 ```python
 from src.services.shadowtag_watermark import ShadowTagWatermarkService
 
@@ -222,7 +212,6 @@ result = await service.verify_watermark(watermarked_asset)
 **File:** `src/agents/pnkln-stack_neural_rank.py`
 
 **Features:**
-
 - **AI-cognition scoring** (NOT engagement-based)
 - **Educational value** assessment
 - **Factual accuracy** verification
@@ -232,7 +221,6 @@ result = await service.verify_watermark(watermarked_asset)
 **Cost:** $0.003 per content item
 
 **Usage:**
-
 ```python
 from src.agents.pnkln-stack_neural_rank import pnkln-stackNeuralRankAgent
 
@@ -251,19 +239,16 @@ print(f"Tier: {score.tier}")  # tier_s, tier_a, etc.
 **File:** `src/services/gemini_batch.py`
 
 **Features:**
-
 - **50% cost savings** vs individual API calls
 - **Batch size:** up to 100 items
 - **Exponential backoff** retry logic
 - **Automatic fallback** to individual calls
 
 **Cost Comparison:**
-
 - Individual: $4.00 per 1K embeddings
 - Batch: $2.00 per 1K embeddings
 
 **Usage:**
-
 ```python
 from src.services.gemini_batch import GeminiBatchProcessor
 
@@ -288,14 +273,12 @@ analyses = await processor.analyze_content_batch(
 **File:** `src/protocols/agent_protocol.py`
 
 **Features:**
-
 - **Agent-to-Agent (A2A)** message passing
 - **Workflow orchestration** (multi-step pipelines)
 - **Role-based routing** (neural_hash, watermark_embed, neural_rank, etc.)
 - **Correlation IDs** for request tracking
 
 **Usage:**
-
 ```python
 from src.protocols.agent_protocol import (
     AgentMessage,
@@ -362,20 +345,17 @@ pytest --cov=src --cov-report=html
 ## Cost Analysis
 
 ### ShadowTag (per asset)
-
 - Neural fingerprint: $0.002
 - Watermark embedding: $0.001
 - Blockchain gas: ~$0.00 (L2 chain)
 - **Total: $0.003/asset**
 
 ### pnkln-stack (per content item)
-
 - Embedding generation: $0.002
 - AI-cognition ranking: $0.003
 - **Total: $0.005/item**
 
 ### Batch Savings
-
 - 1M assets/month: **$1,000 saved** (50% reduction)
 - 500K content items/month: **$500 saved**
 - **Combined: $1,500/month savings**
@@ -383,14 +363,12 @@ pytest --cov=src --cov-report=html
 ## Performance Metrics
 
 ### ShadowTag
-
 - **Fingerprint generation:** < 200ms
 - **Watermark embedding:** < 500ms
 - **Total workflow:** < 1 second
 - **Throughput:** 1,000 assets/minute
 
 ### pnkln-stack
-
 - **AI-cognition scoring:** < 300ms
 - **Batch ranking:** 100 items in < 5 seconds
 - **Feed generation:** < 100ms
@@ -399,13 +377,11 @@ pytest --cov=src --cov-report=html
 ## Deployment
 
 ### Development
-
 ```bash
 python examples/run_mcp_server.py
 ```
 
 ### Production (Docker)
-
 ```bash
 docker build -t pnkln-stack-mcp-server .
 docker run -p 8000:8000 \
@@ -414,7 +390,6 @@ docker run -p 8000:8000 \
 ```
 
 ### Kubernetes
-
 ```bash
 kubectl apply -f k8s/mcp-server-deployment.yaml
 ```
@@ -422,12 +397,11 @@ kubectl apply -f k8s/mcp-server-deployment.yaml
 ## Next Steps
 
 See `docs/research/implementation-checklist.md` for:
-
 - ✅ Phase 0 Week 1-2: Foundation (COMPLETED)
-- ⏭️ Phase 0 Week 3-4: ShadowTag MVP
-- ⏭️ Phase 0 Week 5-6: pnkln-stack MVP
-- ⏭️ Phase 0 Week 7-8: Integration testing
-- ⏭️ Phase 0 Week 9-12: Pilot launch
+- ⏭️  Phase 0 Week 3-4: ShadowTag MVP
+- ⏭️  Phase 0 Week 5-6: pnkln-stack MVP
+- ⏭️  Phase 0 Week 7-8: Integration testing
+- ⏭️  Phase 0 Week 9-12: Pilot launch
 
 ## References
 
@@ -438,6 +412,5 @@ See `docs/research/implementation-checklist.md` for:
 ## Support
 
 For issues or questions:
-
 - GitHub Issues: [repo-url]
 - Documentation: `docs/research/README.md`

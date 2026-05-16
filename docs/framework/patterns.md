@@ -153,11 +153,11 @@ const dataValidationWorkflow = new WorkflowAgent(
       execute: async (context) => {
         const result = await query({
           prompt: `Classify this data format: ${JSON.stringify(context.input)}`,
-          options: { systemPrompt: workflowPrompt },
+          options: { systemPrompt: workflowPrompt }
         });
         return result;
       },
-      validate: (result) => result !== null,
+      validate: (result) => result !== null
     },
     {
       name: "schema_validation",
@@ -165,11 +165,11 @@ const dataValidationWorkflow = new WorkflowAgent(
         // Schema validation logic
         return { valid: true, errors: [] };
       },
-      validate: (result) => Array.isArray(result.errors),
+      validate: (result) => Array.isArray(result.errors)
     },
     // Additional steps...
   ],
-  workflowPrompt,
+  workflowPrompt
 );
 ```
 
@@ -245,7 +245,6 @@ data_validation_workflow = WorkflowAgent(
 ### When to Use Workflow
 
 ✅ **Good fit:**
-
 - Data validation and transformation
 - Report generation
 - Form processing
@@ -254,7 +253,6 @@ data_validation_workflow = WorkflowAgent(
 - ETL pipelines
 
 ❌ **Poor fit:**
-
 - Exploratory research
 - Unpredictable user interactions
 - Creative problem-solving
@@ -379,14 +377,14 @@ class SingleAgent {
     this.tools = tools;
     this.context = {
       conversationHistory: [],
-      issueResolved: false,
+      issueResolved: false
     };
   }
 
   async handleInteraction(userMessage: string): Promise<string> {
     this.context.conversationHistory.push({
       role: "user",
-      content: userMessage,
+      content: userMessage
     });
 
     const result = await query({
@@ -394,20 +392,22 @@ class SingleAgent {
       options: {
         systemPrompt: this.systemPrompt,
         tools: this.tools,
-        maxTokens: 4000,
-      },
+        maxTokens: 4000
+      }
     });
 
     this.context.conversationHistory.push({
       role: "assistant",
-      content: result,
+      content: result
     });
 
     return result;
   }
 
   private buildPrompt(userMessage: string): string {
-    const history = this.context.conversationHistory.map((m) => `${m.role}: ${m.content}`).join("\n");
+    const history = this.context.conversationHistory
+      .map(m => `${m.role}: ${m.content}`)
+      .join("\n");
 
     return `
 Conversation history:
@@ -428,20 +428,21 @@ const accountLookupTool = tool({
   parameters: {
     type: "object",
     properties: {
-      customerId: { type: "string", description: "Customer ID" },
+      customerId: { type: "string", description: "Customer ID" }
     },
-    required: ["customerId"],
+    required: ["customerId"]
   },
   execute: async ({ customerId }) => {
     // Implementation
-    return {
-      /* account data */
-    };
-  },
+    return { /* account data */ };
+  }
 });
 
 // Create agent
-const supportAgent = new SingleAgent(supportAgentPrompt, [accountLookupTool /* other tools */]);
+const supportAgent = new SingleAgent(
+  supportAgentPrompt,
+  [accountLookupTool, /* other tools */]
+);
 ```
 
 ### Python Implementation
@@ -534,7 +535,6 @@ support_agent = SingleAgent(
 ### When to Use Single-Agent
 
 ✅ **Good fit:**
-
 - Customer support
 - Interactive problem-solving
 - Code debugging and refactoring
@@ -543,7 +543,6 @@ support_agent = SingleAgent(
 - Dynamic workflow execution
 
 ❌ **Poor fit:**
-
 - Fully predictable tasks (use workflow)
 - Requires parallel exploration (use multi-agent)
 - Simple classification (use simple prompt)
@@ -907,7 +906,6 @@ report = await orchestrator.execute_research(
 ### When to Use Multi-Agent
 
 ✅ **Good fit:**
-
 - Comprehensive market research
 - Large codebase analysis
 - Multi-domain problem solving
@@ -915,7 +913,6 @@ report = await orchestrator.execute_research(
 - Complex decision support
 
 ❌ **Poor fit:**
-
 - Sequential dependencies
 - Cost-sensitive tasks
 - Real-time requirements
@@ -976,16 +973,16 @@ class HybridAgent {
 
 ## Comparison Matrix
 
-| Aspect               | Workflow  | Single-Agent | Multi-Agent | Hybrid |
-| -------------------- | --------- | ------------ | ----------- | ------ |
-| **Use Cases**        | 80%       | 15%          | 4%          | 1%     |
-| **Cost**             | $         | $$$          | $$$$        | $$     |
-| **Speed**            | Fast      | Medium       | Slow        | Fast   |
-| **Flexibility**      | Low       | High         | Very High   | Medium |
-| **Complexity**       | Low       | Medium       | High        | Medium |
-| **Testability**      | Excellent | Good         | Fair        | Good   |
-| **Observability**    | Excellent | Good         | Complex     | Good   |
-| **Production Ready** | ✅        | ✅           | ⚠️          | ✅     |
+| Aspect | Workflow | Single-Agent | Multi-Agent | Hybrid |
+|--------|----------|--------------|-------------|---------|
+| **Use Cases** | 80% | 15% | 4% | 1% |
+| **Cost** | $ | $$$ | $$$$ | $$ |
+| **Speed** | Fast | Medium | Slow | Fast |
+| **Flexibility** | Low | High | Very High | Medium |
+| **Complexity** | Low | Medium | High | Medium |
+| **Testability** | Excellent | Good | Fair | Good |
+| **Observability** | Excellent | Good | Complex | Good |
+| **Production Ready** | ✅ | ✅ | ⚠️ | ✅ |
 
 ---
 

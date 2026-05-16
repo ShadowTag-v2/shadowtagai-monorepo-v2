@@ -1,0 +1,14 @@
+/* comment 1 */
+:root {
+  /* comment 2 */
+  --prop : {
+    /* comment 3 */
+    /* comment 4 */ /* comment 5 */
+    color: #fff /* comment 6 */; /* comment 7 */
+    /* comment 8 */
+    font-size: 12px;
+    /* comment 9 */
+  }
+  /* comment 10 */
+}
+/* comment 11 */

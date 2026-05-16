@@ -34,7 +34,7 @@ apps/pnkln-stack_ecosystem/raw_ingest/
 
 # Backups / recovered / legacy mirrors
 **/_PRE_OMEGA_BACKUP_*/
-**/ShadowTagAI-Omega/
+**/ShadowTag-Omega/
 **/arsenal_recovered/
 **/repos/*-legacy/
 
@@ -51,6 +51,6 @@ tools/legacy/
 docs/legacy_shadowtag_v2/
 apps/pnkln-stack_ecosystem/raw_ingest/
 _PRE_OMEGA_BACKUP_*/
-ShadowTagAI-Omega/
+ShadowTag-Omega/
 arsenal_recovered/
 repos/*-legacy/

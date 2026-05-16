@@ -25,25 +25,25 @@
       "kind": "stale_model",
       "severity": "high",
       "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/config_schema.json",
-      "detail": "Stale model reference; migrate to gemini-3.1-flash-lite-preview: gemini-2.5-pro-exp-03-25"
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro-exp-03-25"
     },
     {
       "kind": "stale_model",
       "severity": "high",
       "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/continue_rc_schema.json",
-      "detail": "Stale model reference; migrate to gemini-3.1-flash-lite-preview: gemini-2.5-pro-exp-03-25"
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro-exp-03-25"
     },
     {
       "kind": "stale_model",
       "severity": "high",
       "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/config-yaml-schema.json",
-      "detail": "Stale model reference; migrate to gemini-3.1-flash-lite-preview: gemini-2.5-pro"
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro"
     },
     {
       "kind": "stale_model",
       "severity": "high",
       "path": ".cursor/extensions/continue.continue-1.2.7-win32-x64/out/extension.js",
-      "detail": "Stale model reference; migrate to gemini-3.1-flash-lite-preview: gemini-2.5-pro"
+      "detail": "Stale model reference; migrate to gemini-3.1-family: gemini-2.5-pro"
     },
     {
       "kind": "stale_naming",

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Kosmos E2E Test Runner Template
 
 Full end-to-end workflow testing.
@@ -38,8 +39,7 @@ async def test_full_research_cycle():
         artifacts_dir.mkdir(parents=True, exist_ok=True)
 
         workflow = ResearchWorkflow(
-            research_objective="What are recent advances in large language model efficiency?",
-            artifacts_dir=str(artifacts_dir),
+            research_objective="What are recent advances in large language model efficiency?", artifacts_dir=str(artifacts_dir)
         )
 
         start = time.time()
@@ -54,8 +54,9 @@ async def test_full_research_cycle():
         if result.get("cycles_completed", 0) >= 1:
             print("  [OK] Research cycle completed")
             return True
-        print("  [FAIL] No cycles completed")
-        return False
+        else:
+            print("  [FAIL] No cycles completed")
+            return False
 
     except Exception as e:
         print(f"  [FAIL] Error: {e}")
@@ -76,11 +77,7 @@ async def test_context_compression():
 
         # Test cycle result compression
         test_task_results = [
-            {
-                "type": "data_analysis",
-                "summary": "Analysis of gene expression patterns",
-                "statistics": {"correlation": 0.85, "p_value": 0.001},
-            },
+            {"type": "data_analysis", "summary": "Analysis of gene expression patterns", "statistics": {"correlation": 0.85, "p_value": 0.001}},
             {"type": "literature_review", "summary": "Review of relevant papers", "papers": []},
         ]
 
@@ -90,8 +87,9 @@ async def test_context_compression():
             print("  [OK] Compression completed")
             print(f"       Summary length: {len(result.summary)} chars")
             return True
-        print("  [WARN] No summary returned")
-        return True
+        else:
+            print("  [WARN] No summary returned")
+            return True
 
     except ImportError as e:
         print(f"  [SKIP] Module not available: {e}")
@@ -127,8 +125,9 @@ async def test_state_management():
             if path and path.exists():
                 print(f"  [OK] Finding artifact saved to: {path.name}")
                 return True
-            print("  [FAIL] Artifact not saved")
-            return False
+            else:
+                print("  [FAIL] Artifact not saved")
+                return False
 
     except ImportError as e:
         print(f"  [SKIP] Module not available: {e}")
@@ -168,9 +167,10 @@ print(df.sum().to_dict())
                 if hasattr(result, "stdout") and result.stdout:
                     print(f"       Output: {result.stdout[:100]}...")
                 return True
-            error_msg = getattr(result, "error_message", str(result))
-            print(f"  [FAIL] Execution failed: {error_msg}")
-            return False
+            else:
+                error_msg = getattr(result, "error_message", str(result))
+                print(f"  [FAIL] Execution failed: {error_msg}")
+                return False
 
         finally:
             await executor.cleanup()
@@ -211,8 +211,9 @@ async def test_scholar_evaluation():
             print(f"       Overall score: {result.overall_score:.2f}")
             print(f"       Approved: {result.approved}")
             return True
-        print("  [WARN] No score returned")
-        return True
+        else:
+            print("  [WARN] No score returned")
+            return True
 
     except ImportError as e:
         print(f"  [SKIP] Module not available: {e}")
@@ -233,11 +234,7 @@ async def test_plan_creator():
         creator = PlanCreatorAgent(anthropic_client=None)
 
         # Test plan creation
-        context = {
-            "research_objective": "Investigate KRAS mutations in cancer",
-            "prior_findings": [],
-            "cycle": 1,
-        }
+        context = {"research_objective": "Investigate KRAS mutations in cancer", "prior_findings": [], "cycle": 1}
 
         plan = await creator.create_plan(context)
 
@@ -245,11 +242,12 @@ async def test_plan_creator():
             print("  [OK] Plan created")
             print(f"       Tasks: {len(plan.tasks)}")
             return True
-        if plan:
+        elif plan:
             print("  [OK] Plan created (alternative format)")
             return True
-        print("  [WARN] No plan returned")
-        return True
+        else:
+            print("  [WARN] No plan returned")
+            return True
 
     except ImportError as e:
         print(f"  [SKIP] Module not available: {e}")
@@ -275,8 +273,9 @@ async def test_skill_loader():
             print("  [OK] Skills loaded")
             print(f"       Count: {len(skills) if isinstance(skills, list) else 'N/A'}")
             return True
-        print("  [WARN] No skills loaded (may be expected)")
-        return True
+        else:
+            print("  [WARN] No skills loaded (may be expected)")
+            return True
 
     except ImportError as e:
         print(f"  [SKIP] Module not available: {e}")

@@ -25,7 +25,6 @@
 8. Use repo-local docs in `governance/docs/` and `operations/docs/` as working references.
 
 ## Recommended use
-
 - Greenfield repo: install `governance/` first.
 - Existing monorepo with MCP/workspace control: layer in `operations/` next.
 - ShadowTag/Antigravity/monorepo-specific workflow: layer in `overlay_shadowtag/` last.

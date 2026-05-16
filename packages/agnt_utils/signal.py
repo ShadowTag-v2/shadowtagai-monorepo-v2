@@ -33,44 +33,44 @@ from collections.abc import Callable
 
 
 class Signal:
-    """A synchronous event signal with subscribe/emit/clear semantics.
+  """A synchronous event signal with subscribe/emit/clear semantics.
 
-    Listeners are stored in a ``set`` for O(1) add/remove. Iteration
-    order is insertion order (Python 3.7+).
-    """
+  Listeners are stored in a ``set`` for O(1) add/remove. Iteration
+  order is insertion order (Python 3.7+).
+  """
 
-    __slots__ = ("_listeners",)
+  __slots__ = ("_listeners",)
 
-    def __init__(self) -> None:
-        self._listeners: set[Callable[..., Any]] = set()
+  def __init__(self) -> None:
+    self._listeners: set[Callable[..., Any]] = set()
 
-    def subscribe(self, listener: Callable[..., Any]) -> Callable[[], None]:
-        """Add a listener. Returns an unsubscribe callable."""
-        self._listeners.add(listener)
+  def subscribe(self, listener: Callable[..., Any]) -> Callable[[], None]:
+    """Add a listener. Returns an unsubscribe callable."""
+    self._listeners.add(listener)
 
-        def _unsubscribe() -> None:
-            self._listeners.discard(listener)
+    def _unsubscribe() -> None:
+      self._listeners.discard(listener)
 
-        return _unsubscribe
+    return _unsubscribe
 
-    def emit(self, *args: Any, **kwargs: Any) -> None:
-        """Call all subscribed listeners with the given arguments."""
-        for listener in list(self._listeners):  # snapshot to allow unsub during emit
-            listener(*args, **kwargs)
+  def emit(self, *args: Any, **kwargs: Any) -> None:
+    """Call all subscribed listeners with the given arguments."""
+    for listener in list(self._listeners):  # snapshot to allow unsub during emit
+      listener(*args, **kwargs)
 
-    def clear(self) -> None:
-        """Remove all listeners. Useful in dispose/reset paths."""
-        self._listeners.clear()
+  def clear(self) -> None:
+    """Remove all listeners. Useful in dispose/reset paths."""
+    self._listeners.clear()
 
-    @property
-    def listener_count(self) -> int:
-        """Return the number of active listeners."""
-        return len(self._listeners)
+  @property
+  def listener_count(self) -> int:
+    """Return the number of active listeners."""
+    return len(self._listeners)
 
-    def __repr__(self) -> str:
-        return f"Signal(listeners={self.listener_count})"
+  def __repr__(self) -> str:
+    return f"Signal(listeners={self.listener_count})"
 
 
 def create_signal() -> Signal:
-    """Factory function that mirrors the upstream ``createSignal()`` API."""
-    return Signal()
+  """Factory function that mirrors the upstream ``createSignal()`` API."""
+  return Signal()

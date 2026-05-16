@@ -29,7 +29,7 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│           ShadowTag-v2-ingestion-cluster (GKE)                     │
+│           aiyou-ingestion-cluster (GKE)                     │
 │                                                             │
 │  Namespace: intelligence-pipeline                           │
 │                                                             │
@@ -63,15 +63,15 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 
 ### Data Sources Integration
 
-| Source Type             | Items/Day | Coverage | Reliability | Primary Tier |
-| ----------------------- | --------- | -------- | ----------- | ------------ |
-| **Satellite Telemetry** | 38,000    | 92.5%    | 98.2%       | Tier 1 (84%) |
-| **Tower Metrics**       | 42,000    | 88.7%    | 96.5%       | Tier 1 (67%) |
-| **Vehicle Data**        | 15,000    | 75.3%    | 89.8%       | Tier 1 (53%) |
-| **Defense Feeds**       | 12,000    | 95.8%    | 99.1%       | Tier 1 (92%) |
-| **Twitter**             | 8,000     | 62.4%    | 72.3%       | Tier 2 (50%) |
-| **News**                | 7,000     | 81.2%    | 88.7%       | Tier 1 (64%) |
-| **GitHub**              | 3,000     | 58.9%    | 85.4%       | Tier 1 (60%) |
+| Source Type | Items/Day | Coverage | Reliability | Primary Tier |
+|-------------|-----------|----------|-------------|--------------|
+| **Satellite Telemetry** | 38,000 | 92.5% | 98.2% | Tier 1 (84%) |
+| **Tower Metrics** | 42,000 | 88.7% | 96.5% | Tier 1 (67%) |
+| **Vehicle Data** | 15,000 | 75.3% | 89.8% | Tier 1 (53%) |
+| **Defense Feeds** | 12,000 | 95.8% | 99.1% | Tier 1 (92%) |
+| **Twitter** | 8,000 | 62.4% | 72.3% | Tier 2 (50%) |
+| **News** | 7,000 | 81.2% | 88.7% | Tier 1 (64%) |
+| **GitHub** | 3,000 | 58.9% | 85.4% | Tier 1 (60%) |
 
 ---
 
@@ -80,25 +80,21 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 ### 1. Multi-Source Collection
 
 **Orbital Layer Intelligence**
-
 - Starlink satellite telemetry (real-time positioning, health metrics)
 - Orbital AI inference results (edge compute outputs)
 - Global backhaul performance data
 
 **Terrestrial Layer Intelligence**
-
 - Cell tower GPU utilization metrics
 - CoreWeave compute node performance
 - City-level AI routing analytics
 
 **User Layer Intelligence**
-
 - Vehicle mesh telemetry (Tesla, Rivian, Ford fleets)
 - End-user AI interaction logs
 - Local caching effectiveness metrics
 
 **OSINT (Open Source Intelligence)**
-
 - Social media (Twitter, Reddit)
 - Technical sources (GitHub, Stack Overflow)
 - News aggregation (verified sources only)
@@ -119,7 +115,6 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 ```
 
 **Key Principles**:
-
 - Respect website robots.txt directives
 - Implement polite rate limiting (< 1 req/sec per domain)
 - Transparent user-agent identification
@@ -129,21 +124,18 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 ### 3. Three-Tier Classification System
 
 **Tier 1: High-Value, Verified Intelligence** (69.84% of total)
-
 - Verified sources with high reliability (>90%)
 - Mission-critical data (defense, satellite, infrastructure)
 - Cost: $0.00142/item | Quality: 94.5%
 - **Primary Use**: Strategic decision-making, AM briefings
 
 **Tier 2: Medium-Value, Partially Verified** (22.96% of total)
-
 - Moderately reliable sources (70-90%)
 - Supporting intelligence (news, technical docs)
 - Cost: $0.00085/item | Quality: 81.2%
 - **Primary Use**: Context enrichment, trend analysis
 
 **Tier 3: Low-Value, Unverified** (7.20% of total)
-
 - Low reliability sources (<70%)
 - Preliminary signals (social media, forums)
 - Cost: $0.00032/item | Quality: 58.7%
@@ -153,12 +145,12 @@ The Gemini Ingestion Layer is the foundational intelligence collection system fo
 
 All collected intelligence must pass **4 quality gates**:
 
-| Gate                  | Threshold | Current   | Status  |
-| --------------------- | --------- | --------- | ------- |
-| **Minimum Items/Day** | ≥100,000  | 125,000   | ✅ PASS |
-| **Minimum Sources**   | ≥40       | 47        | ✅ PASS |
-| **Maximum Cost/Item** | ≤$0.001   | $0.000616 | ✅ PASS |
-| **Minimum Relevance** | ≥85%      | 87.3%     | ✅ PASS |
+| Gate | Threshold | Current | Status |
+|------|-----------|---------|--------|
+| **Minimum Items/Day** | ≥100,000 | 125,000 | ✅ PASS |
+| **Minimum Sources** | ≥40 | 47 | ✅ PASS |
+| **Maximum Cost/Item** | ≤$0.001 | $0.000616 | ✅ PASS |
+| **Minimum Relevance** | ≥85% | 87.3% | ✅ PASS |
 
 **Overall Status**: **4/4 PASSED** (100%)
 
@@ -179,7 +171,7 @@ The ingestion layer is **called by** these services to trigger collection:
 
 Ingested data **feeds into** these services:
 
-1. **judge-six-validator** - Validates all incoming data for compliance (Compliance Framework, JR)
+1. **judge-six-validator** - Validates all incoming data for compliance (ATP 5-19, JR)
 2. **am-briefing-generator** - Produces daily 6 AM intelligence briefings
 3. **strategic-dashboard** - Powers Cor.57 real-time monitoring
 4. **defense-reporting** - Feeds classified DoD/DHS reporting systems
@@ -194,7 +186,7 @@ Ingested data **feeds into** these services:
 │         │                                                  │
 │         │ 125ms avg latency                                │
 │         ▼                                                  │
-│  [Judge 6 Validator]                                      │
+│  [Judge #6 Validator]                                      │
 │         │                                                  │
 │         │ <90ms p99 validation                             │
 │         ▼                                                  │
@@ -216,14 +208,14 @@ Ingested data **feeds into** these services:
 
 ### Performance Benchmarks
 
-| Metric              | Target  | Current  | Status |
-| ------------------- | ------- | -------- | ------ |
-| **Runtime**         | ≤60 min | 43.2 min | ✅     |
-| **Items/Day**       | ≥100k   | 125k     | ✅     |
-| **Relevance Score** | ≥85%    | 87.3%    | ✅     |
-| **Timeliness**      | ≥90%    | 92.1%    | ✅     |
-| **Completeness**    | ≥90%    | 94.5%    | ✅     |
-| **Success Rate**    | ≥99%    | 99.7%    | ✅     |
+| Metric | Target | Current | Status |
+|--------|--------|---------|--------|
+| **Runtime** | ≤60 min | 43.2 min | ✅ |
+| **Items/Day** | ≥100k | 125k | ✅ |
+| **Relevance Score** | ≥85% | 87.3% | ✅ |
+| **Timeliness** | ≥90% | 92.1% | ✅ |
+| **Completeness** | ≥90% | 94.5% | ✅ |
+| **Success Rate** | ≥99% | 99.7% | ✅ |
 
 ### Monthly Cost Breakdown ($77 total)
 
@@ -245,7 +237,6 @@ Ingested data **feeds into** these services:
 ```
 
 **ROI Analysis**:
-
 - At current scale: $77/mo for 125k items/day = 3.75M items/month
 - Effective cost: **$0.000021 per item per month**
 - Scales linearly with source additions
@@ -257,14 +248,14 @@ Ingested data **feeds into** these services:
 
 ### Daily Intelligence Briefing Metrics
 
-| Metric                  | Performance            |
-| ----------------------- | ---------------------- |
-| **Delivery Time**       | 06:00 AM (daily)       |
-| **On-Time Rate**        | 98.5%                  |
-| **Avg Items/Briefing**  | 45 (curated from 125k) |
-| **User Engagement**     | 89.3%                  |
-| **Actionability Score** | 91.7%                  |
-| **Format Quality**      | Excellent              |
+| Metric | Performance |
+|--------|-------------|
+| **Delivery Time** | 06:00 AM (daily) |
+| **On-Time Rate** | 98.5% |
+| **Avg Items/Briefing** | 45 (curated from 125k) |
+| **User Engagement** | 89.3% |
+| **Actionability Score** | 91.7% |
+| **Format Quality** | Excellent |
 
 ### Briefing Composition
 
@@ -297,30 +288,30 @@ Ingested data **feeds into** these services:
 
 ---
 
-## Ingestion vs. Validation (Judge 6)
+## Ingestion vs. Validation (Judge #6)
 
 ### Architectural Comparison
 
-| Component            | Ingestion Layer                                     | Judge 6 Validator                                | Strategic Impact                                          |
-| -------------------- | --------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------- |
-| **Architecture**     | GKE CronJob Multi-Container (Batch)                 | Hybrid Gemini+PyTorch (Real-time)                 | Complementary: Ingestion feeds validated data to Judge 6 |
-| **Key Metrics**      | Items/Day, Sources, Cost/Item                       | Latency (p99 ≤90ms), Throughput, Block Rate       | Ingestion: volume/diversity; Judge 6: speed/accuracy     |
-| **Integration Role** | Called by 4 services (data provider)                | Calls services in 4 namespaces (enforcement)      | Ingestion = foundation; Judge 6 = protection             |
-| **Unique Features**  | Ethical Crawling, Tier Classification, Multi-Source | Compliance Framework Compliance, JR Validation, Fast Decision | Prevent bad data entry vs. prevent bad data propagation   |
-| **Cost Model**       | Monthly Operational ~$77                            | API Calls per Validation                          | Fixed cost vs. variable cost                              |
-| **Quality Focus**    | Relevance, Timeliness, Completeness                 | False Positive/Negative Rates                     | Input quality vs. output correctness                      |
-| **Runtime**          | ~45 min/night (batch)                               | p99 ≤90ms (real-time)                             | Overnight gathering vs. instant response                  |
-| **Data Flow**        | Collects from satellites, towers, vehicles, OSINT   | Validates requests across 4 namespaces            | Builds intelligence base vs. protects operational layer   |
+| Component | Ingestion Layer | Judge #6 Validator | Strategic Impact |
+|-----------|-----------------|--------------------|--------------------|
+| **Architecture** | GKE CronJob Multi-Container (Batch) | Hybrid Gemini+PyTorch (Real-time) | Complementary: Ingestion feeds validated data to Judge #6 |
+| **Key Metrics** | Items/Day, Sources, Cost/Item | Latency (p99 ≤90ms), Throughput, Block Rate | Ingestion: volume/diversity; Judge #6: speed/accuracy |
+| **Integration Role** | Called by 4 services (data provider) | Calls services in 4 namespaces (enforcement) | Ingestion = foundation; Judge #6 = protection |
+| **Unique Features** | Ethical Crawling, Tier Classification, Multi-Source | ATP 5-19 Compliance, JR Validation, Fast Decision | Prevent bad data entry vs. prevent bad data propagation |
+| **Cost Model** | Monthly Operational ~$77 | API Calls per Validation | Fixed cost vs. variable cost |
+| **Quality Focus** | Relevance, Timeliness, Completeness | False Positive/Negative Rates | Input quality vs. output correctness |
+| **Runtime** | ~45 min/night (batch) | p99 ≤90ms (real-time) | Overnight gathering vs. instant response |
+| **Data Flow** | Collects from satellites, towers, vehicles, OSINT | Validates requests across 4 namespaces | Builds intelligence base vs. protects operational layer |
 
 ### End-to-End Quality Pipeline
 
 ```
 [Collection] → [Classification] → [Validation] → [Action]
      ↑               ↑                  ↑            ↑
-  Ingestion      Ingestion          Judge 6    Downstream
+  Ingestion      Ingestion          Judge #6    Downstream
    Layer          Layer              Layer       Services
 
-Ingestion ensures GOOD INPUTS → Judge 6 ensures CORRECT OUTPUTS
+Ingestion ensures GOOD INPUTS → Judge #6 ensures CORRECT OUTPUTS
 ```
 
 ---
@@ -330,7 +321,6 @@ Ingestion ensures GOOD INPUTS → Judge 6 ensures CORRECT OUTPUTS
 ### Current Confidence Score: **68.5%** (Target: ≥60%)
 
 **Confidence Breakdown**:
-
 - ✅ **Architecture**: 85% (well-documented GKE setup)
 - ✅ **Metrics**: 75% (production-like test data)
 - ⚠️ **Integration**: 60% (specs-based, not live prod)
@@ -399,26 +389,22 @@ Ingestion ensures GOOD INPUTS → Judge 6 ensures CORRECT OUTPUTS
 All ingestion layer data is accessible via REST API:
 
 ### Core Metrics
-
 - `GET /api/v1/ingestion/metrics` - Performance metrics
 - `GET /api/v1/ingestion/ethical-compliance` - Compliance status
 - `GET /api/v1/ingestion/source-coverage` - Multi-source breakdown
 - `GET /api/v1/ingestion/tier-classification` - Tier distribution
 
 ### Architecture & Operations
-
 - `GET /api/v1/ingestion/architecture` - GKE configuration
 - `GET /api/v1/ingestion/quality-gates` - Quality gate status
 - `GET /api/v1/ingestion/operational-costs` - Cost breakdown
 
 ### Intelligence Products
-
 - `GET /api/v1/ingestion/am-briefing` - Briefing metrics
 - `GET /api/v1/ingestion/integration` - PNKLN integration
 - `GET /api/v1/ingestion/complete-analysis` - Full analysis report
 
 ### Comparative Analysis
-
 - `GET /api/v1/ingestion/vs-judge-six` - Ingestion vs Validation comparison
 
 ---
@@ -428,14 +414,13 @@ All ingestion layer data is accessible via REST API:
 The Gemini Ingestion Layer is a **critical foundational component** of the Cor.57 infrastructure, operating as a preventive intelligence collection system that ensures high-quality, ethically-sourced data flows into the PNKLN Core Stack.
 
 **Key Strengths**:
-
 - ✅ Cost-effective ($77/month for 125k items/day)
 - ✅ Ethically compliant (99.8% robots.txt, zero legal violations)
 - ✅ High-quality output (70% Tier 1, 87.3% relevance)
 - ✅ Reliable (99.7% success rate, 98.5% on-time AM briefings)
-- ✅ Well-integrated (feeds Judge 6 and 3 other downstream services)
+- ✅ Well-integrated (feeds Judge #6 and 3 other downstream services)
 
-**Strategic Role**: Ingestion prevents bad data entry; Judge 6 prevents bad data propagation. Together, they ensure **end-to-end intelligence quality** for the Unified Sky-Ground GPU Mesh.
+**Strategic Role**: Ingestion prevents bad data entry; Judge #6 prevents bad data propagation. Together, they ensure **end-to-end intelligence quality** for the Unified Sky-Ground GPU Mesh.
 
 ---
 

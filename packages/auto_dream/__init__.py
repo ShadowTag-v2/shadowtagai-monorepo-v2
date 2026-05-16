@@ -17,19 +17,19 @@ Phases:
 """
 
 from packages.auto_dream.consolidation import (
-    AutoDreamConfig,
-    AutoDreamResult,
-    ConsolidationLock,
-    build_consolidation_prompt,
-    check_dream_gates,
-    record_consolidation,
+  AutoDreamConfig,
+  AutoDreamResult,
+  ConsolidationLock,
+  build_consolidation_prompt,
+  check_dream_gates,
+  record_consolidation,
 )
 
 __all__ = [
-    "AutoDreamConfig",
-    "AutoDreamResult",
-    "ConsolidationLock",
-    "build_consolidation_prompt",
-    "check_dream_gates",
-    "record_consolidation",
+  "AutoDreamConfig",
+  "AutoDreamResult",
+  "ConsolidationLock",
+  "build_consolidation_prompt",
+  "check_dream_gates",
+  "record_consolidation",
 ]

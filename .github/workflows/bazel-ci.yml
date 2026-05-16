@@ -1,157 +1,99 @@
-# bazel-ci.yml — Structural Truth CI Ladder
-# Level 1: Buildifier formatting + Bazel query (structural validation)
-# Level 2: Bazel test on canonical zones (packages/, tools/)
-#
-# This does NOT attempt `bazel build //...` or `bazel test //...`.
-# Coverage expands wave-by-wave per build/bazel_adoption.yaml.
-
-name: "Bazel CI — Structural Truth"
+name: Bazel CI
 
 on:
   push:
     branches: [main]
-    paths:
-      - "BUILD.bazel"
-      - "MODULE.bazel"
-      - ".bazelrc"
-      - ".bazelignore"
-      - ".bazelversion"
-      - "packages/**"
-      - "tools/build_defs/**"
-      - "build/bazel_adoption.yaml"
-      - "scripts/check-buildifier.sh"
-      - "scripts/dep-governance.sh"
   pull_request:
-    paths:
-      - "BUILD.bazel"
-      - "MODULE.bazel"
-      - ".bazelrc"
-      - ".bazelignore"
-      - ".bazelversion"
-      - "packages/**"
-      - "tools/build_defs/**"
-      - "build/bazel_adoption.yaml"
-
-concurrency:
-  group: bazel-ci-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [main]
 
 env:
-  BAZEL_VERSION: "9.1.0"
-
-permissions:
-  contents: read
+  BUILD_BUDDY_API_KEY: ${{ secrets.BUILD_BUDDY_API_KEY }}
 
 jobs:
-  # =========================================================================
-  # Level 1: Buildifier formatting gate
-  # =========================================================================
-  buildifier-check:
-    name: "L1 — Buildifier Format Check"
+  bazel-build:
+    name: Build all targets
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
 
-      - name: Install Buildifier
-        run: |
-          curl -fsSL -o /usr/local/bin/buildifier \
-            "https://github.com/bazelbuild/buildtools/releases/download/v8.0.3/buildifier-linux-amd64"
-          chmod +x /usr/local/bin/buildifier
-          buildifier --version
-
-      - name: Run Buildifier check
-        run: |
-          find . -type f \( -name "BUILD" -o -name "BUILD.bazel" -o -name "WORKSPACE" \
-            -o -name "WORKSPACE.bazel" -o -name "MODULE.bazel" -o -name "*.bzl" \) \
-            -not -path "./archive/*" \
-            -not -path "./external_repos/*" \
-            -not -path "./node_modules/*" \
-            -not -path "./.git/*" \
-            | xargs buildifier -mode=check
-          echo "✅ All Bazel files pass Buildifier formatting"
-
-  # =========================================================================
-  # Level 1: Bazel query — structural validation
-  # =========================================================================
-  bazel-query:
-    name: "L1 — Bazel Query (Structural)"
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.14.0
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
         with:
-          bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
-          repository-cache: true
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
 
-      - name: Query packages
+      - name: Build all targets
         run: |
-          echo "=== Querying package graph ==="
-          bazel query '//packages/...' --output=label 2>&1 || true
-          echo ""
-          echo "=== Querying tools ==="
-          bazel query '//tools/build_defs/...' --output=label 2>&1 || true
-          echo ""
-          echo "=== All declared targets ==="
-          bazel query 'deps(//packages/...)' --output=label 2>&1 | head -100 || true
+          bazel build \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //...
 
-      - name: Verify no forbidden deps
-        run: |
-          echo "=== Checking for forbidden zone references ==="
-          FORBIDDEN_PATTERNS="//archive|//external_repos|//apps/aiyou_stack|//node_modules|//.venv"
-          VIOLATIONS=$(bazel query 'deps(//packages/...)' --output=label 2>/dev/null | grep -E "$FORBIDDEN_PATTERNS" || true)
-          if [ -n "$VIOLATIONS" ]; then
-            echo "❌ FORBIDDEN ZONE DEPENDENCY DETECTED:"
-            echo "$VIOLATIONS"
-            exit 1
-          fi
-          echo "✅ No forbidden-zone dependencies found"
-
-  # =========================================================================
-  # Level 2: Dep governance script
-  # =========================================================================
-  dep-governance:
-    name: "L2 — Dependency Governance"
+  bazel-test:
+    name: Run tests
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: [buildifier-check]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
 
-      - name: Run dep governance check
-        run: |
-          chmod +x scripts/dep-governance.sh
-          bash scripts/dep-governance.sh
-
-  # =========================================================================
-  # Level 2: Bazel test on canonical zones (gated behind L1)
-  # =========================================================================
-  bazel-test-canonical:
-    name: "L2 — Bazel Test (Canonical Zones)"
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [buildifier-check, bazel-query]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.14.0
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
         with:
-          bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
-          repository-cache: true
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
 
-      - name: Test tools/build_defs
+      - name: Run all tests
         run: |
-          echo "=== Running lint wrapper tests ==="
-          bazel test //tools/build_defs/... --test_output=errors 2>&1 || echo "⚠️ Some lint wrappers need host tools"
+          bazel test \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //...
 
-      - name: Verify package loading
+  format-check:
+    name: Format check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
+
+      - name: Run format check
         run: |
-          echo "=== Verifying all canonical packages load ==="
-          bazel build --nobuild //packages/... 2>&1
-          echo "✅ All canonical packages parse successfully"
+          bazel run \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //:format.check
+
+  lint-check:
+    name: Lint check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Restore Bazel disk cache
+        uses: actions/cache@v5
+        with:
+          path: .cache/bazel
+          key: bazel-cache-${{ runner.os }}-${{ hashFiles('**/*.bazel', '**/BUILD', '**/*.bzl', 'WORKSPACE', 'MODULE.bazel') }}
+          restore-keys: |
+            bazel-cache-${{ runner.os }}-
+
+      - name: Run lint check
+        run: |
+          bazel lint \
+            --remote_header="x-buildbuddy-api-key=$BUILD_BUDDY_API_KEY" \
+            --compilation_mode=opt \
+            //...

@@ -1,8 +1,8 @@
-# pnkln Judge 6 - GKE Inference Validation Sprint
+# pnkln Judge #6 - GKE Inference Validation Sprint
 
 ## Executive Summary
 
-**Objective**: Validate Google Cloud's GKE inference reference architecture against pnkln's strict latency SLA for Judge 6 hybrid governance enforcement.
+**Objective**: Validate Google Cloud's GKE inference reference architecture against pnkln's strict latency SLA for Judge #6 hybrid governance enforcement.
 
 **Success Criteria**: p99 latency ≤ 90ms for 3-layer hybrid decision pipeline
 **Budget**: $5,000 (2-week sprint cap)
@@ -12,7 +12,7 @@
 
 ## Architecture Overview
 
-### Judge 6 Hybrid 3-Layer Design
+### Judge #6 Hybrid 3-Layer Design
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -44,13 +44,13 @@
 
 ### Component Stack
 
-| Component            | Technology                       | SLA Contribution | Scaling Strategy   |
-| -------------------- | -------------------------------- | ---------------- | ------------------ |
-| **Layer 1: Gemini**  | Vertex AI Gemini 1.5 Pro (tuned) | ≤30ms p99        | GPU node pool (L4) |
-| **Layer 2: PyTorch** | Custom enforcement model         | ≤40ms p99        | Shared GPU         |
-| **Layer 3: Rules**   | Deterministic logic              | ≤10ms p99        | CPU-only           |
-| **Orchestrator**     | LangGraph + FastAPI              | ≤10ms overhead   | HPA on latency     |
-| **Infrastructure**   | GKE Autopilot + Vertex AI        | -                | Auto-scaling       |
+| Component | Technology | SLA Contribution | Scaling Strategy |
+|-----------|-----------|------------------|------------------|
+| **Layer 1: Gemini** | Vertex AI Gemini 1.5 Pro (tuned) | ≤30ms p99 | GPU node pool (L4) |
+| **Layer 2: PyTorch** | Custom enforcement model | ≤40ms p99 | Shared GPU |
+| **Layer 3: Rules** | Deterministic logic | ≤10ms p99 | CPU-only |
+| **Orchestrator** | LangGraph + FastAPI | ≤10ms overhead | HPA on latency |
+| **Infrastructure** | GKE Autopilot + Vertex AI | - | Auto-scaling |
 
 ---
 
@@ -83,7 +83,7 @@ cd infrastructure
 # - Vertex AI Workbench instance
 ```
 
-### Step 2: Deploy Judge 6 Components
+### Step 2: Deploy Judge #6 Components
 
 ```bash
 # Apply Kubernetes manifests
@@ -148,15 +148,14 @@ python synthetic_workload.py
 
 **Objective**: Establish baseline performance under light load
 
-| Metric          | Target   | Test Duration |
-| --------------- | -------- | ------------- |
-| Request Rate    | 10 req/s | 6 hours       |
-| p99 Latency     | ≤90ms    | Continuous    |
-| Error Rate      | <1%      | Continuous    |
-| GPU Utilization | 30-50%   | Continuous    |
+| Metric | Target | Test Duration |
+|--------|--------|---------------|
+| Request Rate | 10 req/s | 6 hours |
+| p99 Latency | ≤90ms | Continuous |
+| Error Rate | <1% | Continuous |
+| GPU Utilization | 30-50% | Continuous |
 
 **Success Criteria**:
-
 - ✓ p99 ≤ 90ms for 95% of test duration
 - ✓ Error rate < 1%
 - ✓ No circuit breaker trips
@@ -165,16 +164,15 @@ python synthetic_workload.py
 
 **Objective**: Validate sustained performance under target load
 
-| Metric          | Target        | Test Duration |
-| --------------- | ------------- | ------------- |
-| Request Rate    | 50 req/s      | 48 hours      |
-| p99 Latency     | ≤90ms         | Continuous    |
-| Error Rate      | <1%           | Continuous    |
-| GPU Utilization | 60-80%        | Continuous    |
-| HPA Scaling     | 3-12 replicas | Automatic     |
+| Metric | Target | Test Duration |
+|--------|--------|---------------|
+| Request Rate | 50 req/s | 48 hours |
+| p99 Latency | ≤90ms | Continuous |
+| Error Rate | <1% | Continuous |
+| GPU Utilization | 60-80% | Continuous |
+| HPA Scaling | 3-12 replicas | Automatic |
 
 **Success Criteria**:
-
 - ✓ p99 ≤ 90ms for 99% of test duration
 - ✓ HPA scaling responsive (<2 min)
 - ✓ No OOM errors
@@ -184,16 +182,15 @@ python synthetic_workload.py
 
 **Objective**: Test resilience under peak traffic
 
-| Metric          | Target                       | Test Duration |
-| --------------- | ---------------------------- | ------------- |
-| Request Rate    | 100 req/s                    | 4 hours       |
-| p99 Latency     | ≤90ms                        | Continuous    |
-| Error Rate      | <5% (acceptable degradation) | Continuous    |
-| GPU Utilization | 80-95%                       | Continuous    |
-| HPA Scaling     | Up to 20 replicas            | Automatic     |
+| Metric | Target | Test Duration |
+|--------|--------|---------------|
+| Request Rate | 100 req/s | 4 hours |
+| p99 Latency | ≤90ms | Continuous |
+| Error Rate | <5% (acceptable degradation) | Continuous |
+| GPU Utilization | 80-95% | Continuous |
+| HPA Scaling | Up to 20 replicas | Automatic |
 
 **Success Criteria**:
-
 - ✓ p99 ≤ 90ms during burst
 - ✓ No pod crashes
 - ✓ Circuit breaker activates gracefully if needed
@@ -239,14 +236,14 @@ kubectl port-forward -n pnkln-monitoring svc/prometheus-grafana 3000:80
 
 ### Alert Channels
 
-| Alert                              | Severity | Trigger          | Action                     |
-| ---------------------------------- | -------- | ---------------- | -------------------------- |
-| p99 > 90ms for 2min                | Critical | SLA breach       | Scale up immediately       |
-| p95 > 60ms for 5min                | Warning  | Approaching SLA  | Investigate layer latency  |
-| Error rate > 5%                    | Critical | High failures    | Check layer health         |
-| Circuit breaker trips > 10 in 5min | Warning  | Layer timeouts   | Increase timeouts or scale |
-| Cost > $4K                         | Critical | Budget alert     | Review resource usage      |
-| GPU util < 30% for 15min           | Info     | Underutilization | Scale down                 |
+| Alert | Severity | Trigger | Action |
+|-------|----------|---------|--------|
+| p99 > 90ms for 2min | Critical | SLA breach | Scale up immediately |
+| p95 > 60ms for 5min | Warning | Approaching SLA | Investigate layer latency |
+| Error rate > 5% | Critical | High failures | Check layer health |
+| Circuit breaker trips > 10 in 5min | Warning | Layer timeouts | Increase timeouts or scale |
+| Cost > $4K | Critical | Budget alert | Review resource usage |
+| GPU util < 30% for 15min | Info | Underutilization | Scale down |
 
 ### Key Metrics to Monitor
 
@@ -276,16 +273,16 @@ avg(nvidia_gpu_duty_cycle{namespace="pnkln-core"})
 
 ### Budget Breakdown
 
-| Resource            | Daily Cost | 2-Week Total | Notes                      |
-| ------------------- | ---------- | ------------ | -------------------------- |
-| GKE Autopilot       | $50        | $700         | Control plane + base nodes |
-| GPU Nodes (L4)      | $150       | $2,100       | 3-8 nodes @ $0.85/hr       |
-| Vertex AI Inference | $80        | $1,120       | Gemini API calls           |
-| Networking          | $20        | $280         | Egress + load balancing    |
-| Storage             | $10        | $140         | Persistent volumes         |
-| Monitoring          | $15        | $210         | Prometheus + logging       |
-| **Buffer**          | $35        | $450         | 10% contingency            |
-| **TOTAL**           | **$360**   | **$5,000**   |                            |
+| Resource | Daily Cost | 2-Week Total | Notes |
+|----------|-----------|--------------|-------|
+| GKE Autopilot | $50 | $700 | Control plane + base nodes |
+| GPU Nodes (L4) | $150 | $2,100 | 3-8 nodes @ $0.85/hr |
+| Vertex AI Inference | $80 | $1,120 | Gemini API calls |
+| Networking | $20 | $280 | Egress + load balancing |
+| Storage | $10 | $140 | Persistent volumes |
+| Monitoring | $15 | $210 | Prometheus + logging |
+| **Buffer** | $35 | $450 | 10% contingency |
+| **TOTAL** | **$360** | **$5,000** | |
 
 ### Cost Monitoring
 
@@ -305,13 +302,11 @@ gcloud billing budgets create \
 ### Cost Optimization Tips
 
 1. **Scale down overnight** (if not running 24/7 tests):
-
    ```bash
    kubectl scale deployment judge-6-hybrid -n pnkln-core --replicas=1
    ```
 
 2. **Use preemptible GPU nodes** (50% cost reduction, but less reliable):
-
    ```bash
    # Add to GKE node pool config
    --preemptible
@@ -334,7 +329,6 @@ gcloud billing budgets create \
 **Symptom**: `kubectl get pods -n pnkln-core` shows pods pending
 **Cause**: GPU node pool not ready or quota exceeded
 **Fix**:
-
 ```bash
 # Check GPU quota
 gcloud compute project-info describe --project=PROJECT_ID
@@ -351,7 +345,6 @@ kubectl get nodes -l cloud.google.com/gke-accelerator=nvidia-l4
 **Symptom**: SLA breach in monitoring
 **Cause**: Layer timeout or insufficient scaling
 **Fix**:
-
 ```bash
 # Check layer latency breakdown
 ./scripts/monitor-sla.sh
@@ -374,7 +367,6 @@ gcloud alpha services quota list \
 **Symptom**: `ERROR_RATE > 5%` in monitoring
 **Cause**: Circuit breaker tripping or layer failures
 **Fix**:
-
 ```bash
 # Check pod logs
 kubectl logs -n pnkln-core deployment/judge-6-hybrid -c gemini-layer --tail=100
@@ -390,7 +382,6 @@ kubectl logs -n pnkln-core deployment/judge-6-hybrid -c orchestrator | grep "Cir
 **Symptom**: Cost tracker script exits with code 2
 **Cause**: Over-provisioned resources or long-running tests
 **Fix**:
-
 ```bash
 # Immediate actions:
 # 1. Scale down to minimum
@@ -450,16 +441,15 @@ Implement:
 
 ### Final Recommendation Criteria
 
-| Criterion           | Weight | Pass Threshold         |
-| ------------------- | ------ | ---------------------- |
-| **p99 Latency**     | 50%    | ≤90ms for 95% of time  |
-| **p95 Latency**     | 20%    | ≤60ms for 98% of time  |
-| **Error Rate**      | 15%    | <1% average            |
-| **Cost Efficiency** | 10%    | ≤$2,500 for Week 1     |
-| **Scalability**     | 5%     | HPA responsive (<2min) |
+| Criterion | Weight | Pass Threshold |
+|-----------|--------|----------------|
+| **p99 Latency** | 50% | ≤90ms for 95% of time |
+| **p95 Latency** | 20% | ≤60ms for 98% of time |
+| **Error Rate** | 15% | <1% average |
+| **Cost Efficiency** | 10% | ≤$2,500 for Week 1 |
+| **Scalability** | 5% | HPA responsive (<2min) |
 
 **Weighted Score Calculation**:
-
 - Score ≥ 80%: **STRONG PROCEED** → Continue to production deployment
 - Score 60-79%: **CONDITIONAL PROCEED** → Address gaps in Week 2
 - Score < 60%: **ABORT** → Pivot to ground-up architecture
@@ -524,7 +514,6 @@ Implement:
 **GCP Support**: Enterprise Support (if applicable)
 
 **Slack Channels**:
-
 - `#pnkln-validation-sprint` - Daily updates
 - `#pnkln-sre` - Infrastructure issues
 - `#pnkln-incidents` - SLA breaches / budget alerts

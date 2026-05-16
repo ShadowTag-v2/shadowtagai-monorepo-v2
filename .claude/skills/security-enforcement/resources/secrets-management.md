@@ -11,15 +11,15 @@
 
 ```bash
 # .env.development (NEVER COMMIT THIS)
-DATABASE_URL="postgresql://dev:devpass@localhost:5432/shadowtagai_dev"
+DATABASE_URL="postgresql://dev:devpass@localhost:5432/pnkln_dev"
 JWT_SECRET="dev-secret-change-in-production"
-API_KEY="YOUR_API_KEY_HERE"
+API_KEY="dev-api-key-12345"
 SENTRY_DSN="https://dev@sentry.io/123456"
 ENCRYPTION_KEY="base64-encoded-32-byte-key-here"
 
 # Google Cloud (for local testing)
 GOOGLE_APPLICATION_CREDENTIALS="./config/gcp-dev-service-account.json"
-GCP_PROJECT="shadowtagai-dev"
+GCP_PROJECT="pnkln-dev"
 ```
 
 ### `.gitignore` Configuration
@@ -63,21 +63,21 @@ ENCRYPTION_KEY="base64-encoded-32-byte-key"
 ```bash
 # Create secret for database URL
 gcloud secrets create database-url \
-  --project=shadowtagai-prod \
+  --project=pnkln-prod \
   --replication-policy="automatic" \
   --data-file=- <<EOF
-postgresql://prod:SECURE_PASSWORD@10.0.0.5:5432/shadowtagai_prod
+postgresql://prod:SECURE_PASSWORD@10.0.0.5:5432/pnkln_prod
 EOF
 
 # Create secret for JWT signing key
 openssl rand -base64 32 | gcloud secrets create jwt-secret \
-  --project=shadowtagai-prod \
+  --project=pnkln-prod \
   --replication-policy="automatic" \
   --data-file=-
 
 # Create secret for API key
 gcloud secrets create api-key \
-  --project=shadowtagai-prod \
+  --project=pnkln-prod \
   --replication-policy="automatic" \
   --data-file=- <<EOF
 sk-prod-1234567890abcdef
@@ -85,7 +85,7 @@ EOF
 
 # Grant access to service account
 gcloud secrets add-iam-policy-binding database-url \
-  --member="serviceAccount:shadowtagai-backend@shadowtagai-prod.iam.gserviceaccount.com" \
+  --member="serviceAccount:pnkln-backend@pnkln-prod.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
 ```
 
@@ -110,7 +110,7 @@ export class SecretManager {
       return cached.value;
     }
 
-    const projectId = process.env.GCP_PROJECT || 'shadowtagai-prod';
+    const projectId = process.env.GCP_PROJECT || 'pnkln-prod';
     const name = `projects/${projectId}/secrets/${secretName}/versions/latest`;
 
     try {
@@ -257,7 +257,7 @@ import os
 class SecretManager:
     def __init__(self):
         self.client = secretmanager.SecretManagerServiceClient()
-        self.project_id = os.getenv('GCP_PROJECT', 'shadowtagai-prod')
+        self.project_id = os.getenv('GCP_PROJECT', 'pnkln-prod')
 
     @lru_cache(maxsize=128)
     def get_secret(self, secret_name: str) -> str:
@@ -393,25 +393,25 @@ CMD ["npm", "start"]
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: shadowtagai-backend
+  name: pnkln-backend
   annotations:
-    iam.gke.io/gcp-service-account: shadowtagai-backend@shadowtagai-prod.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: pnkln-backend@pnkln-prod.iam.gserviceaccount.com
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shadowtagai-backend
+  name: pnkln-backend
 spec:
   template:
     spec:
-      serviceAccountName: shadowtagai-backend
+      serviceAccountName: pnkln-backend
       containers:
       - name: backend
-        image: gcr.io/shadowtagai-prod/backend:latest
+        image: gcr.io/pnkln-prod/backend:latest
         env:
         - name: GCP_PROJECT
-          value: "shadowtagai-prod"
+          value: "pnkln-prod"
         - name: NODE_ENV
           value: "production"
         # Secrets loaded from Google Secret Manager at runtime

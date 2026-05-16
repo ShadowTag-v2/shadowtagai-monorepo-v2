@@ -125,7 +125,6 @@ Retrieve financial projection for a specific year.
 **Endpoint**: `GET /api/v1/financial/projection/{year}`
 
 **Parameters**:
-
 - `year` (path) - Year for projection (currently only 2030 available)
 
 **Response**: `FinancialProjection` object
@@ -348,4 +347,4 @@ For API support and questions:
 
 - Documentation: http://localhost:8000/docs
 - GitHub Issues: (to be added)
-- Email: api-support@ShadowTag-v2.com (example)
+- Email: api-support@aiyou.com (example)

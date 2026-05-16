@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
 Python API Usage Examples for Wealth Acceleration Agent
 
@@ -5,11 +6,11 @@ This file demonstrates how to interact with the Wealth Acceleration FastAPI serv
 using Python's requests library and async/await patterns.
 """
 
-import asyncio
-import json
-
-import aiohttp
 import requests
+import json
+import asyncio
+import aiohttp
+
 
 # =============================================================================
 # Helper Functions
@@ -41,11 +42,12 @@ async def async_stream_response(url: str, data: dict):
         url: API endpoint URL
         data: Request payload
     """
-    async with aiohttp.ClientSession() as session, session.post(url, json=data) as response:
-        response.raise_for_status()
-        async for chunk in response.content.iter_any():
-            if chunk:
-                print(chunk.decode("utf-8"), end="", flush=True)
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=data) as response:
+            response.raise_for_status()
+            async for chunk in response.content.iter_any():
+                if chunk:
+                    print(chunk.decode("utf-8"), end="", flush=True)
     print("\n")
 
 
@@ -86,12 +88,7 @@ def example2_funnel_analysis():
 
     url = "http://localhost:8000/analyze/funnel"
     data = {
-        "business_context": {
-            "niche": "Marketing consultants",
-            "current_monthly_revenue": 8000,
-            "audience_size": 20000,
-            "engagement_level": "medium",
-        },
+        "business_context": {"niche": "Marketing consultants", "current_monthly_revenue": 8000, "audience_size": 20000, "engagement_level": "medium"},
         "funnel_stages": [
             {"name": "Blog/Content", "visitors": 15000, "conversions": 3000, "revenue": 0},
             {"name": "Lead Magnet Page", "visitors": 3000, "conversions": 1200, "revenue": 0},
@@ -137,12 +134,7 @@ def example4_revenue_projections():
 
     url = "http://localhost:8000/analyze/projections"
     data = {
-        "business_context": {
-            "niche": "Content creators",
-            "current_monthly_revenue": 5000,
-            "audience_size": 25000,
-            "engagement_level": "high",
-        },
+        "business_context": {"niche": "Content creators", "current_monthly_revenue": 5000, "audience_size": 25000, "engagement_level": "high"},
         "current_monthly_revenue": 5000,
         "current_audience_size": 25000,
         "monthly_audience_growth": 15,
@@ -193,14 +185,7 @@ def example6_opportunity_assessment():
         "audience_size": 15000,
         "engagement": "high",
         "current_revenue": 3000,
-        "potential_revenue_streams": [
-            "courses",
-            "coaching",
-            "software",
-            "membership",
-            "affiliate",
-            "sponsorship",
-        ],
+        "potential_revenue_streams": ["courses", "coaching", "software", "membership", "affiliate", "sponsorship"],
     }
 
     stream_response(url, data)
@@ -263,14 +248,7 @@ async def example8_async_usage():
     print("\n=== Example 8: Async API Usage ===\n")
 
     url = "http://localhost:8000/analyze/monetization"
-    data = {
-        "business_context": {
-            "niche": "Online educators",
-            "current_monthly_revenue": 7500,
-            "audience_size": 30000,
-            "engagement_level": "medium",
-        }
-    }
+    data = {"business_context": {"niche": "Online educators", "current_monthly_revenue": 7500, "audience_size": 30000, "engagement_level": "medium"}}
 
     await async_stream_response(url, data)
 
@@ -290,22 +268,11 @@ async def example9_batch_processing():
     analyses = [
         {
             "url": "http://localhost:8000/analyze/pricing",
-            "data": {
-                "product_type": "course",
-                "current_price": 497,
-                "cost_to_deliver": 50,
-                "monthly_customers": 20,
-                "market_position": "premium",
-            },
+            "data": {"product_type": "course", "current_price": 497, "cost_to_deliver": 50, "monthly_customers": 20, "market_position": "premium"},
         },
         {
             "url": "http://localhost:8000/analyze/ltv",
-            "data": {
-                "average_order_value": 497,
-                "purchase_frequency": 2,
-                "customer_lifespan": 3,
-                "gross_margin": 90,
-            },
+            "data": {"average_order_value": 497, "purchase_frequency": 2, "customer_lifespan": 3, "gross_margin": 90},
         },
     ]
 

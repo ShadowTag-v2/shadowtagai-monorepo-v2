@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import subprocess
 
@@ -38,49 +39,48 @@ DANGER_ZONES = [
 ]
 
 
-def frame_git_repo(path_str) -> None:
+def frame_git_repo(path_str):
     if path_str in DANGER_ZONES:
+        print(f"⏭️ HARD SKIP: {path_str} (Danger zone - Prevents committing OS root secrets)")
         return
 
     if not os.path.exists(path_str):
+        print(f"❌ NOT FOUND: {path_str}")
         return
 
     if not os.path.isdir(path_str):
+        print(f"⏭️ SKIPPED: {path_str} is a file, not a directory.")
         return
 
+    print(f"\n--- Framing: {path_str} ---")
     git_dir = os.path.join(path_str, ".git")
 
     try:
         if not os.path.exists(git_dir):
+            print("📦 Initializing local git repository...")
             subprocess.run(["git", "init"], cwd=path_str, check=True)
 
         subprocess.run(["git", "add", "-A"], cwd=path_str, check=False)
 
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=path_str,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        status = result.stdout
+        status = subprocess.getoutput(f"cd '{path_str}' && git status --porcelain")
         if status.strip():
-            subprocess.run(
-                ["git", "commit", "-m", "chore: autonomous local repository framing"],
-                cwd=path_str,
-                check=False,
-            )
+            print("💾 Committing snapshot locally...")
+            subprocess.run(["git", "commit", "-m", "chore: autonomous local repository framing"], cwd=path_str, check=False)
         else:
-            pass
+            print("✅ Already tracked and clean. No new local changes.")
 
-    except Exception:
-        pass
+        print("✅ Local framing sequence complete.")
+
+    except Exception as e:
+        print(f"⚠️ Error framing {path_str}: {e}")
 
 
-def main() -> None:
+def main():
+    print("Initiating Local Git Framing Sequence...")
+
     # Parse and dedup
     lines = RAW_PATHS.splitlines()
-    targets = list({line.strip().rstrip(",") for line in lines if line.strip()})
+    targets = list(set([line.strip().rstrip(",") for line in lines if line.strip()]))
 
     for t in targets:
         # Resolve 'ast-grep-mcp' typo organically if present

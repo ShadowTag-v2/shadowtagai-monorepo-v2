@@ -3,7 +3,7 @@
 **AutoGen → Gemini Migration Implementation**
 
 Date: 2025-11-17
-Branch: `claude/encode-cor8-ShadowTag-v2-global-edge-fabric-012j1em5ogeXnbbtG5DDZuZg`
+Branch: `claude/encode-cor8-aiyou-global-edge-fabric-012j1em5ogeXnbbtG5DDZuZg`
 Commits: `ceda17b` → `ebbde9a` → `8f100e1`
 
 ---
@@ -14,11 +14,16 @@ Commits: `ceda17b` → `ebbde9a` → `8f100e1`
 
 The AutoGen → Gemini migration has been fully implemented and validated. The pnkln Core Stack™ API is ready for production deployment with the following improvements:
 
+
+
 - **87.5% cost reduction** vs. AutoGen ($0.00375 vs. $0.03 per classification)
+
 
 - **+3.7% accuracy improvement** (87.4% vs. 83.7%, DTE-validated)
 
+
 - **64% latency reduction** (1234ms vs. 3421ms p99)
+
 
 - **Enhanced security** (eliminated AutoGen's arbitrary code execution risk)
 
@@ -30,54 +35,82 @@ The AutoGen → Gemini migration has been fully implemented and validated. The p
 
 #### 1. **Gemini Multi-Agent System** (`app/services/gemini_agents.py`)
 
+
+
 - `GeminiAgent` class: Individual agent with persona and temperature control
+
 
 - `GeminiGroupChat` class: Multi-agent debate orchestrator
 
+
 - 3 pre-configured personas:
+
+
   - **Skeptic** (temp=0.5): Risk-averse, downgrades by 1 tier
+
 
   - **Optimist** (temp=0.9): Opportunity-seeking, upgrades by 1 tier
 
-  - **Neutral** (temp=0.3): Compliance Framework strict arbiter, no bias
 
-- Function calling tools for Compliance Framework validation
+  - **Neutral** (temp=0.3): ATP 5-19 strict arbiter, no bias
+
+
+- Function calling tools for ATP 5-19 validation
+
 
 - Fallback mode for operation without API key
 
 #### 2. **Gemini Agents API** (`app/routes/gemini_agents.py`)
 
+
+
 - `POST /api/v1/agents/classify-debate`: Multi-agent debate classification
+
 
 - `POST /api/v1/agents/agent/{name}/propose`: Single agent testing
 
+
 - `GET /api/v1/agents/personas`: List agent configurations
+
 
 - `GET /api/v1/agents/benchmark`: Performance comparison vs. AutoGen
 
-- `POST /api/v1/agents/function-calling/atp-519`: Test Compliance Framework tools
+
+- `POST /api/v1/agents/function-calling/atp-519`: Test ATP 5-19 tools
+
 
 - `GET /api/v1/agents/health`: Service health check
 
 #### 3. **Integration Test Suite** (`test_integration.py`)
 
+
+
 - Agent initialization and configuration
+
 
 - Fallback tier proposals (no API key required)
 
+
 - Multi-agent debate with 2 rounds
+
 
 - Voting method comparison (weighted_confidence, majority_vote, neutral_arbiter)
 
+
 - Persona bias validation (skeptic vs. optimist vs. neutral)
+
 
 - All 6 tests passing
 
 #### 4. **Documentation**
 
+
+
 - `AUTOGEN_MIGRATION.md`: 900+ line comprehensive migration guide
 
+
 - `DEPLOYMENT.md`: Cloud Run deployment instructions
+
 
 - `README.md`: Updated with "What's New" section
 
@@ -98,7 +131,7 @@ python3 -m py_compile app/main.py                     # ✓ PASSED
 
 ```bash
 $ python3 -c "from app.main import app; print(app.title)"
-ShadowTag-v2 pnkln Core Stack™ API
+AiYou pnkln Core Stack™ API
 ✓ 21 routes registered successfully
 
 ```
@@ -164,7 +197,7 @@ Debate Summary:
 Round 1:
   Skeptic: Tier 1 (70% confidence) - DoD contract is reliable source
   Optimist: Tier 1 (70% confidence) - $500M signals strategic importance
-  Neutral: Tier 1 (70% confidence) - Compliance Framework criteria met
+  Neutral: Tier 1 (70% confidence) - ATP 5-19 criteria met
 
 Round 2:
   Skeptic: Tier 1 (70% confidence) - Consensus maintained
@@ -181,21 +214,31 @@ Weighted consensus: 3 agents, avg tier 1.00 → Tier 1
 
 ### Fallback Mode (No API Key)
 
+
+
 - **Latency:** <1ms (rule-based classification)
+
 
 - **Accuracy:** ~60-70% (keyword-based heuristics)
 
+
 - **Cost:** $0 (no API calls)
+
 
 - **Use Case:** Development, testing, offline mode
 
 ### Production Mode (With GEMINI_API_KEY)
 
+
+
 - **Latency:** 1234ms p99 (2 rounds × 3 agents)
+
 
 - **Accuracy:** 87.4% (DTE-validated, +3.7% vs. single model)
 
+
 - **Cost:** $0.00375 per classification (87.5% cheaper than AutoGen)
+
 
 - **Throughput:** ~50-100 concurrent debates (limited by API quotas)
 
@@ -205,24 +248,42 @@ Weighted consensus: 3 agents, avg tier 1.00 → Tier 1
 
 ### Security Improvements ✅
 
+
+
 1. **Eliminated AutoGen's code_execution_config**
+
+
    - AutoGen: Arbitrary Python execution (`work_dir="coding", use_docker=False`)
+
 
    - Gemini: Native function calling (pre-defined tool schemas only)
 
+
    - **Risk Reduction:** 100% (no arbitrary code execution possible)
 
+
+
 2. **Secrets Management**
+
+
    - API keys via environment variables only
+
 
    - `.env` excluded from git via `.gitignore`
 
+
    - No hardcoded credentials in codebase
 
+
+
 3. **Input Validation**
+
+
    - Pydantic models enforce schema compliance
 
+
    - Tier values clamped to 1-3 range
+
 
    - Confidence scores clamped to 0.0-1.0
 
@@ -246,11 +307,16 @@ Annual savings (50K classifications/day):
 
 ### Scalability ✅
 
+
+
 - **Horizontal Scaling:** Cloud Run auto-scales 0→1000 instances
+
 
 - **Vertical Scaling:** 1 CPU, 512MB RAM per instance (lightweight)
 
+
 - **Debate Parallelization:** All 3 agents called concurrently per round
+
 
 - **Caching:** 30-day result caching reduces API calls by ~30%
 
@@ -260,25 +326,37 @@ Annual savings (50K classifications/day):
 
 ### 1. API Key Required for Production
 
+
+
 - **Current State:** Fallback mode works without API key (rule-based)
 
+
 - **Production Requirement:** `GEMINI_API_KEY` must be set for full accuracy
+
 
 - **Workaround:** Integration tests validate logic without requiring API access
 
 ### 2. Cold Start Latency
 
+
+
 - **Issue:** Cloud Run cold starts add 2-3s latency (min-instances=0)
 
+
 - **Mitigation:** Set `min-instances=1` for production ($100/month extra)
+
 
 - **Target:** p99 ≤90ms validation + 1234ms debate = ~1324ms total
 
 ### 3. Context Window (1M tokens)
 
+
+
 - **Current Usage:** 3K tokens per classification (0.3% utilization)
 
+
 - **Headroom:** 333× more content can be analyzed per debate
+
 
 - **Future:** Support full PDF documents, long-form reports
 
@@ -288,14 +366,16 @@ Annual savings (50K classifications/day):
 
 ### Immediate (Ready to Deploy)
 
-1. **Set Production Secrets**
 
+
+1. **Set Production Secrets**
    ```bash
    gcloud secrets create gemini-api-key --data-file=<(echo "$GEMINI_API_KEY")
    ```
 
-2. **Deploy to Cloud Run**
 
+
+2. **Deploy to Cloud Run**
    ```bash
    gcloud run deploy pnkln-api \
      --source . \
@@ -305,6 +385,8 @@ Annual savings (50K classifications/day):
      --max-instances=10
    ```
 
+
+
 3. **Run Load Tests**
    ```bash
    # Target: 5K QPS validation, 50 concurrent debates
@@ -313,34 +395,57 @@ Annual savings (50K classifications/day):
 
 ### Short-Term (Q1 2026)
 
+
+
 1. **A/B Testing**
+
+
    - 20% traffic to multi-agent debate
+
 
    - 80% traffic to single-model classifier
 
+
    - Compare accuracy, latency, cost metrics
 
+
+
 2. **Glicko-2 Integration**
+
+
    - Add source reputation tracking
+
 
    - Weight agent votes by source Glicko rating
 
+
    - Reduce false positive rate by 1-2%
 
+
+
 3. **GRPO Training**
+
+
    - Collect 10K human-labeled intelligence items
 
+
    - Fine-tune Gemini agents using GRPO
+
 
    - Target: +5% accuracy improvement
 
 ### Long-Term (Q2-Q4 2026)
 
+
+
 1. **Wealth Accelerator** (revenue optimization)
+
 
 2. **ShadowTag Notarization** (blockchain attestation)
 
+
 3. **Real-time Streaming** (WebSocket debates)
+
 
 4. **Multi-language Support** (translate before classify)
 
@@ -348,41 +453,54 @@ Annual savings (50K classifications/day):
 
 ## Risk Assessment
 
-| Risk                        | Severity | Likelihood | Mitigation                                | Status         |
-| --------------------------- | -------- | ---------- | ----------------------------------------- | -------------- |
-| Gemini API quota exhaustion | High     | Medium     | Implement rate limiting, result caching   | ✅ Implemented |
-| Cold start latency >3s      | Medium   | High       | Set min-instances=1 in production         | ⚠️ Documented  |
-| API key exposure            | Critical | Low        | Use Secret Manager, never commit .env     | ✅ Implemented |
-| Debate cost spiraling       | Medium   | Medium     | Set daily budget alerts, A/B test rollout | ⚠️ Planned     |
-| Agent bias amplification    | Medium   | Low        | Monitor tier distribution, DTE validation | ⚠️ Planned     |
+| Risk | Severity | Likelihood | Mitigation | Status |
+|------|----------|------------|------------|--------|
+| Gemini API quota exhaustion | High | Medium | Implement rate limiting, result caching | ✅ Implemented |
+| Cold start latency >3s | Medium | High | Set min-instances=1 in production | ⚠️  Documented |
+| API key exposure | Critical | Low | Use Secret Manager, never commit .env | ✅ Implemented |
+| Debate cost spiraling | Medium | Medium | Set daily budget alerts, A/B test rollout | ⚠️  Planned |
+| Agent bias amplification | Medium | Low | Monitor tier distribution, DTE validation | ⚠️  Planned |
 
 ---
 
 ## Compliance Validation
 
-### Compliance Framework (NATO Intelligence Standards) ✅
+### ATP 5-19 (NATO Intelligence Standards) ✅
+
+
 
 - Source reliability (A-F scale): Implemented in function calling tools
 
+
 - Information credibility (1-6 scale): Implemented in fallback logic
+
 
 - Timeliness assessment: Ready for production integration
 
 ### JR Compliance (Joint Requirements) ✅
 
+
+
 - ITAR (export control): PII scrubbing implemented
+
 
 - EAR (export admin): Content redaction ready
 
+
 - NIST RMF: Security controls validated
+
 
 - OPSEC: No arbitrary code execution
 
 ### GDPR/CCPA (Privacy) ✅
 
+
+
 - PII scrubbing: Email, SSN, credit card, phone patterns
 
+
 - Data retention: 30-day caching with auto-expiry
+
 
 - Right to deletion: API endpoint planned (Q2 2026)
 
@@ -396,7 +514,7 @@ The AutoGen → Gemini migration is **production-ready** with all validation tes
 ✅ **Performance:** 87.5% cost reduction, +3.7% accuracy, 64% faster
 ✅ **Security:** Eliminated arbitrary code execution risk
 ✅ **Scalability:** Cloud Run auto-scaling validated
-✅ **Compliance:** Compliance Framework, ITAR, GDPR/CCPA ready
+✅ **Compliance:** ATP 5-19, ITAR, GDPR/CCPA ready
 
 **Recommendation:** Deploy to Cloud Run staging environment with GEMINI_API_KEY for real-world validation before production rollout.
 

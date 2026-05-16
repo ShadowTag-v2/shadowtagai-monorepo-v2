@@ -42,7 +42,6 @@
 ```
 
 **Characteristics:**
-
 - ✓ Static prompts
 - ✓ Manual skill/agent design
 - ✓ Execution tracking only
@@ -114,7 +113,6 @@
 ```
 
 **New Characteristics:**
-
 - ✓ Self-evolving prompts (DTE)
 - ✓ Performance ratings (Glicko-2)
 - ✓ Objective validation (benchmarks)
@@ -265,23 +263,23 @@ Total: 23 Python files, 2 YAML files
 
 ### v1.0.0 Skills
 
-| ID                          | Name                   | Category | Frameworks    | Purpose               |
-| --------------------------- | ---------------------- | -------- | ------------- | --------------------- |
-| `research_explorer_v1`      | Research Explorer      | Research | CoT, RCR, ToT | Deep exploration      |
-| `design_critic_v1`          | Design Critic          | Design   | RCR, MAD      | Jobs-aesthetic review |
-| `monetization_architect_v1` | Monetization Architect | Business | CoT, RCR      | Revenue architecture  |
+| ID | Name | Category | Frameworks | Purpose |
+|----|------|----------|------------|---------|
+| `research_explorer_v1` | Research Explorer | Research | CoT, RCR, ToT | Deep exploration |
+| `design_critic_v1` | Design Critic | Design | RCR, MAD | Jobs-aesthetic review |
+| `monetization_architect_v1` | Monetization Architect | Business | CoT, RCR | Revenue architecture |
 
 ### v2.0.0 Skills (All 7)
 
-| ID                          | Name                   | Category   | Frameworks            | Purpose                             | NEW?      |
-| --------------------------- | ---------------------- | ---------- | --------------------- | ----------------------------------- | --------- |
-| `research_explorer_v1`      | Research Explorer      | Research   | CoT, RCR, ToT         | Deep exploration                    | No        |
-| `design_critic_v1`          | Design Critic          | Design     | RCR, MAD              | Jobs-aesthetic review               | No        |
-| `monetization_architect_v1` | Monetization Architect | Business   | CoT, RCR              | Revenue architecture                | No        |
-| `cheat_sheet_fusion_v1`     | Cheat Sheet Fusion     | Prompts    | DTE                   | Evolved prompt optimization (21→10) | ✓ **YES** |
-| `glicko_mastery_v1`         | Glicko Mastery         | Rating     | Glicko-2              | Performance tracking (mu/phi/vol)   | ✓ **YES** |
-| `framework_fusion_v1`       | Framework Fusion       | Reasoning  | RTF-TAG-BAB-CARE-RISE | Meta-framework coordination         | ✓ **YES** |
-| `benchmark_testing_v1`      | Benchmark Testing      | Validation | N/A                   | HumanEval/BigCodeBench/SWE-bench    | ✓ **YES** |
+| ID | Name | Category | Frameworks | Purpose | NEW? |
+|----|------|----------|------------|---------|------|
+| `research_explorer_v1` | Research Explorer | Research | CoT, RCR, ToT | Deep exploration | No |
+| `design_critic_v1` | Design Critic | Design | RCR, MAD | Jobs-aesthetic review | No |
+| `monetization_architect_v1` | Monetization Architect | Business | CoT, RCR | Revenue architecture | No |
+| `cheat_sheet_fusion_v1` | Cheat Sheet Fusion | Prompts | DTE | Evolved prompt optimization (21→10) | ✓ **YES** |
+| `glicko_mastery_v1` | Glicko Mastery | Rating | Glicko-2 | Performance tracking (mu/phi/vol) | ✓ **YES** |
+| `framework_fusion_v1` | Framework Fusion | Reasoning | RTF-TAG-BAB-CARE-RISE | Meta-framework coordination | ✓ **YES** |
+| `benchmark_testing_v1` | Benchmark Testing | Validation | N/A | HumanEval/BigCodeBench/SWE-bench | ✓ **YES** |
 
 ---
 
@@ -289,22 +287,22 @@ Total: 23 Python files, 2 YAML files
 
 ### v1.0.0 Agents
 
-| ID                        | Persona            | Skills                 | Purpose                 |
-| ------------------------- | ------------------ | ---------------------- | ----------------------- |
-| `ultrathink_designer`     | Steve Jobs         | research, design       | Beautiful inevitability |
-| `wealth_accelerator`      | Revenue Strategist | monetization, research | 10x income via leverage |
-| `pnkln_orchestrator_meta` | Execution Engine   | all skills             | Auto-routing            |
+| ID | Persona | Skills | Purpose |
+|----|---------|--------|---------|
+| `ultrathink_designer` | Steve Jobs | research, design | Beautiful inevitability |
+| `wealth_accelerator` | Revenue Strategist | monetization, research | 10x income via leverage |
+| `pnkln_orchestrator_meta` | Execution Engine | all skills | Auto-routing |
 
 ### v2.0.0 Agents (All 6)
 
-| ID                        | Persona            | Skills                           | Purpose                             | NEW?      |
-| ------------------------- | ------------------ | -------------------------------- | ----------------------------------- | --------- |
-| `ultrathink_designer`     | Steve Jobs         | research, design                 | Beautiful inevitability             | No        |
-| `wealth_accelerator`      | Revenue Strategist | monetization, research           | 10x income via leverage             | No        |
-| `pnkln_orchestrator_meta` | Execution Engine   | all skills                       | Auto-routing                        | No        |
-| `deep_reasoning_agent`    | DTE Reasoner       | research, framework, cheatsheet  | Multi-stage DTE-evolved reasoning   | ✓ **YES** |
-| `panel_debate_agent`      | Multi-Perspective  | research, design, framework      | PanelGPT/MAD consensus              | ✓ **YES** |
-| `code_crafter_agent`      | Code Generator     | cheatsheet, framework, benchmark | Benchmark-validated code generation | ✓ **YES** |
+| ID | Persona | Skills | Purpose | NEW? |
+|----|---------|--------|---------|------|
+| `ultrathink_designer` | Steve Jobs | research, design | Beautiful inevitability | No |
+| `wealth_accelerator` | Revenue Strategist | monetization, research | 10x income via leverage | No |
+| `pnkln_orchestrator_meta` | Execution Engine | all skills | Auto-routing | No |
+| `deep_reasoning_agent` | DTE Reasoner | research, framework, cheatsheet | Multi-stage DTE-evolved reasoning | ✓ **YES** |
+| `panel_debate_agent` | Multi-Perspective | research, design, framework | PanelGPT/MAD consensus | ✓ **YES** |
+| `code_crafter_agent` | Code Generator | cheatsheet, framework, benchmark | Benchmark-validated code generation | ✓ **YES** |
 
 ---
 
@@ -312,15 +310,13 @@ Total: 23 Python files, 2 YAML files
 
 ### Architectural Philosophy
 
-**v1.0.0:** _Elegant foundation_
-
+**v1.0.0:** *Elegant foundation*
 - Prove the concept
 - Beautiful, simple, inevitable
 - Manual curation of skills/agents
 - Focus: Reliable execution
 
-**v2.0.0:** _Intelligent ecosystem_
-
+**v2.0.0:** *Intelligent ecosystem*
 - Build on proven foundation
 - Add self-evolution capabilities
 - Automated improvement via learning
@@ -329,14 +325,12 @@ Total: 23 Python files, 2 YAML files
 ### When to Use Each
 
 **Use v1.0.0 when:**
-
 - Stability is paramount
 - Manual control preferred
 - Deterministic behavior required
 - Simpler stack preferred
 
 **Use v2.0.0 when:**
-
 - Performance optimization needed
 - Self-improvement desired
 - Objective validation required
@@ -345,7 +339,6 @@ Total: 23 Python files, 2 YAML files
 ### Migration Strategy
 
 **Option 1: Feature Flag (Recommended)**
-
 ```python
 orchestrator = create_orchestrator(
     version="2.0.0",              # or "1.0.0"
@@ -356,7 +349,6 @@ orchestrator = create_orchestrator(
 ```
 
 **Option 2: Separate Instances**
-
 ```python
 # v1.0.0 for production stability
 orchestrator_stable = create_orchestrator(version="1.0.0")
@@ -370,14 +362,12 @@ orchestrator_evolved = create_orchestrator(version="2.0.0", enable_evolution=Tru
 ## Branch Strategy
 
 ### Current State
-
 ```
 main
   └─ claude/pnkln-ultrathink-framework-01URALiZh8CRvMhLV9FeXVce (v1.0.0) ✓ DEPLOYED
 ```
 
 ### Proposed v2.0.0 Development
-
 ```
 main
   ├─ claude/pnkln-ultrathink-framework-01URALiZh8CRvMhLV9FeXVce (v1.0.0) ✓
@@ -398,13 +388,11 @@ main
 ## Risk Assessment
 
 ### v1.0.0 Risks (Mitigated)
-
 - ✓ No evolution → Manual updates needed (acceptable, proven stable)
 - ✓ No ratings → Selection by keywords only (works well for clear intent)
 - ✓ No benchmarks → Trust through testing (tests pass, audit trail works)
 
 ### v2.0.0 Additional Risks (To Manage)
-
 - ⚠ Evolution instability → **Mitigation:** Feature flags, gradual rollout
 - ⚠ Rating drift → **Mitigation:** Glicko tolerances, manual override
 - ⚠ Benchmark dependencies → **Mitigation:** Graceful degradation if unavailable
@@ -415,28 +403,24 @@ main
 ## Implementation Phases
 
 ### Phase 1: Foundation Extensions (Week 1)
-
 - [ ] Create `pnkln/core/glicko.py`
 - [ ] Create `pnkln/core/grpo.py`
 - [ ] Add tests for both
 - [ ] Verify backward compatibility
 
 ### Phase 2: Skills & Agents (Week 2)
-
 - [ ] Extend `skills/registry.yaml` (+4 skills)
 - [ ] Extend `agents/registry.yaml` (+3 agents)
 - [ ] Update orchestrator for new skills
 - [ ] Add integration tests
 
 ### Phase 3: Evolution Layer (Week 3)
-
 - [ ] Create `evolution/` directory
 - [ ] Implement DTE cycle
 - [ ] Implement GRPO training loop
 - [ ] Add debate orchestration
 
 ### Phase 4: Validation Layer (Week 4)
-
 - [ ] Create `validation/` directory
 - [ ] Integrate HumanEval
 - [ ] Integrate BigCodeBench
@@ -444,7 +428,6 @@ main
 - [ ] Create end-to-end tests
 
 ### Phase 5: API & Documentation (Week 5)
-
 - [ ] Add 5 new endpoints
 - [ ] Update all documentation
 - [ ] Create migration guide

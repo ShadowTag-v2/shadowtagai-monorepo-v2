@@ -55,14 +55,14 @@ app.post('/api/v1/intake', (req, res) => {
   );
 });
 
-app.get('/api/v1/intake', (req, res) => {
+app.get('/api/v1/intake', (_req, res) => {
   db.all('SELECT * FROM intake ORDER BY id DESC', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ data: rows });
   });
 });
 
-app.get('/api/v1/analytics', (req, res) => {
+app.get('/api/v1/analytics', (_req, res) => {
   db.all('SELECT * FROM analytics ORDER BY id ASC', [], (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });

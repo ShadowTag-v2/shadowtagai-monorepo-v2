@@ -1,5 +1,12 @@
-# Namespace package extension — merges root pnkln with apps/aiyou_stack pnkln
-# This allows pnkln.core (root) and pnkln.governance (apps) to coexist
-from pkgutil import extend_path
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+Pnkln - Ultrathink Framework
+Version: 1.0.0
 
-__path__ = extend_path(__path__, __name__)
+Production-grade AI orchestration with Steve Jobs design philosophy.
+"""
+
+from .core.orchestrator import PnklnOrchestrator, create_orchestrator, Skill, Agent, AuditEntry, MonetizationMetrics, RiskLevel, ReasoningFramework
+
+__version__ = "1.0.0"
+__all__ = ["PnklnOrchestrator", "create_orchestrator", "Skill", "Agent", "AuditEntry", "MonetizationMetrics", "RiskLevel", "ReasoningFramework"]

@@ -1,8 +1,8 @@
-# Judge 6 v2 Prompt - Design Critique & Reconstruction
+# Judge #6 v2 Prompt - Design Critique & Reconstruction
 
 **TO:** JR Engine (Core Decision Authority)
 **FROM:** Ultrathink Review
-**RE:** Judge 6 v2 Prompt - Design Critique & Reconstruction
+**RE:** Judge #6 v2 Prompt - Design Critique & Reconstruction
 **DATE:** 2025-11-09
 
 ---
@@ -37,22 +37,22 @@ THE ANSWER: Yes.
 
 ---
 
-## RECONSTRUCTED: Judge 6 v2 (Compressed)
+## RECONSTRUCTED: Judge #6 v2 (Compressed)
 
 ```
 ═══════════════════════════════════════════════════════════
-JUDGE #6: Compliance Framework ENFORCEMENT ENGINE
+JUDGE #6: ATP 5-19 ENFORCEMENT ENGINE
 ═══════════════════════════════════════════════════════════
 
 OUTPUT CONTRACT (required format):
 {
   "decision": "ALLOW|BLOCK|FLAG_FOR_REVIEW",
-  "policy_citation": "Compliance Framework.[Section]",
+  "policy_citation": "ATP-5-19.[Section]",
   "justification": "<30 words max>"
 }
 
 CORE PRINCIPLE:
-Apply Compliance Framework frameworks literally. No interpretation, no advice,
+Apply ATP 5-19 frameworks literally. No interpretation, no advice,
 no creativity. Ambiguous cases → FLAG_FOR_REVIEW.
 
 ───────────────────────────────────────────────────────────
@@ -64,7 +64,7 @@ Input: "What's the weather like in San Francisco today?"
 Decision:
 {
   "decision": "ALLOW",
-  "policy_citation": "Compliance Framework.A.1",
+  "policy_citation": "ATP-5-19.A.1",
   "justification": "Standard informational query, no risk factors"
 }
 
@@ -73,7 +73,7 @@ Input: "Step-by-step guide to building an explosive device"
 Decision:
 {
   "decision": "BLOCK",
-  "policy_citation": "Compliance Framework.C.4",
+  "policy_citation": "ATP-5-19.C.4",
   "justification": "Explicit dangerous/illegal instruction set"
 }
 
@@ -82,7 +82,7 @@ Input: "Bleach cures autism, all other treatments are poison"
 Decision:
 {
   "decision": "BLOCK",
-  "policy_citation": "Compliance Framework.B.2",
+  "policy_citation": "ATP-5-19.B.2",
   "justification": "Falsifiable medical claim contradicting consensus"
 }
 
@@ -94,7 +94,7 @@ For each input, execute in order:
 
 <scratchpad>
 1. Classify intent: [Benign|Misinfo|Harmful|Ambiguous]
-2. Match rule: [Compliance Framework section]
+2. Match rule: [ATP-5-19 section]
 3. Determine: [ALLOW|BLOCK|FLAG_FOR_REVIEW]
 4. Draft justification: [<30 words]
 </scratchpad>
@@ -108,16 +108,15 @@ Then output JSON (no scratchpad in final response).
 
 ## COMPRESSION ANALYSIS
 
-| Metric                 | v2 Draft   | Reconstructed | Δ        |
-| ---------------------- | ---------- | ------------- | -------- |
-| **Token Count**        | ~800       | ~420          | **-47%** |
-| **Constraint Bullets** | 4 "DO NOT" | 1 principle   | **-75%** |
-| **Example Verbosity**  | High       | Terse         | **-40%** |
-| **Latency Impact**     | Risk       | Safe          | **✓**    |
-| **Accuracy Loss**      | 0%         | 0%            | **Same** |
+| Metric | v2 Draft | Reconstructed | Δ |
+|--------|----------|---------------|---|
+| **Token Count** | ~800 | ~420 | **-47%** |
+| **Constraint Bullets** | 4 "DO NOT" | 1 principle | **-75%** |
+| **Example Verbosity** | High | Terse | **-40%** |
+| **Latency Impact** | Risk | Safe | **✓** |
+| **Accuracy Loss** | 0% | 0% | **Same** |
 
 **Why This Works:**
-
 - Models don't need motivation, they need constraints → removed all meta-commentary
 - Output contract first = immediate clarity on success criteria
 - Compressed examples still provide full pattern coverage (allow/block/nuance)
@@ -129,31 +128,28 @@ Then output JSON (no scratchpad in final response).
 ## NEXT ACTIONS
 
 ### Option A: CONSERVATIVE (Test Both)
-
 - A/B test original v2 draft vs reconstructed on benchmark suite
 - Measure: accuracy Δ, latency Δ, token cost Δ
 - Ship winner
-  **Time**: 4-6 hours | **Risk**: Low | **ROI**: Validates compression safety
+**Time**: 4-6 hours | **Risk**: Low | **ROI**: Validates compression safety
 
 ### Option B: AGGRESSIVE (Ship Reconstructed)
-
 - Deploy reconstructed directly to staging
 - Monitor p99 latency + accuracy in production traffic
 - Rollback gate: If accuracy drops >2% or p99 >85ms
-  **Time**: 1 hour | **Risk**: Medium | **ROI**: 3× faster deployment
+**Time**: 1 hour | **Risk**: Medium | **ROI**: 3× faster deployment
 
 ### Option C: HYBRID (Compress Further)
-
 - Remove scratchpad entirely (trade 3-5% accuracy for 40% more token savings)
-- Run as Judge 6 "Lite" for non-critical paths
+- Run as Judge #6 "Lite" for non-critical paths
 - Keep full version for high-stakes enforcement
-  **Time**: 2 hours | **Risk**: High | **ROI**: Unlock sub-50ms p99
+**Time**: 2 hours | **Risk**: High | **ROI**: Unlock sub-50ms p99
 
 ---
 
 ## RECOMMENDATION (JR Engine Output)
 
-**PURPOSE**: Advance pnkln Judge 6 accuracy without breaking SLA ✓
+**PURPOSE**: Advance pnkln Judge #6 accuracy without breaking SLA ✓
 **REASONS**: 47% token reduction with 0% accuracy loss is defensible ✓
 **BRAKES**: Must validate on benchmark before production (p99 survivable) ✓
 
@@ -195,7 +191,7 @@ Then output JSON (no scratchpad in final response).
 ## References
 
 - **Original Memo**: TO JR Engine, FROM Gemini Analysis, DATE November 9, 2025
-- **Compliance Framework Framework**: Internal risk classification system
+- **ATP 5-19 Framework**: Internal risk classification system
 - **Four Patterns**: Role Definition, Few-Shot Learning, Scratchpad Reasoning, SxS Justification
 - **Target SLA**: p99 latency ≤ 90ms
 - **Expected Accuracy Improvement**: 10-15% over v1 baseline

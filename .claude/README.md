@@ -1,4 +1,4 @@
-# Claude Code Agents for ShadowTag-v2-fastapi-services
+# Claude Code Agents for aiyou-fastapi-services
 
 Custom agents to enhance development workflow.
 

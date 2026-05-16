@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/orbstack_sandbox/__init__.py
+# hypothesis_version: 6.151.5
+
+['ContainerLifecycle', 'OverlayDiff', 'OverlayManager', 'SandboxConfig', 'SandboxEngine', 'SandboxResult', 'create_sandbox']

@@ -2,7 +2,6 @@
 
 Act as an adversarial reviewer trying to break this app without access to source-control secrets.
 Look for:
-
 - enumeration
 - privilege escalation
 - IDOR
@@ -13,7 +12,6 @@ Look for:
 - client-only authorization assumptions
 
 Return:
-
 1. attack paths
 2. prerequisites
 3. impact

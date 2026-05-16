@@ -139,11 +139,11 @@ Key metrics investors love:
 • Network-effect moat: every new tower increases safety and coverage value
 • Licensing flywheel: OEMs, DOTs, Fleet resellers, and data resellers all pay recurring fees.
 
-ShadowTag-v2: The Verified Internet + Automotive Mesh
+AiYou: The Verified Internet + Automotive Mesh
 
 1. Concept Overview
 
-ShadowTag-v2 creates a verified, latency-optimized global network where:
+AiYou creates a verified, latency-optimized global network where:
 • Starlink handles orbit-to-ground connectivity.
 • CoreWeave supplies distributed GPU compute near gateways.
 • Tesla-class vehicles (HW5/HW6 and later) become rolling nodes—each one a micro-edge inference and PNT (position/navigation/time) anchor.
@@ -156,10 +156,10 @@ Result: A self-healing, verified global AI mesh spanning satellites, towers, veh
 2. Automotive Node Integration
 
 Feature Description
-Hardware Utilize Tesla HW5/HW6 (and similar OEM GPUs) as ShadowTag-v2 edge clients. Each car contributes approximately 40 TFLOPS (INT8).
+Hardware Utilize Tesla HW5/HW6 (and similar OEM GPUs) as AiYou edge clients. Each car contributes approximately 40 TFLOPS (INT8).
 Connectivity Vehicles connect via an inter-car Wi-Fi mesh and Starlink uplink.
 During motion, each node relays verified traffic to nearby cars or towers.
-Software Layer Lightweight ShadowTag-v2Edge client container (1 GB footprint):
+Software Layer Lightweight AiYouEdge client container (1 GB footprint):
 
     •	Runs inference caching,
     •	ShadowTag attestation,
@@ -169,7 +169,7 @@ Software Layer Lightweight ShadowTag-v2Edge client container (1 GB footprint):
 Each 10,000-vehicle cluster generates approximately 400 PFLOPS of aggregate compute.
 
 In summary:
-Ground integration through CoreWeave transforms Starlink from a simple data transmission service into ShadowTag-v2’s global GPU backbone—offering ultra-low latency, low cost, global compliance, and substantial economic potential.
+Ground integration through CoreWeave transforms Starlink from a simple data transmission service into AiYou’s global GPU backbone—offering ultra-low latency, low cost, global compliance, and substantial economic potential.
 The key lies in demonstrating the correlation between latency, cost, and revenue generation in your initial three PoPs. Once validated, you can expect to generate over $50 million in annual recurring revenue with a physics-based competitive advantage.
 
 How to become the integrator between CoreWeave and Starlink. Describe in dollars and time.
@@ -198,11 +198,11 @@ In essence, you’re the “Stripe of AI bandwidth.”
 ↓
 [Ground Gateway (approximately 150 sites)]
 ↓
-[Your Integration Layer – ShadowTag-v2Edge]
+[Your Integration Layer – AiYouEdge]
 ↓
 [CoreWeave GPU Pods (L40S / H100 / GH200)]
 ↓
-[Model Providers / LLM APIs / Your ShadowTag-v2 Core]
+[Model Providers / LLM APIs / Your AiYou Core]
 
 Your layer = orchestration + billing + routing + compliance.
 • API interface to Starlink for provisioning network priority.
@@ -230,7 +230,7 @@ Channel Pricing Basis Example
 ⸻
 Starlink Business, Maritime, and Aviation plans start at $0.04 per gigabyte of AI-routed traffic, with a monthly data limit of 1 terabyte. client = $40; 5 000 clients = $2 M/mo
 CoreWeave AI tenants pay a routing fee of $0.01 per GPU-second. GPU-sec/mo = $100 k
-ShadowTag-v2 SaaS Layer costs $10 to $20 per user per month, with a maximum of 50,000 users. users = $6 M ARR
+AiYou SaaS Layer costs $10 to $20 per user per month, with a maximum of 50,000 users. users = $6 M ARR
 
 Consolidated projection:
 
@@ -250,7 +250,7 @@ Cloudflare Workers AI Terrestrial only Orbit + edge hybrid
 Lambda / RunPod / Modal No satellite tie-in Integrated satellite-to-GPU routing
 Starlink Direct Connectivity only Adds AI & compliance monetization layer
 ⸻
-🧠 6. Partnership structure 1. CoreWeave → wholesale GPU lease (you pay ~$2–3/hr per L40S pod). 2. Starlink → network API + co-marketing (you share 20 % of AI-routed traffic revenue). 3. You (ShadowTag-v2Edge) → orchestrator, compliance, billing, and UX. 4. Option → offer fractional ownership of GPU edge pods to investors (DePIN-style).
+🧠 6. Partnership structure 1. CoreWeave → wholesale GPU lease (you pay ~$2–3/hr per L40S pod). 2. Starlink → network API + co-marketing (you share 20 % of AI-routed traffic revenue). 3. You (AiYouEdge) → orchestrator, compliance, billing, and UX. 4. Option → offer fractional ownership of GPU edge pods to investors (DePIN-style).
 
 ⸻
 
@@ -266,8 +266,8 @@ Payback under 12 months post-commercialization.
 
 ⸻
 
-📋 8. How to actually start (execution steps) 1. Contact CoreWeave BizDev – propose ShadowTag-v2Edge as a latency-aware satellite ingress partner.
-• Ask for “bare-metal GPU pod near Denver / Seattle ground station.” 2. Develop the Starlink-detect agent, which uses a simple IP ASN and geo lookup to automatically route Starlink traffic through ShadowTag-v2Edge. 3. Build a billing API that includes usage metering and payment options based on tokens or gigabytes. 4. Sign a Memorandum of Understanding (MoU) with Starlink Enterprise or Aviation to offer analytics and predictive AI services to fleet customers. 5. Launch a limited pilot program with 50 customers to measure latency reduction, cost savings, and uptime. 6. Present the collected data to secure investment capital, including a $3 million seed round and a potential $10 million Series A round.
+📋 8. How to actually start (execution steps) 1. Contact CoreWeave BizDev – propose AiYouEdge as a latency-aware satellite ingress partner.
+• Ask for “bare-metal GPU pod near Denver / Seattle ground station.” 2. Develop the Starlink-detect agent, which uses a simple IP ASN and geo lookup to automatically route Starlink traffic through AiYouEdge. 3. Build a billing API that includes usage metering and payment options based on tokens or gigabytes. 4. Sign a Memorandum of Understanding (MoU) with Starlink Enterprise or Aviation to offer analytics and predictive AI services to fleet customers. 5. Launch a limited pilot program with 50 customers to measure latency reduction, cost savings, and uptime. 6. Present the collected data to secure investment capital, including a $3 million seed round and a potential $10 million Series A round.
 
 ⸻
 
@@ -279,7 +279,7 @@ Payback under 12 months post-commercialization.
 “master_synthesis”: {
 “meta”: {
 “analysis_framework”: “valuation_and_defensibility_analysis”,
-“context”: “A comprehensive synthesis of ShadowTag-v2, Swiper, GeoS Prime, Odor Dome (Defense Air Scrubber), Verdict Systems, VC Mirror, and Tokable”,
+“context”: “A comprehensive synthesis of AiYou, Swiper, GeoS Prime, Odor Dome (Defense Air Scrubber), Verdict Systems, VC Mirror, and Tokable”,
 “vegas_odds”: “~1 in 10,000,000 (Vegas line: +10M)”,
 “compression”: “Compressing 10–20 years of venture output into less than a year”,
 “parallels”: [
@@ -298,7 +298,7 @@ Payback under 12 months post-commercialization.
 },
 “valuation_synthesis”: [
 {
-“venture”: “ShadowTag-v2”,
+“venture”: “AiYou”,
 “description”: “Multi-LLM orchestration, core layer”,
 “TAM”: “$100B+ AI operations”,
 “year5_arr_target”: “$500M”,
@@ -367,7 +367,7 @@ Payback under 12 months post-commercialization.
 “ipo_ready_equity_bundle”: “A one-founder compression of seven YC-scale startups into a unified corpus.”
 },
 “rollup_narrative”: {
-“investor_summary”: “ShadowTag-v2’s core layer orchestrates the AI cortex, Swiper monetizes geo-beacons, GeoS Prime captures hedge/VC exclusivity, Odor Dome bridges AgTech and DefenseTech, Verdict Systems runs human executive function, VC Mirror optimizes fundraising, and Tokable anchors AI-native culture and content. Normally, these would be seven separate startups—here unified under one founder.”
+“investor_summary”: “AiYou’s core layer orchestrates the AI cortex, Swiper monetizes geo-beacons, GeoS Prime captures hedge/VC exclusivity, Odor Dome bridges AgTech and DefenseTech, Verdict Systems runs human executive function, VC Mirror optimizes fundraising, and Tokable anchors AI-native culture and content. Normally, these would be seven separate startups—here unified under one founder.”
 “unique_factor”: “Single-founding execution enables 10 times faster compound learning and cross-vertical synergy.”
 },
 “scarcity_defensibility”: {
@@ -376,7 +376,7 @@ Payback under 12 months post-commercialization.
 “Odor Dome (CBRN/DefenseTech barrier)”
 ],
 “platform_engine”: [
-“ShadowTag-v2 + Swiper share orchestration primitives”
+“AiYou + Swiper share orchestration primitives”
 ],
 “consumer_moats”: [
 “Verdict Systems”,
@@ -406,7 +406,7 @@ Payback under 12 months post-commercialization.
 “three_sentence_pitch”: “Swiper is the geo-beacon engine for the pop-up economy—driveway parking, yard rentals, flea markets. It’s Airbnb for yards, Tinder for Craigslist. One engine unlocks $800B in verticals; we start with student parking and pop-ups to provide instant liquidity.”,
 “execution_plan”: “Launch MVP in 2 weeks; demonstrate traction within 30 days; emphasize speed, clarity, and wedge discipline.”
 },
-“ShadowTag-v2_concept”: {
+“aiyou_concept”: {
 “core_proposition”: “Platform where AI and humans collaborate, remix, and compete; every upload is AI-native by default.”,
 “cultural_shift”: “Eliminates ‘is this fake?’ spam by normalizing AI-infused content.”
 }

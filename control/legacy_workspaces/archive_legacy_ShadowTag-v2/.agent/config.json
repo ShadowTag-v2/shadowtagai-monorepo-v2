@@ -1,0 +1,17 @@
+{
+  "agent": {
+    "mode": "planning",
+    "name": "Antigravity God Mode",
+    "settings": {
+      "artifactReviewPolicy": "agent_decides",
+      "terminalCommandPolicy": "always_proceed",
+      "nonWorkspaceFileAccess": "always_proceed",
+      "contextWindow": "2000000"
+    }
+  },
+  "experimental": {
+    "taskGroups": true,
+    "skills": true,
+    "workflows": true
+  }
+}

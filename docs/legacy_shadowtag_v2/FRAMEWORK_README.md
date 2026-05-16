@@ -171,7 +171,7 @@ stack.deployment       # {"dev": "Vertex AI Workbench", "prod": "GKE"}
 
 ## 3. Operating Framework
 
-**Compliance Framework Risk Management + Decision Protocols**
+**ATP 5-19 Risk Management + Decision Protocols**
 
 ### Risk Assessment
 
@@ -205,12 +205,12 @@ result['message']      # "APPROVED: Deploy new feature (ALLOW)"
 
 ### Risk Levels & Action Gates
 
-| Risk Level | Action Gate            |
-| ---------- | ---------------------- |
-| EH         | BLOCK (non-negotiable) |
-| H          | CFO_approval_required  |
-| M          | Manager_approval       |
-| L          | ALLOW                  |
+| Risk Level | Action Gate                |
+|-----------|----------------------------|
+| EH        | BLOCK (non-negotiable)     |
+| H         | CFO_approval_required      |
+| M         | Manager_approval           |
+| L         | ALLOW                      |
 
 ### Decision Protocol
 
@@ -225,7 +225,7 @@ approved, message = protocol.validate_decision(
     action="Launch new vertical",
     mission_aligned=True,           # Purpose: pnkln-stackJR alignment
     doctrine_compliant=True,        # Reason: SOPs A-D compliance
-    risk_level=RiskLevel.M_MEDIUM   # Brakes: Compliance Framework assessment
+    risk_level=RiskLevel.M_MEDIUM   # Brakes: ATP 5-19 assessment
 )
 
 ```
@@ -297,7 +297,7 @@ state = StateSummary(
     technical_foundation={"stack": "Python + LangGraph"},
     business_model={"type": "Vertical SaaS"},
     go_to_market={"phase_1": "5 pilots, $10K MRR"},
-    critical_frameworks=["Compliance Framework", "SOPs A-D"]
+    critical_frameworks=["ATP 5-19", "SOPs A-D"]
 )
 
 # Define immediate actions
@@ -401,17 +401,24 @@ pytest tests/test_core_framework.py -v
 
 Test coverage:
 
+
 - PRISM kernel validation
+
 
 - Business metrics & verticals
 
+
 - Kill-switch evaluation
+
 
 - Risk assessment matrix
 
+
 - Decision protocol
 
+
 - Code validation
+
 
 - Transfer package creation
 
@@ -428,15 +435,21 @@ python examples/framework_usage.py
 
 Examples include:
 
+
 1. PRISM runtime execution
+
 
 2. Business plan analysis
 
+
 3. Kill-switch evaluation
+
 
 4. Risk assessment & decision validation
 
+
 5. Code validation
+
 
 6. Transfer package creation
 
@@ -458,19 +471,28 @@ No assumptions without n≥10 user interviews or documented evidence.
 
 ### Bootstrap Discipline
 
+
+
 - ROI ≥3× (18 months)
 
+
 - LTV:CAC ≥4:1 (12 months)
+
 
 - Kill-switches enforced
 
 ### Shipping Philosophy
 
+
+
 1. Stupid simple > fancy
+
 
 2. Ship fast > perfect
 
+
 3. Real utility > general-purpose
+
 
 4. Evidence-only decisions
 

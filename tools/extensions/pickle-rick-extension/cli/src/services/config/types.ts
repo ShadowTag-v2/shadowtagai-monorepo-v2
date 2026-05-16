@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // Settings schema for ~/.pickle/settings.json
 export const PickleSettingsSchema = z.object({
   model: z
     .object({
       provider: z
-        .enum(['gemini', 'opencode', 'claude', 'cursor', 'codex', 'qwen', 'droid', 'copilot'])
+        .enum(["gemini", "opencode", "claude", "cursor", "codex", "qwen", "droid", "copilot"])
         .optional(),
       model: z.string().optional(),
     })
@@ -18,7 +18,7 @@ export type PickleSettings = z.infer<typeof PickleSettingsSchema>;
 export const SessionStateSchema = z.object({
   active: z.boolean(),
   working_dir: z.string(),
-  step: z.enum(['prd', 'breakdown', 'research', 'plan', 'implement', 'refactor', 'done']),
+  step: z.enum(["prd", "breakdown", "research", "plan", "implement", "refactor", "done"]),
   iteration: z.number(),
   max_iterations: z.number(),
   max_time_minutes: z.number(),
@@ -32,7 +32,7 @@ export const SessionStateSchema = z.object({
   interrogation_history: z
     .array(
       z.object({
-        role: z.enum(['user', 'agent']),
+        role: z.enum(["user", "agent"]),
         content: z.string(),
         timestamp: z.string(),
       }),

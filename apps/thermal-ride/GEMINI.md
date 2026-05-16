@@ -4,8 +4,8 @@
 - The Omega Protocol: GCA is 'The HUD' (Tactical, Fast, Local). Antigravity is 'The Brain' (Strategic, System-wide, Heavy Lifts). Hand-off rule: If GCA fails/hallucinates, switch to Antigravity immediately.
 - I must run 'npm run lint' and 'npm run metrics' before completing tasks in ShadowTag-v2/apps to respect the CodePMCS Golden Rules.
 - The `ShadowTag-Omega-v2` backend services are located in `apps/src/api/`, specifically `transcript_to_contract.py` which now runs with an in-memory stateful DB for prototyping.
-- The default compute service account for this project is redacted@shadowtag-v4.local.
-- The user prefers 'Heavy Lift' focus, uses 'Antigravity' VS Code setup with 'YOLO Mode', and expects the agent to act as 'The Brain' while 'GCA' is 'The HUD'. The backend services are in 'apps/src/api/'. Service account is redacted@shadowtag-v4.local. C# projects in 'apps/' build successfully.
+- The default compute service account for this project is 767252945109-compute@developer.gserviceaccount.com.
+- The user prefers 'Heavy Lift' focus, uses 'Antigravity' VS Code setup with 'YOLO Mode', and expects the agent to act as 'The Brain' while 'GCA' is 'The HUD'. The backend services are in 'apps/src/api/'. Service account is 767252945109-compute@developer.gserviceaccount.com. C# projects in 'apps/' build successfully.
 - The user alias 'f1 gca' stands for 'finish all changes in workspace and save, then close same'.
 - Upgraded Genesis Workstation to Antigravity Spec: 16 vCPU, 200GB, Custom Image.
 - The alias 'f1 gca' stands for 'finish all changes in workspace and save, then close same'. It implies staging all changes, committing them, and ensuring the session is clean.
@@ -16,9 +16,9 @@
 - The user provided instructions on how to run a "god mode" script called `god_mode_admin.py` to maximize its effectiveness.
 
 How to run it:
-cd /Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2
+cd /Users/pikeymickey/aiyou-stack/ShadowTag-v2
 export GCP_PROJECT_ID='shadowtag-omega-v4'
-/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/.venv/bin/python scripts/god_mode_admin.py
+/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.venv/bin/python scripts/god_mode_admin.py
 
 First commands to use inside:
 1. status
@@ -123,6 +123,6 @@ gcloud auth application-default set-quota-project shadowtag-omega-v4
 gcloud auth login --update-adc
 ```
 
-1. Service Accounts: `redacted@shadowtag-v4.local` is now REFRESHING at the start of every tool call. This is this service account’s only function! `redacted@shadowtag-v4.local` is for cloud runs.
+1. Service Accounts: `headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com` is now REFRESHING at the start of every tool call. This is this service account’s only function! `shadowtag-core-run-sa@shadowtag-omega-v4.iam.gserviceaccount.com` is for cloud runs.
 2. `BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"`
 3. Ensure you are saving everything to beads as you go.

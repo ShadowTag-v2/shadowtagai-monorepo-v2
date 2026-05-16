@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-**Enterprise Value (2030)**: **$207B** (risk-adjusted with governance + LLM memory + Judge 6)
+**Enterprise Value (2030)**: **$207B** (risk-adjusted with governance + LLM memory + Judge #6)
 
 **Valuation Build-Up**:
 | Component | Value | Source |
@@ -19,7 +19,7 @@
 | Satellite GPU Edge Mesh | +$18.3B | Cost/latency optimization |
 | Governance Premium (Judge Architecture) | +$19B | Enterprise compliance, verified CPM |
 | LLM Memory Integration | +$3.5B | Creator patterns, appeal precedent, 4-LLM |
-| Judge 6 Enforcement Layer | +$1.6B | Compliance Framework compliance, risk mitigation |
+| Judge #6 Enforcement Layer | +$1.6B | ATP 5-19 compliance, risk mitigation |
 | Risk Adjustment (-25%) | -$32.9B | Conservative discount |
 | **Total** | **$207B** | |
 
@@ -30,7 +30,7 @@
 - Gross Margin: 92%
 - Users: 500M MAU
 - Uploads: 100M/month
-- OpEx: $343.7M/year (includes +$1M for memory, +$2.88K for Judge 6)
+- OpEx: $343.7M/year (includes +$1M for memory, +$2.88K for Judge #6)
 
 ---
 
@@ -267,16 +267,16 @@ Round up: $3.5B
 
 **Details**: See `docs/architecture/LLM_MEMORY_INTEGRATION.md` for full analysis
 
-### 1.9 Judge 6 Enforcement Layer (+$1.6B)
+### 1.9 Judge #6 Enforcement Layer (+$1.6B)
 
-**From**: ShadowTagAi Intelligence Pipeline Integration (Judge 6 + JR Engine)
+**From**: ShadowTagAi Intelligence Pipeline Integration (Judge #6 + JR Engine)
 
 **Value Drivers**:
 
 - Regulatory risk mitigation: 8% reduction on $26B enterprise governance component (+$2.1B)
-- Enterprise sales acceleration: 20% faster close (Judge 6 audit trail)
-- Legal risk reduction: $4.6M/year savings (Compliance Framework compliance)
-- Premium pricing: "Judge 6 enforced" competitive differentiator
+- Enterprise sales acceleration: 20% faster close (Judge #6 audit trail)
+- Legal risk reduction: $4.6M/year savings (ATP 5-19 compliance)
+- Premium pricing: "Judge #6 enforced" competitive differentiator
 
 **Calculation** (Conservative):
 
@@ -298,8 +298,8 @@ Round: $1.6B
 
 - Tier 5 Enforcement Layer: Validates all Tier 4 panel debates against 21-layer Judge Architecture
 - JR Engine Integration: Purpose/Reasons/Brakes validation (500μs SLA)
-- Compliance Framework Risk Compliance: Military-grade decision framework
-- Immutable Audit Trail: ShadowTag + Judge 6 logs for regulatory compliance
+- ATP 5-19 Risk Compliance: Military-grade decision framework
+- Immutable Audit Trail: ShadowTag + Judge #6 logs for regulatory compliance
 
 **Implementation Cost**: $510K (Q1-Q3 2025, Phases 1-3)
 **Operational Cost**: $2.88K/year ($240/month at scale, batching + enterprise pricing)
@@ -332,7 +332,7 @@ Round: $1.6B
 | Satellite Mesh         | $18.3B      | 65%        | -35%            | $11.9B         |
 | Governance Premium     | $19B        | 70%        | -30%            | $13.3B         |
 | LLM Memory Integration | $3.5B       | 77%        | -23%            | $2.7B          |
-| Judge 6 Enforcement   | $1.6B       | 75%        | -25%            | $1.2B          |
+| Judge #6 Enforcement   | $1.6B       | 75%        | -25%            | $1.2B          |
 | **Subtotal**           | **$197.6B** | -          | -               | **$137.3B**    |
 
 ### 2.2 Synergy Premium

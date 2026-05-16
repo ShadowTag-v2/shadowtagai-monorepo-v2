@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/tool_gateway/async_evidence.py
+# hypothesis_version: 6.151.5
+
+[500, 'a', 'allowed', 'context_keys', 'contract_id', 'detail', 'issues.jsonl', 'preconditions_met', 'reason', 'reuse_hints', 'success', 'tool_gateway_check', 'tool_id', 'ts', 'type']

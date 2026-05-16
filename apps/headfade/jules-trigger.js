@@ -64,13 +64,9 @@ async function triggerJulesSession(repoUrl, taskDescription) {
           clearInterval(interval);
           console.log('Jules session test completed successfully.');
         }
-      } catch (e) {
-        console.error('Error checking activities', e);
-      }
+      } catch (_e) {}
     }, 2000);
-  } catch (error) {
-    console.error('Error triggering Jules session:', error);
-  }
+  } catch (_error) {}
 }
 
 // Example usage:

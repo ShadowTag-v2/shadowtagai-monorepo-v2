@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from fastapi import FastAPI
 
 from .routers import bootstrap, context, health, hydrate, promotions, search, validate

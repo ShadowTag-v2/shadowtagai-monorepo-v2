@@ -1,7 +1,7 @@
-import { existsSync } from 'node:fs';
-import { copyFile, mkdir, readdir } from 'node:fs/promises';
-import { join } from 'node:path';
-import simpleGit, { type SimpleGit } from 'simple-git';
+import { existsSync } from "node:fs";
+import { copyFile, mkdir, readdir } from "node:fs/promises";
+import { join } from "node:path";
+import simpleGit, { type SimpleGit } from "simple-git";
 
 export async function createPickleWorktree(
   sessionName: string,
@@ -9,7 +9,7 @@ export async function createPickleWorktree(
   workingDir: string,
   gitInstance?: SimpleGit,
 ): Promise<{ worktreeDir: string; branchName: string }> {
-  const worktreeBase = join(workingDir, '.pickle', 'worktrees');
+  const worktreeBase = join(workingDir, ".pickle", "worktrees");
   const worktreeDir = join(worktreeBase, `session-${sessionName}`);
   const branchName = `pickle/session-${sessionName}`;
 
@@ -25,10 +25,10 @@ export async function createPickleWorktree(
   }
 
   // Prune stale worktrees
-  await git.raw(['worktree', 'prune']);
+  await git.raw(["worktree", "prune"]);
 
   // Create worktree
-  await git.raw(['worktree', 'add', '-B', branchName, worktreeDir, baseBranch]);
+  await git.raw(["worktree", "add", "-B", branchName, worktreeDir, baseBranch]);
 
   return { worktreeDir, branchName };
 }
@@ -39,7 +39,7 @@ export async function createPickleWorktree(
 export async function getGitRoot(dir: string, gitInstance?: SimpleGit): Promise<string> {
   const git: SimpleGit = gitInstance || simpleGit(dir);
   try {
-    const root = await git.revparse(['--show-toplevel']);
+    const root = await git.revparse(["--show-toplevel"]);
     return root.trim();
   } catch {
     return dir; // Fallback to provided dir
@@ -52,7 +52,7 @@ export async function getGitRoot(dir: string, gitInstance?: SimpleGit): Promise<
 async function copyFilesRecursively(
   srcDir: string,
   destDir: string,
-  excludeDirs: string[] = ['.git', '.pickle'],
+  excludeDirs: string[] = [".git", ".pickle"],
 ): Promise<void> {
   const entries = await readdir(srcDir, { withFileTypes: true });
 
@@ -96,26 +96,26 @@ export async function syncWorktreeToOriginal(
   const status = await worktreeGit.status();
   if (status.files.length > 0) {
     // Stage all changes
-    await worktreeGit.add('-A');
+    await worktreeGit.add("-A");
     // Commit
-    await worktreeGit.commit('Auto-commit: Final worktree changes before merge');
+    await worktreeGit.commit("Auto-commit: Final worktree changes before merge");
   }
 
   // 2. In the git root directory, merge the worktree branch
   try {
     // First, fetch latest state of the branch (it's local, so this is fast)
-    await originalGit.fetch('.', branchName);
+    await originalGit.fetch(".", branchName);
 
     // Merge the branch into current HEAD
     await originalGit.merge([
       branchName,
-      '--no-ff',
-      '-m',
+      "--no-ff",
+      "-m",
       `Merge branch '${branchName}' (Pickle session)`,
     ]);
   } catch (error) {
     // If merge fails (conflicts), try copying files directly
-    console.error('Merge failed, attempting file copy fallback:', error);
+    console.error("Merge failed, attempting file copy fallback:", error);
 
     // Copy files from worktree to git root (excludes .git and .pickle directories)
     await copyFilesRecursively(worktreeDir, gitRoot);
@@ -139,8 +139,8 @@ export async function cleanupPickleWorktree(
   const git: SimpleGit = gitInstance || simpleGit(gitRoot);
 
   try {
-    await git.raw(['worktree', 'remove', '-f', worktreeDir]);
+    await git.raw(["worktree", "remove", "-f", worktreeDir]);
   } catch (e) {}
 
-  await git.raw(['worktree', 'prune']);
+  await git.raw(["worktree", "prune"]);
 }

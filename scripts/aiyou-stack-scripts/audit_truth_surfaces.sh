@@ -25,9 +25,9 @@ root = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball")
 patterns = {
     "stale_model": ["gemini-2.5", "gemini-3.1-flash-lite-preview"],
     "stale_mcp": ["mcp_config.json", "cline_mcp_settings.json", ".mcp.json"],
-    "stale_naming": ["ShadowTag-v2", "ShadowTag", "ShadowTag-v2"],
+    "stale_naming": ["AiYou", "YouAi", "ShadowTag-v2"],
     "forbidden_service_account_claim": [
-        "Service Accounts: 767252945109-compute@developer.gserviceaccount.com is now REFRESHING at the start of every tool call. This is this service account’s only function!"
+        "Service Accounts: headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com is now REFRESHING at the start of every tool call. This is this service account’s only function!"
     ],
 }
 

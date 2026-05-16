@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Generate markdown summary of all repos in apps/ShadowTag-v2_stack/
+# Generate markdown summary of all repos in apps/aiyou_stack/
 set -euo pipefail
 MONOREPO=/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
-STACK_DIR="$MONOREPO/apps/ShadowTag-v2_stack"
-OUTPUT="$MONOREPO/docs/ShadowTag-v2_stack_report.md"
+STACK_DIR="$MONOREPO/apps/aiyou_stack"
+OUTPUT="$MONOREPO/docs/aiyou_stack_report.md"
 
-echo "# ShadowTag-v2 Stack Report" > "$OUTPUT"
+echo "# AiYou Stack Report" > "$OUTPUT"
 echo "Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 
@@ -14,7 +14,7 @@ if [ ! -d "$STACK_DIR" ]; then
     exit 1
 fi
 
-echo "## Repos in apps/ShadowTag-v2_stack/" >> "$OUTPUT"
+echo "## Repos in apps/aiyou_stack/" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 echo "| Repo | Size | Files | Has package.json | Has Dockerfile |" >> "$OUTPUT"
 echo "|------|------|-------|-----------------|----------------|" >> "$OUTPUT"

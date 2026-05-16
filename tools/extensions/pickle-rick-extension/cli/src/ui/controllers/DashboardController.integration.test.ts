@@ -1,11 +1,11 @@
-import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from 'bun:test';
-import '../test-setup.js';
-import * as state from '../../services/config/state.js';
-import * as search from '../../utils/search.js';
-import { createMockRenderer } from '../mock-factory.js';
-import { DashboardController } from './DashboardController.js';
+import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test";
+import "../test-setup.js";
+import * as state from "../../services/config/state.js";
+import * as search from "../../utils/search.js";
+import { createMockRenderer } from "../mock-factory.js";
+import { DashboardController } from "./DashboardController.js";
 
-describe('DashboardController Integration', () => {
+describe("DashboardController Integration", () => {
   let mockRenderer: any;
   let mockSessionContainer: any;
   let mockSidebar: any;
@@ -23,14 +23,14 @@ describe('DashboardController Integration', () => {
     };
 
     spies = [
-      spyOn(search, 'recursiveSearch').mockImplementation(async (dir, query) => {
-        if (query === 'test') {
-          return { files: ['/root/test.ts'], truncated: false };
+      spyOn(search, "recursiveSearch").mockImplementation(async (dir, query) => {
+        if (query === "test") {
+          return { files: ["/root/test.ts"], truncated: false };
         }
         return { files: [], truncated: false };
       }),
-      spyOn(state, 'listSessions').mockResolvedValue([]),
-      spyOn(state, 'createSession').mockResolvedValue({ session_dir: '/tmp/session' } as any),
+      spyOn(state, "listSessions").mockResolvedValue([]),
+      spyOn(state, "createSession").mockResolvedValue({ session_dir: "/tmp/session" } as any),
     ];
   });
 
@@ -38,7 +38,7 @@ describe('DashboardController Integration', () => {
     spies.forEach((s) => s.mockRestore());
   });
 
-  test('should initialize controller', () => {
+  test("should initialize controller", () => {
     const controller = new DashboardController(mockRenderer, mockSessionContainer);
 
     expect(controller).toBeDefined();

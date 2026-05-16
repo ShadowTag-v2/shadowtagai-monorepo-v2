@@ -7,27 +7,27 @@ import {
   MouseParser,
   ScrollBoxRenderable,
   TextRenderable,
-} from '@opentui/core';
-import { isGameboyActive } from '../games/gameboy/GameboyView.js';
-import { MultiLineInputEvents, MultiLineInputRenderable } from './components/MultiLineInput.js';
-import { DashboardController } from './controllers/DashboardController.js';
+} from "@opentui/core";
+import { isGameboyActive } from "../games/gameboy/GameboyView.js";
+import { MultiLineInputEvents, MultiLineInputRenderable } from "./components/MultiLineInput.js";
+import { DashboardController } from "./controllers/DashboardController.js";
 import {
   buildVerticalBar,
   createCtrlCExitHandler,
   createInputContainerMouseHandler,
   createProviderMetadataRow,
-} from './input-chrome.js';
-import { THEME } from './theme.js';
-import { createLandingView } from './views/LandingView.js';
+} from "./input-chrome.js";
+import { THEME } from "./theme.js";
+import { createLandingView } from "./views/LandingView.js";
 
 export async function createDashboard(renderer: CliRenderer, initialPrompt?: string) {
   const INPUT_CHROME_LINES = 4;
 
   const root = new BoxRenderable(renderer, {
-    id: 'dashboard-root',
-    width: '100%',
-    height: '100%',
-    flexDirection: 'column',
+    id: "dashboard-root",
+    width: "100%",
+    height: "100%",
+    flexDirection: "column",
     backgroundColor: THEME.bg,
     paddingLeft: 4,
     paddingRight: 4,
@@ -43,42 +43,42 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
   });
 
   const mainContent = new BoxRenderable(renderer, {
-    id: 'mainContent',
-    width: '100%',
+    id: "mainContent",
+    width: "100%",
     flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
     paddingTop: 1,
     backgroundColor: THEME.bg,
   });
 
   const separator = new BoxRenderable(renderer, {
-    id: 'separator',
-    width: '96%',
+    id: "separator",
+    width: "96%",
     height: 1,
-    border: ['bottom'],
+    border: ["bottom"],
     borderColor: THEME.darkAccent,
     marginBottom: 1,
     flexShrink: 0,
-    alignSelf: 'center',
+    alignSelf: "center",
     visible: false,
   });
 
   const sessionContainer = new BoxRenderable(renderer, {
-    id: 'sessionContainer',
-    width: '100%',
+    id: "sessionContainer",
+    width: "100%",
     flexGrow: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
+    flexDirection: "column",
+    alignItems: "stretch",
     gap: 0,
   });
 
   const dashboardView = new ScrollBoxRenderable(renderer, {
-    id: 'dashboardView',
-    width: '100%',
+    id: "dashboardView",
+    width: "100%",
     flexGrow: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
     scrollY: true,
     scrollX: false,
     scrollbarOptions: {
@@ -90,37 +90,37 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
   });
 
   const toyboxView = new BoxRenderable(renderer, {
-    id: 'toyboxView',
-    width: '100%',
+    id: "toyboxView",
+    width: "100%",
     flexGrow: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
     visible: false,
     backgroundColor: THEME.bg,
   });
 
   const inputGroup = new BoxRenderable(renderer, {
-    id: 'inputGroup',
-    width: '100%',
-    flexDirection: 'column',
+    id: "inputGroup",
+    width: "100%",
+    flexDirection: "column",
     flexShrink: 0,
-    border: ['top'],
+    border: ["top"],
     borderColor: THEME.darkAccent,
     paddingTop: 1,
     marginBottom: 1,
   });
 
   const inputContainer = new BoxRenderable(renderer, {
-    id: 'inputContainer',
-    width: '100%',
+    id: "inputContainer",
+    width: "100%",
     minHeight: 5,
-    flexDirection: 'column',
+    flexDirection: "column",
     backgroundColor: THEME.surface,
     paddingLeft: 1,
     paddingRight: 1,
   });
 
   const input = new MultiLineInputRenderable(renderer, {
-    id: 'input',
+    id: "input",
     flexGrow: 1,
     placeholder: 'Try "Write unit tests for this file"',
     textColor: THEME.text,
@@ -130,10 +130,10 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
   });
 
   const inputRow = new BoxRenderable(renderer, {
-    id: 'inputRow',
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    id: "inputRow",
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
   });
 
   inputRow.add(input);
@@ -144,19 +144,19 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
     row: metadataRow,
     pickleLabel: metadataRowL,
     modelLabel,
-  } = createProviderMetadataRow(renderer, 'metadataRow');
+  } = createProviderMetadataRow(renderer, "metadataRow");
 
-  inputContainer.add(new BoxRenderable(renderer, { id: 'spacer1', height: 1 }));
+  inputContainer.add(new BoxRenderable(renderer, { id: "spacer1", height: 1 }));
   inputContainer.add(inputRow);
-  inputContainer.add(new BoxRenderable(renderer, { id: 'spacer2', height: 1 }));
+  inputContainer.add(new BoxRenderable(renderer, { id: "spacer2", height: 1 }));
   inputContainer.add(metadataRow);
-  inputContainer.add(new BoxRenderable(renderer, { id: 'spacer3', height: 1 }));
+  inputContainer.add(new BoxRenderable(renderer, { id: "spacer3", height: 1 }));
 
   const inputDecorativeBar = new TextRenderable(renderer, {
-    id: 'inputDecorativeBar',
+    id: "inputDecorativeBar",
     content: buildVerticalBar(inputContainer.minHeight ?? 5),
     fg: THEME.accent,
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     top: 0,
   });
@@ -165,26 +165,26 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
   inputGroup.add(inputContainer);
 
   const globalFooter = new BoxRenderable(renderer, {
-    id: 'globalFooter',
-    width: '100%',
+    id: "globalFooter",
+    width: "100%",
     height: 1,
     backgroundColor: THEME.bg,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingLeft: 1,
     paddingRight: 1,
     flexShrink: 0,
   });
 
   const footerLeft = new TextRenderable(renderer, {
-    id: 'footerLeft',
-    content: 'CTRL+T: Toybox',
+    id: "footerLeft",
+    content: "CTRL+T: Toybox",
     fg: THEME.dim,
   });
 
   const footerRight = new TextRenderable(renderer, {
-    id: 'footerRight',
-    content: '',
+    id: "footerRight",
+    content: "",
     fg: THEME.dim,
   });
 
@@ -218,8 +218,8 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
   input.focus();
 
   const syncInputChrome = () => {
-    const minHeight = typeof inputContainer.minHeight === 'number' ? inputContainer.minHeight : 5;
-    const inputHeight = typeof input.height === 'number' ? input.height : 1;
+    const minHeight = typeof inputContainer.minHeight === "number" ? inputContainer.minHeight : 5;
+    const inputHeight = typeof input.height === "number" ? input.height : 1;
     const nextHeight = Math.max(minHeight, inputHeight + INPUT_CHROME_LINES);
     if (inputContainer.height !== nextHeight) {
       inputContainer.height = nextHeight;
@@ -234,7 +234,7 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
   input.on(MultiLineInputEvents.SUBMIT, (value: string) => {
     if (controller.hasActivePicker() || isGameboyActive()) return;
     controller.spawnSession(value);
-    input.value = '';
+    input.value = "";
     syncInputChrome();
   });
 
@@ -242,11 +242,11 @@ export async function createDashboard(renderer: CliRenderer, initialPrompt?: str
     syncInputChrome();
   });
 
-  renderer.keyInput.on('keypress', (key: KeyEvent) => {
+  renderer.keyInput.on("keypress", (key: KeyEvent) => {
     if (controller.hasActivePicker() || isGameboyActive()) return false;
 
     // Handle Ctrl+T to toggle toybox
-    if (key.ctrl && key.name === 't') {
+    if (key.ctrl && key.name === "t") {
       controller.toggleToybox?.();
       return true;
     }
@@ -295,22 +295,22 @@ export async function startDashboard(initialPrompt?: string) {
     // Get footer reference for hints
     const footerLeft = dashboard.root
       .getChildren()
-      .find((c) => c.id === 'globalFooter')
+      .find((c) => c.id === "globalFooter")
       ?.getChildren()
-      .find((c) => c.id === 'footerLeft') as TextRenderable | undefined;
+      .find((c) => c.id === "footerLeft") as TextRenderable | undefined;
 
     if (footerLeft) {
       const exitHandler = createCtrlCExitHandler({
         renderer,
         hintText: footerLeft,
-        originalContent: footerLeft.content || '',
+        originalContent: footerLeft.content || "",
       });
-      renderer.keyInput.on('keypress', exitHandler);
+      renderer.keyInput.on("keypress", exitHandler);
     }
 
     renderer.start();
   } catch (error) {
-    console.error('❌ Failed to start Pickle Rick Dashboard:', error);
+    console.error("❌ Failed to start Pickle Rick Dashboard:", error);
     process.exit(1);
   }
 }

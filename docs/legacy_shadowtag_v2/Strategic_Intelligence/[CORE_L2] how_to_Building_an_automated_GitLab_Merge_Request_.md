@@ -419,7 +419,7 @@ Date: 2026-01-09 Mission: Keyless Auth, Brain Upgrade, and God Mode.
    embeddings.py (Vector) and 
    ingestion.py (PDF).
    Refactor: Updated 
-   autoresearch.py to use google.genai.Client(vertexai=True).
+   flying_monkeys.py to use google.genai.Client(vertexai=True).
    Validation: Passed unit tests (pytest tests/unit/test_vectorization.py).
    2.3. The Archive (BigLake)
    Infrastructure: 
@@ -448,7 +448,7 @@ Date: 2026-01-09 Mission: Keyless Auth, Brain Upgrade, and God Mode.
    Ran 
 
 tests/integration/test_god_mode.py:INFO:GeminiCodeAssistProxy:⚡️ GOD MODE TRIGGERED
-INFO:GeminiCodeAssistProxy:✅ Judge 6 Verified. Applying Direct Write.
+INFO:GeminiCodeAssistProxy:✅ Judge #6 Verified. Applying Direct Write.
 Result: {'status': 'APPLIED_AUTOMATICALLY'}
 Git Status
 All changes committed and pushed to 
@@ -465,7 +465,7 @@ Phase 15: Sovereign Launch (God Mode Activated)
 2. Sovereign Code Transfer
    Method: SSH Stream (tar)
    Payload: ~4.6GB (Excluded imported_universe)
-   Destination: ~/ShadowTag-v2-fastapi-services on Cloud Workstation
+   Destination: ~/aiyou-fastapi-services on Cloud Workstation
 3. Internal Cloud Build
    Trigger: Executed gcloud builds submit from the workstation.
    Benefit: Bypassed local upload bottleneck; leveraged internal Google Cloud bandwidth.

@@ -1,11 +1,11 @@
-import type { TagEngine } from '@shadowtag/core/TagEngine';
-import { ArtifactId } from '@shared/types';
-import type { Pool } from 'pg';
-import type { Edge, InsertDoc, RagGraph, RetrieveHit, RetrieveQuery } from './RagGraph';
+import type { TagEngine } from "@shadowtag/core/TagEngine";
+import { ArtifactId } from "@shared/types";
+import type { Pool } from "pg";
+import type { Edge, InsertDoc, RagGraph, RetrieveHit, RetrieveQuery } from "./RagGraph";
 
 /**
  * PgRagGraph
- * Implements the ShadowTag-v2 semantic retrieval graph using pgvector and ShadowTag.
+ * Implements the AiYou semantic retrieval graph using pgvector and ShadowTag.
  *
  * Execution Flow (Retrieve):
  * 1. Filter viable artifact IDs via ShadowTag (metadata spine).
@@ -45,7 +45,7 @@ export class PgRagGraph implements RagGraph {
 
     // 2. Upsert vector + text payload
     if (doc.embed && doc.embed instanceof Float32Array) {
-      const vectorString = `[${doc.embed.join(',')}]`;
+      const vectorString = `[${doc.embed.join(",")}]`;
       const query = `
         INSERT INTO document_embeddings (artifact_id, text_content, embedding)
         VALUES ($1, $2, $3::vector)
@@ -80,7 +80,7 @@ export class PgRagGraph implements RagGraph {
     // E.g., const embedVector = await externalEmbed(query.q);
 
     // For scaffolding the pgvector call structure (simulated vector):
-    const mockVectorString = `[${new Array(1536).fill(0.01).join(',')}]`;
+    const mockVectorString = `[${new Array(1536).fill(0.01).join(",")}]`;
 
     // 2. Fetch via pgvector (cosine distance filtering)
     let sql = `

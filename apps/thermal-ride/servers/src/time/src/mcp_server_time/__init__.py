@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from .server import serve
 
 
@@ -6,9 +7,7 @@ def main():
     import argparse
     import asyncio
 
-    parser = argparse.ArgumentParser(
-        description="give a model the ability to handle time queries and timezone conversions",
-    )
+    parser = argparse.ArgumentParser(description="give a model the ability to handle time queries and timezone conversions")
     parser.add_argument("--local-timezone", type=str, help="Override local timezone")
 
     args = parser.parse_args()

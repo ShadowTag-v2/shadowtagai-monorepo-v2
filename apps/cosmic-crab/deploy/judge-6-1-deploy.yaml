@@ -11,7 +11,7 @@ spec:
         autoscaling.knative.dev/minScale: "0"
         autoscaling.knative.dev/maxScale: "10"
     spec:
-      serviceAccountName: redacted@shadowtag-v4.local
+      serviceAccountName: 767252945109-compute@developer.gserviceaccount.com
       containers:
       - image: gcr.io/shadowtag-omega-v4/sentinel:latest
         ports:

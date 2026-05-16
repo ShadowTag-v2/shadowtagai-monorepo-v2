@@ -2,25 +2,37 @@
 
 ## Active Projects
 
+
+
 - **pnkln-stack-fastapi-services**: Main FastAPI services repo
+
 
 - **judge6-mcp**: Judge Six MCP integration
 
 ## GCP Infrastructure
 
+
+
 - Project: `acquired-jet-478701-b3`
 
+
 - Cluster: `autopilot-cluster-1` (us-central1)
+
 
 - gcloud path: `/Users/pikeymickey/google-cloud-sdk/bin/gcloud`
 
 ## Key Branches/PRs to Track
 
+
+
 - pnkln-ultrathink-framework
+
 
 - llm-serving-efficiency-research
 
+
 - shadowtag-v2-watermarking
+
 
 - code-into-c (K8s deployment)
 

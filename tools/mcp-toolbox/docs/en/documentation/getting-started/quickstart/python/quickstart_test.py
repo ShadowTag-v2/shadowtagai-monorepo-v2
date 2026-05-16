@@ -29,31 +29,33 @@ GOLDEN_KEYWORDS = ["Hilton Basel", "Hyatt Regency", "book"]
 
 # --- Execution Tests ---
 class TestExecution:
-    """Test framework execution and output validation."""
+  """Test framework execution and output validation."""
 
-    _cached_output = None
+  _cached_output = None
 
-    @pytest.fixture(scope="function")
-    def script_output(self, capsys):
-        """Run the quickstart function and return its output."""
-        if TestExecution._cached_output is None:
-            asyncio.run(quickstart.main())
-            out, err = capsys.readouterr()
-            TestExecution._cached_output = (out, err)
+  @pytest.fixture(scope="function")
+  def script_output(self, capsys):
+    """Run the quickstart function and return its output."""
+    if TestExecution._cached_output is None:
+      asyncio.run(quickstart.main())
+      out, err = capsys.readouterr()
+      TestExecution._cached_output = (out, err)
 
-        class Output:
-            def __init__(self, out, err):
-                self.out = out
-                self.err = err
+    class Output:
+      def __init__(self, out, err):
+        self.out = out
+        self.err = err
 
-        return Output(*TestExecution._cached_output)
+    return Output(*TestExecution._cached_output)
 
-    def test_script_runs_without_errors(self, script_output):
-        """Test that the script runs and produces no stderr."""
-        assert script_output.err == "", f"Script produced stderr: {script_output.err}"
+  def test_script_runs_without_errors(self, script_output):
+    """Test that the script runs and produces no stderr."""
+    assert script_output.err == "", f"Script produced stderr: {script_output.err}"
 
-    def test_keywords_in_output(self, script_output):
-        """Test that expected keywords are present in the script's output."""
-        output = script_output.out
-        missing_keywords = [kw for kw in GOLDEN_KEYWORDS if kw.lower() not in output.lower()]
-        assert not missing_keywords, f"Missing keywords in output: {missing_keywords}"
+  def test_keywords_in_output(self, script_output):
+    """Test that expected keywords are present in the script's output."""
+    output = script_output.out
+    missing_keywords = [
+      kw for kw in GOLDEN_KEYWORDS if kw.lower() not in output.lower()
+    ]
+    assert not missing_keywords, f"Missing keywords in output: {missing_keywords}"

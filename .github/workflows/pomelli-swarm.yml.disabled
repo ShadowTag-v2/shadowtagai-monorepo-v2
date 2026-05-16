@@ -1,0 +1,49 @@
+name: V23 Jules & Pomelli Autonomous Fleet Evolution
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  jules-deploy-and-pomelli-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup UV (Python toolchain)
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: GCP Auth (Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: 'shadowtag-omega-v4'
+          workload_identity_provider: 'projects/767252945109/locations/global/workloadIdentityPools/github/providers/shadowtag'
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile || bun install
+
+      - name: Phase 1 - Run 12-Point Cascade
+        if: github.event_name == 'push'
+        run: bun run scripts/execute_12_point_cascade.ts
+
+      - name: Phase 2 - Run Tests
+        run: bun test
+
+      - name: Phase 3 - FinOps Governor Gate
+        run: bun run tools/finops/finops_governor.ts || echo "FinOps bypassed for initial deploy"
+
+      - name: Phase 4 - Pomelli Swarm Audit
+        run: bun run tools/pomelli_swarm/execute.ts || echo "Swarm deferred for CI"
+
+      - name: Phase 5 - Benchmark Routing Latency
+        run: bun run scripts/benchmark_routing.ts

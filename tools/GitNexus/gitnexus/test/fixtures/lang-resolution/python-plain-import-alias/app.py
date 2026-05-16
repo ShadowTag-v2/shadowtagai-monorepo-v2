@@ -5,11 +5,11 @@ import auth as a
 
 
 def main():
-    u = m.User()
-    u.save()
+  u = m.User()
+  u.save()
 
-    r = m.Repo()
-    r.persist()
+  r = m.Repo()
+  r.persist()
 
-    v = a.User()
-    v.login()
+  v = a.User()
+  v.login()

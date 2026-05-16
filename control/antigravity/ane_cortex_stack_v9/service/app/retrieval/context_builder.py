@@ -1,19 +1,17 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-from ..adapters.authority_state import AuthorityState
-from ..adapters.json_memory import JsonMemoryStore
-from ..adapters.memory_atoms import search_atoms
 from ..utils.db import pg_conn
-from .lancedb_store import search as semantic_search
 from .sqlite_index import exact_search
+from .lancedb_store import search as semantic_search
+from ..adapters.json_memory import JsonMemoryStore
+from ..adapters.authority_state import AuthorityState
+from ..adapters.memory_atoms import search_atoms
 
 
 def memory_search(pg_dsn: str, repo_id: str, limit: int = 6):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
         cur.execute(
-            "SELECT subject, summary, memory_kind FROM semantic_memories WHERE repo_id = %s ORDER BY created_at DESC LIMIT %s",
-            (repo_id, limit),
+            "SELECT subject, summary, memory_kind FROM semantic_memories WHERE repo_id = %s ORDER BY created_at DESC LIMIT %s", (repo_id, limit)
         )
         return [{"title": r[0], "content": r[1], "kind": r[2], "source": "postgres"} for r in cur.fetchall()]
 
@@ -22,12 +20,7 @@ def json_memory_search(query: str, limit: int = 6):
     store = JsonMemoryStore()
     rows = store.search(query, limit)
     return [
-        {
-            "title": r.get("subject", ""),
-            "content": r.get("summary") or r.get("body", ""),
-            "kind": r.get("type", "memory"),
-            "source": "jsonl",
-        }
+        {"title": r.get("subject", ""), "content": r.get("summary") or r.get("body", ""), "kind": r.get("type", "memory"), "source": "jsonl"}
         for r in rows
     ]
 
@@ -35,10 +28,7 @@ def json_memory_search(query: str, limit: int = 6):
 def task_search(pg_dsn: str, repo_id: str, limit: int = 6):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
-        cur.execute(
-            "SELECT bead_id, title, status, summary FROM beads_tasks WHERE repo_id = %s ORDER BY updated_at DESC LIMIT %s",
-            (repo_id, limit),
-        )
+        cur.execute("SELECT bead_id, title, status, summary FROM beads_tasks WHERE repo_id = %s ORDER BY updated_at DESC LIMIT %s", (repo_id, limit))
         return [{"id": r[0], "title": r[1], "status": r[2], "summary": r[3] or ""} for r in cur.fetchall()]
 
 
@@ -70,15 +60,7 @@ def build_prompt_context(query: str, authority, atoms, exact, semantic, memory, 
     return "\n".join(parts)
 
 
-def collect_context(
-    sqlite_db: str,
-    lancedb_root: str,
-    pg_dsn: str,
-    repo_id: str,
-    query: str,
-    authority_state_path: str,
-    limit: int = 8,
-):
+def collect_context(sqlite_db: str, lancedb_root: str, pg_dsn: str, repo_id: str, query: str, authority_state_path: str, limit: int = 8):
     authority = AuthorityState(authority_state_path).read()
     atoms = search_atoms(pg_dsn, repo_id, query, limit=10)
     exact = exact_search(sqlite_db, query, limit)

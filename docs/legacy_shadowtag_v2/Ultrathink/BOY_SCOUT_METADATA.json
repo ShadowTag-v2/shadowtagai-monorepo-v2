@@ -1,9 +1,9 @@
 {
-  "boyScoutRuleMetadata": {
-    "filesTouched": [],
-    "cleanupActions": [],
-    "cleanerThanFound": true,
-    "baselineState": "",
-    "newState": ""
-  }
+	"boyScoutRuleMetadata": {
+		"filesTouched": [],
+		"cleanupActions": [],
+		"cleanerThanFound": true,
+		"baselineState": "",
+		"newState": ""
+	}
 }

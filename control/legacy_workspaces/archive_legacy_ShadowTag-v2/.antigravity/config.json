@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "workspace": "shadowtag-v2",
+  "mode": "development",
+  "agents": {
+    "flying_monkeys": {
+      "enabled": true,
+      "model": "gemini-2.5-pro",
+      "fallback": "gemini-2.5-flash"
+    },
+    "judge_six": {
+      "enabled": true,
+      "threshold": 0.8
+    }
+  },
+  "external_repos": {
+    "path": "./external_repos/antigravity-repos",
+    "index": "~/antigravity-flattened/index.json"
+  },
+  "mcp": {
+    "servers": ["quibbler", "github", "google-cloud"]
+  }
+}

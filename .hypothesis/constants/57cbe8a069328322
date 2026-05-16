@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/src/utils/semantic_compression.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.5, 0.8, 1000, 1000000, '$', '%Y%m%d', 'ALLOW', 'BLOCK', 'PO_', '_gate', '_risk', '_vendor', 'action', 'amount', 'amount_usd', 'approval_gate', 'auto_gate', 'case', 'case_assessment', 'case_type', 'compliance', 'compliance_area', 'compliance_check', 'components', 'compress_audit_trail', 'contract', 'contract_approval', 'contract_value', 'decision', 'duration', 'fraud', 'fraud_', 'fraud_check', 'fraud_high', 'fraud_level', 'fraud_low', 'fraud_med', 'fraud_score', 'generate_trail_id', 'legal', 'legal_review', 'no_PO', 'payment', 'po_number', 'purchase_order', 'risk_level', 'term_months', 'unknown', 'vendor', 'vendor_id', 'vendor_onboard', 'vendor_onboarding', 'vendor_status', 'wire', 'wire_transfer', '→']

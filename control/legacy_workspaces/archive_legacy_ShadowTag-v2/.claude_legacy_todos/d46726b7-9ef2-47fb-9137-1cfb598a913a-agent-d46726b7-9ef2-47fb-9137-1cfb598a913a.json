@@ -1,0 +1,17 @@
+[
+  {
+    "content": "Check git status for uncommitted changes",
+    "status": "completed",
+    "activeForm": "Checking git status"
+  },
+  {
+    "content": "Commit cleaned requirements files",
+    "status": "in_progress",
+    "activeForm": "Committing cleaned requirements files"
+  },
+  {
+    "content": "Run claude teleport command",
+    "status": "pending",
+    "activeForm": "Running claude teleport command"
+  }
+]

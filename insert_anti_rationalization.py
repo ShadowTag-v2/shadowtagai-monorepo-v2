@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 with open(".claude/skills/debugging/verification-before-completion.md") as f:
-    content = f.read()
+  content = f.read()
 
 anti_rationalization = """
 ## Anti-Rationalization & Self-Awareness Block (Claude 2.1.90 Integration)
@@ -23,5 +23,7 @@ At least ONE adversarial probe must be executed before declaring PASS:
 """
 
 if "Anti-Rationalization" not in content:
-    with open(".claude/skills/debugging/verification-before-completion.md", "w") as f:
-        f.write(content.replace("## When to Use", anti_rationalization + "\n## When to Use"))
+  with open(".claude/skills/debugging/verification-before-completion.md", "w") as f:
+    f.write(
+      content.replace("## When to Use", anti_rationalization + "\n## When to Use")
+    )

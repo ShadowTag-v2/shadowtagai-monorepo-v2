@@ -41,7 +41,7 @@ Place these files where the setup script can access them:
 ## Recommended monorepo root
 
 Run everything from the root of:
-- `shadowtag-omega-v4/Monorepo-Uphillsnowball`
+- `ShadowTag-v2/Monorepo-Uphillsnowball`
 
 ## Install steps
 

@@ -4,7 +4,7 @@
 
 Cor.72 Cloudflare
 
-“Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and ShadowTag-v2JR as the operating compass:
+“Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and AiYouJR as the operating compass:
 
 ⸻
 
@@ -15,7 +15,7 @@ Cor.72 Cloudflare
 ~4–6 months to MVP.
     •    Core ingestion → RAG engine (already scaffolded with Cursor).
     •    Hosting layer → YouTube clone baseline (open-source clones + custom AI upload policy).
-    •    Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early.
+    •    Risk/guardrails → ATP 5-19 / AiYouJR embedded early.
     •    Deployment infra → CoreWeave/NVIDIA for compute acceleration.
 
 ✅ Net time saved: ~65–70%. That’s the equivalent of skipping 9+ months of infra churn.
@@ -35,7 +35,7 @@ Old pitch: “We need infra to even start.”
 Looks fragile; you’d appear infra-dependent and high burn.
 
 New pitch:
-    •    “We’ve compressed a Cloudflare-class infra build into a tiny team via Rust modularization and ShadowTag-v2JR. We’re already at product velocity; infra partners just accelerate scale.”
+    •    “We’ve compressed a Cloudflare-class infra build into a tiny team via Rust modularization and AiYouJR. We’re already at product velocity; infra partners just accelerate scale.”
     •    To CoreWeave: You’re the GPU backbone for inference hosting. Our workload is engagement-optimized AI video → sticky, high-throughput customers.
     •    To NVIDIA: We are the showcase use-case of AI-native content platforms. Every AI-generated video hosted here = GPU cycles on your stack. Position us as the “YouTube of AI” to their Inception Program.
 
@@ -44,7 +44,7 @@ New pitch:
 🚀 Tiny Team Advantage
     •    Solo founder + Cursor = compressed engineering.
     •    FL2 learnings = skipped infra pain.
-    •    ShadowTag-v2JR doctrine = risk-managed, no fluff, fact-based decisions.
+    •    AiYouJR doctrine = risk-managed, no fluff, fact-based decisions.
     •    Result: MVP in <6 months, at <10% of the cost a 20-person team would burn.
 
 ⸻
@@ -60,73 +60,73 @@ Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVID
 
 “Did I initially guess cloudfares tech build by myself??
 
-Based on Cloudflare’s AI Index first build (public beta) and ShadowTag-v2’s internal plan:
+Based on Cloudflare’s AI Index first build (public beta) and AiYou’s internal plan:
     •    Architecture overlap:
     •    Both use structured indexes, APIs, and controlled ingestion → ~70–75% overlap.
-    •    Where they differ: Cloudflare = text/web focus, ShadowTag-v2 = video-first, AI-native.
+    •    Where they differ: Cloudflare = text/web focus, AiYou = video-first, AI-native.
     •    Technical mechanics:
     •    Pub/sub, MCP, bulk data export, provenance controls all mirror our intended build → ~80% direct match.
-    •    Missing on their side: AI-generated video hosting, engagement optimization under ShadowTag-v2JR.
+    •    Missing on their side: AI-generated video hosting, engagement optimization under AiYouJR.
     •    Business model:
     •    Cloudflare = “pay per crawl / API access.”
-    •    ShadowTag-v2 = “YouTube-for-AI” + index. That’s adjacent, not identical → ~60% overlap.
+    •    AiYou = “YouTube-for-AI” + index. That’s adjacent, not identical → ~60% overlap.
     •    Governance posture:
     •    They emphasize permission + control (domain owners decide what’s indexed).
-    •    ShadowTag-v2JR enforces risk-first, objection protocol, Compliance Framework compliance.
+    •    AiYouJR enforces risk-first, objection protocol, ATP 5-19 compliance.
     •    Here overlap is ~50% — they don’t have risk doctrine baked in.
 
 ⸻
 
 📊 Overall % Match
-    •    First build Cloudflare vs ShadowTag-v2JR spec = 65–70% similarity.
-    •    The gap (~30–35%) is where ShadowTag-v2 differentiates:
+    •    First build Cloudflare vs AiYouJR spec = 65–70% similarity.
+    •    The gap (~30–35%) is where AiYou differentiates:
     •    AI-native video hosting (not text/web).
-    •    ShadowTag-v2JR operating philosophy (risk management, objections, doctrine).
+    •    AiYouJR operating philosophy (risk management, objections, doctrine).
     •    Engagement optimization tuned to AI-first content.
 
 ⸻
 
-👉 In plain terms: Cloudflare just validated ~70% of our design as the new normal. The remaining ~30% (video-first + ShadowTag-v2JR enforcement) is where we own the wedge.
+👉 In plain terms: Cloudflare just validated ~70% of our design as the new normal. The remaining ~30% (video-first + AiYouJR enforcement) is where we own the wedge.
 
-Would you like me to map this 30% differentiation into a “Moat slide” for the pitch deck (i.e., “Cloudflare covers the web, ShadowTag-v2 owns AI-native video”)?”
+Would you like me to map this 30% differentiation into a “Moat slide” for the pitch deck (i.e., “Cloudflare covers the web, AiYou owns AI-native video”)?”
 
 <next>
 
 “Did I initially guess cloudfares tech build by myself??
 
-Based on Cloudflare’s AI Index first build (public beta) and ShadowTag-v2’s internal plan:
+Based on Cloudflare’s AI Index first build (public beta) and AiYou’s internal plan:
     •    Architecture overlap:
     •    Both use structured indexes, APIs, and controlled ingestion → ~70–75% overlap.
-    •    Where they differ: Cloudflare = text/web focus, ShadowTag-v2 = video-first, AI-native.
+    •    Where they differ: Cloudflare = text/web focus, AiYou = video-first, AI-native.
     •    Technical mechanics:
     •    Pub/sub, MCP, bulk data export, provenance controls all mirror our intended build → ~80% direct match.
-    •    Missing on their side: AI-generated video hosting, engagement optimization under ShadowTag-v2JR.
+    •    Missing on their side: AI-generated video hosting, engagement optimization under AiYouJR.
     •    Business model:
     •    Cloudflare = “pay per crawl / API access.”
-    •    ShadowTag-v2 = “YouTube-for-AI” + index. That’s adjacent, not identical → ~60% overlap.
+    •    AiYou = “YouTube-for-AI” + index. That’s adjacent, not identical → ~60% overlap.
     •    Governance posture:
     •    They emphasize permission + control (domain owners decide what’s indexed).
-    •    ShadowTag-v2JR enforces risk-first, objection protocol, Compliance Framework compliance.
+    •    AiYouJR enforces risk-first, objection protocol, ATP 5-19 compliance.
     •    Here overlap is ~50% — they don’t have risk doctrine baked in.
 
 ⸻
 
 📊 Overall % Match
-    •    First build Cloudflare vs ShadowTag-v2JR spec = 65–70% similarity.
-    •    The gap (~30–35%) is where ShadowTag-v2 differentiates:
+    •    First build Cloudflare vs AiYouJR spec = 65–70% similarity.
+    •    The gap (~30–35%) is where AiYou differentiates:
     •    AI-native video hosting (not text/web).
-    •    ShadowTag-v2JR operating philosophy (risk management, objections, doctrine).
+    •    AiYouJR operating philosophy (risk management, objections, doctrine).
     •    Engagement optimization tuned to AI-first content.
 
 ⸻
 
-👉 In plain terms: Cloudflare just validated ~70% of our design as the new normal. The remaining ~30% (video-first + ShadowTag-v2JR enforcement) is where we own the wedge.
+👉 In plain terms: Cloudflare just validated ~70% of our design as the new normal. The remaining ~30% (video-first + AiYouJR enforcement) is where we own the wedge.
 
-Would you like me to map this 30% differentiation into a “Moat slide” for the pitch deck (i.e., “Cloudflare covers the web, ShadowTag-v2 owns AI-native video”)?”
+Would you like me to map this 30% differentiation into a “Moat slide” for the pitch deck (i.e., “Cloudflare covers the web, AiYou owns AI-native video”)?”
 
 <next>
 
-“Here’s a clear breakdown of money and time saved by finding and integrating Cloudflare’s FL2/Rust modularization approach into ShadowTag-v2:
+“Here’s a clear breakdown of money and time saved by finding and integrating Cloudflare’s FL2/Rust modularization approach into AiYou:
 
 ⸻
 
@@ -159,7 +159,7 @@ Launching a year earlier lets us capture market share + investors before incumbe
 
 ⚖️ Strategic Value
     •    This isn’t just “cost savings” — it’s risk elimination + acceleration.
-    •    With ShadowTag-v2JR doctrine, every % of saved rework = less variance in build, more predictable execution.
+    •    With AiYouJR doctrine, every % of saved rework = less variance in build, more predictable execution.
     •    Net effect: we jump from ~60% to ~75% complete build map instantly, saving ~1 year of grind and at least half a million in costs.
 
 ⸻
@@ -168,7 +168,7 @@ Do you want me to log this formally in our Decision Log (Mochary-style: Options,
 
 <next>
 
-“Here’s a clear breakdown of money and time saved by finding and integrating Cloudflare’s FL2/Rust modularization approach into ShadowTag-v2:
+“Here’s a clear breakdown of money and time saved by finding and integrating Cloudflare’s FL2/Rust modularization approach into AiYou:
 
 ⸻
 
@@ -201,7 +201,7 @@ Launching a year earlier lets us capture market share + investors before incumbe
 
 ⚖️ Strategic Value
     •    This isn’t just “cost savings” — it’s risk elimination + acceleration.
-    •    With ShadowTag-v2JR doctrine, every % of saved rework = less variance in build, more predictable execution.
+    •    With AiYouJR doctrine, every % of saved rework = less variance in build, more predictable execution.
     •    Net effect: we jump from ~60% to ~75% complete build map instantly, saving ~1 year of grind and at least half a million in costs.
 
 ⸻
@@ -210,7 +210,7 @@ Do you want me to log this formally in our Decision Log (Mochary-style: Options,
 
 <next>
 
-“Here’s a clear breakdown of money and time saved by finding and integrating Cloudflare’s FL2/Rust modularization approach into ShadowTag-v2:
+“Here’s a clear breakdown of money and time saved by finding and integrating Cloudflare’s FL2/Rust modularization approach into AiYou:
 
 ⸻
 
@@ -243,7 +243,7 @@ Launching a year earlier lets us capture market share + investors before incumbe
 
 ⚖️ Strategic Value
     •    This isn’t just “cost savings” — it’s risk elimination + acceleration.
-    •    With ShadowTag-v2JR doctrine, every % of saved rework = less variance in build, more predictable execution.
+    •    With AiYouJR doctrine, every % of saved rework = less variance in build, more predictable execution.
     •    Net effect: we jump from ~60% to ~75% complete build map instantly, saving ~1 year of grind and at least half a million in costs.
 
 ⸻
@@ -271,7 +271,7 @@ Subtotal: ~60% of technical foundations covered with open-source repos + the fla
 
 What remains
     •    Product layer (YouTube clone UX) → ~20% (React/Next.js front end, Figma design system, Studio dashboard, creator tools).
-    •    Engagement + ShadowTag-v2JR algo integration → ~10% (ranking filters, DD Form 2977 rails, provenance enforcement).
+    •    Engagement + AiYouJR algo integration → ~10% (ranking filters, DD Form 2977 rails, provenance enforcement).
     •    Monetization & ads → ~5% (ad server, tiering, payouts).
     •    Ops/security/compliance automation → ~5% (CI/CD risk gates, moderation models, artifact provenance).
 
@@ -295,23 +295,23 @@ What remains
 
 <next>
 
-“We were just gifted our entire build plan!!!  This Cloudflare FL2/Rust migration is directly relevant for ShadowTag-v2’s architecture and corp ops. Here’s the assessment:
+“We were just gifted our entire build plan!!!  This Cloudflare FL2/Rust migration is directly relevant for AiYou’s architecture and corp ops. Here’s the assessment:
 
 ⸻
 
-🔑 Fit for ShadowTag-v2
+🔑 Fit for AiYou
     •    Rust + Oxy-like Framework → We should follow Cloudflare’s play: modular, Rust-based proxy/core engine for inference and RAG routing. Benefits: memory safety, high concurrency, composability.
-    •    Strict module contracts → Exactly what ShadowTag-v2JR calls for: explicit inputs/outputs, compile-time enforcement, prevention of “silent bleed” between features.
+    •    Strict module contracts → Exactly what AiYouJR calls for: explicit inputs/outputs, compile-time enforcement, prevention of “silent bleed” between features.
     •    Graceful restarts/systemd socket activation → Perfect pattern for our inference microservices and knowledge ingestion pipeline. Avoids dropped sessions, ensures CI/CD upgrades don’t break live usage.
-    •    Fallback to old system → Mirrors our need for dual-path ShadowTag-v2 engines (CUDA/ROCm/CANN). FL1→FL2 fallback = CUDA→ROCm fallback while maturing.
+    •    Fallback to old system → Mirrors our need for dual-path AiYou engines (CUDA/ROCm/CANN). FL1→FL2 fallback = CUDA→ROCm fallback while maturing.
     •    Automated rollout/testing → Their “Flamingo” testbed = what we should codify in CI: dual-run old vs new, auto-rollback if metrics slip.
-    •    Performance gains → Their 25% performance lift is directly a competitive moat. For us: lower latency RAG = more engagement on ShadowTag-v2-hosted AI videos, tighter loop for creators.
+    •    Performance gains → Their 25% performance lift is directly a competitive moat. For us: lower latency RAG = more engagement on AiYou-hosted AI videos, tighter loop for creators.
 
 ⸻
 
-⚖️ ShadowTag-v2JR Alignment
+⚖️ AiYouJR Alignment
     •    Purpose → Cut fragility, enforce predictability in infra.
-    •    Reasons → Verified doctrine: Compliance Framework, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
+    •    Reasons → Verified doctrine: ATP 5-19, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
     •    Brakes → Automate regression tests, fallback, socket activation.
 
 ⸻
@@ -325,32 +325,32 @@ What remains
 ⸻
 
 👉 Recommendation:
-    •    Stage a Rust/Oxy-like “ShadowTag-v2 Core Proxy” to replace Lua/Python glue.
+    •    Stage a Rust/Oxy-like “AiYou Core Proxy” to replace Lua/Python glue.
     •    Build module-phase contracts for RAG/AI video services.
     •    Add graceful restart + fallback as default infra doctrine.
     •    Automate dual-run “Flamingo-lite” to gate every rollout.
 
 ⸻
 
-Do you want me to draft a Cursor-ready spec (module definition format + graceful restart workflow + fallback design) that mirrors Cloudflare FL2 but applied to ShadowTag-v2’s AI video + inference engine?”
+Do you want me to draft a Cursor-ready spec (module definition format + graceful restart workflow + fallback design) that mirrors Cloudflare FL2 but applied to AiYou’s AI video + inference engine?”
 
-“This Cloudflare FL2/Rust migration is directly relevant for ShadowTag-v2’s architecture and corp ops. Here’s the assessment:
+“This Cloudflare FL2/Rust migration is directly relevant for AiYou’s architecture and corp ops. Here’s the assessment:
 
 ⸻
 
-🔑 Fit for ShadowTag-v2
+🔑 Fit for AiYou
     •    Rust + Oxy-like Framework → We should follow Cloudflare’s play: modular, Rust-based proxy/core engine for inference and RAG routing. Benefits: memory safety, high concurrency, composability.
-    •    Strict module contracts → Exactly what ShadowTag-v2JR calls for: explicit inputs/outputs, compile-time enforcement, prevention of “silent bleed” between features.
+    •    Strict module contracts → Exactly what AiYouJR calls for: explicit inputs/outputs, compile-time enforcement, prevention of “silent bleed” between features.
     •    Graceful restarts/systemd socket activation → Perfect pattern for our inference microservices and knowledge ingestion pipeline. Avoids dropped sessions, ensures CI/CD upgrades don’t break live usage.
-    •    Fallback to old system → Mirrors our need for dual-path ShadowTag-v2 engines (CUDA/ROCm/CANN). FL1→FL2 fallback = CUDA→ROCm fallback while maturing.
+    •    Fallback to old system → Mirrors our need for dual-path AiYou engines (CUDA/ROCm/CANN). FL1→FL2 fallback = CUDA→ROCm fallback while maturing.
     •    Automated rollout/testing → Their “Flamingo” testbed = what we should codify in CI: dual-run old vs new, auto-rollback if metrics slip.
-    •    Performance gains → Their 25% performance lift is directly a competitive moat. For us: lower latency RAG = more engagement on ShadowTag-v2-hosted AI videos, tighter loop for creators.
+    •    Performance gains → Their 25% performance lift is directly a competitive moat. For us: lower latency RAG = more engagement on AiYou-hosted AI videos, tighter loop for creators.
 
 ⸻
 
-⚖️ ShadowTag-v2JR Alignment
+⚖️ AiYouJR Alignment
     •    Purpose → Cut fragility, enforce predictability in infra.
-    •    Reasons → Verified doctrine: Compliance Framework, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
+    •    Reasons → Verified doctrine: ATP 5-19, AR 385-10, DD Form 2977 demand mitigation of preventable downtime/errors.
     •    Brakes → Automate regression tests, fallback, socket activation.
 
 ⸻
@@ -364,11 +364,11 @@ Do you want me to draft a Cursor-ready spec (module definition format + graceful
 ⸻
 
 👉 Recommendation:
-    •    Stage a Rust/Oxy-like “ShadowTag-v2 Core Proxy” to replace Lua/Python glue.
+    •    Stage a Rust/Oxy-like “AiYou Core Proxy” to replace Lua/Python glue.
     •    Build module-phase contracts for RAG/AI video services.
     •    Add graceful restart + fallback as default infra doctrine.
     •    Automate dual-run “Flamingo-lite” to gate every rollout.
 
 ⸻
 
-Do you want me to draft a Cursor-ready spec (module definition format + graceful restart workflow + fallback design) that mirrors Cloudflare FL2 but applied to ShadowTag-v2’s AI video + inference engine?”
+Do you want me to draft a Cursor-ready spec (module definition format + graceful restart workflow + fallback design) that mirrors Cloudflare FL2 but applied to AiYou’s AI video + inference engine?”

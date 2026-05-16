@@ -2,7 +2,7 @@
 
 # Categories: DEFENSE_L6, FINANCE_BIZ
 
-discuss following in context of above: Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and ShadowTag-v2JR as the operating compass:
+discuss following in context of above: Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and AiYouJR as the operating compass:
 ⸻
 ⏱️ Timeline to MVP (Solo + Cursor, small budget)
     •    Before Cloudflare FL2 insights:
@@ -11,7 +11,7 @@ discuss following in context of above: Alright, let’s ground this in your MVP 
 ~4–6 months to MVP.
     •    Core ingestion → RAG engine (already scaffolded with Cursor).
     •    Hosting layer → YouTube clone baseline (open-source clones + custom AI upload policy).
-    •    Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early.
+    •    Risk/guardrails → ATP 5-19 / AiYouJR embedded early.
     •    Deployment infra → CoreWeave/NVIDIA for compute acceleration.
 ✅ Net time saved: ~65–70%. That’s the equivalent of skipping 9+ months of infra churn.
 ⸻
@@ -24,14 +24,14 @@ discuss following in context of above: Alright, let’s ground this in your MVP 
 Old pitch: “We need infra to even start.”
 Looks fragile; you’d appear infra-dependent and high burn.
 New pitch:
-    •    “We’ve compressed a Cloudflare-class infra build into a tiny team via Rust modularization and ShadowTag-v2JR. We’re already at product velocity; infra partners just accelerate scale.”
+    •    “We’ve compressed a Cloudflare-class infra build into a tiny team via Rust modularization and AiYouJR. We’re already at product velocity; infra partners just accelerate scale.”
     •    To CoreWeave: You’re the GPU backbone for inference hosting. Our workload is engagement-optimized AI video → sticky, high-throughput customers.
     •    To NVIDIA: We are the showcase use-case of AI-native content platforms. Every AI-generated video hosted here = GPU cycles on your stack. Position us as the “YouTube of AI” to their Inception Program.
 ⸻
 🚀 Tiny Team Advantage
     •    Solo founder + Cursor = compressed engineering.
     •    FL2 learnings = skipped infra pain.
-    •    ShadowTag-v2JR doctrine = risk-managed, no fluff, fact-based decisions.
+    •    AiYouJR doctrine = risk-managed, no fluff, fact-based decisions.
     •    Result: MVP in <6 months, at <10% of the cost a 20-person team would burn.
 ⸻
 👉 Board-level summary:
@@ -40,7 +40,7 @@ We go from “we need $5–10M and 20 engineers to stand up infra” → to “o
 Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVIDIA with this compressed timeline + “AI-native YouTube” framing? That way, you’ve got a targeted deck for infra partners, not just investors."
 <next>
 
-"Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and ShadowTag-v2JR as the operating compass:
+"Alright, let’s ground this in your MVP path under Tiny Teams doctrine, factoring in Cloudflare’s FL2/Rust modularization and AiYouJR as the operating compass:
 
 ⸻
 
@@ -51,7 +51,7 @@ Do you want me to re-roll your pitch deck slides specifically for CoreWeave/NVID
 ~4–6 months to MVP.
     •    Core ingestion → RAG engine (already scaffolded with Cursor).
     •    Hosting layer → YouTube clone baseline (open-source clones + custom AI upload policy).
-    •    Risk/guardrails → Compliance Framework / ShadowTag-v2JR embedded early.
+    •    Risk/guardrails → ATP 5-19 / AiYouJR embedded early.
     •    Deployment infra → CoreWeave/NVIDIA for compute acceleration.
 
 ✅ Net time saved: ~65–70%. That’s the equivalent of skipping 9+ months of infra churn.
@@ -71,7 +71,7 @@ Old pitch: “We need infra to even start.”
 Looks fragile; you’d appear infra-dependent and high burn.
 
 New pitch:
-    •    “We’ve compressed a Cloudflare-class infra build into a tiny team via Rust modularization and ShadowTag-v2JR. We’re already at product velocity; infra partners just accelerate scale.”
+    •    “We’ve compressed a Cloudflare-class infra build into a tiny team via Rust modularization and AiYouJR. We’re already at product velocity; infra partners just accelerate scale.”
     •    To CoreWeave: You’re the GPU backbone for inference hosting. Our workload is engagement-optimized AI video → sticky, high-throughput customers.
     •    To NVIDIA: We are the showcase use-case of AI-native content platforms. Every AI-generated video hosted here = GPU cycles on your stack. Position us as the “YouTube of AI” to their Inception Program.
 
@@ -80,7 +80,7 @@ New pitch:
 🚀 Tiny Team Advantage
     •    Solo founder + Cursor = compressed engineering.
     •    FL2 learnings = skipped infra pain.
-    •    ShadowTag-v2JR doctrine = risk-managed, no fluff, fact-based decisions.
+    •    AiYouJR doctrine = risk-managed, no fluff, fact-based decisions.
     •    Result: MVP in <6 months, at <10% of the cost a 20-person team would burn.
 
 ⸻

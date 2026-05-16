@@ -78,7 +78,6 @@
 ### Kill-Switch Triggers
 
 Activate kill-switch if:
-
 - ROI projection < 3× at 12-month review
 - Security breach detected
 - Legal/compliance violation
@@ -89,25 +88,21 @@ Activate kill-switch if:
 ### Severity Levels
 
 **P0 - Critical**
-
 - System down
 - Data breach
 - Security vulnerability exploited
 
 **P1 - High**
-
 - Degraded performance (>50% slower)
 - Blockchain integration failure
 - High error rate (>5%)
 
 **P2 - Medium**
-
 - Minor performance degradation
 - Non-critical feature failure
 - Elevated error rate (1-5%)
 
 **P3 - Low**
-
 - Cosmetic issues
 - Documentation gaps
 - Enhancement requests

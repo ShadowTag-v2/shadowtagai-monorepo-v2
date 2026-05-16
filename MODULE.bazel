@@ -1,57 +1,25 @@
-# MODULE.bazel — Root Bazel module for the ShadowTag monorepo
-# Phase: 3 (CI Ladder, OWNERS, Dep Governance)
-# Status: Structural enforcement + L2 CI + dependency isolation
-#
-# Policy: Bazel adoption proceeds wave-by-wave through canonical zones.
-#         Archive, venvs, external forks, and generated artifacts are EXCLUDED.
-
 module(
-    name = "shadowtag_monorepo",
-    version = "0.1.0",
+    name = "uphillsnowball",
+    version = "1.0",
 )
 
-# =============================================================================
-# Language rules — pinned versions
-# =============================================================================
+# JavaScript & TypeScript Rules
+bazel_dep(name = "aspect_rules_js", version = "2.0.0")
+bazel_dep(name = "aspect_rules_swc", version = "1.0.0")
+bazel_dep(name = "aspect_rules_ts", version = "2.1.0")
 
-bazel_dep(name = "rules_python", version = "1.7.0")
-
-# Go rules — for apps/counselconduit/shield (ATP 5-19 risk interceptor)
-bazel_dep(name = "rules_go", version = "0.60.0")
-bazel_dep(name = "gazelle", version = "0.42.0")
-
-# TypeScript/JS rules — staged adoption (Phase 5+)
-# bazel_dep(name = "aspect_rules_js", version = "2.3.7")
-# bazel_dep(name = "aspect_rules_ts", version = "3.5.1")
-
-# Rust rules — for libs/core/router_daemon (Phase 4+)
-# bazel_dep(name = "rules_rust", version = "0.61.0")
-
-# =============================================================================
-# Python toolchain — pin to CPython 3.14
-# =============================================================================
+# Python Rules
+bazel_dep(name = "rules_python", version = "0.40.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(
     is_default = True,
-    python_version = "3.14",
+    python_version = "3.11",
 )
 
-# =============================================================================
-# Pip dependencies — hermetic test deps resolved from lock file
-# =============================================================================
+# Go Rules (Optional Base Layer)
+bazel_dep(name = "rules_go", version = "0.46.0")
+bazel_dep(name = "gazelle", version = "0.35.0")
 
-pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
-pip.parse(
-    hub_name = "pip_deps",
-    python_version = "3.14",
-    requirements_lock = "//third_party/python:requirements_test_lock.txt",
-)
-use_repo(pip, "pip_deps")
-
-# =============================================================================
-# Go toolchain — pin to system Go (for shield sub-package)
-# =============================================================================
-
-go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.24.2")
+# Formatting & Linting
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.2", dev_dependency = True)

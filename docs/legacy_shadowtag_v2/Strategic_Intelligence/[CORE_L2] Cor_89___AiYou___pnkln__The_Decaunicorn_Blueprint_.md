@@ -1,8 +1,8 @@
-# Original Path: Cor.89 # ShadowTag-v2 | pnkln: The Decaunicorn Blueprint (Strategic Master…/Cor.89 # ShadowTag-v2 | pnkln: The Decaunicorn Blueprint (Strategic Master….txt
+# Original Path: Cor.89 # AiYou | pnkln: The Decaunicorn Blueprint (Strategic Master…/Cor.89 # AiYou | pnkln: The Decaunicorn Blueprint (Strategic Master….txt
 
 # Categories: CORE_L2, FINANCE_BIZ, MASTER_PLANS
 
-Cor.89 # ShadowTag-v2 / pnkln: The Decaunicorn Blueprint (Strategic Master Plan 2025)
+Cor.89 # AiYou / pnkln: The Decaunicorn Blueprint (Strategic Master Plan 2025)
 
 **Strictly Confidential | Founder Eyes Only**
 **Version:** 2.0 (Lean/High-Leverage Pivot)
@@ -15,7 +15,7 @@ Cor.89 # ShadowTag-v2 / pnkln: The Decaunicorn Blueprint (Strategic Master Plan 
 **Mission:** Build the world's first $1B revenue company with zero non-founder employees, powered by an autonomous agent swarm.
 
 **The Narrative:**
-The era of "headcount as a metric of success" is dead. We are building **ShadowTag-v2 (pnkln)**—a hyper-efficient, AI-native infrastructure platform that leverages a 600-agent swarm ("https://github.com/karpathy/autoresearchs") to outperform traditional engineering teams of 500+ humans.
+The era of "headcount as a metric of success" is dead. We are building **aiyou (pnkln)**—a hyper-efficient, AI-native infrastructure platform that leverages a 600-agent swarm ("https://github.com/karpathy/autoresearchs") to outperform traditional engineering teams of 500+ humans.
 
 **Key Differentials:**
 
@@ -55,7 +55,7 @@ The era of "headcount as a metric of success" is dead. We are building **ShadowT
 
 ### Unit Economics (The "Lean" Delta)
 
-| Metric                 | Industry Standard | ShadowTag-v2 (Current)    | Difference           |
+| Metric                 | Industry Standard | AiYou (Current)    | Difference           |
 | :--------------------- | :---------------- | :----------------- | :------------------- |
 | **Gross Margin**       | 70-75%            | **92%**            | +20% (via Flash 2.0) |
 | **LTV:CAC**            | 3:1               | **25:1**           | 8x Effective         |
@@ -107,5 +107,5 @@ We are currently in the **Active Execution Phase**, self-funding via high-margin
 
 ---
 
-**Confidential - ShadowTag-v2 / pnkln Ecosystem**
+**Confidential - AiYou / pnkln Ecosystem**
 _Generated from Internal Memory Banks - December 8, 2025_

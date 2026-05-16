@@ -1,10 +1,10 @@
-# ShadowTag Governance Service
+# YouAi Governance Service
 
 Full governance, compliance, and infrastructure management service implementing EU AI Act, DSA, NIST RMF, ISO 42001, and adtech standards.
 
 ## Overview
 
-The ShadowTag Governance Service provides comprehensive compliance and governance capabilities for AI-driven content platforms. All AI personas run at **IQ 160** for maximum foresight, innovation depth, and risk detection.
+The YouAi Governance Service provides comprehensive compliance and governance capabilities for AI-driven content platforms. All AI personas run at **IQ 160** for maximum foresight, innovation depth, and risk detection.
 
 ### Key Features
 
@@ -22,31 +22,26 @@ The ShadowTag Governance Service provides comprehensive compliance and governanc
 ### Local Deployment (Docker)
 
 1. **Clone and navigate to the repository**
-
 ```bash
-cd ShadowTag-v2-fastapi-services
+cd aiyou-fastapi-services
 ```
 
 2. **Copy environment configuration**
-
 ```bash
 cp .env.example .env
 ```
 
 3. **Start services with Docker Compose**
-
 ```bash
 docker-compose up -d
 ```
 
 4. **Verify services are running**
-
 ```bash
 docker-compose ps
 ```
 
 5. **Access the API**
-
 - API Documentation: http://localhost:8000/docs
 - Health Check: http://localhost:8000/health
 - KPI Dashboard: http://localhost:8000/api/v1/kpi/dashboard
@@ -54,20 +49,17 @@ docker-compose ps
 ### Local Development (Python)
 
 1. **Create virtual environment**
-
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 2. **Install dependencies**
-
 ```bash
 pip install -r requirements.txt
 ```
 
 3. **Run the service**
-
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
@@ -244,13 +236,13 @@ pytest tests/test_governance.py
 
 ```bash
 # Build image
-docker build -t ShadowTag-governance:latest .
+docker build -t youai-governance:latest .
 
 # Tag for registry
-docker tag ShadowTag-governance:latest registry.example.com/ShadowTag-governance:latest
+docker tag youai-governance:latest registry.example.com/youai-governance:latest
 
 # Push to registry
-docker push registry.example.com/ShadowTag-governance:latest
+docker push registry.example.com/youai-governance:latest
 ```
 
 ### Kubernetes
@@ -268,7 +260,7 @@ See `k8s/` directory for Kubernetes manifests (deployment, service, ingress, con
 - **Rate Limiting**: 100 requests/minute per IP (configurable)
 - **CORS**: Configurable allowed origins
 - **Input Validation**: Pydantic models with strict validation
-- **Non-root Container**: Runs as user `ShadowTag` (UID 1000)
+- **Non-root Container**: Runs as user `youai` (UID 1000)
 - **Health Checks**: Built-in liveness/readiness probes
 
 ## Performance
@@ -281,26 +273,23 @@ See `k8s/` directory for Kubernetes manifests (deployment, service, ingress, con
 ## 30-60-90 Day Plan
 
 ### 30 Days ✅
-
 - [x] Map YRM↔️NIST RMF↔️ISO 42001 controls
 - [x] Choose adtech baseline: VAST 4.x + OM SDK
 - [x] WCAG 2.2 audit + minors' defaults
 
 ### 60 Days 🏗️
-
 - [ ] C2PA Content Credentials live
 - [ ] SKAN/Topics instrumentation
 - [x] OpenTelemetry + SBOM/SLSA pipeline
 
 ### 90 Days 📋
-
 - [ ] Advertiser dashboard (OM viewability + brand-safety)
-- [ ] Publish ShadowTag Governance Report v0.1
+- [ ] Publish YouAi Governance Report v0.1
 - [ ] Infra decision: Blackwell + Trainium2/Azure Maia
 
 ## License
 
-Proprietary - ShadowTag Platform
+Proprietary - YouAi Platform
 
 ## Support
 

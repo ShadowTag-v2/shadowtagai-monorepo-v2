@@ -67,14 +67,12 @@ The PNKLN Core Stack™ is organized into four Kubernetes namespaces:
 ### 1. Called By (Downstream Services)
 
 #### Analysis Service
-
 **Namespace**: `analysis`
 **Purpose**: Trend analysis and pattern detection
 **Integration**: REST API / Event Stream
 **Data Format**: JSON
 
 **Request Pattern**:
-
 ```http
 GET /api/v1/intelligence/latest?tier=1&limit=100
 GET /api/v1/intelligence/search?query=keyword&since=24h
@@ -82,7 +80,6 @@ GET /api/v1/intelligence/by-source?source=twitter&tier=1,2
 ```
 
 **Response**:
-
 ```json
 {
   "timestamp": "2024-11-15T07:00:00Z",
@@ -116,14 +113,12 @@ GET /api/v1/intelligence/by-source?source=twitter&tier=1,2
 ```
 
 #### Alerting Service
-
 **Namespace**: `alerting`
 **Purpose**: Monitor for critical events and trigger alerts
 **Integration**: Webhook / Event Bus
 **Pattern**: Push-based
 
 **Webhook Payload** (Tier 1 items only):
-
 ```json
 {
   "event": "intelligence.tier1.new",
@@ -145,14 +140,12 @@ GET /api/v1/intelligence/by-source?source=twitter&tier=1,2
 ```
 
 #### Reporting Service
-
 **Namespace**: `reporting`
 **Purpose**: Generate periodic intelligence reports
 **Integration**: Batch API
 **Pattern**: Pull-based (daily/weekly/monthly)
 
 **Report Request**:
-
 ```http
 POST /api/v1/intelligence/report
 Content-Type: application/json
@@ -168,7 +161,6 @@ Content-Type: application/json
 ```
 
 **Report Response**:
-
 ```json
 {
   "report": {
@@ -193,31 +185,26 @@ Content-Type: application/json
 ```
 
 #### Briefing Service
-
 **Namespace**: `briefing`
 **Purpose**: Create morning AM briefings
 **Integration**: File-based / REST API
 **Pattern**: Pull-based (morning delivery)
 
 **AM Briefing Request**:
-
 ```http
 GET /api/v1/intelligence/am-briefing?date=2024-11-15
 ```
 
 **AM Briefing Format** (Markdown):
-
 ```markdown
 # AM Intelligence Briefing - November 15, 2024
 
 ## Executive Summary
-
 Overnight intelligence collection completed at 07:00 UTC. 1,247 total items across 5 sources, with 251 high-value (Tier 1) items identified.
 
 ## Top 10 Tier 1 Items
 
 ### 1. [Breaking: Major Tech Announcement]
-
 - **Source**: Reuters (News)
 - **Time**: 06:45 UTC
 - **Relevance**: 0.92 | **Credibility**: 0.94
@@ -227,13 +214,11 @@ Overnight intelligence collection completed at 07:00 UTC. 1,247 total items acro
 [... 9 more items ...]
 
 ## Key Themes & Trends
-
 - **Artificial Intelligence**: 87 items (42 Tier 1)
 - **Cybersecurity**: 63 items (28 Tier 1)
 - **Markets**: 112 items (35 Tier 1)
 
 ## Source Distribution
-
 - News: 374 items (30%)
 - Twitter: 312 items (25%)
 - YouTube: 249 items (20%)
@@ -241,7 +226,6 @@ Overnight intelligence collection completed at 07:00 UTC. 1,247 total items acro
 - RSS: 125 items (10%)
 
 ## Collection Metrics
-
 - **Runtime**: 42 minutes ✓
 - **Quality**: 0.73 average ✓
 - **Cost**: $2.56 ($0.00205/item) ✓
@@ -259,7 +243,6 @@ The Intelligence Layer makes outbound API calls to:
 - **RSS Feeds**: Distributed content
 
 All API calls use:
-
 - Ethical crawling practices
 - Rate limiting
 - robots.txt compliance
@@ -291,7 +274,7 @@ All API calls use:
   │     └─> Write classified data
   │
   ├─> Container 3: Validation (5 min)
-  │     ├─> Judge 6 quality gates
+  │     ├─> Judge #6 quality gates
   │     ├─> Items gate (volume, quality)
   │     ├─> Sources gate (diversity, balance)
   │     ├─> Costs gate (efficiency)
@@ -337,34 +320,29 @@ CREATE INDEX idx_items_expires ON intelligence.items(expires_at);
 ```
 
 **Retention Policy**:
-
 - Tier 1: 90 days
 - Tier 2: 60 days
 - Tier 3: 30 days
 
 **Automated Cleanup** (daily CronJob):
-
 ```sql
 DELETE FROM intelligence.items WHERE expires_at < NOW();
 ```
 
 ---
 
-## Quality Gates (Judge 6)
+## Quality Gates (Judge #6)
 
 ### Gate Definitions
 
 #### 1. Items Gate
-
 **Purpose**: Ensure sufficient volume and quality
 **Thresholds**:
-
 - Minimum daily items: 500 (error)
 - Target daily items: 1000 (warning)
 - Minimum quality score: 0.60 (error)
 
 **Validation**:
-
 ```javascript
 {
   "itemsGate": {
@@ -397,16 +375,13 @@ DELETE FROM intelligence.items WHERE expires_at < NOW();
 ```
 
 #### 2. Sources Gate
-
 **Purpose**: Ensure source diversity and balance
 **Thresholds**:
-
 - Minimum sources: 5 (error)
 - Maximum source percent: 40% (warning)
 - Minimum source percent: 5% (info)
 
 **Validation**:
-
 ```javascript
 {
   "sourcesGate": {
@@ -432,16 +407,13 @@ DELETE FROM intelligence.items WHERE expires_at < NOW();
 ```
 
 #### 3. Costs Gate
-
 **Purpose**: Ensure cost efficiency
 **Thresholds**:
-
 - Max per-item cost: $0.005 (error)
 - Target per-item cost: $0.0025 (warning)
 - Max monthly cost: $100 (error)
 
 **Validation**:
-
 ```javascript
 {
   "costsGate": {
@@ -467,17 +439,14 @@ DELETE FROM intelligence.items WHERE expires_at < NOW();
 ```
 
 #### 4. Scores Gate
-
 **Purpose**: Ensure data quality metrics
 **Thresholds**:
-
 - Minimum relevance: 0.60 (error)
 - Minimum timeliness: 0.50 (error)
 - Minimum credibility: 0.65 (error)
 - Minimum completeness: 0.70 (error)
 
 **Validation**:
-
 ```javascript
 {
   "scoresGate": {
@@ -505,26 +474,22 @@ DELETE FROM intelligence.items WHERE expires_at < NOW();
 ## Performance Targets
 
 ### Runtime Performance
-
 - **Target**: 45 minutes
 - **Maximum**: 60 minutes (hard timeout)
 - **Actual** (90th percentile): 42 minutes ✓
 
 **Breakdown**:
-
 - Ingestion: 20 min (44%)
 - Classification: 15 min (33%)
 - Validation: 5 min (11%)
 - Delivery: 5 min (11%)
 
 ### Cost Performance
-
 - **Target**: $77/month ($0.0025/item × 1000 items/day × 30 days)
 - **Maximum**: $150/month ($0.005/item max)
 - **Actual**: $76.50/month ✓
 
 **By Source**:
-
 - YouTube API: $23.40/month (30%)
 - Twitter API: $28.50/month (37%)
 - News API: $13.50/month (18%)
@@ -532,12 +497,10 @@ DELETE FROM intelligence.items WHERE expires_at < NOW();
 - RSS Hosting: $11.10/month (15%)
 
 ### Quality Performance
-
 - **Target Quality**: 0.65 average composite
 - **Actual Quality**: 0.73 ✓
 
 **By Tier**:
-
 - Tier 1: 0.88 average (251 items, 20%)
 - Tier 2: 0.72 average (623 items, 50%)
 - Tier 3: 0.52 average (373 items, 30%)
@@ -570,7 +533,6 @@ intelligence_gate_passed{gate="costs"} 1
 ### Grafana Dashboards
 
 **Dashboard**: PNKLN Intelligence Layer
-
 - Real-time ingestion progress
 - Tier distribution charts
 - Source balance pie chart
@@ -612,21 +574,18 @@ intelligence_gate_passed{gate="costs"} 1
 ## Ethical & Compliance Framework
 
 ### Ethical Crawling
-
 - Respect robots.txt: ✓
 - Honor crawl-delay: ✓
 - Rate limiting: ✓
 - Transparent User-Agent: ✓
 
 ### Privacy Compliance
-
 - GDPR compliant: ✓
 - CCPA compliant: ✓
 - PII anonymization: ✓
 - Data retention limits: ✓
 
 ### Transparency
-
 - Bot policy published: https://pnkln.ai/bot-policy
 - Contact email: bot@pnkln.ai
 - Opt-out mechanism: Available
@@ -638,38 +597,30 @@ intelligence_gate_passed{gate="costs"} 1
 ### Failure Scenarios
 
 #### 1. CronJob Failure
-
 **Detection**: Job doesn't complete within 60 minutes
 **Alert**: PagerDuty critical
 **Mitigation**:
-
 - Automatic retry (backoff limit: 2)
 - Manual trigger via kubectl
 - Fall back to previous day's data for briefing
 
 #### 2. API Outage
-
 **Detection**: Source returns HTTP 5xx or timeouts
 **Mitigation**:
-
 - Skip source gracefully
 - Continue with other sources
 - Log warning for investigation
 
 #### 3. Quality Gate Failure
-
-**Detection**: Judge 6 validation fails
+**Detection**: Judge #6 validation fails
 **Mitigation**:
-
 - Deliver data with warning flag
 - Alert data quality team
 - Investigate root cause
 
 #### 4. Database Unavailable
-
 **Detection**: PostgreSQL connection fails
 **Mitigation**:
-
 - Write to GCS bucket (backup)
 - Retry connection with exponential backoff
 - Alert infrastructure team
@@ -679,7 +630,6 @@ intelligence_gate_passed{gate="costs"} 1
 ## Future Enhancements
 
 ### Planned Features
-
 - Real-time streaming (complement to batch)
 - Machine learning relevance tuning
 - Automated source discovery
@@ -688,7 +638,6 @@ intelligence_gate_passed{gate="costs"} 1
 - Image intelligence (OCR, object detection)
 
 ### Scaling Considerations
-
 - Horizontal scaling (multiple CronJobs)
 - Geographic distribution
 - Specialized source workers

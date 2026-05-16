@@ -5,13 +5,11 @@
 ### Why Not GKE (Yet)
 
 The original plan called for a $62.5K/month GKE infrastructure with:
-
 - 4-namespace Kubernetes deployment
 - GPU node pools (L4, A100)
-- 3-layer hybrid Judge 6 (Gemini + PyTorch + Rules)
+- 3-layer hybrid Judge #6 (Gemini + PyTorch + Rules)
 
 **Problems with this approach:**
-
 1. No product-market fit validation
 2. $750K/year infrastructure before first customer
 3. 4-6 month deployment timeline
@@ -64,19 +62,18 @@ PHASE 2: GKE Migration (when justified)
 ```typescript
 // src/integrations/vertex-ai.ts
 const client = new VertexAIClient({
-  projectId: "pnkln-core-stack",
-  modelWeights: { gemini: 0.6, claude: 0.4 },
+  projectId: 'pnkln-core-stack',
+  modelWeights: { gemini: 0.6, claude: 0.4 }
 });
 
 // Automatic model selection with fallback
 const response = await client.complete({
   prompt: "Analyze this content...",
-  model: "auto", // Routes based on weights
+  model: 'auto'  // Routes based on weights
 });
 ```
 
 **Supported Models:**
-
 - `claude-sonnet-4-5@20250929` - Deep analysis, complex reasoning
 - `gemini-3.1-family` - Fast inference, cost-optimized
 - `gemini-3.1-family` - High-quality generation
@@ -85,21 +82,21 @@ const response = await client.complete({
 
 ### Current (Cloudflare Workers)
 
-| Component                | Monthly Cost |
-| ------------------------ | ------------ |
-| Workers (10M requests)   | $5           |
-| Vertex AI (Gemini Flash) | $200-500     |
-| KV Storage               | $5           |
-| **Total**                | **$210-510** |
+| Component | Monthly Cost |
+|-----------|-------------|
+| Workers (10M requests) | $5 |
+| Vertex AI (Gemini Flash) | $200-500 |
+| KV Storage | $5 |
+| **Total** | **$210-510** |
 
 ### At Scale (GKE Migration Trigger)
 
-| Metric               | Threshold   |
-| -------------------- | ----------- |
-| MRR                  | > $100,000  |
-| Requests/day         | > 1,000,000 |
-| Enterprise customers | > 10        |
-| Compliance needs     | SOC2/HIPAA  |
+| Metric | Threshold |
+|--------|-----------|
+| MRR | > $100,000 |
+| Requests/day | > 1,000,000 |
+| Enterprise customers | > 10 |
+| Compliance needs | SOC2/HIPAA |
 
 ## API Specification
 
@@ -108,7 +105,6 @@ const response = await client.complete({
 Validate content against ATP 519 policy.
 
 **Request:**
-
 ```json
 {
   "content": "Content to validate",
@@ -119,7 +115,6 @@ Validate content against ATP 519 policy.
 ```
 
 **Response:**
-
 ```json
 {
   "approved": true,
@@ -137,7 +132,6 @@ Validate content against ATP 519 policy.
 Health check endpoint.
 
 **Response:**
-
 ```json
 {
   "status": "healthy",
@@ -148,12 +142,12 @@ Health check endpoint.
 
 ## Performance Targets
 
-| Metric       | Target | Current          |
-| ------------ | ------ | ---------------- |
-| p50 latency  | <10ms  | ~5ms (rules)     |
-| p99 latency  | <50ms  | ~45ms (gemini)   |
-| Availability | 99.9%  | 99.99% (CF edge) |
-| Coverage     | 98%+   | 98.5%            |
+| Metric | Target | Current |
+|--------|--------|---------|
+| p50 latency | <10ms | ~5ms (rules) |
+| p99 latency | <50ms | ~45ms (gemini) |
+| Availability | 99.9% | 99.99% (CF edge) |
+| Coverage | 98%+ | 98.5% |
 
 ## Security Model
 
@@ -201,14 +195,12 @@ pnkln-stack-fastapi-services/
 ## Future Phases
 
 ### Phase 2: Multi-Tenant SaaS
-
 - User dashboard
 - Usage-based billing (Stripe)
 - Custom rule configuration
 - Webhook integrations
 
 ### Phase 3: GKE Migration
-
 - PyTorch layer for custom models
 - GPU inference (L4/A100)
 - Kubernetes autoscaling
@@ -216,17 +208,16 @@ pnkln-stack-fastapi-services/
 
 ## Key Decisions Log
 
-| Date       | Decision                  | Rationale                  |
-| ---------- | ------------------------- | -------------------------- |
-| 2025-11-20 | CF Workers over GKE       | Time-to-revenue: 4h vs 4mo |
-| 2025-11-20 | Rules-first architecture  | 95% requests at $0.0001    |
-| 2025-11-20 | Gemini Flash for analysis | Best cost/latency ratio    |
-| 2025-11-20 | No PyTorch layer (yet)    | Premature optimization     |
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| 2025-11-20 | CF Workers over GKE | Time-to-revenue: 4h vs 4mo |
+| 2025-11-20 | Rules-first architecture | 95% requests at $0.0001 |
+| 2025-11-20 | Gemini Flash for analysis | Best cost/latency ratio |
+| 2025-11-20 | No PyTorch layer (yet) | Premature optimization |
 
 ---
 
 **Bootstrap Gate**: Deploy to production only after:
-
 - [ ] 10 beta customers confirmed
 - [ ] Pricing validated ($99 + usage)
 - [ ] 95% test coverage

@@ -56,7 +56,7 @@ Let Cursor/Codespaces give you 3.14 instantly without touching Windows:
 
 // .devcontainer/devcontainer.json
 {
-"name": "ShadowTag-v2/ShadowTag",
+"name": "AiYou/ShadowTag",
 "image": "mcr.microsoft.com/devcontainers/python:3.14",
 "features": {
 "ghcr.io/devcontainers/features/node:1": { "version": "22" }
@@ -350,7 +350,7 @@ If you like, I can mock up performance & defect metrics comparing (Grok-only) pi
 
 ⸻
 
-Moondream → Ingestion pipeline (ShadowTag/ShadowTag-v2)
+Moondream → Ingestion pipeline (ShadowTag/AiYou)
 
 Where it fits 1. Watchers (local, Codespaces, cloud bucket) 2. Normalizer (rename, MIME sniff, page-split) 3. Vision parse (NEW) ← Moondream 4. PII pass/Redaction (regex + policy) 5. Schema & JSONL emit (one record per doc/page) 6. Dedup & cache (SQLite/GPTRAM + hash) 7. Embeddings/Index (optional now; batch later) 8. Ship (artifact → S3/GCS, or attach to PR)
 
@@ -564,7 +564,7 @@ So: it’s 5–10× faster, fully local, and semantically aware.
 
 ⸻
 
-💸 Economic Impact for You (ShadowTag / ShadowTag-v2)
+💸 Economic Impact for You (ShadowTag / AiYou)
 
 Use Case Old Method With Moondream Cost Impact
 Invoice / receipt parsing AWS Textract / GPT-4-V Moondream JSON directly ↓ 90 % cost / file
@@ -614,7 +614,7 @@ Conclusion: Moondream delivers ~95 % of GPT-4o’s performance at 1/40th cost an
 
 ⸻
 
-🚀 Strategic Fit with ShadowTag-v2/ShadowTag
+🚀 Strategic Fit with AiYou/ShadowTag
 • Acts as the visual cognition layer of your chain architecture.
 • Converts unstructured visual content into auditable structured data (JSON receipts, UI diffs, etc.).
 • Enables visual-code feedback loops: Cursor’s LLMs can “see” what the chain changed.
@@ -1662,7 +1662,7 @@ package.json (add scripts)
 
 ⸻
 
-6) How this plugs into ShadowTag/ShadowTag-v2
+6) How this plugs into ShadowTag/AiYou
 	•	Ingest gaps (no API): Create small Cursor tasks that set CU_GOAL per portal (e.g., “login → export CSV → paste to upload form”), run npm run cu:run, then ingest the .ci/computer_use_final.html or a downloaded file.
 	•	QA smoke: The included ui-smoke.yml runs nightly and uploads a DOM snapshot + action log so you can diff changes.
 	•	Auditability: The JSONL audit lets us reconstruct exactly what the agent did, per turn.
@@ -1675,7 +1675,7 @@ If you want me to also:
 
 say the word and I’ll ship those files too.”
 
-“Here’s the quick, practical take on Gemini “Computer Use” and how we’d fold it into your ShadowTag/ShadowTag-v2 stack.
+“Here’s the quick, practical take on Gemini “Computer Use” and how we’d fold it into your ShadowTag/AiYou stack.
 
 What it is (in 1 line)
 
@@ -1700,7 +1700,7 @@ Press/early coverage notes it’s browser-scoped (not full OS control) and curre
 
 ⸻
 
-Fold-in plan for ShadowTag / ShadowTag-v2
+Fold-in plan for ShadowTag / AiYou
 
 1) Where it slots
 	•	ShadowTag ingest & ops: use Computer Use to automate “no-API” sources (e.g., vendor portals) when our crawler lacks an endpoint.
@@ -2100,7 +2100,7 @@ Want the Cursor headless agent flavor too?
 Say “add Cursor agent step” and I’ll drop a second workflow that lets the model propose diffs for non-trivial fixes (kept behind a branch and tiny PR link), while preserving our strict permissions posture.”
 
 “Let’s quantify exactly how good — in near-term financial and operational terms — this Codemender-style auto-fix fold-in would be for your SaaS.
-Assume we deploy it now inside the ShadowTag-v2JR Safety Stack (with the CI agent and safety pipeline described earlier).
+Assume we deploy it now inside the AiYouJR Safety Stack (with the CI agent and safety pipeline described earlier).
 
 ⸻
 
@@ -2241,7 +2241,7 @@ C) Risk controls / brakes
 
 “We don’t just detect security issues — we auto-repair trivial ones in CI, under audit. Think Codemender, but with full traceability, gated permissions, and human fallback.”
 
-You can market your product as “Codemender-grade reliability, built inside ShadowTag-v2’s safety pipeline”.
+You can market your product as “Codemender-grade reliability, built inside AiYou’s safety pipeline”.
 	•	Be able to quantify: “We auto-fixed 72 issues in open-source over 10 days → saved 120 dev hours.”
 	•	Always mention transparency / audit trail—every auto-fix is stamped with commit hash, PR comment, and backed by your safety evidence pipeline.
 	•	For enterprise customers: offer “auto-fix policies” (aggressive vs conservative).
@@ -2348,7 +2348,7 @@ app.listen(port, () => console.log(`[router] OpenAI proxy on :${port}`));
 router/package.json:
 
 {
-  "name": "ShadowTag-v2-router",
+  "name": "aiyou-router",
   "private": true,
   "type": "module",
   "scripts": {
@@ -2417,7 +2417,7 @@ Add to your repo:
 .devcontainer/devcontainer.json
 
 {
-  "name": "ShadowTag-v2 Codespace",
+  "name": "AiYou Codespace",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
   "features": {
     "ghcr.io/devcontainers/features/python:1": { "version": "3.11" }
@@ -2457,7 +2457,7 @@ Use the forwarded URL for Cline/Continue inside the Codespace: https://<forwarde
 
 5) Ready-to-paste Cursor tasks (so you don’t have to remember)
 
-tasks/ShadowTag-v2.tasks.json
+tasks/aiyou.tasks.json
 
 {
   "version": "1",
@@ -2505,7 +2505,7 @@ If you want, I can also drop:
 	•	wires a blocking review + conditional auto-merge,
 	•	and fails fast if GitHub isn’t reachable (“notify if GitHub is not visible”).
 
-I’m also flagging one objection per ShadowTag-v2JR/“strict mode”: auto-approving all merges blindly is risky. I include conditional auto-merge (only when all safety gates are green and no 🚨/🔒 issues were found). You can flip one flag to make it unconditional if you insist.
+I’m also flagging one objection per AiYouJR/“strict mode”: auto-approving all merges blindly is risky. I include conditional auto-merge (only when all safety gates are green and no 🚨/🔒 issues were found). You can flip one flag to make it unconditional if you insist.
 
 ⸻
 
@@ -2529,7 +2529,7 @@ $mk | ForEach-Object { New-Item -ItemType Directory -Force -Path $_ | Out-Null }
 @'
 # Service Definition (Item Definition analogue)
 ## Scope
-- Service(s): ShadowTag, ShadowTag-v2
+- Service(s): ShadowTag, AiYou
 - Inputs: user uploads, APIs, model prompts
 - Outputs: responses, embeddings, video snippets
 - Users: public, creators, moderators, admin
@@ -2547,7 +2547,7 @@ $mk | ForEach-Object { New-Item -ItemType Directory -Force -Path $_ | Out-Null }
   severity: 5
   probability: 3
   control: 4
-  owner: safety@ShadowTag-v2
+  owner: safety@aiyou
   mitigations:
     - safety filters, eval tests
     - human review for escalations
@@ -2558,7 +2558,7 @@ $mk | ForEach-Object { New-Item -ItemType Directory -Force -Path $_ | Out-Null }
   severity: 4
   probability: 2
   control: 4
-  owner: sre@ShadowTag-v2
+  owner: sre@aiyou
   mitigations:
     - SLO alerts, canary 10%, rollback runbook
   evidence: monitoring/slo-dashboard.png
@@ -2782,7 +2782,7 @@ jobs:
         run: |
           gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
 
-Want unconditional auto-approve? Replace the first job’s if: with always() and drop the checks. Not recommended (ShadowTag-v2JR objection).
+Want unconditional auto-approve? Replace the first job’s if: with always() and drop the checks. Not recommended (AiYouJR objection).
 
 ⸻
 
@@ -2795,7 +2795,7 @@ Want unconditional auto-approve? Replace the first job’s if: with always() and
 
 ⸻
 
-5) Tech stack re-roll (ShadowTag → first; ShadowTag-v2 → second)
+5) Tech stack re-roll (ShadowTag → first; AiYou → second)
 
 Runtime & Dev
 	•	GitHub Codespaces (no local Docker required); Next.js 14 + Node 22; Python 3.11 for tools; optional Rust for native helpers.
@@ -2812,7 +2812,7 @@ Biz plan deltas (high level)
 	•	Enterprise-friendly from day 1 (SOC2-ready story).
 	•	Faster due diligence → shorter sales cycle (target 30–40% reduction).
 	•	Lower incident cost (automated postmortems & rollback) → ~60% opex savings on outages.
-	•	Positioning: “Safety-case-as-a-service” differentiator for creators & brands (especially for ShadowTag-v2’s public feed moderation).
+	•	Positioning: “Safety-case-as-a-service” differentiator for creators & brands (especially for AiYou’s public feed moderation).
 
 ⸻
 
@@ -2851,13 +2851,13 @@ Think of this as your “safety-case-as-a-service” blueprint — same rigor, S
 
 | Layer                               | Deliverable                                                   | Description / Metrics                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
-| **Governance (Doctrine / ShadowTag-v2JR)** | Safety charter + roles matrix                                 | Owner per risk domain; Board oversight of security/reliability. |
+| **Governance (Doctrine / AiYouJR)** | Safety charter + roles matrix                                 | Owner per risk domain; Board oversight of security/reliability. |
 | **Design Controls**                 | Threat model + architecture doc                               | Maintain diagrams; model threat propagation (STRIDE/LINDD).     |
 | **Development Controls**            | Test coverage ≥ 98 %; mandatory static analysis & code review | Cursor / GitHub Actions enforce energy margin, test pass, lint. |
 | **Deployment Controls**             | Staged rollout, feature flags, rollback automation            | No direct-to-prod merges; canary 5–10 % traffic before 100 %.   |
 | **Monitoring Controls**             | Uptime ≥ 99.9 %, error budget ≤ 0.1 %                         | Logs, metrics, anomaly detection.                               |
 | **Incident Response**               | Post-mortem template (5-Whys) + 24 h disclosure SLA           | Required for SOC 2 / ISO 27001 equivalence.                     |
-| **Data Protection**                 | Encryption @ rest + in-transit; zero plaintext PII            | Already part of ShadowTag-v2 doctrine.                                 |
+| **Data Protection**                 | Encryption @ rest + in-transit; zero plaintext PII            | Already part of AiYou doctrine.                                 |
 | **Audit Evidence**                  | CI artifacts + model cards + runbooks                         | Every commit leaves verifiable trail (like DSSAD for UNECE).    |
 
 ---
@@ -2965,13 +2965,13 @@ Think of this as your “safety-case-as-a-service” blueprint — same rigor, S
 
 | Layer                               | Deliverable                                                   | Description / Metrics                                           |
 | ----------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
-| **Governance (Doctrine / ShadowTag-v2JR)** | Safety charter + roles matrix                                 | Owner per risk domain; Board oversight of security/reliability. |
+| **Governance (Doctrine / AiYouJR)** | Safety charter + roles matrix                                 | Owner per risk domain; Board oversight of security/reliability. |
 | **Design Controls**                 | Threat model + architecture doc                               | Maintain diagrams; model threat propagation (STRIDE/LINDD).     |
 | **Development Controls**            | Test coverage ≥ 98 %; mandatory static analysis & code review | Cursor / GitHub Actions enforce energy margin, test pass, lint. |
 | **Deployment Controls**             | Staged rollout, feature flags, rollback automation            | No direct-to-prod merges; canary 5–10 % traffic before 100 %.   |
 | **Monitoring Controls**             | Uptime ≥ 99.9 %, error budget ≤ 0.1 %                         | Logs, metrics, anomaly detection.                               |
 | **Incident Response**               | Post-mortem template (5-Whys) + 24 h disclosure SLA           | Required for SOC 2 / ISO 27001 equivalence.                     |
-| **Data Protection**                 | Encryption @ rest + in-transit; zero plaintext PII            | Already part of ShadowTag-v2 doctrine.                                 |
+| **Data Protection**                 | Encryption @ rest + in-transit; zero plaintext PII            | Already part of AiYou doctrine.                                 |
 | **Audit Evidence**                  | CI artifacts + model cards + runbooks                         | Every commit leaves verifiable trail (like DSSAD for UNECE).    |
 
 ---

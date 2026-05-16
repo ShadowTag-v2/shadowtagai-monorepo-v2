@@ -10,15 +10,15 @@
 
 ### What Changed When We Folded In ALL Branches
 
-| Component                   | Source Branch                | Year 1 ARR | Year 3 ARR | Margin  |
-| --------------------------- | ---------------------------- | ---------- | ---------- | ------- |
-| ShadowTag v2 (Watermarking) | Current                      | $893K      | $4.67M     | 85%     |
-| UltraThink Orchestration    | ultrathink-framework         | $537K      | $2.5M      | 80%     |
-| Kernel Chaining (Decisions) | kernel-chaining-architecture | $459K      | $2.5M      | 97%     |
-| LLM Memory Persistence      | superpowers-marketplace      | $200K      | $6M        | 98%     |
-| Load Testing & Benchmarks   | intelligence-pipeline        | $120K      | $10.8M     | 80%     |
-| Gemini Ingestion Layer      | cor7-neural                  | $200K      | $2.9M      | 75%     |
-| **TOTAL ECOSYSTEM**         | **All Merged**               | **$2.4M**  | **$29.4M** | **85%** |
+| Component | Source Branch | Year 1 ARR | Year 3 ARR | Margin |
+|-----------|---------------|------------|------------|--------|
+| ShadowTag v2 (Watermarking) | Current | $893K | $4.67M | 85% |
+| UltraThink Orchestration | ultrathink-framework | $537K | $2.5M | 80% |
+| Kernel Chaining (Decisions) | kernel-chaining-architecture | $459K | $2.5M | 97% |
+| LLM Memory Persistence | superpowers-marketplace | $200K | $6M | 98% |
+| Load Testing & Benchmarks | intelligence-pipeline | $120K | $10.8M | 80% |
+| Gemini Ingestion Layer | cor7-neural | $200K | $2.9M | 75% |
+| **TOTAL ECOSYSTEM** | **All Merged** | **$2.4M** | **$29.4M** | **85%** |
 
 ### The Transformation
 
@@ -41,7 +41,6 @@ AFTER (Unified Platform):
 ## 💰 UNIFIED REVENUE ARCHITECTURE
 
 ### LAYER 1: Content Authenticity (ShadowTag v2)
-
 **Source**: `claude/encode-workbench-011HjffkzypaspRcDZL1uXf1`
 
 ```
@@ -61,7 +60,6 @@ AFTER (Unified Platform):
 ```
 
 **Key Metrics**:
-
 - Video watermarking: DCT mid-band, H.264/H.265 resilient
 - Audio watermarking: Ultrasonic 19.5 kHz spread-spectrum
 - Blockchain receipts: Polygon/Ethereum provenance
@@ -69,7 +67,6 @@ AFTER (Unified Platform):
 ---
 
 ### LAYER 2: AI Orchestration (UltraThink Framework)
-
 **Source**: `claude/pnkln-ultrathink-framework-01URALiZh8CRvMhLV9FeXVce`
 
 ```
@@ -88,7 +85,6 @@ AFTER (Unified Platform):
 ```
 
 **Key Agents**:
-
 - UltraThink Designer (Steve Jobs persona)
 - Wealth Accelerator (Revenue strategist)
 - Monetization Architect (Funnel optimization)
@@ -96,7 +92,6 @@ AFTER (Unified Platform):
 ---
 
 ### LAYER 3: Decision Engine (Kernel Chaining)
-
 **Source**: `claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR`
 
 ```
@@ -122,7 +117,6 @@ AFTER (Unified Platform):
 ```
 
 **Technical Innovation**:
-
 - ATP-519 risk scan → Judge Six classify → Audit compress
 - Single Gemini 2.0 Flash call with function tools
 - Cryptographic audit trail (ShadowTag integration)
@@ -130,7 +124,6 @@ AFTER (Unified Platform):
 ---
 
 ### LAYER 4: LLM Memory Persistence
-
 **Source**: `claude/add-superpowers-marketplace-011CUuLnhzCNrXYhosFmMAt9`
 
 ```
@@ -151,7 +144,6 @@ AFTER (Unified Platform):
 ```
 
 **Market Position**:
-
 - TAM: 10M+ developers using Claude/GPT/Gemini
 - SAM: 1M+ power users (multi-LLM)
 - SOM: 10K → 200K users (Year 1 → Year 3)
@@ -161,7 +153,6 @@ AFTER (Unified Platform):
 ---
 
 ### LAYER 5: Load Testing & Benchmarks
-
 **Source**: `claude/pnkln-intelligence-pipeline-deployment-011CUvwKSmyxTgTWmc7WaHUR`
 
 ```
@@ -186,7 +177,6 @@ AFTER (Unified Platform):
 ---
 
 ### LAYER 6: Intelligence Ingestion
-
 **Source**: `claude/encode-cor7-neural-01RVzFL6F91CVxsjZcooGS4C`
 
 ```
@@ -301,14 +291,14 @@ Monthly Costs (at scale):        $18,000       (−90%)
 
 ### Cost Breakdown Comparison
 
-| Cost Category    | Before        | After        | Savings    |
-| ---------------- | ------------- | ------------ | ---------- |
-| Video Processing | $180K/yr      | $18K/yr      | $162K      |
-| AI Orchestration | $360K/yr      | $10.8K/yr    | $349K      |
-| LLM Tokens       | $720K/yr      | $180K/yr     | $540K      |
-| Blockchain Gas   | $480K/yr      | $4.8K/yr     | $475K      |
-| Infrastructure   | $200K/yr      | $200K/yr     | $0         |
-| **TOTAL**        | **$1.94M/yr** | **$413K/yr** | **$1.53M** |
+| Cost Category | Before | After | Savings |
+|--------------|--------|-------|---------|
+| Video Processing | $180K/yr | $18K/yr | $162K |
+| AI Orchestration | $360K/yr | $10.8K/yr | $349K |
+| LLM Tokens | $720K/yr | $180K/yr | $540K |
+| Blockchain Gas | $480K/yr | $4.8K/yr | $475K |
+| Infrastructure | $200K/yr | $200K/yr | $0 |
+| **TOTAL** | **$1.94M/yr** | **$413K/yr** | **$1.53M** |
 
 ---
 
@@ -317,7 +307,6 @@ Monthly Costs (at scale):        $18,000       (−90%)
 ### pnkln Target: ≥3× ROI in 18 Months
 
 **Investment (Cumulative)**:
-
 ```
 R&D (all systems):           $400,000
 Infrastructure:              $100,000
@@ -329,7 +318,6 @@ TOTAL:                     $2,600,000
 ```
 
 **12-Month Projection**:
-
 ```
 ARR:                       $2,422,400
 Net Revenue (80%):         $1,937,920
@@ -339,7 +327,6 @@ ROI:                          0.75×  ⚠️ BELOW 1×
 ```
 
 **18-Month Projection** (Accelerated Growth):
-
 ```
 ARR (Month 18):            $8,500,000
 Net Revenue:               $6,800,000
@@ -351,18 +338,15 @@ ROI:                          2.62×  ⚠️ BELOW 3×
 ### ⚡ ACCELERATION REQUIRED
 
 To hit 3× ROI at 18 months, need:
-
 - ARR: $9,750,000 (currently projecting $8.5M)
 - **Gap**: $1,250,000 ARR
 
 **Acceleration Options**:
-
 1. **Close 2 additional enterprise white-label deals**: +$1M ARR
 2. **Aggressive memory persistence launch**: +$500K ARR
 3. **Load testing early market capture**: +$500K ARR
 
 **Revised 18-Month Projection (Accelerated)**:
-
 ```
 ARR:                      $10,500,000
 Net Revenue:               $8,400,000
@@ -376,7 +360,6 @@ ROI:                          3.23×  ✅ ABOVE 3×
 ## 🎯 COMPETITIVE ADVANTAGE (MONETARY)
 
 ### vs. AutoGen (Microsoft)
-
 ```
 AutoGen: $0.01/orchestration
 pnkln:   $0.0003/decision
@@ -386,7 +369,6 @@ CAPTURE:   Enterprise customers save $100K+/year
 ```
 
 ### vs. OpenAI Assistants API
-
 ```
 OpenAI: $0.10/thread + $0.03/run
 pnkln:  $0.0003/decision
@@ -396,7 +378,6 @@ CAPTURE:   Mass market (usage-based micro-pricing)
 ```
 
 ### vs. Content Authenticity Initiative (Adobe/Microsoft)
-
 ```
 C2PA: Metadata-only (easily stripped)
 pnkln: Embedded steganography (survives re-encoding)
@@ -406,7 +387,6 @@ CAPTURE:   Platforms need resilient watermarking
 ```
 
 ### vs. LangSmith (Benchmarking)
-
 ```
 LangSmith: Manual benchmark setup
 pnkln:     Automated CI/CD integration
@@ -437,46 +417,39 @@ CAPTURE:   Every deployment needs validation
 ## 🚀 UNIFIED REVENUE STREAMS (7 MONETIZATION VECTORS)
 
 ### 1. API-as-a-Service (Usage-Based)
-
 - Watermarking: $0.01-0.10/embed
 - Decisions: $0.0003/decision
 - Benchmarks: $0.50-5/test
 - **Margin**: 80-97%
 
 ### 2. SaaS Subscriptions (Recurring)
-
 - Memory: $10-50/user/month
 - Creator bundle: $29-499/month
 - Enterprise: $5K-15K/month
 - **Margin**: 80-98%
 
 ### 3. Data Licensing (High-Margin)
-
 - Watermark corpus: $100K-1M/year
 - Benchmark datasets: $50K-500K/year
 - **Margin**: 90%+
 
 ### 4. Marketplace (Platform Fee)
-
 - Skills: 30% of GMV
 - Agents: 30% of GMV
 - **Margin**: 100% (pure platform)
 
 ### 5. White-Label (Enterprise)
-
 - Setup: $50K-250K
 - Per-user: $2-10/month
 - Revenue share: 10-20%
 - **Margin**: 70%
 
 ### 6. Consulting/Training
-
 - Agent licensing: $20K-50K/year
 - Implementation: $50K-200K project
 - **Margin**: 60%
 
 ### 7. Strategic Partnerships
-
 - Co-marketing with Anthropic/Google
 - Revenue share from integrations
 - **Margin**: Variable
@@ -551,28 +524,25 @@ CAPTURE:   Every deployment needs validation
 ## ⚠️ RISK MITIGATION
 
 ### Technical Risks
-
-| Risk                        | Mitigation                              | Cost |
-| --------------------------- | --------------------------------------- | ---- |
-| Gemini API rate limits      | Multi-provider fallback (Claude, GPT)   | $50K |
-| Watermark stripping attacks | Regular adversarial testing             | $20K |
-| Memory sync failures        | Redundant storage + conflict resolution | $30K |
+| Risk | Mitigation | Cost |
+|------|------------|------|
+| Gemini API rate limits | Multi-provider fallback (Claude, GPT) | $50K |
+| Watermark stripping attacks | Regular adversarial testing | $20K |
+| Memory sync failures | Redundant storage + conflict resolution | $30K |
 
 ### Business Risks
-
-| Risk             | Mitigation                                | Cost  |
-| ---------------- | ----------------------------------------- | ----- |
-| Low conversion   | Aggressive free tier + viral hooks        | $100K |
-| High CAC         | Product-led growth, organic content       | $50K  |
+| Risk | Mitigation | Cost |
+|------|------------|------|
+| Low conversion | Aggressive free tier + viral hooks | $100K |
+| High CAC | Product-led growth, organic content | $50K |
 | Enterprise churn | Monthly value reports + proactive support | $100K |
 
 ### Market Risks
-
-| Risk                   | Mitigation                          | Cost  |
-| ---------------------- | ----------------------------------- | ----- |
-| Competitor entry       | Patent protection + network effects | $150K |
-| Regulation (EU AI Act) | Compliance-first design             | $75K  |
-| Economic downturn      | Usage-based pricing (scales down)   | $0    |
+| Risk | Mitigation | Cost |
+|------|------------|------|
+| Competitor entry | Patent protection + network effects | $150K |
+| Regulation (EU AI Act) | Compliance-first design | $75K |
+| Economic downturn | Usage-based pricing (scales down) | $0 |
 
 ---
 
@@ -611,21 +581,20 @@ CAPTURE:   Every deployment needs validation
 
 ### What Changed in Money
 
-| Metric          | Before | After        | Change |
-| --------------- | ------ | ------------ | ------ |
-| Year 1 ARR      | $0     | $2,422,400   | ∞      |
-| Year 3 ARR      | $0     | $29,368,600  | ∞      |
-| Year 5 ARR      | $0     | $100,000,000 | ∞      |
-| Cost/Decision   | $0.01  | $0.0003      | −97%   |
-| Margin          | 50%    | 85%          | +70%   |
-| Valuation       | $0     | $800M+       | ∞      |
-| Revenue Streams | 0      | 7            | +7     |
-| Network Effects | None   | Strong       | ✅     |
+| Metric | Before | After | Change |
+|--------|--------|-------|--------|
+| Year 1 ARR | $0 | $2,422,400 | ∞ |
+| Year 3 ARR | $0 | $29,368,600 | ∞ |
+| Year 5 ARR | $0 | $100,000,000 | ∞ |
+| Cost/Decision | $0.01 | $0.0003 | −97% |
+| Margin | 50% | 85% | +70% |
+| Valuation | $0 | $800M+ | ∞ |
+| Revenue Streams | 0 | 7 | +7 |
+| Network Effects | None | Strong | ✅ |
 
 ### The Strategic Position
 
 **pnkln is now**:
-
 - The **cheapest** AI decision platform (97% lower)
 - The **only** persistent LLM memory solution (no competitor)
 - The **most resilient** content watermarking (survives re-encoding)
@@ -646,7 +615,6 @@ Year 5:      $8.3M MRR → $100M ARR
 ### The Ask
 
 **Pick one**:
-
 1. 🚀 **EXECUTE**: Launch waitlist today, close first customer this week
 2. 🔬 **VALIDATE**: 10 customer conversations first, then decide
 3. 🛑 **PAUSE**: Need more technical de-risking before market launch
@@ -662,7 +630,7 @@ Year 5:      $8.3M MRR → $100M ARR
 
 ---
 
-_"The only way to make money is to make something people want. The faster you learn whether they want it, the faster you learn to make money."_ — Paul Graham
+*"The only way to make money is to make something people want. The faster you learn whether they want it, the faster you learn to make money."* — Paul Graham
 
 ---
 

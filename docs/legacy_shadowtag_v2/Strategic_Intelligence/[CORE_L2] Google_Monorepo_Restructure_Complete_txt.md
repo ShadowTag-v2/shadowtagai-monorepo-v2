@@ -5,9 +5,9 @@
 Google Monorepo Restructure Complete
 I have successfully reconfigured the repository to the Google Monorepo standard:
 apps/: antigravity (Engine) and https://github.com/karpathy/autoresearchs (Swarm) are now apps.
-libs/: ShadowTag-v2 (Core) and agents (Swarm) are shared libraries.
+libs/: aiyou (Core) and agents (Swarm) are shared libraries.
 third_party/: Vendored dependencies.
-Imports: Refactored to libs.ShadowTag-v2 and libs.agents.
+Imports: Refactored to libs.aiyou and libs.agents.
 Governance: CODEOWNERS created.
 Actions Taken:
 Commit Initiated: Background commit for the restructure is processing.

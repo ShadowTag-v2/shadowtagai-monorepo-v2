@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/speculation_engine/streaming_executor.py
+# hypothesis_version: 6.151.5
+
+['command', 'completed', 'discarded', 'error_count', 'executing', 'file_path', 'has_errored', 'pattern', 'queued', 'sibling_error', 'status_counts', 'streaming_fallback', 'total_tools', 'user', 'user_interrupted', 'yielded', '…']

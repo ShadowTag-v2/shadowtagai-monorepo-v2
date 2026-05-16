@@ -1,7 +1,7 @@
 # CRM-JR Decision Framework
 
 **Purpose:** Enhanced decision-making with 160-IQ board + Treadstone/Blackbriar analytical rigor
-**Integration:** Works alongside ShadowTag-v2JR Purpose • Reasons • Brakes gates
+**Integration:** Works alongside AiYouJR Purpose • Reasons • Brakes gates
 **Activation:** Automatic for strategic decisions (>$50k investment or >3 month timeline)
 
 ---
@@ -83,7 +83,7 @@ Unknown │  INSIGHTS        │  BLINDSPOTS          │
 - Current auth: Username/password only
 - Enterprise customers asking for MFA (12 requests in Q4)
 - Competitors offer MFA (Auth0, Okta, etc.)
-- Team has OAuth 2.0 experience (implemented for SHADOWTAGAI API)
+- Team has OAuth 2.0 experience (implemented for PNKLN API)
 
 **QUESTIONS (Known Unknowns):**
 - Will customers pay premium for MFA? (needs pricing research)
@@ -106,7 +106,7 @@ Unknown │  INSIGHTS        │  BLINDSPOTS          │
 
 ## 2. Reasons Analysis (Multi-Dimensional)
 
-### 2.1 Financial Layer (ShadowTag-v2JR Reasons Gate)
+### 2.1 Financial Layer (AiYouJR Reasons Gate)
 
 Already covered in main SKILL.md:
 - ROI ≥3× in 18 months
@@ -259,7 +259,7 @@ HOWEVER: Strategic consideration
 - If ActiveShield runs 5+ years, Option A wins
 - If exiting in Y5-Y7, Option A delivers $90k-$126k savings
 
-Decision: Option A (custom) aligns with SHADOWTAGAI long-term strategy
+Decision: Option A (custom) aligns with PNKLN long-term strategy
 ```
 
 ### Second-Order Thinking
@@ -441,9 +441,9 @@ RECOVERY (Month 1):
 
 ---
 
-## CRM-JR vs ShadowTag-v2JR: When to Use Each
+## CRM-JR vs AiYouJR: When to Use Each
 
-### Use ShadowTag-v2JR (Purpose • Reasons • Brakes) for:
+### Use AiYouJR (Purpose • Reasons • Brakes) for:
 - Standard features (<$50k, <3 months)
 - Clear precedent (similar features shipped before)
 - Low strategic ambiguity
@@ -457,7 +457,7 @@ RECOVERY (Month 1):
 ### Combined Approach (Recommended for Major Features):
 
 ```markdown
-STEP 1: Run ShadowTag-v2JR Gates (fast filter)
+STEP 1: Run AiYouJR Gates (fast filter)
 → If any gate fails, stop or pivot
 
 STEP 2: If all gates pass, run CRM-JR deep dive
@@ -569,5 +569,5 @@ NEXT ACTION: _______________
 
 **Last Updated:** 2025-11-15
 **Framework:** CRM-JR (Context • Reasons • Mental Models • Judgment • Reversal)
-**Integration:** Works with ShadowTag-v2JR gates, MBA frameworks, Monte Carlo simulations
+**Integration:** Works with AiYouJR gates, MBA frameworks, Monte Carlo simulations
 **Source:** Treadstone/Blackbriar analytical protocols adapted for startup decision-making

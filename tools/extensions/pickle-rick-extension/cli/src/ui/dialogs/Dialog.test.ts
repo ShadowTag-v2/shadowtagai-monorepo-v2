@@ -1,36 +1,36 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
-import type { CliRenderer } from '@opentui/core';
-import { createMockRenderer, type MockRenderer } from './test-utils.ts';
+import { beforeEach, describe, expect, mock, test } from "bun:test";
+import type { CliRenderer } from "@opentui/core";
+import { createMockRenderer, type MockRenderer } from "./test-utils.ts";
 
-mock.module('../theme.js', () => ({
+mock.module("../theme.js", () => ({
   THEME: {
-    bg: '#000000',
-    dim: '#555555',
-    accent: '#00ff00',
-    darkAccent: '#003300',
-    text: '#ffffff',
-    white: '#ffffff',
+    bg: "#000000",
+    dim: "#555555",
+    accent: "#00ff00",
+    darkAccent: "#003300",
+    text: "#ffffff",
+    white: "#ffffff",
   },
 }));
 
-describe('Dialog', () => {
+describe("Dialog", () => {
   let mockRenderer: MockRenderer;
 
   beforeEach(() => {
     mockRenderer = createMockRenderer();
   });
 
-  test('should initialize with title', async () => {
-    const { Dialog } = await import('./Dialog.ts');
-    const dialog = new Dialog(mockRenderer as unknown as CliRenderer, 'Test Title');
+  test("should initialize with title", async () => {
+    const { Dialog } = await import("./Dialog.ts");
+    const dialog = new Dialog(mockRenderer as unknown as CliRenderer, "Test Title");
     expect(dialog).toBeDefined();
     expect(dialog.isOpen()).toBe(false);
     expect(dialog.root).toBeDefined();
   });
 
-  test('should show and hide', async () => {
-    const { Dialog } = await import('./Dialog.ts');
-    const dialog = new Dialog(mockRenderer as unknown as CliRenderer, 'Test Title');
+  test("should show and hide", async () => {
+    const { Dialog } = await import("./Dialog.ts");
+    const dialog = new Dialog(mockRenderer as unknown as CliRenderer, "Test Title");
 
     dialog.show();
     expect(dialog.isOpen()).toBe(true);
@@ -41,10 +41,10 @@ describe('Dialog', () => {
     expect(dialog.root.visible).toBe(false);
   });
 
-  test('should have setOptions method', async () => {
-    const { Dialog } = await import('./Dialog.ts');
-    const dialog = new Dialog(mockRenderer as unknown as CliRenderer, 'Test Title');
+  test("should have setOptions method", async () => {
+    const { Dialog } = await import("./Dialog.ts");
+    const dialog = new Dialog(mockRenderer as unknown as CliRenderer, "Test Title");
 
-    expect(typeof dialog.setOptions).toBe('function');
+    expect(typeof dialog.setOptions).toBe("function");
   });
 });

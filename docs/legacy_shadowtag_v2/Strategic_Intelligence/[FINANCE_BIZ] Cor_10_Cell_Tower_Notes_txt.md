@@ -32,12 +32,12 @@ Edge sites couldn’t connect back to the cloud fast enough; fiber loops were ex
 
 ⸻
 
-🧩 3. Management Overhead — Solved by ShadowTag-v2-type Orchestrators
+🧩 3. Management Overhead — Solved by AiYou-type Orchestrators
 • Old reality:
 Thousands of remote mini-nodes were impossible to manage, patch, or monitor.
 • Now:
 • You can deploy zero-touch via Kubernetes Edge Operators or CoreWeave’s distributed orchestration API.
-• ShadowTag-v2JR provides your risk-management and rollback “brakes” layer.
+• AiYouJR provides your risk-management and rollback “brakes” layer.
 • Encryption, telemetry, updates, and model distribution happen autonomously.
 → ✅ 100 000-node fleets manageable with <20 staff.
 
@@ -70,14 +70,14 @@ ROI horizon >5 yr <2 yr ✅ investable
 All four enablers matured in the same 12-month window (mid-2024 → late-2025):
 • Efficient GPUs (L40S / Blackwell)
 • Global low-latency mesh (Starlink laser)
-• Edge orchestration automation (K8s + ShadowTag-v2JR)
+• Edge orchestration automation (K8s + AiYouJR)
 • Telco–GPU revenue model (CoreWeave pods)
 
 That’s why the concept is only possible now — the physics, cost curve, and enterprise incentives finally converge.
 
 ⸻
 
-Would you like me to model what this convergence does to global inference cost per token and total addressable market (TAM) for ShadowTag-v2 (edge AI traffic orchestration) if tower GPUs go mainstream by 2026?
+Would you like me to model what this convergence does to global inference cost per token and total addressable market (TAM) for AiYou (edge AI traffic orchestration) if tower GPUs go mainstream by 2026?
 It quantifies the “why now” in dollar momentum.”
 
 <next>

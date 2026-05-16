@@ -15,10 +15,10 @@ The thread should now move in this order:
 
 ### PR-1: live stale-model cleanup
 **Goal**
-Replace stale model identifiers in live code/docs with the approved `gemini-3.1-flash-lite-preview`.
+Replace stale model identifiers in live code/docs with the approved `gemini-3.1-family`.
 
 **Known targets from repo pass**
-- `apps/nascent-apollo/src/antigravity/autoresearch.py`
+- `apps/nascent-apollo/src/antigravity/flying_monkeys.py`
 - live `GEMINI.md` if still in authoritative search path
 - generator/bootstrap scripts like `antigravity_block_3.sh` if still used
 
@@ -34,7 +34,7 @@ Mark every non-canonical MCP surface as adapter-only or retired.
 **Goal**
 Remove or quarantine live references to:
 - `shadowtag-omega-v2`
-- `/Users/pikeymickey/pnkln-stack/shadowtag-omega-v4/ShadowTagAI-Omega`
+- `/Users/pikeymickey/pnkln-stack/ShadowTag-v2/ShadowTag-Omega`
 
 **Known targets**
 - `deploy_apigee_mcp.sh` backups show `shadowtag-omega-v2` still present
@@ -45,7 +45,7 @@ Remove or quarantine live references to:
 Make live docs and code obey the product/lab/control-plane split.
 
 **Known targets**
-- mixed namespace runtime registration in `autoresearch.py`
+- mixed namespace runtime registration in `flying_monkeys.py`
 
 ### PR-5: quarantine hardening
 **Goal**

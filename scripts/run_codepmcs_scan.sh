@@ -16,7 +16,7 @@ echo "" | tee -a "$REPORT"
 echo "--- ruff lint ---" | tee -a "$REPORT"
 if command -v ruff &>/dev/null; then
   ruff check "$MONO_ROOT" --select=E9,F,I \
-    --exclude="$MONO_ROOT/docs/bundles,$MONO_ROOT/apps/ShadowTag-v2_stack/cosmic-crab-payload" \
+    --exclude="$MONO_ROOT/docs/bundles,$MONO_ROOT/apps/aiyou_stack/cosmic-crab-payload" \
     --output-format=full 2>&1 | tee -a "$REPORT" || true
 else
   echo "ruff not found — skipping" | tee -a "$REPORT"

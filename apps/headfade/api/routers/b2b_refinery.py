@@ -1,3 +1,5 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
 import langextract as lx
 import pipeline_dp
 from fastapi import APIRouter
@@ -14,7 +16,9 @@ class HDISignal(BaseModel):
 
 @router.post("/process-dataset")
 async def process_b2b_dataset(daily_comments: list[str]):
-    """Nightly CRON endpoint. Extracts chaos into the Human Deception Index."""
+    """
+    Nightly CRON endpoint. Extracts chaos into the Human Deception Index.
+    """
     extracted_data = []
 
     # 1. Pipeline: LangExtract parsing of chaotic unstructured comments
@@ -25,8 +29,7 @@ async def process_b2b_dataset(daily_comments: list[str]):
             schema=HDISignal,
             model_id="gemini-3-flash-preview",
         )
-        if hasattr(result, "extractions") and result.extractions:
-            extracted_data.extend(result.extractions)
+        extracted_data.extend(result.extractions)
 
     # 2. Pipeline: Differential Privacy (EU AI Act Compliance)
     accountant = pipeline_dp.NaiveBudgetAccountant(total_epsilon=1.0, total_delta=1e-5)
@@ -58,6 +61,6 @@ async def process_b2b_dataset(daily_comments: list[str]):
         if errors:
             return {"status": "error", "message": str(errors)}
     except Exception as e:
-        return {"status": "error", "message": f"BigQuery routing failed: {e!s}"}
+        return {"status": "error", "message": f"BigQuery routing failed: {str(e)}"}
 
     return {"status": "success", "message": "B2B Refinery pipeline generated anonymized dataset."}

@@ -89,7 +89,7 @@ jobs:
       - name: Configure git
         run: |
           git config --global user.name "GitHub Actions"
-          git config --global user.email "redacted@shadowtag-v4.local"
+          git config --global user.email "actions@github.com"
 
       - name: Commit changes
         id: commit

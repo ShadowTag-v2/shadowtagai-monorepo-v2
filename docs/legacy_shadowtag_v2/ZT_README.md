@@ -12,9 +12,13 @@
 
 **Missed deadlines are the #2 cause of legal malpractice.**
 
+
+
 - Miss a payment date → Breach of contract
 
+
 - Miss a response deadline → Lose leverage or default judgment
+
 
 - Miss a filing deadline → Malpractice exposure
 
@@ -24,27 +28,40 @@ Courts don't care about your excuses. The legal system runs on strict timelines.
 
 **Zero-Touch Legal Deadline Management** automatically:
 
+
+
 1. **Extracts** deadlines from court documents using AI/ML
+
 
 2. **Calculates** precise dates using jurisdiction-specific rules
 
+
 3. **Populates** your calendar with zero manual entry
 
+
 4. **Reminds** you with cascading notifications (30, 14, 7, 1 days)
+
 
 5. **Verifies** with lawyer approval before syncing
 
 ### Key Features
 
+
+
 - 🤖 **AI-Powered Extraction**: Rule-based + NER + LLM hybrid approach
+
 
 - ⚖️ **100% Jurisdiction Coverage**: Federal + all 50 states
 
+
 - 📅 **Calendar Integration**: Google Calendar, Outlook, Apple Calendar
+
 
 - 🔔 **Multi-Channel Reminders**: Email, SMS, Slack, Push notifications
 
+
 - ✅ **Lawyer Verification**: Human-in-the-loop for fail-safe accuracy
+
 
 - 🎯 **Zero Manual Entry**: Automatic document processing and calendar population
 
@@ -52,11 +69,16 @@ Courts don't care about your excuses. The legal system runs on strict timelines.
 
 ### Prerequisites
 
+
+
 - Python 3.11+
+
 
 - PostgreSQL 14+
 
+
 - Redis 6+
+
 
 - Google Cloud Platform account (for deployment)
 
@@ -66,8 +88,8 @@ Courts don't care about your excuses. The legal system runs on strict timelines.
 
 # Clone the repository
 
-git clone https://github.com/ShadowTag-v2/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ShadowTag-v2/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # Install dependencies
 
@@ -91,7 +113,10 @@ uvicorn src.api.legal_deadlines:app --reload --port 8001
 
 ### Access the API
 
+
+
 - **Swagger UI**: http://localhost:8001/docs
+
 
 - **ReDoc**: http://localhost:8001/redoc
 
@@ -125,6 +150,7 @@ curl -X POST "http://localhost:8001/documents/upload" \
   "processing_status": "processing",
   "uploaded_by": "john@lawfirm.com"
 }
+
 ```
 
 ### 2. Get Extracted Deadlines
@@ -157,9 +183,15 @@ curl "http://localhost:8001/documents/doc_20251117_abc123/deadlines"
       "holidays_excluded": 0,
       "total_calendar_days": 21
     },
-    "reminder_schedule": ["2025-11-08", "2025-11-24", "2025-12-01", "2025-12-07"]
+    "reminder_schedule": [
+      "2025-11-08",
+      "2025-11-24",
+      "2025-12-01",
+      "2025-12-07"
+    ]
   }
 ]
+
 ```
 
 ### 3. Verify Deadline
@@ -222,13 +254,18 @@ curl -X POST "http://localhost:8001/deadlines/dl_20251117_xyz789/calendar?calend
 
 ✅ **Federal Courts** (FRCP, FRAP)
 
+
 - Answer to complaint: 21 days
+
 
 - Response to motion: 14 days
 
+
 - Interrogatory responses: 30 days
 
+
 - Notice of appeal: 30 days
+
 
 - Service by mail addition: +3 days
 
@@ -236,13 +273,18 @@ curl -X POST "http://localhost:8001/deadlines/dl_20251117_xyz789/calendar?calend
 
 **Examples**:
 
+
 - **California**: 30 days to respond, +5 days for mail service
+
 
 - **New York**: 20 days to respond, +5 days for mail service
 
+
 - **Texas**: 20 days + next Monday rule, +4 days for mail
 
+
 - **Florida**: 20 days to respond, +5 days for mail service
+
 
 - **Illinois**: 30 days to respond
 
@@ -250,31 +292,46 @@ curl -X POST "http://localhost:8001/deadlines/dl_20251117_xyz789/calendar?calend
 
 ### STANDARD (Default)
 
+
+
 - 30 days before deadline
+
 
 - 14 days before
 
+
 - 7 days before
+
 
 - 1 day before
 
 ### INTENSIVE (Important cases)
 
+
+
 - 30, 14, 7, 3, 1 days before
 
 ### CRITICAL (High-stakes)
+
+
 
 - 30, 14, 7, 5, 3, 2, 1 days before
 
 ### Notification Channels
 
+
+
 - 📧 **Email**: HTML formatted with urgency indicators
+
 
 - 📱 **SMS**: Critical deadlines only (Twilio)
 
+
 - 💬 **Slack**: Team notifications with rich formatting
 
+
 - 🔔 **Push**: Mobile app notifications
+
 
 - 🔗 **Webhooks**: Custom integrations
 
@@ -358,29 +415,43 @@ SPACY_MODEL=en_core_web_lg
 
 ### Accuracy
 
+
+
 - ✅ Extraction accuracy: **95%+** (with verification)
+
 
 - ✅ Calculation accuracy: **100%** (rule-based deterministic)
 
+
 - ✅ Calendar sync success: **99.5%+**
+
 
 - ✅ Notification delivery: **99.9%+**
 
 ### Speed
 
+
+
 - Document processing: **<60 seconds** (PDF with OCR)
+
 
 - Deadline extraction: **<10 seconds** per document
 
+
 - Calendar sync: **<3 seconds**
+
 
 - API response (p95): **<500ms**
 
 ### Reliability
 
+
+
 - System uptime: **99.9%** (three nines)
 
+
 - Zero missed critical notifications
+
 
 - Automatic failover and recovery
 
@@ -390,11 +461,15 @@ SPACY_MODEL=en_core_web_lg
 
 **$49/month**
 
+
 - Up to 50 deadlines/month
+
 
 - Google Calendar integration
 
+
 - Email reminders
+
 
 - 1 user
 
@@ -402,11 +477,15 @@ SPACY_MODEL=en_core_web_lg
 
 **$199/month**
 
+
 - Up to 200 deadlines/month
+
 
 - All calendar integrations
 
+
 - Email + SMS + Slack
+
 
 - Up to 5 users
 
@@ -414,11 +493,15 @@ SPACY_MODEL=en_core_web_lg
 
 **$599/month**
 
+
 - Unlimited deadlines
+
 
 - Priority support
 
+
 - Custom jurisdiction rules
+
 
 - Up to 25 users
 
@@ -426,11 +509,15 @@ SPACY_MODEL=en_core_web_lg
 
 **Custom Pricing**
 
+
 - Multi-office support
+
 
 - Dedicated success manager
 
+
 - API access
+
 
 - Unlimited users
 
@@ -440,67 +527,98 @@ SPACY_MODEL=en_core_web_lg
 
 **Manual Process**:
 
+
 - Time per deadline entry: 5 minutes
+
 
 - Deadlines per month: 200
 
+
 - Total time: 1,000 minutes = **16.7 hours/month**
+
 
 - Cost at $300/hour: **$5,000/month**
 
 **With Zero-Touch**:
 
+
 - Subscription: $199/month
+
 
 - Time saved: 95% → **15.8 hours/month**
 
+
 - **ROI**: $4,801/month = **2,400% return**
+
 
 - **Payback period**: <1 week
 
 ## 🔒 Security & Compliance
 
+
+
 - ✅ **Encryption**: AES-256 at rest, TLS 1.3 in transit
+
 
 - ✅ **Authentication**: OAuth 2.0 / OIDC, MFA supported
 
+
 - ✅ **Access Control**: Role-based (RBAC)
+
 
 - ✅ **Audit Trail**: Complete activity logging
 
+
 - ✅ **Compliance**: GDPR, SOC 2 Type II ready
+
 
 - ✅ **Attorney-Client Privilege**: Document isolation per firm
 
 ## 🛠️ Tech Stack
 
+
+
 - **Backend**: FastAPI, Python 3.11
+
 
 - **Database**: PostgreSQL 14, SQLAlchemy ORM
 
+
 - **Cache**: Redis 6
+
 
 - **ML/AI**: SpaCy, HuggingFace Transformers, PyTorch
 
+
 - **OCR**: Tesseract, Google Cloud Vision API
+
 
 - **Calendar**: Google Calendar API, Microsoft Graph API
 
+
 - **Notifications**: SendGrid, Twilio, Slack
 
+
 - **Infrastructure**: Google Cloud Platform (GKE, Cloud SQL, GCS)
+
 
 - **Monitoring**: Prometheus, Grafana, Sentry
 
 ## 📚 Documentation
 
+
+
 - [Architecture Overview](docs/architecture/zero-touch-legal-deadlines.md)
+
 
 - [API Reference](http://localhost:8001/docs)
 
+
 - [Jurisdiction Rules Database](docs/jurisdiction-rules.md)
 
+
 - [Deployment Guide](docs/deployment.md)
+
 
 - [ML Model Documentation](docs/ml-models.md)
 
@@ -514,25 +632,34 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🆘 Support
 
+
+
 - **Documentation**: https://docs.zero-touch-legal.ai
+
 
 - **Email**: support@zero-touch-legal.ai
 
+
 - **Slack**: https://zero-touch-legal.slack.com
 
-- **GitHub Issues**: https://github.com/ShadowTag-v2/ShadowTag-v2-fastapi-services/issues
+
+- **GitHub Issues**: https://github.com/ShadowTag-v2/aiyou-fastapi-services/issues
 
 ## 🎖️ Credits
 
-Built as part of the **pnkln Core Stack™** by ShadowTag-v2 Jr.
+Built as part of the **pnkln Core Stack™** by AiYou Jr.
 
 Powered by:
 
+
 - Gemini 2.0 Pro (Google)
+
 
 - Claude Sonnet 4.5 (Anthropic)
 
+
 - FastAPI
+
 
 - Google Cloud Platform
 

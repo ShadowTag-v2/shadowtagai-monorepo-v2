@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import argparse
@@ -6,7 +7,11 @@ import json
 from pathlib import Path
 
 
-def repeat_prompt(text: str, times: int = 2, separator: str = "\n\n--- REPEAT ---\n\n") -> str:
+def repeat_prompt(text: str, times: int = 2, separator: str = "
+
+--- REPEAT ---
+
+") -> str:
     if times < 1:
         raise ValueError("times must be >= 1")
     return separator.join([text] * times)

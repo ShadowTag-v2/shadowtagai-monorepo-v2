@@ -4,8 +4,8 @@ from address import Address
 
 
 class User:
-    name: str
-    address: Address
+  name: str
+  address: Address
 
-    def save(self):
-        pass
+  def save(self):
+    pass

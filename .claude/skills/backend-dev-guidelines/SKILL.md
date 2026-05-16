@@ -1,6 +1,6 @@
 # Backend Development Guidelines
 
-**Purpose:** Enforce Node.js/TypeScript/Express patterns for ShadowTagAi backend services
+**Purpose:** Enforce Node.js/TypeScript/Express patterns for Pnkln backend services
 **Enforcement:** `"suggest"`
 **Priority:** `"high"`
 **Version:** 1.0.0
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This skill provides best practices for building scalable, maintainable backend services using ShadowTagAi's tech stack. It covers architecture patterns, error handling, testing, and deployment practices.
+This skill provides best practices for building scalable, maintainable backend services using Pnkln's tech stack. It covers architecture patterns, error handling, testing, and deployment practices.
 
 **Tech Stack:**
 - **Runtime:** Node.js 20+ with TypeScript 5+
@@ -488,7 +488,7 @@ pnpm remove express
 
 ```json
 {
-  "name": "shadowtagai-backend-service",
+  "name": "pnkln-backend-service",
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx watch src/app.ts",
@@ -568,7 +568,7 @@ DELETE /api/v1/users/:id       # Delete user
 ```bash
 NODE_ENV=development
 PORT=3000
-DATABASE_URL="postgresql://dev:devpass@localhost:5432/shadowtagai_dev"
+DATABASE_URL="postgresql://dev:devpass@localhost:5432/pnkln_dev"
 JWT_SECRET="dev-secret-change-in-production"
 SENTRY_DSN="https://dev@sentry.io/123456"
 ```
@@ -671,5 +671,5 @@ res.json({ id: user.id, email: user.email });
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi Backend Team
+**Maintained By:** Pnkln Backend Team
 **Stack:** Node.js 20+ TypeScript 5 + Express + Prisma + pnpm + PM2

@@ -1,9 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-from typing import Any
-
-from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel, EmailStr
+from typing import Any
 
 router = APIRouter()
 

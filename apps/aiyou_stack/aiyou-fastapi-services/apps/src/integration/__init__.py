@@ -11,7 +11,6 @@ This is the bridge between:
 import asyncio
 
 from pnkln.core.judge_six_pipeline import JudgeSixKernel
-
 from src.agents.debate import DebateAgent, DebateConfig, DebateOrchestrator
 from src.core import FunctionRegistry, FunctionTool
 from src.evolution.dte import DTESystem, EvolutionStrategy

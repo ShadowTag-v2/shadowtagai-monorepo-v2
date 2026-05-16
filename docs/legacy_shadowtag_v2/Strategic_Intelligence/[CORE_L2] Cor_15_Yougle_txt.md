@@ -27,16 +27,16 @@ Make Corp name: “Ai.You”
 
 <next>
 
-The whole point for ShadowTag-v2 is everything is Ai laced. Labeling Ai tools or whatever is up to creators.
+The whole point for AiYou is everything is Ai laced. Labeling Ai tools or whatever is up to creators.
 <next>
 we want to encourage everyone, not just influencers, to begin mixing Ai into their content. <next>
 since this is a fledgling field, we want the field to grow within our platform.
 <next>
-ShadowTag-v2 is where the Ai giants come to do battle
+AiYou is where the Ai giants come to do battle
 
 <next>
 
-ShadowTag-v2 - So you don’t need wonder about whether it’s Ai?
+AiYou - So you don’t need wonder about whether it’s Ai?
 <next>
 Of course, our creators content will get modified and shared on other platforms. Just like with current media.
 <next>
@@ -82,7 +82,7 @@ Are you a portfolio manager with a PhD in finance and at least one publication i
 
 <next>
 
-“awesome—here’s a tight, solo-founder, Cursor-ready rollout for Yougle (the search layer) + ShadowTag-v2JR (safety + reasoning) using your exact stack:
+“awesome—here’s a tight, solo-founder, Cursor-ready rollout for Yougle (the search layer) + AiYouJR (safety + reasoning) using your exact stack:
 • LangChain
 • GPTRAM (memory/runtime)
 • Nowgrep (neural search)
@@ -100,7 +100,7 @@ yougle-ai/
 ├─ apps/
 │ ├─ yougle-web/ # Next.js UI (search bar, results, settings)
 │ ├─ yougle-api/ # FastAPI (or Node/Express) – orchestration gateway
-│ └─ ShadowTag-v2jr-cli/ # CLI + Cursor hooks (Run1/Run2/Run3)
+│ └─ aiyoujr-cli/ # CLI + Cursor hooks (Run1/Run2/Run3)
 ├─ services/
 │ ├─ retriever-nowgrep/ # Nowgrep + Milvus/pgvector indexer & retriever
 │ ├─ memory-gptram/ # GPTRAM memory service (KV, cache, prefetch APIs)
@@ -116,7 +116,7 @@ yougle-ai/
 │ ├─ terraform/ # CoreWeave/NVIDIA + DB infra (later)
 │ └─ github-actions/ # CI workflows
 ├─ packages/
-│ ├─ ShadowTag-v2-protocol/ # BEACON/EVENT/MAPDELTA/CONSENSUS msg schemas (future)
+│ ├─ aiyou-protocol/ # BEACON/EVENT/MAPDELTA/CONSENSUS msg schemas (future)
 │ ├─ utils/ # shared utils (logging, schema, errors)
 │ └─ sdk-js/ sdk-py/ # thin client SDKs for web & CLI
 └─ .cursor/
@@ -293,7 +293,7 @@ Costs: domains + tiny DB + a few GPU hours → <$200 if you lean on credits and 
 
 8. Naming + IP quick takes
    • “Yougle”: buy yougle.ai (or yougle.app). File an Intent-to-Use trademark (USPTO TEAS Plus).
-   • Put “Yougle™ — Verified Search by ShadowTag-v2” in the footer; keep ShadowTag-v2 as the parent brand.
+   • Put “Yougle™ — Verified Search by AiYou” in the footer; keep AiYou as the parent brand.
 
 ⸻
 

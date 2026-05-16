@@ -8,11 +8,11 @@
 
 ## What Was Built
 
-I've successfully integrated the **Gemini Ingestion Layer** into your GKE deployment, adapting the Judge 6 architecture pattern for proactive intelligence collection. Here's the complete implementation:
+I've successfully integrated the **Gemini Ingestion Layer** into your GKE deployment, adapting the Judge #6 architecture pattern for proactive intelligence collection. Here's the complete implementation:
 
 ### 🎯 **Core Achievement**
 
-**Adapted Judge 6 enforcement pattern → Gemini Ingestion collection pattern**
+**Adapted Judge #6 enforcement pattern → Gemini Ingestion collection pattern**
 
 From: Reactive validation (90ms latency, 98% coverage, real-time enforcement)
 To: Proactive collection (45-min batch, multi-source diversity, ethical crawling)
@@ -22,11 +22,9 @@ To: Proactive collection (45-min batch, multi-source diversity, ethical crawling
 ## 📦 **Files Created/Modified (5 files)**
 
 ### 1. **Kubernetes Manifest** (`k8s/base/gemini-ingestion-layer.yaml`)
-
 **Lines**: 800+ | **Size**: Production-grade CronJob configuration
 
 **Components**:
-
 - ✅ Namespace: `gemini-ingestion` (5th namespace in pnkln stack)
 - ✅ ConfigMap: Quality gates, ethical compliance settings, multi-source config
 - ✅ Secret: API credentials (YouTube, Twitter, Reddit, News, Gemini)
@@ -38,7 +36,6 @@ To: Proactive collection (45-min batch, multi-source diversity, ethical crawling
 - ✅ PrometheusRule: 6 quality gate alerts
 
 **8-Container Architecture**:
-
 ```
 Init: Config Validator
 ├── Container 1: YouTube Collector (10K quota/day)
@@ -52,11 +49,9 @@ Init: Config Validator
 ```
 
 ### 2. **Documentation** (`docs/GEMINI_INGESTION_LAYER.md`)
-
 **Lines**: 3,000+ | **Size**: Comprehensive deployment guide
 
 **Sections**:
-
 - ✅ Architecture overview (position in pnkln stack)
 - ✅ Multi-container pod design
 - ✅ Data flow diagrams
@@ -71,12 +66,10 @@ Init: Config Validator
 - ✅ Future enhancements roadmap
 
 ### 3. **Architecture Comparison** (`docs/ARCHITECTURE_COMPARISON.md`)
-
 **Lines**: 1,500+ | **Size**: Deep analysis of design decisions
 
 **Sections**:
-
-- ✅ Side-by-side comparison table (Ingestion vs Judge 6)
+- ✅ Side-by-side comparison table (Ingestion vs Judge #6)
 - ✅ Direct replacements rationale (file refs, metrics, gates)
 - ✅ Context-specific adaptations (architecture, integration, cost)
 - ✅ New sections added (ethical compliance, multi-source coverage, tier metrics, AM briefing)
@@ -86,7 +79,6 @@ Init: Config Validator
 - ✅ When to use each system (scenario matrix)
 
 ### 4. **Terraform Update** (`terraform/main.tf`)
-
 **Changes**: Added Workload Identity service account
 
 ```hcl
@@ -125,11 +117,9 @@ output "gemini_ingestion_sa_email" {
 ```
 
 ### 5. **README Update** (`README.md`)
-
 **Changes**: Added Gemini Ingestion to architecture diagram and cost breakdown
 
 **Updated Sections**:
-
 - ✅ Components tree (added `gemini-ingestion` as 5th namespace)
 - ✅ Architecture diagram (added Ingestion Layer feeding downstream)
 - ✅ Deployment steps (added `kubectl apply` for ingestion manifest)
@@ -159,7 +149,7 @@ output "gemini_ingestion_sa_email" {
     ┌───────────────────┴───────────────────────────────┐
     │         DATA CONSUMERS (4 Namespaces)             │
     ├───────────────────┬───────────────────────────────┤
-    │ pnkln-stackjr-governance│ Judge 6 (context enrichment) │
+    │ pnkln-stackjr-governance│ Judge #6 (context enrichment) │
     │ autogen-orchestr. │ Multi-Agent (agent context)   │
     │ cognitive-stack-v5│ LLM Router (briefing delivery)│
     │ shadowtag-v2      │ Watermarking (raw data access)│
@@ -210,7 +200,7 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 ┌────────────────────────────────────────────────────────┐
 │ 5. AVAILABILITY (6 AM - Next 2 AM)                    │
 │    Services pull data:                                │
-│    ├── Judge 6: Tier 1 items for context            │
+│    ├── Judge #6: Tier 1 items for context            │
 │    ├── AutoGen: High-relevance data for agents       │
 │    ├── LLM Router: Receives briefing delivery        │
 │    └── ShadowTag: Accesses raw items for watermarks  │
@@ -219,48 +209,44 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 
 ---
 
-## 📊 **Comparison: Gemini Ingestion vs Judge 6**
+## 📊 **Comparison: Gemini Ingestion vs Judge #6**
 
 ### Quick Reference Table
 
-| Aspect           | **Gemini Ingestion**  | **Judge 6**               |
-| ---------------- | --------------------- | -------------------------- |
-| **Philosophy**   | Proactive (collect)   | Reactive (enforce)         |
-| **Execution**    | Scheduled (cron)      | Event-driven (HPA)         |
-| **Latency**      | 45 min batch          | p99 ≤90ms streaming        |
-| **Architecture** | CronJob 8-container   | Deployment 3-layer hybrid  |
-| **AI Model**     | Gemini 2.0 Flash      | Gemini 1.5 Flash + PyTorch |
-| **Scaling**      | Fixed (1 job/night)   | Auto (3-10 pods)           |
-| **Cost/Month**   | $77                   | $6,000 (GPU pool)          |
-| **Integration**  | Called BY (pull)      | Calls (push)               |
-| **Key Metrics**  | Items, sources, cost  | Latency, FP/FN             |
-| **Quality**      | Relevance, timeliness | Policy accuracy            |
-| **Compliance**   | Ethical (robots.txt)  | Military (Compliance Framework)        |
+| Aspect | **Gemini Ingestion** | **Judge #6** |
+|--------|----------------------|--------------|
+| **Philosophy** | Proactive (collect) | Reactive (enforce) |
+| **Execution** | Scheduled (cron) | Event-driven (HPA) |
+| **Latency** | 45 min batch | p99 ≤90ms streaming |
+| **Architecture** | CronJob 8-container | Deployment 3-layer hybrid |
+| **AI Model** | Gemini 2.0 Flash | Gemini 1.5 Flash + PyTorch |
+| **Scaling** | Fixed (1 job/night) | Auto (3-10 pods) |
+| **Cost/Month** | $77 | $6,000 (GPU pool) |
+| **Integration** | Called BY (pull) | Calls (push) |
+| **Key Metrics** | Items, sources, cost | Latency, FP/FN |
+| **Quality** | Relevance, timeliness | Policy accuracy |
+| **Compliance** | Ethical (robots.txt) | Military (ATP 5-19) |
 
 ### Key Design Decisions
 
 #### 1. **Why Multi-Container Pod?**
-
 - **Fault isolation**: YouTube failure ≠ Twitter failure
 - **Parallelism**: 5 collectors run simultaneously (15 min vs 75 min sequential)
 - **Resource optimization**: Each container sized for workload
 - **Debugging**: Separate logs per source
 
 #### 2. **Why Nightly Cron vs Real-time?**
-
 - **Cost**: Batch cheaper than 24/7 streaming
 - **API quotas**: Align with daily limits (YouTube, Twitter)
 - **Downstream needs**: Services need summaries, not second-by-second updates
 - **Ethics**: Avoids aggressive polling → rate limits
 
 #### 3. **Why Gemini 2.0 Flash vs Pro?**
-
 - **Cost**: Flash = 15x cheaper ($0.003 vs $0.045 per 1K chars)
 - **Speed**: Flash faster for classification
 - **Accuracy**: Tier classification doesn't need Pro-level reasoning
 
 #### 4. **Why Tier 1/2/3 vs Binary Classification?**
-
 - **Prioritization**: Allocate resources to high-value data
 - **Cost optimization**: Use Gemini only on Tier 1 candidates
 - **Flexibility**: Services choose tier based on needs
@@ -271,14 +257,14 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 
 ### Monthly Breakdown: $77
 
-| Component                 | Cost | Calculation                                        |
-| ------------------------- | ---- | -------------------------------------------------- |
-| **GKE CronJob Runtime**   | $15  | 45 min/night × 30 nights × $0.011/min              |
-| **Gemini 2.0 Flash**      | $45  | 550 items/day × 30 days × $0.003/item              |
-| **GCS Storage (PVC)**     | $2   | 50 GB × $0.04/GB                                   |
-| **Networking (Egress)**   | $5   | API calls to YouTube, Twitter, etc.                |
-| **Prometheus Monitoring** | $5   | Metrics storage + alerts                           |
-| **API Quotas**            | $5   | Mostly free tiers (YouTube, Twitter, Reddit, News) |
+| Component | Cost | Calculation |
+|-----------|------|-------------|
+| **GKE CronJob Runtime** | $15 | 45 min/night × 30 nights × $0.011/min |
+| **Gemini 2.0 Flash** | $45 | 550 items/day × 30 days × $0.003/item |
+| **GCS Storage (PVC)** | $2 | 50 GB × $0.04/GB |
+| **Networking (Egress)** | $5 | API calls to YouTube, Twitter, etc. |
+| **Prometheus Monitoring** | $5 | Metrics storage + alerts |
+| **API Quotas** | $5 | Mostly free tiers (YouTube, Twitter, Reddit, News) |
 
 **Total**: $77/month (~0.16% of total pnkln stack cost)
 
@@ -292,12 +278,12 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 
 ### Sensitivity Analysis
 
-| Scenario                             | Impact                               |
-| ------------------------------------ | ------------------------------------ |
-| **2x item volume** (1,100 items/day) | +$45/mo (Gemini) → $122/mo           |
-| **Add 3 more sources** (8 total)     | +$10/mo (networking) → $87/mo        |
-| **Switch to Gemini Pro**             | +$630/mo (15x cost) → $707/mo        |
-| **Run twice daily** (2 AM + 2 PM)    | +$60/mo (runtime + Gemini) → $137/mo |
+| Scenario | Impact |
+|----------|--------|
+| **2x item volume** (1,100 items/day) | +$45/mo (Gemini) → $122/mo |
+| **Add 3 more sources** (8 total) | +$10/mo (networking) → $87/mo |
+| **Switch to Gemini Pro** | +$630/mo (15x cost) → $707/mo |
+| **Run twice daily** (2 AM + 2 PM) | +$60/mo (runtime + Gemini) → $137/mo |
 
 ---
 
@@ -306,7 +292,6 @@ NIGHTLY PIPELINE (2 AM - 3 AM UTC)
 ### Prerequisites
 
 1. **GKE Cluster**: Deploy infrastructure first
-
    ```bash
    cd terraform
    terraform apply  # Creates gemini-ingestion-sa service account
@@ -335,7 +320,6 @@ kubectl create secret generic api-credentials \
 ```
 
 **Verification**:
-
 ```bash
 kubectl get secret api-credentials -n gemini-ingestion
 # Should show: Opaque, 6 (keys)
@@ -348,7 +332,6 @@ kubectl apply -f k8s/base/gemini-ingestion-layer.yaml
 ```
 
 **Expected Output**:
-
 ```
 namespace/gemini-ingestion created
 configmap/ingestion-config created
@@ -404,7 +387,6 @@ kubectl logs -n gemini-ingestion -l app=gemini-ingestion -c youtube-collector --
 Next execution: **2 AM UTC** (adjust schedule in CronJob if needed)
 
 Check last run:
-
 ```bash
 kubectl get cronjob gemini-ingestion-nightly -n gemini-ingestion -o yaml | grep lastScheduleTime
 ```
@@ -424,7 +406,6 @@ curl http://localhost:9090/metrics | grep ingestion_
 ```
 
 **Key Metrics to Check**:
-
 - `ingestion_items_collected_total` - Should be ≥500 after first run
 - `ingestion_active_sources_count` - Should be 5 (YouTube, Twitter, News, Reddit, Web)
 - `ingestion_cost_per_item_usd` - Should be ≤0.15
@@ -442,7 +423,6 @@ kubectl get prometheusrule gemini-ingestion-alerts -n gemini-ingestion -o yaml
 ```
 
 **Configured Alerts**:
-
 1. ✅ LowDailyItemCount (<500 items)
 2. ✅ LowSourceDiversity (<5 sources)
 3. ✅ HighCostPerItem (>$0.15)
@@ -452,8 +432,7 @@ kubectl get prometheusrule gemini-ingestion-alerts -n gemini-ingestion -o yaml
 
 ### Integration Validation
 
-**Test Judge 6 Integration**:
-
+**Test Judge #6 Integration**:
 ```python
 # In pnkln-stackjr-governance namespace
 import requests
@@ -467,7 +446,6 @@ print(f"Items collected: {response.json()}")
 ```
 
 **Test AM Briefing Delivery**:
-
 ```bash
 # Check LLM Router logs for briefing POST
 kubectl logs -n cognitive-stack-v5 -l app=llm-prefill | grep "/v1/briefing"
@@ -485,14 +463,12 @@ kubectl logs -n cognitive-stack-v5 -l app=llm-prefill | grep "/v1/briefing"
 **Symptom**: `kubectl get jobs -n gemini-ingestion` shows no jobs
 
 **Diagnosis**:
-
 ```bash
 kubectl describe cronjob gemini-ingestion-nightly -n gemini-ingestion
 # Check: Schedule, Suspend, Last Schedule Time
 ```
 
 **Fixes**:
-
 - If `Suspend: True`: Edit CronJob and set `spec.suspend: false`
 - If wrong schedule: Edit CronJob and update `spec.schedule`
 - If concurrency issue: Check `spec.concurrencyPolicy` (should be `Forbid`)
@@ -502,14 +478,12 @@ kubectl describe cronjob gemini-ingestion-nightly -n gemini-ingestion
 **Symptom**: Pod shows status `Error` or `CrashLoopBackOff`
 
 **Diagnosis**:
-
 ```bash
 kubectl get pods -n gemini-ingestion
 kubectl logs <pod-name> -n gemini-ingestion -c <container-name>
 ```
 
 **Common Errors**:
-
 - `401 Unauthorized`: Missing/invalid API key → Check Secret
 - `429 Too Many Requests`: Rate limit exceeded → Reduce quota in ConfigMap
 - `403 Forbidden`: robots.txt block → Review compliance settings
@@ -520,13 +494,11 @@ kubectl logs <pod-name> -n gemini-ingestion -c <container-name>
 **Symptom**: Job completes but metrics show threshold violations
 
 **Diagnosis**:
-
 ```bash
 kubectl logs -n gemini-ingestion -l app=gemini-ingestion -c quality-gate
 ```
 
 **Common Causes**:
-
 - Low item count → Increase quotas or add sources
 - Low quality score → Review Gemini classification criteria
 - High cost → Reduce Gemini usage or switch to cheaper model
@@ -536,14 +508,12 @@ kubectl logs -n gemini-ingestion -l app=gemini-ingestion -c quality-gate
 **Symptom**: LLM Router doesn't receive briefing
 
 **Diagnosis**:
-
 ```bash
 kubectl logs -n gemini-ingestion -l app=gemini-ingestion -c briefing-generator
 kubectl logs -n cognitive-stack-v5 -l app=llm-prefill | grep briefing
 ```
 
 **Fixes**:
-
 - Check endpoint: `http://llm-prefill-service.cognitive-stack-v5:8000/v1/briefing`
 - Verify RBAC: ServiceAccount should have cross-namespace access
 - Check network policies: No blocking rules between namespaces
@@ -555,33 +525,28 @@ kubectl logs -n cognitive-stack-v5 -l app=llm-prefill | grep briefing
 After first week of operation, verify:
 
 ### Performance
-
 - ✅ Runtime: ≤45 minutes (check `ingestion_runtime_minutes`)
 - ✅ Item count: ≥500/day (check `ingestion_items_collected_total`)
 - ✅ Source diversity: 5 sources (check `ingestion_active_sources_count`)
 
 ### Quality
-
 - ✅ Quality score: ≥0.70 avg (check `ingestion_item_quality_score`)
 - ✅ Tier distribution: ~40% T1, ~40% T2, ~20% T3
 - ✅ Relevance: High scores for Tier 1 items
 
 ### Cost
-
 - ✅ Cost/item: ≤$0.15 (check `ingestion_cost_per_item_usd`)
 - ✅ Monthly total: ~$77 (check billing dashboard)
 - ✅ Gemini usage: ~500 items/day × $0.003 = ~$1.50/day
 
 ### Compliance
-
 - ✅ robots.txt violations: 0 (check `ingestion_robots_txt_violations_total`)
 - ✅ Rate limit hits: <5% (check HTTP 429 responses)
 - ✅ User-Agent transparency: Verified in source logs
 
 ### Integration
-
 - ✅ Briefing delivery: 100% success rate
-- ✅ Judge 6 consumption: Context enrichment active
+- ✅ Judge #6 consumption: Context enrichment active
 - ✅ AutoGen usage: Tier 1 items accessed
 - ✅ ShadowTag access: Raw data available
 
@@ -589,29 +554,27 @@ After first week of operation, verify:
 
 ## 📚 **Documentation Index**
 
-| Document                         | Purpose                           | Location                          |
-| -------------------------------- | --------------------------------- | --------------------------------- |
-| **Gemini Ingestion Layer Guide** | Complete deployment & operations  | `docs/GEMINI_INGESTION_LAYER.md`  |
-| **Architecture Comparison**      | Ingestion vs Judge 6 analysis    | `docs/ARCHITECTURE_COMPARISON.md` |
-| **Deployment Checklist**         | Production readiness verification | `docs/DEPLOYMENT_CHECKLIST.md`    |
-| **Implementation Summary**       | GKE infrastructure overview       | `docs/IMPLEMENTATION_SUMMARY.md`  |
-| **GKE Architecture Analysis**    | Google reference alignment        | `GKE_ARCHITECTURE_ANALYSIS.md`    |
-| **Main README**                  | Quick start guide                 | `README.md`                       |
+| Document | Purpose | Location |
+|----------|---------|----------|
+| **Gemini Ingestion Layer Guide** | Complete deployment & operations | `docs/GEMINI_INGESTION_LAYER.md` |
+| **Architecture Comparison** | Ingestion vs Judge #6 analysis | `docs/ARCHITECTURE_COMPARISON.md` |
+| **Deployment Checklist** | Production readiness verification | `docs/DEPLOYMENT_CHECKLIST.md` |
+| **Implementation Summary** | GKE infrastructure overview | `docs/IMPLEMENTATION_SUMMARY.md` |
+| **GKE Architecture Analysis** | Google reference alignment | `GKE_ARCHITECTURE_ANALYSIS.md` |
+| **Main README** | Quick start guide | `README.md` |
 
 ---
 
 ## ✅ **Completion Checklist**
 
 ### Design Phase
-
-- [x] Adapted Judge 6 prompt for ingestion use case
+- [x] Adapted Judge #6 prompt for ingestion use case
 - [x] Defined quality gates (items, sources, cost, score, runtime)
 - [x] Established ethical compliance model (robots.txt, rate limiting)
 - [x] Designed tier classification system (Tier 1/2/3)
 - [x] Specified multi-source coverage (YouTube, Twitter, News, Reddit, Web)
 
 ### Implementation Phase
-
 - [x] Created Kubernetes CronJob manifest (800+ lines)
 - [x] Implemented 8-container pod architecture
 - [x] Configured ConfigMaps for quality gates & sources
@@ -622,14 +585,12 @@ After first week of operation, verify:
 - [x] Defined PrometheusRule with 6 alerts
 
 ### Infrastructure Phase
-
 - [x] Added Terraform service account (gemini-ingestion-sa)
 - [x] Configured IAM roles (AI Platform, Storage, Logging, Monitoring)
 - [x] Added Workload Identity binding
 - [x] Created Terraform output for SA email
 
 ### Documentation Phase
-
 - [x] Wrote comprehensive guide (3,000+ lines)
 - [x] Created architecture comparison document (1,500+ lines)
 - [x] Updated main README with integration steps
@@ -638,7 +599,6 @@ After first week of operation, verify:
 - [x] Created monitoring & observability guide
 
 ### Testing Phase
-
 - [x] Validated YAML syntax (kubectl dry-run)
 - [x] Verified Terraform changes (plan successful)
 - [x] Documented manual test procedure
@@ -646,7 +606,6 @@ After first week of operation, verify:
 - [x] Created integration validation tests
 
 ### Git Phase
-
 - [x] Committed changes (2 commits)
 - [x] Pushed to remote branch
 - [x] Created detailed commit messages
@@ -657,27 +616,23 @@ After first week of operation, verify:
 ## 🚀 **Next Actions**
 
 ### Immediate (Day 0)
-
 1. ✅ **Review this summary** - Verify all components meet requirements
 2. ⏳ **Deploy to GKE** - Run `terraform apply` + `kubectl apply`
 3. ⏳ **Set up API credentials** - Obtain keys and create Secret
 
 ### Short-term (Week 1)
-
 4. ⏳ **Wait for first nightly run** - Verify 2 AM execution
 5. ⏳ **Check metrics** - Validate quality gates passed
-6. ⏳ **Test integration** - Verify Judge 6 receives data
+6. ⏳ **Test integration** - Verify Judge #6 receives data
 7. ⏳ **Review costs** - Confirm ~$77/month estimate
 
 ### Medium-term (Month 1)
-
 8. ⏳ **Tune classification** - Adjust tier criteria based on distribution
 9. ⏳ **Optimize performance** - Reduce runtime if >45 min
 10. ⏳ **Add sources** - Expand diversity if needed
 11. ⏳ **Cost analysis** - Identify optimization opportunities
 
 ### Long-term (Quarter 1)
-
 12. ⏳ **Real-time augmentation** - Add streaming for breaking news
 13. ⏳ **Multi-language support** - Translate non-English sources
 14. ⏳ **Deduplication** - Implement semantic dedup
@@ -688,19 +643,16 @@ After first week of operation, verify:
 ## 📞 **Support**
 
 ### Internal Resources
-
 - **Architecture docs**: `/docs/` directory
 - **Kubernetes manifests**: `/k8s/base/` directory
 - **Terraform configs**: `/terraform/` directory
 
 ### External Resources
-
 - **Gemini API**: https://ai.google.dev/docs
 - **GKE CronJobs**: https://cloud.google.com/kubernetes-engine/docs/how-to/cronjobs
 - **Workload Identity**: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
 
 ### Debugging
-
 - **Logs**: `kubectl logs -n gemini-ingestion -l app=gemini-ingestion --all-containers`
 - **Metrics**: Port-forward to `:9090` and query Prometheus
 - **Alerts**: Check PrometheusRule for threshold violations

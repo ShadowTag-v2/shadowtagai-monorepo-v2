@@ -13,6 +13,14 @@ import Stripe from 'stripe';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 
+// V25 Jules Ascension — Orchestration modules
+import {
+  JulesFleetOrchestrator,
+  DartEdgeBridge,
+  ClaudeSourcemapBridge,
+  NotebookLMEpistemicHook,
+} from './orchestration/index.js';
+
 // ============================================
 // CONFIGURATION
 // ============================================
@@ -182,6 +190,92 @@ server.tool('purchaseWorkflowLicense', async ({ videoId, agentWalletToken }: any
 });
 
 // ============================================
+// V25 JULES ASCENSION — ORCHESTRATION MODULES
+// ============================================
+const fleetOrchestrator = new JulesFleetOrchestrator({
+  cloudRunProject: 'shadowtag-omega-v4',
+  cloudRunRegion: 'us-central1',
+  concurrency: 5,
+});
+
+const dartBridge = new DartEdgeBridge('fleet-ops');
+const sourcemapBridge = new ClaudeSourcemapBridge();
+const epistemicHook = new NotebookLMEpistemicHook();
+
+// Register known Cloud Run services in the fleet
+for (const svc of [
+  { name: 'counselconduit', region: 'us-central1', imageUrl: 'gcr.io/shadowtag-omega-v4/counselconduit', healthEndpoint: '/health' },
+  { name: 'headfade-mcp', region: 'us-central1', imageUrl: 'gcr.io/shadowtag-omega-v4/headfade-mcp', healthEndpoint: '/health' },
+]) {
+  fleetOrchestrator.registerService(svc);
+}
+
+// --- Fleet Management Tools ---
+
+server.tool('v25_fleet_diagnostics', async () => {
+  const diagnostics = {
+    fleet: fleetOrchestrator.getDiagnostics(),
+    dart: dartBridge.getDiagnostics(),
+    sourcemap: sourcemapBridge.getDiagnostics(),
+    epistemic: epistemicHook.getDiagnostics(),
+  };
+  return { content: [{ type: 'text', text: JSON.stringify(diagnostics, null, 2) }] };
+});
+
+server.tool('v25_plan_deployment', async ({ serviceName, prompt, priority }: any) => {
+  const plan = fleetOrchestrator.planDeployment([
+    { serviceName, prompt, priority: priority ?? 'P1' },
+  ]);
+  const dartPlan = dartBridge.planDeploymentTask(serviceName, prompt, priority ?? 'P1');
+  return {
+    content: [{ type: 'text', text: JSON.stringify({ deploymentPlan: plan, dartPlan }, null, 2) }],
+  };
+});
+
+server.tool('v25_plan_batch_execution', async ({ targets }: any) => {
+  const plan = fleetOrchestrator.planDeployment(targets);
+  const batchPlan = fleetOrchestrator.planBatchExecution(plan);
+  return { content: [{ type: 'text', text: JSON.stringify(batchPlan, null, 2) }] };
+});
+
+server.tool('v25_plan_health_check', async () => {
+  const healthPlan = fleetOrchestrator.planFleetHealthCheck();
+  return { content: [{ type: 'text', text: JSON.stringify(healthPlan, null, 2) }] };
+});
+
+// --- SRE / Sourcemap Tools ---
+
+server.tool('v25_deobfuscate_trace', async ({ errorMessage, frames }: any) => {
+  const trace = sourcemapBridge.deobfuscateTrace(errorMessage, frames);
+  const correlation = sourcemapBridge.correlateError(trace, 'unknown');
+  epistemicHook.recordIncident(correlation);
+  return { content: [{ type: 'text', text: JSON.stringify({ trace, correlation }, null, 2) }] };
+});
+
+server.tool('v25_plan_incident_response', async ({ correlationId }: any) => {
+  // Look up correlation — if not found, return empty plan
+  const plan = sourcemapBridge.planIncidentResponse({
+    correlationId,
+    errorPattern: '',
+    occurrenceCount: 0,
+    firstSeen: '',
+    lastSeen: '',
+    affectedServices: [],
+    deobfuscatedTraces: [],
+  });
+  return { content: [{ type: 'text', text: JSON.stringify(plan, null, 2) }] };
+});
+
+// --- Epistemic Memory Tools ---
+
+server.tool('v25_query_memory', async ({ type, tags, limit }: any) => {
+  const results = epistemicHook.query({ type, tags, limit: limit ?? 20 });
+  return { content: [{ type: 'text', text: JSON.stringify(results, null, 2) }] };
+});
+
+console.log('✅ V25 Jules Ascension orchestration modules initialized');
+
+// ============================================
 // GRACEFUL SHUTDOWN
 // ============================================
 const shutdown = async (signal: string) => {
@@ -229,4 +323,3 @@ const startServer = async () => {
 };
 
 startServer();
-```

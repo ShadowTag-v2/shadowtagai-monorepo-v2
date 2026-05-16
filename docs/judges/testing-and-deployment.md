@@ -1,4 +1,4 @@
-# Judge 6 HITL System - Testing & Deployment Guide
+# Judge #6 HITL System - Testing & Deployment Guide
 
 ## Quick Start
 
@@ -33,8 +33,7 @@ xdg-open htmlcov/index.html  # Linux
 
 ### Unit Tests (`tests/unit/`)
 
-**test_risk_matrix.py** - Compliance Framework Risk Matrix
-
+**test_risk_matrix.py** - ATP 5-19 Risk Matrix
 - Matrix lookup correctness (all 20 combinations)
 - Approval authority determination
 - Risk assessment flow
@@ -42,7 +41,6 @@ xdg-open htmlcov/index.html  # Linux
 - Edge cases
 
 **test_semantic_compression.py** - Audit Trail Compression
-
 - Compression/decompression
 - Trail ID generation
 - Compression ratio (10:1 target)
@@ -50,7 +48,6 @@ xdg-open htmlcov/index.html  # Linux
 - Edge cases
 
 **test_judges.py** - All Judge Verticals
-
 - FinJudge: Wire transfer approval, vendor verification
 - CaseJudge: Case acceptance, conflict checks, settlement
 - LawJudge: EU AI Act, GDPR, CA SB 53, export control
@@ -62,7 +59,6 @@ xdg-open htmlcov/index.html  # Linux
 ### Integration Tests (`tests/integration/`)
 
 **test_judge_api.py** - FastAPI Endpoints
-
 - Health checks
 - /judges/evaluate endpoint (all verticals)
 - Audit trail retrieval
@@ -76,28 +72,24 @@ xdg-open htmlcov/index.html  # Linux
 ### Performance Tests (`tests/performance/`)
 
 **latency_validation.py** - Latency Validation
-
 - Validates p99 ≤90ms requirement
 - Tests 1000 samples per vertical
 - Generates latency distribution (p50, p90, p95, p99, p100)
 - Exports results to JSON/CSV
 
 **Usage**:
-
 ```bash
 python tests/performance/latency_validation.py --samples 1000
 python tests/performance/latency_validation.py --samples 1000 --export-json --export-csv
 ```
 
 **benchmark.py** - Performance Benchmarks
-
 - Throughput (target: 100 decisions/sec)
 - Memory usage
 - Cold start vs warm cache
 - Decision complexity comparison
 
 **Usage**:
-
 ```bash
 python tests/performance/benchmark.py
 ```
@@ -130,7 +122,6 @@ LATENCY DISTRIBUTION:
 **Pass Criteria**: p99 ≤90ms
 
 **If validation fails**:
-
 1. Check CPU/memory resources
 2. Verify no external API calls in critical path
 3. Profile hot spots with cProfile
@@ -158,13 +149,11 @@ docker push gcr.io/PROJECT_ID/judge-hitl:v1.0.0
 ### Kubernetes Deployment
 
 **Prerequisites**:
-
 - GKE cluster
 - kubectl configured
 - Secrets created (Gemini API key, database URL)
 
 **Deploy**:
-
 ```bash
 # Create namespace
 kubectl create namespace pnkln-judges
@@ -190,7 +179,6 @@ kubectl port-forward svc/judge-hitl-service 8001:80 -n pnkln-judges
 ```
 
 **Deployment includes**:
-
 - 3 replicas (HA)
 - Horizontal Pod Autoscaler (3-10 pods)
 - Resource limits (256Mi-512Mi memory, 250m-500m CPU)
@@ -202,14 +190,12 @@ kubectl port-forward svc/judge-hitl-service 8001:80 -n pnkln-judges
 ### Scaling
 
 **Horizontal Pod Autoscaler (HPA)**:
-
 - Min replicas: 3
 - Max replicas: 10
 - Target CPU: 70%
 - Target memory: 80%
 
 **Manual scaling**:
-
 ```bash
 kubectl scale deployment judge-hitl --replicas=5 -n pnkln-judges
 ```
@@ -217,7 +203,6 @@ kubectl scale deployment judge-hitl --replicas=5 -n pnkln-judges
 ### Monitoring
 
 **Health checks**:
-
 ```bash
 # Service health
 kubectl exec -it deployment/judge-hitl -n pnkln-judges -- \
@@ -229,7 +214,6 @@ kubectl exec -it deployment/judge-hitl -n pnkln-judges -- \
 ```
 
 **Prometheus metrics** (to be added):
-
 ```yaml
 - judge_decisions_total{judge_type, decision}
 - judge_latency_seconds{judge_type, quantile}
@@ -260,7 +244,7 @@ kubectl exec -it deployment/judge-hitl -n pnkln-judges -- \
 ### GitHub Actions (Suggested)
 
 ```yaml
-name: Judge 6 HITL CI
+name: Judge #6 HITL CI
 
 on: [push, pull_request]
 
@@ -268,25 +252,25 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-      - run: pip install -r requirements.txt
-      - run: pip install pytest pytest-cov
-      - run: pytest tests/unit/ --cov=src
-      - run: pytest tests/integration/
-      - run: python tests/performance/latency_validation.py --quiet
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - run: pip install -r requirements.txt
+    - run: pip install pytest pytest-cov
+    - run: pytest tests/unit/ --cov=src
+    - run: pytest tests/integration/
+    - run: python tests/performance/latency_validation.py --quiet
 
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: false
-          tags: judge-hitl:test
+    - uses: actions/checkout@v3
+    - uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: false
+        tags: judge-hitl:test
 ```
 
 ## Troubleshooting
@@ -294,19 +278,16 @@ jobs:
 ### Tests Failing
 
 **Unit tests fail**:
-
 - Check Python version (requires 3.11+)
 - Verify dependencies: `pip install -r requirements.txt`
-- Clear **pycache**: `find . -type d -name __pycache__ -exec rm -r {} +`
+- Clear __pycache__: `find . -type d -name __pycache__ -exec rm -r {} +`
 
 **Integration tests fail**:
-
 - Check if API is running: `curl http://localhost:8001/judges/health`
 - Verify no port conflicts (8001)
 - Check logs for errors
 
 **Latency validation fails**:
-
 - Run on dedicated hardware (no shared CPU)
 - Close resource-intensive applications
 - Increase sample size for statistical significance
@@ -315,21 +296,18 @@ jobs:
 ### Deployment Issues
 
 **Pods not starting**:
-
 ```bash
 kubectl describe pod <pod-name> -n pnkln-judges
 kubectl logs <pod-name> -n pnkln-judges
 ```
 
 **Common issues**:
-
 - Missing secrets → Create judge-secrets
 - Image pull errors → Verify GCR permissions
 - Resource constraints → Increase limits
 - Liveness probe failing → Check /judges/health endpoint
 
 **Database connection fails**:
-
 - Verify DATABASE_URL secret
 - Check Cloud SQL proxy (if using)
 - Verify network policies allow egress to port 5432

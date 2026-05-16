@@ -66,8 +66,8 @@ const result = await query({
   prompt: "ultrathink: Design a distributed caching system for 1M QPS",
   options: {
     systemPrompt: agentPromptWithExtendedThinking,
-    maxTokens: 16000,
-  },
+    maxTokens: 16000
+  }
 });
 ```
 
@@ -137,7 +137,9 @@ Quality Gates:
 class Orchestrator {
   async coordinate(task: string): Promise<Report> {
     const subtasks = await this.decompose(task);
-    const results = await Promise.all(subtasks.map((st) => this.spawnSubagent(st)));
+    const results = await Promise.all(
+      subtasks.map(st => this.spawnSubagent(st))
+    );
     return await this.synthesize(results);
   }
 }
@@ -219,11 +221,11 @@ class ValidatedAgent {
       this.completenessCheck(result),
       this.qualityCheck(result),
       this.securityCheck(result),
-      this.selfCritique(result),
+      this.selfCritique(result)
     ];
 
     const results = await Promise.all(checks);
-    return results.every((r) => r === true);
+    return results.every(r => r === true);
   }
 }
 ```
@@ -509,7 +511,7 @@ class ObservableAgent {
           event_type: "task_start",
           severity: "info",
           message: "Starting task execution",
-          metadata: { task },
+          metadata: { task }
         });
 
         const result = await this.performTask(task);
@@ -519,21 +521,21 @@ class ObservableAgent {
           event_type: "task_complete",
           severity: "info",
           message: "Task completed successfully",
-          metadata: { task, result },
+          metadata: { task, result }
         });
 
         return result;
       } catch (error) {
         span.setStatus({
           code: SpanStatusCode.ERROR,
-          message: error.message,
+          message: error.message
         });
 
         this.log({
           event_type: "task_error",
           severity: "error",
           message: "Task failed",
-          metadata: { task, error: error.message },
+          metadata: { task, error: error.message }
         });
 
         throw error;
@@ -544,14 +546,12 @@ class ObservableAgent {
   }
 
   private log(entry: LogEntry): void {
-    console.log(
-      JSON.stringify({
-        ...entry,
-        timestamp: new Date().toISOString(),
-        agent_id: this.agentId,
-        correlation_id: context.active().getValue("correlation_id"),
-      }),
-    );
+    console.log(JSON.stringify({
+      ...entry,
+      timestamp: new Date().toISOString(),
+      agent_id: this.agentId,
+      correlation_id: context.active().getValue("correlation_id")
+    }));
   }
 }
 ```
@@ -634,10 +634,10 @@ class ResilientAgent {
     }
 
     try {
-      const result = await this.retryWithBackoff(() => this.tools[tool](params), {
-        maxRetries: 3,
-        backoff: "exponential",
-      });
+      const result = await this.retryWithBackoff(
+        () => this.tools[tool](params),
+        { maxRetries: 3, backoff: "exponential" }
+      );
 
       this.circuitBreaker.recordSuccess(tool);
       return result;
@@ -647,7 +647,11 @@ class ResilientAgent {
     }
   }
 
-  private async handleError(error: Error, tool: string, params: any): Promise<any> {
+  private async handleError(
+    error: Error,
+    tool: string,
+    params: any
+  ): Promise<any> {
     const errorType = this.classifyError(error);
 
     switch (errorType) {
@@ -753,15 +757,15 @@ const fileSearchTool = tool({
     properties: {
       pattern: {
         type: "string",
-        description: "Regex pattern to search (e.g., 'class.*Agent')",
+        description: "Regex pattern to search (e.g., 'class.*Agent')"
       },
       fileTypes: {
         type: "array",
         items: { type: "string" },
-        description: "File extensions (e.g., ['.py', '.ts'])",
-      },
+        description: "File extensions (e.g., ['.py', '.ts'])"
+      }
     },
-    required: ["pattern"],
+    required: ["pattern"]
   },
   execute: async ({ pattern, fileTypes }) => {
     // Validate inputs
@@ -784,7 +788,7 @@ const fileSearchTool = tool({
     console.log(`Search completed: ${results.length} matches`);
 
     return results;
-  },
+  }
 });
 ```
 
@@ -837,7 +841,6 @@ const fileSearchTool = tool({
 ---
 
 **Best Practices**:
-
 1. **Start Minimal**: Include only components you need
 2. **Test Independently**: Validate each component separately
 3. **Compose Gradually**: Add components incrementally

@@ -1,11 +1,11 @@
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
 import {
   type EventStore,
   StreamableHTTPServerTransport,
-} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import cors from 'cors';
-import express, { type Request, type Response } from 'express';
-import { createServer } from '../server/index.js';
+} from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import cors from "cors";
+import express, { type Request, type Response } from "express";
+import { createServer } from "../server/index.js";
 
 // Simple in-memory event store for SSE resumability
 class InMemoryEventStore implements EventStore {
@@ -35,17 +35,17 @@ class InMemoryEventStore implements EventStore {
   }
 }
 
-console.log('Starting Streamable HTTP server...');
+console.log("Starting Streamable HTTP server...");
 
 // Express app with permissive CORS for testing with Inspector direct connect mode
 const app = express();
 app.use(
   cors({
-    origin: '*', // use "*" with caution in production
-    methods: 'GET,POST,DELETE',
+    origin: "*", // use "*" with caution in production
+    methods: "GET,POST,DELETE",
     preflightContinue: false,
     optionsSuccessStatus: 204,
-    exposedHeaders: ['mcp-session-id', 'last-event-id', 'mcp-protocol-version'],
+    exposedHeaders: ["mcp-session-id", "last-event-id", "mcp-protocol-version"],
   }),
 );
 
@@ -56,11 +56,11 @@ const transports: Map<string, StreamableHTTPServerTransport> = new Map<
 >();
 
 // Handle POST requests for client messages
-app.post('/mcp', async (req: Request, res: Response) => {
-  console.log('Received MCP POST request');
+app.post("/mcp", async (req: Request, res: Response) => {
+  console.log("Received MCP POST request");
   try {
     // Check for existing session ID
-    const sessionId = req.headers['mcp-session-id'] as string | undefined;
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
 
     let transport: StreamableHTTPServerTransport;
 
@@ -101,10 +101,10 @@ app.post('/mcp', async (req: Request, res: Response) => {
     } else {
       // Invalid request - no session ID or not initialization request
       res.status(400).json({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         error: {
           code: -32000,
-          message: 'Bad Request: No valid session ID provided',
+          message: "Bad Request: No valid session ID provided",
         },
         id: req?.body?.id,
       });
@@ -115,13 +115,13 @@ app.post('/mcp', async (req: Request, res: Response) => {
     // The existing transport is already connected to the server
     await transport.handleRequest(req, res);
   } catch (error) {
-    console.log('Error handling MCP request:', error);
+    console.log("Error handling MCP request:", error);
     if (!res.headersSent) {
       res.status(500).json({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         error: {
           code: -32603,
-          message: 'Internal server error',
+          message: "Internal server error",
         },
         id: req?.body?.id,
       });
@@ -131,15 +131,15 @@ app.post('/mcp', async (req: Request, res: Response) => {
 });
 
 // Handle GET requests for SSE streams
-app.get('/mcp', async (req: Request, res: Response) => {
-  console.log('Received MCP GET request');
-  const sessionId = req.headers['mcp-session-id'] as string | undefined;
+app.get("/mcp", async (req: Request, res: Response) => {
+  console.log("Received MCP GET request");
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
   if (!sessionId || !transports.has(sessionId)) {
     res.status(400).json({
-      jsonrpc: '2.0',
+      jsonrpc: "2.0",
       error: {
         code: -32000,
-        message: 'Bad Request: No valid session ID provided',
+        message: "Bad Request: No valid session ID provided",
       },
       id: req?.body?.id,
     });
@@ -147,7 +147,7 @@ app.get('/mcp', async (req: Request, res: Response) => {
   }
 
   // Check for Last-Event-ID header for resumability
-  const lastEventId = req.headers['last-event-id'] as string | undefined;
+  const lastEventId = req.headers["last-event-id"] as string | undefined;
   if (lastEventId) {
     console.log(`Client reconnecting with Last-Event-ID: ${lastEventId}`);
   } else {
@@ -159,14 +159,14 @@ app.get('/mcp', async (req: Request, res: Response) => {
 });
 
 // Handle DELETE requests for session termination
-app.delete('/mcp', async (req: Request, res: Response) => {
-  const sessionId = req.headers['mcp-session-id'] as string | undefined;
+app.delete("/mcp", async (req: Request, res: Response) => {
+  const sessionId = req.headers["mcp-session-id"] as string | undefined;
   if (!sessionId || !transports.has(sessionId)) {
     res.status(400).json({
-      jsonrpc: '2.0',
+      jsonrpc: "2.0",
       error: {
         code: -32000,
-        message: 'Bad Request: No valid session ID provided',
+        message: "Bad Request: No valid session ID provided",
       },
       id: req?.body?.id,
     });
@@ -179,13 +179,13 @@ app.delete('/mcp', async (req: Request, res: Response) => {
     const transport = transports.get(sessionId);
     await transport!.handleRequest(req, res);
   } catch (error) {
-    console.log('Error handling session termination:', error);
+    console.log("Error handling session termination:", error);
     if (!res.headersSent) {
       res.status(500).json({
-        jsonrpc: '2.0',
+        jsonrpc: "2.0",
         error: {
           code: -32603,
-          message: 'Error handling session termination',
+          message: "Error handling session termination",
         },
         id: req?.body?.id,
       });
@@ -201,25 +201,25 @@ const server = app.listen(PORT, () => {
 });
 
 // Handle server errors
-server.on('error', (err: unknown) => {
+server.on("error", (err: unknown) => {
   const code =
-    typeof err === 'object' && err !== null && 'code' in err
+    typeof err === "object" && err !== null && "code" in err
       ? (err as { code?: unknown }).code
       : undefined;
-  if (code === 'EADDRINUSE') {
+  if (code === "EADDRINUSE") {
     console.error(
       `Failed to start: Port ${PORT} is already in use. Set PORT to a free port or stop the conflicting process.`,
     );
   } else {
-    console.error('HTTP server encountered an error while starting:', err);
+    console.error("HTTP server encountered an error while starting:", err);
   }
   // Ensure a non-zero exit so npm reports the failure instead of silently exiting
   process.exit(1);
 });
 
 // Handle server shutdown
-process.on('SIGINT', async () => {
-  console.log('Shutting down server...');
+process.on("SIGINT", async () => {
+  console.log("Shutting down server...");
 
   // Close all active transports to properly clean up resources
   for (const sessionId in transports) {
@@ -232,6 +232,6 @@ process.on('SIGINT', async () => {
     }
   }
 
-  console.log('Server shutdown complete');
+  console.log("Server shutdown complete");
   process.exit(0);
 });

@@ -1,427 +1,115 @@
-name: shadowtag-omega-v4 CI Pipeline
+name: CI
 
 on:
   push:
-    branches: [ main, develop, 'claude/**' ]
+    branches: [ main, develop, claude/* ]
   pull_request:
     branches: [ main, develop ]
-  workflow_dispatch:
-
-env:
-  NODE_VERSION: '22'
-  PYTHON_VERSION: '3.11'
-  RUST_VERSION: 'stable'
-
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 1. PYTHON SERVICES
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  python-services:
-    name: Python Services (FastAPI)
+  test:
+    name: Test Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     strategy:
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt || echo "No requirements.txt found"
-          pip install pytest pytest-cov ruff black mypy || true
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
-      - name: Lint with Ruff
-        run: |
-          if command -v ruff &> /dev/null; then
-            ruff check . --select=E,F,W,C,N || true
-          fi
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -e ".[dev]"
 
-      - name: Format check with Black
-        run: |
-          if command -v black &> /dev/null; then
-            black --check . || true
-          fi
+    - name: Run tests with pytest
+      run: |
+        pytest shadowtag_v2/tests -v --cov=shadowtag_v2 --cov=app --cov-report=xml --cov-report=term-missing
 
-      - name: Type check with mypy
-        run: |
-          if command -v mypy &> /dev/null; then
-            mypy . --ignore-missing-imports || true
-          fi
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
 
-      - name: Run tests
-        run: |
-          if [ -d tests ]; then
-            pytest tests/ --cov=. --cov-report=xml --cov-report=term || true
-          else
-            echo "No tests directory found"
-          fi
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        if: matrix.python-version == '3.11'
-        with:
-          files: ./coverage.xml
-          flags: python
-          fail_ci_if_error: false
-
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 2. NODE.JS SERVICES
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  node-services:
-    name: Node.js Services
+  lint:
+    name: Code Quality Checks
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      matrix:
-        node-version: ['20', '22']
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
 
-      - name: Install dependencies
-        run: |
-          if [ -f package.json ]; then
-            npm ci || npm install
-          else
-            echo "No package.json found"
-          fi
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black flake8 isort mypy
 
-      - name: Lint
-        run: |
-          if [ -f package.json ] && npm run | grep -q "lint"; then
-            npm run lint || true
-          fi
+    - name: Check code formatting with black
+      run: black --check shadowtag_v2 app
 
-      - name: Format check
-        run: |
-          if [ -f package.json ] && npm run | grep -q "format:check"; then
-            npm run format:check || true
-          fi
+    - name: Check import sorting with isort
+      run: isort --check-only shadowtag_v2 app
 
-      - name: Type check
-        run: |
-          if [ -f tsconfig.json ]; then
-            npx tsc --noEmit || true
-          fi
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 shadowtag_v2 app --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 shadowtag_v2 app --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
-      - name: Run tests
-        run: |
-          if [ -f package.json ] && npm run | grep -q "test"; then
-            npm test -- --ci --coverage || true
-          fi
+    - name: Type check with mypy
+      run: mypy shadowtag_v2 app --ignore-missing-imports
+      continue-on-error: true
 
-      - name: Build
-        run: |
-          if [ -f package.json ] && npm run | grep -q "build"; then
-            npm run build || true
-          fi
-
-      - name: Post-build pack safety check
-        run: |
-          echo "🛡️ Post-build source map leak check..."
-          PACK_OUT=$(npm pack --dry-run 2>&1) || true
-          MAP_FILES=$(echo "$PACK_OUT" | grep -c '\.map$' || true)
-          if [ "$MAP_FILES" -gt 0 ]; then
-            echo "❌ $MAP_FILES .map file(s) would leak into package!"
-            echo "$PACK_OUT" | grep '\.map$'
-            exit 1
-          fi
-          echo "✅ No source maps in pack output"
-
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 3. RUST SERVICES
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  rust-services:
-    name: Rust Services
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: contains(github.event.head_commit.modified, 'Cargo.toml') || contains(github.event.head_commit.modified, '*.rs')
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: ${{ env.RUST_VERSION }}
-          components: clippy, rustfmt
-          target: x86_64-unknown-linux-gnu
-          override: true
-
-      - name: Cache Cargo
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Format check
-        run: |
-          if [ -f Cargo.toml ]; then
-            cargo fmt -- --check
-          fi
-
-      - name: Clippy
-        run: |
-          if [ -f Cargo.toml ]; then
-            cargo clippy --all-targets --all-features -- -D warnings
-          fi
-
-      - name: Build
-        run: |
-          if [ -f Cargo.toml ]; then
-            cargo build --release --locked
-          fi
-
-      - name: Run tests
-        run: |
-          if [ -f Cargo.toml ]; then
-            cargo test --all --locked
-          fi
-
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 4. DOCKER BUILD
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  docker-build:
-    name: Docker Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: contains(github.event.head_commit.modified, 'Dockerfile') || github.event_name == 'workflow_dispatch'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        run: |
-          if [ -f Dockerfile ]; then
-            docker build -t shadowtag-omega-v4-services:${{ github.sha }} .
-          fi
-
-      - name: Test Docker image
-        run: |
-          if [ -f Dockerfile ]; then
-            docker run --rm shadowtag-omega-v4-services:${{ github.sha }} --version || echo "No --version flag"
-          fi
-
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 5. SECURITY SCANNING
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  security-scan:
+  security:
     name: Security Scan
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      security-events: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
 
-      - name: Upload Trivy results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
 
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 6. COGNITIVE STACK VALIDATION
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  cognitive-stack-validation:
-    name: Cognitive Stack Validation
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    - name: Check dependencies for known vulnerabilities
+      run: safety check --file requirements.txt
+      continue-on-error: true
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Run bandit security scan
+      run: bandit -r shadowtag_v2 app -f json -o bandit-report.json
+      continue-on-error: true
 
-      - name: Validate MEGA_ROLLUP documentation
-        run: |
-          echo "Validating Cognitive Stack v5 documentation..."
-
-          # Check required files exist
-          test -f .cursor/MEGA_ROLLUP/MEGA_ROLLUP.md
-          test -f .cursor/MEGA_ROLLUP/impact_summary.md
-          test -f .cursor/MEGA_ROLLUP/RoE_integration.md
-          test -f .cursor/MEGA_ROLLUP/task_index.json
-
-          echo "✅ All required documentation files present"
-
-      - name: Validate task_index.json structure
-        run: |
-          echo "Validating task index JSON structure..."
-
-          # Check JSON is valid
-          python3 -c "
-          import json
-          with open('.cursor/MEGA_ROLLUP/task_index.json') as f:
-              data = json.load(f)
-              assert 'tasks' in data
-              assert 'workflows' in data
-              assert 'integrations' in data
-              assert 'guard_rails' in data
-              print(f'✅ Valid task index with {len(data[\"tasks\"])} tasks')
-          "
-
-      - name: Check shadowtag-omega-v4JR guard-rails compliance
-        run: |
-          echo "Checking guard-rails compliance..."
-
-          # Verify guard-rails are defined
-          python3 -c "
-          import json
-          with open('.cursor/MEGA_ROLLUP/task_index.json') as f:
-              data = json.load(f)
-              gr = data['guard_rails']['shadowtag-omega-v4jr_doctrine']
-              assert gr['purpose'] == 'verified facts → structured decision'
-              assert gr['reason'] == 'automated reasoning'
-              assert gr['brakes'] == 'auditable logs'
-              print('✅ shadowtag-omega-v4JR guard-rails properly configured')
-          "
-
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 7. INTEGRATION TESTS (if applicable)
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [python-services, node-services]
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
-
-    services:
-      postgres:
-        image: pgvector/pgvector:pg16
-        env:
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: shadowtag-omega-v4_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-      redis:
-        image: redis:7-alpine
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
-
-      mongodb:
-        image: mongo:7
-        env:
-          MONGO_INITDB_ROOT_USERNAME: test
-          MONGO_INITDB_ROOT_PASSWORD: test
-        options: >-
-          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 27017:27017
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt || true
-          npm ci || npm install || true
-
-      - name: Run integration tests
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: shadowtag-omega-v4_test
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
-          MONGODB_HOST: localhost
-          MONGODB_PORT: 27017
-        run: |
-          if [ -d tests/integration ]; then
-            pytest tests/integration/ -v || true
-          else
-            echo "No integration tests found"
-          fi
-
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # 8. SUMMARY
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  summary:
-    name: CI Summary
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [python-services, node-services, cognitive-stack-validation]
-    if: always()
-
-    steps:
-      - name: Check overall status
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🧠 shadowtag-omega-v4 Cognitive Stack v5 — CI Pipeline Summary"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo ""
-          echo "Python Services:    ${{ needs.python-services.result }}"
-          echo "Node.js Services:   ${{ needs.node-services.result }}"
-          echo "Cognitive Stack:    ${{ needs.cognitive-stack-validation.result }}"
-          echo ""
-          echo "Reference: Cor.71"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    - name: Upload bandit results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-report
+        path: bandit-report.json

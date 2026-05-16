@@ -136,14 +136,12 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
 ### Revenue Model
 
 **Platform Revenue Streams**:
-
 1. **Transaction Fees**: 30% of all superpower sales
 2. **Subscriptions**: Pro/Enterprise tier subscriptions
 3. **Featured Listings**: Creators pay to feature their superpowers ($100/month)
 4. **Enterprise Licenses**: Custom contracts for large deployments
 
 **Creator Revenue**:
-
 - 70% of all sales
 - No upfront fees
 - Paid monthly via Stripe Connect
@@ -204,16 +202,15 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
 
 **Suggested Pricing** (creators set their own, but we provide guidelines):
 
-| Superpower Type | Complexity   | Suggested Price | Creator Take (70%) |
-| --------------- | ------------ | --------------- | ------------------ |
-| Simple Kernel   | Low          | $0.01/exec      | $0.007/exec        |
-| Complex Kernel  | Medium       | $0.05/exec      | $0.035/exec        |
-| Chain           | High         | $0.25/exec      | $0.175/exec        |
-| Agent           | Very High    | $2.00/session   | $1.40/session      |
-| Framework       | Subscription | $20/month       | $14/month          |
+| Superpower Type | Complexity | Suggested Price | Creator Take (70%) |
+|----------------|-----------|----------------|-------------------|
+| Simple Kernel | Low | $0.01/exec | $0.007/exec |
+| Complex Kernel | Medium | $0.05/exec | $0.035/exec |
+| Chain | High | $0.25/exec | $0.175/exec |
+| Agent | Very High | $2.00/session | $1.40/session |
+| Framework | Subscription | $20/month | $14/month |
 
 **Example Creator Revenue**:
-
 - Publish 5 kernels at $0.05 each
 - Each gets 1,000 executions/month
 - Revenue: 5 × 1,000 × $0.05 × 70% = $175/month
@@ -226,7 +223,6 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
 ### Discovery & Search
 
 **Category Taxonomy**:
-
 ```
 📊 Business & Finance
    ├── Market analysis
@@ -267,7 +263,6 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
 ```
 
 **Search Features**:
-
 - Full-text search (name, description, tags)
 - Filters:
   - Price range
@@ -283,7 +278,6 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
   - Trending (velocity-based)
 
 **Recommendation Engine**:
-
 - "Users who bought X also bought Y"
 - "Based on your recent searches"
 - "Trending in your industry"
@@ -292,7 +286,6 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
 ### Quality Assurance
 
 **Automated Checks** (before approval):
-
 1. **Schema Validation**
    - Input/output schemas are valid
    - Examples match schema
@@ -315,21 +308,18 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
    - Complies with usage policies
 
 **Manual Review** (for featured/high-value superpowers):
-
 - pnkln team tests functionality
 - Reviews documentation quality
 - Checks ethical implications
 - Approves or requests changes
 
 **Post-Launch Monitoring**:
-
 - User ratings (1-5 stars)
 - Error rates (<5% acceptable)
 - Execution volume (signals popularity)
 - Flagged content (reported by users)
 
 **Removal Criteria**:
-
 - Rating <2.5 stars after 100+ ratings
 - Error rate >10% over 7 days
 - Multiple user reports (5+)
@@ -342,7 +332,6 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
 ### Frontend (User-Facing)
 
 **Marketplace Web App** (Next.js):
-
 ```
 ├── /marketplace            # Browse, search, filter
 ├── /superpowers/:id        # Detail page
@@ -377,7 +366,6 @@ A **Superpower** is a pre-packaged, production-ready AI capability that solves a
    - "Buy Now" or "Add to Cart" button
 
 4. **Creator Dashboard** (`/creator/dashboard`):
-
    ```
    ┌──────────────────────────────────────────────┐
    │  My Superpowers                              │
@@ -541,7 +529,6 @@ CREATE TABLE ratings (
 **Goal**: Validate concept with 50 creators, 200 users
 
 **Strategy**:
-
 1. **Recruit Top Creators**:
    - Invite 50 AI practitioners (Twitter, LinkedIn outreach)
    - Offer $500 signing bonus to first 20 creators
@@ -562,7 +549,6 @@ CREATE TABLE ratings (
 **Goal**: 1,000 users, 100 creators, $10K MRR
 
 **Strategy**:
-
 1. **Launch Campaign**:
    - Product Hunt launch (aim for #1 product of the day)
    - Hacker News "Show HN"
@@ -584,7 +570,6 @@ CREATE TABLE ratings (
 **Goal**: 20,000 users, 500 creators, $1M MRR by Month 12
 
 **Strategy**:
-
 1. **Paid Acquisition**:
    - Google Ads (keywords: "AI API", "AI marketplace")
    - Twitter Ads (target: developers, AI enthusiasts)
@@ -615,7 +600,6 @@ CREATE TABLE ratings (
 **GMV (Gross Merchandise Value)**: Total transaction volume through marketplace
 
 Target trajectory:
-
 - Month 3: $30K GMV
 - Month 6: $150K GMV
 - Month 12: $500K GMV
@@ -623,21 +607,18 @@ Target trajectory:
 ### Secondary Metrics
 
 **User Metrics**:
-
 - Active users (DAU, MAU)
 - Conversion rate (free → paid): Target 15%
 - Churn rate: Target <5%/month
 - NPS: Target >50
 
 **Creator Metrics**:
-
 - Active creators (published ≥1 superpower)
 - Avg revenue per creator: Target $250/month
 - Top creator revenue: Target $5K+/month
 - Creator NPS: Target >60
 
 **Marketplace Metrics**:
-
 - Superpowers published: Target 500 by Month 12
 - Avg rating: Target >4.2★
 - Execution volume: Target 10M/month by Month 12
@@ -652,7 +633,6 @@ Target trajectory:
 **Problem**: Not enough superpowers at launch
 
 **Mitigation**:
-
 - pnkln team creates 30 base superpowers
 - $500 signing bonus for first 20 creators
 - Guaranteed minimum revenue ($1K for 3 months)
@@ -662,7 +642,6 @@ Target trajectory:
 **Problem**: Low-quality superpowers hurt user trust
 
 **Mitigation**:
-
 - Automated quality checks (schema, tests, security)
 - Manual review for featured superpowers
 - User ratings + removal at <2.5 stars
@@ -673,7 +652,6 @@ Target trajectory:
 **Problem**: Creators race to bottom on price
 
 **Mitigation**:
-
 - Suggested pricing guidelines
 - Highlight value, not just price (reviews, examples)
 - Prevent undercutting (minimum $0.01 per execution)
@@ -684,7 +662,6 @@ Target trajectory:
 **Problem**: Google or Anthropic launch competing marketplace
 
 **Mitigation**:
-
 - Multi-provider support (not locked to one LLM)
 - Focus on unique value: composability (kernel chaining)
 - Build creator lock-in (revenue, community, tools)
@@ -694,15 +671,14 @@ Target trajectory:
 
 ## Competitive Analysis
 
-| Competitor           | Strengths             | Weaknesses                         | pnkln Advantage             |
-| -------------------- | --------------------- | ---------------------------------- | --------------------------- |
-| **OpenAI GPT Store** | Huge user base, brand | Locked to OpenAI, no composability | Multi-LLM, kernel chaining  |
-| **Hugging Face Hub** | Large model library   | Complex for non-ML users           | No-code UI, curated quality |
-| **Replicate**        | Easy API hosting      | Expensive, no marketplace          | Marketplace + lower costs   |
-| **LangChain Hub**    | Developer mindshare   | No monetization for creators       | 70% revenue share           |
+| Competitor | Strengths | Weaknesses | pnkln Advantage |
+|-----------|-----------|-----------|----------------|
+| **OpenAI GPT Store** | Huge user base, brand | Locked to OpenAI, no composability | Multi-LLM, kernel chaining |
+| **Hugging Face Hub** | Large model library | Complex for non-ML users | No-code UI, curated quality |
+| **Replicate** | Easy API hosting | Expensive, no marketplace | Marketplace + lower costs |
+| **LangChain Hub** | Developer mindshare | No monetization for creators | 70% revenue share |
 
 **Unique Value Props**:
-
 1. **Composability**: Kernels can be chained (not possible with GPTs)
 2. **Multi-LLM**: Works with Gemini, Claude, GPT (not locked-in)
 3. **Creator Revenue**: 70% share (vs. 0% for most platforms)
@@ -713,7 +689,6 @@ Target trajectory:
 ## Roadmap
 
 ### Month 1-2: Private Beta
-
 - [ ] Build marketplace MVP (frontend + backend)
 - [ ] Create 30 base superpowers
 - [ ] Onboard 50 beta creators
@@ -721,21 +696,18 @@ Target trajectory:
 - [ ] Iterate based on feedback
 
 ### Month 3: Public Launch
-
 - [ ] Product Hunt launch
 - [ ] 100+ superpowers live
 - [ ] 1,000 users, $10K MRR
 - [ ] First creator payouts ($7K to creators)
 
 ### Month 4-6: Growth
-
 - [ ] Paid acquisition campaigns ($50K/month budget)
 - [ ] 5,000 users, $50K MRR
 - [ ] 200 active creators
 - [ ] Enterprise tier launch
 
 ### Month 7-12: Scale
-
 - [ ] 20,000 users, $1M MRR
 - [ ] 500 active creators
 - [ ] $250K+ paid to creators
@@ -752,13 +724,11 @@ The Superpowers Marketplace transforms pnkln from an infrastructure platform int
 - More usage → more data → better recommendations → higher engagement
 
 **Financial Impact**:
-
 - **Revenue**: $150K/month platform take (30% of $500K GMV)
 - **Creator Payouts**: $350K/month (70% of GMV)
 - **Margin**: 85%+ (after infrastructure costs)
 
 **Strategic Impact**:
-
 - **Moat**: Creator lock-in (revenue, reputation, community)
 - **Defensibility**: Network effects, not just technology
 - **Optionality**: Marketplace data → training data → proprietary models

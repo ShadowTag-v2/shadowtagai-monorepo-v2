@@ -1,45 +1,45 @@
 #!/usr/bin/env node
-import * as path from 'path';
+import * as path from "path";
 
-import { getExtensionRoot, printMinimalPanel, Style } from '../services/pickle-utils.js';
+import { getExtensionRoot, printMinimalPanel, Style } from "../services/pickle-utils.js";
 import {
   isSamePathOrDescendant,
   readStateFile,
   resolveSessionPath,
   writeStateFile,
-} from '../services/session-state.js';
+} from "../services/session-state.js";
 
 export function cancelSession(cwd: string): void {
   const sessionPath = resolveSessionPath(getExtensionRoot(), cwd);
 
   if (!sessionPath) {
-    console.log('No active session found for this directory.');
+    console.log("No active session found for this directory.");
     return;
   }
 
-  const statePath = path.join(sessionPath, 'state.json');
+  const statePath = path.join(sessionPath, "state.json");
   const state = readStateFile(statePath);
   if (!state) {
-    console.log('State file not found.');
+    console.log("State file not found.");
     return;
   }
 
   if (!isSamePathOrDescendant(cwd, state.working_dir)) {
     console.error(
-      `${Style.RED}❌ Wrong directory. Active session is in ${state.working_dir}.${Style.RESET}`
+      `${Style.RED}❌ Wrong directory. Active session is in ${state.working_dir}.${Style.RESET}`,
     );
     return;
   }
 
   if (!state.active) {
     printMinimalPanel(
-      'Loop Already Inactive',
+      "Loop Already Inactive",
       {
         Session: path.basename(sessionPath),
-        Status: 'Inactive',
+        Status: "Inactive",
       },
-      'YELLOW',
-      '🛑'
+      "YELLOW",
+      "🛑",
     );
     return;
   }
@@ -48,16 +48,16 @@ export function cancelSession(cwd: string): void {
   writeStateFile(statePath, state);
 
   printMinimalPanel(
-    'Loop Cancelled',
+    "Loop Cancelled",
     {
       Session: path.basename(sessionPath),
-      Status: 'Inactive',
+      Status: "Inactive",
     },
-    'RED',
-    '🛑'
+    "RED",
+    "🛑",
   );
 }
 
-if (process.argv[1] && path.basename(process.argv[1]).startsWith('cancel')) {
+if (process.argv[1] && path.basename(process.argv[1]).startsWith("cancel")) {
   cancelSession(process.cwd());
 }

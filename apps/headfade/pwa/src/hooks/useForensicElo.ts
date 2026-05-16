@@ -1,4 +1,5 @@
 'use client';
+
 /**
  * useForensicElo — Dual Reward Economy
  *
@@ -27,9 +28,9 @@
  *     foolRate: number, deceptionTier: string, dynamicPriceMultiplier: number }
  */
 
+import { doc, increment, onSnapshot, runTransaction } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { doc, runTransaction, onSnapshot, increment } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { getFirestoreInstance } from '@/lib/firebase';
 
 export type DeceptionTier = 'transparent' | 'convincing' | 'expert' | 'god-tier';
 
@@ -66,42 +67,74 @@ function deceptionTier(foolRate: number): DeceptionTier {
 
 function priceMultiplier(tier: DeceptionTier): number {
   switch (tier) {
-    case 'god-tier': return 6;
-    case 'expert': return 2;
-    case 'convincing': return 1;
-    default: return 0.5;
+    case 'god-tier':
+      return 6;
+    case 'expert':
+      return 2;
+    case 'convincing':
+      return 1;
+    default:
+      return 0.5;
   }
 }
 
 const LS_ELO_KEY = 'headfade_elo_v1';
 
 function loadLocalElo(): ForensicEloState {
-  if (typeof window === 'undefined') return { eloRating: 1000, correctVotes: 0, totalVotes: 0, badges: [], accuracy: 0 };
+  if (typeof window === 'undefined')
+    return { eloRating: 1000, correctVotes: 0, totalVotes: 0, badges: [], accuracy: 0 };
   try {
-    return JSON.parse(localStorage.getItem(LS_ELO_KEY) ?? 'null') ?? { eloRating: 1000, correctVotes: 0, totalVotes: 0, badges: [], accuracy: 0 };
-  } catch { return { eloRating: 1000, correctVotes: 0, totalVotes: 0, badges: [], accuracy: 0 }; }
+    return (
+      JSON.parse(localStorage.getItem(LS_ELO_KEY) ?? 'null') ?? {
+        eloRating: 1000,
+        correctVotes: 0,
+        totalVotes: 0,
+        badges: [],
+        accuracy: 0,
+      }
+    );
+  } catch {
+    return { eloRating: 1000, correctVotes: 0, totalVotes: 0, badges: [], accuracy: 0 };
+  }
 }
 
 export function useForensicElo(uid: string | null) {
   const [elo, setElo] = useState<ForensicEloState>(loadLocalElo);
 
-  // Subscribe to live Firestore Elo when authenticated
+  // Subscribe to live Firestore Elo when authenticated — async init
   useEffect(() => {
     if (!uid) return;
-    const ref = doc(db, 'users', uid);
-    return onSnapshot(ref, (snap) => {
-      if (!snap.exists()) return;
-      const d = snap.data();
-      const next: ForensicEloState = {
-        eloRating: d.eloRating ?? 1000,
-        correctVotes: d.correctVotes ?? 0,
-        totalVotes: d.totalVotes ?? 0,
-        badges: d.badges ?? [],
-        accuracy: d.totalVotes > 0 ? Math.round((d.correctVotes / d.totalVotes) * 100) : 0,
-      };
-      setElo(next);
-      try { localStorage.setItem(LS_ELO_KEY, JSON.stringify(next)); } catch { /* quota */ }
-    });
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    getFirestoreInstance()
+      .then((db) => {
+        if (cancelled) return;
+        const ref = doc(db, 'users', uid);
+        unsub = onSnapshot(ref, (snap) => {
+          if (!snap.exists()) return;
+          const d = snap.data();
+          const next: ForensicEloState = {
+            eloRating: d.eloRating ?? 1000,
+            correctVotes: d.correctVotes ?? 0,
+            totalVotes: d.totalVotes ?? 0,
+            badges: d.badges ?? [],
+            accuracy: d.totalVotes > 0 ? Math.round((d.correctVotes / d.totalVotes) * 100) : 0,
+          };
+          setElo(next);
+          try {
+            localStorage.setItem(LS_ELO_KEY, JSON.stringify(next));
+          } catch {
+            /* quota */
+          }
+        });
+      })
+      .catch(() => {
+        /* offline */
+      });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
   }, [uid]);
 
   /**
@@ -119,34 +152,59 @@ export function useForensicElo(uid: string | null) {
           eloRating: Math.max(0, prev.eloRating + delta),
           totalVotes: prev.totalVotes + 1,
           correctVotes: prev.correctVotes + (isCorrect ? 1 : 0),
-          accuracy: Math.round(((prev.correctVotes + (isCorrect ? 1 : 0)) / (prev.totalVotes + 1)) * 100),
+          accuracy: Math.round(
+            ((prev.correctVotes + (isCorrect ? 1 : 0)) / (prev.totalVotes + 1)) * 100,
+          ),
         };
         // Badge unlock: top detection milestones
         const badges = [...prev.badges];
-        if (next.correctVotes === 10 && !badges.includes('🎯 First Blood')) badges.push('🎯 First Blood');
-        if (next.eloRating >= 1200 && !badges.includes('🔬 Forensics Analyst')) badges.push('🔬 Forensics Analyst');
-        if (next.eloRating >= 1500 && !badges.includes('🏅 OSINT Verified')) badges.push('🏅 OSINT Verified');
-        if (next.eloRating >= 2000 && !badges.includes('💎 God-Tier Detector')) badges.push('💎 God-Tier Detector');
+        if (next.correctVotes === 10 && !badges.includes('🎯 First Blood'))
+          badges.push('🎯 First Blood');
+        if (next.eloRating >= 1200 && !badges.includes('🔬 Forensics Analyst'))
+          badges.push('🔬 Forensics Analyst');
+        if (next.eloRating >= 1500 && !badges.includes('🏅 OSINT Verified'))
+          badges.push('🏅 OSINT Verified');
+        if (next.eloRating >= 2000 && !badges.includes('💎 God-Tier Detector'))
+          badges.push('💎 God-Tier Detector');
         next.badges = badges;
-        try { localStorage.setItem(LS_ELO_KEY, JSON.stringify(next)); } catch { /* quota */ }
+        try {
+          localStorage.setItem(LS_ELO_KEY, JSON.stringify(next));
+        } catch {
+          /* quota */
+        }
         return next;
       });
 
       if (!uid) return;
 
-      // Firestore write
+      // Firestore write — read-then-write to ensure 1000 base Elo for new users
       try {
+        const db = await getFirestoreInstance();
         const userRef = doc(db, 'users', uid);
         await runTransaction(db, async (tx) => {
-          tx.set(
-            userRef,
-            {
-              eloRating: increment(delta),
-              totalVotes: increment(1),
-              correctVotes: increment(isCorrect ? 1 : 0),
-            },
-            { merge: true },
-          );
+          const snap = await tx.get(userRef);
+          if (!snap.exists() || snap.data()?.eloRating === undefined) {
+            // First vote ever — initialize with base 1000
+            tx.set(
+              userRef,
+              {
+                eloRating: 1000 + delta,
+                totalVotes: 1,
+                correctVotes: isCorrect ? 1 : 0,
+              },
+              { merge: true },
+            );
+          } else {
+            tx.set(
+              userRef,
+              {
+                eloRating: increment(delta),
+                totalVotes: increment(1),
+                correctVotes: increment(isCorrect ? 1 : 0),
+              },
+              { merge: true },
+            );
+          }
         });
 
         // Update video creator stats
@@ -169,7 +227,9 @@ export function useForensicElo(uid: string | null) {
             { merge: true },
           );
         });
-      } catch { /* offline */ }
+      } catch {
+        /* offline */
+      }
     },
     [uid],
   );

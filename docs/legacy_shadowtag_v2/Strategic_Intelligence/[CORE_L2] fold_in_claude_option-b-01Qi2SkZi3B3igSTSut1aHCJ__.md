@@ -16,7 +16,7 @@ claude/encode-cor7-neural-01RVzFL6F91CVxsjZcooGS4C;
 
 claude/unified-sky-ground-gpu-mesh-015XorWLBtpoJuHvKX9MC813;
 
-claude/encode-cor8-ShadowTag-v2-global-edge-fabric-012j1em5ogeXnbbtG5DDZuZg;
+claude/encode-cor8-aiyou-global-edge-fabric-012j1em5ogeXnbbtG5DDZuZg;
 
 claude/llm-serving-efficiency-research-01Wz3vRoYMZKeU8Whpf5PHin;
 
@@ -92,7 +92,7 @@ claude/discussion-011CUvL58WBB556AvXdpHVEY;
 
 claude/prompt-framework-templates-011CUvJuWR9Lm2KsueHVXjhW;
 
-claude/ShadowTag-v2-shadowtag-edge-orchestration-011CUvR74Gp38y8mqbXVnyX2;
+claude/aiyou-shadowtag-edge-orchestration-011CUvR74Gp38y8mqbXVnyX2;
 
 claude/update-gke-native-011CUvRFYMVGVdBYtutGzT4G;
 

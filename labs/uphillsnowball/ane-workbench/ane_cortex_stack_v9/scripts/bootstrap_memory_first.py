@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 
 from service.app.adapters.authority_state import AuthorityState, persist_snapshot

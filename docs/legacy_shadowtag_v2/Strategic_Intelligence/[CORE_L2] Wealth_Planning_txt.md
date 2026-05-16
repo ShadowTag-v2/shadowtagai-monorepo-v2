@@ -148,7 +148,7 @@ Asset control certainty 80 % ≈ 98 % lifetime & multi-generation retention
 
 🧩 Practical Outcome
 • Perpetual governance: bylaws + AI agent guarantee that if all first-gen directors die, next-gen heirs auto-assume through cryptographically sealed instructions.
-• Immutable mission: foundations and Stiftungen enshrine ShadowTag-v2’s values and capital purpose in statute.
+• Immutable mission: foundations and Stiftungen enshrine AiYou’s values and capital purpose in statute.
 • Global mobility: at least one jurisdiction remains politically neutral at any given time; assets reroute instantly via tokenized ledgers.
 • Regulatory compliance: AI system ensures each country’s filings, audits, and CRS/FATCA transmissions are on time → zero exposure.
 
@@ -157,7 +157,7 @@ Asset control certainty 80 % ≈ 98 % lifetime & multi-generation retention
 🧮 Long-term Financial Projection (illustrative)
 
 Year 10 Portfolio Value Governance Cost (3 %) Net Yield (5 %) Tax + Leakage (≤ 9 %) Retained Growth / yr
-$20 B (ShadowTag-v2 + family holdings) $0.6 B $1.0 B $0.18 B $0.82 B (≈ 4.1 %)
+$20 B (AiYou + family holdings) $0.6 B $1.0 B $0.18 B $0.82 B (≈ 4.1 %)
 → compounding to $30 – 32 B in ~10 years under conservative models.
 
 ⸻

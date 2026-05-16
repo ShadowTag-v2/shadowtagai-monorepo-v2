@@ -1,13 +1,11 @@
 # ADK Multi-Agent Patterns Reference
-
 **Source:** [Google ADK Docs](https://google.github.io/adk-docs/)
 **Date:** 2026-01-18
 
 This document contains the core Multi-Agent Patterns extracted from the ADK documentation, ready for implementation in `ShadowTag-v2`.
 
 ## 1. Sequential Pipeline (The Assembly Line)
-
-_Linear, deterministic execution._
+*Linear, deterministic execution.*
 
 ```python
 from google.adk.agents import SequentialAgent, LlmAgent
@@ -34,8 +32,7 @@ pipeline = SequentialAgent(
 ```
 
 ## 2. Parallel Fan-Out/Gather (The Swarm)
-
-_Concurrent execution for independent tasks._
+*Concurrent execution for independent tasks.*
 
 ```python
 from google.adk.agents import ParallelAgent, LlmAgent
@@ -52,8 +49,7 @@ gatherer = ParallelAgent(
 ```
 
 ## 3. Coordinator/Dispatcher (The Concierge)
-
-_LLM-driven dynamic routing._
+*LLM-driven dynamic routing.*
 
 ```python
 from google.adk.agents import LlmAgent
@@ -77,8 +73,7 @@ coordinator = LlmAgent(
 ```
 
 ## 4. Loop Agent (The Sculptor / Generator-Critic)
-
-_Iterative refinement until a condition is met._
+*Iterative refinement until a condition is met.*
 
 ```python
 from google.adk.agents import LoopAgent, LlmAgent
@@ -97,7 +92,6 @@ refinement_loop = LoopAgent(
 ```
 
 ## Implementation Notes
-
 - **State Management:** Use `output_key` to write to the shared session state.
 - **Routing:** Use `description` fields in Sub-Agents to guide the Coordinator's routing logic.
 - **Library:** These patterns rely on `google.adk.agents`. Ensure this package is available or implement the equivalent classes in `libs/pnkln-stack`.

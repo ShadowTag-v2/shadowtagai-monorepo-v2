@@ -152,7 +152,13 @@ def run_codebase_embedder(cfg=None) -> dict:
         chunks = [content[i : i + MAX_CHUNK_SIZE] for i in range(0, len(content), MAX_CHUNK_SIZE)]
         for idx, chunk in enumerate(chunks):
             batch_texts.append(chunk)
-            batch_meta.append({"file_path": str(fpath.relative_to(REPO_ROOT)), "chunk_index": idx, "text": chunk})
+            batch_meta.append(
+                {
+                    "file_path": str(fpath.relative_to(REPO_ROOT)),
+                    "chunk_index": idx,
+                    "text": chunk,
+                }
+            )
 
             if len(batch_texts) >= 5:
                 try:

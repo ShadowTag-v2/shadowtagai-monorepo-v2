@@ -1,7 +1,7 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import * as fs from "node:fs";
+import * as path from "node:path";
 
-import type { State } from '../types/index.js';
+import type { State } from "../types/index.js";
 
 export type SessionsMap = Record<string, string>;
 
@@ -10,11 +10,11 @@ function normalizePath(input: string): string {
 }
 
 function toInt(value: unknown, fallback: number): number {
-  if (typeof value === 'number' && Number.isFinite(value)) {
+  if (typeof value === "number" && Number.isFinite(value)) {
     return Math.floor(value);
   }
 
-  if (typeof value === 'string' && value.trim() !== '') {
+  if (typeof value === "string" && value.trim() !== "") {
     const parsed = Number.parseInt(value, 10);
     if (Number.isFinite(parsed)) {
       return parsed;
@@ -31,12 +31,12 @@ export function atomicWriteJson(filePath: string, payload: unknown): void {
     fs.mkdirSync(directory, { recursive: true });
   }
 
-  fs.writeFileSync(tmpPath, JSON.stringify(payload, null, 2), 'utf8');
+  fs.writeFileSync(tmpPath, JSON.stringify(payload, null, 2), "utf8");
   fs.renameSync(tmpPath, filePath);
 }
 
 export function getSessionsMapPath(extensionRoot: string): string {
-  return path.join(extensionRoot, 'current_sessions.json');
+  return path.join(extensionRoot, "current_sessions.json");
 }
 
 export function loadSessionsMap(extensionRoot: string): SessionsMap {
@@ -46,14 +46,14 @@ export function loadSessionsMap(extensionRoot: string): SessionsMap {
   }
 
   try {
-    const raw = JSON.parse(fs.readFileSync(mapPath, 'utf8')) as unknown;
-    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    const raw = JSON.parse(fs.readFileSync(mapPath, "utf8")) as unknown;
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
       return {};
     }
 
     const normalized: SessionsMap = {};
     for (const [cwd, sessionPath] of Object.entries(raw as Record<string, unknown>)) {
-      if (typeof cwd !== 'string' || typeof sessionPath !== 'string') {
+      if (typeof cwd !== "string" || typeof sessionPath !== "string") {
         continue;
       }
       normalized[normalizePath(cwd)] = sessionPath;
@@ -126,7 +126,7 @@ export function resolveSessionPath(extensionRoot: string, cwd: string): string |
 }
 
 export function findLatestSessionForCwd(extensionRoot: string, cwd: string): string | null {
-  const sessionsRoot = path.join(extensionRoot, 'sessions');
+  const sessionsRoot = path.join(extensionRoot, "sessions");
   if (!fs.existsSync(sessionsRoot)) {
     return null;
   }
@@ -140,7 +140,7 @@ export function findLatestSessionForCwd(extensionRoot: string, cwd: string): str
     }
 
     const sessionPath = path.join(sessionsRoot, entry.name);
-    const statePath = path.join(sessionPath, 'state.json');
+    const statePath = path.join(sessionPath, "state.json");
     if (!fs.existsSync(statePath)) {
       continue;
     }
@@ -187,7 +187,7 @@ export function resolveStateFilePath(
     return null;
   }
 
-  const stateFile = path.join(sessionPath, 'state.json');
+  const stateFile = path.join(sessionPath, "state.json");
   if (!fs.existsSync(stateFile)) {
     return null;
   }
@@ -201,24 +201,24 @@ export function readStateFile(stateFile: string): State | null {
   }
 
   try {
-    const raw = JSON.parse(fs.readFileSync(stateFile, 'utf8')) as Record<string, unknown>;
+    const raw = JSON.parse(fs.readFileSync(stateFile, "utf8")) as Record<string, unknown>;
 
     const state: State = {
       active: Boolean(raw.active),
-      working_dir: typeof raw.working_dir === 'string' ? raw.working_dir : process.cwd(),
-      step: typeof raw.step === 'string' ? raw.step : 'prd',
+      working_dir: typeof raw.working_dir === "string" ? raw.working_dir : process.cwd(),
+      step: typeof raw.step === "string" ? raw.step : "prd",
       iteration: toInt(raw.iteration, 0),
       max_iterations: toInt(raw.max_iterations, 0),
       max_time_minutes: toInt(raw.max_time_minutes, 0),
       worker_timeout_seconds: toInt(raw.worker_timeout_seconds, 1200),
       start_time_epoch: toInt(raw.start_time_epoch, Math.floor(Date.now() / 1000)),
       completion_promise: raw.completion_promise == null ? null : String(raw.completion_promise),
-      original_prompt: typeof raw.original_prompt === 'string' ? raw.original_prompt : '',
+      original_prompt: typeof raw.original_prompt === "string" ? raw.original_prompt : "",
       current_ticket: raw.current_ticket == null ? null : String(raw.current_ticket),
       history: Array.isArray(raw.history) ? raw.history : [],
-      started_at: typeof raw.started_at === 'string' ? raw.started_at : new Date().toISOString(),
+      started_at: typeof raw.started_at === "string" ? raw.started_at : new Date().toISOString(),
       session_dir:
-        typeof raw.session_dir === 'string'
+        typeof raw.session_dir === "string"
           ? raw.session_dir
           : path.dirname(normalizePath(stateFile)),
       jar_complete: raw.jar_complete === true,

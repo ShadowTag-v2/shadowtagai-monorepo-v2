@@ -53,7 +53,7 @@ Charge brands $50k
 
 Sell to nvidia for $25b,
 No ipo
-Next year, launch ShadowTag-v2 2.0 on quantum chips
+Next year, launch AiYou 2.0 on quantum chips
 Run on qbits good to 2030
 
 Shadowtag v2

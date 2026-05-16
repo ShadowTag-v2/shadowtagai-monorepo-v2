@@ -11,7 +11,7 @@ We have successfully folded in the "Ultrathink", "Cor.113 Agents Whitepaper", "C
 
 - **Philosophy:** Steve Jobs / Ultrathink (Design + Wealth).
 - **Architecture:** BDH + RoT + MoE-CL + Qwen3.
-- **Governance:** Judge 6 (Purpose, Reasons, Brakes).
+- **Governance:** Judge #6 (Purpose, Reasons, Brakes).
 
 ---
 
@@ -38,12 +38,12 @@ We have successfully folded in the "Ultrathink", "Cor.113 Agents Whitepaper", "C
   - **Old:** Static ReAct loop.
   - **New:** **Dynamic, Learning, Retrieving Brain**. -40% Tokens, +82% Speed.
 
-### 3. The Governance (Judge 6) - _Cor.26 & Cor.114_
+### 3. The Governance (Judge #6) - _Cor.26 & Cor.114_
 
-- **Input:** Financial Doctrine (ROI > 3x, LTV:CAC > 4:1), Compliance Framework Risk Matrix.
+- **Input:** Financial Doctrine (ROI > 3x, LTV:CAC > 4:1), ATP 5-19 Risk Matrix.
 - **Action:**
   - Created `libs/steel/strategy_core.py`: **VRIO Analysis**, **Monte Carlo Simulation**, **ROI Gates**.
-  - Updated `libs/steel/sentinel.py`: **Compliance Framework Risk Matrix**.
+  - Updated `libs/steel/sentinel.py`: **ATP 5-19 Risk Matrix**.
   - Created `Docs/COR_114_WEALTH_PLANNING.md`.
 - **Improvement:**
   - **Old:** Subjective code checks.
@@ -51,7 +51,7 @@ We have successfully folded in the "Ultrathink", "Cor.113 Agents Whitepaper", "C
 
 ### 4. The Nervous System (Wiring)
 
-- **Input:** "Fold into n-autoresearch/Kosmos/BioAgents".
+- **Input:** "Fold into Monkeys".
 - **Action:**
   - Wired `kosmos` and `strategy_core` into `apps/https://github.com/karpathy/autoresearchs-server/src/main.py`.
   - Added endpoints: `/agent/kosmos/run` and `/agent/world/state`.

@@ -4,10 +4,10 @@ import {
   type KeyEvent,
   RGBA,
   TextRenderable,
-} from '@opentui/core';
-import { getConfiguredModel, getConfiguredProvider } from '../services/providers/index.js';
-import { capitalizeProvider, createMultiGradientText } from '../utils/index.js';
-import { THEME } from './theme.js';
+} from "@opentui/core";
+import { getConfiguredModel, getConfiguredProvider } from "../services/providers/index.js";
+import { capitalizeProvider, createMultiGradientText } from "../utils/index.js";
+import { THEME } from "./theme.js";
 
 const DOUBLE_TAP_THRESHOLD = 1000; // ms
 
@@ -16,9 +16,9 @@ const DOUBLE_TAP_THRESHOLD = 1000; // ms
  * Accepts number or percentage string (percentage strings default to 5)
  */
 export function buildVerticalBar(height: number | `${number}%` | undefined): string {
-  const h = typeof height === 'number' ? height : 5;
-  if (h <= 0) return '';
-  return Array.from({ length: h }, () => '┃').join('\n');
+  const h = typeof height === "number" ? height : 5;
+  if (h <= 0) return "";
+  return Array.from({ length: h }, () => "┃").join("\n");
 }
 
 /**
@@ -29,30 +29,30 @@ export function createInputContainerMouseHandler(
   focusTarget?: { focus: () => void },
 ) {
   return (event: { type: string }) => {
-    if (event.type === 'click' && focusTarget) {
+    if (event.type === "click" && focusTarget) {
       focusTarget.focus();
     }
     switch (event.type) {
-      case 'over':
-        container.backgroundColor = '#2d372d';
+      case "over":
+        container.backgroundColor = "#2d372d";
         break;
-      case 'out':
+      case "out":
         container.backgroundColor = THEME.surface;
         break;
-      case 'down':
-        container.backgroundColor = '#1a241a';
+      case "down":
+        container.backgroundColor = "#1a241a";
         break;
-      case 'up':
-        container.backgroundColor = '#2d372d';
+      case "up":
+        container.backgroundColor = "#2d372d";
         break;
     }
   };
 }
 
 const PROVIDER_GRADIENT_COLORS = [
-  RGBA.fromHex('#1b5e20'),
-  RGBA.fromHex('#43a047'),
-  RGBA.fromHex('#76ff03'),
+  RGBA.fromHex("#1b5e20"),
+  RGBA.fromHex("#43a047"),
+  RGBA.fromHex("#76ff03"),
 ];
 
 /**
@@ -62,29 +62,29 @@ const PROVIDER_GRADIENT_COLORS = [
 export function createProviderMetadataRow(renderer: CliRenderer, idPrefix: string) {
   const row = new BoxRenderable(renderer, {
     id: `${idPrefix}-metadata-row`,
-    width: '100%',
+    width: "100%",
     height: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "flex-start",
     gap: 1,
   });
 
   const pickleLabel = new TextRenderable(renderer, {
     id: `${idPrefix}-meta-l`,
-    content: 'Pickle',
+    content: "Pickle",
     fg: THEME.green,
   });
   row.add(pickleLabel);
 
   const providerLabel = new TextRenderable(renderer, {
     id: `${idPrefix}-meta-m`,
-    content: createMultiGradientText('Loading...', PROVIDER_GRADIENT_COLORS),
+    content: createMultiGradientText("Loading...", PROVIDER_GRADIENT_COLORS),
   });
   row.add(providerLabel);
 
   const modelLabel = new TextRenderable(renderer, {
     id: `${idPrefix}-meta-r`,
-    content: '',
+    content: "",
     fg: THEME.dim,
   });
   row.add(modelLabel);
@@ -92,14 +92,14 @@ export function createProviderMetadataRow(renderer: CliRenderer, idPrefix: strin
   // Fetch and update provider info asynchronously
   Promise.all([getConfiguredProvider(), getConfiguredModel()])
     .then(([provider, model]) => {
-      const displayProvider = capitalizeProvider(provider || 'gemini');
+      const displayProvider = capitalizeProvider(provider || "gemini");
       providerLabel.content = createMultiGradientText(displayProvider, PROVIDER_GRADIENT_COLORS);
-      modelLabel.content = model ? `(${model})` : '';
+      modelLabel.content = model ? `(${model})` : "";
       renderer.requestRender();
     })
     .catch(() => {
-      providerLabel.content = createMultiGradientText('Gemini', PROVIDER_GRADIENT_COLORS);
-      modelLabel.content = '';
+      providerLabel.content = createMultiGradientText("Gemini", PROVIDER_GRADIENT_COLORS);
+      modelLabel.content = "";
       renderer.requestRender();
     });
 
@@ -134,7 +134,7 @@ export function createCtrlCExitHandler(options: CtrlCExitHandlerOptions) {
   return (key: KeyEvent): boolean => {
     if (shouldSkip?.()) return false;
 
-    if (key.ctrl && key.name === 'c') {
+    if (key.ctrl && key.name === "c") {
       const now = Date.now();
       if (now - lastCtrlCTime < DOUBLE_TAP_THRESHOLD) {
         // Double Ctrl+C - exit
@@ -144,7 +144,7 @@ export function createCtrlCExitHandler(options: CtrlCExitHandlerOptions) {
       } else {
         // First Ctrl+C - show hint
         lastCtrlCTime = now;
-        hintText.content = 'Press Ctrl+C again to exit';
+        hintText.content = "Press Ctrl+C again to exit";
         hintText.fg = THEME.warning;
         renderer.requestRender();
 

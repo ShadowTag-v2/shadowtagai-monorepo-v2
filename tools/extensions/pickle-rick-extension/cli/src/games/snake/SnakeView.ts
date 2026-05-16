@@ -5,15 +5,15 @@ import {
   RGBA,
   TextAttributes,
   TextRenderable,
-} from '@opentui/core';
-import { THEME } from '../../ui/theme.js';
-import { Direction, SnakeGame } from './SnakeGame.js';
+} from "@opentui/core";
+import { THEME } from "../../ui/theme.js";
+import { Direction, SnakeGame } from "./SnakeGame.js";
 
 export interface SnakeOptions {
-  width?: number | 'auto' | `${number}%`;
-  height?: number | 'auto' | `${number}%`;
-  left?: number | 'auto' | `${number}%`;
-  top?: number | 'auto' | `${number}%`;
+  width?: number | "auto" | `${number}%`;
+  height?: number | "auto" | `${number}%`;
+  left?: number | "auto" | `${number}%`;
+  top?: number | "auto" | `${number}%`;
   zIndex?: number;
   startPaused?: boolean;
   onSplitRequest?: (paused: boolean) => void;
@@ -26,31 +26,31 @@ export async function launchSnake(
   options: SnakeOptions = {},
 ) {
   const container = new BoxRenderable(renderer, {
-    id: 'snake-container',
-    width: options.width ?? '100%',
-    height: options.height ?? '100%',
-    position: 'absolute',
+    id: "snake-container",
+    width: options.width ?? "100%",
+    height: options.height ?? "100%",
+    position: "absolute",
     left: options.left ?? 0,
     top: options.top ?? 0,
     zIndex: options.zIndex ?? 24000, // Below sidebar (25000)
     backgroundColor: RGBA.fromHex(THEME.bg),
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
     border:
       options.width && !options.height
-        ? ['left']
+        ? ["left"]
         : options.height && !options.width
-          ? ['bottom']
+          ? ["bottom"]
           : undefined,
     borderColor: THEME.darkAccent,
   });
   renderer.root.add(container);
 
   // Calculate actual available dimensions
-  const parseSize = (size: number | string | 'auto' | undefined, terminalSize: number): number => {
-    if (typeof size === 'number') return size;
-    if (typeof size === 'string' && size.endsWith('%')) {
+  const parseSize = (size: number | string | "auto" | undefined, terminalSize: number): number => {
+    if (typeof size === "number") return size;
+    if (typeof size === "string" && size.endsWith("%")) {
       const pct = parseFloat(size) / 100;
       return Math.floor(terminalSize * pct);
     }
@@ -71,7 +71,7 @@ export async function launchSnake(
     game = new SnakeGame(gameWidth, gameHeight);
   } catch (e) {
     const errorDisplay = new TextRenderable(renderer, {
-      id: 'snake-error',
+      id: "snake-error",
       content: e instanceof Error ? e.message : String(e),
       fg: RGBA.fromInts(255, 50, 50, 255),
       attributes: TextAttributes.BOLD,
@@ -87,28 +87,28 @@ export async function launchSnake(
   }
 
   const board = new BoxRenderable(renderer, {
-    id: 'snake-board',
+    id: "snake-board",
     width: gameWidth + 2,
     height: gameHeight + 2,
     border: true,
     borderColor: THEME.accent, // Brighter border
     backgroundColor: THEME.surface,
-    position: 'relative',
+    position: "relative",
     marginBottom: 1,
   });
   container.add(board);
 
   const statsRow = new BoxRenderable(renderer, {
-    id: 'snake-stats',
+    id: "snake-stats",
     width: gameWidth + 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 1,
   });
 
   const scoreText = new TextRenderable(renderer, {
-    id: 'snake-score',
-    content: 'Score: 0',
+    id: "snake-score",
+    content: "Score: 0",
     fg: THEME.accent,
     attributes: TextAttributes.BOLD,
   });
@@ -116,8 +116,8 @@ export async function launchSnake(
   container.add(statsRow);
 
   const helpText = new TextRenderable(renderer, {
-    id: 'snake-help',
-    content: 'WASD: Move | P: Pause | CTRL+S: Sessions | ESC: Quit',
+    id: "snake-help",
+    content: "WASD: Move | P: Pause | CTRL+S: Sessions | ESC: Quit",
     fg: THEME.dim,
   });
   container.add(helpText);
@@ -145,26 +145,26 @@ export async function launchSnake(
     if (isExiting) return;
     isExiting = true;
     stopGameLoop();
-    renderer.keyInput.off('keypress', inputHandler);
+    renderer.keyInput.off("keypress", inputHandler);
     renderer.root.remove(container.id);
     onExit();
     renderer.requestRender();
   };
 
   const inputHandler = (key: KeyEvent) => {
-    if (key.name === 'escape') {
+    if (key.name === "escape") {
       cleanup();
       return;
     }
 
-    if (key.ctrl && key.name === 's' && options.onSidebarRequest) {
+    if (key.ctrl && key.name === "s" && options.onSidebarRequest) {
       options.onSidebarRequest();
       renderer.requestRender();
       return true;
     }
 
     if (game.getGameOver()) {
-      if (key.name === 'r') {
+      if (key.name === "r") {
         game = new SnakeGame(gameWidth, gameHeight);
         isPaused = false;
         renderGame();
@@ -173,7 +173,7 @@ export async function launchSnake(
       return;
     }
 
-    if (key.name === 'p' || key.name === 'space') {
+    if (key.name === "p" || key.name === "space") {
       isPaused = !isPaused;
       if (isPaused) {
         stopGameLoop();
@@ -184,7 +184,7 @@ export async function launchSnake(
       return;
     }
 
-    if (isPaused && key.name === '_' && options.onSplitRequest) {
+    if (isPaused && key.name === "_" && options.onSplitRequest) {
       cleanup();
       options.onSplitRequest(isPaused);
       return;
@@ -193,31 +193,31 @@ export async function launchSnake(
     if (isPaused) return;
 
     switch (key.name) {
-      case 'w':
-      case 'up':
+      case "w":
+      case "up":
         game.setDirection(Direction.UP);
         break;
-      case 's':
-      case 'down':
+      case "s":
+      case "down":
         game.setDirection(Direction.DOWN);
         break;
-      case 'a':
-      case 'left':
+      case "a":
+      case "left":
         game.setDirection(Direction.LEFT);
         break;
-      case 'd':
-      case 'right':
+      case "d":
+      case "right":
         game.setDirection(Direction.RIGHT);
         break;
     }
   };
 
-  renderer.keyInput.on('keypress', inputHandler);
+  renderer.keyInput.on("keypress", inputHandler);
 
   const renderGame = () => {
     const children = board.getChildren();
     for (const child of children) {
-      if (child.id.startsWith('snake-') || child.id === 'food' || child.id === 'overlay') {
+      if (child.id.startsWith("snake-") || child.id === "food" || child.id === "overlay") {
         board.remove(child.id);
       }
     }
@@ -225,10 +225,10 @@ export async function launchSnake(
     const food = game.getFood();
     board.add(
       new TextRenderable(renderer, {
-        id: 'food',
-        content: '◆',
+        id: "food",
+        content: "◆",
         fg: THEME.error,
-        position: 'absolute',
+        position: "absolute",
         left: food.x,
         top: food.y,
         zIndex: 10,
@@ -239,9 +239,9 @@ export async function launchSnake(
       board.add(
         new TextRenderable(renderer, {
           id: `snake-${i}`,
-          content: i === 0 ? '█' : '▒',
+          content: i === 0 ? "█" : "▒",
           fg: THEME.accent,
-          position: 'absolute',
+          position: "absolute",
           left: p.x,
           top: p.y,
           zIndex: 20,
@@ -252,26 +252,26 @@ export async function launchSnake(
     scoreText.content = `Score: ${game.getScore()}`;
 
     if (isPaused || game.getGameOver()) {
-      const msg = game.getGameOver() ? ' GAME OVER ' : ' PAUSED ';
-      const subMsg = game.getGameOver() ? ' [R]estart | [ESC] Quit ' : '';
+      const msg = game.getGameOver() ? " GAME OVER " : " PAUSED ";
+      const subMsg = game.getGameOver() ? " [R]estart | [ESC] Quit " : "";
 
       const overlay = new BoxRenderable(renderer, {
-        id: 'overlay',
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
+        id: "overlay",
+        width: "100%",
+        height: "100%",
+        position: "absolute",
         left: 0,
         top: 0,
         zIndex: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
         backgroundColor: RGBA.fromInts(0, 0, 0, 180),
       });
 
       overlay.add(
         new TextRenderable(renderer, {
-          id: 'overlay-msg',
+          id: "overlay-msg",
           content: msg,
           fg: THEME.white,
           attributes: TextAttributes.BOLD,
@@ -281,7 +281,7 @@ export async function launchSnake(
       if (subMsg) {
         overlay.add(
           new TextRenderable(renderer, {
-            id: 'overlay-sub',
+            id: "overlay-sub",
             content: subMsg,
             fg: THEME.dim,
           }),

@@ -10,11 +10,15 @@
 
 This guide walks you through deploying the complete SHADOWTAGAI Intelligence Platform on macOS, including:
 
+
 - **MCP Gemini Efficiency Patterns** (Batch governance with 90-97% cost savings)
+
 
 - **Nightly Intel Pipeline** (AI/MLOps intelligence gathering)
 
+
 - **LLM Memory System** (Persistent memory across Claude Code, Vertex, 4-LLM orchestration)
+
 
 - **pnkln-stack Governance Service** (EU AI Act, DSA, NIST RMF, ISO 42001 compliance)
 
@@ -24,13 +28,19 @@ This guide walks you through deploying the complete SHADOWTAGAI Intelligence Pla
 
 ### 1. System Requirements
 
+
+
 - **macOS**: 12.0 (Monterey) or later
+
 
 - **RAM**: 8GB minimum, 16GB recommended
 
+
 - **Disk**: 10GB free space
 
+
 - **Python**: 3.11 or later
+
 
 - **Node.js**: 18.x or later (for LLM Memory scripts)
 
@@ -323,13 +333,18 @@ python scripts/extract_and_commit.py
 
 This will:
 
+
 - Find conversation databases in `~/Library/Application Support/Cursor/`, etc.
+
 
 - Extract conversations
 
+
 - Generate metadata with Gemini Flash
 
+
 - Commit to Git with semantic versioning
+
 
 - Cost: ~$0.45 for 2,121 conversations
 
@@ -353,11 +368,11 @@ Test:
 
 # In Claude Code, ask:
 
-"What is Judge 6?"
+"What is Judge #6?"
 
 # Should respond with:
 
-# "Judge 6 is a hybrid Gemini+PyTorch+Rules validation system with 98% coverage and p99 ≤90ms latency..."
+# "Judge #6 is a hybrid Gemini+PyTorch+Rules validation system with 98% coverage and p99 ≤90ms latency..."
 
 ```
 
@@ -766,15 +781,15 @@ See `erik-hancock-llm-memory/configs/vertex_workbench_config.py`
 
 ## Part 10: Cost Summary (Mac Local)
 
-| Component               | Monthly Cost     | Notes                               |
-| ----------------------- | ---------------- | ----------------------------------- |
-| **pnkln-stack FastAPI** | $0               | Local, no infrastructure            |
-| **Nightly Intel**       | $3-11            | Gemini API only (GitHub/arXiv free) |
-| **LLM Memory**          | $0.12            | Incremental extractions             |
-| **4-LLM Orchestration** | $0.08-0.12/query | On-demand only                      |
-| **PostgreSQL**          | $0               | Local instance                      |
-| **Redis**               | $0               | Local instance                      |
-| **Total**               | **$3-12/month**  | Pure API costs                      |
+| Component | Monthly Cost | Notes |
+|-----------|-------------|-------|
+| **pnkln-stack FastAPI** | $0 | Local, no infrastructure |
+| **Nightly Intel** | $3-11 | Gemini API only (GitHub/arXiv free) |
+| **LLM Memory** | $0.12 | Incremental extractions |
+| **4-LLM Orchestration** | $0.08-0.12/query | On-demand only |
+| **PostgreSQL** | $0 | Local instance |
+| **Redis** | $0 | Local instance |
+| **Total** | **$3-12/month** | Pure API costs |
 
 **vs. GKE Production**: $77-92/month (includes infrastructure)
 
@@ -786,31 +801,46 @@ See `erik-hancock-llm-memory/configs/vertex_workbench_config.py`
 
 ### Immediate (Week 1)
 
+
+
 - [ ] Deploy pnkln-stack FastAPI locally
+
 
 - [ ] Test batch governance API
 
+
 - [ ] Run Nightly Intel manually
+
 
 - [ ] Extract conversations to LLM Memory
 
 ### Short-term (Month 1)
 
+
+
 - [ ] Schedule Nightly Intel in cron
+
 
 - [ ] Integrate memory into Claude Code
 
+
 - [ ] Setup PostgreSQL + Redis
+
 
 - [ ] Test 4-LLM orchestration
 
 ### Medium-term (Quarter 1)
 
+
+
 - [ ] Deploy to GKE for production
+
 
 - [ ] Setup monitoring (Prometheus + Grafana)
 
+
 - [ ] Add more intelligence sources (YouTube, News)
+
 
 - [ ] Fine-tune scoring thresholds
 
@@ -820,11 +850,15 @@ See `erik-hancock-llm-memory/configs/vertex_workbench_config.py`
 
 **Documentation**:
 
+
 - pnkln-stack: `docs/pnkln-stack-governance-README.md`
+
 
 - Nightly Intel: `nightly_intel_pipeline/README.md`
 
+
 - LLM Memory: `erik-hancock-llm-memory/README.md`
+
 
 - MCP Patterns: `docs/MCP_GEMINI_EFFICIENCY_IMPACT.md`
 
@@ -832,9 +866,12 @@ See `erik-hancock-llm-memory/configs/vertex_workbench_config.py`
 
 **Cost Analyses**:
 
+
 - `docs/MCP_GEMINI_EFFICIENCY_IMPACT.md` - 90-97% cost reduction
 
+
 - `docs/NIGHTLY_INTEL_PIPELINE_FINANCIAL_IMPACT.md` - $146K 3-year NPV
+
 
 - `erik-hancock-llm-memory/IMPLEMENTATION_SUMMARY.md` - 18,000% ROI
 

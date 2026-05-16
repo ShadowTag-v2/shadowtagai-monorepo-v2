@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  pnkln-judge6:
+    image: mcr.microsoft.com/playwright:v1.58.2-noble
+    volumes:
+      - .:/app
+    command: bash -c "npm ci && chmod +x scripts/pnkln-test.sh && ./scripts/pnkln-test.sh"
+    stdin_open: true
+    tty: true

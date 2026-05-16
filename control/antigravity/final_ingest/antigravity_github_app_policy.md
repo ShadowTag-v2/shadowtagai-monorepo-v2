@@ -5,10 +5,10 @@
 ### Current declared monorepo truth
 The live monorepo documents still declare a **four-repo canonical merge at the canonical-root layer**:
 
-- `apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services`
-- `apps/ShadowTag-v2_stack/cosmic-crab-payload`
-- `apps/ShadowTag-v2_stack/Pipeline`
-- `apps/ShadowTag-v2_stack/nascent-apollo`
+- `apps/pnkln-stack_stack/pnkln-stack-fastapi-services`
+- `apps/pnkln-stack_stack/cosmic-crab-payload`
+- `apps/pnkln-stack_stack/Pipeline`
+- `apps/pnkln-stack_stack/nascent-apollo`
 
 They also define additional active monorepo roots such as:
 - `apps/counselconduit`

@@ -1,12 +1,12 @@
 from datetime import UTC, datetime
 
 import pytest
-from src.dualco.models import Base, DualCoGateState
 
 from src.database import SessionLocal
 from src.database import engine as db_engine
 from src.dualco.constants import GATE_A_LOGOS, GateName
 from src.dualco.engine import DualCoEngine
+from src.dualco.models import Base, DualCoGateState
 from src.dualco.schemas import MetricsInput
 
 

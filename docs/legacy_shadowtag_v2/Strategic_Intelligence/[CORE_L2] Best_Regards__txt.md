@@ -13,7 +13,7 @@ founder@shadowtagai.com
 
 > > > Erik L. Hancock. Notice and Disclaimer: Any review, use, disclosure, distribution or copying of this e-mail without permission from the sender is prohibited by federal law except by or on behalf of the intended recipient. If you have received this email in error, please notify Erik L. Hancock immediately by reply email, delete this email, and do not disclose its contents to anyone. > > >
 
-cd /Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/erik-hancock-llm-memory/scripts
+cd /Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services/erik-hancock-llm-memory/scripts
 
 6340 E Hwy 20
 Lucerne, CA 95458-7801

@@ -11,19 +11,16 @@
 Adding Gemini CLI TUI, kernel-chaining architecture, and migrating from Autogen (OpenAI) to Gemini Flash creates **dramatic cost reductions** and **new revenue streams**:
 
 **Cost Impact:**
-
 - **Before Migration:** $630-965/mo (current production costs)
 - **After Migration:** $185-315/mo (70-67% cost reduction)
 - **Savings:** $445-650/mo (~$5,340-7,800/year)
 
 **Revenue Impact:**
-
 - **New CLI Adoption:** Free tier → 20% convert to web dashboard ($49/mo)
 - **Kernel-Chaining Premium:** Enterprise feature ($499/mo, 30% margin boost)
 - **Unit Economics:** LTV:CAC improves from 5.3:1 → 8.7:1
 
 **Break-Even:**
-
 - **Before:** 4-6 customers to break-even
 - **After:** 1-2 customers to break-even (67% faster path to profitability)
 
@@ -34,24 +31,22 @@ Adding Gemini CLI TUI, kernel-chaining architecture, and migrating from Autogen 
 ### Architecture
 
 **Stack:**
-
 ```typescript
 // judge6-cli (Ink-based TUI)
-import { render, Box, Text } from "ink";
-import { judge6 } from "@pnkln/governance-sdk";
+import { render, Box, Text } from 'ink';
+import { judge6 } from '@pnkln/governance-sdk';
 
-// CloudFlare Workers API endpoint (CLI talks to Judge 6 service)
+// CloudFlare Workers API endpoint (CLI talks to Judge #6 service)
 export default {
   async fetch(request) {
     const { purpose } = await request.json();
     const decision = await judge6.scan({ purpose, atp519: true });
     return Response.json(decision);
-  },
-};
+  }
+}
 ```
 
 **Key Features:**
-
 1. **Alternate Screen Buffer** - Flicker-free rendering (like Vim/Less)
 2. **Sticky Headers** - Fixed positioning with Ink flexbox
 3. **Anchored Prompts** - Bottom-screen input (no bounce)
@@ -61,7 +56,6 @@ export default {
 ### Cost Analysis
 
 **Infrastructure:**
-
 ```
 CloudFlare Workers (CLI API endpoint):
 - Free tier: 100K requests/day
@@ -73,18 +67,17 @@ npm Package Hosting:
 
 CLI Bundle Size:
 - Ink + dependencies: 5MB
-- Judge 6 SDK: 2MB
+- Judge #6 SDK: 2MB
 - Total: 7MB (acceptable for CLI)
 
 Development Cost:
-- Week 1: Ink prototype + Judge 6 integration
+- Week 1: Ink prototype + Judge #6 integration
 - Week 2: Flicker testing across terminals
 - Week 3: npm publish + docs
 - Total: 3 weeks (~$15K if outsourced, $0 if internal)
 ```
 
 **Monthly Costs:**
-
 - CloudFlare Workers: $0-5/mo
 - npm hosting: $0
 - Maintenance: $0 (community-driven)
@@ -93,7 +86,6 @@ Development Cost:
 ### Revenue Impact
 
 **Freemium Model:**
-
 ```
 CLI (Free) → Web Dashboard Upsell:
 - CLI downloads: 500/month (conservative)
@@ -111,7 +103,6 @@ Total New Revenue: $7,395/mo
 ```
 
 **Unit Economics:**
-
 ```
 Customer Acquisition Cost (CAC):
 - CLI = $0 (organic npm downloads)
@@ -136,14 +127,13 @@ LTV:CAC Ratio:
 ### Architecture
 
 **Multi-Agent Orchestration:**
-
 ```python
 # src/pnkln_agents/core/kernel_chain.py
 class KernelChain:
     """
     Chains multiple specialized kernels for complex decision workflows
 
-    Example: pnkln Intelligence → Judge 6 → JR Engine → Action
+    Example: pnkln Intelligence → Judge #6 → JR Engine → Action
     """
 
     def __init__(self, kernels: List[Kernel]):
@@ -170,7 +160,7 @@ class KernelChain:
 # Example usage: Multi-step governance workflow
 chain = KernelChain([
     GeminiIngestionKernel(),   # Collect intelligence from 5 sources
-    Judge6Kernel(),            # Binary governance scan (Compliance Framework)
+    Judge6Kernel(),            # Binary governance scan (ATP 5-19)
     JREngineKernel(),          # Justice/Restitution layer
     ActionExecutionKernel()    # Execute approved action
 ])
@@ -182,7 +172,6 @@ result = await chain.execute({
 ```
 
 **Key Features:**
-
 1. **State Management** - Intermediate results cached between kernels
 2. **Early Exit** - Brake triggers short-circuit chain
 3. **Observability** - Full trace of decision flow
@@ -191,7 +180,6 @@ result = await chain.execute({
 ### Cost Analysis
 
 **Gemini API Costs (per kernel execution):**
-
 ```
 Kernel 1: GeminiIngestion (5 sources × 10 items/source):
 - Input: 50 items × 500 tokens/item = 25K tokens
@@ -212,7 +200,6 @@ Total per chain execution: $0.0028 (~$0.003)
 ```
 
 **Monthly Costs (assuming 10K chain executions/month):**
-
 ```
 Gemini API: 10K × $0.003 = $30/mo
 State caching (Redis): $30/mo (Cloud Memorystore basic tier)
@@ -222,7 +209,6 @@ Total: $70/mo
 ```
 
 **Compare to OpenAI (Autogen approach):**
-
 ```
 OpenAI GPT-4 Turbo:
 - Input: $0.01/1K tokens
@@ -236,7 +222,6 @@ Savings: $4,100 - $70 = $4,030/mo (~98% reduction)
 ### Revenue Impact
 
 **Premium Feature Pricing:**
-
 ```
 Kernel-Chaining = Enterprise Feature:
 - Basic tier ($49/mo): Single-kernel workflows only
@@ -249,7 +234,6 @@ Incremental Revenue:
 ```
 
 **Unit Economics:**
-
 ```
 LTV (Enterprise with kernel-chaining):
 - $499/mo × 24 months = $11,976
@@ -269,7 +253,6 @@ LTV:CAC ratio: $11,808 / $50 = 236:1
 ### Architecture
 
 **Before (Autogen + OpenAI GPT-4):**
-
 ```python
 # Autogen approach (multi-agent conversation)
 from autogen import AssistantAgent, UserProxyAgent
@@ -294,7 +277,6 @@ user_proxy.initiate_chat(
 ```
 
 **After (Gemini Flash 1.5):**
-
 ```python
 # Direct Gemini Flash API (single-shot structured output)
 import google.generativeai as genai
@@ -313,7 +295,6 @@ response = model.generate_content(
 ```
 
 **Cost Comparison:**
-
 ```
 Autogen (OpenAI GPT-4):
 - Per analysis: $0.90
@@ -330,7 +311,6 @@ Annual savings: $107,592
 ### Quality Comparison
 
 **Benchmark: Intelligence Analysis Task**
-
 ```
 Test: Analyze 50 news articles, extract 10 key insights, rank by relevance
 
@@ -352,16 +332,14 @@ Trade-off: -2% accuracy, +75% faster, -99.6% cheaper
 ### Migration Costs
 
 **Development:**
-
 ```
 Week 1: Replace Autogen with Gemini SDK (5 collectors)
-Week 2: Migrate Judge 6 to Gemini (binary decision logic)
+Week 2: Migrate Judge #6 to Gemini (binary decision logic)
 Week 3: Testing + rollback plan
 Total: 3 weeks (~$15K if outsourced, $0 if internal)
 ```
 
 **Risk Mitigation:**
-
 ```
 Gradual Rollout:
 - Week 1: 10% traffic to Gemini (A/B test accuracy)
@@ -381,7 +359,6 @@ Rollback Plan:
 ### Cost Structure Comparison
 
 **Before (Current Platform - 11/11 gaps fixed):**
-
 ```
 Infrastructure:
 - GKE cluster (production): $500-800/mo
@@ -397,7 +374,6 @@ Total Monthly Cost: $9,630-9,965/mo
 ```
 
 **After (Gemini CLI + Kernel-Chaining + Gemini Migration):**
-
 ```
 Infrastructure:
 - GKE cluster (production): $500-800/mo (unchanged)
@@ -420,7 +396,6 @@ Savings: $8,896-8,891/mo (92% cost reduction!)
 ### Revenue Structure Comparison
 
 **Before (Current Platform):**
-
 ```
 Revenue Streams:
 - Web dashboard: $49/mo × 50 customers = $2,450/mo
@@ -437,7 +412,6 @@ Break-even: Need 218 customers ($9,630 / $49 = 196 web + 22 enterprise)
 ```
 
 **After (With Gemini Stack):**
-
 ```
 Revenue Streams:
 - CLI (free): $0 (acquisition tool)
@@ -457,7 +431,6 @@ Break-even: Need 2 customers ($904 / $499 = 1.8 enterprise customers)
 ### Unit Economics Comparison
 
 **Before:**
-
 ```
 Customer Acquisition Cost (CAC): $150/customer (paid ads, no CLI)
 Lifetime Value (LTV):
@@ -472,7 +445,6 @@ Blended LTV:CAC: 10.6:1 (good, but high CAC)
 ```
 
 **After:**
-
 ```
 Customer Acquisition Cost (CAC): $50/customer (organic CLI downloads)
 Lifetime Value (LTV):
@@ -494,14 +466,12 @@ Blended LTV:CAC: 28.7:1 (world-class, SaaS benchmark is 3:1)
 ### Scenario: Conservative Growth
 
 **Assumptions:**
-
 - CLI downloads: 500/month (month 1) → 2,000/month (month 12)
 - CLI → Web conversion: 20%
 - Web → Enterprise conversion: 10%
 - Churn: 5%/month
 
 **Month 1:**
-
 ```
 Customers:
 - CLI (free): 500
@@ -522,7 +492,6 @@ Profit: $9,890 - $5,734 = $4,156 (42% margin)
 ```
 
 **Month 12:**
-
 ```
 Customers:
 - CLI (free): 2,000
@@ -548,14 +517,12 @@ Annual Profit (Year 1): ~$200K (71% margin)
 ### Scenario: Aggressive Growth
 
 **Assumptions:**
-
 - CLI downloads: 2,000/month (month 1) → 10,000/month (month 12)
 - CLI → Web conversion: 25% (better onboarding)
 - Web → Enterprise conversion: 15% (kernel-chaining demand)
 - Churn: 3%/month (lower due to stickiness)
 
 **Month 12:**
-
 ```
 Customers:
 - CLI (free): 10,000
@@ -585,7 +552,6 @@ Annual Profit (Year 1): ~$1.5M (83% margin)
 ### Bootstrap Gates
 
 **Phase 1: Gemini CLI (Month 1-2)**
-
 ```
 Success Criteria:
 - ✅ 100 CLI downloads in first month
@@ -600,7 +566,6 @@ Gate: If <50 downloads in M1 → kill CLI, focus on web-only
 ```
 
 **Phase 2: Kernel-Chaining (Month 2-3)**
-
 ```
 Success Criteria:
 - ✅ 10 enterprise customers adopt kernel-chaining
@@ -615,7 +580,6 @@ Gate: If <5 enterprise customers in M2 → simplify to single-kernel, delay chai
 ```
 
 **Phase 3: Autogen → Gemini Migration (Month 3-4)**
-
 ```
 Success Criteria:
 - ✅ <5% accuracy regression vs Autogen
@@ -632,19 +596,16 @@ Gate: If >10% accuracy drop → rollback to Autogen, negotiate OpenAI volume dis
 ### Kill Switches
 
 **CLI Kill Switch:**
-
 - Trigger: <100 downloads/month for 3 consecutive months
 - Action: Sunset CLI, redirect npm install to web dashboard
 - Savings: $5/mo (CloudFlare Workers) + maintenance time
 
 **Kernel-Chaining Kill Switch:**
-
 - Trigger: <5 enterprise customers after 6 months
 - Action: Simplify to single-kernel workflows, refund enterprise downgrades
 - Savings: $70/mo (kernel infra) + development complexity
 
 **Gemini Migration Kill Switch:**
-
 - Trigger: >10% accuracy regression OR >5 customer complaints
 - Action: Instant rollback to Autogen (feature flag)
 - Cost: Resume $9K/mo OpenAI spend (temporary until accuracy fixed)
@@ -656,7 +617,6 @@ Gate: If >10% accuracy drop → rollback to Autogen, negotiate OpenAI volume dis
 ### Technical Risks
 
 **1. Gemini Flash Accuracy (<92%)**
-
 ```
 Probability: 20% (Gemini Flash 1.5 is production-ready, but new model)
 Impact: HIGH (customer churn if intelligence quality drops)
@@ -669,7 +629,6 @@ Cost of Rollback: $9K/mo (resume OpenAI spend)
 ```
 
 **2. TUI Flicker on VSCode Terminal**
-
 ```
 Probability: 30% (VSCode terminal has limited ANSI support)
 Impact: MEDIUM (50% of devs use VSCode, but can fallback to JSON output)
@@ -682,7 +641,6 @@ Cost of Mitigation: 1 week dev time (~$5K)
 ```
 
 **3. Kernel-Chaining State Drift**
-
 ```
 Probability: 15% (distributed systems issue)
 Impact: HIGH (chain executions fail, enterprise customers impacted)
@@ -697,7 +655,6 @@ Cost of Mitigation: Built into initial design (no incremental cost)
 ### Business Risks
 
 **1. CLI Cannibalization (Free tier reduces web sales)**
-
 ```
 Probability: 10% (CLI is feature-limited, web dashboard has canvas view)
 Impact: MEDIUM (lose $49/mo from users who stick to CLI)
@@ -710,7 +667,6 @@ Net Impact: CLI drives awareness, minimal cannibalization
 ```
 
 **2. Enterprise Price Resistance ($499/mo too high)**
-
 ```
 Probability: 25% (early-stage pricing experiment)
 Impact: HIGH (lose enterprise customers to competitors)
@@ -723,7 +679,6 @@ Alternative Pricing: $299/mo (still 87% margin at $70 COGS)
 ```
 
 **3. Gemini API Price Increase**
-
 ```
 Probability: 40% (Google could raise prices post-beta)
 Impact: MEDIUM (Gemini Flash is currently cheap, could 10x overnight)
@@ -742,7 +697,6 @@ Worst Case: Gemini costs 10x → $340/mo (still 92% cheaper than OpenAI)
 ### Gemini Pricing vs Competitors
 
 **Cost per 1M Tokens (Input/Output):**
-
 ```
 Gemini Flash 1.5:      $0.075 / $0.30   (baseline)
 Claude 3.5 Haiku:      $0.80 / $4.00    (11x / 13x more expensive)
@@ -753,7 +707,6 @@ Conclusion: Gemini Flash is 2-133x cheaper than alternatives
 ```
 
 **Quality Comparison (MMLU Benchmark):**
-
 ```
 Gemini Flash 1.5:      78.9% (good enough for intelligence analysis)
 Claude 3.5 Haiku:      75.2% (slightly worse, but 11x more expensive)
@@ -766,7 +719,6 @@ Conclusion: Gemini Flash offers best price/performance ratio
 ### Strategic Positioning
 
 **Why Gemini Flash Wins:**
-
 1. **Cost Arbitrage:** 99.6% cheaper than GPT-4 (current Autogen backend)
 2. **Good Enough Quality:** 78.9% MMLU (vs 86.4% GPT-4) acceptable for intelligence ranking
 3. **Google Cloud Integration:** Native GKE/Secret Manager/Vertex AI ecosystem
@@ -774,7 +726,6 @@ Conclusion: Gemini Flash offers best price/performance ratio
 5. **Multimodal:** Can analyze images/video (future: screenshot governance scans)
 
 **When to Switch Away:**
-
 - If accuracy drops <70% (below acceptable threshold)
 - If Google raises prices >10x (still cheaper than competitors, but margin shrinks)
 - If Claude/OpenAI offer equivalent pricing (unlikely, but monitor)
@@ -786,7 +737,7 @@ Conclusion: Gemini Flash offers best price/performance ratio
 ### Immediate Actions (Week 1)
 
 1. **Start Gemini CLI Prototype**
-   - Build Ink-based TUI with Judge 6 integration
+   - Build Ink-based TUI with Judge #6 integration
    - Test on iTerm2, Wezterm, VSCode terminals
    - Deploy CloudFlare Workers API endpoint
    - **Cost:** $0 (free tier), **Time:** 1 week
@@ -843,28 +794,25 @@ Conclusion: Gemini Flash offers best price/performance ratio
 
 **The Gemini Stack transforms unit economics:**
 
-| Metric              | Before (Autogen + OpenAI) | After (Gemini CLI + Kernel-Chaining) | Change          |
-| ------------------- | ------------------------- | ------------------------------------ | --------------- |
-| **Monthly Costs**   | $9,630-9,965              | $734-1,074                           | -92%            |
-| **Monthly Revenue** | $4,425                    | $9,890 (M1) → $309K (M12)            | +123% → +6,885% |
-| **Gross Margin**    | -118% (NEGATIVE)          | 42% (M1) → 83% (M12)                 | PROFITABLE      |
-| **Break-Even**      | 218 customers             | 2 customers                          | 109x faster     |
-| **LTV:CAC Ratio**   | 10.6:1                    | 28.7:1                               | +171%           |
+| Metric | Before (Autogen + OpenAI) | After (Gemini CLI + Kernel-Chaining) | Change |
+|--------|---------------------------|--------------------------------------|--------|
+| **Monthly Costs** | $9,630-9,965 | $734-1,074 | -92% |
+| **Monthly Revenue** | $4,425 | $9,890 (M1) → $309K (M12) | +123% → +6,885% |
+| **Gross Margin** | -118% (NEGATIVE) | 42% (M1) → 83% (M12) | PROFITABLE |
+| **Break-Even** | 218 customers | 2 customers | 109x faster |
+| **LTV:CAC Ratio** | 10.6:1 | 28.7:1 | +171% |
 
 **Path to $1M ARR:**
-
 - **Month 3:** $9,890/mo × 12 = $118K ARR (break-even)
 - **Month 6:** $50K/mo × 12 = $600K ARR (scaling)
 - **Month 12:** $309K/mo × 12 = $3.7M ARR (profitable growth)
 
 **Critical Success Factors:**
-
 1. ✅ Gemini Flash accuracy stays >90% (monitor with A/B tests)
 2. ✅ CLI drives web conversions at 20%+ (freemium funnel works)
 3. ✅ Enterprise adopts kernel-chaining at $499/mo (premium pricing validated)
 
 **Kill Switches:**
-
 - CLI: <100 downloads/month for 3 months → sunset
 - Kernel-chaining: <5 enterprise customers after 6 months → simplify
 - Gemini: >10% accuracy drop → rollback to Autogen

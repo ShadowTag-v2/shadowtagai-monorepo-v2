@@ -1,12 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
-
-import json
-import uuid
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+import json
+import uuid
+from datetime import datetime, UTC
 
 
 class JsonMemoryStore:

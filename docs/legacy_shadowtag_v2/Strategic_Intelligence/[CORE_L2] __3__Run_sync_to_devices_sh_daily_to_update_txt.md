@@ -6,7 +6,7 @@
 
 ⏺ The implementation is complete. All the swarm voting integration has been added to nodes.py:
 
-1. Imports (lines 26-34): Added SwarmVoter, swarm_vote, VoteDecision from autoresearch2
+1. Imports (lines 26-34): Added SwarmVoter, swarm_vote, VoteDecision from flying_monkeys2
 2. \_async_swarm_vote (lines 381-520): Full swarm voting implementation with fallback
 3. \_async_debate dispatcher (lines 670-702): Routes to appropriate voting mode
 4. node_debate (lines 705-727): Updated to use the new dispatcher
@@ -21,7 +21,7 @@ Files Modified/Created:
 
 | File                      | Changes                                                         |
 | ------------------------- | --------------------------------------------------------------- |
-| agents/autoresearch2.py | New 500-line SwarmVoter class with heuristic-first voting       |
+| agents/flying_monkeys2.py | New 500-line SwarmVoter class with heuristic-first voting       |
 | src/judge6/state.py       | Added SwarmVoteState, SwarmVoteMethod, default VotingMode.SWARM |
 | src/judge6/nodes.py       | Added \_async_swarm_vote, \_async_debate dispatcher             |
 
@@ -37,7 +37,7 @@ Architecture:
 200 Active Agents (from 600-agent https://github.com/karpathy/autoresearchs swarm)
 │
 ▼
-Heuristic Vote (Compliance Framework risk scoring)
+Heuristic Vote (ATP 5-19 risk scoring)
 │
 ├─► ≥55% approve → APPROVE ($0)
 ├─► ≤40% approve → REJECT ($0)
@@ -50,7 +50,7 @@ Voting Modes Available:
 - THREE_PHASE: Legacy prosecutor/defender/judge
 - DISABLED: Skip voting
 
-The original autoresearch.py (600-agent swarm) remains intact.
+The original flying_monkeys.py (600-agent swarm) remains intact.
 
 ⏺ This is your AntigravityAgent implementation. It follows Advanced Tool Use patterns:
 
@@ -70,7 +70,7 @@ Pattern 3: Programmatic Orchestration (placeholder)
 
 Let me also check the registry it depends on:
 
-⏺ Read(ShadowTag-v2-fastapi-services/src/ShadowTag-v2/tools/registry.py)
+⏺ Read(aiyou-fastapi-services/src/aiyou/tools/registry.py)
 ⎿  Read 73 lines
 
 ⏺ Here's the full picture:
@@ -97,7 +97,7 @@ Currently Registered Tools:
 
 Example Flow:
 
-from src.ShadowTag-v2.agents.base import AntigravityAgent
+from src.aiyou.agents.base import AntigravityAgent
 
 agent = AntigravityAgent("FinancialAuditor")
 

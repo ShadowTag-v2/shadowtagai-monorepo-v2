@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from src.shadowtag_v4.cursor_features import CursorFeatures
+
 from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
 
 

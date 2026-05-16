@@ -1,7 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 from __future__ import annotations
-
 from ..config import load_settings
 from ..utils.db import pg_conn
 

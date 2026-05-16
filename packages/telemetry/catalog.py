@@ -24,1161 +24,1163 @@ from typing import Any
 
 
 class EventCategory(StrEnum):
-    """Event category for filtering and dashboarding."""
+  """Event category for filtering and dashboarding."""
 
-    API = "api"
-    COMPACTION = "compaction"
-    TOOL = "tool"
-    CLASSIFIER = "classifier"
-    SHELL = "shell"
-    MEMORY = "memory"
-    VCR = "vcr"
-    SESSION = "session"
-    ERROR = "error"
-    GEMINI = "gemini"
-    RESEARCH = "research"
+  API = "api"
+  COMPACTION = "compaction"
+  TOOL = "tool"
+  CLASSIFIER = "classifier"
+  SHELL = "shell"
+  MEMORY = "memory"
+  VCR = "vcr"
+  SESSION = "session"
+  ERROR = "error"
+  GEMINI = "gemini"
+  RESEARCH = "research"
 
 
 @dataclass
 class TelemetryEvent:
-    """A single telemetry event.
+  """A single telemetry event.
 
-    Attributes:
-        event: Event name (e.g., "agnt_api_success").
-        category: Event category for grouping.
-        timestamp: Unix epoch when event occurred.
-        properties: Arbitrary key-value properties.
-        duration_ms: Duration for timed events.
-        success: Whether the operation succeeded.
-        error_message: Error details if success=False.
-    """
+  Attributes:
+      event: Event name (e.g., "agnt_api_success").
+      category: Event category for grouping.
+      timestamp: Unix epoch when event occurred.
+      properties: Arbitrary key-value properties.
+      duration_ms: Duration for timed events.
+      success: Whether the operation succeeded.
+      error_message: Error details if success=False.
+  """
 
-    event: str
-    category: EventCategory
-    timestamp: float = 0.0
-    properties: dict[str, Any] = field(default_factory=dict)
-    duration_ms: float = 0.0
-    success: bool = True
-    error_message: str = ""
+  event: str
+  category: EventCategory
+  timestamp: float = 0.0
+  properties: dict[str, Any] = field(default_factory=dict)
+  duration_ms: float = 0.0
+  success: bool = True
+  error_message: str = ""
 
-    def __post_init__(self) -> None:
-        if self.timestamp == 0.0:
-            self.timestamp = time.time()
+  def __post_init__(self) -> None:
+    if self.timestamp == 0.0:
+      self.timestamp = time.time()
 
-    def to_dict(self) -> dict[str, Any]:
-        """Serialize for JSONL output."""
-        d: dict[str, Any] = {
-            "event": self.event,
-            "category": self.category.value,
-            "timestamp": self.timestamp,
-            "success": self.success,
-        }
-        if self.properties:
-            d["properties"] = self.properties
-        if self.duration_ms > 0:
-            d["duration_ms"] = self.duration_ms
-        if self.error_message:
-            d["error_message"] = self.error_message
-        return d
+  def to_dict(self) -> dict[str, Any]:
+    """Serialize for JSONL output."""
+    d: dict[str, Any] = {
+      "event": self.event,
+      "category": self.category.value,
+      "timestamp": self.timestamp,
+      "success": self.success,
+    }
+    if self.properties:
+      d["properties"] = self.properties
+    if self.duration_ms > 0:
+      d["duration_ms"] = self.duration_ms
+    if self.error_message:
+      d["error_message"] = self.error_message
+    return d
 
 
 class EventCatalog:
-    """Factory for creating typed telemetry events.
+  """Factory for creating typed telemetry events.
 
-    Maps Claude Code tengu_* events to AGNT equivalents.
+  Maps Claude Code tengu_* events to AGNT equivalents.
 
-    Usage:
-        catalog = EventCatalog()
-        event = catalog.api_success(model="gemini-3.1-flash", tokens=1500)
-        sink.emit(event)
+  Usage:
+      catalog = EventCatalog()
+      event = catalog.api_success(model="gemini-3.1-flash", tokens=1500)
+      sink.emit(event)
+  """
+
+  # --- API Events ---
+
+  @staticmethod
+  def api_success(
+    model: str = "",
+    prompt_tokens: int = 0,
+    completion_tokens: int = 0,
+    latency_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_api_success — Successful Gemini API call.
+
+    CC equivalent: tengu_api_success
     """
-
-    # --- API Events ---
-
-    @staticmethod
-    def api_success(
-        model: str = "",
-        prompt_tokens: int = 0,
-        completion_tokens: int = 0,
-        latency_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_api_success — Successful Gemini API call.
-
-        CC equivalent: tengu_api_success
-        """
-        return TelemetryEvent(
-            event="agnt_api_success",
-            category=EventCategory.API,
-            duration_ms=latency_ms,
-            properties={
-                "model": model,
-                "prompt_tokens": prompt_tokens,
-                "completion_tokens": completion_tokens,
-                "total_tokens": prompt_tokens + completion_tokens,
-            },
-        )
-
-    @staticmethod
-    def api_error(
-        model: str = "",
-        error_type: str = "",
-        error_message: str = "",
-        latency_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_api_error — Failed Gemini API call.
-
-        CC equivalent: tengu_api_error
-        """
-        return TelemetryEvent(
-            event="agnt_api_error",
-            category=EventCategory.API,
-            success=False,
-            duration_ms=latency_ms,
-            error_message=error_message,
-            properties={
-                "model": model,
-                "error_type": error_type,
-            },
-        )
-
-    @staticmethod
-    def api_retry(
-        model: str = "",
-        attempt: int = 0,
-        reason: str = "",
-    ) -> TelemetryEvent:
-        """agnt_api_retry — API call retried.
-
-        CC equivalent: tengu_api_retry
-        """
-        return TelemetryEvent(
-            event="agnt_api_retry",
-            category=EventCategory.API,
-            properties={
-                "model": model,
-                "attempt": attempt,
-                "reason": reason,
-            },
-        )
-
-    # --- Compaction Events ---
-
-    @staticmethod
-    def compact_started(
-        layer: int = 0,
-        token_count: int = 0,
-        threshold: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_compact_started — Compaction layer initiated.
-
-        CC equivalent: tengu_compact_started
-        """
-        return TelemetryEvent(
-            event="agnt_compact_started",
-            category=EventCategory.COMPACTION,
-            properties={
-                "layer": layer,
-                "token_count": token_count,
-                "threshold": threshold,
-            },
-        )
-
-    @staticmethod
-    def compact_success(
-        layer: int = 0,
-        tokens_before: int = 0,
-        tokens_after: int = 0,
-        tokens_reclaimed: int = 0,
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_compact_success — Compaction completed successfully.
-
-        CC equivalent: tengu_compact_success
-        """
-        return TelemetryEvent(
-            event="agnt_compact_success",
-            category=EventCategory.COMPACTION,
-            duration_ms=duration_ms,
-            properties={
-                "layer": layer,
-                "tokens_before": tokens_before,
-                "tokens_after": tokens_after,
-                "tokens_reclaimed": tokens_reclaimed,
-                "reclaim_pct": (round(tokens_reclaimed / tokens_before * 100, 1) if tokens_before > 0 else 0),
-            },
-        )
-
-    @staticmethod
-    def compact_failed(
-        layer: int = 0,
-        error_message: str = "",
-        circuit_breaker_open: bool = False,
-    ) -> TelemetryEvent:
-        """agnt_compact_failed — Compaction failed.
-
-        CC equivalent: tengu_compact_failed
-        """
-        return TelemetryEvent(
-            event="agnt_compact_failed",
-            category=EventCategory.COMPACTION,
-            success=False,
-            error_message=error_message,
-            properties={
-                "layer": layer,
-                "circuit_breaker_open": circuit_breaker_open,
-            },
-        )
-
-    # --- Tool Events ---
-
-    @staticmethod
-    def tool_use_success(
-        tool_id: str = "",
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_tool_use_success — Tool executed successfully.
-
-        CC equivalent: tengu_tool_use_success
-        """
-        return TelemetryEvent(
-            event="agnt_tool_use_success",
-            category=EventCategory.TOOL,
-            duration_ms=duration_ms,
-            properties={"tool_id": tool_id},
-        )
-
-    @staticmethod
-    def tool_use_error(
-        tool_id: str = "",
-        error_message: str = "",
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_tool_use_error — Tool execution failed.
-
-        CC equivalent: tengu_tool_use_error
-        """
-        return TelemetryEvent(
-            event="agnt_tool_use_error",
-            category=EventCategory.TOOL,
-            success=False,
-            duration_ms=duration_ms,
-            error_message=error_message,
-            properties={"tool_id": tool_id},
-        )
-
-    # --- Classifier Events ---
-
-    @staticmethod
-    def classifier_outcome(
-        tool_id: str = "",
-        verdict: str = "",
-        stage: int = 1,
-        fail_closed: bool = False,
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_classifier_outcome — Permission decision.
-
-        CC equivalent: tengu_auto_mode_outcome
-        """
-        return TelemetryEvent(
-            event="agnt_classifier_outcome",
-            category=EventCategory.CLASSIFIER,
-            duration_ms=duration_ms,
-            properties={
-                "tool_id": tool_id,
-                "verdict": verdict,
-                "stage": stage,
-                "fail_closed": fail_closed,
-            },
-        )
-
-    # --- Shell Security Events ---
-
-    @staticmethod
-    def bash_classifier(
-        command_hash: str = "",
-        subcommand_count: int = 0,
-        verdict: str = "",
-        unsafe_vars: list[str] | None = None,
-    ) -> TelemetryEvent:
-        """agnt_bash_classifier — Shell security classification.
-
-        CC equivalent: tengu_internal_bash_classifier_result
-        """
-        return TelemetryEvent(
-            event="agnt_bash_classifier",
-            category=EventCategory.SHELL,
-            properties={
-                "command_hash": command_hash,
-                "subcommand_count": subcommand_count,
-                "verdict": verdict,
-                "unsafe_vars": unsafe_vars or [],
-            },
-        )
-
-    # --- Memory Events ---
-
-    @staticmethod
-    def memory_compact(
-        memories_before: int = 0,
-        memories_after: int = 0,
-        deduped: int = 0,
-        archived: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_memory_compact — Session memory compaction.
-
-        CC equivalent: tengu_sm_compact
-        """
-        return TelemetryEvent(
-            event="agnt_memory_compact",
-            category=EventCategory.MEMORY,
-            properties={
-                "memories_before": memories_before,
-                "memories_after": memories_after,
-                "deduped": deduped,
-                "archived": archived,
-            },
-        )
-
-    # --- VCR Events ---
-
-    @staticmethod
-    def vcr_record(
-        cassette: str = "",
-        entry_count: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_vcr_record — VCR recording event."""
-        return TelemetryEvent(
-            event="agnt_vcr_record",
-            category=EventCategory.VCR,
-            properties={
-                "cassette": cassette,
-                "entry_count": entry_count,
-            },
-        )
-
-    @staticmethod
-    def vcr_replay_hit(cassette: str = "") -> TelemetryEvent:
-        """agnt_vcr_replay_hit — VCR replay cache hit."""
-        return TelemetryEvent(
-            event="agnt_vcr_replay_hit",
-            category=EventCategory.VCR,
-            properties={"cassette": cassette},
-        )
-
-    @staticmethod
-    def vcr_replay_miss(cassette: str = "") -> TelemetryEvent:
-        """agnt_vcr_replay_miss — VCR replay cache miss."""
-        return TelemetryEvent(
-            event="agnt_vcr_replay_miss",
-            category=EventCategory.VCR,
-            success=False,
-            properties={"cassette": cassette},
-        )
-
-    @staticmethod
-    def vcr_diff_mismatch(
-        cassette: str = "",
-        diff_lines: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_vcr_diff_mismatch — VCR diff regression detected."""
-        return TelemetryEvent(
-            event="agnt_vcr_diff_mismatch",
-            category=EventCategory.VCR,
-            success=False,
-            properties={
-                "cassette": cassette,
-                "diff_lines": diff_lines,
-            },
-        )
-
-    # --- Session Events ---
-
-    @staticmethod
-    def session_started(
-        conversation_id: str = "",
-        context_budget: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_session_started — Agent session initialized."""
-        return TelemetryEvent(
-            event="agnt_session_started",
-            category=EventCategory.SESSION,
-            properties={
-                "conversation_id": conversation_id,
-                "context_budget": context_budget,
-            },
-        )
-
-    @staticmethod
-    def session_ended(
-        conversation_id: str = "",
-        total_turns: int = 0,
-        total_tokens: int = 0,
-        total_tool_calls: int = 0,
-        duration_seconds: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_session_ended — Agent session completed."""
-        return TelemetryEvent(
-            event="agnt_session_ended",
-            category=EventCategory.SESSION,
-            duration_ms=duration_seconds * 1000,
-            properties={
-                "conversation_id": conversation_id,
-                "total_turns": total_turns,
-                "total_tokens": total_tokens,
-                "total_tool_calls": total_tool_calls,
-            },
-        )
-
-    # --- Error Events ---
-
-    @staticmethod
-    def context_decay_warning(
-        tokens_remaining: int = 0,
-        pct_remaining: float = 0.0,
-        threshold: str = "",
-    ) -> TelemetryEvent:
-        """agnt_context_decay_warning — Context window pressure.
-
-        CC equivalent: tengu_context_decay
-        """
-        return TelemetryEvent(
-            event="agnt_context_decay_warning",
-            category=EventCategory.ERROR,
-            properties={
-                "tokens_remaining": tokens_remaining,
-                "pct_remaining": pct_remaining,
-                "threshold": threshold,
-            },
-        )
-
-    @staticmethod
-    def circuit_breaker_open(
-        subsystem: str = "",
-        failure_count: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_circuit_breaker_open — Circuit breaker tripped."""
-        return TelemetryEvent(
-            event="agnt_circuit_breaker_open",
-            category=EventCategory.ERROR,
-            success=False,
-            properties={
-                "subsystem": subsystem,
-                "failure_count": failure_count,
-            },
-        )
-
-    # --- Gemini API Events (P4.1) ---
-
-    @staticmethod
-    def gemini_interactions_turn(
-        session_id: str = "",
-        turn_index: int = 0,
-        prompt_tokens: int = 0,
-        completion_tokens: int = 0,
-        latency_ms: float = 0.0,
-        function_calls: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_gemini_interactions_turn — Single Interactions API turn."""
-        return TelemetryEvent(
-            event="agnt_gemini_interactions_turn",
-            category=EventCategory.GEMINI,
-            duration_ms=latency_ms,
-            properties={
-                "session_id": session_id,
-                "turn_index": turn_index,
-                "prompt_tokens": prompt_tokens,
-                "completion_tokens": completion_tokens,
-                "total_tokens": prompt_tokens + completion_tokens,
-                "function_calls": function_calls,
-            },
-        )
-
-    @staticmethod
-    def gemini_interactions_session_end(
-        session_id: str = "",
-        total_turns: int = 0,
-        total_tokens: int = 0,
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_gemini_interactions_session_end — Interactions session completed."""
-        return TelemetryEvent(
-            event="agnt_gemini_interactions_session_end",
-            category=EventCategory.GEMINI,
-            duration_ms=duration_ms,
-            properties={
-                "session_id": session_id,
-                "total_turns": total_turns,
-                "total_tokens": total_tokens,
-            },
-        )
-
-    @staticmethod
-    def gemini_interactions_error(
-        session_id: str = "",
-        error_type: str = "",
-        error_message: str = "",
-        reconnect_attempt: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_gemini_interactions_error — Interactions API error."""
-        return TelemetryEvent(
-            event="agnt_gemini_interactions_error",
-            category=EventCategory.GEMINI,
-            success=False,
-            error_message=error_message,
-            properties={
-                "session_id": session_id,
-                "error_type": error_type,
-                "reconnect_attempt": reconnect_attempt,
-            },
-        )
-
-    # --- Deep Research Events (P4.1) ---
-
-    @staticmethod
-    def deep_research_started(
-        query: str = "",
-        depth: str = "",
-        collaborative_planning: bool = False,
-    ) -> TelemetryEvent:
-        """agnt_deep_research_started — Deep Research sweep initiated."""
-        return TelemetryEvent(
-            event="agnt_deep_research_started",
-            category=EventCategory.RESEARCH,
-            properties={
-                "query_length": len(query),
-                "depth": depth,
-                "collaborative_planning": collaborative_planning,
-            },
-        )
-
-    @staticmethod
-    def deep_research_completed(
-        query: str = "",
-        depth: str = "",
-        sources_found: int = 0,
-        duration_ms: float = 0.0,
-        token_usage: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_deep_research_completed — Deep Research sweep finished."""
-        return TelemetryEvent(
-            event="agnt_deep_research_completed",
-            category=EventCategory.RESEARCH,
-            duration_ms=duration_ms,
-            properties={
-                "query_length": len(query),
-                "depth": depth,
-                "sources_found": sources_found,
-                "token_usage": token_usage,
-            },
-        )
-
-    @staticmethod
-    def deep_research_error(
-        query: str = "",
-        error_type: str = "",
-        error_message: str = "",
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_deep_research_error — Deep Research sweep failed."""
-        return TelemetryEvent(
-            event="agnt_deep_research_error",
-            category=EventCategory.RESEARCH,
-            success=False,
-            duration_ms=duration_ms,
-            error_message=error_message,
-            properties={
-                "query_length": len(query),
-                "error_type": error_type,
-            },
-        )
-
-    # --- Rate Limit Events (OTel Histograms) ---
-
-    @staticmethod
-    def throttle_invocation(
-        function_name: str = "",
-        interval_ms: float = 0.0,
-        was_suppressed: bool = False,
-        elapsed_since_last_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_throttle_invocation — Tracks throttle execution/suppression.
-
-        OTel histogram buckets on elapsed_since_last_ms reveal rate-limit
-        pressure: spikes at low-ms values indicate callers hitting the
-        suppression wall, while even distribution means healthy pacing.
-        """
-        return TelemetryEvent(
-            event="agnt_throttle_invocation",
-            category=EventCategory.TOOL,
-            duration_ms=elapsed_since_last_ms,
-            properties={
-                "function_name": function_name,
-                "interval_ms": interval_ms,
-                "was_suppressed": was_suppressed,
-            },
-        )
-
-    @staticmethod
-    def debounce_invocation(
-        function_name: str = "",
-        wait_ms: float = 0.0,
-        was_coalesced: bool = False,
-        max_wait_triggered: bool = False,
-        pending_duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_debounce_invocation — Tracks debounce coalescing behavior.
-
-        OTel histogram on pending_duration_ms shows how long events queue
-        before firing. Frequent max_wait_triggered=True signals the
-        debounce ceiling is being hit under sustained load.
-        """
-        return TelemetryEvent(
-            event="agnt_debounce_invocation",
-            category=EventCategory.TOOL,
-            duration_ms=pending_duration_ms,
-            properties={
-                "function_name": function_name,
-                "wait_ms": wait_ms,
-                "was_coalesced": was_coalesced,
-                "max_wait_triggered": max_wait_triggered,
-            },
-        )
-
-    @staticmethod
-    def cooldown_check(
-        throttle_name: str = "",
-        cooldown_ms: float = 0.0,
-        was_allowed: bool = True,
-        time_until_next_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_cooldown_check — Tracks CooldownThrottle gate decisions.
-
-        Histogram on time_until_next_ms shows how close callers are to
-        the cooldown boundary. Clustering near 0ms = good pacing;
-        clustering near cooldown_ms = premature retries.
-        """
-        return TelemetryEvent(
-            event="agnt_cooldown_check",
-            category=EventCategory.TOOL,
-            properties={
-                "throttle_name": throttle_name,
-                "cooldown_ms": cooldown_ms,
-                "was_allowed": was_allowed,
-                "time_until_next_ms": time_until_next_ms,
-            },
-        )
-
-    # --- Speculation Lifecycle Events ---
-
-    @staticmethod
-    def speculation_started(
-        session_id: str = "",
-        step_count: int = 0,
-        trigger: str = "",
-    ) -> TelemetryEvent:
-        """agnt_speculation_started — Speculative execution initiated.
-
-        CC equivalent: tengu_speculation_started
-        """
-        return TelemetryEvent(
-            event="agnt_speculation_started",
-            category=EventCategory.SESSION,
-            properties={
-                "session_id": session_id,
-                "step_count": step_count,
-                "trigger": trigger,
-            },
-        )
-
-    @staticmethod
-    def speculation_accepted(
-        session_id: str = "",
-        steps_executed: int = 0,
-        overlay_files_merged: int = 0,
-        time_saved_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_speculation_accepted — User accepted speculative results.
-
-        CC equivalent: tengu_speculation_accepted
-        """
-        return TelemetryEvent(
-            event="agnt_speculation_accepted",
-            category=EventCategory.SESSION,
-            duration_ms=time_saved_ms,
-            properties={
-                "session_id": session_id,
-                "steps_executed": steps_executed,
-                "overlay_files_merged": overlay_files_merged,
-            },
-        )
-
-    @staticmethod
-    def speculation_rejected(
-        session_id: str = "",
-        reason: str = "",
-        steps_discarded: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_speculation_rejected — User rejected speculative results.
-
-        CC equivalent: tengu_speculation_rejected
-        """
-        return TelemetryEvent(
-            event="agnt_speculation_rejected",
-            category=EventCategory.SESSION,
-            success=False,
-            properties={
-                "session_id": session_id,
-                "reason": reason,
-                "steps_discarded": steps_discarded,
-            },
-        )
-
-    # --- Plan Mode Events ---
-
-    @staticmethod
-    def plan_mode_entered(
-        session_id: str = "",
-        trigger: str = "",
-        step_count: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_plan_mode_entered — Planning mode activated.
-
-        CC equivalent: tengu_plan_mode_entered
-        """
-        return TelemetryEvent(
-            event="agnt_plan_mode_entered",
-            category=EventCategory.SESSION,
-            properties={
-                "session_id": session_id,
-                "trigger": trigger,
-                "step_count": step_count,
-            },
-        )
-
-    @staticmethod
-    def plan_mode_exited(
-        session_id: str = "",
-        exit_reason: str = "",
-        duration_ms: float = 0.0,
-        steps_completed: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_plan_mode_exited — Planning mode deactivated.
-
-        CC equivalent: tengu_plan_mode_exited
-        """
-        return TelemetryEvent(
-            event="agnt_plan_mode_exited",
-            category=EventCategory.SESSION,
-            duration_ms=duration_ms,
-            properties={
-                "session_id": session_id,
-                "exit_reason": exit_reason,
-                "steps_completed": steps_completed,
-            },
-        )
-
-    # --- Feature Flag Events ---
-
-    @staticmethod
-    def feature_flag_evaluated(
-        flag_key: str = "",
-        value: bool = False,
-        source: str = "default",
-        user_id: str = "",
-    ) -> TelemetryEvent:
-        """agnt_feature_flag_evaluated — Feature flag evaluation recorded.
-
-        CC equivalent: tengu_feature_flag_evaluated (GrowthBook)
-        """
-        return TelemetryEvent(
-            event="agnt_feature_flag_evaluated",
-            category=EventCategory.SESSION,
-            properties={
-                "flag_key": flag_key,
-                "value": value,
-                "source": source,
-                "user_id": user_id,
-            },
-        )
-
-    # --- Tool Lifecycle Events (Extended) ---
-
-    @staticmethod
-    def tool_use_blocked(
-        tool_id: str = "",
-        reason: str = "",
-        tier: str = "",
-        matched_rules: list[str] | None = None,
-    ) -> TelemetryEvent:
-        """agnt_tool_use_blocked — Tool execution blocked by gateway.
-
-        CC equivalent: tengu_tool_use_blocked
-        """
-        return TelemetryEvent(
-            event="agnt_tool_use_blocked",
-            category=EventCategory.TOOL,
-            success=False,
-            properties={
-                "tool_id": tool_id,
-                "reason": reason,
-                "tier": tier,
-                "matched_rules": matched_rules or [],
-            },
-        )
-
-    @staticmethod
-    def tool_use_timeout(
-        tool_id: str = "",
-        timeout_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_tool_use_timeout — Tool execution timed out.
-
-        CC equivalent: tengu_tool_use_timeout
-        """
-        return TelemetryEvent(
-            event="agnt_tool_use_timeout",
-            category=EventCategory.TOOL,
-            success=False,
-            duration_ms=timeout_ms,
-            error_message=f"Tool '{tool_id}' exceeded timeout ({timeout_ms}ms)",
-            properties={"tool_id": tool_id},
-        )
-
-    # --- Auto-Dream Events ---
-
-    @staticmethod
-    def auto_dream_started(
-        session_id: str = "",
-        memory_count: int = 0,
-        trigger: str = "",
-    ) -> TelemetryEvent:
-        """agnt_auto_dream_started — AutoDream memory consolidation initiated.
-
-        CC equivalent: tengu_auto_dream_started
-        """
-        return TelemetryEvent(
-            event="agnt_auto_dream_started",
-            category=EventCategory.MEMORY,
-            properties={
-                "session_id": session_id,
-                "memory_count": memory_count,
-                "trigger": trigger,
-            },
-        )
-
-    @staticmethod
-    def auto_dream_completed(
-        session_id: str = "",
-        memories_consolidated: int = 0,
-        memories_pruned: int = 0,
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_auto_dream_completed — AutoDream consolidation finished.
-
-        CC equivalent: tengu_auto_dream_completed
-        """
-        return TelemetryEvent(
-            event="agnt_auto_dream_completed",
-            category=EventCategory.MEMORY,
-            duration_ms=duration_ms,
-            properties={
-                "session_id": session_id,
-                "memories_consolidated": memories_consolidated,
-                "memories_pruned": memories_pruned,
-            },
-        )
-
-    # --- Shell Security Events (Extended) ---
-
-    @staticmethod
-    def bash_security_check_failed(
-        check_id: int = 0,
-        check_name: str = "",
-        command_hash: str = "",
-        message: str = "",
-    ) -> TelemetryEvent:
-        """agnt_bash_security_check_failed — Bash command blocked by security pipeline.
-
-        CC equivalent: tengu_bash_security_check_failed
-        """
-        return TelemetryEvent(
-            event="agnt_bash_security_check_failed",
-            category=EventCategory.SHELL,
-            success=False,
-            error_message=message,
-            properties={
-                "check_id": check_id,
-                "check_name": check_name,
-                "command_hash": command_hash,
-            },
-        )
-
-    @staticmethod
-    def bash_security_validated(
-        command_hash: str = "",
-        checks_passed: int = 0,
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_bash_security_validated — Bash command passed all 23 security checks.
-
-        CC equivalent: tengu_bash_security_validated
-        """
-        return TelemetryEvent(
-            event="agnt_bash_security_validated",
-            category=EventCategory.SHELL,
-            duration_ms=duration_ms,
-            properties={
-                "command_hash": command_hash,
-                "checks_passed": checks_passed,
-            },
-        )
-
-    @staticmethod
-    def bash_rate_limit_hit(
-        command_hash: str = "",
-        call_count: int = 0,
-        limit: int = 10,
-        window_seconds: float = 60.0,
-    ) -> TelemetryEvent:
-        """agnt_bash_rate_limit_hit — Bash tool hit rate limit cap.
-
-        CC equivalent: tengu_bash_rate_limit (50-subcommand cap per Adversa §3.4)
-        """
-        return TelemetryEvent(
-            event="agnt_bash_rate_limit_hit",
-            category=EventCategory.SHELL,
-            success=False,
-            error_message=f"Rate limit hit: {call_count}/{limit} in {window_seconds}s",
-            properties={
-                "command_hash": command_hash,
-                "call_count": call_count,
-                "limit": limit,
-                "window_seconds": window_seconds,
-            },
-        )
-
-    # --- Undercover Mode Events ---
-
-    @staticmethod
-    def undercover_activated(
-        repo_class: str = "",
-        forced: bool = False,
-    ) -> TelemetryEvent:
-        """agnt_undercover_activated — Undercover mode turned on.
-
-        CC equivalent: tengu_undercover_activated
-        """
-        return TelemetryEvent(
-            event="agnt_undercover_activated",
-            category=EventCategory.SESSION,
-            properties={
-                "repo_class": repo_class,
-                "forced": forced,
-            },
-        )
-
-    @staticmethod
-    def undercover_deactivated(
-        repo_class: str = "",
-        reason: str = "",
-    ) -> TelemetryEvent:
-        """agnt_undercover_deactivated — Undercover mode turned off.
-
-        CC equivalent: tengu_undercover_deactivated
-        """
-        return TelemetryEvent(
-            event="agnt_undercover_deactivated",
-            category=EventCategory.SESSION,
-            properties={
-                "repo_class": repo_class,
-                "reason": reason,
-            },
-        )
-
-    # --- Sandbox Violation Events ---
-
-    @staticmethod
-    def sandbox_violation(
-        tool_id: str = "",
-        path: str = "",
-        resolution_type: str = "",
-        deny_reason: str = "",
-    ) -> TelemetryEvent:
-        """agnt_sandbox_violation — Filesystem path violated sandbox boundary.
-
-        CC equivalent: tengu_sandbox_violation
-        """
-        return TelemetryEvent(
-            event="agnt_sandbox_violation",
-            category=EventCategory.CLASSIFIER,
-            success=False,
-            properties={
-                "tool_id": tool_id,
-                "path": path,
-                "resolution_type": resolution_type,
-                "deny_reason": deny_reason,
-            },
-        )
-
-    # --- Compaction Events (Extended) ---
-
-    @staticmethod
-    def compact_skipped(
-        reason: str = "",
-        token_count: int = 0,
-        threshold: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_compact_skipped — Compaction skipped (below threshold / rate limited).
-
-        CC equivalent: tengu_compact_skipped
-        """
-        return TelemetryEvent(
-            event="agnt_compact_skipped",
-            category=EventCategory.COMPACTION,
-            properties={
-                "reason": reason,
-                "token_count": token_count,
-                "threshold": threshold,
-            },
-        )
-
-    # --- Context Window Events ---
-
-    @staticmethod
-    def context_checkpoint(
-        conversation_id: str = "",
-        tokens_used: int = 0,
-        tokens_remaining: int = 0,
-        pct_used: float = 0.0,
-        turn_index: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_context_checkpoint — Periodic context window health snapshot.
-
-        CC equivalent: tengu_context_checkpoint
-        """
-        return TelemetryEvent(
-            event="agnt_context_checkpoint",
-            category=EventCategory.SESSION,
-            properties={
-                "conversation_id": conversation_id,
-                "tokens_used": tokens_used,
-                "tokens_remaining": tokens_remaining,
-                "pct_used": round(pct_used, 2),
-                "turn_index": turn_index,
-            },
-        )
-
-    @staticmethod
-    def context_window_exceeded(
-        conversation_id: str = "",
-        tokens_used: int = 0,
-        budget: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_context_window_exceeded — Context window exhausted.
-
-        CC equivalent: tengu_context_exceeded
-        """
-        return TelemetryEvent(
-            event="agnt_context_window_exceeded",
-            category=EventCategory.ERROR,
-            success=False,
-            error_message=f"Context window exceeded: {tokens_used}/{budget} tokens",
-            properties={
-                "conversation_id": conversation_id,
-                "tokens_used": tokens_used,
-                "budget": budget,
-            },
-        )
-
-    # --- File Edit Events ---
-
-    @staticmethod
-    def file_edit_success(
-        file_path: str = "",
-        edit_type: str = "",
-        lines_changed: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_file_edit_success — File edit completed successfully.
-
-        CC equivalent: tengu_file_edit_success
-        """
-        return TelemetryEvent(
-            event="agnt_file_edit_success",
-            category=EventCategory.TOOL,
-            properties={
-                "file_path": file_path,
-                "edit_type": edit_type,
-                "lines_changed": lines_changed,
-            },
-        )
-
-    @staticmethod
-    def file_edit_error(
-        file_path: str = "",
-        error_type: str = "",
-        error_message: str = "",
-    ) -> TelemetryEvent:
-        """agnt_file_edit_error — File edit failed.
-
-        CC equivalent: tengu_file_edit_error
-        """
-        return TelemetryEvent(
-            event="agnt_file_edit_error",
-            category=EventCategory.TOOL,
-            success=False,
-            error_message=error_message,
-            properties={
-                "file_path": file_path,
-                "error_type": error_type,
-            },
-        )
-
-    # --- Search Events ---
-
-    @staticmethod
-    def search_executed(
-        query_length: int = 0,
-        results_count: int = 0,
-        search_type: str = "",
-        duration_ms: float = 0.0,
-    ) -> TelemetryEvent:
-        """agnt_search_executed — Code/doc search completed.
-
-        CC equivalent: tengu_search_executed
-        """
-        return TelemetryEvent(
-            event="agnt_search_executed",
-            category=EventCategory.TOOL,
-            duration_ms=duration_ms,
-            properties={
-                "query_length": query_length,
-                "results_count": results_count,
-                "search_type": search_type,
-            },
-        )
-
-    # --- Anti-Distillation Events ---
-
-    @staticmethod
-    def anti_distillation_alert(
-        token_entropy: float = 0.0,
-        bigram_repetition: float = 0.0,
-        vocab_diversity: float = 0.0,
-        consecutive_suspicious: int = 0,
-    ) -> TelemetryEvent:
-        """agnt_anti_distillation_alert — Entropy monitor flagged distillation risk.
-
-        CC equivalent: tengu_anti_distillation_alert
-        """
-        return TelemetryEvent(
-            event="agnt_anti_distillation_alert",
-            category=EventCategory.SESSION,
-            success=False,
-            properties={
-                "token_entropy": round(token_entropy, 4),
-                "bigram_repetition": round(bigram_repetition, 4),
-                "vocab_diversity": round(vocab_diversity, 4),
-                "consecutive_suspicious": consecutive_suspicious,
-            },
-        )
+    return TelemetryEvent(
+      event="agnt_api_success",
+      category=EventCategory.API,
+      duration_ms=latency_ms,
+      properties={
+        "model": model,
+        "prompt_tokens": prompt_tokens,
+        "completion_tokens": completion_tokens,
+        "total_tokens": prompt_tokens + completion_tokens,
+      },
+    )
+
+  @staticmethod
+  def api_error(
+    model: str = "",
+    error_type: str = "",
+    error_message: str = "",
+    latency_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_api_error — Failed Gemini API call.
+
+    CC equivalent: tengu_api_error
+    """
+    return TelemetryEvent(
+      event="agnt_api_error",
+      category=EventCategory.API,
+      success=False,
+      duration_ms=latency_ms,
+      error_message=error_message,
+      properties={
+        "model": model,
+        "error_type": error_type,
+      },
+    )
+
+  @staticmethod
+  def api_retry(
+    model: str = "",
+    attempt: int = 0,
+    reason: str = "",
+  ) -> TelemetryEvent:
+    """agnt_api_retry — API call retried.
+
+    CC equivalent: tengu_api_retry
+    """
+    return TelemetryEvent(
+      event="agnt_api_retry",
+      category=EventCategory.API,
+      properties={
+        "model": model,
+        "attempt": attempt,
+        "reason": reason,
+      },
+    )
+
+  # --- Compaction Events ---
+
+  @staticmethod
+  def compact_started(
+    layer: int = 0,
+    token_count: int = 0,
+    threshold: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_compact_started — Compaction layer initiated.
+
+    CC equivalent: tengu_compact_started
+    """
+    return TelemetryEvent(
+      event="agnt_compact_started",
+      category=EventCategory.COMPACTION,
+      properties={
+        "layer": layer,
+        "token_count": token_count,
+        "threshold": threshold,
+      },
+    )
+
+  @staticmethod
+  def compact_success(
+    layer: int = 0,
+    tokens_before: int = 0,
+    tokens_after: int = 0,
+    tokens_reclaimed: int = 0,
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_compact_success — Compaction completed successfully.
+
+    CC equivalent: tengu_compact_success
+    """
+    return TelemetryEvent(
+      event="agnt_compact_success",
+      category=EventCategory.COMPACTION,
+      duration_ms=duration_ms,
+      properties={
+        "layer": layer,
+        "tokens_before": tokens_before,
+        "tokens_after": tokens_after,
+        "tokens_reclaimed": tokens_reclaimed,
+        "reclaim_pct": (
+          round(tokens_reclaimed / tokens_before * 100, 1) if tokens_before > 0 else 0
+        ),
+      },
+    )
+
+  @staticmethod
+  def compact_failed(
+    layer: int = 0,
+    error_message: str = "",
+    circuit_breaker_open: bool = False,
+  ) -> TelemetryEvent:
+    """agnt_compact_failed — Compaction failed.
+
+    CC equivalent: tengu_compact_failed
+    """
+    return TelemetryEvent(
+      event="agnt_compact_failed",
+      category=EventCategory.COMPACTION,
+      success=False,
+      error_message=error_message,
+      properties={
+        "layer": layer,
+        "circuit_breaker_open": circuit_breaker_open,
+      },
+    )
+
+  # --- Tool Events ---
+
+  @staticmethod
+  def tool_use_success(
+    tool_id: str = "",
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_tool_use_success — Tool executed successfully.
+
+    CC equivalent: tengu_tool_use_success
+    """
+    return TelemetryEvent(
+      event="agnt_tool_use_success",
+      category=EventCategory.TOOL,
+      duration_ms=duration_ms,
+      properties={"tool_id": tool_id},
+    )
+
+  @staticmethod
+  def tool_use_error(
+    tool_id: str = "",
+    error_message: str = "",
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_tool_use_error — Tool execution failed.
+
+    CC equivalent: tengu_tool_use_error
+    """
+    return TelemetryEvent(
+      event="agnt_tool_use_error",
+      category=EventCategory.TOOL,
+      success=False,
+      duration_ms=duration_ms,
+      error_message=error_message,
+      properties={"tool_id": tool_id},
+    )
+
+  # --- Classifier Events ---
+
+  @staticmethod
+  def classifier_outcome(
+    tool_id: str = "",
+    verdict: str = "",
+    stage: int = 1,
+    fail_closed: bool = False,
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_classifier_outcome — Permission decision.
+
+    CC equivalent: tengu_auto_mode_outcome
+    """
+    return TelemetryEvent(
+      event="agnt_classifier_outcome",
+      category=EventCategory.CLASSIFIER,
+      duration_ms=duration_ms,
+      properties={
+        "tool_id": tool_id,
+        "verdict": verdict,
+        "stage": stage,
+        "fail_closed": fail_closed,
+      },
+    )
+
+  # --- Shell Security Events ---
+
+  @staticmethod
+  def bash_classifier(
+    command_hash: str = "",
+    subcommand_count: int = 0,
+    verdict: str = "",
+    unsafe_vars: list[str] | None = None,
+  ) -> TelemetryEvent:
+    """agnt_bash_classifier — Shell security classification.
+
+    CC equivalent: tengu_internal_bash_classifier_result
+    """
+    return TelemetryEvent(
+      event="agnt_bash_classifier",
+      category=EventCategory.SHELL,
+      properties={
+        "command_hash": command_hash,
+        "subcommand_count": subcommand_count,
+        "verdict": verdict,
+        "unsafe_vars": unsafe_vars or [],
+      },
+    )
+
+  # --- Memory Events ---
+
+  @staticmethod
+  def memory_compact(
+    memories_before: int = 0,
+    memories_after: int = 0,
+    deduped: int = 0,
+    archived: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_memory_compact — Session memory compaction.
+
+    CC equivalent: tengu_sm_compact
+    """
+    return TelemetryEvent(
+      event="agnt_memory_compact",
+      category=EventCategory.MEMORY,
+      properties={
+        "memories_before": memories_before,
+        "memories_after": memories_after,
+        "deduped": deduped,
+        "archived": archived,
+      },
+    )
+
+  # --- VCR Events ---
+
+  @staticmethod
+  def vcr_record(
+    cassette: str = "",
+    entry_count: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_vcr_record — VCR recording event."""
+    return TelemetryEvent(
+      event="agnt_vcr_record",
+      category=EventCategory.VCR,
+      properties={
+        "cassette": cassette,
+        "entry_count": entry_count,
+      },
+    )
+
+  @staticmethod
+  def vcr_replay_hit(cassette: str = "") -> TelemetryEvent:
+    """agnt_vcr_replay_hit — VCR replay cache hit."""
+    return TelemetryEvent(
+      event="agnt_vcr_replay_hit",
+      category=EventCategory.VCR,
+      properties={"cassette": cassette},
+    )
+
+  @staticmethod
+  def vcr_replay_miss(cassette: str = "") -> TelemetryEvent:
+    """agnt_vcr_replay_miss — VCR replay cache miss."""
+    return TelemetryEvent(
+      event="agnt_vcr_replay_miss",
+      category=EventCategory.VCR,
+      success=False,
+      properties={"cassette": cassette},
+    )
+
+  @staticmethod
+  def vcr_diff_mismatch(
+    cassette: str = "",
+    diff_lines: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_vcr_diff_mismatch — VCR diff regression detected."""
+    return TelemetryEvent(
+      event="agnt_vcr_diff_mismatch",
+      category=EventCategory.VCR,
+      success=False,
+      properties={
+        "cassette": cassette,
+        "diff_lines": diff_lines,
+      },
+    )
+
+  # --- Session Events ---
+
+  @staticmethod
+  def session_started(
+    conversation_id: str = "",
+    context_budget: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_session_started — Agent session initialized."""
+    return TelemetryEvent(
+      event="agnt_session_started",
+      category=EventCategory.SESSION,
+      properties={
+        "conversation_id": conversation_id,
+        "context_budget": context_budget,
+      },
+    )
+
+  @staticmethod
+  def session_ended(
+    conversation_id: str = "",
+    total_turns: int = 0,
+    total_tokens: int = 0,
+    total_tool_calls: int = 0,
+    duration_seconds: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_session_ended — Agent session completed."""
+    return TelemetryEvent(
+      event="agnt_session_ended",
+      category=EventCategory.SESSION,
+      duration_ms=duration_seconds * 1000,
+      properties={
+        "conversation_id": conversation_id,
+        "total_turns": total_turns,
+        "total_tokens": total_tokens,
+        "total_tool_calls": total_tool_calls,
+      },
+    )
+
+  # --- Error Events ---
+
+  @staticmethod
+  def context_decay_warning(
+    tokens_remaining: int = 0,
+    pct_remaining: float = 0.0,
+    threshold: str = "",
+  ) -> TelemetryEvent:
+    """agnt_context_decay_warning — Context window pressure.
+
+    CC equivalent: tengu_context_decay
+    """
+    return TelemetryEvent(
+      event="agnt_context_decay_warning",
+      category=EventCategory.ERROR,
+      properties={
+        "tokens_remaining": tokens_remaining,
+        "pct_remaining": pct_remaining,
+        "threshold": threshold,
+      },
+    )
+
+  @staticmethod
+  def circuit_breaker_open(
+    subsystem: str = "",
+    failure_count: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_circuit_breaker_open — Circuit breaker tripped."""
+    return TelemetryEvent(
+      event="agnt_circuit_breaker_open",
+      category=EventCategory.ERROR,
+      success=False,
+      properties={
+        "subsystem": subsystem,
+        "failure_count": failure_count,
+      },
+    )
+
+  # --- Gemini API Events (P4.1) ---
+
+  @staticmethod
+  def gemini_interactions_turn(
+    session_id: str = "",
+    turn_index: int = 0,
+    prompt_tokens: int = 0,
+    completion_tokens: int = 0,
+    latency_ms: float = 0.0,
+    function_calls: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_gemini_interactions_turn — Single Interactions API turn."""
+    return TelemetryEvent(
+      event="agnt_gemini_interactions_turn",
+      category=EventCategory.GEMINI,
+      duration_ms=latency_ms,
+      properties={
+        "session_id": session_id,
+        "turn_index": turn_index,
+        "prompt_tokens": prompt_tokens,
+        "completion_tokens": completion_tokens,
+        "total_tokens": prompt_tokens + completion_tokens,
+        "function_calls": function_calls,
+      },
+    )
+
+  @staticmethod
+  def gemini_interactions_session_end(
+    session_id: str = "",
+    total_turns: int = 0,
+    total_tokens: int = 0,
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_gemini_interactions_session_end — Interactions session completed."""
+    return TelemetryEvent(
+      event="agnt_gemini_interactions_session_end",
+      category=EventCategory.GEMINI,
+      duration_ms=duration_ms,
+      properties={
+        "session_id": session_id,
+        "total_turns": total_turns,
+        "total_tokens": total_tokens,
+      },
+    )
+
+  @staticmethod
+  def gemini_interactions_error(
+    session_id: str = "",
+    error_type: str = "",
+    error_message: str = "",
+    reconnect_attempt: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_gemini_interactions_error — Interactions API error."""
+    return TelemetryEvent(
+      event="agnt_gemini_interactions_error",
+      category=EventCategory.GEMINI,
+      success=False,
+      error_message=error_message,
+      properties={
+        "session_id": session_id,
+        "error_type": error_type,
+        "reconnect_attempt": reconnect_attempt,
+      },
+    )
+
+  # --- Deep Research Events (P4.1) ---
+
+  @staticmethod
+  def deep_research_started(
+    query: str = "",
+    depth: str = "",
+    collaborative_planning: bool = False,
+  ) -> TelemetryEvent:
+    """agnt_deep_research_started — Deep Research sweep initiated."""
+    return TelemetryEvent(
+      event="agnt_deep_research_started",
+      category=EventCategory.RESEARCH,
+      properties={
+        "query_length": len(query),
+        "depth": depth,
+        "collaborative_planning": collaborative_planning,
+      },
+    )
+
+  @staticmethod
+  def deep_research_completed(
+    query: str = "",
+    depth: str = "",
+    sources_found: int = 0,
+    duration_ms: float = 0.0,
+    token_usage: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_deep_research_completed — Deep Research sweep finished."""
+    return TelemetryEvent(
+      event="agnt_deep_research_completed",
+      category=EventCategory.RESEARCH,
+      duration_ms=duration_ms,
+      properties={
+        "query_length": len(query),
+        "depth": depth,
+        "sources_found": sources_found,
+        "token_usage": token_usage,
+      },
+    )
+
+  @staticmethod
+  def deep_research_error(
+    query: str = "",
+    error_type: str = "",
+    error_message: str = "",
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_deep_research_error — Deep Research sweep failed."""
+    return TelemetryEvent(
+      event="agnt_deep_research_error",
+      category=EventCategory.RESEARCH,
+      success=False,
+      duration_ms=duration_ms,
+      error_message=error_message,
+      properties={
+        "query_length": len(query),
+        "error_type": error_type,
+      },
+    )
+
+  # --- Rate Limit Events (OTel Histograms) ---
+
+  @staticmethod
+  def throttle_invocation(
+    function_name: str = "",
+    interval_ms: float = 0.0,
+    was_suppressed: bool = False,
+    elapsed_since_last_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_throttle_invocation — Tracks throttle execution/suppression.
+
+    OTel histogram buckets on elapsed_since_last_ms reveal rate-limit
+    pressure: spikes at low-ms values indicate callers hitting the
+    suppression wall, while even distribution means healthy pacing.
+    """
+    return TelemetryEvent(
+      event="agnt_throttle_invocation",
+      category=EventCategory.TOOL,
+      duration_ms=elapsed_since_last_ms,
+      properties={
+        "function_name": function_name,
+        "interval_ms": interval_ms,
+        "was_suppressed": was_suppressed,
+      },
+    )
+
+  @staticmethod
+  def debounce_invocation(
+    function_name: str = "",
+    wait_ms: float = 0.0,
+    was_coalesced: bool = False,
+    max_wait_triggered: bool = False,
+    pending_duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_debounce_invocation — Tracks debounce coalescing behavior.
+
+    OTel histogram on pending_duration_ms shows how long events queue
+    before firing. Frequent max_wait_triggered=True signals the
+    debounce ceiling is being hit under sustained load.
+    """
+    return TelemetryEvent(
+      event="agnt_debounce_invocation",
+      category=EventCategory.TOOL,
+      duration_ms=pending_duration_ms,
+      properties={
+        "function_name": function_name,
+        "wait_ms": wait_ms,
+        "was_coalesced": was_coalesced,
+        "max_wait_triggered": max_wait_triggered,
+      },
+    )
+
+  @staticmethod
+  def cooldown_check(
+    throttle_name: str = "",
+    cooldown_ms: float = 0.0,
+    was_allowed: bool = True,
+    time_until_next_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_cooldown_check — Tracks CooldownThrottle gate decisions.
+
+    Histogram on time_until_next_ms shows how close callers are to
+    the cooldown boundary. Clustering near 0ms = good pacing;
+    clustering near cooldown_ms = premature retries.
+    """
+    return TelemetryEvent(
+      event="agnt_cooldown_check",
+      category=EventCategory.TOOL,
+      properties={
+        "throttle_name": throttle_name,
+        "cooldown_ms": cooldown_ms,
+        "was_allowed": was_allowed,
+        "time_until_next_ms": time_until_next_ms,
+      },
+    )
+
+  # --- Speculation Lifecycle Events ---
+
+  @staticmethod
+  def speculation_started(
+    session_id: str = "",
+    step_count: int = 0,
+    trigger: str = "",
+  ) -> TelemetryEvent:
+    """agnt_speculation_started — Speculative execution initiated.
+
+    CC equivalent: tengu_speculation_started
+    """
+    return TelemetryEvent(
+      event="agnt_speculation_started",
+      category=EventCategory.SESSION,
+      properties={
+        "session_id": session_id,
+        "step_count": step_count,
+        "trigger": trigger,
+      },
+    )
+
+  @staticmethod
+  def speculation_accepted(
+    session_id: str = "",
+    steps_executed: int = 0,
+    overlay_files_merged: int = 0,
+    time_saved_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_speculation_accepted — User accepted speculative results.
+
+    CC equivalent: tengu_speculation_accepted
+    """
+    return TelemetryEvent(
+      event="agnt_speculation_accepted",
+      category=EventCategory.SESSION,
+      duration_ms=time_saved_ms,
+      properties={
+        "session_id": session_id,
+        "steps_executed": steps_executed,
+        "overlay_files_merged": overlay_files_merged,
+      },
+    )
+
+  @staticmethod
+  def speculation_rejected(
+    session_id: str = "",
+    reason: str = "",
+    steps_discarded: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_speculation_rejected — User rejected speculative results.
+
+    CC equivalent: tengu_speculation_rejected
+    """
+    return TelemetryEvent(
+      event="agnt_speculation_rejected",
+      category=EventCategory.SESSION,
+      success=False,
+      properties={
+        "session_id": session_id,
+        "reason": reason,
+        "steps_discarded": steps_discarded,
+      },
+    )
+
+  # --- Plan Mode Events ---
+
+  @staticmethod
+  def plan_mode_entered(
+    session_id: str = "",
+    trigger: str = "",
+    step_count: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_plan_mode_entered — Planning mode activated.
+
+    CC equivalent: tengu_plan_mode_entered
+    """
+    return TelemetryEvent(
+      event="agnt_plan_mode_entered",
+      category=EventCategory.SESSION,
+      properties={
+        "session_id": session_id,
+        "trigger": trigger,
+        "step_count": step_count,
+      },
+    )
+
+  @staticmethod
+  def plan_mode_exited(
+    session_id: str = "",
+    exit_reason: str = "",
+    duration_ms: float = 0.0,
+    steps_completed: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_plan_mode_exited — Planning mode deactivated.
+
+    CC equivalent: tengu_plan_mode_exited
+    """
+    return TelemetryEvent(
+      event="agnt_plan_mode_exited",
+      category=EventCategory.SESSION,
+      duration_ms=duration_ms,
+      properties={
+        "session_id": session_id,
+        "exit_reason": exit_reason,
+        "steps_completed": steps_completed,
+      },
+    )
+
+  # --- Feature Flag Events ---
+
+  @staticmethod
+  def feature_flag_evaluated(
+    flag_key: str = "",
+    value: bool = False,
+    source: str = "default",
+    user_id: str = "",
+  ) -> TelemetryEvent:
+    """agnt_feature_flag_evaluated — Feature flag evaluation recorded.
+
+    CC equivalent: tengu_feature_flag_evaluated (GrowthBook)
+    """
+    return TelemetryEvent(
+      event="agnt_feature_flag_evaluated",
+      category=EventCategory.SESSION,
+      properties={
+        "flag_key": flag_key,
+        "value": value,
+        "source": source,
+        "user_id": user_id,
+      },
+    )
+
+  # --- Tool Lifecycle Events (Extended) ---
+
+  @staticmethod
+  def tool_use_blocked(
+    tool_id: str = "",
+    reason: str = "",
+    tier: str = "",
+    matched_rules: list[str] | None = None,
+  ) -> TelemetryEvent:
+    """agnt_tool_use_blocked — Tool execution blocked by gateway.
+
+    CC equivalent: tengu_tool_use_blocked
+    """
+    return TelemetryEvent(
+      event="agnt_tool_use_blocked",
+      category=EventCategory.TOOL,
+      success=False,
+      properties={
+        "tool_id": tool_id,
+        "reason": reason,
+        "tier": tier,
+        "matched_rules": matched_rules or [],
+      },
+    )
+
+  @staticmethod
+  def tool_use_timeout(
+    tool_id: str = "",
+    timeout_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_tool_use_timeout — Tool execution timed out.
+
+    CC equivalent: tengu_tool_use_timeout
+    """
+    return TelemetryEvent(
+      event="agnt_tool_use_timeout",
+      category=EventCategory.TOOL,
+      success=False,
+      duration_ms=timeout_ms,
+      error_message=f"Tool '{tool_id}' exceeded timeout ({timeout_ms}ms)",
+      properties={"tool_id": tool_id},
+    )
+
+  # --- Auto-Dream Events ---
+
+  @staticmethod
+  def auto_dream_started(
+    session_id: str = "",
+    memory_count: int = 0,
+    trigger: str = "",
+  ) -> TelemetryEvent:
+    """agnt_auto_dream_started — AutoDream memory consolidation initiated.
+
+    CC equivalent: tengu_auto_dream_started
+    """
+    return TelemetryEvent(
+      event="agnt_auto_dream_started",
+      category=EventCategory.MEMORY,
+      properties={
+        "session_id": session_id,
+        "memory_count": memory_count,
+        "trigger": trigger,
+      },
+    )
+
+  @staticmethod
+  def auto_dream_completed(
+    session_id: str = "",
+    memories_consolidated: int = 0,
+    memories_pruned: int = 0,
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_auto_dream_completed — AutoDream consolidation finished.
+
+    CC equivalent: tengu_auto_dream_completed
+    """
+    return TelemetryEvent(
+      event="agnt_auto_dream_completed",
+      category=EventCategory.MEMORY,
+      duration_ms=duration_ms,
+      properties={
+        "session_id": session_id,
+        "memories_consolidated": memories_consolidated,
+        "memories_pruned": memories_pruned,
+      },
+    )
+
+  # --- Shell Security Events (Extended) ---
+
+  @staticmethod
+  def bash_security_check_failed(
+    check_id: int = 0,
+    check_name: str = "",
+    command_hash: str = "",
+    message: str = "",
+  ) -> TelemetryEvent:
+    """agnt_bash_security_check_failed — Bash command blocked by security pipeline.
+
+    CC equivalent: tengu_bash_security_check_failed
+    """
+    return TelemetryEvent(
+      event="agnt_bash_security_check_failed",
+      category=EventCategory.SHELL,
+      success=False,
+      error_message=message,
+      properties={
+        "check_id": check_id,
+        "check_name": check_name,
+        "command_hash": command_hash,
+      },
+    )
+
+  @staticmethod
+  def bash_security_validated(
+    command_hash: str = "",
+    checks_passed: int = 0,
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_bash_security_validated — Bash command passed all 23 security checks.
+
+    CC equivalent: tengu_bash_security_validated
+    """
+    return TelemetryEvent(
+      event="agnt_bash_security_validated",
+      category=EventCategory.SHELL,
+      duration_ms=duration_ms,
+      properties={
+        "command_hash": command_hash,
+        "checks_passed": checks_passed,
+      },
+    )
+
+  @staticmethod
+  def bash_rate_limit_hit(
+    command_hash: str = "",
+    call_count: int = 0,
+    limit: int = 10,
+    window_seconds: float = 60.0,
+  ) -> TelemetryEvent:
+    """agnt_bash_rate_limit_hit — Bash tool hit rate limit cap.
+
+    CC equivalent: tengu_bash_rate_limit (50-subcommand cap per Adversa §3.4)
+    """
+    return TelemetryEvent(
+      event="agnt_bash_rate_limit_hit",
+      category=EventCategory.SHELL,
+      success=False,
+      error_message=f"Rate limit hit: {call_count}/{limit} in {window_seconds}s",
+      properties={
+        "command_hash": command_hash,
+        "call_count": call_count,
+        "limit": limit,
+        "window_seconds": window_seconds,
+      },
+    )
+
+  # --- Undercover Mode Events ---
+
+  @staticmethod
+  def undercover_activated(
+    repo_class: str = "",
+    forced: bool = False,
+  ) -> TelemetryEvent:
+    """agnt_undercover_activated — Undercover mode turned on.
+
+    CC equivalent: tengu_undercover_activated
+    """
+    return TelemetryEvent(
+      event="agnt_undercover_activated",
+      category=EventCategory.SESSION,
+      properties={
+        "repo_class": repo_class,
+        "forced": forced,
+      },
+    )
+
+  @staticmethod
+  def undercover_deactivated(
+    repo_class: str = "",
+    reason: str = "",
+  ) -> TelemetryEvent:
+    """agnt_undercover_deactivated — Undercover mode turned off.
+
+    CC equivalent: tengu_undercover_deactivated
+    """
+    return TelemetryEvent(
+      event="agnt_undercover_deactivated",
+      category=EventCategory.SESSION,
+      properties={
+        "repo_class": repo_class,
+        "reason": reason,
+      },
+    )
+
+  # --- Sandbox Violation Events ---
+
+  @staticmethod
+  def sandbox_violation(
+    tool_id: str = "",
+    path: str = "",
+    resolution_type: str = "",
+    deny_reason: str = "",
+  ) -> TelemetryEvent:
+    """agnt_sandbox_violation — Filesystem path violated sandbox boundary.
+
+    CC equivalent: tengu_sandbox_violation
+    """
+    return TelemetryEvent(
+      event="agnt_sandbox_violation",
+      category=EventCategory.CLASSIFIER,
+      success=False,
+      properties={
+        "tool_id": tool_id,
+        "path": path,
+        "resolution_type": resolution_type,
+        "deny_reason": deny_reason,
+      },
+    )
+
+  # --- Compaction Events (Extended) ---
+
+  @staticmethod
+  def compact_skipped(
+    reason: str = "",
+    token_count: int = 0,
+    threshold: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_compact_skipped — Compaction skipped (below threshold / rate limited).
+
+    CC equivalent: tengu_compact_skipped
+    """
+    return TelemetryEvent(
+      event="agnt_compact_skipped",
+      category=EventCategory.COMPACTION,
+      properties={
+        "reason": reason,
+        "token_count": token_count,
+        "threshold": threshold,
+      },
+    )
+
+  # --- Context Window Events ---
+
+  @staticmethod
+  def context_checkpoint(
+    conversation_id: str = "",
+    tokens_used: int = 0,
+    tokens_remaining: int = 0,
+    pct_used: float = 0.0,
+    turn_index: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_context_checkpoint — Periodic context window health snapshot.
+
+    CC equivalent: tengu_context_checkpoint
+    """
+    return TelemetryEvent(
+      event="agnt_context_checkpoint",
+      category=EventCategory.SESSION,
+      properties={
+        "conversation_id": conversation_id,
+        "tokens_used": tokens_used,
+        "tokens_remaining": tokens_remaining,
+        "pct_used": round(pct_used, 2),
+        "turn_index": turn_index,
+      },
+    )
+
+  @staticmethod
+  def context_window_exceeded(
+    conversation_id: str = "",
+    tokens_used: int = 0,
+    budget: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_context_window_exceeded — Context window exhausted.
+
+    CC equivalent: tengu_context_exceeded
+    """
+    return TelemetryEvent(
+      event="agnt_context_window_exceeded",
+      category=EventCategory.ERROR,
+      success=False,
+      error_message=f"Context window exceeded: {tokens_used}/{budget} tokens",
+      properties={
+        "conversation_id": conversation_id,
+        "tokens_used": tokens_used,
+        "budget": budget,
+      },
+    )
+
+  # --- File Edit Events ---
+
+  @staticmethod
+  def file_edit_success(
+    file_path: str = "",
+    edit_type: str = "",
+    lines_changed: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_file_edit_success — File edit completed successfully.
+
+    CC equivalent: tengu_file_edit_success
+    """
+    return TelemetryEvent(
+      event="agnt_file_edit_success",
+      category=EventCategory.TOOL,
+      properties={
+        "file_path": file_path,
+        "edit_type": edit_type,
+        "lines_changed": lines_changed,
+      },
+    )
+
+  @staticmethod
+  def file_edit_error(
+    file_path: str = "",
+    error_type: str = "",
+    error_message: str = "",
+  ) -> TelemetryEvent:
+    """agnt_file_edit_error — File edit failed.
+
+    CC equivalent: tengu_file_edit_error
+    """
+    return TelemetryEvent(
+      event="agnt_file_edit_error",
+      category=EventCategory.TOOL,
+      success=False,
+      error_message=error_message,
+      properties={
+        "file_path": file_path,
+        "error_type": error_type,
+      },
+    )
+
+  # --- Search Events ---
+
+  @staticmethod
+  def search_executed(
+    query_length: int = 0,
+    results_count: int = 0,
+    search_type: str = "",
+    duration_ms: float = 0.0,
+  ) -> TelemetryEvent:
+    """agnt_search_executed — Code/doc search completed.
+
+    CC equivalent: tengu_search_executed
+    """
+    return TelemetryEvent(
+      event="agnt_search_executed",
+      category=EventCategory.TOOL,
+      duration_ms=duration_ms,
+      properties={
+        "query_length": query_length,
+        "results_count": results_count,
+        "search_type": search_type,
+      },
+    )
+
+  # --- Anti-Distillation Events ---
+
+  @staticmethod
+  def anti_distillation_alert(
+    token_entropy: float = 0.0,
+    bigram_repetition: float = 0.0,
+    vocab_diversity: float = 0.0,
+    consecutive_suspicious: int = 0,
+  ) -> TelemetryEvent:
+    """agnt_anti_distillation_alert — Entropy monitor flagged distillation risk.
+
+    CC equivalent: tengu_anti_distillation_alert
+    """
+    return TelemetryEvent(
+      event="agnt_anti_distillation_alert",
+      category=EventCategory.SESSION,
+      success=False,
+      properties={
+        "token_entropy": round(token_entropy, 4),
+        "bigram_repetition": round(bigram_repetition, 4),
+        "vocab_diversity": round(vocab_diversity, 4),
+        "consecutive_suspicious": consecutive_suspicious,
+      },
+    )

@@ -10,7 +10,6 @@
 > — Steve Jobs
 
 **Operating Principles**:
-
 1. **Pause**: Stop and understand the problem deeply
 2. **Breathe**: Give space for elegant solutions to emerge
 3. **Design**: Obsess over details until nothing can be removed
@@ -45,7 +44,7 @@
 │  │                                                           │ │
 │  │  ┌────────────┐  ┌─────────────┐  ┌──────────────────┐  │ │
 │  │  │ JR Engine  │  │     Cor     │  │   ShadowTag      │  │ │
-│  │  │ (P-R-B)    │  │  (Judge 6) │  │  (Ed25519 + MT)  │  │ │
+│  │  │ (P-R-B)    │  │  (Judge #6) │  │  (Ed25519 + MT)  │  │ │
 │  │  └────────────┘  └─────────────┘  └──────────────────┘  │ │
 │  │                                                           │ │
 │  │  ┌────────────┐  ┌─────────────┐  ┌──────────────────┐  │ │
@@ -103,7 +102,6 @@
 ### Current Branch
 
 **`claude/preserve-it-ai-prototype-01VcDxp2cxiCmoeHWrQWub58`** (Active)
-
 - Gemini Ingestion Layer
 - FastAPI service foundation
 - Migration documentation
@@ -137,7 +135,6 @@ system_prompt = cheat.to_system_prompt()
 ```
 
 **DTE Validation**:
-
 - Tested on HumanEval, BigCodeBench, SWE-bench
 - Result: 21-element baseline 82.3% → 10-element 86.0% (+3.7%)
 - Strategy: RCR-MAD (Recursive Critique + Multi-Agent Debate)
@@ -147,7 +144,6 @@ system_prompt = cheat.to_system_prompt()
 ### 2. Glicko-2 Ratings (Uncertainty + Volatility)
 
 **Why Glicko-2 > Elo/PPO**:
-
 - **Elo**: Rating only (no uncertainty)
 - **PPO**: Policy optimization (not rating)
 - **Glicko-2**: Rating + Uncertainty + Volatility
@@ -178,13 +174,11 @@ volatility = updated_player.get_vol()     # Consistency
 ```
 
 **Application**:
-
 - Track kernel performance over time
 - Detect degradation before impact
 - Rank agent strategies for selection
 
 **Convergence**:
-
 ```
 f(φ, σ) → τ² with tolerance 1e-6
 Typically converges in 3-5 iterations
@@ -264,7 +258,6 @@ reasoning = result.rounds  # Full debate history
 ```
 
 **Process**:
-
 1. **Round 1**: Each agent proposes initial answer
 2. **Round 2-N**: Agents revise based on others' arguments
 3. **Final**: Aggregate via consensus or Glicko-2 weighted voting
@@ -309,14 +302,14 @@ loss = -torch.min(ratio * advantages, clipped * advantages)
 
 **Comparison**:
 
-| Aspect                | GRPO                   | PPO               | Winner |
-| --------------------- | ---------------------- | ----------------- | ------ |
-| **Advantages**        | Relative (group mean)  | Absolute (GAE)    | GRPO   |
-| **Variance**          | Lower (mean-centering) | Higher            | GRPO   |
-| **Sample Efficiency** | G responses/prompt     | 1 response/prompt | GRPO   |
-| **Reasoning Tasks**   | Excellent              | Good              | GRPO   |
-| **Complexity**        | Low (no clipping)      | Medium (clipping) | GRPO   |
-| **Code Tasks**        | +8.5% (proven)         | Baseline          | GRPO   |
+| Aspect | GRPO | PPO | Winner |
+|--------|------|-----|--------|
+| **Advantages** | Relative (group mean) | Absolute (GAE) | GRPO |
+| **Variance** | Lower (mean-centering) | Higher | GRPO |
+| **Sample Efficiency** | G responses/prompt | 1 response/prompt | GRPO |
+| **Reasoning Tasks** | Excellent | Good | GRPO |
+| **Complexity** | Low (no clipping) | Medium (clipping) | GRPO |
+| **Code Tasks** | +8.5% (proven) | Baseline | GRPO |
 
 **Verdict**: GRPO for DTE evolution, PPO for general RL.
 
@@ -341,7 +334,6 @@ response = await designer.reason(
 ```
 
 **Characteristics**:
-
 - Focuses on "what can be removed"
 - Challenges complexity
 - Demands elegance
@@ -377,7 +369,6 @@ print(plan.challenge)   # Timeline accountability
 ```
 
 **Output Structure**:
-
 1. **Hard Truth**: Revenue bleeding, unsustainable ratios, missed opportunities
 2. **Plan**: Specific tactics with ROI projections
 3. **Challenge**: "Do X in Y days or fire me"
@@ -401,7 +392,6 @@ response = await deep_reasoning.analyze(
 ```
 
 **Reasoning Chain**:
-
 1. **CoT**: Chain of Thought (step-by-step)
 2. **ToT**: Tree of Thought (explore branches)
 3. **RCR**: Recursive Critique & Refinement (self-correct)
@@ -424,7 +414,6 @@ result = await panel.debate("Should we pivot from PreserveIt to Pinkln?")
 ```
 
 **Voting Methods**:
-
 - `unanimous`: Require 100% agreement
 - `majority`: Require >50%
 - `glicko_weighted`: Weight by agent ratings
@@ -450,13 +439,11 @@ code = await code_crafter.implement(
 ```
 
 **Validation**:
-
 - **HumanEval**: 164 programming problems
 - **BigCodeBench**: Real-world API usage
 - **SWE-bench**: GitHub issue resolution
 
 **Quality Gates**:
-
 - Functions ≤20 lines
 - No external dependencies (stdlib only)
 - Test coverage ≥90%
@@ -536,7 +523,6 @@ prompt = framework.to_prompt()
 ```
 
 **Consensus Metrics**:
-
 - Agreement score: % agents with same answer
 - Confidence score: Avg confidence across agents
 - Convergence speed: Rounds to consensus
@@ -546,7 +532,6 @@ prompt = framework.to_prompt()
 ### 3. DTE Strategies
 
 **Strategy 1: RCR-MAD**
-
 ```python
 EvolutionStrategy.RCR_MAD
 ├─ Recursive Critique (RCR)
@@ -558,7 +543,6 @@ Result: +3.7% (cheat sheet 21→10)
 ```
 
 **Strategy 2: GRPO**
-
 ```python
 EvolutionStrategy.GRPO
 ├─ Generate G=8 responses
@@ -569,7 +553,6 @@ Result: +8.5% (code generation)
 ```
 
 **Strategy 3: BENCHMARK**
-
 ```python
 EvolutionStrategy.BENCHMARK
 ├─ Run HumanEval/BigCodeBench
@@ -600,7 +583,7 @@ decision = jr.validate(
         "DTE evolution proven (+3.7%)"
     ],
     brakes=[
-        "Compliance Framework compliance check",
+        "ATP 5-19 compliance check",
         "Cryptographic audit trail",
         "Rollback plan documented"
     ]
@@ -612,8 +595,7 @@ risk_tier = decision.risk_tier     # RA-1 (low) to RA-4 (high)
 audit_log = decision.audit_trail   # Cryptographic proof
 ```
 
-**Compliance Framework Risk Matrix**:
-
+**ATP 5-19 Risk Matrix**:
 ```
 Probability × Severity → Risk Level
 
@@ -626,7 +608,7 @@ E (Unlikely) × IV (Negligible)  = L  (Low)
 
 ---
 
-### 2. Cor (Judge 6 Hybrid Enforcement)
+### 2. Cor (Judge #6 Hybrid Enforcement)
 
 **3-Layer Decision System**:
 
@@ -648,7 +630,6 @@ reasoning = decision.reasoning_trace     # Full audit
 ```
 
 **Layers**:
-
 1. **Gemini 2.0 Flash**: Semantic understanding (violations → context)
 2. **PyTorch Local**: Binary classification (go/no-go)
 3. **Rules-Based**: Compliance gates (hard constraints)
@@ -686,10 +667,9 @@ is_valid = shadow.verify(tagged)
 ```
 
 **Cryptography**:
-
 - **Ed25519**: Digital signatures (fast, secure)
 - **Merkle Tree**: Hash chain for audit trail
-- **Retention**: 7 years (Compliance Framework compliance)
+- **Retention**: 7 years (ATP 5-19 compliance)
 
 ---
 
@@ -722,7 +702,6 @@ similar = await ns.query(
 ```
 
 **Features**:
-
 - Vector embeddings (semantic search)
 - Version control (evolution history)
 - Cross-device sync (see superpowers-marketplace branch)
@@ -766,7 +745,6 @@ similar = await ns.query(
 ```
 
 **Cost Breakdown** (Month 1):
-
 ```
 GKE Autopilot:   $500/mo  (3 nodes)
 GPU (A100):      $1,080/mo (1 GPU, 7 models via Aegaeon pooling)
@@ -806,7 +784,6 @@ assert results.error_rate <= 0.01
 ```
 
 **Enhancements** (v2.0):
-
 1. ✅ Adaptive load control
 2. ✅ Response time degradation detection
 3. ✅ Jitter analysis (JR Engine SLA)
@@ -849,14 +826,12 @@ assert results.error_rate <= 0.01
 ```
 
 **Key Files**:
-
 - `scripts/claude_code_memory_local.py`: Local memory management
 - `scripts/sync_to_devices.sh`: Cross-device sync
 - `scripts/llm_blender_rotation.py`: Multi-model orchestration
 - `.github/workflows/daily_sync.yml`: Automation
 
 **Memory Schema**:
-
 ```json
 {
   "type": "evolution",
@@ -913,12 +888,12 @@ rules:
 ```javascript
 // .eslintrc.js
 module.exports = {
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
-    "max-lines-per-function": ["error", 20], // Jobs: simplicity
-    "no-console": "warn", // Structured logging only
-    "no-eval": "error", // Security absolute
-    "@typescript-eslint/explicit-function-return-type": "error",
+    'max-lines-per-function': ['error', 20],  // Jobs: simplicity
+    'no-console': 'warn',                      // Structured logging only
+    'no-eval': 'error',                        // Security absolute
+    '@typescript-eslint/explicit-function-return-type': 'error',
   },
 };
 ```
@@ -941,7 +916,7 @@ decision = jr.validate(
         "3 enterprise pilots successful"
     ],
     brakes=[
-        "Compliance Framework compliance: ✅ Validated",
+        "ATP 5-19 compliance: ✅ Validated",
         "ShadowTag audit trail: ✅ Enabled",
         "Rollback plan: ✅ Documented",
         "Monitoring: ✅ Prometheus + Grafana"
@@ -1063,7 +1038,7 @@ FRAMEWORKS:
 • GRPO (G=8 group size, mean-centered advantages, no clipping)
 
 VALIDATION:
-• JR Engine: Purpose-Reasons-Brakes (Compliance Framework risk matrix)
+• JR Engine: Purpose-Reasons-Brakes (ATP 5-19 risk matrix)
 • Load Testing: p99 ≤90ms SLA, $0.0003 cost, 7-year audit retention
 • Glicko-2: Rating ≥1500, Uncertainty ≤200, Volatility ≤0.1
 • DTE: Improvement metric >0%, benchmark validation required

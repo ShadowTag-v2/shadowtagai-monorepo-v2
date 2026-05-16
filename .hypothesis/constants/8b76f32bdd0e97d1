@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/src/collectors/__init__.py
+# hypothesis_version: 6.151.5
+
+['NewsAPICollector', 'RSSCollector', 'SourceCollector', 'TwitterCollector', 'YouTubeCollector']

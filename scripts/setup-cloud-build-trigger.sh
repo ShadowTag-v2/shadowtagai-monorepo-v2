@@ -1,14 +1,14 @@
 #!/bin/bash
-# Setup Cloud Build triggers for shadowtagai orchestrator
+# Setup Cloud Build triggers for pnkln orchestrator
 
 set -e
 
 PROJECT_ID="${1:-your-project-id}"
-REPO_NAME="ShadowTag-v2-fastapi-services"
+REPO_NAME="aiyou-fastapi-services"
 REPO_OWNER="ehanc69"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Setting up Cloud Build triggers for shadowtagai orchestrator"
+echo "Setting up Cloud Build triggers for pnkln orchestrator"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Enable required APIs
@@ -22,10 +22,10 @@ gcloud services enable \
 
 # Create Artifact Registry repository
 echo "🏗️  Creating Artifact Registry repository..."
-gcloud artifacts repositories create shadowtagai \
+gcloud artifacts repositories create pnkln \
   --repository-format=docker \
   --location=us-central1 \
-  --description="shadowtagai orchestrator container images" \
+  --description="pnkln orchestrator container images" \
   --project="$PROJECT_ID" || echo "Repository already exists"
 
 # Grant Cloud Build permissions
@@ -43,7 +43,7 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
 # Create trigger for main branch (production deployments)
 echo "🚀 Creating production trigger..."
 gcloud builds triggers create github \
-  --name="shadowtagai-production-deploy" \
+  --name="pnkln-production-deploy" \
   --repo-name="$REPO_NAME" \
   --repo-owner="$REPO_OWNER" \
   --branch-pattern="^main$" \
@@ -54,7 +54,7 @@ gcloud builds triggers create github \
 # Create trigger for PRs (build and test only)
 echo "🔬 Creating PR trigger..."
 gcloud builds triggers create github \
-  --name="shadowtagai-pr-validation" \
+  --name="pnkln-pr-validation" \
   --repo-name="$REPO_NAME" \
   --repo-owner="$REPO_OWNER" \
   --pull-request-pattern=".*" \

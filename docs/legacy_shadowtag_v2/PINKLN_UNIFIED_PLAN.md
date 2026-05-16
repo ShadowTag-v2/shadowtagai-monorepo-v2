@@ -8,41 +8,70 @@
 
 Integration of FOUR technical architectures into unified Pinkln ultrathink system:
 
+
+
 1. **LLM Memory Persistence** (from `claude/add-superpowers-marketplace-011CUuLnhzCNrXYhosFmMAt9`)
+
+
    - Conversation extraction from 2,121+ Cursor/Claude/Codex sessions
+
 
    - GitHub-backed semantic memory with version control
 
+
    - Cross-device sync (MacBook ↔ Vertex ↔ GKE)
+
 
    - 4-LLM orchestration with review rotation
 
+
    - **Foundation layer**: Provides training data for all other systems
 
+
+
 2. **Gemini Function Calling** (from `claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp`)
+
+
    - Replaces AutoGen multi-agent (3+ API calls) with single Gemini call + local functions
+
 
    - 12× latency improvement (1100ms → 75ms)
 
+
    - 70% cost reduction
+
 
    - **Key insight**: Gemini function calling IS kernel chaining 2.0
 
+
+
 3. **Kernel Chaining** (from `claude/kernel-chaining-architecture-01XDGPpkmfkiiiNWRNFnkJKR`)
+
+
    - 3 specialized kernels: ATP_519_scan, judge_six_classify, audit_compress
+
 
    - 98.5% token reduction (50KB → 487 bytes)
 
+
    - 52ms p50 latency
+
 
    - Model-agnostic (Gemini + PyTorch + rules)
 
+
+
 4. **Vertex Workbench** (current branch `claude/vertex-workbench-code-01MQJ8CfXToph64WHQD2P7Zj`)
+
+
    - ACE orchestration (Generator → Refactorer → Reflector → Curator)
+
 
    - Multi-model router (6 models)
 
+
    - Code Refactorer (12 tests passing)
+
 
    - Full CI/CD, safety framework
 
@@ -81,7 +110,7 @@ audit_trail = await compress(binary_decision)                      # API call 3
 tools = [
     FunctionTool(
         name="atp_519_scan",
-        description="Extract Compliance Framework violations from context",
+        description="Extract ATP 5-19 violations from context",
         function=atp_519_scan_local,  # Local Python function
         parameters={"context": {"type": "string"}}
     ),
@@ -189,7 +218,7 @@ result = caller.execute("Process this decision context...")
 │  ┌──────────────▼───────────────────────────────────────────┐  │
 │  │ LAYER 1: pnkln stack (Validation & Audit)               │  │
 │  │                                                          │  │
-│  │  • Judge 6 (JR Engine): Purpose/Reasons/Brakes         │  │
+│  │  • Judge #6 (JR Engine): Purpose/Reasons/Brakes         │  │
 │  │  • Cor: Orchestration coordinator                       │  │
 │  │  • ShadowTag: Ed25519 cryptographic watermarks          │  │
 │  │  • NS: Semantic memory retrieval                        │  │
@@ -270,9 +299,12 @@ class GeminiFunctionCaller:
 
 **Integration**:
 
+
 - Replace kernel chaining API calls with Gemini function tools
 
+
 - Keep kernel logic as local Python functions
+
 
 - Add function tools for: debates, DTE evolution, Glicko updates
 
@@ -299,7 +331,7 @@ src/pnkln/
 ```python
 class JudgeSix:
     """
-    Judge 6 enforcement layer for function calling.
+    Judge #6 enforcement layer for function calling.
 
     Validates every function call against:
 
@@ -349,9 +381,12 @@ class NS:
 
 **Integration**:
 
+
 - Wrap GeminiFunctionCaller with JudgeSix for all executions
 
+
 - Add ShadowTag watermarks to all function outputs
+
 
 - Use NS for context retrieval in ACE agents
 
@@ -417,11 +452,15 @@ class Glicko2System:
 
 **Integration**:
 
+
 - Track ACE agent performance (Generator, Refactorer, Reflector, Curator)
+
 
 - Track function tool performance
 
+
 - Track model performance in multi-model router
+
 
 - Add `glicko_update()` function tool
 
@@ -492,9 +531,12 @@ class GRPOvsPPOComparison:
 
 **Integration**:
 
+
 - Use for training ACE agents
 
+
 - Use for training debate agents
+
 
 - Compare effectiveness on reasoning tasks
 
@@ -544,11 +586,15 @@ class DTESystem:
 
 **Integration**:
 
+
 - Add `dte_evolve()` function tool
+
 
 - Evolve ACE agent prompts
 
+
 - Evolve cheat sheet fusion elements
+
 
 - Track with Glicko-2 ratings
 
@@ -563,7 +609,7 @@ class DTESystem:
 ```
 
 src/kernels/
-├── atp_519_scan.py      # Compliance Framework violation extraction
+├── atp_519_scan.py      # ATP 5-19 violation extraction
 ├── judge_six.py         # Binary classification (PyTorch)
 ├── audit_compress.py    # Audit trail compression
 ├── base.py              # Kernel base class
@@ -589,7 +635,7 @@ class ATP519ScanKernel(Kernel):
 
 def atp_519_scan_local(context: str) -> Dict:
     """
-    Extract Compliance Framework violations from context.
+    Extract ATP 5-19 violations from context.
 
     Executes locally, no API call overhead.
     """
@@ -601,7 +647,7 @@ def atp_519_scan_local(context: str) -> Dict:
 
 atp_scan_tool = FunctionTool(
     name="atp_519_scan",
-    description="Extract Compliance Framework violations",
+    description="Extract ATP 5-19 violations",
     function=atp_519_scan_local,
     parameters={"context": {"type": "string"}}
 )
@@ -673,9 +719,12 @@ def debate_orchestrate_local(
 
 **Integration**:
 
+
 - Add `debate_orchestrate()` function tool
 
+
 - Use for ACE Reflector (multi-perspective analysis)
+
 
 - Track agent performance with Glicko-2
 
@@ -772,8 +821,9 @@ erik-hancock-llm-memory/
 
 **Key capabilities**:
 
-1. **Conversation Extraction**
 
+
+1. **Conversation Extraction**
    ```python
    # Extract from Cursor, Claude Code, Codex
    conversations = extract_0xsero_conversations()
@@ -781,8 +831,9 @@ erik-hancock-llm-memory/
    # Gemini Flash 2.0 metadata generation ($0.45 one-time)
    ```
 
-2. **GitHub Persistence**
 
+
+2. **GitHub Persistence**
    ```python
    # Semantic versioning
    version = "1.2.3"  # major.minor.patch
@@ -791,22 +842,24 @@ erik-hancock-llm-memory/
    # LLM-powered conflict resolution
    ```
 
-3. **Claude Code Integration**
 
+
+3. **Claude Code Integration**
    ```bash
    # Auto-install to ~/.claude-code/memory.md
    python scripts/claude_code_memory_local.py --install
 
    # pnkln architecture loaded on every startup:
-   # - Judge 6 validation framework
+   # - Judge #6 validation framework
    # - ShadowTag cryptographic audit
    # - JR (Purpose/Reasons/Brakes) engine
    # - Glicko-2 rating system
    # - DTE evolution protocols
    ```
 
-4. **Vertex AI Workbench Integration**
 
+
+4. **Vertex AI Workbench Integration**
    ```python
    # GCS-backed memory
    memory_path = f"gs://{PROJECT}-workbench-memory/pnkln_memory.json"
@@ -819,8 +872,9 @@ erik-hancock-llm-memory/
    pnkln_memory = sync_memory()
    ```
 
-5. **4-LLM Orchestration**
 
+
+5. **4-LLM Orchestration**
    ```python
    # Routing strategy:
    orchestration = {
@@ -838,8 +892,9 @@ erik-hancock-llm-memory/
    # Final: Claude Code synthesis → GitHub commit
    ```
 
-6. **Cross-Device Sync**
 
+
+6. **Cross-Device Sync**
    ```bash
    # MacBook ↔ Vertex ↔ GKE synchronization
    ./scripts/sync_to_devices.sh --pull  # Fetch latest from GitHub
@@ -851,33 +906,46 @@ erik-hancock-llm-memory/
 
 **Cost economics**:
 
+
 - One-time: $0.45 (initial 2,121 conversation metadata)
+
 
 - Monthly: $0.12 (GCS storage + incremental metadata)
 
+
 - Per-query: $0.08-0.12 (4-LLM orchestration)
+
 
 - ROI: 18,000% ($2,160/mo value vs $0.12/mo cost)
 
 **Integration with Pinkln Stack**:
 
+
 - Memory feeds **DTE evolution** (conversations as training data)
+
 
 - GitHub persistence complements **ShadowTag** audit trails
 
+
 - 4-LLM rotation can replace/augment **multi-model router**
+
 
 - Synergizes with **NS semantic memory** (Layer 1)
 
-- Provides historical context for **Judge 6** validation (Layer 1)
+
+- Provides historical context for **Judge #6** validation (Layer 1)
+
 
 - Training corpus for **GRPO optimization** (Layer 5)
 
 **Deployment targets**:
 
+
 1. **Claude Code** (local): `~/.claude-code/memory.md`
 
+
 2. **Vertex Workbench**: `gs://{PROJECT}-workbench-memory/`
+
 
 3. **GKE**: ConfigMap + CronJob for automated sync
 
@@ -977,8 +1045,9 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 ### Phase 2: Integrate with Existing Stack (Week 1-2)
 
-1. **Update ACE Orchestrator** to use Gemini function calling
 
+
+1. **Update ACE Orchestrator** to use Gemini function calling
    ```python
    # tools/orchestrator/ace_with_gemini.mjs
    from src.core.gemini_function_calling import GeminiFunctionCaller, FunctionTool
@@ -997,21 +1066,31 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
    result = judge.enforce("Add health check endpoint")
    ```
 
+
+
 2. **Add function tools for existing capabilities**
+
+
    - `code_refactor()` - Code Refactorer agent
+
 
    - `computer_use()` - Browser automation
 
+
    - `multi_model_route()` - Model routing
+
 
    - `glicko_update()` - Performance tracking
 
+
    - `debate_orchestrate()` - Multi-agent debates
+
 
    - `dte_evolve()` - Prompt evolution
 
-3. **Update FastAPI backend**
 
+
+3. **Update FastAPI backend**
    ```python
    # app/routers/pinkln.py
    @router.post("/function-call")
@@ -1023,8 +1102,9 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
        return {"result": result, "audit": judge.audit_log}
    ```
 
-4. **Add Glicko-2 tracking**
 
+
+4. **Add Glicko-2 tracking**
    ```python
    # app/routers/ratings.py
    from src.ratings.glicko2 import Glicko2System, Glicko2Player
@@ -1041,8 +1121,9 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 ### Phase 3: Testing & Validation (Week 2)
 
-1. **Add integration tests**
 
+
+1. **Add integration tests**
    ```
 
    tests/integration/
@@ -1054,18 +1135,28 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
    ├── test_unified_stack.py            # Full integration
    ```
 
+
+
 2. **Run benchmark tests**
+
+
    - HumanEval integration
 
+
    - Latency benchmarks (target: <90ms p99)
+
 
    - Cost analysis (target: $0.0003/decision)
 
 ### Phase 4: Documentation (Week 2)
 
+
+
 1. **Update README.md** with Gemini function calling
 
+
 2. **Create ARCHITECTURE.md** documenting unified stack
+
 
 3. **Add examples** showing function tool usage
 
@@ -1073,17 +1164,17 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 ## Performance Targets
 
-| Metric             | Kernel Chain v1 | Gemini Functions | Pinkln Unified   | Target                 |
-| ------------------ | --------------- | ---------------- | ---------------- | ---------------------- |
-| **Latency (p99)**  | 52ms            | 75ms             | **35ms**         | ≤90ms                  |
-| **API Calls**      | 3               | 1                | **1**            | ≤2                     |
-| **Token Usage**    | 3.6KB           | 3KB              | **2.8KB**        | ≤5KB                   |
-| **Cost/Decision**  | $0.0003         | $0.0003          | **$0.0003**      | ≤$0.001                |
-| **Function Tools** | 3 kernels       | Unlimited        | **7 core + ∞**   | Extensible             |
-| **Self-Evolution** | ❌              | ❌               | **✅ DTE**       | +3.7% accuracy         |
-| **Ratings**        | ❌              | ❌               | **✅ Glicko-2**  | Uncertainty tracking   |
-| **Validation**     | ❌              | ❌               | **✅ JR Engine** | Purpose/Reasons/Brakes |
-| **Audit**          | Basic           | ❌               | **✅ ShadowTag** | Ed25519 signatures     |
+| Metric | Kernel Chain v1 | Gemini Functions | Pinkln Unified | Target |
+|--------|----------------|------------------|----------------|---------|
+| **Latency (p99)** | 52ms | 75ms | **35ms** | ≤90ms |
+| **API Calls** | 3 | 1 | **1** | ≤2 |
+| **Token Usage** | 3.6KB | 3KB | **2.8KB** | ≤5KB |
+| **Cost/Decision** | $0.0003 | $0.0003 | **$0.0003** | ≤$0.001 |
+| **Function Tools** | 3 kernels | Unlimited | **7 core + ∞** | Extensible |
+| **Self-Evolution** | ❌ | ❌ | **✅ DTE** | +3.7% accuracy |
+| **Ratings** | ❌ | ❌ | **✅ Glicko-2** | Uncertainty tracking |
+| **Validation** | ❌ | ❌ | **✅ JR Engine** | Purpose/Reasons/Brakes |
+| **Audit** | Basic | ❌ | **✅ ShadowTag** | Ed25519 signatures |
 
 ---
 
@@ -1091,53 +1182,79 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 ### Week 1: Core Integration
 
+
+
 - [ ] Cherry-pick Gemini function calling core
 
-- [ ] Cherry-pick pnkln stack (Judge 6, Cor, ShadowTag, NS)
+
+- [ ] Cherry-pick pnkln stack (Judge #6, Cor, ShadowTag, NS)
+
 
 - [ ] Cherry-pick Glicko-2 implementation
 
+
 - [ ] Cherry-pick GRPO training
+
 
 - [ ] Cherry-pick DTE evolution
 
+
 - [ ] Cherry-pick kernel adaptations
 
+
 - [ ] Update requirements.txt
+
 
 - [ ] Resolve any conflicts
 
 ### Week 2: Integration & Testing
 
+
+
 - [ ] Update ACE orchestrator with Gemini functions
+
 
 - [ ] Add function tools for existing capabilities
 
+
 - [ ] Update FastAPI endpoints
+
 
 - [ ] Add Glicko-2 tracking endpoints
 
+
 - [ ] Create integration tests
+
 
 - [ ] Run benchmark tests
 
+
 - [ ] Validate latency targets
+
 
 - [ ] Document architecture
 
 ### Week 3+: Advanced Features
 
+
+
 - [ ] Implement cheat sheet fusion
+
 
 - [ ] Add HumanEval benchmark integration
 
+
 - [ ] Add BigCodeBench integration
+
 
 - [ ] Add SWE-bench integration
 
+
 - [ ] Create DTE evolution workflow
 
+
 - [ ] Add GRPO training workflow
+
 
 - [ ] Performance optimization
 
@@ -1147,59 +1264,102 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 **Why This Integration Works**:
 
+
+
 1. **Memory Persistence** provides foundation layer
+
+
    - 2,121+ conversations as training corpus
+
 
    - GitHub version control for all context
 
+
    - Cross-device sync (MacBook ↔ Vertex ↔ GKE)
+
 
    - 4-LLM orchestration with review rotation
 
+
    - $0.12/month cost, 18,000% ROI
 
+
+
 2. **Gemini Function Calling** eliminates API overhead
+
+
    - 1 API call vs 3 (kernel chain)
+
 
    - Functions execute locally (0 network latency)
 
+
    - Maintains context throughout
+
 
    - memory_retrieve() function for persistent context
 
+
+
 3. **pnkln stack** adds validation & audit
-   - Judge 6 validates every function call
+
+
+   - Judge #6 validates every function call
+
 
    - ShadowTag provides cryptographic proof
 
+
    - NS retrieves relevant context (enhanced by Layer 0 memory)
+
 
    - Historical context from persistent memory
 
+
+
 4. **Glicko-2** tracks performance scientifically
+
+
    - Uncertainty + volatility tracking
+
 
    - Better than Elo for agent rating
 
+
    - Configurable `tol` parameter for precision
+
 
    - Performance data persisted in memory layer
 
+
+
 5. **GRPO Training** optimizes agents
+
+
    - Group relative advantages
+
 
    - Better for reasoning tasks than PPO
 
+
    - Proven improvement on benchmarks
+
 
    - Training corpus from memory persistence
 
+
+
 6. **DTE Evolution** enables self-improvement
+
+
    - Benchmark-driven prompt evolution
+
 
    - +3.7% accuracy improvement proven
 
+
    - Automatic evolution via CI/CD
+
 
    - Conversations feed evolution pipeline
 
@@ -1211,51 +1371,84 @@ git checkout origin/claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp 
 
 ### ✅ Completed
 
+
+
 1. **Memory Persistence** (from `claude/add-superpowers-marketplace-011CUuLnhzCNrXYhosFmMAt9`)
+
+
    - ✅ Cherry-picked `erik-hancock-llm-memory/` directory (15 files, 4,021 lines)
+
 
    - ✅ Integrated into unified plan as Layer 0 (Foundation)
 
+
    - ✅ Updated architecture diagram
+
 
    - Ready for deployment to Claude Code, Vertex Workbench, and GKE
 
 ### 🚀 Ready to Start
 
+
+
 2. **Core Implementations** (from `claude/autogen-to-gemini-migration-0188pPLLGzqinNBd1Paa5VCp`)
+
+
    - Cherry-pick Gemini Function Calling (`src/core/`)
+
 
    - Cherry-pick pnkln stack (`src/pnkln/`)
 
+
    - Cherry-pick Glicko-2 ratings (`src/ratings/`)
+
 
    - Cherry-pick GRPO training (`src/training/`)
 
+
    - Cherry-pick DTE evolution (`src/evolution/`)
+
 
    - Cherry-pick kernels and integration (`src/kernels/`, `src/integration/`)
 
+
    - Cherry-pick agents (`src/agents/`)
+
 
    - Integration tests
 
+
+
 3. **Testing & Validation** (Week 2)
+
+
    - Unit tests for all components
+
 
    - Integration tests for memory persistence
 
+
    - Performance benchmarks (latency, cost)
+
 
    - Validate Layer 0 → Layer 5 data flow
 
+
+
 4. **Advanced Features** (Week 3+)
+
+
    - HumanEval/BigCodeBench/SWE-bench integration
+
 
    - Cheat sheet fusion automation
 
+
    - DTE evolution automation via CI/CD
 
+
    - GRPO training workflows
+
 
    - Memory-driven prompt evolution
 

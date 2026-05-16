@@ -22,7 +22,7 @@ for f in \
   "$SELF_DIR/setup_antigravity_v10_local.sh"
 do
   if [ -f "$f" ]; then
-    cp "$f" control/antigravity/v11/ 2>/dev/null || true
+    cp "$f" control/antigravity/v11/
   fi
 done
 

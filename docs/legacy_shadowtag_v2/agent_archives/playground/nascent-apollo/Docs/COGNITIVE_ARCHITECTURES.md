@@ -1,4 +1,4 @@
-# ShadowTag-v2 Cognitive Architectures: The "Fold-In"
+# AiYou Cognitive Architectures: The "Fold-In"
 
 We do not just "prompt." We engineer cognition using advanced frameworks derived from the Kaggle x Google Agents Whitepaper and 2025 State-of-the-Art research.
 
@@ -11,7 +11,7 @@ We do not just "prompt." We engineer cognition using advanced frameworks derived
 ### Tree-of-Thoughts (ToT)
 *   **Use:** Complex planning, lookahead, ambiguity.
 *   **Implementation:** Branching exploration. "Propose 3 paths, evaluate each, prune the weak, expand the strong."
-*   **System:** Using `JudgeShadowTag-v2JR` to evaluate branches (Purpose/Reasons/Brakes).
+*   **System:** Using `JudgeAiYouJR` to evaluate branches (Purpose/Reasons/Brakes).
 
 ### PanelGPT (The Digital Panel)
 *   **Use:** Interdisciplinary problems, accuracy, reducing hallucination.

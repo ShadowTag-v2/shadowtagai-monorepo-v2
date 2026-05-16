@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_services/telemetry_events.py
+# hypothesis_version: 6.151.5
+
+[5000, 60000, '%Y-%m-%dT%H:%M:%SZ', '1', '2.2.0', '<REDACTED>', 'OTEL_SERVICE_NAME', 'OTEL_SERVICE_VERSION', 'PYTEST_CURRENT_TEST', 'WORKSPACE_HOST_PATHS', 'agnt-services', 'agnt.%s', 'console', 'event.name', 'event.sequence', 'event.timestamp', 'grpc', 'http/json', 'http/protobuf', 'model.cache_hit', 'model.duration_ms', 'model.input_tokens', 'model.name', 'model.output_tokens', 'model_request', 'none', 'otel_attributes', 'prompt.id', 'service.name', 'service.version', 'session', 'session.details', 'session.event_type', 'session.id', 'tool.duration_ms', 'tool.error', 'tool.name', 'tool.success', 'tool_use', 'true', 'workspace.host_paths', '|']

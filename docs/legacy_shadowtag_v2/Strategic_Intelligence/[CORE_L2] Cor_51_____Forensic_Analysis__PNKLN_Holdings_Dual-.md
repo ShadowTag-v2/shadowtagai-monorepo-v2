@@ -124,7 +124,7 @@ For growth/pre-IPO stage: **60-70% success** (possibly justified)
 **Concepts Introduced:**
 
 - 9-LLM hyper-stack
-- Judge System (ShadowTag-v2JR #6)
+- Judge System (AiYouJR #6)
 - 3-tier GPU architecture
 - Cognitive v5 stack
 

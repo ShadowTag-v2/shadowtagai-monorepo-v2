@@ -1,12 +1,12 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { beginSimulatedLogging, stopSimulatedLogging } from '../server/logging.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import { beginSimulatedLogging, stopSimulatedLogging } from "../server/logging.js";
 
 // Tool configuration
-const name = 'toggle-simulated-logging';
+const name = "toggle-simulated-logging";
 const config = {
-  title: 'Toggle Simulated Logging',
-  description: 'Toggles simulated, random-leveled logging on or off.',
+  title: "Toggle Simulated Logging",
+  description: "Toggles simulated, random-leveled logging on or off.",
   inputSchema: {},
 };
 
@@ -41,7 +41,7 @@ export const registerToggleSimulatedLoggingTool = (server: McpServer) => {
     }
 
     return {
-      content: [{ type: 'text', text: `${response}` }],
+      content: [{ type: "text", text: `${response}` }],
     };
   });
 };

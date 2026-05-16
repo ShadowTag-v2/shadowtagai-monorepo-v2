@@ -1,8 +1,8 @@
-# Original Path: Cor.33 ShadowTag-v2 disco/Cor.33 ShadowTag-v2 disco.txt
+# Original Path: Cor.33 aiyou disco/Cor.33 aiyou disco.txt
 
 # Categories: CONSUMER_L3, CORE_L2, FINANCE_BIZ, INFRA_L4_L5
 
-Cor.33 ShadowTag-v2 disco
+Cor.33 aiyou disco
 
 “Why can’t users, discuss the use’s mentions in Features Section ^^^,
 Simply in the comments,
@@ -22,16 +22,16 @@ Make Corp name: “Ai.You”
 
 <next>
 
-The whole point for ShadowTag-v2 is everything is Ai laced. Labeling Ai tools or whatever is up to creators.
+The whole point for AiYou is everything is Ai laced. Labeling Ai tools or whatever is up to creators.
 <next>
 we want to encourage everyone, not just influencers, to begin mixing Ai into their content. <next>
 since this is a fledgling field, we want the field to grow within our platform.
 <next>
-ShadowTag-v2 is where the Ai giants come to do battle
+AiYou is where the Ai giants come to do battle
 
 <next>
 
-ShadowTag-v2 - So you don’t need wonder about whether it’s Ai?
+AiYou - So you don’t need wonder about whether it’s Ai?
 <next>
 Of course, our creators content will get modified and shared on other platforms. Just like with current media.
 <next>
@@ -82,7 +82,7 @@ Fold into the order of the all above m
 
 If you like, I can translate this into how DigitalPlat’s model could be adapted as a sub-product inside AiU (with revenue, risks, and integration), as part of our Digital Mall offering. Do you want me to do that?
 
-“Biz plan for ShadowTag-v2:
+“Biz plan for AiYou:
 
 Our wedge simply being our,
 filling the “gap” created by ai in faang”

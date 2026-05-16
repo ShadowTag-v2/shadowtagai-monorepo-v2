@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
 Common utilities for the project. This includes:
     * session state initialization.

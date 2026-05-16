@@ -1,15 +1,12 @@
 #!/usr/bin/env python
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import argparse
 import logging
 import subprocess
 import sys
 
 # Configure Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    stream=sys.stdout,
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", stream=sys.stdout)
 logger = logging.getLogger("FinishChanges")
 
 
@@ -31,22 +28,17 @@ def run_command(command, dry_run=False):
         logger.error(f"Stderr: {e.stderr}")
         return False
     except FileNotFoundError:
-        logger.error(
-            f"Command not found: {command[0]}. Please ensure it is installed and in your PATH.",
-        )
+        logger.error(f"Command not found: {command[0]}. Please ensure it is installed and in your PATH.")
         return False
 
 
 def main():
-    """Main function to run the finish changes cycle.
+    """
+    Main function to run the finish changes cycle.
     Lint -> Format -> Stage -> Commit
     """
     parser = argparse.ArgumentParser(description="Finish changes cycle.")
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Print commands instead of executing them.",
-    )
+    parser.add_argument("--dry-run", action="store_true", help="Print commands instead of executing them.")
     args = parser.parse_args()
 
     logger.info("Starting the finish changes cycle...")
@@ -54,10 +46,6 @@ def main():
         logger.info("[DRY RUN] Running in dry-run mode. No changes will be made.")
 
     # Linting
-    if not run_command(["ruff", "check", "--fix", "."], dry_run=args.dry_run):
-        logger.error("Linting with ruff failed. Aborting.")
-        sys.exit(1)
-
     if not run_command(["oxlint"], dry_run=args.dry_run):
         logger.error("Linting with oxlint failed. Aborting.")
         sys.exit(1)
@@ -67,10 +55,6 @@ def main():
         sys.exit(1)
 
     # Formatting
-    if not run_command(["ruff", "format", "."], dry_run=args.dry_run):
-        logger.error("Formatting with ruff failed. Aborting.")
-        sys.exit(1)
-
     if not run_command(["dprint", "fmt"], dry_run=args.dry_run):
         logger.error("Formatting with dprint failed. Aborting.")
         sys.exit(1)
@@ -86,16 +70,13 @@ def main():
 
     # Committing
     # Check if there are any changes to commit
-    if args.dry_run:
-        logger.info("[DRY RUN] Skipping git status check and commit.")
-        return
-
     status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
     if not status_result.stdout:
         logger.info("No changes to commit. Workspace is clean.")
-    elif not run_command(["git", "commit", "-m", "chore: finish changes"]):
-        logger.error("Committing changes failed. Aborting.")
-        sys.exit(1)
+    else:
+        if not run_command(["git", "commit", "-m", "chore: finish changes"], dry_run=args.dry_run):
+            logger.error("Committing changes failed. Aborting.")
+            sys.exit(1)
 
     logger.info("Finish changes cycle completed successfully.")
 

@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function purchaseWorkflowLicense(
   videoId: string,
   agentWalletToken: string,
-  authToken: string,
+  _authToken: string,
 ) {
   try {
     // 1. Validate agent payment token (simplified for demo)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import contextlib
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import shlex
 import subprocess
@@ -16,12 +16,14 @@ def run_grep(term):
     count = 0
     for line in res.stdout.splitlines():
         if ":" in line:
-            with contextlib.suppress(ValueError):
+            try:
                 count += int(line.split(":")[-1])
+            except ValueError:
+                pass
     return count
 
 
-legacy_terms = ["ShadowTag-v2", "ShadowTag", "gemini-3.1-family"]
+legacy_terms = ["AiYou", "YouAi", "gemini-3.1-family"]
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 with open(output_path, "w") as f:
@@ -36,3 +38,5 @@ with open(output_path, "w") as f:
     cmd = "find . -maxdepth 3 -name '*.code-workspace'"
     res = subprocess.run(shlex.split(cmd), capture_output=True, text=True)
     f.write(f"```text\n{res.stdout.strip()}\n```\n")
+
+print("[audit] Final drift audit generated at docs/FINAL_DRIFT_AUDIT.md")

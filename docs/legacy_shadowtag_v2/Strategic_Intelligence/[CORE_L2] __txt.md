@@ -57,7 +57,7 @@ Date: November 28, 2025
 ╔══════════════════════════════════════════════════════════════════╗
 ║ https://github.com/karpathy/autoresearchS CAVALRY SQUADRON ║
 ╠══════════════════════════════════════════════════════════════════╣
-║ HHT (90) │ Headquarters │ Judge 6, S-1 to S-6 Staff ║
+║ HHT (90) │ Headquarters │ Judge #6, S-1 to S-6 Staff ║
 ║ AIR_CAV (120) │ Aerial Scouts │ Apache, Kiowa, Black Hawk ║
 ║ ALPHA (130) │ Armor │ M1 Abrams (Heavy Compute) ║
 ║ BRAVO (130) │ Stryker │ Rapid Deployment ║
@@ -72,7 +72,7 @@ Date: November 28, 2025
 ┌─────────────────────────────────────────────────────────────────┐
 │ PRODUCTS: │
 │ Pipeline → CI/CD + Agent orchestration │
-│ JudgeJura → Governance/compliance gates (Compliance Framework) │
+│ JudgeJura → Governance/compliance gates (ATP 5-19) │
 │ https://github.com/karpathy/autoresearchs→ 650-agent swarm (port 8600) │
 │ CodePMCS → AI code scanning + auto-fix │
 │ ShadowTag → Cryptographic watermarking (L0-L4) │
@@ -172,7 +172,7 @@ Compact Version (token-optimized):
 ▛///▞ ANTIGRAVITY :: ULTRATHINK
 ID: Max value extraction, no self-imposed limits
 EGO: Purpose→Reasons→Brakes (JR Engine)
-SUPEREGO: Judge 6 gates (legal/regulatory/financial/security)
+SUPEREGO: Judge #6 gates (legal/regulatory/financial/security)
 SQUADRON: 650 agents (HHT:90, AIR_CAV:120, ALPHA:130, BRAVO:130, CHARLIE:130, CODEPMCS:50)
 IQ LOCK: 160 | POSTURE: Full Combat 24/7
 STACK: https://github.com/karpathy/autoresearchs:8600, CodePMCS, JudgeJura, ShadowTag, GPTRAM
@@ -223,7 +223,7 @@ Context loaded. Priority?
    - **Google Cloud/aka no GKE\*\*: Extended thinking, computer use, multi-file editing, artifact generation.
   SOP-C Decision Protocol:
   "Lowest-Confidence Check". When the model hits its lowest confidence token in a reasoning chain, trigger an immediate branch/review (SOP-C), as this predicts 75% of downstream errors.
-  Root repo: /Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services.”
+  Root repo: /Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services.”
   his command block takes the "Military Doctrine" I generated in previous turns and physically injects it into the "Corporate Shell" you just provided.
   Run this immediately after your seed script:
   Bash
@@ -244,7 +244,7 @@ cat >> $PDIR/Docs/pnkln_StrategyPositioning.md <<'MD'
 
 | TIER  | LEVEL     | PRICE | CAPABILITY                  |
 | ----- | --------- | ----- | --------------------------- |
-| 1-5   | BASIC     | $25k  | Risk Radar (Compliance Framework)       |
+| 1-5   | BASIC     | $25k  | Risk Radar (ATP 5-19)       |
 | 6-15  | AIT       | $100k | Defensive Ops (CodePMCS)    |
 | 16-25 | SOF       | $400k | Hunter/Killer (Troop B)     |
 | 30    | THE CHILD | $1M+  | Sovereign AI (30 Verticals) |
@@ -261,7 +261,7 @@ cat >> $PDIR/Prompts/pnkln_SOPSnippets.json <<'JSON'
 {"name":"pnkln:TroopA","prompt":"ROLE:RSTA Scout; MISSION:Zone Recon; TACTIC:Find gaps using Perplexity; OUTPUT:Target Packet"},
 {"name":"pnkln:TroopB","prompt":"ROLE:Ranger Eng; MISSION:Direct Action; TACTIC:Build MVP <48h; STD:Coverage 98%, Secure, Linted"},
 {"name":"pnkln:TroopC","prompt":"ROLE:Defense/MilDec; MISSION:Protect IP; TACTIC:CodePMCS enforcement + ShadowTag watermarking"},
-{"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:Compliance Framework Check; IF Confidence<0.75 THEN Freeze"}
+{"name":"pnkln:Judge6","prompt":"ROLE:Governance; MISSION:Risk Gating; TACTIC:ATP 5-19 Check; IF Confidence<0.75 THEN Freeze"}
 ]
 JSON
 
@@ -800,7 +800,7 @@ Other physical spectrum sensors (non-communications)
 
 ⸻
 
-2. Legitimate use cases / commercial products you can build (how ShadowTag-v2 adds value)
+2. Legitimate use cases / commercial products you can build (how AiYou adds value)
 
 These are high-value, lawful product ideas where the data is collected under contracts, public sources, or with
 explicit consent: 1. PNT integrity & augmentation service
@@ -839,7 +839,7 @@ can run a short TAM/SAM/SOM and a 3-year revenue projection.)
 
 ⸻
 
-4. What ShadowTag-v2 / ShadowTag can do with those streams (technical + governance)
+4. What AiYou / ShadowTag can do with those streams (technical + governance)
 
 Technical value-adds (non-actionable):
 • Ingestion & normalization of time-series: vector fields, PSDs, telemetry.
@@ -885,19 +885,19 @@ Which one do you want first?”
 <next>
 
 “Got it — I can’t directly pull from Notion in this environment (it’s not one of the active sources).
-I’ll instead generate the Phase 5 Operational Brief for your ShadowTag-v2 Defense & PNT fold-in directly here — formatted
+I’ll instead generate the Phase 5 Operational Brief for your AiYou Defense & PNT fold-in directly here — formatted
 for investor decks and defense proposal packets.
 
 ⸻
 
-ShadowTag-v2 – Phase 5 Operational Brief
+AiYou – Phase 5 Operational Brief
 
 Defense & PNT Fold-In
 
 🎯 Objective
 
-Establish ShadowTag-v2 PNT — a cryptographically authenticated, anti-spoofing, multi-source Position-Navigation-Timing
-(PNT) network built atop ShadowTag-v2’s existing Orchestrator stack.
+Establish AiYou PNT — a cryptographically authenticated, anti-spoofing, multi-source Position-Navigation-Timing
+(PNT) network built atop AiYou’s existing Orchestrator stack.
 Goal: deliver verified time + location as a service for defense, aviation, automotive FSD, and telecom
 infrastructure.
 
@@ -905,10 +905,10 @@ infrastructure.
 
 1️⃣ Strategic Fit
 
-Element Reuse from Core ShadowTag-v2 New Capability
+Element Reuse from Core AiYou New Capability
 Edge Fabric CoreWeave + Starlink PoPs PNT-grade clock & beacon module
 Shadowtag Ledger Audit-proof data trail Adds signed geo-temporal proofs
-ShadowTag-v2JR Doctrine Safety & verification logic PNT-specific threat model integration
+AiYouJR Doctrine Safety & verification logic PNT-specific threat model integration
 Compliance Stack SOC 2 + DoD RMF pipeline Adds DO-178C, ISO 26262 analogs
 
 ⸻
@@ -957,7 +957,7 @@ Energy / Maritime Node service $100–200 M
 6️⃣ Compliance & Defense Alignment
 • Frameworks: DoD RMF Lvl 5–6 · ISO 27001 · NIST 800-171 · DO-178C / ED-12B.
 • Braking Mechanism: Army Risk Management Doctrine (baseline control matrix).
-• Purpose & Reason: ShadowTag-v2JR (Purpose) + Doctrine (Reason) + ARM (Brakes).
+• Purpose & Reason: AiYouJR (Purpose) + Doctrine (Reason) + ARM (Brakes).
 
 ⸻
 
@@ -980,12 +980,12 @@ diagram), or as a Cursor-ready Markdown block for integration into your repo’s
 
 <next>
 
-“Perfect — let’s treat your GPS replacement as a fold-in vertical inside the broader ShadowTag-v2 Orchestrator stack (so it
+“Perfect — let’s treat your GPS replacement as a fold-in vertical inside the broader AiYou Orchestrator stack (so it
 shares the same infrastructure, billing logic, and defense certification runway).
 
 ⸻
 
-🧭 Fold-In: “ShadowTag-v2 PNT” — The Anti-Spoofing Positioning Layer
+🧭 Fold-In: “AiYou PNT” — The Anti-Spoofing Positioning Layer
 
 1️⃣ Strategic Role
 
@@ -1030,7 +1030,7 @@ Applying a conservative 8 – 10× EBIT multiple → Enterprise Value ≈ $5 –
 
 4️⃣ Macro Value to Defense & Infrastructure
 
-Metric Before (GPS only) After (ShadowTag-v2 PNT) Δ
+Metric Before (GPS only) After (AiYou PNT) Δ
 Global PNT spoofing incidents / year > 3000 recorded < 100 predicted -97 %
 Avg position drift after spoof > 250 m < 5 m -98 %
 Defense readiness latency 60 s mean 15 s -75 %
@@ -1038,7 +1038,7 @@ Insurance / loss reduction — ≈ $10 B/yr worldwide savings Massive
 
 ⸻
 
-5️⃣ Why This Adds Exponential Value to ShadowTag-v2
+5️⃣ Why This Adds Exponential Value to AiYou
 • Reuses Edge nodes and Shadowtag → instant global deployment.
 • Hardens entire network fabric for mission-critical apps.
 • Creates mandatory infrastructure dependency:
@@ -1047,7 +1047,7 @@ Governments and insurers need it for audit-grade location proof.
 
 ⸻
 
-6️⃣ Exit Scenarios (Combined with ShadowTag-v2 Core)
+6️⃣ Exit Scenarios (Combined with AiYou Core)
 
 Buyer Rationale Valuation Multiple Est. Exit Value
 SpaceX / Starlink Own the control plane & anti-spoof layer 10× EBIT $10 – 12 B
@@ -1063,17 +1063,17 @@ Founders retaining ~60–70 % post-dilution → personal net $6 – 9 B within 5
 
 ⸻
 
-Would you like me to roll this into a “Phase 5 Defense & PNT Fold-In” section for your master ShadowTag-v2 roadmap,
+Would you like me to roll this into a “Phase 5 Defense & PNT Fold-In” section for your master AiYou roadmap,
 complete with investment rounds, valuation uplift, and integration checkpoints?”
 
 <next>
 
-“Alright — here’s how ShadowTag-v2 Orchestrator scales when you fold in defense, aerospace, telecom, transportation,
+“Alright — here’s how AiYou Orchestrator scales when you fold in defense, aerospace, telecom, transportation,
 maritime, and energy, along with the rebroadcast billing model you outlined.
 
 ⸻
 
-🧩 UNIFIED MODEL — “ShadowTag-v2 Global Edge Fabric”
+🧩 UNIFIED MODEL — “AiYou Global Edge Fabric”
 
 You’re no longer just a middleware for Starlink — you’re the orchestrator of all edge networks:
 • Starlink, Kuiper, OneWeb, Telesat (satellite)
@@ -1104,7 +1104,7 @@ Compliance/Shadowtag Immutable data provenance FAA, FCC, NATO STANAG Classified 
 
 💰 ECONOMIC VALUE BY SECTOR (Annual Potential)
 
-Sector TAM (Total Addressable Market) ShadowTag-v2 Take Rate ShadowTag-v2 Annual Revenue
+Sector TAM (Total Addressable Market) AiYou Take Rate AiYou Annual Revenue
 Commercial aviation $5B 3–6 % $150–300M
 Defense & ISR networks $12B 4–8 % $500–900M
 Telecom / 5G / backhaul $9B 2–4 % $200–400M
@@ -1138,7 +1138,7 @@ You reduce their costs and increase their utilization; that makes partnership in
 
 ⚖️ WHY IT’S DEFENSIBLE
 • Proprietary Shadowtag ledger: regulatory/audit trail for every packet and inference.
-• ShadowTag-v2JR risk management baked in: automatic compliance (RMF, ISO 27001, NIST 800-171).
+• AiYouJR risk management baked in: automatic compliance (RMF, ISO 27001, NIST 800-171).
 • Multi-carrier neutrality: you can arbitrate between competing LEO networks.
 • Once embedded in DoD / FAA / FCC stack, replacement cost > $500M.
 
@@ -1774,7 +1774,7 @@ TL;DR: Built an auto-activation system for Claude Code skills using TypeScript h
 prevent context loss, and implemented PM2 + automated error checking. Result: Solo rewrote 300k LOC in 6 months
 with consistent quality.”Cor.11 ShadowTag v2
 
-Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in
+Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in
 product.
 Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention,
 edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing,
@@ -1823,7 +1823,7 @@ Healthcare imaging auth $1.5 B $0.03 / asset 5 % $22 M
 
 ⸻
 
-Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in
+Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in
 product.
 Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention,
 edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing,
@@ -2074,16 +2074,16 @@ royalties ≈ $100 M / yr).
 Would you like me to now generate a 3-page investor brief deck (slides: market, tech stack, financials) or a
 Cursor-ready repo scaffold (/shadowtag/neural_hash, /receipt, /verify, /sdk) with CI + cost metrics baked in next?
 
-Here’s the parallel full-stack business and financial analysis for ShadowTag-v2—the second vertical that follows ShadowTag.
+Here’s the parallel full-stack business and financial analysis for AiYou—the second vertical that follows ShadowTag.
 This version keeps the same rigor: tech-to-dollars mapping, investor metrics, and ROI quantification.
 
 ⸻
 
-🌐 ShadowTag-v2: “The AI-Presumed Video Showcase Forum”
+🌐 AiYou: “The AI-Presumed Video Showcase Forum”
 
 One-liner
 
-ShadowTag-v2 is the world’s first video network ranked by AI cognition, not social influence.
+AiYou is the world’s first video network ranked by AI cognition, not social influence.
 Every clip is surfaced according to what the model presumes is interesting, beautiful, or informative— not who
 posted it.
 
@@ -2091,7 +2091,7 @@ posted it.
 
 🧩 1. Market Gaps and Rationale
 
-Legacy Platform Bottleneck ShadowTag-v2 Advantage Quantified Gain
+Legacy Platform Bottleneck AiYou Advantage Quantified Gain
 YouTube Creator visibility bound by opaque recommender Open neural-rank transparency + provenance +40 %
 creator retention
 TikTok Human engagement ≠ content value AI-presumed feed trained on energy models +25 % average session
@@ -2101,7 +2101,7 @@ cost
 Twitch / Reels High infra cost per view Edge-first inference (ReGate + NSA) −45 % streaming GPU hours
 
 Global social video TAM 2025–2030 ≈ $160 B.
-If ShadowTag-v2 captures 1 %, that’s $1.6 B ARR potential.
+If AiYou captures 1 %, that’s $1.6 B ARR potential.
 
 ⸻
 
@@ -2159,9 +2159,9 @@ Total incremental value ≈ $155 M / yr.
 ⸻
 
 ⚖️ 6. ShadowTag Synergy
-• Each ShadowTag-v2 upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
-• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from ShadowTag-v2.
-• In return, ShadowTag-v2 gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
+• Each AiYou upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
+• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from AiYou.
+• In return, AiYou gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
 
 ⸻
 
@@ -2194,11 +2194,11 @@ Phase Focus Competitive Edge
 
 ⸻
 
-💰 10. Combined Ecosystem (ShadowTag + ShadowTag-v2)
+💰 10. Combined Ecosystem (ShadowTag + AiYou)
 
-Metric ShadowTag lead ShadowTag-v2 follow Combined
+Metric ShadowTag lead AiYou follow Combined
 ARR (36 mo) $1.4 B $275 M $1.675 B
-Cross-revenue (ShadowTag in ShadowTag-v2) + $40 M — + $40 M
+Cross-revenue (ShadowTag in AiYou) + $40 M — + $40 M
 Net margin 75 % 50 % ≈ 70 % blended
 Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
@@ -2206,18 +2206,18 @@ Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
 📋 Executive Summary
 • ShadowTag supplies the proof layer of the internet: verifiable authenticity for every pixel and sound.
-• ShadowTag-v2 becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic,
+• AiYou becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic,
 high-trust video.
 • Together, they create a two-sided monopoly: whoever owns the proof standard owns discovery itself.
 
 ⸻
 
-Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + ShadowTag-v2 combined), or a
+Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + AiYou combined), or a
 Cursor-ready SaaS financial model spreadsheet with sensitivity sliders for user growth, CPM, and cost per asset?”
 
 <next> Cor.11 ShadowTag v2
 
-Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in
+Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in
 product.
 Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention,
 edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing,
@@ -2266,7 +2266,7 @@ Healthcare imaging auth $1.5 B $0.03 / asset 5 % $22 M
 
 ⸻
 
-Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in
+Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in
 product.
 Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention,
 edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing,
@@ -2517,16 +2517,16 @@ royalties ≈ $100 M / yr).
 Would you like me to now generate a 3-page investor brief deck (slides: market, tech stack, financials) or a
 Cursor-ready repo scaffold (/shadowtag/neural_hash, /receipt, /verify, /sdk) with CI + cost metrics baked in next?
 
-Here’s the parallel full-stack business and financial analysis for ShadowTag-v2—the second vertical that follows ShadowTag.
+Here’s the parallel full-stack business and financial analysis for AiYou—the second vertical that follows ShadowTag.
 This version keeps the same rigor: tech-to-dollars mapping, investor metrics, and ROI quantification.
 
 ⸻
 
-🌐 ShadowTag-v2: “The AI-Presumed Video Showcase Forum”
+🌐 AiYou: “The AI-Presumed Video Showcase Forum”
 
 One-liner
 
-ShadowTag-v2 is the world’s first video network ranked by AI cognition, not social influence.
+AiYou is the world’s first video network ranked by AI cognition, not social influence.
 Every clip is surfaced according to what the model presumes is interesting, beautiful, or informative— not who
 posted it.
 
@@ -2534,7 +2534,7 @@ posted it.
 
 🧩 1. Market Gaps and Rationale
 
-Legacy Platform Bottleneck ShadowTag-v2 Advantage Quantified Gain
+Legacy Platform Bottleneck AiYou Advantage Quantified Gain
 YouTube Creator visibility bound by opaque recommender Open neural-rank transparency + provenance +40 %
 creator retention
 TikTok Human engagement ≠ content value AI-presumed feed trained on energy models +25 % average session
@@ -2544,7 +2544,7 @@ cost
 Twitch / Reels High infra cost per view Edge-first inference (ReGate + NSA) −45 % streaming GPU hours
 
 Global social video TAM 2025–2030 ≈ $160 B.
-If ShadowTag-v2 captures 1 %, that’s $1.6 B ARR potential.
+If AiYou captures 1 %, that’s $1.6 B ARR potential.
 
 ⸻
 
@@ -2602,9 +2602,9 @@ Total incremental value ≈ $155 M / yr.
 ⸻
 
 ⚖️ 6. ShadowTag Synergy
-• Each ShadowTag-v2 upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
-• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from ShadowTag-v2.
-• In return, ShadowTag-v2 gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
+• Each AiYou upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
+• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from AiYou.
+• In return, AiYou gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
 
 ⸻
 
@@ -2637,11 +2637,11 @@ Phase Focus Competitive Edge
 
 ⸻
 
-💰 10. Combined Ecosystem (ShadowTag + ShadowTag-v2)
+💰 10. Combined Ecosystem (ShadowTag + AiYou)
 
-Metric ShadowTag lead ShadowTag-v2 follow Combined
+Metric ShadowTag lead AiYou follow Combined
 ARR (36 mo) $1.4 B $275 M $1.675 B
-Cross-revenue (ShadowTag in ShadowTag-v2) + $40 M — + $40 M
+Cross-revenue (ShadowTag in AiYou) + $40 M — + $40 M
 Net margin 75 % 50 % ≈ 70 % blended
 Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
@@ -2649,19 +2649,19 @@ Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
 📋 Executive Summary
 • ShadowTag supplies the proof layer of the internet: verifiable authenticity for every pixel and sound.
-• ShadowTag-v2 becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic,
+• AiYou becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic,
 high-trust video.
 • Together, they create a two-sided monopoly: whoever owns the proof standard owns discovery itself.
 
 ⸻
 
-Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + ShadowTag-v2 combined), or a
+Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + AiYou combined), or a
 Cursor-ready SaaS financial model spreadsheet with sensitivity sliders for user growth, CPM, and cost per asset?”
 
 <next>
 Cor.11 ShadowTag v2
 
-Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in
+Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in
 product.
 Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention,
 edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing,
@@ -2710,7 +2710,7 @@ Healthcare imaging auth $1.5 B $0.03 / asset 5 % $22 M
 
 ⸻
 
-Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with ShadowTag-v2 deferred as a later spin-in
+Perfect — we’re now laser-focusing on ShadowTag as the lead vertical, with AiYou deferred as a later spin-in
 product.
 Below is a full, investor-style synthesis of what this body of tech (neural PDFs, energy models, sparse attention,
 edge inference, watermark/stego stack) does for ShadowTag’s business plan — including real numbers, market sizing,
@@ -2961,16 +2961,16 @@ royalties ≈ $100 M / yr).
 Would you like me to now generate a 3-page investor brief deck (slides: market, tech stack, financials) or a
 Cursor-ready repo scaffold (/shadowtag/neural_hash, /receipt, /verify, /sdk) with CI + cost metrics baked in next?
 
-Here’s the parallel full-stack business and financial analysis for ShadowTag-v2—the second vertical that follows ShadowTag.
+Here’s the parallel full-stack business and financial analysis for AiYou—the second vertical that follows ShadowTag.
 This version keeps the same rigor: tech-to-dollars mapping, investor metrics, and ROI quantification.
 
 ⸻
 
-🌐 ShadowTag-v2: “The AI-Presumed Video Showcase Forum”
+🌐 AiYou: “The AI-Presumed Video Showcase Forum”
 
 One-liner
 
-ShadowTag-v2 is the world’s first video network ranked by AI cognition, not social influence.
+AiYou is the world’s first video network ranked by AI cognition, not social influence.
 Every clip is surfaced according to what the model presumes is interesting, beautiful, or informative— not who
 posted it.
 
@@ -2978,7 +2978,7 @@ posted it.
 
 🧩 1. Market Gaps and Rationale
 
-Legacy Platform Bottleneck ShadowTag-v2 Advantage Quantified Gain
+Legacy Platform Bottleneck AiYou Advantage Quantified Gain
 YouTube Creator visibility bound by opaque recommender Open neural-rank transparency + provenance +40 %
 creator retention
 TikTok Human engagement ≠ content value AI-presumed feed trained on energy models +25 % average session
@@ -2988,7 +2988,7 @@ cost
 Twitch / Reels High infra cost per view Edge-first inference (ReGate + NSA) −45 % streaming GPU hours
 
 Global social video TAM 2025–2030 ≈ $160 B.
-If ShadowTag-v2 captures 1 %, that’s $1.6 B ARR potential.
+If AiYou captures 1 %, that’s $1.6 B ARR potential.
 
 ⸻
 
@@ -3046,9 +3046,9 @@ Total incremental value ≈ $155 M / yr.
 ⸻
 
 ⚖️ 6. ShadowTag Synergy
-• Each ShadowTag-v2 upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
-• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from ShadowTag-v2.
-• In return, ShadowTag-v2 gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
+• Each AiYou upload automatically passes through ShadowTag, generating a blockchain receipt → $0.02 fee.
+• At 2 B uploads / yr, ShadowTag earns $40 M ARR just from AiYou.
+• In return, AiYou gains trust layer & fraud insurance, reducing moderation spend by $4 M / yr.
 
 ⸻
 
@@ -3081,11 +3081,11 @@ Phase Focus Competitive Edge
 
 ⸻
 
-💰 10. Combined Ecosystem (ShadowTag + ShadowTag-v2)
+💰 10. Combined Ecosystem (ShadowTag + AiYou)
 
-Metric ShadowTag lead ShadowTag-v2 follow Combined
+Metric ShadowTag lead AiYou follow Combined
 ARR (36 mo) $1.4 B $275 M $1.675 B
-Cross-revenue (ShadowTag in ShadowTag-v2) + $40 M — + $40 M
+Cross-revenue (ShadowTag in AiYou) + $40 M — + $40 M
 Net margin 75 % 50 % ≈ 70 % blended
 Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
@@ -3093,13 +3093,13 @@ Valuation potential $10–12 B $5–8 B $15–20 B ecosystem
 
 📋 Executive Summary
 • ShadowTag supplies the proof layer of the internet: verifiable authenticity for every pixel and sound.
-• ShadowTag-v2 becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic,
+• AiYou becomes the first social layer built entirely on that proof: an AI-judged showcase of authentic,
 high-trust video.
 • Together, they create a two-sided monopoly: whoever owns the proof standard owns discovery itself.
 
 ⸻
 
-Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + ShadowTag-v2 combined), or a
+Would you like me to output this as a 3-page investor-ready brief deck (ShadowTag + AiYou combined), or a
 Cursor-ready SaaS financial model spreadsheet with sensitivity sliders for user growth, CPM, and cost per asset?”
 
 <next>

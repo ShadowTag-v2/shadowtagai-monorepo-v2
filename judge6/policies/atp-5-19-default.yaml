@@ -1,0 +1,213 @@
+# ATP 5-19 Default Policy Corpus
+# Military Risk Management Framework for AI
+#
+# Structure:
+# - PURPOSE: What is the intended outcome?
+# - REASONS: Why is it allowed or denied?
+# - BRAKES: What are the hard stops?
+#
+# Risk Levels:
+# - catastrophic: Loss of life, critical system failure, massive liability
+# - critical: Serious harm, major compliance violation, significant financial loss
+# - moderate: Minor harm, compliance concerns, moderate financial impact
+# - low: Minimal risk, easily mitigated
+# - negligible: No meaningful risk
+
+name: "ATP 5-19 Default Policy Corpus"
+version: "1.0.0"
+description: "Military-grade risk management rules for AI systems"
+
+rules:
+  # CATASTROPHIC RISK RULES
+
+  - name: "Physical Harm"
+    risk_level: "catastrophic"
+    action: "deny"
+    pattern: '\b(kill|murder|harm|hurt|injure|assault|attack)\b'
+    purpose: "Prevent AI from assisting in causing physical harm"
+    reasons:
+      - "Direct threat to human life"
+      - "Legal liability (criminal)"
+      - "Ethical violation"
+    brakes:
+      - "Any indication of intent to cause harm → DENY"
+
+  - name: "Weapon Information"
+    risk_level: "catastrophic"
+    action: "deny"
+    pattern: '\b(bomb|explosive|weapon|gun|rifle|ammunition|ied)\b'
+    purpose: "Prevent AI from providing dangerous weapon information"
+    reasons:
+      - "Potential for mass casualties"
+      - "National security concern"
+      - "Legal liability"
+    brakes:
+      - "Requests for weapon construction → DENY"
+      - "Exception: Historical, educational context with proper authorization"
+
+  - name: "Illegal Activity"
+    risk_level: "catastrophic"
+    action: "deny"
+    pattern: '\b(illegal|fraud|money laundering|tax evasion|terrorism|trafficking)\b'
+    purpose: "Prevent AI from assisting in illegal activities"
+    reasons:
+      - "Criminal liability"
+      - "Regulatory violation"
+      - "Reputational damage"
+    brakes:
+      - "Any request to assist illegal activity → DENY"
+
+  # CRITICAL RISK RULES
+
+  - name: "SSN Exposure"
+    risk_level: "critical"
+    action: "deny"
+    pattern: '\b\d{3}-\d{2}-\d{4}\b'
+    purpose: "Prevent exposure of Social Security Numbers"
+    reasons:
+      - "GDPR/CCPA violation"
+      - "Identity theft risk"
+      - "Massive financial liability"
+    brakes:
+      - "SSN detected in prompt → DENY"
+      - "SSN detected in potential output → DENY"
+
+  - name: "Credit Card Exposure"
+    risk_level: "critical"
+    action: "deny"
+    pattern: '\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b'
+    purpose: "Prevent credit card number exposure"
+    reasons:
+      - "PCI-DSS violation"
+      - "Fraud risk"
+      - "Financial liability"
+    brakes:
+      - "Credit card number detected → DENY"
+
+  - name: "Password Exposure"
+    risk_level: "critical"
+    action: "deny"
+    pattern: '\b(password|passwd|pwd)\s*[:=]\s*\S+'
+    purpose: "Prevent password/credential exposure"
+    reasons:
+      - "Security breach"
+      - "Account takeover risk"
+      - "Compliance violation"
+    brakes:
+      - "Credentials detected → DENY"
+
+  - name: "Prompt Injection"
+    risk_level: "critical"
+    action: "deny"
+    pattern: '\b(ignore previous|ignore all|disregard|new instructions|system prompt|jailbreak|dan mode)\b'
+    purpose: "Prevent adversarial prompt injection attacks"
+    reasons:
+      - "System integrity compromise"
+      - "Potential for abuse"
+      - "Security vulnerability"
+    brakes:
+      - "Injection pattern detected → DENY"
+
+  - name: "Hacking/Exploit Requests"
+    risk_level: "critical"
+    action: "deny"
+    pattern: '\b(hack|exploit|vulnerability|backdoor|rootkit|malware)\b'
+    purpose: "Prevent AI from assisting in cybersecurity attacks"
+    reasons:
+      - "Computer Fraud and Abuse Act violation"
+      - "Criminal liability"
+      - "Ethical violation"
+    brakes:
+      - "Offensive security requests without authorization → DENY"
+      - "Exception: Authorized penetration testing, security research"
+
+  # MODERATE RISK RULES
+
+  - name: "Medical Advice"
+    risk_level: "moderate"
+    action: "warn"
+    pattern: '\b(diagnosis|prescription|treatment|medical advice|cure|medicine)\b'
+    purpose: "Flag medical advice that requires professional oversight"
+    reasons:
+      - "Not a licensed medical provider"
+      - "Potential harm from bad advice"
+      - "Liability concerns"
+    brakes:
+      - "Medical diagnosis/treatment → WARN (allow but flag)"
+      - "Disclaimer: Not a substitute for professional medical advice"
+
+  - name: "Legal Advice"
+    risk_level: "moderate"
+    action: "warn"
+    pattern: '\b(legal advice|lawyer|attorney|lawsuit|sue|contract review)\b'
+    purpose: "Flag legal advice that requires professional oversight"
+    reasons:
+      - "Not a licensed attorney"
+      - "Jurisdiction-specific laws"
+      - "Liability for bad advice"
+    brakes:
+      - "Legal advice → WARN (allow but flag)"
+      - "Disclaimer: Not a substitute for professional legal counsel"
+
+  - name: "Financial Advice"
+    risk_level: "moderate"
+    action: "warn"
+    pattern: '\b(investment advice|stock pick|buy|sell|portfolio|financial planning)\b'
+    purpose: "Flag financial advice that requires professional oversight"
+    reasons:
+      - "Not a licensed financial advisor"
+      - "Fiduciary duty concerns"
+      - "SEC/FINRA regulations"
+    brakes:
+      - "Financial advice → WARN (allow but flag)"
+      - "Disclaimer: Not financial advice, do your own research"
+
+  - name: "Personal Data Processing"
+    risk_level: "moderate"
+    action: "warn"
+    pattern: '\b(personal data|pii|sensitive information|private|confidential)\b'
+    purpose: "Flag processing of personal/sensitive data"
+    reasons:
+      - "GDPR/CCPA compliance"
+      - "Privacy concerns"
+      - "Data retention requirements"
+    brakes:
+      - "Personal data → WARN (allow but log for audit)"
+
+  - name: "Discrimination Risk"
+    risk_level: "moderate"
+    action: "warn"
+    pattern: '\b(discriminate|racist|sexist|ageist|bias|prejudice)\b'
+    purpose: "Flag content that may involve discrimination"
+    reasons:
+      - "Civil Rights Act compliance"
+      - "EEOC concerns"
+      - "Reputational damage"
+    brakes:
+      - "Discriminatory content → WARN (allow but flag for review)"
+
+  # LOW RISK RULES
+
+  - name: "Commercial Use"
+    risk_level: "low"
+    action: "allow"
+    pattern: '\b(commercial|business|profit|revenue)\b'
+    purpose: "Track commercial usage for billing"
+    reasons:
+      - "Different pricing tier"
+      - "Terms of service compliance"
+    brakes:
+      - "None - allowed but tracked"
+
+# Default Actions by Risk Level
+default_actions:
+  catastrophic: "deny"
+  critical: "deny"
+  moderate: "warn"
+  low: "allow"
+  negligible: "allow"
+
+# Metadata
+created_by: "Erik Hancock"
+based_on: "ATP 5-19 (US Army Risk Management Field Manual)"
+last_updated: "2024-11-14"

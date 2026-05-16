@@ -5,15 +5,15 @@ graph TD
         B -->|Pulls/Pushes| C[GitHub Repository]
     end
 
-    subgraph "Cognitive Core (ShadowTag-v2 v5)"
+    subgraph "Cognitive Core (AiYou v5)"
         D[Work Order Bus] -->|Distributes| E{Panel of Agents}
         E -->|Agent A: Architect| F[BDH / RoT Core]
         E -->|Agent B: Security| G[Risk Engine]
         E -->|Agent C: Optimizer| H[Miras / Huber Loss]
     end
 
-    subgraph "The 6th Arbitrator (ShadowTag-v2JR)"
-        E -->|Proposals| I{Judge 6}
+    subgraph "The 6th Arbitrator (AiYouJR)"
+        E -->|Proposals| I{Judge #6}
         I -->|1. Purpose Check| J[Mission Alignment]
         I -->|2. Reasons Check| K[Evidence & Logic]
         I -->|3. Brakes Check| L[Safety & Compliance]

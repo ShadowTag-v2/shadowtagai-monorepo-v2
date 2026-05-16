@@ -1,7 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 # Stub dependencies to ensure import resolution
@@ -69,20 +68,20 @@ class CorCSRMCGovernanceFabric:
         payload: dict,
         user_id: str,
         controls: list,
-        _applied: str,
+        applied: str,
         framework: str,
     ):
         if risk in [RiskLevel.TERMINAL, RiskLevel.EXTREMELY_HIGH]:
             layer = EscalationLayer.LAYER_5_LOCKOUT
             self.active_users[user_id] = False
             notification = {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "user_id": user_id,
                 "risk": risk.value,
                 "framework": framework,
                 "ny_raise_penalty_exposure": "UP TO $1M FIRST VIOLATION / $3M SUBSEQUENT (RAISE Act) + Chatbot UPL private right of action",
                 "action_blocked": payload,
-                "escalation": "Layer 5 — Immediate CEO + Cor.CSRMC + Cor_Claude_Code_6 FM notification",
+                "escalation": "Layer 5 — Immediate CEO + Cor.CSRMC + Judge6 FM notification",
                 "signed_proof": "fake_crypto_sig_for_now",
             }
             print(f"[!] {layer.name} EXECUTED: {json.dumps(notification)}")

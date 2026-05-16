@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import re
 
@@ -28,7 +29,7 @@ CREDENTIAL_PATTERNS = [
 ]
 
 
-def sweep_file(filepath) -> None:
+def sweep_file(filepath):
     try:
         with open(filepath, encoding="utf-8") as f:
             content = f.read()
@@ -42,9 +43,11 @@ def sweep_file(filepath) -> None:
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(content)
+        print(f"[REDACTED] Purged credentials from: {filepath}")
 
 
-def main() -> None:
+def main():
+    print("Initiating Omega Credential & PII Sweep...")
     scanned = 0
     for d in TARGET_DIRS:
         if not os.path.exists(d):
@@ -64,10 +67,11 @@ def main() -> None:
                         ".md",
                         ".sh",
                         ".env.example",
-                    ),
+                    )
                 ):
                     sweep_file(os.path.join(root, file))
                     scanned += 1
+    print(f"Sweep complete. Scanned {scanned} text-based source files.")
 
 
 if __name__ == "__main__":

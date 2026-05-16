@@ -1,25 +1,25 @@
-# Original Path: Cor.58 ShadowTag-v2JR as a Gemini CLI extension/Cor.58 ShadowTag-v2JR as a Gemini CLI extension.txt
+# Original Path: Cor.58 AiYouJR as a Gemini CLI extension/Cor.58 AiYouJR as a Gemini CLI extension.txt
 
 # Categories: FINANCE_BIZ
 
-Cor.58 ShadowTag-v2JR as a Gemini CLI extension
+Cor.58 AiYouJR as a Gemini CLI extension
 This software I’ve already apparently written, is already worth something?
 Gpt full dropped this plan on me yesterday:
 
-Perfect — here’s the economic + control-flow diagram for ShadowTag-v2JR as a Gemini CLI extension, expressed textually so you can drop it straight into a README or architecture doc (I can render a visual later in Cursor once GitHub visibility is live).
+Perfect — here’s the economic + control-flow diagram for AiYouJR as a Gemini CLI extension, expressed textually so you can drop it straight into a README or architecture doc (I can render a visual later in Cursor once GitHub visibility is live).
 
 ⸻
 
-🧭 ShadowTag-v2JR Economic + Control Flow (“Juggernaut ↔ Brake” Model)
+🧭 AiYouJR Economic + Control Flow (“Juggernaut ↔ Brake” Model)
 
                 ┌────────────────────────────┐
                 │  Developer / Org Terminal │
                 │  (Gemini CLI + Cursor)    │
                 └────────────┬──────────────┘
-                             │  Commands (ShadowTag-v2jr *)
+                             │  Commands (aiyoujr *)
                              ▼
         ┌──────────────────────────────────────────────────┐
-        │  ShadowTag-v2JR Extension Core (Revenue Engine)          │
+        │  AiYouJR Extension Core (Revenue Engine)          │
         │  - Plan / Audit / Risk / Chain modules           │
         │  - GPT-5 Pro + local LLM chains + Gemini API     │
         └────────────┬─────────────────────────────────────┘
@@ -44,7 +44,7 @@ Perfect — here’s the economic + control-flow diagram for ShadowTag-v2JR as a
                      │ revenue / events / telemetry
                      ▼
         ┌──────────────────────────────────────────┐
-        │  ShadowTag-v2 Data Lake + Audit Vault           │
+        │  AiYou Data Lake + Audit Vault           │
         │  - Encrypted evidence (S3 / D1 / Litestream) │
         │  - Cognitive throughput ledger (usage→$) │
         └──────────────────────────────────────────┘
@@ -54,11 +54,11 @@ Perfect — here’s the economic + control-flow diagram for ShadowTag-v2JR as a
 ⚙️ How Money Flows
 
 Step Event $ Flow
-1 User runs ShadowTag-v2jr risk evaluate or plan assist Triggers usage meter (Stripe micro-bill $0.05–$1 / run)
+1 User runs aiyoujr risk evaluate or plan assist Triggers usage meter (Stripe micro-bill $0.05–$1 / run)
 2 CLI invokes RMF validator Adds audit record (→ compliance asset)
 3 RMF proof uploads to Audit Vault $0.002 storage cost → 0.09 ¢ liability coverage earned
 4 Enterprise license aggregates proofs monthly $20–$500 / seat subscription
-5 Gemini Marketplace fee split Google takes 20 %, ShadowTag-v2 keeps 80 % gross
+5 Gemini Marketplace fee split Google takes 20 %, AiYou keeps 80 % gross
 6 Audit data resold as “continuous assurance feed” $ secondary data yield ($3–5 k / month per client)
 
 ⸻
@@ -92,10 +92,10 @@ Every cycle yields:
 
 🧭 Strategic Outcome
 
-ShadowTag-v2JR CLI on Gemini = economic engine + compliance layer in one binary.
+AiYouJR CLI on Gemini = economic engine + compliance layer in one binary.
 
     •	Gemini gives you distribution ( 1 M developers ).
-    •	ShadowTag-v2JR turns usage into recurring revenue.
+    •	AiYouJR turns usage into recurring revenue.
     •	RMF converts risk into trust assets → monetizable proof.
 
 ⸻

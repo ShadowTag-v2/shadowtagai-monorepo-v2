@@ -6,12 +6,12 @@ import {
   RenderableEvents,
   RGBA,
   TextRenderable,
-} from '@opentui/core';
-import { GameSidebarManager } from '../../games/GameSidebarManager.js';
-import { isGameboyActive, launchGameboy } from '../../games/gameboy/GameboyView.js';
-import { launchSnake } from '../../games/snake/SnakeView.js';
-import { getLineColor, HEADER_LINES } from '../common.js';
-import { THEME } from '../theme.js';
+} from "@opentui/core";
+import { GameSidebarManager } from "../../games/GameSidebarManager.js";
+import { isGameboyActive, launchGameboy } from "../../games/gameboy/GameboyView.js";
+import { launchSnake } from "../../games/snake/SnakeView.js";
+import { getLineColor, HEADER_LINES } from "../common.js";
+import { THEME } from "../theme.js";
 
 /**
  * Interface representing a "toy" in the toybox.
@@ -45,16 +45,16 @@ export class ToyboxView {
   }
 
   private init() {
-    this.container.flexDirection = 'column';
-    this.container.alignItems = 'center';
-    this.container.justifyContent = 'flex-start';
+    this.container.flexDirection = "column";
+    this.container.alignItems = "center";
+    this.container.justifyContent = "flex-start";
     this.container.paddingTop = 1;
     this.container.backgroundColor = RGBA.fromHex(THEME.bg);
 
     const headerContainer = new BoxRenderable(this.renderer, {
-      id: 'toybox-headerContainer',
-      flexDirection: 'column',
-      alignItems: 'center',
+      id: "toybox-headerContainer",
+      flexDirection: "column",
+      alignItems: "center",
       height: 10,
       marginBottom: 1,
     });
@@ -66,19 +66,19 @@ export class ToyboxView {
         content: line.trimEnd(),
         fg: color,
         flexShrink: 0,
-        alignSelf: 'center',
+        alignSelf: "center",
       });
       headerContainer.add(textRenderable);
     });
 
     const toyGrid = new BoxRenderable(this.renderer, {
-      id: 'toybox-grid',
-      width: '100%',
+      id: "toybox-grid",
+      width: "100%",
       flexGrow: 1,
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "flex-start",
       padding: 2,
       gap: 2,
     });
@@ -87,10 +87,10 @@ export class ToyboxView {
 
     // Help text at the bottom
     const helpText = new TextRenderable(this.renderer, {
-      id: 'toybox-help',
-      content: '←→: Select | ENTER: Play | CTRL+S: Sessions | ESC: Back',
+      id: "toybox-help",
+      content: "←→: Select | ENTER: Play | CTRL+S: Sessions | ESC: Back",
       fg: THEME.dim,
-      alignSelf: 'center',
+      alignSelf: "center",
       marginTop: 1,
       flexShrink: 0,
     });
@@ -103,7 +103,7 @@ export class ToyboxView {
   public enable() {
     if (!this.keyHandler) {
       this.keyHandler = (key: any) => this.handleKey(key);
-      this.renderer.keyInput.on('keypress', this.keyHandler);
+      this.renderer.keyInput.on("keypress", this.keyHandler);
       this.sidebarManager.enable();
 
       // Select first item if nothing selected
@@ -116,7 +116,7 @@ export class ToyboxView {
 
   public disable() {
     if (this.keyHandler) {
-      this.renderer.keyInput.off('keypress', this.keyHandler);
+      this.renderer.keyInput.off("keypress", this.keyHandler);
       this.keyHandler = undefined;
     }
     this.sidebarManager.disable();
@@ -126,7 +126,7 @@ export class ToyboxView {
     // Ignore input when GameBoy is active
     if (isGameboyActive()) return;
 
-    if (key.name === 'escape') {
+    if (key.name === "escape") {
       if (this.onBack) this.onBack();
       return;
     }
@@ -137,20 +137,20 @@ export class ToyboxView {
     }
 
     // Tab triggers split view
-    if (key.name === 'tab') {
+    if (key.name === "tab") {
       if (this.onSplitSnake) this.onSplitSnake();
       return;
     }
 
     if (this.toys.length === 0) return;
 
-    if (key.name === 'right') {
+    if (key.name === "right") {
       this.selectedIndex = (this.selectedIndex + 1) % this.toys.length;
       this.updateSelection();
-    } else if (key.name === 'left') {
+    } else if (key.name === "left") {
       this.selectedIndex = (this.selectedIndex - 1 + this.toys.length) % this.toys.length;
       this.updateSelection();
-    } else if (key.name === 'return' || key.name === 'enter' || key.name === 'space') {
+    } else if (key.name === "return" || key.name === "enter" || key.name === "space") {
       if (this.selectedIndex !== -1 && this.toys[this.selectedIndex].onClick) {
         this.toys[this.selectedIndex].onClick!();
       }
@@ -170,14 +170,14 @@ export class ToyboxView {
           g: targetBorder.g,
           b: targetBorder.b,
           duration: 150,
-          ease: 'outQuad',
+          ease: "outQuad",
         })
         .add(card.backgroundColor, {
           r: targetBg.r,
           g: targetBg.g,
           b: targetBg.b,
           duration: 150,
-          ease: 'outQuad',
+          ease: "outQuad",
         });
     });
     this.renderer.requestRender();
@@ -190,9 +190,9 @@ export class ToyboxView {
   private populateToyGrid(container: BoxRenderable) {
     this.toys = [
       {
-        id: 'gameboy',
-        title: 'GameBoy',
-        description: 'Play retro GameBoy games',
+        id: "gameboy",
+        title: "GameBoy",
+        description: "Play retro GameBoy games",
         color: THEME.blue,
         onClick: () => {
           this.disable();
@@ -206,9 +206,9 @@ export class ToyboxView {
         },
       },
       {
-        id: 'snake',
-        title: 'Snake',
-        description: 'Pickle Snake! Eat to grow.',
+        id: "snake",
+        title: "Snake",
+        description: "Pickle Snake! Eat to grow.",
         color: THEME.accent,
         onClick: () => {
           this.disable();
@@ -245,9 +245,9 @@ export class ToyboxView {
       border: true,
       borderColor: THEME.darkAccent,
       backgroundColor: THEME.surface,
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
       padding: 1,
       gap: 1,
     });
@@ -255,7 +255,7 @@ export class ToyboxView {
     const titleText = new ASCIIFontRenderable(this.renderer, {
       id: `toy-title-${toy.id}`,
       text: toy.title,
-      font: 'tiny',
+      font: "tiny",
       color: toy.color,
     });
 
@@ -281,14 +281,14 @@ export class ToyboxView {
           g: hoverBorder.g,
           b: hoverBorder.b,
           duration: 150,
-          ease: 'outQuad',
+          ease: "outQuad",
         })
         .add(card.backgroundColor, {
           r: hoverBg.r,
           g: hoverBg.g,
           b: hoverBg.b,
           duration: 150,
-          ease: 'outQuad',
+          ease: "outQuad",
         });
     };
 
@@ -299,21 +299,21 @@ export class ToyboxView {
           g: normalBorder.g,
           b: normalBorder.b,
           duration: 200,
-          ease: 'outQuad',
+          ease: "outQuad",
         })
         .add(card.backgroundColor, {
           r: normalBg.r,
           g: normalBg.g,
           b: normalBg.b,
           duration: 200,
-          ease: 'outQuad',
+          ease: "outQuad",
         });
     };
 
     if (toy.onClick) {
       const originalOnMouse = card.onMouse;
       card.onMouse = (event: any) => {
-        if (event.type === 'click' || event.type === 'up') {
+        if (event.type === "click" || event.type === "up") {
           toy.onClick!();
         }
         if (originalOnMouse) {

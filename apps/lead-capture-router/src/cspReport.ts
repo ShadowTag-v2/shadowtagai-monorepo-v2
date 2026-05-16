@@ -10,6 +10,7 @@
 
 import { logger } from 'firebase-functions/v2';
 import { onRequest } from 'firebase-functions/v2/https';
+import { verifyAppCheck } from './appCheckMiddleware';
 
 interface CSPViolationReport {
   'csp-report'?: {
@@ -35,6 +36,9 @@ export const cspReport = onRequest(
     memory: '128MiB',
   },
   async (req, res) => {
+    // App Check attestation gate
+    if (!(await verifyAppCheck(req, res))) return;
+
     // Only accept POST with CSP report content type
     if (req.method !== 'POST') {
       res.status(405).send('Method Not Allowed');

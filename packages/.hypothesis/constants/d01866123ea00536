@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/config/feature_flags.py
+# hypothesis_version: 6.151.5
+
+[100, 256, 2000, 13000, 20000, 30000, 50000, '1', 'AGNT_FC_OVERRIDES', 'classifier_model', 'context_compaction', 'dump_prompts', 'fail_closed_default', 'file_read_budget', 'nag_prompt_cache_ms', 'nag_prompt_max_count', 'nag_prompt_min_count', 'off', 'plan_interview_phase', 'plan_mode_v2', 'speculation_enabled', 'telemetry_enabled', 'true', 'vcr_mode', 'xml_classifier', 'yes']

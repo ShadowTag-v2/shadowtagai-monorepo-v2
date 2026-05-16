@@ -3,9 +3,6 @@ name: Offline Eval + Promotion Gate
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'tools/eval/**'
-      - 'policy/**'
   schedule:
     - cron: "23 9 * * *"
   workflow_dispatch:
@@ -14,15 +11,9 @@ permissions:
   contents: write
   pull-requests: write
 
-
-concurrency:
-  group: offline-eval-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   eval:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
@@ -38,8 +29,7 @@ jobs:
         run: |
           mkdir -p policy/config
           curl -fsSL -o policy/config/strict_policy.yml \
-            https://raw.githubusercontent.com/ehanc69/pnkln-stack-policy/refs/heads/main/policy/config/strict_policy.yml \
-            || echo '{"max_ruff_violations": 10, "min_python_version": "3.11"}' > policy/config/strict_policy.yml
+            https://raw.githubusercontent.com/ehanc69/pnkln-stack-policy/refs/heads/main/policy/config/strict_policy.yml
 
       - name: Run offline eval
         run: |
@@ -53,8 +43,7 @@ jobs:
 
       - name: Label PR if blocked
         if: github.event_name == 'pull_request' && steps.gate.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env: { GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
         run: |
           gh pr edit ${{ github.event.pull_request.number }} --add-label "blocked:promotion-gate"
           gh pr comment ${{ github.event.pull_request.number }} --body "Offline eval uplift below policy threshold."

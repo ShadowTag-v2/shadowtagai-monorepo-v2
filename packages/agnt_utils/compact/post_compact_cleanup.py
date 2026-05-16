@@ -17,33 +17,37 @@ from packages.agnt_utils.compact.warning_state import suppress_compact_warning
 
 
 def run_post_compact_cleanup(query_source: str | None = None) -> None:
-    """Run cleanup of caches and tracking state after compaction.
+  """Run cleanup of caches and tracking state after compaction.
 
-    Args:
-        query_source: The compacting query's source, so we can skip
-                      resets that would clobber main-thread module-level
-                      state.  Subagents (agent:*) run in the same process
-                      and share module-level state.
-    """
-    is_main = query_source is None or query_source.startswith("repl_main_thread") or query_source == "sdk"
+  Args:
+      query_source: The compacting query's source, so we can skip
+                    resets that would clobber main-thread module-level
+                    state.  Subagents (agent:*) run in the same process
+                    and share module-level state.
+  """
+  is_main = (
+    query_source is None
+    or query_source.startswith("repl_main_thread")
+    or query_source == "sdk"
+  )
 
-    # Always reset microcompact tracking
-    reset_microcompact_state()
+  # Always reset microcompact tracking
+  reset_microcompact_state()
 
-    # Suppress the compact warning until next API response gives real counts
-    suppress_compact_warning()
+  # Suppress the compact warning until next API response gives real counts
+  suppress_compact_warning()
 
-    # Main-thread-only resets would go here in a full integration:
-    # - getUserContext cache clear
-    # - resetGetMemoryFilesCache
-    # - context collapse reset
-    # For the utility library, we emit a hook that callers can subscribe to.
-    if is_main:
-        for hook in _post_compact_hooks:
-            try:
-                hook(query_source)
-            except Exception:
-                pass  # Hooks must not break compaction flow
+  # Main-thread-only resets would go here in a full integration:
+  # - getUserContext cache clear
+  # - resetGetMemoryFilesCache
+  # - context collapse reset
+  # For the utility library, we emit a hook that callers can subscribe to.
+  if is_main:
+    for hook in _post_compact_hooks:
+      try:
+        hook(query_source)
+      except Exception:
+        pass  # Hooks must not break compaction flow
 
 
 # ── Hook registration ─────────────────────────────────────────────────────────
@@ -53,13 +57,13 @@ _post_compact_hooks: list = []
 
 
 def register_post_compact_hook(fn) -> None:  # noqa: ANN001
-    """Register a function to be called after compaction cleanup.
+  """Register a function to be called after compaction cleanup.
 
-    The function receives ``query_source: str | None`` as its argument.
-    """
-    _post_compact_hooks.append(fn)
+  The function receives ``query_source: str | None`` as its argument.
+  """
+  _post_compact_hooks.append(fn)
 
 
 def clear_post_compact_hooks() -> None:
-    """Remove all registered post-compact hooks (for testing)."""
-    _post_compact_hooks.clear()
+  """Remove all registered post-compact hooks (for testing)."""
+  _post_compact_hooks.clear()

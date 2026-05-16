@@ -1,9 +1,8 @@
-# pnkln | SHADOWTAG | ShadowTag-v2: UNIFIED MEGA-ROLLUP 2026
-
+# pnkln | SHADOWTAG | AIYOU: UNIFIED MEGA-ROLLUP 2026
 **Master Business Plan & Operational Compendium**
 
 > **Compiled**: 2026-01-30
-> **Sources**: 47 business plans + 263 iPhone Notes + 289 claude/\* branches + 70 Antigravity conversations + 17GB "The Index"
+> **Sources**: 47 business plans + 263 iPhone Notes + 289 claude/* branches + 70 Antigravity conversations + 17GB "The Index"
 > **Status**: EXECUTION PHASE
 
 ---
@@ -27,26 +26,24 @@
 ## 1. EXECUTIVE SUMMARY
 
 ### The Vision
-
 **Antigravity** is not a company; it is a **Sovereign Industrial System**.
 We are building the **Civilization OS**—a vertically integrated stack from electrons (L1) to orbital defense (L6).
 
 ### Key Metrics
 
-| Metric                            | Value               | Source                 |
-| --------------------------------- | ------------------- | ---------------------- |
-| **2030 Valuation (Conservative)** | $207B               | Monte Carlo DCF        |
-| **2030 Valuation (Optimistic)**   | $307B               | Full AiU integration   |
-| **Total Verticals**               | 32 fully integrated | pnkln v3.0             |
-| **ARR Target (2030)**             | $15.4B              | Unified valuation      |
-| **EBITDA Margin**                 | 76%                 | Production projections |
-| **Total Code Products**           | 45+ modules         | Monorepo inventory     |
-| **iPhone Notes Processed**        | 263 notes           | Extraction pipeline    |
-| **Code Blocks Extracted**         | 706 blocks          | Manifest.json          |
-| **API Specs Identified**          | 177 specs           | Manifest.json          |
+| Metric | Value | Source |
+|--------|-------|--------|
+| **2030 Valuation (Conservative)** | $207B | Monte Carlo DCF |
+| **2030 Valuation (Optimistic)** | $307B | Full AiU integration |
+| **Total Verticals** | 32 fully integrated | pnkln v3.0 |
+| **ARR Target (2030)** | $15.4B | Unified valuation |
+| **EBITDA Margin** | 76% | Production projections |
+| **Total Code Products** | 45+ modules | Monorepo inventory |
+| **iPhone Notes Processed** | 263 notes | Extraction pipeline |
+| **Code Blocks Extracted** | 706 blocks | Manifest.json |
+| **API Specs Identified** | 177 specs | Manifest.json |
 
 ### The Pitch
-
 > **"31x faster AI. 97% cheaper. Self-evolving. Powered by our own electrons."**
 
 ---
@@ -55,26 +52,25 @@ We are building the **Civilization OS**—a vertically integrated stack from ele
 
 ### Core Components
 
-| Asset                 | Value            | Status                          |
-| --------------------- | ---------------- | ------------------------------- |
-| **Sulphur Bank Mine** | $1.1B standalone | SECURED (160 acres, 100MW)      |
-| **The Index**         | +$85M pre-money  | RECOVERED (17GB sovereign code) |
-| **ShadowTag v2**      | $3.07B capture   | TRL-8 (System Qualified)        |
-| **Judge 6**          | $1.6B+           | Production Ready                |
-| **30 Verticals**      | $207B (2030)     | Platform Complete               |
+| Asset | Value | Status |
+|-------|-------|--------|
+| **Sulphur Bank Mine** | $1.1B standalone | SECURED (160 acres, 100MW) |
+| **The Index** | +$85M pre-money | RECOVERED (17GB sovereign code) |
+| **ShadowTag v2** | $3.07B capture | TRL-8 (System Qualified) |
+| **Judge #6** | $1.6B+ | Production Ready |
+| **30 Verticals** | $207B (2030) | Platform Complete |
 
 ### The Index Recovery (17GB)
 
 The "Gucci Hunt" of January 2026 recovered:
 
-| Component     | Size  | Value           | Contents                                      |
-| ------------- | ----- | --------------- | --------------------------------------------- |
-| **The Brain** | 1.2GB | $2M/yr savings  | 300+ Governance SOPs (Compliance Framework)               |
-| **The Body**  | 8.5GB | 18 months saved | JaaS Microservices, API Connectors            |
-| **The Soul**  | 7.3GB | Defensible IP   | 2 years decision logs, Judge training vectors |
+| Component | Size | Value | Contents |
+|-----------|------|-------|----------|
+| **The Brain** | 1.2GB | $2M/yr savings | 300+ Governance SOPs (ATP 5-19) |
+| **The Body** | 8.5GB | 18 months saved | JaaS Microservices, API Connectors |
+| **The Soul** | 7.3GB | Defensible IP | 2 years decision logs, Judge training vectors |
 
 **Impact**:
-
 - Status shift: "Startup" → "Scale-up"
 - Time-to-Market: +1.5 years saved
 - R&D Savings: $4.45M+ (40K engineer-hours)
@@ -84,22 +80,19 @@ The "Gucci Hunt" of January 2026 recovered:
 ## 3. CORE ASSET INVENTORY
 
 ### Code Repositories
-
 - **Monorepo Core**: 18 repositories consolidated
 - **External Dependencies**: 22+ integrations
 - **GitHub Total**: 688 consolidated repos
-- **Feature Branches**: 289 claude/\* branches (merged 2026-01-30)
+- **Feature Branches**: 289 claude/* branches (merged 2026-01-30)
 - **Total Size**: 29MB+ feature branch code
 
 ### Documentation Portfolio
-
 - **Business Plans**: 47 documents
 - **Technical Docs**: 320+ files
 - **Antigravity Brain**: 70 conversations + 13 unique MD types
 - **iPhone Notes**: 263 notes scanned, 213 code-relevant
 
 ### Infrastructure
-
 - **GCP Project**: shadowtagai-production
 - **Cluster**: autopilot-cluster-1
 - **Registry**: us-central1-docker.pkg.dev
@@ -128,7 +121,7 @@ The "Gucci Hunt" of January 2026 recovered:
 │      Value: $27.4B (500M TAM creator economy)                       │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L2: CORE PROTOCOLS (The Operating System)                         │
-│      ShadowTag v2, Judge 6, ActiveShield MCF, Vexa                 │
+│      ShadowTag v2, Judge #6, ActiveShield MCF, Vexa                 │
 │      Value: $68.4B (base platform)                                  │
 ├─────────────────────────────────────────────────────────────────────┤
 │  L1: ENERGY (The Foundation)                                       │
@@ -140,7 +133,6 @@ The "Gucci Hunt" of January 2026 recovered:
 ### Layer Details
 
 #### L1: Energy Foundation (Sulphur Bank Mine)
-
 - **Location**: 160 acres, Clearlake Oaks, CA
 - **Capacity**: 50MW Geothermal (Baseload) + 40MW Floating Solar (Peaker)
 - **Value**: $1.1B standalone (pre-revenue)
@@ -151,21 +143,18 @@ The "Gucci Hunt" of January 2026 recovered:
 - **Moat**: "Moon Pool" submarine access via Boring Co. tunnel
 
 #### L2: Core Protocols
-
 - **ShadowTag v2**: Visual (1x1 steganography) + Audio (ultrasonic) + Chain (Polygon/Solana)
-- **Judge 6**: <90ms governance engine, Compliance Framework compliant
+- **Judge #6**: <90ms governance engine, ATP 5-19 compliant
 - **ActiveShield MCF**: EU AI Act/HIPAA/ITAR automation
 - **Vexa**: Transcription service with verification
 
 #### L3: Consumer Interface
-
 - **AiU Digital Mall**: Verified-only marketplace ($100M GMV target)
 - **Tokable**: Viral adoption hook (gesture game)
 - **CineVerse**: ShadowTag-signed streaming ($430M revenue)
 - **Dreamlight**: AI-verified content creation
 
 #### L4-L6: Infrastructure/Orbital/Defense
-
 - **RoadMesh**: Map-free autonomous navigation ($60 TPUs vs $5K NVIDIA)
 - **Satellite GPU Edge Mesh**: 50ms latency, 100% global coverage
 - **DoD Edge**: ITAR-compliant defense compute
@@ -177,50 +166,50 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ### Tier 1: Core Platform
 
-| Product                 | Description                                    | Pricing                  |
-| ----------------------- | ---------------------------------------------- | ------------------------ |
-| **Kernel Chain API**    | 3 specialized kernels (ATP scan, Judge, Audit) | $0.0003/decision         |
-| **ShadowTag**           | Privacy-first metadata tagging                 | $0.002/tag               |
-| **ShadowTag-v2 Feed**          | Real-time safety decisions                     | $499/mo + $0.01/decision |
-| **Safety-as-a-Service** | White-labeled safety framework                 | $5,000/mo + $50K setup   |
+| Product | Description | Pricing |
+|---------|-------------|---------|
+| **Kernel Chain API** | 3 specialized kernels (ATP scan, Judge, Audit) | $0.0003/decision |
+| **ShadowTag** | Privacy-first metadata tagging | $0.002/tag |
+| **AiYou Feed** | Real-time safety decisions | $499/mo + $0.01/decision |
+| **Safety-as-a-Service** | White-labeled safety framework | $5,000/mo + $50K setup |
 
 ### Tier 2: AI Agents
 
-| Agent             | Use Case               | Pricing  |
-| ----------------- | ---------------------- | -------- |
-| **SalesAgent**    | B2B SaaS automation    | $1.5K/mo |
-| **ContentAgent**  | Marketing automation   | $800/mo  |
-| **CodeCrafter**   | Engineering automation | $2K/mo   |
-| **DeepReasoning** | Strategy consulting    | $5K/mo   |
-| **PanelDebate**   | Research consensus     | $3K/mo   |
+| Agent | Use Case | Pricing |
+|-------|----------|---------|
+| **SalesAgent** | B2B SaaS automation | $1.5K/mo |
+| **ContentAgent** | Marketing automation | $800/mo |
+| **CodeCrafter** | Engineering automation | $2K/mo |
+| **DeepReasoning** | Strategy consulting | $5K/mo |
+| **PanelDebate** | Research consensus | $3K/mo |
 
 ### Tier 3: Intelligence Products
 
-| Product                   | Description       | Pricing      |
-| ------------------------- | ----------------- | ------------ |
-| **Tier1 Market Research** | ~50 items/day     | $299/mo      |
-| **Intelligence Pipeline** | Trend monitoring  | $500/mo      |
-| **Wealth Planning**       | Business analysis | $50/analysis |
-| **Evolved Prompts**       | ~500 templates    | $49/mo       |
+| Product | Description | Pricing |
+|---------|-------------|---------|
+| **Tier1 Market Research** | ~50 items/day | $299/mo |
+| **Intelligence Pipeline** | Trend monitoring | $500/mo |
+| **Wealth Planning** | Business analysis | $50/analysis |
+| **Evolved Prompts** | ~500 templates | $49/mo |
 
 ### Tier 4: Enterprise
 
-| Offering                 | Description             | Pricing   |
-| ------------------------ | ----------------------- | --------- |
-| **Full Stack**           | Unlimited everything    | $5,000/mo |
-| **Kernel Orchestration** | Multi-agent workflows   | $10K/mo   |
-| **Custom Integration**   | Superpowers Marketplace | $200/mo   |
+| Offering | Description | Pricing |
+|----------|-------------|---------|
+| **Full Stack** | Unlimited everything | $5,000/mo |
+| **Kernel Orchestration** | Multi-agent workflows | $10K/mo |
+| **Custom Integration** | Superpowers Marketplace | $200/mo |
 
 ### AiU Governance Verticals (New)
 
-| Division             | Valuation | ARR (2030) | Focus                       |
-| -------------------- | --------- | ---------- | --------------------------- |
-| **AiUCRM Framework** | $8.6B     | -          | Pre-hoc compliance moat     |
-| **AiU Digital Mall** | $10.0B    | $1.44B     | Governed AI marketplace     |
-| **AiU Med**          | $7.0B     | $1.0B      | HIPAA/MDR medical AI        |
-| **AiU Lex**          | $2.0B     | $0.5B      | Legal document verification |
-| **AiU Aero**         | $15.0B    | $2.0B      | FAA/DoD aerospace           |
-| **AiU Orbital**      | $31.0B    | $3.5B      | Space-tower mesh routing    |
+| Division | Valuation | ARR (2030) | Focus |
+|----------|-----------|------------|-------|
+| **AiUCRM Framework** | $8.6B | - | Pre-hoc compliance moat |
+| **AiU Digital Mall** | $10.0B | $1.44B | Governed AI marketplace |
+| **AiU Med** | $7.0B | $1.0B | HIPAA/MDR medical AI |
+| **AiU Lex** | $2.0B | $0.5B | Legal document verification |
+| **AiU Aero** | $15.0B | $2.0B | FAA/DoD aerospace |
+| **AiU Orbital** | $31.0B | $3.5B | Space-tower mesh routing |
 
 ---
 
@@ -262,51 +251,48 @@ The "Gucci Hunt" of January 2026 recovered:
                       ▼
           ┌───────────────────────────────────┐
           │         JUDGE #6 GATE              │
-          │  Compliance Framework Compliance               │
+          │  ATP 5-19 Compliance               │
           │  <90ms p99 latency                 │
           └───────────────────────────────────┘
 ```
 
 ### Model Distribution
 
-| Provider          | Allocation | Cost/Month  | Use Case                |
-| ----------------- | ---------- | ----------- | ----------------------- |
-| Gemini 2.0 Flash  | 40%        | $24-26K     | Fast decisions          |
-| Claude Sonnet 4.5 | 35%        | $21-23K     | Deep analysis           |
-| GPT-5             | 15%        | $9-11K      | Specialized tasks       |
-| Grok              | 5%         | $3-4K       | Alternative perspective |
-| Other             | 5%         | $3-4K       | Fallback                |
-| **Total**         | 100%       | **$60-65K** |                         |
+| Provider | Allocation | Cost/Month | Use Case |
+|----------|------------|------------|----------|
+| Gemini 2.0 Flash | 40% | $24-26K | Fast decisions |
+| Claude Sonnet 4.5 | 35% | $21-23K | Deep analysis |
+| GPT-5 | 15% | $9-11K | Specialized tasks |
+| Grok | 5% | $3-4K | Alternative perspective |
+| Other | 5% | $3-4K | Fallback |
+| **Total** | 100% | **$60-65K** | |
 
 ### Performance SLAs
 
-| Component         | Target      | Achieved |
-| ----------------- | ----------- | -------- |
-| Judge 6 Binary   | p99 ≤ 90ms  | ✅       |
-| Kernel Chain      | <35ms       | ✅       |
-| Compliance Framework Scan     | <50ms       | ✅       |
-| Claude Deep       | p95 ≤ 2s    | ✅       |
-| Gemini Production | p99 ≤ 100ms | ✅       |
+| Component | Target | Achieved |
+|-----------|--------|----------|
+| Judge #6 Binary | p99 ≤ 90ms | ✅ |
+| Kernel Chain | <35ms | ✅ |
+| ATP 5-19 Scan | <50ms | ✅ |
+| Claude Deep | p95 ≤ 2s | ✅ |
+| Gemini Production | p99 ≤ 100ms | ✅ |
 
 ### Code Modules (45+)
 
 **Core Services**:
-
 - `agents/` - Multi-agent framework
-- `autoresearch/` - 650-agent swarm
-- `judge6/` - Compliance Framework governance
+- `flying_monkeys/` - 650-agent swarm
+- `judge6/` - ATP 5-19 governance
 - `shadowtag/` - Cryptographic watermarking
 - `codepmcs/` - 50-agent code remediation
 
 **Intelligence**:
-
 - `ingestion/` - Gemini Ingestion Layer
 - `wealth/` - Wealth Acceleration Agent
 - `aiucrm/` - CRM integration
 - `brain/` - Context management
 
 **Infrastructure**:
-
 - `antigravity/` - Cross-model orchestration
 - `monetization/` - Revenue tracking
 - `governance/` - Compliance gates
@@ -318,57 +304,56 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ### 2030 Valuation Breakdown: $307B
 
-| Category               | Valuation | % of Total |
-| ---------------------- | --------- | ---------- |
-| Core ShadowTag-v2 Platform    | $207B     | 67%        |
-| AiU Governance Layer   | $50B      | 16%        |
-| pnkln Ultrathink       | $12B      | 4%         |
-| Cor.17 Infrastructure  | $8B       | 3%         |
-| Extended AiU Portfolio | $15B      | 5%         |
-| Infrastructure Uplift  | $15B      | 5%         |
-| **Total**              | **$307B** | **100%**   |
+| Category | Valuation | % of Total |
+|----------|-----------|------------|
+| Core AiYou Platform | $207B | 67% |
+| AiU Governance Layer | $50B | 16% |
+| pnkln Ultrathink | $12B | 4% |
+| Cor.17 Infrastructure | $8B | 3% |
+| Extended AiU Portfolio | $15B | 5% |
+| Infrastructure Uplift | $15B | 5% |
+| **Total** | **$307B** | **100%** |
 
 ### Revenue Projections
 
-| Year            | ARR    | MRR    | Customers | EBITDA       |
-| --------------- | ------ | ------ | --------- | ------------ |
-| Year 1 (Seed)   | $2.1M  | $175K  | 350       | $0.1M (5%)   |
-| Year 2 (Growth) | $7.8M  | $650K  | 980       | $2.6M (33%)  |
-| Year 3 (Scale)  | $15.0M | $1.25M | 1,650     | $6.0M (40%)  |
-| Year 5 (Empire) | $22.6B | $1.88B | 50K+      | $12.7B (56%) |
+| Year | ARR | MRR | Customers | EBITDA |
+|------|-----|-----|-----------|--------|
+| Year 1 (Seed) | $2.1M | $175K | 350 | $0.1M (5%) |
+| Year 2 (Growth) | $7.8M | $650K | 980 | $2.6M (33%) |
+| Year 3 (Scale) | $15.0M | $1.25M | 1,650 | $6.0M (40%) |
+| Year 5 (Empire) | $22.6B | $1.88B | 50K+ | $12.7B (56%) |
 
 ### Unit Economics
 
-| Metric             | Value      | Benchmark            |
-| ------------------ | ---------- | -------------------- |
-| **CAC**            | $1,200     | -                    |
-| **LTV**            | $18,000    | 3-year retention     |
-| **LTV:CAC**        | 15:1       | Healthy > 3:1        |
-| **Gross Margin**   | 78%        | Cloud COGS optimized |
-| **Payback Period** | 2.4 months | -                    |
+| Metric | Value | Benchmark |
+|--------|-------|-----------|
+| **CAC** | $1,200 | - |
+| **LTV** | $18,000 | 3-year retention |
+| **LTV:CAC** | 15:1 | Healthy > 3:1 |
+| **Gross Margin** | 78% | Cloud COGS optimized |
+| **Payback Period** | 2.4 months | - |
 
 ### Moat Analysis: $38.6B Total
 
-| Moat Type                 | Value      | Description              |
-| ------------------------- | ---------- | ------------------------ |
-| AiUCRM Pre-hoc Compliance | $8.6B      | +14% EV premium          |
-| Technical Moats           | $20.0B     | 3-5 year regulatory lead |
-| Network Effects           | $10.0B     | Self-reinforcing value   |
-| **Total**                 | **$38.6B** | 13% of valuation         |
+| Moat Type | Value | Description |
+|-----------|-------|-------------|
+| AiUCRM Pre-hoc Compliance | $8.6B | +14% EV premium |
+| Technical Moats | $20.0B | 3-5 year regulatory lead |
+| Network Effects | $10.0B | Self-reinforcing value |
+| **Total** | **$38.6B** | 13% of valuation |
 
 ### Investor Returns (Seed → 2030)
 
-| Round           | Investment | 2030 Value | MOIC   | IRR  |
-| --------------- | ---------- | ---------- | ------ | ---- |
-| Seed (2025)     | $8M        | $40.8B     | 5,100x | 220% |
-| Series A (2026) | $40M       | $40.8B     | 1,020x | 120% |
-| Series B (2027) | $120M      | $24.6B     | 205x   | 85%  |
-| Series C (2028) | $250M      | $19.2B     | 77x    | 55%  |
+| Round | Investment | 2030 Value | MOIC | IRR |
+|-------|------------|------------|------|-----|
+| Seed (2025) | $8M | $40.8B | 5,100x | 220% |
+| Series A (2026) | $40M | $40.8B | 1,020x | 120% |
+| Series B (2027) | $120M | $24.6B | 205x | 85% |
+| Series C (2028) | $250M | $19.2B | 77x | 55% |
 
 ### Capital Ask
 
 **Seed+ Round**: $47M @ 15% Equity
-
 - Pre-Money: $266M
 - Use of Funds:
   - $25M: Sulphur Bank (Land, Permits, Drilling)
@@ -380,28 +365,24 @@ The "Gucci Hunt" of January 2026 recovered:
 ## 8. GO-TO-MARKET STRATEGY
 
 ### Phase 1: Product-Led Growth (Months 1-6)
-
 - **Channels**: GitHub, Dev.to, Y Combinator
 - **Tactic**: Open-source Safety Framework Templates
 - **Goal**: 100 free users, 20 paying
 - **Target**: $500K ARR
 
 ### Phase 2: Sales-Led Growth (Months 7-12)
-
 - **Channels**: LinkedIn, Cold Email, Compliance Conferences
 - **Tactic**: "Cut Safety Bugs by 70%" case studies
 - **Goal**: $1.5M ARR
 - **Focus**: 5 enterprise pilots @ $5K/mo each
 
 ### Phase 3: Platform Expansion (Year 2)
-
 - **Vertical Agents**: Industry-specific AI agents
 - **Marketplace**: Third-party integrations
 - **Goal**: $7.8M ARR
 
 ### Beachhead Markets
-
-1. **Military/Defense Procurement** (Compliance Framework compliance) - $800M
+1. **Military/Defense Procurement** (ATP 5-19 compliance) - $800M
 2. **Developer-led Startups** (Speed > Compliance)
 3. **Mid-market SaaS** (Cost > Speed)
 4. **Enterprise FinTech/HealthTech** (Compliance > Cost)
@@ -412,36 +393,36 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ### Extraction Statistics
 
-| Metric              | Value       |
-| ------------------- | ----------- |
-| Total Notes Scanned | 263         |
-| Code-Relevant Notes | 213 (81%)   |
-| Total Code Blocks   | 706         |
-| Total API Specs     | 177         |
-| Total Size          | ~4.5MB text |
+| Metric | Value |
+|--------|-------|
+| Total Notes Scanned | 263 |
+| Code-Relevant Notes | 213 (81%) |
+| Total Code Blocks | 706 |
+| Total API Specs | 177 |
+| Total Size | ~4.5MB text |
 
 ### Top Value Notes (by Code Blocks)
 
-| Note                                  | Code Blocks | API Specs | Size  |
-| ------------------------------------- | ----------- | --------- | ----- |
-| Prompt Ultrathink [Gemini-Complete]-1 | 118         | 0         | 307KB |
-| my data center plan                   | 114         | 57        | 323KB |
-| COR.100: pnkln AS AI-NATIVE FAANG     | 103         | 0         | 129KB |
-| NIST PQC & Hybrid Falcon-Dilithium    | 56          | 0         | 88KB  |
-| Cor.83 pnkln CODE COMPENDIUM          | 51          | 0         | 28KB  |
-| AiU + ShadowTag-v2 Unified Platform          | 38          | 19        | 58KB  |
+| Note | Code Blocks | API Specs | Size |
+|------|-------------|-----------|------|
+| Prompt Ultrathink [Gemini-Complete]-1 | 118 | 0 | 307KB |
+| my data center plan | 114 | 57 | 323KB |
+| COR.100: pnkln AS AI-NATIVE FAANG | 103 | 0 | 129KB |
+| NIST PQC & Hybrid Falcon-Dilithium | 56 | 0 | 88KB |
+| Cor.83 pnkln CODE COMPENDIUM | 51 | 0 | 28KB |
+| AiU + AiYou Unified Platform | 38 | 19 | 58KB |
 
 ### Key Content Categories
 
 1. **Business Plans & Valuations** (15 notes)
    - pnkln Master Plans v1-v3
-   - ShadowTag-v2 Platform Valuations
+   - AiYou Platform Valuations
    - Cor.67 Comprehensive Vertical Valuation
    - Wealth Planning strategies
 
 2. **Technical Architecture** (25 notes)
    - Antigravity orchestration design
-   - Judge 6 Compliance Framework compliance
+   - Judge #6 ATP 5-19 compliance
    - ShadowTag v2 implementation
    - https://github.com/karpathy/autoresearchs swarm architecture
 
@@ -461,23 +442,22 @@ The "Gucci Hunt" of January 2026 recovered:
    - Monte Carlo analysis
    - Revenue projections
 
-### Cor.\* Series Notes (Core IP)
+### Cor.* Series Notes (Core IP)
 
-| Note       | Focus                  | Value                   |
-| ---------- | ---------------------- | ----------------------- |
-| Cor.1-25   | Foundation strategy    | Architecture decisions  |
-| Cor.26-50  | Implementation details | API specs, integrations |
-| Cor.51-75  | Scale operations       | Swarm management        |
-| Cor.76-100 | Empire expansion       | Multi-vertical strategy |
-| Cor.100+   | Wealth & exit planning | Liquidity events        |
+| Note | Focus | Value |
+|------|-------|-------|
+| Cor.1-25 | Foundation strategy | Architecture decisions |
+| Cor.26-50 | Implementation details | API specs, integrations |
+| Cor.51-75 | Scale operations | Swarm management |
+| Cor.76-100 | Empire expansion | Multi-vertical strategy |
+| Cor.100+ | Wealth & exit planning | Liquidity events |
 
 ---
 
 ## 10. IMPLEMENTATION ROADMAP
 
 ### Phase 0: Foundation (Months 0-6) - Current
-
-- [x] Merge 289 claude/\* branches
+- [x] Merge 289 claude/* branches
 - [x] Extract 263 iPhone Notes
 - [x] Consolidate business plans
 - [ ] Secure Sulphur Bank site access
@@ -485,21 +465,18 @@ The "Gucci Hunt" of January 2026 recovered:
 - [ ] Close $47M Seed+ Round
 
 ### Phase 1: The Bridge (Months 6-18)
-
 - [ ] Deploy CoreWeave Pod at Starlink Gateway
 - [ ] Drill test wells at Zone C
 - [ ] AiU Digital Mall $100M GMV
 - [ ] Series A ($150M) @ $3B Val
 
 ### Phase 2: The Mesh (Months 18-36)
-
 - [ ] Roll out 1,000 RoadMesh Tower Nodes
 - [ ] "The Lair" goes online (50MW Geothermal)
 - [ ] Activate DoD Tactical Edge
 - [ ] Series B ($500M) @ $15B Val
 
 ### Phase 3: Empire (Year 5 / 2030)
-
 - [ ] 10,000 Nodes, 1GW Energy
 - [ ] $22.6B ARR / 76% Margins
 - [ ] IPO or Strategic Split
@@ -507,19 +484,16 @@ The "Gucci Hunt" of January 2026 recovered:
 ### Immediate Priorities (Next 30 Days)
 
 **Revenue**:
-
 1. [ ] Launch Kernel Chain API ($0.0003/decision)
 2. [ ] 5 pilot customers @ $500/mo
 3. [ ] Target: $10K MRR
 
 **Product**:
-
 1. [ ] Deploy https://github.com/karpathy/autoresearchs to Cloud Run
-2. [ ] Integrate Judge 6 governance
+2. [ ] Integrate Judge #6 governance
 3. [ ] Launch ShadowTag beta
 
 **Infrastructure**:
-
 1. [ ] Complete GKE deployment
 2. [ ] SOC 2 Type 1 audit prep
 3. [ ] Implement revenue tracking
@@ -530,13 +504,13 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ### A. Competitive Advantages
 
-| Advantage                 | Impact                       |
-| ------------------------- | ---------------------------- |
-| **31x Faster**            | 35ms vs 1100ms (AutoGen)     |
-| **97% Cheaper**           | $0.0003 vs $0.01/task        |
-| **98.5% Token Reduction** | 300 tokens vs 10K            |
-| **Self-Evolution**        | +3.7% continuous improvement |
-| **ISO 26262 Heritage**    | Automotive-grade safety      |
+| Advantage | Impact |
+|-----------|--------|
+| **31x Faster** | 35ms vs 1100ms (AutoGen) |
+| **97% Cheaper** | $0.0003 vs $0.01/task |
+| **98.5% Token Reduction** | 300 tokens vs 10K |
+| **Self-Evolution** | +3.7% continuous improvement |
+| **ISO 26262 Heritage** | Automotive-grade safety |
 
 ### B. Optimization Patterns
 
@@ -569,13 +543,13 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ### D. Document Sources
 
-| Category             | Count | Description                     |
-| -------------------- | ----- | ------------------------------- |
-| Business Plans       | 47    | Strategy & valuation docs       |
-| iPhone Notes         | 263   | Cor.\* series + technical notes |
-| Claude Branches      | 289   | Merged 2026-01-30               |
-| Antigravity Sessions | 70    | AI conversation logs            |
-| Code Products        | 45+   | Production modules              |
+| Category | Count | Description |
+|----------|-------|-------------|
+| Business Plans | 47 | Strategy & valuation docs |
+| iPhone Notes | 263 | Cor.* series + technical notes |
+| Claude Branches | 289 | Merged 2026-01-30 |
+| Antigravity Sessions | 70 | AI conversation logs |
+| Code Products | 45+ | Production modules |
 
 ### E. Key File Locations
 
@@ -595,6 +569,6 @@ The "Gucci Hunt" of January 2026 recovered:
 
 ---
 
-_Compiled from 47 source documents, 263 iPhone Notes, 289 claude/_ branches, and 70 Antigravity sessions.\*
-_Last Updated: 2026-01-30_
-_Version: 1.0.0_
+*Compiled from 47 source documents, 263 iPhone Notes, 289 claude/* branches, and 70 Antigravity sessions.*
+*Last Updated: 2026-01-30*
+*Version: 1.0.0*

@@ -12,13 +12,13 @@ cd "$SCRIPT_DIR"
 npm install
 
 echo "[gitnexus] Indexing monorepo (tree-sitter AST analysis)..."
-npx gitnexus analyze "$REPO_ROOT" \
+npx nexus analyze "$REPO_ROOT" \
   --output "$SCRIPT_DIR/.nexus" \
   --langs ts,tsx,py,js \
   --exclude "node_modules,data/drive_ingest,data/web_ingest,data/alphaxiv,artifacts/workspace_archive"
 
 echo "[gitnexus] Registering repository in nexus registry..."
-npx gitnexus setup "$REPO_ROOT" --output "$SCRIPT_DIR/.nexus"
+npx nexus setup "$REPO_ROOT" --output "$SCRIPT_DIR/.nexus"
 
 echo "[gitnexus] Setup complete."
 echo ""

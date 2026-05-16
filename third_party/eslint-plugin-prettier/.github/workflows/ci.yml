@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint and Test on Node ${{ matrix.node }} (ESLint ${{ matrix.eslint }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 22
+          - 20
+          - 18
+        eslint:
+          - 9
+          - 8
+        include:
+          - node: 16
+            eslint: 8
+          - node: 14
+            eslint: 8
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --prefer-frozen-lockfile
+
+      - name: Install ESLint ${{ matrix.node }}
+        if: ${{ matrix.eslint != 9 }}
+        run: pnpm install -D eslint@${{ matrix.eslint }} @graphql-eslint/eslint-plugin@3 eslint-plugin-svelte@2 svelte@3 vue-eslint-parser@9
+
+      - name: Test
+        run: pnpm mocha
+
+      - name: Perf
+        # Skip on node 14, as eslint-plugin-n contains syntax that doesn't work
+        # with node 14
+        if: ${{ matrix.node != 14 }}
+        run: TIMING=1 pnpm lint

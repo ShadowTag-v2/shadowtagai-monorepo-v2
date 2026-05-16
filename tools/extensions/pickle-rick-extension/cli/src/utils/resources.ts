@@ -1,9 +1,9 @@
-import { existsSync } from 'node:fs';
-import { homedir } from 'node:os';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { existsSync } from "node:fs";
+import { homedir } from "node:os";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const DEFAULT_EXTENSION_PATH = join(homedir(), '.gemini/extensions/pickle-rick');
+const DEFAULT_EXTENSION_PATH = join(homedir(), ".gemini/extensions/pickle-rick");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -34,38 +34,38 @@ export function resolveSkillPath(skillName: string): string {
 
   // 0. Local Dev Priority: Check `../src/skills/<name>.md` relative to binary
   // If running from `dist/pickle`, this maps to `src/skills/<name>.md`
-  const devLocalSkill = join(execDir, '../src/skills', `${skillName}.md`);
+  const devLocalSkill = join(execDir, "../src/skills", `${skillName}.md`);
   if (existsSync(devLocalSkill)) return devLocalSkill;
 
   // 1. Bundled: Check `skills/<name>.md` next to binary
-  const bundledSkill = join(dirname(process.execPath), 'skills', `${skillName}.md`);
+  const bundledSkill = join(dirname(process.execPath), "skills", `${skillName}.md`);
   if (existsSync(bundledSkill)) return bundledSkill;
 
   // 2. Local Source (Dev): Check `../skills/<name>.md` relative to this file
   // src/utils/resources.ts -> src/skills
-  const localSrcSkill = join(__dirname, '../skills', `${skillName}.md`);
+  const localSrcSkill = join(__dirname, "../skills", `${skillName}.md`);
   if (existsSync(localSrcSkill)) return localSrcSkill;
 
   // 3. Local Source (Root): Check `../../../skills/<name>/SKILL.md` relative to this file
   // src/utils/resources.ts -> src -> cli -> pickle-rick-extension -> skills
-  const localRootSkill = join(__dirname, '../../../skills', skillName, 'SKILL.md');
+  const localRootSkill = join(__dirname, "../../../skills", skillName, "SKILL.md");
   if (existsSync(localRootSkill)) return localRootSkill;
 
   // 4. Dev: Check `cli/src/skills/<name>.md` in home extension
-  const devSkill = join(DEFAULT_EXTENSION_PATH, 'cli', 'src', 'skills', `${skillName}.md`);
+  const devSkill = join(DEFAULT_EXTENSION_PATH, "cli", "src", "skills", `${skillName}.md`);
   if (existsSync(devSkill)) return devSkill;
 
   // 5. Legacy: Check `skills/<name>/SKILL.md` in home extension
-  const legacySkill = join(DEFAULT_EXTENSION_PATH, 'skills', skillName, 'SKILL.md');
+  const legacySkill = join(DEFAULT_EXTENSION_PATH, "skills", skillName, "SKILL.md");
   if (existsSync(legacySkill)) return legacySkill;
 
-  return '';
+  return "";
 }
 
 export function getExtensionRoot(): string {
   // Return the bundled root if resources exist there, otherwise default
   // We use 'commands' as a sentinel
-  const bundledCommands = join(dirname(process.execPath), 'commands');
+  const bundledCommands = join(dirname(process.execPath), "commands");
   if (existsSync(bundledCommands)) {
     return dirname(process.execPath);
   }

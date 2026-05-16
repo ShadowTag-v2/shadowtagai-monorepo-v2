@@ -9,14 +9,12 @@ This is a cost-engineering and concurrency pattern, not a claim about direct con
 ## Core claim
 
 Aegaeon achieved large savings by separating:
-
 - prefill
 - decode
 - active model residency
 - request scheduling
 
 In the Gemini-native stack, the closest practical equivalents are:
-
 - **prefill reuse** → Gemini context caching
 - **decode fan-out** → shared-cache multi-request routing
 - **token-level scheduling** → swarm router / work queue
@@ -33,7 +31,6 @@ Send only the task-specific delta to each worker request.
 ## What counts as shared context
 
 The shared slab should contain only stable, high-reuse material such as:
-
 - canonical system instructions
 - monorepo architecture summary
 - repo truth surfaces
@@ -61,7 +58,6 @@ Instead of paying full input-token cost repeatedly for the same large context:
 Treat several concurrent `gemini-3.1-flash-lite-preview` calls as one logical worker pool.
 
 The router:
-
 - accepts incoming work
 - classifies work by complexity
 - attaches the same cache reference when appropriate
@@ -73,9 +69,7 @@ The router:
 Use the cheaper fast path for most work.
 
 #### Fast path
-
 `gemini-3.1-flash-lite-preview` for:
-
 - extraction
 - formatting
 - lightweight planning
@@ -84,9 +78,7 @@ Use the cheaper fast path for most work.
 - retrieval-grounded response generation
 
 #### Heavy path
-
 Escalate only when needed for:
-
 - deep architecture reasoning
 - major ambiguity
 - difficult cross-system reconciliation
@@ -95,7 +87,6 @@ Escalate only when needed for:
 ## Example architecture
 
 ### Shared slab contents
-
 - canonical monorepo summary
 - current repo-root truth
 - current MCP/control-plane truth
@@ -106,14 +97,12 @@ Escalate only when needed for:
 - coding/operator rules
 
 ### Example concurrent events
-
 - 3 PR reviews
 - 2 UI-triggered summarizations
 - 1 retrieval evaluation run
 - 1 pricing-model analysis
 
 All 7 tasks can reference the same shared context cache, while each sends only:
-
 - a diff
 - a query
 - a small payload
@@ -122,24 +111,18 @@ All 7 tasks can reference the same shared context cache, while each sends only:
 ## Practical savings logic
 
 ### Baseline
-
 Without caching:
-
 - repeated large shared prefill
 - each worker repays the same input-token burden
 
 ### Cached model
-
 With caching:
-
 - shared context is created once
 - later requests reference the cache
 - only task deltas are sent repeatedly
 
 ### Result
-
 Operational spend can fall substantially whenever:
-
 - the shared prompt/context is large
 - reuse is high
 - concurrency is nontrivial
@@ -148,13 +131,11 @@ Operational spend can fall substantially whenever:
 ## What this is not
 
 This is not:
-
 - direct VRAM management
 - physical GPU residency control
 - exact replication of Aegaeon internals on Google-managed infrastructure
 
 It is:
-
 - a practical cost/concurrency analogue
 - a prompt-and-routing architecture
 - a way to reduce repeated prefill costs
@@ -162,25 +143,20 @@ It is:
 ## Intended use in this workspace
 
 ### counselconduit
-
 Use this protocol for:
-
 - retrieval-grounded legal workflow processing
 - concurrent task handling
 - product-facing cost discipline
 - high-speed, low-friction agent work
 
 ### pnkln
-
 Use this protocol for:
-
 - control-plane routing
 - queue discipline
 - cache-aware agent orchestration
 - operational cost engineering
 
 ### uphillsnowball
-
 Use it as a conceptual reference only.
 The local lab uses a different physical runtime model.
 
@@ -208,7 +184,6 @@ The local lab uses a different physical runtime model.
 ## Metrics
 
 Track at minimum:
-
 - cache creation count
 - cache reuse count
 - input tokens saved
@@ -223,7 +198,6 @@ Track at minimum:
 The value is not just lower model spend.
 
 It also improves:
-
 - throughput
 - predictability
 - concurrency handling

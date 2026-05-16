@@ -5,11 +5,11 @@ import os
 
 from google import genai
 from google.genai.types import (
-    Content,
-    FunctionDeclaration,
-    GenerateContentConfig,
-    Part,
-    Tool,
+  Content,
+  FunctionDeclaration,
+  GenerateContentConfig,
+  Part,
+  Tool,
 )
 
 from toolbox_core import ToolboxClient
@@ -27,79 +27,88 @@ prompt = """
 """
 
 queries = [
-    "Find hotels in Basel with Basel in its name.",
-    "Please book the hotel Hilton Basel for me.",
-    "This is too expensive. Please cancel it.",
-    "Please book Hyatt Regency for me",
-    "My check in dates for my booking would be from April 10, 2024 to April 19, 2024.",
+  "Find hotels in Basel with Basel in its name.",
+  "Please book the hotel Hilton Basel for me.",
+  "This is too expensive. Please cancel it.",
+  "Please book Hyatt Regency for me",
+  "My check in dates for my booking would be from April 10, 2024 to April 19, 2024.",
 ]
 
 
 async def main():
-    async with ToolboxClient("http://127.0.0.1:5000") as toolbox_client:
-        # The toolbox_tools list contains Python callables (functions/methods) designed for LLM tool-use
-        # integration. While this example uses Google's genai client, these callables can be adapted for
-        # various function-calling or agent frameworks. For easier integration with supported frameworks
-        # (https://github.com/googleapis/mcp-toolbox-python-sdk/tree/main/packages), use the
-        # provided wrapper packages, which handle framework-specific boilerplate.
-        toolbox_tools = await toolbox_client.load_toolset("my-toolset")
-        tool_map = {tool.__name__: tool for tool in toolbox_tools}
-        genai_client = genai.Client(vertexai=True, project=project, location="us-central1")
+  async with ToolboxClient("http://127.0.0.1:5000") as toolbox_client:
+    # The toolbox_tools list contains Python callables (functions/methods) designed for LLM tool-use
+    # integration. While this example uses Google's genai client, these callables can be adapted for
+    # various function-calling or agent frameworks. For easier integration with supported frameworks
+    # (https://github.com/googleapis/mcp-toolbox-python-sdk/tree/main/packages), use the
+    # provided wrapper packages, which handle framework-specific boilerplate.
+    toolbox_tools = await toolbox_client.load_toolset("my-toolset")
+    tool_map = {tool.__name__: tool for tool in toolbox_tools}
+    genai_client = genai.Client(vertexai=True, project=project, location="us-central1")
 
-        genai_tools = [Tool(function_declarations=[FunctionDeclaration.from_callable_with_api_option(callable=tool)]) for tool in toolbox_tools]
-        history = []
-        for query in queries:
-            print(f"\n[INPUT] User: {query}")
-            user_prompt_content = Content(
-                role="user",
-                parts=[Part.from_text(text=query)],
-            )
-            history.append(user_prompt_content)
+    genai_tools = [
+      Tool(
+        function_declarations=[
+          FunctionDeclaration.from_callable_with_api_option(callable=tool)
+        ]
+      )
+      for tool in toolbox_tools
+    ]
+    history = []
+    for query in queries:
+      print(f"\n[INPUT] User: {query}")
+      user_prompt_content = Content(
+        role="user",
+        parts=[Part.from_text(text=query)],
+      )
+      history.append(user_prompt_content)
 
-            response = genai_client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=history,
-                config=GenerateContentConfig(
-                    system_instruction=prompt,
-                    tools=genai_tools,
-                ),
-            )
-            history.append(response.candidates[0].content)
-            function_response_parts = []
+      response = genai_client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=history,
+        config=GenerateContentConfig(
+          system_instruction=prompt,
+          tools=genai_tools,
+        ),
+      )
+      history.append(response.candidates[0].content)
+      function_response_parts = []
 
-            if response.function_calls:
-                for function_call in response.function_calls:
-                    fn_name = function_call.name
-                    print(f"[TOOL CALL] Model requested tool '{fn_name}' with args: {function_call.args}")
+      if response.function_calls:
+        for function_call in response.function_calls:
+          fn_name = function_call.name
+          print(
+            f"[TOOL CALL] Model requested tool '{fn_name}' with args: {function_call.args}"
+          )
 
-                    if fn_name in tool_map:
-                        function_result = await tool_map[fn_name](**function_call.args)
-                    else:
-                        raise ValueError(f"Function name {fn_name} not present.")
+          if fn_name in tool_map:
+            function_result = await tool_map[fn_name](**function_call.args)
+          else:
+            raise ValueError(f"Function name {fn_name} not present.")
 
-                    function_response = {"result": function_result}
-                    function_response_part = Part.from_function_response(
-                        name=function_call.name,
-                        response=function_response,
-                    )
-                    function_response_parts.append(function_response_part)
+          function_response = {"result": function_result}
+          function_response_part = Part.from_function_response(
+            name=function_call.name,
+            response=function_response,
+          )
+          function_response_parts.append(function_response_part)
 
-            if function_response_parts:
-                tool_response_content = Content(role="tool", parts=function_response_parts)
-                history.append(tool_response_content)
+      if function_response_parts:
+        tool_response_content = Content(role="tool", parts=function_response_parts)
+        history.append(tool_response_content)
 
-                response2 = genai_client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=history,
-                    config=GenerateContentConfig(
-                        tools=genai_tools,
-                    ),
-                )
-                final_model_response_content = response2.candidates[0].content
-                history.append(final_model_response_content)
-                print(f"[OUTPUT] AI: {response2.text}")
-            else:
-                print(f"[OUTPUT] AI: {response.text}")
+        response2 = genai_client.models.generate_content(
+          model="gemini-2.5-flash",
+          contents=history,
+          config=GenerateContentConfig(
+            tools=genai_tools,
+          ),
+        )
+        final_model_response_content = response2.candidates[0].content
+        history.append(final_model_response_content)
+        print(f"[OUTPUT] AI: {response2.text}")
+      else:
+        print(f"[OUTPUT] AI: {response.text}")
 
 
 asyncio.run(main())

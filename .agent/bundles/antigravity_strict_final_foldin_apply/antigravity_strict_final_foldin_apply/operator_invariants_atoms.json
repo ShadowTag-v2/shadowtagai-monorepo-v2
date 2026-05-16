@@ -94,7 +94,7 @@
       "atom_kind": "preference",
       "subject": "settings",
       "predicate": "monorepo_primary_workspace",
-      "object_text": "shadowtag-omega-v4/Monorepo-Uphillsnowball",
+      "object_text": "ShadowTag-v2/Monorepo-Uphillsnowball",
       "canonical_weight": 1.0,
       "validity": "active",
       "source_type": "operator_invariants",

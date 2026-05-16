@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 DTE: Difficulty-Tracking Evolution
 
@@ -12,7 +11,7 @@ Based on Agent0 paper (arXiv:2511.16043v1):
 - Adjust difficulty to maximize learning signal
 - Prevent stagnation at easy/hard extremes
 
-Part of PNKLN evolution stack.
+Part of pnkln evolution stack.
 """
 
 import math

@@ -38,12 +38,12 @@ LOCAL_COMMAND_CAVEAT_TAG: str = "local-command-caveat"
 # All terminal-related tags that indicate a message is terminal output,
 # not a user prompt.
 TERMINAL_OUTPUT_TAGS: tuple[str, ...] = (
-    BASH_INPUT_TAG,
-    BASH_STDOUT_TAG,
-    BASH_STDERR_TAG,
-    LOCAL_COMMAND_STDOUT_TAG,
-    LOCAL_COMMAND_STDERR_TAG,
-    LOCAL_COMMAND_CAVEAT_TAG,
+  BASH_INPUT_TAG,
+  BASH_STDOUT_TAG,
+  BASH_STDERR_TAG,
+  LOCAL_COMMAND_STDOUT_TAG,
+  LOCAL_COMMAND_STDERR_TAG,
+  LOCAL_COMMAND_CAVEAT_TAG,
 )
 
 # Timer/heartbeat tag.
@@ -121,19 +121,19 @@ COMMON_HELP_ARGS: tuple[str, ...] = ("help", "-h", "--help")
 
 # Common argument patterns for slash commands that request current state/info.
 COMMON_INFO_ARGS: tuple[str, ...] = (
-    "list",
-    "show",
-    "display",
-    "current",
-    "view",
-    "get",
-    "check",
-    "describe",
-    "print",
-    "version",
-    "about",
-    "status",
-    "?",
+  "list",
+  "show",
+  "display",
+  "current",
+  "view",
+  "get",
+  "check",
+  "describe",
+  "print",
+  "version",
+  "about",
+  "status",
+  "?",
 )
 
 
@@ -146,44 +146,44 @@ _UNWRAP_PATTERN_CACHE: dict[str, re.Pattern[str]] = {}
 
 
 def wrap_xml_tag(tag: str, content: str) -> str:
-    """Wrap content in an XML tag pair.
+  """Wrap content in an XML tag pair.
 
-    Args:
-        tag: The XML tag name (e.g., 'bash-stdout').
-        content: The text content to wrap.
+  Args:
+      tag: The XML tag name (e.g., 'bash-stdout').
+      content: The text content to wrap.
 
-    Returns:
-        String in the form ``<tag>content</tag>``.
-    """
-    return f"<{tag}>{content}</{tag}>"
+  Returns:
+      String in the form ``<tag>content</tag>``.
+  """
+  return f"<{tag}>{content}</{tag}>"
 
 
 def unwrap_xml_tag(tag: str, text: str) -> str | None:
-    """Extract content from within an XML tag pair.
+  """Extract content from within an XML tag pair.
 
-    Args:
-        tag: The XML tag name to look for.
-        text: The text potentially containing the wrapped content.
+  Args:
+      tag: The XML tag name to look for.
+      text: The text potentially containing the wrapped content.
 
-    Returns:
-        The inner content if found, or None if the tag is not present.
-    """
-    if tag not in _UNWRAP_PATTERN_CACHE:
-        _UNWRAP_PATTERN_CACHE[tag] = re.compile(
-            rf"<{re.escape(tag)}>(.*?)</{re.escape(tag)}>",
-            re.DOTALL,
-        )
-    match = _UNWRAP_PATTERN_CACHE[tag].search(text)
-    return match.group(1) if match else None
+  Returns:
+      The inner content if found, or None if the tag is not present.
+  """
+  if tag not in _UNWRAP_PATTERN_CACHE:
+    _UNWRAP_PATTERN_CACHE[tag] = re.compile(
+      rf"<{re.escape(tag)}>(.*?)</{re.escape(tag)}>",
+      re.DOTALL,
+    )
+  match = _UNWRAP_PATTERN_CACHE[tag].search(text)
+  return match.group(1) if match else None
 
 
 def is_terminal_output_tag(tag: str) -> bool:
-    """Check if a tag name indicates terminal output (not user prompt).
+  """Check if a tag name indicates terminal output (not user prompt).
 
-    Args:
-        tag: The XML tag name to check.
+  Args:
+      tag: The XML tag name to check.
 
-    Returns:
-        True if the tag is in TERMINAL_OUTPUT_TAGS.
-    """
-    return tag in TERMINAL_OUTPUT_TAGS
+  Returns:
+      True if the tag is in TERMINAL_OUTPUT_TAGS.
+  """
+  return tag in TERMINAL_OUTPUT_TAGS

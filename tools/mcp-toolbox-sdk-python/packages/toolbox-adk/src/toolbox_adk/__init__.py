@@ -21,10 +21,11 @@ from .toolset import ToolboxToolset
 from .version import __version__
 
 __all__ = [
-    "CredentialStrategy",
-    "CredentialConfig",
-    "CredentialType",
-    "ToolboxClient",
-    "ToolboxTool",
-    "ToolboxToolset",
+  "CredentialStrategy",
+  "CredentialConfig",
+  "CredentialType",
+  "ToolboxClient",
+  "ToolboxTool",
+  "ToolboxToolset",
+  "__version__",
 ]

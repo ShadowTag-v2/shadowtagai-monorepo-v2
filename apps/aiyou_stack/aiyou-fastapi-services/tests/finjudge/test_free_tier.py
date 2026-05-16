@@ -3,6 +3,7 @@ Test API key management, signup, and rate limiting
 """
 
 import pytest
+
 from src.finjudge.api.auth import APIKeyManager, TierLevel
 
 

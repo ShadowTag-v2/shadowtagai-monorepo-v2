@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from service.app.config import load_settings
 from service.app.jobs.sync_postgres import sync_doc_registry
 from service.app.retrieval.lancedb_store import upsert_chunks

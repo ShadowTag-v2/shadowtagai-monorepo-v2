@@ -5,7 +5,6 @@
 Define the cost-engineering hierarchy for the current `pnkln` stack.
 
 This document connects:
-
 - truth surfaces
 - model spend
 - routing
@@ -34,7 +33,6 @@ Fix truth first.
 The highest-value cost optimization is removing structural ambiguity.
 
 A confused repo/control plane creates:
-
 - duplicated work
 - duplicated prompts
 - duplicated infra assumptions
@@ -42,7 +40,6 @@ A confused repo/control plane creates:
 - duplicated model calls
 
 Canonical truth must come first:
-
 - one canonical monorepo manifest
 - one canonical MCP config
 - one canonical product/lab split
@@ -52,7 +49,6 @@ Canonical truth must come first:
 Once truth is stable, reduce repeated prefill spend.
 
 Principle:
-
 - cache shared stable context once
 - reuse it across many requests
 - send only task deltas repeatedly
@@ -64,7 +60,6 @@ This applies most directly to the Google-native production path.
 Treat concurrent tasks as a work pool, not isolated full-context jobs.
 
 The router should:
-
 - attach shared cache/context where possible
 - classify task complexity
 - keep most work on the cheap fast path
@@ -75,7 +70,6 @@ The router should:
 Do not pay heavy-model prices for routine work.
 
 Use the cheapest acceptable path for:
-
 - extraction
 - formatting
 - summary generation
@@ -83,7 +77,6 @@ Use the cheapest acceptable path for:
 - routine retrieval-grounded responses
 
 Escalate only for:
-
 - architectural anomalies
 - high ambiguity
 - high-risk review
@@ -94,7 +87,6 @@ Escalate only for:
 Model cost without retrieval discipline becomes waste.
 
 Needed:
-
 - retrieval quality checks
 - grounding pass rate
 - false-support detection
@@ -106,27 +98,21 @@ Needed:
 The commercial product must stay simple.
 
 ### counselconduit
-
 This is the business-facing MVP.
 It should present:
-
 - a clean product story
 - premium economics
 - stateless workflow clarity
 - BYOK-friendly adoption
 
 ### uphillsnowball
-
 This remains:
-
 - local lab
 - runtime experimentation path
 - internal R&D engine
 
 ### pnkln
-
 This remains:
-
 - doctrine
 - control plane
 - operator logic
@@ -135,7 +121,6 @@ This remains:
 ## 7. Pricing and valuation
 
 Pricing should sit on top of:
-
 - actual retrieval quality
 - latency and throughput confidence
 - route efficiency
@@ -147,14 +132,11 @@ Not on top of unverified hype.
 ## Highest-value opportunities
 
 ### Opportunity 1
-
 Fix truth surfaces first.
 This unlocks every other optimization.
 
 ### Opportunity 2
-
 Operationalize recovered code instead of redrafting it:
-
 - green loop
 - CSP collector
 - retriever eval
@@ -164,13 +146,11 @@ Operationalize recovered code instead of redrafting it:
 - Drive-ingest daemon
 
 ### Opportunity 3
-
 Use the recovered CounselConduit blueprint as the business-facing spec while `pnkln/uphillsnowball` remains the internal engine.
 
 ## Metrics to run the system by
 
 Track:
-
 - blended cost per task
 - input tokens per completed task
 - cache reuse rate

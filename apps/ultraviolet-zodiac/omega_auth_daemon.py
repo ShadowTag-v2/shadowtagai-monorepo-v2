@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""omega_auth_daemon.py
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+omega_auth_daemon.py
 --------------------
 A persistent daemon that ensures the "headless-runner" service account
 remains authenticated by triggering the `gcloud_auth_solver.py` every 3 minutes.
@@ -63,13 +65,7 @@ def main():
         try:
             # Run the solver synchronously
             # Use sys.executable to ensure we use the same Python environment
-            result = subprocess.run(
-                [sys.executable, SOLVER_SCRIPT],
-                capture_output=True,
-                text=True,
-                check=False,
-                env=os.environ,
-            )
+            result = subprocess.run([sys.executable, SOLVER_SCRIPT], capture_output=True, text=True, check=False, env=os.environ)
 
             if result.returncode == 0:
                 log("✅ Solver Success: " + result.stdout.strip())

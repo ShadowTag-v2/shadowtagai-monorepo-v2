@@ -2,7 +2,7 @@
 
 > **CLASSIFICATION**: TIER 30 // SOVEREIGN EYES ONLY
 > **DATE**: 2026-01-24
-> **STATUS**: n-autoresearch/Kosmos/BioAgents ACTIVATED
+> **STATUS**: MONKEYS ACTIVATED
 
 ## 1. IDENTITY & MISSION
 
@@ -26,7 +26,7 @@
 
 | TROOP        | SIZE | MODEL | ROLE                    | TACTIC                    |
 | ------------ | ---- | ----- | ----------------------- | ------------------------- |
-| **HHT**      | 90   | PRO   | Judge 6, Governance    | Judge 6 / cATO Gating    |
+| **HHT**      | 90   | PRO   | Judge #6, Governance    | Judge #6 / cATO Gating    |
 | **AIR**      | 120  | FLASH | Aerial Scouts (Recon)   | Zone Recon via Perplexity |
 | **ALPHA**    | 130  | FLASH | Armor (Heavy Compute)   | Main Battle Tank Ops      |
 | **BRAVO**    | 130  | FLASH | Stryker (Rapid Deploy)  | MVP < 48h                 |
@@ -44,7 +44,7 @@
 
 ## 5. RESEARCH DELTAS & PROTOCOLS
 
-- **Entropy-Targeted RL**: Focus compute on high-entropy forks via Judge 6.
+- **Entropy-Targeted RL**: Focus compute on high-entropy forks via Judge #6.
 - **SOP-C Decision Protocol**: "Lowest-Confidence Check" triggers immediate branch review.
 - **RoT Templates**: 40% token reduction via retrieval-of-thought.
 - **Long⊗Short Routing**: 7B model for low-entropy, Pro for high-entropy.
@@ -61,7 +61,7 @@
 >
 > - **PROJECT**: `shadowtag-omega-v2`
 > - **ENVIRONMENT**: Pure Gemini (Zero Deviation Enforced)
-> - **n-autoresearch/Kosmos/BioAgents**: ACTIVATED
+> - **MONKEYS**: ACTIVATED
 > - **JUDGE BRAKES**: ACTIVE
 
 ## 8. ARCHITECTURE: UPHILLSNOWBALL (GOD-MODE)
@@ -74,7 +74,7 @@
 **CONTROL LOOP**:
 
 1. **Generator**: Gemini Code Assist creates plan.
-2. **Plan Mode**: n-autoresearch/Kosmos/BioAgents/Kosmos reverse-engineer intent + risk.
+2. **Plan Mode**: Monkeys/Kosmos reverse-engineer intent + risk.
 3. **Validator**: Judge/CSRMC executes audit, signs proof.
 4. **Publish**: Serverless Cloud Run releases output.
 
@@ -103,19 +103,18 @@ if __name__ == "__main__":
     print(f"✅ LOADED {len(doctrine)} SOPs")
     execute_tier_30()
 ```
-
-```
+````
 
 ## 10. COR.JUDGE.6 DOCTRINE (CSRMC 2026)
 
-> **SUPERSEDES**: Compliance Framework (Risk Management)
+> **SUPERSEDES**: ATP 5-19 (Risk Management)
 > **AUTHORITY**: DoD CSRMC 2025/2026 Framework
 > **STATE**: "Always-On" (Continuous ATO)
 
 ### A. THE SHIFT
 
-- **Legacy (Compliance Framework)**: Static, Snapshot-in-time, Checklist compliance.
-- **Omega (Judge 6)**: Dynamic, Real-time, Policy-as-Code enforcement.
+- **Legacy (ATP 5-19)**: Static, Snapshot-in-time, Checklist compliance.
+- **Omega (Judge #6)**: Dynamic, Real-time, Policy-as-Code enforcement.
 
 ### B. 10 STRATEGIC TENETS
 
@@ -149,4 +148,3 @@ if __name__ == "__main__":
 **END OF PROTOCOL**
 
 `
-```

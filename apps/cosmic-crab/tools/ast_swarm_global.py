@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 import logging
 import subprocess
@@ -37,9 +38,7 @@ class SwarmAuditor:
                 # Log to a secure file
                 Path(".beads/security_sweep.json").write_text(result.stdout)
             else:
-                logger.info(
-                    "✅ Perimeter secure. No rigid hardcoded secrets detected structurally.",
-                )
+                logger.info("✅ Perimeter secure. No rigid hardcoded secrets detected structurally.")
         except Exception as e:
             logger.error(f"AST-Grep execution failed: {e}. Is 'sg' installed?")
 

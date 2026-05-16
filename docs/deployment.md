@@ -1,438 +1,404 @@
 # Deployment Guide - Pnkln Ultrathink Framework
 
-Complete step-by-step guide to deploying pnkln orchestrator to Google Kubernetes Engine.
+**Target:** GKE Native (Google Cloud exclusive)
+**Philosophy:** Production-grade, ruthlessly simple, obsessively detailed
 
 ## Prerequisites
 
-### Required Tools
+- Google Cloud account with billing enabled
+- `gcloud` CLI installed and authenticated
+- GKE cluster created and configured
+- Docker installed locally
+- `kubectl` configured for your GKE cluster
+
+## Deployment Phases
+
+### Phase 1: Local Development (CURRENT)
+
+**Status:** ✓ Complete
 
 ```bash
-# Install gcloud CLI
-curl https://sdk.cloud.google.com | bash
+# 1. Clone repository
+git clone <repo_url>
+cd aiyou-fastapi-services
 
-# Install kubectl
-gcloud components install kubectl
+# 2. Install dependencies
+pip install -r requirements.txt
 
-# Install Terraform
-brew install terraform  # macOS
-# or download from https://www.terraform.io/downloads
+# 3. Run tests
+python tests/test_orchestrator.py
 
-# Install Skaffold
-brew install skaffold  # macOS
-# or download from https://skaffold.dev/docs/install/
+# 4. Start local server
+uvicorn api.main:app --reload --port 8000
+
+# 5. Access API
+open http://localhost:8000/docs
 ```
 
-### Required Permissions
+### Phase 2: Containerization
 
-Your GCP account needs:
+**Status:** Ready for implementation
 
-- `roles/owner` (or equivalent granular roles)
-- Billing account access
-- Ability to enable APIs
+#### Create Dockerfile
 
-## Step-by-Step Deployment
+```dockerfile
+FROM python:3.11-slim
 
-### Phase 1: GCP Project Setup
+WORKDIR /app
 
-```bash
-# 1. Set your project ID
-export PROJECT_ID="your-project-id"
-export REGION="us-central1"
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 2. Set default project
-gcloud config set project $PROJECT_ID
+# Copy application
+COPY pnkln/ ./pnkln/
+COPY api/ ./api/
+COPY data/ ./data/
 
-# 3. Enable billing (if not already enabled)
-# Visit: https://console.cloud.google.com/billing
+# Create non-root user
+RUN useradd -m -u 1000 pnkln && chown -R pnkln:pnkln /app
+USER pnkln
 
-# 4. Verify project
-gcloud projects describe $PROJECT_ID
+# Expose port
+EXPOSE 8000
+
+# Run application
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-### Phase 2: Infrastructure Provisioning
+#### Build and Test
 
 ```bash
-# 1. Navigate to terraform directory
-cd terraform
+# Build
+docker build -t pnkln-api:1.0.0 .
 
-# 2. Create terraform.tfvars
-cp terraform.tfvars.example terraform.tfvars
+# Test locally
+docker run -p 8000:8000 pnkln-api:1.0.0
 
-# 3. Edit terraform.tfvars
-nano terraform.tfvars
-
-# Add your values:
-# project_id                  = "your-project-id"
-# region                      = "us-central1"
-# anthropic_vertex_project_id = "your-anthropic-vertex-project-id"
-
-# 4. Initialize Terraform
-terraform init
-
-# 5. Review plan
-terraform plan
-
-# 6. Apply infrastructure
-terraform apply
-
-# Type 'yes' to confirm
+# Verify
+curl http://localhost:8000/health
 ```
 
-**This will create:**
+### Phase 3: Google Cloud Setup
 
-- GKE cluster with Workload Identity
-- VPC network with private subnets
-- Cloud NAT for egress
-- Node pools (Spot + On-demand)
-- Artifact Registry repository
-- Service accounts with IAM bindings
-- Secrets in Secret Manager
-
-### Phase 3: Configure kubectl
+#### Configure gcloud
 
 ```bash
-# Get cluster credentials
-gcloud container clusters get-credentials pnkln-production \
-  --region $REGION \
-  --project $PROJECT_ID
+# Set project
+gcloud config set project YOUR_PROJECT_ID
 
-# Verify connection
-kubectl cluster-info
-kubectl get nodes
+# Enable required APIs
+gcloud services enable container.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
+
+# Create Artifact Registry repository
+gcloud artifacts repositories create pnkln-repo \
+    --repository-format=docker \
+    --location=us-central1 \
+    --description="Pnkln ultrathink framework images"
+
+# Configure Docker for Artifact Registry
+gcloud auth configure-docker us-central1-docker.pkg.dev
 ```
 
-### Phase 4: Update Kubernetes Manifests
+#### Push Image to Artifact Registry
 
 ```bash
-# 1. Update ServiceAccount with your project ID
-# Edit k8s/base/serviceaccount.yaml
+# Tag image
+docker tag pnkln-api:1.0.0 \
+  us-central1-docker.pkg.dev/YOUR_PROJECT_ID/pnkln-repo/pnkln-api:1.0.0
 
-# Replace YOUR_PROJECT_ID with your actual project ID:
-sed -i "s/YOUR_PROJECT_ID/$PROJECT_ID/g" k8s/base/serviceaccount.yaml
-
-# 2. Update kustomization.yaml
-sed -i "s/PROJECT_ID/$PROJECT_ID/g" k8s/base/kustomization.yaml
+# Push
+docker push us-central1-docker.pkg.dev/YOUR_PROJECT_ID/pnkln-repo/pnkln-api:1.0.0
 ```
 
-### Phase 5: Create Kubernetes Secret
+### Phase 4: GKE Deployment
+
+#### Create GKE Cluster (if not exists)
 
 ```bash
-# Create secret from Secret Manager
-kubectl create secret generic pnkln-secrets \
-  --from-literal=project-id="$(gcloud secrets versions access latest --secret=anthropic-vertex-project-id)" \
-  --namespace=pnkln-production
+gcloud container clusters create pnkln-cluster \
+    --zone=us-central1-a \
+    --num-nodes=3 \
+    --machine-type=e2-standard-2 \
+    --enable-autoscaling \
+    --min-nodes=1 \
+    --max-nodes=5 \
+    --enable-autorepair \
+    --enable-autoupgrade
+
+# Get credentials
+gcloud container clusters get-credentials pnkln-cluster --zone=us-central1-a
 ```
 
-### Phase 6: Set Up Cloud Build
+#### Kubernetes Manifests
 
-```bash
-# Run setup script
-./scripts/setup-cloud-build-trigger.sh $PROJECT_ID
+**deployment.yaml:**
 
-# Follow prompts to connect GitHub repository
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pnkln-api
+  labels:
+    app: pnkln-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pnkln-api
+  template:
+    metadata:
+      labels:
+        app: pnkln-api
+    spec:
+      containers:
+      - name: pnkln-api
+        image: us-central1-docker.pkg.dev/YOUR_PROJECT_ID/pnkln-repo/pnkln-api:1.0.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pnkln-api-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: pnkln-api
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
 ```
 
-### Phase 7: Set Up Monitoring
+#### Deploy
 
 ```bash
-# Run setup script
-./scripts/setup-monitoring.sh $PROJECT_ID
+# Apply deployment
+kubectl apply -f k8s/deployment.yaml
 
-# Enter your email when prompted for alerts
+# Check status
+kubectl get pods
+kubectl get services
+
+# Get external IP
+kubectl get service pnkln-api-service
+
+# Test
+curl http://EXTERNAL_IP/health
 ```
 
-### Phase 8: Deploy Application
+### Phase 5: Monitoring & Logging
 
-#### Option A: Via Cloud Build (Recommended for Production)
+#### Enable Google Cloud Monitoring
 
 ```bash
-# Push to main branch
-git add .
-git commit -m "Initial deployment"
-git push origin main
+# View logs
+gcloud logging read "resource.type=k8s_container AND resource.labels.cluster_name=pnkln-cluster" \
+  --limit 50 \
+  --format json
 
-# Monitor build
-gcloud builds list --ongoing
-
-# Watch build logs
-gcloud builds log BUILD_ID --stream
+# Create log-based metric
+gcloud logging metrics create pnkln_requests \
+  --description="Pnkln API requests" \
+  --log-filter='resource.type="k8s_container" AND resource.labels.cluster_name="pnkln-cluster"'
 ```
 
-#### Option B: Via Skaffold (For Testing)
+#### Set Up Alerts
 
 ```bash
-# Development deployment with hot reload
-skaffold dev
-
-# Production deployment
-skaffold run -p production
+# Create alerting policy (via Cloud Console or Terraform)
+# Monitor:
+# - API error rate
+# - Response latency
+# - Pod restarts
+# - Memory usage
 ```
 
-#### Option C: Manual Deployment
+### Phase 6: CI/CD (Optional)
 
-```bash
-# Build and push image
-docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:v1 .
-docker push $REGION-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:v1
+#### Cloud Build Configuration
 
-# Deploy to GKE
-kubectl apply -k k8s/base
+**cloudbuild.yaml:**
+
+```yaml
+steps:
+  # Run tests
+  - name: python:3.11-slim
+    entrypoint: /bin/bash
+    args:
+      - -c
+      - |
+        pip install -r requirements.txt
+        python tests/test_orchestrator.py
+
+  # Build Docker image
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/pnkln-repo/pnkln-api:$SHORT_SHA
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/pnkln-repo/pnkln-api:latest
+      - .
+
+  # Push to Artifact Registry
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - us-central1-docker.pkg.dev/$PROJECT_ID/pnkln-repo/pnkln-api:$SHORT_SHA
+
+  # Deploy to GKE
+  - name: gcr.io/cloud-builders/kubectl
+    args:
+      - set
+      - image
+      - deployment/pnkln-api
+      - pnkln-api=us-central1-docker.pkg.dev/$PROJECT_ID/pnkln-repo/pnkln-api:$SHORT_SHA
+    env:
+      - CLOUDSDK_COMPUTE_ZONE=us-central1-a
+      - CLOUDSDK_CONTAINER_CLUSTER=pnkln-cluster
+
+options:
+  logging: CLOUD_LOGGING_ONLY
 ```
 
-### Phase 9: Verify Deployment
+#### Create Build Trigger
 
 ```bash
-# Check pods
-kubectl get pods -n pnkln-production
-
-# Check deployment status
-kubectl rollout status deployment/pnkln-orchestrator -n pnkln-production
-
-# Check logs
-kubectl logs -f deployment/pnkln-orchestrator -n pnkln-production
-
-# Check service
-kubectl get svc -n pnkln-production
-
-# Test health endpoint
-kubectl port-forward svc/pnkln-orchestrator 8080:80 -n pnkln-production
-curl http://localhost:8080/health
+gcloud builds triggers create github \
+  --repo-name=aiyou-fastapi-services \
+  --repo-owner=YOUR_GITHUB_USERNAME \
+  --branch-pattern="^main$" \
+  --build-config=cloudbuild.yaml
 ```
 
-### Phase 10: Set Up Ingress (Optional)
+## Production Checklist
+
+- [ ] GKE cluster created and configured
+- [ ] Artifact Registry repository created
+- [ ] Docker image built and pushed
+- [ ] Kubernetes manifests created
+- [ ] Deployment applied to cluster
+- [ ] Service exposed with LoadBalancer
+- [ ] External IP obtained and tested
+- [ ] Monitoring and logging configured
+- [ ] Alerts set up for critical metrics
+- [ ] CI/CD pipeline configured (optional)
+- [ ] SSL/TLS certificate configured (if using custom domain)
+- [ ] API authentication implemented
+- [ ] Rate limiting configured
+- [ ] Backup strategy implemented for audit trail
+
+## Cost Optimization
+
+### GKE Cluster Sizing
+
+**Development:**
+- Nodes: 1-2
+- Machine type: `e2-small`
+- Cost: ~$25-50/month
+
+**Production:**
+- Nodes: 3-5 (with autoscaling)
+- Machine type: `e2-standard-2`
+- Cost: ~$150-250/month
+
+### Cost Monitoring
 
 ```bash
-# 1. Reserve static IP
-gcloud compute addresses create pnkln-orchestrator-ip \
-  --global \
-  --project $PROJECT_ID
-
-# 2. Get IP address
-gcloud compute addresses describe pnkln-orchestrator-ip --global --format="value(address)"
-
-# 3. Create DNS A record pointing to this IP
-# (Use your DNS provider)
-
-# 4. Wait for Ingress to provision (5-10 minutes)
-kubectl get ingress -n pnkln-production -w
-
-# 5. Verify certificate
-kubectl describe managedcertificate pnkln-cert -n pnkln-production
-
-# 6. Test via domain
-curl https://api.pnkln.io/health
-```
-
-## Post-Deployment Configuration
-
-### Enable Workload Identity Annotation
-
-```bash
-# Annotate Kubernetes ServiceAccount
-kubectl annotate serviceaccount pnkln-orchestrator \
-  -n pnkln-production \
-  iam.gke.io/gcp-service-account=pnkln-orchestrator@$PROJECT_ID.iam.gserviceaccount.com
-```
-
-### Set Up Log Routing (Optional)
-
-```bash
-# Create log sink for long-term storage
-gcloud logging sinks create pnkln-logs \
-  gs://your-logs-bucket/pnkln \
-  --log-filter='resource.type="k8s_pod" AND resource.labels.namespace_name="pnkln-production"' \
-  --project=$PROJECT_ID
-```
-
-### Configure Budget Alerts
-
-```bash
-# Set up budget alert
+# Set budget alerts
 gcloud billing budgets create \
-  --billing-account=YOUR_BILLING_ACCOUNT_ID \
+  --billing-account=BILLING_ACCOUNT_ID \
   --display-name="Pnkln Monthly Budget" \
-  --budget-amount=500USD \
+  --budget-amount=300USD \
   --threshold-rule=percent=50 \
   --threshold-rule=percent=90 \
   --threshold-rule=percent=100
 ```
 
-## Testing the Deployment
-
-### 1. Health Check
+## Rollback Strategy
 
 ```bash
-curl https://api.pnkln.io/health
-```
-
-Expected response:
-
-```json
-{
-  "status": "healthy",
-  "timestamp": "2025-01-08T...",
-  "uptime": 12345,
-  "version": "1.0.0",
-  "vertex": true
-}
-```
-
-### 2. Execute Request
-
-```bash
-curl -X POST https://api.pnkln.io/api/execute \
-  -H "Content-Type: application/json" \
-  -d '{
-    "input": "What is the best way to optimize costs for a GKE deployment?"
-  }'
-```
-
-### 3. Check Metrics
-
-```bash
-curl https://api.pnkln.io/metrics
-```
-
-## Scaling Configuration
-
-### Adjust HPA Limits
-
-```bash
-# Edit HPA
-kubectl edit hpa pnkln-orchestrator -n pnkln-production
-
-# Or apply updated configuration
-kubectl apply -f k8s/base/hpa.yaml
-```
-
-### Add More Node Pools
-
-```terraform
-# Edit terraform/main.tf
-# Add new node pool resource
-# Apply changes
-terraform plan
-terraform apply
-```
-
-## Rollback Procedure
-
-### Rollback to Previous Deployment
-
-```bash
-# Check rollout history
-kubectl rollout history deployment/pnkln-orchestrator -n pnkln-production
+# View deployment history
+kubectl rollout history deployment/pnkln-api
 
 # Rollback to previous version
-kubectl rollout undo deployment/pnkln-orchestrator -n pnkln-production
+kubectl rollout undo deployment/pnkln-api
 
 # Rollback to specific revision
-kubectl rollout undo deployment/pnkln-orchestrator -n pnkln-production --to-revision=2
-```
-
-### Emergency Rollback
-
-```bash
-# Scale to zero
-kubectl scale deployment pnkln-orchestrator --replicas=0 -n pnkln-production
-
-# Deploy previous image
-kubectl set image deployment/pnkln-orchestrator \
-  orchestrator=us-central1-docker.pkg.dev/$PROJECT_ID/pnkln/orchestrator:PREVIOUS_TAG \
-  -n pnkln-production
-
-# Scale back up
-kubectl scale deployment pnkln-orchestrator --replicas=3 -n pnkln-production
+kubectl rollout undo deployment/pnkln-api --to-revision=2
 ```
 
 ## Troubleshooting
 
-### Pods Not Starting
+### Pods not starting
 
 ```bash
-# Check pod events
-kubectl describe pod POD_NAME -n pnkln-production
-
-# Common issues:
-# - ImagePullBackOff: Check Artifact Registry permissions
-# - CrashLoopBackOff: Check logs for application errors
-# - Pending: Check node resources
+kubectl describe pod <pod-name>
+kubectl logs <pod-name>
 ```
 
-### Workload Identity Issues
+### Service not accessible
 
 ```bash
-# Verify binding
-gcloud iam service-accounts get-iam-policy \
-  pnkln-orchestrator@$PROJECT_ID.iam.gserviceaccount.com
-
-# Verify annotation
-kubectl get sa pnkln-orchestrator -n pnkln-production -o yaml | grep iam.gke.io
+kubectl get endpoints pnkln-api-service
+kubectl describe service pnkln-api-service
 ```
 
-### High Costs
+### High memory usage
 
 ```bash
-# Check node pool usage
+kubectl top pods
 kubectl top nodes
-
-# Check pod resource usage
-kubectl top pods -n pnkln-production
-
-# Review GCP billing
-gcloud billing accounts list
 ```
 
-## Maintenance
+## Security Best Practices
 
-### Regular Updates
+1. **Secrets Management** - Use Google Secret Manager
+2. **Network Policies** - Restrict pod-to-pod traffic
+3. **Service Accounts** - Use minimal permissions
+4. **Image Scanning** - Enable Artifact Registry vulnerability scanning
+5. **HTTPS Only** - Configure SSL/TLS termination
+6. **Rate Limiting** - Implement API rate limits
 
-```bash
-# Update GKE cluster (via Terraform)
-cd terraform
-terraform plan
-terraform apply
+## Next Steps After Deployment
 
-# Update application (via CI/CD)
-git push origin main
-```
+1. Configure custom domain and SSL
+2. Set up authentication (OAuth, API keys)
+3. Implement request rate limiting
+4. Configure backup for audit trail data
+5. Set up performance monitoring dashboard
+6. Document runbooks for common operations
+7. Create disaster recovery plan
 
-### Certificate Renewal
+---
 
-GCP Managed Certificates renew automatically, but verify:
+**Philosophy:** Deploy with confidence, monitor obsessively, iterate ruthlessly.
 
-```bash
-kubectl describe managedcertificate pnkln-cert -n pnkln-production
-```
-
-### Log Retention
-
-```bash
-# Cloud Logging retains logs for 30 days by default
-# For longer retention, configure log sinks
-```
-
-## Clean Up
-
-### Remove Application
-
-```bash
-# Delete Kubernetes resources
-kubectl delete -k k8s/base
-
-# Or delete namespace
-kubectl delete namespace pnkln-production
-```
-
-### Destroy Infrastructure
-
-```bash
-cd terraform
-terraform destroy
-
-# Type 'yes' to confirm
-```
-
-## Troubleshooting
-
-**Questions?** Open an issue on GitHub or contact support@pnkln.io
+**Status:** Phase 1 Complete ✓
+**Next:** Containerization (Phase 2)

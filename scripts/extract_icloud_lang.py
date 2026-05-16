@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import glob
 import logging
 import os
@@ -9,10 +10,11 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-import langextract as lx  # noqa: E402
-from dotenv import load_dotenv  # noqa: E402
-from rag_engine.memory_service import SequentialMemoryService  # noqa: E402
-from shared.config import settings  # noqa: E402
+import langextract as lx
+from dotenv import load_dotenv
+
+from rag_engine.memory_service import SequentialMemoryService
+from shared.config import settings
 
 load_dotenv(override=True)
 
@@ -26,7 +28,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("iCloud_Extractor")
 
 
-def ingest_icloud_notes(notes_dir: str) -> None:
+def ingest_icloud_notes(notes_dir: str):
     logger.info(f"Targeting iCloud Notes Vault: {notes_dir}")
 
     # Locate all note files (txt and md)
@@ -53,11 +55,11 @@ def ingest_icloud_notes(notes_dir: str) -> None:
     # High-quality few-shot examples telling LangExtract how to parse the unformatted brain dumps
     examples = [
         lx.data.ExampleData(
-            text="Need to migrate the ShadowTag-v2-fastapi-services to Cloud Run and finalize the Stripe webhooks by Friday.",
+            text="Need to migrate the aiyou-fastapi-services to Cloud Run and finalize the Stripe webhooks by Friday.",
             extractions=[
                 lx.data.Extraction(
                     extraction_class="project",
-                    extraction_text="ShadowTag-v2-fastapi-services",
+                    extraction_text="aiyou-fastapi-services",
                     attributes={"status": "needs migration", "target": "Cloud Run"},
                 ),
                 lx.data.Extraction(
@@ -66,7 +68,7 @@ def ingest_icloud_notes(notes_dir: str) -> None:
                     attributes={"deadline": "Friday"},
                 ),
             ],
-        ),
+        )
     ]
 
     # Initialize Memory Service
@@ -106,7 +108,7 @@ def ingest_icloud_notes(notes_dir: str) -> None:
                             "text": f"[{ext.extraction_class.upper()}] {ext.extraction_text} | Context: {ext.attributes}",
                             "timestamp": "retroactive",
                             "node_type": "icloud_note_extraction",
-                        },
+                        }
                     )
 
                 # Push mathematically tagged structures into the active Sovereign Vector Engine
@@ -114,7 +116,7 @@ def ingest_icloud_notes(notes_dir: str) -> None:
                 logger.info(f" -> Upserted {len(structured_events)} structured entities.")
 
         except Exception as e:
-            logger.exception(f"Failed extracting {filepath}: {e!s}")
+            logger.error(f"Failed extracting {filepath}: {str(e)}")
 
     logger.info("iCloud Extraction Sequence Complete.")
 

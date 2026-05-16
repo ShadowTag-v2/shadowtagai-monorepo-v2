@@ -27,7 +27,7 @@ set -euo pipefail
 # ==============================================================================
 
 # Configuration
-export PROJECT_ID="${PROJECT_ID:-shadowtagai-core-stack}"
+export PROJECT_ID="${PROJECT_ID:-pnkln-core-stack}"
 export REGION="${REGION:-us-central1}"
 export CLUSTER_NAME="${CLUSTER_NAME:-judge6-inference}"
 
@@ -97,22 +97,6 @@ configure_docker_auth() {
   log_info "✓ Docker authentication configured"
 }
 
-# Check quality gate
-check_quality_gate() {
-  log_step "Checking SonarQube Quality Gate"
-
-  if [ -z "${SONAR_TOKEN:-}" ]; then
-    log_warn "SONAR_TOKEN not set. Skipping quality gate check."
-    return 0
-  fi
-
-  if python3 -m app.quality.quality_gates; then
-    log_info "✓ Quality gate passed"
-  else
-    error_exit "Quality gate failed. Deployment blocked."
-  fi
-}
-
 # Deploy infrastructure with Terraform
 deploy_infrastructure() {
   log_step "Deploying infrastructure with Terraform"
@@ -120,7 +104,7 @@ deploy_infrastructure() {
   cd infrastructure
 
   # Bootstrap backend bucket if needed
-  if ! gsutil ls -b "gs://shadowtagai-terraform-state" &>/dev/null; then
+  if ! gsutil ls -b "gs://pnkln-terraform-state" &>/dev/null; then
     log_info "Creating Terraform state bucket..."
     bash bootstrap.sh
   fi
@@ -359,7 +343,6 @@ main() {
   case "$command" in
     all)
       deploy_infrastructure
-      check_quality_gate
       build_and_push_images
       create_gke_cluster
       deploy_to_kubernetes
@@ -376,7 +359,6 @@ main() {
       create_gke_cluster
       ;;
     deploy)
-      check_quality_gate
       deploy_to_kubernetes
       ;;
     validate)

@@ -4,7 +4,7 @@
 
 ```bash
 # Start the Swiper API server
-cd /home/user/ShadowTag-v2-fastapi-services
+cd /home/user/aiyou-fastapi-services
 python src/api/swiper.py
 
 # Server runs on http://localhost:8000
@@ -210,7 +210,7 @@ curl -X POST "http://localhost:8000/videos/play" \
       "buy_url": "https://walmart.com/products/superman-figure",
       "start_time": 4500,
       "end_time": 5400,
-      "position": { "x": 80, "y": 80, "width": 15, "height": 15 },
+      "position": {"x": 80, "y": 80, "width": 15, "height": 15},
       "cta_text": "Get your Superman!"
     }
   ],
@@ -240,7 +240,6 @@ curl -X POST "http://localhost:8000/videos/play" \
 ```
 
 **What Happened:**
-
 1. ✅ Movie runtime adjusted from 90min → 45min (matches ETA)
 2. ✅ AI selected "family_fun" narrative arc (household type = family_with_kids)
 3. ✅ Loaded parent-targeted persuasion points (kids will repeat these to mom)
@@ -318,7 +317,6 @@ curl -X POST "http://localhost:8000/interactions" \
 ```
 
 **Result:**
-
 - Video conversion count incremented
 - Product purchase count incremented
 - User unlocks Part 2 for the ride home
@@ -373,7 +371,6 @@ curl -X GET "http://localhost:8000/analytics/videos/video-uuid-123"
 ```
 
 **Insights:**
-
 - ✅ **33% conversion rate** (vs. industry standard ~2-3%)
 - ✅ **76% arrival rate** (most viewers actually drove to store)
 - ✅ **41% unlock rate** (bought product to get Part 2)
@@ -425,9 +422,9 @@ curl -X GET "http://localhost:8000/analytics/dashboard"
   },
 
   "top_categories": [
-    { "category": "toys", "products": 123 },
-    { "category": "electronics", "products": 87 },
-    { "category": "home_goods", "products": 65 }
+    {"category": "toys", "products": 123},
+    {"category": "electronics", "products": 87},
+    {"category": "home_goods", "products": 65}
   ]
 }
 ```
@@ -452,14 +449,13 @@ curl -X GET "http://localhost:8000/retailers/walmart-123/performance"
   "total_views": 15678,
   "total_conversions": 4234,
   "total_revenue_usd": 126789.45,
-  "conversion_rate_pct": 27.0,
+  "conversion_rate_pct": 27.00,
   "revenue_share_pct": 15.0,
   "retailer_payout_usd": 19018.42
 }
 ```
 
 **Walmart's Return:**
-
 - Invested: $50,000/month ad spend
 - Generated: $126,789 in sales
 - **ROI: 2.5× return**
@@ -554,7 +550,7 @@ print(f"Persuasion points: {len(playback['persuasion_points'])}")
 ```javascript
 // Swiper React Integration
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 const SwiperPlayer = ({ videoId, userId, userLocation, etaMinutes }) => {
   const [playback, setPlayback] = useState(null);
@@ -562,21 +558,21 @@ const SwiperPlayer = ({ videoId, userId, userLocation, etaMinutes }) => {
 
   useEffect(() => {
     // Get adaptive playback configuration
-    fetch("http://localhost:8000/videos/play", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    fetch('http://localhost:8000/videos/play', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         video_id: videoId,
         user_id: userId,
-        runtime_mode: "auto_adaptive",
+        runtime_mode: 'auto_adaptive',
         location_lat: userLocation.lat,
         location_lon: userLocation.lon,
         eta_minutes: etaMinutes,
-        device_type: "mobile",
-      }),
+        device_type: 'mobile'
+      })
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setPlayback(data);
         setLoading(false);
       });
@@ -584,38 +580,43 @@ const SwiperPlayer = ({ videoId, userId, userLocation, etaMinutes }) => {
 
   const handleProductClick = (product) => {
     // Log interaction
-    fetch("http://localhost:8000/interactions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    fetch('http://localhost:8000/interactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         user_id: userId,
         video_id: videoId,
-        interaction_type: "click_product",
-        product_id: product.product_id,
-      }),
+        interaction_type: 'click_product',
+        product_id: product.product_id
+      })
     });
 
     // Redirect to buy URL
-    window.open(product.buy_url, "_blank");
+    window.open(product.buy_url, '_blank');
   };
 
   if (loading) return <div>Loading adaptive content...</div>;
 
   return (
     <div className="swiper-player">
-      <video src={playback.playback_url} autoPlay controls style={{ width: "100%" }} />
+      <video
+        src={playback.playback_url}
+        autoPlay
+        controls
+        style={{ width: '100%' }}
+      />
 
       {/* Shoppable Product Overlays */}
-      {playback.products.map((product) => (
+      {playback.products.map(product => (
         <div
           key={product.product_id}
           className="product-overlay"
           style={{
-            position: "absolute",
+            position: 'absolute',
             left: `${product.position.x}%`,
             top: `${product.position.y}%`,
             width: `${product.position.width}%`,
-            height: `${product.position.height}%`,
+            height: `${product.position.height}%`
           }}
           onClick={() => handleProductClick(product)}
         >
@@ -625,7 +626,11 @@ const SwiperPlayer = ({ videoId, userId, userLocation, etaMinutes }) => {
       ))}
 
       {/* Premium Beacon Unlock Message */}
-      {playback.is_beacon_session && <div className="unlock-banner">{playback.unlock_condition}</div>}
+      {playback.is_beacon_session && (
+        <div className="unlock-banner">
+          {playback.unlock_condition}
+        </div>
+      )}
 
       {/* Metadata */}
       <div className="video-info">
@@ -692,7 +697,6 @@ These examples cover all major Swiper features:
 5. ✅ **Analytics** - Comprehensive performance metrics
 
 **Next Steps:**
-
 - Try the API locally: `python src/api/swiper.py`
 - Visit docs: http://localhost:8000/docs
 - Build your first Premium Beacon!

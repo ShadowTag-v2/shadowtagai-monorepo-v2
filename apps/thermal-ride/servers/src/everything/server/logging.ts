@@ -1,5 +1,5 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { LoggingLevel } from '@modelcontextprotocol/sdk/types.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { LoggingLevel } from "@modelcontextprotocol/sdk/types.js";
 
 // Map session ID to the interval for sending logging messages to the client
 const logsUpdateIntervals: Map<string | undefined, NodeJS.Timeout | undefined> = new Map<
@@ -16,23 +16,23 @@ const logsUpdateIntervals: Map<string | undefined, NodeJS.Timeout | undefined> =
  * the session ID will be appended to log messages.
  */
 export const beginSimulatedLogging = (server: McpServer, sessionId: string | undefined) => {
-  const maybeAppendSessionId = sessionId ? ` - SessionId ${sessionId}` : '';
+  const maybeAppendSessionId = sessionId ? ` - SessionId ${sessionId}` : "";
   const messages: { level: LoggingLevel; data: string }[] = [
-    { level: 'debug', data: `Debug-level message${maybeAppendSessionId}` },
-    { level: 'info', data: `Info-level message${maybeAppendSessionId}` },
-    { level: 'notice', data: `Notice-level message${maybeAppendSessionId}` },
+    { level: "debug", data: `Debug-level message${maybeAppendSessionId}` },
+    { level: "info", data: `Info-level message${maybeAppendSessionId}` },
+    { level: "notice", data: `Notice-level message${maybeAppendSessionId}` },
     {
-      level: 'warning',
+      level: "warning",
       data: `Warning-level message${maybeAppendSessionId}`,
     },
-    { level: 'error', data: `Error-level message${maybeAppendSessionId}` },
+    { level: "error", data: `Error-level message${maybeAppendSessionId}` },
     {
-      level: 'critical',
+      level: "critical",
       data: `Critical-level message${maybeAppendSessionId}`,
     },
-    { level: 'alert', data: `Alert level-message${maybeAppendSessionId}` },
+    { level: "alert", data: `Alert level-message${maybeAppendSessionId}` },
     {
-      level: 'emergency',
+      level: "emergency",
       data: `Emergency-level message${maybeAppendSessionId}`,
     },
   ];

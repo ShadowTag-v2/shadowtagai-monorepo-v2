@@ -3,7 +3,6 @@
 ## Executive Summary
 
 This document describes the implementation of a **Kosmos-pattern autonomous agent system** on Google Cloud Platform, combining:
-
 - **Kosmos principle**: Long-horizon autonomous workflows with world-model coordination
 - **ReAct algorithm**: Reason → Act → Observe → Reason loop for interpretable agent behavior
 - **AgentOps infrastructure**: Full observability, tracing, and operational excellence
@@ -11,7 +10,6 @@ This document describes the implementation of a **Kosmos-pattern autonomous agen
 ## Architecture Decision: Option 1 (Production-Grade)
 
 **Stack:**
-
 ```
 ├── GKE Autopilot cluster (GPU-enabled for inference)
 ├── Vertex AI Gemini 2.5 Pro/Flash (primary LLM brain)
@@ -81,7 +79,6 @@ class ReActOrchestrator:
 ```
 
 **Termination criteria:**
-
 - Explicit "Final Answer:" in LLM response
 - Confidence threshold reached (>0.95)
 - Max iterations (safety limit: 50 for fast loops, 500 for long-horizon)
@@ -91,7 +88,6 @@ class ReActOrchestrator:
 Following Gemini Enterprise Agent Builder patterns, we decompose into specialized agents:
 
 #### 3.1 Literature Agent
-
 ```python
 class LiteratureAgent(BaseAgent):
     model = "gemini-3.1-flash"  # Fast + cheap for search
@@ -100,7 +96,6 @@ class LiteratureAgent(BaseAgent):
 ```
 
 #### 3.2 Data Analysis Agent
-
 ```python
 class DataAnalysisAgent(BaseAgent):
     model = "gemini-3.1-pro"  # Deep reasoning for code generation
@@ -109,7 +104,6 @@ class DataAnalysisAgent(BaseAgent):
 ```
 
 #### 3.3 Hypothesis Agent
-
 ```python
 class HypothesisAgent(BaseAgent):
     model = "gemini-3.1-pro"
@@ -118,7 +112,6 @@ class HypothesisAgent(BaseAgent):
 ```
 
 #### 3.4 Synthesis Agent
-
 ```python
 class SynthesisAgent(BaseAgent):
     model = "gemini-3.1-pro"
@@ -145,10 +138,10 @@ Each phase = multiple ReAct cycles. World model persists state between phases.
 
 ### Model Selection Strategy
 
-| Model            | Use Case                                         | Cost (1M tokens) | Latency |
-| ---------------- | ------------------------------------------------ | ---------------- | ------- |
-| Gemini 2.5 Flash | Literature search, fast iterations, tool routing | $0.075 input     | ~500ms  |
-| Gemini 2.5 Pro   | Deep reasoning, code generation, synthesis       | $1.25 input      | ~2s     |
+| Model | Use Case | Cost (1M tokens) | Latency |
+|-------|----------|------------------|---------|
+| Gemini 2.5 Flash | Literature search, fast iterations, tool routing | $0.075 input | ~500ms |
+| Gemini 2.5 Pro | Deep reasoning, code generation, synthesis | $1.25 input | ~2s |
 
 **Dynamic routing:** Use Flash for <5k context, Pro for >5k or when previous attempt failed.
 
@@ -212,14 +205,12 @@ def execute_cycle(self, goal):
 ### Observability Dashboards
 
 **Metrics tracked:**
-
 - **Per-session:** Total iterations, tool calls, tokens consumed, cost, duration
 - **Per-agent:** Success rate, average cycles to completion, error rate
 - **Per-tool:** Invocation count, latency, failure rate
 - **Cost tracking:** Token usage by model, daily burn rate, cost per research cycle
 
 **Alerts:**
-
 - Infinite loop detection (>100 iterations without progress)
 - Cost threshold exceeded ($200/session warning, $500 hard stop)
 - Tool failure rate >10%
@@ -283,12 +274,10 @@ class CostMonitor:
 ```
 
 **Pricing (Gemini 2.5):**
-
 - Flash: $0.075 / 1M input, $0.30 / 1M output
 - Pro: $1.25 / 1M input, $5.00 / 1M output
 
 **Estimated cost per 20-cycle Kosmos run:**
-
 - Literature search (Flash): ~500k tokens × $0.075 = $0.04
 - Data analysis (Pro): ~2M tokens × $1.25 = $2.50
 - Hypothesis generation (Pro): ~1M tokens × $1.25 = $1.25
@@ -319,7 +308,6 @@ gcloud container clusters get-credentials kosmos-cluster \
 ### Kubernetes Manifests
 
 **Deployment:**
-
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -337,27 +325,26 @@ spec:
     spec:
       serviceAccountName: kosmos-sa
       containers:
-        - name: orchestrator
-          image: gcr.io/$PROJECT_ID/kosmos-orchestrator:latest
-          env:
-            - name: GOOGLE_CLOUD_PROJECT
-              value: "$PROJECT_ID"
-            - name: AGENTOPS_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: agentops-secret
-                  key: api-key
-          resources:
-            requests:
-              memory: "4Gi"
-              cpu: "2"
-            limits:
-              memory: "16Gi"
-              cpu: "8"
+      - name: orchestrator
+        image: gcr.io/$PROJECT_ID/kosmos-orchestrator:latest
+        env:
+        - name: GOOGLE_CLOUD_PROJECT
+          value: "$PROJECT_ID"
+        - name: AGENTOPS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agentops-secret
+              key: api-key
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "2"
+          limits:
+            memory: "16Gi"
+            cpu: "8"
 ```
 
 **Service:**
-
 ```yaml
 apiVersion: v1
 kind: Service
@@ -368,8 +355,8 @@ spec:
   selector:
     app: kosmos
   ports:
-    - port: 8080
-      targetPort: 8080
+  - port: 8080
+    targetPort: 8080
 ```
 
 ### Workload Identity (Secure GCP Access)
@@ -444,21 +431,18 @@ gs://{BUCKET_NAME}/
 ## Validation & Testing
 
 ### Unit Tests
-
 - World model state transitions
 - ReAct loop termination conditions
 - Tool execution error handling
 - Cost estimation accuracy
 
 ### Integration Tests
-
 - End-to-end single-phase workflow
 - Multi-agent coordination
 - Firestore persistence/recovery
 - Vertex AI API error handling
 
 ### Load Tests
-
 - 10 concurrent research cycles
 - 100 ReAct iterations (stress test)
 - Network partition recovery
@@ -482,15 +466,15 @@ gs://{BUCKET_NAME}/
 
 ## Comparison to Alternatives
 
-| Feature            | Option 1 (This)    | Option 2 (LangGraph) | Option 3 (Fork Kosmos)     |
-| ------------------ | ------------------ | -------------------- | -------------------------- |
-| Time to MVP        | 2-3 weeks          | 3 days               | 1 day                      |
-| Production-ready   | ✅ Yes             | ⚠️ Limited           | ❌ No                      |
-| Custom world model | ✅ Full control    | ⚠️ Via checkpointing | ✅ Existing implementation |
-| Observability      | ✅ AgentOps + OTel | ⚠️ Basic             | ❌ Manual                  |
-| Scalability        | ✅ GKE Autopilot   | ✅ Cloud Run         | ❌ Single VM               |
-| Cost/run           | ~$5-20             | ~$5-15               | ~$10-30                    |
-| Vendor lock-in     | ⚠️ GCP             | ⚠️ GCP               | ⚠️ GCP                     |
+| Feature | Option 1 (This) | Option 2 (LangGraph) | Option 3 (Fork Kosmos) |
+|---------|----------------|---------------------|----------------------|
+| Time to MVP | 2-3 weeks | 3 days | 1 day |
+| Production-ready | ✅ Yes | ⚠️ Limited | ❌ No |
+| Custom world model | ✅ Full control | ⚠️ Via checkpointing | ✅ Existing implementation |
+| Observability | ✅ AgentOps + OTel | ⚠️ Basic | ❌ Manual |
+| Scalability | ✅ GKE Autopilot | ✅ Cloud Run | ❌ Single VM |
+| Cost/run | ~$5-20 | ~$5-15 | ~$10-30 |
+| Vendor lock-in | ⚠️ GCP | ⚠️ GCP | ⚠️ GCP |
 
 ## Next Steps
 

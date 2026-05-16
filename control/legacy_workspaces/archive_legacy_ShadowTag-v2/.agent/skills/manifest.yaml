@@ -1,0 +1,29 @@
+version: '2.2'
+agent_managers:
+  - id: 'antigravity-v2.2'
+    name: 'Singularity IDE Agent Manager'
+
+skills:
+  - id: 'firecrawl-browser-scraping'
+    name: 'FireCrawl Browser Scraping'
+    description: 'Managed JS-rendering, anti-ban proxy layer, and SPA crawling.'
+    activation: { conditions: ['user wants full-DOM rendering', 'site is anti-bot locked'] }
+
+  - id: 'scrapling-vue-spa-parse'
+    name: 'Scrapling Vue SPA Data Parser'
+    description: 'Post-processes rendered HTML from Firecrawl/Dia. Handles virtual lists.'
+    activation: { conditions: ['extract structured data from rendered HTML'] }
+
+  - id: 'dia-browser-read-html'
+    name: 'Dia Browser Read Rendered HTML'
+    description: 'Interactive Dia Browser tab chat. Exports cleaned HTML.'
+    activation: { conditions: ['page requires interactive auth or specific click-paths'] }
+
+  - id: 'antigravity-safe-scrapling-runner'
+    name: 'Antigravity-Safe Scrapling Runner'
+    description: 'Sandboxed Scrapling execution. Write-to-file only. Zero drive-deletion risk.'
+    activation: { conditions: ['running local Scrapling spiders'] }
+
+  - id: 'spa-spacing-scrapper'
+    name: 'SPA-Spacing Scrapper (Infinite Scroll / Virtual Lists)'
+    description: 'Scrape Vue-style infinite-scroll using FireCrawl + Scrapling.'

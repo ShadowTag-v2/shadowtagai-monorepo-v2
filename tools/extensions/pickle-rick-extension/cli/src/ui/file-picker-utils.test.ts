@@ -1,18 +1,18 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
-import type { BoxRenderable, InputRenderable } from '@opentui/core';
-import type { FilePickerState } from './file-picker-utils.js';
-import { createMockRenderer } from './mock-factory.ts';
+import { beforeEach, describe, expect, mock, test } from "bun:test";
+import type { BoxRenderable, InputRenderable } from "@opentui/core";
+import type { FilePickerState } from "./file-picker-utils.js";
+import { createMockRenderer } from "./mock-factory.ts";
 
 // Mock search utility
-const mockRecursiveSearch = mock(async () => ({ files: ['test.ts', 'other.ts'] }));
-mock.module('../utils/search.js', () => ({
+const mockRecursiveSearch = mock(async () => ({ files: ["test.ts", "other.ts"] }));
+mock.module("../utils/search.js", () => ({
   recursiveSearch: mockRecursiveSearch,
 }));
 
 // Now import the target
-import { setupFilePicker } from './file-picker-utils.js';
+import { setupFilePicker } from "./file-picker-utils.js";
 
-describe('File Picker Utils', () => {
+describe("File Picker Utils", () => {
   let mockRenderer: any;
   let mockInput: InputRenderable;
   let mockContainer: BoxRenderable;
@@ -22,7 +22,7 @@ describe('File Picker Utils', () => {
     mockRenderer = createMockRenderer();
 
     mockInput = {
-      value: '',
+      value: "",
       syntaxStyle: null,
       removeHighlightsByRef: mock(() => {}),
       addHighlightByCharRange: mock(() => {}),
@@ -41,31 +41,31 @@ describe('File Picker Utils', () => {
     };
   });
 
-  test('setupFilePicker should register syntax highlighting and override delete', () => {
+  test("setupFilePicker should register syntax highlighting and override delete", () => {
     const cleanup = setupFilePicker(mockRenderer, mockInput, mockContainer, state);
     expect(mockInput.syntaxStyle).not.toBeNull();
-    expect(typeof mockInput.deleteCharBackward).toBe('function');
+    expect(typeof mockInput.deleteCharBackward).toBe("function");
     cleanup();
   });
 
-  test('should trigger search when @ is typed', async () => {
+  test("should trigger search when @ is typed", async () => {
     setupFilePicker(mockRenderer, mockInput, mockContainer, state);
 
     // @ts-expect-error - accessing mock properties
     const inputCalls = mockInput.on.mock.calls;
-    const onInput = inputCalls.find((c: [string, Function]) => c[0] === 'input')[1];
+    const onInput = inputCalls.find((c: [string, Function]) => c[0] === "input")[1];
 
-    await onInput('Checking @');
+    await onInput("Checking @");
     expect(mockRecursiveSearch).toHaveBeenCalled();
   });
 
-  test('atomic deletion logic', () => {
+  test("atomic deletion logic", () => {
     setupFilePicker(mockRenderer, mockInput, mockContainer, state);
 
-    mockInput.value = 'File is @test.ts';
+    mockInput.value = "File is @test.ts";
     // Should delete @test.ts atomically
     const deleted = mockInput.deleteCharBackward();
     expect(deleted).toBe(true);
-    expect(mockInput.value).toBe('File is ');
+    expect(mockInput.value).toBe("File is ");
   });
 });

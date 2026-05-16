@@ -1,7 +1,7 @@
-# ShadowTag-v2 FastAPI Services - Integration Implementation Guide
+# AIYOU FastAPI Services - Integration Implementation Guide
 
 **Generated:** 2025-11-18
-**Purpose:** Practical implementation guide for integrating AI agent patterns into ShadowTag-v2 services
+**Purpose:** Practical implementation guide for integrating AI agent patterns into AIYOU services
 **Companion to:** `ai-agents-knowledge-base.md`
 
 ---
@@ -15,7 +15,6 @@
 **ROI:** 50% reduction in embedding costs
 
 #### Current State Analysis
-
 ```bash
 # Check current Gemini API usage
 grep -r "generate_content" src/
@@ -157,19 +156,16 @@ if __name__ == "__main__":
 #### Integration Steps
 
 1. **Install dependencies**
-
 ```bash
 pip install google-generativeai>=0.8.0
 ```
 
 2. **Update requirements.txt**
-
 ```
 google-generativeai>=0.8.0
 ```
 
 3. **Migrate existing code**
-
 ```python
 # Before (expensive)
 for doc in documents:
@@ -181,7 +177,6 @@ embeddings = await processor.embed_documents_batch(documents)
 ```
 
 4. **Monitor cost savings**
-
 ```python
 # Add to GeminiBatchProcessor class
 
@@ -216,18 +211,18 @@ from mcp import Server, Tool
 from typing import Dict, Any
 import asyncio
 
-class ShadowTag-v2MCPServer(Server):
+class AiyouMCPServer(Server):
     """
-    MCP server for ShadowTag-v2 services
-    Enables Claude Code, Codex, Gemini CLI to call ShadowTag-v2 tools
+    MCP server for AIYOU services
+    Enables Claude Code, Codex, Gemini CLI to call AIYOU tools
     """
 
     def __init__(self):
-        super().__init__(name="ShadowTag-v2-fastapi-services")
+        super().__init__(name="aiyou-fastapi-services")
         self.register_tools()
 
     def register_tools(self):
-        """Register ShadowTag-v2 capabilities as MCP tools"""
+        """Register AIYOU capabilities as MCP tools"""
 
         @self.tool(
             name="ingest_document",
@@ -313,7 +308,7 @@ class ShadowTag-v2MCPServer(Server):
             }
 
 async def main():
-    server = ShadowTag-v2MCPServer()
+    server = AiyouMCPServer()
     await server.run(transport="stdio")  # MCP uses stdio by default
 
 if __name__ == "__main__":
@@ -323,15 +318,14 @@ if __name__ == "__main__":
 #### MCP Client Configuration
 
 **For Claude Desktop:**
-
 ```json
 // ~/Library/Application Support/Claude/claude_desktop_config.json
 
 {
   "mcpServers": {
-    "ShadowTag-v2": {
+    "aiyou": {
       "command": "python",
-      "args": ["/path/to/ShadowTag-v2-fastapi-services/src/mcp/server.py"],
+      "args": ["/path/to/aiyou-fastapi-services/src/mcp/server.py"],
       "env": {
         "GEMINI_API_KEY": "your-api-key"
       }
@@ -341,13 +335,12 @@ if __name__ == "__main__":
 ```
 
 **For Codex:**
-
 ```json
 // ~/.codex/mcp_servers.json
 
 {
-  "ShadowTag-v2": {
-    "command": "python /path/to/ShadowTag-v2-fastapi-services/src/mcp/server.py",
+  "aiyou": {
+    "command": "python /path/to/aiyou-fastapi-services/src/mcp/server.py",
     "type": "stdio",
     "enabled_tools": ["ingest_document", "search_documents"]
   }
@@ -360,11 +353,11 @@ if __name__ == "__main__":
 # tests/test_mcp.py
 
 import pytest
-from src.mcp.server import ShadowTag-v2MCPServer
+from src.mcp.server import AiyouMCPServer
 
 @pytest.mark.asyncio
 async def test_mcp_ingest_tool():
-    server = ShadowTag-v2MCPServer()
+    server = AiyouMCPServer()
 
     # Simulate MCP tool call from Claude/Codex
     result = await server.call_tool(
@@ -378,7 +371,7 @@ async def test_mcp_ingest_tool():
 
 @pytest.mark.asyncio
 async def test_mcp_search_tool():
-    server = ShadowTag-v2MCPServer()
+    server = AiyouMCPServer()
 
     result = await server.call_tool(
         "search_documents",
@@ -675,9 +668,9 @@ from mem_layer import MemLayer, MemoryNode, MemoryEdge
 from typing import List, Dict, Optional
 from datetime import datetime
 
-class ShadowTag-v2Memory:
+class AiyouMemory:
     """
-    Persistent memory for ShadowTag-v2 agents
+    Persistent memory for AIYOU agents
     Tracks document processing history across sessions
     """
 
@@ -799,9 +792,9 @@ class ShadowTag-v2Memory:
 # Usage in ingestion pipeline
 async def enhanced_ingestion_with_memory(source: str):
     from src.services.ingestion import IngestionService
-    from src.services.memory import ShadowTag-v2Memory
+    from src.services.memory import AiyouMemory
 
-    memory = ShadowTag-v2Memory()
+    memory = AiyouMemory()
     service = IngestionService()
 
     # Check if already processed
@@ -835,7 +828,7 @@ async def enhanced_ingestion_with_memory(source: str):
 #### MCP Server Integration
 
 ```python
-# src/mcp/server.py (add to ShadowTag-v2MCPServer)
+# src/mcp/server.py (add to AiyouMCPServer)
 
 @self.tool(
     name="query_memory",
@@ -850,9 +843,9 @@ async def enhanced_ingestion_with_memory(source: str):
 )
 async def query_memory(pattern: str, hours: int = 24):
     """MCP tool: query_memory"""
-    from src.services.memory import ShadowTag-v2Memory
+    from src.services.memory import AiyouMemory
 
-    memory = ShadowTag-v2Memory()
+    memory = AiyouMemory()
     results = await memory.query_recent_documents(hours=hours)
 
     return {
@@ -880,7 +873,7 @@ curl -sSL https://backlog.md/install.sh | sh
 npm install -g backlog-md
 
 # Initialize in project
-cd /path/to/ShadowTag-v2-fastapi-services
+cd /path/to/aiyou-fastapi-services
 backlog init
 ```
 
@@ -917,11 +910,9 @@ tags:
 # Implement Gemini Batch API
 
 ## Description
-
 Migrate from individual Gemini API calls to batch processing for 50% cost reduction
 
 ## Acceptance Criteria
-
 - [ ] Batch requests in groups of 100 documents
 - [ ] Handle rate limits gracefully with exponential backoff
 - [ ] Monitor cost savings (target: 50%)
@@ -929,26 +920,21 @@ Migrate from individual Gemini API calls to batch processing for 50% cost reduct
 - [ ] Update documentation
 
 ## Dependencies
-
 - task:setup-gcp-credentials
 - task:update-gemini-sdk
 
 ## Planning Notes
-
 - Use `google.ai.generativelanguage_v1beta.BatchEmbedContentsRequest`
 - Poll batch job every 5 seconds with 300s timeout
 - Fallback to individual calls if batch fails
 
 ## Tags
-
 optimization, api, embeddings
 
 ## Status
-
 in_progress
 
 ## Assigned To
-
 claude-code
 ```
 
@@ -1248,35 +1234,35 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ShadowTag-v2-services
+  name: aiyou-services
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ShadowTag-v2-services
+      app: aiyou-services
   template:
     metadata:
       labels:
-        app: ShadowTag-v2-services
+        app: aiyou-services
     spec:
       containers:
-        - name: api
-          image: ShadowTag-v2-services:latest
-          ports:
-            - containerPort: 8000
-          env:
-            - name: GEMINI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: ShadowTag-v2-secrets
-                  key: gemini-api-key
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1000m"
+      - name: api
+        image: aiyou-services:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aiyou-secrets
+              key: gemini-api-key
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
 ```
 
 ---

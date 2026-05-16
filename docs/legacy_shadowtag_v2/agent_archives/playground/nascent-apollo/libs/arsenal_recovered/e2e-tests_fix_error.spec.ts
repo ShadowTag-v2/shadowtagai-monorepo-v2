@@ -1,12 +1,12 @@
-import { testSkipIfWindows } from './helpers/test_helper';
+import { testSkipIfWindows } from "./helpers/test_helper";
 
-testSkipIfWindows('fix error with AI', async ({ po }) => {
+testSkipIfWindows("fix error with AI", async ({ po }) => {
   await po.setUp({ autoApprove: true });
-  await po.sendPrompt('tc=create-error');
+  await po.sendPrompt("tc=create-error");
 
   await po.snapshotPreviewErrorBanner();
 
-  await po.page.getByText('Error Line 6 error', { exact: true }).click();
+  await po.page.getByText("Error Line 6 error", { exact: true }).click();
   await po.snapshotPreviewErrorBanner();
 
   await po.clickFixErrorWithAI();

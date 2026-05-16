@@ -3,13 +3,11 @@
 ## Goal
 
 Compare three prompt strategies on your real workload:
-
 - baseline
 - repeat x2
 - repeat x3
 
 ## Track
-
 - accuracy / pass rate
 - groundedness / citation correctness
 - output-format compliance

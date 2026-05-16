@@ -1,13 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-import json
-
 from fastapi import APIRouter
-
-from ..adapters.authority_state import AuthorityState, record_authority_event
-from ..adapters.cortexltm import add_event, create_thread, write_summary
-from ..adapters.memory_atoms import replace_authority_atoms
+import json
 from ..config import load_settings
+from ..adapters.authority_state import AuthorityState, record_authority_event
+from ..adapters.cortexltm import create_thread, add_event, write_summary
+from ..adapters.memory_atoms import replace_authority_atoms
 
 router = APIRouter(prefix="/api")
 
@@ -33,11 +30,7 @@ def seed_bootstrap():
         {
             "version": 1,
             "repo_id": s.repo_id,
-            "startup_contract": {
-                "mode": "memory_first",
-                "ignore_codebase_as_authority": True,
-                "hydrate_before_reasoning": True,
-            },
+            "startup_contract": {"mode": "memory_first", "ignore_codebase_as_authority": True, "hydrate_before_reasoning": True},
             "standards": {
                 "formatter": "prettier-vscode",
                 "memory_rule": "authority memory is canonical",

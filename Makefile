@@ -1,43 +1,106 @@
-.PHONY: test lint format clean check all dead-code
+# AiYou Governance System - Makefile
+# Elegant automation for the pnkln way
 
-# Run the full test suite
+.PHONY: help install test lint format clean docker-build docker-push deploy
+
+# Default target
+help:
+	@echo "AiYou Governance System - Available Commands"
+	@echo ""
+	@echo "Development:"
+	@echo "  make install       - Install dependencies"
+	@echo "  make test          - Run tests"
+	@echo "  make lint          - Run linters (ruff, mypy)"
+	@echo "  make format        - Format code (black, ruff)"
+	@echo "  make run           - Run locally"
+	@echo ""
+	@echo "Docker:"
+	@echo "  make docker-build  - Build Docker image"
+	@echo "  make docker-push   - Push to GCR"
+	@echo "  make docker-run    - Run in Docker locally"
+	@echo ""
+	@echo "Deployment:"
+	@echo "  make deploy-dev    - Deploy to dev GKE"
+	@echo "  make deploy-prod   - Deploy to production GKE"
+	@echo ""
+	@echo "Utilities:"
+	@echo "  make clean         - Clean build artifacts"
+	@echo "  make logs          - Tail GKE logs"
+
+# ============================================================================
+# Development
+# ============================================================================
+
+install:
+	pip install -r requirements.txt
+	pip install -e ".[dev]"
+
 test:
-	python3 -m pytest tests/ -v --tb=short
+	pytest tests/ -v --cov=src --cov-report=html --cov-report=term
 
-# Run test suite with coverage (60% minimum threshold)
-coverage:
-	python3 -m pytest tests/ -v --tb=short --cov=control/pnkln --cov=scripts --cov-report=term-missing --cov-fail-under=60
-
-# Dead code sweep (V22 Pruned — ruff F401/F841 replaces vulture)
-dead-code:
-	python3 -m ruff check control/pnkln/ scripts/ --select F401,F841 --statistics || true
-
-# Lint check (no fix)
 lint:
-	python3 -m ruff check control/pnkln/ scripts/
+	ruff check src/
+	mypy src/
 
-# Lint fix (safe)
-fix:
-	python3 -m ruff check --fix control/pnkln/ scripts/
-
-# Format code
 format:
-	python3 -m ruff format control/pnkln/ scripts/
+	black src/ tests/
+	ruff check --fix src/ tests/
 
-# GCA pruner dry-run
-prune-check:
-	python3 scripts/prune_gca_chat_threads.py
+run:
+	python -m uvicorn src.gateway.main:app --reload --host 0.0.0.0 --port 8000
 
-# Full quality gate: format + fix + test + dead-code
-check: format fix test dead-code
-	@echo "✅ All quality checks passed"
+# ============================================================================
+# Docker
+# ============================================================================
 
-# Clean build artifacts
+PROJECT_ID ?= $(shell gcloud config get-value project)
+IMAGE_NAME = governance-gateway
+IMAGE_TAG ?= latest
+GCR_IMAGE = gcr.io/$(PROJECT_ID)/$(IMAGE_NAME):$(IMAGE_TAG)
+
+docker-build:
+	@echo "Building Docker image: $(GCR_IMAGE)"
+	docker build -t $(GCR_IMAGE) .
+
+docker-push: docker-build
+	@echo "Pushing to GCR: $(GCR_IMAGE)"
+	docker push $(GCR_IMAGE)
+
+docker-run:
+	docker run --rm -p 8000:8000 --env-file .env $(GCR_IMAGE)
+
+# ============================================================================
+# GKE Deployment
+# ============================================================================
+
+deploy-dev: docker-push
+	@echo "Deploying to development GKE..."
+	kubectl apply -k k8s/namespaces/
+	kubectl apply -k k8s/deployments/
+	kubectl rollout status deployment/governance-gateway -n governance
+
+deploy-prod: docker-push
+	@echo "Deploying to production GKE..."
+	@echo "⚠️  WARNING: This will deploy to PRODUCTION"
+	@read -p "Are you sure? [y/N] " -n 1 -r; \
+	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+		kubectl apply -k k8s/namespaces/; \
+		kubectl apply -k k8s/deployments/; \
+		kubectl rollout status deployment/governance-gateway -n governance; \
+	fi
+
+logs:
+	kubectl logs -f -n governance -l app=governance-gateway --tail=100
+
+# ============================================================================
+# Utilities
+# ============================================================================
+
 clean:
-	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	find . -type d -name .pytest_cache -exec rm -rf {} + 2>/dev/null || true
-	find . -type f -name '*.pyc' -delete 2>/dev/null || true
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
+	find . -type f -name "*.pyo" -delete
+	find . -type d -name "*.egg-info" -exec rm -rf {} +
+	rm -rf build/ dist/ .pytest_cache/ htmlcov/ .coverage
 
-# Everything
-all: format fix test dead-code
-	@echo "🎉 Full sweep complete"
+.PHONY: install test lint format clean run docker-build docker-push docker-run deploy-dev deploy-prod logs

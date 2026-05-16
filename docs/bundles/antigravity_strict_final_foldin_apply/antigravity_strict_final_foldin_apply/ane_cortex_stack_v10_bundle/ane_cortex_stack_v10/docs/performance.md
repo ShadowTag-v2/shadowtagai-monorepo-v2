@@ -9,7 +9,6 @@
 - /api/context assembly: usually <1s before model generation
 
 ## Indexless JSON memory
-
 - writes: extremely cheap append-only
 - reads: linear scan
 - good for hundreds to low thousands of memories

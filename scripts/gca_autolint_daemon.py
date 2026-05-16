@@ -104,7 +104,7 @@ def resolve_pem_path() -> Path:
             tmp = Path(tempfile.mktemp(suffix=".pem"))
             tmp.write_text(result.stdout)
             return tmp
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
 
     print("[!] FATAL: No PEM file found in any of the 5 fallback tiers.")
@@ -123,7 +123,10 @@ def generate_jwt(app_id: str, pem_path: Path) -> str:
 def get_installation_id(jwt_token: str) -> int:
     """Fetch the installation ID for the specific repository."""
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/installation"
-    headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
+    headers = {
+        "Authorization": f"Bearer {jwt_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
     response = requests.get(url, headers=headers, timeout=15)
     response.raise_for_status()
     return response.json()["id"]
@@ -132,7 +135,10 @@ def get_installation_id(jwt_token: str) -> int:
 def get_access_token(jwt_token: str, installation_id: int) -> str:
     """Exchange JWT and Installation ID for a short-lived access token."""
     url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
-    headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
+    headers = {
+        "Authorization": f"Bearer {jwt_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
     response = requests.post(url, headers=headers, timeout=15)
     response.raise_for_status()
     return response.json()["token"]
@@ -211,7 +217,7 @@ def get_ruff_version() -> str:
             timeout=5,
         )
         return r.stdout.strip() if r.returncode == 0 else "unknown"
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         return "unknown"
 
 
@@ -241,25 +247,41 @@ def run_linters(
     if aggressive:
         ruff_check_cmd.insert(3, "--unsafe-fixes")
     r = run_command(ruff_check_cmd, check_fatal=True)
-    results["ruff_check"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+    results["ruff_check"] = {
+        "exit_code": r.returncode,
+        "stdout": r.stdout,
+        "stderr": r.stderr,
+    }
 
     # Item 8: Ruff statistics summary
     r_stats = run_command(["ruff", "check", "--statistics", "."])
-    results["ruff_statistics"] = {"exit_code": r_stats.returncode, "stdout": r_stats.stdout, "stderr": r_stats.stderr}
+    results["ruff_statistics"] = {
+        "exit_code": r_stats.returncode,
+        "stdout": r_stats.stdout,
+        "stderr": r_stats.stderr,
+    }
 
     # 2. Ruff format (item 11: diff mode for dry-run)
     if dry_run:
         r = run_command(["ruff", "format", "--diff", "."])
     else:
         r = run_command(["ruff", "format", "."], check_fatal=True)
-    results["ruff_format"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+    results["ruff_format"] = {
+        "exit_code": r.returncode,
+        "stdout": r.stdout,
+        "stderr": r.stderr,
+    }
 
     # 3. Ruff dead-code focused pass (V22 Pruned Singularity — replaces vulture)
     r = run_command(
         ["ruff", "check", "--select", "F401,F841", "--statistics", "."],
         check_fatal=False,
     )
-    results["ruff_dead_code"] = {"exit_code": r.returncode, "stdout": r.stdout, "stderr": r.stderr}
+    results["ruff_dead_code"] = {
+        "exit_code": r.returncode,
+        "stdout": r.stdout,
+        "stderr": r.stderr,
+    }
 
     # 4. Biome check + fix
     r = run_command(["npx", "@biomejs/biome", "check", "--write", "."], check_fatal=True)
@@ -318,13 +340,21 @@ def send_gws_notification(summary: str, branch: str = "") -> None:
         msg += f" → branch: {branch}"
     try:
         subprocess.run(
-            [gws, "chat", "spaces", "messages", "create", "--space=spaces/autolint-alerts", f"--text={msg}"],
+            [
+                gws,
+                "chat",
+                "spaces",
+                "messages",
+                "create",
+                "--space=spaces/autolint-alerts",
+                f"--text={msg}",
+            ],
             capture_output=True,
             text=True,
             timeout=15,
         )
         print(f"[*] GWS notification sent: {msg[:80]}")
-    except FileNotFoundError, subprocess.TimeoutExpired:
+    except (FileNotFoundError, subprocess.TimeoutExpired):
         print("[*] GWS notification failed — continuing")
 
 
@@ -363,9 +393,24 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--yes", "-y", action="store_true", help="Auto-approve changes (headless mode)")
     parser.add_argument("--json", action="store_true", help="Write structured results to .lint-results/")
     parser.add_argument("--dry-run", action="store_true", help="Run linters but skip commit/push")
-    parser.add_argument("--branch", type=str, default=None, help="Custom branch name (default: chore/autolint-{timestamp})")
-    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help=f"Timeout per linter in seconds (default: {DEFAULT_TIMEOUT})")
-    parser.add_argument("--exclude", type=str, default="", help="Comma-separated paths to exclude (e.g., 'libs/,docs/')")
+    parser.add_argument(
+        "--branch",
+        type=str,
+        default=None,
+        help="Custom branch name (default: chore/autolint-{timestamp})",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=DEFAULT_TIMEOUT,
+        help=f"Timeout per linter in seconds (default: {DEFAULT_TIMEOUT})",
+    )
+    parser.add_argument(
+        "--exclude",
+        type=str,
+        default="",
+        help="Comma-separated paths to exclude (e.g., 'libs/,docs/')",
+    )
     parser.add_argument("--notify", action="store_true", help="Send GWS notification on completion")
     parser.add_argument("--aggressive", action="store_true", help="Enable ruff --unsafe-fixes (item 9)")
     return parser.parse_args()
@@ -428,7 +473,11 @@ def main() -> None:
             print(f"[!] Repo Doctor warnings:\n{rd.stdout[-1000:]}")
         else:
             print("[*] Repo Doctor: healthy")
-        lint_results["repo_doctor"] = {"exit_code": rd.returncode, "stdout": rd.stdout, "stderr": rd.stderr}
+        lint_results["repo_doctor"] = {
+            "exit_code": rd.returncode,
+            "stdout": rd.stdout,
+            "stderr": rd.stderr,
+        }
     else:
         print("[*] Repo Doctor script not found — skipping")
 
@@ -481,7 +530,12 @@ def main() -> None:
 
     # Configure commit signing with the Agent's DID SSH key
     did_key_path = Path("keys/agent_did_ed25519")
-    commit_cmd = ["git", "commit", "-m", "chore(ast): autonomous AST optimization via GCA"]
+    commit_cmd = [
+        "git",
+        "commit",
+        "-m",
+        "chore(ast): autonomous AST optimization via GCA",
+    ]
 
     if did_key_path.exists():
         did_key_path.chmod(0o600)

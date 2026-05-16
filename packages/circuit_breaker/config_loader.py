@@ -29,52 +29,54 @@ _DEFAULT_PROFILES_PATH = Path(__file__).parent / "service_profiles.yaml"
 
 
 def load_profiles(
-    *,
-    profiles_path: Path | None = None,
-    registry: CircuitBreakerRegistry | None = None,
+  *,
+  profiles_path: Path | None = None,
+  registry: CircuitBreakerRegistry | None = None,
 ) -> CircuitBreakerRegistry:
-    """Load service profiles from YAML and register breakers.
+  """Load service profiles from YAML and register breakers.
 
-    Args:
-        profiles_path: Path to the YAML config. Defaults to
-            ``packages/circuit_breaker/service_profiles.yaml``.
-        registry: Registry to populate. Defaults to the global
-            telemetry-wired ``default_registry``.
+  Args:
+      profiles_path: Path to the YAML config. Defaults to
+          ``packages/circuit_breaker/service_profiles.yaml``.
+      registry: Registry to populate. Defaults to the global
+          telemetry-wired ``default_registry``.
 
-    Returns:
-        The populated CircuitBreakerRegistry.
-    """
-    target_registry = registry if registry is not None else default_registry
-    config_path = profiles_path or _DEFAULT_PROFILES_PATH
+  Returns:
+      The populated CircuitBreakerRegistry.
+  """
+  target_registry = registry if registry is not None else default_registry
+  config_path = profiles_path or _DEFAULT_PROFILES_PATH
 
-    if not config_path.exists():
-        logger.warning("Service profiles not found at %s — no breakers pre-registered", config_path)
-        return target_registry
-
-    try:
-        import yaml  # type: ignore[import-untyped]
-
-        raw = yaml.safe_load(config_path.read_text())
-    except ImportError:
-        logger.debug("PyYAML not installed — falling back to manual registration")
-        return target_registry
-    except Exception as exc:
-        logger.error("Failed to parse service profiles: %s", exc)
-        return target_registry
-
-    services: dict[str, dict[str, Any]] = raw.get("services", {})
-
-    for service_name, profile in services.items():
-        target_registry.register(
-            service_name=service_name,
-            failure_threshold=profile.get("failure_threshold", 3),
-            reset_timeout_s=float(profile.get("reset_timeout_s", 60.0)),
-            half_open_max_probes=profile.get("half_open_max_probes", 1),
-        )
-
-    logger.info(
-        "Loaded %d circuit breaker profiles from %s",
-        len(services),
-        config_path.name,
+  if not config_path.exists():
+    logger.warning(
+      "Service profiles not found at %s — no breakers pre-registered", config_path
     )
     return target_registry
+
+  try:
+    import yaml  # type: ignore[import-untyped]
+
+    raw = yaml.safe_load(config_path.read_text())
+  except ImportError:
+    logger.debug("PyYAML not installed — falling back to manual registration")
+    return target_registry
+  except Exception as exc:
+    logger.error("Failed to parse service profiles: %s", exc)
+    return target_registry
+
+  services: dict[str, dict[str, Any]] = raw.get("services", {})
+
+  for service_name, profile in services.items():
+    target_registry.register(
+      service_name=service_name,
+      failure_threshold=profile.get("failure_threshold", 3),
+      reset_timeout_s=float(profile.get("reset_timeout_s", 60.0)),
+      half_open_max_probes=profile.get("half_open_max_probes", 1),
+    )
+
+  logger.info(
+    "Loaded %d circuit breaker profiles from %s",
+    len(services),
+    config_path.name,
+  )
+  return target_registry

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_tmux/tmux_socket.py
+# hypothesis_version: 6.151.5
+
+[',', '-L', '-V', '-d', '-g', '-p', '-s', 'agnt', 'base', 'display-message', 'kill-server', 'new-session', 'set-environment', 'tmux', 'true']

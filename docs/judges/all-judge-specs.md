@@ -3,11 +3,9 @@
 ## FinJudge - Financial Transaction Enforcement
 
 ### Overview
-
 Binary ALLOW/BLOCK decisions for financial transactions with emphasis on $50K+ wire transfers requiring CFO approval.
 
 ### Use Cases
-
 - Wire transfers
 - Payment authorizations
 - Contract financial approvals
@@ -37,20 +35,17 @@ if vendor_status == "approved" and has_purchase_order:
 ### Risk Assessment
 
 **Probability Factors**:
-
 - Vendor status (new → B, approved → D)
 - Purchase order presence
 - Historical payment patterns
 
 **Severity Factors** (based on amount):
-
 - ≥$1M: Severity I (Catastrophic)
 - ≥$100K: Severity II (Critical)
 - ≥$10K: Severity III (Moderate)
 - <$10K: Severity IV (Negligible)
 
 **Mitigations**:
-
 - Verify vendor with external database (D&B, Creditsafe)
 - Conduct vendor due diligence
 - Require dual approval (CFO + Finance Director) for $50K+
@@ -59,7 +54,6 @@ if vendor_status == "approved" and has_purchase_order:
 ### Example Request/Response
 
 **Request**:
-
 ```json
 {
   "request_id": "req_fin_001",
@@ -78,7 +72,6 @@ if vendor_status == "approved" and has_purchase_order:
 ```
 
 **Response**:
-
 ```json
 {
   "decision": "BLOCK",
@@ -93,7 +86,11 @@ if vendor_status == "approved" and has_purchase_order:
   "reasoning": "Wire transfer $75K to new vendor without PO requires CFO approval",
   "semantic_trail": "wire→$75K→new_vendor→no_PO→high_risk→CFO_gate→BLOCK",
   "latency_ms": 38.2,
-  "next_steps": ["Route to CFO approval queue", "Verify vendor via D&B lookup", "Request supporting documentation"]
+  "next_steps": [
+    "Route to CFO approval queue",
+    "Verify vendor via D&B lookup",
+    "Request supporting documentation"
+  ]
 }
 ```
 
@@ -102,11 +99,9 @@ if vendor_status == "approved" and has_purchase_order:
 ## CaseJudge - Legal Case Assessment
 
 ### Overview
-
 Binary ALLOW/BLOCK decisions for legal case strategies and actions with focus on risk/reward analysis.
 
 ### Use Cases
-
 - Case acceptance (new client/matter intake)
 - Settlement authorization ($100K+ threshold)
 - Litigation strategy approval
@@ -138,20 +133,17 @@ if probability_of_success < 0.3:
 ### Risk Assessment
 
 **Probability Factors**:
-
 - Conflict check failure → A (Almost certain ethics violation)
 - Probability of success <30% → B (Likely to lose)
 - Probability of success >70% → E (Rare to lose)
 
 **Severity Factors**:
-
 - Case value ≥$10M or high-profile → I (Catastrophic - reputational + financial)
 - Case value ≥$1M → II (Critical)
 - Case value ≥$100K → III (Moderate)
 - Case value <$100K → IV (Negligible)
 
 **Mitigations**:
-
 - Complete comprehensive conflict of interest analysis
 - Obtain ethics committee clearance
 - Explore settlement options
@@ -161,7 +153,6 @@ if probability_of_success < 0.3:
 ### Example
 
 **Context**:
-
 ```json
 {
   "case_value_usd": 500000,
@@ -181,11 +172,9 @@ if probability_of_success < 0.3:
 ## LawJudge - Legal Compliance Validation
 
 ### Overview
-
 Binary ALLOW/BLOCK decisions for legal compliance and regulatory validation with emphasis on EU AI Act and CA SB 53.
 
 ### Use Cases
-
 - EU AI Act compliance (high-risk AI systems)
 - GDPR compliance (DPIA requirements)
 - CA SB 53 transparency validation
@@ -195,7 +184,6 @@ Binary ALLOW/BLOCK decisions for legal compliance and regulatory validation with
 ### High-Risk AI Systems (EU AI Act)
 
 Per Article 6, these systems require enhanced oversight:
-
 - Biometric identification
 - Critical infrastructure
 - Law enforcement
@@ -232,20 +220,17 @@ if destination_country in ["CN", "RU", "IR", "KP"]:
 ### Risk Assessment
 
 **Probability Factors**:
-
 - No legal review → B (Likely violation)
 - High-risk AI system → C (Possible - complex regulations)
 - Legal review complete → D (Unlikely)
 
 **Severity Factors**:
-
 - EU AI Act + high-risk system → I (€30M + criminal liability)
 - GDPR/EU AI Act (general) → II (€20M fine + reputation)
 - CA SB 53 → III (Civil penalties)
 - Export control violation → I (Criminal penalties + export ban)
 
 **Mitigations**:
-
 - Obtain legal counsel review and opinion
 - Complete Data Protection Impact Assessment (DPIA)
 - Conduct AI risk assessment per EU AI Act Article 9
@@ -257,7 +242,6 @@ if destination_country in ["CN", "RU", "IR", "KP"]:
 ### Example - High-Risk AI System
 
 **Context**:
-
 ```json
 {
   "compliance_area": "eu_ai_act",
@@ -277,11 +261,9 @@ if destination_country in ["CN", "RU", "IR", "KP"]:
 ## FraudJudge - Fraud Detection & Risk Scoring
 
 ### Overview
-
 Binary ALLOW/BLOCK decisions for fraud prevention with ML-based scoring and multi-indicator analysis.
 
 ### Use Cases
-
 - Payment fraud detection
 - Account takeover prevention
 - Identity verification
@@ -328,7 +310,6 @@ if velocity_exceeded:
 ### Risk Assessment
 
 **Probability Factors**:
-
 - Fraud score ≥0.7 OR indicators ≥3 → A (Almost certain)
 - Fraud score ≥0.5 OR indicators ≥2 → B (Likely)
 - Fraud score ≥0.3 OR indicators ≥1 → C (Possible)
@@ -336,14 +317,12 @@ if velocity_exceeded:
 - Fraud score <0.1 → E (Rare)
 
 **Severity Factors**:
-
 - Account takeover OR identity theft → I (Catastrophic)
 - Amount ≥$100K → II (Critical - major financial loss)
 - Amount ≥$10K → III (Moderate)
 - Amount <$10K → IV (Negligible)
 
 **Mitigations**:
-
 - Trigger step-up authentication (MFA)
 - Contact account holder via verified channel
 - Require identity verification (KYC)
@@ -356,7 +335,6 @@ if velocity_exceeded:
 ### Example - High Fraud Score
 
 **Context**:
-
 ```json
 {
   "fraud_score": 0.82,
@@ -397,7 +375,6 @@ action→key_factor_1→key_factor_2→risk_level→approval_gate→decision
 ```
 
 **Examples**:
-
 - FinJudge: `wire→$75K→new_vendor→no_PO→high_risk→CFO_gate→BLOCK`
 - CaseJudge: `case_accept→$500K→conflict_failed→EH_risk→escalate→BLOCK`
 - LawJudge: `eu_ai_act→biometric_id→no_legal_review→EH_risk→legal_gate→BLOCK`
@@ -406,7 +383,6 @@ action→key_factor_1→key_factor_2→risk_level→approval_gate→decision
 ### Performance Metrics
 
 All judges track:
-
 - Decision count (ALLOW vs BLOCK)
 - Latency (avg, p50, p99 - target ≤90ms)
 - Risk distribution (EH/H/M/L)

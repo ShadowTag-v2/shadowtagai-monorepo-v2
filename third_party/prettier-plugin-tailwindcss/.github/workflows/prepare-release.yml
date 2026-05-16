@@ -1,0 +1,59 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  CI: true
+  NODE_VERSION: 22
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: write # for softprops/action-gh-release to create GitHub release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: git fetch --tags -f
+
+      - name: Resolve version
+        id: vars
+        run: |
+          echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Get release notes
+        run: |
+          RELEASE_NOTES=$(pnpm run release-notes --silent)
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: ${{ env.TAG_NAME }}
+          body: |
+            ${{ env.RELEASE_NOTES }}

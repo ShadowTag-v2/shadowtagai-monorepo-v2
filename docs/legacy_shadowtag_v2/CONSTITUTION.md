@@ -141,24 +141,21 @@ def compress_governance_decision(input_tokens):
 **"If it is not in Git, it does not exist."**
 
 ### 5.1 The Golden Source Mandate
-
 1.  **Repo is Truth:** The active repository (`ShadowTag-v2`) `main` branch is the ONLY source of truth.
 2.  **No Ghost Data:** Information residing in backups (`_PRE_OMEGA...`), local drives, or uncommitted branches is considered "Ghost Data" and must be migrated to `Docs/` or deleted.
 3.  **The 96GB Rule:** We distinguish between **Matter** (Dependencies, venv, node_modules) and **Wisdom** (Code, Docs, Plans).
-    - **Matter** is generated, ephemeral, and heavy. It is IGNORED (`.gcloudignore`).
-    - **Wisdom** is distilled, permanent, and light. It is COMMITTED.
-4.  **Session Anchor:** At the end of every active session, the Agent _MUST_ commit all new Wisdom artifacts to `main`.
+    *   **Matter** is generated, ephemeral, and heavy. It is IGNORED (`.gcloudignore`).
+    *   **Wisdom** is distilled, permanent, and light. It is COMMITTED.
+4.  **Session Anchor:** At the end of every active session, the Agent *MUST* commit all new Wisdom artifacts to `main`.
 
 ### 5.2 The Master Plan Clause
-
 1.  **Consolidation:** The "Whole Business Plan" is maintained in `SHADOWTAG_BUSINESS_MASTER.md`.
 2.  **Synthesis:** All scattered intelligence (backup folders, transcripts) must be synthesized into the Master Plan, then the source can be archived.
-3.  **Persistence:** We save to the _same folder_ (`Docs/` or `brain/`) every time. We do not fork truth.
+3.  **Persistence:** We save to the *same folder* (`Docs/` or `brain/`) every time. We do not fork truth.
+
 
 ### 5.3 The Repository Integrity Clause
-
 **"One Repo to Rule Them All."**
-
 1.  **Target URI:** The Agent MUST NEVER deviate from `https://github.com/ShadowTag-v2/pnkln-stack-fastapi-services.git`.
 2.  **Constraint:** Any operation targeting a different remote (e.g. `ehanc69`, `origin-legacy`) without explicit User Override is a **Constitutional Violation**.
 3.  **Consolidation:** All divergent branches (e.g. `feat/pr-consolidation`) MUST be merged into `main` immediately upon stabilization. Long-lived feature branches are prohibited.

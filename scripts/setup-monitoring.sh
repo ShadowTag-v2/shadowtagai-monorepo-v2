@@ -1,12 +1,12 @@
 #!/bin/bash
-# Setup monitoring and alerting for shadowtagai orchestrator
+# Setup monitoring and alerting for pnkln orchestrator
 
 set -e
 
 PROJECT_ID="${1:-your-project-id}"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Setting up monitoring for shadowtagai orchestrator"
+echo "Setting up monitoring for pnkln orchestrator"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Enable required APIs
@@ -23,7 +23,7 @@ echo "📧 Creating notification channel..."
 read -p "Enter email for alerts: " EMAIL
 
 CHANNEL_ID=$(gcloud alpha monitoring channels create \
-  --display-name="ShadowTagAi Ops Team" \
+  --display-name="Pnkln Ops Team" \
   --type=email \
   --channel-labels=email_address="$EMAIL" \
   --project="$PROJECT_ID" \
@@ -47,32 +47,32 @@ done
 # Create dashboard
 echo "📊 Creating monitoring dashboard..."
 gcloud monitoring dashboards create \
-  --config-from-file=monitoring/dashboards/shadowtagai-overview.json \
+  --config-from-file=monitoring/dashboards/pnkln-overview.json \
   --project="$PROJECT_ID" || echo "Dashboard may already exist"
 
 # Setup log-based metrics
 echo "📝 Creating log-based metrics..."
 
 # Metric: Total requests
-gcloud logging metrics create shadowtagai_log_requests \
+gcloud logging metrics create pnkln_log_requests \
   --description="Total requests from logs" \
   --log-filter='resource.type="k8s_pod"
-    resource.labels.namespace_name="shadowtagai-production"
+    resource.labels.namespace_name="pnkln-production"
     jsonPayload.message=~"HTTP request"' \
   --project="$PROJECT_ID" || echo "Metric may already exist"
 
 # Metric: Errors
-gcloud logging metrics create shadowtagai_log_errors \
+gcloud logging metrics create pnkln_log_errors \
   --description="Error count from logs" \
   --log-filter='resource.type="k8s_pod"
-    resource.labels.namespace_name="shadowtagai-production"
+    resource.labels.namespace_name="pnkln-production"
     severity>=ERROR' \
   --project="$PROJECT_ID" || echo "Metric may already exist"
 
 # Create uptime check
 echo "🔍 Creating uptime check..."
 gcloud monitoring uptime create \
-  --display-name="ShadowTagAi Orchestrator Health" \
+  --display-name="Pnkln Orchestrator Health" \
   --resource-type="uptime-url" \
   --http-check-path="/health" \
   --port=443 \

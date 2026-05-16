@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# adapter_only_hardening_audit.sh
-#
-# Purpose:
-# - prove canonical vs adapter-only vs retired truth surfaces
-# - detect stale model ids, stale project ids, duplicate live roots, nested .git
-# - detect likely inline secrets in committed config/docs/scripts
-# - emit docs/ADAPTER_ONLY_HARDENING_REPORT.md
-#
-# Usage:
-#   bash scripts/adapter_only_hardening_audit.sh
-
 ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
 REPORT="$ROOT/docs/ADAPTER_ONLY_HARDENING_REPORT.md"
 
@@ -33,16 +22,16 @@ REFERENCE_REPOS=(
 )
 
 DUPLICATE_ROOT_CANDIDATES=(
-  "apps/ShadowTag-v2-fastapi-services"
+  "apps/aiyou-fastapi-services"
   "apps/nascent-apollo"
   "apps/shadowtag-core"
 )
 
 CANONICAL_ROOTS=(
-  "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
-  "apps/ShadowTag-v2_stack/cosmic-crab-payload"
-  "apps/ShadowTag-v2_stack/Pipeline"
-  "apps/ShadowTag-v2_stack/nascent-apollo"
+  "apps/aiyou_stack/aiyou-fastapi-services"
+  "apps/aiyou_stack/cosmic-crab-payload"
+  "apps/aiyou_stack/Pipeline"
+  "apps/aiyou_stack/nascent-apollo"
 )
 
 log() {
@@ -67,16 +56,15 @@ cd "$ROOT" || fail "cannot cd into $ROOT"
 mkdir -p "$(dirname "$REPORT")"
 
 if [[ ! -f "$MANIFEST" ]]; then
-  # Don't fail the audit completely if manifest is just not tracked yet
-  log "Warning: missing monorepo_manifest.yaml - proceeding with audit anyway."
+  fail "missing monorepo_manifest.yaml"
 fi
 
 if [[ ! -f "$CANONICAL_MCP" ]]; then
-  log "Warning: missing canonical MCP file - proceeding."
+  fail "missing canonical MCP file"
 fi
 
 if [[ ! -f "$CHECKLIST" ]]; then
-  log "Warning: missing fold_in_checklist.yaml - proceeding."
+  fail "missing fold_in_checklist.yaml"
 fi
 
 log "Classifying MCP truth surfaces"
@@ -120,31 +108,211 @@ for rel in "${DUPLICATE_ROOT_CANDIDATES[@]}"; do
   fi
 done
 
-log "Checking for nested .git directories..."
-nested_gits=$(find . -mindepth 2 -type d -name ".git" | grep -v "external_sdks" | grep -v "third_party" || true)
+if [[ ${#present_duplicate_roots[@]} -gt 0 ]]; then
+  duplicate_live_root_result="FAIL"
+else
+  duplicate_live_root_result="PASS"
+fi
 
-cat <<EOF > "$REPORT"
-# Adapter-Only Hardening Report
-Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+log "Checking nested .git directories"
+mapfile -t nested_git_dirs < <(
+  find "$ROOT" \
+    -path "$ROOT/.git" -prune -o \
+    -type d -name ".git" -print
+)
 
-## MCP Truth Surface
-- Canonical MCP: $MCP_CANONICAL_STATUS
-- Retired MCP: $MCP_RETIRED_STATUS
-- Adapter MCP: $MCP_ADAPTER_STATUS
+if [[ ${#nested_git_dirs[@]} -gt 0 ]]; then
+  nested_git_result="FAIL"
+else
+  nested_git_result="PASS"
+fi
 
-## Reference Repos
-- Present: ${#present_reference[@]}
-- Missing: ${#missing_reference[@]}
+log "Searching stale model ids"
+mapfile -t stale_model_hits < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/archive/**' \
+    --glob '!**/tools/legacy/**' \
+    -e 'gemini-[0-9]+\.[0-9]+-[A-Za-z0-9._-]+' \
+    "$ROOT" | grep -v "$EXPECTED_MODEL" || true
+)
 
-## Canonical Roots
-- Present: ${#present_canonical_roots[@]}
-- Missing: ${#missing_canonical_roots[@]}
+log "Searching stale project ids"
+mapfile -t stale_project_hits < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/archive/**' \
+    --glob '!**/tools/legacy/**' \
+    -e 'shadowtag-[A-Za-z0-9._-]+' \
+    "$ROOT" | grep -v "$EXPECTED_PROJECT" || true
+)
 
-## Duplicate Roots Detected
-${present_duplicate_roots[*]:-None}
+log "Searching likely inline secrets"
+mapfile -t inline_secret_hits < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    --glob '!**/*.png' \
+    --glob '!**/*.jpg' \
+    --glob '!**/*.jpeg' \
+    --glob '!**/*.webp' \
+    --glob '!**/*.pdf' \
+    --glob '!**/archive/**' \
+    --glob '!**/tools/legacy/**' \
+    -e 'AIza[0-9A-Za-z\-_]{20,}' \
+    -e 'sk-[A-Za-z0-9]{20,}' \
+    -e 'ghp_[A-Za-z0-9]{20,}' \
+    -e 'github_pat_[A-Za-z0-9_]{20,}' \
+    -e 'BEGIN PRIVATE KEY' \
+    -e 'X-Goog-Api-Key:\s*[A-Za-z0-9\-_]+' \
+    -e 'api[_-]?key["'"'"']?\s*[:=]\s*["'"'"'][^"'"'"']{8,}["'"'"']' \
+    "$ROOT" || true
+)
 
-## Nested .git Instances Identified
-${nested_gits:-None}
-EOF
+log "Computing final verdict"
+final_verdict="COMPLETE"
+blockers=()
 
-log "Audit Complete. Report generated at docs/ADAPTER_ONLY_HARDENING_REPORT.md"
+if [[ ${#missing_canonical_roots[@]} -gt 0 ]]; then
+  blockers+=("missing canonical roots")
+fi
+
+if [[ ${#missing_reference[@]} -gt 0 ]]; then
+  blockers+=("missing reference repos")
+fi
+
+if [[ "$duplicate_live_root_result" != "PASS" ]]; then
+  blockers+=("duplicate live roots")
+fi
+
+if [[ "$nested_git_result" != "PASS" ]]; then
+  blockers+=("nested .git directories")
+fi
+
+if [[ ${#blockers[@]} -gt 0 ]]; then
+  final_verdict="COMPLETE_WITH_BLOCKERS"
+fi
+
+log "Writing report"
+{
+  echo "# ADAPTER_ONLY_HARDENING_REPORT.md"
+  echo
+  echo "## Canonical truth files"
+  echo "- workspace truth: \`monorepo_manifest.yaml\`"
+  echo "- MCP truth: \`antigravity-mcp-config.json\`"
+  echo "- checklist truth: \`fold_in_checklist.yaml\`"
+  echo
+  echo "## MCP surface classification"
+  echo "- canonical: \`$CANONICAL_MCP\` ($MCP_CANONICAL_STATUS)"
+  echo "- retired: \`$RETIRED_MCP\` ($MCP_RETIRED_STATUS)"
+  echo "- adapter-only: \`$ADAPTER_MCP\` ($MCP_ADAPTER_STATUS)"
+  echo
+  echo "## Canonical root status"
+  echo "### Present canonical roots"
+  if [[ ${#present_canonical_roots[@]} -gt 0 ]]; then
+    for x in "${present_canonical_roots[@]}"; do
+      echo "- \`$x\`"
+    done
+  else
+    echo "- none"
+  fi
+  echo
+  echo "### Missing canonical roots"
+  if [[ ${#missing_canonical_roots[@]} -gt 0 ]]; then
+    for x in "${missing_canonical_roots[@]}"; do
+      echo "- \`$x\`"
+    done
+  else
+    echo "- none"
+  fi
+  echo
+  echo "## Reference repo status"
+  echo "### Present reference repos"
+  if [[ ${#present_reference[@]} -gt 0 ]]; then
+    for x in "${present_reference[@]}"; do
+      echo "- \`$x\`"
+    done
+  else
+    echo "- none"
+  fi
+  echo
+  echo "### Missing reference repos"
+  if [[ ${#missing_reference[@]} -gt 0 ]]; then
+    for x in "${missing_reference[@]}"; do
+      echo "- \`$x\`"
+    done
+  else
+    echo "- none"
+  fi
+  echo
+  echo "## Duplicate live root status"
+  echo "- result: **$duplicate_live_root_result**"
+  if [[ ${#present_duplicate_roots[@]} -gt 0 ]]; then
+    echo
+    echo "### Conflicting legacy roots still present"
+    for x in "${present_duplicate_roots[@]}"; do
+      echo "- \`$x\`"
+    done
+  fi
+  echo
+  echo "## Nested git status"
+  echo "- result: **$nested_git_result**"
+  if [[ ${#nested_git_dirs[@]} -gt 0 ]]; then
+    echo
+    echo "### Nested .git directories found"
+    for x in "${nested_git_dirs[@]}"; do
+      echo "- \`${x#$ROOT/}\`"
+    done
+  fi
+  echo
+  echo "## Stale model audit"
+  echo "- expected model family: \`$EXPECTED_MODEL\`"
+  echo "- findings: **${#stale_model_hits[@]}**"
+  if [[ ${#stale_model_hits[@]} -gt 0 ]]; then
+    echo
+    echo "### Sample stale model hits"
+    printf '%s\n' "${stale_model_hits[@]:0:50}" | sed 's/^/- /'
+  fi
+  echo
+  echo "## Stale project audit"
+  echo "- expected project: \`$EXPECTED_PROJECT\`"
+  echo "- findings: **${#stale_project_hits[@]}**"
+  if [[ ${#stale_project_hits[@]} -gt 0 ]]; then
+    echo
+    echo "### Sample stale project hits"
+    printf '%s\n' "${stale_project_hits[@]:0:50}" | sed 's/^/- /'
+  fi
+  echo
+  echo "## Inline secret audit"
+  echo "- candidate findings: **${#inline_secret_hits[@]}**"
+  if [[ ${#inline_secret_hits[@]} -gt 0 ]]; then
+    echo
+    echo "### Sample secret candidates"
+    printf '%s\n' "${inline_secret_hits[@]:0:50}" | sed 's/^/- /'
+  fi
+  echo
+  echo "## Blockers"
+  if [[ ${#blockers[@]} -gt 0 ]]; then
+    for x in "${blockers[@]}"; do
+      echo "- $x"
+    done
+  else
+    echo "- none"
+  fi
+  echo
+  echo "## Final verdict"
+  echo "- **$final_verdict**"
+} > "$REPORT"
+
+log "Done"

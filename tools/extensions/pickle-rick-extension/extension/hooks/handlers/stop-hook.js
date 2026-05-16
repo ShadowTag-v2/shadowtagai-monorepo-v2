@@ -1,17 +1,17 @@
-import * as fs from 'node:fs';
-import * as os from 'node:os';
-import * as path from 'node:path';
-import { evaluateLoopLimits } from '../../services/loop-limits.js';
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+import { evaluateLoopLimits } from "../../services/loop-limits.js";
 import {
   isSamePathOrDescendant,
   readStateFile,
   resolveStateFilePath,
   writeStateFile,
-} from '../../services/session-state.js';
+} from "../../services/session-state.js";
 
 function createLogger(extensionDir, sessionDir) {
-  const globalDebugLog = path.join(extensionDir, 'debug.log');
-  const sessionHooksLog = sessionDir ? path.join(sessionDir, 'hooks.log') : null;
+  const globalDebugLog = path.join(extensionDir, "debug.log");
+  const sessionHooksLog = sessionDir ? path.join(sessionDir, "hooks.log") : null;
   return (level, message) => {
     const line = `[${new Date().toISOString()}] [StopHookJS] [${level}] ${message}\n`;
     try {
@@ -29,15 +29,15 @@ function createLogger(extensionDir, sessionDir) {
   };
 }
 function allow() {
-  console.log(JSON.stringify({ decision: 'allow' }));
+  console.log(JSON.stringify({ decision: "allow" }));
 }
 function block(message, additionalContext) {
   console.log(
     JSON.stringify({
-      decision: 'block',
+      decision: "block",
       systemMessage: message,
       hookSpecificOutput: {
-        hookEventName: 'AfterAgent',
+        hookEventName: "AfterAgent",
         additionalContext,
       },
     }),
@@ -45,15 +45,15 @@ function block(message, additionalContext) {
 }
 function readHookInput() {
   try {
-    const raw = fs.readFileSync(0, 'utf8');
-    return JSON.parse(raw || '{}');
+    const raw = fs.readFileSync(0, "utf8");
+    return JSON.parse(raw || "{}");
   } catch {
     return {};
   }
 }
 async function main() {
   const extensionDir =
-    process.env.EXTENSION_DIR || path.join(os.homedir(), '.gemini/extensions/pickle-rick');
+    process.env.EXTENSION_DIR || path.join(os.homedir(), ".gemini/extensions/pickle-rick");
   const input = readHookInput();
   const stateFile = resolveStateFilePath(
     extensionDir,
@@ -67,64 +67,64 @@ async function main() {
   const state = readStateFile(stateFile);
   const log = createLogger(extensionDir, state?.session_dir);
   if (!state) {
-    log('WARN', `Failed to read state file: ${stateFile}`);
+    log("WARN", `Failed to read state file: ${stateFile}`);
     allow();
     return;
   }
   if (!isSamePathOrDescendant(process.cwd(), state.working_dir)) {
     log(
-      'INFO',
+      "INFO",
       `Skipped due to cwd mismatch. cwd=${process.cwd()} working_dir=${state.working_dir}`,
     );
     allow();
     return;
   }
   if (!state.active) {
-    log('INFO', 'Session inactive; allowing stop.');
+    log("INFO", "Session inactive; allowing stop.");
     allow();
     return;
   }
   const role = process.env.PICKLE_ROLE;
-  const isWorker = role === 'worker' || state.worker === true;
-  const responseText = input.prompt_response || '';
-  const promptContext = state.original_prompt || '';
+  const isWorker = role === "worker" || state.worker === true;
+  const responseText = input.prompt_response || "";
+  const promptContext = state.original_prompt || "";
   const limits = evaluateLoopLimits(state);
   if (limits.exceeded) {
     state.active = false;
     writeStateFile(stateFile, state);
-    log('WARN', limits.message ?? 'Loop limit reached.');
+    log("WARN", limits.message ?? "Loop limit reached.");
     allow();
     return;
   }
   const hasPromise =
     !!state.completion_promise &&
     responseText.includes(`<promise>${state.completion_promise}</promise>`);
-  const isEpicDone = responseText.includes('<promise>EPIC_COMPLETED</promise>');
-  const isTaskFinished = responseText.includes('<promise>TASK_COMPLETED</promise>');
-  const isWorkerDone = isWorker && responseText.includes('<promise>I AM DONE</promise>');
-  const isPrdDone = !isWorker && responseText.includes('<promise>PRD_COMPLETE</promise>');
+  const isEpicDone = responseText.includes("<promise>EPIC_COMPLETED</promise>");
+  const isTaskFinished = responseText.includes("<promise>TASK_COMPLETED</promise>");
+  const isWorkerDone = isWorker && responseText.includes("<promise>I AM DONE</promise>");
+  const isPrdDone = !isWorker && responseText.includes("<promise>PRD_COMPLETE</promise>");
   const isBreakdownDone =
-    !isWorker && responseText.includes('<promise>BREAKDOWN_COMPLETE</promise>');
-  const isTicketSelected = !isWorker && responseText.includes('<promise>TICKET_SELECTED</promise>');
-  const isTicketDone = !isWorker && responseText.includes('<promise>TICKET_COMPLETE</promise>');
-  const isTaskDone = !isWorker && responseText.includes('<promise>TASK_COMPLETE</promise>');
+    !isWorker && responseText.includes("<promise>BREAKDOWN_COMPLETE</promise>");
+  const isTicketSelected = !isWorker && responseText.includes("<promise>TICKET_SELECTED</promise>");
+  const isTicketDone = !isWorker && responseText.includes("<promise>TICKET_COMPLETE</promise>");
+  const isTaskDone = !isWorker && responseText.includes("<promise>TASK_COMPLETE</promise>");
   if (hasPromise || isEpicDone || isTaskFinished || isWorkerDone) {
     if (!isWorker) {
       state.active = false;
       writeStateFile(stateFile, state);
     }
-    log('INFO', 'Allowing stop due to completion token.');
+    log("INFO", "Allowing stop due to completion token.");
     allow();
     return;
   }
   if (isPrdDone || isBreakdownDone || isTicketSelected || isTicketDone || isTaskDone) {
-    let feedback = '🥒 Pickle Rick loop active.';
-    if (isPrdDone) feedback = '🥒 PRD complete. Proceed to Breakdown.';
-    if (isBreakdownDone) feedback = '🥒 Breakdown complete. Proceed to ticket execution.';
-    if (isTicketSelected) feedback = '🥒 Ticket selected. Begin research.';
+    let feedback = "🥒 Pickle Rick loop active.";
+    if (isPrdDone) feedback = "🥒 PRD complete. Proceed to Breakdown.";
+    if (isBreakdownDone) feedback = "🥒 Breakdown complete. Proceed to ticket execution.";
+    if (isTicketSelected) feedback = "🥒 Ticket selected. Begin research.";
     if (isTicketDone || isTaskDone)
-      feedback = '🥒 Ticket complete. Continue with validation or next ticket.';
-    log('INFO', `Blocking stop for checkpoint token. feedback="${feedback}"`);
+      feedback = "🥒 Ticket complete. Continue with validation or next ticket.";
+    log("INFO", `Blocking stop for checkpoint token. feedback="${feedback}"`);
     block(feedback, promptContext);
     return;
   }
@@ -132,7 +132,7 @@ async function main() {
     state.max_iterations > 0
       ? `🥒 Pickle Rick loop active (Iteration ${state.iteration}/${state.max_iterations}).`
       : `🥒 Pickle Rick loop active (Iteration ${state.iteration}).`;
-  log('INFO', 'Blocking stop by default (loop continues).');
+  log("INFO", "Blocking stop by default (loop continues).");
   block(iterationSummary, promptContext);
 }
 main().catch(() => allow());

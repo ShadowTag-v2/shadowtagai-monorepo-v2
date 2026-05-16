@@ -41,7 +41,7 @@ pnkln Doctrine Files Created:
 - pnkln/Docs/JURA_ROUTING.md
 - pnkln/Docs/SOP_MATRIX.md
 
-n-autoresearch/Kosmos/BioAgents ACTIVATED, STANDING BY.
+MONKEYS ACTIVATED, STANDING BY.
 
 Ready for ExToto/ANTIGRAVITY prompt execution via:
 curl -X POST http://127.0.0.1:8600/assist \
@@ -77,15 +77,15 @@ K8s Redis Config: 2GB maxmemory, LRU eviction, AOF persistence, 20Gi storage
 
 Cloud Run Fit by Vertical
 
-| Vertical                                         | Cloud Run Fit | Why                                       | Monetization Tier    |
-| ------------------------------------------------ | ------------- | ----------------------------------------- | -------------------- |
+| Vertical             | Cloud Run Fit | Why                                       | Monetization Tier    |
+| -------------------- | ------------- | ----------------------------------------- | -------------------- |
 | https://github.com/karpathy/autoresearchs (HTTP) | ✅ PERFECT    | Stateless, scale-to-zero, pay-per-request | FLASH $25k           |
-| Oracle (HTTP)                                    | ✅ PERFECT    | Stateless Gemini wrapper                  | PRO $100k            |
-| JURA Router                                      | ✅ GOOD       | Stateless tier routing                    | Core infra           |
-| CodePMCS Scan                                    | ✅ GOOD       | Stateless code analysis                   | PRO $400k            |
-| JudgeJura (Compliance Framework)                             | ⚠️ PARTIAL    | Needs Redis for verdict cache             | PRO $100k            |
-| GPTRAM/Redis                                     | ❌ NO         | Stateful, persistent connections          | Memorystore required |
-| ShadowTag                                        | ⚠️ PARTIAL    | L0-L4 attestation needs state             | Mixed                |
+| Oracle (HTTP)        | ✅ PERFECT    | Stateless Gemini wrapper                  | PRO $100k            |
+| JURA Router          | ✅ GOOD       | Stateless tier routing                    | Core infra           |
+| CodePMCS Scan        | ✅ GOOD       | Stateless code analysis                   | PRO $400k            |
+| JudgeJura (ATP 5-19) | ⚠️ PARTIAL    | Needs Redis for verdict cache             | PRO $100k            |
+| GPTRAM/Redis         | ❌ NO         | Stateful, persistent connections          | Memorystore required |
+| ShadowTag            | ⚠️ PARTIAL    | L0-L4 attestation needs state             | Mixed                |
 
 ---
 
@@ -109,12 +109,12 @@ Architecture Recommendation
 
 Monetization Matrix
 
-| Tier           | Price | Cloud Run? | Key Capability                                         |
-| -------------- | ----- | ---------- | ------------------------------------------------------ |
-| BASIC (1-5)    | $25k  | ✅ 100%    | https://github.com/karpathy/autoresearchs + Risk Radar |
-| AIT (6-15)     | $100k | ✅ 95%     | + Oracle + JudgeJura                                   |
-| SOF (16-25)    | $400k | ⚠️ 80%     | + CodePMCS + Hunter/Killer                             |
-| THE CHILD (30) | $1M+  | ⚠️ 60%     | Full 650-agent sovereign AI                            |
+| Tier           | Price | Cloud Run? | Key Capability              |
+| -------------- | ----- | ---------- | --------------------------- |
+| BASIC (1-5)    | $25k  | ✅ 100%    | https://github.com/karpathy/autoresearchs + Risk Radar  |
+| AIT (6-15)     | $100k | ✅ 95%     | + Oracle + JudgeJura        |
+| SOF (16-25)    | $400k | ⚠️ 80%     | + CodePMCS + Hunter/Killer  |
+| THE CHILD (30) | $1M+  | ⚠️ 60%     | Full 650-agent sovereign AI |
 
 Cloud Run Cost Savings:
 
@@ -165,7 +165,7 @@ Squadron Structure (650 Agents)
 
 | Troop    | Size | Model            | Role                       |
 | -------- | ---- | ---------------- | -------------------------- |
-| HHT      | 90   | gemini-3.1-pro   | Judge 6, S-1 to S-6 Staff |
+| HHT      | 90   | gemini-3.1-pro   | Judge #6, S-1 to S-6 Staff |
 | AIR_CAV  | 120  | gemini-3.1-flash | Aerial Scouts              |
 | ALPHA    | 130  | gemini-3.1-flash | Armor                      |
 | BRAVO    | 130  | gemini-3.1-flash | Stryker                    |
@@ -199,7 +199,7 @@ Manual Steps Required (VS Code IDE)
 
 > no is supposed to be in antigravity, not vs code. see https://github.com/elad12390/antigravity-proxy
 
-⏺ n-autoresearch/Kosmos/BioAgents ACTIVATED, STANDING BY.
+⏺ MONKEYS ACTIVATED, STANDING BY.
 
 Let me check the antigravity-proxy repo to understand the correct Agent Mode implementation:
 
@@ -222,7 +222,7 @@ Files Created:
 
 Files Modified:
 
-1. src/ShadowTag-v2/jura/cost_tracker.py - Fixed CostTier.FREE bug (Gemini-only: FLASH/PRO)
+1. src/aiyou/jura/cost_tracker.py - Fixed CostTier.FREE bug (Gemini-only: FLASH/PRO)
 2. bin/https://github.com/karpathy/autoresearchs-server - Added Oracle integration:
    - POST /architect - Routes strategic questions to Oracle
    - GET /oracle/status - Checks Oracle server health

@@ -1,17 +1,17 @@
-import { appendFile, mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { appendFile, mkdir } from "node:fs/promises";
+import { join } from "node:path";
 
-const LOG_DIR = join(process.cwd(), '.pickle');
-const LOG_FILE = join(LOG_DIR, 'cli.log');
+const LOG_DIR = join(process.cwd(), ".pickle");
+const LOG_FILE = join(LOG_DIR, "cli.log");
 
 async function writeLog(line: string): Promise<void> {
   try {
     await mkdir(LOG_DIR, { recursive: true });
-    await appendFile(LOG_FILE, line + '\n', 'utf-8');
+    await appendFile(LOG_FILE, line + "\n", "utf-8");
   } catch (err) {
     // Only surface write issues when debugging; otherwise stay quiet
     if (process.env.DEBUG) {
-      console.error('[logger] failed to write log:', err);
+      console.error("[logger] failed to write log:", err);
     }
   }
 }

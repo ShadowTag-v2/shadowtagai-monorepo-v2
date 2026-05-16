@@ -43,229 +43,234 @@ MAX_ENTRYPOINT_LINES = 100
 
 @dataclass
 class AutoDreamConfig:
-    """Thresholds for dream triggering."""
+  """Thresholds for dream triggering."""
 
-    min_hours: float = 24.0
-    min_sessions: int = 5
+  min_hours: float = 24.0
+  min_sessions: int = 5
 
 
 @dataclass
 class AutoDreamResult:
-    """Result of a dream gate check."""
+  """Result of a dream gate check."""
 
-    should_fire: bool
-    reason: str
-    hours_since: float = 0.0
-    sessions_found: int = 0
-    session_ids: list[str] = field(default_factory=list)
-    prior_mtime: float = 0.0
+  should_fire: bool
+  reason: str
+  hours_since: float = 0.0
+  sessions_found: int = 0
+  session_ids: list[str] = field(default_factory=list)
+  prior_mtime: float = 0.0
 
 
 class ConsolidationLock:
-    """File-based consolidation lock.
+  """File-based consolidation lock.
 
-    The lock file's mtime IS lastConsolidatedAt. The body contains
-    the holder's PID. This allows dead-PID detection and self-healing.
+  The lock file's mtime IS lastConsolidatedAt. The body contains
+  the holder's PID. This allows dead-PID detection and self-healing.
 
-    Ported from ``consolidationLock.ts``.
+  Ported from ``consolidationLock.ts``.
+  """
+
+  def __init__(self, memory_dir: str) -> None:
+    self._memory_dir = memory_dir
+    self._lock_path = os.path.join(memory_dir, LOCK_FILE)
+
+  @property
+  def lock_path(self) -> str:
+    return self._lock_path
+
+  def read_last_consolidated_at(self) -> float:
+    """mtime of the lock file = lastConsolidatedAt. 0 if absent.
+
+    Per-turn cost: one stat.
     """
+    try:
+      s = os.stat(self._lock_path)
+      return s.st_mtime * 1000  # Convert to milliseconds
+    except FileNotFoundError:
+      return 0.0
 
-    def __init__(self, memory_dir: str) -> None:
-        self._memory_dir = memory_dir
-        self._lock_path = os.path.join(memory_dir, LOCK_FILE)
+  def try_acquire(self) -> float | None:
+    """Acquire the lock.
 
-    @property
-    def lock_path(self) -> str:
-        return self._lock_path
+    Returns the pre-acquire mtime (for rollback), or None if blocked.
+    """
+    mtime_ms: float | None = None
+    holder_pid: int | None = None
 
-    def read_last_consolidated_at(self) -> float:
-        """mtime of the lock file = lastConsolidatedAt. 0 if absent.
+    try:
+      s = os.stat(self._lock_path)
+      mtime_ms = s.st_mtime * 1000
 
-        Per-turn cost: one stat.
-        """
-        try:
-            s = os.stat(self._lock_path)
-            return s.st_mtime * 1000  # Convert to milliseconds
-        except FileNotFoundError:
-            return 0.0
+      with open(self._lock_path) as f:
+        raw = f.read().strip()
+        parsed = int(raw) if raw.isdigit() else None
+        holder_pid = parsed
+    except (FileNotFoundError, ValueError, OSError):
+      pass  # No prior lock
 
-    def try_acquire(self) -> float | None:
-        """Acquire the lock.
+    # Check if lock is held by a live process
+    if (
+      mtime_ms is not None
+      and (time.time() * 1000 - mtime_ms) < HOLDER_STALE_MS
+      and holder_pid is not None
+      and _is_process_running(holder_pid)
+    ):
+      logger.debug(
+        "[autoDream] lock held by live PID %d (mtime %ds ago)",
+        holder_pid,
+        int((time.time() * 1000 - mtime_ms) / 1000),
+      )
+      return None
+      # Dead PID or unparseable body — reclaim
 
-        Returns the pre-acquire mtime (for rollback), or None if blocked.
-        """
-        mtime_ms: float | None = None
-        holder_pid: int | None = None
+    # Memory dir may not exist yet
+    os.makedirs(self._memory_dir, exist_ok=True)
 
-        try:
-            s = os.stat(self._lock_path)
-            mtime_ms = s.st_mtime * 1000
+    # Write our PID
+    with open(self._lock_path, "w") as f:
+      f.write(str(os.getpid()))
 
-            with open(self._lock_path) as f:
-                raw = f.read().strip()
-                parsed = int(raw) if raw.isdigit() else None
-                holder_pid = parsed
-        except (FileNotFoundError, ValueError, OSError):
-            pass  # No prior lock
+    # Two reclaimers both write → last wins. Verify we hold it.
+    try:
+      with open(self._lock_path) as f:
+        verify = f.read().strip()
+    except OSError:
+      return None
 
-        # Check if lock is held by a live process
-        if mtime_ms is not None and (time.time() * 1000 - mtime_ms) < HOLDER_STALE_MS and holder_pid is not None and _is_process_running(holder_pid):
-            logger.debug(
-                "[autoDream] lock held by live PID %d (mtime %ds ago)",
-                holder_pid,
-                int((time.time() * 1000 - mtime_ms) / 1000),
-            )
-            return None
-            # Dead PID or unparseable body — reclaim
+    if verify != str(os.getpid()):
+      return None
 
-        # Memory dir may not exist yet
-        os.makedirs(self._memory_dir, exist_ok=True)
+    return mtime_ms if mtime_ms is not None else 0.0
 
-        # Write our PID
-        with open(self._lock_path, "w") as f:
-            f.write(str(os.getpid()))
+  def rollback(self, prior_mtime: float) -> None:
+    """Rewind mtime to pre-acquire after a failed consolidation.
 
-        # Two reclaimers both write → last wins. Verify we hold it.
-        try:
-            with open(self._lock_path) as f:
-                verify = f.read().strip()
-        except OSError:
-            return None
+    ``prior_mtime`` 0 → remove the file (restore no-file state).
+    """
+    try:
+      if prior_mtime == 0:
+        os.unlink(self._lock_path)
+        return
 
-        if verify != str(os.getpid()):
-            return None
+      # Clear PID body
+      with open(self._lock_path, "w") as f:
+        f.write("")
 
-        return mtime_ms if mtime_ms is not None else 0.0
+      # Restore mtime
+      t = prior_mtime / 1000  # utimes wants seconds
+      os.utime(self._lock_path, (t, t))
+    except OSError as exc:
+      logger.debug(
+        "[autoDream] rollback failed: %s — next trigger delayed to min_hours",
+        exc,
+      )
 
-    def rollback(self, prior_mtime: float) -> None:
-        """Rewind mtime to pre-acquire after a failed consolidation.
-
-        ``prior_mtime`` 0 → remove the file (restore no-file state).
-        """
-        try:
-            if prior_mtime == 0:
-                os.unlink(self._lock_path)
-                return
-
-            # Clear PID body
-            with open(self._lock_path, "w") as f:
-                f.write("")
-
-            # Restore mtime
-            t = prior_mtime / 1000  # utimes wants seconds
-            os.utime(self._lock_path, (t, t))
-        except OSError as exc:
-            logger.debug(
-                "[autoDream] rollback failed: %s — next trigger delayed to min_hours",
-                exc,
-            )
-
-    def record(self) -> None:
-        """Stamp from manual /dream. Optimistic — fires at prompt-build time."""
-        try:
-            os.makedirs(self._memory_dir, exist_ok=True)
-            with open(self._lock_path, "w") as f:
-                f.write(str(os.getpid()))
-        except OSError as exc:
-            logger.debug("[autoDream] record failed: %s", exc)
+  def record(self) -> None:
+    """Stamp from manual /dream. Optimistic — fires at prompt-build time."""
+    try:
+      os.makedirs(self._memory_dir, exist_ok=True)
+      with open(self._lock_path, "w") as f:
+        f.write(str(os.getpid()))
+    except OSError as exc:
+      logger.debug("[autoDream] record failed: %s", exc)
 
 
 def check_dream_gates(
-    memory_dir: str,
-    transcript_dir: str,
-    *,
-    config: AutoDreamConfig | None = None,
-    current_session_id: str | None = None,
-    force: bool = False,
+  memory_dir: str,
+  transcript_dir: str,
+  *,
+  config: AutoDreamConfig | None = None,
+  current_session_id: str | None = None,
+  force: bool = False,
 ) -> AutoDreamResult:
-    """Run the 3-gate cascade to determine if consolidation should fire.
+  """Run the 3-gate cascade to determine if consolidation should fire.
 
-    Gates (cheapest first):
-        1. Time: hours since last consolidation >= min_hours
-        2. Sessions: transcript count with mtime > last_consolidated >= min_sessions
-        3. Lock: no other process mid-consolidation
+  Gates (cheapest first):
+      1. Time: hours since last consolidation >= min_hours
+      2. Sessions: transcript count with mtime > last_consolidated >= min_sessions
+      3. Lock: no other process mid-consolidation
 
-    Parameters
-    ----------
-    memory_dir:
-        Path to the memory directory (e.g., ``~/.claude/memory/``).
-    transcript_dir:
-        Path to the session transcript directory.
-    config:
-        Thresholds. Uses defaults (24h, 5 sessions) if not provided.
-    current_session_id:
-        Session to exclude from the session count (it's always recent).
-    force:
-        Bypass time/session gates (but NOT the lock).
-    """
-    cfg = config or AutoDreamConfig()
-    lock = ConsolidationLock(memory_dir)
+  Parameters
+  ----------
+  memory_dir:
+      Path to the memory directory (e.g., ``~/.claude/memory/``).
+  transcript_dir:
+      Path to the session transcript directory.
+  config:
+      Thresholds. Uses defaults (24h, 5 sessions) if not provided.
+  current_session_id:
+      Session to exclude from the session count (it's always recent).
+  force:
+      Bypass time/session gates (but NOT the lock).
+  """
+  cfg = config or AutoDreamConfig()
+  lock = ConsolidationLock(memory_dir)
 
-    # --- Time gate ---
-    last_at = lock.read_last_consolidated_at()
-    hours_since = (time.time() * 1000 - last_at) / 3_600_000
+  # --- Time gate ---
+  last_at = lock.read_last_consolidated_at()
+  hours_since = (time.time() * 1000 - last_at) / 3_600_000
 
-    if not force and hours_since < cfg.min_hours:
-        return AutoDreamResult(
-            should_fire=False,
-            reason=f"time_gate: {hours_since:.1f}h < {cfg.min_hours}h",
-            hours_since=hours_since,
-        )
-
-    # --- Session gate ---
-    session_ids = _list_sessions_touched_since(transcript_dir, last_at)
-
-    # Exclude current session
-    if current_session_id:
-        session_ids = [sid for sid in session_ids if sid != current_session_id]
-
-    if not force and len(session_ids) < cfg.min_sessions:
-        return AutoDreamResult(
-            should_fire=False,
-            reason=f"session_gate: {len(session_ids)} < {cfg.min_sessions}",
-            hours_since=hours_since,
-            sessions_found=len(session_ids),
-        )
-
-    # --- Lock gate ---
-    if not force:
-        prior_mtime = lock.try_acquire()
-        if prior_mtime is None:
-            return AutoDreamResult(
-                should_fire=False,
-                reason="lock_gate: held by another process",
-                hours_since=hours_since,
-                sessions_found=len(session_ids),
-            )
-    else:
-        prior_mtime = last_at
-
+  if not force and hours_since < cfg.min_hours:
     return AutoDreamResult(
-        should_fire=True,
-        reason=f"all_gates_passed: {hours_since:.1f}h, {len(session_ids)} sessions",
+      should_fire=False,
+      reason=f"time_gate: {hours_since:.1f}h < {cfg.min_hours}h",
+      hours_since=hours_since,
+    )
+
+  # --- Session gate ---
+  session_ids = _list_sessions_touched_since(transcript_dir, last_at)
+
+  # Exclude current session
+  if current_session_id:
+    session_ids = [sid for sid in session_ids if sid != current_session_id]
+
+  if not force and len(session_ids) < cfg.min_sessions:
+    return AutoDreamResult(
+      should_fire=False,
+      reason=f"session_gate: {len(session_ids)} < {cfg.min_sessions}",
+      hours_since=hours_since,
+      sessions_found=len(session_ids),
+    )
+
+  # --- Lock gate ---
+  if not force:
+    prior_mtime = lock.try_acquire()
+    if prior_mtime is None:
+      return AutoDreamResult(
+        should_fire=False,
+        reason="lock_gate: held by another process",
         hours_since=hours_since,
         sessions_found=len(session_ids),
-        session_ids=session_ids,
-        prior_mtime=prior_mtime,
-    )
+      )
+  else:
+    prior_mtime = last_at
+
+  return AutoDreamResult(
+    should_fire=True,
+    reason=f"all_gates_passed: {hours_since:.1f}h, {len(session_ids)} sessions",
+    hours_since=hours_since,
+    sessions_found=len(session_ids),
+    session_ids=session_ids,
+    prior_mtime=prior_mtime,
+  )
 
 
 def record_consolidation(memory_dir: str) -> None:
-    """Stamp from manual /dream."""
-    lock = ConsolidationLock(memory_dir)
-    lock.record()
+  """Stamp from manual /dream."""
+  lock = ConsolidationLock(memory_dir)
+  lock.record()
 
 
 def build_consolidation_prompt(
-    memory_root: str,
-    transcript_dir: str,
-    extra: str = "",
+  memory_root: str,
+  transcript_dir: str,
+  extra: str = "",
 ) -> str:
-    """Generate the 4-phase consolidation prompt.
+  """Generate the 4-phase consolidation prompt.
 
-    Ported from ``consolidationPrompt.ts``.
-    """
-    return f"""# Dream: Memory Consolidation
+  Ported from ``consolidationPrompt.ts``.
+  """
+  return f"""# Dream: Memory Consolidation
 
 You are performing a dream — a reflective pass over your memory files. \
 Synthesize what you've learned recently into durable, well-organized \
@@ -334,46 +339,46 @@ If nothing changed (memories are already tight), say so.{_extra_section(extra)}"
 
 
 def _extra_section(extra: str) -> str:
-    if not extra:
-        return ""
-    return f"\n\n## Additional context\n\n{extra}"
+  if not extra:
+    return ""
+  return f"\n\n## Additional context\n\n{extra}"
 
 
 def _list_sessions_touched_since(transcript_dir: str, since_ms: float) -> list[str]:
-    """Session IDs with mtime after since_ms.
+  """Session IDs with mtime after since_ms.
 
-    Scans for JSONL transcript files, excludes agent-*.jsonl.
-    """
-    since_s = since_ms / 1000
-    session_ids: list[str] = []
+  Scans for JSONL transcript files, excludes agent-*.jsonl.
+  """
+  since_s = since_ms / 1000
+  session_ids: list[str] = []
 
-    try:
-        pattern = os.path.join(transcript_dir, "**", "*.jsonl")
-        for filepath in glob.glob(pattern, recursive=True):
-            basename = os.path.basename(filepath)
-            # Exclude agent transcripts
-            if basename.startswith("agent-"):
-                continue
-            try:
-                st = os.stat(filepath)
-                if st.st_mtime > since_s:
-                    # Extract session ID from filename
-                    session_id = Path(filepath).stem
-                    session_ids.append(session_id)
-            except OSError:
-                continue
-    except OSError:
-        pass
+  try:
+    pattern = os.path.join(transcript_dir, "**", "*.jsonl")
+    for filepath in glob.glob(pattern, recursive=True):
+      basename = os.path.basename(filepath)
+      # Exclude agent transcripts
+      if basename.startswith("agent-"):
+        continue
+      try:
+        st = os.stat(filepath)
+        if st.st_mtime > since_s:
+          # Extract session ID from filename
+          session_id = Path(filepath).stem
+          session_ids.append(session_id)
+      except OSError:
+        continue
+  except OSError:
+    pass
 
-    return session_ids
+  return session_ids
 
 
 def _is_process_running(pid: int) -> bool:
-    """Check if a process is running by sending signal 0."""
-    try:
-        os.kill(pid, 0)
-        return True
-    except (ProcessLookupError, PermissionError):
-        return False
-    except OSError:
-        return False
+  """Check if a process is running by sending signal 0."""
+  try:
+    os.kill(pid, 0)
+    return True
+  except (ProcessLookupError, PermissionError):
+    return False
+  except OSError:
+    return False

@@ -1,4 +1,4 @@
-name: ShadowTag-v2 CI
+name: AiYou CI
 on:
   push:
     branches: [ main ]

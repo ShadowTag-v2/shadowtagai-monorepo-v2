@@ -1,4 +1,4 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 /**
  * Register a simple prompt with no arguments
@@ -9,18 +9,18 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 export const registerSimplePrompt = (server: McpServer) => {
   // Register the prompt
   server.registerPrompt(
-    'simple-prompt',
+    "simple-prompt",
     {
-      title: 'Simple Prompt',
-      description: 'A prompt with no arguments',
+      title: "Simple Prompt",
+      description: "A prompt with no arguments",
     },
     () => ({
       messages: [
         {
-          role: 'user',
+          role: "user",
           content: {
-            type: 'text',
-            text: 'This is a simple prompt without arguments.',
+            type: "text",
+            text: "This is a simple prompt without arguments.",
           },
         },
       ],

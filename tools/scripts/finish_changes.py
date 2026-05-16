@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 FINISH CHANGES (The "Janitor")
 ====================================

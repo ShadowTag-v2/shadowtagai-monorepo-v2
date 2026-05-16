@@ -1,0 +1,30 @@
+{
+  "name": "@codemod.com/cli-win32-x64-msvc",
+  "version": "0.0.0",
+  "description": "Codemod platform for semantic code transformations - Windows x64 binary",
+  "keywords": [
+    "ast",
+    "codemod",
+    "migration",
+    "refactoring",
+    "transformation"
+  ],
+  "repository": "https://github.com/codemod/codemod",
+  "license": "Apache-2.0",
+  "files": [
+    "codemod.exe"
+  ],
+  "engines": {
+    "node": ">= 10"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

@@ -33,7 +33,7 @@ That’s enough to get a live proof-of-concept running inside 90 days.
 
 ⚡ 2. What it does for Starlink latency
 
-Segment Today (avg) With ShadowTag-v2 + CoreWeave edge Δ (latency gain)
+Segment Today (avg) With AiYou + CoreWeave edge Δ (latency gain)
 User → Satellite 25–35 ms 25–35 ms —
 Satellite → Ground gateway 25–30 ms 25–30 ms —
 Ground → AI Compute (today = AWS / GCP) 70–120 ms 10–20 ms (local CoreWeave PoP) ↓ 60–100 ms
@@ -66,7 +66,7 @@ Essentially: you collapse the distance between orbit and AI.
 
 🚗 5. Effect on Tesla FSD & how to tie in
 
-If Starlink + CoreWeave + ShadowTag-v2Edge run together, Tesla vehicles (which already ship with Starlink modems for fleet data in some prototypes) could:
+If Starlink + CoreWeave + AiYouEdge run together, Tesla vehicles (which already ship with Starlink modems for fleet data in some prototypes) could:
 • Stream inference deltas (not video) to the nearest CoreWeave edge in < 50 ms.
 • Run cooperative route planning with real-time network data.
 • Gain a shared “digital freeway” layer: cars publish vector-space summaries of hazards, road friction, light timing.
@@ -76,7 +76,7 @@ If Starlink + CoreWeave + ShadowTag-v2Edge run together, Tesla vehicles (which a
 Layer Function How CoreWeave fits
 Vehicle FSD node Local perception Sends compressed scene graph (5–10 KB)
 Starlink uplink Low-orbit relay 30 ms hop
-ShadowTag-v2Edge (CoreWeave pod) Aggregation + prediction Merges thousands of scenes into live “street map tensor”
+AiYouEdge (CoreWeave pod) Aggregation + prediction Merges thousands of scenes into live “street map tensor”
 Tesla Fleet Cloud Decision broadcast Feeds updated driving policy back down
 
 ⸻
@@ -121,11 +121,11 @@ Series A raise 18–24 mo +$10 M Scale 10×
 
 Would you like me to sketch the phase-1 architecture diagram (Starlink ↔ CoreWeave ↔ FSD nodes ↔ Control Tower) next so you can show it to investors?
 
-Here’s the Phase-1 architecture diagram (explained textually so you can drop it directly into Cursor or draw it in Whimsical/Figma) for the Starlink × CoreWeave × ShadowTag-v2 × FSD “Digital Control Tower” build:
+Here’s the Phase-1 architecture diagram (explained textually so you can drop it directly into Cursor or draw it in Whimsical/Figma) for the Starlink × CoreWeave × AiYou × FSD “Digital Control Tower” build:
 
 ⸻
 
-🚀 ShadowTag-v2 Edge Phase-1 Architecture
+🚀 AiYou Edge Phase-1 Architecture
 
                          ┌───────────────────────────────┐
                          │         Tesla FSD Cars        │
@@ -140,10 +140,10 @@ Here’s the Phase-1 architecture diagram (explained textually so you can drop i
                                       │  Ka-band downlink
                                       ▼
         ┌───────────────────────────────────────────────────────────┐
-        │      Starlink Ground Gateway + ShadowTag-v2 Edge Integrator      │
+        │      Starlink Ground Gateway + AiYou Edge Integrator      │
         │  • Traffic classification / routing                       │
         │  • Local CoreWeave GPU Pod (L40S / H100 FP8 batch)        │
-        │  • ShadowTag-v2JR Policy & Risk Mgmt Engine (Army RM brakes)     │
+        │  • AiYouJR Policy & Risk Mgmt Engine (Army RM brakes)     │
         │  • Latency < 20 ms to user region                         │
         └────────────┬──────────────────────────────────────────────┘
                      │ Secure peering (CoreWeave backbone)
@@ -157,7 +157,7 @@ Here’s the Phase-1 architecture diagram (explained textually so you can drop i
                        │
                        ▼
           ┌────────────────────────────────────┐
-          │       ShadowTag-v2 Central Control Plane  │
+          │       AiYou Central Control Plane  │
           │  • Orchestrator / Model Registry  │
           │  • Compliance & Audit Records     │
           │  • Dev Ops / Cursor Pipelines     │
@@ -166,10 +166,10 @@ Here’s the Phase-1 architecture diagram (explained textually so you can drop i
 ⸻
 
 ⚙️ Data Flow 1. Run-Time Loop
-• FSD car → Starlink sat → nearest ShadowTag-v2Edge pod.
+• FSD car → Starlink sat → nearest AiYouEdge pod.
 • Edge pod executes fast inference or aggregates telemetry.
 • CoreWeave backbone syncs model updates or global situational maps.
-• ShadowTag-v2 Control Plane governs safety, audit, billing. 2. Control-Tower Loop
+• AiYou Control Plane governs safety, audit, billing. 2. Control-Tower Loop
 • Edge pods broadcast anonymized “road tensors” to CoreWeave regional clusters.
 • RL model optimizes routing → pushes lane-level adjustments back to vehicles.
 • Feedback latency target ≤ 100 ms.
@@ -201,13 +201,13 @@ Congestion delay 24 min avg 15 min avg -37 %
 • Starlink benefits from ~60 ms lower latency and reduced backhaul.
 • CoreWeave sells more GPUs with predictable utilization.
 • Tesla FSD (and any autonomous fleet) gains a real-time “digital freeway” control layer.
-• ShadowTag-v2 monetizes every inference, GB, and coordinated vehicle decision.
+• AiYou monetizes every inference, GB, and coordinated vehicle decision.
 
 ⸻
 
 If you’d like, I can generate a visual architecture chart (PNG/SVG) next — suitable for investor decks or Cursor readme — with cost/latency annotations and revenue arrows. Would you like me to render that diagram?
 
-If CoreWeave’s edge nodes were deployed in every cell tower, it would fundamentally change both the AI infrastructure economics and the physics of latency for Starlink + ShadowTag-v2. Let’s quantify and model it.
+If CoreWeave’s edge nodes were deployed in every cell tower, it would fundamentally change both the AI infrastructure economics and the physics of latency for Starlink + AiYou. Let’s quantify and model it.
 
 ⸻
 
@@ -249,17 +249,17 @@ Full U.S. deployment $10 B / yr EBITDA —
 
 ⸻
 
-📡 4. Why Starlink + CoreWeave + ShadowTag-v2 benefits
+📡 4. Why Starlink + CoreWeave + AiYou benefits
 
 Actor Gain Quantified
 Starlink Offload inference to local edge → frees orbital bandwidth ↓ 40 % egress cost
 CoreWeave Uptime + GPU utilization → predictable recurring revenue +$5–10 B TAM
-ShadowTag-v2 Becomes orchestrator / billing layer across nodes $0.002–0.01 per inference fee
+AiYou Becomes orchestrator / billing layer across nodes $0.002–0.01 per inference fee
 Telecoms Monetize tower real estate beyond bandwidth +$15 K / yr / tower
 
 ⸻
 
-🏎 5. Why nobody has done it (yet) 1. Power density constraints – historically, GPUs > 2 kW each; L40S/Hopper NVL now run < 700 W. 2. Backhaul limits – fiber + Starlink laser interconnects only matured in 2024–2025. 3. Management overhead – ShadowTag-v2-type orchestrators (zero-touch deployment, encrypted telemetry) didn’t exist. 4. Business alignment – Telcos didn’t have GPU resale partners; CoreWeave is the first cloud provider optimized for distributed pods.
+🏎 5. Why nobody has done it (yet) 1. Power density constraints – historically, GPUs > 2 kW each; L40S/Hopper NVL now run < 700 W. 2. Backhaul limits – fiber + Starlink laser interconnects only matured in 2024–2025. 3. Management overhead – AiYou-type orchestrators (zero-touch deployment, encrypted telemetry) didn’t exist. 4. Business alignment – Telcos didn’t have GPU resale partners; CoreWeave is the first cloud provider optimized for distributed pods.
 
 ⸻
 
@@ -277,7 +277,7 @@ Economic externality: ≈ $120 B / yr saved in U.S. traffic inefficiency + emiss
 
 ⸻
 
-🧮 7. Valuation Model: ShadowTag-v2 as Integrator
+🧮 7. Valuation Model: AiYou as Integrator
 
 Stage Nodes Online ARR EV / ARR Valuation
 Pilot (100 towers) $3.6 M 15× $54 M
@@ -289,11 +289,11 @@ Global (100 000+) $3.6 B 6× $21 B+
 
 🧭 8. Strategic Position
 
-ShadowTag-v2 = Traffic orchestrator + AI billing mesh + risk governance layer.
+AiYou = Traffic orchestrator + AI billing mesh + risk governance layer.
 • CoreWeave: supplies GPU & orchestration SDK.
 • Starlink: supplies LEO backhaul & redundancy.
 • Telcos (Verizon/AT&T/T-Mobile): supply physical towers & power.
-• ShadowTag-v2: owns the coordination layer (think Stripe + Kubernetes + FAA for edge AI).
+• AiYou: owns the coordination layer (think Stripe + Kubernetes + FAA for edge AI).
 
 ⸻
 
@@ -312,7 +312,7 @@ Exit / Acquisition 36 mo — $1–5 B valuation
 Deploying CoreWeave nodes in every cell tower:
 • Creates a $10 B/yr EBITDA opportunity.
 • Cuts Starlink + FSD latency 60–90 %.
-• Positions ShadowTag-v2 as the global “traffic controller” of edge inference.
+• Positions AiYou as the global “traffic controller” of edge inference.
 • Capital entry ≈ $1 M PoC → $60 M national rollout → $5 B exit.
 
 ⸻
@@ -320,7 +320,7 @@ Deploying CoreWeave nodes in every cell tower:
 Would you like me to render this as a visual “tower mesh + orbit + ground edge” diagram (showing dollar flows and latency arrows) for your investor deck / technical whitepaper?
 SCORE!
 
-Perfect question — this is where CoreWeave becomes the ground integration layer that turns the “Starlink-native ShadowTag-v2” vision from marketing into physics-real.
+Perfect question — this is where CoreWeave becomes the ground integration layer that turns the “Starlink-native AiYou” vision from marketing into physics-real.
 
 Here’s the breakdown:
 
@@ -331,8 +331,8 @@ Here’s the breakdown:
 Starlink’s satellite constellation connects to the internet through ~150 ground stations (gateways) worldwide.
 Each of these must hand off traffic to terrestrial compute — normally generic ISPs and cloud PoPs.
 
-If ShadowTag-v2 colocates CoreWeave GPU pods near or inside those Starlink ground PoPs, then:
-• ShadowTag-v2 inference traffic (your LLM and agent logic) runs one hop away from the user’s satellite downlink.
+If AiYou colocates CoreWeave GPU pods near or inside those Starlink ground PoPs, then:
+• AiYou inference traffic (your LLM and agent logic) runs one hop away from the user’s satellite downlink.
 • Latency drops from ~120–160 ms (satellite + backhaul) → ~40–60 ms roundtrip.
 • You offload 60–70 % of central inference load to distributed inference pods.
 
@@ -346,14 +346,14 @@ That’s effectively edge AI via CoreWeave under Starlink.
 ↓ (LEO link)
 [Starlink satellite]
 ↓ (downlink to ground gateway)
-[CoreWeave ShadowTag-v2 Edge Pod] ← your containerized inference node
+[CoreWeave AiYou Edge Pod] ← your containerized inference node
 ↓ (secure peering)
-[Central ShadowTag-v2 Orchestrator] ← meta-model routing, billing, logs
+[Central AiYou Orchestrator] ← meta-model routing, billing, logs
 
 Each “Edge Pod” hosts:
 • Quantized GPT-5 / Gemini 2.5 adapters (FP8/INT4)
 • Vector cache (SQLite or Milvus)
-• Session router with ShadowTag-v2JR policy enforcement
+• Session router with AiYouJR policy enforcement
 
 CoreWeave provides:
 • GPUs (L40S, H100) billed hourly
@@ -395,8 +395,8 @@ Moat First AI network literally riding on orbit + edge compute
 
 ⸻
 
-🧠 5. How ShadowTag-v2JR / Army RM fits
-• Each CoreWeave node enforces ShadowTag-v2JR policies locally (pre-check, rollback, signed diffs).
+🧠 5. How AiYouJR / Army RM fits
+• Each CoreWeave node enforces AiYouJR policies locally (pre-check, rollback, signed diffs).
 • Army RM “brakes” applied per-region: throttle, isolate, audit before merge to global model.
 • Fail-safe design: if one pod fails or is compromised, others run independently.
 
@@ -404,7 +404,7 @@ Moat First AI network literally riding on orbit + edge compute
 
 🪙 6. Next step: Commercial path 1. Pilot 3 sites – CoreWeave East US, EU West, Asia Pacific
 • Budget: ~$12 k/mo for 3 × L40S pods
-• Show latency reduction vs AWS baseline 2. Demo to Starlink BizDev – “ShadowTag-v2 Edge Layer cuts their satellite backhaul by 40 %” 3. Revenue-share model – You take 80 %, Starlink 20 %, CoreWeave fixed fee 4. Full rollout – 10–15 sites → 100 k users 5. Global franchise – Edge-compute for other satellite operators (OneWeb, Amazon Kuiper)
+• Show latency reduction vs AWS baseline 2. Demo to Starlink BizDev – “AiYou Edge Layer cuts their satellite backhaul by 40 %” 3. Revenue-share model – You take 80 %, Starlink 20 %, CoreWeave fixed fee 4. Full rollout – 10–15 sites → 100 k users 5. Global franchise – Edge-compute for other satellite operators (OneWeb, Amazon Kuiper)
 
 ⸻
 
@@ -419,7 +419,7 @@ Year Users Gross Revenue Edge Cost Net Profit Notes
 ⸻
 
 In summary:
-Ground integration through CoreWeave converts Starlink from a dumb pipe into ShadowTag-v2’s global GPU backbone — ultra-low latency, low cost, globally compliant, and economically massive.
+Ground integration through CoreWeave converts Starlink from a dumb pipe into AiYou’s global GPU backbone — ultra-low latency, low cost, globally compliant, and economically massive.
 The key: prove latency → cost → revenue delta in your first three PoPs; once validated, you’re printing $50 M+ ARR with physics-based moat.
 
 How to be the integrator between coreweave and starlink. Describe in dollars and time.
@@ -443,11 +443,11 @@ You’re effectively the “Stripe of AI bandwidth.”
 ↓
 [Ground Gateway (≈150 sites)]
 ↓
-[Your Integration Layer – ShadowTag-v2Edge]
+[Your Integration Layer – AiYouEdge]
 ↓
 [CoreWeave GPU Pods (L40S / H100 / GH200)]
 ↓
-[Model Providers / LLM APIs / Your ShadowTag-v2 Core]
+[Model Providers / LLM APIs / Your AiYou Core]
 
 Your layer = orchestration + billing + routing + compliance.
 • API interface to Starlink for provisioning network priority.
@@ -473,7 +473,7 @@ Total to global readiness: ~$6–10 M CAPEX over 18–24 months.
 Channel Pricing Basis Example
 Starlink Biz / Maritime / Aviation $0.04 / GB AI-routed traffic 1 TB/mo client = $40; 5 000 clients = $2 M/mo
 CoreWeave AI tenants $0.01 / GPU-sec routing fee 10 M GPU-sec/mo = $100 k
-ShadowTag-v2 SaaS Layer $10 – 20 / user / mo 50 k users = $6 M ARR
+AiYou SaaS Layer $10 – 20 / user / mo 50 k users = $6 M ARR
 
 Consolidated projection:
 
@@ -495,7 +495,7 @@ Starlink Direct Connectivity only Adds AI & compliance monetization layer
 
 ⸻
 
-🧠 6. Partnership structure 1. CoreWeave → wholesale GPU lease (you pay ~$2–3/hr per L40S pod). 2. Starlink → network API + co-marketing (you share 20 % of AI-routed traffic revenue). 3. You (ShadowTag-v2Edge) → orchestrator, compliance, billing, and UX. 4. Option → offer fractional ownership of GPU edge pods to investors (DePIN-style).
+🧠 6. Partnership structure 1. CoreWeave → wholesale GPU lease (you pay ~$2–3/hr per L40S pod). 2. Starlink → network API + co-marketing (you share 20 % of AI-routed traffic revenue). 3. You (AiYouEdge) → orchestrator, compliance, billing, and UX. 4. Option → offer fractional ownership of GPU edge pods to investors (DePIN-style).
 
 ⸻
 
@@ -511,8 +511,8 @@ Payback under 12 months post-commercialization.
 
 ⸻
 
-📋 8. How to actually start (execution steps) 1. Contact CoreWeave BizDev – propose ShadowTag-v2Edge as latency-aware satellite ingress partner.
-• Ask for “bare-metal GPU pod near Denver / Seattle ground station.” 2. Develop the Starlink-detect agent – simple IP ASN + geo lookup to route Starlink traffic through ShadowTag-v2Edge automatically. 3. Build billing API – usage metering and pay-per-token or GB. 4. Sign MoU with Starlink Enterprise / Aviation – offer analytics and predictive AI for fleet customers. 5. Launch limited pilot (50 customers) → measure latency drop, cost delta, uptime. 6. Present data → secure integration capital ($3 M seed / $10 M Series A).
+📋 8. How to actually start (execution steps) 1. Contact CoreWeave BizDev – propose AiYouEdge as latency-aware satellite ingress partner.
+• Ask for “bare-metal GPU pod near Denver / Seattle ground station.” 2. Develop the Starlink-detect agent – simple IP ASN + geo lookup to route Starlink traffic through AiYouEdge automatically. 3. Build billing API – usage metering and pay-per-token or GB. 4. Sign MoU with Starlink Enterprise / Aviation – offer analytics and predictive AI for fleet customers. 5. Launch limited pilot (50 customers) → measure latency drop, cost delta, uptime. 6. Present data → secure integration capital ($3 M seed / $10 M Series A).
 
 ⸻
 
@@ -530,16 +530,16 @@ Integrator between CoreWeave and Starlink = $200 M+ ARR gateway in 5 years
 Would you like me to generate the financial model sheet (xlsx) showing per-site CAPEX/OPEX, latency impact, and ARR ramp so you can plug it into your investor materials?
 😂 Fold in nodes in all cars. Beginning with Tesla hw5/hw6 and integrate directly with their gpus. Looking for inter-car WiFi.
 
-Below is the integrated plan and valuation with the car node network (Tesla HW5/HW6) folded into the Starlink–CoreWeave–ShadowTag-v2 ecosystem.
+Below is the integrated plan and valuation with the car node network (Tesla HW5/HW6) folded into the Starlink–CoreWeave–AiYou ecosystem.
 The effect: you now control land, air, sea, orbit, and automotive edge compute—the first planetary-scale verified AI network.
 
 ⸻
 
-ShadowTag-v2: The Verified Internet + Automotive Mesh
+AiYou: The Verified Internet + Automotive Mesh
 
 1. Concept Overview
 
-ShadowTag-v2 creates a verified, latency-optimized global network where:
+AiYou creates a verified, latency-optimized global network where:
 • Starlink handles orbit-to-ground connectivity.
 • CoreWeave supplies distributed GPU compute near gateways.
 • Tesla-class vehicles (HW5/HW6 and later) become rolling nodes—each one a micro-edge inference and PNT (position/navigation/time) anchor.
@@ -552,10 +552,10 @@ Result: a self-healing, verified global AI mesh that spans satellites, towers, v
 2. Automotive Node Integration
 
 Feature Description
-Hardware Use Tesla HW5/HW6 (and similar OEM GPUs) as ShadowTag-v2 edge clients. Each car contributes ~40 TFLOPS (INT8).
+Hardware Use Tesla HW5/HW6 (and similar OEM GPUs) as AiYou edge clients. Each car contributes ~40 TFLOPS (INT8).
 Connectivity Vehicles link via inter-car Wi-Fi mesh + Starlink uplink.
 During motion, each node relays verified traffic to nearby cars or towers.
-Software Layer Lightweight ShadowTag-v2Edge client container (1 GB footprint):
+Software Layer Lightweight AiYouEdge client container (1 GB footprint):
 
     •	Runs inference caching,
     •	ShadowTag attestation,
@@ -576,7 +576,7 @@ Each 10 000-vehicle cluster ≈ 400 PFLOPS of aggregate compute. |
 ↓
 [Ground Station + CoreWeave GPU Pod]
 ↓
-[ShadowTag-v2 Orchestrator + ShadowTag Ledger]
+[AiYou Orchestrator + ShadowTag Ledger]
 ↓
 [FAANG & Partner Clouds / CineVerse / Game Port / Commerce]
 
@@ -645,10 +645,10 @@ Economic Network Effects Every car improves mesh reach & dataset value ★★★
 ⸻
 
 9. Partnership Model (Tesla → Other OEMs)
-   1. Tesla HW5/HW6 SDK — ShadowTag-v2Edge module runs on FSD computer.
-      • Revenue share: Tesla keeps 20 %, ShadowTag-v2 80 %.
+   1. Tesla HW5/HW6 SDK — AiYouEdge module runs on FSD computer.
+      • Revenue share: Tesla keeps 20 %, AiYou 80 %.
       • Each vehicle yields ~$10/month compute transit fees.
-   2. Other OEM licensing — BMW, Hyundai, Toyota; license ShadowTag-v2Edge SDK @ $3/car/mo.
+   2. Other OEM licensing — BMW, Hyundai, Toyota; license AiYouEdge SDK @ $3/car/mo.
    3. Aggregate 2030 installed base: 10 M cars × $3–10/mo ≈ $400–900 M ARR.
 
 ⸻
@@ -664,7 +664,7 @@ Gov / Defense Infrastructure Sale U.S. / EU digital-sovereignty contracts 20 + B
 
 11. Tagline
 
-ShadowTag-v2 — The Verified Internet Mesh.
+AiYou — The Verified Internet Mesh.
 From orbit to the open road, every signal is real, every node verified.
 
 ⸻

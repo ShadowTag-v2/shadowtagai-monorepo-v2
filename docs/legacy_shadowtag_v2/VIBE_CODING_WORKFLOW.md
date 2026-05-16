@@ -2,7 +2,7 @@
 
 **How a Senior Engineer at a $140M+ Startup Actually Codes with AI**
 
-> _Adapted from real-world workflows at well-funded startups shipping 40% faster with 95% AI-assisted development_
+> *Adapted from real-world workflows at well-funded startups shipping 40% faster with 95% AI-assisted development*
 
 ---
 
@@ -29,7 +29,6 @@ The "Vibe Coding" workflow represents a pragmatic approach to AI-assisted develo
 #### How It Works
 
 1. **Describe what you want in natural language**
-
    ```bash
    # Example: Starting Gemini Ingestion Layer feature
    $ claude
@@ -104,7 +103,6 @@ class CrawlerManager:
    - Prioritize based on criticality
 
 2. **Use Cursor's real-time code generation**
-
    ```
    # In Cursor, highlight the _crawl_source method and prompt:
 
@@ -225,7 +223,6 @@ class CrawlerManager:
 #### How It Works
 
 1. **Local quick checks with scode extension**
-
    ```bash
    # Run CodeRabbit scode extension in Cursor
    # Catches common issues before committing:
@@ -236,7 +233,6 @@ class CrawlerManager:
    ```
 
 2. **Commit and push to feature branch**
-
    ```bash
    git add src/ingestion/crawler_manager.py
    git commit -m "Add ethical multi-source crawler manager
@@ -266,29 +262,22 @@ class CrawlerManager:
 ## CodeRabbit PR Review
 
 ### Security Issues
-
 ⚠️ **High**: `RobotFileParser.read()` can execute arbitrary HTTP requests
-
-- Recommendation: Add timeout parameter (30s)
-- Add to line 87: `rp.read()` → `await asyncio.wait_for(rp.read(), timeout=30)`
+   - Recommendation: Add timeout parameter (30s)
+   - Add to line 87: `rp.read()` → `await asyncio.wait_for(rp.read(), timeout=30)`
 
 ### Performance
-
 💡 **Medium**: Creating new `aiohttp.ClientSession` per source is inefficient
-
-- Recommendation: Share session across all sources in batch
-- Estimated improvement: 20% faster runtime
+   - Recommendation: Share session across all sources in batch
+   - Estimated improvement: 20% faster runtime
 
 ### Best Practices
-
 ✅ **Low**: Consider adding type hints for `_fetch_items` return value
-
-- Current: `async def _fetch_items(session, source)`
-- Suggested: `async def _fetch_items(session: ClientSession, source: str) -> List[Dict]`
+   - Current: `async def _fetch_items(session, source)`
+   - Suggested: `async def _fetch_items(session: ClientSession, source: str) -> List[Dict]`
 ```
 
 **Why This Works**: AI-reviewing-AI catches different patterns:
-
 - **Human review**: Architecture, business logic, maintainability
 - **AI review (CodeRabbit)**: Security, performance, edge cases, type safety
 - **AI generation (Claude/Cursor)**: Implementation speed, boilerplate reduction
@@ -308,7 +297,6 @@ This creates a **complementary review system** rather than redundant checking.
 #### How It Works
 
 1. **AI-assisted test generation**
-
    ```bash
    # In Cursor, prompt:
    "Generate comprehensive pytest tests for CrawlerManager:
@@ -320,7 +308,6 @@ This creates a **complementary review system** rather than redundant checking.
    ```
 
 2. **Human-written edge cases**
-
    ```python
    # tests/test_crawler_manager.py - Human adds edge cases AI missed
 
@@ -336,14 +323,12 @@ This creates a **complementary review system** rather than redundant checking.
    ```
 
 3. **Run comprehensive test suite**
-
    ```bash
    pytest tests/ --cov=src/ingestion --cov-report=html
    # Target: >90% coverage (AI helps reach 70-80%, human adds 10-20%)
    ```
 
 4. **Deploy to staging**
-
    ```bash
    # GKE staging cluster
    kubectl apply -f k8s/staging/ingestion-cronjob.yaml
@@ -368,37 +353,33 @@ This creates a **complementary review system** rather than redundant checking.
 
 ## Workflow Comparison: Traditional vs. Vibe Coding
 
-| Aspect                     | Traditional Workflow   | Vibe Coding Workflow              |
-| -------------------------- | ---------------------- | --------------------------------- |
-| **Initial Implementation** | 100% manual coding     | 70% AI-generated structure        |
-| **Debugging**              | Trial and error        | Real-time AI supervision          |
-| **Code Review**            | Human reviewers only   | AI + human complementary review   |
-| **Test Writing**           | 100% manual            | AI-assisted with human edge cases |
-| **Time to Completion**     | Baseline               | **40% faster**                    |
-| **Focus Area**             | Implementation details | System design + architecture      |
-| **Junior Engineer Output** | Junior-level           | **Senior-level** (design focus)   |
+| Aspect | Traditional Workflow | Vibe Coding Workflow |
+|--------|---------------------|---------------------|
+| **Initial Implementation** | 100% manual coding | 70% AI-generated structure |
+| **Debugging** | Trial and error | Real-time AI supervision |
+| **Code Review** | Human reviewers only | AI + human complementary review |
+| **Test Writing** | 100% manual | AI-assisted with human edge cases |
+| **Time to Completion** | Baseline | **40% faster** |
+| **Focus Area** | Implementation details | System design + architecture |
+| **Junior Engineer Output** | Junior-level | **Senior-level** (design focus) |
 
 ---
 
 ## Success Metrics: Real-World Results
 
 ### Speed
-
 - **40% faster feature delivery** (from concept to production)
 - **Reduced context switching** (less time debugging, more time designing)
 
 ### Quality
-
 - **Same or better code quality** (AI catches edge cases humans miss)
 - **More comprehensive tests** (AI generates boilerplate tests faster)
 
 ### Team Impact
-
 - **Junior engineers promoted faster** (focus on design, not boilerplate)
 - **Senior engineers more productive** (delegate repetitive work to AI)
 
 ### Adoption
-
 - **80 engineers at $140M+ startup** using this workflow
 - **Becoming standard across teams**
 
@@ -427,12 +408,12 @@ This creates a **complementary review system** rather than redundant checking.
 
 ## Tool Stack Summary
 
-| Phase                  | Tool                            | Purpose                     | Time % |
-| ---------------------- | ------------------------------- | --------------------------- | ------ |
-| **1. Rough Structure** | Claude Code (terminal)          | Generate 70% scaffolding    | 20-30% |
-| **2. Refinement**      | Cursor IDE                      | Real-time polishing         | 40-50% |
-| **3. AI Review**       | CodeRabbit (scode + GitHub app) | Catch edge cases            | 10-15% |
-| **4. Testing**         | pytest + staging + manual QA    | Human-controlled validation | 20-30% |
+| Phase | Tool | Purpose | Time % |
+|-------|------|---------|--------|
+| **1. Rough Structure** | Claude Code (terminal) | Generate 70% scaffolding | 20-30% |
+| **2. Refinement** | Cursor IDE | Real-time polishing | 40-50% |
+| **3. AI Review** | CodeRabbit (scode + GitHub app) | Catch edge cases | 10-15% |
+| **4. Testing** | pytest + staging + manual QA | Human-controlled validation | 20-30% |
 
 ---
 
@@ -463,7 +444,6 @@ This creates a **complementary review system** rather than redundant checking.
 ### Q: Doesn't AI-reviewing-AI seem redundant?
 
 **A**: No, because different AI tools catch different issues:
-
 - **Claude/Cursor** (generation): Fast implementation, general patterns
 - **CodeRabbit** (review): Security, performance, cross-file dependencies
 - **Human** (architecture): Business logic, system design, maintainability
@@ -473,7 +453,6 @@ They're complementary, not redundant.
 ### Q: How do junior engineers benefit?
 
 **A**: By focusing on **design** instead of **implementation**:
-
 - AI handles boilerplate and repetitive coding
 - Junior engineers learn architecture and system thinking
 - They deliver senior-level output by combining design skills with AI implementation
@@ -482,7 +461,6 @@ They're complementary, not redundant.
 ### Q: What about AI hallucinations?
 
 **A**: Caught in **Phase 2** (real-time refinement):
-
 - Watch code appear line-by-line in Cursor
 - Stop and redirect when AI goes off track
 - Much easier than reviewing massive code dumps later
@@ -490,7 +468,6 @@ They're complementary, not redundant.
 ### Q: How do you handle sensitive code or trade secrets?
 
 **A**: Use self-hosted AI or on-premise solutions:
-
 - Deploy Claude Code with local models (if available)
 - Use CodeRabbit's self-hosted enterprise version
 - Keep critical IP in human-written code, use AI for infrastructure/boilerplate
@@ -498,14 +475,12 @@ They're complementary, not redundant.
 ### Q: Does this work for all types of coding?
 
 **A**: Works best for:
-
 - ✅ Web services and APIs (like pnkln stack)
 - ✅ Data pipelines and ETL
 - ✅ CRUD applications
 - ✅ Infrastructure as code
 
 Less effective for:
-
 - ❌ Novel algorithms (AI lacks domain expertise)
 - ❌ Performance-critical code (requires deep optimization)
 - ❌ Safety-critical systems (human verification essential)
@@ -516,7 +491,7 @@ Less effective for:
 
 The Vibe Coding workflow isn't about replacing engineers with AI—it's about **strategic delegation** to maximize engineering impact. By handling repetitive implementation with AI, engineers can focus on what humans do best: **system design, architecture, and strategic decision-making**.
 
-**Key Takeaway**: 95% AI-assisted doesn't mean 95% autonomous. It means 95% of _implementation time_ leverages AI, while 100% of _architectural decisions_ remain human-driven.
+**Key Takeaway**: 95% AI-assisted doesn't mean 95% autonomous. It means 95% of *implementation time* leverages AI, while 100% of *architectural decisions* remain human-driven.
 
 ---
 

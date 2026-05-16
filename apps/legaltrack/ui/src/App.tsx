@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { CriticalTile } from './components/CriticalTile';
-import './index.css';
+import React, { useState } from "react";
+import { CriticalTile } from "./components/CriticalTile";
+import "./index.css";
 
 function App() {
   const [activeTileIndex, setActiveTileIndex] = useState(0);
@@ -8,18 +8,18 @@ function App() {
   // Mock data pulled from the Zero-Trust PostGIS backend
   const tiles = [
     {
-      imperativeAction: 'FILE',
-      matterName: 'Stark v. Rogers',
-      deadlineIso: '2026-04-15T17:00:00Z',
-      ruleCitation: 'FRCP Rule 12(a)(1)(a)(i)',
-      intensityLevel: 'no-slack' as const,
+      imperativeAction: "FILE",
+      matterName: "Stark v. Rogers",
+      deadlineIso: "2026-04-15T17:00:00Z",
+      ruleCitation: "FRCP Rule 12(a)(1)(a)(i)",
+      intensityLevel: "no-slack" as const,
     },
     {
-      imperativeAction: 'REVIEW',
-      matterName: 'Wayne Enterprises Merger',
-      deadlineIso: '2026-04-20T12:00:00Z',
-      ruleCitation: 'INTERNAL SLA',
-      intensityLevel: 'moderate' as const,
+      imperativeAction: "REVIEW",
+      matterName: "Wayne Enterprises Merger",
+      deadlineIso: "2026-04-20T12:00:00Z",
+      ruleCitation: "INTERNAL SLA",
+      intensityLevel: "moderate" as const,
     },
   ];
 

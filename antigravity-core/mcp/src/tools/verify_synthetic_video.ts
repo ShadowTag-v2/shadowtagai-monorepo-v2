@@ -1,6 +1,6 @@
 import { executeGetVideoForensicsQuery } from '../utils/firebase-data-connect.js';
 
-export async function verifySyntheticVideo(videoId: string, authToken: string) {
+export async function verifySyntheticVideo(videoId: string, _authToken: string) {
   try {
     // Direct query via Firebase Data Connect (Postgres)
     const data = await executeGetVideoForensicsQuery({ id: videoId });

@@ -63,12 +63,12 @@ Now continuing with the remaining plan tasks - updating god-cli.md with Gemini-o
 ║ - gemini-bridge → Gemini API routing ║
 ║ - gptram → UNGPT tools for Claude Code ║
 
-> continue n-autoresearch/Kosmos/BioAgents, codepmcs servers while you reboot. exit
+> continue monkeys, codepmcs servers while you reboot. exit
 
-⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services" && git status)
+⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services" && git status)
 ⎿  Running…
 
-⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services" && git log --oneline -3)
+⏺ Bash(cd "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/aiyou-fastapi-services" && git log --oneline -3)
 ⎿  Error: Exit code 128
 fatal: your current branch 'main' does not have any commits yet
 
@@ -679,7 +679,7 @@ Google Drive/
 ⏺ Search(pattern: "**/.claude-worktrees/**/lib/\*.py")
 ⎿  Found 0 files
 
-⏺ Bash(ls -la ~/.claude-worktrees/ShadowTag-v2-fastapi-services/ 2>/dev/null | head -20)
+⏺ Bash(ls -la ~/.claude-worktrees/aiyou-fastapi-services/ 2>/dev/null | head -20)
 ⎿  total 16
 drwxr-xr-x@ 5 pikeymickey staff 160 Dec 1 06:56 .
 drwxr-xr-x@ 4 pikeymickey staff 128 Dec 1 06:56 ..

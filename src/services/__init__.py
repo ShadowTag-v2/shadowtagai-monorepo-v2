@@ -1,2 +1,2 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-"""Services — streaming watchdog, secrets management."""
+"""Services module for Wealth Acceleration Agent."""

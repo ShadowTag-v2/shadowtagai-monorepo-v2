@@ -1,61 +1,50 @@
-'use strict';
+"use strict";
+
 module.exports = {
   rules: {
-    'no-dynamic-imports': {
-      create(context) {
-        return {
-          ImportExpression(node) {
-            context.report({
-              node,
-              message: 'Dynamic import forbidden. Use static imports or next/dynamic.',
-            });
-          },
-        };
+    "no-dynamic-imports": (context) => ({
+      ImportExpression(node) {
+        context.report({
+          node,
+          message:
+            "SEC-DEBT: Dynamic import forbidden. Use static imports. (Cor.Rule: no-dynamic-imports)",
+        });
       },
-    },
-    'no-any-cast': {
-      create(context) {
-        return {
-          TSAnyKeyword(node) {
-            context.report({ node, message: 'Avoid `any`. Use explicit, safe types.' });
-          },
-        };
+    }),
+    "no-any-cast": (context) => ({
+      TSAnyKeyword(node) {
+        context.report({
+          node,
+          message: "Avoid `any`. Use explicit typed schemas. (Cor.Rule: no-any-cast)",
+        });
       },
-    },
-    'no-extra-trycatch': {
-      create(context) {
-        return {
-          TryStatement(node) {
-            const hasEmptyCatch =
-              node.handler &&
-              (!node.handler.param || (node.handler.body && node.handler.body.body.length === 0));
-            if (hasEmptyCatch) {
-              context.report({
-                node,
-                message: 'Remove blanket try/catch or handle specific errors at call site.',
-              });
-            }
-          },
-        };
+    }),
+    "no-extra-trycatch": (context) => ({
+      TryStatement(node) {
+        const hasEmptyCatch =
+          node.handler && node.handler.body && node.handler.body.body.length === 0;
+        if (hasEmptyCatch) {
+          context.report({
+            node,
+            message:
+              "Empty catch swallows errors. Handle specific errors or bubble up. (Cor.Rule: no-extra-trycatch)",
+          });
+        }
       },
-    },
-    'no-console-log': {
-      create(context) {
-        return {
-          CallExpression(node) {
-            if (
-              node.callee.type === 'MemberExpression' &&
-              node.callee.object.name === 'console' &&
-              node.callee.property.name === 'log'
-            ) {
-              context.report({
-                node,
-                message: 'Remove console.log before shipping. Use structured logging.',
-              });
-            }
-          },
-        };
+    }),
+    "no-console-in-client": (context) => ({
+      CallExpression(node) {
+        if (
+          node.callee.type === "MemberExpression" &&
+          node.callee.object.name === "console" &&
+          ["log", "debug", "info"].includes(node.callee.property.name)
+        ) {
+          context.report({
+            node,
+            message: "Remove console.log before shipping. Use structured logging. (Cor.Rule 11)",
+          });
+        }
       },
-    },
+    }),
   },
 };

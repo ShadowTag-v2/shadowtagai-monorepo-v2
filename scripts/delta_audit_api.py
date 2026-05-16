@@ -1,13 +1,14 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import time
 
 import requests
 
 REPOS = {
-    "ShadowTag-v2-fastapi-services": "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services",
-    "Pipeline": "apps/ShadowTag-v2_stack/Pipeline",
-    "cosmic-crab-payload": "apps/ShadowTag-v2_stack/cosmic-crab-payload",
-    "nascent-apollo": "apps/ShadowTag-v2_stack/nascent-apollo",
+    "aiyou-fastapi-services": "apps/aiyou_stack/aiyou-fastapi-services",
+    "Pipeline": "apps/aiyou_stack/Pipeline",
+    "cosmic-crab-payload": "apps/aiyou_stack/cosmic-crab-payload",
+    "nascent-apollo": "apps/aiyou_stack/nascent-apollo",
 }
 
 TOKEN = None
@@ -20,18 +21,17 @@ try:
         pk = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
     enc = jwt.encode(payload, pk, algorithm="RS256")
-    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"}, timeout=30)
+    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"})
     r.raise_for_status()
     insts = r.json()
     r2 = requests.post(
         f"https://api.github.com/app/installations/{insts[0]['id']}/access_tokens",
         headers={"Authorization": f"Bearer {enc}"},
-        timeout=30,
     )
     r2.raise_for_status()
     TOKEN = r2.json()["token"]
-except Exception:
-    pass
+except Exception as e:
+    print(f"Could not generate JWT token: {e}")
 
 headers = {"Accept": "application/vnd.github.v3+json"}
 if TOKEN:
@@ -44,25 +44,29 @@ def get_remote_tree(repo):
     for org in orgs:
         for branch in branches:
             url = f"https://api.github.com/repos/{org}/{repo}/git/trees/{branch}?recursive=1"
-            res = requests.get(url, headers=headers, timeout=30)
+            res = requests.get(url, headers=headers)
             if res.status_code == 200:
-                return [item["path"] for item in res.json().get("tree", []) if item["type"] == "blob"]
+                tree = [item["path"] for item in res.json().get("tree", []) if item["type"] == "blob"]
+                return tree
     return None
 
 
 report = "# Delta Audit of 4 Canonical Roots\n\n"
-stale_strings = ["gemini-2.5-flash", "ShadowTag-v2", "AIzaSy", "sk-"]
+stale_strings = ["gemini-2.5-flash", "AiYou", "AIzaSy", "sk-"]
 
 for repo, dest in REPOS.items():
+    print(f"Auditing {repo}...")
     remote_files = get_remote_tree(repo)
 
     if remote_files is None:
         report += f"## {repo}\n**Status:** blocked (Could not fetch remote tree from GitHub API)\n\n"
+        print("  -> Blocked")
         continue
 
     local_dir = os.path.join(os.getcwd(), dest)
     if not os.path.exists(local_dir):
         report += f"## {repo}\n**Status:** drifted (Local destination {dest} missing)\n\n"
+        print("  -> Missing Local")
         continue
 
     local_files = []
@@ -86,7 +90,7 @@ for repo, dest in REPOS.items():
                             if st in content:
                                 stale_hits.append(f"{path} contains stale string: '{st}'")
                                 break
-                except Exception:
+                except:
                     pass
 
     remote_set = set(remote_files)
@@ -101,7 +105,10 @@ for repo, dest in REPOS.items():
     if len(missing_in_local) == 0 and len(extra_in_local) == 0 and len(stale_hits) == 0:
         status = "fully folded"
     elif len(missing_in_local) < (len(remote_set) / 2):
-        status = "partial copy (drifted)" if len(stale_hits) > 0 or len(extra_in_local) > 0 or len(missing_in_local) > 0 else "fully folded"
+        if len(stale_hits) > 0 or len(extra_in_local) > 0 or len(missing_in_local) > 0:
+            status = "partial copy (drifted)"
+        else:
+            status = "fully folded"
 
     report += f"**Status:** {status}\n\n"
     report += f"- **Missing Files (in GitHub but not locally):** {len(missing_in_local)}\n"
@@ -130,3 +137,4 @@ for repo, dest in REPOS.items():
 os.makedirs("docs", exist_ok=True)
 with open("docs/DELTA_AUDIT_REPORT.md", "w") as f:
     f.write(report)
+print("Delta Audit Complete. Wrote docs/DELTA_AUDIT_REPORT.md")

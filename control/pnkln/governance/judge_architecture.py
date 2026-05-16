@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """
 Judge Architecture: Comprehensive Decision-Validation Framework
 ================================================================
@@ -28,6 +27,7 @@ from enum import Enum
 from typing import Any
 
 import numpy as np
+
 from src.kosmos.doctrine import (
     BattleDrillRouter,
     DrillTrigger,
@@ -99,7 +99,7 @@ class RiskLevel(Enum):
         return APPROVAL_AUTHORITY.get(self.to_doctrine_level(), "Commander")
 
     @staticmethod
-    def from_probability_severity(prob: Probability, sev: Severity) -> RiskLevel:
+    def from_probability_severity(prob: Probability, sev: Severity) -> "RiskLevel":
         """Calculate risk level from ATP 5-19 probability × severity matrix."""
         doctrine_level = RISK_MATRIX.get((prob, sev), DoctrineRiskLevel.MEDIUM)
         reverse_mapping = {
@@ -451,7 +451,7 @@ class InfrastructureOptimizer:
         else:
             return "default_neuron_onnx"  # Portable fallback
 
-    def project_savings(self, current_spend: float, _multi_silicon_mix: dict[str, float]) -> dict[str, float]:
+    def project_savings(self, current_spend: float, multi_silicon_mix: dict[str, float]) -> dict[str, float]:
         """
         Project cost savings from multi-silicon strategy.
 
@@ -494,7 +494,7 @@ class SupplyChainSecurityGate:
     """
 
     async def validate(
-        self, _function_name: str = None, _callable: Any = None, _sbom: dict[str, Any] = None, decision: Decision = None
+        self, function_name: str = None, callable: Any = None, sbom: dict[str, Any] = None, decision: Decision = None
     ) -> dict[str, Any]:
         """
         Validate supply chain security for function or decision.

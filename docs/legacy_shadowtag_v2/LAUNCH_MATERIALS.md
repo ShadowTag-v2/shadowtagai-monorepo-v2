@@ -7,19 +7,16 @@ Social media posts optimized for HackerNews, Reddit, and Twitter.
 ## 🟧 HACKERNEWS SUBMISSION
 
 ### Title (80 chars max)
-
 ```
 Show HN: Gemini Function Tools – 31× faster than AutoGen, 97% cheaper
 ```
 
 ### URL
-
 ```
 https://github.com/ehanc69/pnkln-stack-fastapi-services/tree/claude/pnkln-unified-platform-01HqKbW8HyXvd4iCueBjN5qK/examples/function-tools
 ```
 
 ### Text (First Comment)
-
 ```
 I replaced AutoGen's multi-agent system with Google Gemini 2.0's native function calling and got a 31× speedup.
 
@@ -37,7 +34,7 @@ Gemini function calling:
 
 I've open-sourced 7 production-ready examples:
 
-1. Compliance Framework Compliance Checker (98.5% token reduction)
+1. ATP 5-19 Compliance Checker (98.5% token reduction)
 2. Multi-Agent Debate (31× faster than AutoGen)
 3. Code Review Automation (67% faster reviews)
 4. Research Summarizer (10× faster than manual)
@@ -64,14 +61,12 @@ Questions welcome! I spent 6 months migrating our production system from AutoGen
 ## 🔴 REDDIT r/MachineLearning
 
 ### Title
-
 ```
 [P] Replaced AutoGen multi-agent with Gemini function calling, got 31× speedup + 97% cost reduction
 ```
 
 ### Post
-
-````
+```
 **TL;DR**: Migrated from AutoGen to Google Gemini 2.0 function calling. Went from 1100ms → 35ms latency (31× faster) and $0.01 → $0.0003 per task (97% cheaper).
 
 ## The Problem with AutoGen
@@ -96,10 +91,9 @@ analyst = Agent("Analyst")
 writer = Agent("Writer")
 manager = GroupChatManager([researcher, analyst, writer])
 result = manager.run("Research quantum computing")  # 1100ms
-````
+```
 
 Gemini (1 API call):
-
 ```python
 model = genai.GenerativeModel(
     model_name='gemini-3.1-flash-exp',
@@ -151,7 +145,6 @@ Happy to answer questions about migration, performance tuning, or production dep
 
 **Demo**: Try the examples yourself (5 min setup)
 **Repo**: https://github.com/ehanc69/pnkln-stack-fastapi-services/
-
 ```
 
 ---
@@ -160,16 +153,13 @@ Happy to answer questions about migration, performance tuning, or production dep
 
 ### Tweet 1 (Hook)
 ```
-
 I replaced AutoGen with Gemini function calling and got a 31× speedup + 97% cost reduction.
 
 Here's how it works 🧵
-
 ```
 
 ### Tweet 2 (Problem)
 ```
-
 AutoGen's multi-agent approach is powerful but slow:
 
 • 3+ separate API calls
@@ -178,12 +168,10 @@ AutoGen's multi-agent approach is powerful but slow:
 • Complex orchestration
 
 For production workloads, this adds up fast.
-
 ```
 
 ### Tweet 3 (Solution)
 ```
-
 Gemini 2.0's function calling changes the game:
 
 • 1 API call
@@ -192,12 +180,10 @@ Gemini 2.0's function calling changes the game:
 • Simple, unified context
 
 Same functionality, 97% cheaper, 31× faster.
-
 ```
 
 ### Tweet 4 (How It Works)
 ```
-
 Key insight: Gemini executes functions INTERNALLY
 
 Instead of:
@@ -207,12 +193,10 @@ You get:
 Gemini → {func1(), func2(), func3()} → Done
 
 All in one request, with shared context.
-
 ```
 
 ### Tweet 5 (Benchmarks)
 ```
-
 Real numbers from 100 production runs:
 
 Latency:
@@ -224,12 +208,10 @@ Cost (1M tasks/mo):
 • Gemini: $300
 
 28× faster, 97% cheaper.
-
 ```
 
 ### Tweet 6 (Examples)
 ```
-
 I open-sourced 7 production examples:
 
 • ATP compliance (98.5% token reduction)
@@ -241,12 +223,10 @@ I open-sourced 7 production examples:
 • Revenue leak detector
 
 All <100 lines each.
-
 ```
 
 ### Tweet 7 (CTA)
 ```
-
 Try it yourself (5 min):
 
 1. Get free API key: https://aistudio.google.com/app/apikey
@@ -256,7 +236,6 @@ Try it yourself (5 min):
 See the 31× speedup with your own eyes.
 
 Questions? Drop them below 👇
-
 ```
 
 ---
@@ -265,7 +244,6 @@ Questions? Drop them below 👇
 
 ### Post
 ```
-
 I just open-sourced 7 production-ready AI function calling examples that are 31× faster and 97% cheaper than traditional multi-agent systems.
 
 The Problem:
@@ -280,7 +258,6 @@ Real-World Impact:
 • Complexity: 200+ lines → 30 lines (90% simpler)
 
 7 Production Examples:
-
 1. Regulatory compliance automation
 2. Multi-agent collaborative reasoning
 3. Code review automation
@@ -295,7 +272,6 @@ Try it yourself with a free Gemini API key (no credit card required):
 [GitHub link]
 
 #AI #MachineLearning #Python #OpenSource #DeveloperTools
-
 ```
 
 ---
@@ -380,4 +356,3 @@ Try it yourself with a free Gemini API key (no credit card required):
 **READY TO LAUNCH** ✅
 
 All materials prepared. Execute posting schedule on launch day.
-```

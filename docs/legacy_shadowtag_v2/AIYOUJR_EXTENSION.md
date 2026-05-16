@@ -43,23 +43,23 @@
 
 ## ⚙️ How Money Flows
 
-| Step | Event                                                    | $ Flow                                                  |
-| ---- | -------------------------------------------------------- | ------------------------------------------------------- |
-| 1    | User runs `pnkln-stackjr risk evaluate` or `plan assist` | Triggers usage meter (Stripe micro-bill $0.05–$1 / run) |
-| 2    | CLI invokes RMF validator                                | Adds audit record (→ compliance asset)                  |
-| 3    | RMF proof uploads to Audit Vault                         | $0.002 storage cost → 0.09 ¢ liability coverage earned  |
-| 4    | Enterprise license aggregates proofs monthly             | $20–$500 / seat subscription                            |
-| 5    | Gemini Marketplace fee split                             | Google takes 20 %, pnkln-stack keeps 80 % gross         |
-| 6    | Audit data resold as “continuous assurance feed”         | $ secondary data yield ($3–5 k / month per client)      |
+| Step | Event | $ Flow |
+|------|-------|--------|
+| 1 | User runs `pnkln-stackjr risk evaluate` or `plan assist` | Triggers usage meter (Stripe micro-bill $0.05–$1 / run) |
+| 2 | CLI invokes RMF validator | Adds audit record (→ compliance asset) |
+| 3 | RMF proof uploads to Audit Vault | $0.002 storage cost → 0.09 ¢ liability coverage earned |
+| 4 | Enterprise license aggregates proofs monthly | $20–$500 / seat subscription |
+| 5 | Gemini Marketplace fee split | Google takes 20 %, pnkln-stack keeps 80 % gross |
+| 6 | Audit data resold as “continuous assurance feed” | $ secondary data yield ($3–5 k / month per client) |
 
 ## 📊 Financial Throughput at Scale
 
-| Metric                                | Assumption            | Result                       |
-| ------------------------------------- | --------------------- | ---------------------------- |
-| Active CLI users (1 % of Gemini base) | ≈ 10 000              | $25 / seat → $3 M ARR        |
-| Enterprise auditors (100)             | $1 k / mo             | $1.2 M ARR                   |
-| Audit data yield resale               | 5 clients × $4 k / mo | $240 k ARR                   |
-| **Total Y2 ARR**                      | —                     | **≈ $4.4 M ( 88 % margin )** |
+| Metric | Assumption | Result |
+|--------|------------|--------|
+| Active CLI users (1 % of Gemini base) | ≈ 10 000 | $25 / seat → $3 M ARR |
+| Enterprise auditors (100) | $1 k / mo | $1.2 M ARR |
+| Audit data yield resale | 5 clients × $4 k / mo | $240 k ARR |
+| **Total Y2 ARR** | — | **≈ $4.4 M ( 88 % margin )** |
 
 ## 🧠 Control Loop (Technical)
 
@@ -69,7 +69,6 @@
 4. **Cursor / Gemini / GitHub CI:** Publishes outputs & billing artifact.
 
 Every cycle yields:
-
 - 1 billable unit (run)
 - 1 auditable record (safety proof)
 - 1 compliance asset (re-sellable trust signal)

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import subprocess
 import time
@@ -41,6 +42,7 @@ RAW_PATHS = """
 
 def generate_installation_token():
     if not os.path.exists(KEY_PATH):
+        print(f"ERROR: Key file not found at {KEY_PATH}")
         return None
 
     with open(KEY_PATH) as f:
@@ -51,19 +53,22 @@ def generate_installation_token():
     encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers)
     if resp.status_code != 200:
+        print(f"Error fetching installations: HTTP {resp.status_code}\n{resp.text}")
         return None
 
     installations = resp.json()
     if not installations:
+        print("ERROR: No installations found for this GitHub App.")
         return None
 
     inst_id = installations[0]["id"]
     url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    res = requests.post(url, headers=headers, timeout=30)
+    res = requests.post(url, headers=headers)
 
     if res.status_code != 201:
+        print(f"Error creating access token: HTTP {res.status_code}\n{res.text}")
         return None
 
     return res.json()["token"]
@@ -79,11 +84,14 @@ def extract_repo_path(remote_url: str):
     return None
 
 
-def process_git_directory(repo_path: str, token: str) -> None:
-    if repo_path in {"/Users/pikeymickey", "/Users/Deleted Users/pikeymickey"}:
+def process_git_directory(repo_path: str, token: str):
+    print(f"\n--- Processing: {repo_path} ---")
+    if repo_path == "/Users/pikeymickey" or repo_path == "/Users/Deleted Users/pikeymickey":
+        print("⏭️ DANGER: Target is the system user home directory. Hard-skipping to prevent massive secrets leak.")
         return
 
     if not os.path.isdir(os.path.join(repo_path, ".git")):
+        print("⏭️ Not a git repository (missing .git wrapper). Skipping.")
         return
 
     try:
@@ -91,37 +99,22 @@ def process_git_directory(repo_path: str, token: str) -> None:
         subprocess.run(["git", "add", "-A"], cwd=repo_path, check=False)
 
         # 2. Check if there are changes to commit
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=repo_path,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        status = result.stdout
+        status = subprocess.getoutput(f"cd '{repo_path}' && git status --porcelain")
         if status.strip():
-            subprocess.run(
-                ["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"],
-                cwd=repo_path,
-                check=False,
-            )
+            subprocess.run(["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"], cwd=repo_path, check=False)
+            print("✅ Changes committed.")
         else:
-            pass
+            print("✅ Working tree clean. No new commits.")
 
         # 3. Pull Current Remote
-        remote_result = subprocess.run(
-            ["git", "remote", "get-url", "origin"],
-            cwd=repo_path,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        remote_out = remote_result.stdout.strip()
+        remote_out = subprocess.getoutput(f"cd '{repo_path}' && git remote get-url origin").strip()
         if "fatal: No such remote" in remote_out or not remote_out:
+            print("❌ No 'origin' remote found. Cannot push.")
             return
 
         relative_repo = extract_repo_path(remote_out)
         if not relative_repo:
+            print(f"❌ Failed to parse GitHub owner/repo from origin: {remote_out}")
             return
 
         # 4. Push aggressively using ephemeral App Token via direct HTTPS injection
@@ -129,16 +122,22 @@ def process_git_directory(repo_path: str, token: str) -> None:
         # Using check_call to let failure propagate cleanly to logs without exposing token in stdout by default
         os.environ.copy()
 
+        print("🚀 Pushing to GitHub via App Authorized Route...")
         subprocess.run(["git", "push", push_cmd, "HEAD"], cwd=repo_path, check=True)
+        print("🌟 Push Successful.")
 
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"⚠️ Error processing repository {repo_path}: {e}")
 
 
-def main() -> None:
+def main():
+    print("Initiating Mass Multi-Repo Sync Matrix...")
     token = generate_installation_token()
     if not token:
+        print("CRITICAL: Failed to bind GitHub App context. Halting Matrix.")
         return
+
+    print("🔐 GitHub App Connection Established.")
 
     # Parse provided raw blob, trimming commas and cleaning paths
     lines = RAW_PATHS.splitlines()

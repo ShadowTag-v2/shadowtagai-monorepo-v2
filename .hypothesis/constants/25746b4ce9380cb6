@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/tool.py
+# hypothesis_version: 6.151.5
+
+[100000, 'FileReadingLimits', 'GlobLimits', 'PermissionMode', 'PermissionResult', 'QueryChainTracking', 'Tool', 'ToolDecision', 'ToolInputSchema', 'ToolResult', 'ToolUseContext', 'ValidationResult', 'aliases', 'allow', 'auto', 'build_tool', 'bypass', 'default', 'find_tool_by_name', 'forked', 'plan', 'tool_matches_name']

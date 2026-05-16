@@ -1,8 +1,7 @@
 'use client';
+import { doc, increment, onSnapshot, runTransaction } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { doc, runTransaction, onSnapshot, increment } from 'firebase/firestore';
-import { logEvent } from 'firebase/analytics';
-import { db, analyticsPromise } from '@/lib/firebase';
+import { getAnalyticsInstance, getFirestoreInstance } from '@/lib/firebase';
 
 const LS_KEY = 'headfade_votes_v1';
 const LS_FILTER = 'headfade_filter_v1';
@@ -25,11 +24,19 @@ function seedVotes(i: number) {
 
 function loadLS<T>(key: string, fallback: T): T {
   if (typeof window === 'undefined') return fallback;
-  try { return JSON.parse(localStorage.getItem(key) ?? 'null') ?? fallback; } catch { return fallback; }
+  try {
+    return JSON.parse(localStorage.getItem(key) ?? 'null') ?? fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function saveLS(key: string, val: unknown) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch { /* quota */ }
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch {
+    /* quota */
+  }
 }
 
 export function useVotes(count: number) {
@@ -39,7 +46,12 @@ export function useVotes(count: number) {
     for (let i = 0; i < count; i++) {
       const uv = saved[i] ?? null;
       const s = seedVotes(i);
-      out[i] = { ...s, voteAI: s.voteAI + (uv === 'ai' ? 1 : 0), voteHuman: s.voteHuman + (uv === 'human' ? 1 : 0), userVote: uv };
+      out[i] = {
+        ...s,
+        voteAI: s.voteAI + (uv === 'ai' ? 1 : 0),
+        voteHuman: s.voteHuman + (uv === 'human' ? 1 : 0),
+        userVote: uv,
+      };
     }
     return out;
   });
@@ -49,15 +61,28 @@ export function useVotes(count: number) {
   const [globalAI, setGlobalAI] = useState(68_200_000);
   const [globalHuman, setGlobalHuman] = useState(31_800_000);
 
-  // Live global totals from Firestore
+  // Live global totals from Firestore — async init to avoid undefined db
   useEffect(() => {
-    const ref = doc(db, 'meta', 'vote_totals');
-    return onSnapshot(ref, (snap) => {
-      if (!snap.exists()) return;
-      const d = snap.data();
-      if (d.totalAI) setGlobalAI(d.totalAI);
-      if (d.totalHuman) setGlobalHuman(d.totalHuman);
-    });
+    let unsub: (() => void) | undefined;
+    let cancelled = false;
+    getFirestoreInstance()
+      .then((db) => {
+        if (cancelled) return;
+        const ref = doc(db, 'meta', 'vote_totals');
+        unsub = onSnapshot(ref, (snap) => {
+          if (!snap.exists()) return;
+          const d = snap.data();
+          if (d.totalAI) setGlobalAI(d.totalAI);
+          if (d.totalHuman) setGlobalHuman(d.totalHuman);
+        });
+      })
+      .catch(() => {
+        /* offline */
+      });
+    return () => {
+      cancelled = true;
+      unsub?.();
+    };
   }, []);
 
   const setFilter = useCallback((f: VoteFilter) => {
@@ -97,6 +122,7 @@ export function useVotes(count: number) {
 
     // Firestore atomic increment
     try {
+      const db = await getFirestoreInstance();
       const ref = doc(db, 'videos', `video_${key}`);
       await runTransaction(db, async (tx) => {
         const snap = await tx.get(ref);
@@ -116,12 +142,17 @@ export function useVotes(count: number) {
         else updates.totalHuman = increment(1);
         tx.set(metaRef, updates, { merge: true });
       });
-    } catch { /* offline — local state still correct */ }
+    } catch {
+      /* offline — local state still correct */
+    }
 
-    // Analytics
-    analyticsPromise.then((analytics) => {
-      if (analytics) logEvent(analytics, 'vote_cast', { choice, videoId: key });
-    });
+    // Analytics — dynamic import; null until first interaction triggers init
+    const analytics = getAnalyticsInstance();
+    if (analytics) {
+      import('firebase/analytics').then(({ logEvent: log }) => {
+        log(analytics, 'vote_cast', { choice, videoId: key });
+      });
+    }
   }, []);
 
   return { votes, vote, filter, setFilter, saved, toggleSave, globalAI, globalHuman };

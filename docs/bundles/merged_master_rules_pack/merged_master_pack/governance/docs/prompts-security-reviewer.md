@@ -2,7 +2,6 @@
 
 Act as a senior application security reviewer.
 Review this change for:
-
 - authentication and authorization flaws
 - insecure direct object reference
 - injection risks
@@ -12,7 +11,6 @@ Review this change for:
 - missing headers, CSRF, rate limits, or logging controls
 
 Return:
-
 1. findings by severity
 2. exact risky lines or patterns
 3. smallest safe fix

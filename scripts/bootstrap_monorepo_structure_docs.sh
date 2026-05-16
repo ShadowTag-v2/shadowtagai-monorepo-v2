@@ -13,9 +13,9 @@ cat > "$MONOREPO/docs/STRUCTURE.md" << 'EOF'
 ```
 Monorepo-Uphillsnowball/
 ├── apps/
-│   └── ShadowTag-v2_stack/          # Primary app namespace
+│   └── aiyou_stack/          # Primary app namespace
 │       ├── cosmic-crab-payload/  # Folded in from playground/cosmic-crab
-│       └── ...               # Other ShadowTag-v2 stack apps
+│       └── ...               # Other AiYou stack apps
 ├── memory/
 │   ├── antigravity-knowledge/  # Folded in from ~/antigravity-knowledge
 │   └── ...                   # Other memory/knowledge files
@@ -42,7 +42,7 @@ Monorepo-Uphillsnowball/
 - docs: UPPER_SNAKE_CASE.md for governance, Title_Case.md for guides
 
 ## Fold-in Policy
-All external repos must be folded into apps/ShadowTag-v2_stack/ or third_party/
+All external repos must be folded into apps/aiyou_stack/ or third_party/
 with --exclude='.git' to strip history, then committed atomically.
 EOF
 

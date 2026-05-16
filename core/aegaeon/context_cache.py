@@ -1,154 +1,143 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+core/aegaeon/context_cache.py
+Gemini Context Cache "Slab" — maps Aegaeon's VRAM slab to Gemini's caching API.
 
-"""context_cache.py — Aegaeon Protocol: Gemini Context Cache Slab Builder
-
-Builds a persistent Gemini Context Cache ("Master Memory Slab") from
-CLAUDE.md, .beads/, Cor_Claude_Code_6 config, and monorepo manifest. Cached tokens
-cost ~90% less on subsequent requests (Gemini 2.5+ pricing).
-
-State persists to data/aegaeon/cache_state.json.
+Economics:
+  Standard input tokens: $X
+  Cached input tokens:   $X * 0.25  (75% discount)
+  Combined with flash-lite baseline → net ~84% reduction vs stateless usage.
 
 Usage:
-    python -m core.aegaeon.context_cache --build
-    python -m core.aegaeon.context_cache --status
+  cache = AegaeonContextCache()
+  cache_name = cache.build()           # one-time upload
+  cache_name = cache.get_or_build()    # idempotent — reuses live cache
 """
 
 from __future__ import annotations
 
-import argparse
-import datetime
 import json
 import logging
 import os
-import pathlib
+import time
+from pathlib import Path
 
-from dotenv import load_dotenv
+logger = logging.getLogger("aegaeon.context_cache")
 
-load_dotenv()
+REPO_ROOT = Path(__file__).parent.parent.parent
+CACHE_STATE_PATH = REPO_ROOT / "data" / "aegaeon" / "cache_state.json"
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
+CACHE_TTL_SECONDS = int(os.environ.get("AEGAEON_CACHE_TTL", "3600"))
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [AEGAEON] %(message)s")
-logger = logging.getLogger(__name__)
-
-REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-DATA_DIR = REPO_ROOT / "data" / "aegaeon"
-STATE_FILE = DATA_DIR / "cache_state.json"
-
-# Files composing the Master Memory Slab (order matters)
-SLAB_SOURCES = [
+# Sources loaded into the Master Memory Slab (in priority order)
+_SLAB_SOURCES: list[Path] = [
     REPO_ROOT / "CLAUDE.md",
-    REPO_ROOT / "AGENTS.md",
-    REPO_ROOT / "monorepo_manifest.yaml",
-    REPO_ROOT / ".beads" / "active_session_invariants.md",
-    REPO_ROOT / "apps" / "aiyou_stack" / "aiyou-fastapi-services" / "src" / "Cor_Claude_Code_6" / "orchestrator.py",
+    REPO_ROOT / "operations" / "monorepo_manifest.yaml",
+    REPO_ROOT / "scripts" / "judge6.sh",
+    REPO_ROOT / "data" / "ane_beads",  # directory — all .txt files under it
 ]
 
-# Default model for caching
-DEFAULT_MODEL = "models/gemini-3.1-flash-lite-preview"
-DEFAULT_TTL_HOURS = 24
 
-
-def _collect_slab_content() -> str:
-    """Concatenate all slab source files into a single context string."""
+def _load_slab_text(max_chars: int = 900_000) -> str:
     parts: list[str] = []
-    for path in SLAB_SOURCES:
-        if path.exists():
-            content = path.read_text(errors="replace")
-            parts.append(f"--- {path.relative_to(REPO_ROOT)} ---\n{content}\n")
-            logger.info("  Loaded: %s (%d bytes)", path.name, len(content))
-        else:
-            logger.warning("  Missing: %s", path)
-    return "\n".join(parts)
+    total = 0
+    for src in _SLAB_SOURCES:
+        if src.is_dir():
+            files = sorted(src.rglob("*.txt"))[:200]
+            for f in files:
+                chunk = f.read_text(errors="ignore")[:8_000]
+                parts.append(f"# {f.name}\n{chunk}")
+                total += len(chunk)
+                if total >= max_chars:
+                    break
+        elif src.is_file():
+            chunk = src.read_text(errors="ignore")[:40_000]
+            parts.append(f"# {src.name}\n{chunk}")
+            total += len(chunk)
+        if total >= max_chars:
+            break
+    return "\n\n".join(parts)
 
 
-def build_cache(model: str = DEFAULT_MODEL, ttl_hours: int = DEFAULT_TTL_HOURS) -> dict | None:
-    """Create a new Gemini Context Cache from slab sources.
+class AegaeonContextCache:
+    """Manages the Gemini Context Cache slab lifecycle."""
 
-    Returns:
-        Cache metadata dict, or None on failure.
-    """
-    try:
-        from google import genai
-    except ImportError:
-        logger.error("google-genai not installed. Run: pip install google-genai")
-        return None
+    def __init__(self) -> None:
+        try:
+            from google import genai
 
-    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-    if not api_key:
-        logger.error("No GEMINI_API_KEY or GOOGLE_API_KEY in environment")
-        return None
+            self._client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+            self._genai = genai
+        except ImportError as exc:
+            raise RuntimeError("Install google-genai: pip install google-genai") from exc
 
-    client = genai.Client(api_key=api_key)
-    slab_content = _collect_slab_content()
+    # ── Public API ──────────────────────────────────────────────────────────
 
-    if not slab_content.strip():
-        logger.error("No content collected for slab")
-        return None
+    def get_or_build(self) -> str:
+        """Return existing cache name if still valid, else build a new one."""
+        existing = self._load_state()
+        if existing and self._is_alive(existing):
+            logger.info("Reusing live context cache: %s", existing)
+            return existing
+        logger.info("Cache missing or expired — building new slab...")
+        return self.build()
 
-    logger.info("Building cache slab (%d chars) for model %s...", len(slab_content), model)
+    def build(self) -> str:
+        """Upload a fresh context slab and persist the cache name."""
+        from google.genai import types
 
-    try:
-        cache = client.caches.create(
-            model=model,
-            config={
-                "contents": [{"role": "user", "parts": [{"text": slab_content}]}],
-                "display_name": "aegaeon-master-slab",
-                "ttl": f"{ttl_hours * 3600}s",
-                "system_instruction": (
-                    "You are an expert assistant for the ShadowTag monorepo. "
-                    "Use the cached context to answer questions about the codebase, "
-                    "architecture, and operational state."
+        slab_text = _load_slab_text()
+        logger.info("Uploading %.1f KB to Gemini Context Cache...", len(slab_text) / 1024)
+
+        cache = self._client.caches.create(
+            model=MODEL,
+            config=types.CreateCachedContentConfig(
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[types.Part(text=slab_text)],
+                    )
+                ],
+                system_instruction=(
+                    "You are Cor, the Antigravity Principal AI Coding Architect. "
+                    "Apply the Sovereign Doctrine, Judge 6 rulesets, and Zero Trust "
+                    "security protocols from the slab above to every response."
                 ),
-            },
+                ttl=f"{CACHE_TTL_SECONDS}s",
+            ),
         )
+        cache_name: str = cache.name
+        self._save_state(cache_name)
+        logger.info("Context cache created: %s (TTL %ds)", cache_name, CACHE_TTL_SECONDS)
+        return cache_name
 
-        state = {
-            "cache_name": cache.name,
-            "model": model,
-            "created_at": datetime.datetime.now(datetime.UTC).isoformat(),
-            "ttl_hours": ttl_hours,
-            "slab_chars": len(slab_content),
-            "source_count": len([p for p in SLAB_SOURCES if p.exists()]),
-        }
+    def invalidate(self) -> None:
+        """Force-expire the cached slab (triggers rebuild on next get_or_build)."""
+        if CACHE_STATE_PATH.exists():
+            CACHE_STATE_PATH.unlink()
+            logger.info("Cache state invalidated.")
 
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
-        STATE_FILE.write_text(json.dumps(state, indent=2))
-        logger.info("Cache created: %s", cache.name)
-        logger.info("State saved to: %s", STATE_FILE)
-        return state
+    # ── Private helpers ─────────────────────────────────────────────────────
 
-    except Exception as e:
-        logger.error("Cache creation failed: %s", e)
+    def _load_state(self) -> str | None:
+        if not CACHE_STATE_PATH.exists():
+            return None
+        try:
+            state = json.loads(CACHE_STATE_PATH.read_text())
+            if time.time() < state.get("expires_at", 0):
+                return state["name"]
+        except (json.JSONDecodeError, KeyError):
+            pass
         return None
 
+    def _save_state(self, name: str) -> None:
+        CACHE_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        state = {"name": name, "expires_at": time.time() + CACHE_TTL_SECONDS - 60}
+        CACHE_STATE_PATH.write_text(json.dumps(state, indent=2))
 
-def get_status() -> dict | None:
-    """Read current cache state from disk."""
-    if not STATE_FILE.exists():
-        logger.info("No cache state found at %s", STATE_FILE)
-        return None
-    state = json.loads(STATE_FILE.read_text())
-    logger.info("Cache: %s", state.get("cache_name", "unknown"))
-    logger.info("Created: %s", state.get("created_at", "unknown"))
-    logger.info("Model: %s", state.get("model", "unknown"))
-    logger.info("TTL: %dh", state.get("ttl_hours", 0))
-    return state
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Aegaeon Context Cache Manager")
-    parser.add_argument("--build", action="store_true", help="Build a new cache slab")
-    parser.add_argument("--status", action="store_true", help="Show current cache state")
-    parser.add_argument("--model", default=DEFAULT_MODEL, help="Gemini model ID")
-    parser.add_argument("--ttl", type=int, default=DEFAULT_TTL_HOURS, help="Cache TTL in hours")
-    args = parser.parse_args()
-
-    if args.build:
-        build_cache(model=args.model, ttl_hours=args.ttl)
-    elif args.status:
-        get_status()
-    else:
-        parser.print_help()
-
-
-if __name__ == "__main__":
-    main()
+    def _is_alive(self, name: str) -> bool:
+        try:
+            self._client.caches.get(name=name)
+            return True
+        except Exception:
+            return False

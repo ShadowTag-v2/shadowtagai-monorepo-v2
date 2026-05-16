@@ -24,17 +24,14 @@ All requests should use `Content-Type: application/json`
 Get all available pricing tiers.
 
 **Request:**
-
 ```http
 GET /api/v1/pricing/tiers
 ```
 
 **Query Parameters:**
-
 - `active_only` (boolean, optional): Filter to only active tiers (default: true)
 
 **Response:**
-
 ```json
 [
   {
@@ -72,13 +69,11 @@ GET /api/v1/pricing/tiers
 Create a new pricing tier.
 
 **Request:**
-
 ```http
 POST /api/v1/pricing/tiers
 ```
 
 **Body:**
-
 ```json
 {
   "name": "Enterprise",
@@ -97,7 +92,6 @@ POST /api/v1/pricing/tiers
 ```
 
 **Response:**
-
 ```json
 {
   "id": "tier_456",
@@ -113,13 +107,11 @@ POST /api/v1/pricing/tiers
 Create a new subscription for a user.
 
 **Request:**
-
 ```http
 POST /api/v1/subscriptions
 ```
 
 **Body:**
-
 ```json
 {
   "user_id": "user_123",
@@ -130,7 +122,6 @@ POST /api/v1/subscriptions
 ```
 
 **Response:**
-
 ```json
 {
   "id": "sub_789",
@@ -151,13 +142,11 @@ POST /api/v1/subscriptions
 Get the current subscription for a user.
 
 **Request:**
-
 ```http
 GET /api/v1/subscriptions/user/{user_id}
 ```
 
 **Response:**
-
 ```json
 {
   "id": "sub_789",
@@ -172,13 +161,11 @@ GET /api/v1/subscriptions/user/{user_id}
 Change subscription to a different pricing tier.
 
 **Request:**
-
 ```http
 PATCH /api/v1/subscriptions/{subscription_id}/upgrade
 ```
 
 **Body:**
-
 ```json
 {
   "pricing_tier_id": "tier_premium"
@@ -190,13 +177,11 @@ PATCH /api/v1/subscriptions/{subscription_id}/upgrade
 Cancel a subscription.
 
 **Request:**
-
 ```http
 POST /api/v1/subscriptions/{subscription_id}/cancel
 ```
 
 **Body:**
-
 ```json
 {
   "reason": "User requested cancellation",
@@ -213,13 +198,11 @@ POST /api/v1/subscriptions/{subscription_id}/cancel
 Create a Stripe Checkout session for subscription signup.
 
 **Request:**
-
 ```http
 POST /api/v1/payments/checkout/session
 ```
 
 **Body:**
-
 ```json
 {
   "user_id": "user_123",
@@ -232,7 +215,6 @@ POST /api/v1/payments/checkout/session
 ```
 
 **Response:**
-
 ```json
 {
   "session_id": "cs_test_abc123",
@@ -249,13 +231,11 @@ Redirect the user to the `url` to complete checkout.
 Create a one-time payment intent.
 
 **Request:**
-
 ```http
 POST /api/v1/payments/intent
 ```
 
 **Body:**
-
 ```json
 {
   "amount": 99.99,
@@ -269,7 +249,6 @@ POST /api/v1/payments/intent
 ```
 
 **Response:**
-
 ```json
 {
   "payment_intent_id": "pi_abc123",
@@ -283,13 +262,11 @@ POST /api/v1/payments/intent
 Refund a payment.
 
 **Request:**
-
 ```http
 POST /api/v1/payments/refund
 ```
 
 **Body:**
-
 ```json
 {
   "payment_id": "pay_123",
@@ -307,13 +284,11 @@ POST /api/v1/payments/refund
 Get comprehensive revenue summary for a period.
 
 **Request:**
-
 ```http
 GET /api/v1/revenue/summary?start_date=2025-01-01T00:00:00Z&end_date=2025-01-31T23:59:59Z
 ```
 
 **Response:**
-
 ```json
 {
   "period": {
@@ -321,14 +296,14 @@ GET /api/v1/revenue/summary?start_date=2025-01-01T00:00:00Z&end_date=2025-01-31T
     "end_date": "2025-01-31T23:59:59Z"
   },
   "revenue": {
-    "gross_revenue": 15000.0,
-    "net_revenue": 14250.0,
-    "refunds": 500.0,
-    "fees": 250.0
+    "gross_revenue": 15000.00,
+    "net_revenue": 14250.00,
+    "refunds": 500.00,
+    "fees": 250.00
   },
   "recurring_revenue": {
-    "mrr": 12000.0,
-    "arr": 144000.0
+    "mrr": 12000.00,
+    "arr": 144000.00
   },
   "subscriptions": {
     "active_count": 250,
@@ -340,16 +315,14 @@ GET /api/v1/revenue/summary?start_date=2025-01-01T00:00:00Z&end_date=2025-01-31T
 ### Get MRR (Monthly Recurring Revenue)
 
 **Request:**
-
 ```http
 GET /api/v1/revenue/mrr
 ```
 
 **Response:**
-
 ```json
 {
-  "mrr": 12000.0,
+  "mrr": 12000.00,
   "currency": "USD",
   "date": "2025-01-15T10:00:00Z"
 }
@@ -358,16 +331,14 @@ GET /api/v1/revenue/mrr
 ### Get ARR (Annual Recurring Revenue)
 
 **Request:**
-
 ```http
 GET /api/v1/revenue/arr
 ```
 
 **Response:**
-
 ```json
 {
-  "arr": 144000.0,
+  "arr": 144000.00,
   "currency": "USD",
   "date": "2025-01-15T10:00:00Z"
 }
@@ -376,13 +347,11 @@ GET /api/v1/revenue/arr
 ### Get Churn Rate
 
 **Request:**
-
 ```http
 GET /api/v1/revenue/churn-rate?start_date=2025-01-01T00:00:00Z&end_date=2025-01-31T23:59:59Z
 ```
 
 **Response:**
-
 ```json
 {
   "churn_rate": 2.5,
@@ -396,13 +365,11 @@ GET /api/v1/revenue/churn-rate?start_date=2025-01-01T00:00:00Z&end_date=2025-01-
 ### Get Customer Lifetime Value
 
 **Request:**
-
 ```http
 GET /api/v1/revenue/ltv/user_123
 ```
 
 **Response:**
-
 ```json
 {
   "user_id": "user_123",
@@ -414,13 +381,11 @@ GET /api/v1/revenue/ltv/user_123
 ### Get Revenue Dashboard
 
 **Request:**
-
 ```http
 GET /api/v1/revenue/dashboard?days=30
 ```
 
 **Response:**
-
 ```json
 {
   "summary": {
@@ -445,17 +410,14 @@ GET /api/v1/revenue/dashboard?days=30
 Endpoint for receiving Stripe webhook events.
 
 **Request:**
-
 ```http
 POST /api/v1/webhooks/stripe
 ```
 
 **Headers:**
-
 - `Stripe-Signature`: Webhook signature for verification
 
 **Supported Events:**
-
 - `checkout.session.completed`
 - `customer.subscription.created`
 - `customer.subscription.updated`

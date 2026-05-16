@@ -694,16 +694,16 @@ function analyzeContract() {
   var text = doc.getBody().getText();
 
   // Call pnkln API
-  var response = UrlFetchApp.fetch("https://api.pnkln.ai/v1/analyze/contract", {
-    method: "post",
+  var response = UrlFetchApp.fetch('https://api.pnkln.ai/v1/analyze/contract', {
+    method: 'post',
     payload: JSON.stringify({ text: text }),
-    headers: { Authorization: "Bearer " + getAccessToken() },
+    headers: { Authorization: 'Bearer ' + getAccessToken() },
   });
 
   var analysis = JSON.parse(response.getContentText());
 
   // Insert matrix at end of doc
-  doc.getBody().appendParagraph("Contract Analysis:");
+  doc.getBody().appendParagraph('Contract Analysis:');
   doc.getBody().appendTable(createMatrix(analysis));
 }
 ```
@@ -738,19 +738,19 @@ function onNewEmail(email) {
     // Add to Calendar
     deadlines.forEach(function (deadline) {
       CalendarApp.createEvent(deadline.event, deadline.date, deadline.date, {
-        description: "Extracted from: " + email.subject,
+        description: 'Extracted from: ' + email.subject,
       });
     });
 
     // Label email
-    GmailApp.getUserLabelByName("Deadlines").addToThread(email.thread);
+    GmailApp.getUserLabelByName('Deadlines').addToThread(email.thread);
   }
 }
 
 function extractDeadlines(text) {
   // Call pnkln API
-  return UrlFetchApp.fetch("https://api.pnkln.ai/v1/analyze/deadlines", {
-    method: "post",
+  return UrlFetchApp.fetch('https://api.pnkln.ai/v1/analyze/deadlines', {
+    method: 'post',
     payload: JSON.stringify({ text: text }),
   });
 }
@@ -1079,7 +1079,7 @@ Google is not buying 400 lines of code.
 Google is buying:
 ├─ 15 years of legal tech R&D (ClarityBoard, Verdict, CNCR)
 ├─ Security/compliance expertise (BlackTrack)
-├─ AI orchestration patterns (ShadowTag-v2, Schiznit)
+├─ AI orchestration patterns (AiYou, Schiznit)
 └─ Platform architecture that works across 10+ verticals
 
 Value = Knowledge + Team + Code + Market Position

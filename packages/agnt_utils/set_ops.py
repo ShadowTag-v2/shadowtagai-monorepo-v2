@@ -22,93 +22,95 @@ from collections.abc import Iterable
 
 T = TypeVar("T")
 
+T = TypeVar("T")
+
 
 # ---------------------------------------------------------------------------
 # Imperative (upstream-parity) variants
 # ---------------------------------------------------------------------------
-def difference[T](a: set[T], b: set[T]) -> set[T]:
-    """Return elements in *a* that are not in *b*.
+def difference(a: set[T], b: set[T]) -> set[T]:
+  """Return elements in *a* that are not in *b*.
 
-    Optimized for speed — iterates *a* once with O(1) ``has`` checks on *b*.
-    """
-    result: set[T] = set()
-    for item in a:
-        if item not in b:
-            result.add(item)
-    return result
-
-
-def intersects[T](a: set[T], b: set[T]) -> bool:
-    """Return ``True`` if *a* and *b* share at least one element.
-
-    Short-circuits on the first match for hot-path performance.
-    """
-    if not a or not b:
-        return False
-    return any(item in b for item in a)
+  Optimized for speed — iterates *a* once with O(1) ``has`` checks on *b*.
+  """
+  result: set[T] = set()
+  for item in a:
+    if item not in b:
+      result.add(item)
+  return result
 
 
-def every[T](a: AbstractSet[T], b: AbstractSet[T]) -> bool:
-    """Return ``True`` if every element of *a* is also in *b*.
+def intersects(a: set[T], b: set[T]) -> bool:
+  """Return ``True`` if *a* and *b* share at least one element.
 
-    Equivalent to ``a.issubset(b)`` but uses explicit iteration.
-    """
-    return all(item in b for item in a)
+  Short-circuits on the first match for hot-path performance.
+  """
+  if not a or not b:
+    return False
+  return any(item in b for item in a)
 
 
-def union[T](a: set[T], b: set[T]) -> set[T]:
-    """Return the union of *a* and *b* as a new set."""
-    result: set[T] = set()
-    for item in a:
-        result.add(item)
-    for item in b:
-        result.add(item)
-    return result
+def every(a: AbstractSet[T], b: AbstractSet[T]) -> bool:
+  """Return ``True`` if every element of *a* is also in *b*.
+
+  Equivalent to ``a.issubset(b)`` but uses explicit iteration.
+  """
+  return all(item in b for item in a)
+
+
+def union(a: set[T], b: set[T]) -> set[T]:
+  """Return the union of *a* and *b* as a new set."""
+  result: set[T] = set()
+  for item in a:
+    result.add(item)
+  for item in b:
+    result.add(item)
+  return result
 
 
 # ---------------------------------------------------------------------------
 # Native (idiomatic Python) variants — use these when you don't need
 # micro-benchmark parity with the TypeScript codebase.
 # ---------------------------------------------------------------------------
-def difference_native[T](a: set[T], b: set[T]) -> set[T]:
-    """Return ``a - b`` using Python's built-in set difference."""
-    return a - b
+def difference_native(a: set[T], b: set[T]) -> set[T]:
+  """Return ``a - b`` using Python's built-in set difference."""
+  return a - b
 
 
-def intersects_native[T](a: set[T], b: set[T]) -> bool:
-    """Return ``True`` if ``a`` and ``b`` are not disjoint."""
-    return not a.isdisjoint(b)
+def intersects_native(a: set[T], b: set[T]) -> bool:
+  """Return ``True`` if ``a`` and ``b`` are not disjoint."""
+  return not a.isdisjoint(b)
 
 
-def every_native[T](a: AbstractSet[T], b: AbstractSet[T]) -> bool:
-    """Return ``True`` if ``a ⊆ b``."""
-    return a.issubset(b)
+def every_native(a: AbstractSet[T], b: AbstractSet[T]) -> bool:
+  """Return ``True`` if ``a ⊆ b``."""
+  return a.issubset(b)
 
 
-def union_native[T](a: set[T], b: set[T]) -> set[T]:
-    """Return ``a | b`` using Python's built-in set union."""
-    return a | b
+def union_native(a: set[T], b: set[T]) -> set[T]:
+  """Return ``a | b`` using Python's built-in set union."""
+  return a | b
 
 
 # ---------------------------------------------------------------------------
 # Convenience
 # ---------------------------------------------------------------------------
-def symmetric_difference[T](a: set[T], b: set[T]) -> set[T]:
-    """Return elements in either *a* or *b* but not both."""
-    return a.symmetric_difference(b)
+def symmetric_difference(a: set[T], b: set[T]) -> set[T]:
+  """Return elements in either *a* or *b* but not both."""
+  return a.symmetric_difference(b)
 
 
-def intersection[T](a: set[T], b: set[T]) -> set[T]:
-    """Return elements common to both *a* and *b*."""
-    return a & b
+def intersection(a: set[T], b: set[T]) -> set[T]:
+  """Return elements common to both *a* and *b*."""
+  return a & b
 
 
-def unique[T](items: Iterable[T]) -> list[T]:
-    """Return unique items preserving first-seen order."""
-    seen: set[T] = set()
-    result: list[T] = []
-    for item in items:
-        if item not in seen:
-            seen.add(item)
-            result.append(item)
-    return result
+def unique(items: Iterable[T]) -> list[T]:
+  """Return unique items preserving first-seen order."""
+  seen: set[T] = set()
+  result: list[T] = []
+  for item in items:
+    if item not in seen:
+      seen.add(item)
+      result.append(item)
+  return result

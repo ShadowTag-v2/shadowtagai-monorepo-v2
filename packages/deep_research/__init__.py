@@ -18,42 +18,42 @@ Public API:
 """
 
 from deep_research.state_machine import (
-    DeepResearchEngine,
-    PhaseTransition,
-    ResearchConfig,
-    ResearchPhase,
-    ResearchResult,
+  DeepResearchEngine,
+  PhaseTransition,
+  ResearchConfig,
+  ResearchPhase,
+  ResearchResult,
 )
 from deep_research.research_router import (
-    ResearchQuery,
-    QuerySource,
-    route_query,
+  ResearchQuery,
+  QuerySource,
+  route_query,
 )
 from deep_research.synthesis import (
-    SynthesisResult,
-    synthesize_findings,
+  SynthesisResult,
+  synthesize_findings,
 )
 from deep_research.telemetry import (
-    emit_phase_event,
-    emit_research_metric,
+  emit_phase_event,
+  emit_research_metric,
 )
 
 __all__ = [
-    # Core engine
-    "DeepResearchEngine",
-    # State machine
-    "ResearchPhase",
-    "ResearchConfig",
-    "ResearchResult",
-    "PhaseTransition",
-    # Research routing
-    "ResearchQuery",
-    "QuerySource",
-    "route_query",
-    # Synthesis
-    "SynthesisResult",
-    "synthesize_findings",
-    # Telemetry
-    "emit_phase_event",
-    "emit_research_metric",
+  # Core engine
+  "DeepResearchEngine",
+  # State machine
+  "ResearchPhase",
+  "ResearchConfig",
+  "ResearchResult",
+  "PhaseTransition",
+  # Research routing
+  "ResearchQuery",
+  "QuerySource",
+  "route_query",
+  # Synthesis
+  "SynthesisResult",
+  "synthesize_findings",
+  # Telemetry
+  "emit_phase_event",
+  "emit_research_metric",
 ]

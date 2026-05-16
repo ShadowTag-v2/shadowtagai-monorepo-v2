@@ -1,10 +1,11 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import json
 import sys
 
 import yaml
 
 
-def main() -> None:
+def main():
     try:
         with open("repo_census.current.json") as f:
             census = json.load(f)
@@ -48,7 +49,11 @@ def main() -> None:
         with open("repo_merge_blockers.json", "w") as f:
             json.dump(blockers, f, indent=2)
 
-    except Exception:
+        print(f"Delta computed: {len(delta)} repos need physical merge action.")
+        print(f"Blockers found: {len(blockers)} repos unclassified.")
+
+    except Exception as e:
+        print(f"Error computing delta: {e}")
         sys.exit(1)
 
 

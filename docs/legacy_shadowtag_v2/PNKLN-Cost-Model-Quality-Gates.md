@@ -1,5 +1,4 @@
 # pnkln CORE STACK™ — COST MODEL & QUALITY GATES
-
 ## Comprehensive Financial + Performance Framework (GKE-Native)
 
 **Document Version:** 1.0
@@ -12,16 +11,14 @@
 ## EXECUTIVE SUMMARY
 
 **Combined System Economics:**
-
 - **Gemini Ingestion Layer:** ~$77/month ($924/year)
-- **Judge 6 Stack:** $60-65K/month (included in full pnkln Core Stack™)
+- **Judge #6 Stack:** $60-65K/month (included in full pnkln Core Stack™)
 - **Total Core Stack Target ARR:** $1.5B (2030)
 - **EBITDA Margin:** 76% (weighted across all 6 layers)
 
 **Quality Philosophy:**
-
 - **Ingestion:** Maximize value per dollar (JR doctrine applied to data acquisition)
-- **Judge 6:** Maximize trust per microsecond (sub-500μs governance)
+- **Judge #6:** Maximize trust per microsecond (sub-500μs governance)
 - **Combined:** Pre-hoc compliance moat worth $8.6B EV premium (Cor.55)
 
 ---
@@ -38,7 +35,7 @@ cost_breakdown:
     vcpu: 4
     memory: "16 GB"
     cost_per_hour: "$0.10"
-    hours_per_month: 22.5 # 45 min/night × 30 days
+    hours_per_month: 22.5  # 45 min/night × 30 days
     subtotal: "$2.25"
 
   # GPU for Tier Classification
@@ -46,7 +43,7 @@ cost_breakdown:
     accelerator: "nvidia-tesla-t4"
     memory: "16 GB"
     cost_per_hour: "$0.35"
-    hours_per_month: 15 # Parallel to crawler, ~30 min/night
+    hours_per_month: 15  # Parallel to crawler, ~30 min/night
     subtotal: "$5.25"
 
   # API Costs (External Services)
@@ -64,10 +61,10 @@ cost_breakdown:
 
   # Cloud Storage (GCS)
   storage:
-    bucket_size_gb: 500 # 30 days × ~15 GB/day
+    bucket_size_gb: 500  # 30 days × ~15 GB/day
     storage_cost: "$10/TB-month = $0.01/GB-month"
     cost: "$5"
-    egress_gb: 50 # Judge 6 downloads
+    egress_gb: 50  # Judge #6 downloads
     egress_cost: "$0.12/GB"
     egress_total: "$6"
     subtotal: "$11"
@@ -75,7 +72,7 @@ cost_breakdown:
 
   # Pub/Sub (Event Notifications)
   pubsub:
-    messages_per_month: 30 # One per day
+    messages_per_month: 30  # One per day
     message_size_kb: 2
     cost: "$0.40/million messages"
     subtotal: "$0.001 ≈ $1"
@@ -94,26 +91,23 @@ cost_breakdown:
 ### Cost Scaling Scenarios
 
 **Current (Pre-Production):**
-
 - 10K-50K items/day
 - 30 days retention
 - ~$77/month
 
 **Production (Q2 2026):**
-
 - 100K-250K items/day
 - 90 days retention
 - Tier 1 sources expand (5 → 15)
 - **Estimated:** $180-250/month
 
 **Scale (2027-2030):**
-
 - 1M items/day
 - Multi-region redundancy (us-central1, us-east1, europe-west1)
 - GPU upgrade (T4 → A100 for real-time classification)
 - **Estimated:** $800-1,200/month
 
-**Key Insight:** Even at 10× scale, ingestion remains <$15K/year (0.02% of Judge 6 stack cost).
+**Key Insight:** Even at 10× scale, ingestion remains <$15K/year (0.02% of Judge #6 stack cost).
 
 ---
 
@@ -121,7 +115,7 @@ cost_breakdown:
 
 ### Monthly Operational Costs ($60-65K)
 
-**Note:** This is the full pnkln Core Stack™ deployment, not just Judge 6 in isolation.
+**Note:** This is the full pnkln Core Stack™ deployment, not just Judge #6 in isolation.
 
 ```yaml
 cost_breakdown:
@@ -137,7 +131,7 @@ cost_breakdown:
 
       gpu_pool:
         machine_type: "a2-highgpu-1g (1× A100)"
-        nodes: 3 # Judge 6 StatefulSet replicas
+        nodes: 3  # Judge #6 StatefulSet replicas
         cost_per_node: "$3.67/hour"
         subtotal: "$8,047/month"
 
@@ -149,19 +143,19 @@ cost_breakdown:
 
     total_compute: "$12,836/month"
 
-  # Redis (Judge 6 Cache)
+  # Redis (Judge #6 Cache)
   redis:
     instance_type: "Memorystore Redis (32 GB)"
-    instances: 3 # High availability
+    instances: 3  # High availability
     cost_per_instance: "$0.051/GB-hour × 32 GB × 730 hours"
     cost_per_instance_calc: "$1,193/month"
     subtotal: "$3,579/month"
 
   # Vertex AI (Cognitive Stack v5)
   vertex_ai:
-    model_garden: "$500/month" # Qwen3-VL, foundation models
-    pipelines: "$800/month" # RoT, MoE-CL training
-    prediction: "$2,000/month" # CoDA inference serving
+    model_garden: "$500/month"  # Qwen3-VL, foundation models
+    pipelines: "$800/month"     # RoT, MoE-CL training
+    prediction: "$2,000/month"  # CoDA inference serving
     subtotal: "$3,300/month"
 
   # Cloud Storage (Models, Logs, Artifacts)
@@ -176,7 +170,7 @@ cost_breakdown:
     load_balancer: "$18/month"
     nat_gateway: "$45/month"
     vpc_peering: "$50/month"
-    egress: "$1,000/month" # Judge 6 API responses
+    egress: "$1,000/month"  # Judge #6 API responses
     subtotal: "$1,113/month"
 
   # Monitoring (Prometheus, Grafana, Cloud Monitoring)
@@ -190,7 +184,7 @@ cost_breakdown:
   security:
     binary_authorization: "$50/month"
     policy_controller: "$100/month"
-    workload_identity: "$0" # No charge
+    workload_identity: "$0"  # No charge
     subtotal: "$150/month"
 
   # Backup & DR (Multi-Region Replication)
@@ -206,14 +200,12 @@ cost_breakdown:
 ```
 
 **Multi-Region Scaling (Production):**
-
 - **1 Region (Staging):** ~$22K/month
 - **3 Regions (Production):** ~$65K/month
 - **5 Regions (Global):** ~$110K/month
 
 **Key Cost Drivers:**
-
-1. **GPU Nodes (37%):** A100 GPUs for Judge 6 + CoDA inference
+1. **GPU Nodes (37%):** A100 GPUs for Judge #6 + CoDA inference
 2. **Redis Cache (17%):** 32GB × 3 instances for sub-500μs latency
 3. **Vertex AI (15%):** Cognitive Stack v5 model serving
 4. **Compute (60% total):** Node pools across 4 namespaces
@@ -291,11 +283,11 @@ tier_gates:
 ```yaml
 ethics_gates:
   robots_txt_violations:
-    maximum: 0 # ZERO TOLERANCE
+    maximum: 0  # ZERO TOLERANCE
     action: "Immediate job abort, manual review required"
 
   rate_limit_violations:
-    maximum: 0 # ZERO TOLERANCE
+    maximum: 0  # ZERO TOLERANCE
     action: "Backoff algorithm triggered, source blacklisted 24h"
 
   user_agent_transparency:
@@ -349,7 +341,7 @@ performance_gates:
     action: "Redis cache warming, query optimization"
 
   latency_p99:
-    maximum_ms: 500 # HARD SLA
+    maximum_ms: 500  # HARD SLA
     target_ms: 350
     alert_above_ms: 480
     action: "Immediate scale-up, fallback mode if breached"
@@ -367,10 +359,10 @@ performance_gates:
     action: "Check upstream bottlenecks, scale replicas"
 
   coverage_percentage:
-    minimum: 98.0 # HARD GATE
+    minimum: 98.0  # HARD GATE
     target: 99.5
     alert_below: 97.5
-    rollback_below: 95.0 # Auto-rollback if coverage <95%
+    rollback_below: 95.0  # Auto-rollback if coverage <95%
     action: "Fallback mode (fail-closed), manual investigation"
 ```
 
@@ -379,13 +371,13 @@ performance_gates:
 ```yaml
 accuracy_gates:
   false_positive_rate:
-    maximum: 0.02 # 2% max
+    maximum: 0.02  # 2% max
     target: 0.01
     alert_above: 0.025
-    action: "Retrain Judge 6 model, review PRB policies"
+    action: "Retrain Judge #6 model, review PRB policies"
 
   false_negative_rate:
-    maximum: 0.01 # 1% max (more critical than FP)
+    maximum: 0.01  # 1% max (more critical than FP)
     target: 0.005
     alert_above: 0.012
     action: "Immediate model review, tighten thresholds"
@@ -402,18 +394,18 @@ accuracy_gates:
 ```yaml
 integration_gates:
   ingestion_data_age:
-    maximum_hours: 26 # Alert if >26 hours stale
-    target_hours: 2 # Fresh data within 2 hours of ingestion
+    maximum_hours: 26  # Alert if >26 hours stale
+    target_hours: 2    # Fresh data within 2 hours of ingestion
     action: "Check Pub/Sub subscription, Updater health"
 
   cache_hit_rate:
-    minimum: 0.95 # 95% of queries hit Redis cache
+    minimum: 0.95  # 95% of queries hit Redis cache
     target: 0.99
     alert_below: 0.93
     action: "Increase Redis memory, optimize cache keys"
 
   updater_lag:
-    maximum_minutes: 10 # Max delay from Pub/Sub to Redis
+    maximum_minutes: 10  # Max delay from Pub/Sub to Redis
     target_minutes: 2
     alert_above_minutes: 8
     action: "Scale Updater replicas, check GCS latency"
@@ -422,7 +414,6 @@ integration_gates:
 ### Rollback Triggers
 
 **Immediate Rollback (Automatic):**
-
 - Coverage <95%
 - Latency p99 >500μs for 5 consecutive minutes
 - False negative rate >2%
@@ -444,17 +435,14 @@ rollback_actions:
 ### Cost Per Intelligence Item (End-to-End)
 
 **Gemini Ingestion:**
-
 - **Target:** $0.0005/item (50,000 items/day at $77/month)
 - **Maximum:** $0.001/item (gate threshold)
 
-**Judge 6 Validation:**
-
+**Judge #6 Validation:**
 - **Per Query:** ~$0.006 (at 10M queries/month, $65K/month)
 - **Per Item Validated:** Same as per query (1:1 mapping)
 
 **Combined (Ingestion → Validation):**
-
 - **Total Cost:** $0.0065/item
 - **Value Created:** Pre-hoc compliance, -94% fines (Cor.55)
 - **ROI:** $8.6B EV premium / $1.5B ARR = 5.7× valuation multiple
@@ -464,7 +452,6 @@ rollback_actions:
 **Question:** Is $77/month for ingestion justified?
 
 **Analysis:**
-
 ```
 Value Created (Ingestion):
 - 50K items/day × 30 days = 1.5M items/month
@@ -482,12 +469,11 @@ JR Verdict: ✅ APPROVED
 - Efficiency gain: 100× cost reduction, 15× volume increase
 ```
 
-**Question:** Is $65K/month for Judge 6 stack justified?
+**Question:** Is $65K/month for Judge #6 stack justified?
 
 **Analysis:**
-
 ```
-Value Created (Judge 6):
+Value Created (Judge #6):
 - 10M queries/month validated in <500μs
 - -94% regulatory fines (Cor.55: $8.6B moat)
 - 98% coverage (vs industry 60-70%)
@@ -499,7 +485,7 @@ Alternative (Manual Review):
 - 521 FTEs × $15K/month = $7.8M/month
 
 JR Verdict: ✅ APPROVED
-- Judge 6 cost: $65K/month
+- Judge #6 cost: $65K/month
 - Manual equivalent: $7.8M/month (120× more expensive)
 - Speed advantage: 30 sec → 0.5 ms (60,000× faster)
 - Compliance moat: $8.6B EV premium
@@ -509,16 +495,16 @@ JR Verdict: ✅ APPROVED
 
 ## QUALITY GATES ENFORCEMENT MATRIX
 
-| System        | Gate Type   | Threshold     | Action    | Authority        |
-| ------------- | ----------- | ------------- | --------- | ---------------- |
-| **Ingestion** | Items/day   | <10K          | PagerDuty | Auto-alert       |
-| **Ingestion** | Relevance   | <0.70         | Rollback  | 3 consecutive    |
-| **Ingestion** | Ethics      | >0 violations | Abort     | Immediate        |
-| **Ingestion** | Cost/item   | >$0.001       | Review    | Manual           |
-| **Judge 6**  | Latency p99 | >500μs        | Rollback  | Auto (5 min)     |
-| **Judge 6**  | Coverage    | <98%          | Fallback  | Auto (immediate) |
-| **Judge 6**  | Coverage    | <95%          | Rollback  | Auto (immediate) |
-| **Judge 6**  | FN rate     | >1%           | Retrain   | Manual urgent    |
+| System | Gate Type | Threshold | Action | Authority |
+|--------|-----------|-----------|--------|-----------|
+| **Ingestion** | Items/day | <10K | PagerDuty | Auto-alert |
+| **Ingestion** | Relevance | <0.70 | Rollback | 3 consecutive |
+| **Ingestion** | Ethics | >0 violations | Abort | Immediate |
+| **Ingestion** | Cost/item | >$0.001 | Review | Manual |
+| **Judge #6** | Latency p99 | >500μs | Rollback | Auto (5 min) |
+| **Judge #6** | Coverage | <98% | Fallback | Auto (immediate) |
+| **Judge #6** | Coverage | <95% | Rollback | Auto (immediate) |
+| **Judge #6** | FN rate | >1% | Retrain | Manual urgent |
 
 ---
 
@@ -543,7 +529,7 @@ ingestion_runtime_minutes{namespace="gke-training-system"}
 ingestion_robots_txt_violations_total{namespace="gke-training-system"}
 ```
 
-### Prometheus Metrics (Judge 6)
+### Prometheus Metrics (Judge #6)
 
 ```promql
 # Latency percentiles
@@ -582,7 +568,7 @@ judge6_false_negative_rate{namespace="gke-inference-system"}
 - alert: IngestionStale
   expr: (time() - max(ingestion_completion_timestamp)) > 93600
   severity: warning
-  action: Judge 6 using stale data
+  action: Judge #6 using stale data
 ```
 
 ---
@@ -596,7 +582,7 @@ judge6_false_negative_rate{namespace="gke-inference-system"}
 3. **API Quota Optimization:** Batch requests, cache responses
 4. **Storage Lifecycle:** Delete items >90 days old
 
-### Judge 6 Stack
+### Judge #6 Stack
 
 1. **GKE Autopilot:** Bin packing optimization (vs manual node sizing)
 2. **Committed Use Discounts:** 3-year commit for GPUs (57% savings)
@@ -608,15 +594,13 @@ judge6_false_negative_rate{namespace="gke-inference-system"}
 ## PRODUCTION READINESS CHECKLIST
 
 ### Gemini Ingestion (Q4 2025)
-
 - [ ] All quality gates validated over 30-day pilot
 - [ ] Zero ethics violations sustained
 - [ ] Cost/item <$0.0005 achieved
 - [ ] Runtime <45 min consistently
 - [ ] Tier 1 sources ≥25%
 
-### Judge 6 (Q2 2026)
-
+### Judge #6 (Q2 2026)
 - [ ] Latency p99 <500μs over 7 days
 - [ ] Coverage ≥98% sustained
 - [ ] FN rate <0.5% validated
@@ -624,8 +608,7 @@ judge6_false_negative_rate{namespace="gke-inference-system"}
 - [ ] Rollback procedure verified
 
 ### Integration (Q2 2026)
-
-- [ ] End-to-end test: Ingestion → Judge 6 → Service
+- [ ] End-to-end test: Ingestion → Judge #6 → Service
 - [ ] Pub/Sub lag <2 minutes
 - [ ] Cache hit rate >95%
 - [ ] Stale data alerts working

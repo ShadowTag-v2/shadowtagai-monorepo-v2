@@ -56,7 +56,10 @@ def get_installation_token() -> str:
         token = jwt.encode(payload, pem, algorithm="RS256")
 
         # Get installation ID
-        headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+        }
         resp = requests.get(
             f"https://api.github.com/repos/{GITHUB_REPO}/installation",
             headers=headers,
@@ -127,7 +130,11 @@ def create_gap_stub(action: dict, token: str) -> dict | None:
     }
     resp = requests.post(
         f"https://api.github.com/repos/{GITHUB_REPO}/issues",
-        json={"title": title, "body": body, "labels": ["intelligence-pipeline", action["priority"]]},
+        json={
+            "title": title,
+            "body": body,
+            "labels": ["intelligence-pipeline", action["priority"]],
+        },
         headers=headers,
     )
     if resp.status_code == 201:

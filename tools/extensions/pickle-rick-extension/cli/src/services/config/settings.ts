@@ -1,22 +1,22 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
-import type { AIProviderName } from '../providers/types.js';
-import { type PickleSettings, PickleSettingsSchema } from './types.js';
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import type { AIProviderName } from "../providers/types.js";
+import { type PickleSettings, PickleSettingsSchema } from "./types.js";
 
-const SETTINGS_DIR = join(homedir(), '.pickle');
-const SETTINGS_PATH = join(SETTINGS_DIR, 'settings.json');
+const SETTINGS_DIR = join(homedir(), ".pickle");
+const SETTINGS_PATH = join(SETTINGS_DIR, "settings.json");
 
 // Valid provider names
 const VALID_PROVIDERS = [
-  'gemini',
-  'opencode',
-  'claude',
-  'cursor',
-  'codex',
-  'qwen',
-  'droid',
-  'copilot',
+  "gemini",
+  "opencode",
+  "claude",
+  "cursor",
+  "codex",
+  "qwen",
+  "droid",
+  "copilot",
 ] as const;
 
 export interface ValidationResult {
@@ -31,7 +31,7 @@ export interface ValidationResult {
  */
 function fixJsonSyntax(jsonString: string): string | null {
   // Remove trailing commas before } or ]
-  const fixed = jsonString.replace(/,(\s*[}\]])/g, '$1');
+  const fixed = jsonString.replace(/,(\s*[}\]])/g, "$1");
 
   // Try to parse the fixed JSON
   try {
@@ -50,8 +50,8 @@ export function validateSettings(content: string): ValidationResult {
   const warnings: string[] = [];
 
   // Check if content is empty
-  if (!content || content.trim() === '') {
-    return { valid: false, errors: ['Settings file is empty'], warnings };
+  if (!content || content.trim() === "") {
+    return { valid: false, errors: ["Settings file is empty"], warnings };
   }
 
   // Try to parse JSON
@@ -64,7 +64,7 @@ export function validateSettings(content: string): ValidationResult {
     if (fixed) {
       try {
         parsed = JSON.parse(fixed);
-        warnings.push('Fixed trailing comma in JSON');
+        warnings.push("Fixed trailing comma in JSON");
       } catch {
         errors.push(
           `Invalid JSON syntax: ${parseError instanceof Error ? parseError.message : String(parseError)}`,
@@ -86,7 +86,7 @@ export function validateSettings(content: string): ValidationResult {
   const schemaResult = PickleSettingsSchema.safeParse(parsed);
   if (!schemaResult.success) {
     schemaResult.error.errors.forEach((err) => {
-      errors.push(`Schema error at ${err.path.join('.')}: ${err.message}`);
+      errors.push(`Schema error at ${err.path.join(".")}: ${err.message}`);
     });
     return { valid: false, errors, warnings, fixed: wasFixed ? JSON.stringify(parsed) : undefined };
   }
@@ -98,23 +98,23 @@ export function validateSettings(content: string): ValidationResult {
     if (!VALID_PROVIDERS.includes(settings.model.provider as (typeof VALID_PROVIDERS)[number])) {
       errors.push(
         `Invalid provider "${settings.model.provider}". ` +
-          `Must be one of: ${VALID_PROVIDERS.join(', ')}`,
+          `Must be one of: ${VALID_PROVIDERS.join(", ")}`,
       );
     }
   }
 
   // Validate model string if specified
   if (settings.model?.model !== undefined) {
-    if (typeof settings.model.model !== 'string') {
-      errors.push('Model must be a string');
-    } else if (settings.model.model.trim() === '') {
-      warnings.push('Model name is empty - provider default will be used');
+    if (typeof settings.model.model !== "string") {
+      errors.push("Model must be a string");
+    } else if (settings.model.model.trim() === "") {
+      warnings.push("Model name is empty - provider default will be used");
     }
   }
 
   // Warn if no provider configured
   if (!settings.model?.provider) {
-    warnings.push('No provider configured - will use default (Gemini)');
+    warnings.push("No provider configured - will use default (Gemini)");
   }
 
   return {
@@ -133,7 +133,7 @@ export async function loadSettingsWithValidation(): Promise<{
   validation: ValidationResult;
 }> {
   try {
-    const content = await readFile(SETTINGS_PATH, 'utf-8');
+    const content = await readFile(SETTINGS_PATH, "utf-8");
     const validation = validateSettings(content);
 
     // If we have a fixed version, use it
@@ -143,13 +143,13 @@ export async function loadSettingsWithValidation(): Promise<{
     return { settings, validation };
   } catch (e) {
     // File doesn't exist or is completely unreadable
-    if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") {
       return {
         settings: {},
         validation: {
           valid: true,
           errors: [],
-          warnings: ['Settings file does not exist - using defaults'],
+          warnings: ["Settings file does not exist - using defaults"],
         },
       };
     }
@@ -171,7 +171,7 @@ export async function loadSettingsWithValidation(): Promise<{
  */
 export async function loadSettings(): Promise<PickleSettings> {
   try {
-    const content = await readFile(SETTINGS_PATH, 'utf-8');
+    const content = await readFile(SETTINGS_PATH, "utf-8");
     const json = JSON.parse(content);
     return PickleSettingsSchema.parse(json);
   } catch (e) {
@@ -188,7 +188,7 @@ export async function saveSettings(settings: PickleSettings): Promise<void> {
   try {
     await mkdir(SETTINGS_DIR, { recursive: true });
     const validated = PickleSettingsSchema.parse(settings);
-    await writeFile(SETTINGS_PATH, JSON.stringify(validated, null, 2), 'utf-8');
+    await writeFile(SETTINGS_PATH, JSON.stringify(validated, null, 2), "utf-8");
   } catch (e) {
     throw new Error(`Failed to save settings: ${e}`);
   }

@@ -1,11 +1,11 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from fastapi import FastAPI
-
-from .calendar import google_sync
-from .ceo_track import prodding_engine
 from .config import settings
 from .ingestion import webhooks
 from .parsing import gemini_parser
 from .rules import rules_engine
+from .calendar import google_sync
+from .ceo_track import prodding_engine
 
 app = FastAPI(title="LegalTrack + CEOTrack", version="1.0.0")
 

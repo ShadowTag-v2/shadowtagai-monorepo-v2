@@ -1,6 +1,6 @@
 # Security Enforcement Skill
 
-**Purpose:** Block code that violates ShadowTagAi security requirements
+**Purpose:** Block code that violates Pnkln security requirements
 **Enforcement:** `"block"` - Prevents edits that fail security checks
 **Priority:** `"critical"`
 **Version:** 1.0.0
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This skill enforces ShadowTagAi's zero-trust security architecture and ensures all code meets military-grade security standards (Army RM Stage IV compliance). It automatically activates when you work with authentication, APIs, databases, or any code involving sensitive data.
+This skill enforces Pnkln's zero-trust security architecture and ensures all code meets military-grade security standards (Army RM Stage IV compliance). It automatically activates when you work with authentication, APIs, databases, or any code involving sensitive data.
 
 **Auto-Activation Triggers:**
 - Keywords: `auth`, `encrypt`, `secret`, `password`, `token`, `api`, `deploy`
@@ -76,10 +76,10 @@ const result = await fetch('https://internal-service/data', {
 
 ```typescript
 // ❌ BLOCKED - Hardcoded secret
-const apiKey = 'YOUR_API_KEY_HERE';
+const apiKey = 'sk-1234567890abcdef';
 
 // ❌ BLOCKED - Secret in config file
-export const config = { apiKey: 'YOUR_API_KEY_HERE' };
+export const config = { apiKey: 'sk-1234567890abcdef' };
 
 // ✅ APPROVED - Environment variable
 const apiKey = process.env.API_KEY;
@@ -88,7 +88,7 @@ if (!apiKey) throw new Error('API_KEY not set');
 // ✅ APPROVED - Google Secret Manager
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager';
 const client = new SecretManagerServiceClient();
-const [version] = await client.accessSecretVersion({ name: 'projects/shadowtagai/secrets/api-key/versions/latest' });
+const [version] = await client.accessSecretVersion({ name: 'projects/pnkln/secrets/api-key/versions/latest' });
 const apiKey = version.payload.data.toString();
 ```
 
@@ -217,14 +217,14 @@ Use this checklist when implementing authentication/API features:
 - [ ] All exceptions captured with Sentry
 - [ ] No sensitive data in logs (emails ok, passwords/tokens never)
 - [ ] All `.env` files in `.gitignore`
-- [ ] Security review completed (run `/ShadowTag-v2jr-gate`)
+- [ ] Security review completed (run `/aiyoujr-gate`)
 - [ ] Rollback plan documented (in dev docs)
 
 ---
 
-## Integration with ShadowTag-v2JR
+## Integration with AiYouJR
 
-This skill is part of the **Brakes Gate** in the ShadowTag-v2JR decision framework:
+This skill is part of the **Brakes Gate** in the AiYouJR decision framework:
 
 - **Purpose:** Does this serve founder goals? → Other skills handle this
 - **Reasons:** Financial validation (ROI, LTV:CAC) → Other skills handle this
@@ -248,5 +248,5 @@ A: Use `.env.development` with test credentials. Never commit this file. See [re
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi Security Team (Erik)
+**Maintained By:** Pnkln Security Team (Erik)
 **Compliance:** Army RM Stage IV, OWASP Top 10, Zero-Trust Architecture

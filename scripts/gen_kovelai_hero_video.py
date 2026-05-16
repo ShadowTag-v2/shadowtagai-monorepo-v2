@@ -20,7 +20,9 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from google import genai  # noqa: E402
 
 # ─── Output Configuration ────────────────────────────────────────────────────
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "apps", "kovelai", "public", "hero-videos")
+OUTPUT_DIR = os.path.join(
+  os.path.dirname(__file__), "..", "apps", "kovelai", "public", "hero-videos"
+)
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "legal-data-arch.mp4")
 
 # ─── Veo 3.1 Prompt ──────────────────────────────────────────────────────────
@@ -51,37 +53,37 @@ Duration: 8 seconds. 4K resolution. Cinematic, photorealistic render quality.
 
 
 def main() -> None:
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        msg = "GEMINI_API_KEY environment variable not set.\nRun: export GEMINI_API_KEY=your_key_here"
-        raise RuntimeError(msg)
+  api_key = os.environ.get("GEMINI_API_KEY")
+  if not api_key:
+    msg = "GEMINI_API_KEY environment variable not set.\nRun: export GEMINI_API_KEY=your_key_here"
+    raise RuntimeError(msg)
 
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+  os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    client = genai.Client(api_key=api_key)
+  client = genai.Client(api_key=api_key)
 
-    operation = client.models.generate_videos(
-        model="veo-3.1-generate-preview",
-        prompt=HERO_PROMPT,
-    )
+  operation = client.models.generate_videos(
+    model="veo-3.1-generate-preview",
+    prompt=HERO_PROMPT,
+  )
 
-    poll_count = 0
-    while not operation.done:
-        poll_count += 1
-        poll_count * 15
-        time.sleep(15)
-        operation = client.operations.get(operation)
+  poll_count = 0
+  while not operation.done:
+    poll_count += 1
+    poll_count * 15
+    time.sleep(15)
+    operation = client.operations.get(operation)
 
-    if not operation.response or not operation.response.generated_videos:
-        msg = "No videos in response. Check API quota or prompt."
-        raise RuntimeError(msg)
+  if not operation.response or not operation.response.generated_videos:
+    msg = "No videos in response. Check API quota or prompt."
+    raise RuntimeError(msg)
 
-    video = operation.response.generated_videos[0]
-    client.files.download(file=video.video)
-    video.video.save(OUTPUT_FILE)
+  video = operation.response.generated_videos[0]
+  client.files.download(file=video.video)
+  video.video.save(OUTPUT_FILE)
 
-    os.path.getsize(OUTPUT_FILE) / (1024 * 1024)
+  os.path.getsize(OUTPUT_FILE) / (1024 * 1024)
 
 
 if __name__ == "__main__":
-    main()
+  main()

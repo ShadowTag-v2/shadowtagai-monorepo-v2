@@ -1,8 +1,8 @@
-# Original Path: Cor.94 AiU + ShadowTag-v2 Unified Platform: Business Plan & Operational Status/Cor.94 AiU + ShadowTag-v2 Unified Platform: Business Plan & Operational Status.txt
+# Original Path: Cor.94 AiU + AiYou Unified Platform: Business Plan & Operational Status/Cor.94 AiU + AiYou Unified Platform: Business Plan & Operational Status.txt
 
 # Categories: FINANCE_BIZ
 
-Cor.94 AiU + ShadowTag-v2 Unified Platform: Business Plan & Operational Status
+Cor.94 AiU + AiYou Unified Platform: Business Plan & Operational Status
 Date: December 14, 2025 Status: 🟢 SYSTEMS ACTIVE (Pre-Revenue / Deployment Phase) Valuation Target: $421.5B (2030)
 
 🟢 Real-Time Operational Status
@@ -23,7 +23,7 @@ Date: December 14, 2025 Status: 🟢 SYSTEMS ACTIVE (Pre-Revenue / Deployment
    Payment Rails: Stripe integration pending (2-week sprint)
 
 🎯 Executive Summary
-AiU + ShadowTag-v2 is the world's first production-ready pre-execution AI governance platform. Unlike reactive moderation (detecting harm after it happens), we govern AI before it executes.
+AiU + AiYou is the world's first production-ready pre-execution AI governance platform. Unlike reactive moderation (detecting harm after it happens), we govern AI before it executes.
 The Problem
 Governments: Post-hoc regulation fails (fines come too late).
 Enterprises: Moderation is slow, expensive, and brand-risky.
@@ -35,7 +35,7 @@ Revenue-First Architecture: 4-Layer Monetization (Governance, Content, Services,
 Key Metrics
 Infrastructure Cost: $77/month (GKE Autopilot Native) - Proven
 GPU Cost Savings: 82% (Aegaeon Pooling) - Validated SOSP'24
-Development Velocity: +30% (ShadowTag-v2JR Agents) - Active Now
+Development Velocity: +30% (AiYouJR Agents) - Active Now
 
 💰 Revenue Model (The JURA Protocol)
 Our JURA Protocol routes requests to the most cost-effective model based on complexity, enforcing high margins.

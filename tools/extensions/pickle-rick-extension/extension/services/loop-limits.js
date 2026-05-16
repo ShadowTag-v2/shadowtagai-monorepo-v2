@@ -8,8 +8,8 @@ export function evaluateLoopLimits(state, nowEpoch = Math.floor(Date.now() / 100
   if (state.jar_complete) {
     return {
       exceeded: true,
-      reason: 'jar-complete',
-      message: 'Jar processing complete',
+      reason: "jar-complete",
+      message: "Jar processing complete",
     };
   }
   const maxTimeMinutes = toNonNegativeInt(state.max_time_minutes);
@@ -20,7 +20,7 @@ export function evaluateLoopLimits(state, nowEpoch = Math.floor(Date.now() / 100
     if (elapsedSeconds >= maxTimeSeconds) {
       return {
         exceeded: true,
-        reason: 'time-limit',
+        reason: "time-limit",
         message: `Time limit exceeded (${elapsedSeconds}/${maxTimeSeconds}s)`,
         elapsedSeconds,
         maxTimeSeconds,
@@ -34,7 +34,7 @@ export function evaluateLoopLimits(state, nowEpoch = Math.floor(Date.now() / 100
   if (maxIterations > 0 && iteration > maxIterations) {
     return {
       exceeded: true,
-      reason: 'iteration-limit',
+      reason: "iteration-limit",
       message: `Iteration limit exceeded (${iteration}/${maxIterations})`,
     };
   }

@@ -32,8 +32,9 @@ pnkln Ultrathink Stack is ready for deployment
 
 #### What to Monitor
 
-1. **Conversation Extraction Running**
 
+
+1. **Conversation Extraction Running**
    ```bash
    # Check last extraction timestamp
    cat erik-hancock-llm-memory/memory/.last_sync 2>/dev/null || echo "Never synced"
@@ -41,8 +42,9 @@ pnkln Ultrathink Stack is ready for deployment
    # Expected: Timestamp within last 24 hours
    ```
 
-2. **GitHub Persistence Working**
 
+
+2. **GitHub Persistence Working**
    ```bash
    # Check recent commits
    git log --oneline --since="1 day ago" --grep="memory" | head -5
@@ -50,8 +52,9 @@ pnkln Ultrathink Stack is ready for deployment
    # Expected: Daily automated commits
    ```
 
-3. **4-LLM Orchestration Active**
 
+
+3. **4-LLM Orchestration Active**
    ```bash
    # Check orchestration logs
    tail -20 erik-hancock-llm-memory/.logs/orchestration.log 2>/dev/null
@@ -61,17 +64,25 @@ pnkln Ultrathink Stack is ready for deployment
 
 #### Success Metrics
 
+
+
 - ✅ Daily commits to memory repository
 
+
 - ✅ Cross-device sync successful (last 24 hours)
+
 
 - ✅ 4-LLM cost tracking shows $0.08-0.12 per query
 
 #### Failure Indicators
 
+
+
 - ❌ No commits in 48+ hours
 
+
 - ❌ Sync errors in logs
+
 
 - ❌ Cost exceeds $0.20 per query
 
@@ -91,9 +102,12 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
 
 **Value delivered:**
 
+
 - Context available instantly (vs 20 min manual search)
 
+
 - 2,121+ conversations searchable
+
 
 - Gemini metadata cost: $0.45 one-time (paid)
 
@@ -103,8 +117,9 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
 
 #### What to Monitor
 
-1. **Judge 6 Validation Active**
 
+
+1. **Judge #6 Validation Active**
    ```python
    # Check validation rate
    from src.pnkln import JudgeSix
@@ -117,8 +132,9 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
    # Expected: Active validation, some blocks (shows it's working)
    ```
 
-2. **ShadowTag Signatures Generated**
 
+
+2. **ShadowTag Signatures Generated**
    ```python
    # Check signature count
    from src.pnkln import ShadowTag
@@ -130,8 +146,9 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
    # Expected: Non-zero signatures
    ```
 
-3. **Cor Orchestration Metrics**
 
+
+3. **Cor Orchestration Metrics**
    ```python
    # Check orchestration stats
    from src.pnkln import Cor
@@ -146,17 +163,25 @@ gcloud alpha billing accounts list --format="table(name,displayName)"
 
 #### Success Metrics
 
-- ✅ Judge 6 blocking 3-5% of calls (shows it's active)
+
+
+- ✅ Judge #6 blocking 3-5% of calls (shows it's active)
+
 
 - ✅ 100% of decisions have ShadowTag signatures
+
 
 - ✅ Cor latency <100ms p99
 
 #### Failure Indicators
 
-- ❌ Judge 6 blocks 0% (not running) or >20% (too strict)
+
+
+- ❌ Judge #6 blocks 0% (not running) or >20% (too strict)
+
 
 - ❌ Missing signatures
+
 
 - ❌ Cor latency >500ms
 
@@ -186,8 +211,9 @@ print(f'Value delivered this month: ${value:,}')
 
 #### What to Monitor
 
-1. **Latency Metrics**
 
+
+1. **Latency Metrics**
    ```python
    # Run latency test
    python src/tests/test_latency.py
@@ -198,8 +224,9 @@ print(f'Value delivered this month: ${value:,}')
    # 12× improvement over old architecture
    ```
 
-2. **API Call Reduction**
 
+
+2. **API Call Reduction**
    ```bash
    # Check API call count
    grep "Gemini API call" logs/api.log | wc -l
@@ -210,8 +237,9 @@ print(f'Value delivered this month: ${value:,}')
    # Expected: 1 API call per 3-5 function executions
    ```
 
-3. **Cost Tracking**
 
+
+3. **Cost Tracking**
    ```bash
    # Monthly Gemini API cost
    gcloud billing accounts list --format=json | \
@@ -222,17 +250,25 @@ print(f'Value delivered this month: ${value:,}')
 
 #### Success Metrics
 
+
+
 - ✅ P99 latency <90ms
 
+
 - ✅ 1 API call orchestrating 3+ local functions
+
 
 - ✅ Monthly cost $500 (saving $1,000/month)
 
 #### Failure Indicators
 
+
+
 - ❌ P99 >150ms
 
+
 - ❌ API calls == function executions (not using local functions)
+
 
 - ❌ Cost >$800/month
 
@@ -256,8 +292,9 @@ echo "Savings: \$1,000/month = \$12,000/year"
 
 #### What to Monitor
 
-1. **Refactorer Activity**
 
+
+1. **Refactorer Activity**
    ```bash
    # Check refactorer runs
    npm run test:refactorer
@@ -265,8 +302,9 @@ echo "Savings: \$1,000/month = \$12,000/year"
    # Expected: All tests passing
    ```
 
-2. **Code Quality Metrics**
 
+
+2. **Code Quality Metrics**
    ```bash
    # Check complexity reduction
    node tools/orchestrator/ace_with_refactor.mjs analyze tools/
@@ -274,8 +312,9 @@ echo "Savings: \$1,000/month = \$12,000/year"
    # Expected: Complexity score <50, maintainability >70
    ```
 
-3. **CI/CD Integration**
 
+
+3. **CI/CD Integration**
    ```bash
    # Check GitHub Actions runs
    gh run list --workflow=code-quality.yml --limit 10
@@ -285,17 +324,25 @@ echo "Savings: \$1,000/month = \$12,000/year"
 
 #### Success Metrics
 
+
+
 - ✅ Refactorer runs daily via GitHub Actions
 
+
 - ✅ Code complexity trending down
+
 
 - ✅ 0 critical issues in last 30 days
 
 #### Failure Indicators
 
+
+
 - ❌ No refactorer runs in 7+ days
 
+
 - ❌ Code complexity increasing
+
 
 - ❌ CI/CD failing
 
@@ -324,8 +371,9 @@ print(f'Tech debt reduction value: ${annual_value:,}/year')
 
 #### What to Monitor
 
-1. **Debate Activity**
 
+
+1. **Debate Activity**
    ```python
    # Check debate metrics
    from src.agents import PanelGPT
@@ -338,8 +386,9 @@ print(f'Tech debt reduction value: ${annual_value:,}/year')
    # Expected: 10-20 debates/month, 70%+ consensus
    ```
 
-2. **Glicko-2 Ratings**
 
+
+2. **Glicko-2 Ratings**
    ```python
    # Check agent ratings
    from src.ratings import Glicko2
@@ -353,17 +402,25 @@ print(f'Tech debt reduction value: ${annual_value:,}/year')
 
 #### Success Metrics
 
+
+
 - ✅ Debates happening weekly
 
+
 - ✅ Agent ratings converging (low volatility)
+
 
 - ✅ Decision quality tracking positive
 
 #### Failure Indicators
 
+
+
 - ❌ No debates in 30 days
 
+
 - ❌ All agents rated equally (not learning)
+
 
 - ❌ High dissent rate (>50%)
 
@@ -393,8 +450,9 @@ print(f'Annual decision value: ${value:,}')
 
 #### What to Monitor
 
-1. **Benchmark Scores**
 
+
+1. **Benchmark Scores**
    ```bash
    # Run benchmarks
    python src/tests/test_benchmarks.py
@@ -402,8 +460,9 @@ print(f'Annual decision value: ${value:,}')
    # Expected: Accuracy improving over time
    ```
 
-2. **Prompt Evolution**
 
+
+2. **Prompt Evolution**
    ```python
    # Check evolution metrics
    from src.evolution import DTE
@@ -417,8 +476,9 @@ print(f'Annual decision value: ${value:,}')
    # Expected: +3.7% or better improvement
    ```
 
-3. **GRPO Training Progress**
 
+
+3. **GRPO Training Progress**
    ```python
    # Check training metrics
    from src.training import GRPO
@@ -433,17 +493,25 @@ print(f'Annual decision value: ${value:,}')
 
 #### Success Metrics
 
+
+
 - ✅ Accuracy improving +3.7% or more
 
+
 - ✅ GRPO success rate >80%
+
 
 - ✅ Benchmarks run automatically weekly
 
 #### Failure Indicators
 
+
+
 - ❌ Accuracy declining
 
+
 - ❌ No benchmark runs in 14+ days
+
 
 - ❌ GRPO success rate <75%
 
@@ -540,7 +608,7 @@ def calculate_daily_value():
     """Calculate dollar value generated today"""
     value = 0
 
-    # Judge 6 prevented incidents
+    # Judge #6 prevented incidents
     blocked = get_judge_stats()['blocked']
     value += blocked * (25000 / 30)  # $25K per incident, daily rate
 
@@ -646,29 +714,38 @@ python scripts/health_dashboard.py
 
 **Layer 0**
 
+
 - ❌ No memory sync in 48+ hours → Check GitHub Actions
+
 
 - ❌ 4-LLM cost >$0.50/query → Check orchestration config
 
 **Layer 1**
 
-- ❌ Judge 6 blocks 0% for 24h → Check if running
 
-- ❌ Judge 6 blocks >30% for 24h → Thresholds too strict
+- ❌ Judge #6 blocks 0% for 24h → Check if running
+
+
+- ❌ Judge #6 blocks >30% for 24h → Thresholds too strict
+
 
 - ❌ Missing signatures → ShadowTag not running
 
 **Layer 2**
 
+
 - ❌ P99 latency >200ms → Gemini API issues
+
 
 - ❌ Monthly cost >$1,000 → Check for API call leaks
 
 **Layer 3**
 
+
 - ❌ CI/CD failing >3 days → Fix broken tests
 
 **Layer 5**
+
 
 - ❌ Accuracy dropping below baseline → Investigate regression
 
@@ -676,23 +753,29 @@ python scripts/health_dashboard.py
 
 **Layer 0**
 
+
 - ⚠ Sync delay >12 hours
+
 
 - ⚠ Cost trend increasing
 
 **Layer 1**
 
+
 - ⚠ Block rate 15-30% (may need tuning)
 
 **Layer 2**
+
 
 - ⚠ Latency P99 >100ms but <150ms
 
 **Layer 4**
 
+
 - ⚠ No debates in 14 days
 
 **Layer 5**
+
 
 - ⚠ Improvement plateau (no gain in 30 days)
 
@@ -722,15 +805,20 @@ python scripts/health_dashboard.py
 
 Daily checklist:
 
+
 - [ ] Run `python scripts/verify_pnkln_stack.py`
+
 
 - [ ] Check for critical alerts
 
+
 - [ ] Review dollar value generated
+
 
 - [ ] Verify costs are within budget ($870/month)
 
-- [ ] Check for any blocked decisions (Judge 6)
+
+- [ ] Check for any blocked decisions (Judge #6)
 
 ---
 
@@ -805,9 +893,13 @@ python src/evolution/dte.py --show-history
 
 ## Bottom Line: Three Numbers to Watch
 
+
+
 1. **Daily Value Generated**: Should be >$3,000/day
 
+
 2. **Monthly Cost**: Should be ~$870
+
 
 3. **ROI Multiple**: Should be >100×
 

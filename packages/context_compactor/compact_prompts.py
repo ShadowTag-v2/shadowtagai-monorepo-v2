@@ -31,9 +31,9 @@ NO_TOOLS_PREAMBLE = """CRITICAL: Respond with TEXT ONLY. Do NOT call any tools.
 """
 
 NO_TOOLS_TRAILER = (
-    "\n\nREMINDER: Do NOT call any tools. Respond with plain text only — "
-    "an <analysis> block followed by a <summary> block. "
-    "Tool calls will be rejected and you will fail the task."
+  "\n\nREMINDER: Do NOT call any tools. Respond with plain text only — "
+  "an <analysis> block followed by a <summary> block. "
+  "Tool calls will be rejected and you will fail the task."
 )
 
 DETAILED_ANALYSIS_BASE = """Before providing your final summary, wrap your analysis in <analysis> tags to organize your thoughts and ensure you've covered all necessary points. In your analysis process:
@@ -105,118 +105,118 @@ Please provide your summary based on the RECENT messages only (after the retaine
 
 
 def get_compact_prompt(custom_instructions: str | None = None) -> str:
-    """Get the full compaction prompt.
+  """Get the full compaction prompt.
 
-    Args:
-        custom_instructions: Optional custom summarization instructions.
+  Args:
+      custom_instructions: Optional custom summarization instructions.
 
-    Returns:
-        Complete prompt string with preamble and trailer.
-    """
-    prompt = NO_TOOLS_PREAMBLE + BASE_COMPACT_PROMPT
-    if custom_instructions and custom_instructions.strip():
-        prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
-    prompt += NO_TOOLS_TRAILER
-    return prompt
+  Returns:
+      Complete prompt string with preamble and trailer.
+  """
+  prompt = NO_TOOLS_PREAMBLE + BASE_COMPACT_PROMPT
+  if custom_instructions and custom_instructions.strip():
+    prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
+  prompt += NO_TOOLS_TRAILER
+  return prompt
 
 
 def get_partial_compact_prompt(
-    custom_instructions: str | None = None,
-    *,
-    direction: str = "from",
+  custom_instructions: str | None = None,
+  *,
+  direction: str = "from",
 ) -> str:
-    """Get the partial compaction prompt.
+  """Get the partial compaction prompt.
 
-    Args:
-        custom_instructions: Optional custom summarization instructions.
-        direction: 'from' (recent only) or 'up_to' (prefix summary).
+  Args:
+      custom_instructions: Optional custom summarization instructions.
+      direction: 'from' (recent only) or 'up_to' (prefix summary).
 
-    Returns:
-        Complete prompt string.
-    """
-    template = PARTIAL_COMPACT_PROMPT  # 'up_to' variant omitted for brevity
-    prompt = NO_TOOLS_PREAMBLE + template
-    if custom_instructions and custom_instructions.strip():
-        prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
-    prompt += NO_TOOLS_TRAILER
-    return prompt
+  Returns:
+      Complete prompt string.
+  """
+  template = PARTIAL_COMPACT_PROMPT  # 'up_to' variant omitted for brevity
+  prompt = NO_TOOLS_PREAMBLE + template
+  if custom_instructions and custom_instructions.strip():
+    prompt += f"\n\nAdditional Instructions:\n{custom_instructions}"
+  prompt += NO_TOOLS_TRAILER
+  return prompt
 
 
 def format_compact_summary(summary: str) -> str:
-    """Format raw LLM summary by stripping <analysis> and cleaning <summary> tags.
+  """Format raw LLM summary by stripping <analysis> and cleaning <summary> tags.
 
-    The <analysis> block is a drafting scratchpad that improves summary
-    quality but has no informational value once the summary is written.
+  The <analysis> block is a drafting scratchpad that improves summary
+  quality but has no informational value once the summary is written.
 
-    Args:
-        summary: Raw summary string from the LLM.
+  Args:
+      summary: Raw summary string from the LLM.
 
-    Returns:
-        Cleaned summary with analysis stripped and tags replaced.
-    """
-    formatted = summary
+  Returns:
+      Cleaned summary with analysis stripped and tags replaced.
+  """
+  formatted = summary
 
-    # Strip analysis section
-    formatted = re.sub(r"<analysis>[\s\S]*?</analysis>", "", formatted)
+  # Strip analysis section
+  formatted = re.sub(r"<analysis>[\s\S]*?</analysis>", "", formatted)
 
-    # Extract and format summary section
-    match = re.search(r"<summary>([\s\S]*?)</summary>", formatted)
-    if match:
-        content = match.group(1).strip()
-        formatted = re.sub(
-            r"<summary>[\s\S]*?</summary>",
-            f"Summary:\n{content}",
-            formatted,
-        )
+  # Extract and format summary section
+  match = re.search(r"<summary>([\s\S]*?)</summary>", formatted)
+  if match:
+    content = match.group(1).strip()
+    formatted = re.sub(
+      r"<summary>[\s\S]*?</summary>",
+      f"Summary:\n{content}",
+      formatted,
+    )
 
-    # Clean up extra whitespace
-    formatted = re.sub(r"\n\n+", "\n\n", formatted)
-    return formatted.strip()
+  # Clean up extra whitespace
+  formatted = re.sub(r"\n\n+", "\n\n", formatted)
+  return formatted.strip()
 
 
 def get_compact_user_summary_message(
-    summary: str,
-    *,
-    suppress_follow_up: bool = False,
-    transcript_path: str | None = None,
-    recent_preserved: bool = False,
+  summary: str,
+  *,
+  suppress_follow_up: bool = False,
+  transcript_path: str | None = None,
+  recent_preserved: bool = False,
 ) -> str:
-    """Build the post-compaction summary message.
+  """Build the post-compaction summary message.
 
-    Args:
-        summary: The raw or formatted summary text.
-        suppress_follow_up: If True, add continuation instructions.
-        transcript_path: Path to full transcript for detail lookup.
-        recent_preserved: Whether recent messages are kept verbatim.
+  Args:
+      summary: The raw or formatted summary text.
+      suppress_follow_up: If True, add continuation instructions.
+      transcript_path: Path to full transcript for detail lookup.
+      recent_preserved: Whether recent messages are kept verbatim.
 
-    Returns:
-        Formatted summary message for injection into context.
-    """
-    formatted = format_compact_summary(summary)
+  Returns:
+      Formatted summary message for injection into context.
+  """
+  formatted = format_compact_summary(summary)
 
-    base = (
-        "This session is being continued from a previous conversation that "
-        f"ran out of context. The summary below covers the earlier portion "
-        f"of the conversation.\n\n{formatted}"
+  base = (
+    "This session is being continued from a previous conversation that "
+    f"ran out of context. The summary below covers the earlier portion "
+    f"of the conversation.\n\n{formatted}"
+  )
+
+  if transcript_path:
+    base += (
+      f"\n\nIf you need specific details from before compaction "
+      f"(like exact code snippets, error messages, or content you "
+      f"generated), read the full transcript at: {transcript_path}"
     )
 
-    if transcript_path:
-        base += (
-            f"\n\nIf you need specific details from before compaction "
-            f"(like exact code snippets, error messages, or content you "
-            f"generated), read the full transcript at: {transcript_path}"
-        )
+  if recent_preserved:
+    base += "\n\nRecent messages are preserved verbatim."
 
-    if recent_preserved:
-        base += "\n\nRecent messages are preserved verbatim."
+  if suppress_follow_up:
+    base += (
+      "\nContinue the conversation from where it left off without "
+      "asking the user any further questions. Resume directly — do not "
+      "acknowledge the summary, do not recap what was happening, do not "
+      'preface with "I\'ll continue" or similar. Pick up the last task '
+      "as if the break never happened."
+    )
 
-    if suppress_follow_up:
-        base += (
-            "\nContinue the conversation from where it left off without "
-            "asking the user any further questions. Resume directly — do not "
-            "acknowledge the summary, do not recap what was happening, do not "
-            'preface with "I\'ll continue" or similar. Pick up the last task '
-            "as if the break never happened."
-        )
-
-    return base
+  return base

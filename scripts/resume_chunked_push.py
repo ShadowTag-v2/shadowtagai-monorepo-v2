@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 
 import os
 import subprocess
@@ -20,15 +21,18 @@ def get_github_token():
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
     encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
-    res = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
+    res = requests.get("https://api.github.com/app/installations", headers=headers)
     res.raise_for_status()
     target_inst = next((i for i in res.json() if i["account"]["login"] == "ShadowTag-v2"), None)
-    res2 = requests.post(f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens", headers=headers, timeout=30)
+    res2 = requests.post(
+        f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens",
+        headers=headers,
+    )
     res2.raise_for_status()
     return res2.json()["token"]
 
 
-def sync_remote_state(token) -> None:
+def sync_remote_state(token):
     repo_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
     try:
         subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
@@ -47,15 +51,17 @@ def get_push_candidate_set():
         for f in block.stdout.splitlines():
             if f.strip():
                 files.add(f.strip())
-    return sorted(files)
+    return sorted(list(files))
 
 
-def chunk_commit_push() -> None:
+def chunk_commit_push():
     BATCH = 20
     current_size = 0
     current_files = []
 
+    print("Enumerating intelligent candidate payload...")
     all_files = get_push_candidate_set()
+    print(f"Discovered {len(all_files)} trackable files remaining.")
 
     total_files = len(all_files)
     idx = 0
@@ -66,6 +72,7 @@ def chunk_commit_push() -> None:
         size = 0 if os.path.islink(f) else os.path.getsize(f)
 
         if size > 95 * 1024 * 1024:
+            print(f"WARNING: Skipping {f} because it is >95MB and will break pushing.")
             continue
 
         current_files.append(f)
@@ -75,8 +82,9 @@ def chunk_commit_push() -> None:
             if not current_files:
                 continue
 
+            print(f"Batch {BATCH}: Adding {len(current_files)} remaining files ({current_size / 1024 / 1024:.2f} MB)...")
             for i in range(0, len(current_files), 1000):
-                subprocess.run(["git", "add", *current_files[i : i + 1000]], check=True)
+                subprocess.run(["git", "add"] + current_files[i : i + 1000], check=True)
 
             subprocess.run(
                 ["git", "commit", "--no-verify", "-m", f"chore: stateful sync chunk {BATCH}"],
@@ -84,7 +92,7 @@ def chunk_commit_push() -> None:
             )
 
             success = False
-            for _attempt in range(3):
+            for attempt in range(3):
                 ret = subprocess.run(["git", "push", "origin", "main", "--no-verify"])
                 if ret.returncode == 0:
                     success = True

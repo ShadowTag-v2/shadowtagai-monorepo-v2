@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_tools/plan_mode_tools.py
+# hypothesis_version: 6.151.5
+
+['EnterPlanMode', 'ExitPlanMode', 'additionalProperties', 'allow', 'current_mode', 'deny', 'enter_plan', 'error', 'exit_plan', 'message', 'no_change', 'object', 'plan', 'plan_mode_off', 'plan_mode_on', 'previous_mode', 'properties', 'restored_mode', 'status', 'type']

@@ -9,14 +9,12 @@ The Tier Classification system categorizes ingested intelligence into three prio
 ### Tier 1: Priority Intelligence
 
 **Characteristics**:
-
 - High-authority sources (verified news outlets, official channels)
 - Time-critical information (breaking news, urgent alerts)
 - High relevance to objectives (direct topic match)
 - Strong engagement signals (viral, trending)
 
 **Examples**:
-
 - Breaking news from AP, Reuters, BBC
 - Official government announcements
 - Verified expert analysis
@@ -29,14 +27,12 @@ The Tier Classification system categorizes ingested intelligence into three prio
 ### Tier 2: Standard Intelligence
 
 **Characteristics**:
-
 - Moderate-authority sources (reputable blogs, established channels)
 - Standard timeliness (published within 72 hours)
 - Moderate relevance (related topics, secondary sources)
 - Moderate engagement (100-1000 engagements)
 
 **Examples**:
-
 - Industry blog posts
 - Secondary news coverage
 - Expert commentary
@@ -49,14 +45,12 @@ The Tier Classification system categorizes ingested intelligence into three prio
 ### Tier 3: Background Intelligence
 
 **Characteristics**:
-
 - Lower-authority sources (personal blogs, unverified accounts)
 - Low timeliness (>72 hours old)
 - Tangential relevance (loosely related)
 - Low engagement (<100 engagements)
 
 **Examples**:
-
 - Opinion pieces
 - Older archival content
 - Loosely related topics
@@ -113,31 +107,30 @@ def rule_based_tier(item: IngestedItem) -> int:
 
 **Features** (20 total):
 
-| Feature                 | Type            | Description                              |
-| ----------------------- | --------------- | ---------------------------------------- |
-| `source_authority`      | Float (0-100)   | Reputation score of source               |
-| `age_hours`             | Float           | Hours since publication                  |
-| `relevance_score`       | Float (0-100)   | Topic match strength                     |
-| `engagement_score`      | Int             | Social signals (likes, shares, comments) |
-| `source_type`           | Categorical     | news, social, blog, official, etc.       |
-| `content_length`        | Int             | Character count                          |
-| `has_media`             | Boolean         | Images, videos present                   |
-| `sentiment_score`       | Float (-1 to 1) | Emotional tone                           |
-| `entity_count`          | Int             | Named entities (people, orgs, places)    |
-| `keyword_density`       | Float (0-1)     | Target keyword ratio                     |
-| `link_count`            | Int             | Outbound links                           |
-| `author_followers`      | Int             | Social media following                   |
-| `domain_rank`           | Int             | Alexa/Similar ranking                    |
-| `is_verified`           | Boolean         | Verified account/source                  |
-| `topic_tags`            | List[str]       | Assigned topic categories                |
-| `language`              | Str             | Content language (ISO 639-1)             |
-| `geo_location`          | Str             | Geographic origin                        |
-| `publication_frequency` | Float           | Source posting rate                      |
-| `historical_tier_avg`   | Float (1-3)     | Source's avg past tier                   |
-| `completeness_score`    | Float (0-1)     | Required fields present                  |
+| Feature | Type | Description |
+|---------|------|-------------|
+| `source_authority` | Float (0-100) | Reputation score of source |
+| `age_hours` | Float | Hours since publication |
+| `relevance_score` | Float (0-100) | Topic match strength |
+| `engagement_score` | Int | Social signals (likes, shares, comments) |
+| `source_type` | Categorical | news, social, blog, official, etc. |
+| `content_length` | Int | Character count |
+| `has_media` | Boolean | Images, videos present |
+| `sentiment_score` | Float (-1 to 1) | Emotional tone |
+| `entity_count` | Int | Named entities (people, orgs, places) |
+| `keyword_density` | Float (0-1) | Target keyword ratio |
+| `link_count` | Int | Outbound links |
+| `author_followers` | Int | Social media following |
+| `domain_rank` | Int | Alexa/Similar ranking |
+| `is_verified` | Boolean | Verified account/source |
+| `topic_tags` | List[str] | Assigned topic categories |
+| `language` | Str | Content language (ISO 639-1) |
+| `geo_location` | Str | Geographic origin |
+| `publication_frequency` | Float | Source posting rate |
+| `historical_tier_avg` | Float (1-3) | Source's avg past tier |
+| `completeness_score` | Float (0-1) | Required fields present |
 
 **Model Architecture**:
-
 ```python
 from sklearn.ensemble import GradientBoostingClassifier
 
@@ -158,7 +151,6 @@ model.fit(X_train, y_train)
 ```
 
 **Performance**:
-
 - **Accuracy**: 85% on validation set
 - **Precision**: 82% (Tier 1), 87% (Tier 2), 84% (Tier 3)
 - **Recall**: 79% (Tier 1), 88% (Tier 2), 86% (Tier 3)
@@ -200,7 +192,6 @@ def ensemble_tier(item: IngestedItem) -> tuple[int, float]:
 ### Source Authority Scoring
 
 **Components**:
-
 - **Domain Reputation**: Alexa rank, domain age, SSL cert
 - **Historical Quality**: Past tier distribution from this source
 - **Verification Status**: Official verification badges
@@ -208,7 +199,6 @@ def ensemble_tier(item: IngestedItem) -> tuple[int, float]:
 - **Editorial Standards**: Fact-checking, corrections policy
 
 **Calculation**:
-
 ```python
 def calculate_source_authority(source: Source) -> float:
     """Compute 0-100 authority score."""
@@ -233,13 +223,11 @@ def calculate_source_authority(source: Source) -> float:
 ### Relevance Scoring
 
 **Methods**:
-
 1. **Keyword Matching**: TF-IDF weighted keyword presence
 2. **Topic Modeling**: LDA topic alignment
 3. **Semantic Similarity**: Embeddings (sentence-transformers)
 
 **Implementation**:
-
 ```python
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -265,7 +253,6 @@ def calculate_relevance(item_text: str, objective_text: str) -> float:
 ### Engagement Scoring
 
 **Social Media Signals**:
-
 ```python
 def calculate_engagement(item: IngestedItem) -> int:
     """Aggregate engagement metrics."""
@@ -364,13 +351,11 @@ tier_classification:
 ### Training Data Collection
 
 **Sources**:
-
 - Historical items with manual labels (gold standard)
 - User feedback (promote/demote tier)
 - Downstream quality signals (briefing inclusion, user engagement)
 
 **Labeling Process**:
-
 ```python
 def collect_training_sample(item: IngestedItem, label: int, source: str):
     """Save labeled example for retraining."""
@@ -392,7 +377,6 @@ def collect_training_sample(item: IngestedItem, label: int, source: str):
 **Frequency**: Monthly (or 1000 new samples)
 
 **Process**:
-
 1. Extract new training samples from DB
 2. Combine with existing training set (max 10K samples)
 3. Split into train (80%) / validation (20%)
@@ -407,7 +391,6 @@ def collect_training_sample(item: IngestedItem, label: int, source: str):
 **Naming**: `tier_classifier_vX_YYYYMMDD.pkl`
 
 **Metadata**:
-
 ```json
 {
   "version": "v2",
@@ -428,19 +411,16 @@ def collect_training_sample(item: IngestedItem, label: int, source: str):
 ### Key Metrics
 
 **Distribution Metrics**:
-
 - Tier 1/2/3 percentage daily
 - Trend over time (weekly, monthly)
 - Per-source tier distribution
 
 **Quality Metrics**:
-
 - Tier accuracy (manual review sample)
 - Tier stability (re-classification rate)
 - User feedback ratio (promote/demote)
 
 **Performance Metrics**:
-
 - Classification latency (target: <50ms)
 - Model confidence distribution
 - Feature importance drift
@@ -448,7 +428,6 @@ def collect_training_sample(item: IngestedItem, label: int, source: str):
 ### Dashboards
 
 **Tier Distribution Over Time**:
-
 ```
 Tier 1: ████░░░░░░░░░░░░░░░░░░ 15%
 Tier 2: ████████████░░░░░░░░░░ 35%
@@ -466,13 +445,11 @@ Tier 3: ██████████████████████ 50%
 ### Alerts
 
 **Immediate**:
-
 - Tier 1 percentage <5% or >30% (distribution skew)
 - Model confidence <60% for >20% of items
 - Classification latency >100ms
 
 **Warning**:
-
 - Tier distribution outside target ranges for 3+ days
 - Source tier shift (e.g., normally 80% Tier 1 drops to 50%)
 - Feature drift detected (distribution change)

@@ -73,11 +73,11 @@ Claude Code supports three authentication methods with different trade-offs for 
 
 ### Authentication method comparison
 
-| Method                   | Persistence                      | Cost Model                  | Security                | Best For                   |
-| ------------------------ | -------------------------------- | --------------------------- | ----------------------- | -------------------------- |
-| **API Key (env var)**    | Requires configuration           | Pay-per-use                 | Requires secure storage | Automated workflows, CI/CD |
-| **Claude Console OAuth** | Browser-based, survives restarts | Creates dedicated workspace | Linked to user account  | Individual developers      |
-| **Pro/Max Subscription** | Browser-based, survives restarts | Fixed monthly ($20-$100)    | Linked to user account  | Regular heavy usage        |
+| Method | Persistence | Cost Model | Security | Best For |
+|--------|-------------|------------|----------|----------|
+| **API Key (env var)** | Requires configuration | Pay-per-use | Requires secure storage | Automated workflows, CI/CD |
+| **Claude Console OAuth** | Browser-based, survives restarts | Creates dedicated workspace | Linked to user account | Individual developers |
+| **Pro/Max Subscription** | Browser-based, survives restarts | Fixed monthly ($20-$100) | Linked to user account | Regular heavy usage |
 
 ### Method 1: API Key with Google Cloud Secret Manager (recommended for production)
 
@@ -501,7 +501,6 @@ Vertex AI Workbench's two-disk architecture requires specific strategies to ensu
 ### Understanding persistence in Vertex AI Workbench
 
 **Persistent (Data Disk - `/home/jupyter/`):**
-
 - User files and notebooks
 - `~/.bashrc`, `~/.zshrc` shell configurations
 - `~/.local/` user-installed binaries and libraries
@@ -511,7 +510,6 @@ Vertex AI Workbench's two-disk architecture requires specific strategies to ensu
 - Conda environments in `/home/jupyter/envs/`
 
 **Ephemeral (Boot Disk - lost on upgrades/restarts):**
-
 - System packages installed via `apt-get`
 - `/opt/conda` base environment modifications
 - Framework versions
@@ -889,7 +887,7 @@ chmod +x ~/init-workspace.sh
 
 Create `.claude/` configuration in each repository:
 
-````bash
+```bash
 # Example: API Service repository configuration
 cd ~/repos/backend/api-service
 
@@ -914,31 +912,24 @@ FastAPI-based REST API service for ML model serving.
 ```bash
 uvicorn app.main:app --reload  # Run locally
 pytest tests/ --cov=app         # Run tests
-````
-
+```
 EOF
 
 # Create project-specific commands
-
 cat > .claude/commands/test.md << 'EOF'
-
 # Test Suite
-
 Run comprehensive test suite:
-
 1. Unit tests: `pytest tests/unit/ -v`
 2. Integration tests: `pytest tests/integration/ -v`
 3. Generate coverage report
-   $ARGUMENTS
-   EOF
+$ARGUMENTS
+EOF
 
 # Commit configuration to repository
-
 git add .claude/ CLAUDE.md
 git commit -m "Add Claude Code project configuration"
 git push
-
-````
+```
 
 ## Performance optimization for Vertex AI Workbench
 
@@ -963,7 +954,7 @@ gcloud workbench instances create ml-instance \
   --install-gpu-driver \
   --data-disk-size=500GB \
   --data-disk-type=pd-ssd
-````
+```
 
 ### Disk performance optimization
 
@@ -1147,7 +1138,6 @@ claude /status
 ### Security best practices checklist
 
 **API Key Management:**
-
 - ✅ Use Secret Manager for production
 - ✅ Never commit keys to Git repositories
 - ✅ Rotate keys regularly (every 90 days minimum)
@@ -1156,7 +1146,6 @@ claude /status
 - ❌ Never share keys via email/Slack
 
 **Access Control:**
-
 ```bash
 # Implement least privilege
 gcloud secrets add-iam-policy-binding anthropic-api-key \
@@ -1170,7 +1159,6 @@ gcloud logging read "resource.type=secretmanager_secret" \
 ```
 
 **Network Security:**
-
 ```bash
 # Create private instance (no external IP)
 gcloud workbench instances create secure-instance \
@@ -1180,7 +1168,6 @@ gcloud workbench instances create secure-instance \
 ```
 
 **Credential Rotation:**
-
 ```bash
 # Update Secret Manager with new key
 echo -n "sk-ant-api03-NEW_KEY" | gcloud secrets versions add anthropic-api-key \
@@ -1235,14 +1222,12 @@ gcloud workbench instances create cmek-instance \
 ## Production deployment checklist
 
 **✅ Installation & Configuration:**
-
 - [ ] Claude Code installed via native installer
 - [ ] `claude doctor` passes all checks
 - [ ] Authentication configured via Secret Manager
 - [ ] Shell profile configured with API key retrieval
 
 **✅ Security:**
-
 - [ ] API keys stored in Secret Manager
 - [ ] Service account follows least privilege
 - [ ] Audit logging enabled
@@ -1250,28 +1235,24 @@ gcloud workbench instances create cmek-instance \
 - [ ] Key rotation procedure documented
 
 **✅ Persistence:**
-
 - [ ] All configurations in `/home/jupyter/`
 - [ ] Post-startup script created and configured
 - [ ] Git SSH keys configured
 - [ ] Custom conda environments in persistent location
 
 **✅ Multi-Repository Setup:**
-
 - [ ] Repository directory structure created
 - [ ] All repositories cloned
 - [ ] Project-specific `.claude/` configurations created
 - [ ] Custom slash commands created
 
 **✅ Performance:**
-
 - [ ] Instance machine type appropriate
 - [ ] Data disk sized appropriately (SSD recommended)
 - [ ] Idle shutdown configured
 - [ ] Monitoring enabled
 
 **✅ Testing:**
-
 - [ ] Test API key retrieval from Secret Manager
 - [ ] Test Claude Code authentication
 - [ ] Test GitHub SSH access

@@ -9,9 +9,9 @@ policy:
   - reference_only
   - deprecated
 repos:
-- repo: ehanc69/ShadowTag-v2-fastapi-services
+- repo: ehanc69/aiyou-fastapi-services
   status: canonical_in_monorepo
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
+  destination: apps/aiyou_stack/aiyou-fastapi-services
   duplicate_family: fastapi-services
   checks:
     classified: false
@@ -26,9 +26,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2jr-template-2
+- repo: ehanc69/aiyoujr-template-2
   status: queued_for_fold_in
-  destination: apps/templates/ShadowTag-v2jr-template-2
+  destination: apps/templates/aiyoujr-template-2
   duplicate_family: null
   checks:
     classified: false
@@ -43,9 +43,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-objections-decisions
+- repo: ehanc69/aiyou-objections-decisions
   status: queued_for_fold_in
-  destination: governance/ShadowTag-v2-objections-decisions
+  destination: governance/aiyou-objections-decisions
   duplicate_family: null
   checks:
     classified: false
@@ -60,9 +60,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-core
+- repo: ehanc69/aiyou-core
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-core
+  destination: packages/aiyou-core
   duplicate_family: core
   checks:
     classified: false
@@ -77,9 +77,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-clients
+- repo: ehanc69/aiyou-clients
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-clients
+  destination: apps/aiyou_stack/aiyou-clients
   duplicate_family: null
   checks:
     classified: false
@@ -94,9 +94,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-mlops
+- repo: ehanc69/aiyou-mlops
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-mlops
+  destination: infra/aiyou-mlops
   duplicate_family: mlops
   checks:
     classified: false
@@ -111,9 +111,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-data-contracts
+- repo: ehanc69/aiyou-data-contracts
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-data-contracts
+  destination: packages/aiyou-data-contracts
   duplicate_family: null
   checks:
     classified: false
@@ -128,9 +128,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-infra
+- repo: ehanc69/aiyou-infra
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-infra
+  destination: infra/aiyou-infra
   duplicate_family: infra
   checks:
     classified: false
@@ -145,9 +145,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-devops
+- repo: ehanc69/aiyou-devops
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-devops
+  destination: infra/aiyou-devops
   duplicate_family: null
   checks:
     classified: false
@@ -162,9 +162,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-observability
+- repo: ehanc69/aiyou-observability
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-observability
+  destination: infra/aiyou-observability
   duplicate_family: observability
   checks:
     classified: false
@@ -179,9 +179,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-sre
+- repo: ehanc69/aiyou-sre
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-sre
+  destination: infra/aiyou-sre
   duplicate_family: sre
   checks:
     classified: false
@@ -196,9 +196,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-security
+- repo: ehanc69/aiyou-security
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-security
+  destination: infra/aiyou-security
   duplicate_family: security
   checks:
     classified: false
@@ -213,9 +213,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-sops
+- repo: ehanc69/aiyou-sops
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-sops
+  destination: infra/aiyou-sops
   duplicate_family: null
   checks:
     classified: false
@@ -230,9 +230,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-docs
+- repo: ehanc69/aiyou-docs
   status: queued_for_fold_in
-  destination: docs/ShadowTag-v2
+  destination: docs/aiyou
   duplicate_family: docs
   checks:
     classified: false
@@ -247,9 +247,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-frontend
+- repo: ehanc69/aiyou-frontend
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-frontend
+  destination: apps/aiyou_stack/aiyou-frontend
   duplicate_family: null
   checks:
     classified: false
@@ -264,9 +264,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-examples
+- repo: ehanc69/aiyou-examples
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-examples
+  destination: apps/aiyou_stack/aiyou-examples
   duplicate_family: null
   checks:
     classified: false
@@ -298,9 +298,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-rollup
+- repo: ehanc69/aiyou-rollup
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-rollup
+  destination: packages/aiyou-rollup
   duplicate_family: null
   checks:
     classified: false
@@ -315,9 +315,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-api
+- repo: ehanc69/aiyou-api
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-api
+  destination: apps/aiyou_stack/aiyou-api
   duplicate_family: null
   checks:
     classified: false
@@ -384,7 +384,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/sre
   status: queued_for_fold_in
   destination: staging/sre
@@ -402,7 +402,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/observability
   status: queued_for_fold_in
   destination: staging/observability
@@ -420,7 +420,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/mlops
   status: queued_for_fold_in
   destination: staging/mlops
@@ -438,7 +438,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/docs
   status: queued_for_fold_in
   destination: staging/docs
@@ -456,7 +456,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/prompts
   status: queued_for_fold_in
   destination: staging/prompts
@@ -474,7 +474,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/infra
   status: queued_for_fold_in
   destination: staging/infra
@@ -492,7 +492,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/fastapi-services
   status: queued_for_fold_in
   destination: staging/fastapi-services
@@ -510,7 +510,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/core
   status: queued_for_fold_in
   destination: staging/core
@@ -528,7 +528,7 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes:
-  - legacy/plain-name duplicate family; verify superseded by ShadowTag-v2-* successor
+  - legacy/plain-name duplicate family; verify superseded by aiyou-* successor
 - repo: ehanc69/shadowtag_v2
   status: reference_only
   destination: reference/public-demos/shadowtag_v2
@@ -565,9 +565,9 @@ repos:
     final_status_stamped: false
   notes:
   - public/demo repo unless explicitly promoted
-- repo: ehanc69/Cor.Claude_Code_6
+- repo: ehanc69/judge6
   status: reference_only
-  destination: reference/public-demos/Cor.Claude_Code_6
+  destination: reference/public-demos/judge6
   duplicate_family: null
   checks:
     classified: false
@@ -619,9 +619,9 @@ repos:
     final_status_stamped: false
   notes:
   - public/demo repo unless explicitly promoted
-- repo: ehanc69/ShadowTag-v2-policy
+- repo: ehanc69/aiyou-policy
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-policy
+  destination: packages/aiyou-policy
   duplicate_family: null
   checks:
     classified: false
@@ -638,7 +638,7 @@ repos:
   notes: []
 - repo: ehanc69/Pipeline
   status: canonical_in_monorepo
-  destination: apps/ShadowTag-v2_stack/Pipeline
+  destination: apps/aiyou_stack/Pipeline
   duplicate_family: null
   checks:
     classified: false
@@ -653,9 +653,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-backend
+- repo: ehanc69/aiyou-backend
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-backend
+  destination: apps/aiyou_stack/aiyou-backend
   duplicate_family: null
   checks:
     classified: false
@@ -672,7 +672,7 @@ repos:
   notes: []
 - repo: ehanc69/cosmic-crab-payload
   status: canonical_in_monorepo
-  destination: apps/ShadowTag-v2_stack/cosmic-crab-payload
+  destination: apps/aiyou_stack/cosmic-crab-payload
   duplicate_family: null
   checks:
     classified: false
@@ -689,7 +689,7 @@ repos:
   notes: []
 - repo: ehanc69/nascent-apollo
   status: canonical_in_monorepo
-  destination: apps/ShadowTag-v2_stack/nascent-apollo
+  destination: apps/aiyou_stack/nascent-apollo
   duplicate_family: null
   checks:
     classified: false
@@ -740,9 +740,9 @@ repos:
     final_status_stamped: false
   notes:
   - historical/archive-oriented
-- repo: ehanc69/ShadowTag-v2-evals
+- repo: ehanc69/aiyou-evals
   status: queued_for_fold_in
-  destination: evals/ShadowTag-v2-evals
+  destination: evals/aiyou-evals
   duplicate_family: null
   checks:
     classified: false
@@ -757,9 +757,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-governance
+- repo: ehanc69/aiyou-governance
   status: queued_for_fold_in
-  destination: governance/ShadowTag-v2-governance
+  destination: governance/aiyou-governance
   duplicate_family: null
   checks:
     classified: false
@@ -774,9 +774,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-ui-kit
+- repo: ehanc69/aiyou-ui-kit
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-ui-kit
+  destination: apps/aiyou_stack/aiyou-ui-kit
   duplicate_family: null
   checks:
     classified: false
@@ -791,9 +791,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-offline-appliance
+- repo: ehanc69/aiyou-offline-appliance
   status: queued_for_fold_in
-  destination: apps/ShadowTag-v2_stack/ShadowTag-v2-offline-appliance
+  destination: apps/aiyou_stack/aiyou-offline-appliance
   duplicate_family: null
   checks:
     classified: false
@@ -808,9 +808,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-risk-engine
+- repo: ehanc69/aiyou-risk-engine
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-risk-engine
+  destination: infra/aiyou-risk-engine
   duplicate_family: null
   checks:
     classified: false
@@ -825,9 +825,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-indexer
+- repo: ehanc69/aiyou-indexer
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-indexer
+  destination: packages/aiyou-indexer
   duplicate_family: null
   checks:
     classified: false
@@ -842,9 +842,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-codesmith
+- repo: ehanc69/aiyou-codesmith
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-codesmith
+  destination: packages/aiyou-codesmith
   duplicate_family: null
   checks:
     classified: false
@@ -859,9 +859,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-prompts
+- repo: ehanc69/aiyou-prompts
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-prompts
+  destination: packages/aiyou-prompts
   duplicate_family: prompts
   checks:
     classified: false
@@ -876,9 +876,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-exec
+- repo: ehanc69/aiyou-exec
   status: queued_for_fold_in
-  destination: packages/ShadowTag-v2-exec
+  destination: packages/aiyou-exec
   duplicate_family: null
   checks:
     classified: false
@@ -893,9 +893,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-ml
+- repo: ehanc69/aiyou-ml
   status: queued_for_fold_in
-  destination: staging/ShadowTag-v2-ml
+  destination: staging/aiyou-ml
   duplicate_family: null
   checks:
     classified: false
@@ -910,9 +910,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-data
+- repo: ehanc69/aiyou-data
   status: queued_for_fold_in
-  destination: data/ShadowTag-v2-data
+  destination: data/aiyou-data
   duplicate_family: null
   checks:
     classified: false
@@ -927,9 +927,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-risk
+- repo: ehanc69/aiyou-risk
   status: queued_for_fold_in
-  destination: infra/ShadowTag-v2-risk
+  destination: infra/aiyou-risk
   duplicate_family: null
   checks:
     classified: false
@@ -944,9 +944,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2-ci
+- repo: ehanc69/aiyou-ci
   status: queued_for_fold_in
-  destination: infra/ci/ShadowTag-v2-ci
+  destination: infra/ci/aiyou-ci
   duplicate_family: null
   checks:
     classified: false
@@ -961,9 +961,9 @@ repos:
     build_sanity_checked: false
     final_status_stamped: false
   notes: []
-- repo: ehanc69/ShadowTag-v2
+- repo: ehanc69/aiyou
   status: archived_after_fold_in
-  destination: archive/ShadowTag-v2
+  destination: archive/aiyou
   duplicate_family: null
   checks:
     classified: false

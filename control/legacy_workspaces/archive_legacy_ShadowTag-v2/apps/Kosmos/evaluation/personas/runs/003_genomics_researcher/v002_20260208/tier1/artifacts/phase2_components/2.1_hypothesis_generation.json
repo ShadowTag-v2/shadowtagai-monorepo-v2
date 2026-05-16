@@ -1,0 +1,38 @@
+{
+  "count": 3,
+  "response_type": "HypothesisGenerationResponse",
+  "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+  "domain": "genomics",
+  "hypotheses": [
+    {
+      "statement": "Treatment with the drug will significantly upregulate genes involved in the p53 signaling pathway (e.g., CDKN1A, BAX, PUMA) and downregulate genes in cell cycle progression pathways (e.g., CCNB1, CDC2",
+      "has_rationale": true,
+      "has_domain": true,
+      "novelty_score": 1.0,
+      "testability_score": 0.9,
+      "confidence_score": 0.75
+    },
+    {
+      "statement": "Drug treatment will induce a specific inflammatory gene signature, characterized by the upregulation of interleukin and chemokine genes (e.g., IL6, IL8, CXCL1, CXCL2), and this signature will be assoc",
+      "has_rationale": true,
+      "has_domain": true,
+      "novelty_score": 1.0,
+      "testability_score": 0.85,
+      "confidence_score": 0.65
+    },
+    {
+      "statement": "The drug will cause significant downregulation of genes in the oxidative phosphorylation (OXPHOS) pathway (e.g., subunits of mitochondrial complexes I-V) and concomitant upregulation of genes involved",
+      "has_rationale": true,
+      "has_domain": true,
+      "novelty_score": 1.0,
+      "testability_score": 0.9,
+      "confidence_score": 0.6
+    }
+  ],
+  "novelty_checker_integrated": false,
+  "novelty_checker_note": "NoveltyChecker exists but never called from HypothesisGeneratorAgent",
+  "require_novelty_check_config": true,
+  "min_novelty_score_config": 0.5,
+  "status": "PASS",
+  "duration_seconds": 32.64
+}

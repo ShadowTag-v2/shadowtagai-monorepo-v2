@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "prompts": [
+    {
+      "id": "spec",
+      "name": "Spec",
+      "content": "You are PNKLN Systems. Produce a terse, machine-parseable project plan in JSON. Include objectives, milestones, risks, and owners. Input:\n{{input}}\n"
+    },
+    {
+      "id": "contract",
+      "name": "Contract",
+      "content": "Summarize positions into a two-party matrix with proposed resolutions. Output JSON fields: issues, party_a, party_b, deltas, proposed.\nInput:\n{{input}}\n"
+    },
+    {
+      "id": "lawcal",
+      "name": "Lawcal",
+      "content": "Extract legal deadlines & triggers from the text. Output JSON array of objects: event, trigger, deadline_days, jurisdiction, notes.\nInput:\n{{input}}\n"
+    },
+    {
+      "id": "neg",
+      "name": "Neg",
+      "content": "List open issues and missing terms. Output JSON with fields: missing_terms, conflicting_terms, followups.\nInput:\n{{input}}\n"
+    },
+    {
+      "id": "risk",
+      "name": "Risk",
+      "content": "Top-5 risks with likelihood (1-5) and mitigation. Output JSON array: risk, likelihood, impact, mitigation.\nInput:\n{{input}}\n"
+    }
+  ]
+}

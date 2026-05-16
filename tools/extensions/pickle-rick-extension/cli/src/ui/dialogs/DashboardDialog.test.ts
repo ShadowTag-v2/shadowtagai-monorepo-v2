@@ -1,31 +1,31 @@
-import { afterEach, beforeEach, describe, expect, mock, test } from 'bun:test';
-import type { CliRenderer } from '@opentui/core';
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
+import type { CliRenderer } from "@opentui/core";
 import {
   createMockRenderer,
   createMockSession,
   type MockRenderer,
   type MockSelect,
-} from './test-utils.ts';
+} from "./test-utils.ts";
 
-mock.module('../theme.js', () => ({
+mock.module("../theme.js", () => ({
   THEME: {
-    bg: '#000000',
-    dim: '#555555',
-    accent: '#00ff00',
-    darkAccent: '#003300',
-    text: '#ffffff',
-    white: '#ffffff',
-    surface: '#111111',
-    green: '#00ff00',
+    bg: "#000000",
+    dim: "#555555",
+    accent: "#00ff00",
+    darkAccent: "#003300",
+    text: "#ffffff",
+    white: "#ffffff",
+    surface: "#111111",
+    green: "#00ff00",
   },
 }));
 
 const mockLogView = {
-  root: { id: 'mock-log-view-root', add: mock(() => {}) },
+  root: { id: "mock-log-view-root", add: mock(() => {}) },
   destroy: mock(() => {}),
 };
 
-mock.module('../views/LogView.js', () => ({
+mock.module("../views/LogView.js", () => ({
   LogView: class {
     constructor() {
       return mockLogView;
@@ -34,22 +34,22 @@ mock.module('../views/LogView.js', () => ({
 }));
 
 const utilsMock = {
-  formatDuration: mock((ms: number) => '10s'),
+  formatDuration: mock((ms: number) => "10s"),
   Clipboard: { copy: mock(async () => {}) },
 };
-mock.module('../../utils/index.js', () => utilsMock);
+mock.module("../../utils/index.js", () => utilsMock);
 
 const fsMock = {
-  readFile: mock(async () => 'mock log content'),
+  readFile: mock(async () => "mock log content"),
 };
-mock.module('node:fs/promises', () => fsMock);
+mock.module("node:fs/promises", () => fsMock);
 
 interface MockInterval {
   fn: Function;
   ms: number;
 }
 
-describe('DashboardDialog', () => {
+describe("DashboardDialog", () => {
   let mockRenderer: MockRenderer;
   let originalSetInterval: typeof setInterval;
   let originalClearInterval: typeof clearInterval;
@@ -79,23 +79,23 @@ describe('DashboardDialog', () => {
     global.clearInterval = originalClearInterval;
   });
 
-  test('should initialize and setup UI', async () => {
-    const { DashboardDialog } = await import('./DashboardDialog.ts');
+  test("should initialize and setup UI", async () => {
+    const { DashboardDialog } = await import("./DashboardDialog.ts");
     const dashboard = new DashboardDialog(mockRenderer as unknown as CliRenderer);
     expect(dashboard).toBeDefined();
     expect(dashboard.isOpen()).toBe(false);
   });
 
-  test('should update with session data', async () => {
-    const { DashboardDialog } = await import('./DashboardDialog.ts');
+  test("should update with session data", async () => {
+    const { DashboardDialog } = await import("./DashboardDialog.ts");
     const dashboard = new DashboardDialog(mockRenderer as unknown as CliRenderer);
 
     const mockSession = createMockSession({
-      id: 'sessions/test-id',
-      prompt: 'test prompt',
+      id: "sessions/test-id",
+      prompt: "test prompt",
       startTime: Date.now() - 10000,
-      status: 'Running',
-      engine: 'gemini',
+      status: "Running",
+      engine: "gemini",
       isPrdMode: false,
     });
 
@@ -105,15 +105,15 @@ describe('DashboardDialog', () => {
     expect(mockRenderer.requestRender).toHaveBeenCalled();
   });
 
-  test('should clear ticker on hide', async () => {
-    const { DashboardDialog } = await import('./DashboardDialog.ts');
+  test("should clear ticker on hide", async () => {
+    const { DashboardDialog } = await import("./DashboardDialog.ts");
     const dashboard = new DashboardDialog(mockRenderer as unknown as CliRenderer);
 
     const mockSession = createMockSession({
-      id: 'sessions/test-id',
-      prompt: 'test prompt',
+      id: "sessions/test-id",
+      prompt: "test prompt",
       startTime: Date.now(),
-      status: 'Running',
+      status: "Running",
     });
 
     dashboard.update(mockSession);
@@ -124,21 +124,21 @@ describe('DashboardDialog', () => {
     expect(intervals.length).toBe(0);
   });
 
-  test('should handle copy logs to clipboard', async () => {
-    const { DashboardDialog } = await import('./DashboardDialog.ts');
+  test("should handle copy logs to clipboard", async () => {
+    const { DashboardDialog } = await import("./DashboardDialog.ts");
     const dashboard = new DashboardDialog(mockRenderer as unknown as CliRenderer);
 
     const mockSession = createMockSession({
-      id: 'sessions/test-id',
-      prompt: 'test prompt',
+      id: "sessions/test-id",
+      prompt: "test prompt",
       startTime: Date.now(),
-      status: 'Running',
+      status: "Running",
     });
 
     dashboard.update(mockSession);
 
     const internalDialog = (dashboard as any).dialog as MockSelect;
-    const copyOption = internalDialog.options.find((o) => o.title === 'Copy');
+    const copyOption = internalDialog.options.find((o) => o.title === "Copy");
     expect(copyOption).toBeDefined();
 
     // We need to cast copyOption to include onSelect which is not in MockSelect options but is in the real DialogOption
@@ -148,6 +148,6 @@ describe('DashboardDialog', () => {
 
     await (copyOption as unknown as DialogOptionWithSelect).onSelect(internalDialog);
     expect(fsMock.readFile).toHaveBeenCalled();
-    expect(utilsMock.Clipboard.copy).toHaveBeenCalledWith('mock log content');
+    expect(utilsMock.Clipboard.copy).toHaveBeenCalledWith("mock log content");
   });
 });

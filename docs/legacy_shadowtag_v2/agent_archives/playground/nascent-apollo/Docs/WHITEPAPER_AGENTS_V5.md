@@ -20,7 +20,7 @@
 ## 3. Integration into ShadowTag-Omega-V5
 *   **Scaffold:** Pure Python, GKE-ready.
 *   **Lifecycle:** Discovery -> World Model -> Iterative Cycles (Kosmos) -> Execution (ReAct).
-*   **Governance:** ShadowTag-v2JR Judge (The 6th Arbitrator) enforces Purpose, Reasons, Brakes.
+*   **Governance:** AiYouJR Judge (The 6th Arbitrator) enforces Purpose, Reasons, Brakes.
 
 ## 4. Execution Style
 *   **Proactive:** Don't wait. Anticipate.

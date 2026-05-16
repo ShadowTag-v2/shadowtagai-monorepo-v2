@@ -20,7 +20,7 @@ set -euo pipefail
 # ==============================================================================
 
 # Configuration
-export PROJECT_ID="${PROJECT_ID:-shadowtagai-core-stack}"
+export PROJECT_ID="${PROJECT_ID:-pnkln-core-stack}"
 export CLUSTER_NAME="${CLUSTER_NAME:-judge6-inference}"
 export REGION="${REGION:-us-central1}"
 export NETWORK="${NETWORK:-default}"

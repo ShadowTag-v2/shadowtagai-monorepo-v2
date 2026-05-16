@@ -27,6 +27,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
+
 from src.shadowtag_v4.database import get_db
 
 from ..core.clinical_gateway import (

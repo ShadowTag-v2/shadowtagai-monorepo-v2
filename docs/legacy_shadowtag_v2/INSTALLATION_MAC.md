@@ -6,13 +6,19 @@
 
 ## Table of Contents
 
+
+
 1. [Prerequisites](#prerequisites)
+
 
 2. [Local Installation (Mac)](#local-installation-mac)
 
+
 3. [Cloud Deployment (GCP)](#cloud-deployment-gcp)
 
+
 4. [Verification](#verification)
+
 
 5. [Troubleshooting](#troubleshooting)
 
@@ -24,9 +30,12 @@
 
 **System:**
 
+
 - macOS 12.0 (Monterey) or later
 
+
 - 8GB RAM minimum (16GB recommended)
+
 
 - 10GB free disk space
 
@@ -115,7 +124,7 @@ pip install --upgrade pip
 
 pip install -r requirements.txt
 
-# Install Judge 6 v2.0 dependencies
+# Install Judge #6 v2.0 dependencies
 
 pip install -r judge6/requirements.txt
 
@@ -222,9 +231,12 @@ ENABLE_COST_TRACKING=true
 
 **Get API keys:**
 
+
 - OpenAI: https://platform.openai.com/api-keys
 
+
 - Anthropic: https://console.anthropic.com/
+
 
 - Google AI: https://makersuite.google.com/app/apikey
 
@@ -232,7 +244,7 @@ ENABLE_COST_TRACKING=true
 
 ### Step 5: Verify Installation
 
-**Test Judge 6 v2.0:**
+**Test Judge #6 v2.0:**
 
 ```bash
 
@@ -241,7 +253,7 @@ ENABLE_COST_TRACKING=true
 python3 -c "
 from judge6 import JudgmentRule, RiskLevel
 judge = JudgmentRule(cor_instance_id='local-dev')
-print('✅ Judge 6 v2.0 installed successfully')
+print('✅ Judge #6 v2.0 installed successfully')
 print(f'Risk levels: {[r.value for r in RiskLevel]}')
 "
 
@@ -757,16 +769,16 @@ python3 scripts/verify_pnkln_stack.py
 
 ./scripts/daily_health_check.sh
 
-# 3. Test Judge 6 v2.0
+# 3. Test Judge #6 v2.0
 
 python3 -c "
 from judge6 import JudgmentRule
 judge = JudgmentRule(cor_instance_id='verification-test')
 decision = judge.evaluate_request(
-    user_input='Purpose: System test. Verify Judge 6 is working.',
+    user_input='Purpose: System test. Verify Judge #6 is working.',
     declared_purpose='System verification test'
 )
-print(f'✅ Judge 6 v2.0: {decision.approved}')
+print(f'✅ Judge #6 v2.0: {decision.approved}')
 print(f'Risk Level: {decision.risk_level.value}')
 print(f'Signature: {decision.provenance_stamp.signature[:16]}...')
 "
@@ -1022,11 +1034,15 @@ kubectl get service pnkln-stack
 
 **API Usage (light development):**
 
+
 - OpenAI: ~$10/month
+
 
 - Anthropic: ~$5/month
 
+
 - Google AI: Free tier (2M tokens/day)
+
 
 - **Total: ~$15/month**
 
@@ -1069,25 +1085,28 @@ kubectl get service pnkln-stack
 
 ### After Installation
 
-1. **Run verification:**
 
+
+1. **Run verification:**
    ```bash
    python3 scripts/verify_pnkln_stack.py
    ./scripts/daily_health_check.sh
    ```
 
-2. **Read documentation:**
 
+
+2. **Read documentation:**
    ```bash
    cat INTEGRATION_SUMMARY.md
    cat DOLLAR_VALUE_ANALYSIS.md
    cat MONITORING.md
    ```
 
-3. **Try examples:**
 
+
+3. **Try examples:**
    ```bash
-   # Judge 6 v2.0
+   # Judge #6 v2.0
    python3 judge6/example.py
 
    # Universal Copilot
@@ -1095,12 +1114,19 @@ kubectl get service pnkln-stack
    USE_MOCK=1 npm run dev
    ```
 
+
+
 4. **Deploy to production:**
+
+
    - Choose deployment option (Vertex AI or GKE)
+
 
    - Configure monitoring (Prometheus/Grafana)
 
+
    - Set up alerting
+
 
    - Enable automated backups
 
@@ -1110,13 +1136,18 @@ kubectl get service pnkln-stack
 
 **Documentation:**
 
+
 - `INTEGRATION_SUMMARY.md` - Complete integration guide
+
 
 - `MONITORING.md` - Health monitoring
 
+
 - `DOLLAR_VALUE_ANALYSIS.md` - ROI analysis
 
-- `judge6/README.md` - Judge 6 v2.0 docs
+
+- `judge6/README.md` - Judge #6 v2.0 docs
+
 
 - `universal-copilot/README.md` - Universal Copilot docs
 

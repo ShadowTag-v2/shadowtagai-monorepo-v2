@@ -1,4 +1,18 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+Workflow agent implementations for orchestrating multi-agent execution.
+"""
 
-# Copyright 2026 ShadowTagAI. All rights reserved.
-"""__init__.py — src/workflows package."""
+from .workflow_agents import (
+  ConditionalWorkflowAgent,
+  LoopWorkflowAgent,
+  ParallelWorkflowAgent,
+  SequentialWorkflowAgent,
+)
+
+__all__ = [
+  "SequentialWorkflowAgent",
+  "ParallelWorkflowAgent",
+  "LoopWorkflowAgent",
+  "ConditionalWorkflowAgent",
+]

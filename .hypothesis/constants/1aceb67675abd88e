@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/prevent_sleep.py
+# hypothesis_version: 6.151.5
+
+[300, '-i', '-t', 'caffeinate', 'darwin', 'get_ref_count', 'is_active', 'start_prevent_sleep', 'stop_prevent_sleep']

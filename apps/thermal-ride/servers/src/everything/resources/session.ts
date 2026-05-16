@@ -1,5 +1,5 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { Resource, ResourceLink } from '@modelcontextprotocol/sdk/types.js';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { Resource, ResourceLink } from "@modelcontextprotocol/sdk/types.js";
 
 /**
  * Generates a session-scoped resource URI string based on the provided resource name.
@@ -25,7 +25,7 @@ export const getSessionResourceURI = (name: string): string => {
 export const registerSessionResource = (
   server: McpServer,
   resource: Resource,
-  type: 'text' | 'blob',
+  type: "text" | "blob",
   payload: string,
 ): ResourceLink => {
   // Destructure resource
@@ -34,7 +34,7 @@ export const registerSessionResource = (
   // Prepare the resource content to return
   // See https://modelcontextprotocol.io/specification/2025-11-25/server/resources#resource-contents
   const resourceContent =
-    type === 'text'
+    type === "text"
       ? {
           uri: uri.toString(),
           mimeType,
@@ -58,5 +58,5 @@ export const registerSessionResource = (
     },
   );
 
-  return { type: 'resource_link', ...resource };
+  return { type: "resource_link", ...resource };
 };

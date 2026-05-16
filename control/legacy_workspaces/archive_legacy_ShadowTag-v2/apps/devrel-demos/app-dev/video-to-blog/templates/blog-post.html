@@ -1,0 +1,50 @@
+<!--
+Copyright 2025 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!doctype html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="container blog-container">
+      {% if image_data %}
+      <img
+        src="data:image/png;base64,{{ image_data }}"
+        alt="{{ title }}"
+        style="width: 50%; display: block; margin: auto"
+      />
+      {% endif %}
+      <div>{{ blog_post_html | safe }}</div>
+      <hr />
+      <form action="/refine" method="post">
+        <input type="hidden" name="blog_post_markdown" value="{{ blog_post_markdown }}" />
+        <input type="hidden" name="session_id" value="{{ session_id or '' }}" />
+        <input type="hidden" name="user_id" value="{{ user_id or '' }}" />
+        <textarea name="feedback" placeholder="Your feedback..."></textarea>
+        <button type="submit">Generate</button>
+      </form>
+      <div id="loader" class="loader"></div>
+    </div>
+    <script>
+      document.querySelector('form').addEventListener('submit', () => {
+        document.getElementById('loader').style.display = 'block';
+        document.querySelector('button').disabled = true;
+        document.querySelector('button').textContent = 'Generating...';
+      });
+    </script>
+  </body>
+</html>

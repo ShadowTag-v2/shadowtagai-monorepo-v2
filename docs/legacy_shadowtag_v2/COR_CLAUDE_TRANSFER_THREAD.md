@@ -1,5 +1,4 @@
 # Cor.Claude Transfer Thread
-
 **Comprehensive Context Handoff for Claude-Based AI Agents**
 
 > **Purpose**: Single source of truth for continuing work across Claude sessions, compiling all conversation history and extracted business/code plans.
@@ -13,12 +12,10 @@
 ### 1.1 Claude Code CLI Sessions (Primary)
 
 **Current User**: `/Users/pikeymickey/.claude/projects/-Users-pikeymickey/`
-
 - **Active Session**: `367cc1c1-7469-41b4-b1c1-638bf6807436.jsonl` (55MB)
 - **Previous Sessions**: 10+ session files totaling 150MB+
 
 **Deleted Users Recovery**: `~/.claude/projects_imported/`
-
 - **Largest Session**: `5a24baa6-fb10-4f13-808e-b36839f18f58.jsonl` (89MB)
 - **Additional**: 45+ session files totaling 200MB+
 - **Contains**: Nov 19-29 2025 intensive development period
@@ -26,7 +23,6 @@
 ### 1.2 Claude Desktop App
 
 **Location**: `~/Library/Application Support/Claude/`
-
 - `claude-code-sessions/` - Limited session data
 - `config.json` - MCP server configurations
 - `Claude Extensions/` - Browser extension data
@@ -36,7 +32,6 @@
 **Status**: Needs full export from https://chatgpt.com/settings
 **Current Export**: `/Users/pikeymickey/Downloads/ChatGPT data/conversations.json` (1 conversation only)
 **Action Required**:
-
 1. Go to https://chatgpt.com/settings
 2. Click "Export data"
 3. Wait for email with download link
@@ -53,22 +48,21 @@
 
 From Claude history keyword analysis:
 
-| Keyword    | Mentions | Context                   |
-| ---------- | -------- | ------------------------- |
-| MVP        | 2000+    | Multiple MVP iterations   |
-| Phase 1-7  | 3200+    | Detailed phase planning   |
-| Revenue    | 900+     | Revenue model discussions |
-| Valuation  | 700+     | Valuation analysis        |
-| Pitch Deck | 330+     | Investor materials        |
-| Launch     | 450+     | Launch planning           |
-| Milestone  | 136+     | Project milestones        |
+| Keyword | Mentions | Context |
+|---------|----------|---------|
+| MVP | 2000+ | Multiple MVP iterations |
+| Phase 1-7 | 3200+ | Detailed phase planning |
+| Revenue | 900+ | Revenue model discussions |
+| Valuation | 700+ | Valuation analysis |
+| Pitch Deck | 330+ | Investor materials |
+| Launch | 450+ | Launch planning |
+| Milestone | 136+ | Project milestones |
 
 ---
 
 ## 3. Business Documentation Index
 
 ### Core Plans (20+ documents)
-
 Located at `/docs/`:
 
 1. **BUSINESS_MASTER.md** - Synthesized master plan (ShadowTag Omega)
@@ -86,7 +80,6 @@ Located at `/docs/`:
 13. **SHADOWTAGAI_MASTER_PLAN.md** - ShadowTag strategy
 
 ### Subdirectories
-
 - `/docs/business/` - Business documents
 - `/docs/business_plans/` - Plan versions
 - `/docs/roadmap/` - Roadmap documents
@@ -96,18 +89,16 @@ Located at `/docs/`:
 ## 4. Technical Context
 
 ### Product Stack
-
-| Product          | Purpose                                   | Status               |
-| ---------------- | ----------------------------------------- | -------------------- |
-| **Pipeline**     | CI/CD + Agent orchestration               | Active               |
-| **Core Swarm**   | https://github.com/karpathy/autoresearchs | 650 Agents           |
-| **Governance**   | JudgeJura #6                              | Compliance Framework             |
-| **Framework**    | ExToto                                    | ID/EGO/SUPEREGO      |
-| **Code Quality** | CODEPMCS                                  | 50-Agent Remediation |
-| **ShadowTag**    | Cryptographic watermarking                | Building             |
+| Product | Purpose | Status |
+|---------|---------|--------|
+| **Pipeline** | CI/CD + Agent orchestration | Active |
+| **Core Swarm** | https://github.com/karpathy/autoresearchs | 650 Agents |
+| **Governance** | JudgeJura #6 | ATP 5-19 |
+| **Framework** | ExToto | ID/EGO/SUPEREGO |
+| **Code Quality** | CODEPMCS | 50-Agent Remediation |
+| **ShadowTag** | Cryptographic watermarking | Building |
 
 ### Monorepo Structure
-
 ```
 pnkln-stack-stack/ShadowTag-v2/
 ├── branches/           # 297 feature branches (29MB)
@@ -119,7 +110,6 @@ pnkln-stack-stack/ShadowTag-v2/
 ```
 
 ### Repository Consolidation
-
 - **424 symlinks** in Documents/GitHub pointing to monorepo
 - **264 real repos** consolidated to `external_repos/github_consolidated/`
 - **Total**: 688 repos organized
@@ -136,7 +126,6 @@ When starting a new Claude session:
 4. [ ] Check `/docs/business_plans/` for latest plans
 
 ### Key Contacts & Credentials
-
 - **GitHub**: ehanc69 / ShadowTag-v2
 - **GCP Project**: shadowtagai-production
 - **Domain**: shadowtagai.com
@@ -146,7 +135,6 @@ When starting a new Claude session:
 ## 6. Immediate Action Items
 
 ### Completed (2026-01-30)
-
 - [x] Extract 297 feature branches (29MB, 873K lines)
 - [x] Close 6 conflicting PRs on ehanc69/pnkln-stack-fastapi-services
 - [x] Consolidate 687 Documents/GitHub repos
@@ -154,7 +142,6 @@ When starting a new Claude session:
 - [x] Copy Deleted Users Claude history
 
 ### Pending
-
 - [ ] Full ChatGPT export (manual action required)
 - [ ] Verdict Systems TODOs (~20+ items in schiznit_engine.py)
 - [ ] Claude web history extraction (limited API access)
@@ -195,5 +182,5 @@ ERIK HANCOCK | SOLE FOUNDER | "TINY TEAMS" PHILOSOPHY
 
 ---
 
-_Last Updated: 2026-01-30 13:50 UTC_
-_Next Session: Continue from this document_
+*Last Updated: 2026-01-30 13:50 UTC*
+*Next Session: Continue from this document*

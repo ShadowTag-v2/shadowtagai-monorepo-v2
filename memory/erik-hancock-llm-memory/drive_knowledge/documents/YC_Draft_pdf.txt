@@ -1,0 +1,55 @@
+ehanc69Log out BackFoundersErik Hancock
+ Profile complete Edit profile+ Add a co-founderWho writes code, or does other technical work on your product? Was any of it done by a non-founder? Please explain.I, Erik, do all the technical work.  
+I have developed this product set over the past 13 years.Are you looking for a cofounder?YesFounder VideoPlease record a one minute video introducing the founder(s).*Make sure the file does not exceed 100 MB. Read more about the videohere.YC Application (Spring 2025)Apply to Y Combinator https://apply.ycombinator.com/app/edit
+1 of 7 2/9/2025, 3:26 PM
+Drop here or browseCompanyCompany name*ActiveShield [Medical]Describe what your company does in 50 characters or less.*Deactivate viruses and odors before they escape.Company URL, if anyhttps://www.activeshieldmedical.com/If you have a demo, attach it below.Anything that shows us how the product works. Please limit to 3 minutes / 100 MB.Drop here or browsePlease provide a link to the product, if any.https://drive.google.com/drive/folders/1Itw8DpCrynp4tRMKGQ77p7geYp-8bVd2If login credentials are required for the link above, enter them here.username / passwordWhat is your company going to make? Please describe your product and what it does or willdo.Apply to Y Combinator https://apply.ycombinator.com/app/edit
+2 of 7 2/9/2025, 3:26 PM
+We place an ozone generator in-line with the exhaust vent to deactivate the odor before it leaves 
+the facility.  In facilities with central HVAC, we install an in-line ozone generator inside the return.  
+Our in-line ozone generator then deactivates / removes the noxious odor before it is vented into the 
+atmosphere.  Or, before the noxious odor enters the air conditioning unit.  We further offer ozone destruct devices installed in sequence, following our ozone generator, to make the newly purified by Where do you live now, and where would the company be based after YC?Use the format City A, Country A / City B, Country BLucerne, CA, USA / San Francisco, CA, USAExplain your decision regarding location.San Francisco offers the nearest, best access to channels of distribution, ports of travel, and 
+business entities.ProgressHow far along are you?We are on our fifth prototype mask MVP.  
+We have recently reached a partnership agreement with Ozone Solutions  |  451 Black Forest Rd 
+Hull, IA 51239  |  (281) 671-0300 |  https://ozonesolutions.com/ to install their tech, as per our plans.  How long have each of you been working on this? How much of that has been full-time? Pleaseexplain.I have been working on this for the past 13 years. 
+I have been working on this full-time for only the past 12 months.What tech stack are you using, or planning to use, to build this product?I have partnered with Ozone Solutions  |  451 Black Forest Rd Hull, IA 51239  |  (281) 671-0300 |  
+https://ozonesolutions.com/ to install their systems as part of my patentable process.Are people using your product?YesNoHow many active users or customers do you have? How many are paying? Who is paying youApply to Y Combinator https://apply.ycombinator.com/app/edit
+3 of 7 2/9/2025, 3:26 PM
+the most, and how much do they pay you?Two active users, my wife and me.
+No one is paying.Do you have revenue?YesNoIf you are applying with the same idea as a previous batch, did anything change? If you appliedwith a different idea, why did you pivot and what did you learn from the last idea?With this current application, I have pivoted from an MVP of wearable tech to an MVP of installing 
+my system(s) in commercial facilities.  I will additionally produce filters for battlefield breathing in 
+chemically and biologically contaminated environments.If you have already participated or committed to participate in an incubator, "accelerator" or"pre-accelerator" program, please tell us about it.N/AIdeaWhy did you pick this idea to work on? Do you have domain expertise in this area? How do youknow people need what you're making?I found this idea when attempting to emulate Ozonics hunting technology.  When Ozonics released 
+their MVP, I too began hunting with an ozone generator to actively mask my scent.  However, I built 
+my ozone generator to vent the inside of my ground blind to the outside.  To accomplish, I included 
+a chimney to be zipped into the top of my ground blind.  When hunting in this manner, I felt invisible to the deer. Who are your competitors? What do you understand about your business that they don't?I. PathogenFocus 880 Facet Road  |  Henderson, NC 27537  |  1-866-883-6287 | https://
+pathogenfocus.com/  ;
+II. Ozone Solutions  |  451 Black Forest Rd Hull, IA 51239  |  (281) 671-0300 |  https://
+ozonesolutions.com/ ;III. Ozonics | 520 S Pierce Ave Suite 216, Mason City, IA 50401  |  (979) 285-2401 | http://How do or will you make money? How much could you make?(We realize you can't know precisely, but give your best estimate)Apply to Y Combinator https://apply.ycombinator.com/app/edit
+4 of 7 2/9/2025, 3:26 PM
+We will make money by building profit into our installation fees. 
+We will make money as well by installing the electrical components on a subscription-only basis, 
+including the ozone generator and ozone destruct devices.Which category best applies to your company?Hard TechYou're being asked the following questions because you selected the categoryHard Tech.Please describe the scientific basis for your product. How does it work?(It's best if you address your answer to a scientist, but one who is not a specialist in your field)Our product's ozone's chemical oxidizing power is primarily responsible for our pathogen and odor 
+elimination.
+Oxidative Damage via Ozone and ROS:
+Impact on Viral Pathogens: Viral pathogens are mainly inactivated by the oxidative effects of ozone and other reactive species produced in the generator. Ozone oxidizes proteins and lipids in the viral Describe the next few stages in developing your product. For each stage, how much time andmoney will it take??If you were accepted into YC, what could you accomplish by Demo Day??Does your product need regulatory approval (i.e., FDA)? If so, what is the approval process?What is your plan to get approved, and how much time and money will it take?The wearable PPE would require FDA approval.
+Retain our FDA specialist, in conjunction with a design engineering firm, to develop a product 
+capable of receiving FDA approval.  Our FDA specialist is: Mark Paxton  |  White Oak Law  |  117 
+Classic Court Versailles, KY 40383  |  https://www.whiteoakailaw.com/ .What experimental data (if any) do you have showing that this would work?Apply to Y Combinator https://apply.ycombinator.com/app/edit
+5 of 7 2/9/2025, 3:26 PM
+If you would respectfully please see the video in the link below?  It is of a whitetail buck 40 yards 
+downwind of me that failed to detect my presence while wearing the mask.  This failure to detect an 
+ultimately lethal threat due to my wearing our product mask, shows the effectiveness of our mask’s 
+odor destroying capabilities.  ChatGPT opines that ours will equally destroy/deactivate airborne viruses:  https://drive.google.com/file/d/1mkZYbPadKkIe4E2c3mnz2u-jrfi_7wcw/view?usp=sharing.If you had any other ideas you considered applying with, please list them. One may besomething we've been waiting for. Often when we fund people it's to do something they list hereand not in the main application.Other Ideas Listed:
+1. Wearable PPE to prevent the spread of respiratory acquired infections. 
+a. A mask containing an AFV (ozone generator) behind an anti-backflow valve.  Our wearable 
+Active Virus Filter (AFV) technology prevents 99.9% of viral load from escaping the wearer, thereby protecting those around them from respiratory Healthcare Acquired Infections (HAI’s). Our AFV EquityHave you formed ANY legal entity yet?This may be in the US, in your home country or in another country.YesNoIf you have not formed the company yet, describe the planned equity ownership breakdownamong the founders, employees and any other proposed stockholders. If there are multiplefounders, be sure to give the proposed equity ownership of each founder and founder title (e.g.CEO). (This question is as much for you as us.)As the principal founder, I will own 60% of the
+company
+When I have another co-founder, I will offer them 40%.
+As other people join,I will carve out equity for them as well.Have you taken any investment yet?YesNoAre you currently fundraising?YesNoPlease provide any relevant details about your current fundraise.I recently called or emailed five (5) VC's.
+I have received no replies.Apply to Y Combinator https://apply.ycombinator.com/app/edit
+6 of 7 2/9/2025, 3:26 PM
+CuriousWhat convinced you to apply to Y Combinator? Did someone encourage you to apply? Haveyou been to any YC events?When searching for financial advice on the internet, many of the resources I discovered.  Pointed 
+towards investing in my own startup(s) as a means of accelerating gains.  While designing these 
+items, monetization has always occurred.  My somewhat recent introduction to X/twitter has really 
+given me anecdotal motivation to apply to YC.  However, once I had YC narrowed down, YCs' own YouTube videos greatly facilitated my application.  How did you hear about Y Combinator?Popular media.Founder video is requiredAfter submitting your application, you will be able to edit only certain sections: founder profiles, foundervideo, demo video, progress, and fundraising. BackSave for laterSubmit applicationContentsFoundersFounder VideoCompanyProgressIdeaEquityCurious
+AboutPeopleBlogResourcesLegalNotice at CollectionContactApply to Y Combinator https://apply.ycombinator.com/app/edit
+7 of 7 2/9/2025, 3:26 PM

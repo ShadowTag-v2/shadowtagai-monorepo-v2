@@ -1,19 +1,19 @@
-import * as fs from 'fs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { get_branch_name, update_ticket_status } from './git-utils.js';
+import * as fs from "fs";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { get_branch_name, update_ticket_status } from "./git-utils.js";
 
-vi.mock('fs');
-vi.mock('child_process', () => ({
+vi.mock("fs");
+vi.mock("child_process", () => ({
   execSync: vi.fn(),
 }));
 
-describe('git_utils', () => {
+describe("git_utils", () => {
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
-  describe('get_branch_name', () => {
-    it('should return a feat branch name', () => {
+  describe("get_branch_name", () => {
+    it("should return a feat branch name", () => {
       // Mock get_github_user indirectly or mock run_cmd
       // Since get_branch_name calls get_github_user which calls run_cmd
       // We can mock run_cmd if we exported it, or just mock the dependencies.
@@ -21,22 +21,22 @@ describe('git_utils', () => {
     });
   });
 
-  describe('update_ticket_status', () => {
-    it('should update the status in a ticket file', () => {
-      const ticketId = '123';
-      const sessionDir = '/session';
-      const ticketPath = '/session/linear_ticket_123.md';
+  describe("update_ticket_status", () => {
+    it("should update the status in a ticket file", () => {
+      const ticketId = "123";
+      const sessionDir = "/session";
+      const ticketPath = "/session/linear_ticket_123.md";
       const initialContent = `---
 status: "Todo"
 updated: "2026-01-01"
 ---
 Body`;
 
-      vi.mocked(fs.readdirSync).mockReturnValue(['linear_ticket_123.md'] as any);
+      vi.mocked(fs.readdirSync).mockReturnValue(["linear_ticket_123.md"] as any);
       vi.mocked(fs.statSync).mockReturnValue({ isDirectory: () => false } as any);
       vi.mocked(fs.readFileSync).mockReturnValue(initialContent);
 
-      update_ticket_status(ticketId, 'Done', sessionDir);
+      update_ticket_status(ticketId, "Done", sessionDir);
 
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         ticketPath,
@@ -44,9 +44,9 @@ Body`;
       );
     });
 
-    it('should throw error if ticket not found', () => {
+    it("should throw error if ticket not found", () => {
       vi.mocked(fs.readdirSync).mockReturnValue([]);
-      expect(() => update_ticket_status('123', 'Done', '/session')).toThrow('not found');
+      expect(() => update_ticket_status("123", "Done", "/session")).toThrow("not found");
     });
   });
 });

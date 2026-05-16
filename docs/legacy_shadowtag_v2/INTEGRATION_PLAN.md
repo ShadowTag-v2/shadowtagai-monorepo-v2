@@ -9,7 +9,6 @@
 ## Executive Summary
 
 This document outlines the technical integration of:
-
 1. **ShadowTag v2** - Dual-layer watermarking (this branch)
 2. **UltraThink Framework** - AI orchestration (`claude/pnkln-ultrathink-framework-01SX9cmBe23YZ7WxueesKzw5`)
 3. **Referenced initiatives** - Kernel chaining, Gemini migration, superpowers marketplace, etc.
@@ -700,30 +699,30 @@ spec:
   template:
     spec:
       containers:
-        - name: api
-          image: gcr.io/pnkln/platform:latest
-          env:
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: url
-            - name: REDIS_URL
-              value: redis://redis:6379
-            - name: STRIPE_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: stripe-credentials
-                  key: secret
-          resources:
-            requests:
-              memory: "2Gi"
-              cpu: "1000m"
-              nvidia.com/gpu: "1" # For video processing
-            limits:
-              memory: "4Gi"
-              cpu: "2000m"
-              nvidia.com/gpu: "1"
+      - name: api
+        image: gcr.io/pnkln/platform:latest
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: url
+        - name: REDIS_URL
+          value: redis://redis:6379
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-credentials
+              key: secret
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+            nvidia.com/gpu: "1"  # For video processing
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+            nvidia.com/gpu: "1"
 ```
 
 ### Monitoring
@@ -842,14 +841,12 @@ CREATE TABLE skills_marketplace (
 ## Next Actions
 
 ### This Week
-
 1. ✅ Merge ultrathink branch
 2. ✅ Create `/api/v2/*` endpoints
 3. ✅ Implement Stripe billing MVP
 4. 🔄 Ship Creator tier ($29/month)
 
 ### Next Month
-
 5. 🔄 Launch skills marketplace
 6. 🔄 First data licensing conversation
 7. 🔄 Close first enterprise contract
@@ -863,4 +860,4 @@ CREATE TABLE skills_marketplace (
 
 ---
 
-_"Integration is not about connecting systems. It's about multiplying value."_ — pnkln Engineering
+*"Integration is not about connecting systems. It's about multiplying value."* — pnkln Engineering

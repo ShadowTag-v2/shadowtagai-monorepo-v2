@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_classifier/bridge.py
+# hypothesis_version: 6.151.5
+
+[0.0, 1000, 'allow_allowlist', 'allow_classifier', 'allow_policy', 'allowlist_count', 'allowlist_hits', 'avg_latency_ms', 'block_classifier', 'block_fail_closed', 'block_policy', 'classifier_allows', 'classifier_blocks', 'denylist_count', 'has_allowlist', 'has_denylist', 'policy', 'policy_blocks', 'telemetry', 'total_allowed', 'total_blocked', 'total_evaluations', 'total_fail_closed']

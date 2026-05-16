@@ -3,7 +3,6 @@
 **Production-grade autonomous agent system implementing the Kosmos pattern on GCP infrastructure**
 
 Combines:
-
 - **Kosmos principle**: Long-horizon autonomous workflows with world-model coordination (inspired by arxiv 2511.02824)
 - **ReAct algorithm**: Reason → Act → Observe loop for interpretable agent behavior (arxiv 2210.03629)
 - **AgentOps**: Full observability, tracing, and operational excellence
@@ -49,27 +48,23 @@ Built for Vertex AI, GKE, and Gemini 2.5 Pro/Flash models.
 ## Key Features
 
 ### Autonomous Research Workflows
-
 - Multi-phase workflow orchestration (Ingest → Explore → Hypothesize → Test → Validate → Synthesize)
 - Long-horizon task execution (20+ cycle autonomous runs)
 - World model state management across phases
 
 ### Specialized Agents
-
 - **Literature Agent** (Gemini Flash): Academic paper search, citation extraction
 - **Data Analysis Agent** (Gemini Pro): Code generation, statistical testing, visualization
 - **Hypothesis Agent** (Gemini Pro): Hypothesis generation, evaluation, refinement
 - **Synthesis Agent** (Gemini Pro): Scientific report writing, citation formatting
 
 ### Production-Grade Infrastructure
-
 - **GKE Autopilot**: Serverless Kubernetes with auto-scaling
 - **Vertex AI**: Gemini 2.5 Pro ($1.25/1M tokens) and Flash ($0.075/1M tokens)
 - **Firestore**: Persistent world model state
 - **Cloud Storage**: Large artifact storage (datasets, plots, reports)
 
 ### Observability & Cost Control
-
 - **AgentOps SDK**: Session tracking, event recording, dashboards
 - **OpenTelemetry**: Cloud Trace integration with full trace hierarchy
 - **Cost Monitor**: Budget enforcement, real-time burn tracking, alerts
@@ -91,8 +86,8 @@ Built for Vertex AI, GKE, and Gemini 2.5 Pro/Flash models.
 
 ```bash
 # Clone repository
-git clone https://github.com/ehanc69/ShadowTag-v2-fastapi-services.git
-cd ShadowTag-v2-fastapi-services
+git clone https://github.com/ehanc69/aiyou-fastapi-services.git
+cd aiyou-fastapi-services
 
 # Install Python dependencies
 pip install -r requirements.txt
@@ -228,16 +223,16 @@ class CustomAgent(BaseAgent):
 
 ### Environment Variables
 
-| Variable               | Description               | Default                      |
-| ---------------------- | ------------------------- | ---------------------------- |
-| `GOOGLE_CLOUD_PROJECT` | GCP project ID            | Required                     |
-| `GCP_LOCATION`         | GCP region                | `us-central1`                |
-| `FIRESTORE_DATABASE`   | Firestore database name   | `(default)`                  |
-| `STORAGE_BUCKET`       | Cloud Storage bucket      | `{project}-kosmos-artifacts` |
-| `AGENTOPS_API_KEY`     | AgentOps API key          | Optional                     |
-| `DAILY_BUDGET`         | Daily cost budget (USD)   | `2000.0`                     |
-| `MONTHLY_BUDGET`       | Monthly cost budget (USD) | `60000.0`                    |
-| `ENABLE_TELEMETRY`     | Enable OpenTelemetry      | `true`                       |
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `GOOGLE_CLOUD_PROJECT` | GCP project ID | Required |
+| `GCP_LOCATION` | GCP region | `us-central1` |
+| `FIRESTORE_DATABASE` | Firestore database name | `(default)` |
+| `STORAGE_BUCKET` | Cloud Storage bucket | `{project}-kosmos-artifacts` |
+| `AGENTOPS_API_KEY` | AgentOps API key | Optional |
+| `DAILY_BUDGET` | Daily cost budget (USD) | `2000.0` |
+| `MONTHLY_BUDGET` | Monthly cost budget (USD) | `60000.0` |
+| `ENABLE_TELEMETRY` | Enable OpenTelemetry | `true` |
 
 ### Model Selection
 
@@ -269,13 +264,13 @@ result = vertex_client.generate_with_auto_routing(
 
 ### Estimated Costs
 
-| Task                                 | Model | Tokens | Cost      |
-| ------------------------------------ | ----- | ------ | --------- |
-| Literature search (10 papers)        | Flash | 500k   | $0.04     |
-| Data analysis (1 dataset)            | Pro   | 2M     | $2.50     |
-| Hypothesis generation (5 hypotheses) | Pro   | 1M     | $1.25     |
-| Report synthesis                     | Pro   | 1.5M   | $1.88     |
-| **Total 20-cycle research run**      | Mixed | ~5M    | **$5-20** |
+| Task | Model | Tokens | Cost |
+|------|-------|--------|------|
+| Literature search (10 papers) | Flash | 500k | $0.04 |
+| Data analysis (1 dataset) | Pro | 2M | $2.50 |
+| Hypothesis generation (5 hypotheses) | Pro | 1M | $1.25 |
+| Report synthesis | Pro | 1.5M | $1.88 |
+| **Total 20-cycle research run** | Mixed | ~5M | **$5-20** |
 
 ### Budget Controls
 
@@ -334,7 +329,6 @@ tracker.end_session(result="success")
 ```
 
 **Dashboard metrics:**
-
 - Session success rate
 - Average iterations per task
 - Tool usage frequency
@@ -355,7 +349,6 @@ with TracedOperation("agent_execution", agent="literature", goal="search"):
 ```
 
 View traces in Cloud Console → Trace Explorer:
-
 - Full hierarchy of agent → ReAct loop → tool calls
 - Latency breakdown
 - Error attribution

@@ -1,4 +1,7 @@
-"""Persona Engine — Manages and injects Antigravity personas from .antigravity/prompts/"""
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+Persona Engine — Manages and injects Antigravity personas from .antigravity/prompts/
+"""
 
 import logging
 from pathlib import Path

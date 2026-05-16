@@ -11,7 +11,7 @@ cd "$ROOT"
 ROOT_GITIGNORE="$ROOT/.gitignore"
 
 mapfile -t GITIGNORE_FILES < <(
-  find "$ROOT" -type f -name ".gitignore" | sort
+  find "$ROOT" -type d \( -name ".git" -o -name ".venv" -o -name "node_modules" \) -prune -o -type f -name ".gitignore" -print | sort
 )
 
 mapfile -t EXCLUDE_FILES < <(
@@ -39,18 +39,18 @@ has_pattern() {
 
 {
   echo "# .gitignore Canonicalization Report"
-  echo ""
+  echo
   echo "## Canonical Recommendation"
   echo "- canonical shared ignore file: \`.gitignore\` at repo root"
   echo "- local-only ignore belongs in \`.git/info/exclude\`"
-  echo ""
+  echo
   echo "## Root .gitignore Presence"
   if [[ -f "$ROOT_GITIGNORE" ]]; then
     echo "- present: \`$ROOT_GITIGNORE\`"
   else
     echo "- missing: \`$ROOT_GITIGNORE\`"
   fi
-  echo ""
+  echo
   echo "## Discovered .gitignore Files"
   if [[ ${#GITIGNORE_FILES[@]} -eq 0 ]]; then
     echo "- none"
@@ -64,7 +64,7 @@ has_pattern() {
       fi
     done
   fi
-  echo ""
+  echo
   echo "## Local Exclude Files"
   if [[ ${#EXCLUDE_FILES[@]} -eq 0 ]]; then
     echo "- none"
@@ -74,7 +74,7 @@ has_pattern() {
       echo "- \`${rel}\` → local-only ignore surface"
     done
   fi
-  echo ""
+  echo
   echo "## Root Coverage Check"
   if [[ -f "$ROOT_GITIGNORE" ]]; then
     for p in "${COMMON_PATTERNS[@]}"; do
@@ -87,7 +87,7 @@ has_pattern() {
   else
     echo "- skipped; root .gitignore missing"
   fi
-  echo ""
+  echo
   echo "## Required Outcome"
   echo "- keep one canonical root .gitignore"
   echo "- keep only narrow, justified nested .gitignore overrides"

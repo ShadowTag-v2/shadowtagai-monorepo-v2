@@ -15,7 +15,7 @@ We have consolidated 7 verticals into one governing architecture: **The pnkln Co
 | Vertical        | Layer   | Component                            | Valuation Impact | Status                            |
 | :-------------- | :------ | :----------------------------------- | :--------------- | :-------------------------------- |
 | **Energy**      | L1      | **Gulfstream Protocol**              | $45B             | Strategic Doctrine (DOE Sec 1706) |
-| **Core**        | L2      | **pnkln Core + Judge 6**            | $207B            | Active Code (Verified)            |
+| **Core**        | L2      | **pnkln Core + Judge #6**            | $207B            | Active Code (Verified)            |
 | **Marketplace** | L3      | **AiU Mall + Swiper**                | $50B             | Active Code + Spec                |
 | **Edge**        | L4      | **RoadMesh / Digital Freeway**       | $25B             | Active Code                       |
 | **Orbital**     | L5      | **AiU Orbital**                      | $15B             | Active Code                       |
@@ -40,7 +40,7 @@ We have consolidated 7 verticals into one governing architecture: **The pnkln Co
 - **The Mission**: Military-grade orchestration and governance for the Sovereign AI.
 - **The Assets**:
   - **Antigravity**: The Master Agent Controller (`antigravity.py`).
-  - **Judge 6**: The <500µs Governance Engine (`judge6_enforcement.py`).
+  - **Judge #6**: The <500µs Governance Engine (`judge6_enforcement.py`).
   - **Kosmos**: The 5,590-Agent Swarm.
 - **Current State**: **ACTIVE**. The beating heart of the 41GB codebase.
 

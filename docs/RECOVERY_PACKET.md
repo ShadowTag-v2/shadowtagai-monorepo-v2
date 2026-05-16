@@ -11,6 +11,6 @@ If memory appears dropped:
 ## Canonical files
 - AGENTS.md
 - docs/MEMORY_LOCK.md
-- docs/UPDATED_PNKLN_PACK.md
+- docs/UPDATED_pnkln_PACK.md
 - monorepo_manifest.yaml
 - antigravity-mcp-config.json

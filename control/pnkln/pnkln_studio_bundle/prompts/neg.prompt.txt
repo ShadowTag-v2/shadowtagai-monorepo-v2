@@ -1,0 +1,3 @@
+List open issues and missing terms. Output JSON with fields: missing_terms, conflicting_terms, followups.
+Input:
+{{input}}

@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-helmrelease-mutate-capsule
+spec:
+  rules:
+  - name: mutate-target-ns-sa
+    match:
+      any:
+      - resources:
+          kinds:
+          - HelmRelease
+          namespaces:
+          - "-flux-system"
+    mutate:
+      patchStrategicMerge:
+        spec:
+          targetNamespace: "{{request.object.metadata.namespace}}"
+          serviceAccountName: "{{metadata.labels['capsule.clastix.io/tenant']}}-flux-sa"
+          driftDetection:
+            enabled: true
+            mode: Disabled  # Tenant control
+  - name: default-values
+    mutate:
+      patchStrategicMerge:
+        spec:
+          values:
+            image:
+              tag: "safe-pennal:v1"

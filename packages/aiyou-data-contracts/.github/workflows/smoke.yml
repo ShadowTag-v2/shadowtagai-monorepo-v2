@@ -12,7 +12,7 @@ jobs:
         run: |
           set -euo pipefail
           test -f README.md
-          test -f .ShadowTag-v2/assistant.defaults.json
+          test -f .aiyou/assistant.defaults.json
           test -f .github/workflows/assistant-defaults-guard.yml
       - name: Python smoke (if applicable)
         if: hashFiles('requirements.txt') != ''

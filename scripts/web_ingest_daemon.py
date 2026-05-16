@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
@@ -10,21 +12,21 @@ Web/Local Document Ingest Daemon
 Extracts structure from downloaded PDFs (Kaggle, DoD, NIST) using LangExtract.
 """
 
-import json  # noqa: E402
-import logging  # noqa: E402
-import os  # noqa: E402
-import sqlite3  # noqa: E402
-import sys  # noqa: E402
-import textwrap  # noqa: E402
-import time  # noqa: E402
-from pathlib import Path  # noqa: E402
+import json
+import logging
+import os
+import sqlite3
+import sys
+import textwrap
+import time
+from pathlib import Path
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-import langextract as lx  # noqa: E402
-from dotenv import load_dotenv  # noqa: E402
+import langextract as lx
+from dotenv import load_dotenv
 
 load_dotenv(override=True)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -79,7 +81,7 @@ EXAMPLES = [
                 attributes={"domain": "Security"},
             ),
         ],
-    ),
+    )
 ]
 
 
@@ -126,7 +128,7 @@ class CheckpointDB:
 
 class JSONLWriter:
     def __init__(self, path: Path) -> None:
-        self.fh = open(path, "a", encoding="utf-8")  # noqa: SIM115
+        self.fh = open(path, "a", encoding="utf-8")
 
     def write(self, file_id: str, extractions: list[dict]) -> None:
         for ex in extractions:
@@ -138,8 +140,7 @@ class WebIngester:
     def __init__(self) -> None:
         self.api_key = os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
-            msg = "GEMINI_API_KEY not set"
-            raise RuntimeError(msg)
+            raise RuntimeError("GEMINI_API_KEY not set")
         self.db = CheckpointDB(DB_PATH)
         self.writer = JSONLWriter(JSONL_PATH)
 
@@ -188,7 +189,7 @@ class WebIngester:
                                             "source": name,
                                         }
                                         for e in res.extractions
-                                    ],
+                                    ]
                                 )
                         break
                     except Exception as e:
@@ -196,8 +197,7 @@ class WebIngester:
                         logger.warning(f"  Attempt {attempt + 1} failed: {e}. Retry in {wait}s.")
                         time.sleep(wait)
                 else:
-                    msg = "All retries exhausted"
-                    raise RuntimeError(msg)
+                    raise RuntimeError("All retries exhausted")
 
                 self.writer.write(fid, extractions)
                 self.db.insert_extractions(fid, name, extractions)
@@ -205,7 +205,7 @@ class WebIngester:
                 logger.info(f"  → {len(extractions)} intelligence nodes processed successfully")
 
             except Exception as e:
-                logger.exception(f"  → Fatal Failure: {e}")
+                logger.error(f"  → Fatal Failure: {e}")
                 self.db.mark(fid, name, "failed")
 
             time.sleep(RATE_DELAY)

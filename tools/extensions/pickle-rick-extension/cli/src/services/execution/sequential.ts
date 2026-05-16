@@ -1,11 +1,11 @@
-import { existsSync } from 'node:fs';
-import { appendFile, mkdir, writeFile } from 'node:fs/promises';
-import { basename, join } from 'node:path';
-import { createInterface } from 'node:readline';
-import pc from 'picocolors';
-import type { Task, WorktreeInfo } from '../../types/tasks.js';
-import { loadState, saveState } from '../config/state.js';
-import type { SessionState } from '../config/types.js';
+import { existsSync } from "node:fs";
+import { appendFile, mkdir, writeFile } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { createInterface } from "node:readline";
+import pc from "picocolors";
+import type { Task, WorktreeInfo } from "../../types/tasks.js";
+import { loadState, saveState } from "../config/state.js";
+import type { SessionState } from "../config/types.js";
 import {
   cleanupPickleWorktree,
   createPickleWorktree,
@@ -13,12 +13,12 @@ import {
   generatePRDescription,
   getCurrentBranch,
   isGhAvailable,
-} from '../git/index.js';
-import { execCommand } from '../providers/base.js';
-import { getConfiguredModel } from '../providers/index.js';
-import type { AIProvider } from '../providers/types.js';
-import { PickleTaskSource } from './pickle-source.js';
-import { buildPrompt } from './prompt.js';
+} from "../git/index.js";
+import { execCommand } from "../providers/base.js";
+import { getConfiguredModel } from "../providers/index.js";
+import type { AIProvider } from "../providers/types.js";
+import { PickleTaskSource } from "./pickle-source.js";
+import { buildPrompt } from "./prompt.js";
 
 export interface ProgressReport {
   iteration: number;
@@ -81,15 +81,15 @@ export class SequentialExecutor {
     try {
       // Use rsync for efficiency and exclusion support (standard on macOS/Linux)
       await execCommand(
-        'rsync',
-        ['-a', ...excludes.map((e) => `--exclude=${e}`), `${src}/`, `${dest}/`],
+        "rsync",
+        ["-a", ...excludes.map((e) => `--exclude=${e}`), `${src}/`, `${dest}/`],
         process.cwd(),
       );
     } catch (e) {
       // Fallback to cp -R if rsync fails
       try {
         await mkdir(dest, { recursive: true });
-        await execCommand('sh', ['-c', `cp -R "${src}/"* "${dest}/"`], process.cwd());
+        await execCommand("sh", ["-c", `cp -R "${src}/"* "${dest}/"`], process.cwd());
       } catch (cpError) {
         console.error(pc.red(`⚠️ Sync failed: ${cpError}`));
       }
@@ -104,11 +104,11 @@ export class SequentialExecutor {
     const executionResult: ExecutionResult = {};
 
     const taskSource = new PickleTaskSource(this.state.session_dir);
-    const logFile = join(this.state.session_dir, 'session.log');
+    const logFile = join(this.state.session_dir, "session.log");
 
     const log = async (msg: string) => {
       try {
-        await appendFile(logFile, msg + '\n');
+        await appendFile(logFile, msg + "\n");
       } catch (e) {}
       if (this.verbose) {
         console.log(msg);
@@ -124,7 +124,7 @@ export class SequentialExecutor {
       }
     };
 
-    const baseBranch = (await getCurrentBranch(this.state.working_dir)) || 'main';
+    const baseBranch = (await getCurrentBranch(this.state.working_dir)) || "main";
     let sessionWorktree: { worktreeDir: string; branchName: string } | null = null;
     let localSessionDir: string | null = null;
     const sessionName = basename(this.state.session_dir);
@@ -141,7 +141,7 @@ export class SequentialExecutor {
 
         // Check limits
         if (this.state.max_iterations > 0 && this.state.iteration > this.state.max_iterations) {
-          await log(pc.yellow('Max iterations reached.'));
+          await log(pc.yellow("Max iterations reached."));
           this.state.active = false;
           await saveState(this.state.session_dir, this.state);
           break;
@@ -150,7 +150,7 @@ export class SequentialExecutor {
         // Get Next Task
         const task = await taskSource.getNextTask();
         if (!task) {
-          await log(pc.bold(pc.green('✅ All Tasks Complete!')));
+          await log(pc.bold(pc.green("✅ All Tasks Complete!")));
           this.state.active = false;
           await saveState(this.state.session_dir, this.state);
           break;
@@ -165,7 +165,7 @@ export class SequentialExecutor {
         let engineSessionDir = this.state.session_dir;
 
         // If it's a TICKET (not a phase), ensure we are in the Session Worktree
-        if (task.id.startsWith('phase-') === false) {
+        if (task.id.startsWith("phase-") === false) {
           if (!sessionWorktree) {
             try {
               sessionWorktree = await createPickleWorktree(
@@ -177,10 +177,10 @@ export class SequentialExecutor {
 
               // Replicate the entire project state to the worktree (including uncommitted files)
               // We EXCLUDE .git (to keep worktree metadata) and .pickle (to avoid infinite recursion)
-              await log(pc.dim('🔄 Syncing project state to worktree...'));
+              await log(pc.dim("🔄 Syncing project state to worktree..."));
               await this.syncFiles(this.state.working_dir, sessionWorktree.worktreeDir, [
-                '.git',
-                '.pickle',
+                ".git",
+                ".pickle",
               ]);
 
               // Clear Gemini session ID when switching execution context
@@ -195,10 +195,10 @@ export class SequentialExecutor {
             engineWorkDir = sessionWorktree.worktreeDir;
 
             // Mirror the Session Directory inside the worktree to bypass sandbox
-            localSessionDir = join(sessionWorktree.worktreeDir, '.pickle', 'sessions', sessionName);
+            localSessionDir = join(sessionWorktree.worktreeDir, ".pickle", "sessions", sessionName);
             await mkdir(localSessionDir, { recursive: true });
 
-            await log(pc.dim('🔄 Syncing session context to worktree...'));
+            await log(pc.dim("🔄 Syncing session context to worktree..."));
             await this.syncFiles(this.state.session_dir, localSessionDir);
             engineSessionDir = localSessionDir;
           }
@@ -211,20 +211,20 @@ export class SequentialExecutor {
         });
 
         // Debug: Save prompt and prepare iteration log
-        const debugDir = join(this.state.session_dir, 'debug');
+        const debugDir = join(this.state.session_dir, "debug");
         const iterationLogFile = join(debugDir, `iteration_${this.state.iteration}_log.txt`);
         try {
           await mkdir(debugDir, { recursive: true });
           await writeFile(
             join(debugDir, `iteration_${this.state.iteration}_prompt.txt`),
             prompt,
-            'utf-8',
+            "utf-8",
           );
           // Initialize iteration log file
           await writeFile(
             iterationLogFile,
             `=== Iteration ${this.state.iteration} Log ===\nTask: ${task.title}\nStarted: ${new Date().toISOString()}\n\n`,
-            'utf-8',
+            "utf-8",
           );
         } catch (err) {}
 
@@ -235,7 +235,7 @@ export class SequentialExecutor {
           } catch (e) {}
         };
 
-        let lastStepLog = '';
+        let lastStepLog = "";
 
         const configuredModel = await getConfiguredModel();
         const modelOverride = configuredModel?.trim() ? configuredModel.trim() : undefined;
@@ -261,7 +261,7 @@ export class SequentialExecutor {
             if (content) {
               await logRaw(content);
               await logIteration(content);
-            } else if (step !== 'thinking' && step !== lastStepLog) {
+            } else if (step !== "thinking" && step !== lastStepLog) {
               await log(pc.dim(`Rick is ${step}...`));
               lastStepLog = step;
               this.emitProgress(step);
@@ -281,7 +281,7 @@ export class SequentialExecutor {
         );
 
         if (!result.success) {
-          const singleLineError = result.error?.replace(/\s+/g, ' ').trim();
+          const singleLineError = result.error?.replace(/\s+/g, " ").trim();
           await log(
             pc.red(`
 ❌ Engine Error: ${singleLineError}`),
@@ -294,10 +294,10 @@ export class SequentialExecutor {
             );
           } catch (e) {}
           await logIteration(`ERROR: ${singleLineError}\n`);
-          await log(''); // spacing to separate status/info lines visually
+          await log(""); // spacing to separate status/info lines visually
           this.state.active = false;
           await saveState(this.state.session_dir, this.state);
-          throw new Error(singleLineError || 'Engine error');
+          throw new Error(singleLineError || "Engine error");
         }
 
         if (result.sessionId && !this.state.gemini_session_id) {
@@ -306,7 +306,7 @@ export class SequentialExecutor {
 
         // Sync Back: If we are in a worktree, sync the local session state back to the master session dir
         if (localSessionDir) {
-          await log(pc.dim('🔄 Syncing changes back to master session...'));
+          await log(pc.dim("🔄 Syncing changes back to master session..."));
           await this.syncFiles(localSessionDir, this.state.session_dir);
         }
 
@@ -314,8 +314,8 @@ export class SequentialExecutor {
         const promiseFulfilled =
           this.state.completion_promise &&
           result.response.includes(`<promise>${this.state.completion_promise}</promise>`);
-        const explicitDone = result.response.includes('I AM DONE');
-        const stopTurn = result.response.includes('[STOP_TURN]');
+        const explicitDone = result.response.includes("I AM DONE");
+        const stopTurn = result.response.includes("[STOP_TURN]");
 
         if (promiseFulfilled || explicitDone) {
           await log(
@@ -333,7 +333,7 @@ export class SequentialExecutor {
               branchName: sessionWorktree.branchName,
               baseBranch,
             };
-            await log(pc.dim('Worktree preserved for TUI review.'));
+            await log(pc.dim("Worktree preserved for TUI review."));
           }
 
           // Check if this was the last ticket (retain existing messaging)
@@ -363,36 +363,36 @@ Your choice (m/p/s): `),
               );
               const choice = answer.toLowerCase().trim();
 
-              if (choice === 'm' || choice === 'merge') {
-                await log(pc.dim('Syncing files from worktree...'));
+              if (choice === "m" || choice === "merge") {
+                await log(pc.dim("Syncing files from worktree..."));
                 await this.syncFiles(sessionWorktree.worktreeDir, this.state.working_dir, [
-                  '.git',
-                  '.pickle',
+                  ".git",
+                  ".pickle",
                 ]);
 
-                await log(pc.dim('Merging worktree...'));
+                await log(pc.dim("Merging worktree..."));
                 try {
                   await execCommand(
-                    'git',
-                    ['merge', sessionWorktree.branchName],
+                    "git",
+                    ["merge", sessionWorktree.branchName],
                     this.state.working_dir,
                   );
-                  await log(pc.green('Merge successful.'));
+                  await log(pc.green("Merge successful."));
                 } catch (e) {
                   await log(pc.red(`⚠️ Merge failed: ${e}`));
                 }
 
                 // Cleanup after merge
-                await log(pc.dim('Deleting worktree...'));
+                await log(pc.dim("Deleting worktree..."));
                 try {
                   await cleanupPickleWorktree(sessionWorktree.worktreeDir, this.state.working_dir);
-                  await log(pc.green('Worktree deleted.'));
+                  await log(pc.green("Worktree deleted."));
                 } catch (e) {
                   await log(pc.red(`⚠️ Cleanup failed: ${e}`));
                 }
                 sessionWorktree = null;
                 localSessionDir = null;
-              } else if (choice === 'p' || choice === 'pr') {
+              } else if (choice === "p" || choice === "pr") {
                 // Generate PR description from session artifacts
                 const prDesc = await generatePRDescription(
                   this.state.session_dir,
@@ -404,7 +404,7 @@ Your choice (m/p/s): `),
                 const ghAvailable = await isGhAvailable();
 
                 if (ghAvailable) {
-                  await log(pc.dim('Creating Pull Request...'));
+                  await log(pc.dim("Creating Pull Request..."));
                   try {
                     const prUrl = await createPullRequest(
                       sessionWorktree.branchName,
@@ -417,22 +417,22 @@ Your choice (m/p/s): `),
                     if (prUrl) {
                       await log(pc.green(`✅ Pull Request created: ${prUrl}`));
                     } else {
-                      await log(pc.red('⚠️ Failed to create PR. Saving description to file...'));
-                      const prDescPath = join(this.state.session_dir, 'pr_description.md');
-                      await writeFile(prDescPath, `# ${prDesc.title}\n\n${prDesc.body}`, 'utf-8');
+                      await log(pc.red("⚠️ Failed to create PR. Saving description to file..."));
+                      const prDescPath = join(this.state.session_dir, "pr_description.md");
+                      await writeFile(prDescPath, `# ${prDesc.title}\n\n${prDesc.body}`, "utf-8");
                       await log(pc.yellow(`📄 PR description saved to: ${prDescPath}`));
                     }
                   } catch (e) {
                     await log(pc.red(`⚠️ PR creation failed: ${e}`));
-                    const prDescPath = join(this.state.session_dir, 'pr_description.md');
-                    await writeFile(prDescPath, `# ${prDesc.title}\n\n${prDesc.body}`, 'utf-8');
+                    const prDescPath = join(this.state.session_dir, "pr_description.md");
+                    await writeFile(prDescPath, `# ${prDesc.title}\n\n${prDesc.body}`, "utf-8");
                     await log(pc.yellow(`📄 PR description saved to: ${prDescPath}`));
                   }
                 } else {
-                  await log(pc.yellow('⚠️ GitHub CLI (gh) not installed or not authenticated.'));
-                  await log(pc.dim('Saving PR description to file...'));
-                  const prDescPath = join(this.state.session_dir, 'pr_description.md');
-                  await writeFile(prDescPath, `# ${prDesc.title}\n\n${prDesc.body}`, 'utf-8');
+                  await log(pc.yellow("⚠️ GitHub CLI (gh) not installed or not authenticated."));
+                  await log(pc.dim("Saving PR description to file..."));
+                  const prDescPath = join(this.state.session_dir, "pr_description.md");
+                  await writeFile(prDescPath, `# ${prDesc.title}\n\n${prDesc.body}`, "utf-8");
                   await log(pc.yellow(`📄 PR description saved to: ${prDescPath}`));
                   await log(pc.dim(`To create PR manually, push the branch and use:`));
                   await log(pc.dim(`  git push -u origin ${sessionWorktree.branchName}`));
@@ -444,17 +444,17 @@ Your choice (m/p/s): `),
                 }
 
                 // Cleanup worktree after PR
-                await log(pc.dim('Deleting worktree...'));
+                await log(pc.dim("Deleting worktree..."));
                 try {
                   await cleanupPickleWorktree(sessionWorktree.worktreeDir, this.state.working_dir);
-                  await log(pc.green('Worktree deleted.'));
+                  await log(pc.green("Worktree deleted."));
                 } catch (e) {
                   await log(pc.red(`⚠️ Cleanup failed: ${e}`));
                 }
                 sessionWorktree = null;
                 localSessionDir = null;
               } else {
-                await log(pc.dim('Skipping. Worktree preserved at:'));
+                await log(pc.dim("Skipping. Worktree preserved at:"));
                 await log(pc.dim(`  ${sessionWorktree.worktreeDir}`));
               }
             }

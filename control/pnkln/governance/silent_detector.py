@@ -1,17 +1,16 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
-"""Judge 6 Silent Detector — Passive signal collection layer.
+"""Judge #6 Silent Detector — Passive signal collection layer.
 
 Scans content streams for NY S7263, RAISE Act, credential, and injection
 violations without blocking the caller. All hits are routed through
-Cor_Claude_Code_6Engine.evaluate() and returned as GovernanceDecision objects.
+Judge6Engine.evaluate() and returned as GovernanceDecision objects.
 """
 
 from __future__ import annotations
 
 import re
 
-from .Cor_Claude_Code_6_core import GovernanceDecision, Cor_Claude_Code_6Engine, RiskEvent, ViolationType
+from .judge6_core import GovernanceDecision, Judge6Engine, RiskEvent, ViolationType
 
 _UNAUTHORIZED_PRACTICE_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"you\s+should\s+(?:sue|file\s+a\s+(?:lawsuit|claim|motion))", re.I),
@@ -48,7 +47,7 @@ _INJECTION_PATTERNS: list[re.Pattern[str]] = [
 class SilentDetector:
     """Passive scanner — runs on every content stream without blocking output."""
 
-    def __init__(self, engine: Cor_Claude_Code_6Engine, agent_id: str = "silent-detector") -> None:
+    def __init__(self, engine: Judge6Engine, agent_id: str = "silent-detector") -> None:
         self.engine = engine
         self.agent_id = agent_id
         self._scan_count = 0

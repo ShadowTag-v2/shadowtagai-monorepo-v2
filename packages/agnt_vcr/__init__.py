@@ -5,6 +5,6 @@ from .async_vcr import AsyncVCR
 from .vcr import VCRReplay
 
 __all__ = [
-    "AsyncVCR",
-    "VCRReplay",
+  "AsyncVCR",
+  "VCRReplay",
 ]

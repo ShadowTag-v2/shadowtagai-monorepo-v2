@@ -27,56 +27,56 @@ Usage:
 
 from firebase_tool_bridge.bridge import BridgeResult, CallStatus, ToolBridge
 from firebase_tool_bridge.declarations import (
-    function_to_declaration,
-    registry_to_declarations,
+  function_to_declaration,
+  registry_to_declarations,
 )
 from firebase_tool_bridge.evidence import EvidenceLogger
 from firebase_tool_bridge.firebase_chat_loop import (
-    ChatLoopResult,
-    FirebaseChatLoop,
-    FunctionCallPart,
-    FunctionResponsePart,
-    ModelResponse,
+  ChatLoopResult,
+  FirebaseChatLoop,
+  FunctionCallPart,
+  FunctionResponsePart,
+  ModelResponse,
 )
 from firebase_tool_bridge.registry import (
-    FunctionRegistry,
-    RegisteredFunction,
-    RiskTier,
+  FunctionRegistry,
+  RegisteredFunction,
+  RiskTier,
 )
 from firebase_tool_bridge.remote_config import ModelConfig
 from firebase_tool_bridge.workspace_confirmation import (
-    OfflineConfirmationProvider,
-    SovereignConfirmationProvider,
-    WorkspaceCLIConfirmationProvider,
+  OfflineConfirmationProvider,
+  SovereignConfirmationProvider,
+  WorkspaceCLIConfirmationProvider,
 )
 from firebase_tool_bridge.confirmation_providers import (
-    AllowlistConfirmationProvider,
-    FirebaseAuthConfirmationProvider,
-    SlackConfirmationProvider,
+  AllowlistConfirmationProvider,
+  FirebaseAuthConfirmationProvider,
+  SlackConfirmationProvider,
 )
 
 __all__ = [
-    "AllowlistConfirmationProvider",
-    "BridgeResult",
-    "CallStatus",
-    "ChatLoopResult",
-    "EvidenceLogger",
-    "FirebaseAuthConfirmationProvider",
-    "FirebaseChatLoop",
-    "FunctionCallPart",
-    "FunctionRegistry",
-    "FunctionResponsePart",
-    "ModelConfig",
-    "ModelResponse",
-    "OfflineConfirmationProvider",
-    "RegisteredFunction",
-    "RiskTier",
-    "SlackConfirmationProvider",
-    "SovereignConfirmationProvider",
-    "ToolBridge",
-    "WorkspaceCLIConfirmationProvider",
-    "function_to_declaration",
-    "registry_to_declarations",
+  "AllowlistConfirmationProvider",
+  "BridgeResult",
+  "CallStatus",
+  "ChatLoopResult",
+  "EvidenceLogger",
+  "FirebaseAuthConfirmationProvider",
+  "FirebaseChatLoop",
+  "FunctionCallPart",
+  "FunctionRegistry",
+  "FunctionResponsePart",
+  "ModelConfig",
+  "ModelResponse",
+  "OfflineConfirmationProvider",
+  "RegisteredFunction",
+  "RiskTier",
+  "SlackConfirmationProvider",
+  "SovereignConfirmationProvider",
+  "ToolBridge",
+  "WorkspaceCLIConfirmationProvider",
+  "function_to_declaration",
+  "registry_to_declarations",
 ]
 
 __version__ = "0.3.0"

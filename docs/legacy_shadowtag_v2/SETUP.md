@@ -303,16 +303,16 @@ spec:
         app: ultrathink
     spec:
       containers:
-        - name: ultrathink
-          image: gcr.io/YOUR_PROJECT_ID/ultrathink:v1.0
-          ports:
-            - containerPort: 8000
-          env:
-            - name: ANTHROPIC_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: ultrathink-secrets
-                  key: anthropic-api-key
+      - name: ultrathink
+        image: gcr.io/YOUR_PROJECT_ID/ultrathink:v1.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ultrathink-secrets
+              key: anthropic-api-key
 ```
 
 #### 4. Deploy

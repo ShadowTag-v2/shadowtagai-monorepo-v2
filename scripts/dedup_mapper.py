@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import subprocess
 from pathlib import Path
@@ -5,7 +6,7 @@ from pathlib import Path
 # Directories to scan
 scan_dirs = [
     os.path.expanduser("~/antigravity-repos"),
-    os.path.expanduser("~/ShadowTag-v2-stack"),
+    os.path.expanduser("~/aiyou-stack"),
     os.path.expanduser("~/.gemini/antigravity"),
 ]
 
@@ -15,15 +16,15 @@ markdown_rows = []
 
 def get_remote(git_dir):
     try:
-        return subprocess.check_output(
-            ["git", "-C", str(git_dir), "config", "--get", "remote.origin.url"],
-            stderr=subprocess.DEVNULL,
-            text=True,
+        remote = subprocess.check_output(
+            ["git", "-C", str(git_dir), "config", "--get", "remote.origin.url"], stderr=subprocess.DEVNULL, text=True
         ).strip()
+        return remote
     except subprocess.CalledProcessError:
         return ""
 
 
+print("Generating Dedup Table...")
 for root_dir in scan_dirs:
     root_path = Path(root_dir)
     if not root_path.exists():
@@ -52,23 +53,17 @@ for root_dir in scan_dirs:
             status = "Duplicate Git Clone"
 
         clean_path = ds_path.replace(os.path.expanduser("~"), "~")
-        markdown_rows.append(f"| `{clean_path}` | `{remote_url or 'NONE'}` | {status} |")
+        markdown_rows.append(f"| `{clean_path}` | `{remote_url if remote_url else 'NONE'}` | {status} |")
 
 # Also find raw non-git folders that match the target names
-target_names = [
-    "ShadowTag-v2-fastapi-services",
-    "Pipeline",
-    "cosmic-crab-payload",
-    "nascent-apollo",
-    "ShadowTag-v2",
-]
+target_names = ["aiyou-fastapi-services", "Pipeline", "cosmic-crab-payload", "nascent-apollo", "ShadowTag-v2"]
 for root_dir in scan_dirs:
     root_path = Path(root_dir)
     if not root_path.exists():
         continue
     for path in root_path.rglob("*"):
         if path.is_dir() and path.name in target_names and not (path / ".git").exists():
-            if "node_modules" in str(path) or ".venv" in str(path) or "apps/ShadowTag-v2_stack" in str(path):
+            if "node_modules" in str(path) or ".venv" in str(path) or "apps/aiyou_stack" in str(path):
                 continue
             clean_path = str(path).replace(os.path.expanduser("~"), "~")
             markdown_rows.append(f"| `{clean_path}` | `NONE` | Non-Git Folder / Flat Copy |")
@@ -80,3 +75,6 @@ out_file = "docs/DEDUP_MAPPING.md"
 os.makedirs("docs", exist_ok=True)
 with open(out_file, "w") as f:
     f.write(report)
+
+print(f"Report written to {out_file}.")
+print(report)

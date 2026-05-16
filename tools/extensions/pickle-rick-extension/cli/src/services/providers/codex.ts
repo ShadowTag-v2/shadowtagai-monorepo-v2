@@ -1,13 +1,13 @@
-import { readFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { readFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import {
   BaseProvider,
   checkForErrors,
   detectStepFromOutput,
   execCommandStreaming,
-} from './base.js';
-import type { AIResult, ProviderOptions } from './types.js';
+} from "./base.js";
+import type { AIResult, ProviderOptions } from "./types.js";
 
 interface CodexUsage {
   input_tokens?: number;
@@ -56,13 +56,13 @@ function extractErrorMessage(event: CodexEvent): string | undefined {
 }
 
 export class CodexProvider extends BaseProvider {
-  name = 'Codex';
-  cliCommand = 'codex';
+  name = "Codex";
+  cliCommand = "codex";
 
   async getModelName(): Promise<string | undefined> {
     try {
-      const configPath = join(homedir(), '.codex/config.toml');
-      const content = await readFile(configPath, 'utf-8');
+      const configPath = join(homedir(), ".codex/config.toml");
+      const content = await readFile(configPath, "utf-8");
       const match = content.match(/^model\s*=\s*["']?([^"'\n]+)["']?\s*$/m);
       if (match) {
         return match[1].trim();
@@ -84,16 +84,16 @@ export class CodexProvider extends BaseProvider {
     onProgress: (step: string, content?: string) => void,
     options?: ProviderOptions,
   ): Promise<AIResult> {
-    const codexArgs: string[] = ['exec'];
+    const codexArgs: string[] = ["exec"];
 
     if (options?.resumeSessionId) {
-      codexArgs.push('resume', options.resumeSessionId);
+      codexArgs.push("resume", options.resumeSessionId);
     }
 
-    codexArgs.push('--json');
+    codexArgs.push("--json");
 
     if (options?.modelOverride) {
-      codexArgs.push('--model', options.modelOverride);
+      codexArgs.push("--model", options.modelOverride);
     }
 
     if (options?.providerArgs) {
@@ -102,11 +102,11 @@ export class CodexProvider extends BaseProvider {
 
     // Codex CLI currently rejects --add-dir; ignore extraIncludes for this provider to avoid errors
 
-    codexArgs.push('-');
+    codexArgs.push("-");
 
     const outputLines: string[] = [];
     let sessionId: string | undefined;
-    let accumulatedResponse = '';
+    let accumulatedResponse = "";
     let inputTokens = 0;
     let outputTokens = 0;
     let error: string | undefined;
@@ -120,17 +120,17 @@ export class CodexProvider extends BaseProvider {
         try {
           const event: CodexEvent = JSON.parse(line);
 
-          if (event.type === 'thread.started' && event.thread_id) {
+          if (event.type === "thread.started" && event.thread_id) {
             sessionId = event.thread_id;
           }
 
           if (event.item) {
-            const itemType = event.item.type?.toLowerCase() || '';
-            const normalizedItemType = itemType.replace(/[^a-z0-9]/g, '');
-            if (itemType === 'agent_message' || normalizedItemType === 'agentmessage') {
+            const itemType = event.item.type?.toLowerCase() || "";
+            const normalizedItemType = itemType.replace(/[^a-z0-9]/g, "");
+            if (itemType === "agent_message" || normalizedItemType === "agentmessage") {
               if (event.item.text) {
                 accumulatedResponse += event.item.text;
-                onProgress('thinking', event.item.text);
+                onProgress("thinking", event.item.text);
               }
             }
 
@@ -149,8 +149,8 @@ export class CodexProvider extends BaseProvider {
             }
           }
 
-          if (event.type.endsWith('.failed') || event.type === 'error') {
-            error = error || extractErrorMessage(event) || 'Unknown error';
+          if (event.type.endsWith(".failed") || event.type === "error") {
+            error = error || extractErrorMessage(event) || "Unknown error";
           }
         } catch {
           // Ignore JSON parsing errors
@@ -160,19 +160,19 @@ export class CodexProvider extends BaseProvider {
       prompt,
     );
 
-    const fullOutput = outputLines.join('\n');
+    const fullOutput = outputLines.join("\n");
     const parsedError = checkForErrors(fullOutput);
     if (parsedError) {
       error = parsedError;
     }
 
     if (exitCode !== 0 && !error) {
-      const rawLines = outputLines.filter((l) => !l.trim().startsWith('{'));
-      error = rawLines.join('\n') || `Unknown execution error (exit code ${exitCode})`;
+      const rawLines = outputLines.filter((l) => !l.trim().startsWith("{"));
+      error = rawLines.join("\n") || `Unknown execution error (exit code ${exitCode})`;
     }
 
     if (error) {
-      const compactError = error.replace(/\s+/g, ' ').trim();
+      const compactError = error.replace(/\s+/g, " ").trim();
       return {
         success: false,
         response: accumulatedResponse,
@@ -184,7 +184,7 @@ export class CodexProvider extends BaseProvider {
 
     return {
       success: exitCode === 0 && !error,
-      response: accumulatedResponse || 'Task completed',
+      response: accumulatedResponse || "Task completed",
       inputTokens,
       outputTokens,
       error: exitCode !== 0 ? `Process exited with code ${exitCode}` : undefined,

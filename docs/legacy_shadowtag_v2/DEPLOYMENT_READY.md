@@ -75,7 +75,6 @@ curl -X POST http://localhost:8000/api/v1/reasoning/reason \
 ```
 
 **Services started**:
-
 - Cor.17 API: `http://localhost:8000`
 - API Docs: `http://localhost:8000/docs`
 - Prometheus: `http://localhost:9091`
@@ -136,7 +135,6 @@ curl http://$EXTERNAL_IP/health
 ```
 
 **GKE Configuration** (from `gke-setup.sh`):
-
 - Cluster: `cor17-cluster` (us-central1-a)
 - Node pool: 3 nodes (n1-standard-4)
 - Autoscaling: 3-10 nodes
@@ -197,7 +195,6 @@ chmod +x deployment/vertex-workbench-setup.sh
 ```
 
 **Core Components**:
-
 1. **Orchestration** (LangChain + GPTRAM): Chain orchestration with temporal agent memory
 2. **Reasoning** (BDH × RoT × MoE-CL × Diffusion): Hybrid neural reasoning engine
 3. **Search** (Nowgrep): Ultra-fast semantic search for code and text
@@ -211,30 +208,25 @@ chmod +x deployment/vertex-workbench-setup.sh
 Once deployed, access these endpoints:
 
 ### Orchestration
-
 - `POST /api/v1/orchestration/chain` - Execute reasoning chain
 - `POST /api/v1/orchestration/multi-agent` - Multi-agent orchestration
 - `GET /api/v1/orchestration/memory/{session_id}` - Get memory stats
 
 ### Reasoning
-
 - `POST /api/v1/reasoning/reason` - Execute reasoning (BDH + RoT + MoE-CL)
 - `POST /api/v1/reasoning/train-adapter` - Train MoE-CL adapter
 
 ### Search
-
 - `POST /api/v1/search/index` - Create search index
 - `POST /api/v1/search/search` - Semantic search
 - `POST /api/v1/search/multimodal-search` - Multimodal search
 
 ### Safety
-
 - `POST /api/v1/safety/moderate/content` - Moderate text content
 - `POST /api/v1/safety/moderate/media` - Moderate media files
 - `GET /api/v1/safety/stats` - Moderation statistics
 
 ### Data Ops
-
 - `POST /api/v1/dataops/embeddings` - Store embeddings
 - `GET /api/v1/dataops/embeddings/{id}` - Retrieve embeddings
 - `POST /api/v1/dataops/adapters` - Save MoE-CL adapter
@@ -248,23 +240,21 @@ Once deployed, access these endpoints:
 
 Based on Cor.17 architecture benchmarks:
 
-| Metric                | Baseline       | Cor.17        | Improvement |
-| --------------------- | -------------- | ------------- | ----------- |
-| Inference throughput  | 100 req/s      | 182 req/s     | +82%        |
-| Token cost per output | $0.02          | $0.0082       | -59%        |
-| Memory footprint      | 8GB            | 4.24GB        | -47%        |
-| Search latency        | 500ms          | 200ms         | -60%        |
-| Context retention     | 0% (stateless) | 100% (GPTRAM) | ∞           |
+| Metric | Baseline | Cor.17 | Improvement |
+|--------|----------|--------|-------------|
+| Inference throughput | 100 req/s | 182 req/s | +82% |
+| Token cost per output | $0.02 | $0.0082 | -59% |
+| Memory footprint | 8GB | 4.24GB | -47% |
+| Search latency | 500ms | 200ms | -60% |
+| Context retention | 0% (stateless) | 100% (GPTRAM) | ∞ |
 
 **Cost Savings (50 employees)**:
-
 - Current state: 5,000 queries/day × $0.02 = $100/day = $3,000/month
 - With Cor.17: 5,000 queries/day × $0.0082 = $41/day = $1,230/month
 - **Monthly savings**: $1,770
 - **Annual savings**: $21,240
 
 **Productivity Gains (semantic search)**:
-
 - 50 employees × 30 min/day saved = 25 hours/day
 - 25 hours/day × $80/hour = $2,000/day
 - **Annual value**: $520,000
@@ -276,7 +266,6 @@ Based on Cor.17 architecture benchmarks:
 ## 🔐 Security & Compliance
 
 **Built-in Security Features**:
-
 - ✅ Google Content Safety API integration (BLOCK_MEDIUM_AND_ABOVE)
 - ✅ Rate limiting (100 requests/minute default, configurable)
 - ✅ API key authentication (X-API-Key header)
@@ -286,7 +275,6 @@ Based on Cor.17 architecture benchmarks:
 - ✅ OpenTelemetry tracing (distributed traces)
 
 **Compliance Ready**:
-
 - EU AI Act: Risk classification and transparency logging
 - GDPR: Data minimization and privacy controls
 - SOC 2: Audit logs and access controls
@@ -297,7 +285,6 @@ Based on Cor.17 architecture benchmarks:
 ## 📦 What's Included
 
 ### Application Code
-
 ```
 app/
 ├── main.py                         # FastAPI application entry point
@@ -330,7 +317,6 @@ app/
 ```
 
 ### Deployment Files
-
 ```
 deployment/
 ├── gke-setup.sh                    # GKE cluster setup (3 nodes, autoscaling)
@@ -350,7 +336,6 @@ deployment/
 ```
 
 ### Documentation
-
 ```
 docs/
 ├── README.md                       # Architecture overview
@@ -381,7 +366,6 @@ VERTEX_AI_MODEL=gemini-3.1-flash-exp
 ### Advanced Configuration
 
 **Performance Tuning**:
-
 ```bash
 # API workers (default: 4, increase for higher throughput)
 API_WORKERS=8
@@ -394,7 +378,6 @@ TURBO_API_MAX_RPS=40000
 ```
 
 **MoE-CL (Mixture of Experts)**:
-
 ```bash
 # Number of expert adapters (default: 8)
 MOE_NUM_EXPERTS=8
@@ -407,7 +390,6 @@ MOE_TRAINING_SCHEDULE=nightly
 ```
 
 **BDH (Sparse Linear Attention)**:
-
 ```bash
 # Attention type (default: sparse_linear)
 BDH_ATTENTION_TYPE=sparse_linear
@@ -417,7 +399,6 @@ BDH_GPU_ENABLED=true
 ```
 
 **Nowgrep (Semantic Search)**:
-
 ```bash
 # Index storage path (default: /data/nowgrep/indices)
 NOWGREP_INDEX_PATH=/data/nowgrep/indices
@@ -431,7 +412,6 @@ NOWGREP_VECTOR_DIM=768
 ## 🧪 Testing the Deployment
 
 ### Health Check
-
 ```bash
 curl http://localhost:8000/health
 
@@ -440,7 +420,6 @@ curl http://localhost:8000/health
 ```
 
 ### Reasoning Endpoint Test
-
 ```bash
 curl -X POST http://localhost:8000/api/v1/reasoning/reason \
   -H "Content-Type: application/json" \
@@ -463,7 +442,6 @@ curl -X POST http://localhost:8000/api/v1/reasoning/reason \
 ```
 
 ### Semantic Search Test
-
 ```bash
 # 1. Index your codebase
 curl -X POST http://localhost:8000/api/v1/search/index \
@@ -487,7 +465,6 @@ curl -X POST http://localhost:8000/api/v1/search/search \
 ```
 
 ### Memory Persistence Test
-
 ```bash
 # 1. First query (creates memory)
 curl -X POST http://localhost:8000/api/v1/orchestration/chain \
@@ -517,7 +494,6 @@ curl -X POST http://localhost:8000/api/v1/orchestration/chain \
 Access Prometheus at `http://localhost:9091` (Docker Compose) or `http://<EXTERNAL_IP>:9090` (GKE)
 
 **Key Metrics**:
-
 - `cor17_requests_total` - Total API requests
 - `cor17_request_duration_seconds` - Request latency histogram
 - `cor17_reasoning_token_cost` - Token cost per reasoning operation
@@ -527,19 +503,16 @@ Access Prometheus at `http://localhost:9091` (Docker Compose) or `http://<EXTERN
 ### Logs
 
 **Docker Compose**:
-
 ```bash
 docker-compose logs -f api
 ```
 
 **GKE**:
-
 ```bash
 kubectl logs -f deployment/cor17-api -n cor17
 ```
 
 **Cloud Logging** (GKE only):
-
 ```bash
 gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_name=cor17" --limit 50
 ```
@@ -549,7 +522,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 ## 🎯 Quick Value Extraction Roadmap
 
 ### Day 1: Deploy + Test
-
 1. Run Option 1 (Docker Compose) - 30 minutes
 2. Test health endpoint - 5 minutes
 3. Test reasoning endpoint - 10 minutes
@@ -559,7 +531,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 **Total**: 60 minutes to first value
 
 ### Day 2: Team Integration
-
 1. Create Slack bot using `/api/v1/reasoning/reason` endpoint
 2. Connect to internal chat system
 3. Test with 5-10 pilot users
@@ -568,7 +539,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 **Total**: 4 hours engineering + 4 hours testing
 
 ### Day 3: Codebase Indexing
-
 1. Index company codebase with `/api/v1/search/index`
 2. Test semantic code search
 3. Integrate with IDE (VS Code extension)
@@ -577,7 +547,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 **Total**: 6 hours engineering
 
 ### Day 4: Content Moderation
-
 1. Configure content safety policies
 2. Test `/api/v1/safety/moderate/content` endpoint
 3. Integrate with user-generated content pipeline
@@ -586,7 +555,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 **Total**: 4 hours engineering
 
 ### Days 5-7: Production GKE Deployment
-
 1. Setup GKE cluster (Option 2)
 2. Configure autoscaling (2-20 replicas)
 3. Setup monitoring and alerts
@@ -602,20 +570,17 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 ### Infrastructure Costs (GKE)
 
 **Monthly GKE Cluster** (3 n1-standard-4 nodes):
-
 - 3 nodes × 4 vCPUs × $0.0475/hour × 730 hours = $416/month
 - 3 nodes × 15GB RAM × $0.0063/hour × 730 hours = $208/month
 - Load balancer: $18/month
 - **Subtotal**: $642/month
 
 **Vertex AI API Costs** (50 employees, 5,000 queries/day):
-
 - Gemini 2.0 Flash: 5,000 × 30 days × $0.0082 = $1,230/month
 - Embeddings: 1,000 documents/day × 30 × $0.0001 = $3/month
 - **Subtotal**: $1,233/month
 
 **Storage** (GCS + Redis + PostgreSQL + MongoDB):
-
 - GCS: $23/month (100GB standard storage)
 - Redis memory: Included in cluster
 - PostgreSQL: Included in cluster
@@ -625,7 +590,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 **Total Monthly Cost**: $1,898
 
 **vs. Direct Gemini API** (no Cor.17):
-
 - 5,000 queries/day × $0.02 × 30 days = $3,000/month
 - No infrastructure needed: $0/month
 - **Total**: $3,000/month
@@ -642,7 +606,6 @@ gcloud logging read "resource.type=k8s_container AND resource.labels.namespace_n
 
 **Problem**: `docker-compose up -d` fails with "network error"
 **Solution**:
-
 ```bash
 docker network prune
 docker-compose down
@@ -651,7 +614,6 @@ docker-compose up -d
 
 **Problem**: Redis connection refused
 **Solution**:
-
 ```bash
 docker-compose logs redis
 # Check if Redis is running
@@ -660,7 +622,6 @@ docker-compose restart redis
 
 **Problem**: API returns 500 errors on `/api/v1/reasoning/reason`
 **Solution**:
-
 ```bash
 # Check GCP credentials
 docker-compose logs api | grep "GCP_PROJECT_ID"
@@ -673,7 +634,6 @@ docker-compose restart api
 
 **Problem**: `kubectl apply` fails with "namespace not found"
 **Solution**:
-
 ```bash
 kubectl apply -f deployment/kubernetes/namespace.yaml
 # Then re-run other manifests
@@ -681,7 +641,6 @@ kubectl apply -f deployment/kubernetes/namespace.yaml
 
 **Problem**: Pods stuck in "Pending" state
 **Solution**:
-
 ```bash
 kubectl describe pod <pod-name> -n cor17
 # Common causes:
@@ -692,7 +651,6 @@ kubectl describe pod <pod-name> -n cor17
 
 **Problem**: Ingress returns 502 Bad Gateway
 **Solution**:
-
 ```bash
 kubectl get pods -n cor17
 # Ensure all pods are Running
@@ -742,7 +700,6 @@ After deployment, verify these conditions:
 ---
 
 **Questions or Issues?**
-
 - Review this guide: `DEPLOYMENT_READY.md`
 - Check README.md for architecture details
 - Review API docs: `http://localhost:8000/docs` (after deployment)

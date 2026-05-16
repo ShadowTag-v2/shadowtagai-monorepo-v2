@@ -31,7 +31,6 @@ python3 scripts/setup_stripe_products.py
 ```
 
 **Expected output:**
-
 ```
 ✅ Created: Cor2.0 Pro - Price ID: price_1ABC123
 ✅ Created: Cor2.0 Math Auditor - Price ID: price_1DEF456
@@ -98,24 +97,22 @@ stripe trigger checkout.session.completed
 
 ## 📊 Expected Results (Week 1)
 
-| Day | Action        | Result            |
-| --- | ------------- | ----------------- |
+| Day | Action | Result |
+|-----|--------|--------|
 | Mon | Deploy Stripe | Pricing page live |
-| Tue | ProductHunt   | 50 signups        |
-| Wed | Email drip    | 5 trials          |
-| Thu | Follow-ups    | 2 paid ($40 MRR)  |
-| Fri | Optimize      | 8% conversion     |
+| Tue | ProductHunt | 50 signups |
+| Wed | Email drip | 5 trials |
+| Thu | Follow-ups | 2 paid ($40 MRR) |
+| Fri | Optimize | 8% conversion |
 
 ## 🐛 Troubleshooting
 
 **Error: No module named 'stripe'**
-
 ```bash
 pip3 install stripe
 ```
 
 **Error: STRIPE_SECRET_KEY not found**
-
 ```bash
 # Check .env exists
 cat .env | grep STRIPE
@@ -126,7 +123,6 @@ load_dotenv()
 ```
 
 **Error: Invalid price_id**
-
 ```bash
 # Verify products created
 stripe products list

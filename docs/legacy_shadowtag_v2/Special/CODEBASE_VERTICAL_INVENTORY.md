@@ -71,7 +71,7 @@
 - **Directories**:
   - `nightly_intel_pipeline/`
   - `intelligence-pipeline/`
-  - `autoresearch...` (The scraper/collector swarm)
+  - `flying_monkeys...` (The scraper/collector swarm)
 - **Key Code**:
   - `nightly_intel_pipeline/`: Automated intelligence gathering scripts.
   - `https://github.com/karpathy/autoresearchs_v8.py`: The advanced scraping/browsing agent.

@@ -10,16 +10,13 @@
 ## EXECUTIVE CONTEXT
 
 ### What This Is
-
 Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision framework (160-IQ board equivalence) at code level. Based on diet103's 6-month battle-tested patterns, customized for pnkln dual-company strategy (ActiveShield + pnkln Holdings).
 
 ### Why This Exists
-
 **Problem:** AI coding assistants don't automatically enforce strategic thresholds, security requirements, or financial gates.
 **Solution:** Skills + Hooks + Agents that auto-activate to enforce ROI ≥3×, LTV:CAC ≥4:1, security standards, and kill-switch culture.
 
 ### Key Principles
-
 - **Skills handle "how to code"** - Reusable patterns, best practices, security requirements
 - **CLAUDE.md handles "how this project works"** - Architecture, integration points, quirks
 - **Hooks enforce gates** - Auto-activation, error checking, quality control
@@ -31,9 +28,7 @@ Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision
 ## pnkln STRATEGIC CONTEXT
 
 ### Company Structure
-
 **Dual-Company Strategy:**
-
 1. **ActiveShield** (Cybersecurity) - Cash engine, exit Y5-Y7 at $30-50B
 2. **pnkln Holdings** (AI Infrastructure) - Keystone asset, $726B-$1.33T by Y30
 
@@ -42,7 +37,6 @@ Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision
 **Risk Management:** Army Special Forces protocols, RM Stage IV human accountability
 
 ### Core Thresholds (pnkln-stackJR Gates)
-
 - **ROI Gate:** ≥3× return in 18 months, validated via Monte Carlo
 - **LTV:CAC Gate:** ≥4:1 ratio within 12-18 months
 - **Go/No-Go:** ≥70% probability-weighted positive NPV
@@ -51,7 +45,6 @@ Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision
 - **Security:** AES-256 encryption mandatory, TLS 1.3, zero-trust architecture
 
 ### Technical Standards
-
 - **Python:** Use `uv` for package management (deterministic, fast)
 - **Node:** Use `pnpm` (monorepo, cache efficiency)
 - **Experimental:** Bun (optional acceleration under audit)
@@ -59,7 +52,6 @@ Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision
 - **Naming:** Company name is "pnkln" only, internal functions use "Cor" not "pnklnCor"
 
 ### Strategic Frameworks (Cor.X)
-
 - **Cor.21:** Valuation frameworks (VRIO, Value Stick, Blue Ocean, Horizons)
 - **Cor.17:** Tech architecture (pnkln Core Stack: JR governance, Cor execution, NS nervous system)
 - **Cor.34:** 90-point pnkln-stack/AiY architecture summary
@@ -67,7 +59,6 @@ Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision
 - **Cor.8:** pnkln-stackJR Dashboard (ROI reporting template)
 
 ### Current Projects
-
 1. **ShadowTag 2.0** - Cryptographic auditing, provenance signing
 2. **ActiveShield** - 5 cybersecurity verticals, Q1 2026 launch planned
 3. **Cognitive Stack v5** - RoT thought graphs, MoE-CL lifelong learning, CoDA/DLM decode optimization
@@ -78,14 +69,12 @@ Production-grade Claude Code infrastructure that enforces pnkln-stackJR decision
 ## DIET103 INFRASTRUCTURE PATTERNS
 
 ### Original Source
-
 - **GitHub:** https://github.com/diet103/claude-code-infrastructure-showcase
 - **Reddit Post:** "Claude Code is a Beast – Tips from 6 Months of Hardcore Use"
 - **Key Achievement:** Solo rewrote 300k LOC in 6 months with consistent quality
 - **Core Innovation:** Skills that actually auto-activate (solved "skills sit unused" problem)
 
 ### Architecture Overview
-
 ```
 .claude/
 ├── skills/              # Domain expertise (5 core + N custom)
@@ -117,16 +106,13 @@ dev/
 ```
 
 ### The 500-Line Rule
-
 **Critical Pattern:** All skills follow modular structure:
-
 - Main `SKILL.md` file: <500 lines (high-level guide + navigation)
 - `resources/` folder: Topic-specific files, each <500 lines
 - Progressive disclosure: Claude loads main first, resources only when needed
 - **Token efficiency:** 40-60% improvement vs monolithic files
 
 ### Hook Pipeline (The Magic)
-
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ USER SUBMITS PROMPT                                          │
@@ -164,7 +150,6 @@ dev/
 ```
 
 ### Dev Docs Pattern (Survives Context Resets)
-
 **Problem:** Claude loses strategic context after auto-compaction or new session.
 **Solution:** Three-file structure created for EVERY large task:
 
@@ -191,7 +176,6 @@ dev/
    - Blockers and dependencies
 
 **Workflow:**
-
 ```bash
 # Start new feature
 claude planning mode → Create plan → Review/approve → ESC to interrupt
@@ -214,19 +198,16 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 ## pnkln-stackJR SKILLS (CUSTOM FOR pnkln)
 
 ### Security Enforcement Skill
-
 **Purpose:** Block code that violates pnkln security requirements
 **Enforcement:** `"block"` - Prevents edits that fail security checks
 **Priority:** `"critical"`
 
 **Trigger Patterns:**
-
 - Keywords: `auth`, `encrypt`, `secret`, `password`, `token`, `api`, `deploy`
 - File patterns: All `.ts`, `.py`, `.env` files
 - Content patterns: Detects `password`, `apiKey`, `SECRET`, unencrypted connections
 
 **Mandatory Requirements:**
-
 1. **Encryption at rest:** AES-256 for all stored data
 2. **Encryption in transit:** TLS 1.3 for all API traffic (no TLS 1.2)
 3. **Zero-trust auth:** Every service-to-service call authenticated
@@ -234,7 +215,6 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 5. **Error tracking:** All exceptions captured via Sentry.captureException()
 
 **Progressive Disclosure:** (resources/ folder)
-
 - `auth-patterns.md` - OAuth 2.0, JWT signing, refresh tokens
 - `encryption.md` - AES-256-GCM implementation, key rotation
 - `secrets-management.md` - Environment variables, Google Secret Manager
@@ -242,13 +222,11 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 - `tls-config.md` - TLS 1.3 cipher suites, certificate pinning
 
 ### pnkln-stackJR Judge Skill
-
 **Purpose:** Enforce strategic decision gates before feature implementation
 **Enforcement:** `"suggest"` - Shows warnings but doesn't block (human decides)
 **Priority:** `"high"`
 
 **Trigger Patterns:**
-
 - Keywords: `feature`, `implement`, `build`, `architecture`, `plan`, `deploy`
 - Intent: `(plan|design|implement|deploy).*feature`
 - File patterns: `ARCHITECTURE.md`, `PLAN.md`, dev docs
@@ -274,7 +252,6 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
    - [ ] **Security review:** Passes security-enforcement skill checks
 
 **Kill-Switch Triggers (Auto-abort scenarios):**
-
 - Security vulnerability CVSS ≥7.0 discovered
 - Cost overrun >20% vs. budget in dev docs
 - Timeline slip >30% vs. plan without re-approval
@@ -282,7 +259,6 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 - Two consecutive gate failures on related features
 
 **Progressive Disclosure:**
-
 - `valuation-frameworks.md` - VRIO, Value Stick, Blue Ocean (from Cor.21)
 - `tech-architecture.md` - pnkln Core Stack, microservices (from Cor.17)
 - `monte-carlo-templates.md` - Scenario modeling, NPV calculation
@@ -291,13 +267,11 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 - `risk-management.md` - Army RM protocols, Stage IV gates
 
 ### Backend Dev Guidelines Skill (Adapted from diet103)
-
 **Purpose:** Enforce Node.js/TypeScript/Express patterns
 **Enforcement:** `"suggest"`
 **Priority:** `"high"`
 
 **Key Patterns:**
-
 - Architecture: Routes → Controllers → Services → Repositories
 - Error handling: Try-catch with Sentry.captureException()
 - Testing: Jest, ≥98% coverage, integration tests for APIs
@@ -305,19 +279,16 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 - API design: RESTful, versioning (/api/v1/), OpenAPI docs
 
 **pnkln Customizations:**
-
 - PM2 for process management (7 microservices)
 - pnpm for package management (not npm/yarn)
 - Environment-specific configs (.env.development, .env.production)
 
 ### Frontend Dev Guidelines Skill (Adapted from diet103)
-
 **Purpose:** Enforce React 19 + TypeScript + TanStack patterns
 **Enforcement:** `"suggest"`
 **Priority:** `"high"`
 
 **Key Patterns:**
-
 - React 19 best practices (Server Components, Actions)
 - TanStack Query v5 for data fetching
 - TanStack Router for file-based routing
@@ -325,7 +296,6 @@ claude: "Read ~/git/project/dev/active/[task-name]/*.md and continue"
 - TypeScript strict mode enabled
 
 **pnkln Customizations:**
-
 - ShadowTag V2 provenance UI components
 - ActiveShield dashboard patterns
 - Responsive design (mobile-first)
@@ -344,24 +314,11 @@ This file controls auto-activation. Claude Code checks this on every prompt.
     "priority": "critical",
     "promptTriggers": {
       "keywords": [
-        "auth",
-        "authenticate",
-        "authorization",
-        "encrypt",
-        "encryption",
-        "decrypt",
-        "secret",
-        "password",
-        "token",
-        "apiKey",
-        "api",
-        "endpoint",
-        "deploy",
-        "production",
-        "database",
-        "db",
-        "prisma",
-        "query"
+        "auth", "authenticate", "authorization",
+        "encrypt", "encryption", "decrypt",
+        "secret", "password", "token", "apiKey",
+        "api", "endpoint", "deploy", "production",
+        "database", "db", "prisma", "query"
       ],
       "intentPatterns": [
         "(create|add|implement|build).*(auth|security|api|endpoint)",
@@ -371,7 +328,15 @@ This file controls auto-activation. Claude Code checks this on every prompt.
       ]
     },
     "fileTriggers": {
-      "pathPatterns": ["**/*.ts", "**/*.py", "**/*.js", "**/auth/**/*", "**/api/**/*", "**/.env*", "**/config/**/*"],
+      "pathPatterns": [
+        "**/*.ts",
+        "**/*.py",
+        "**/*.js",
+        "**/auth/**/*",
+        "**/api/**/*",
+        "**/.env*",
+        "**/config/**/*"
+      ],
       "contentPatterns": [
         "password",
         "apiKey",
@@ -394,17 +359,9 @@ This file controls auto-activation. Claude Code checks this on every prompt.
     "priority": "high",
     "promptTriggers": {
       "keywords": [
-        "feature",
-        "implement",
-        "build",
-        "create",
-        "architecture",
-        "design",
-        "plan",
-        "refactor",
-        "deploy",
-        "launch",
-        "release"
+        "feature", "implement", "build", "create",
+        "architecture", "design", "plan", "refactor",
+        "deploy", "launch", "release"
       ],
       "intentPatterns": [
         "(plan|design|architect).*feature",
@@ -414,8 +371,19 @@ This file controls auto-activation. Claude Code checks this on every prompt.
       ]
     },
     "fileTriggers": {
-      "pathPatterns": ["**/ARCHITECTURE.md", "**/PLAN.md", "**/dev/active/**/*", "**/CLAUDE.md"],
-      "contentPatterns": ["## Architecture", "## Plan", "Monte Carlo", "ROI", "LTV:CAC"]
+      "pathPatterns": [
+        "**/ARCHITECTURE.md",
+        "**/PLAN.md",
+        "**/dev/active/**/*",
+        "**/CLAUDE.md"
+      ],
+      "contentPatterns": [
+        "## Architecture",
+        "## Plan",
+        "Monte Carlo",
+        "ROI",
+        "LTV:CAC"
+      ]
     }
   },
 
@@ -425,17 +393,9 @@ This file controls auto-activation. Claude Code checks this on every prompt.
     "priority": "high",
     "promptTriggers": {
       "keywords": [
-        "backend",
-        "api",
-        "endpoint",
-        "route",
-        "controller",
-        "service",
-        "repository",
-        "database",
-        "db",
-        "prisma",
-        "query"
+        "backend", "api", "endpoint", "route",
+        "controller", "service", "repository",
+        "database", "db", "prisma", "query"
       ],
       "intentPatterns": [
         "(create|add|build).*(route|endpoint|controller|service)",
@@ -451,7 +411,12 @@ This file controls auto-activation. Claude Code checks this on every prompt.
         "**/controllers/**/*.ts",
         "**/repositories/**/*.ts"
       ],
-      "contentPatterns": ["router\\.", "export.*Controller", "express", "prisma"]
+      "contentPatterns": [
+        "router\\.",
+        "export.*Controller",
+        "express",
+        "prisma"
+      ]
     }
   },
 
@@ -460,12 +425,27 @@ This file controls auto-activation. Claude Code checks this on every prompt.
     "enforcement": "suggest",
     "priority": "high",
     "promptTriggers": {
-      "keywords": ["frontend", "react", "component", "ui", "tanstack", "query", "router", "mui"],
-      "intentPatterns": ["(create|add|build).*(component|page|layout)", "(how to|best practice).*(react|frontend|ui)"]
+      "keywords": [
+        "frontend", "react", "component", "ui",
+        "tanstack", "query", "router", "mui"
+      ],
+      "intentPatterns": [
+        "(create|add|build).*(component|page|layout)",
+        "(how to|best practice).*(react|frontend|ui)"
+      ]
     },
     "fileTriggers": {
-      "pathPatterns": ["**/frontend/**/*.tsx", "**/components/**/*.tsx", "**/pages/**/*.tsx"],
-      "contentPatterns": ["import.*React", "export.*function.*Component", "useState", "useQuery"]
+      "pathPatterns": [
+        "**/frontend/**/*.tsx",
+        "**/components/**/*.tsx",
+        "**/pages/**/*.tsx"
+      ],
+      "contentPatterns": [
+        "import.*React",
+        "export.*function.*Component",
+        "useState",
+        "useQuery"
+      ]
     }
   }
 }
@@ -476,20 +456,19 @@ This file controls auto-activation. Claude Code checks this on every prompt.
 ## HOOKS IMPLEMENTATION
 
 ### 1. skill-activation-prompt (TypeScript)
-
 **File:** `.claude/hooks/skill-activation-prompt.ts`
 **Type:** `UserPromptSubmit`
 **Runs:** BEFORE Claude sees your prompt
 **Purpose:** Auto-activate relevant skills
 
 ```typescript
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface SkillRule {
   type: string;
-  enforcement: "block" | "suggest";
-  priority: "critical" | "high" | "medium" | "low";
+  enforcement: 'block' | 'suggest';
+  priority: 'critical' | 'high' | 'medium' | 'low';
   promptTriggers: {
     keywords: string[];
     intentPatterns: string[];
@@ -506,15 +485,15 @@ interface SkillRules {
 
 export async function handler(params: any) {
   const { userPrompt, conversationHistory } = params;
-  const skillsDir = path.join(process.cwd(), ".claude", "skills");
-  const rulesPath = path.join(skillsDir, "skill-rules.json");
+  const skillsDir = path.join(process.cwd(), '.claude', 'skills');
+  const rulesPath = path.join(skillsDir, 'skill-rules.json');
 
   // Load skill rules
   if (!fs.existsSync(rulesPath)) {
     return { userPrompt }; // No rules, pass through
   }
 
-  const rules: SkillRules = JSON.parse(fs.readFileSync(rulesPath, "utf-8"));
+  const rules: SkillRules = JSON.parse(fs.readFileSync(rulesPath, 'utf-8'));
   const activatedSkills: string[] = [];
 
   // Check each skill
@@ -533,7 +512,7 @@ export async function handler(params: any) {
     // Check intent pattern triggers
     if (!shouldActivate) {
       for (const pattern of rule.promptTriggers.intentPatterns) {
-        const regex = new RegExp(pattern, "i");
+        const regex = new RegExp(pattern, 'i');
         if (regex.test(userPrompt)) {
           shouldActivate = true;
           break;
@@ -553,40 +532,43 @@ export async function handler(params: any) {
     return { userPrompt };
   }
 
-  const criticalSkills = activatedSkills.filter((name) => rules[name].priority === "critical");
-  const highSkills = activatedSkills.filter((name) => rules[name].priority === "high");
+  const criticalSkills = activatedSkills.filter(
+    name => rules[name].priority === 'critical'
+  );
+  const highSkills = activatedSkills.filter(
+    name => rules[name].priority === 'high'
+  );
 
-  let activationMessage = "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-  activationMessage += "🎯 SKILL ACTIVATION CHECK\n";
-  activationMessage += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+  let activationMessage = '\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+  activationMessage += '🎯 SKILL ACTIVATION CHECK\n';
+  activationMessage += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
 
   if (criticalSkills.length > 0) {
-    activationMessage += "🚨 CRITICAL SKILLS (Must Follow):\n";
-    criticalSkills.forEach((skill) => {
+    activationMessage += '🚨 CRITICAL SKILLS (Must Follow):\n';
+    criticalSkills.forEach(skill => {
       activationMessage += `   • ${skill} (enforcement: ${rules[skill].enforcement})\n`;
     });
-    activationMessage += "\n";
+    activationMessage += '\n';
   }
 
   if (highSkills.length > 0) {
-    activationMessage += "⚠️  HIGH PRIORITY SKILLS (Recommended):\n";
-    highSkills.forEach((skill) => {
+    activationMessage += '⚠️  HIGH PRIORITY SKILLS (Recommended):\n';
+    highSkills.forEach(skill => {
       activationMessage += `   • ${skill}\n`;
     });
-    activationMessage += "\n";
+    activationMessage += '\n';
   }
 
-  activationMessage += "💡 Load these skills and follow their guidelines.\n";
-  activationMessage += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  activationMessage += '💡 Load these skills and follow their guidelines.\n';
+  activationMessage += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
 
   return {
-    userPrompt: activationMessage + userPrompt,
+    userPrompt: activationMessage + userPrompt
   };
 }
 ```
 
 ### 2. post-tool-use-tracker (Shell)
-
 **File:** `.claude/hooks/post-tool-use-tracker.sh`
 **Type:** `PostToolUse`
 **Runs:** AFTER each file edit operation
@@ -623,7 +605,6 @@ exit 0
 ```
 
 ### 3. stop-build-check (Shell)
-
 **File:** `.claude/hooks/stop-build-check.sh`
 **Type:** `Stop`
 **Runs:** AFTER Claude finishes responding
@@ -726,7 +707,6 @@ exit 0
 ```
 
 ### 4. rollback-verification (Shell) - pnkln-stackJR Addition
-
 **File:** `.claude/hooks/rollback-verification.sh`
 **Type:** `Stop`
 **Runs:** AFTER Claude finishes responding
@@ -787,18 +767,15 @@ exit 0
 ## AGENTS (SPECIALIZED TASKS)
 
 ### Strategic Plan Architect (Enhanced for pnkln-stackJR)
-
 **File:** `.claude/agents/strategic-plan-architect.md`
 
 ```markdown
 # Agent: Strategic Plan Architect (pnkln-stackJR Enhanced)
 
 ## Role
-
 Expert strategic planner who creates comprehensive implementation plans with pnkln-stackJR financial gates embedded.
 
 ## When to Use
-
 - Planning any new feature (before implementation)
 - Major refactoring initiatives
 - Architecture changes
@@ -838,16 +815,14 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
    - `[task]-tasks.md` - Execution checklist
 
 ## Output Format (plan.md)
-```
 
+```
 # [Feature Name] - Strategic Plan
 
 ## Executive Summary (BLUF)
-
 [One paragraph: What, Why, Impact, Timeline]
 
 ## Purpose Gate ✓/✗
-
 - [ ] Aligns with ActiveShield exit timeline (Y5-Y7)
 - [ ] OR Supports pnkln long-term strategy
 - [ ] Documented in Cor.X framework: [Reference]
@@ -856,30 +831,25 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
 ## Reasons Gate ✓/✗
 
 ### Financial Analysis
-
 **ROI (Target ≥3× in 18mo):**
-
 - Base Case: [X]× return in [Y] months
 - Best Case: [X]× return in [Y] months
 - Worst Case: [X]× return in [Y] months
 - Probability-Weighted: [X]× return
 
 **LTV:CAC (Target ≥4:1 in 12-18mo):**
-
 - Customer Lifetime Value: $[X]
 - Customer Acquisition Cost: $[Y]
 - Ratio: [Z]:1
 - Payback Period: [N] months
 
 **Go/No-Go (Target ≥70% Positive NPV):**
-
 - NPV Calculation: $[X]M
 - Discount Rate: [Y]%
 - Probability of Success: [Z]%
 - Decision: [GO / NO-GO / CONDITIONAL]
 
 ### Cost Breakdown
-
 - Development Time: [X] hours @ $[Y]/hr = $[Z]
 - AI Compute: $[X]/month × [Y] months = $[Z]
 - Infrastructure: $[X]/month × [Y] months = $[Z]
@@ -889,21 +859,17 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
 ## Brakes Gate ✓/✗
 
 ### Reversibility
-
 **Rollback Steps:**
-
 1. [Step 1]
 2. [Step 2]
 3. [Step 3]
 
 **Blast Radius:** [Low / Medium / High]
-
 - Affected systems: [List]
 - User impact if rolled back: [Description]
 - Data loss risk: [None / Minimal / Significant]
 
 ### Kill-Switch Triggers
-
 - [ ] Security vulnerability CVSS ≥7.0
 - [ ] Cost overrun >20% ($[X] budget)
 - [ ] Timeline slip >30% ([X] week plan)
@@ -911,7 +877,6 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
 - [ ] [Custom trigger for this feature]
 
 ### Security Requirements
-
 - [ ] AES-256 encryption for data at rest
 - [ ] TLS 1.3 for API traffic
 - [ ] Zero-trust auth implemented
@@ -921,56 +886,45 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
 ## Implementation Plan
 
 ### Phase 1: [Name] ([Timeline])
-
 **Tasks:**
-
 - [ ] Task 1.1 - [Description]
 - [ ] Task 1.2 - [Description]
 
 **Deliverables:**
-
 - [Deliverable 1]
 - [Deliverable 2]
 
 **Success Metrics:**
-
 - [Metric 1]: Target [X]
 - [Metric 2]: Target [Y]
 
 ### Phase 2: [Name] ([Timeline])
-
 [Repeat structure]
 
 ## Architecture
 
 ### Current State
-
 [Description or diagram]
 
 ### Proposed Changes
-
 [Description of changes]
 
 ### Integration Points
-
 - [System 1]: [How it integrates]
 - [System 2]: [How it integrates]
 
 ## Testing Strategy
-
 - Unit Tests: Target ≥98% coverage
 - Integration Tests: [Scenarios]
 - E2E Tests: [Critical paths]
 - Performance Tests: [Load benchmarks]
 
 ## Dependencies
-
 - [External dependency 1]
 - [Internal service 2]
 - [Blocking item 3]
 
 ## Timeline
-
 - Planning: [Dates]
 - Phase 1: [Dates]
 - Phase 2: [Dates]
@@ -978,13 +932,11 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
 - Launch: [Target date]
 
 ## Risks & Mitigations
-
-| Risk     | Impact | Probability | Mitigation   |
-| -------- | ------ | ----------- | ------------ |
-| [Risk 1] | High   | Medium      | [Mitigation] |
+| Risk | Impact | Probability | Mitigation |
+|------|--------|-------------|------------|
+| [Risk 1] | High | Medium | [Mitigation] |
 
 ## Success Criteria
-
 - [ ] All tests passing (≥98% coverage)
 - [ ] Security review approved
 - [ ] Performance benchmarks met
@@ -992,11 +944,9 @@ Expert strategic planner who creates comprehensive implementation plans with pnk
 - [ ] Rollback tested successfully
 
 ## Next Steps
-
 1. [Immediate action]
 2. [Follow-up action]
 3. [Long-term action]
-
 ```
 
 ## Validation Checklist
@@ -1011,25 +961,21 @@ Before finalizing plan:
 ```
 
 ### pnkln-stackJR Scenario Analyzer
-
 **File:** `.claude/agents/pnkln-stackjr-scenario-analyzer.md`
 
-````markdown
+```markdown
 # Agent: pnkln-stackJR Scenario Analyzer
 
 ## Role
-
 Financial modeling expert who generates Monte Carlo scenarios and probability-weighted NPV calculations for pnkln-stackJR decision gates.
 
 ## When to Use
-
 - Validating new feature ROI
 - Assessing project continuation (gate check)
 - Comparing alternative approaches
 - Annual strategic planning
 
 ## Input Required
-
 - Feature description
 - Cost estimates (dev time, infrastructure, maintenance)
 - Revenue assumptions (pricing, volume, conversion rates)
@@ -1074,21 +1020,18 @@ Generated: [Timestamp]
 ## Input Assumptions
 
 ### Costs
-
 - Development: [X] hours @ $[Y]/hr = $[Z]
 - AI Compute: $[A]/month
 - Infrastructure: $[B]/month
 - Maintenance: $[C]/year
 
 ### Revenue
-
 - Pricing: $[X] per [unit]
 - Target Volume: [Y] [units]/month
 - Conversion Rate: [Z]%
 - Churn Rate: [W]%
 
 ### Timeline
-
 - Development: [X] months
 - Ramp-up: [Y] months
 - Full adoption: [Z] months
@@ -1096,16 +1039,13 @@ Generated: [Timestamp]
 ## Monte Carlo Scenarios
 
 ### Base Case (Probability: 50%)
-
 **Assumptions:**
-
 - Development: [X] months (as estimated)
 - Adoption: [Y] users by month [Z]
 - Revenue: $[A]/month by month [B]
 - Costs: As estimated
 
 **Financial Metrics:**
-
 - Total Investment: $[X]
 - 18-month Revenue: $[Y]
 - 18-month ROI: [Z]×
@@ -1117,16 +1057,13 @@ Generated: [Timestamp]
 **Decision: [PASS / FAIL] LTV:CAC gate (≥4:1)**
 
 ### Best Case (Probability: 25%)
-
 **Assumptions:**
-
 - Development: [X] months (20% faster)
 - Adoption: [Y] users by month [Z] (30% higher)
 - Revenue: $[A]/month by month [B] (30% higher)
 - Costs: 10% under budget
 
 **Financial Metrics:**
-
 - Total Investment: $[X]
 - 18-month Revenue: $[Y]
 - 18-month ROI: [Z]×
@@ -1137,16 +1074,13 @@ Generated: [Timestamp]
 **Decision: [PASS / FAIL]**
 
 ### Worst Case (Probability: 25%)
-
 **Assumptions:**
-
 - Development: [X] months (50% slower)
 - Adoption: [Y] users by month [Z] (40% lower)
 - Revenue: $[A]/month by month [B] (40% lower)
 - Costs: 20% over budget
 
 **Financial Metrics:**
-
 - Total Investment: $[X]
 - 18-month Revenue: $[Y]
 - 18-month ROI: [Z]×
@@ -1175,35 +1109,30 @@ Generated: [Timestamp]
 [Explanation based on probability-weighted metrics]
 
 **Conditions (if conditional):**
-
 - [Condition 1 that must be met]
 - [Condition 2 that must be met]
 
 ## Sensitivity Analysis
 
-| Variable        | -20% Impact | Base      | +20% Impact |
-| --------------- | ----------- | --------- | ----------- |
-| Dev Cost        | ROI: [X]×   | ROI: [Y]× | ROI: [Z]×   |
-| Conversion Rate | ROI: [X]×   | ROI: [Y]× | ROI: [Z]×   |
-| Timeline        | ROI: [X]×   | ROI: [Y]× | ROI: [Z]×   |
-| Churn Rate      | ROI: [X]×   | ROI: [Y]× | ROI: [Z]×   |
+| Variable | -20% Impact | Base | +20% Impact |
+|----------|-------------|------|-------------|
+| Dev Cost | ROI: [X]× | ROI: [Y]× | ROI: [Z]× |
+| Conversion Rate | ROI: [X]× | ROI: [Y]× | ROI: [Z]× |
+| Timeline | ROI: [X]× | ROI: [Y]× | ROI: [Z]× |
+| Churn Rate | ROI: [X]× | ROI: [Y]× | ROI: [Z]× |
 
 **High-Leverage Factors:** [Variables with biggest impact]
 
 ## Risk Mitigation
-
 - [ ] De-risk [high-leverage factor 1] by: [action]
 - [ ] De-risk [high-leverage factor 2] by: [action]
 
 ## Next Steps
-
 1. [If GO: Implementation action]
 2. [If NO-GO: Alternative exploration]
 3. [If CONDITIONAL: Validation needed]
 ```
-````
-
-````
+```
 
 ---
 
@@ -1272,12 +1201,10 @@ You are acting as the Strategic Plan Architect agent. Follow these steps:
 User: `/dev-docs Add user authentication to admin panel`
 
 Claude response:
-````
-
+```
 I'll create a strategic plan for adding user authentication to the admin panel.
 
 [Gathering context...]
-
 - Found admin panel at: frontend/admin/
 - Current auth: None (open access)
 - Related: backend/services/auth-service/
@@ -1285,19 +1212,16 @@ I'll create a strategic plan for adding user authentication to the admin panel.
 [pnkln-stackJR Gate Analysis...]
 
 Purpose Gate: ✓ PASS
-
 - Aligns with ActiveShield security vertical
 - Mission-critical for production launch
 
 Reasons Gate: ⚠️ CONDITIONAL
-
 - ROI: 5.2× in 18mo (PASS ≥3×)
 - LTV:CAC: 3.8:1 (FAIL ≥4:1 - needs optimization)
 - NPV: 78% probability positive (PASS ≥70%)
 - Recommendation: GO with condition - optimize CAC
 
 Brakes Gate: ✓ PASS
-
 - Rollback: Documented (revert to open access)
 - Blast radius: Low (only admin panel affected)
 - Security: Comprehensive plan included
@@ -1305,7 +1229,6 @@ Brakes Gate: ✓ PASS
 [Creating dev docs...]
 
 Created:
-
 - dev/active/admin-auth/admin-auth-plan.md
 - dev/active/admin-auth/admin-auth-context.md
 - dev/active/admin-auth/admin-auth-tasks.md
@@ -1317,17 +1240,13 @@ Created:
 ✓ Ready for implementation
 
 Next steps:
-
 1. Review plan: dev/active/admin-auth/admin-auth-plan.md
 2. If approved, start Phase 1: JWT token infrastructure
 3. Run /pnkln-stackjr-gate before each phase to revalidate
-
 ```
-
 ```
 
 ### /pnkln-stackjr-gate
-
 **Purpose:** Quick gate check without full planning
 **File:** `.claude/commands/pnkln-stackjr-gate.md`
 
@@ -1376,39 +1295,31 @@ User: `/pnkln-stackjr-gate`
 
 Claude response:
 ```
-
 Running pnkln-stackJR gate check on current task: "Add user authentication"
 
 Purpose Gate: ✓ PASS
-
 - Aligns with ActiveShield security vertical
 - Mission-critical for production launch
 
 Reasons Gate: ⚠️ CONDITIONAL
-
 - ROI: Estimated 5× in 18mo (PASS)
 - LTV:CAC: Estimated 3.8:1 (FAIL - need 4:1)
 - NPV: Not fully modeled yet
 
 Brakes Gate: ✓ PASS
-
 - Rollback: Documented in plan
 - Blast radius: Low
 - Security: Requirements defined
 
 Decision: CONDITIONAL GO
-
 - Proceed with implementation
 - But: Run pnkln-stackjr-scenario-analyzer to validate LTV:CAC
 - Before production deploy: Verify NPV calculation
 
 Next steps:
-
 1. Continue Phase 1 implementation
 2. Run scenario analysis before Phase 2
-
 ```
-
 ```
 
 ---
@@ -1424,91 +1335,91 @@ Next steps:
 module.exports = {
   apps: [
     {
-      name: "auth-service",
-      script: "npm",
-      args: "start",
-      cwd: "./backend/auth",
-      error_file: "./backend/auth/logs/error.log",
-      out_file: "./backend/auth/logs/out.log",
+      name: 'auth-service',
+      script: 'npm',
+      args: 'start',
+      cwd: './backend/auth',
+      error_file: './backend/auth/logs/error.log',
+      out_file: './backend/auth/logs/out.log',
       env: {
-        NODE_ENV: "development",
-        PORT: 3001,
+        NODE_ENV: 'development',
+        PORT: 3001
       },
       env_production: {
-        NODE_ENV: "production",
-        PORT: 3001,
-      },
+        NODE_ENV: 'production',
+        PORT: 3001
+      }
     },
     {
-      name: "shadowtag-service",
-      script: "npm",
-      args: "start",
-      cwd: "./backend/shadowtag",
-      error_file: "./backend/shadowtag/logs/error.log",
-      out_file: "./backend/shadowtag/logs/out.log",
+      name: 'shadowtag-service',
+      script: 'npm',
+      args: 'start',
+      cwd: './backend/shadowtag',
+      error_file: './backend/shadowtag/logs/error.log',
+      out_file: './backend/shadowtag/logs/out.log',
       env: {
-        NODE_ENV: "development",
-        PORT: 3002,
-      },
+        NODE_ENV: 'development',
+        PORT: 3002
+      }
     },
     {
-      name: "activeshield-api",
-      script: "npm",
-      args: "start",
-      cwd: "./backend/activeshield",
-      error_file: "./backend/activeshield/logs/error.log",
-      out_file: "./backend/activeshield/logs/out.log",
+      name: 'activeshield-api',
+      script: 'npm',
+      args: 'start',
+      cwd: './backend/activeshield',
+      error_file: './backend/activeshield/logs/error.log',
+      out_file: './backend/activeshield/logs/out.log',
       env: {
-        NODE_ENV: "development",
-        PORT: 3003,
-      },
+        NODE_ENV: 'development',
+        PORT: 3003
+      }
     },
     {
-      name: "cognitive-stack",
-      script: "python",
-      args: "-m uvicorn main:app --reload --port 8000",
-      cwd: "./backend/cognitive-stack",
-      error_file: "./backend/cognitive-stack/logs/error.log",
-      out_file: "./backend/cognitive-stack/logs/out.log",
-      interpreter: "python3",
+      name: 'cognitive-stack',
+      script: 'python',
+      args: '-m uvicorn main:app --reload --port 8000',
+      cwd: './backend/cognitive-stack',
+      error_file: './backend/cognitive-stack/logs/error.log',
+      out_file: './backend/cognitive-stack/logs/out.log',
+      interpreter: 'python3'
     },
     {
-      name: "notification-service",
-      script: "npm",
-      args: "start",
-      cwd: "./backend/notifications",
-      error_file: "./backend/notifications/logs/error.log",
-      out_file: "./backend/notifications/logs/out.log",
+      name: 'notification-service',
+      script: 'npm',
+      args: 'start',
+      cwd: './backend/notifications',
+      error_file: './backend/notifications/logs/error.log',
+      out_file: './backend/notifications/logs/out.log',
       env: {
-        NODE_ENV: "development",
-        PORT: 3004,
-      },
+        NODE_ENV: 'development',
+        PORT: 3004
+      }
     },
     {
-      name: "workflow-engine",
-      script: "npm",
-      args: "start",
-      cwd: "./backend/workflow",
-      error_file: "./backend/workflow/logs/error.log",
-      out_file: "./backend/workflow/logs/out.log",
+      name: 'workflow-engine',
+      script: 'npm',
+      args: 'start',
+      cwd: './backend/workflow',
+      error_file: './backend/workflow/logs/error.log',
+      out_file: './backend/workflow/logs/out.log',
       env: {
-        NODE_ENV: "development",
-        PORT: 3005,
-      },
+        NODE_ENV: 'development',
+        PORT: 3005
+      }
     },
     {
-      name: "analytics-service",
-      script: "npm",
-      args: "start",
-      cwd: "./backend/analytics",
-      error_file: "./backend/analytics/logs/error.log",
-      out_file: "./backend/analytics/logs/out.log",
+      name: 'analytics-service',
+      script: 'npm',
+      args: 'start',
+      cwd: './backend/analytics',
+      error_file: './backend/analytics/logs/error.log',
+      out_file: './backend/analytics/logs/out.log',
       env: {
-        NODE_ENV: "development",
-        PORT: 3006,
-      },
-    },
-  ],
+        NODE_ENV: 'development',
+        PORT: 3006
+      }
+    }
+  ]
 };
 ```
 
@@ -1534,14 +1445,12 @@ module.exports = {
 ### Phase 1: Foundation (Week 1)
 
 **Day 1-2: Install Claude Code + Clone diet103**
-
 - [ ] Install Claude Code: `npm install -g @anthropic-ai/claude-code`
 - [ ] Verify version ≥1.0.48: `claude-code --version`
 - [ ] Clone diet103 repo: `git clone https://github.com/diet103/claude-code-infrastructure-showcase`
 - [ ] Review structure: `tree -L 3 claude-code-infrastructure-showcase`
 
 **Day 3-4: Create pnkln-stackJR Skills**
-
 - [ ] Create directory: `mkdir -p .claude/skills/security-enforcement/resources`
 - [ ] Create directory: `mkdir -p .claude/skills/pnkln-stackjr-judge/resources`
 - [ ] Write `security-enforcement/SKILL.md` (see templates above)
@@ -1549,19 +1458,16 @@ module.exports = {
 - [ ] Create resource files for each skill (<500 lines each)
 
 **Day 5: Copy Backend/Frontend Skills**
-
 - [ ] Copy `backend-dev-guidelines` from diet103
 - [ ] Copy `frontend-dev-guidelines` from diet103
 - [ ] Customize for pnkln tech stack (pnpm, uv, Bun)
 
 **Day 6: Configure skill-rules.json**
-
 - [ ] Create `.claude/skills/skill-rules.json`
 - [ ] Add rules for all 4 skills (see template above)
 - [ ] Test keyword triggers match your workflow
 
 **Day 7: Install Hooks**
-
 - [ ] Create directory: `mkdir -p .claude/hooks`
 - [ ] Copy `skill-activation-prompt.*` from diet103
 - [ ] Copy `post-tool-use-tracker.sh` from diet103
@@ -1573,7 +1479,6 @@ module.exports = {
 ### Phase 2: Testing (Week 2)
 
 **Test Skill Auto-Activation**
-
 - [ ] Open Claude Code in project directory
 - [ ] Type: "Create an API endpoint for user login"
 - [ ] Verify: security-enforcement skill activates
@@ -1581,7 +1486,6 @@ module.exports = {
 - [ ] Verify: pnkln-stackjr-judge skill activates (for "create" intent)
 
 **Test Hooks Pipeline**
-
 - [ ] Edit a TypeScript file
 - [ ] Check: `PostToolUse` hook logs edit to `.claude/logs/file-edits.log`
 - [ ] Let Claude finish response
@@ -1589,7 +1493,6 @@ module.exports = {
 - [ ] Check: Rollback verification runs (if dev docs exist)
 
 **Test Dev Docs Pattern**
-
 - [ ] Create: `mkdir -p dev/active`
 - [ ] Run: `/dev-docs Add OAuth 2.0 authentication`
 - [ ] Verify: 3 files created (plan, context, tasks)
@@ -1600,14 +1503,12 @@ module.exports = {
 ### Phase 3: Agents (Week 3)
 
 **Create pnkln-stackJR Agents**
-
 - [ ] Create directory: `mkdir -p .claude/agents`
 - [ ] Write `strategic-plan-architect.md` (see template above)
 - [ ] Write `pnkln-stackjr-scenario-analyzer.md` (see template above)
 - [ ] Copy useful agents from diet103: `code-architecture-reviewer`, `refactor-planner`
 
 **Create Slash Commands**
-
 - [ ] Create directory: `mkdir -p .claude/commands`
 - [ ] Write `/dev-docs` command (see template above)
 - [ ] Write `/pnkln-stackjr-gate` command (see template above)
@@ -1616,7 +1517,6 @@ module.exports = {
 ### Phase 4: PM2 Setup (Week 3)
 
 **Configure Microservices**
-
 - [ ] Install PM2: `npm install -g pm2`
 - [ ] Create `ecosystem.config.js` (see template above)
 - [ ] Add npm scripts to root `package.json`
@@ -1627,20 +1527,17 @@ module.exports = {
 ### Phase 5: Production (Week 4)
 
 **Documentation**
-
 - [ ] Update root `CLAUDE.md` with quick reference
 - [ ] Document skill activation patterns
 - [ ] Document slash commands
 - [ ] Create troubleshooting guide
 
 **Team Onboarding**
-
 - [ ] Record demo video of system in action
 - [ ] Write onboarding checklist
 - [ ] Schedule knowledge transfer session
 
 **Continuous Improvement**
-
 - [ ] Monitor hook logs for issues
 - [ ] Refine skill-rules.json based on false positives
 - [ ] Add new skills as patterns emerge
@@ -1655,14 +1552,12 @@ module.exports = {
 **Symptom:** Prompt contains keywords but skill doesn't activate
 
 **Diagnosis:**
-
 1. Check `.claude/skills/skill-rules.json` exists
 2. Verify keyword spelling (case-insensitive but must match)
 3. Check hook logs: `.claude/logs/hook-errors.log`
 4. Ensure `skill-activation-prompt.*` hook installed correctly
 
 **Fix:**
-
 ```bash
 # Verify hook exists
 ls -la .claude/hooks/skill-activation-prompt.*
@@ -1679,13 +1574,11 @@ node .claude/hooks/skill-activation-prompt.ts '{"userPrompt": "test auth endpoin
 **Symptom:** TypeScript errors present but Stop hook doesn't show them
 
 **Diagnosis:**
-
 1. Check if `stop-build-check.sh` is executable: `ls -la .claude/hooks/`
 2. Verify edit log exists: `.claude/logs/file-edits.log`
 3. Check if pnpm/build scripts work: `cd [repo] && pnpm build`
 
 **Fix:**
-
 ```bash
 # Make hook executable
 chmod +x .claude/hooks/stop-build-check.sh
@@ -1702,13 +1595,11 @@ cd backend/auth && pnpm build
 **Symptom:** `/dev-docs` command runs but files not created
 
 **Diagnosis:**
-
 1. Check if `dev/active/` directory exists
 2. Verify Claude Code has write permissions
 3. Look for error messages in Claude's response
 
 **Fix:**
-
 ```bash
 # Create directory
 mkdir -p dev/active
@@ -1724,13 +1615,11 @@ ls -ld dev/active
 **Symptom:** Service shows "errored" status in `pm2 status`
 
 **Diagnosis:**
-
 1. Check error logs: `pm2 logs [service-name] --err --lines 50`
 2. Verify environment variables set
 3. Check port conflicts: `lsof -i :[PORT]`
 
 **Fix:**
-
 ```bash
 # View errors
 pm2 logs auth-service --err
@@ -1748,13 +1637,11 @@ pm2 restart all
 **Symptom:** Every feature fails Reasons gate (ROI/LTV:CAC)
 
 **Diagnosis:**
-
 1. Check if Monte Carlo scenarios are realistic
 2. Verify cost assumptions accurate
 3. Review discount rate (too high = always fail)
 
 **Fix:**
-
 - Calibrate gate thresholds in `pnkln-stackjr-judge` skill
 - For early-stage features, use conditional GO (validate later)
 - Run `pnkln-stackjr-scenario-analyzer` agent for detailed analysis
@@ -1764,7 +1651,6 @@ pm2 restart all
 ## MAINTENANCE
 
 ### Weekly Tasks
-
 - [ ] Review skill activation logs (`.claude/logs/`)
 - [ ] Check for false positives (skills activating unnecessarily)
 - [ ] Update `skill-rules.json` based on usage patterns
@@ -1772,7 +1658,6 @@ pm2 restart all
 - [ ] Archive completed tasks: `mv dev/active/[task] dev/completed/`
 
 ### Monthly Tasks
-
 - [ ] Analyze gate pass/fail rates
 - [ ] Refine Monte Carlo assumptions based on actuals
 - [ ] Update cost estimates in `pnkln-stackjr-judge` skill
@@ -1780,7 +1665,6 @@ pm2 restart all
 - [ ] Optimize hook performance (check execution time)
 
 ### Quarterly Tasks
-
 - [ ] Full system audit
 - [ ] Update skills with new best practices
 - [ ] Review and archive old dev docs
@@ -1796,7 +1680,6 @@ pm2 restart all
 If you have multiple repos in one workspace:
 
 **Directory Structure:**
-
 ```
 project/
 ├── .claude/              (Shared skills/hooks)
@@ -1812,28 +1695,24 @@ project/
 ```
 
 **Root CLAUDE.md:**
-
 ```markdown
 # pnkln Monorepo
 
 ## Quick Start
-
 - Frontend: `cd frontend && pnpm dev`
 - Backend: `pnpm pm2:start` (all services)
 - Tests: `pnpm test:all`
 
 ## Repo-Specific Guides
-
 - Frontend: See [frontend/claude.md](frontend/claude.md)
 - Auth Service: See [backend/auth/claude.md](backend/auth/claude.md)
 - ShadowTag: See [backend/shadowtag/claude.md](backend/shadowtag/claude.md)
 
 ## Skills (Global)
-
 - security-enforcement (applies to ALL repos)
 - pnkln-stackjr-judge (applies to ALL features)
-- backend-dev-guidelines (backend/\* only)
-- frontend-dev-guidelines (frontend/\* only)
+- backend-dev-guidelines (backend/* only)
+- frontend-dev-guidelines (frontend/* only)
 ```
 
 ### Conditional Skill Activation
@@ -1841,7 +1720,6 @@ project/
 For skills that should activate only in specific contexts:
 
 **skill-rules.json:**
-
 ```json
 {
   "production-deployment-checklist": {
@@ -1866,7 +1744,6 @@ For skills that should activate only in specific contexts:
 Skills can reference other skills for complex scenarios:
 
 **pnkln-stackjr-judge/SKILL.md:**
-
 ```markdown
 # pnkln-stackJR Judge
 
@@ -1888,28 +1765,24 @@ This ensures security is always checked before financial validation.
 Track these metrics to measure infrastructure effectiveness:
 
 ### Code Quality
-
 - TypeScript errors caught by hooks: Target 100%
 - Test coverage: Target ≥98%
 - Security violations prevented: Track monthly
 - Build failures caught pre-commit: Target 100%
 
 ### Productivity
-
 - Time saved per feature (estimate): Track in dev docs
 - Context resets handled smoothly: % of tasks with dev docs
 - Skill activation accuracy: % relevant activations
 - Agent task completion rate: % successful outcomes
 
 ### Decision Quality
-
 - Features passing pnkln-stackJR gates: % on first try
 - ROI accuracy: Actual vs. projected (review quarterly)
 - Kill-switch triggers hit: Count (lower is better if gates work)
 - Strategic alignment: % features mapped to Cor.X frameworks
 
 ### Financial
-
 - ROI of infrastructure investment: Time saved × hourly rate
 - Gate-prevented waste: Estimate $ saved from killing bad features early
 - Acceleration factor: Sprint velocity with vs. without infrastructure
@@ -1934,18 +1807,15 @@ Track these metrics to measure infrastructure effectiveness:
 ### Resources
 
 **Official Docs:**
-
 - Claude Code: https://docs.claude.com/en/docs/claude-code
 - Anthropic Skills: https://docs.anthropic.com/skills
 - Anthropic Hooks: https://docs.anthropic.com/hooks
 
 **Community:**
-
 - diet103 Repo: https://github.com/diet103/claude-code-infrastructure-showcase
 - diet103 Reddit: https://www.reddit.com/r/ClaudeAI/comments/1oivjvm/
 
 **pnkln Internal:**
-
 - Strategic Frameworks: See Cor.X documents
 - Tech Architecture: See Cor.17
 - Valuation Models: See Cor.21
@@ -1953,7 +1823,6 @@ Track these metrics to measure infrastructure effectiveness:
 ### Version History
 
 **1.0.0** (2025-10-30)
-
 - Initial release
 - 4 core skills (security, pnkln-stackjr-judge, backend, frontend)
 - 4 hooks (skill-activation, post-tool-use, build-check, rollback)
@@ -1973,7 +1842,6 @@ This infrastructure is not a silver bullet. It's a force multiplier that makes C
 4. **Calibration:** Adjusting thresholds based on real outcomes
 
 The payoff is massive:
-
 - Consistent code quality (≥98% test coverage enforced)
 - Strategic alignment (every feature passes pnkln-stackJR gates)
 - Risk management (kill-switches prevent waste)

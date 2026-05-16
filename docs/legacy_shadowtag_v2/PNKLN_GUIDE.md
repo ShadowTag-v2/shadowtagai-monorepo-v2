@@ -7,22 +7,26 @@ This guide provides comprehensive documentation for using the pnkln stack analys
 The pnkln stack analyzer provides specialized tools for analyzing components of the pnkln Core Stack™, a production-grade intelligence pipeline. It includes:
 
 - **Master Prompt Framework**: Generates specialized analysis prompts for different components
-- **Component Analyzers**: Dedicated agents for Judge 6, Gemini Ingestion Layer, and more
+- **Component Analyzers**: Dedicated agents for Judge #6, Gemini Ingestion Layer, and more
 - **Comparison Framework**: Compares components and provides migration guidance
 - **Integration Analysis**: Analyzes end-to-end data flow across components
 
 ## Quick Start
 
 ```typescript
-import { pnklnStack, masterPromptFramework, getAgent } from "claude-code-agents";
+import {
+  pnklnStack,
+  masterPromptFramework,
+  getAgent
+} from 'claude-code-agents';
 
 // Get a pnkln analyzer
-const ingestionAnalyzer = getAgent("gemini-ingestion-analyzer");
+const ingestionAnalyzer = getAgent('gemini-ingestion-analyzer');
 
 // Execute analysis
 const result = await ingestionAnalyzer.execute({
-  projectPath: "/path/to/pnkln-stack",
-  userQuery: "Analyze the Gemini Ingestion Layer for optimization opportunities",
+  projectPath: '/path/to/pnkln-stack',
+  userQuery: 'Analyze the Gemini Ingestion Layer for optimization opportunities',
 });
 
 console.log(result.output);
@@ -45,22 +49,22 @@ Analyzes the intelligence collection pipeline with focus on:
 #### Usage Example
 
 ```typescript
-import { pnklnStack } from "claude-code-agents";
+import { pnklnStack } from 'claude-code-agents';
 
 const analyzer = new pnklnStack.GeminiIngestionAnalyzerAgent();
 
 const result = await analyzer.execute({
-  projectPath: "/path/to/gemini-ingestion",
-  userQuery: "Evaluate ethical compliance and suggest improvements",
+  projectPath: '/path/to/gemini-ingestion',
+  userQuery: 'Evaluate ethical compliance and suggest improvements',
   additionalContext: {
-    focusAreas: ["ethical-compliance", "tier-classification"],
+    focusAreas: ['ethical-compliance', 'tier-classification'],
     includeComparison: true,
   },
 });
 
 // Access structured results
-console.log("Confidence Score:", result.metrics?.stepsCompleted);
-console.log("Recommendations:", result.recommendations);
+console.log('Confidence Score:', result.metrics?.stepsCompleted);
+console.log('Recommendations:', result.recommendations);
 ```
 
 #### Expected Output
@@ -89,7 +93,7 @@ opportunity for optimization in Tier 1 data acquisition.
 Confidence: 85%
 ```
 
-### 2. Judge 6 Analyzer
+### 2. Judge #6 Analyzer
 
 Analyzes the real-time validation system with focus on:
 
@@ -103,13 +107,13 @@ Analyzes the real-time validation system with focus on:
 #### Usage Example
 
 ```typescript
-import { pnklnStack } from "claude-code-agents";
+import { pnklnStack } from 'claude-code-agents';
 
 const analyzer = new pnklnStack.JudgeSixAnalyzerAgent();
 
 const result = await analyzer.execute({
-  projectPath: "/path/to/judge-six",
-  userQuery: "Analyze latency bottlenecks and optimization opportunities",
+  projectPath: '/path/to/judge-six',
+  userQuery: 'Analyze latency bottlenecks and optimization opportunities',
   constraints: {
     maxTokens: 100000,
     timeoutMs: 300000,
@@ -121,7 +125,7 @@ const result = await analyzer.execute({
 
 ```
 ## Executive Summary
-Judge 6 demonstrates excellent latency (p99: 78ms) with opportunities
+Judge #6 demonstrates excellent latency (p99: 78ms) with opportunities
 to reduce false positives and API costs.
 
 ## Performance Assessment ✓
@@ -150,29 +154,36 @@ Compares different pnkln components and provides migration guidance.
 #### Usage Example
 
 ```typescript
-import { pnklnStack, masterPromptFramework } from "claude-code-agents";
+import { pnklnStack, masterPromptFramework } from 'claude-code-agents';
 
 // Generate comparison prompt
-const comparisonPrompt = masterPromptFramework.compareComponents("judge-6", "gemini-ingestion");
+const comparisonPrompt = masterPromptFramework.compareComponents(
+  'judge-6',
+  'gemini-ingestion'
+);
 
 console.log(comparisonPrompt);
 
 // Or use the agent directly
 const analyzer = new pnklnStack.ComponentComparisonAnalyzerAgent();
 
-const result = await analyzer.compareComponents("judge-6", "gemini-ingestion", {
-  projectPath: "/path/to/pnkln-stack",
-  userQuery: "Compare and provide adaptation guidance",
-});
+const result = await analyzer.compareComponents(
+  'judge-6',
+  'gemini-ingestion',
+  {
+    projectPath: '/path/to/pnkln-stack',
+    userQuery: 'Compare and provide adaptation guidance',
+  }
+);
 ```
 
 #### Expected Output
 
 ```
-# Component Comparison: Judge 6 vs Gemini Ingestion Layer
+# Component Comparison: Judge #6 vs Gemini Ingestion Layer
 
 ## Architectural Differences
-Judge 6 uses Hybrid Gemini+PyTorch while Gemini Ingestion uses GKE CronJob.
+Judge #6 uses Hybrid Gemini+PyTorch while Gemini Ingestion uses GKE CronJob.
 This reflects their different positions in the stack: real-time validation vs batch collection.
 
 ## Metric Adaptations
@@ -181,7 +192,7 @@ This reflects their different positions in the stack: real-time validation vs ba
 - **Caller → Callee**: Integration pattern reflects preventive vs reactive roles
 
 ## Key Differences Table
-| Aspect | Judge 6 | Gemini Ingestion |
+| Aspect | Judge #6 | Gemini Ingestion |
 |--------|----------|------------------|
 | Purpose | Real-time validation | Intelligence collection |
 | Architecture | Hybrid Gemini+PyTorch | GKE CronJob Multi-Container |
@@ -203,12 +214,15 @@ The Master Prompt Framework generates specialized analysis prompts for any pnkln
 ### Generating Custom Prompts
 
 ```typescript
-import { masterPromptFramework, pnklnComponent } from "claude-code-agents";
+import { masterPromptFramework, pnklnComponent } from 'claude-code-agents';
 
 // Generate prompt for a specific component
-const prompt = masterPromptFramework.generatePrompt("gemini-ingestion", {
-  additionalContext: "Focus on cost optimization and ethical compliance",
-});
+const prompt = masterPromptFramework.generatePrompt(
+  'gemini-ingestion',
+  {
+    additionalContext: 'Focus on cost optimization and ethical compliance',
+  }
+);
 
 // Use with Gemini 2.0 Pro or Claude
 // ... send prompt to LLM ...
@@ -218,8 +232,7 @@ const prompt = masterPromptFramework.generatePrompt("gemini-ingestion", {
 
 Each component has tailored metrics:
 
-#### Judge 6
-
+#### Judge #6
 - Latency (p50, p95, p99)
 - Throughput
 - Block rate
@@ -227,7 +240,6 @@ Each component has tailored metrics:
 - API calls per validation
 
 #### Gemini Ingestion
-
 - Runtime (~45 min/night)
 - Items per day
 - Source diversity
@@ -240,10 +252,18 @@ Each component has tailored metrics:
 
 ```typescript
 // Compare two components
-const comparison = masterPromptFramework.compareComponents("judge-6", "gemini-ingestion");
+const comparison = masterPromptFramework.compareComponents(
+  'judge-6',
+  'gemini-ingestion'
+);
 
 // Analyze integration across components
-const integration = masterPromptFramework.analyzeIntegration(["gemini-ingestion", "judge-6", "storage", "api-gateway"]);
+const integration = masterPromptFramework.analyzeIntegration([
+  'gemini-ingestion',
+  'judge-6',
+  'storage',
+  'api-gateway',
+]);
 ```
 
 ## Confidence Scoring
@@ -256,8 +276,8 @@ All analyses include confidence scores:
 
 ```typescript
 const result = await analyzer.execute({
-  projectPath: "/path/to/component",
-  userQuery: "Analyze...",
+  projectPath: '/path/to/component',
+  userQuery: 'Analyze...',
 });
 
 if (result.metrics && result.metrics.tokensUsed) {
@@ -271,12 +291,12 @@ if (result.metrics && result.metrics.tokensUsed) {
 
 ```typescript
 const result = await analyzer.execute({
-  projectPath: "/path/to/component",
-  userQuery: "Comprehensive analysis",
+  projectPath: '/path/to/component',
+  userQuery: 'Comprehensive analysis',
   additionalContext: {
-    environment: "pre-production",
-    focusAreas: ["performance", "cost", "ethics"],
-    compareWith: "judge-6",
+    environment: 'pre-production',
+    focusAreas: ['performance', 'cost', 'ethics'],
+    compareWith: 'judge-6',
     includeVisualization: true,
   },
   constraints: {
@@ -290,14 +310,16 @@ const result = await analyzer.execute({
 ### Batch Analysis
 
 ```typescript
-import { getAllAgents } from "claude-code-agents";
+import { getAllAgents } from 'claude-code-agents';
 
-const pnklnAgents = getAllAgents().filter((agent) => agent.metadata.category === "pnkln-stack");
+const pnklnAgents = getAllAgents().filter(
+  (agent) => agent.metadata.category === 'pnkln-stack'
+);
 
 for (const agent of pnklnAgents) {
   const result = await agent.execute({
     projectPath: `/path/to/${agent.metadata.id}`,
-    userQuery: "Comprehensive analysis",
+    userQuery: 'Comprehensive analysis',
   });
 
   console.log(`\n=== ${agent.metadata.name} ===`);
@@ -315,7 +337,7 @@ on:
   push:
     branches: [main, develop]
   schedule:
-    - cron: "0 0 * * 0" # Weekly on Sunday
+    - cron: '0 0 * * 0'  # Weekly on Sunday
 
 jobs:
   analyze:
@@ -326,7 +348,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install Dependencies
         run: npm install claude-code-agents
@@ -354,22 +376,22 @@ jobs:
 You can customize prompt templates for specific needs:
 
 ```typescript
-import { MasterPromptFrameworkImpl } from "claude-code-agents";
+import { MasterPromptFrameworkImpl } from 'claude-code-agents';
 
 class CustomFramework extends MasterPromptFrameworkImpl {
   constructor() {
     super();
     // Add custom component template
-    this.componentTemplates.set("custom-component", {
-      id: "custom-component-analysis",
-      name: "Custom Component Analysis",
-      version: "1.0.0",
-      targetComponent: "custom-component",
+    this.componentTemplates.set('custom-component', {
+      id: 'custom-component-analysis',
+      name: 'Custom Component Analysis',
+      version: '1.0.0',
+      targetComponent: 'custom-component',
       sections: {
-        context: "Custom context...",
-        objectives: ["Custom objectives..."],
-        analysisAreas: ["Custom areas..."],
-        outputFormat: "Custom format...",
+        context: 'Custom context...',
+        objectives: ['Custom objectives...'],
+        analysisAreas: ['Custom areas...'],
+        outputFormat: 'Custom format...',
         confidenceThreshold: 65,
       },
       replacements: [],
@@ -379,7 +401,7 @@ class CustomFramework extends MasterPromptFrameworkImpl {
 }
 
 const customFramework = new CustomFramework();
-const prompt = customFramework.generatePrompt("custom-component");
+const prompt = customFramework.generatePrompt('custom-component');
 ```
 
 ## Best Practices
@@ -396,7 +418,6 @@ const prompt = customFramework.generatePrompt("custom-component");
 ### Low Confidence Scores
 
 If confidence is <50%, check:
-
 - Sufficient documentation provided
 - Specs are up-to-date
 - Metrics are available
@@ -405,7 +426,6 @@ If confidence is <50%, check:
 ### Irrelevant Recommendations
 
 Ensure `additionalContext` specifies:
-
 - Component type correctly
 - Focus areas
 - Constraints (cost, performance, ethics)
@@ -417,10 +437,9 @@ Verify the component template includes all necessary metrics. Extend the framewo
 ## Examples Repository
 
 See `examples/pnkln-stack/` for:
-
 - `gemini-ingestion-analysis.ts`: Full ingestion analysis
 - `judge-six-optimization.ts`: Performance optimization
-- `component-migration.ts`: Migration from Judge 6 to Ingestion
+- `component-migration.ts`: Migration from Judge #6 to Ingestion
 - `ci-cd-integration.ts`: Automated analysis in CI/CD
 
 ## Contributing
@@ -436,7 +455,6 @@ To add new pnkln components:
 ## Support
 
 For issues or questions:
-
 - GitHub Issues: https://github.com/ehanc69/pnkln-stack-fastapi-services/issues
 - Documentation: See `README.md` and `AGENTS.md`
 

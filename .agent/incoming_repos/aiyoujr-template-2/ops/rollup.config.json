@@ -1,0 +1,12 @@
+{
+  "sources": ["docs/thread/**/*.md", "docs/research/**/*.md", "docs/decisions/**/*.md"],
+  "output": "ROLLUP.md",
+  "sections": [
+    "Operating Posture",
+    "Decision Framework",
+    "SOPs",
+    "Research Highlights",
+    "Pipelines & CI",
+    "Next Actions"
+  ]
+}

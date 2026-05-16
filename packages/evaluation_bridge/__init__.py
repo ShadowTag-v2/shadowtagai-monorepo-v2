@@ -21,17 +21,17 @@ Public API:
 """
 
 from evaluation_bridge.bridge import (
-    EvaluationBridge,
-    EvaluationConfig,
-    EvaluationResult,
-    GateResult,
-    GateType,
+  EvaluationBridge,
+  EvaluationConfig,
+  EvaluationResult,
+  GateResult,
+  GateType,
 )
 
 __all__ = [
-    "EvaluationBridge",
-    "EvaluationConfig",
-    "EvaluationResult",
-    "GateResult",
-    "GateType",
+  "EvaluationBridge",
+  "EvaluationConfig",
+  "EvaluationResult",
+  "GateResult",
+  "GateType",
 ]

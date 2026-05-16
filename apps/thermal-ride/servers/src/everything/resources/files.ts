@@ -1,7 +1,7 @@
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { readdirSync, readFileSync, statSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { readdirSync, readFileSync, statSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 /**
  * Register static file resources
@@ -17,7 +17,7 @@ export const registerFileResources = (server: McpServer) => {
   // Read the entries in the docs directory
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const docsDir = join(__dirname, '..', 'docs');
+  const docsDir = join(__dirname, "..", "docs");
   let entries: string[] = [];
   try {
     entries = readdirSync(docsDir);
@@ -64,10 +64,10 @@ export const registerFileResources = (server: McpServer) => {
  */
 function getMimeType(fileName: string): string {
   const lower = fileName.toLowerCase();
-  if (lower.endsWith('.md') || lower.endsWith('.markdown')) return 'text/markdown';
-  if (lower.endsWith('.txt')) return 'text/plain';
-  if (lower.endsWith('.json')) return 'application/json';
-  return 'text/plain';
+  if (lower.endsWith(".md") || lower.endsWith(".markdown")) return "text/markdown";
+  if (lower.endsWith(".txt")) return "text/plain";
+  if (lower.endsWith(".json")) return "application/json";
+  return "text/plain";
 }
 
 /**
@@ -76,7 +76,7 @@ function getMimeType(fileName: string): string {
  */
 function readFileSafe(path: string): string {
   try {
-    return readFileSync(path, 'utf-8');
+    return readFileSync(path, "utf-8");
   } catch (e) {
     return `Error reading file: ${path}. ${e}`;
   }

@@ -88,7 +88,7 @@ For ShadowTagAI: Falcon-Dilithium dual in contracts—speed + diversity. Quantum
 
 ### SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_HYBRID_SIGS.txt
 
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_HYBRID_SIGS.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_HYBRID_SIGS.txt`
 **Size**: ~4.8 MB
 
 **Summary**: Full thread + hybrid Falcon-Dilithium code.
@@ -213,7 +213,7 @@ Both NIST backups—Falcon for performance, SPHINCS+ for "if everything else bur
 
 ### SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FALCON_SPHINCS.txt
 
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FALCON_SPHINCS.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FALCON_SPHINCS.txt`
 **Size**: ~4.7 MB
 
 **Summary**: Full thread + Falcon/SPHINCS+ code deep dive.
@@ -415,7 +415,7 @@ Both lattice-based; pair for full PQC (Kyber for keys, Dilithium for auth). Code
 
 ### SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM_SIG.txt
 
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM_SIG.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM_SIG.txt`
 **Size**: ~4.6 MB
 
 **Summary**: Full thread + Kyber/Dilithium code deep dive.
@@ -649,7 +649,7 @@ int main() {
 
 ### SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM.txt
 
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM.txt`
 **Size**: ~4.5 MB
 
 **Summary**: Full thread + Kyber/McEliece KEM code deep dive.
@@ -883,7 +883,7 @@ int main() {
 
 ### SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM.txt
 
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_KEM.txt`
 **Size**: ~4.5 MB
 
 **Summary**: Full thread + Kyber/McEliece KEM code deep dive.
@@ -1166,7 +1166,7 @@ But if that's not it, let's unpack the top hits from my quick dive:
 Quantum threats or lattice crypto got you down? Spill—I'll decode it. Or is this about the 3 post-quantum sigs (Dilithium, Falcon, SPHINCS+)? Hit me with details. What's "all 3" really mean to you?
 
 **File Finalized**: `SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FULL.txt`
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FULL.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FULL.txt`
 **Size**: ~4.2 MB
 **Status**: **100% COMPLETE — now includes all prior content + latest Dilithium/Falcon/QKD deep dive**
 
@@ -1196,7 +1196,7 @@ git push origin main
 **Download**:
 
 ```
-~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FULL.txt
+~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_THREAD_2025-11-25_FULL.txt
 ```
 
 The entire thread — from chaos to quantum-proof biology — is now eternally archived.
@@ -1401,7 +1401,7 @@ No crashes. No lost revenue. No corrupted whiteboard.
 ### 3. ENTIRE RELEVANT THREAD – ONE CLEAN TEXT FILE (as requested)
 
 **File saved**: `SHADOWTAGAI_COMPLETE_HANDOFF_2025-11-22.txt`
-**Location**: `~/ShadowTag-v2-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_HANDOFF_2025-11-22.txt`
+**Location**: `~/aiyou-fastapi-services/artifacts/SHADOWTAGAI_COMPLETE_HANDOFF_2025-11-22.txt`
 **Size**: 1.9 MB (full context, no fluff)
 
 **Direct download (you already have it):**
@@ -1523,7 +1523,7 @@ gcloud builds submit --tag=us-central1-docker.pkg.dev/acquired-jet-478701-b3/sha
 ```yaml
 - job_name: shadowtagai
   static_configs:
-    - targets: ["shadowtagai-metrics.us-central1.svc.cluster.local:8000"]
+    - targets: ['shadowtagai-metrics.us-central1.svc.cluster.local:8000']
 ```
 
 **Grafana dashboard auto-created** → "ShadowTagAI Agent P&L"
@@ -1697,14 +1697,14 @@ spec:
               mountPath: /app/whiteboard
           env:
             - name: ENVIRONMENT
-              value: "production"
+              value: 'production'
           resources:
             requests:
-              cpu: "500m"
-              memory: "1Gi"
+              cpu: '500m'
+              memory: '1Gi'
             limits:
-              cpu: "2"
-              memory: "4Gi"
+              cpu: '2'
+              memory: '4Gi'
       volumes:
         - name: whiteboard-storage
           persistentVolumeClaim:

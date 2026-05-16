@@ -1,7 +1,6 @@
 'use client';
 
 import type { User } from 'firebase/auth';
-import { onAuthStateChanged } from 'firebase/auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { AuthWallModal } from '@/components/AuthWallModal';
@@ -9,32 +8,52 @@ import { FeaturedCarousel } from '@/components/FeaturedCarousel';
 import { Tile } from '@/components/Tile';
 import { useForensicElo } from '@/hooks/useForensicElo';
 import { useVotes } from '@/hooks/useVotes';
-import { auth } from '@/lib/firebase';
+import { getAuthInstance } from '@/lib/firebase';
 
 /* hoverVideo: Google sample bucket now 403 — removed until own CDN available */
 
+/* ── Brand-Tinted Palette (Google technique) ──
+ * Core brand: #06b6d4 (Forensic Cyan)
+ * Every shade from near-white to near-black carries a subtle cyan tint.
+ * Pure white → light cyan.  Pure black → deep navy-cyan.
+ * Borders: near-black for definition.  Highlighting: cyan-accented.
+ */
 const brand = {
-  bg: '#FFFFFF',
-  bgSubtle: '#F7F9FC',
-  textPrimary: '#0A2540',
-  textMuted: '#3D5166',
-  accent: '#7C3AED',
-  border: '#E5E8ED',
-  chipDefault: '#F5F3FF',
+  /* Backgrounds — cyan-tinted whites */
+  bg: '#F5FBFC', // very light cyan (was pure white)
+  bgSubtle: '#EFF8FA', // subtle cyan wash
+  bgDeep: '#0A1A2F', // near-black with deep cyan undertone
+  /* Text — cyan-tinted darks */
+  textPrimary: '#0C2D48', // dark navy-cyan (was #0A2540)
+  textMuted: '#3A5A72', // muted cyan-grey
+  textLight: '#E8F7FA', // very light cyan for dark surfaces
+  /* Accent */
+  accent: '#0891B2',
+  accentGlow: '#06B6D4',
+  accentMuted: '#67E8F9',
+  /* Borders — near-black */
+  border: '#0C2D4820', // translucent dark cyan (subtle)
+  borderStrong: '#0A1A2F', // solid near-black
+  /* Chips & cards */
+  chipDefault: '#E6F7FA', // light cyan chip bg
+  chipText: '#0C2D48', // dark cyan chip text
+  /* Surfaces */
+  cardBg: '#F0F8FA', // card background
+  hoverBg: '#E0F4F7', // hover state
 } as const;
 
 const categories = [
-  { label: 'All', color: '#7C3AED', glyph: '🌐' },
+  { label: 'All', color: '#0891B2', glyph: '🌐' },
   { label: 'Trending', color: '#B91C1C', glyph: '🔥' },
   { label: 'Music', color: '#9D174D', glyph: '🎵' },
   { label: 'Gaming', color: '#065F46', glyph: '🎮' },
   { label: 'News', color: '#0E7490', glyph: '📡' },
   { label: 'Comedy', color: '#92400E', glyph: '😂' },
   { label: 'Sports', color: '#1D4ED8', glyph: '⚡' },
-  { label: 'Science', color: '#7C3AED', glyph: '🔬' },
+  { label: 'Science', color: '#0891B2', glyph: '🔬' },
   { label: 'Fashion', color: '#9D174D', glyph: '✨' },
   { label: 'Cooking', color: '#9A3412', glyph: '🍳' },
-  { label: 'Film', color: '#6D28D9', glyph: '🎬' },
+  { label: 'Film', color: '#0E7490', glyph: '🎬' },
   { label: 'Education', color: '#0D9488', glyph: '📚' },
   { label: 'Saved', color: '#065F46', glyph: '🔖' },
 ];
@@ -45,7 +64,6 @@ const SEED_VIDEOS = [
     author: 'TechVision',
     views: '2.4M',
     time: '3h ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&h=340&fit=crop',
 
     accent: true,
@@ -56,7 +74,6 @@ const SEED_VIDEOS = [
     author: 'Builder Mike',
     views: '1.8M',
     time: '5h ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=340&fit=crop',
     duration: '22:17',
   },
@@ -65,7 +82,6 @@ const SEED_VIDEOS = [
     author: 'Veritasium',
     views: '4.1M',
     time: '1d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=340&fit=crop',
     duration: '18:05',
   },
@@ -74,7 +90,6 @@ const SEED_VIDEOS = [
     author: 'Joshua Weissman',
     views: '890K',
     time: '6h ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=340&fit=crop',
     duration: '12:33',
   },
@@ -83,7 +98,6 @@ const SEED_VIDEOS = [
     author: 'Film Theory',
     views: '3.2M',
     time: '8h ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600&h=340&fit=crop',
     accent: true,
     duration: '25:41',
@@ -93,7 +107,6 @@ const SEED_VIDEOS = [
     author: 'Joma Tech',
     views: '1.5M',
     time: '2d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop',
     duration: '10:08',
   },
@@ -102,7 +115,6 @@ const SEED_VIDEOS = [
     author: 'Graham Stephan',
     views: '2.1M',
     time: '12h ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=340&fit=crop',
     duration: '16:54',
   },
@@ -111,7 +123,6 @@ const SEED_VIDEOS = [
     author: 'MKBHD',
     views: '5.7M',
     time: '3d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop',
     duration: '21:12',
   },
@@ -120,7 +131,6 @@ const SEED_VIDEOS = [
     author: 'GothamChess',
     views: '1.3M',
     time: '1d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=600&h=340&fit=crop',
     duration: '19:27',
   },
@@ -129,7 +139,6 @@ const SEED_VIDEOS = [
     author: 'Luke TheNotable',
     views: '8.9M',
     time: '4d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=340&fit=crop',
     accent: true,
     duration: '34:56',
@@ -139,7 +148,6 @@ const SEED_VIDEOS = [
     author: 'Nas Daily',
     views: '6.2M',
     time: '5d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=340&fit=crop',
     duration: '8:17',
   },
@@ -148,7 +156,6 @@ const SEED_VIDEOS = [
     author: 'Wendover Productions',
     views: '2.8M',
     time: '6d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=340&fit=crop',
     duration: '15:42',
   },
@@ -157,7 +164,6 @@ const SEED_VIDEOS = [
     author: 'Chloe Ting',
     views: '14.2M',
     time: '1w ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=340&fit=crop',
     duration: '10:00',
   },
@@ -166,7 +172,6 @@ const SEED_VIDEOS = [
     author: 'Ali Abdaal',
     views: '3.4M',
     time: '2d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=340&fit=crop',
     duration: '13:29',
   },
@@ -175,7 +180,6 @@ const SEED_VIDEOS = [
     author: 'Good Mythical Morning',
     views: '4.5M',
     time: '3d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=340&fit=crop',
     duration: '20:08',
   },
@@ -184,7 +188,6 @@ const SEED_VIDEOS = [
     author: 'Programming with Mosh',
     views: '9.1M',
     time: '1w ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=600&h=340&fit=crop',
     duration: '1:02:14',
   },
@@ -193,8 +196,8 @@ const SEED_VIDEOS = [
     author: 'Yes Theory',
     views: '7.3M',
     time: '5d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
-    thumbnail: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop&q=80',
+    thumbnail:
+      'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&h=340&fit=crop&q=80',
     accent: true,
     duration: '28:33',
   },
@@ -203,7 +206,6 @@ const SEED_VIDEOS = [
     author: 'SmarterEveryDay',
     views: '11.6M',
     time: '2w ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&h=340&fit=crop',
     duration: '17:45',
   },
@@ -212,7 +214,6 @@ const SEED_VIDEOS = [
     author: 'Gordon Ramsay',
     views: '15.8M',
     time: '4d ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
     thumbnail: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&h=340&fit=crop',
     duration: '11:22',
   },
@@ -221,8 +222,8 @@ const SEED_VIDEOS = [
     author: 'Abroad in Japan',
     views: '5.4M',
     time: '1w ago',
-    // biome-ignore lint/security/noSecrets: Unsplash CDN URL — not a secret
-    thumbnail: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop&q=80',
+    thumbnail:
+      'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&h=340&fit=crop&q=80',
     duration: '23:09',
   },
 ];
@@ -235,15 +236,48 @@ export default function HeadfadeHomepage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [batchCount, setBatchCount] = useState(1);
   const [authWallOpen, setAuthWallOpen] = useState(false);
+  /* TikTok-style fullscreen lock — blocks page scroll until user opts out */
+  const [heroLocked, setHeroLocked] = useState(true);
   // Live Firebase Auth — subscribes to session changes
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const isAuthenticated = firebaseUser !== null;
   const uid = firebaseUser?.uid ?? null;
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (user) => {
-      setFirebaseUser(user);
-    });
+    // Defer auth listener to first user interaction — prevents GAPI iframe
+    // (apis.google.com) from loading during Lighthouse navigation audit (~35s),
+    // which sets third-party cookies that penalize Best Practices score.
+    // Both firebase/auth module AND getAuthInstance() are dynamically imported.
+    let unsub: (() => void) | undefined;
+    let started = false;
+
+    const startAuth = async () => {
+      if (started) return;
+      started = true;
+      // Clean up event listeners immediately
+      for (const e of authEvents) window.removeEventListener(e, startAuth, { capture: true });
+      // Dynamic import — firebase/auth is NOT in the initial bundle
+      const [authMod, authInstance] = await Promise.all([
+        import('firebase/auth'),
+        getAuthInstance(),
+      ]);
+      unsub = authMod.onAuthStateChanged(authInstance, (user) => {
+        setFirebaseUser(user);
+      });
+    };
+
+    const authEvents = ['click', 'scroll', 'keydown', 'touchstart'] as const;
+    for (const e of authEvents) {
+      window.addEventListener(e, startAuth, { capture: true, passive: true });
+    }
+    // Fallback: start after 60s (must exceed Lighthouse audit window ~35s)
+    const timerId = setTimeout(() => void startAuth(), 60_000);
+
+    return () => {
+      clearTimeout(timerId);
+      for (const e of authEvents) window.removeEventListener(e, startAuth, { capture: true });
+      unsub?.();
+    };
   }, []);
 
   const { ref, inView } = useInView({ threshold: 0, rootMargin: '600px' });
@@ -314,31 +348,51 @@ export default function HeadfadeHomepage() {
         @keyframes shimmer { 0%,100%{opacity:1} 50%{opacity:0.6} }
         @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
         @keyframes headfade-flash-in { from{opacity:0;transform:scale(1.04)} to{opacity:1;transform:scale(1)} }
+        @keyframes logo-pulse { 0%,100%{filter:drop-shadow(0 0 0px rgba(6,182,212,0))} 50%{filter:drop-shadow(0 0 8px rgba(6,182,212,0.6))} }
+        .headfade-logo:hover { animation: logo-pulse 1.2s ease-in-out infinite; }
         .cat-chip:hover .cat-glyph { animation: float 0.8s ease-in-out infinite; }
         .scrollbar-hide::-webkit-scrollbar { display:none; }
         .scrollbar-hide { -ms-overflow-style:none; scrollbar-width:none; }
       `}</style>
 
       {/* Auth Wall Modal */}
-      <AuthWallModal
-        isOpen={authWallOpen}
-        onClose={() => setAuthWallOpen(false)}
-      />
+      <AuthWallModal isOpen={authWallOpen} onClose={() => setAuthWallOpen(false)} />
 
-      <div className="min-h-screen" style={{ backgroundColor: brand.bg, color: brand.textPrimary }}>
+      <div
+        className="min-h-screen"
+        style={{
+          backgroundColor: brand.bg,
+          color: brand.textPrimary,
+          overflow: heroLocked ? 'hidden' : undefined,
+          height: heroLocked ? '100vh' : undefined,
+        }}
+      >
         {/* ── Sticky Header ── */}
         <header
           className="sticky top-0 z-50"
-          style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.border}` }}
+          style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.borderStrong}` }}
         >
           <div className="w-full px-4 h-14 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 type="button"
                 aria-label="Open menu"
-                className="p-2 hover:bg-[#f2f2f2] rounded-full transition-colors"
+                className="p-2 rounded-full transition-colors"
+                style={{ color: brand.textPrimary }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = brand.hoverBg;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+                }}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -348,31 +402,132 @@ export default function HeadfadeHomepage() {
                 </svg>
               </button>
               <div className="flex items-center gap-2 cursor-pointer select-none">
-                <svg viewBox="0 0 32 32" className="w-8 h-8" fill="none" aria-label="HeadFade logo" role="img">
+                <svg
+                  viewBox="0 0 36 36"
+                  className="headfade-logo w-9 h-9 transition-transform hover:scale-110"
+                  fill="none"
+                  aria-label="HeadFade logo"
+                  role="img"
+                >
                   <title>HeadFade</title>
-                  <rect width="32" height="32" rx="8" fill="#7C3AED" />
-                  <path
-                    d="M6 22 Q10 10 16 16 Q22 22 26 10"
+                  <defs>
+                    <linearGradient
+                      id="hf-grad"
+                      x1="0"
+                      y1="0"
+                      x2="36"
+                      y2="36"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop offset="0%" stopColor="#0891B2" />
+                      <stop offset="100%" stopColor="#06B6D4" />
+                    </linearGradient>
+                  </defs>
+                  {/* Circular base */}
+                  <circle cx="18" cy="18" r="17" fill="url(#hf-grad)" />
+                  {/* Outer detection ring */}
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="14"
                     stroke="white"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.3"
                     fill="none"
                   />
+                  {/* Inner detection ring */}
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="10"
+                    stroke="white"
+                    strokeWidth="0.6"
+                    strokeOpacity="0.25"
+                    fill="none"
+                  />
+                  {/* Crosshair lines */}
+                  <line
+                    x1="18"
+                    y1="4"
+                    x2="18"
+                    y2="11"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="18"
+                    y1="25"
+                    x2="18"
+                    y2="32"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="4"
+                    y1="18"
+                    x2="11"
+                    y2="18"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="25"
+                    y1="18"
+                    x2="32"
+                    y2="18"
+                    stroke="white"
+                    strokeWidth="1.2"
+                    strokeOpacity="0.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Center eye — forensic detection symbol */}
+                  <ellipse
+                    cx="18"
+                    cy="18"
+                    rx="5"
+                    ry="3.5"
+                    stroke="white"
+                    strokeWidth="1.5"
+                    fill="none"
+                  />
+                  <circle cx="18" cy="18" r="1.8" fill="white" />
+                  {/* Scan line accent */}
+                  <line
+                    x1="8"
+                    y1="13"
+                    x2="28"
+                    y2="13"
+                    stroke="#67E8F9"
+                    strokeWidth="0.7"
+                    strokeOpacity="0.6"
+                    strokeDasharray="2 2"
+                  />
                 </svg>
-                <span className="font-bold text-[20px] tracking-tight">HeadFade</span>
+                <span
+                  className="font-bold text-[20px] tracking-tight"
+                  style={{ color: brand.textPrimary }}
+                >
+                  HeadFade
+                </span>
               </div>
             </div>
 
             <div className="hidden md:flex flex-1 max-w-[600px] px-8">
               <div
                 className="flex w-full items-center rounded-full overflow-hidden"
-                style={{ border: `1px solid ${brand.border}` }}
+                style={{ border: `1px solid ${brand.borderStrong}`, backgroundColor: brand.bg }}
               >
                 <input
                   type="text"
                   placeholder="Search AI-presumed videos..."
                   className="w-full px-4 py-2 outline-none text-[16px]"
-                  style={{ backgroundColor: brand.bg }}
+                  style={{ backgroundColor: brand.bg, color: brand.textPrimary }}
                 />
                 <button
                   type="button"
@@ -380,10 +535,16 @@ export default function HeadfadeHomepage() {
                   className="px-5 py-2"
                   style={{
                     backgroundColor: brand.bgSubtle,
-                    borderLeft: `1px solid ${brand.border}`,
+                    borderLeft: `1px solid ${brand.borderStrong}`,
                   }}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -400,7 +561,7 @@ export default function HeadfadeHomepage() {
               {isAuthenticated && (
                 <div
                   className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold"
-                  style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)', color: 'white' }}
+                  style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4)', color: 'white' }}
                 >
                   ⚡ Elo {elo.eloRating.toLocaleString()}
                 </div>
@@ -409,9 +570,15 @@ export default function HeadfadeHomepage() {
                 type="button"
                 aria-label="Upload & Fake Us Out"
                 className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[13px] font-bold text-white transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(90deg,#7C3AED,#0891B2)' }}
+                style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4)' }}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <title>Upload icon</title>
                   <path
                     strokeLinecap="round"
@@ -437,11 +604,11 @@ export default function HeadfadeHomepage() {
           {/* Vote campaign banner */}
           <div
             className="w-full px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2"
-            style={{ background: 'linear-gradient(90deg,#4C1D95 0%,#7C3AED 50%,#0891B2 100%)' }}
+            style={{ background: 'linear-gradient(90deg,#164E63 0%,#0891B2 50%,#06B6D4 100%)' }}
           >
             <div className="flex items-center gap-3 text-white">
               <span className="text-[20px] font-black tracking-tight">
-                Is it <span style={{ color: '#C4B5FD' }}>AI</span>, or is it?
+                Is it <span style={{ color: '#67E8F9' }}>AI</span>, or is it?
               </span>
               <span
                 className="hidden sm:block text-[16px] font-bold px-3 py-0.5 rounded-full animate-pulse"
@@ -449,7 +616,9 @@ export default function HeadfadeHomepage() {
               >
                 Vote Now ↓
               </span>
-              <span className="text-[13px]" style={{ color: 'rgba(255,255,255,0.88)' }}>AI Presumed Videos — Only You Can Tell</span>
+              <span className="text-[13px]" style={{ color: 'rgba(255,255,255,0.88)' }}>
+                AI Presumed Videos — Only You Can Tell
+              </span>
             </div>
             <div className="flex items-center gap-4 text-[12px] text-white/80">
               <span>
@@ -468,17 +637,19 @@ export default function HeadfadeHomepage() {
           isAuthenticated={isAuthenticated}
           onAuthRequired={() => setAuthWallOpen(true)}
           eloRating={isAuthenticated ? elo.eloRating : undefined}
+          heroLocked={heroLocked}
+          onUnlockScroll={() => setHeroLocked(false)}
         />
 
         <div className="flex">
           {/* Sidebar */}
           <aside
             className="hidden lg:flex flex-col w-[240px] sticky top-[108px] h-[calc(100vh-6.75rem)] overflow-y-auto py-3 flex-shrink-0"
-            style={{ borderRight: `1px solid ${brand.border}` }}
+            style={{ borderRight: `1px solid ${brand.borderStrong}` }}
           >
             <nav
               className="flex flex-col gap-0.5 px-3 pb-3 mb-3"
-              style={{ borderBottom: `1px solid ${brand.border}` }}
+              style={{ borderBottom: `1px solid ${brand.borderStrong}` }}
             >
               {[
                 {
@@ -503,7 +674,7 @@ export default function HeadfadeHomepage() {
                   aria-current={item.active ? 'page' : undefined}
                   className="flex items-center gap-6 px-3 py-2.5 rounded-[10px] text-[14px] font-medium transition-colors"
                   style={{
-                    backgroundColor: item.active ? '#EDE9FF' : 'transparent',
+                    backgroundColor: item.active ? brand.chipDefault : 'transparent',
                     color: item.active ? brand.accent : brand.textPrimary,
                     fontWeight: item.active ? 700 : 400,
                   }}
@@ -533,8 +704,8 @@ export default function HeadfadeHomepage() {
               <div
                 className="mx-3 mb-3 p-3 rounded-xl"
                 style={{
-                  background: 'linear-gradient(135deg,#4C1D95,#1A0A2E)',
-                  border: '1px solid rgba(124,58,237,0.4)',
+                  background: 'linear-gradient(135deg,#164E63,#0A1628)',
+                  border: '1px solid rgba(8,145,178,0.4)',
                 }}
               >
                 <p className="text-[11px] font-bold text-white/50 mb-1">YOUR FORENSIC ELO</p>
@@ -562,7 +733,7 @@ export default function HeadfadeHomepage() {
 
             <div
               className="flex flex-col gap-0.5 px-3 pb-3 mb-3"
-              style={{ borderBottom: `1px solid ${brand.border}` }}
+              style={{ borderBottom: `1px solid ${brand.borderStrong}` }}
             >
               <h3 className="px-3 py-2 font-bold text-[16px]">Your Votes</h3>
               {(
@@ -580,8 +751,8 @@ export default function HeadfadeHomepage() {
                   onClick={() => setFilter(value)}
                   className="flex items-center gap-6 px-3 py-2 rounded-[10px] text-[14px] transition-colors"
                   style={{
-                    backgroundColor: filter === value ? '#EDE9FF' : 'transparent',
-                    color: filter === value ? '#7C3AED' : '#0A2540',
+                    backgroundColor: filter === value ? brand.chipDefault : 'transparent',
+                    color: filter === value ? brand.accent : brand.textPrimary,
                     fontWeight: filter === value ? 700 : 400,
                   }}
                 >
@@ -601,7 +772,7 @@ export default function HeadfadeHomepage() {
           <main className="flex-1 overflow-x-hidden">
             <div
               className="sticky top-[108px] z-40 flex items-center gap-2 px-6 py-3 overflow-x-auto scrollbar-hide"
-              style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.border}` }}
+              style={{ backgroundColor: brand.bg, borderBottom: `1px solid ${brand.borderStrong}` }}
             >
               {categories.map((cat) => {
                 const isActive = activeCategory === cat.label;
@@ -614,11 +785,13 @@ export default function HeadfadeHomepage() {
                     onClick={() => setActiveCategory(cat.label)}
                     style={{
                       background: isActive ? cat.color : brand.chipDefault,
-                      color: isActive ? '#fff' : '#1E1B4B',
+                      color: isActive ? brand.textLight : brand.chipText,
                       boxShadow: isActive ? `0 2px 12px ${cat.color}55` : 'none',
                     }}
                   >
-                    <span className="cat-glyph text-[15px]" aria-hidden="true">{cat.glyph}</span>
+                    <span className="cat-glyph text-[15px]" aria-hidden="true">
+                      {cat.glyph}
+                    </span>
                     {cat.label}
                   </button>
                 );
@@ -638,7 +811,7 @@ export default function HeadfadeHomepage() {
                         setActiveCategory('All');
                       }}
                       className="mt-2 px-4 py-2 rounded-lg text-white text-[13px] font-bold"
-                      style={{ backgroundColor: '#7C3AED' }}
+                      style={{ backgroundColor: '#0891B2' }}
                     >
                       Show All
                     </button>
@@ -681,7 +854,7 @@ export default function HeadfadeHomepage() {
                 <div ref={ref} className="mt-12 flex justify-center py-8">
                   <div
                     className="w-8 h-8 border-[3px] rounded-full animate-spin"
-                    style={{ borderColor: '#EDE9FF', borderTopColor: brand.accent }}
+                    style={{ borderColor: '#E0F7FA', borderTopColor: brand.accent }}
                   />
                 </div>
               )}

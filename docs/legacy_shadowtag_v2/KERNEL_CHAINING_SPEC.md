@@ -14,7 +14,6 @@ The KERNEL (Keep it simple, Easy to verify, Reproducible, Narrow scope, Explicit
 ### Key Innovation
 
 **Traditional Monolithic Reasoning**:
-
 ```
 User Query → Single LLM Call (10K tokens) → Response
 Cost: $0.105 per query
@@ -22,7 +21,6 @@ Reusability: 0%
 ```
 
 **Kernel Chaining**:
-
 ```
 User Query → Kernel 1 (cached) → Kernel 2 (new) → Kernel 3 (cached) → Response
 Cost: $0.02235 per query (78.7% reduction)
@@ -38,34 +36,34 @@ Reusability: 60% cache hit rate
 ```typescript
 interface Kernel {
   // Metadata
-  id: string; // UUID
-  name: string; // Human-readable name
-  version: string; // Semantic version
-  author: string; // Creator ID
+  id: string;                    // UUID
+  name: string;                  // Human-readable name
+  version: string;               // Semantic version
+  author: string;                // Creator ID
   created_at: timestamp;
 
   // Execution
-  input_schema: JSONSchema; // Input contract
-  output_schema: JSONSchema; // Output contract
-  prompt_template: string; // LLM prompt with {{variables}}
-  model: string; // "gemini-3.1-flash" | "claude-sonnet-4.5"
-  temperature: number; // 0.0-1.0
+  input_schema: JSONSchema;      // Input contract
+  output_schema: JSONSchema;     // Output contract
+  prompt_template: string;       // LLM prompt with {{variables}}
+  model: string;                 // "gemini-3.1-flash" | "claude-sonnet-4.5"
+  temperature: number;           // 0.0-1.0
   max_tokens: number;
 
   // Optimization
-  cacheable: boolean; // Can results be cached?
-  cache_ttl: number; // Seconds
-  cache_key_fields: string[]; // Which inputs determine cache key
+  cacheable: boolean;            // Can results be cached?
+  cache_ttl: number;             // Seconds
+  cache_key_fields: string[];    // Which inputs determine cache key
 
   // Metadata
-  tags: string[]; // ["reasoning", "coding", "math"]
-  cost_estimate: number; // USD per execution
-  avg_latency_ms: number; // Historical average
+  tags: string[];                // ["reasoning", "coding", "math"]
+  cost_estimate: number;         // USD per execution
+  avg_latency_ms: number;        // Historical average
 
   // Quality
-  examples: Example[]; // Input/output pairs
-  test_cases: TestCase[]; // Validation tests
-  success_rate: number; // 0.0-1.0
+  examples: Example[];           // Input/output pairs
+  test_cases: TestCase[];        // Validation tests
+  success_rate: number;          // 0.0-1.0
 }
 
 interface Example {
@@ -77,13 +75,13 @@ interface Example {
 interface TestCase {
   input: object;
   expected_output: object;
-  assertion: string; // JSONPath or JS expression
+  assertion: string;            // JSONPath or JS expression
 }
 ```
 
 ### Example Kernel: Code Reviewer
 
-````json
+```json
 {
   "id": "krn_code_reviewer_v1",
   "name": "Code Reviewer",
@@ -92,9 +90,9 @@ interface TestCase {
   "input_schema": {
     "type": "object",
     "properties": {
-      "code": { "type": "string" },
-      "language": { "type": "string", "enum": ["python", "typescript", "rust"] },
-      "focus": { "type": "string", "enum": ["security", "performance", "style"] }
+      "code": {"type": "string"},
+      "language": {"type": "string", "enum": ["python", "typescript", "rust"]},
+      "focus": {"type": "string", "enum": ["security", "performance", "style"]}
     },
     "required": ["code", "language"]
   },
@@ -106,14 +104,14 @@ interface TestCase {
         "items": {
           "type": "object",
           "properties": {
-            "severity": { "type": "string", "enum": ["critical", "warning", "info"] },
-            "line": { "type": "number" },
-            "message": { "type": "string" },
-            "suggestion": { "type": "string" }
+            "severity": {"type": "string", "enum": ["critical", "warning", "info"]},
+            "line": {"type": "number"},
+            "message": {"type": "string"},
+            "suggestion": {"type": "string"}
           }
         }
       },
-      "overall_quality": { "type": "number", "minimum": 0, "maximum": 10 }
+      "overall_quality": {"type": "number", "minimum": 0, "maximum": 10}
     }
   },
   "prompt_template": "Review the following {{language}} code for {{focus}} issues:\n\n```{{language}}\n{{code}}\n```\n\nProvide structured feedback.",
@@ -127,7 +125,7 @@ interface TestCase {
   "cost_estimate": 0.015,
   "avg_latency_ms": 450
 }
-````
+```
 
 ---
 
@@ -148,8 +146,8 @@ interface Chain {
 interface ChainStep {
   kernel_id: string;
   step_name: string;
-  input_mapping: { [outputKey: string]: string }; // Map chain inputs/previous outputs to kernel inputs
-  condition?: string; // Optional: JS expression to skip step
+  input_mapping: {[outputKey: string]: string};  // Map chain inputs/previous outputs to kernel inputs
+  condition?: string;  // Optional: JS expression to skip step
   retry_policy?: RetryPolicy;
 }
 
@@ -170,9 +168,9 @@ interface RetryPolicy {
   "input_schema": {
     "type": "object",
     "properties": {
-      "frontend_code": { "type": "string" },
-      "backend_code": { "type": "string" },
-      "sql_queries": { "type": "string" }
+      "frontend_code": {"type": "string"},
+      "backend_code": {"type": "string"},
+      "sql_queries": {"type": "string"}
     }
   },
   "kernels": [
@@ -286,18 +284,15 @@ cache_key = generate_cache_key(
 ### Cache Invalidation
 
 **Time-based** (TTL):
-
 - Default: 1 hour
 - Long-lived (stable kernels): 24 hours
 - Short-lived (volatile data): 5 minutes
 
 **Version-based**:
-
 - Kernel version bump → all caches for that kernel invalidated
 - Example: `krn_code_reviewer_v1` → `krn_code_reviewer_v2`
 
 **Manual**:
-
 - Creator can purge cache via API
 - Admin can purge all caches for a kernel
 
@@ -310,7 +305,6 @@ cache_key = generate_cache_key(
 **Scenario**: Complex reasoning task requiring 5 sub-analyses
 
 **Without Caching**:
-
 ```
 Query 1: 5 kernels × 2,000 tokens each = 10,000 tokens
 Query 2: 5 kernels × 2,000 tokens each = 10,000 tokens (same task, different input)
@@ -320,7 +314,6 @@ Cost (Gemini): 30K × $0.075 / 1M = $0.00225
 ```
 
 **With 60% Cache Hit Rate**:
-
 ```
 Query 1: 5 kernels × 2,000 tokens = 10,000 tokens (cold cache)
 Query 2:
@@ -364,7 +357,6 @@ async def execute_chain(chain: Chain, inputs: dict):
 ```
 
 **Latency Improvement**:
-
 - Sequential: 5 kernels × 450ms avg = 2,250ms
 - Parallel (3 levels): Level 1 (450ms) + Level 2 (450ms) + Level 3 (450ms) = 1,350ms (40% faster)
 
@@ -375,21 +367,18 @@ async def execute_chain(chain: Chain, inputs: dict):
 ### Creator Submission Flow
 
 1. **Create Kernel**:
-
    ```bash
    pnkln kernel create --template code-reviewer
    # Opens editor with schema template
    ```
 
 2. **Test Locally**:
-
    ```bash
    pnkln kernel test krn_my_kernel_v1 --test-cases test_cases.json
    # Runs all test cases, reports success rate
    ```
 
 3. **Publish**:
-
    ```bash
    pnkln kernel publish krn_my_kernel_v1 --price 0.05
    # Uploads to marketplace, sets $0.05 per execution
@@ -410,7 +399,6 @@ async def execute_chain(chain: Chain, inputs: dict):
 - **30%** to platform (pnkln)
 
 **Example Calculation**:
-
 ```
 Kernel price: $0.05 per execution
 Executions in month: 10,000
@@ -450,7 +438,6 @@ Before publication, kernels must pass:
 ### User Ratings
 
 Users rate kernels 1-5 stars based on:
-
 - **Accuracy**: Does it produce correct results?
 - **Speed**: Is it fast enough?
 - **Cost**: Is it worth the price?
@@ -462,7 +449,6 @@ Low-rated kernels (<3.0 stars) are depublished after 100 executions.
 ## Implementation Roadmap
 
 ### Phase 1: Core Runtime (Month 1)
-
 - [ ] Kernel schema definition
 - [ ] Chain execution engine
 - [ ] Redis cache integration
@@ -470,7 +456,6 @@ Low-rated kernels (<3.0 stars) are depublished after 100 executions.
 - [ ] 10 base kernels (reasoning, coding, analysis)
 
 ### Phase 2: Marketplace MVP (Month 2)
-
 - [ ] Creator dashboard
 - [ ] Kernel submission flow
 - [ ] Payment integration (Stripe Connect)
@@ -478,7 +463,6 @@ Low-rated kernels (<3.0 stars) are depublished after 100 executions.
 - [ ] First 20 community kernels
 
 ### Phase 3: Optimization (Month 3)
-
 - [ ] Parallel execution
 - [ ] Advanced caching (semantic similarity)
 - [ ] Cost analytics dashboard
@@ -486,7 +470,6 @@ Low-rated kernels (<3.0 stars) are depublished after 100 executions.
 - [ ] Kernel versioning & deprecation
 
 ### Phase 4: Enterprise (Month 4-6)
-
 - [ ] Private kernel hosting
 - [ ] Custom model support (fine-tuned models)
 - [ ] SLA guarantees
@@ -498,14 +481,12 @@ Low-rated kernels (<3.0 stars) are depublished after 100 executions.
 ## Success Metrics
 
 ### Technical Metrics
-
 - **Cache Hit Rate**: Target 60%, stretch 75%
 - **P99 Latency**: <500ms per kernel, <2s per chain
 - **Token Reduction**: 78% vs. monolithic approach
 - **Cost per Execution**: <$0.01 average
 
 ### Business Metrics
-
 - **Active Kernels**: 500+ by month 6
 - **Active Creators**: 200+ by month 6
 - **Execution Volume**: 10M+ per month by month 12

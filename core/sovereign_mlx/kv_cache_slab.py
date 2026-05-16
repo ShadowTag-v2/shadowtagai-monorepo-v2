@@ -1,185 +1,169 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""
+core/sovereign_mlx/kv_cache_slab.py
+Sovereign MLX Protocol — Phase 1: Disaggregate Prefill on Apple Silicon.
 
-"""kv_cache_slab.py — Sovereign MLX KV Cache Slab Builder
+Mapping:
+  Aegaeon "VRAM Slab"   →  llama.cpp KV-cache .bin on Unified Memory
+  GPU VRAM pooling       →  M1 Max Unified Memory (CPU / Metal / ANE share same pool)
 
-Runs llama-server --prompt-cache-all once against the .beads corpus
-to produce a persistent KV cache binary slab. Subsequent inference
-requests use --prompt-cache-ro to skip prefill entirely.
+Workflow:
+  1. Collect .beads grounding library text (CLAUDE.md, rulesets, judge6 context)
+  2. Run `llama-server --prompt-cache` to pre-evaluate KV tensors once
+  3. Export slab to data/sovereign_mlx/kv_cache_slab.bin
+  4. ANEBridge passes --prompt-cache path to every subsequent request (skip prefill)
 
-Slab is valid for 24 hours (regenerate daily via COR.KAIROS daemon).
-
-Usage:
-    python -m core.sovereign_mlx.kv_cache_slab --build
-    python -m core.sovereign_mlx.kv_cache_slab --status
+Trigger:
+  - Called by monorepo post-merge hook or launchd when .beads update
+  - Also callable manually: python -m core.sovereign_mlx.kv_cache_slab --build
 """
 
 from __future__ import annotations
 
 import argparse
-import datetime
-import json
 import logging
 import os
-import pathlib
+import shutil
 import subprocess
+import time
+from pathlib import Path
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [MLX-SLAB] %(message)s")
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("sovereign_mlx.kv_cache_slab")
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-DATA_DIR = REPO_ROOT / "data" / "sovereign_mlx"
-SLAB_FILE = DATA_DIR / "kv_cache_slab.bin"
-STATE_FILE = DATA_DIR / "slab_state.json"
-BEADS_DIR = REPO_ROOT / ".beads"
+REPO_ROOT = Path(__file__).parent.parent.parent
+SLAB_DIR = REPO_ROOT / "data" / "sovereign_mlx"
+SLAB_PATH = SLAB_DIR / "kv_cache_slab.bin"
+SLAB_PROMPT_PATH = SLAB_DIR / "slab_prompt.txt"
+SLAB_STATE_PATH = SLAB_DIR / "slab_state.json"
 
-# Default llama.cpp server binary path
-DEFAULT_LLAMA_SERVER = os.environ.get("LLAMA_SERVER_PATH", "llama-server")
-DEFAULT_MODEL_PATH = os.environ.get(
+# llama.cpp server binary — override via env
+LLAMA_SERVER = os.environ.get("LLAMA_SERVER_BIN", "llama-server")
+MODEL_PATH = os.environ.get(
     "LOCAL_MODEL_PATH",
-    os.path.expanduser("~/models/gemma-2-9b-it.Q4_K_M.gguf"),
+    str(Path.home() / "models" / "gemma-2-9b-it.Q4_K_M.gguf"),
 )
 
-# Slab validity (seconds)
-SLAB_TTL = 86400  # 24 hours
+_SLAB_SOURCES: list[Path] = [
+    REPO_ROOT / "CLAUDE.md",
+    REPO_ROOT / "operations" / "monorepo_manifest.yaml",
+    REPO_ROOT / "scripts" / "judge6.sh",
+    REPO_ROOT / "data" / "ane_beads",
+]
 
 
-def _collect_prompt_corpus() -> str:
-    """Build the prompt corpus from .beads files for KV prefill."""
-    parts: list[str] = []
-    if BEADS_DIR.exists():
-        for f in sorted(BEADS_DIR.glob("*.md")):
-            content = f.read_text(errors="replace")
-            parts.append(f"### {f.name}\n{content}\n")
-            logger.info("  Added: %s (%d bytes)", f.name, len(content))
+class KVCacheSlab:
+    """Builds and manages the llama.cpp KV-cache slab on M1 Max Unified Memory."""
 
-    # Include AGENTS.md and CLAUDE.md
-    for name in ("AGENTS.md", "CLAUDE.md"):
-        path = REPO_ROOT / name
-        if path.exists():
-            parts.append(path.read_text(errors="replace"))
+    # ── Public API ──────────────────────────────────────────────────────────
 
-    return "\n".join(parts)
-
-
-def build_slab(
-    model_path: str = DEFAULT_MODEL_PATH,
-    llama_server: str = DEFAULT_LLAMA_SERVER,
-) -> dict | None:
-    """Build the KV cache slab by running llama-server with prompt-cache-all.
-
-    Returns:
-        Slab metadata dict, or None on failure.
-    """
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-
-    if not pathlib.Path(model_path).exists():
-        logger.error("Model not found: %s", model_path)
+    def get_slab_path(self) -> Path | None:
+        """Return the slab path if it's built and current, else None."""
+        if SLAB_PATH.exists() and self._is_current():
+            return SLAB_PATH
         return None
 
-    corpus = _collect_prompt_corpus()
-    if not corpus.strip():
-        logger.error("No corpus content collected")
-        return None
+    def build(self, force: bool = False) -> Path:
+        """Build (or rebuild) the KV-cache slab. Returns path to .bin file."""
+        if not force and SLAB_PATH.exists() and self._is_current():
+            logger.info("Slab is current — skipping rebuild. Use force=True to override.")
+            return SLAB_PATH
 
-    # Write corpus to temp file for llama-server
-    corpus_file = DATA_DIR / "slab_corpus.txt"
-    corpus_file.write_text(corpus)
+        if not shutil.which(LLAMA_SERVER):
+            raise RuntimeError(f"llama-server not found at '{LLAMA_SERVER}'. Install llama.cpp with Metal: cmake -DLLAMA_METAL=on ..")
+        if not Path(MODEL_PATH).exists():
+            raise RuntimeError(f"Model not found: {MODEL_PATH}. Set LOCAL_MODEL_PATH env var or download a .gguf model.")
 
-    logger.info(
-        "Building KV slab (%d chars) from %s...",
-        len(corpus),
-        model_path,
-    )
-
-    # Run llama-server in prompt-cache-all mode (single pass)
-    cmd = [
-        llama_server,
-        "-m",
-        model_path,
-        "--prompt-cache-all",
-        "--prompt-cache",
-        str(SLAB_FILE),
-        "-ngl",
-        "99",  # full GPU offload
-        "-f",
-        str(corpus_file),
-        "--batch-size",
-        "512",
-        "-n",
-        "1",  # generate 1 token then stop
-    ]
-
-    try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=300,
+        SLAB_DIR.mkdir(parents=True, exist_ok=True)
+        prompt_text = self._collect_slab_text()
+        SLAB_PROMPT_PATH.write_text(prompt_text, encoding="utf-8")
+        logger.info(
+            "Building KV-cache slab: %.1f KB prompt → %s",
+            len(prompt_text) / 1024,
+            SLAB_PATH,
         )
 
-        if SLAB_FILE.exists():
-            state = {
-                "slab_path": str(SLAB_FILE),
-                "model": model_path,
-                "created_at": datetime.datetime.now(datetime.UTC).isoformat(),
-                "slab_bytes": SLAB_FILE.stat().st_size,
-                "corpus_chars": len(corpus),
-                "ttl_seconds": SLAB_TTL,
-            }
-            STATE_FILE.write_text(json.dumps(state, indent=2))
-            logger.info("KV slab built: %s (%d bytes)", SLAB_FILE, state["slab_bytes"])
-            return state
+        cmd = [
+            LLAMA_SERVER,
+            "-m",
+            MODEL_PATH,
+            "--prompt-cache",
+            str(SLAB_PATH),
+            "--prompt-cache-all",
+            "-ngl",
+            "99",  # offload all layers to Metal GPU
+            "--no-mmap",  # keep weights resident in Unified Memory
+            "-p",
+            prompt_text[:32_000],  # llama-server prompt arg (truncated)
+            "-n",
+            "1",  # generate 1 token to trigger cache write
+            "--log-disable",
+        ]
+        t0 = time.time()
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        elapsed = time.time() - t0
 
-        logger.error("Slab file not created. stderr: %s", result.stderr[:500])
-        return None
+        if result.returncode != 0:
+            raise RuntimeError(f"llama-server slab build failed:\n{result.stderr[:2000]}")
 
-    except FileNotFoundError:
-        logger.error("llama-server not found at: %s", llama_server)
-        return None
-    except subprocess.TimeoutExpired:
-        logger.error("Slab build timed out (300s)")
-        return None
+        self._save_state(prompt_text)
+        logger.info("KV-cache slab built in %.1fs → %s", elapsed, SLAB_PATH)
+        return SLAB_PATH
 
+    # ── Private ─────────────────────────────────────────────────────────────
 
-def is_valid() -> bool:
-    """Check if current slab is still within TTL."""
-    if not STATE_FILE.exists():
-        return False
-    state = json.loads(STATE_FILE.read_text())
-    created = datetime.datetime.fromisoformat(state["created_at"])
-    age = (datetime.datetime.now(datetime.UTC) - created).total_seconds()
-    return age < state.get("ttl_seconds", SLAB_TTL)
+    def _collect_slab_text(self, max_chars: int = 200_000) -> str:
 
+        parts: list[str] = []
+        total = 0
+        for src in _SLAB_SOURCES:
+            if src.is_dir():
+                for f in sorted(src.rglob("*.txt"))[:300]:
+                    chunk = f.read_text(errors="ignore")[:6_000]
+                    parts.append(f"### {f.name}\n{chunk}")
+                    total += len(chunk)
+                    if total >= max_chars:
+                        break
+            elif src.is_file():
+                chunk = src.read_text(errors="ignore")[:50_000]
+                parts.append(f"### {src.name}\n{chunk}")
+                total += len(chunk)
+            if total >= max_chars:
+                break
+        return "\n\n".join(parts)
 
-def get_status() -> dict | None:
-    """Read current slab state from disk."""
-    if not STATE_FILE.exists():
-        logger.info("No slab state found at %s", STATE_FILE)
-        return None
-    state = json.loads(STATE_FILE.read_text())
-    valid = is_valid()
-    logger.info("Slab: %s", state.get("slab_path", "unknown"))
-    logger.info("Model: %s", state.get("model", "unknown"))
-    logger.info("Created: %s", state.get("created_at", "unknown"))
-    logger.info("Size: %d bytes", state.get("slab_bytes", 0))
-    logger.info("Valid: %s", "YES" if valid else "EXPIRED")
-    return state
+    def _is_current(self) -> bool:
+        import json as _json
 
+        if not SLAB_STATE_PATH.exists():
+            return False
+        try:
+            state = _json.loads(SLAB_STATE_PATH.read_text())
+            return time.time() < state.get("expires_at", 0)
+        except (ValueError, KeyError):
+            return False
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Sovereign MLX KV Cache Slab Manager")
-    parser.add_argument("--build", action="store_true", help="Build a new KV cache slab")
-    parser.add_argument("--status", action="store_true", help="Show current slab state")
-    parser.add_argument("--model", default=DEFAULT_MODEL_PATH, help="Model path")
-    args = parser.parse_args()
+    def _save_state(self, prompt_text: str) -> None:
+        import hashlib
+        import json as _json
 
-    if args.build:
-        build_slab(model_path=args.model)
-    elif args.status:
-        get_status()
-    else:
-        parser.print_help()
+        state = {
+            "prompt_hash": hashlib.sha256(prompt_text.encode()).hexdigest()[:12],
+            "built_at": time.time(),
+            "expires_at": time.time() + 86_400,  # 24-hour validity
+            "model": Path(MODEL_PATH).name,
+        }
+        SLAB_STATE_PATH.write_text(_json.dumps(state, indent=2))
 
 
 if __name__ == "__main__":
-    main()
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+    parser = argparse.ArgumentParser(description="Build the Sovereign MLX KV-cache slab")
+    parser.add_argument("--build", action="store_true", help="Build/rebuild the slab")
+    parser.add_argument("--force", action="store_true", help="Force rebuild even if current")
+    args = parser.parse_args()
+    if args.build or args.force:
+        slab = KVCacheSlab()
+        path = slab.build(force=args.force)
+        print(f"Slab ready: {path}")
+    else:
+        parser.print_help()

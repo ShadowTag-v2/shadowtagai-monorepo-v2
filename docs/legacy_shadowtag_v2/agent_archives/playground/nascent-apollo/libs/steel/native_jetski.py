@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from playwright.sync_api import sync_playwright
 
 try:

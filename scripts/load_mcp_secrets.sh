@@ -51,7 +51,7 @@ export NEXT_PUBLIC_STRIPE_TRIAL_LINK="https://buy.stripe.com/<trial-link>"
 export NEXT_PUBLIC_STRIPE_PRO_MONTHLY_LINK="https://buy.stripe.com/<monthly-link>"
 export NEXT_PUBLIC_STRIPE_PRO_ANNUAL_LINK="https://buy.stripe.com/<annual-link>"
 
-_log "Exported 16 config vars"
+_log "Exported 13 config vars"
 
 # --- Verify gcloud auth ---
 if ! gcloud auth print-access-token --quiet >/dev/null 2>&1; then
@@ -62,15 +62,12 @@ fi
 # Format: ENV_VAR_NAME:secret-manager-id
 SECRETS="
 DEVELOPER_KNOWLEDGE_API_KEY:developer-knowledge-api-key
-STITCH_API_KEY:stitch-api-key
+STITCH_API_KEY:stitch-api-key-regional
 GOOGLE_DESIGN_API_KEY:google-design-api-key
-GEMINI_API_KEY:gemini-api-key
-STRIPE_SECRET_KEY:stripe-secret-key
-STRIPE_PUBLISHABLE_KEY:stripe-publishable-key
-STRIPE_WEBHOOK_SECRET:stripe-webhook-secret
-KOVEL_ATTESTATION_SECRET:KOVEL_ATTESTATION_SECRET
-MAGIC_LINK_SECRET:MAGIC_LINK_SECRET
-JULES_API_KEY:jules-api-key
+GEMINI_API_KEY:gemini-api-key-regional
+STRIPE_SECRET_KEY:stripe-secret-key-regional
+STRIPE_PUBLISHABLE_KEY:stripe-publishable-key-regional
+STRIPE_WEBHOOK_SECRET:stripe-webhook-secret-regional
 "
 
 loaded=0

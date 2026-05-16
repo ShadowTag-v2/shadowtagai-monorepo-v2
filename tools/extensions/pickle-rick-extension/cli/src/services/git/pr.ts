@@ -1,8 +1,8 @@
-import { existsSync, readdirSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import simpleGit, { type SimpleGit } from 'simple-git';
-import { execCommand } from '../providers/base.js';
+import { existsSync, readdirSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import simpleGit, { type SimpleGit } from "simple-git";
+import { execCommand } from "../providers/base.js";
 
 export interface PRDescription {
   title: string;
@@ -17,37 +17,37 @@ export async function generatePRDescription(
   branchName: string,
   baseBranch: string,
 ): Promise<PRDescription> {
-  let prdContent = '';
+  let prdContent = "";
   const ticketSummaries: string[] = [];
 
   // Try to read PRD
-  const prdPath = join(sessionDir, 'prd.md');
+  const prdPath = join(sessionDir, "prd.md");
   if (existsSync(prdPath)) {
     try {
-      prdContent = await readFile(prdPath, 'utf-8');
+      prdContent = await readFile(prdPath, "utf-8");
     } catch {}
   }
 
   // Extract title from PRD (first heading)
-  let title = 'Pickle Rick Session Changes';
+  let title = "Pickle Rick Session Changes";
   const titleMatch = prdContent.match(/^#\s+(.*)$/m);
   if (titleMatch) {
-    title = titleMatch[1].replace(/\s+PRD$/i, '').trim();
+    title = titleMatch[1].replace(/\s+PRD$/i, "").trim();
   }
 
   // Gather ticket summaries from implementation docs
   try {
     const entries = readdirSync(sessionDir, { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'debug') {
+      if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "debug") {
         const ticketDir = join(sessionDir, entry.name);
-        const implPath = join(ticketDir, 'implementation.md');
+        const implPath = join(ticketDir, "implementation.md");
         const ticketPath = join(ticketDir, `linear_ticket_${entry.name}.md`);
 
         let ticketTitle = entry.name;
         if (existsSync(ticketPath)) {
           try {
-            const ticketContent = await readFile(ticketPath, 'utf-8');
+            const ticketContent = await readFile(ticketPath, "utf-8");
             const ticketTitleMatch = ticketContent.match(/^#\s+(.+)$/m);
             if (ticketTitleMatch) ticketTitle = ticketTitleMatch[1];
           } catch {}
@@ -55,7 +55,7 @@ export async function generatePRDescription(
 
         if (existsSync(implPath)) {
           try {
-            const implContent = await readFile(implPath, 'utf-8');
+            const implContent = await readFile(implPath, "utf-8");
             // Extract summary section or first few lines
             const summaryMatch = implContent.match(/##\s*Summary\s*\n([\s\S]*?)(?=\n##|$)/i);
             const summary = summaryMatch
@@ -69,8 +69,8 @@ export async function generatePRDescription(
   } catch {}
 
   // Extract key sections from PRD for the body
-  let problemStatement = '';
-  let objective = '';
+  let problemStatement = "";
+  let objective = "";
   const problemMatch = prdContent.match(/##\s*Problem Statement\s*\n([\s\S]*?)(?=\n##|$)/i);
   if (problemMatch) problemStatement = problemMatch[1].trim();
   const objectiveMatch = prdContent.match(/##\s*Objective.*?\n([\s\S]*?)(?=\n##|$)/i);
@@ -79,13 +79,13 @@ export async function generatePRDescription(
   // Build PR body
   const body = `## Summary
 
-${problemStatement ? `**Problem:** ${problemStatement.split('\n')[0]}` : 'Automated changes from Pickle Rick session.'}
+${problemStatement ? `**Problem:** ${problemStatement.split("\n")[0]}` : "Automated changes from Pickle Rick session."}
 
-${objective ? `**Objective:** ${objective.split('\n')[0]}` : ''}
+${objective ? `**Objective:** ${objective.split("\n")[0]}` : ""}
 
 ## Changes
 
-${ticketSummaries.length > 0 ? ticketSummaries.join('\n\n') : 'See commit history for details.'}
+${ticketSummaries.length > 0 ? ticketSummaries.join("\n\n") : "See commit history for details."}
 
 ## Test Plan
 
@@ -114,7 +114,7 @@ export async function pushBranch(
   const git: SimpleGit = gitInstance || simpleGit(workDir);
 
   try {
-    await git.push('origin', branch, ['--set-upstream']);
+    await git.push("origin", branch, ["--set-upstream"]);
     return true;
   } catch {
     return false;
@@ -141,24 +141,24 @@ export async function createPullRequest(
 
   // Build gh pr create command args
   const args = [
-    'pr',
-    'create',
-    '--base',
+    "pr",
+    "create",
+    "--base",
     baseBranch,
-    '--head',
+    "--head",
     branch,
-    '--title',
+    "--title",
     title,
-    '--body',
+    "--body",
     body,
   ];
 
   if (draft) {
-    args.push('--draft');
+    args.push("--draft");
   }
 
   // Execute gh CLI
-  const { stdout, exitCode } = await execCommand('gh', args, workDir);
+  const { stdout, exitCode } = await execCommand("gh", args, workDir);
 
   if (exitCode !== 0) {
     return null;
@@ -173,7 +173,7 @@ export async function createPullRequest(
  */
 export async function isGhAvailable(): Promise<boolean> {
   try {
-    const { exitCode } = await execCommand('gh', ['auth', 'status'], process.cwd());
+    const { exitCode } = await execCommand("gh", ["auth", "status"], process.cwd());
     return exitCode === 0;
   } catch {
     return false;
@@ -191,7 +191,7 @@ export async function getOriginUrl(
 
   try {
     const remotes = await git.getRemotes(true);
-    const origin = remotes.find((r) => r.name === 'origin');
+    const origin = remotes.find((r) => r.name === "origin");
     return origin?.refs?.fetch || null;
   } catch {
     return null;

@@ -1,9 +1,9 @@
-import type { Root } from '@modelcontextprotocol/sdk/types.js';
-import { promises as fs, type Stats } from 'fs';
-import os from 'os';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { normalizePath } from './path-utils.js';
+import type { Root } from "@modelcontextprotocol/sdk/types.js";
+import { promises as fs, type Stats } from "fs";
+import os from "os";
+import path from "path";
+import { fileURLToPath } from "url";
+import { normalizePath } from "./path-utils.js";
 
 /**
  * Converts a root URI to a normalized directory path with basic security validation.
@@ -12,9 +12,9 @@ import { normalizePath } from './path-utils.js';
  */
 async function parseRootUri(rootUri: string): Promise<string | null> {
   try {
-    const rawPath = rootUri.startsWith('file://') ? fileURLToPath(rootUri) : rootUri;
+    const rawPath = rootUri.startsWith("file://") ? fileURLToPath(rootUri) : rootUri;
     const expandedPath =
-      rawPath.startsWith('~/') || rawPath === '~'
+      rawPath.startsWith("~/") || rawPath === "~"
         ? path.join(os.homedir(), rawPath.slice(1))
         : rawPath;
     const absolutePath = path.resolve(expandedPath);
@@ -57,7 +57,7 @@ export async function getValidRootDirectories(requestedRoots: readonly Root[]): 
     const resolvedPath = await parseRootUri(requestedRoot.uri);
     if (!resolvedPath) {
       console.error(
-        formatDirectoryError(requestedRoot.uri, undefined, 'invalid path or inaccessible'),
+        formatDirectoryError(requestedRoot.uri, undefined, "invalid path or inaccessible"),
       );
       continue;
     }
@@ -67,7 +67,7 @@ export async function getValidRootDirectories(requestedRoots: readonly Root[]): 
       if (stats.isDirectory()) {
         validatedDirectories.push(resolvedPath);
       } else {
-        console.error(formatDirectoryError(resolvedPath, undefined, 'non-directory root'));
+        console.error(formatDirectoryError(resolvedPath, undefined, "non-directory root"));
       }
     } catch (error) {
       console.error(formatDirectoryError(resolvedPath, error));

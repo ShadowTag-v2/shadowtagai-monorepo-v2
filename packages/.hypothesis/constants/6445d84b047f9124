@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/gemini_deep_research/client.py
+# hypothesis_version: 6.151.5
+
+[3.0, 5.0, 120.0, 3600, 'GEMINI_API_KEY', 'Plan looks good!', 'Unknown error', 'agent', 'agent_config', 'api_key', 'auto', 'background', 'cancelled', 'complete', 'completed', 'content', 'content.delta', 'data', 'deep-research', 'delta', 'error', 'event_id', 'event_type', 'failed', 'id', 'image', 'image/png', 'in_progress', 'input', 'interaction', 'interaction.complete', 'interaction.start', 'last_event_id', 'mime_type', 'outputs', 'start', 'status', 'stream', 'text', 'thinking_summaries', 'thought', 'thought_summary', 'tools', 'total_tokens', 'type', 'usage', 'visualization', 'wb']

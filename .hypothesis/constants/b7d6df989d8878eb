@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/gemini_interactions/tools.py
+# hypothesis_version: 6.151.5
+
+[768, 1024, 'allowed_tools', 'browser', 'code_execution', 'computer_use', 'description', 'display_height_px', 'display_width_px', 'environment', 'file_ids', 'file_search', 'function', 'google_search', 'headers', 'mcp_server', 'name', 'parameters', 'search_types', 'type', 'url', 'url_context', 'vector_store_ids']

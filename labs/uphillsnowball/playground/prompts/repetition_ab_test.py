@@ -13,18 +13,18 @@ from __future__ import annotations
 # This experiment validates the 1-8% accuracy boost claim.
 
 EXPERIMENT_TEMPLATE = {
-    "name": "prompt_repetition_ab",
-    "model": "gemini-3.1-flash-lite-preview",
-    "conditions": {
-        "control": "single instruction in system prompt",
-        "treatment": "instruction repeated 2x in context",
-    },
-    "metrics": ["accuracy", "latency_ms", "output_tokens"],
-    "sample_size": 100,
-    "status": "not_started",
+  "name": "prompt_repetition_ab",
+  "model": "gemini-3.1-flash-lite-preview",
+  "conditions": {
+    "control": "single instruction in system prompt",
+    "treatment": "instruction repeated 2x in context",
+  },
+  "metrics": ["accuracy", "latency_ms", "output_tokens"],
+  "sample_size": 100,
+  "status": "not_started",
 }
 
 if __name__ == "__main__":
-    import json
+  import json
 
-    print(json.dumps(EXPERIMENT_TEMPLATE, indent=2))
+  print(json.dumps(EXPERIMENT_TEMPLATE, indent=2))

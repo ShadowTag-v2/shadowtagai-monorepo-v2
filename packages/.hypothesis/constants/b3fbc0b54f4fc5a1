@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/speculation_engine/cache_break_detection.py
+# hypothesis_version: 6.151.5
+
+[0.95, 2000, 5381, 4294967295, '+00:00', ',', ', ', 'Z', ']', 'added_tool_count', 'added_tools', 'after', 'agent:builtin', 'agent:custom', 'agent:default', 'assistant', 'auto mode toggled', 'auto_mode_changed', 'before', 'betas changed', 'betas_changed', 'cache_control', 'cache_read_tokens', 'cached_mc_changed', 'call_number', 'changed_tool_schemas', 'compact', 'default', 'effort_changed', 'extra_body_changed', 'fast mode toggled', 'fast_mode_changed', 'haiku', 'mcp', 'mcp__', 'model_changed', 'name', 'none', 'overage_changed', 'prompt_cache_break', 'query_source', 'reason', 'removed_tool_count', 'removed_tools', 'repl_main_thread', 'request_id', 'role', 'sdk', 'system_char_delta', 'text', 'timestamp', 'tool_schemas_changed', 'type', 'unknown', 'unknown cause']

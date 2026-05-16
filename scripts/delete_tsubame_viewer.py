@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import sys
 import time
 
@@ -15,7 +16,7 @@ def get_token(client_id, pem_path, owner_name):
     encoded_jwt = jwt.encode(payload, pem_data, algorithm="RS256")
 
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
-    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers)
 
     installations = resp.json()
     target_installation_id = None
@@ -27,19 +28,16 @@ def get_token(client_id, pem_path, owner_name):
     if not target_installation_id:
         return None
 
-    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers, timeout=30)
+    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers)
     if resp.status_code == 201:
         return resp.json()["token"]
     return None
 
 
 if __name__ == "__main__":
-    token = get_token(
-        "Iv23liWtuBLy8uYLpzjn",
-        "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem",
-        "ehanc69",
-    )
+    token = get_token("Iv23liWtuBLy8uYLpzjn", "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem", "ehanc69")
     if not token:
+        print("Failed to get token for ehanc69")
         sys.exit(1)
 
     headers = {
@@ -49,11 +47,15 @@ if __name__ == "__main__":
     }
 
     url = "https://api.github.com/repos/ehanc69/TsubameViewer"
+    print(f"Deleting repository: {url}")
 
     # Needs delete_repo scope, which the GitHub App must have
-    resp = requests.delete(url, headers=headers, timeout=30)
+    resp = requests.delete(url, headers=headers)
 
-    if resp.status_code in {204, 404}:
-        pass
+    if resp.status_code == 204:
+        print("Successfully deleted ehanc69/TsubameViewer")
+    elif resp.status_code == 404:
+        print("Repository not found or already deleted.")
     else:
-        pass
+        print(f"Failed to delete repository: {resp.status_code}")
+        print(resp.json())

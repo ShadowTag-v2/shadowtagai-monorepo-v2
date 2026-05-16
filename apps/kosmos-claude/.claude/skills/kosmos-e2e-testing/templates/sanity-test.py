@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Kosmos Sanity Test Template
 
 Quick validation that basic imports and configuration work.
@@ -9,14 +10,7 @@ import os
 import sys
 
 # Add project root to path
-sys.path.insert(
-    0,
-    os.path.dirname(
-        os.path.dirname(
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-        ),
-    ),
-)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 
 
 def test_core_imports():
@@ -82,8 +76,9 @@ def test_database_connection():
     if os.path.exists(db_path):
         print(f"  [OK] Database exists: {db_path}")
         return True
-    print(f"  [WARN] Database not found: {db_path}")
-    return True  # Not critical for sanity
+    else:
+        print(f"  [WARN] Database not found: {db_path}")
+        return True  # Not critical for sanity
 
 
 def test_provider_detection():

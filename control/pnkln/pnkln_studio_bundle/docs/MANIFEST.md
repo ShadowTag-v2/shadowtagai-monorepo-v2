@@ -1,0 +1,15 @@
+# MANIFEST (PNKLN)
+- scripts/util.py
+- scripts/gcs.py
+- scripts/vertex.py
+- scripts/ocr.py
+- scripts/rag.py
+- scripts/publish.py
+- scripts/runners.py
+- prompts/spec.prompt.txt
+- prompts/contract.prompt.txt
+- prompts/lawcal.prompt.txt
+- prompts/neg.prompt.txt
+- prompts/risk.prompt.txt
+- notebooks/pnkln_vertex_workbench.ipynb
+- README.md

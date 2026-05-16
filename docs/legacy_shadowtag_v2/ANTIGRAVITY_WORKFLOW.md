@@ -98,13 +98,13 @@ Based on `router/src/openai-proxy.ts`:
 
 ### Provider Configuration
 
-| Provider  | Model                  | Use Case             | Cost      |
-| --------- | ---------------------- | -------------------- | --------- |
-| Gemini    | `gemini-3.1-flash`     | Function calls, bulk | $0.075/1M |
-| Anthropic | `claude-sonnet-4.5`    | Deep reasoning       | $3/1M     |
-| Groq      | `llama-3.1-8b-instant` | High volume          | $0.05/1M  |
-| xAI       | `grok-code-fast-1`     | Speed (92 tok/s)     | $0.20/1M  |
-| Ollama    | `llama3.3:70b`         | Offline/sensitive    | $0        |
+| Provider | Model | Use Case | Cost |
+|----------|-------|----------|------|
+| Gemini | `gemini-3.1-flash` | Function calls, bulk | $0.075/1M |
+| Anthropic | `claude-sonnet-4.5` | Deep reasoning | $3/1M |
+| Groq | `llama-3.1-8b-instant` | High volume | $0.05/1M |
+| xAI | `grok-code-fast-1` | Speed (92 tok/s) | $0.20/1M |
+| Ollama | `llama3.3:70b` | Offline/sensitive | $0 |
 
 ### Endpoint
 
@@ -136,46 +136,59 @@ Gemini Ingestion Layer for automated intelligence collection.
 
 ### 4-Stage Pipeline
 
-| Stage             | Duration | Description                    |
-| ----------------- | -------- | ------------------------------ |
-| 1. Collection     | ~30 min  | Parallel fetch from 8+ sources |
-| 2. Classification | ~10 min  | Tier 1/2/3 scoring             |
-| 3. Validation     | ~2 min   | Quality gate enforcement       |
-| 4. Briefing       | ~3 min   | AM intelligence summary        |
+| Stage | Duration | Description |
+|-------|----------|-------------|
+| 1. Collection | ~30 min | Parallel fetch from 8+ sources |
+| 2. Classification | ~10 min | Tier 1/2/3 scoring |
+| 3. Validation | ~2 min | Quality gate enforcement |
+| 4. Briefing | ~3 min | AM intelligence summary |
 
 ### Sources
 
+
+
 - YouTube (video transcripts)
+
 
 - Twitter (trends, mentions)
 
+
 - News API (headlines, articles)
+
 
 - RSS Feeds (industry blogs)
 
+
 - Reddit (subreddit discussions)
+
 
 - LinkedIn (professional content)
 
+
 - GitHub (code trends, releases)
+
 
 - Academic (papers, research)
 
 ### Quality Gates
 
-| Gate           | Target    | Description        |
-| -------------- | --------- | ------------------ |
-| Items/day      | 1000-5000 | Volume bounds      |
-| Active sources | ≥8        | Diversity          |
-| Tier 1 ratio   | ≥40%      | High-value content |
-| Avg relevance  | ≥0.70     | Actionability      |
-| Cost/item      | ≤$0.02    | Efficiency         |
+| Gate | Target | Description |
+|------|--------|-------------|
+| Items/day | 1000-5000 | Volume bounds |
+| Active sources | ≥8 | Diversity |
+| Tier 1 ratio | ≥40% | High-value content |
+| Avg relevance | ≥0.70 | Actionability |
+| Cost/item | ≤$0.02 | Efficiency |
 
 ### Data Tiers
 
+
+
 - **Tier 1**: High-value (verified sources, unique insights)
 
+
 - **Tier 2**: Medium-value (standard sources, general content)
+
 
 - **Tier 3**: Low-value (noise, duplicates)
 
@@ -189,7 +202,7 @@ shadowtagai/core/gemini_ingestion_layer.py
 
 ---
 
-## Judge 6 - Governance Pipeline
+## Judge #6 - Governance Pipeline
 
 3-kernel validation pipeline with p99 ≤90ms SLA.
 
@@ -201,7 +214,7 @@ shadowtagai/core/gemini_ingestion_layer.py
 │ JUDGE #6 THREE-KERNEL PIPELINE              │
 ├─────────────────────────────────────────────┤
 │                                             │
-│ KERNEL 1: Compliance Framework SCAN                     │
+│ KERNEL 1: ATP 5-19 SCAN                     │
 │ ├─ Model: Gemini Flash                      │
 │ ├─ Latency: 40ms p50                        │
 │ ├─ Input: 50KB raw context                  │
@@ -229,30 +242,34 @@ Deterministic risk assessment in <500μs.
 
 #### Framework
 
+
+
 - **Purpose**: Does this advance mission/revenue?
+
 
 - **Reasons**: Defensible judgment with evidence
 
-- **Brakes**: Compliance Framework risk assessment
+
+- **Brakes**: ATP 5-19 risk assessment
 
 #### Probability Levels
 
-| Level | Code       | Frequency        |
-| ----- | ---------- | ---------------- |
-| A     | FREQUENT   | >1 per week      |
-| B     | LIKELY     | 1/month - 1/year |
-| C     | OCCASIONAL | 1 per 1-3 years  |
-| D     | SELDOM     | 1 per 10 years   |
-| E     | UNLIKELY   | <1 per 10 years  |
+| Level | Code | Frequency |
+|-------|------|-----------|
+| A | FREQUENT | >1 per week |
+| B | LIKELY | 1/month - 1/year |
+| C | OCCASIONAL | 1 per 1-3 years |
+| D | SELDOM | 1 per 10 years |
+| E | UNLIKELY | <1 per 10 years |
 
 #### Severity Levels
 
-| Level | Code         | Impact               |
-| ----- | ------------ | -------------------- |
-| I     | CATASTROPHIC | Death, >$10M loss    |
-| II    | CRITICAL     | Severe injury, >$1M  |
-| III   | MODERATE     | Minor injury, >$100K |
-| IV    | NEGLIGIBLE   | First aid, <$100K    |
+| Level | Code | Impact |
+|-------|------|--------|
+| I | CATASTROPHIC | Death, >$10M loss |
+| II | CRITICAL | Severe injury, >$1M |
+| III | MODERATE | Minor injury, >$100K |
+| IV | NEGLIGIBLE | First aid, <$100K |
 
 #### Risk Matrix
 
@@ -276,13 +293,13 @@ L  = LOW            → AUTO-APPROVE
 
 ### Risk Tier Classification
 
-| Tier            | Score | Description         |
-| --------------- | ----- | ------------------- |
-| TIER_1_MINIMAL  | 0.0   | No violations       |
-| TIER_2_LOW      | 2.0   | Minor violations    |
-| TIER_3_MODERATE | 5.0   | Moderate violations |
-| TIER_4_HIGH     | 10.0  | Major violations    |
-| TIER_5_CRITICAL | 20.0  | Critical violations |
+| Tier | Score | Description |
+|------|-------|-------------|
+| TIER_1_MINIMAL | 0.0 | No violations |
+| TIER_2_LOW | 2.0 | Minor violations |
+| TIER_3_MODERATE | 5.0 | Moderate violations |
+| TIER_4_HIGH | 10.0 | Major violations |
+| TIER_5_CRITICAL | 20.0 | Critical violations |
 
 ### Severity Weights
 
@@ -298,25 +315,25 @@ SEVERITY_WEIGHTS = {
 
 ### Performance
 
-| Metric          | Target   | Description        |
-| --------------- | -------- | ------------------ |
-| p99 Latency     | ≤90ms    | End-to-end SLA     |
-| Fast Path       | ~20-30ms | 80% LOW risk       |
-| Full Pipeline   | ~70-85ms | 20% MEDIUM+ risk   |
-| JR Engine       | <500μs   | Deterministic scan |
-| Token Reduction | 95%      | 50KB → 2.5KB       |
-| Compression     | 10:1     | 4.8KB → 487 bytes  |
-| Cost/Decision   | ~$0.0003 | Gemini Flash only  |
+| Metric | Target | Description |
+|--------|--------|-------------|
+| p99 Latency | ≤90ms | End-to-end SLA |
+| Fast Path | ~20-30ms | 80% LOW risk |
+| Full Pipeline | ~70-85ms | 20% MEDIUM+ risk |
+| JR Engine | <500μs | Deterministic scan |
+| Token Reduction | 95% | 50KB → 2.5KB |
+| Compression | 10:1 | 4.8KB → 487 bytes |
+| Cost/Decision | ~$0.0003 | Gemini Flash only |
 
 ### File Locations
 
-| File                                     | Purpose                 |
-| ---------------------------------------- | ----------------------- |
-| `app/kernels/judge_six.py`               | Binary classification   |
-| `app/kernels/atp_519_scan.py`            | Violation extraction    |
-| `app/kernels/audit_compress.py`          | Audit trail compression |
-| `shadowtagai/core/jr_engine.py`          | JR Engine framework     |
-| `shadowtagai/core/judge_six_pipeline.py` | Pipeline orchestration  |
+| File | Purpose |
+|------|---------|
+| `app/kernels/judge_six.py` | Binary classification |
+| `app/kernels/atp_519_scan.py` | Violation extraction |
+| `app/kernels/audit_compress.py` | Audit trail compression |
+| `shadowtagai/core/jr_engine.py` | JR Engine framework |
+| `shadowtagai/core/judge_six_pipeline.py` | Pipeline orchestration |
 
 ---
 
@@ -326,39 +343,45 @@ Based on `router/src/openai-proxy.ts`:
 
 ### Model Routing
 
-| Task           | Model               | Provider   | Reason         |
-| -------------- | ------------------- | ---------- | -------------- |
-| Fast prototype | `grok-code-fast-1`  | OpenRouter | 92 tok/s       |
-| Bulk refactor  | `gemini-3.1-flash`  | Google     | 1M context     |
-| Quick edit     | `claude-haiku-4.5`  | Anthropic  | Fast, cheap    |
-| Security/ATP   | `claude-sonnet-4.5` | Cursor Pro | Best reasoning |
-| Offline        | `llama3.3:70b`      | Ollama     | Local, free    |
+| Task | Model | Provider | Reason |
+|------|-------|----------|--------|
+| Fast prototype | `grok-code-fast-1` | OpenRouter | 92 tok/s |
+| Bulk refactor | `gemini-3.1-flash` | Google | 1M context |
+| Quick edit | `claude-haiku-4.5` | Anthropic | Fast, cheap |
+| Security/ATP | `claude-sonnet-4.5` | Cursor Pro | Best reasoning |
+| Offline | `llama3.3:70b` | Ollama | Local, free |
 
 ---
 
 ## GKE Deployment
 
-| Setting   | Value                                                     |
-| --------- | --------------------------------------------------------- |
-| Cluster   | `autopilot-cluster-1`                                     |
-| Region    | `us-central1`                                             |
-| Project   | `acquired-jet-478701-b3`                                  |
-| Registry  | `us-central1-docker.pkg.dev/PROJECT_ID/shadowtagai-core/` |
-| Namespace | `autopilot-cluster-1`                                     |
+| Setting | Value |
+|---------|-------|
+| Cluster | `autopilot-cluster-1` |
+| Region | `us-central1` |
+| Project | `acquired-jet-478701-b3` |
+| Registry | `us-central1-docker.pkg.dev/PROJECT_ID/shadowtagai-core/` |
+| Namespace | `autopilot-cluster-1` |
 
-### Judge 6 Deployment
+### Judge #6 Deployment
 
 ```yaml
+
 # k8s/judge6_deployment.yaml
 
 namespace: judge6-system
 containers:
+
+
   - layer1-gemini (8080)
+
 
   - layer2-orchestration (8081)
 
+
   - layer3-gateway (8082)
 gpu: nvidia-l4
+
 ```
 
 ---
@@ -400,36 +423,42 @@ gcloud builds submit --config=cloudbuild.yaml --project=acquired-jet-478701-b3 .
 
 ### Per Feature
 
-| Phase        | Cost            |
-| ------------ | --------------- |
-| Antigravity  | $0 (free)       |
-| Grok Fast    | ~$0.30          |
-| Gemini Flash | ~$0.12          |
-| Haiku        | ~$0.15          |
-| Sonnet       | $0 (Cursor Pro) |
-| Llama Local  | $0              |
-| **Total**    | **~$0.62**      |
+| Phase | Cost |
+|-------|------|
+| Antigravity | $0 (free) |
+| Grok Fast | ~$0.30 |
+| Gemini Flash | ~$0.12 |
+| Haiku | ~$0.15 |
+| Sonnet | $0 (Cursor Pro) |
+| Llama Local | $0 |
+| **Total** | **~$0.62** |
 
 ### Monthly Budget
 
-| Item            | Cost                |
-| --------------- | ------------------- |
-| Cursor Pro      | $20                 |
-| 20 features     | ~$12                |
-| Ingestion       | ~$77                |
+| Item | Cost |
+|------|------|
+| Cursor Pro | $20 |
+| 20 features | ~$12 |
+| Ingestion | ~$77 |
 | Judge decisions | ~$9 (30K @ $0.0003) |
-| **Total**       | **~$118/month**     |
+| **Total** | **~$118/month** |
 
 ---
 
 ## Notes
 
+
+
 - Use `gemini-3.1-flash` (not "Gemini 3" which doesn't exist)
+
 
 - Project name: ShadowTagAi (not pnkln)
 
+
 - Llama 70B requires 64GB+ RAM
+
 
 - Ingestion runs nightly via GKE CronJob
 
-- Judge 6 fast path skips Gemini for 80% of requests
+
+- Judge #6 fast path skips Gemini for 80% of requests

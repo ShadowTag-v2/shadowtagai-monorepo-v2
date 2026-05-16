@@ -1,45 +1,18 @@
-import asyncio
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+"""Pytest configuration and fixtures."""
+
 import sys
-from collections.abc import Generator
 from pathlib import Path
-from unittest.mock import MagicMock
+
+# Add src/ to path for direct imports (gemini_ingestion_layer, judges, etc.)
+# Add scripts/ for test_github_app_auth which imports scripts/utils/
+_root = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_root / "scripts"))
+sys.path.insert(0, str(_root / "src"))
 
 import pytest
-
-# Ensure repo root is on sys.path for monorepo imports (apps.counselconduit.*)
-_repo_root = str(Path(__file__).resolve().parent.parent)
-if _repo_root not in sys.path:
-    sys.path.insert(0, _repo_root)
-
-# Add packages/ to sys.path so real packages can be imported directly
-_packages_dir = str(Path(__file__).resolve().parent.parent / "packages")
-if _packages_dir not in sys.path:
-    sys.path.insert(0, _packages_dir)
-
-# ──────────────────────────────────────────────────────────────
-# Module stubs for subsystems not present in this test context.
-# ONLY stub modules that do NOT have real implementations in
-# packages/. Real packages (speculation_engine, context_compactor,
-# deep_research, evaluation_bridge, orbstack_sandbox, tool_gateway,
-# agnt_classifier, agnt_tmux) are imported from packages/ directly.
-# ──────────────────────────────────────────────────────────────
-_STUB_MODULES = [
-    # src sub-modules that don't exist as Python packages yet
-    "src.services.secrets",
-    "src.tools",
-    "src.tools.bash_security",
-    "src.utils",
-    "src.utils.ssrf",
-]
-
-for _mod_name in _STUB_MODULES:
-    if _mod_name not in sys.modules:
-        sys.modules[_mod_name] = MagicMock()
-
-
-# Test Database Configuration
-# Use in-memory SQLite for fast, isolated tests
-TEST_DATABASE_URL = "sqlite:///:memory:"
+import asyncio
+from collections.abc import Generator
 
 
 @pytest.fixture(scope="session")
@@ -86,59 +59,3 @@ def sample_clean_context():
 
     All ATP 5-19 requirements met.
     """
-
-
-@pytest.fixture
-def mock_shadowtag_verifier(mocker):
-    """Mock ShadowTag verifier.
-
-    Returns mock for cryptographic signing.
-    """
-    mock = mocker.Mock()
-
-    mock.sign.return_value = {
-        "signature": "test_signature_base64_encoded",
-        "id": "test_verification_chain_id",
-        "timestamp": "2024-01-01T00:00:00Z",
-    }
-
-    mock.verify.return_value = True
-
-    return mock
-
-
-# Test Data Factories
-
-
-@pytest.fixture
-def sample_image_file(tmp_path):
-    """
-    Create sample image file for upload tests
-
-    Returns:
-        Path to temporary test image
-    """
-
-    from PIL import Image
-
-    # Create simple test image
-    img = Image.new("RGB", (100, 100), color="red")
-    img_path = tmp_path / "test_image.jpg"
-    img.save(img_path)
-
-    return img_path
-
-
-@pytest.fixture
-def sample_video_file(tmp_path):
-    """
-    Create sample video file for upload tests
-
-    Returns:
-        Path to temporary test video
-    """
-    # Create minimal test video file
-    video_path = tmp_path / "test_video.mp4"
-    video_path.write_bytes(b"fake video data for testing")
-
-    return video_path

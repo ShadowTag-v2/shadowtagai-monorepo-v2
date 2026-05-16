@@ -30,21 +30,21 @@ class {tool_name}Tool(BaseTool):
 
 
 def scaffold(tool_name):
-    filename = f"{tool_name}Tool.py"
-    if os.path.exists(filename):
-        print(f"Error: {filename} already exists.")
-        sys.exit(1)
+  filename = f"{tool_name}Tool.py"
+  if os.path.exists(filename):
+    print(f"Error: {filename} already exists.")
+    sys.exit(1)
 
-    content = TEMPLATE.format(tool_name=tool_name)
-    with open(filename, "w") as f:
-        f.write(content.strip())
+  content = TEMPLATE.format(tool_name=tool_name)
+  with open(filename, "w") as f:
+    f.write(content.strip())
 
-    print(f"Created {filename}")
+  print(f"Created {filename}")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python scaffold_tool.py <ToolName>")
-        sys.exit(1)
+  if len(sys.argv) != 2:
+    print("Usage: python scaffold_tool.py <ToolName>")
+    sys.exit(1)
 
-    scaffold(sys.argv[1])
+  scaffold(sys.argv[1])

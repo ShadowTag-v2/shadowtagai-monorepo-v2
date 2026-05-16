@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import asyncio
 import logging
 import sys
@@ -12,10 +13,7 @@ from google.genai import types
 # daemon using gemini-3.1-flash-thinking-exp-01-21 to process reality.
 # =====================================================================
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - [%(levelname)s] - OMEGA_INGEST - %(message)s",
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - [%(levelname)s] - OMEGA_INGEST - %(message)s")
 logger = logging.getLogger("DriveIngestDaemon")
 
 PROJECT_ID = "shadowtag-omega-v4"
@@ -41,10 +39,7 @@ class sovereign_ingestor:
             response = self.client.models.generate_content(
                 model=MODEL_ID,
                 contents=f"Extract the sovereign entities, sentiment, and core directives from this text. Output pure JSON: {raw_content}",
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    temperature=0.1,
-                ),
+                config=types.GenerateContentConfig(response_mime_type="application/json", temperature=0.1),
             )
 
             output_file = self.beads_dir / f"{file_path.stem}_memory.json"

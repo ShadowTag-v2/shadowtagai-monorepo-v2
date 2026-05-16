@@ -4,9 +4,8 @@ Prevents dumb agents from polluting memory.
 
 import json
 
-from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
-
 from agents.legal_whiteboard import LegalWhiteboard
+from src.shadowtag_v4.services.gemini_core import GeminiAntigravity
 
 LEVEL_CRITERIA = {
     0: "Basic Execution: Can the agent complete a defined task without syntax errors?",

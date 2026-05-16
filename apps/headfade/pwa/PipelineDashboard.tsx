@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface PipelineRun {
   id: string;
@@ -13,7 +13,7 @@ interface PipelineRun {
 }
 
 export default function PipelineDashboard() {
-  const [runs, setRuns] = useState<PipelineRun[]>([
+  const [runs, _setRuns] = useState<PipelineRun[]>([
     {
       id: 'run_001',
       project: 'headfade',
@@ -34,8 +34,8 @@ export default function PipelineDashboard() {
     },
   ]);
 
-  const [totalCreditsUsed, setTotalCreditsUsed] = useState(4340);
-  const [remainingCredits, setRemainingCredits] = useState(9650);
+  const [totalCreditsUsed, _setTotalCreditsUsed] = useState(4340);
+  const [remainingCredits, _setRemainingCredits] = useState(9650);
 
   return (
     <div className="max-w-6xl mx-auto p-8 bg-zinc-950 text-white">
@@ -75,6 +75,7 @@ export default function PipelineDashboard() {
         <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center">
           <h2 className="font-semibold">Recent Pipeline Runs</h2>
           <button
+            type="button"
             onClick={() => window.location.reload()}
             className="px-4 py-1.5 text-sm bg-white text-black rounded-lg hover:bg-zinc-200"
           >

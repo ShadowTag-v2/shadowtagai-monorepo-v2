@@ -16,7 +16,7 @@ Every feature ships with the 14-point Security Definition of Done checked.
 No custom production auth. No secrets in code, logs, or commits. Validate all inputs at every boundary. Authorization enforced server-side only.
 
 ### IV. GitHub App as Control-Plane Truth
-GitHub App (ID 3018200, shadowtag-omega-v4) is the authority for repo freshness and truth.
+GitHub App (ID 3018200, ShadowTag-v2) is the authority for repo freshness and truth.
 Local clones are indexed working copies only. SSH is preferred remote. HTTPS repair: `gh auth login && gh auth setup-git`.
 
 ### V. Cor.Rules Coding Standards

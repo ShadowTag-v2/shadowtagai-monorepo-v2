@@ -1,0 +1,828 @@
+[
+  {
+    "description": "The official TypeScript SDK for Model Context Protocol servers and clients",
+    "name": "typescript-sdk",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "A high-throughput and memory-efficient inference and serving engine for LLMs",
+    "name": "vllm",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "A PyTorch native platform for training generative AI models",
+    "name": "torchtitan",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "You like pytorch? You like micrograd? You love tinygrad! ❤️ ",
+    "name": "tinygrad",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "An Open Source Machine Learning Framework for Everyone",
+    "name": "tensorflow",
+    "primaryLanguage": { "name": "C++" }
+  },
+  {
+    "description": "Convert documentation websites, GitHub repositories, and PDFs into Claude AI skills with automatic conflict detection",
+    "name": "Skill_Seekers",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Model Context Protocol Servers",
+    "name": "servers",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "This repository contains the Agent for SAP (Linux and Windows). The agent is intended to run on all Google Cloud compute instances where an SAP workload is running.",
+    "name": "sapagent",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Ray is an AI compute engine. Ray consists of a core distributed runtime and a set of AI Libraries for accelerating ML workloads.",
+    "name": "ray",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Code samples used on cloud.google.com",
+    "name": "python-docs-samples",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "Open source vulnerability DB and triage service.",
+    "name": "osv.dev",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Vulnerability scanner written in Go which uses the data provided by https://osv.dev",
+    "name": "osv-scanner",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "🦜🔗 The platform for reliable agents.",
+    "name": "langchain",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Production-Grade Container Scheduling and Management",
+    "name": "kubernetes",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "🐍 Geometric Computer Vision Library for Spatial AI",
+    "name": "kornia",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Code and configuration to manage Kubernetes project infrastructure, including various *.k8s.io sites",
+    "name": "k8s.io",
+    "primaryLanguage": { "name": "HCL" }
+  },
+  {
+    "description": "A Git-compatible VCS that is both simple and powerful",
+    "name": "jj",
+    "primaryLanguage": { "name": "Rust" }
+  },
+  {
+    "description": "Composable transformations of Python+NumPy programs: differentiate, vectorize, JIT to GPU/TPU, and more",
+    "name": "jax",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Build Real-Time Knowledge Graphs for AI Agents",
+    "name": "graphiti",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Google Cloud Client Library for Python",
+    "name": "google-cloud-python",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Google Cloud Client Library for Node.js",
+    "name": "google-cloud-node",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Google Cloud Client Library for Java",
+    "name": "google-cloud-java",
+    "primaryLanguage": { "name": "Java" }
+  },
+  {
+    "description": "Google Cloud Client Libraries for Go.",
+    "name": "google-cloud-go",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Open-source framework for building AI-powered apps in JavaScript, Go, and Python, built and used in production by Google",
+    "name": "genkit",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Gemma open-weight LLM library, from Google DeepMind",
+    "name": "gemma",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "",
+    "name": "gemini-samples",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "An open-source AI agent that brings the power of Gemini directly into your terminal.",
+    "name": "gemini-cli",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Flax is a neural network library for JAX that is designed for flexibility.",
+    "name": "flax",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  { "description": "", "name": "firestore-native", "primaryLanguage": null },
+  {
+    "description": "Firebase Javascript SDK",
+    "name": "firebase-js-sdk",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "The Open Source Feature Store for AI/ML",
+    "name": "feast",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "🚀 The fast, Pythonic way to build MCP servers and clients",
+    "name": "fastmcp",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Lightweight coding agent that runs in your terminal",
+    "name": "codex",
+    "primaryLanguage": { "name": "Rust" }
+  },
+  {
+    "description": "End-to-end modular samples and landing zones toolkit for Terraform on GCP.",
+    "name": "cloud-foundation-fabric",
+    "primaryLanguage": { "name": "HCL" }
+  },
+  {
+    "description": "Automatically provision and manage TLS certificates in Kubernetes",
+    "name": "cert-manager",
+    "primaryLanguage": { "name": "Go" }
+  },
+  { "description": "", "name": "arize-tracing-assistant", "primaryLanguage": { "name": "Python" } },
+  {
+    "description": "Context retrieval for AI agents across apps and databases",
+    "name": "airweave",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Natural language workflows that enable AI agents to perform complex, multi-step tasks with consistency and reliability.",
+    "name": "agent-sop",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "An open-source, code-first Python toolkit for building, evaluating, and deploying sophisticated AI agents with flexibility and control.",
+    "name": "adk-python",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "accelerated-platforms", "primaryLanguage": { "name": "HCL" } },
+  {
+    "description": "Notebooks, code samples, sample apps, and other resources that demonstrate how to use, develop and manage machine learning and generative AI workflows using Google Cloud Vertex AI.",
+    "name": "vertex-ai-samples",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "GenMedia Creative Studio is a Vertex AI generative media user experience highlighting the use of Imagen, Veo, Gemini 🍌, Gemini TTS, Chirp 3, Lyria and other generative media APIs on Google Cloud.",
+    "name": "vertex-ai-creative-studio",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "Collection of extracted System Prompts from popular chatbots like ChatGPT, Claude & Gemini",
+    "name": "system_prompts_leaks",
+    "primaryLanguage": { "name": "Roff" }
+  },
+  { "description": "", "name": "sql-server", "primaryLanguage": null },
+  { "description": "", "name": "spanner", "primaryLanguage": null },
+  {
+    "description": "Sample cloud-first application with 10 microservices showcasing Kubernetes, Istio, and gRPC.",
+    "name": "microservices-demo",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Like gmail for your coding agents. Lets various different agents communicate and coordinate with each other.",
+    "name": "mcp_agent_mail",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Sample applications for Google Kubernetes Engine (GKE)",
+    "name": "kubernetes-engine-samples",
+    "primaryLanguage": { "name": "HCL" }
+  },
+  {
+    "description": "Sample code and notebooks for Generative AI on Google Cloud, with Gemini on Vertex AI",
+    "name": "generative-ai",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  { "description": "", "name": "flutter", "primaryLanguage": { "name": "Dart" } },
+  { "description": "", "name": "cloud-sql-postgresql", "primaryLanguage": null },
+  {
+    "description": "MCP server to deploy apps to Cloud Run",
+    "name": "cloud-run-mcp",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  { "description": "", "name": "claude-agent-sdk-typescript", "primaryLanguage": null },
+  { "description": "", "name": "bigquery-data-analytics", "primaryLanguage": null },
+  { "description": "", "name": "anthropic-sdk-python", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "alloydb-observability", "primaryLanguage": null },
+  { "description": "", "name": "alloydb", "primaryLanguage": null },
+  {
+    "description": "A collection of production-ready Generative AI Agent templates built for Google Cloud. It accelerates development by providing a holistic, production-ready solution, addressing common challenges (Deployment & Operations, Evaluation, Customization, Observability) in building and deploying GenAI agents.",
+    "name": "agent-starter-pack",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "LLM context persistence layer",
+    "name": "erik-hancock-llm-memory",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "a visual programming language inspired by Scratch",
+    "name": "Snap",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "A pre-commit hook for Ruff.",
+    "name": "ruff-pre-commit",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "The official Python SDK for Model Context Protocol servers and clients",
+    "name": "python-sdk",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "FaaS (Function as a service) framework for writing portable Node.js functions",
+    "name": "functions-framework-nodejs",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "MCP server for chronosphere",
+    "name": "chronosphere-mcp",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "In-depth tutorials on LLMs, RAGs and real-world AI agent applications.",
+    "name": "ai-engineering-hub",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "The largest collection of PyTorch image encoders / backbones. Including train, eval, inference, export scripts, and pretrained weights -- ResNet, ResNeXT, EfficientNet, NFNet, Vision Transformer (ViT), MobileNetV4, MobileNet-V3 & V2, RegNet, DPN, CSPNet, Swin Transformer, MaxViT, CoAtNet, ConvNeXt, and more",
+    "name": "pytorch-image-models",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Official JavaScript / TypeScript library for the OpenAI API",
+    "name": "openai-node",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  { "description": "", "name": "mcp-toolbox", "primaryLanguage": null },
+  { "description": "", "name": "cloud-sql-mysql", "primaryLanguage": null },
+  {
+    "description": "Action for checking out a repo",
+    "name": "checkout",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Java and Kotlin Code samples used on cloud.google.com",
+    "name": "java-docs-samples",
+    "primaryLanguage": { "name": "Java" }
+  },
+  {
+    "description": "Lightweight tsconfig.json parser & paths resolver",
+    "name": "get-tsconfig",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude.",
+    "name": "claude-cookbooks",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "Yet another cross-platform graphical process/system monitor.",
+    "name": "bottom",
+    "primaryLanguage": { "name": "Rust" }
+  },
+  {
+    "description": "the official Rust and C implementations of the BLAKE3 cryptographic hash function",
+    "name": "BLAKE3",
+    "primaryLanguage": { "name": "Assembly" }
+  },
+  {
+    "description": "Unofficial implementation of Titans, SOTA memory for transformers, in Pytorch",
+    "name": "titans-pytorch",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Node.js samples for Google Cloud Platform products.",
+    "name": "nodejs-docs-samples",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Cloud Run Jobs Demos - A collection of samples to show you how and when to run a container to completion without a server",
+    "name": "jobs-demos",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Flexible and powerful tensor operations for readable and reliable code (for pytorch, jax, TF and others)",
+    "name": "einops",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Samples, tutorials, and demos for Conversational AI on Google Cloud",
+    "name": "contact-center-ai-samples",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  { "description": "", "name": "ShadowTag-v2", "primaryLanguage": { "name": "TypeScript" } },
+  {
+    "description": "Giving Kubernetes Superpowers to everyone",
+    "name": "k8sgpt",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Type annotations and runtime checking for shape and dtype of JAX/NumPy/PyTorch/etc. arrays. https://docs.kidger.site/jaxtyping/",
+    "name": "jaxtyping",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Useful scripts, udfs, views, and other utilities for migration and data warehouse operations in BigQuery.",
+    "name": "bigquery-utils",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "Access to Anthropic's safety-first language model APIs in TypeScript",
+    "name": "anthropic-sdk-typescript",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "",
+    "name": "aiyou-fastapi-services",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Self-hosted, multi-user API that drops bots into Google Meet for real-time transcripts.",
+    "name": "vexa",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Public repository for Skills",
+    "name": "skills",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Simple, safe way to store and distribute tensors",
+    "name": "safetensors",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Some out-of-the-box hooks for pre-commit",
+    "name": "pre-commit-hooks",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "postgres", "primaryLanguage": null },
+  {
+    "description": "A collection of samples that demonstrate how to call Google Cloud services from PHP.",
+    "name": "php-docs-samples",
+    "primaryLanguage": { "name": "PHP" }
+  },
+  {
+    "description": "Enable AI agents to work reliably - giving them secure access to structured data, tools to take action, and the context needed to make smart decisions.",
+    "name": "mcp",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  { "description": "", "name": "looker", "primaryLanguage": null },
+  {
+    "description": "AI powered Kubernetes Assistant",
+    "name": "kubectl-ai",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Hugging Face MCP Server",
+    "name": "hf-mcp-server",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Sample apps and code written for Google Cloud in the Go programming language.",
+    "name": "golang-samples",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "This SDK is now deprecated, use the new unified Google GenAI SDK. ",
+    "name": "deprecated-generative-ai-python",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "dataplex", "primaryLanguage": null },
+  {
+    "description": "🍎 Sample app for AI-assisted development on Google Cloud.",
+    "name": "cymbal-superstore",
+    "primaryLanguage": { "name": "CSS" }
+  },
+  { "description": "", "name": "cloud-sql-sqlserver", "primaryLanguage": null },
+  {
+    "description": "A utility for connecting securely to your Cloud SQL instances",
+    "name": "cloud-sql-proxy",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Samples for Cloud Run",
+    "name": "cloud-run-samples",
+    "primaryLanguage": { "name": "Shell" }
+  },
+  {
+    "description": "A collection of projects designed to help developers quickly get started with building deployable applications using the Claude API",
+    "name": "claude-quickstarts",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "bigquery-conversational-analytics", "primaryLanguage": null },
+  {
+    "description": "Backlog.md - A tool for managing project collaboration between humans and AI Agents in a git ecosystem",
+    "name": "Backlog.md",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Avocano is a sample dropship/fake product website, built with Firebase Hosting, Cloud Run, Cloud SQL and Cloud Build",
+    "name": "avocano",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Intercept Google Antigravity IDE API calls and use your own Gemini API token",
+    "name": "antigravity-proxy",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Generated Java code for Google APIs",
+    "name": "google-api-java-client-services",
+    "primaryLanguage": { "name": "Java" }
+  },
+  { "description": "", "name": "shadowtagai-v1", "primaryLanguage": null },
+  { "description": "", "name": "shadowtag_v2", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "kosmos", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "judge6", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "codepmcs", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "antigravity-go", "primaryLanguage": { "name": "Go" } },
+  { "description": "", "name": "pnkln", "primaryLanguage": { "name": "Python" } },
+  {
+    "description": "PyTorch native post-training library",
+    "name": "torchtune",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Qwen3-Coder is the code version of Qwen3, the large language model series developed by Qwen team, Alibaba Cloud.",
+    "name": "Qwen3-Coder",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "",
+    "name": "gcc-conversational_ai_analytics",
+    "primaryLanguage": { "name": "LookML" }
+  },
+  {
+    "description": "Trunk.io plugins repo",
+    "name": "plugins",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Organise your AI's memories with graph database entries",
+    "name": "mem-layer",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "This SDK is now deprecated, use the new unified Google GenAI SDK.",
+    "name": "deprecated-generative-ai-js",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Collection of sample apps showcasing popular use cases using Cloud Functions for Firebase",
+    "name": "functions-samples",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Prettier is an opinionated code formatter.",
+    "name": "prettier",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  { "description": "", "name": "composer-airflow", "primaryLanguage": null },
+  {
+    "description": "CloudGauge is a web application designed to run a comprehensive set of compliance, security, cost optimization, and best-practice checks against a Google Cloud Organization.",
+    "name": "CloudGauge",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Builders and buildpacks designed to run on Google Cloud's container platforms",
+    "name": "buildpacks",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "gcr.io/google_appengine/python - Docker images for python",
+    "name": "python-runtime",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Common tools used by the GCP runtimes.",
+    "name": "runtimes-common",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "A Gemini CLI extension that allows you to use the Gemini CLI to orchestrate the Jules asynchronous agent to perform coding tasks like bug fixing, refactoring, and dependency updates.",
+    "name": "jules",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  { "description": "", "name": "nanobanana", "primaryLanguage": { "name": "TypeScript" } },
+  {
+    "description": "Microservice template for Cloud Run",
+    "name": "cloud-run-microservice-template-nodejs",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "",
+    "name": "cloud-run-microservice-template-java",
+    "primaryLanguage": { "name": "Java" }
+  },
+  {
+    "description": "Code templates to make working with Kubernetes feel like editing and debugging local code.",
+    "name": "cloud-code-samples",
+    "primaryLanguage": { "name": "Java" }
+  },
+  {
+    "description": "A collection of slash commands",
+    "name": "slash-commands",
+    "primaryLanguage": null
+  },
+  {
+    "description": "Mirror of mypy for pre-commit",
+    "name": "mirrors-mypy",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Mirror of eslint node package for pre-commit.",
+    "name": "mirrors-eslint",
+    "primaryLanguage": null
+  },
+  { "description": "", "name": "aiyou-core", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "aiyou-api", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "aiyou-frontend", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-clients", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-mlops", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-data-contracts", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-infra", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-devops", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-observability", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-sre", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-security", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-sops", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-docs", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-objections-decisions", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-rollup", "primaryLanguage": { "name": "JavaScript" } },
+  {
+    "description": "",
+    "name": "recaptcha-enterprise-react-native",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  { "description": "", "name": "mysql", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-policy", "primaryLanguage": null },
+  { "description": "", "name": "Pipeline", "primaryLanguage": null },
+  { "description": "", "name": "datacommons", "primaryLanguage": null },
+  {
+    "description": "Let anyone deploy your GitHub repos to Google Cloud Run with a single click",
+    "name": "cloud-run-button",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "🌈 React for interactive command-line apps",
+    "name": "ink",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "An early research stage expert-parallel load balancer for MoE models based on linear programming.",
+    "name": "LPLB",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "DeepSeek-V3.2-Exp", "primaryLanguage": { "name": "Python" } },
+  {
+    "description": "FaaS (Function as a service) framework for writing portable Python functions",
+    "name": "functions-framework-python",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "A curated list of 100+ libraries and frameworks for AI engineers building with LLMs",
+    "name": "ai-engineering-toolkit",
+    "primaryLanguage": null
+  },
+  {
+    "description": "Tensors, for human consumption",
+    "name": "lovely-tensors",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "A quick vibe coded app for deepseek OCR",
+    "name": "deepseek_ocr_app",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": ".NET code samples used on https://cloud.google.com",
+    "name": "dotnet-docs-samples",
+    "primaryLanguage": { "name": "C#" }
+  },
+  { "description": "", "name": "cloud-sql-sqlserver-observability", "primaryLanguage": null },
+  {
+    "description": "Supercharge Your Model Training",
+    "name": "composer",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "cloud-sql-mysql-observability", "primaryLanguage": null },
+  {
+    "description": "Create Identity Orchestration (IDO) Journeys for Transmit Security's Mosaic platform",
+    "name": "transmit-security-journey-builder",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "AI writing agent powered by kimi-k2-thinking - autonomously creates novels and stories with deep reasoning",
+    "name": "kimi-writer",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Efficient implementation of the Google Drive MCP server",
+    "name": "gdrive-mcp-server",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  { "description": "", "name": "cuda-course", "primaryLanguage": { "name": "Cuda" } },
+  {
+    "description": "Learn how to design large-scale systems. Prep for the system design interview.  Includes Anki flashcards.",
+    "name": "system-design-primer",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "cloud-sql-postgresql-observability", "primaryLanguage": null },
+  {
+    "description": "Examples of my Claude Code infrastructure with skill auto-activation, hooks, and agents",
+    "name": "claude-code-infrastructure-showcase",
+    "primaryLanguage": { "name": "Shell" }
+  },
+  {
+    "description": "Keep AGENTS.md and CLAUDE.md in sync across your projects.",
+    "name": "source-agents",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Contexts Optical Compression",
+    "name": "DeepSeek-OCR",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Agentic AI team to simplify research article reading",
+    "name": "article-explainer",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Resolve package.json `exports` & `imports` maps",
+    "name": "resolve-pkg-maps",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "Utilities intended for use with Llama models.",
+    "name": "llama-models",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "aiyou-examples", "primaryLanguage": null },
+  { "description": "", "name": "aiyoujr-template-2", "primaryLanguage": { "name": "PowerShell" } },
+  { "description": "", "name": "aiyou-backend", "primaryLanguage": null },
+  { "description": "", "name": "core", "primaryLanguage": { "name": "Python" } },
+  {
+    "description": "ANSI escape codes for styling strings in the terminal",
+    "name": "ansi-styles",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  { "description": "", "name": "aiyou-evals", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-governance", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-ui-kit", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-offline-appliance", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-risk-engine", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-indexer", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-codesmith", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-prompts", "primaryLanguage": null },
+  { "description": "", "name": "security", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "sre", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "observability", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "mlops", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "docs", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "prompts", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "infra", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "fastapi-services", "primaryLanguage": { "name": "Python" } },
+  { "description": "", "name": "aiyou-exec", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-ml", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-data", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-risk", "primaryLanguage": null },
+  { "description": "", "name": "aiyou-ci", "primaryLanguage": null },
+  { "description": "", "name": "aiyou", "primaryLanguage": null },
+  {
+    "description": "Slice a string with ANSI escape codes",
+    "name": "slice-ansi",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Wordwrap a string with ANSI escape codes",
+    "name": "wrap-ansi",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Detect whether a terminal supports color",
+    "name": "supports-color",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "🖍 Terminal string styling done right",
+    "name": "chalk",
+    "primaryLanguage": { "name": "JavaScript" }
+  },
+  {
+    "description": "Python A2A is a powerful, easy-to-use library for implementing Google's [Agent-to-Agent (A2A) protocol](https://google.github.io/A2A/). It enables seamless communication between AI agents, creating interoperable agent ecosystems that can collaborate to solve complex problems.",
+    "name": "python-a2a",
+    "primaryLanguage": { "name": "Python" }
+  },
+  { "description": "", "name": "DeepSeek-V3", "primaryLanguage": { "name": "Python" } },
+  {
+    "description": "Unofficial FAQ and everything you've been wondering about Google Cloud Run.",
+    "name": "cloud-run-faq",
+    "primaryLanguage": { "name": "Shell" }
+  },
+  {
+    "description": "FaaS (Function as a service) framework for writing portable Go functions",
+    "name": "functions-framework-go",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "Model Context Protocol (MCP) Server for reading from Google Drive and editing Google Sheets",
+    "name": "mcp-gdrive",
+    "primaryLanguage": { "name": "TypeScript" }
+  },
+  {
+    "description": "如何基于K8s(Kubernetes)部署成PaaS/DevOps(一套完整的软件研发和部署平台)--教程/学习(实战代码/架构设计/大量注释/操作配图)，你将习得部署如：K8S(Kubernetes)、Dashboard、Harbor、Jenkins、本地Gitlab、Apollo框架、Promtheus、Grafana、Spinnaker等。",
+    "name": "k8s_PaaS",
+    "primaryLanguage": { "name": "Shell" }
+  },
+  {
+    "description": "👓 ⏩ A curated list of resources about all things Cloud Run",
+    "name": "awesome-cloud-run",
+    "primaryLanguage": { "name": "Dockerfile" }
+  },
+  {
+    "description": "OpenTimestamps client",
+    "name": "opentimestamps-client",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "K8工具合集(内网渗透/提权工具/远程溢出/漏洞利用/扫描工具/密码破解/免杀工具/Exploit/APT/0day/Shellcode/Payload/priviledge/BypassUAC/OverFlow/WebShell/PenTest) Web GetShell Exploit(Struts2/Zimbra/Weblogic/Tomcat/Apache/Jboss/DotNetNuke/zabbix)",
+    "name": "K8tools",
+    "primaryLanguage": { "name": "PowerShell" }
+  },
+  { "description": "The AI Code Editor", "name": "cursor", "primaryLanguage": null },
+  {
+    "description": "HTTP load generator, ApacheBench (ab) replacement",
+    "name": "hey",
+    "primaryLanguage": { "name": "Go" }
+  },
+  {
+    "description": "PyTorch Lightning + Hydra. A very user-friendly template for ML experimentation.  ⚡🔥⚡",
+    "name": "lightning-hydra-template",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "Cloud Code for Visual Studio Code: Issues, Documentation and more",
+    "name": "cloud-code-vscode",
+    "primaryLanguage": null
+  },
+  {
+    "description": "mirror of the `prettier` npm package for pre-commit",
+    "name": "mirrors-prettier",
+    "primaryLanguage": null
+  },
+  {
+    "description": "",
+    "name": "colabfold-on-cloud-batch-workflows",
+    "primaryLanguage": { "name": "Jupyter Notebook" }
+  },
+  {
+    "description": "Tegu Core. A Machine Learning Toolbox for Programmer who wants to make everything easier:)",
+    "name": "Tegu",
+    "primaryLanguage": { "name": "Python" }
+  },
+  {
+    "description": "GAAS is an open-source program designed for fully autonomous VTOL(a.k.a flying cars) and drones. GAAS stands for Generalized Autonomy Aviation System. ",
+    "name": "GAAS",
+    "primaryLanguage": { "name": "C++" }
+  },
+  {
+    "description": "Commons code used by the Data Catalog connectors, and links for the connectors sample code.",
+    "name": "datacatalog-connectors",
+    "primaryLanguage": { "name": "Python" }
+  }
+]

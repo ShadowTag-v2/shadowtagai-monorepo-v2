@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 from __future__ import annotations
 
 import argparse
@@ -14,22 +15,21 @@ except Exception:
 
 def load_yaml(path: Path) -> Any:
     if yaml is None:
-        msg = "pyyaml is required. Install with: python3 -m pip install pyyaml"
-        raise RuntimeError(msg)
-    with path.open("r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        raise RuntimeError("pyyaml is required. Install with: python3 -m pip install pyyaml")
+    with path.open("r", encoding="utf-8") as file:
+        return yaml.safe_load(file)
 
 
 def flatten(obj: Any, prefix: str = "") -> dict[str, Any]:
     out: dict[str, Any] = {}
     if isinstance(obj, dict):
-        for k, v in obj.items():
-            key = f"{prefix}.{k}" if prefix else str(k)
-            out.update(flatten(v, key))
+        for key, value in obj.items():
+            next_key = f"{prefix}.{key}" if prefix else str(key)
+            out.update(flatten(value, next_key))
     elif isinstance(obj, list):
-        for i, v in enumerate(obj):
-            key = f"{prefix}[{i}]"
-            out.update(flatten(v, key))
+        for i, value in enumerate(obj):
+            next_key = f"{prefix}[{i}]"
+            out.update(flatten(value, next_key))
     else:
         out[prefix] = obj
     return out
@@ -48,44 +48,45 @@ def classify_path(path: str) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Compare two manifest files and emit a reconcile report")
-    ap.add_argument("primary_manifest")
-    ap.add_argument("secondary_manifest")
-    ap.add_argument("--markdown-out", default=None)
-    ap.add_argument("--json-out", default=None)
-    args = ap.parse_args()
+    parser = argparse.ArgumentParser(description="Compare two manifest files and emit a reconcile report")
+    parser.add_argument("primary_manifest")
+    parser.add_argument("secondary_manifest")
+    parser.add_argument("--markdown-out", default=None)
+    parser.add_argument("--json-out", default=None)
+    args = parser.parse_args()
 
-    p1 = Path(args.primary_manifest).expanduser().resolve()
-    p2 = Path(args.secondary_manifest).expanduser().resolve()
-    d1 = load_yaml(p1)
-    d2 = load_yaml(p2)
-    f1 = flatten(d1)
-    f2 = flatten(d2)
+    primary = Path(args.primary_manifest).expanduser().resolve()
+    secondary = Path(args.secondary_manifest).expanduser().resolve()
+    data_primary = load_yaml(primary)
+    data_secondary = load_yaml(secondary)
+    flat_primary = flatten(data_primary)
+    flat_secondary = flatten(data_secondary)
 
-    only_primary = sorted(set(f1) - set(f2))
-    only_secondary = sorted(set(f2) - set(f1))
-    differing = sorted(k for k in set(f1).intersection(f2) if f1[k] != f2[k])
+    only_primary = sorted(set(flat_primary) - set(flat_secondary))
+    only_secondary = sorted(set(flat_secondary) - set(flat_primary))
+    differing = sorted(key for key in set(flat_primary).intersection(flat_secondary) if flat_primary[key] != flat_secondary[key])
 
     classified = []
     for key in differing:
+        section = classify_path(key)
         classified.append(
             {
                 "path": key,
-                "section": classify_path(key),
-                "primary": f1[key],
-                "secondary": f2[key],
-                "severity": "critical" if classify_path(key) in {"repo_roots", "control_plane"} else "medium",
-            },
+                "section": section,
+                "primary": flat_primary[key],
+                "secondary": flat_secondary[key],
+                "severity": "critical" if section in {"repo_roots", "control_plane"} else "medium",
+            }
         )
 
     report = {
-        "primary_manifest": str(p1),
-        "secondary_manifest": str(p2),
+        "primary_manifest": str(primary),
+        "secondary_manifest": str(secondary),
         "summary": {
             "only_primary": len(only_primary),
             "only_secondary": len(only_secondary),
             "differing": len(differing),
-            "critical_drift": sum(1 for x in classified if x["severity"] == "critical"),
+            "critical_drift": sum(1 for item in classified if item["severity"] == "critical"),
         },
         "only_primary": only_primary,
         "only_secondary": only_secondary,
@@ -99,8 +100,8 @@ def main() -> int:
     md_lines = [
         "# Manifest Reconcile Report",
         "",
-        f"- Primary: `{p1}`",
-        f"- Secondary: `{p2}`",
+        f"- Primary: `{primary}`",
+        f"- Secondary: `{secondary}`",
         "",
         "## Summary",
         "",
@@ -126,12 +127,13 @@ def main() -> int:
                     f"- primary: `{item['primary']}`",
                     f"- secondary: `{item['secondary']}`",
                     "",
-                ],
+                ]
             )
     else:
         md_lines.append("No differing keys found.\n")
 
     markdown = "\n".join(md_lines)
+    print(markdown)
     if args.markdown_out:
         Path(args.markdown_out).write_text(markdown + "\n", encoding="utf-8")
     return 0

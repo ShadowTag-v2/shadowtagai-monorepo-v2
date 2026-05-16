@@ -1,6 +1,6 @@
 #!/bin/bash
 # Complete deployment automation script
-# Deploys shadowtagai orchestrator from scratch
+# Deploys pnkln orchestrator from scratch
 
 set -e
 
@@ -122,7 +122,7 @@ EOF
 configure_kubectl() {
     log_info "Configuring kubectl..."
 
-    gcloud container clusters get-credentials shadowtagai-production \
+    gcloud container clusters get-credentials pnkln-production \
       --region $REGION \
       --project $PROJECT_ID
 
@@ -154,12 +154,12 @@ create_secrets() {
       --project=$PROJECT_ID)
 
     # Create namespace first
-    kubectl create namespace shadowtagai-production --dry-run=client -o yaml | kubectl apply -f -
+    kubectl create namespace pnkln-production --dry-run=client -o yaml | kubectl apply -f -
 
     # Create secret
-    kubectl create secret generic shadowtagai-secrets \
+    kubectl create secret generic pnkln-secrets \
       --from-literal=project-id="$SECRET_VALUE" \
-      --namespace=shadowtagai-production \
+      --namespace=pnkln-production \
       --dry-run=client -o yaml | kubectl apply -f -
 
     log_success "Secrets created"
@@ -200,7 +200,7 @@ deploy_application() {
 
     # Wait for deployment
     log_info "Waiting for deployment to complete..."
-    kubectl rollout status deployment/shadowtagai-orchestrator -n shadowtagai-production --timeout=5m
+    kubectl rollout status deployment/pnkln-orchestrator -n pnkln-production --timeout=5m
 
     log_success "Application deployed"
 }
@@ -210,14 +210,14 @@ verify_deployment() {
     log_info "Verifying deployment..."
 
     # Check pods
-    kubectl get pods -n shadowtagai-production
+    kubectl get pods -n pnkln-production
 
     # Check service
-    kubectl get svc -n shadowtagai-production
+    kubectl get svc -n pnkln-production
 
     # Port forward and test
     log_info "Testing health endpoint..."
-    kubectl port-forward svc/shadowtagai-orchestrator 8080:80 -n shadowtagai-production &
+    kubectl port-forward svc/pnkln-orchestrator 8080:80 -n pnkln-production &
     PF_PID=$!
     sleep 5
 
@@ -234,7 +234,7 @@ verify_deployment() {
 # Main deployment flow
 main() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "   SHADOWTAGAI ORCHESTRATOR - COMPLETE DEPLOYMENT"
+    echo "   PNKLN ORCHESTRATOR - COMPLETE DEPLOYMENT"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
 
@@ -270,8 +270,8 @@ main() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
     echo "Next steps:"
-    echo "1. View pods: kubectl get pods -n shadowtagai-production"
-    echo "2. View logs: kubectl logs -f deployment/shadowtagai-orchestrator -n shadowtagai-production"
+    echo "1. View pods: kubectl get pods -n pnkln-production"
+    echo "2. View logs: kubectl logs -f deployment/pnkln-orchestrator -n pnkln-production"
     echo "3. View monitoring: https://console.cloud.google.com/monitoring?project=$PROJECT_ID"
     echo "4. Configure Ingress for external access (see docs/DEPLOYMENT.md)"
     echo ""

@@ -25,29 +25,29 @@ module_path = f"python.{ORCH_NAME}.agent"
 agent = importlib.import_module(module_path)
 
 GOLDEN_KEYWORDS = [
-    "AI:",
-    "Loyalty Points",
-    "POLICY CHECK: Intercepting 'update-hotel'",
+  "AI:",
+  "Loyalty Points",
+  "POLICY CHECK: Intercepting 'update-hotel'",
 ]
 
 
 # --- Execution Tests ---
 class TestExecution:
-    """Test framework execution and output validation."""
+  """Test framework execution and output validation."""
 
-    @pytest.fixture(scope="function")
-    def script_output(self, capsys):
-        """Run the agent function and return its output."""
-        asyncio.run(agent.main())
-        return capsys.readouterr()
+  @pytest.fixture(scope="function")
+  def script_output(self, capsys):
+    """Run the agent function and return its output."""
+    asyncio.run(agent.main())
+    return capsys.readouterr()
 
-    def test_script_runs_without_errors(self, script_output):
-        """Test that the script runs and produces no stderr."""
-        assert script_output.err == "", f"Script produced stderr: {script_output.err}"
+  def test_script_runs_without_errors(self, script_output):
+    """Test that the script runs and produces no stderr."""
+    assert script_output.err == "", f"Script produced stderr: {script_output.err}"
 
-    def test_keywords_in_output(self, script_output):
-        """Test that expected keywords are present in the script's output."""
-        output = script_output.out
-        print(f"\nAgent Output:\n{output}\n")
-        missing_keywords = [kw for kw in GOLDEN_KEYWORDS if kw not in output]
-        assert not missing_keywords, f"Missing keywords in output: {missing_keywords}"
+  def test_keywords_in_output(self, script_output):
+    """Test that expected keywords are present in the script's output."""
+    output = script_output.out
+    print(f"\nAgent Output:\n{output}\n")
+    missing_keywords = [kw for kw in GOLDEN_KEYWORDS if kw not in output]
+    assert not missing_keywords, f"Missing keywords in output: {missing_keywords}"

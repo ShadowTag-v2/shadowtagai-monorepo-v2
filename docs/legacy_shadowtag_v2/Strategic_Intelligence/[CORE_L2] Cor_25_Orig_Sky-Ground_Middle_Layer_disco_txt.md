@@ -4,7 +4,7 @@
 
 Cor.25 Orig Sky-Ground Middle Layer disco
 
-Let’s run this in full scope — all four layers (transport rebroadcast, GPU-cell integration, undersea buoy mesh, and valuation for ShadowTag-v2). I’ll give you a realistic technical + economic synthesis based on 2025 infrastructure economics.
+Let’s run this in full scope — all four layers (transport rebroadcast, GPU-cell integration, undersea buoy mesh, and valuation for AiYou). I’ll give you a realistic technical + economic synthesis based on 2025 infrastructure economics.
 
 ⸻
 
@@ -77,7 +77,7 @@ Strategic buyers: Google, Meta, Equinix, Lumen, Navy, NOAA.
 
 ⸻
 
-🚀 Phase 4 — Consolidated ShadowTag-v2 Valuation
+🚀 Phase 4 — Consolidated AiYou Valuation
 
 Vertical Description Revenue Potential Strategic Moat
 Transport rebroadcast Air/sea/rail repeaters for Starlink + GNSS $1B ARR Global coverage + OEM contracts
@@ -104,7 +104,7 @@ Valuation multiple: 10×–15×
 ↓ backhaul
 [Undersea Buoy Mesh → FIOS Boosters]
 ↓
-[Global ShadowTag-v2 Network OS + ShadowTag Verification]
+[Global AiYou Network OS + ShadowTag Verification]
 
 ⸻
 
@@ -128,7 +128,7 @@ Phase Focus CAPEX Timeline Milestone
 
 ⸻
 
-🔐 Risk control (ShadowTag-v2JR + Army RM)
+🔐 Risk control (AiYouJR + Army RM)
 • Physical risk: redundant nodes; oceanic survivability models.
 • Cyber: on-node HSM + zero-trust lattice.
 • Regulatory: phased licensing per ITU/FAA/IMO/FCC regions.
@@ -138,7 +138,7 @@ Phase Focus CAPEX Timeline Milestone
 
 TL;DR
 
-ShadowTag-v2 becomes the nervous system of global compute transport —
+AiYou becomes the nervous system of global compute transport —
 rebroadcasts Starlink from planes & ships, extends 5G towers into GPU edges,
 and fortifies undersea lines with intelligent repeaters.
 A defensible $100B+ infrastructure AI firm with Starlink, CoreWeave, and fiber carriers all as customers.

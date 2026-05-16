@@ -1,10 +1,10 @@
-import type { ArtifactId, EmbeddingRef, TagSet, Vector } from '@shared/types';
+import type { ArtifactId, EmbeddingRef, TagSet, Vector } from "@shared/types";
 
 export type NodeId = string;
 export type Edge = {
   from: NodeId;
   to: NodeId;
-  rel: 'cites' | 'derives' | 'mentions' | 'duplicates';
+  rel: "cites" | "derives" | "mentions" | "duplicates";
   weight?: number;
 };
 

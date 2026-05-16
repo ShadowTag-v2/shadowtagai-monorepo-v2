@@ -1,0 +1,24 @@
+[
+  {
+    "author": { "id": "U_kgDODdMtIg", "is_bot": false, "login": "ehanc69", "name": "" },
+    "baseRefName": "main",
+    "createdAt": "2025-09-23T07:35:48Z",
+    "headRefName": "smoke/min-tests",
+    "mergedAt": "2025-09-23T08:13:49Z",
+    "number": 2,
+    "state": "MERGED",
+    "title": "CI: add minimal smoke workflow",
+    "updatedAt": "2025-09-23T08:13:51Z"
+  },
+  {
+    "author": { "id": "U_kgDODdMtIg", "is_bot": false, "login": "ehanc69", "name": "" },
+    "baseRefName": "main",
+    "createdAt": "2025-09-23T07:27:18Z",
+    "headRefName": "bootstrap/seed",
+    "mergedAt": null,
+    "number": 1,
+    "state": "OPEN",
+    "title": "Bootstrap: seed scaffolds",
+    "updatedAt": "2025-09-23T07:27:18Z"
+  }
+]

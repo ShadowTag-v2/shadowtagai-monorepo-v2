@@ -1,39 +1,39 @@
 #!/usr/bin/env node
-import * as path from 'path';
+import * as path from "path";
 
-import { readStateFile, writeStateFile } from '../services/session-state.js';
-import type { PickleStep, State } from '../types/index.js';
+import { readStateFile, writeStateFile } from "../services/session-state.js";
+import type { PickleStep, State } from "../types/index.js";
 
 const STEP_VALUES: PickleStep[] = [
-  'prd',
-  'breakdown',
-  'research',
-  'plan',
-  'implement',
-  'refactor',
-  'done',
+  "prd",
+  "breakdown",
+  "research",
+  "plan",
+  "implement",
+  "refactor",
+  "done",
 ];
 
 const NUMERIC_KEYS = new Set([
-  'iteration',
-  'max_iterations',
-  'max_time_minutes',
-  'worker_timeout_seconds',
-  'start_time_epoch',
+  "iteration",
+  "max_iterations",
+  "max_time_minutes",
+  "worker_timeout_seconds",
+  "start_time_epoch",
 ]);
 
-const BOOLEAN_KEYS = new Set(['active', 'jar_complete', 'worker']);
-const NULLABLE_KEYS = new Set(['completion_promise', 'current_ticket']);
-const STRING_KEYS = new Set(['step', 'working_dir', 'original_prompt']);
+const BOOLEAN_KEYS = new Set(["active", "jar_complete", "worker"]);
+const NULLABLE_KEYS = new Set(["completion_promise", "current_ticket"]);
+const STRING_KEYS = new Set(["step", "working_dir", "original_prompt"]);
 
 function parseStateValue(key: string, rawValue: string): string | number | boolean | null {
-  if (NULLABLE_KEYS.has(key) && rawValue === 'null') {
+  if (NULLABLE_KEYS.has(key) && rawValue === "null") {
     return null;
   }
 
   if (BOOLEAN_KEYS.has(key)) {
-    if (rawValue === 'true') return true;
-    if (rawValue === 'false') return false;
+    if (rawValue === "true") return true;
+    if (rawValue === "false") return false;
     throw new Error(`Expected boolean value for ${key}. Use true or false.`);
   }
 
@@ -45,9 +45,9 @@ function parseStateValue(key: string, rawValue: string): string | number | boole
     return parsed;
   }
 
-  if (key === 'step') {
+  if (key === "step") {
     if (!STEP_VALUES.includes(rawValue as PickleStep)) {
-      throw new Error(`Invalid step "${rawValue}". Allowed values: ${STEP_VALUES.join(', ')}`);
+      throw new Error(`Invalid step "${rawValue}". Allowed values: ${STEP_VALUES.join(", ")}`);
     }
     return rawValue;
   }
@@ -62,7 +62,7 @@ function parseStateValue(key: string, rawValue: string): string | number | boole
       ...BOOLEAN_KEYS,
       ...NULLABLE_KEYS,
       ...STRING_KEYS,
-    ].join(', ')}`
+    ].join(", ")}`,
   );
 }
 
@@ -70,7 +70,7 @@ function parseStateValue(key: string, rawValue: string): string | number | boole
  * Usage: node update-state.js <key> <value> <session_dir>
  */
 export function updateState(key: string, rawValue: string, sessionDir: string): void {
-  const statePath = path.join(sessionDir, 'state.json');
+  const statePath = path.join(sessionDir, "state.json");
   const state = readStateFile(statePath);
   if (!state) {
     throw new Error(`state.json not found at ${statePath}`);
@@ -87,11 +87,11 @@ export function updateState(key: string, rawValue: string, sessionDir: string): 
   console.log(`Successfully updated ${key} to ${String(value)} in ${statePath}`);
 }
 
-if (process.argv[1] && path.basename(process.argv[1]).startsWith('update-state')) {
+if (process.argv[1] && path.basename(process.argv[1]).startsWith("update-state")) {
   const [key, value, sessionDir] = process.argv.slice(2);
 
   if (!key || value == null || !sessionDir) {
-    console.error('Usage: node update-state.js <key> <value> <session_dir>');
+    console.error("Usage: node update-state.js <key> <value> <session_dir>");
     process.exit(1);
   }
 

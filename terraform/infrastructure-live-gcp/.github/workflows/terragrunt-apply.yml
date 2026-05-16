@@ -1,0 +1,41 @@
+name: Terragrunt Apply (main)
+on:
+  push:
+    branches: [main]
+    paths: ['terraform/infrastructure-live-gcp/**']
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.env }}
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        env: [non-prod, prod]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mise-action/mise-action@v2
+        with:
+          working_directory: terraform/infrastructure-live-gcp
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.TF_SERVICE_ACCOUNT }}
+      - uses: gruntwork-io/terragrunt-action@v1
+        with:
+          tofu_version: "1.9.0"
+          tg_version: "0.67.0"
+          tg_dir: terraform/infrastructure-live-gcp/${{ matrix.env }}
+          tg_command: run-all apply
+          tg_flags: --terragrunt-non-interactive
+      # Post-apply drift check (Branko Fix #10)
+      - uses: gruntwork-io/terragrunt-action@v1
+        with:
+          tofu_version: "1.9.0"
+          tg_version: "0.67.0"
+          tg_dir: terraform/infrastructure-live-gcp/${{ matrix.env }}
+          tg_command: run-all plan
+          tg_flags: --terragrunt-non-interactive -detailed-exitcode

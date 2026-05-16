@@ -7,7 +7,7 @@
 ## Automation Restored:
 1. `gcloud_auth_solver.py`: Ready (Jetski/Browser).
 2. `omega_auth_daemon.py`: RUNNING (PID: Active).
-3. `BRAIN_DIR` is per-conversation: `~/.gemini/antigravity/brain/<conversation-id>`
+3. `BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"`
 5. Ensure you are saving everything to beads as you go.
 
 ## 1. Native Cloud Interactions (Keyless)
@@ -18,14 +18,14 @@
 - **Native Curl (Uses Sidebar Auth):**
   `curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" <url>`
 
-## 2. shadowtag-omega-v4 RAG — Sovereign Knowledge Base
+## 2. AiYou RAG — Sovereign Knowledge Base
 
 **API base:** `$VITE_API_URL` (default `http://localhost:8000`)
-**MCP config:** `.mcp.json` at repo root (tools: `shadowtag-omega-v4_query`, `shadowtag-omega-v4_ingest`)
+**MCP config:** `.mcp.json` at repo root (tools: `aiyou_query`, `aiyou_ingest`)
 
 ### Query (semantic RAG)
 ```bash
-curl -s -X POST "$VITE_API_URL/api/v1/shadowtag-omega-v4/agent/query" \
+curl -s -X POST "$VITE_API_URL/api/v1/aiyou/agent/query" \
   -H "Content-Type: application/json" \
   -d '{"q": "<your question>"}' | jq .
 ```
@@ -34,7 +34,7 @@ curl -s -X POST "$VITE_API_URL/api/v1/shadowtag-omega-v4/agent/query" \
 ```bash
 # Run the full ingest pipeline (scans 5 source dirs, Gemini text-embedding-004 + fallback):
 cd /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
-npx ts-node packages/shadowtag-omega-v4/src/scripts/ingest.ts [optional-extra-dir]
+npx ts-node packages/aiyou/src/scripts/ingest.ts [optional-extra-dir]
 ```
 
 ### Memory report
@@ -58,12 +58,4 @@ docs/Strategic_Intelligence/SOVEREIGN_MEMORY_LINK.md  ← 118 conversations, 32 
   # Use ADC (Application Default Credentials) provided by Cloud Code
   # SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
   # ... (Agent: Auto-complete this to fetch the requested Doc ID)
-  ```
-## 4. God Mode Access
-- **Path:** `tools/scripts/god_mode_admin.py`
-- **Purpose:** Interactive queue and job sync. Use `help`, `status`, `sync`, `json`, `shell`.
-- **Usage (Background):**
-  ```bash
-  export GCP_PROJECT_ID='shadowtag-omega-v4'
-  nohup python3 tools/scripts/god_mode_admin.py > logs/godmode.log 2>&1 &
   ```

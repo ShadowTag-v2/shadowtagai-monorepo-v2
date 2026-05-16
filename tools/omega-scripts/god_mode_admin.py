@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import logging
 
 from libs.steel.sdk import VelocityEngine

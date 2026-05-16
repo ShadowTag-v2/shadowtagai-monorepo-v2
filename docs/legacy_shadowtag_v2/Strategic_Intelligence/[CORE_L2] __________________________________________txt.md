@@ -9,7 +9,7 @@
 ▛///▞ PiCO :: TRACE
 ⊢ ≔ bind.input{deployment_success: true, metrics: [1800x_speed, 0%_error], stack: [Ungpt_v2, Courtroom, E2P]}
 ⇨ ≔ direct.flow{fuse local_CLI (Ungpt) ⇄ cloud_infra (Cloud Run) via Courtroom Protocol}
-⟿ ≔ carry.motion{operationalize Judge 6 gates on live pipeline}
+⟿ ≔ carry.motion{operationalize Judge #6 gates on live pipeline}
 ▷ ≔ project.output{Priority: Hard-wire the E2P/Courtroom logic into the deployed Cloud Run instance}
 :: ∎
 ▛///▞ PRISM :: KERNEL
@@ -31,7 +31,7 @@ M:: {Mode: Strict Enforcement}
    Critical Path: The local Antigravity CLI is currently a concept wrapper. It must now be updated to target the live Cloud Run endpoints (/draft, /review, /final) defined in your main.py specs, effectively turning your Mac into the command deck for the 650-agent squadron.
 3. PRIORITY ORDER:
    IMMEDIATE: Wire the "Courtroom" Logic into the Live Cloud Run Service.
-   SECONDARY: Integrate Judge 6 (Superego) hard-gates into the weekly-audit job to transition from "health check" to "governance enforcement."
+   SECONDARY: Integrate Judge #6 (Superego) hard-gates into the weekly-audit job to transition from "health check" to "governance enforcement."
 
 ▛///▞ MISSION :: EXECUTION PLAN (WEEK 4-6)
 STEP 1: DEPLOY THE "COURTROOM" KERNEL

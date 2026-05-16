@@ -1,0 +1,157 @@
+---
+# OPA Deployment - Fast Path Policy Engine
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  namespace: governance
+  labels:
+    app: opa
+    component: policy-engine
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: opa
+  template:
+    metadata:
+      labels:
+        app: opa
+        component: policy-engine
+    spec:
+      containers:
+        - name: opa
+          image: openpolicyagent/opa:latest
+          args:
+            - "run"
+            - "--server"
+            - "--log-level=info"
+            - "--log-format=json"
+            - "/policies"
+          ports:
+            - name: http
+              containerPort: 8181
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8181
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8181
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: policies
+              mountPath: /policies
+              readOnly: true
+      volumes:
+        - name: policies
+          configMap:
+            name: opa-policies
+
+---
+# OPA Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: governance
+  labels:
+    app: opa
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8181
+      targetPort: 8181
+      protocol: TCP
+      name: http
+  selector:
+    app: opa
+
+---
+# OPA Policies ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-policies
+  namespace: governance
+data:
+  governance.rego: |
+    package governance
+
+    import future.keywords.if
+    import future.keywords.in
+
+    # Default deny
+    default allow := false
+
+    # Allow if all conditions met
+    allow if {
+        not high_risk_action
+        within_financial_limits
+        has_required_approvals
+        not blocked_user
+    }
+
+    # High-risk actions
+    high_risk_actions := {
+        "delete_production_data",
+        "grant_admin_access",
+        "modify_security_policy",
+        "shutdown_service"
+    }
+
+    high_risk_action if {
+        input.action in high_risk_actions
+    }
+
+    # Financial limits
+    financial_limits := {
+        "admin": 1000000,
+        "manager": 100000,
+        "engineer": 10000,
+        "contractor": 1000
+    }
+
+    within_financial_limits if {
+        not input.financial_value
+    }
+
+    within_financial_limits if {
+        user_role := input.context.user_role
+        limit := financial_limits[user_role]
+        input.financial_value <= limit
+    }
+
+    # Required approvals
+    has_required_approvals if {
+        input.context.approver_id
+        input.context.approver_id != input.user_id
+    }
+
+    # Blocked users
+    blocked_users := {"user_banned_001"}
+
+    blocked_user if {
+        input.user_id in blocked_users
+    }
+
+    # Reasoning
+    reasons contains "Within financial limits" if within_financial_limits
+    reasons contains "Has required approvals" if has_required_approvals
+    reasons contains "User not blocked" if not blocked_user
+    reasons contains "Not high-risk action" if not high_risk_action
+
+    # Policies applied
+    applied_policies contains "POL-FIN-001" if within_financial_limits
+    applied_policies contains "POL-APP-002" if has_required_approvals

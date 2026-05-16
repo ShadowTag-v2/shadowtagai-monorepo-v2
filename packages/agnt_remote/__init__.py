@@ -9,7 +9,7 @@ from .feature_flags import LocalFeatureFlags
 from .telemetry_sink import LocalTelemetrySink
 
 __all__ = [
-    "LocalFeatureFlags",
-    "LocalTelemetrySink",
-    "NoOpAnalytics",
+  "LocalFeatureFlags",
+  "LocalTelemetrySink",
+  "NoOpAnalytics",
 ]

@@ -584,7 +584,7 @@ Use this structure for any PNKLN component:
 
 ---
 
-## Integration with ShadowTag-v2JR Gates
+## Integration with AiYouJR Gates
 
 When analyzing components as part of feature planning, integrate with strategic gates:
 
@@ -658,7 +658,7 @@ DECISION: CONDITIONAL GO
 - [resources/metrics-catalog.md](resources/metrics-catalog.md) - Standard KPIs for each component type
 
 **Integration:**
-- See `ShadowTag-v2jr-judge` skill for strategic gate validation
+- See `aiyoujr-judge` skill for strategic gate validation
 - See `security-enforcement` skill for security analysis requirements
 - See `universal-copilot-patterns` for KERNEL prompt engineering (effective AI analysis prompts)
 
@@ -682,7 +682,7 @@ DECISION: CONDITIONAL GO
    - Add/remove sections based on component role
 
 3. **Integrate with strategic gates**
-   - Run component analysis before ShadowTag-v2JR gates
+   - Run component analysis before AiYouJR gates
    - Use cost models and optimization opportunities for Reasons gate
    - Use SPOF/blast radius for Brakes gate
 

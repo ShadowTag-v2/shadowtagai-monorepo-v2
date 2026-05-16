@@ -5,14 +5,14 @@
  * in TypeScript/Node.js applications.
  */
 
-import WealthAccelerationAgent from '../../src/agents/wealth-acceleration-agent';
+import WealthAccelerationAgent from "../../src/agents/wealth-acceleration-agent";
 
 // =============================================================================
 // Example 1: Basic Setup and Monetization Strategy Analysis
 // =============================================================================
 
 async function example1_basicMonetizationAnalysis() {
-  console.log('=== Example 1: Basic Monetization Strategy Analysis ===\n');
+  console.log("=== Example 1: Basic Monetization Strategy Analysis ===\n");
 
   // Create agent instance
   const agent = new WealthAccelerationAgent({
@@ -23,14 +23,14 @@ async function example1_basicMonetizationAnalysis() {
 
   // Set business context
   agent.setBusinessContext({
-    niche: 'SaaS founders',
+    niche: "SaaS founders",
     currentMonthlyRevenue: 15000,
     audienceSize: 50000,
-    engagementLevel: 'high',
-    revenueStreams: ['consulting', 'courses'],
-    platforms: ['Twitter', 'LinkedIn', 'Newsletter'],
+    engagementLevel: "high",
+    revenueStreams: ["consulting", "courses"],
+    platforms: ["Twitter", "LinkedIn", "Newsletter"],
     additionalContext:
-      'Launching a new cohort-based course next month. Want to optimize entire revenue stack.',
+      "Launching a new cohort-based course next month. Want to optimize entire revenue stack.",
   });
 
   // Run comprehensive monetization analysis
@@ -42,47 +42,47 @@ async function example1_basicMonetizationAnalysis() {
 // =============================================================================
 
 async function example2_funnelOptimization() {
-  console.log('\n=== Example 2: Funnel Optimization ===\n');
+  console.log("\n=== Example 2: Funnel Optimization ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
   });
 
   agent.setBusinessContext({
-    niche: 'Marketing consultants',
+    niche: "Marketing consultants",
     currentMonthlyRevenue: 8000,
     audienceSize: 20000,
-    engagementLevel: 'medium',
+    engagementLevel: "medium",
   });
 
   // Analyze conversion funnel
   await agent.optimizeConversionFunnel([
     {
-      name: 'Blog/Content',
+      name: "Blog/Content",
       visitors: 15000,
       conversions: 3000,
       revenue: 0,
     },
     {
-      name: 'Lead Magnet Page',
+      name: "Lead Magnet Page",
       visitors: 3000,
       conversions: 1200,
       revenue: 0,
     },
     {
-      name: 'Email Nurture Sequence',
+      name: "Email Nurture Sequence",
       visitors: 1200,
       conversions: 300,
       revenue: 0,
     },
     {
-      name: 'Sales Page',
+      name: "Sales Page",
       visitors: 300,
       conversions: 45,
       revenue: 22365,
     },
     {
-      name: 'Customers',
+      name: "Customers",
       visitors: 45,
       conversions: 0,
       revenue: 0,
@@ -95,28 +95,28 @@ async function example2_funnelOptimization() {
 // =============================================================================
 
 async function example3_pricingEvaluation() {
-  console.log('\n=== Example 3: Pricing Strategy Evaluation ===\n');
+  console.log("\n=== Example 3: Pricing Strategy Evaluation ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
   });
 
   agent.setBusinessContext({
-    niche: 'Fitness coaches',
+    niche: "Fitness coaches",
     currentMonthlyRevenue: 12000,
     offers: [
-      { name: 'Self-Paced Course', price: 197, monthlySales: 25 },
-      { name: 'Group Coaching', price: 497, monthlySales: 10 },
+      { name: "Self-Paced Course", price: 197, monthlySales: 25 },
+      { name: "Group Coaching", price: 497, monthlySales: 10 },
     ],
   });
 
   // Evaluate pricing for main course
   await agent.evaluatePricing(
-    'course', // product type
+    "course", // product type
     197, // current price
     25, // cost to deliver
     25, // monthly customers
-    'mid-market', // market position
+    "mid-market", // market position
   );
 }
 
@@ -125,7 +125,7 @@ async function example3_pricingEvaluation() {
 // =============================================================================
 
 async function example4_revenueProjections() {
-  console.log('\n=== Example 4: Revenue Projections ===\n');
+  console.log("\n=== Example 4: Revenue Projections ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -133,10 +133,10 @@ async function example4_revenueProjections() {
   });
 
   agent.setBusinessContext({
-    niche: 'Content creators',
+    niche: "Content creators",
     currentMonthlyRevenue: 5000,
     audienceSize: 25000,
-    engagementLevel: 'high',
+    engagementLevel: "high",
   });
 
   // Project 12-month revenue growth
@@ -154,16 +154,16 @@ async function example4_revenueProjections() {
 // =============================================================================
 
 async function example5_ltvOptimization() {
-  console.log('\n=== Example 5: Customer LTV Optimization ===\n');
+  console.log("\n=== Example 5: Customer LTV Optimization ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
   });
 
   agent.setBusinessContext({
-    niche: 'E-commerce store owners',
+    niche: "E-commerce store owners",
     currentMonthlyRevenue: 20000,
-    revenueStreams: ['courses', 'software', 'membership'],
+    revenueStreams: ["courses", "software", "membership"],
   });
 
   // Calculate and optimize LTV
@@ -180,7 +180,7 @@ async function example5_ltvOptimization() {
 // =============================================================================
 
 async function example6_opportunityAssessment() {
-  console.log('\n=== Example 6: Market Opportunity Assessment ===\n');
+  console.log("\n=== Example 6: Market Opportunity Assessment ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -189,21 +189,21 @@ async function example6_opportunityAssessment() {
   });
 
   agent.setBusinessContext({
-    niche: 'Indie hackers',
+    niche: "Indie hackers",
     currentMonthlyRevenue: 3000,
     audienceSize: 15000,
-    engagementLevel: 'high',
-    platforms: ['Twitter', 'Newsletter', 'YouTube'],
+    engagementLevel: "high",
+    platforms: ["Twitter", "Newsletter", "YouTube"],
   });
 
   // Assess multiple revenue stream opportunities
-  await agent.assessOpportunities('Indie hackers', 15000, 'high', 3000, [
-    'courses',
-    'coaching',
-    'software',
-    'membership',
-    'affiliate',
-    'sponsorship',
+  await agent.assessOpportunities("Indie hackers", 15000, "high", 3000, [
+    "courses",
+    "coaching",
+    "software",
+    "membership",
+    "affiliate",
+    "sponsorship",
   ]);
 }
 
@@ -212,7 +212,7 @@ async function example6_opportunityAssessment() {
 // =============================================================================
 
 async function example7_customAnalysisWithThinking() {
-  console.log('\n=== Example 7: Custom Analysis with Extended Thinking ===\n');
+  console.log("\n=== Example 7: Custom Analysis with Extended Thinking ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -221,11 +221,11 @@ async function example7_customAnalysisWithThinking() {
   });
 
   agent.setBusinessContext({
-    niche: 'B2B SaaS',
+    niche: "B2B SaaS",
     currentMonthlyRevenue: 50000,
     audienceSize: 100000,
-    engagementLevel: 'medium',
-    revenueStreams: ['SaaS subscriptions', 'enterprise contracts', 'consulting'],
+    engagementLevel: "medium",
+    revenueStreams: ["SaaS subscriptions", "enterprise contracts", "consulting"],
     additionalContext: `
       Current situation:
       - MRR: $50K (80% from small businesses, 20% from enterprise)
@@ -261,42 +261,42 @@ async function example7_customAnalysisWithThinking() {
 // =============================================================================
 
 async function example8_multiStageWorkflow() {
-  console.log('\n=== Example 8: Multi-Stage Analysis Workflow ===\n');
+  console.log("\n=== Example 8: Multi-Stage Analysis Workflow ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
   });
 
   const context = {
-    niche: 'Online educators',
+    niche: "Online educators",
     currentMonthlyRevenue: 7500,
     audienceSize: 30000,
-    engagementLevel: 'medium' as const,
-    revenueStreams: ['courses'],
-    platforms: ['YouTube', 'Newsletter'],
+    engagementLevel: "medium" as const,
+    revenueStreams: ["courses"],
+    platforms: ["YouTube", "Newsletter"],
   };
 
   agent.setBusinessContext(context);
 
   // Stage 1: Overall monetization analysis
-  console.log('\n--- Stage 1: Monetization Strategy ---\n');
+  console.log("\n--- Stage 1: Monetization Strategy ---\n");
   await agent.analyzeMonetizationStrategy();
 
   // Stage 2: Specific pricing evaluation
-  console.log('\n--- Stage 2: Pricing Analysis ---\n');
-  await agent.evaluatePricing('course', 497, 75, 15, 'mid-market');
+  console.log("\n--- Stage 2: Pricing Analysis ---\n");
+  await agent.evaluatePricing("course", 497, 75, 15, "mid-market");
 
   // Stage 3: Growth projections
-  console.log('\n--- Stage 3: Revenue Projections ---\n');
+  console.log("\n--- Stage 3: Revenue Projections ---\n");
   await agent.projectRevenue(7500, 30000, 12, 1.8, 12);
 
   // Stage 4: Opportunity assessment
-  console.log('\n--- Stage 4: New Opportunities ---\n');
-  await agent.assessOpportunities('Online educators', 30000, 'medium', 7500, [
-    'coaching',
-    'membership',
-    'software',
-    'affiliate',
+  console.log("\n--- Stage 4: New Opportunities ---\n");
+  await agent.assessOpportunities("Online educators", 30000, "medium", 7500, [
+    "coaching",
+    "membership",
+    "software",
+    "affiliate",
   ]);
 }
 
@@ -305,7 +305,7 @@ async function example8_multiStageWorkflow() {
 // =============================================================================
 
 async function example9_errorHandling() {
-  console.log('\n=== Example 9: Error Handling ===\n');
+  console.log("\n=== Example 9: Error Handling ===\n");
 
   const agent = new WealthAccelerationAgent({
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -314,13 +314,14 @@ async function example9_errorHandling() {
 
   try {
     // Attempt analysis with minimal context
-    await agent.analyze('Give me a complete monetization strategy for my business.');
+    await agent.analyze("Give me a complete monetization strategy for my business.");
 
     // The agent will ask for more context
     console.log(
-      '\n\nNote: The agent will request more specific information when context is insufficient.',
+      "\n\nNote: The agent will request more specific information when context is insufficient.",
     );
-  } catch (_error) {
+  } catch (error) {
+    console.error("Error during analysis:", error);
     // Implement your error handling logic here
   }
 }
@@ -330,8 +331,8 @@ async function example9_errorHandling() {
 // =============================================================================
 
 async function main() {
-  console.log('Wealth Acceleration Agent - TypeScript Examples\n');
-  console.log('================================================\n');
+  console.log("Wealth Acceleration Agent - TypeScript Examples\n");
+  console.log("================================================\n");
 
   // Run examples (uncomment the ones you want to try)
 
@@ -345,10 +346,10 @@ async function main() {
   // await example8_multiStageWorkflow();
   // await example9_errorHandling();
 
-  console.log('\n\nTo run these examples:');
-  console.log('1. Ensure ANTHROPIC_API_KEY is set in your environment');
-  console.log('2. Uncomment the example you want to run in the main() function');
-  console.log('3. Run: npx ts-node docs/examples/typescript-example.ts');
+  console.log("\n\nTo run these examples:");
+  console.log("1. Ensure ANTHROPIC_API_KEY is set in your environment");
+  console.log("2. Uncomment the example you want to run in the main() function");
+  console.log("3. Run: npx ts-node docs/examples/typescript-example.ts");
 }
 
 // Run if executed directly

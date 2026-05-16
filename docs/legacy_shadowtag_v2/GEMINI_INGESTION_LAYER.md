@@ -28,7 +28,7 @@ The Gemini Ingestion Layer is a nightly batch processing pipeline that collects,
     ┌───────────────────────────────────────────────────┐
     │   DATA DELIVERY (Called BY services)              │
     ├───────────────────┬───────────────────────────────┤
-    │ pnkln-stackjr-governance│ Judge 6 Hybrid Enforcement   │
+    │ pnkln-stackjr-governance│ Judge #6 Hybrid Enforcement   │
     │ autogen-orchestr. │ Multi-Agent Coordination      │
     │ cognitive-stack-v5│ LLM Routing Layer             │
     │ shadowtag-v2      │ Watermarking Security         │
@@ -37,8 +37,7 @@ The Gemini Ingestion Layer is a nightly batch processing pipeline that collects,
 
 ### Design Philosophy
 
-**Compared to Judge 6** (reactive validation):
-
+**Compared to Judge #6** (reactive validation):
 - **Proactive vs Reactive**: Collects data upstream vs validates downstream
 - **Batch vs Real-time**: Nightly cron (45 min) vs sub-90ms response
 - **Caller vs Callee**: Called BY services vs calls services
@@ -107,13 +106,13 @@ The Gemini Ingestion Layer is a nightly batch processing pipeline that collects,
 
 ### Quality Gates
 
-| Metric               | Threshold | Purpose                    |
-| -------------------- | --------- | -------------------------- |
-| **Items/Day**        | ≥500      | Ensure sufficient volume   |
-| **Source Diversity** | ≥5        | Prevent single-source bias |
-| **Cost/Item**        | ≤$0.15    | Budget control             |
-| **Quality Score**    | ≥0.70     | Maintain relevance         |
-| **Runtime**          | ≤45 min   | Efficiency target          |
+| Metric | Threshold | Purpose |
+|--------|-----------|---------|
+| **Items/Day** | ≥500 | Ensure sufficient volume |
+| **Source Diversity** | ≥5 | Prevent single-source bias |
+| **Cost/Item** | ≤$0.15 | Budget control |
+| **Quality Score** | ≥0.70 | Maintain relevance |
+| **Runtime** | ≤45 min | Efficiency target |
 
 ### Ethical Compliance Model
 
@@ -122,7 +121,7 @@ compliance:
   robots_txt:
     respect: true
     cache_ttl_hours: 24
-    fallback: "allow" # If robots.txt unavailable
+    fallback: "allow"  # If robots.txt unavailable
 
   rate_limiting:
     requests_per_minute: 60
@@ -140,17 +139,14 @@ compliance:
 ### Multi-Source Coverage
 
 **Tier 1** (Primary, High-Value):
-
 - YouTube API (quota: 10,000 units/day)
 - News Aggregator (quota: 5,000 requests/day)
 
 **Tier 2** (Secondary):
-
 - Twitter/X API (quota: 3,000 tweets/day)
 - Reddit API (quota: 2,000 posts/day)
 
 **Tier 3** (Supplementary):
-
 - RSS Feeds (quota: 1,000 feeds/day)
 - Generic Web Crawler (quota: 500 pages/day)
 
@@ -182,7 +178,6 @@ Tier 3 (Weight: 0.3):
 ### Prerequisites
 
 1. **API Keys Required**:
-
    ```bash
    kubectl create secret generic api-credentials \
      --from-literal=YOUTUBE_API_KEY='your-key' \
@@ -195,7 +190,6 @@ Tier 3 (Weight: 0.3):
    ```
 
 2. **Terraform Service Account**:
-
    ```bash
    cd terraform
    terraform apply  # Creates gemini-ingestion-workload-sa
@@ -211,10 +205,9 @@ Tier 3 (Weight: 0.3):
 Default: 2 AM UTC daily (`0 2 * * *`)
 
 To change timezone (e.g., 2 AM PST = 10 AM UTC):
-
 ```yaml
 spec:
-  schedule: "0 10 * * *" # 2 AM PST
+  schedule: "0 10 * * *"  # 2 AM PST
 ```
 
 ### Manual Execution (Testing)
@@ -236,31 +229,26 @@ kubectl logs -f job/ingestion-test-xxxxx -n gemini-ingestion --all-containers
 ### Key Metrics
 
 **Collection Metrics**:
-
 - `ingestion_items_collected_total` - Total items ingested
 - `ingestion_active_sources_count` - Number of active sources
 - `ingestion_source_quota_remaining` - Remaining quota per source
 
 **Quality Metrics**:
-
 - `ingestion_item_quality_score` - Gemini-assigned quality scores
 - `ingestion_tier_distribution` - Count per tier (1/2/3)
 - `ingestion_relevance_score_avg` - Average relevance
 
 **Cost Metrics**:
-
 - `ingestion_cost_per_item_usd` - Cost efficiency
 - `ingestion_api_calls_total` - API usage
 - `ingestion_monthly_cost_estimate` - Projected monthly cost
 
 **Performance Metrics**:
-
 - `ingestion_runtime_minutes` - Total execution time
 - `ingestion_container_duration_seconds` - Per-container timing
 - `ingestion_parallelism_factor` - Effective parallelization
 
 **Compliance Metrics**:
-
 - `ingestion_robots_txt_violations_total` - Ethical violations
 - `ingestion_rate_limit_hits_total` - 429 responses
 - `ingestion_user_agent_blocks_total` - 403 responses
@@ -269,26 +257,24 @@ kubectl logs -f job/ingestion-test-xxxxx -n gemini-ingestion --all-containers
 
 Configured in `PrometheusRule`:
 
-| Alert                      | Condition     | Severity |
-| -------------------------- | ------------- | -------- |
-| LowDailyItemCount          | <500 items    | Warning  |
-| LowSourceDiversity         | <5 sources    | Warning  |
-| HighCostPerItem            | >$0.15        | Critical |
-| LowQualityScore            | <0.70 avg     | Warning  |
-| RuntimeExceeded            | >45 min       | Warning  |
+| Alert | Condition | Severity |
+|-------|-----------|----------|
+| LowDailyItemCount | <500 items | Warning |
+| LowSourceDiversity | <5 sources | Warning |
+| HighCostPerItem | >$0.15 | Critical |
+| LowQualityScore | <0.70 avg | Warning |
+| RuntimeExceeded | >45 min | Warning |
 | EthicalComplianceViolation | >0 violations | Critical |
 
 ### Dashboards
 
 Access Grafana dashboard:
-
 ```bash
 kubectl port-forward -n monitoring svc/grafana 3000:3000
 # Navigate to: Gemini Ingestion Layer - Nightly Intelligence
 ```
 
 Key panels:
-
 - Daily item count trend
 - Source diversity pie chart
 - Cost per item over time
@@ -305,8 +291,7 @@ Key panels:
 
 Services in the 4 namespaces can fetch ingested data:
 
-**pnkln-stackjr-governance** (Judge 6):
-
+**pnkln-stackjr-governance** (Judge #6):
 ```python
 # Fetch daily intelligence for validation
 import requests
@@ -317,14 +302,12 @@ response = requests.get(
 ```
 
 **autogen-orchestration**:
-
 ```python
 # Get tier 1 items for agent context
 items = fetch_briefing(tier=1, max_items=50)
 ```
 
 **cognitive-stack-v5** (LLM Routing):
-
 ```python
 # Receive AM briefing delivery
 @app.post("/v1/briefing")
@@ -334,7 +317,6 @@ def receive_briefing(briefing: BriefingPayload):
 ```
 
 **shadowtag-v2**:
-
 ```python
 # Access raw data for watermarking
 raw_data = load_from_pvc("/briefings/2025-11-08/raw_items.json")
@@ -343,7 +325,6 @@ raw_data = load_from_pvc("/briefings/2025-11-08/raw_items.json")
 ### RBAC Configuration
 
 The `gemini-ingestion-sa` service account has:
-
 - ✅ `get`, `list` on services across all namespaces
 - ✅ `get`, `list` on pods (for health checks)
 - ✅ `get`, `list` on configmaps (for dynamic config)
@@ -354,17 +335,17 @@ The `gemini-ingestion-sa` service account has:
 
 ### Monthly Breakdown (~$77)
 
-| Component               | Cost | Notes                                |
-| ----------------------- | ---- | ------------------------------------ |
-| **GKE CronJob Runtime** | $15  | ~45 min/night × 30 days × $0.011/min |
-| **YouTube API**         | $5   | Free tier (10K units/day)            |
-| **Twitter API**         | $0   | Free tier (v2 API)                   |
-| **Reddit API**          | $0   | Free tier                            |
-| **News API**            | $0   | Free tier (500 req/day)              |
-| **Gemini 2.0 Flash**    | $45  | ~500 items/day × $0.003/item         |
-| **GCS Storage (PVC)**   | $2   | 50 GB × $0.04/GB                     |
-| **Networking**          | $5   | Egress for API calls                 |
-| **Monitoring**          | $5   | Prometheus metrics storage           |
+| Component | Cost | Notes |
+|-----------|------|-------|
+| **GKE CronJob Runtime** | $15 | ~45 min/night × 30 days × $0.011/min |
+| **YouTube API** | $5 | Free tier (10K units/day) |
+| **Twitter API** | $0 | Free tier (v2 API) |
+| **Reddit API** | $0 | Free tier |
+| **News API** | $0 | Free tier (500 req/day) |
+| **Gemini 2.0 Flash** | $45 | ~500 items/day × $0.003/item |
+| **GCS Storage (PVC)** | $2 | 50 GB × $0.04/GB |
+| **Networking** | $5 | Egress for API calls |
+| **Monitoring** | $5 | Prometheus metrics storage |
 
 **Total**: ~$77/month
 
@@ -449,7 +430,6 @@ kubectl get cm robots-txt-config -n gemini-ingestion -o yaml
 **Target**: ≤45 minutes
 
 **Current Breakdown**:
-
 - Collection (parallel): ~15 min
 - Classification (sequential): ~20 min
 - Quality gates: ~5 min
@@ -458,23 +438,20 @@ kubectl get cm robots-txt-config -n gemini-ingestion -o yaml
 **Optimization Levers**:
 
 1. **Increase Parallelism**:
-
    ```yaml
    resources:
      requests:
-       cpu: "2" # Double CPU for faster processing
+       cpu: "2"  # Double CPU for faster processing
    ```
 
 2. **Reduce Classification Latency**:
-
    ```yaml
    env:
-     - name: GEMINI_BATCH_SIZE
-       value: "50" # Classify 50 items per API call
+   - name: GEMINI_BATCH_SIZE
+     value: "50"  # Classify 50 items per API call
    ```
 
 3. **Smart Sampling**:
-
    ```yaml
    # Only classify Tier 1 candidates with Gemini
    # Use rule-based classification for Tier 2/3
@@ -489,18 +466,15 @@ kubectl get cm robots-txt-config -n gemini-ingestion -o yaml
 ### Source-Specific Tuning
 
 **YouTube** (Slowest - 10 min):
-
 - Use playlist API instead of individual videos
 - Batch metadata requests
 - Cache channel info
 
 **Twitter/X** (Fast - 2 min):
-
 - Use streaming API for real-time ingestion
 - Combine with batch processing
 
 **News** (Variable - 5-10 min):
-
 - Parallelize across news sources
 - Implement connection pooling
 - Use async HTTP requests

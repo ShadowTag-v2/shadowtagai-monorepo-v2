@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/core/ki_engine/schema.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.3, 0.5, 0.8, 0.9, 1.0, 1.5, 1.8, 2.0, 180, 86400, '%Y-%m-%d', '+00:00', '-', 'BELI', 'CONF', 'CONS', 'DECI', 'ENTS', 'FACT', 'OPEN', 'PREF', 'PROC', 'UNKN', 'Z', 'active', 'agent_id', 'applied_to', 'archived', 'belief', 'caused_by', 'classification', 'confidence', 'conflict', 'constraint', 'contradicts', 'created', 'createdAt', 'created_at', 'decision', 'draft', 'entity_summary', 'expired', 'extends', 'fact', 'ki_type', 'name', 'open_question', 'personal', 'preference', 'procedure', 'public', 'references', 'related', 'relation_type', 'relations', 'secret', 'status', 'summary', 'superseded', 'supersedes', 'supports', 'tags', 'target_ki', 'team', 'ttl_days', 'updated', 'updatedAt', 'w']

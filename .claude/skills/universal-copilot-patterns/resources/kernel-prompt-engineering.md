@@ -808,4 +808,4 @@ When building AI-assisted coding tools (see main SKILL.md), apply KERNEL to:
 **Last Updated:** 2025-11-15
 **Source:** 1000+ hours prompt engineering research (tech lead analysis)
 **Framework:** KERNEL (Keep simple, Easy to verify, Reproducible, Narrow scope, Explicit constraints, Logical structure)
-**Maintained By:** ShadowTagAi Engineering (Erik)
+**Maintained By:** Pnkln Engineering (Erik)

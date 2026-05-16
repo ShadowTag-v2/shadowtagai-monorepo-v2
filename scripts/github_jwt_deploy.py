@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-import os
-import subprocess
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import sys
+import os
 import time
-
-import jwt
+import subprocess
 import requests
+import jwt
 
 # User Provided Credentials
 APP_ID = "3018200"
@@ -27,7 +27,7 @@ def get_installation_id(jwt_token, org_name):
     url = "https://api.github.com/app/installations"
     headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
 
-    response = requests.get(url, headers=headers, timeout=30)
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
 
     installations = response.json()
@@ -35,21 +35,20 @@ def get_installation_id(jwt_token, org_name):
         if inst["account"]["login"].lower() == org_name.lower():
             return inst["id"]
 
-    msg = f"Installation not found for organization {org_name}"
-    raise Exception(msg)
+    raise Exception(f"Installation not found for organization {org_name}")
 
 
 def get_access_token(jwt_token, installation_id):
     url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
     headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
 
-    response = requests.post(url, headers=headers, timeout=30)
+    response = requests.post(url, headers=headers)
     response.raise_for_status()
 
     return response.json()["token"]
 
 
-def push_to_remote(token) -> None:
+def push_to_remote(token):
     remote_url = f"https://x-access-token:{token}@github.com/{REPO_OWNER}/{REPO_NAME}.git"
 
     # Check current branch
@@ -57,27 +56,38 @@ def push_to_remote(token) -> None:
     if not branch_output:
         branch_output = "HEAD"
 
+    print(f"Pushing branch {branch_output} to remote...")
+
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
     push_result = subprocess.run(["git", "push", "--no-verify", "origin", branch_output], capture_output=True, text=True)
 
     if push_result.returncode != 0:
+        print(f"Error pushing: {push_result.stderr}", file=sys.stderr)
         sys.exit(1)
+
+    print("Push successful!")
 
 
 if __name__ == "__main__":
     if not os.path.exists(PEM_PATH):
+        print(f"Error: PEM file not found at {PEM_PATH}", file=sys.stderr)
         sys.exit(1)
 
+    print("Generating JWT...")
     jwt_token = generate_jwt(APP_ID, PEM_PATH)
 
+    print(f"Finding installation for {REPO_OWNER}...")
     try:
         install_id = get_installation_id(jwt_token, REPO_OWNER)
-    except Exception:
+    except Exception as e:
+        print(f"Error getting installation ID: {e}", file=sys.stderr)
         sys.exit(1)
 
+    print("Exchanging JWT for Installation Access Token...")
     try:
         access_token = get_access_token(jwt_token, install_id)
-    except Exception:
+    except Exception as e:
+        print(f"Error generating token: {e}", file=sys.stderr)
         sys.exit(1)
 
     push_to_remote(access_token)

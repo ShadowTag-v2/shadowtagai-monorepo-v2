@@ -1,115 +1,76 @@
-#!/usr/bin/env python3
-"""Mass subtree merge for ehanc69 fold-in.
-
-Merges all repos from third_party/ehanc69-fold-staging/ into the monorepo
-using git subtree add --squash. Respects DRY_RUN environment variable.
-
-Staging prefix: third_party/ehanc69-fold-staging/<repo>/
-Target prefix:  third_party/ehanc69/<repo>/
-
-Usage:
-  DRY_RUN=true  python3 scripts/mass_subtree_merge.py   # list only
-  DRY_RUN=false python3 scripts/mass_subtree_merge.py   # merge + commit
-"""
-
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+import json
 import os
 import subprocess
-import sys
-from pathlib import Path
-
-STAGING_DIR = Path("third_party/ehanc69-fold-staging")
-TARGET_PREFIX = "third_party/ehanc69"
-DRY_RUN = os.environ.get("DRY_RUN", "true").lower() in ("true", "1", "yes")
+import time
 
 
-def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
-    """Run a shell command and return result."""
-    return subprocess.run(cmd, capture_output=True, text=True, check=check)
+def fetch_repos_with_token(org, token):
+    """Fetches repos for an organization using the installation access token"""
+    print(f"Fetching repos for {org}...")
+    headers = ["-H", "Accept: application/vnd.github.v3+json", "-H", f"Authorization: token {token}"]
+    url = f"https://api.github.com/users/{org}/repos?per_page=100" if org == "ehanc69" else f"https://api.github.com/orgs/{org}/repos?per_page=100"
+
+    cmd = ["curl", "-s"] + headers + [url]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+
+    if res.returncode != 0:
+        print(f"Error fetching repos for {org}")
+        return []
+
+    try:
+        data = json.loads(res.stdout)
+        if isinstance(data, dict) and "message" in data:
+            print(f"API Error for {org}: {data['message']}")
+            return []
+        return [repo["name"] for repo in data]
+    except Exception as e:
+        print(f"Failed to parse JSON for {org}: {e}")
+        return []
 
 
-def get_staged_repos() -> list[str]:
-    """Return sorted list of repo dirs in staging."""
-    if not STAGING_DIR.exists():
-        sys.exit(1)
-    return sorted(d.name for d in STAGING_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
+def subtree_merge_all():
+    if not os.path.exists(".github_tokens.json"):
+        print("Missing .github_tokens.json. Run dual_org_auth.py first.")
+        return
 
+    with open(".github_tokens.json") as f:
+        tokens = json.load(f)
 
-def merge_repo(repo_name: str) -> bool:
-    """Merge a single repo via subtree read-tree + commit (squash-equivalent).
+    for org, token in tokens.items():
+        if not token:
+            print(f"Skipping {org} - no valid token.")
+            continue
 
-    We avoid `git subtree add` because it requires a remote ref. Instead we:
-    1. Read the staging tree into the target prefix
-    2. Commit with a squash-style message
-    """
-    staging_path = STAGING_DIR / repo_name
-    target_path = Path(TARGET_PREFIX) / repo_name
+        repos = fetch_repos_with_token(org, token)
+        print(f"Found {len(repos)} repositories in {org}.")
 
-    if target_path.exists():
-        return True
+        for repo in repos:
+            prefix = f"apps/{org.lower()}/{repo}"
+            remote_url = f"https://x-access-token:{token}@github.com/{org}/{repo}.git"
 
-    if DRY_RUN:
-        return True
+            if os.path.exists(prefix):
+                print(f"⏭ Skip: {prefix} already exists in working tree.")
+                continue
 
-    # Remove .git from the staging clone so we can add it as plain files
-    staging_git = staging_path / ".git"
-    if staging_git.exists():
-        import shutil
+            print(f"🚀 Adding subtree for {org}/{repo} into {prefix}...")
+            # We assume main branch, fallback to master if main fails
+            cmd_main = ["git", "subtree", "add", f"--prefix={prefix}", remote_url, "main"]
+            res = subprocess.run(cmd_main, capture_output=True, text=True)
 
-        shutil.rmtree(staging_git)
+            if res.returncode != 0:
+                print("    ⚠️ 'main' branch failed, trying 'master'...")
+                cmd_master = ["git", "subtree", "add", f"--prefix={prefix}", remote_url, "master"]
+                res2 = subprocess.run(cmd_master, capture_output=True, text=True)
+                if res2.returncode != 0:
+                    print(f"    ❌ Failed to add subtree {repo}: {res2.stderr.strip().splitlines()[-1] if res2.stderr else 'Unknown error'}")
+                else:
+                    print("    ✅ Success (master branch)")
+            else:
+                print("    ✅ Success (main branch)")
 
-    # Create target dir and copy files
-    target_path.mkdir(parents=True, exist_ok=True)
-    import shutil
-
-    for item in staging_path.iterdir():
-        dest = target_path / item.name
-        if item.is_dir():
-            shutil.copytree(item, dest, dirs_exist_ok=True)
-        else:
-            shutil.copy2(item, dest)
-
-    # Stage the new files
-    result = run(["git", "add", str(target_path)], check=False)
-    if result.returncode != 0:
-        return False
-
-    # Commit with squash-style message
-    result = run(
-        [
-            "git",
-            "commit",
-            "-m",
-            f"fold-in: squash-merge ehanc69/{repo_name} → {target_path}\n\n"
-            f"Source: https://github.com/ehanc69/{repo_name}\n"
-            f"Method: copy + squash (single commit, no history)",
-        ],
-        check=False,
-    )
-    if result.returncode != 0:
-        # Might be empty (no new files)
-        return "nothing to commit" in result.stdout + result.stderr
-
-    return True
-
-
-def main() -> None:
-    repos = get_staged_repos()
-    for _r in repos:
-        pass
-
-    success = 0
-    fail = 0
-
-    for repo in repos:
-        result = merge_repo(repo)
-        if result:
-            success += 1
-        else:
-            fail += 1
-
-    if fail > 0:
-        sys.exit(1)
+            time.sleep(0.5)  # small pause to prevent git locking issues
 
 
 if __name__ == "__main__":
-    main()
+    subtree_merge_all()

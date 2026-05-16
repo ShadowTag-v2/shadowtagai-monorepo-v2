@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { createServer } from '../server/index.js';
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { createServer } from "../server/index.js";
 
-console.error('Starting default (STDIO) server...');
+console.error("Starting default (STDIO) server...");
 
 /**
  * The main method
@@ -20,7 +20,7 @@ async function main(): Promise<void> {
   await server.connect(transport);
 
   // Cleanup on exit
-  process.on('SIGINT', async () => {
+  process.on("SIGINT", async () => {
     await server.close();
     cleanup();
     process.exit(0);
@@ -28,6 +28,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  console.error('Server error:', error);
+  console.error("Server error:", error);
   process.exit(1);
 });

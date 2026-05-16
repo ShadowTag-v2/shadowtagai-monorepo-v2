@@ -1,18 +1,18 @@
 #!/usr/bin/env node
-import * as crypto from 'node:crypto';
-import * as fs from 'node:fs';
-import * as os from 'node:os';
-import * as path from 'node:path';
+import * as crypto from "node:crypto";
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
 
-import { getExtensionRoot, printMinimalPanel, Style } from '../services/pickle-utils.js';
+import { getExtensionRoot, printMinimalPanel, Style } from "../services/pickle-utils.js";
 import {
   findLatestSessionForCwd,
   readStateFile,
   resolveSessionPath,
   setSessionForCwd,
   writeStateFile,
-} from '../services/session-state.js';
-import type { State } from '../types/index.js';
+} from "../services/session-state.js";
+import type { State } from "../types/index.js";
 
 interface SetupDefaults {
   loopLimit: number;
@@ -45,14 +45,14 @@ function die(message: string): never {
 }
 
 function resolvePath(input: string): string {
-  if (input.startsWith('~')) {
+  if (input.startsWith("~")) {
     return path.join(os.homedir(), input.slice(1));
   }
   return path.resolve(input);
 }
 
 function parseNumericFlag(flag: string, value: string | undefined): number {
-  if (!value || value.startsWith('-')) {
+  if (!value || value.startsWith("-")) {
     throw new Error(`Missing value for ${flag}`);
   }
 
@@ -68,12 +68,12 @@ function sanitizeSessionName(name: string): string {
   const slug = name
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9._-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-{2,}/g, '-');
+    .replace(/[^a-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-");
 
   if (!slug) {
-    throw new Error('Invalid --name value. Use letters, numbers, dots, underscores, or hyphens.');
+    throw new Error("Invalid --name value. Use letters, numbers, dots, underscores, or hyphens.");
   }
 
   return slug;
@@ -96,31 +96,31 @@ export function parseSetupArgs(argv: string[]): ParsedSetupArgs {
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
 
-    if (arg === '--max-iterations') {
+    if (arg === "--max-iterations") {
       parsed.maxIterations = parseNumericFlag(arg, argv[i + 1]);
       parsed.provided.maxIterations = true;
       i++;
       continue;
     }
 
-    if (arg === '--max-time') {
+    if (arg === "--max-time") {
       parsed.maxTime = parseNumericFlag(arg, argv[i + 1]);
       parsed.provided.maxTime = true;
       i++;
       continue;
     }
 
-    if (arg === '--worker-timeout') {
+    if (arg === "--worker-timeout") {
       parsed.workerTimeout = parseNumericFlag(arg, argv[i + 1]);
       parsed.provided.workerTimeout = true;
       i++;
       continue;
     }
 
-    if (arg === '--completion-promise') {
+    if (arg === "--completion-promise") {
       const value = argv[i + 1];
-      if (!value || value.startsWith('-')) {
-        throw new Error('Missing value for --completion-promise');
+      if (!value || value.startsWith("-")) {
+        throw new Error("Missing value for --completion-promise");
       }
       parsed.completionPromise = value;
       parsed.provided.completionPromise = true;
@@ -128,38 +128,38 @@ export function parseSetupArgs(argv: string[]): ParsedSetupArgs {
       continue;
     }
 
-    if (arg === '--resume') {
+    if (arg === "--resume") {
       parsed.resume = true;
-      if (argv[i + 1] && !argv[i + 1].startsWith('-')) {
+      if (argv[i + 1] && !argv[i + 1].startsWith("-")) {
         parsed.resumePath = resolvePath(argv[i + 1]);
         i++;
       }
       continue;
     }
 
-    if (arg === '--reset') {
+    if (arg === "--reset") {
       parsed.reset = true;
       continue;
     }
 
-    if (arg === '--paused' || arg === '-paused') {
+    if (arg === "--paused" || arg === "-paused") {
       parsed.paused = true;
       continue;
     }
 
-    if (arg === '--name') {
+    if (arg === "--name") {
       const value = argv[i + 1];
-      if (!value || value.startsWith('-')) {
-        throw new Error('Missing value for --name');
+      if (!value || value.startsWith("-")) {
+        throw new Error("Missing value for --name");
       }
       parsed.name = sanitizeSessionName(value);
       i++;
       continue;
     }
 
-    if (arg === '-s' || arg === '--session-id') {
+    if (arg === "-s" || arg === "--session-id") {
       // Ignore gemini-injected session id argument and consume its value.
-      if (argv[i + 1] && !argv[i + 1].startsWith('-')) {
+      if (argv[i + 1] && !argv[i + 1].startsWith("-")) {
         i++;
       }
       continue;
@@ -178,21 +178,21 @@ function loadDefaults(extensionRoot: string): SetupDefaults {
     workerTimeout: 1200,
   };
 
-  const settingsFile = path.join(extensionRoot, 'pickle_settings.json');
+  const settingsFile = path.join(extensionRoot, "pickle_settings.json");
   if (!fs.existsSync(settingsFile)) {
     return defaults;
   }
 
   try {
-    const settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8')) as Record<string, unknown>;
+    const settings = JSON.parse(fs.readFileSync(settingsFile, "utf8")) as Record<string, unknown>;
 
-    if (typeof settings.default_max_iterations === 'number') {
+    if (typeof settings.default_max_iterations === "number") {
       defaults.loopLimit = Math.max(0, Math.floor(settings.default_max_iterations));
     }
-    if (typeof settings.default_max_time_minutes === 'number') {
+    if (typeof settings.default_max_time_minutes === "number") {
       defaults.timeLimit = Math.max(0, Math.floor(settings.default_max_time_minutes));
     }
-    if (typeof settings.default_worker_timeout_seconds === 'number') {
+    if (typeof settings.default_worker_timeout_seconds === "number") {
       defaults.workerTimeout = Math.max(0, Math.floor(settings.default_worker_timeout_seconds));
     }
   } catch {
@@ -203,7 +203,7 @@ function loadDefaults(extensionRoot: string): SetupDefaults {
 }
 
 function ensureCoreDirs(extensionRoot: string): void {
-  for (const subDir of ['sessions', 'jar', 'worktrees']) {
+  for (const subDir of ["sessions", "jar", "worktrees"]) {
     const target = path.join(extensionRoot, subDir);
     if (!fs.existsSync(target)) {
       fs.mkdirSync(target, { recursive: true });
@@ -212,8 +212,8 @@ function ensureCoreDirs(extensionRoot: string): void {
 }
 
 function createSessionId(sessionsRoot: string, name?: string): string {
-  const today = new Date().toISOString().split('T')[0];
-  const defaultId = `${today}-${crypto.randomBytes(4).toString('hex')}`;
+  const today = new Date().toISOString().split("T")[0];
+  const defaultId = `${today}-${crypto.randomBytes(4).toString("hex")}`;
 
   if (!name) {
     return defaultId;
@@ -225,7 +225,7 @@ function createSessionId(sessionsRoot: string, name?: string): string {
     return base;
   }
 
-  return `${base}-${crypto.randomBytes(2).toString('hex')}`;
+  return `${base}-${crypto.randomBytes(2).toString("hex")}`;
 }
 
 function printSummary(params: {
@@ -238,18 +238,18 @@ function printSummary(params: {
   promiseToken: string | null;
 }): void {
   printMinimalPanel(
-    'Pickle Rick Activated!',
+    "Pickle Rick Activated!",
     {
       Iteration: params.currentIteration,
-      Limit: params.loopLimit > 0 ? params.loopLimit : '∞',
-      'Max Time': `${params.timeLimit}m`,
-      'Worker TO': `${params.workerTimeout}s`,
-      Promise: params.promiseToken || 'None',
+      Limit: params.loopLimit > 0 ? params.loopLimit : "∞",
+      "Max Time": `${params.timeLimit}m`,
+      "Worker TO": `${params.workerTimeout}s`,
+      Promise: params.promiseToken || "None",
       Extension: params.extensionRoot,
       Path: params.sessionPath,
     },
-    'GREEN',
-    '🥒'
+    "GREEN",
+    "🥒",
   );
 
   if (params.promiseToken) {
@@ -261,7 +261,7 @@ ${Style.YELLOW}⚠️  STRICT EXIT CONDITION ACTIVE${Style.RESET}`);
 
 async function main() {
   const extensionRoot = getExtensionRoot();
-  const sessionsRoot = path.join(extensionRoot, 'sessions');
+  const sessionsRoot = path.join(extensionRoot, "sessions");
 
   ensureCoreDirs(extensionRoot);
   const defaults = loadDefaults(extensionRoot);
@@ -277,10 +277,10 @@ async function main() {
       resolveSessionPath(extensionRoot, process.cwd()) ||
       findLatestSessionForCwd(extensionRoot, process.cwd());
     if (!mappedSession) {
-      die('No active session found for current directory. Provide --resume <PATH> to continue.');
+      die("No active session found for current directory. Provide --resume <PATH> to continue.");
     }
 
-    const statePath = path.join(mappedSession, 'state.json');
+    const statePath = path.join(mappedSession, "state.json");
     const loaded = readStateFile(statePath);
     if (!loaded) {
       die(`Unable to read state file at ${statePath}`);
@@ -310,15 +310,17 @@ async function main() {
 
     writeStateFile(statePath, state);
   } else {
-    const task = args.taskParts.join(' ').trim();
+    const task = args.taskParts.join(" ").trim();
     if (!task) {
-      die('No task specified. Run /pickle --help for usage.');
+      die("No task specified. Run /pickle --help for usage.");
     }
 
     const maxIterations = args.provided.maxIterations
       ? (args.maxIterations ?? defaults.loopLimit)
       : defaults.loopLimit;
-    const maxTime = args.provided.maxTime ? (args.maxTime ?? defaults.timeLimit) : defaults.timeLimit;
+    const maxTime = args.provided.maxTime
+      ? (args.maxTime ?? defaults.timeLimit)
+      : defaults.timeLimit;
     const workerTimeout = args.provided.workerTimeout
       ? (args.workerTimeout ?? defaults.workerTimeout)
       : defaults.workerTimeout;
@@ -332,7 +334,7 @@ async function main() {
     state = {
       active: !args.paused,
       working_dir: process.cwd(),
-      step: 'prd',
+      step: "prd",
       iteration: 0,
       max_iterations: maxIterations,
       max_time_minutes: maxTime,
@@ -346,7 +348,7 @@ async function main() {
       session_dir: sessionPath,
     };
 
-    writeStateFile(path.join(sessionPath, 'state.json'), state);
+    writeStateFile(path.join(sessionPath, "state.json"), state);
   }
 
   setSessionForCwd(extensionRoot, process.cwd(), sessionPath, state.working_dir);
@@ -362,7 +364,7 @@ async function main() {
   });
 }
 
-if (process.argv[1] && path.basename(process.argv[1]).startsWith('setup')) {
+if (process.argv[1] && path.basename(process.argv[1]).startsWith("setup")) {
   main().catch((err: unknown) => {
     const message = err instanceof Error ? err.message : String(err);
     die(message);

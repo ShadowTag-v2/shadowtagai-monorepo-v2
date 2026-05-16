@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 
 ROOT = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
@@ -17,11 +18,12 @@ EXCLUDE_DIRS = {
     ".idea",
 }
 
+print("[rename] Starting bottom-up recursive renaming protocol...")
 renamed_dirs = 0
 renamed_files = 0
 
 
-def merge_directories(src, dst) -> None:
+def merge_directories(src, dst):
     if not os.path.exists(dst):
         os.rename(src, dst)
         return
@@ -30,11 +32,12 @@ def merge_directories(src, dst) -> None:
         d = os.path.join(dst, item)
         if os.path.isdir(s):
             merge_directories(s, d)
-        elif not os.path.exists(d):
-            os.rename(s, d)
         else:
-            os.unlink(d)  # overwrite
-            os.rename(s, d)
+            if not os.path.exists(d):
+                os.rename(s, d)
+            else:
+                os.unlink(d)  # overwrite
+                os.rename(s, d)
     os.rmdir(src)
 
 
@@ -60,3 +63,5 @@ for root, dirs, files in os.walk(ROOT, topdown=False):
             if old_path != new_path:
                 merge_directories(old_path, new_path)
                 renamed_dirs += 1
+
+print(f"[rename] Complete. Renamed {renamed_dirs} directories and {renamed_files} files.")

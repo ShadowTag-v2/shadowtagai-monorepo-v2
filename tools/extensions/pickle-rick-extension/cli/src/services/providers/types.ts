@@ -34,11 +34,11 @@ export interface AIProvider {
 }
 
 export type AIProviderName =
-  | 'claude'
-  | 'opencode'
-  | 'cursor'
-  | 'codex'
-  | 'qwen'
-  | 'droid'
-  | 'copilot'
-  | 'gemini';
+  | "claude"
+  | "opencode"
+  | "cursor"
+  | "codex"
+  | "qwen"
+  | "droid"
+  | "copilot"
+  | "gemini";

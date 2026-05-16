@@ -10,7 +10,6 @@
 ## What Is This?
 
 Production-grade Claude Code infrastructure that automatically enforces:
-
 - **Security standards** (AES-256, TLS 1.3, zero-trust)
 - **Strategic gates** (ROI ≥3×, LTV:CAC ≥4:1, NPV ≥70%)
 - **Development patterns** (Backend/Frontend best practices)
@@ -63,13 +62,11 @@ ecosystem.config.js             # PM2 microservices config
 **What it does:** Blocks code that violates ShadowTagAi security requirements
 
 **Auto-activates when you:**
-
 - Work with auth, APIs, databases, secrets
 - Edit `.ts`, `.py`, `.env` files
 - Use keywords like `password`, `token`, `encrypt`
 
 **Mandatory requirements:**
-
 - AES-256-GCM encryption for data at rest
 - TLS 1.3 for all API traffic (no TLS 1.2)
 - Zero-trust auth (every service call authenticated)
@@ -77,10 +74,9 @@ ecosystem.config.js             # PM2 microservices config
 - All errors logged to Sentry
 
 **Example:**
-
 ```typescript
 // ❌ BLOCKED
-const apiKey = "sk-1234567890";
+const apiKey = 'sk-1234567890';
 
 // ✅ APPROVED
 const apiKey = process.env.API_KEY;
@@ -91,7 +87,6 @@ const apiKey = process.env.API_KEY;
 **What it does:** Enforces Purpose • Reasons • Brakes framework before implementation
 
 **Auto-activates when you:**
-
 - Plan/design features
 - Work with ARCHITECTURE.md or PLAN.md files
 - Use keywords like `feature`, `implement`, `deploy`
@@ -99,19 +94,16 @@ const apiKey = process.env.API_KEY;
 **Three Gates:**
 
 **Purpose:** Does this serve founder goals?
-
 - Aligns with ActiveShield exit (Y5-Y7) OR SHADOWTAGAI long-term
 - Documented in Cor.X framework
 - Classification: Mission-critical / High-value / Nice-to-have
 
 **Reasons:** Will this make money?
-
 - ROI ≥3× in 18 months
 - LTV:CAC ≥4:1 in 12-18 months
 - NPV ≥70% positive probability (Monte Carlo)
 
 **Brakes:** Can we reverse if it fails?
-
 - Rollback steps documented
 - Blast radius assessed
 - Kill-switch triggers defined
@@ -119,7 +111,6 @@ const apiKey = process.env.API_KEY;
 - Security review passed
 
 **Example Decision Matrix:**
-
 ```
 Feature: Add MFA to ActiveShield
 
@@ -135,13 +126,11 @@ BRAKES: ✅ PASS (rollback <5min, low blast radius)
 **What it does:** Enforces Node.js/TypeScript/Express patterns
 
 **Auto-activates when you:**
-
 - Work in `backend/**/*.ts` files
 - Create routes, controllers, services
 - Use keywords like `api`, `endpoint`, `prisma`
 
 **Key patterns:**
-
 - Architecture: Routes → Controllers → Services → Repositories
 - Error handling: Try-catch with Sentry
 - Testing: Jest ≥98% coverage
@@ -153,13 +142,11 @@ BRAKES: ✅ PASS (rollback <5min, low blast radius)
 **What it does:** Enforces React 19 + TypeScript patterns
 
 **Auto-activates when you:**
-
 - Work in `frontend/**/*.tsx` files
 - Create components, pages
 - Use keywords like `react`, `component`, `tanstack`
 
 **Key patterns:**
-
 - React 19 with TypeScript strict mode
 - TanStack Query v5 for data fetching
 - TanStack Router for routing
@@ -178,14 +165,12 @@ BRAKES: ✅ PASS (rollback <5min, low blast radius)
 4. Claude follows skill guidelines while coding
 
 **Keyword Triggers (Examples):**
-
 - `auth` → security-enforcement + backend-dev-guidelines
 - `feature` → pnkln-stackjr-judge
 - `encrypt` → security-enforcement
 - `component` → frontend-dev-guidelines
 
 **File Triggers (Examples):**
-
 - Editing `.env` → security-enforcement
 - Editing `PLAN.md` → pnkln-stackjr-judge
 - Editing `backend/**/*.ts` → backend-dev-guidelines + security-enforcement
@@ -276,10 +261,10 @@ pm2 stop all
 ### Example 1: Security Violation Caught
 
 ```typescript
-You: "Create a function to connect to the database";
+You: "Create a function to connect to the database"
 
 // ❌ Claude writes:
-const db = await pg.connect("postgresql://user:password@localhost:5432/db");
+const db = await pg.connect('postgresql://user:password@localhost:5432/db');
 
 // ✅ Security skill activates and corrects:
 const db = await pg.connect(process.env.DATABASE_URL!);
@@ -295,11 +280,10 @@ You: "Build a custom CRM for lead management"
 
 PURPOSE: ⚠️ CONDITIONAL (internal tool, not core product)
 REASONS: ❌ FAIL
-
-- ROI: 1.2× (below 3× threshold)
-- Investment: $80k (custom dev)
-- Revenue: $16k (time savings)
-  BRAKES: ✅ PASS
+  - ROI: 1.2× (below 3× threshold)
+  - Investment: $80k (custom dev)
+  - Revenue: $16k (time savings)
+BRAKES: ✅ PASS
 
 → DECISION: NO-GO
 → RECOMMENDATION: Use HubSpot ($50/mo) instead
@@ -309,10 +293,10 @@ REASONS: ❌ FAIL
 ### Example 3: Backend Pattern Enforcement
 
 ```typescript
-You: "Create user registration endpoint";
+You: "Create user registration endpoint"
 
 // ❌ Bad pattern (business logic in route):
-app.post("/register", async (req, res) => {
+app.post('/register', async (req, res) => {
   const hashed = await bcrypt.hash(req.body.password, 10);
   await db.user.create({ ...req.body, password: hashed });
 });
@@ -334,19 +318,16 @@ app.post("/register", async (req, res) => {
 Every feature must pass three gates:
 
 **Purpose:** Strategic alignment
-
 - Does this serve ActiveShield exit or SHADOWTAGAI long-term?
 - Documented in which Cor.X framework?
 - Mission-critical vs. nice-to-have?
 
 **Reasons:** Financial validation
-
 - ROI ≥3× in 18 months?
 - LTV:CAC ≥4:1 in 12-18 months?
 - NPV ≥70% positive probability?
 
 **Brakes:** Risk management
-
 - Rollback steps documented?
 - Blast radius assessed?
 - Kill-switch triggers defined?
@@ -357,15 +338,14 @@ Every feature must pass three gates:
 |---------|---------|--------|----------|
 | ✅ | ✅ | ✅ | **GO** - Implement |
 | ✅ | ✅ | ⚠️ | **CONDITIONAL** - Fix brakes first |
-| ✅ | ❌ | _ | **NO-GO** - Pivot to higher ROI |
-| ❌ | _ | \* | **STOP** - Not strategic |
+| ✅ | ❌ | * | **NO-GO** - Pivot to higher ROI |
+| ❌ | * | * | **STOP** - Not strategic |
 
 ---
 
 ## ShadowTagAi Tech Stack Reference
 
 ### Backend
-
 - **Runtime:** Node.js 20+
 - **Language:** TypeScript 5+
 - **Framework:** Express.js
@@ -376,7 +356,6 @@ Every feature must pass three gates:
 - **Monitoring:** Sentry
 
 ### Frontend
-
 - **Framework:** React 19
 - **Language:** TypeScript 5+
 - **Data Fetching:** TanStack Query v5
@@ -386,14 +365,12 @@ Every feature must pass three gates:
 - **Build:** Vite
 
 ### Python (Cognitive Stack)
-
 - **Runtime:** Python 3.11+
 - **Framework:** FastAPI
 - **Package Manager:** uv
 - **API Server:** Uvicorn
 
 ### Security Standards
-
 - **Encryption:** AES-256-GCM
 - **Transport:** TLS 1.3 only
 - **Auth:** Zero-trust architecture
@@ -409,7 +386,6 @@ Every feature must pass three gates:
 **Symptom:** You use keywords but skills don't load
 
 **Fix:**
-
 1. Check `.claude/skills/skill-rules.json` exists
 2. Verify keywords in your prompt match those in skill-rules.json
 3. Ask Claude directly: "Load security-enforcement skill"
@@ -419,7 +395,6 @@ Every feature must pass three gates:
 **Symptom:** Every feature fails Reasons gate
 
 **Fix:**
-
 - Calibrate thresholds for early-stage features
 - Use "CONDITIONAL GO" for MVPs
 - Document assumptions clearly (dev time, customer count, pricing)
@@ -429,7 +404,6 @@ Every feature must pass three gates:
 **Symptom:** `pm2 status` shows "errored"
 
 **Fix:**
-
 ```bash
 # Check logs
 pm2 logs [service-name] --err
@@ -471,9 +445,8 @@ Edit thresholds in `.claude/skills/pnkln-stackjr-judge/SKILL.md`:
 
 ```markdown
 # Change from default
-
-- ROI ≥3× in 18 months → ROI ≥2× in 24 months (for long-term projects)
-- LTV:CAC ≥4:1 → LTV:CAC ≥3:1 (for early-stage)
+- ROI ≥3× in 18 months  →  ROI ≥2× in 24 months (for long-term projects)
+- LTV:CAC ≥4:1          →  LTV:CAC ≥3:1 (for early-stage)
 ```
 
 ---
@@ -483,19 +456,16 @@ Edit thresholds in `.claude/skills/pnkln-stackjr-judge/SKILL.md`:
 Track these to measure effectiveness:
 
 ### Code Quality
-
 - Security violations prevented: [count]
 - Test coverage maintained: ≥98%
 - Build errors caught pre-commit: [%]
 
 ### Strategic Alignment
-
 - Features passing all gates on first try: [%]
 - Gate-prevented waste: [$saved from NO-GO decisions]
 - Kill-switch triggers hit: [count]
 
 ### Productivity
-
 - Time saved per feature: [hours]
 - Context resets handled smoothly: [%]
 - Skill activation accuracy: [%]
@@ -505,13 +475,11 @@ Track these to measure effectiveness:
 ## Resources
 
 ### diet103 Original Work
-
 - GitHub: https://github.com/diet103/claude-code-infrastructure-showcase
 - Reddit Post: "Claude Code is a Beast – Tips from 6 Months of Hardcore Use"
 - Achievement: Solo rewrote 300k LOC in 6 months with consistent quality
 
 ### ShadowTagAi Internal
-
 - Cor.X Strategic Frameworks
 - pnkln-stackJR Decision Framework Documentation
 - Security Standards (Army RM Stage IV)
@@ -521,20 +489,17 @@ Track these to measure effectiveness:
 ## Maintenance
 
 ### Weekly
-
 - Review skill activation logs
 - Check for false positives
 - Update skill-rules.json based on usage
 
 ### Monthly
-
 - Analyze gate pass/fail rates
 - Refine Monte Carlo assumptions based on actuals
 - Update cost estimates
 - Review security patterns (new threats?)
 
 ### Quarterly
-
 - Full system audit
 - Update skills with new best practices
 - Review and archive old dev docs

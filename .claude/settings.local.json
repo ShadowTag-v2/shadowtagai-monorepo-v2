@@ -1,12 +1,6 @@
 {
+  "outputStyle": "explanatory",
   "permissions": {
-    "allow": [
-      "Bash(git checkout:*)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:edisonscientific.com)",
-      "WebFetch(domain:arxiv.org)"
-    ],
-    "defaultMode": "plan"
-  },
-  "outputStyle": "explanatory"
+    "allow": ["Bash(git checkout:*)"]
+  }
 }

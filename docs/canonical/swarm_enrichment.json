@@ -1,5 +1,5 @@
 {
-  "query": "synthesize key insights and gaps across Antigravity business plans: CounselConduit, Judge 6, ShadowTag, ShadowTag-v2/OMEGA, valuation timeline \u2014 identify revenue dependencies, critical path risks, and strategic misalignments between products",
+  "query": "synthesize key insights and gaps across Antigravity business plans: CounselConduit, Judge 6, ShadowTag, AiYou/OMEGA, valuation timeline \u2014 identify revenue dependencies, critical path risks, and strategic misalignments between products",
   "research": {
     "evidence": [
       {
@@ -12,7 +12,7 @@
       },
       {
         "source": "monorepo_manifest.yaml",
-        "finding": "The ShadowTag-v2/OMEGA stack (FastAPI, Pipeline, Nascent Apollo) is 'folded-in' rather than canonical, suggesting a fragmented integration path that may cause latency or version-mismatch issues during the CounselConduit rollout."
+        "finding": "The AiYou/OMEGA stack (FastAPI, Pipeline, Nascent Apollo) is 'folded-in' rather than canonical, suggesting a fragmented integration path that may cause latency or version-mismatch issues during the CounselConduit rollout."
       },
       {
         "source": "CLAUDE.md (Intelligence Layer)",
@@ -21,7 +21,7 @@
     ],
     "gaps": [
       "Lack of explicit FinOps mapping between Aegaeon protocol savings and the projected cost-per-query for CounselConduit's commercial tier.",
-      "Undefined migration path for 'folded-in' ShadowTag-v2 components into the production-hardened CounselConduit runtime.",
+      "Undefined migration path for 'folded-in' AiYou components into the production-hardened CounselConduit runtime.",
       "Missing 'valuation timeline' or 'burn-rate' metrics in the current manifest to correlate with the 'ShadowTag-omega-v4' project milestones.",
       "Absence of a formal disaster recovery protocol for the Judge 6 gatekeeper; if the GCS bucket or model endpoint is unreachable, the entire deployment pipeline is currently hard-blocked."
     ]

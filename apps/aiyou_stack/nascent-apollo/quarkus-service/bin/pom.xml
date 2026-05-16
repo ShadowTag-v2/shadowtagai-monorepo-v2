@@ -1,0 +1,10 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.shadowtag</groupId>
+    <artifactId>quarkus-service</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <properties>
+        <java.version>17</java.version> <!-- FIXED: Upgraded to LTS -->
+        <quarkus.platform.version>3.0.0.Alpha5</quarkus.platform.version>
+    </properties>
+</project>

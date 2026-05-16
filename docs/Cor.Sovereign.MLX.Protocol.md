@@ -9,7 +9,6 @@ This document is explicitly about the **lab path**, not the `counselconduit` pro
 ## Scope boundary
 
 This protocol applies to:
-
 - local experimentation
 - Apple Silicon runtime behavior
 - unified-memory-aware local inference design
@@ -22,7 +21,6 @@ It does not redefine the business-facing product stack.
 On Apple Silicon, the relevant advantage is not discrete VRAM slab management in the NVIDIA sense.
 
 The important property is:
-
 - **unified memory**
 - shared CPU/GPU memory domain
 - local inference weight reuse
@@ -45,7 +43,6 @@ Do not spin up multiple heavyweight isolated copies if one resident path plus sh
 ### 2. Shared prompt/cache reuse
 
 For repeated work against a stable doctrine/context:
-
 - precompute or reuse prompt cache state where the local engine supports it
 - avoid rebuilding the same large context repeatedly
 - dispatch smaller task deltas against that shared context
@@ -53,7 +50,6 @@ For repeated work against a stable doctrine/context:
 ### 3. Local swarm routing
 
 Instead of treating each local request as a full isolated inference job:
-
 - maintain one local routing layer
 - preserve shared runtime state where possible
 - dispatch narrow task deltas to the same resident engine
@@ -61,13 +57,11 @@ Instead of treating each local request as a full isolated inference job:
 ## Candidate local engines
 
 This lab protocol can be explored with:
-
 - MLX-native flows
 - `llama.cpp` with Metal acceleration
 - similar local Apple-Silicon-compatible inference backends
 
 The exact engine is secondary to the architecture:
-
 - one resident heavyweight path
 - reused cache/context
 - narrow deltas
@@ -78,7 +72,6 @@ The exact engine is secondary to the architecture:
 `uphillsnowball` is the internal Apple Silicon lab path.
 
 Its purpose includes:
-
 - performance experiments
 - retrieval experiments
 - OCR experiments
@@ -86,7 +79,6 @@ Its purpose includes:
 - operational tooling experiments
 
 That makes it the right home for:
-
 - unified-memory-aware routing
 - local cache reuse experiments
 - concurrency tests on resident local models
@@ -94,7 +86,6 @@ That makes it the right home for:
 ## What is shared locally
 
 Examples of reusable local slab/context:
-
 - stable doctrine text
 - stable repo summaries
 - stable evaluation prompts
@@ -123,7 +114,6 @@ All of those should try to reuse the same stable local context where possible.
 ## ane_bridge role
 
 `ane_bridge.py` should act as:
-
 - a lightweight local task router
 - a concurrency controller
 - a shared-context dispatcher
@@ -134,7 +124,6 @@ It should not pretend to be the product control plane.
 ## Metrics
 
 Track:
-
 - warm vs cold run latency
 - cache reuse rate
 - average prompt size reduction
@@ -146,21 +135,18 @@ Track:
 ## Canonical split
 
 ### counselconduit
-
 - production-facing
 - Google-native
 - business-facing
 - commercial wedge
 
 ### pnkln
-
 - doctrine
 - control-plane logic
 - routing principles
 - operational standards
 
 ### uphillsnowball
-
 - local Apple Silicon lab
 - MLX / Metal / cache experiments
 - runtime prototyping
@@ -171,7 +157,6 @@ This protocol belongs only to the third.
 ## Non-goals
 
 Do not:
-
 - move production truth into the lab
 - let local experiments redefine product architecture
 - confuse local inference experiments with the commercial product story
@@ -181,7 +166,6 @@ Do not:
 The lab can still matter economically.
 
 It can improve:
-
 - internal iteration speed
 - eval velocity
 - prototyping cost

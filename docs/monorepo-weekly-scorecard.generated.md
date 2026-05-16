@@ -1,10 +1,10 @@
 # Monorepo Weekly Scorecard
 
 ## Week of
-`2026-04-09`
+`2026-03-21`
 
 ## Overall score
-- Current week score: `65/100`
+- Current week score: `47/100`
 - Last week score: `__/100`
 - Delta: `+/-__`
 
@@ -14,24 +14,24 @@
 
 | Category | Weight | Score | Weighted score | Notes |
 |---|---:|---:|---:|---|
-| Canonical repo resolution | 20 | 14 | 14 | unresolved repos: 2 |
-| Live tree cleanliness | 20 | 0 | 0 | denied-zone residue count: 8 |
-| GitHub governance | 15 | 15 | 15 | CODEOWNERS=yes, workflow=yes |
-| Bazel / CI reliability | 15 | 15 | 15 | bazel-build=yes, bazel-test=yes |
+| Canonical repo resolution | 20 | 20 | 20 | unresolved repos: 0 |
+| Live tree cleanliness | 20 | 0 | 0 | denied-zone residue count: 36 |
+| GitHub governance | 15 | 5 | 5 | CODEOWNERS=yes, workflow=no |
+| Bazel / CI reliability | 15 | 0 | 0 | bazel-build=no, bazel-test=no |
 | third_party discipline | 10 | 10 | 10 | third_party/README.md=yes |
 | Shared contracts | 10 | 5 | 5 | contracts doc=yes, proto files=0 |
-| Workspace / tooling stability | 5 | 5 | 5 | workspace=yes, pyright=yes |
-| MCP stack stability | 5 | 1 | 1 | chrome_mcp=no, token=no |
+| Workspace / tooling stability | 5 | 3 | 3 | workspace=no, pyright=yes |
+| MCP stack stability | 5 | 4 | 4 | chrome_mcp=yes, token=no |
 
 ---
 
 ## Examples to audit this week
 - Example canonical repo: apps/aiyou_stack/aiyou-fastapi-services
-- Example unresolved repo count: 2
-- Example denied-zone residue count: 8
-- Example green bazel-build: yes
-- Example green bazel-test: yes
-- Example MCP fixed: chrome-devtools resolvable=no
+- Example unresolved repo count: 0
+- Example denied-zone residue count: 36
+- Example green bazel-build: no
+- Example green bazel-test: no
+- Example MCP fixed: chrome-devtools resolvable=yes
 - Example MCP still timing out: firebase-mcp-server / mcp-toolbox-for-databases / sequential-thinking remain manual-validation items
 
 ---
@@ -40,14 +40,14 @@
 
 - monorepo_manifest.yaml: yes
 - .github/CODEOWNERS: yes
-- .github/workflows/main.yml: yes
-- Monorepo-Uphillsnowball.code-workspace: yes
+- .github/workflows/main.yml: no
+- Monorepo-Uphillsnowball.code-workspace: no
 - pyrightconfig.json: yes
 - third_party/README.md: yes
 - contracts/README.md: yes
-- Python files under apps: 42016
-- Python files under libs: 531
-- BUILD.bazel files: 1173
+- Python files under apps: 163494
+- Python files under libs: 9483
+- BUILD.bazel files: 2102
 - Proto files: 0
 
 ---

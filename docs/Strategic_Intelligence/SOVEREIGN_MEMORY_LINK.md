@@ -8,14 +8,12 @@
 ## 1. THE DOCTRINE (Recovered State)
 
 ### Bootstrap Gates
-
 - **roi_target**: `3x in 18mo`
 - **ltv_cac_target**: `4:1 in 12mo`
 - **p99_latency**: `≤90ms`
 - **security**: `100% gate (absolute)`
 
 ### Tech Stack
-
 - **extraction**: 0xSero scripts (Python stdlib, sqlite3)
 - **metadata**: Gemini Flash 2.0 ($0.075/1M input)
 - **orchestration**: Grok, Sonnet 4.5, Gemini, GPT-5, Perplexity
@@ -23,22 +21,18 @@
 - **deployment**: MacBook, Vertex AI Workbench, GKE Native
 
 ### Cost Economics
-
 - **initial_extraction**: $0.45 one-time
 - **github_storage**: $0 (free)
 - **gcs_storage**: $0.02/month
 - **per_query_llm**: $0.08-0.12
 
 ## 2. ARCHITECTURE (Judge 6 & ShadowTag)
-
 ### Judge 6
-
 - **Description**: Gemini + PyTorch + Rules engine with 98% coverage
 - **SLA**: {'coverage': 0.98, 'p99_latency': '≤90ms'}
 
 ## 3. CONVERSATION VAULT (Sample)
-
-_Total indexed: 118_
+*Total indexed: 118*
 
 1. **Judge#6 System Integration** (2025-11-22T07:42:25Z) - `8372574a-d1b3-485d-a41f-20a9a298558e` [1 msgs]
 2. **Validate GitHub MCP Integration** (2025-11-22T07:39:27Z) - `461f2d5a-ffca-424f-a23c-588b7943a6b7` [1 msgs]

@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/deep_research/__init__.py
+# hypothesis_version: 6.151.5
+
+['DeepResearchEngine', 'PhaseTransition', 'QuerySource', 'ResearchConfig', 'ResearchPhase', 'ResearchQuery', 'ResearchResult', 'SynthesisResult', 'emit_phase_event', 'emit_research_metric', 'route_query', 'synthesize_findings']

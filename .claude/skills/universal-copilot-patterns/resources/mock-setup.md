@@ -733,7 +733,7 @@ spec:
     spec:
       containers:
       - name: copilot
-        image: shadowtagai/universal-copilot:latest
+        image: pnkln/universal-copilot:latest
         envFrom:
         - configMapRef:
             name: copilot-config
@@ -762,5 +762,5 @@ spec:
 ---
 
 **Last Updated:** 2025-11-15
-**Maintained By:** ShadowTagAi AI Team
+**Maintained By:** Pnkln AI Team
 **License:** MIT (example code) - Adapt for your needs

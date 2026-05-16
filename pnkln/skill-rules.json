@@ -1,0 +1,646 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Auto-activation rules for PNKLN skills and agents",
+  "last_updated": "2025-11-15",
+
+  "activation_engine": {
+    "enabled": true,
+    "priority_order": ["exact_match", "pattern_match", "keyword_match", "semantic_match"],
+    "confidence_threshold": 0.75,
+    "allow_multi_skill_activation": true,
+    "max_concurrent_skills": 3
+  },
+
+  "skill_rules": {
+    "research_explorer": {
+      "skill_id": "research-explorer-v1",
+      "activation_priority": 1,
+
+      "exact_triggers": [
+        "research",
+        "investigate",
+        "analyze deeply",
+        "deep dive",
+        "comprehensive analysis",
+        "explore topic"
+      ],
+
+      "pattern_triggers": [
+        "^research:",
+        "^explore:",
+        "^investigate:",
+        "deep dive into",
+        "challenge assumptions about",
+        "what are the assumptions",
+        "find contradictions",
+        "research gap",
+        "need evidence for"
+      ],
+
+      "keyword_triggers": [
+        "research",
+        "explore",
+        "investigate",
+        "analyze",
+        "assumptions",
+        "evidence",
+        "contradictions",
+        "multi-perspective",
+        "comprehensive"
+      ],
+
+      "context_markers": [
+        "need evidence",
+        "comprehensive analysis",
+        "multi-perspective",
+        "scholarly",
+        "rigorous",
+        "thorough investigation"
+      ],
+
+      "negative_triggers": ["quick summary", "surface level", "just tell me"],
+
+      "auto_params": {
+        "depth_level": "deep",
+        "challenge_assumptions": true,
+        "perspectives": ["technical", "business", "user", "ethical"]
+      }
+    },
+
+    "design_critic": {
+      "skill_id": "design-critic-v1",
+      "activation_priority": 2,
+
+      "exact_triggers": [
+        "design review",
+        "critique design",
+        "evaluate ui",
+        "simplify design",
+        "does this look good",
+        "review this design"
+      ],
+
+      "pattern_triggers": [
+        "^critique:",
+        "^review design:",
+        "^evaluate ui:",
+        "make it simpler",
+        "jobs would say",
+        "too complex",
+        "design feedback",
+        "ux review"
+      ],
+
+      "keyword_triggers": [
+        "design",
+        "ui",
+        "ux",
+        "interface",
+        "visual",
+        "layout",
+        "simplify",
+        "critique",
+        "beautiful",
+        "elegant"
+      ],
+
+      "context_markers": [
+        "too complex",
+        "visual feedback",
+        "user experience",
+        "design system",
+        "looks cluttered",
+        "overwhelming",
+        "confusing interface"
+      ],
+
+      "negative_triggers": ["implement design", "code this design"],
+
+      "auto_params": {
+        "ruthlessness_level": "ruthless",
+        "evaluation_criteria": ["beauty", "simplicity", "function", "delight", "coherence"]
+      }
+    },
+
+    "copy_converter": {
+      "skill_id": "copy-converter-v1",
+      "activation_priority": 3,
+
+      "exact_triggers": [
+        "write copy",
+        "landing page copy",
+        "email sequence",
+        "convert better",
+        "sales copy",
+        "ad copy"
+      ],
+
+      "pattern_triggers": [
+        "^copy:",
+        "^write:",
+        "need copy for",
+        "increase conversions",
+        "write.*landing page",
+        "write.*email",
+        "create.*ad copy"
+      ],
+
+      "keyword_triggers": [
+        "copy",
+        "copywriting",
+        "landing page",
+        "email",
+        "ad",
+        "cta",
+        "call to action",
+        "conversion",
+        "headline",
+        "marketing message"
+      ],
+
+      "context_markers": [
+        "conversion rate",
+        "cta",
+        "call to action",
+        "marketing",
+        "persuasive",
+        "compelling message",
+        "high-converting"
+      ],
+
+      "negative_triggers": ["copy file", "copy paste", "duplicate"],
+
+      "auto_params": {
+        "tone": "professional",
+        "psychological_triggers": [
+          "scarcity",
+          "social_proof",
+          "authority",
+          "reciprocity",
+          "curiosity"
+        ]
+      }
+    },
+
+    "monetization_architect": {
+      "skill_id": "monetization-architect-v1",
+      "activation_priority": 4,
+
+      "exact_triggers": [
+        "monetization",
+        "revenue model",
+        "pricing strategy",
+        "how to charge",
+        "payment system",
+        "subscription model"
+      ],
+
+      "pattern_triggers": [
+        "^monetize:",
+        "^revenue:",
+        "^pricing:",
+        "how should we price",
+        "make money from",
+        "charge for",
+        "subscription.*design"
+      ],
+
+      "keyword_triggers": [
+        "monetization",
+        "revenue",
+        "pricing",
+        "subscription",
+        "payment",
+        "charge",
+        "billing",
+        "tier",
+        "freemium"
+      ],
+
+      "context_markers": [
+        "subscription",
+        "pricing tier",
+        "payment",
+        "revenue",
+        "business model",
+        "how to make money",
+        "unit economics"
+      ],
+
+      "negative_triggers": ["technical implementation", "code payment"],
+
+      "auto_params": {}
+    },
+
+    "workflow_refiner": {
+      "skill_id": "workflow-refiner-v1",
+      "activation_priority": 5,
+
+      "exact_triggers": [
+        "optimize workflow",
+        "simplify process",
+        "too many steps",
+        "workflow efficiency",
+        "automate this"
+      ],
+
+      "pattern_triggers": [
+        "^optimize:",
+        "^simplify:",
+        "^streamline:",
+        "reduce friction",
+        "eliminate steps",
+        "automate.*process"
+      ],
+
+      "keyword_triggers": [
+        "workflow",
+        "process",
+        "optimize",
+        "simplify",
+        "automate",
+        "efficiency",
+        "bottleneck",
+        "friction",
+        "streamline"
+      ],
+
+      "context_markers": [
+        "bottleneck",
+        "slow process",
+        "too complicated",
+        "waste time",
+        "inefficient",
+        "manual work",
+        "repetitive task"
+      ],
+
+      "negative_triggers": [],
+
+      "auto_params": {
+        "goals": ["reduce_time", "reduce_errors", "increase_throughput"]
+      }
+    },
+
+    "prompt_craft": {
+      "skill_id": "prompt-craft-v1",
+      "activation_priority": 6,
+
+      "exact_triggers": [
+        "create prompt",
+        "prompt engineering",
+        "write instructions",
+        "optimize prompt"
+      ],
+
+      "pattern_triggers": [
+        "^prompt:",
+        "^craft:",
+        "need a prompt for",
+        "prompt that does",
+        "instructions for ai",
+        "ai task"
+      ],
+
+      "keyword_triggers": [
+        "prompt",
+        "instructions",
+        "ai task",
+        "llm",
+        "prompt engineering",
+        "system message",
+        "few-shot"
+      ],
+
+      "context_markers": [
+        "ai instructions",
+        "llm task",
+        "model instructions",
+        "chatgpt",
+        "claude",
+        "prompt template"
+      ],
+
+      "negative_triggers": [],
+
+      "auto_params": {
+        "target_model": "claude",
+        "complexity": "moderate"
+      }
+    }
+  },
+
+  "agent_rules": {
+    "research_agent": {
+      "agent_id": "research-agent-v1",
+      "activation_priority": 1,
+      "auto_activate": true,
+
+      "triggers": {
+        "skill_based": ["research_explorer"],
+        "explicit_mention": ["@research", "/research"],
+        "task_complexity": {
+          "min_research_sources": 3,
+          "requires_assumption_validation": true,
+          "needs_multi_perspective": true
+        }
+      },
+
+      "execution_rules": {
+        "parallel_execution_allowed": true,
+        "requires_user_confirmation": false,
+        "max_execution_time": 1800,
+        "cache_results": true
+      }
+    },
+
+    "design_agent": {
+      "agent_id": "design-agent-v1",
+      "activation_priority": 2,
+      "auto_activate": true,
+
+      "triggers": {
+        "skill_based": ["design_critic"],
+        "explicit_mention": ["@design", "/critique-design", "@design-critique"],
+        "artifact_detection": {
+          "file_types": [".png", ".jpg", ".svg", ".fig", ".sketch"],
+          "keywords": ["screenshot", "mockup", "wireframe", "design"]
+        }
+      },
+
+      "execution_rules": {
+        "parallel_execution_allowed": true,
+        "requires_user_confirmation": true,
+        "max_execution_time": 900,
+        "cache_results": true
+      }
+    },
+
+    "copy_agent": {
+      "agent_id": "copy-agent-v1",
+      "activation_priority": 3,
+      "auto_activate": true,
+
+      "triggers": {
+        "skill_based": ["copy_converter"],
+        "explicit_mention": ["@copy", "/generate-copy", "@copywriter"],
+        "task_indicators": {
+          "needs_marketing_copy": true,
+          "conversion_optimization": true
+        }
+      },
+
+      "execution_rules": {
+        "parallel_execution_allowed": true,
+        "requires_user_confirmation": true,
+        "max_execution_time": 600,
+        "cache_results": true,
+        "generate_variants": true
+      }
+    },
+
+    "revenue_agent": {
+      "agent_id": "revenue-agent-v1",
+      "activation_priority": 4,
+      "auto_activate": false,
+
+      "triggers": {
+        "skill_based": ["monetization_architect"],
+        "explicit_mention": ["@revenue", "/monetization-design", "@revenue-architect"],
+        "business_context": {
+          "pricing_discussion": true,
+          "revenue_optimization": true,
+          "business_model_design": true
+        }
+      },
+
+      "execution_rules": {
+        "parallel_execution_allowed": false,
+        "requires_user_confirmation": true,
+        "max_execution_time": 1200,
+        "cache_results": true
+      }
+    },
+
+    "project_deep_agent": {
+      "agent_id": "project-deep-agent-v1",
+      "activation_priority": 0,
+      "auto_activate": true,
+
+      "triggers": {
+        "explicit_mention": ["@project-deep", "/orchestrate", "@orchestrator"],
+        "multi_skill_detection": {
+          "min_skills_required": 2,
+          "complex_project_indicators": [
+            "end-to-end",
+            "comprehensive",
+            "full project",
+            "launch",
+            "campaign"
+          ]
+        },
+        "project_keywords": [
+          "new product launch",
+          "marketing campaign",
+          "revenue optimization",
+          "complete solution"
+        ]
+      },
+
+      "execution_rules": {
+        "parallel_execution_allowed": false,
+        "requires_user_confirmation": true,
+        "max_execution_time": 3600,
+        "cache_results": true,
+        "can_invoke_sub_agents": true,
+        "max_concurrent_sub_agents": 3
+      }
+    }
+  },
+
+  "workflow_templates": {
+    "new_product_launch": {
+      "description": "Complete new product launch workflow",
+      "trigger_phrases": ["launch new product", "product launch", "go-to-market"],
+      "agent_sequence": [
+        {
+          "agent": "research_agent",
+          "tasks": ["market research", "competitor analysis", "customer interviews"]
+        },
+        {
+          "agent": "revenue_agent",
+          "tasks": ["pricing strategy", "monetization model"]
+        },
+        {
+          "agents": ["design_agent", "copy_agent"],
+          "parallel": true,
+          "tasks": ["landing page design", "marketing copy", "email sequences"]
+        },
+        {
+          "agent": "workflow_refiner",
+          "tasks": ["launch workflow", "automation setup"]
+        }
+      ]
+    },
+
+    "marketing_campaign": {
+      "description": "Comprehensive marketing campaign creation",
+      "trigger_phrases": ["marketing campaign", "ad campaign", "launch campaign"],
+      "agent_sequence": [
+        {
+          "agent": "research_agent",
+          "tasks": ["audience research", "message testing"]
+        },
+        {
+          "agents": ["copy_agent", "design_agent"],
+          "parallel": true,
+          "tasks": ["ad copy", "creative assets", "landing pages"]
+        }
+      ]
+    },
+
+    "revenue_optimization": {
+      "description": "Revenue and pricing optimization project",
+      "trigger_phrases": ["optimize revenue", "increase revenue", "pricing optimization"],
+      "agent_sequence": [
+        {
+          "agents": ["research_agent", "revenue_agent"],
+          "parallel": true,
+          "tasks": ["competitive pricing research", "revenue model design"]
+        },
+        {
+          "agents": ["copy_agent", "design_agent"],
+          "parallel": true,
+          "tasks": ["pricing page copy", "pricing page design"]
+        }
+      ]
+    }
+  },
+
+  "hooks": {
+    "user_prompt_submit": {
+      "description": "Pre-process user prompts to detect skill/agent activation",
+      "enabled": true,
+      "actions": [
+        "parse_user_input",
+        "match_activation_rules",
+        "inject_skill_context",
+        "activate_agents_if_threshold_met"
+      ]
+    },
+
+    "agent_pre_execution": {
+      "description": "Prepare agent context before execution",
+      "enabled": true,
+      "actions": [
+        "load_relevant_skills",
+        "validate_input_parameters",
+        "check_dependency_availability",
+        "set_execution_timeout"
+      ]
+    },
+
+    "agent_post_execution": {
+      "description": "Post-process agent results",
+      "enabled": true,
+      "actions": [
+        "validate_output_schema",
+        "cache_results",
+        "generate_summary",
+        "suggest_next_steps"
+      ]
+    },
+
+    "stop_hook": {
+      "description": "Cleanup and validation when execution stops",
+      "enabled": true,
+      "actions": ["save_partial_results", "log_execution_metrics", "cleanup_resources"]
+    }
+  },
+
+  "semantic_matching": {
+    "enabled": true,
+    "embedding_model": "text-embedding-3-small",
+    "similarity_threshold": 0.8,
+
+    "skill_intent_vectors": {
+      "research_explorer": [
+        "deep investigation",
+        "comprehensive analysis",
+        "evidence gathering",
+        "assumption testing",
+        "multi-perspective exploration"
+      ],
+      "design_critic": [
+        "visual review",
+        "design evaluation",
+        "simplification",
+        "aesthetic judgment",
+        "usability assessment"
+      ],
+      "copy_converter": [
+        "persuasive writing",
+        "conversion optimization",
+        "marketing message",
+        "compelling copy",
+        "psychological triggers"
+      ],
+      "monetization_architect": [
+        "revenue design",
+        "pricing optimization",
+        "business model",
+        "monetization strategy",
+        "payment systems"
+      ],
+      "workflow_refiner": [
+        "process optimization",
+        "efficiency improvement",
+        "automation design",
+        "bottleneck removal",
+        "workflow simplification"
+      ],
+      "prompt_craft": [
+        "instruction design",
+        "ai prompt creation",
+        "llm optimization",
+        "prompt engineering",
+        "task specification"
+      ]
+    }
+  },
+
+  "fallback_rules": {
+    "no_match_found": {
+      "action": "suggest_closest_skill",
+      "confidence_threshold": 0.6,
+      "show_alternatives": true,
+      "max_suggestions": 3
+    },
+
+    "ambiguous_match": {
+      "action": "request_user_clarification",
+      "show_matched_skills": true,
+      "allow_multi_select": true
+    },
+
+    "low_confidence": {
+      "action": "ask_user_to_rephrase",
+      "provide_examples": true
+    }
+  },
+
+  "performance_tracking": {
+    "enabled": true,
+    "metrics_to_track": [
+      "activation_accuracy",
+      "false_positive_rate",
+      "false_negative_rate",
+      "average_confidence_score",
+      "user_override_frequency",
+      "skill_usage_distribution",
+      "agent_success_rate"
+    ],
+    "optimization_interval": "weekly"
+  }
+}

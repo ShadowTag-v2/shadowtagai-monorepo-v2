@@ -7,7 +7,6 @@ This pack combines three layers:
 - `overlay_shadowtag/` — ShadowTag-specific constitution, live-engine workflow, and session bootstrap.
 
 ## Best entry points
-
 - Root behavior contract: `AGENTS.md`
 - Canonical sequencing: `INSTALL_ORDER.md`
 - Portable rules: `governance/docs/vibe-coding-rules.md`
@@ -15,5 +14,4 @@ This pack combines three layers:
 - ShadowTag constitution: `overlay_shadowtag/docs/Cor.Constitution.v3.md`
 
 ## One-line guidance
-
 Use `governance` everywhere, `operations` when the repo needs a control plane, and `overlay_shadowtag` only when the work is truly ShadowTag-specific.

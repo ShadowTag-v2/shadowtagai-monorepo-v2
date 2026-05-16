@@ -7,7 +7,7 @@ set -euo pipefail
 # Deploys Judge6 multi-layer inference workloads to existing GKE cluster
 # ==============================================================================
 
-export PROJECT_ID="${PROJECT_ID:-shadowtagai-core-stack}"
+export PROJECT_ID="${PROJECT_ID:-pnkln-core-stack}"
 export REGION="${REGION:-us-central1}"
 export CLUSTER_NAME="${CLUSTER_NAME:-judge6-inference}"
 

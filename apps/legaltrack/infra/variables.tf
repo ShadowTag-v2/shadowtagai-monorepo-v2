@@ -1,7 +1,7 @@
 variable "project_id" {
   type        = string
   description = "The GCP Project ID."
-  default     = "shadowtag-omega-v4"
+  default     = "shadowtag-omega-v4" 
 }
 
 variable "region" {

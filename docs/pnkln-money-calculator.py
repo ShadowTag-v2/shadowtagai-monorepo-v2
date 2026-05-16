@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
 PNKLN Ultrathink Money Calculator
 
@@ -323,12 +324,7 @@ def print_comparison_table(scenarios: dict):
         valuation_15x = total_profit * 15
         valuation_blended = (valuation_10x + valuation_15x) / 2
 
-        results[name] = {
-            "arr": total_arr,
-            "profit": total_profit,
-            "margin": margin,
-            "valuation": valuation_blended,
-        }
+        results[name] = {"arr": total_arr, "profit": total_profit, "margin": margin, "valuation": valuation_blended}
 
     # Print table
     print(f"{'Metric':<30} | {'Conservative':>15} | {'Baseline':>15} | {'Aggressive':>15}")
@@ -358,10 +354,7 @@ def print_comparison_table(scenarios: dict):
 def main():
     parser = argparse.ArgumentParser(description="PNKLN Ultrathink Money Calculator")
     parser.add_argument(
-        "--scenario",
-        choices=["conservative", "baseline", "aggressive", "all"],
-        default="all",
-        help="Which scenario to calculate (default: all)",
+        "--scenario", choices=["conservative", "baseline", "aggressive", "all"], default="all", help="Which scenario to calculate (default: all)"
     )
 
     args = parser.parse_args()

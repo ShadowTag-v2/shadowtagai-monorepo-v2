@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/scripts/utils/github_app_auth.py
+# hypothesis_version: 6.151.5
+
+[1.0, 500, 502, 503, 504, 'Accept', 'Authorization', 'RS256', 'account', 'exp', 'https://', 'iat', 'id', 'iss', 'login', 'rb', 'token']

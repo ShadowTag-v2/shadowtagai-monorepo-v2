@@ -9,7 +9,6 @@ KERNEL is a prompt engineering framework discovered through analysis of 1000+ re
 ## Measured Impact
 
 Real metrics from applying KERNEL to 1000 prompts:
-
 - **First-try success**: 72% → 94% (+22 percentage points)
 - **Time to useful result**: -67%
 - **Token usage**: -58%
@@ -23,7 +22,6 @@ Real metrics from applying KERNEL to 1000 prompts:
 **Principle**: One clear goal per prompt.
 
 **Bad Example**:
-
 ```
 I need help writing something about Redis. I'm thinking about maybe covering caching,
 persistence, data structures, clustering, and perhaps some best practices for production
@@ -31,7 +29,6 @@ deployments. Also maybe some comparison with other caching solutions and when to
 ```
 
 **Good Example**:
-
 ```
 Write a technical tutorial on Redis caching
 ```
@@ -39,7 +36,6 @@ Write a technical tutorial on Redis caching
 **Impact**: 70% less token usage, 3x faster responses
 
 **Guidelines**:
-
 - Replace verbose context dumps with concise goal statements
 - Limit introductory context to 1-2 sentences maximum
 - State the end goal directly
@@ -51,13 +47,11 @@ Write a technical tutorial on Redis caching
 **Principle**: Include clear success criteria.
 
 **Bad Example**:
-
 ```
 Make the documentation engaging and user-friendly
 ```
 
 **Good Example**:
-
 ```
 Rewrite the documentation with:
 - 3 code examples minimum
@@ -68,7 +62,6 @@ Rewrite the documentation with:
 **Impact**: 85% success rate with clear criteria vs 41% without
 
 **Guidelines**:
-
 - Replace subjective requirements ("engaging", "clean", "professional") with measurable ones
 - Specify exact quantities where possible
 - Define what "done" looks like
@@ -81,13 +74,11 @@ Rewrite the documentation with:
 **Principle**: Same prompt should work next week, next month.
 
 **Bad Example**:
-
 ```
 Analyze current trends in machine learning and latest best practices
 ```
 
 **Good Example**:
-
 ```
 Analyze machine learning trends from January-December 2024, focusing on:
 - Transformer architecture improvements
@@ -98,7 +89,6 @@ Analyze machine learning trends from January-December 2024, focusing on:
 **Impact**: 94% consistency across 30 days in tests
 
 **Guidelines**:
-
 - Avoid temporal references ("current", "latest", "recent", "modern")
 - Use specific versions, dates, or ranges
 - Specify exact technologies/frameworks/libraries
@@ -111,14 +101,12 @@ Analyze machine learning trends from January-December 2024, focusing on:
 **Principle**: One prompt = one goal.
 
 **Bad Example**:
-
 ```
 Build a complete REST API with authentication, database models, tests,
 documentation, deployment scripts, and monitoring
 ```
 
 **Good Example**:
-
 ```
 Prompt 1: Design database schema for user authentication
 Prompt 2: Implement JWT authentication endpoints
@@ -129,7 +117,6 @@ Prompt 3: Write integration tests for auth flow
 **Impact**: 89% satisfaction for single-goal vs 41% for multi-goal prompts
 
 **Guidelines**:
-
 - Don't combine code + docs + tests in one request
 - Split complex tasks into sequential prompts
 - Each prompt should have one primary deliverable
@@ -142,13 +129,11 @@ Prompt 3: Write integration tests for auth flow
 **Principle**: Tell AI what NOT to do.
 
 **Bad Example**:
-
 ```
 Write a Python script to process data
 ```
 
 **Good Example**:
-
 ```
 Write a Python script to process data
 Constraints:
@@ -162,7 +147,6 @@ Constraints:
 **Impact**: Constraints reduce unwanted outputs by 91%
 
 **Guidelines**:
-
 - Specify forbidden libraries/patterns
 - Set code quality bounds (line limits, complexity)
 - Define performance requirements
@@ -175,7 +159,6 @@ Constraints:
 **Principle**: Format every prompt with consistent sections.
 
 **Template**:
-
 ```
 1. Context (input)
 2. Task (function)
@@ -186,15 +169,12 @@ Constraints:
 **Example Application**:
 
 **Before KERNEL**:
-
 ```
 Help me write a script to process some data files and make them more efficient
 ```
-
 Result: 200 lines of generic, unusable code
 
 **After KERNEL**:
-
 ```
 Task: Python script to merge CSVs
 Input: Multiple CSVs in ./data/, identical column structure
@@ -205,7 +185,6 @@ Constraints:
 Output: Single merged.csv in ./output/
 Verify: Run on test_data/ directory
 ```
-
 Result: 37 lines, worked on first try
 
 ---
@@ -265,25 +244,21 @@ Verify: All tests pass
 ## Model-Specific Notes
 
 ### Claude (Sonnet, Opus)
-
 - Excels with structured constraints
 - Responds well to explicit anti-patterns
 - Use detailed output format specifications
 
 ### GPT (4, 5)
-
 - Benefits from examples in constraints
 - Strong with logical structure
 - May need more explicit scope narrowing
 
 ### Gemini
-
 - Performs well with context-task separation
 - Responsive to verification criteria
 - Good at maintaining reproducibility with specific versions
 
 ### Llama
-
 - Requires more explicit constraints
 - Benefits from simpler language in task descriptions
 - Keep context sections especially concise

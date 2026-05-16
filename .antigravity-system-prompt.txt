@@ -30,7 +30,7 @@ If any of the following are true, stop and report the problem instead of guessin
 
 4. Deny non-workspace access
 - Never read, write, create, rename, or delete files outside the canonical workspace root.
-- Never use sibling repos, parent repos, previous shadowtag-omega-v4 paths, playground paths, or old thread paths as implicit context.
+- Never use sibling repos, parent repos, previous ShadowTag-v2 paths, playground paths, or old thread paths as implicit context.
 - Never follow symlinks or path traversal outside the canonical root.
 
 5. Realpath enforcement
@@ -51,7 +51,7 @@ The following zones are excluded from normal source operations unless explicitly
 - apps/pnkln-stack_ecosystem/raw_ingest/
 - **/_PRE_OMEGA_BACKUP_*/
 - **/repos/*-legacy/
-- **/ShadowTagAI-Omega/
+- **/ShadowTag-Omega/
 - **/arsenal_recovered/
 
 Behavior in denied zones:

@@ -17,17 +17,17 @@
 
 ## Change Comparison Matrix
 
-| Dimension              | v1.0.0 (Current)                   | v2.0.0 (Target)                                                      | Delta                   |
-| ---------------------- | ---------------------------------- | -------------------------------------------------------------------- | ----------------------- |
-| **Skills**             | 3 (Research, Design, Monetization) | 7 (+Cheat Sheet Fusion, Glicko Mastery, Framework Fusion, Benchmark) | +4 skills               |
-| **Agents**             | 3 (Designer, Accelerator, Meta)    | 6 (+Deep Reasoning, Panel Debate, Code Crafter)                      | +3 agents               |
-| **Frameworks**         | CoT, ToT, RCR, MAD, DTE            | + RTF-TAG-BAB-CARE-RISE fusion, PanelGPT, Glicko-2                   | +3 frameworks           |
-| **Evolution**          | Static prompts                     | DTE self-evolution with GRPO training                                | Self-improving          |
-| **Rating**             | None                               | Glicko-2 rankings for agent performance                              | Performance tracking    |
-| **Benchmarks**         | None                               | HumanEval, BigCodeBench, SWE-bench                                   | Objective validation    |
-| **Prompt Engineering** | Manual                             | Cheat Sheet Fusion (21→10 essentials)                                | Systematic optimization |
-| **Python Components**  | Orchestrator + Audit               | + Glicko2Player, GRPO simulator, PPO comparison                      | +3 modules              |
-| **Memory**             | Audit trail only                   | + Compounding memory, security priority                              | Enhanced intelligence   |
+| Dimension | v1.0.0 (Current) | v2.0.0 (Target) | Delta |
+|-----------|------------------|-----------------|-------|
+| **Skills** | 3 (Research, Design, Monetization) | 7 (+Cheat Sheet Fusion, Glicko Mastery, Framework Fusion, Benchmark) | +4 skills |
+| **Agents** | 3 (Designer, Accelerator, Meta) | 6 (+Deep Reasoning, Panel Debate, Code Crafter) | +3 agents |
+| **Frameworks** | CoT, ToT, RCR, MAD, DTE | + RTF-TAG-BAB-CARE-RISE fusion, PanelGPT, Glicko-2 | +3 frameworks |
+| **Evolution** | Static prompts | DTE self-evolution with GRPO training | Self-improving |
+| **Rating** | None | Glicko-2 rankings for agent performance | Performance tracking |
+| **Benchmarks** | None | HumanEval, BigCodeBench, SWE-bench | Objective validation |
+| **Prompt Engineering** | Manual | Cheat Sheet Fusion (21→10 essentials) | Systematic optimization |
+| **Python Components** | Orchestrator + Audit | + Glicko2Player, GRPO simulator, PPO comparison | +3 modules |
+| **Memory** | Audit trail only | + Compounding memory, security priority | Enhanced intelligence |
 
 ---
 
@@ -35,81 +35,124 @@
 
 ### 4. Cheat Sheet Fusion (`cheat_sheet_fusion_v1`)
 
+
+
 - **Category:** Prompt Engineering
+
 
 - **Purpose:** Evolved prompt optimization (21→10 essentials)
 
+
 - **Frameworks:** DTE-evolved, +3.7% accuracy proven
+
 
 - **Risk Level:** RA-2
 
+
 - **Triggers:** prompt, optimize, cheat sheet, template
 
+
 - **Essentials:**
+
+
   1. Tone
+
 
   2. Format
 
+
   3. Act (persona)
+
 
   4. Objective
 
+
   5. Context
+
 
   6. Keywords
 
+
   7. Examples
+
 
   8. Audience
 
+
   9. Citations
+
 
   10. Call to action
 
 ### 5. Glicko Mastery (`glicko_mastery_v1`)
 
+
+
 - **Category:** Performance Rating
+
 
 - **Purpose:** Uncertainty-aware agent rankings
 
+
 - **Frameworks:** Glicko-2 (vs. Elo/PPO comparison)
+
 
 - **Risk Level:** RA-2
 
+
 - **Triggers:** rating, performance, ranking, glicko
+
 
 - **Implementation:** Python Glicko2Player class (mu/phi/vol)
 
 ### 6. Framework Fusion (`framework_fusion_v1`)
 
+
+
 - **Category:** Advanced Reasoning
+
 
 - **Purpose:** RTF-TAG-BAB-CARE-RISE integrated framework
 
+
 - **Components:**
+
+
   - RTF: Rephrase, Think, Format
+
 
   - TAG: Think, Act, Gather
 
+
   - BAB: Before, Action, Bridge
+
 
   - CARE: Context, Action, Result, Example
 
+
   - RISE: Reflect, Identify, Strategize, Execute
 
+
 - **Risk Level:** RA-3
+
 
 - **Triggers:** framework, fusion, advanced reasoning
 
 ### 7. Benchmark Testing (`benchmark_testing_v1`)
 
+
+
 - **Category:** Validation
+
 
 - **Purpose:** HumanEval, BigCodeBench, SWE-bench testing
 
+
 - **Risk Level:** RA-2
 
+
 - **Triggers:** benchmark, test, validate, evaluate
+
 
 - **Metrics:** Pass@k, solve rate, accuracy
 
@@ -119,37 +162,55 @@
 
 ### 4. Deep Reasoning (`deep_reasoning_agent`)
 
+
+
 - **Persona:** DTE-evolved reasoner
+
 
 - **Skills:** Research Explorer + Framework Fusion + Cheat Sheet Fusion
 
+
 - **IQ:** 160
 
+
 - **Purpose:** Multi-stage reasoning with self-evolution
+
 
 - **Training:** GRPO-enhanced, continuously improving
 
 ### 5. Panel Debate (`panel_debate_agent`)
 
+
+
 - **Persona:** Multi-perspective debater (PanelGPT/MAD)
+
 
 - **Skills:** Research Explorer + Design Critic + Framework Fusion
 
+
 - **IQ:** 160
 
+
 - **Purpose:** Adversarial consensus through structured debate
+
 
 - **Method:** RCR-MAD fusion (Reflect-Critique-Refine + Multi-Agent Debate)
 
 ### 6. Code Crafter (`code_crafter_agent`)
 
+
+
 - **Persona:** Cheat-enhanced code generator
+
 
 - **Skills:** Cheat Sheet Fusion + Framework Fusion + Benchmark Testing
 
+
 - **IQ:** 160
 
+
 - **Purpose:** Production code with evolved prompts
+
 
 - **Validation:** Benchmarked on HumanEval/BigCodeBench/SWE-bench
 
@@ -270,30 +331,46 @@ def compare_ppo_grpo():
 
 ### Current (v1.0.0)
 
+
+
 - **CoT** - Chain of Thought
+
 
 - **ToT** - Tree of Thoughts
 
+
 - **RCR** - Reflect-Critique-Refine
 
+
 - **MAD** - Multi-Agent Debate
+
 
 - **DTE** - Debate-Train-Evolve (mentioned, not implemented)
 
 ### Added (v2.0.0)
 
+
+
 - **RTF-TAG-BAB-CARE-RISE** - Fused meta-framework
+
+
   - Systematic prompt structuring
+
 
   - Multi-stage reasoning coordination
 
+
   - Context-Action-Result flow
+
 
 - **PanelGPT** - Multi-perspective debate orchestration
 
+
 - **Glicko-2** - Uncertainty-aware performance rating
 
+
 - **Cheat Sheet Fusion** - Evolved prompt optimization (21→10 essentials)
+
 
 - **DTE Implementation** - Full GRPO training for prompt evolution
 
@@ -303,23 +380,34 @@ def compare_ppo_grpo():
 
 ### v1.0.0: Monetization Architect
 
+
+
 - Hard truth identification
+
 
 - Action plan creation
 
+
 - Direct challenge issuance
+
 
 - 90-day roadmap
 
 ### v2.0.0: Enhanced with DTE Evolution
 
+
+
 - **Leak spotting** with evolved prompts (+3.7% accuracy)
+
 
 - **Funnel redesign** using cheat sheet optimization
 
+
 - **Viral/conversion strategies** benchmarked
 
+
 - **Structured responses** (truth/plan/challenge) continuously refined via DTE
+
 
 - **Leverage opportunities** identified through framework fusion
 
@@ -329,25 +417,37 @@ def compare_ppo_grpo():
 
 ### Security Priority
 
+
+
 - Validation layers before execution (RA-3/RA-4 require approval)
 
+
 - Assumption challenges (every decision questioned)
+
 
 - Critique loops (RCR on all strategies)
 
 ### Memory Compounding
 
+
+
 - Audit trail → Learning → Improvement
 
+
 - Performance tracking → Glicko ratings → Strategy evolution
+
 
 - Boy Scout Rule → Continuous refinement
 
 ### Reality Distortion Field
 
+
+
 - "Impossible" triggers ultrathink mode
 
+
 - Constraint questioning (Why must it function so?)
+
 
 - Framework fusion for novel solutions
 
@@ -357,43 +457,67 @@ def compare_ppo_grpo():
 
 ### Phase 1: Skills Extension (Week 1)
 
+
+
 1. Add 4 new skills to `skills/registry.yaml`
 
+
 2. Implement Python modules:
+
+
    - `pnkln/core/glicko.py` (Glicko-2 implementation)
+
 
    - `pnkln/core/grpo.py` (GRPO simulation)
 
+
    - `pnkln/core/benchmarks.py` (HumanEval/BigCodeBench integration)
+
 
    - `pnkln/core/cheatsheet.py` (Prompt optimization)
 
 ### Phase 2: Agent Enhancement (Week 2)
 
+
+
 1. Add 3 new agents to `agents/registry.yaml`
 
+
 2. Integrate DTE self-evolution:
+
+
    - Implement debate phase (MAD)
 
+
    - Implement training phase (GRPO)
+
 
    - Implement evolution phase (prompt refinement)
 
 ### Phase 3: Framework Fusion (Week 3)
 
+
+
 1. Create unified framework orchestrator
 
+
 2. RTF-TAG-BAB-CARE-RISE integration
+
 
 3. PanelGPT multi-agent coordination
 
 ### Phase 4: Benchmarking (Week 4)
 
+
+
 1. HumanEval integration
+
 
 2. BigCodeBench integration
 
+
 3. SWE-bench integration
+
 
 4. Continuous validation pipeline
 
@@ -462,21 +586,31 @@ POST /api/pnkln/debate
 
 ### Preserved (100% Compatible)
 
+
+
 - All v1.0.0 skills functional
+
 
 - All v1.0.0 agents functional
 
+
 - All v1.0.0 API endpoints unchanged
+
 
 - Audit trail format unchanged
 
 ### Extended (Additive)
 
+
+
 - New skills augment existing
+
 
 - New agents add capabilities
 
+
 - New endpoints add features
+
 
 - Glicko ratings optional (fallback to execution count)
 
@@ -506,23 +640,34 @@ result = await orchestrator_v2.execute("Research market", evolve=True)
 
 ### Technical
 
+
+
 - [ ] DTE evolution: +3.7% accuracy on prompts (proven)
+
 
 - [ ] Glicko ratings: <5% drift vs manual rankings
 
+
 - [ ] Benchmarks: Pass@1 >80% on HumanEval
 
+
 - [ ] GRPO training: Converges within 100 iterations
+
 
 - [ ] Framework fusion: <10ms routing overhead
 
 ### Business
 
+
+
 - [ ] Wealth planning accuracy: +20% revenue identification
+
 
 - [ ] Time saved: 15+ hours/week (up from 10)
 
+
 - [ ] Leverage ratio: >150x (up from 100x)
+
 
 - [ ] Agent evolution: Measurable improvement monthly
 
@@ -530,23 +675,34 @@ result = await orchestrator_v2.execute("Research market", evolve=True)
 
 ## Next Actions
 
+
+
 1. **Create branch** `claude/pnkln-ecosystem-v2-[SESSION_ID]`
+
 
 2. **Implement Glicko-2** Python module
 
+
 3. **Implement GRPO** simulation and training
+
 
 4. **Extend skills registry** with 4 new skills
 
+
 5. **Extend agents registry** with 3 new agents
+
 
 6. **Add framework fusion** orchestration
 
+
 7. **Integrate benchmarks** (HumanEval/BigCodeBench/SWE-bench)
+
 
 8. **Update API** with new endpoints
 
+
 9. **Create tests** for all new components
+
 
 10. **Update docs** (README, DEPLOYMENT, TRANSFER_PACKAGE)
 
@@ -558,11 +714,15 @@ result = await orchestrator_v2.execute("Research market", evolve=True)
 
 **Answer:** Adding capabilities, but each with ruthless focus:
 
+
 - Glicko → One number: How good is this agent?
+
 
 - GRPO → One goal: Make prompts better automatically
 
+
 - Cheat Sheet → One question: What makes prompts work?
+
 
 - Framework Fusion → One principle: Coordinate, don't duplicate
 

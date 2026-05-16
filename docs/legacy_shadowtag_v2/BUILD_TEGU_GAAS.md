@@ -22,17 +22,15 @@ python -c "import torch; import cv2; print('✅ Ready!')"
 ## What Gets Integrated
 
 ### Tegu: Machine Learning Toolbox
-
 - **Repository**: https://github.com/generalized-intelligence/Tegu
 - **Purpose**: Computer vision for tower monitoring, vendor verification, content moderation
 - **Models**: YOLOv3, FaceNet, ActivityNet, SSD300, MTCNN
 - **Integration**: `src/tegu/` wrapper services with AiUCRM validation
 
 ### GAAS: Autonomous Aviation System
-
 - **Repository**: https://github.com/generalized-intelligence/GAAS
 - **Purpose**: Autonomous flight control, lidar mapping, drone deployment
-- **Components**: PX4 offboard control, A\* planning, HD-map relocalization
+- **Components**: PX4 offboard control, A* planning, HD-map relocalization
 - **Integration**: `src/gaas/` wrapper services with FAA DO-178C compliance
 
 ---
@@ -42,14 +40,12 @@ python -c "import torch; import cv2; print('✅ Ready!')"
 ### Prerequisites
 
 **Required**:
-
 - Python 3.10+
 - CUDA 11.8+ (for GPU acceleration)
 - 16GB RAM minimum
 - Ubuntu 20.04+ (or macOS for Tegu-only)
 
 **For Full GAAS** (optional):
-
 - Ubuntu 18.04 (ROS Melodic requirement)
 - ROS Melodic
 - PCL 1.8.0
@@ -66,7 +62,6 @@ chmod +x scripts/setup_tegu_gaas.sh
 ```
 
 **What this does**:
-
 - Clones Tegu → `external/Tegu/`
 - Clones GAAS → `external/GAAS/`
 - Installs Python dependencies
@@ -110,7 +105,6 @@ wget https://pjreddie.com/media/files/yolov3.weights -O models/yolov3.weights
 ```
 
 **Custom Training** (recommended):
-
 ```bash
 # Train custom tower equipment model
 cd external/Tegu
@@ -148,7 +142,6 @@ EOF
 ```
 
 **Expected Output**:
-
 ```
 Tower monitoring service initialized with weights: models/tower_equipment_v1.pth
 Status: success
@@ -187,7 +180,6 @@ EOF
 ```
 
 **Expected Output**:
-
 ```
 Autonomous flight service initialized for drone drone_test_001
 Pre-flight compliance check for 2 waypoints
@@ -218,7 +210,6 @@ kubectl apply -f kubernetes/tegu-service.yaml
 ```
 
 **API Usage**:
-
 ```python
 import httpx
 
@@ -257,7 +248,6 @@ make -j4
 ```
 
 **Flight Testing**:
-
 ```bash
 # 1. Run GAAS SITL (simulation)
 cd external/GAAS
@@ -317,23 +307,23 @@ async def inspect_and_maintain_tower(tower_id: str):
 
 ### Tegu Computer Vision: +$8B
 
-| Application               | Annual Savings | Valuation (15× multiple) |
-| ------------------------- | -------------- | ------------------------ |
-| Tower Monitoring          | $50M/year      | $750M                    |
-| Vendor Verification       | $30M/year      | $450M                    |
-| Content Moderation        | $170M/year     | $2.55B                   |
-| License Plate Recognition | $100M/year     | $1.5B                    |
-| **Total**                 | **$350M/year** | **~$8B**                 |
+| Application | Annual Savings | Valuation (15× multiple) |
+|-------------|----------------|--------------------------|
+| Tower Monitoring | $50M/year | $750M |
+| Vendor Verification | $30M/year | $450M |
+| Content Moderation | $170M/year | $2.55B |
+| License Plate Recognition | $100M/year | $1.5B |
+| **Total** | **$350M/year** | **~$8B** |
 
 ### GAAS Autonomous Aviation: +$10B
 
-| Application             | Annual Savings | Valuation (15× multiple) |
-| ----------------------- | -------------- | ------------------------ |
-| Autonomous Flight Ops   | $100M/year     | $1.5B                    |
-| Tower Node Deployment   | $200M/year     | $3B                      |
-| Infrastructure Mapping  | $50M/year      | $750M                    |
-| FAA Certification Value | -              | $5B (regulatory moat)    |
-| **Total**               | **$350M/year** | **~$10B**                |
+| Application | Annual Savings | Valuation (15× multiple) |
+|-------------|----------------|--------------------------|
+| Autonomous Flight Ops | $100M/year | $1.5B |
+| Tower Node Deployment | $200M/year | $3B |
+| Infrastructure Mapping | $50M/year | $750M |
+| FAA Certification Value | - | $5B (regulatory moat) |
+| **Total** | **$350M/year** | **~$10B** |
 
 **Combined**: +$18B valuation increase
 **Updated 2030 Valuation**: $307B → **$325B**
@@ -345,7 +335,6 @@ async def inspect_and_maintain_tower(tower_id: str):
 ### Tegu Issues
 
 **Error: CUDA not available**
-
 ```bash
 # Check CUDA installation
 nvidia-smi
@@ -359,7 +348,6 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 ```
 
 **Error: Module 'Network.yolov3' not found**
-
 ```bash
 # Add Tegu to Python path
 export PYTHONPATH=$PYTHONPATH:$(pwd)/external/Tegu
@@ -372,7 +360,6 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)/external/Tegu
 ### GAAS Issues
 
 **Error: ROS not found**
-
 ```bash
 # GAAS requires Ubuntu 18.04 + ROS Melodic
 # For development, use simulation mode (already configured in wrappers)
@@ -383,7 +370,6 @@ source /opt/ros/melodic/setup.bash
 ```
 
 **Error: PX4 connection failed**
-
 ```bash
 # Run PX4 SITL first
 cd ~/PX4-Autopilot
@@ -400,23 +386,23 @@ cd external/GAAS
 
 ### Tegu Computer Vision
 
-| Operation                          | Latency (GPU) | Latency (CPU) | Accuracy |
-| ---------------------------------- | ------------- | ------------- | -------- |
-| Tower Monitoring (YOLOv3)          | 45ms          | 380ms         | 94%      |
-| Facial Recognition (FaceNet)       | 30ms          | 250ms         | 97%      |
-| Video Classification (ActivityNet) | 120ms         | 890ms         | 91%      |
-| License Plate Recognition          | 25ms          | 180ms         | 96%      |
+| Operation | Latency (GPU) | Latency (CPU) | Accuracy |
+|-----------|---------------|---------------|----------|
+| Tower Monitoring (YOLOv3) | 45ms | 380ms | 94% |
+| Facial Recognition (FaceNet) | 30ms | 250ms | 97% |
+| Video Classification (ActivityNet) | 120ms | 890ms | 91% |
+| License Plate Recognition | 25ms | 180ms | 96% |
 
 **Hardware**: NVIDIA Tesla T4, Intel Xeon
 
 ### GAAS Autonomous Flight
 
-| Operation                  | Latency | Accuracy |
-| -------------------------- | ------- | -------- |
-| Lidar Processing (32-line) | 50ms    | N/A      |
-| Path Planning (A\*)        | 15ms    | 99.8%    |
-| Waypoint Navigation        | <5s     | 99.5%    |
-| Emergency Landing          | <1s     | 100%     |
+| Operation | Latency | Accuracy |
+|-----------|---------|----------|
+| Lidar Processing (32-line) | 50ms | N/A |
+| Path Planning (A*) | 15ms | 99.8% |
+| Waypoint Navigation | <5s | 99.5% |
+| Emergency Landing | <1s | 100% |
 
 **Hardware**: Jetson Xavier NX, Velodyne VLP-32C
 
@@ -488,7 +474,6 @@ cd external/GAAS
 ## Support
 
 **Issues**:
-
 - Tegu: https://github.com/generalized-intelligence/Tegu/issues
 - GAAS: https://github.com/generalized-intelligence/GAAS/issues
 - AiU Integration: Create issue in this repository

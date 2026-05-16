@@ -1,12 +1,14 @@
-import json
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import logging
+import json
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class MemoryAsAService:
-    """Superpowers Marketplace: Memory-as-a-Service ($54M ARR target).
+    """
+    Superpowers Marketplace: Memory-as-a-Service ($54M ARR target).
     Persists infinite context windows per-lawyer and per-case across independent LLM sessions.
     """
 
@@ -15,15 +17,13 @@ class MemoryAsAService:
         self.db_pool = db_pool
 
     async def extract_and_store_entities(self, attorney_id: str, case_id: str, document_text: str):
-        """Reads a document, extracts the permanent memory state (judges preferences, opposing counsel tactics),
+        """
+        Reads a document, extracts the permanent memory state (judges preferences, opposing counsel tactics),
         and locks it into the pgvector schema.
         """
         logger.info(f"MaaS: Extracting entities for Attorney {attorney_id} | Case {case_id}")
         # Phase 3 NLP Extraction via Intelligence Pipeline
-        extracted_memory = {
-            "judge_preference": "Hates footnoted citations",
-            "opposing_counsel": "Delays discovery",
-        }
+        extracted_memory = {"judge_preference": "Hates footnoted citations", "opposing_counsel": "Delays discovery"}
 
         if self.db_pool:
             async with self.db_pool.acquire() as conn:
@@ -48,14 +48,14 @@ class MemoryAsAService:
                     json.dumps(extracted_memory),
                 )
 
-                logger.info(
-                    "MaaS: Successfully persisted structured memory state to pgvector backend.",
-                )
+                logger.info("MaaS: Successfully persisted structured memory state to pgvector backend.")
 
         return extracted_memory
 
     async def inject_context(self, attorney_id: str, case_id: str, current_prompt: str) -> str:
-        """Injects the persisted memory directly into the Zero-Touch context window."""
+        """
+        Injects the persisted memory directly into the Zero-Touch context window.
+        """
         logger.debug(f"MaaS: Retrieving continuous memory state for Case {case_id}")
         historical_context = "MEMORY CONTEXT: None retrieved."
 

@@ -50,7 +50,7 @@ resource "google_cloud_run_v2_service" "legaltrack_api" {
   template {
     execution_environment = "EXECUTION_ENVIRONMENT_GEN2"
     service_account       = "run-sa@${var.project_id}.iam.gserviceaccount.com"
-
+    
     # 2026 Optimization: Cold start mitigation
     # startup_cpu_boost   = true  <- Handled via CLI/Deploy usually but noted
 
@@ -61,7 +61,7 @@ resource "google_cloud_run_v2_service" "legaltrack_api" {
 
     containers {
       image = "us-central1-docker.pkg.dev/${var.project_id}/legaltrack-repo/api:latest"
-
+      
       resources {
         limits = {
           cpu    = "1"

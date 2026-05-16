@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/circuit_breaker/config_loader.py
+# hypothesis_version: 6.151.5
+
+[60.0, 'failure_threshold', 'half_open_max_probes', 'reset_timeout_s', 'services']

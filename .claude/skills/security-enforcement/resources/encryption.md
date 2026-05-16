@@ -67,7 +67,7 @@ import { KeyManagementServiceClient } from '@google-cloud/kms';
 const kmsClient = new KeyManagementServiceClient();
 
 export async function getEncryptionKey(): Promise<Buffer> {
-  const keyName = `projects/${process.env.GCP_PROJECT}/locations/global/keyRings/shadowtagai-keys/cryptoKeys/data-encryption-key`;
+  const keyName = `projects/${process.env.GCP_PROJECT}/locations/global/keyRings/pnkln-keys/cryptoKeys/data-encryption-key`;
 
   // Generate a data encryption key (DEK) using KMS
   const [result] = await kmsClient.generateRandomBytes({
@@ -79,7 +79,7 @@ export async function getEncryptionKey(): Promise<Buffer> {
 }
 
 export async function encryptWithKMS(plaintext: string): Promise<string> {
-  const keyName = `projects/${process.env.GCP_PROJECT}/locations/global/keyRings/shadowtagai-keys/cryptoKeys/envelope-key`;
+  const keyName = `projects/${process.env.GCP_PROJECT}/locations/global/keyRings/pnkln-keys/cryptoKeys/envelope-key`;
 
   const [result] = await kmsClient.encrypt({
     name: keyName,
@@ -90,7 +90,7 @@ export async function encryptWithKMS(plaintext: string): Promise<string> {
 }
 
 export async function decryptWithKMS(ciphertext: string): Promise<string> {
-  const keyName = `projects/${process.env.GCP_PROJECT}/locations/global/keyRings/shadowtagai-keys/cryptoKeys/envelope-key`;
+  const keyName = `projects/${process.env.GCP_PROJECT}/locations/global/keyRings/pnkln-keys/cryptoKeys/envelope-key`;
 
   const [result] = await kmsClient.decrypt({
     name: keyName,

@@ -1,5 +1,4 @@
 # RoadMesh Data Flow Diagram
-
 ## Visual Architecture for Technical Presentations
 
 ---
@@ -519,22 +518,21 @@ graph TB
 
 ## 10. Data Flow Summary Table
 
-| Stage           | Input               | Processing             | Output                    | Latency  | Compute      |
-| --------------- | ------------------- | ---------------------- | ------------------------- | -------- | ------------ |
-| **Sensors**     | Physical world      | Synchronization        | Raw data (16 Gbps)        | 5ms      | N/A          |
-| **Perception**  | Sensor data         | BEV fusion + heads     | Objects, occupancy, lanes | 35ms     | 180 TOPS     |
-| **World Rep**   | Perception output   | GNN on graph           | Enriched graph (512-dim)  | 8ms      | 25 TOPS      |
-| **Forecasting** | Graph + history     | Multi-agent prediction | Trajectories (8s horizon) | 22ms     | 35 TOPS      |
-| **Planning**    | Forecast + graph    | Diffusion/sampling     | Ego trajectory (80 pts)   | 35ms     | 14 TOPS      |
-| **Control**     | Planned trajectory  | MPC optimization       | Actuator commands         | 10ms     | <1 TOPS      |
-| **TOTAL**       | Sensors → Actuators | Full pipeline          | Control @ 100Hz           | **95ms** | **254 TOPS** |
+| Stage | Input | Processing | Output | Latency | Compute |
+|-------|-------|------------|--------|---------|---------|
+| **Sensors** | Physical world | Synchronization | Raw data (16 Gbps) | 5ms | N/A |
+| **Perception** | Sensor data | BEV fusion + heads | Objects, occupancy, lanes | 35ms | 180 TOPS |
+| **World Rep** | Perception output | GNN on graph | Enriched graph (512-dim) | 8ms | 25 TOPS |
+| **Forecasting** | Graph + history | Multi-agent prediction | Trajectories (8s horizon) | 22ms | 35 TOPS |
+| **Planning** | Forecast + graph | Diffusion/sampling | Ego trajectory (80 pts) | 35ms | 14 TOPS |
+| **Control** | Planned trajectory | MPC optimization | Actuator commands | 10ms | <1 TOPS |
+| **TOTAL** | Sensors → Actuators | Full pipeline | Control @ 100Hz | **95ms** | **254 TOPS** |
 
 ---
 
 ## 11. Performance Metrics Summary
 
 ### Accuracy
-
 - **3D Object Detection AP:** 72.3% (vs industry 68-75%)
 - **BEV Segmentation IoU:** 68.1% (vs industry 62-70%)
 - **Lane Detection F1:** 91.2% (vs industry 88-93%)
@@ -543,14 +541,12 @@ graph TB
 - **Collision Rate:** 0.003/mile (target <0.01)
 
 ### Efficiency
-
 - **End-to-End Latency:** 95ms (target <100ms)
 - **Power Consumption:** 53W (edge device)
 - **Memory Usage:** 20 GB (of 64 GB available)
 - **Data Rate:** 500 GB/hour per vehicle
 
 ### Cost
-
 - **Hardware (per vehicle):** $12,700 (target $6,500 at scale)
 - **Cloud (per vehicle/month):** $35
 - **Training (per model):** $138K/month (fleet-wide)
@@ -560,7 +556,6 @@ graph TB
 ## Appendix: Legend
 
 ### Diagram Color Coding
-
 - 🔵 **Blue (Sensors/Input):** Physical sensors and data acquisition
 - 🟡 **Yellow (Processing):** Computation and inference
 - 🟢 **Green (Representation):** Data structures and graphs
@@ -569,7 +564,6 @@ graph TB
 - ☁️ **Cloud (Training/Inference):** Off-vehicle computation
 
 ### Performance Icons
-
 - ⏱️ **Latency:** Time from input to output
 - 💾 **Memory:** RAM usage
 - ⚡ **Compute:** TOPS (AI operations)

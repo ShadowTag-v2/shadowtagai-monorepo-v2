@@ -1,4 +1,5 @@
 #!/usr/bin/env uv run --script
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
@@ -11,10 +12,10 @@ import json
 import re
 import subprocess
 import sys
-from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, NewType, Protocol
+from collections.abc import Iterator
 
 import click
 import tomlkit
@@ -26,12 +27,7 @@ GitHash = NewType("GitHash", str)
 class GitHashParamType(click.ParamType):
     name = "git_hash"
 
-    def convert(
-        self,
-        value: Any,
-        param: click.Parameter | None,
-        ctx: click.Context | None,
-    ) -> GitHash | None:
+    def convert(self, value: Any, param: click.Parameter | None, ctx: click.Context | None) -> GitHash | None:
         if value is None:
             return None
 

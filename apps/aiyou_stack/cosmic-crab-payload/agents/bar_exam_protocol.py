@@ -1,17 +1,18 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 # agents/bar_exam_protocol.py
 import logging
 
+from agents.legal_whiteboard import whiteboard
 from google import genai
 from google.genai import types
-
-from agents.legal_whiteboard import whiteboard
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("BarExamProtocol")
 
 
 class BarExamProtocol:
-    """ShadowTag Omega V7 Bar Exam Protocol
+    """
+    ShadowTag Omega V7 Bar Exam Protocol
     Promotes agents through capability tiers using Gemini Thinking validation.
     """
 
@@ -21,7 +22,7 @@ class BarExamProtocol:
         api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("DEVELOPERKNOWLEDGE_API_KEY")
         if not api_key:
             raise ValueError(
-                "Missing API Key! Please set GOOGLE_API_KEY or DEVELOPERKNOWLEDGE_API_KEY.",
+                "Missing API Key! Please set GOOGLE_API_KEY or DEVELOPERKNOWLEDGE_API_KEY."
             )
         self.client = genai.Client(api_key=api_key)
 
@@ -31,10 +32,10 @@ class BarExamProtocol:
         # Level 1: Thinking-driven Validation
         try:
             response = self.client.models.generate_content(
-                model="gemini-3.1-flash-lite-preview-thinking",  # Using a thinking model
+                model="gemini-2.0-flash-thinking-exp-01-21",  # Using a thinking model
                 contents=f"Evaluate this agent's response to the challenge '{challenge}' for doctrinal correctness.",
                 config=types.GenerateContentConfig(
-                    thinking_config=types.ThinkingConfig(include_thoughts=True),
+                    thinking_config=types.ThinkingConfig(include_thoughts=True)
                 ),
             )
 

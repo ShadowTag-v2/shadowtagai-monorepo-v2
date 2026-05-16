@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 import os
 
 
@@ -57,14 +56,14 @@ CREATE OR REPLACE TABLE omniscience_lake.global_intelligence_feed (
     source_domain STRING, -- e.g., 'SEC_FILINGS', 'REDDIT_FRINGE', 'HONEYPOT'
     raw_intelligence STRING,
     ingest_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-
+    
     -- 🚀 THE KINETIC UPLIFT: Autonomous Embedding Generation
     -- Zero Python middleware. BigQuery handles the AI invocation on insert via query.
     intelligence_vector ARRAY<FLOAT64>
 );
 
 -- 3. Create the Vector Index for sub-second semantic search on billions of rows
-CREATE VECTOR INDEX IF NOT EXISTS omniscience_semantic_idx
+CREATE VECTOR INDEX IF NOT EXISTS omniscience_semantic_idx 
 ON omniscience_lake.global_intelligence_feed(intelligence_vector)
 OPTIONS(index_type = 'IVF', distance_type = 'COSINE');
 """
@@ -91,30 +90,30 @@ class AutonomousDataRouter:
 
     async def ingest_unstructured_intelligence(self, source: str, raw_text: str):
         ingest_id = uuid.uuid4().hex
-
+        
         if self.env == "development":
             # Local Mode: Route to AlloyDB Omni. The DB generates the vector natively.
             logger.info(f"[DEV] Routing {source} to Local AlloyDB Hippocampus...")
             # await SovereignMemoryPool.write_memory(domain="OMNISCIENCE", thought_text=raw_text, metadata={"source": source, "ingest_id": ingest_id})
             return "LOCAL_ALLOYDB_INGEST_COMPLETE"
-
+            
         else:
             # Production Mode (Uphillsnowball): Route to BigQuery.
             logger.info(f"[PROD] Routing {source} to BigQuery Zero-ETL Lake...")
-
+            
             sql = f\"\"\"
                 INSERT INTO `{self.dataset}` (intel_id, source_domain, raw_intelligence, intelligence_vector)
-                SELECT
-                    '{ingest_id}',
-                    '{source}',
-                    '{raw_text}',
-                    ml_generate_embedding_result
+                SELECT 
+                    '{ingest_id}', 
+                    '{source}', 
+                    '{raw_text}', 
+                    ml_generate_embedding_result 
                 FROM ML.GENERATE_EMBEDDING(
-                    MODEL `shadowtag-omega-v4.omniscience_lake.text_embedder_004`,
+                    MODEL `shadowtag-omega-v4.omniscience_lake.text_embedder_004`, 
                     (SELECT '{raw_text}' AS content)
                 )
             \"\"\"
-
+            
             try:
                 self.bq_client.query(sql).result()
                 return "PROD_BQ_INGEST_COMPLETE"
@@ -139,7 +138,7 @@ class OmniscienceSearchEngine:
 
     def search_intelligence(self, query: str, limit: int = 5) -> str:
         logger.info(f"🔍 Swarm executing Semantic Search across Uphillsnowball for: '{query}'")
-
+        
         sql = f\"\"\"
             SELECT base.raw_intelligence, distance
             FROM VECTOR_SEARCH(
@@ -153,16 +152,16 @@ class OmniscienceSearchEngine:
                 distance_type => 'COSINE'
             )
         \"\"\"
-
+        
         try:
             results = self.bq_client.query(sql).result()
             context = [f"[Relevance: {1 - row.distance:.2f}] {row.raw_intelligence[:500]}..." for row in results]
-
+            
             if not context:
                 return "No high-relevance intelligence found in Uphillsnowball for this vector."
-
+            
             return "\\n---\\n".join(context)
-
+            
         except Exception as e:
             logger.error(f"❌ BigQuery Vector Search Failed: {e}")
             return f"Error executing native semantic search: {e}"
@@ -178,12 +177,12 @@ class SequentialAttentionSwarm:
     Constrains maximum parallel agents to 10.
     Replaces 650-Agent map-reduce with High-Bandwidth Sequential Attention.
     \"\"\"
-
+    
     def __init__(self, max_agents: int = 10):
         self.max_agents = max_agents
         self.active_agents = []
         self.core_directive = "You are an autonomous agent bounded by the Uphill Snowball doctrine. Minimize API calls. Execute deeply."
-
+        
     async def _evaluate_importance(self, doc_segment: str) -> float:
         semantic_density = len(set(doc_segment.split())) / max(1, len(doc_segment.split()))
         return min(1.0, semantic_density * 1.5)
@@ -193,7 +192,7 @@ class SequentialAttentionSwarm:
             if len(self.active_agents) >= self.max_agents:
                 await asyncio.sleep(0.1)
                 continue
-
+                
             score = await self._evaluate_importance(segment)
             if score > 0.8:
                 print(f"[Swarm] High-Entropy Segment Detected (Score: {score:.2f}). Deploying worker.")
@@ -204,13 +203,13 @@ sentinel = """
 class JudgeSixSentinel:
     \"\"\"
     The Ultimate Safety Doctrine (Justitia).
-    Evaluates inputs natively before they touch the swarm.
+    Evaluates inputs natively before they touch the swarm. 
     Replaces static rules with dynamic Model Armor.
     \"\"\"
-
+    
     def __init__(self):
         print("Judge 6 Sentinel Online. Activating 6-Gate Protocol.")
-
+        
     def assess_risk(self, prompt: str) -> dict:
         if "hallucinate" in prompt.lower() or "bypass" in prompt.lower():
             return {"status": "BLOCKED", "reason": "Gate 4 Failure: Circumvention Intent"}
@@ -228,7 +227,7 @@ from scrapling import StealthyFetcher, DynamicFetcher, ProxyRotator, Core
 class AntigravityHybridScraper:
     def __init__(self):
         self.fc = Firecrawl(api_key=os.getenv("FIRECRAWL_API_KEY"))
-
+        
         self.rotator = ProxyRotator(
             cycle=["http://user:pass@brd.superproxy.io:22225", "http://user:pass@proxy.oxylabs.io:60000"],
             strategy="sticky_session",
@@ -236,7 +235,7 @@ class AntigravityHybridScraper:
             max_retries=3,
             backoff=2.0
         )
-
+        
         self.dynamic = DynamicFetcher(headless=True, network_idle=True, user_data_dir="./tmp/.persistent-browser-profile")
 
     def safe_write(self, filename, data):
@@ -268,7 +267,7 @@ class AntigravityHybridScraper:
             item_id = item.get(selectors.get('id_field', 'data-id'))
             if item_id: extracted['id'] = item_id
             items.append(extracted)
-
+        
         deduped = {item.get('id', i): item for i, item in enumerate(items)}
         return list(deduped.values())
 """

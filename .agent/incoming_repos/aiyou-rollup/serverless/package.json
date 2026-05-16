@@ -1,0 +1,18 @@
+{
+  "name": "pnkln-stack-rollup-serverless",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "start": "serverless offline --noPrependStageInUrl"
+  },
+  "dependencies": {
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.39.0",
+    "serverless-offline": "^13.8.0"
+  }
+}

@@ -41,6 +41,7 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
         {/* Play Overlay */}
         {!isPlaying && (
           <button
+            type="button"
             onClick={togglePlay}
             className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/60 transition-all"
           >
@@ -63,6 +64,7 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
           <div className="flex justify-between items-center mb-3">
             <div className="font-semibold">TRUTH LAYER</div>
             <button
+              type="button"
               onClick={() => setShowForensics(false)}
               className="text-xs opacity-60 hover:opacity-100"
             >
@@ -97,6 +99,7 @@ export default function EmbedPlayer({ videoId, autoPlay = false }: EmbedPlayerPr
       <div className="bg-black px-4 py-2 text-xs text-white/60 flex justify-between items-center">
         <div>HeadFade • Zero Filter Bubbles</div>
         <button
+          type="button"
           onClick={() => setShowForensics(!showForensics)}
           className="hover:text-white transition-colors"
         >

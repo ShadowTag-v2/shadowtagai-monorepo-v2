@@ -359,11 +359,15 @@ fi
 
 **Enhancements**:
 
+
 - Fetches PROJECT_ID from instance metadata for bucket names
+
 
 - Better error handling for cargo installs (checks if already installed)
 
+
 - Sources cargo environment for all shells
+
 
 - Better logging throughout
 
@@ -418,11 +422,16 @@ fi
 
 ### Improved Summary Output
 
+
+
 - Shows actual bucket names with project suffix
+
 
 - Indicates GPU status if enabled
 
+
 - Clearer next steps
+
 
 - Omits manual clone step if REPO_URL was provided
 
@@ -432,31 +441,46 @@ fi
 
 ### ✅ Fixed Issues
 
+
+
 - **Command Injection**: Replaced `eval` with safe `printf` assignment
+
 
 - **Input Validation**: Added basic validation for suspicious characters
 
 ### ✅ Good Security Practices Already Present
 
+
+
 - Service account with least-privilege IAM roles
+
 
 - No hardcoded credentials
 
+
 - Bucket lifecycle policies for data retention
+
 
 - SSD boot disk (encrypted at rest by default in GCP)
 
 ### ⚠️ Recommendations for Production Use
 
+
+
 1. **Add Input Validation**: Validate PROJECT_ID format (must match `[a-z][-a-z0-9]{4,28}[a-z0-9]`)
+
 
 2. **Add REPO_URL Validation**: Ensure it's a valid Git URL before passing to instance
 
+
 3. **Consider VPC Service Controls**: For production, add VPC-SC perimeter around resources
+
 
 4. **Enable Binary Authorization**: For production workloads
 
+
 5. **Add Workload Identity**: Instead of service account keys
+
 
 6. **Implement Cloud Armor**: If exposing JupyterLab externally
 
@@ -483,9 +507,13 @@ test_bucket_name_uniqueness() {
 
 ### Integration Tests
 
+
+
 1. **Dry Run Mode**: Add `--dry-run` flag that validates config without creating resources
 
+
 2. **Cleanup Script**: Create `cleanup.sh` to remove all created resources
+
 
 3. **Idempotency Test**: Run script twice, verify second run succeeds
 
@@ -495,8 +523,9 @@ test_bucket_name_uniqueness() {
 
 Before running the revised script:
 
-- [ ] Set required environment variables:
 
+
+- [ ] Set required environment variables:
   ```bash
   export GCP_PROJECT_ID="your-project-id"
   export RUST_SCRIPTBOTS_REPO="https://github.com/user/rust_scriptbots.git"
@@ -504,18 +533,28 @@ Before running the revised script:
   export USE_GPU="false"  # Set to "true" if you need GPU support
   ```
 
+
+
 - [ ] Ensure you have required permissions:
+
+
   - `roles/owner` OR combination of:
+
+
     - `roles/compute.admin`
+
 
     - `roles/iam.serviceAccountAdmin`
 
+
     - `roles/storage.admin`
+
 
     - `roles/notebooks.admin`
 
-- [ ] Install prerequisites:
 
+
+- [ ] Install prerequisites:
   ```bash
   # macOS
   brew install jq google-cloud-sdk
@@ -524,12 +563,15 @@ Before running the revised script:
   apt-get install jq google-cloud-sdk
   ```
 
-- [ ] Authenticate gcloud:
 
+
+- [ ] Authenticate gcloud:
   ```bash
   gcloud auth login
   gcloud config set project $GCP_PROJECT_ID
   ```
+
+
 
 - [ ] Have `COR_MULTI_AGENT_TEMPLATE.ipynb` in current directory (optional but recommended)
 
@@ -541,8 +583,9 @@ If you already deployed with the original script:
 
 ### Option 1: Manual Fixes
 
-1. **Upload Startup Script to Instance**:
 
+
+1. **Upload Startup Script to Instance**:
    ```bash
    # SSH to instance
    gcloud compute ssh pnkln-multi-agent --zone=us-central1-a
@@ -553,6 +596,8 @@ If you already deployed with the original script:
    sudo /tmp/startup.sh
    ```
 
+
+
 2. **Fix Bucket Names**: Update application code to use suffixed names:
    ```bash
    gs://pnkln-agent-mail-$PROJECT_ID
@@ -562,8 +607,9 @@ If you already deployed with the original script:
 
 ### Option 2: Clean Redeploy
 
-1. **Delete Existing Resources**:
 
+
+1. **Delete Existing Resources**:
    ```bash
    # Delete instance
    gcloud notebooks instances delete pnkln-multi-agent --location=us-central1-a
@@ -577,6 +623,8 @@ If you already deployed with the original script:
    gcloud iam service-accounts delete pnkln-agent-orchestrator@$PROJECT_ID.iam.gserviceaccount.com
    ```
 
+
+
 2. **Run Revised Script**:
    ```bash
    ./deploy-vertex-workbench-REVISED.sh
@@ -588,7 +636,10 @@ If you already deployed with the original script:
 
 ### Deployment Time
 
+
+
 - **Original Script Estimate**: 6-12 minutes
+
 
 - **Revised Script Actual**: 8-14 minutes (additional wait times for propagation)
 
@@ -604,36 +655,46 @@ No changes to runtime performance - improvements are deployment-only.
 
 ### Summary of Changes
 
-| Category           | Issues Found | Issues Fixed |
-| ------------------ | ------------ | ------------ |
-| Critical Security  | 1            | 1            |
-| Major Functional   | 4            | 4            |
-| Medium Priority    | 4            | 4            |
-| Minor/Improvements | 5+           | 5+           |
+| Category | Issues Found | Issues Fixed |
+|----------|-------------|--------------|
+| Critical Security | 1 | 1 |
+| Major Functional | 4 | 4 |
+| Medium Priority | 4 | 4 |
+| Minor/Improvements | 5+ | 5+ |
 
 ### Risk Assessment
 
 **Original Script Risk Level**: 🔴 **HIGH**
 
+
 - Critical security vulnerability
 
+
 - Multiple deployment failure points
+
 
 - Auto-configuration won't work
 
 **Revised Script Risk Level**: 🟢 **LOW**
 
+
 - All critical issues resolved
 
+
 - Robust error handling
+
 
 - Production-ready with recommended enhancements
 
 ### Next Steps
 
+
+
 1. **Immediate**: Use `deploy-vertex-workbench-REVISED.sh` for all new deployments
 
+
 2. **Short-term**: Add recommended security controls for production
+
 
 3. **Long-term**: Implement Infrastructure as Code (Terraform) for better state management
 
@@ -645,43 +706,60 @@ No changes to runtime performance - improvements are deployment-only.
 
 **Security**:
 
+
 - Fixed command injection vulnerability in `prompt_if_empty()`
+
 
 - Added input validation for user-provided values
 
 **Functionality**:
 
+
 - Attached startup script to instance via metadata
+
 
 - Made startup script fetch REPO_URL from instance metadata
 
+
 - Added conditional GPU support with proper hardware configuration
 
+
 - Added IAM propagation delays to prevent race conditions
+
 
 - Updated bucket names with project ID suffix for uniqueness
 
 **Reliability**:
 
+
 - Enhanced API enablement verification
+
 
 - Added FAILED state detection in instance provisioning
 
+
 - Improved error messages with console links
 
+
 - Added notebook JSON validation
+
 
 - Proper temp directory management with cleanup trap
 
 **Startup Script**:
 
+
 - Fetches configuration from instance metadata
+
 
 - Better cargo installation error handling
 
+
 - Sources cargo env for all shells
 
+
 - Dynamic project ID and bucket name resolution
+
 
 - Improved logging and error messages
 
@@ -689,11 +767,16 @@ No changes to runtime performance - improvements are deployment-only.
 
 ## References
 
+
+
 - [GCP Workbench Documentation](https://cloud.google.com/vertex-ai/docs/workbench)
+
 
 - [IAM Propagation Delays](https://cloud.google.com/iam/docs/access-change-propagation)
 
+
 - [Bash Security Best Practices](https://google.github.io/styleguide/shellguide.html)
+
 
 - [GCS Bucket Naming Rules](https://cloud.google.com/storage/docs/naming-buckets)
 

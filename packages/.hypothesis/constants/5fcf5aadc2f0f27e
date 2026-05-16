@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/counselconduit/api/stripe_handler.py
+# hypothesis_version: 6.151.5
+
+[60.0, 300, ',', '/stripe', '/webhooks', '=', 'Stripe-Signature', 'access_revoked', 'action', 'amount_cents', 'amount_due', 'amount_paid', 'attempt', 'attempt_count', 'customer', 'customer_email', 'data', 'email', 'event_type', 'id', 'no_handler', 'object', 'payment_failed', 'payment_recorded', 'provisioned', 'received', 'result', 'status', 'stripe', 'subscription', 'subscription_id', 't', 'tier_updated', 'type', 'unknown', 'utf-8', 'v1', 'webhooks']

@@ -1,5 +1,4 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-
 """RKILL — Emergency AI Safety Kill Protocol (Patent Claim #7).
 
 Two-phase coordinated lockout:
@@ -23,7 +22,7 @@ Usage::
         armor_policy="lawtrack-api-prod-policy",
         trigger_reason="RAISE_ACT_FRONTIER violation — automated lockout",
     )
-    result = await RkillProtocol(cfg).execute(triggered_by="Cor_Claude_Code_6-auto")
+    result = await RkillProtocol(cfg).execute(triggered_by="judge6-auto")
 """
 
 from __future__ import annotations

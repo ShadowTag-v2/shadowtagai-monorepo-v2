@@ -1,25 +1,26 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import pty
 import select
 
 # The command to run
 command = [
-    "/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/.venv/bin/python",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/.venv/bin/python",
     "scripts/god_mode_admin.py",
 ]
 
 # Set the environment variables
 os.environ["GCP_PROJECT_ID"] = "shadowtag-omega-v4"
-os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2"
+os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/Users/pikeymickey/aiyou-stack/ShadowTag-v2"
 os.environ["BRAIN_DIR"] = "/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"
-os.environ["EXTERNAL_SDKS"] = "/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2"
+os.environ["EXTERNAL_SDKS"] = "/Users/pikeymickey/aiyou-stack/ShadowTag-v2"
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
     "/Users/pikeymickey/Library/Application Support/google-vscode-extension/auth/application_default_credentials.json"
 )
 
 
 # Change the working directory
-os.chdir("/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2")
+os.chdir("/Users/pikeymickey/aiyou-stack/ShadowTag-v2")
 
 
 def read_until_prompt(fd, prompt="Awaiting Command Flux..."):

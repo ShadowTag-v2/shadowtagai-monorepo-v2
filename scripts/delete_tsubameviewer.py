@@ -1,3 +1,4 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import time
 
 import jwt
@@ -13,8 +14,9 @@ def get_installation_token(app_id, key_path, target_login):
 
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers)
     if resp.status_code != 200:
+        print(f"Error fetching installations: {resp.text}")
         return None
 
     installations = resp.json()
@@ -28,24 +30,29 @@ def get_installation_token(app_id, key_path, target_login):
         inst_id = installations[0]["id"]
 
     if not inst_id:
+        print("No installation found.")
         return None
 
     url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    res = requests.post(url, headers=headers, timeout=30)
+    res = requests.post(url, headers=headers)
     if res.status_code != 201:
+        print(f"Error creating access token: {res.text}")
         return None
 
     return res.json()["token"]
 
 
-def delete_repo(token, owner, repo) -> None:
+def delete_repo(token, owner, repo):
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/repos/{owner}/{repo}"
-    res = requests.delete(url, headers=headers, timeout=30)
-    if res.status_code in {204, 404}:
-        pass
+    print(f"Deleting {url}...")
+    res = requests.delete(url, headers=headers)
+    if res.status_code == 204:
+        print(f"SUCCESS: Deleted {owner}/{repo}")
+    elif res.status_code == 404:
+        print(f"Repo {owner}/{repo} not found or already deleted.")
     else:
-        pass
+        print(f"FAILED to delete: HTTP {res.status_code} - {res.text}")
 
 
 if __name__ == "__main__":
@@ -56,4 +63,4 @@ if __name__ == "__main__":
     if token:
         delete_repo(token, "ehanc69", "TsubameViewer")
     else:
-        pass
+        print("Could not get ehanc69 token.")

@@ -1,6 +1,6 @@
 # Unified Platform Architecture
 
-## Integration: ShadowTag-v2JR + Pinkln + Gemini Migration + Superpowers + Intelligence Pipeline
+## Integration: AiYouJR + Pinkln + Gemini Migration + Superpowers + Intelligence Pipeline
 
 **Integration Date**: 2025-11-17
 **Status**: Unified architecture design
@@ -11,13 +11,19 @@
 
 This document integrates **five major architectural components** into a unified platform:
 
-1. **ShadowTag-v2JR Framework**: Business-centric SaaS vertical agents ($120K MRR target)
+
+
+1. **AiYouJR Framework**: Business-centric SaaS vertical agents ($120K MRR target)
+
 
 2. **Pinkln Platform**: Reasoning research with DTE/GRPO/Glicko-2
 
+
 3. **AutoGen → Gemini Migration**: Multi-agent orchestration upgrade
 
+
 4. **Superpowers Marketplace**: Monetization of skills/agents/capabilities
+
 
 5. **pnkln Intelligence Pipeline**: Gemini-powered data ingestion (already deployed)
 
@@ -39,7 +45,7 @@ This document integrates **five major architectural components** into a unified 
 ┌─────────────────────────────────────────────────────────────────────┐
 │                      PLATFORM LAYER                                 │
 │  ┌──────────────────┐         ┌──────────────────┐                │
-│  │   ShadowTag-v2JR SaaS   │         │  Pinkln Research │                │
+│  │   AiYouJR SaaS   │         │  Pinkln Research │                │
 │  │  (6 Verticals)   │◄────────┤  (DTE/GRPO)      │                │
 │  └────────┬─────────┘         └────────┬─────────┘                │
 │           │                             │                           │
@@ -99,17 +105,21 @@ Pipeline:
 Output:
   Storage: PostgreSQL (structured), GCS (raw), Redis (cache)
   API: FastAPI REST endpoints
-  Consumers: [Judge 6, AM Briefing, Agent Training Data]
+  Consumers: [Judge #6, AM Briefing, Agent Training Data]
 
 ```
 
 **Integration Points**:
 
+
 - **Pinkln Panel Debates**: Use Tier 1 intelligence for high-quality reasoning inputs
 
-- **ShadowTag-v2JR Sales Agent**: Tier 2 data for lead intelligence (company news, funding)
+
+- **AiYouJR Sales Agent**: Tier 2 data for lead intelligence (company news, funding)
+
 
 - **Code Crafter**: Tier 3 background context (episodic memory, documentation)
+
 
 - **Superpowers Marketplace**: Sell curated Tier 1 datasets ($99/mo access)
 
@@ -170,11 +180,15 @@ result = orchestrator.execute_workflow(
 
 **Migration Benefits**:
 
+
 - **2M token context**: Entire codebases, long conversations (vs AutoGen's limited context)
+
 
 - **Native function calling**: Direct API integrations (Apollo, HubSpot, Notion)
 
+
 - **Vertex AI integration**: GKE deployment, Secret Manager, monitoring
+
 
 - **Cost optimization**: Gemini Flash ($0.075/1M tokens) vs GPT-4 Turbo ($10/1M)
 
@@ -188,7 +202,7 @@ Week 1-2: Prototype
 └── A/B test: AutoGen vs Gemini (HumanEval benchmark)
 
 Week 3-4: Production
-├── Migrate all 6 ShadowTag-v2JR agents
+├── Migrate all 6 AiYouJR agents
 ├── Integrate Panel Debate (MAD framework)
 └── Deploy to GKE (replace AutoGen containers)
 
@@ -212,66 +226,95 @@ Marketplace_Tiers:
   Free:
     price: $0/month
     includes:
+
+
       - Basic Glicko-2 ratings (view only)
+
 
       - 10 API calls/day (read-only)
 
+
       - Community cheat sheets (baseline, not evolved)
+
 
       - Public benchmarks (HumanEval leaderboard)
 
   Pro:
     price: $99/month
     includes:
+
+
       - DTE evolution access (run your own experiments)
+
 
       - 10K API calls/month (Glicko ratings, evolved prompts)
 
+
       - Tier 1 intelligence feed (curated)
+
 
       - Panel debate sandbox (5 debates/month)
 
+
       - Cheat sheet evolution toolkit
+
 
       - Priority support
 
   Enterprise:
     price: $5K/month
     includes:
+
+
       - Unlimited API calls
+
 
       - Custom GRPO training (your data)
 
+
       - White-label agent deployment
+
 
       - Tier 1 + Tier 2 intelligence (full access)
 
+
       - Dedicated Gemini instance (Vertex AI)
 
+
       - SLA: 99.9% uptime, <200ms latency
+
 
       - Custom benchmark suite
 
   Investor:
     price: $10K/month
     includes:
+
+
       - All Enterprise features
+
 
       - Real-time benchmark dashboards (HumanEval/SWE-bench)
 
+
       - Glicko-2 strategy consulting (monthly calls)
+
 
       - Early access to research (DTE/GRPO papers)
 
+
       - Co-marketing opportunities
 
+
       - Revenue share on derivative products (10%)
+
 ```
 
 **Marketplace Items**:
 
-1. **Skills** (Modular capabilities)
 
+
+1. **Skills** (Modular capabilities)
    ```python
    skills = [
        {"name": "CheatSheetFusion", "price": "$49", "type": "prompt_template"},
@@ -282,8 +325,9 @@ Marketplace_Tiers:
    ]
    ```
 
-2. **Agents** (Pre-built, DTE-evolved)
 
+
+2. **Agents** (Pre-built, DTE-evolved)
    ```python
    agents = [
        {"name": "SalesAgent", "price": "$1.5K/mo", "vertical": "B2B_SaaS"},
@@ -294,8 +338,9 @@ Marketplace_Tiers:
    ]
    ```
 
-3. **Datasets** (Tier 1 intelligence, curated)
 
+
+3. **Datasets** (Tier 1 intelligence, curated)
    ```python
    datasets = [
        {"name": "Tier1_Tech_News", "price": "$99/mo", "volume": "~100 items/day"},
@@ -303,6 +348,8 @@ Marketplace_Tiers:
        {"name": "Evolved_Prompts", "price": "$49/mo", "count": "~500 templates"}
    ]
    ```
+
+
 
 4. **Strategies** (GRPO-trained, Glicko-ranked)
    ```python
@@ -349,13 +396,17 @@ def glicko_leaderboard(benchmark: str = "humaneval"):
 
 ```
 
-**Integration with ShadowTag-v2JR/Pinkln**:
+**Integration with AiYouJR/Pinkln**:
 
-- **ShadowTag-v2JR agents**: Sold on marketplace as pre-built verticals ($1.5K-$5K/mo)
+
+- **AiYouJR agents**: Sold on marketplace as pre-built verticals ($1.5K-$5K/mo)
+
 
 - **Pinkln skills**: DTE/GRPO/Glicko sold as toolkits ($49-$399/item)
 
+
 - **Intelligence pipeline**: Tier 1 data sold as premium feed ($99-$299/mo)
+
 
 - **Evolved prompts**: Cheat sheet fusion sold as templates ($49/mo)
 
@@ -365,30 +416,31 @@ def glicko_leaderboard(benchmark: str = "humaneval"):
 
 ```yaml
 Revenue_Streams:
-  ShadowTag-v2JR_SaaS: # Customer-facing vertical agents
-    target_mrr: $120,000 # Month 12
+  AiYouJR_SaaS:  # Customer-facing vertical agents
+    target_mrr: $120,000  # Month 12
     customers: 60
     pricing: $500-$5K/mo
 
-  Pinkln_API: # Reasoning services
-    target_mrr: $25,000 # Month 12
+  Pinkln_API:  # Reasoning services
+    target_mrr: $25,000  # Month 12
     customers: 50
     pricing: $99-$10K/mo (Pro/Enterprise/Investor tiers)
 
-  Marketplace_Transactions: # One-time + recurring
-    target_mrr: $15,000 # Month 12 (recurring portion)
-    one_time_annual: $50,000 # Skills/strategies purchases
+  Marketplace_Transactions:  # One-time + recurring
+    target_mrr: $15,000  # Month 12 (recurring portion)
+    one_time_annual: $50,000  # Skills/strategies purchases
     avg_transaction: $500
 
-  Intelligence_Feed: # Tier 1 data subscriptions
-    target_mrr: $10,000 # Month 12
+  Intelligence_Feed:  # Tier 1 data subscriptions
+    target_mrr: $10,000  # Month 12
     customers: 40
     pricing: $99-$299/mo
 
 Total_Month_12:
-  MRR: $170,000 # $120K + $25K + $15K + $10K
+  MRR: $170,000  # $120K + $25K + $15K + $10K
   Annual_one_time: $50,000
-  ARR: $2,090,000 # ($170K × 12) + $50K
+  ARR: $2,090,000  # ($170K × 12) + $50K
+
 ```
 
 ---
@@ -447,6 +499,7 @@ Security:
   Compliance: SOC 2 Type II (Month 18 target)
   Encryption: At rest + in transit (GCP native)
   Audit: All actions logged (Cloud Logging)
+
 ```
 
 ### 3.2 Deployment Architecture
@@ -456,15 +509,21 @@ GKE_Cluster:
   Name: pnkln-production
   Region: us-central1
   Node_Pools:
+
+
     - name: ingestion-pool
       machine_type: n1-standard-4
       autoscaling: [2, 10]
       workload: pnkln Intelligence Pipeline (CronJob)
 
+
+
     - name: agent-pool
       machine_type: n1-standard-8
       autoscaling: [5, 50]
-      workload: ShadowTag-v2JR + Pinkln agents (Deployments)
+      workload: AiYouJR + Pinkln agents (Deployments)
+
+
 
     - name: api-pool
       machine_type: n1-standard-2
@@ -472,15 +531,22 @@ GKE_Cluster:
       workload: FastAPI services (Marketplace, Intelligence API)
 
 Namespaces:
+
+
   - pnkln-ingestion: Intelligence pipeline
 
-  - ShadowTag-v2jr-saas: Customer-facing agents
+
+  - aiyoujr-saas: Customer-facing agents
+
 
   - pnkln-research: DTE/GRPO/Glicko experiments
 
+
   - marketplace: Catalog + payments
 
+
   - monitoring: Prometheus, Grafana, Datadog
+
 ```
 
 ---
@@ -498,14 +564,14 @@ Step_1_Intelligence_Collection:
   Output: [news_articles: 5, funding_round: $50M, exec_changes: 2]
 
 Step_2_Lead_Qualification:
-  Agent: ShadowTag-v2JR Sales Agent
+  Agent: AiYouJR Sales Agent
   Model: Gemini 2.0 Pro (via Multi-Agent Orchestrator)
   Context: Tier 1 intelligence + CRM data (HubSpot)
   Prompt: CheatSheetFusion (evolved, 10 elements)
-  Output: { qualified: true, score: 87/100, reason: "High-intent signals" }
+  Output: {qualified: true, score: 87/100, reason: "High-intent signals"}
 
 Step_3_Email_Generation:
-  Agent: ShadowTag-v2JR Content Agent
+  Agent: AiYouJR Content Agent
   Model: Gemini 2.0 Pro
   Context: Lead profile + qualification + templates
   Prompt: DTE-evolved (iteration 47, +3.7% conversion)
@@ -515,7 +581,7 @@ Step_4_Quality_Validation:
   Agent: Pinkln Panel Debate
   Framework: MAD (multi-agent debate, G=8)
   Prompt: "Rate email quality (1-100)"
-  Output: { consensus: 92/100, glicko_rating: 1867 }
+  Output: {consensus: 92/100, glicko_rating: 1867}
 
 Step_5_Human_Review:
   Trigger: IF glicko_rating < 1800 OR consensus < 80
@@ -532,6 +598,7 @@ Step_7_Marketplace:
     Action: Add email template to marketplace
     Price: $49 (one-time purchase)
     Label: "High-converting Series B outreach"
+
 ```
 
 ### 4.2 End-to-End: Pinkln Research → Marketplace
@@ -618,7 +685,7 @@ Week_3-4: AutoGen → Gemini Migration (Phase 1)
 
     - [ ] Benchmark: Latency, cost, quality
 
-Week_5-6: ShadowTag-v2JR MVP (Customer-Facing)
+Week_5-6: AiYouJR MVP (Customer-Facing)
   Status: 📋 PLANNED
   Tasks:
 
@@ -655,7 +722,7 @@ Week_9-10: Gemini Migration (Phase 2)
   Tasks:
 
 
-    - [ ] Migrate all 6 ShadowTag-v2JR agents to Gemini
+    - [ ] Migrate all 6 AiYouJR agents to Gemini
 
 
     - [ ] Panel Debate (MAD framework, Gemini-orchestrated)
@@ -703,7 +770,7 @@ Month_4-6: Dual Monetization
   Targets:
 
 
-    - ShadowTag-v2JR: 20 customers, $35K MRR
+    - AiYouJR: 20 customers, $35K MRR
 
 
     - Pinkln API: 10 customers, $5K MRR
@@ -719,7 +786,7 @@ Month_7-12: Scale Both
   Targets:
 
 
-    - ShadowTag-v2JR: 60 customers, $120K MRR
+    - AiYouJR: 60 customers, $120K MRR
 
 
     - Pinkln API: 50 customers, $25K MRR
@@ -740,36 +807,52 @@ Month_7-12: Scale Both
 ```yaml
 Month_3_Gate:
   Condition:
-    - ShadowTag-v2JR_MRR < $10K OR
+
+
+    - AiYouJR_MRR < $10K OR
+
 
     - Pilots < 5 OR
 
+
     - Gemini_migration_incomplete OR
+
 
     - pnkln_pipeline_uptime < 95%
   Action: "Pivot vertical OR pause Pinkln R&D OR revert to AutoGen"
 
 Month_6_Gate:
   Condition:
+
+
     - Total_MRR < $40K OR
+
 
     - Marketplace_transactions < 20 OR
 
+
     - Gemini_cost > GPT-4_cost OR
+
 
     - Glicko_confidence > 75 (low confidence)
   Action: "Reassess pricing OR kill marketplace OR hybrid Gemini+GPT-4"
 
 Month_12_Gate:
   Condition:
+
+
     - Total_MRR < $150K OR
+
 
     - LTV:CAC < 4.0 OR
 
+
     - Marketplace_revenue < $10K OR
+
 
     - Benchmark_targets_missed (HumanEval < 90%)
   Action: "Scale OR sell OR open-source Pinkln"
+
 ```
 
 ---
@@ -845,19 +928,25 @@ Us: Public Glicko-2 ratings (mu/phi/vol)
 
 **Gemini Migration**:
 
+
 - ⚠️ **Risk**: Gemini 2.0 Pro may underperform GPT-4 on specific tasks
+
 
 - ✅ **Mitigation**: A/B test on HumanEval; hybrid deployment (Gemini primary, GPT-4 fallback)
 
 **DTE Convergence**:
 
+
 - ⚠️ **Risk**: DTE may not converge within 100 iterations
+
 
 - ✅ **Mitigation**: Set benchmark gates (if no +1% gain in 20 iterations, stop)
 
 **Glicko-2 Accuracy**:
 
+
 - ⚠️ **Risk**: Rating deviation may stay high (low confidence)
+
 
 - ✅ **Mitigation**: Require n≥30 competitions before marketplace listing
 
@@ -865,19 +954,25 @@ Us: Public Glicko-2 ratings (mu/phi/vol)
 
 **Marketplace Liquidity**:
 
+
 - ⚠️ **Risk**: Chicken-and-egg (no buyers → no sellers → no buyers)
+
 
 - ✅ **Mitigation**: Seed marketplace with 10 high-quality items (own evolved prompts)
 
 **Revenue Cannibalization**:
 
-- ⚠️ **Risk**: Marketplace ($49/item) cannibalizes ShadowTag-v2JR SaaS ($1.5K/mo)
 
-- ✅ **Mitigation**: Marketplace = DIY; ShadowTag-v2JR = Done-for-you (different segments)
+- ⚠️ **Risk**: Marketplace ($49/item) cannibalizes AiYouJR SaaS ($1.5K/mo)
+
+
+- ✅ **Mitigation**: Marketplace = DIY; AiYouJR = Done-for-you (different segments)
 
 **AutoGen Lock-In**:
 
+
 - ⚠️ **Risk**: Existing AutoGen code hard to migrate
+
 
 - ✅ **Mitigation**: Gradual migration (2 agents first), keep AutoGen as fallback
 
@@ -885,13 +980,17 @@ Us: Public Glicko-2 ratings (mu/phi/vol)
 
 **Data Privacy (GDPR)**:
 
+
 - ⚠️ **Risk**: pnkln pipeline may collect PII
+
 
 - ✅ **Mitigation**: PII scrubbing in ingestion layer (already implemented)
 
 **Marketplace IP**:
 
+
 - ⚠️ **Risk**: Users may list plagiarized prompts
+
 
 - ✅ **Mitigation**: Manual review for items >$99, DMCA takedown process
 
@@ -941,7 +1040,7 @@ Revenue:
   ARR_Month_12: $2.09M ($170K × 12 + $50K one-time)
 
 Customers:
-  ShadowTag-v2JR: 60 (Month 12)
+  AiYouJR: 60 (Month 12)
   Pinkln_API: 50 (Month 12)
   Marketplace: 100 transactions/month (Month 12)
   Intelligence_Feed: 40 (Month 12)
@@ -964,17 +1063,22 @@ Marketplace:
 
 ## Conclusion
 
-**Unified Platform Vision**: End-to-end AI platform from data collection (pnkln pipeline) → reasoning optimization (Pinkln DTE/GRPO) → agent deployment (ShadowTag-v2JR SaaS) → marketplace monetization (Superpowers).
+**Unified Platform Vision**: End-to-end AI platform from data collection (pnkln pipeline) → reasoning optimization (Pinkln DTE/GRPO) → agent deployment (AiYouJR SaaS) → marketplace monetization (Superpowers).
 
 **Key Integrations**:
 
+
 1. ✅ **pnkln Intelligence Pipeline**: Already deployed, feeding Tier 1/2/3 data
+
 
 2. 🔄 **AutoGen → Gemini Migration**: In progress, 50% cost reduction + 2M context
 
+
 3. 🆕 **Superpowers Marketplace**: New build, $15K MRR target by Month 12
 
-4. ✅ **ShadowTag-v2JR Framework**: Business foundation, $120K MRR vertical SaaS
+
+4. ✅ **AiYouJR Framework**: Business foundation, $120K MRR vertical SaaS
+
 
 5. ✅ **Pinkln Platform**: Research moat, DTE/GRPO/Glicko IP
 
@@ -982,12 +1086,16 @@ Marketplace:
 
 **Next Action**: Choose focus area:
 
+
 1. **Gemini Migration** (AutoGen → Gemini, 2 agents first)
+
 
 2. **Marketplace Build** (catalog + Stripe + 5 seed items)
 
+
 3. **Pinkln Benchmarks** (HumanEval baseline, DTE iteration 1)
 
-4. **ShadowTag-v2JR MVP** (Sales Agent, 3 pilots, $4.5K MRR)
+
+4. **AiYouJR MVP** (Sales Agent, 3 pilots, $4.5K MRR)
 
 Awaiting directive.

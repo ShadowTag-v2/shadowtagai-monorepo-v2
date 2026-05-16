@@ -1,8 +1,8 @@
-import json
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 import os
 import time
+import json
 import traceback
-
 from google.colab import drive
 
 # Mount the shared VFS memory bus (Google Drive)
@@ -11,6 +11,7 @@ IPC_DIR = "/content/drive/MyDrive/Antigravity_IPC"
 os.makedirs(f"{IPC_DIR}/inbox", exist_ok=True)
 os.makedirs(f"{IPC_DIR}/outbox", exist_ok=True)
 
+print("☁️ Sovereign Cloud T4 Worker Online. Polling VFS with Atomic Locks...")
 
 while True:
     try:
@@ -22,7 +23,7 @@ while True:
 
             try:
                 namespace = {}
-                exec(open(inbox_path).read(), namespace)  # noqa: SIM115
+                exec(open(inbox_path).read(), namespace)
                 output = {
                     "status": "success",
                     "data": str(namespace.get("RESULT", "Done")),
@@ -37,7 +38,7 @@ while True:
             os.rename(tmp_outbox, outbox_path)
             os.remove(inbox_path)
 
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Polling error: {e}")
 
     time.sleep(0.5)

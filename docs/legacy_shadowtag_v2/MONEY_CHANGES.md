@@ -111,7 +111,6 @@ ARR: $892,800
 **Current**: Optional feature (no revenue capture)
 
 **New Model**:
-
 - Polygon receipts: Included in Pro+
 - Ethereum mainnet: $1/receipt (premium authenticity)
 - Multi-chain bundles: $0.50/receipt for 1K+ volume
@@ -169,7 +168,6 @@ ARR: $537,000
 - Skill bundles (e.g., "Content Creator Stack")
 
 **Revenue Projections**:
-
 - 100 skill creators × avg $500/month revenue × 30% = $15K MRR
 - Growing to 1,000 creators = $150K MRR (12-18 months)
 
@@ -178,7 +176,6 @@ ARR: $537,000
 #### 2.3 Agent Personas Licensing
 
 **Wealth Accelerator**, **UltraThink Designer** → licensed to:
-
 - Consulting firms ($10K-$50K/year per firm)
 - Accelerators/incubators ($25K/year)
 - Enterprise training programs ($50K+/year)
@@ -194,7 +191,6 @@ ARR: $537,000
 **Product**: AI-Powered Content Authenticity Platform
 
 **Use Case Flow**:
-
 1. Creator generates AI content (video, audio, image)
 2. **UltraThink Designer** agent optimizes content for virality
 3. **Monetization Architect** skill suggests revenue strategies
@@ -203,7 +199,6 @@ ARR: $537,000
 6. Creator publishes → verification requests → data flywheel
 
 **Revenue Multiplier**:
-
 - Not selling watermarking OR orchestration
 - Selling **complete creator revenue stack**
 - Price: $199-$499/month (10× higher than components)
@@ -214,14 +209,12 @@ ARR: $537,000
 **Strategy**: License entire stack to platforms
 
 **Target Customers**:
-
 - Social media platforms (Instagram, TikTok, YouTube)
 - Stock media marketplaces (Shutterstock, Adobe Stock)
 - NFT platforms (OpenSea, Foundation)
 - Content creation tools (Canva, Descript, Riverside)
 
 **Pricing Model**:
-
 - Setup fee: $50K-$250K
 - Per-user licensing: $2-$10/month per active creator
 - Revenue share: 10-20% of incremental revenue
@@ -233,13 +226,11 @@ ARR: $537,000
 **Asset**: Watermark verification corpus + UltraThink execution traces
 
 **Buyers**:
-
 - AI companies training content provenance models
 - Research institutions studying AI orchestration
 - Regulatory bodies (EU AI Act compliance)
 
 **Pricing**:
-
 - Anonymized corpus: $100K-$500K/year per customer
 - Live API access: $1M+/year for real-time verification
 
@@ -250,7 +241,6 @@ ARR: $537,000
 ## Revenue Summary: 12-Month Projection
 
 ### Standalone (Current State)
-
 ```
 ShadowTag v2 API SaaS:        $892,800 ARR
 UltraThink Orchestration:     $537,000 ARR
@@ -261,7 +251,6 @@ Net Revenue:                $1,143,840
 ```
 
 ### Integrated Platform (Target State)
-
 ```
 Core SaaS (combined):       $1,429,800 ARR
 Data Flywheel Licensing:    $1,000,000 ARR
@@ -278,7 +267,6 @@ REVENUE MULTIPLIER: 3.27× vs standalone
 ```
 
 ### Cost Structure
-
 ```
 Infrastructure (GCP):         $180,000/year
 Headcount (10 FTE @ $150K):  $1,500,000/year
@@ -361,12 +349,10 @@ EBITDA Margin:                     38%
 ### Infrastructure Optimization
 
 **Before**:
-
 - CPU-only video processing: $0.50/embed
 - 1K embeds/day = $15K/month compute
 
 **After**:
-
 - GPU batching (NVIDIA T4): $0.05/embed
 - 10K embeds/day = $15K/month (10× volume, same cost)
 - **Savings**: $135K/year at scale
@@ -374,13 +360,11 @@ EBITDA Margin:                     38%
 ### Token Optimization (UltraThink)
 
 **Before**:
-
 - Standard CoT: ~2K tokens/execution
 - 10K executions/month = 20M tokens
 - Cost @ Claude Sonnet 4.5: ~$60K/month
 
 **After** (Apply RoT + ICoT from research deltas):
-
 - RoT: 40% token reduction → 1.2K tokens/execution
 - ICoT for simple tasks: 100% accuracy, 50% token reduction
 - Blended: ~1K tokens/execution average
@@ -390,13 +374,11 @@ EBITDA Margin:                     38%
 ### Blockchain Gas Optimization
 
 **Before**:
-
 - Per-transaction receipts on Ethereum mainnet
 - Average: $5-$20/transaction
 - 1K receipts/month = $10K-$40K/month
 
 **After**:
-
 - Polygon for most receipts: $0.01/transaction
 - Ethereum only for premium/enterprise
 - Batch receipts where possible
@@ -412,7 +394,6 @@ EBITDA Margin:                     38%
 ### pnkln Target: ≥3× ROI in 18 Months
 
 **Investment (Cumulative)**:
-
 - R&D (ShadowTag v2 + UltraThink): $200K
 - Infrastructure build-out: $50K
 - Initial headcount (6 months): $750K
@@ -420,7 +401,6 @@ EBITDA Margin:                     38%
 - **TOTAL**: $1,200,000
 
 **12-Month Revenue (Conservative)**:
-
 - SaaS MRR: $40K (ramp to $100K by month 12)
 - Data licensing: $300K ARR
 - Enterprise contracts: $1M ARR
@@ -428,7 +408,6 @@ EBITDA Margin:                     38%
 - **Net Revenue** (80% margin): $1,424,000
 
 **ROI Calculation**:
-
 - Return: $1,424,000
 - Investment: $1,200,000
 - **ROI = 1.19× at 12 months**
@@ -438,14 +417,12 @@ EBITDA Margin:                     38%
 ### Acceleration Plan (Hit 3× by 18 Months)
 
 **Additional Initiatives** (Months 13-18):
-
 1. **Skills Marketplace Launch**: +$180K ARR (30% of $600K GMV)
 2. **B2B2C White-Label**: Close 2 platform deals = +$1M ARR
 3. **International Expansion**: EU + Asia = +$500K ARR
 4. **NFT Minting Integration**: +$200K ARR
 
 **18-Month Projection**:
-
 - ARR: $3,660,000
 - Net Revenue (85% margin): $3,111,000
 - **ROI = 2.59×**
@@ -474,46 +451,39 @@ Still short of 3×. **Kill-switch discussion required OR pivot.**
 ## Strategic Advantages (7 Powers)
 
 ### 1. **Process Power** (Patent-Pending)
-
 - Dual-layer watermarking (video DCT + audio ultrasonic)
 - Provisional patent filed
 - 18-month head start on competitors
 - **Moat Strength**: 7/10
 
 ### 2. **Network Effects** (Skills Marketplace)
-
 - More creators → more skills → more users
 - Two-sided marketplace dynamics
 - **Moat Strength**: 9/10 (at scale)
 
 ### 3. **Data Flywheel**
-
 - Each watermark verification → corpus grows
 - Corpus = training data = ML advantage
 - Compounding moat over time
 - **Moat Strength**: 8/10
 
 ### 4. **Scale Economics** (Infrastructure)
-
 - GPU batching: 10× cost advantage at scale
 - Token optimization: 50% cheaper per execution
 - Blockchain batching: 100× gas savings
 - **Moat Strength**: 6/10
 
 ### 5. **Brand** (Early Mover)
-
 - First H.264-resilient watermarking
 - First AI orchestration + authenticity bundle
 - **Moat Strength**: 4/10 (too early)
 
 ### 6. **Cornered Resource** (Talent)
-
 - UltraThink framework IP
 - ShadowTag v2 implementation team
 - **Moat Strength**: 5/10
 
 ### 7. **Switching Costs** (Integration Lock-In)
-
 - Once creators integrate → sticky
 - White-label partners → infrastructure dependency
 - **Moat Strength**: 7/10
@@ -549,13 +519,11 @@ Still short of 3×. **Kill-switch discussion required OR pivot.**
 ### Kill-Switch Decision Point
 
 **12-Month Review**:
-
 - If ROI < 2×: **KILL** or **PIVOT**
 - If ROI 2-2.5×: **ACCELERATE** (double down on B2B2C)
 - If ROI > 2.5×: **CONTINUE** (on track for 3× at 18 months)
 
 **18-Month Review**:
-
 - If ROI < 3×: **KILL** or **STRATEGIC EXIT**
 - If ROI ≥ 3×: **SCALE** (raise growth capital)
 
@@ -585,4 +553,4 @@ Still short of 3×. **Kill-switch discussion required OR pivot.**
 
 ---
 
-_"Revenue is vanity, profit is sanity, cash is reality."_ — Anonymous CFO
+*"Revenue is vanity, profit is sanity, cash is reality."* — Anonymous CFO

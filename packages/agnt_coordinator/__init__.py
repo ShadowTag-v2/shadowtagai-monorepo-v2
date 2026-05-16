@@ -3,7 +3,7 @@
 from .coordinator import SubAgentCoordinator, TaskResult, TaskState
 
 __all__ = [
-    "SubAgentCoordinator",
-    "TaskResult",
-    "TaskState",
+  "SubAgentCoordinator",
+  "TaskResult",
+  "TaskState",
 ]

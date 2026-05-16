@@ -3,28 +3,28 @@ import os
 BASE_DIR = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/shadowtag_v4-web-dashboard/src/app"
 
 ROUTES = [
-    ("contact", "Contact Us"),
-    ("contact/contact-ir", "Contact Investor Relations"),
-    ("contact/contact-sales-inquiries", "Contact Sales Inquiries"),
-    ("contact/faq", "Investor FAQs"),
-    ("contact/email-alerts", "Email Alerts"),
-    ("media-inquiries", "Media Inquiries"),
-    ("products", "Our Products"),
-    ("news-events", "News & Events"),
-    ("news-events/media-coverage", "Media Coverage"),
-    ("news-events/events", "Upcoming Events"),
-    ("news-events/press-releases", "Press Releases"),
-    ("stock", "Stock Information"),
-    ("about-us", "About Us"),
-    ("about-us/overview", "Company Overview"),
-    ("about-us/company-presentation", "Company Presentation"),
-    ("corporate-governance", "Corporate Governance"),
-    ("corporate-governance/management", "Management Team"),
-    ("corporate-governance/board-of-directors", "Board of Directors"),
-    ("corporate-governance/board-committees", "Board Committees"),
-    ("corporate-governance/governance-documents", "Governance Documents"),
-    ("financials/sec-filings", "SEC Filings"),
-    ("accessibility", "Accessibility Policy"),
+  ("contact", "Contact Us"),
+  ("contact/contact-ir", "Contact Investor Relations"),
+  ("contact/contact-sales-inquiries", "Contact Sales Inquiries"),
+  ("contact/faq", "Investor FAQs"),
+  ("contact/email-alerts", "Email Alerts"),
+  ("media-inquiries", "Media Inquiries"),
+  ("products", "Our Products"),
+  ("news-events", "News & Events"),
+  ("news-events/media-coverage", "Media Coverage"),
+  ("news-events/events", "Upcoming Events"),
+  ("news-events/press-releases", "Press Releases"),
+  ("stock", "Stock Information"),
+  ("about-us", "About Us"),
+  ("about-us/overview", "Company Overview"),
+  ("about-us/company-presentation", "Company Presentation"),
+  ("corporate-governance", "Corporate Governance"),
+  ("corporate-governance/management", "Management Team"),
+  ("corporate-governance/board-of-directors", "Board of Directors"),
+  ("corporate-governance/board-committees", "Board Committees"),
+  ("corporate-governance/governance-documents", "Governance Documents"),
+  ("financials/sec-filings", "SEC Filings"),
+  ("accessibility", "Accessibility Policy"),
 ]
 
 TEMPLATE = """import React from 'react';
@@ -62,19 +62,19 @@ export default function Page() {
 
 
 def main():
-    print("Executing Stitch 2 Route Scaffolding Daemon...")
-    for route, title in ROUTES:
-        dir_path = os.path.join(BASE_DIR, route)
-        os.makedirs(dir_path, exist_ok=True)
-        file_path = os.path.join(dir_path, "page.tsx")
+  print("Executing Stitch 2 Route Scaffolding Daemon...")
+  for route, title in ROUTES:
+    dir_path = os.path.join(BASE_DIR, route)
+    os.makedirs(dir_path, exist_ok=True)
+    file_path = os.path.join(dir_path, "page.tsx")
 
-        # Don't overwrite if heavily customized, but since we are copying, we just blast it.
-        with open(file_path, "w") as f:
-            f.write(TEMPLATE.replace("{page_title}", title))
-        print(f"Scaffolded [200 OK]: /{route}")
+    # Don't overwrite if heavily customized, but since we are copying, we just blast it.
+    with open(file_path, "w") as f:
+      f.write(TEMPLATE.replace("{page_title}", title))
+    print(f"Scaffolded [200 OK]: /{route}")
 
-    print("Scaffolding Complete. All unusualmachines.com nodes replicated.")
+  print("Scaffolding Complete. All unusualmachines.com nodes replicated.")
 
 
 if __name__ == "__main__":
-    main()
+  main()

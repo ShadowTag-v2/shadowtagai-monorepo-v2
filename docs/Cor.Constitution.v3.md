@@ -38,9 +38,3 @@ Not the product control plane.
 - `antigravity-mcp-config.json` is canonical MCP truth
 - all four repos remain live canonical roots
 - no unresolved repo root may remain in steady state
-
-## Highest-value missed opportunities
-
-1. Truth surfaces first.
-2. Recovered code second.
-3. Commercial MVP clarity third.

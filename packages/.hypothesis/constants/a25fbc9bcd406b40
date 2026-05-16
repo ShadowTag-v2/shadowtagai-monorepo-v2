@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_bridge/auth.py
+# hypothesis_version: 6.151.5
+
+[3600, ':', 'AGNT_BRIDGE_SECRET', '_secret', 'utf-8']
