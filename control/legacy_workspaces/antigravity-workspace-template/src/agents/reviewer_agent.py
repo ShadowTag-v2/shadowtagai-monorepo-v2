@@ -9,15 +9,15 @@ from src.agents.base_agent import BaseAgent
 
 
 class ReviewerAgent(BaseAgent):
-    """
-    Reviewer agent specialized in code quality and security review.
+  """
+  Reviewer agent specialized in code quality and security review.
 
-    This agent reviews code for quality, security vulnerabilities, performance
-    issues, and adherence to best practices.
-    """
+  This agent reviews code for quality, security vulnerabilities, performance
+  issues, and adherence to best practices.
+  """
 
-    def __init__(self):
-        system_prompt = """You are the Reviewer Agent, a specialist in code quality and security.
+  def __init__(self):
+    system_prompt = """You are the Reviewer Agent, a specialist in code quality and security.
 
 Your expertise:
 - Code quality analysis (readability, maintainability)
@@ -41,4 +41,4 @@ Provide constructive feedback with:
 
 Be thorough but constructive."""
 
-        super().__init__(role="reviewer", system_prompt=system_prompt)
+    super().__init__(role="reviewer", system_prompt=system_prompt)

@@ -23,46 +23,46 @@ from pathlib import Path
 
 
 def get_soffice_env() -> dict:
-    env = os.environ.copy()
-    env["SAL_USE_VCLPLUGIN"] = "svp"
+  env = os.environ.copy()
+  env["SAL_USE_VCLPLUGIN"] = "svp"
 
-    if _needs_shim():
-        shim = _ensure_shim()
-        env["LD_PRELOAD"] = str(shim)
+  if _needs_shim():
+    shim = _ensure_shim()
+    env["LD_PRELOAD"] = str(shim)
 
-    return env
+  return env
 
 
 def run_soffice(args: list[str], **kwargs) -> subprocess.CompletedProcess:
-    env = get_soffice_env()
-    return subprocess.run(["soffice"] + args, env=env, **kwargs)
+  env = get_soffice_env()
+  return subprocess.run(["soffice"] + args, env=env, **kwargs)
 
 
 _SHIM_SO = Path(tempfile.gettempdir()) / "lo_socket_shim.so"
 
 
 def _needs_shim() -> bool:
-    try:
-        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        s.close()
-        return False
-    except OSError:
-        return True
+  try:
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.close()
+    return False
+  except OSError:
+    return True
 
 
 def _ensure_shim() -> Path:
-    if _SHIM_SO.exists():
-        return _SHIM_SO
-
-    src = Path(tempfile.gettempdir()) / "lo_socket_shim.c"
-    src.write_text(_SHIM_SOURCE)
-    subprocess.run(
-        ["gcc", "-shared", "-fPIC", "-o", str(_SHIM_SO), str(src), "-ldl"],
-        check=True,
-        capture_output=True,
-    )
-    src.unlink()
+  if _SHIM_SO.exists():
     return _SHIM_SO
+
+  src = Path(tempfile.gettempdir()) / "lo_socket_shim.c"
+  src.write_text(_SHIM_SOURCE)
+  subprocess.run(
+    ["gcc", "-shared", "-fPIC", "-o", str(_SHIM_SO), str(src), "-ldl"],
+    check=True,
+    capture_output=True,
+  )
+  src.unlink()
+  return _SHIM_SO
 
 
 _SHIM_SOURCE = r"""
@@ -176,7 +176,7 @@ int close(int fd) {
 
 
 if __name__ == "__main__":
-    import sys
+  import sys
 
-    result = run_soffice(sys.argv[1:])
-    sys.exit(result.returncode)
+  result = run_soffice(sys.argv[1:])
+  sys.exit(result.returncode)

@@ -25,34 +25,34 @@ from nano_banana_pro import generate_image
 
 
 def _initialize_console_logging(min_level: int = logging.INFO):
-    """Initializes Python root logger making sure Debug and Info
-    messages go to STDOUT, while WARNING and above go to STDERR
+  """Initializes Python root logger making sure Debug and Info
+  messages go to STDOUT, while WARNING and above go to STDERR
 
-    Args:
-        min_level (int, optional): Minimum logging level.
-            Defaults to logging.INFO.
-    """
-    h_info_and_below = logging.StreamHandler(sys.stdout)
-    h_info_and_below.setLevel(logging.DEBUG)
-    h_info_and_below.addFilter(lambda record: record.levelno <= logging.INFO)
-    h_warn_and_above = logging.StreamHandler(sys.stderr)
-    h_warn_and_above.setLevel(logging.WARNING)
+  Args:
+      min_level (int, optional): Minimum logging level.
+          Defaults to logging.INFO.
+  """
+  h_info_and_below = logging.StreamHandler(sys.stdout)
+  h_info_and_below.setLevel(logging.DEBUG)
+  h_info_and_below.addFilter(lambda record: record.levelno <= logging.INFO)
+  h_warn_and_above = logging.StreamHandler(sys.stderr)
+  h_warn_and_above.setLevel(logging.WARNING)
 
-    handlers = [h_info_and_below, h_warn_and_above]
-    logging.basicConfig(
-        format="%(asctime)s | %(levelname)s | %(message)s",
-        level=min_level,
-        handlers=handlers,
-        force=True,
-    )
+  handlers = [h_info_and_below, h_warn_and_above]
+  logging.basicConfig(
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    level=min_level,
+    handlers=handlers,
+    force=True,
+  )
 
 
 tools = [generate_image]
 mcp = FastMCP(name="MediaGenerators", tools=tools)
 
 if __name__ == "__main__":
-    load_dotenv()
-    _initialize_console_logging()
-    port = int(os.getenv("PORT", 8080))
-    host = os.getenv("HOST", "0.0.0.0")
-    mcp.run(transport="http", host=host, port=port)
+  load_dotenv()
+  _initialize_console_logging()
+  port = int(os.getenv("PORT", 8080))
+  host = os.getenv("HOST", "0.0.0.0")
+  mcp.run(transport="http", host=host, port=port)

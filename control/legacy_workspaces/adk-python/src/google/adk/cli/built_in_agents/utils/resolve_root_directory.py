@@ -25,63 +25,65 @@ from .path_normalizer import sanitize_generated_file_path
 
 
 def resolve_file_path(
-    file_path: str,
-    session_state: dict[str, Any] | None = None,
-    working_directory: str | None = None,
+  file_path: str,
+  session_state: dict[str, Any] | None = None,
+  working_directory: str | None = None,
 ) -> Path:
-    """Resolve a file path using root directory from session state.
+  """Resolve a file path using root directory from session state.
 
-    This is a helper function that other tools can use to resolve file paths
-    without needing to be async or return detailed resolution information.
+  This is a helper function that other tools can use to resolve file paths
+  without needing to be async or return detailed resolution information.
 
-    Args:
-      file_path: File path (relative or absolute)
-      session_state: Session state dict that may contain root_directory
-      working_directory: Working directory to use as base (defaults to cwd)
+  Args:
+    file_path: File path (relative or absolute)
+    session_state: Session state dict that may contain root_directory
+    working_directory: Working directory to use as base (defaults to cwd)
 
-    Returns:
-      Resolved absolute Path object
-    """
-    normalized_path = sanitize_generated_file_path(file_path)
-    file_path_obj = Path(normalized_path)
+  Returns:
+    Resolved absolute Path object
+  """
+  normalized_path = sanitize_generated_file_path(file_path)
+  file_path_obj = Path(normalized_path)
 
-    # If already absolute, use as-is
-    if file_path_obj.is_absolute():
-        return file_path_obj
+  # If already absolute, use as-is
+  if file_path_obj.is_absolute():
+    return file_path_obj
 
-    # Get root directory from session state, default to "./"
-    root_directory = "./"
-    if session_state and "root_directory" in session_state:
-        root_directory = session_state["root_directory"]
+  # Get root directory from session state, default to "./"
+  root_directory = "./"
+  if session_state and "root_directory" in session_state:
+    root_directory = session_state["root_directory"]
 
-    # Use the same resolution logic as the main function
-    root_path_obj = Path(root_directory)
+  # Use the same resolution logic as the main function
+  root_path_obj = Path(root_directory)
 
-    if root_path_obj.is_absolute():
-        resolved_root = root_path_obj
+  if root_path_obj.is_absolute():
+    resolved_root = root_path_obj
+  else:
+    if working_directory:
+      resolved_root = Path(working_directory) / root_directory
     else:
-        if working_directory:
-            resolved_root = Path(working_directory) / root_directory
-        else:
-            resolved_root = Path(os.getcwd()) / root_directory
+      resolved_root = Path(os.getcwd()) / root_directory
 
-    # Resolve file path relative to root directory
-    return resolved_root / file_path_obj
+  # Resolve file path relative to root directory
+  return resolved_root / file_path_obj
 
 
 def resolve_file_paths(
-    file_paths: list[str],
-    session_state: dict[str, Any] | None = None,
-    working_directory: str | None = None,
+  file_paths: list[str],
+  session_state: dict[str, Any] | None = None,
+  working_directory: str | None = None,
 ) -> list[Path]:
-    """Resolve multiple file paths using root directory from session state.
+  """Resolve multiple file paths using root directory from session state.
 
-    Args:
-      file_paths: List of file paths (relative or absolute)
-      session_state: Session state dict that may contain root_directory
-      working_directory: Working directory to use as base (defaults to cwd)
+  Args:
+    file_paths: List of file paths (relative or absolute)
+    session_state: Session state dict that may contain root_directory
+    working_directory: Working directory to use as base (defaults to cwd)
 
-    Returns:
-      List of resolved absolute Path objects
-    """
-    return [resolve_file_path(path, session_state, working_directory) for path in file_paths]
+  Returns:
+    List of resolved absolute Path objects
+  """
+  return [
+    resolve_file_path(path, session_state, working_directory) for path in file_paths
+  ]

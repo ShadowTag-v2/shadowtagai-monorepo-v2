@@ -20,80 +20,82 @@ logger = logging.getLogger(__name__)
 
 
 class Tier2AutoActions:
+  """
+  Automated action handler for Tier 2 items
+  """
+
+  def __init__(self):
+    """Initialize Tier 2 auto-actions"""
+    self.github_token = os.getenv("GITHUB_TOKEN")
+    self.slack_webhook = os.getenv("SLACK_WEBHOOK_URL")
+    logger.info("Tier2AutoActions initialized")
+
+  async def process_tier2_items(
+    self, items: list[IntelligenceItem]
+  ) -> list[IntelligenceItem]:
     """
-    Automated action handler for Tier 2 items
+    Process Tier 2 items with automated actions
+
+    Args:
+        items: List of classified intelligence items
+
+    Returns:
+        Same list with action metadata added
     """
+    tier2_items = [item for item in items if item.tier == IntelligenceTier.TIER_2]
 
-    def __init__(self):
-        """Initialize Tier 2 auto-actions"""
-        self.github_token = os.getenv("GITHUB_TOKEN")
-        self.slack_webhook = os.getenv("SLACK_WEBHOOK_URL")
-        logger.info("Tier2AutoActions initialized")
+    logger.info(f"=== Processing {len(tier2_items)} Tier 2 items ===")
+    start_time = datetime.now()
 
-    async def process_tier2_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Process Tier 2 items with automated actions
+    for i, item in enumerate(tier2_items):
+      try:
+        actions_taken = []
 
-        Args:
-            items: List of classified intelligence items
+        # Create GitHub issue
+        if self.github_token:
+          issue_url = await self.create_github_issue(item)
+          if issue_url:
+            actions_taken.append(f"GitHub issue: {issue_url}")
 
-        Returns:
-            Same list with action metadata added
-        """
-        tier2_items = [item for item in items if item.tier == IntelligenceTier.TIER_2]
+        # Send Slack notification
+        if self.slack_webhook:
+          slack_sent = await self.send_slack_notification(item)
+          if slack_sent:
+            actions_taken.append("Slack notification sent")
 
-        logger.info(f"=== Processing {len(tier2_items)} Tier 2 items ===")
-        start_time = datetime.now()
+        # Schedule monitoring
+        monitoring_scheduled = await self.schedule_monitoring(item)
+        if monitoring_scheduled:
+          actions_taken.append("Monitoring scheduled")
 
-        for i, item in enumerate(tier2_items):
-            try:
-                actions_taken = []
+        item.action_items = actions_taken
+        logger.info(f"[{i + 1}/{len(tier2_items)}] Processed: {item.title[:50]}...")
 
-                # Create GitHub issue
-                if self.github_token:
-                    issue_url = await self.create_github_issue(item)
-                    if issue_url:
-                        actions_taken.append(f"GitHub issue: {issue_url}")
+      except Exception as e:
+        logger.error(f"Error processing Tier 2 item {item.id}: {e}")
+        item.action_items = [f"Action failed: {str(e)}"]
 
-                # Send Slack notification
-                if self.slack_webhook:
-                    slack_sent = await self.send_slack_notification(item)
-                    if slack_sent:
-                        actions_taken.append("Slack notification sent")
+    duration = (datetime.now() - start_time).total_seconds()
+    logger.info(f"✓ Tier 2 actions complete in {duration:.1f}s")
 
-                # Schedule monitoring
-                monitoring_scheduled = await self.schedule_monitoring(item)
-                if monitoring_scheduled:
-                    actions_taken.append("Monitoring scheduled")
+    return items
 
-                item.action_items = actions_taken
-                logger.info(f"[{i + 1}/{len(tier2_items)}] Processed: {item.title[:50]}...")
+  async def create_github_issue(self, item: IntelligenceItem) -> str:
+    """
+    Create GitHub issue for Tier 2 item
 
-            except Exception as e:
-                logger.error(f"Error processing Tier 2 item {item.id}: {e}")
-                item.action_items = [f"Action failed: {str(e)}"]
+    Args:
+        item: Intelligence item
 
-        duration = (datetime.now() - start_time).total_seconds()
-        logger.info(f"✓ Tier 2 actions complete in {duration:.1f}s")
+    Returns:
+        Issue URL or empty string
+    """
+    logger.info(f"📝 Creating GitHub issue for: {item.title[:50]}...")
 
-        return items
-
-    async def create_github_issue(self, item: IntelligenceItem) -> str:
-        """
-        Create GitHub issue for Tier 2 item
-
-        Args:
-            item: Intelligence item
-
-        Returns:
-            Issue URL or empty string
-        """
-        logger.info(f"📝 Creating GitHub issue for: {item.title[:50]}...")
-
-        # In production, use GitHub API
-        # For now, log the intent
-        issue_title = f"[Intelligence] {item.title[:100]}"
-        issue_body = f"""## Intelligence Item
+    # In production, use GitHub API
+    # For now, log the intent
+    issue_title = f"[Intelligence] {item.title[:100]}"
+    issue_body = f"""## Intelligence Item
 
 **Source:** {item.source.value}
 **Published:** {item.published_date.strftime("%Y-%m-%d")}
@@ -113,24 +115,24 @@ class Tier2AutoActions:
 *Auto-generated by PNKLN Intelligence Pipeline*
 """
 
-        logger.info(f"  Issue would be created: {issue_title}")
-        return "https://github.com/pnkln/intelligence/issues/new"
+    logger.info(f"  Issue would be created: {issue_title}")
+    return "https://github.com/pnkln/intelligence/issues/new"
 
-    async def send_slack_notification(self, item: IntelligenceItem) -> bool:
-        """
-        Send Slack notification for Tier 2 item
+  async def send_slack_notification(self, item: IntelligenceItem) -> bool:
+    """
+    Send Slack notification for Tier 2 item
 
-        Args:
-            item: Intelligence item
+    Args:
+        item: Intelligence item
 
-        Returns:
-            True if sent successfully
-        """
-        logger.info(f"💬 Sending Slack notification for: {item.title[:50]}...")
+    Returns:
+        True if sent successfully
+    """
+    logger.info(f"💬 Sending Slack notification for: {item.title[:50]}...")
 
-        # In production, use Slack webhook
-        # For now, log the intent
-        message = f"""🔔 *Tier 2 Intelligence Alert*
+    # In production, use Slack webhook
+    # For now, log the intent
+    message = f"""🔔 *Tier 2 Intelligence Alert*
 
 *{item.title}*
 
@@ -144,55 +146,59 @@ class Tier2AutoActions:
 <{item.url}|View Source>
 """
 
-        logger.info("  Slack notification would be sent")
-        return True
+    logger.info("  Slack notification would be sent")
+    return True
 
-    async def schedule_monitoring(self, item: IntelligenceItem) -> bool:
-        """
-        Schedule follow-up monitoring for item
+  async def schedule_monitoring(self, item: IntelligenceItem) -> bool:
+    """
+    Schedule follow-up monitoring for item
 
-        Args:
-            item: Intelligence item
+    Args:
+        item: Intelligence item
 
-        Returns:
-            True if scheduled successfully
-        """
-        logger.info(f"📅 Scheduling monitoring for: {item.title[:50]}...")
+    Returns:
+        True if scheduled successfully
+    """
+    logger.info(f"📅 Scheduling monitoring for: {item.title[:50]}...")
 
-        # In production, add to monitoring schedule
-        # For now, log the intent
-        logger.info("  Monitoring scheduled for 30 days")
-        return True
+    # In production, add to monitoring schedule
+    # For now, log the intent
+    logger.info("  Monitoring scheduled for 30 days")
+    return True
 
 
 async def main():
-    """
-    Main Tier 2 actions entry point
-    """
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+  """
+  Main Tier 2 actions entry point
+  """
+  logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  )
 
-    # Load synthesized items
-    input_file = "/tmp/intelligence_items_synthesized.json"
-    with open(input_file) as f:
-        items_data = json.load(f)
+  # Load synthesized items
+  input_file = "/tmp/intelligence_items_synthesized.json"
+  with open(input_file) as f:
+    items_data = json.load(f)
 
-    items = [IntelligenceItem.from_dict(item_data) for item_data in items_data]
+  items = [IntelligenceItem.from_dict(item_data) for item_data in items_data]
 
-    # Process Tier 2 items
-    processor = Tier2AutoActions()
-    processed_items = await processor.process_tier2_items(items)
+  # Process Tier 2 items
+  processor = Tier2AutoActions()
+  processed_items = await processor.process_tier2_items(items)
 
-    # Save processed items
-    output_file = "/tmp/intelligence_items_processed.json"
-    with open(output_file, "w") as f:
-        json.dump([item.to_dict() for item in processed_items], f, indent=2, default=str)
+  # Save processed items
+  output_file = "/tmp/intelligence_items_processed.json"
+  with open(output_file, "w") as f:
+    json.dump([item.to_dict() for item in processed_items], f, indent=2, default=str)
 
-    tier2_count = len([item for item in processed_items if item.tier == IntelligenceTier.TIER_2])
-    print(f"✓ Processed {tier2_count} Tier 2 items")
-    print(f"✓ Saved to {output_file}")
+  tier2_count = len(
+    [item for item in processed_items if item.tier == IntelligenceTier.TIER_2]
+  )
+  print(f"✓ Processed {tier2_count} Tier 2 items")
+  print(f"✓ Saved to {output_file}")
 
 
 if __name__ == "__main__":
-    import asyncio
+  import asyncio
 
-    asyncio.run(main())
+  asyncio.run(main())

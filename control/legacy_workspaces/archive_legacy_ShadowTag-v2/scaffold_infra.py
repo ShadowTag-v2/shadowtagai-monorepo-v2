@@ -3,17 +3,17 @@ import os
 
 
 def write_file(path, content):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w") as f:
-        f.write(content.strip() + "\n")
+  os.makedirs(os.path.dirname(path), exist_ok=True)
+  with open(path, "w") as f:
+    f.write(content.strip() + "\n")
 
 
 # -------------------------------------------------------------
 # 1. infrastructure-pulumi
 # -------------------------------------------------------------
 write_file(
-    "infrastructure-pulumi/README.md",
-    """
+  "infrastructure-pulumi/README.md",
+  """
 # infrastructure-pulumi – GCP Serverless (Pure Cloud Run)
 
 Production Pulumi monorepo (TypeScript) for GCP Cloud Run Gen2.
@@ -45,8 +45,8 @@ Full observability alerts fire automatically on deploy.
 )
 
 write_file(
-    "infrastructure-pulumi/mise.toml",
-    """
+  "infrastructure-pulumi/mise.toml",
+  """
 [tools]
 pulumi = "3.150.0"
 node = "22"
@@ -54,8 +54,8 @@ node = "22"
 )
 
 write_file(
-    "infrastructure-pulumi/package.json",
-    """
+  "infrastructure-pulumi/package.json",
+  """
 {
   "name": "infrastructure-pulumi",
   "private": true,
@@ -68,8 +68,8 @@ write_file(
 )
 
 write_file(
-    "infrastructure-pulumi/pnpm-workspace.yaml",
-    """
+  "infrastructure-pulumi/pnpm-workspace.yaml",
+  """
 packages:
   - 'packages/*'
   - 'stacks/*'
@@ -77,15 +77,15 @@ packages:
 )
 
 write_file(
-    "infrastructure-pulumi/tsconfig.json",
-    """
+  "infrastructure-pulumi/tsconfig.json",
+  """
 { "compilerOptions": { "target": "ES2022", "module": "commonjs", "strict": true } }
 """,
 )
 
 write_file(
-    "infrastructure-pulumi/.github/workflows/pulumi-preview.yml",
-    """
+  "infrastructure-pulumi/.github/workflows/pulumi-preview.yml",
+  """
 name: Pulumi Preview (PR)
 on:
   pull_request:
@@ -131,8 +131,8 @@ jobs:
 )
 
 write_file(
-    "infrastructure-pulumi/.github/workflows/pulumi-deploy.yml",
-    """
+  "infrastructure-pulumi/.github/workflows/pulumi-deploy.yml",
+  """
 name: Pulumi Deploy (main)
 on:
   push:
@@ -182,8 +182,8 @@ jobs:
 )
 
 write_file(
-    "infrastructure-pulumi/.github/workflows/cloud-deploy-rollout.yml",
-    """
+  "infrastructure-pulumi/.github/workflows/cloud-deploy-rollout.yml",
+  """
 name: Cloud Deploy Canary Rollout
 on:
   workflow_dispatch:
@@ -239,8 +239,8 @@ jobs:
 
 # Packages
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/package.json",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/package.json",
+  """
 {
   "name": "@yourorg/gcp-cloud-run",
   "version": "1.2.0",
@@ -252,15 +252,15 @@ write_file(
 )
 
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/tsconfig.json",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/tsconfig.json",
+  """
 { "extends": "../../tsconfig.json", "compilerOptions": { "outDir": "./dist" } }
 """,
 )
 
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/src/vpc-connector.ts",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/src/vpc-connector.ts",
+  """
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 
@@ -297,8 +297,8 @@ export class VpcConnector extends pulumi.ComponentResource {
 )
 
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/src/cloud-sql.ts",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/src/cloud-sql.ts",
+  """
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 
@@ -313,8 +313,8 @@ export class CloudSql extends pulumi.ComponentResource {
 )
 
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/src/cloud-deploy-canary.ts",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/src/cloud-deploy-canary.ts",
+  """
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 import { CloudRun } from "./cloud-run";
@@ -393,8 +393,8 @@ export class CloudDeployCanaryPipeline extends pulumi.ComponentResource {
 )
 
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/src/cloud-run.ts",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/src/cloud-run.ts",
+  """
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 
@@ -583,8 +583,8 @@ export class CloudRun extends pulumi.ComponentResource {
 )
 
 write_file(
-    "infrastructure-pulumi/packages/gcp-cloud-run/src/index.ts",
-    """
+  "infrastructure-pulumi/packages/gcp-cloud-run/src/index.ts",
+  """
 export * from "./cloud-run";
 export * from "./vpc-connector";
 export * from "./cloud-sql";
@@ -593,8 +593,8 @@ export * from "./cloud-deploy-canary";
 )
 
 write_file(
-    "infrastructure-pulumi/stacks/dev/index.ts",
-    """
+  "infrastructure-pulumi/stacks/dev/index.ts",
+  """
 import { CloudRun, VpcConnector, CloudDeployCanaryPipeline } from "@yourorg/gcp-cloud-run";
 
 const connector = new VpcConnector("private-run", {
@@ -632,16 +632,16 @@ export const canaryRolloutUrl = canaryPipeline.rolloutUrl;
 )
 
 write_file(
-    "infrastructure-pulumi/stacks/dev/Pulumi.yaml",
-    """
+  "infrastructure-pulumi/stacks/dev/Pulumi.yaml",
+  """
 name: dev-infra
 runtime: nodejs
 """,
 )
 
 write_file(
-    "infrastructure-pulumi/stacks/dev/Pulumi.dev.yaml",
-    """
+  "infrastructure-pulumi/stacks/dev/Pulumi.dev.yaml",
+  """
 config:
   gcp:project: my-project
   gcp:region: us-central1
@@ -652,8 +652,8 @@ config:
 # 2. infrastructure-catalog-gcp-cloud-run
 # -------------------------------------------------------------
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/README.md",
-    """
+  "infrastructure-catalog-gcp-cloud-run/README.md",
+  """
 # infrastructure-catalog-gcp-cloud-run
 
 Production OpenTofu modules for GCP Cloud Run v2 (serverless only) – 2026 best practices.
@@ -673,8 +673,8 @@ Modules:
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/mise.toml",
-    """
+  "infrastructure-catalog-gcp-cloud-run/mise.toml",
+  """
 [tools]
 opentofu = "1.11.5"
 terragrunt = "1.0.0"
@@ -683,8 +683,8 @@ tflint = "latest"
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/.pre-commit-config.yaml",
-    """
+  "infrastructure-catalog-gcp-cloud-run/.pre-commit-config.yaml",
+  """
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.95.0
@@ -698,8 +698,8 @@ repos:
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/.github/workflows/opentofu-ci.yml",
-    """
+  "infrastructure-catalog-gcp-cloud-run/.github/workflows/opentofu-ci.yml",
+  """
 name: OpenTofu CI
 on: [push, pull_request]
 jobs:
@@ -715,8 +715,8 @@ jobs:
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/.github/workflows/opentofu-release.yml",
-    """
+  "infrastructure-catalog-gcp-cloud-run/.github/workflows/opentofu-release.yml",
+  """
 name: OpenTofu Release
 on:
   push:
@@ -737,8 +737,8 @@ jobs:
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-vpc-connector/variables.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-vpc-connector/variables.tf",
+  """
 variable "project_id" { type = string }
 variable "region"     { type = string; default = "us-central1" }
 variable "name"       { type = string }
@@ -750,8 +750,8 @@ variable "max_instances" { type = number; default = 10 }
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-vpc-connector/main.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-vpc-connector/main.tf",
+  """
 resource "google_vpc_access_connector" "connector" {
   name          = var.name
   region        = var.region
@@ -768,16 +768,16 @@ resource "google_vpc_access_connector" "connector" {
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-vpc-connector/outputs.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-vpc-connector/outputs.tf",
+  """
 output "id"   { value = google_vpc_access_connector.connector.id }
 output "name" { value = google_vpc_access_connector.connector.name }
 """,
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-service/variables.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-service/variables.tf",
+  """
 variable "project_id" { type = string }
 variable "region"     { type = string; default = "us-central1" }
 variable "service_name" { type = string }
@@ -805,8 +805,8 @@ variable "cloud_sql_instances" { type = list(string); default = [] }
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-service/main.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-service/main.tf",
+  """
 resource "google_cloud_run_v2_service" "service" {
   name     = var.service_name
   location = var.region
@@ -834,8 +834,8 @@ resource "google_cloud_run_v2_service" "service" {
         period_seconds        = var.startup_probe.period
       }
       """
-    + "liveness_probe {"
-    + """
+  + "liveness_probe {"
+  + """
         initial_delay_seconds = var.liveness_probe.initial_delay
         timeout_seconds       = var.liveness_probe.timeout
         period_seconds        = var.liveness_probe.period
@@ -874,8 +874,8 @@ resource "google_cloud_run_v2_service" "service" {
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-iam/variables.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-iam/variables.tf",
+  """
 variable "project_id" { type = string }
 variable "region"     { type = string }
 variable "service_name" { type = string }
@@ -886,8 +886,8 @@ variable "iam_members" {
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-iam/main.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-run-iam/main.tf",
+  """
 resource "google_cloud_run_v2_service_iam_member" "member" {
   for_each = var.iam_members
   project  = var.project_id
@@ -900,8 +900,8 @@ resource "google_cloud_run_v2_service_iam_member" "member" {
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/variables.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/variables.tf",
+  """
 variable "project_id" { type = string }
 variable "region"     { type = string; default = "us-central1" }
 variable "name"       { type = string }
@@ -913,8 +913,8 @@ variable "description" { type = string; default = "Automated canary for Cloud Ru
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/main.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/main.tf",
+  """
 resource "google_clouddeploy_target" "run_target" {
   location = var.region
   name     = "${var.name}-target"
@@ -961,8 +961,8 @@ resource "google_clouddeploy_delivery_pipeline" "pipeline" {
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/outputs.tf",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/outputs.tf",
+  """
 output "pipeline_name" { value = google_clouddeploy_delivery_pipeline.pipeline.name }
 output "target_name"   { value = google_clouddeploy_target.run_target.name }
 output "rollout_url"   { value = "https://console.cloud.google.com/deploy/delivery-pipelines/${var.region}/${google_clouddeploy_delivery_pipeline.pipeline.name}?project=${var.project_id}" }
@@ -970,8 +970,8 @@ output "rollout_url"   { value = "https://console.cloud.google.com/deploy/delive
 )
 
 write_file(
-    "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/README.md",
-    """
+  "infrastructure-catalog-gcp-cloud-run/modules/cloud-deploy-canary-pipeline/README.md",
+  """
 # cloud-deploy-canary-pipeline
 
 Deploys Cloud Deploy Delivery Pipeline + Target with automated canary (25→50→75→100%) for Cloud Run.
@@ -982,8 +982,8 @@ Deploys Cloud Deploy Delivery Pipeline + Target with automated canary (25→50�
 # 3. infrastructure-live-gcp
 # -------------------------------------------------------------
 write_file(
-    "infrastructure-live-gcp/root.hcl",
-    """
+  "infrastructure-live-gcp/root.hcl",
+  """
 remote_state {
   backend = "gcs"
   config = {

@@ -35,9 +35,9 @@ __author__ = "K-Dense"
 __license__ = "MIT"
 
 __all__ = [
-    "generate_paper",
-    "ProgressUpdate",
-    "PaperResult",
-    "PaperMetadata",
-    "PaperFiles",
+  "generate_paper",
+  "ProgressUpdate",
+  "PaperResult",
+  "PaperMetadata",
+  "PaperFiles",
 ]

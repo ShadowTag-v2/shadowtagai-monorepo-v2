@@ -233,4 +233,3 @@ class ShadowTag:
         List of all watermarks as dictionaries
     """
     return [wm.to_dict() for wm in self.watermarks]
-

@@ -25,40 +25,42 @@ from pydantic import BaseModel
 
 
 async def add(x, y) -> int:
-    """Adds two numbers."""
-    return x + y
+  """Adds two numbers."""
+  return x + y
 
 
 @tool
 def minus(x, y) -> int:
-    """Subtracts two numbers."""
-    return x - y
+  """Subtracts two numbers."""
+  return x - y
 
 
 class AddSchema(BaseModel):
-    x: int
-    y: int
+  x: int
+  y: int
 
 
 class MinusSchema(BaseModel):
-    x: int
-    y: int
+  x: int
+  y: int
 
 
 test_langchain_add_tool = StructuredTool.from_function(
-    add,
-    name="add",
-    description="Adds two numbers",
-    args_schema=AddSchema,
+  add,
+  name="add",
+  description="Adds two numbers",
+  args_schema=AddSchema,
 )
 
 root_agent = Agent(
-    model="gemini-2.0-flash-001",
-    name="test_app",
-    description="A helpful assistant for user questions.",
-    instruction=("You are a helpful assistant for user questions, you have access to a tool that adds two numbers."),
-    tools=[
-        LangchainTool(tool=test_langchain_add_tool),
-        LangchainTool(tool=minus),
-    ],
+  model="gemini-2.0-flash-001",
+  name="test_app",
+  description="A helpful assistant for user questions.",
+  instruction=(
+    "You are a helpful assistant for user questions, you have access to a tool that adds two numbers."
+  ),
+  tools=[
+    LangchainTool(tool=test_langchain_add_tool),
+    LangchainTool(tool=minus),
+  ],
 )

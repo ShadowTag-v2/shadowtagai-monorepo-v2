@@ -19,9 +19,9 @@ from google.adk import Agent
 
 # Agent that selects the best city for the trip.
 identify_agent = Agent(
-    name="identify_agent",
-    description="Select the best city based on weather, season, and prices.",
-    instruction="""
+  name="identify_agent",
+  description="Select the best city based on weather, season, and prices.",
+  instruction="""
   Analyze and select the best city for the trip based
   on specific criteria such as weather patterns, seasonal
   events, and travel costs. This task involves comparing
@@ -43,9 +43,9 @@ identify_agent = Agent(
 
 # Agent that gathers information about the city.
 gather_agent = Agent(
-    name="gather_agent",
-    description="Provide the BEST insights about the selected city",
-    instruction="""
+  name="gather_agent",
+  description="Provide the BEST insights about the selected city",
+  instruction="""
   As a local expert on this city you must compile an
   in-depth guide for someone traveling there and wanting
   to have THE BEST trip ever!
@@ -70,10 +70,10 @@ gather_agent = Agent(
 
 # Agent that plans the trip.
 plan_agent = Agent(
-    name="plan_agent",
-    description="""Create the most amazing travel itineraries with budget and
+  name="plan_agent",
+  description="""Create the most amazing travel itineraries with budget and
     packing suggestions for the city""",
-    instruction="""
+  instruction="""
   Expand this guide into a full 7-day travel
   itinerary with detailed per-day plans, including
   weather forecasts, places to eat, packing suggestions,
@@ -100,12 +100,12 @@ plan_agent = Agent(
 )
 
 root_agent = Agent(
-    model="gemini-2.0-flash-001",
-    name="trip_planner",
-    description="Plan the best trip ever",
-    instruction="""
+  model="gemini-2.0-flash-001",
+  name="trip_planner",
+  description="Plan the best trip ever",
+  instruction="""
   Your goal is to plan the best trip according to information listed above.
   You describe why did you choose the city, list top 3
   attractions and provide a detailed itinerary for each day.""",
-    sub_agents=[identify_agent, gather_agent, plan_agent],
+  sub_agents=[identify_agent, gather_agent, plan_agent],
 )

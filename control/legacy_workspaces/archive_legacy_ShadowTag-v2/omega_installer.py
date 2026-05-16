@@ -14,12 +14,12 @@ BASE_DIR = os.path.abspath("shadowtag_omega")
 
 
 def create_file(rel_path, content):
-    """The Universal Constructor: Writes the DNA of the system to disk."""
-    full_path = os.path.join(BASE_DIR, rel_path)
-    os.makedirs(os.path.dirname(full_path), exist_ok=True)
-    with open(full_path, "w") as f:
-        f.write(content.strip())
-    print(f"    [+] Constructed: {rel_path}")
+  """The Universal Constructor: Writes the DNA of the system to disk."""
+  full_path = os.path.join(BASE_DIR, rel_path)
+  os.makedirs(os.path.dirname(full_path), exist_ok=True)
+  with open(full_path, "w") as f:
+    f.write(content.strip())
+  print(f"    [+] Constructed: {rel_path}")
 
 
 print(f"\n>>> 🍏 INITIALIZING SHADOWTAG OMEGA ON {PROJECT_ID}...")
@@ -31,8 +31,8 @@ print(">>> \"It's not just a system. It's a way of thinking.\"\n")
 print(">>> 📜 CODIFYING THE LAWS...")
 
 create_file(
-    "Docs/CONSTITUTION_YOUAI.md",
-    """
+  "Docs/CONSTITUTION_YOUAI.md",
+  """
 # THE YOUAI DOCTRINE
 **Prime Directive:** "Maximize value in every equation, bounded solely by the YouAi Risk Engine."
 **Valuation Target:** $345B -> $1T.
@@ -48,8 +48,8 @@ create_file(
 )
 
 create_file(
-    "Docs/DOCTRINE_MILITARY.md",
-    """
+  "Docs/DOCTRINE_MILITARY.md",
+  """
 # UNIFIED MILITARY STANDARDS
 **Kinetic:** ATP 5-19 & AR 385-10.
 * **Class A Mishap:** Loss >= $2.5M. Action: IMMEDIATE HALT.
@@ -67,8 +67,8 @@ create_file(
 print(">>> 🏗️  PROVISIONING INFRASTRUCTURE...")
 
 create_file(
-    "config/digital_freeway_topology.json",
-    """
+  "config/digital_freeway_topology.json",
+  """
 {
   "layer": "STARLINK_COREWEAVE_MESH",
   "density": "1_NODE_PER_POLE",
@@ -81,8 +81,8 @@ create_file(
 )
 
 create_file(
-    "scripts/deploy_god_mode.py",
-    """
+  "scripts/deploy_god_mode.py",
+  """
 import os
 # Placeholder for google-cloud-notebooks
 def deploy():
@@ -104,8 +104,8 @@ print(">>> 🧠 WIRING THE NEURAL PATHWAYS...")
 
 # 1. CAV MTOE (The Army Vote)
 create_file(
-    "src/governance/voting/cav_mtoe.py",
-    """
+  "src/governance/voting/cav_mtoe.py",
+  """
 import random
 class CavMTOE:
     '''The 650-Unit Consensus Swarm.'''
@@ -122,8 +122,8 @@ class CavMTOE:
 
 # 2. CSRMC ENGINE (The Cyber Defender)
 create_file(
-    "src/governance/engines/csrmc.py",
-    """
+  "src/governance/engines/csrmc.py",
+  """
 class CSRMCEngine:
     '''Dynamic Defense: Can we survive the next 5 minutes?'''
     def check_survivability(self, telemetry):
@@ -140,8 +140,8 @@ class CSRMCEngine:
 
 # 3. REAPER & JIEDDO (Hygiene)
 create_file(
-    "src/governance/protocols/reaper.py",
-    """
+  "src/governance/protocols/reaper.py",
+  """
 class ReaperProtocol:
     def jieddo_scan(self, agent_pool):
         print("    [JIEDDO] Scanning for threat patterns...")
@@ -160,8 +160,8 @@ print(">>> ⚔️  LOADING THE ARSENAL...")
 
 # 1. SHADOWTAG (Neural Hash)
 create_file(
-    "src/provenance/shadowtag_core/neural_hash.py",
-    """
+  "src/provenance/shadowtag_core/neural_hash.py",
+  """
 import hashlib
 class NeuralHash:
     '''Extracts the mathematical soul of the data.'''
@@ -173,8 +173,8 @@ class NeuralHash:
 
 # 2. TEGU (Computer Vision)
 create_file(
-    "src/intelligence/tegu_vision/detector.py",
-    """
+  "src/intelligence/tegu_vision/detector.py",
+  """
 class TeguVision:
     '''Seeing what others miss.'''
     def scan_feed(self, stream):
@@ -185,8 +185,8 @@ class TeguVision:
 
 # 3. GAAS (Autonomous Flight)
 create_file(
-    "src/intelligence/gaas_flight/autopilot.py",
-    """
+  "src/intelligence/gaas_flight/autopilot.py",
+  """
 class GAASAutopilot:
     '''Flying without fear.'''
     def calculate_route(self, waypoints):
@@ -197,8 +197,8 @@ class GAASAutopilot:
 
 # 4. SAFETY NET (The Filter)
 create_file(
-    "src/intelligence/safety_net/moderator.py",
-    """
+  "src/intelligence/safety_net/moderator.py",
+  """
 class SafetyNet:
     '''The Hive/Google Content Shield.'''
     def scan(self, payload):
@@ -210,8 +210,8 @@ class SafetyNet:
 
 # 5. GOOGLE DRIVE INGESTION (The Resource)
 create_file(
-    "src/intelligence/ingest/drive_loader.py",
-    """
+  "src/intelligence/ingest/drive_loader.py",
+  """
 class DriveLoader:
     '''Sucking in the reams.'''
     def ingest_unstructured(self, folder_id):
@@ -226,8 +226,8 @@ class DriveLoader:
 print(">>> 👁️  CONNECTING THE CONSCIENCE...")
 
 create_file(
-    "src/governance/human/psychiatrist_cco.py",
-    """
+  "src/governance/human/psychiatrist_cco.py",
+  """
 class PsychiatristCCO:
     '''The Circuit Breaker for Cultural Collapse (RA-4).'''
     def analyze_narrative(self, context):
@@ -244,8 +244,8 @@ class PsychiatristCCO:
 print(">>> 🏛️  FINALIZING JUDGE #6 OMEGA CORE...")
 
 create_file(
-    "src/main.py",
-    """
+  "src/main.py",
+  """
 from enum import Enum
 from src.governance.engines.csrmc import CSRMCEngine
 from src.governance.voting.cav_mtoe import CavMTOE
@@ -316,8 +316,8 @@ if __name__ == "__main__":
 print(">>> 🛠️  INSTALLING FINGER-SAVING AUTOMATION...")
 
 create_file(
-    "scripts/auto_approve.sh",
-    """
+  "scripts/auto_approve.sh",
+  """
 #!/bin/bash
 # ANTIGRAVITY YOLO MODE (Human-Out-Of-Loop)
 echo ">>> 🚀 ENGAGING AUTO-APPROVE..."

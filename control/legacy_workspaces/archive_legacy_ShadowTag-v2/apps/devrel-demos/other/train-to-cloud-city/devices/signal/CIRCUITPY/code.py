@@ -50,18 +50,18 @@ onboard_pixel = neopixel.NeoPixel(board.NEOPIXEL, 1, brightness=BRIGHTNESS)
 pixel_pin = board.A0
 num_pixels = 2
 pixels = neopixel.NeoPixel(
-    pixel_pin,
-    num_pixels,
-    brightness=BRIGHTNESS,
-    auto_write=False,
-    pixel_order=(1, 0, 2, 3),
+  pixel_pin,
+  num_pixels,
+  brightness=BRIGHTNESS,
+  auto_write=False,
+  pixel_order=(1, 0, 2, 3),
 )
 
 # This signal's ID. Write some short string to "id.txt"
 try:
-    ID = open("id.txt").read().strip().encode("UTF-8")
+  ID = open("id.txt").read().strip().encode("UTF-8")
 except BaseException:
-    ID = b"UNKNOWN"
+  ID = b"UNKNOWN"
 
 board.BUTTON
 from digitalio import DigitalInOut, Direction, Pull
@@ -72,95 +72,95 @@ btn.pull = Pull.UP
 
 
 def init():
-    set_pixels(ORANGE)
-    print(f"my id is: {ID}")
-    usb_cdc.data.write(ID + b":INIT\n")
-    usb_cdc.data.write(ID + b":VERSION " + VERSION.encode("UTF-8") + "\n")
+  set_pixels(ORANGE)
+  print(f"my id is: {ID}")
+  usb_cdc.data.write(ID + b":INIT\n")
+  usb_cdc.data.write(ID + b":VERSION " + VERSION.encode("UTF-8") + "\n")
 
 
 def set_pixels(color_rgb):
-    onboard_pixel[0] = color_rgb[0][:3]
-    pixels[0] = color_rgb[1]
-    pixels[1] = color_rgb[2]
-    pixels.show()
+  onboard_pixel[0] = color_rgb[0][:3]
+  pixels[0] = color_rgb[1]
+  pixels[1] = color_rgb[2]
+  pixels.show()
 
 
 def serial_response(result):
-    usb_cdc.data.write(ID)
-    usb_cdc.data.write(b":")
-    usb_cdc.data.write(result)
-    usb_cdc.data.write(b"\n")
+  usb_cdc.data.write(ID)
+  usb_cdc.data.write(b":")
+  usb_cdc.data.write(result)
+  usb_cdc.data.write(b"\n")
 
 
 def parse_and_run_command(input):
-    input = input.strip().upper()
-    if input == b"HELP":
-        set_pixels(ORANGE)
-        return HELP
-    elif input == b"OFF" or input == b"O":
-        set_pixels(OFF)
-        return input
-    elif input == b"STOP" or input == b"S":
-        set_pixels(STOP)
-        return input
-    elif input == b"CLEAR" or input == b"C":
-        set_pixels(CLEAR)
-        return input
-    else:
-        set_pixels(ORANGE)
-        return b"ERROR: Unknown command: " + input + b" (Enter HELP for command list.)"
+  input = input.strip().upper()
+  if input == b"HELP":
+    set_pixels(ORANGE)
+    return HELP
+  elif input == b"OFF" or input == b"O":
+    set_pixels(OFF)
+    return input
+  elif input == b"STOP" or input == b"S":
+    set_pixels(STOP)
+    return input
+  elif input == b"CLEAR" or input == b"C":
+    set_pixels(CLEAR)
+    return input
+  else:
+    set_pixels(ORANGE)
+    return b"ERROR: Unknown command: " + input + b" (Enter HELP for command list.)"
 
 
 async def usb_client():
-    usb_cdc.data.timeout = 0
-    s = asyncio.StreamReader(usb_cdc.data)
-    while True:
-        data = await s.readline()
-        print("input: ", data)
-        try:
-            result = parse_and_run_command(data)
-        except Exception as err:
-            result = "ERROR: " + str(type(err)) + str(err)
-            result.encode("UTF-8")
-        serial_response(result)
+  usb_cdc.data.timeout = 0
+  s = asyncio.StreamReader(usb_cdc.data)
+  while True:
+    data = await s.readline()
+    print("input: ", data)
+    try:
+      result = parse_and_run_command(data)
+    except Exception as err:
+      result = "ERROR: " + str(type(err)) + str(err)
+      result.encode("UTF-8")
+    serial_response(result)
 
 
 # Press "BOOT" button to cycle between states.
 async def button():
-    prev_state = btn.value
-    states = [(STOP, b"STOP"), (CLEAR, b"CLEAR"), (OFF, b"OFF"), (ORANGE, b"ERROR")]
-    index = 0
+  prev_state = btn.value
+  states = [(STOP, b"STOP"), (CLEAR, b"CLEAR"), (OFF, b"OFF"), (ORANGE, b"ERROR")]
+  index = 0
 
-    while True:
-        cur_state = btn.value
-        if cur_state != prev_state:
-            if not cur_state:
-                # print("BUTTON is down")
-                pass
-            else:
-                # print("BUTTON is up")
-                color, result = states[index % 4]
-                set_pixels(color)
-                serial_response(result)
-                index += 1
-        prev_state = cur_state
-        await asyncio.sleep(0.2)
+  while True:
+    cur_state = btn.value
+    if cur_state != prev_state:
+      if not cur_state:
+        # print("BUTTON is down")
+        pass
+      else:
+        # print("BUTTON is up")
+        color, result = states[index % 4]
+        set_pixels(color)
+        serial_response(result)
+        index += 1
+    prev_state = cur_state
+    await asyncio.sleep(0.2)
 
 
 async def counter():
-    i = 0
-    while True:
-        usb_cdc.data.write(ID)
-        usb_cdc.data.write(b":HEARTBEAT\n")
-        await asyncio.sleep(60)
+  i = 0
+  while True:
+    usb_cdc.data.write(ID)
+    usb_cdc.data.write(b":HEARTBEAT\n")
+    await asyncio.sleep(60)
 
 
 async def main():
-    init()
-    clients = [asyncio.create_task(counter())]
-    clients.append(asyncio.create_task(usb_client()))
-    clients.append(asyncio.create_task(button()))
-    await asyncio.gather(*clients)
+  init()
+  clients = [asyncio.create_task(counter())]
+  clients.append(asyncio.create_task(usb_client()))
+  clients.append(asyncio.create_task(button()))
+  await asyncio.gather(*clients)
 
 
 asyncio.run(main())

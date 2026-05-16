@@ -29,14 +29,16 @@ from ..utils.feature_decorator import experimental
 
 
 class OpenIdConnectWithConfig(SecurityBase):
-    type_: SecuritySchemeType = Field(default=SecuritySchemeType.openIdConnect, alias="type")
-    authorization_endpoint: str
-    token_endpoint: str
-    userinfo_endpoint: str | None = None
-    revocation_endpoint: str | None = None
-    token_endpoint_auth_methods_supported: list[str] | None = None
-    grant_types_supported: list[str] | None = None
-    scopes: list[str] | None = None
+  type_: SecuritySchemeType = Field(
+    default=SecuritySchemeType.openIdConnect, alias="type"
+  )
+  authorization_endpoint: str
+  token_endpoint: str
+  userinfo_endpoint: str | None = None
+  revocation_endpoint: str | None = None
+  token_endpoint_auth_methods_supported: list[str] | None = None
+  grant_types_supported: list[str] | None = None
+  scopes: list[str] | None = None
 
 
 # AuthSchemes contains SecuritySchemes from OpenAPI 3.0 and an extra flattened OpenIdConnectWithConfig.
@@ -44,25 +46,25 @@ AuthScheme = Union[SecurityScheme, OpenIdConnectWithConfig]
 
 
 class OAuthGrantType(str, Enum):
-    """Represents the OAuth2 flow (or grant type)."""
+  """Represents the OAuth2 flow (or grant type)."""
 
-    CLIENT_CREDENTIALS = "client_credentials"
-    AUTHORIZATION_CODE = "authorization_code"
-    IMPLICIT = "implicit"
-    PASSWORD = "password"
+  CLIENT_CREDENTIALS = "client_credentials"
+  AUTHORIZATION_CODE = "authorization_code"
+  IMPLICIT = "implicit"
+  PASSWORD = "password"
 
-    @staticmethod
-    def from_flow(flow: OAuthFlows) -> OAuthGrantType:
-        """Converts an OAuthFlows object to a OAuthGrantType."""
-        if flow.clientCredentials:
-            return OAuthGrantType.CLIENT_CREDENTIALS
-        if flow.authorizationCode:
-            return OAuthGrantType.AUTHORIZATION_CODE
-        if flow.implicit:
-            return OAuthGrantType.IMPLICIT
-        if flow.password:
-            return OAuthGrantType.PASSWORD
-        return None
+  @staticmethod
+  def from_flow(flow: OAuthFlows) -> OAuthGrantType:
+    """Converts an OAuthFlows object to a OAuthGrantType."""
+    if flow.clientCredentials:
+      return OAuthGrantType.CLIENT_CREDENTIALS
+    if flow.authorizationCode:
+      return OAuthGrantType.AUTHORIZATION_CODE
+    if flow.implicit:
+      return OAuthGrantType.IMPLICIT
+    if flow.password:
+      return OAuthGrantType.PASSWORD
+    return None
 
 
 # AuthSchemeType re-exports SecuritySchemeType from OpenAPI 3.0.
@@ -71,6 +73,6 @@ AuthSchemeType = SecuritySchemeType
 
 @experimental
 class ExtendedOAuth2(OAuth2):
-    """OAuth2 scheme that incorporates auto-discovery for endpoints."""
+  """OAuth2 scheme that incorporates auto-discovery for endpoints."""
 
-    issuer_url: str | None = None  # Used for endpoint-discovery
+  issuer_url: str | None = None  # Used for endpoint-discovery

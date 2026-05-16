@@ -19,7 +19,7 @@ from kosmos.config import get_config
 from kosmos.agents.research_director import ResearchDirectorAgent
 
 __all__ = [
-    "__version__",
-    "get_config",
-    "ResearchDirectorAgent",
+  "__version__",
+  "get_config",
+  "ResearchDirectorAgent",
 ]

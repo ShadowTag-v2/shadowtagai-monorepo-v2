@@ -143,7 +143,11 @@ def get_child_node(name: str, path: str, type_: TestNodeTypeEnum, root: TestNode
     Path is required to distinguish between nodes with the same name and type.
     """
     try:
-        result = next(node for node in root["children"] if node["name"] == name and node["type_"] == type_ and node["path"] == path)
+        result = next(
+            node
+            for node in root["children"]
+            if node["name"] == name and node["type_"] == type_ and node["path"] == path
+        )
     except StopIteration:
         result = build_test_node(path, name, type_)
         root["children"].append(result)
@@ -151,7 +155,9 @@ def get_child_node(name: str, path: str, type_: TestNodeTypeEnum, root: TestNode
     return result  # type:ignore
 
 
-def build_test_tree(suite: unittest.TestSuite, top_level_directory: str) -> Tuple[Union[TestNode, None], List[str]]:
+def build_test_tree(
+    suite: unittest.TestSuite, top_level_directory: str
+) -> Tuple[Union[TestNode, None], List[str]]:
     """Build a test tree from a unittest test suite.
 
     This function returns the test tree, and any errors found by unittest.
@@ -226,10 +232,14 @@ def build_test_tree(suite: unittest.TestSuite, top_level_directory: str) -> Tupl
             # Find/build file node.
             path_components = [top_level_directory, *folders, py_filename]
             file_path = os.fsdecode(pathlib.PurePath("/".join(path_components)))
-            current_node = get_child_node(py_filename, file_path, TestNodeTypeEnum.file, current_node)
+            current_node = get_child_node(
+                py_filename, file_path, TestNodeTypeEnum.file, current_node
+            )
 
             # Find/build class node.
-            current_node = get_child_node(class_name, file_path, TestNodeTypeEnum.class_, current_node)
+            current_node = get_child_node(
+                class_name, file_path, TestNodeTypeEnum.class_, current_node
+            )
 
             # Get test line number.
             test_method = getattr(test_case, test_case._testMethodName)  # noqa: SLF001
@@ -336,7 +346,9 @@ def send_post_request(
     data = json.dumps(rpc)
     try:
         if __writer:
-            request = f"""content-length: {len(data)}\r\ncontent-type: application/json\r\n\r\n{data}"""
+            request = (
+                f"""content-length: {len(data)}\r\ncontent-type: application/json\r\n\r\n{data}"""
+            )
             size = 4096
             encoded = request.encode("utf-8")
             bytes_written = 0

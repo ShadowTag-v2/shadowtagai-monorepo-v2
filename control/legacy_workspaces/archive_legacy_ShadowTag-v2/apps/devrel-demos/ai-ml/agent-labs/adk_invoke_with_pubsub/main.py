@@ -8,8 +8,8 @@ import logging
 import os
 
 logging.basicConfig(
-    level=logging.INFO,
-    force=True,
+  level=logging.INFO,
+  force=True,
 )
 logger = logging.getLogger(__name__)
 
@@ -24,25 +24,27 @@ os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "True")
 
 @app.post("/zookeeper")
 async def eventarc_handler(request: Request) -> JSONResponse:
-    """Update collection of animals based on incoming event data."""
-    try:
-        body = await request.body()
-        event = from_http(request.headers, body)
-        message, code = await process_request(event, REPLY_TOPIC_ID)
-        status = "error" if code != 200 else "success"
-        return JSONResponse(content={"status": status, "message": message}, status_code=code)
-    except Exception as e:
-        logger.error(f"❌ failed processing Eventarc event: {e}")
-        return JSONResponse(
-            content={
-                "status": "error",
-                "message": "Failed to parse payload to Eventarc event",
-            },
-            status_code=400,
-        )
+  """Update collection of animals based on incoming event data."""
+  try:
+    body = await request.body()
+    event = from_http(request.headers, body)
+    message, code = await process_request(event, REPLY_TOPIC_ID)
+    status = "error" if code != 200 else "success"
+    return JSONResponse(
+      content={"status": status, "message": message}, status_code=code
+    )
+  except Exception as e:
+    logger.error(f"❌ failed processing Eventarc event: {e}")
+    return JSONResponse(
+      content={
+        "status": "error",
+        "message": "Failed to parse payload to Eventarc event",
+      },
+      status_code=400,
+    )
 
 
 if __name__ == "__main__":
-    import uvicorn
+  import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))
+  uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8080")))

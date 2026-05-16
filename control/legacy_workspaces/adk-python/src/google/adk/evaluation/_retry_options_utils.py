@@ -25,44 +25,50 @@ from ..models.llm_response import LlmResponse
 from ..plugins.base_plugin import BasePlugin
 
 _RETRY_HTTP_STATUS_CODES = (
-    408,  # Request timeout.
-    429,  # Too many requests.
-    500,  # Internal server error.
-    502,  # Bad gateway.
-    503,  # Service unavailable.
-    504,  # Gateway timeout
+  408,  # Request timeout.
+  429,  # Too many requests.
+  500,  # Internal server error.
+  502,  # Bad gateway.
+  503,  # Service unavailable.
+  504,  # Gateway timeout
 )
 _DEFAULT_HTTP_RETRY_OPTIONS = types.HttpRetryOptions(
-    attempts=7,
-    initial_delay=5.0,
-    max_delay=120,
-    exp_base=2.0,
-    http_status_codes=_RETRY_HTTP_STATUS_CODES,
+  attempts=7,
+  initial_delay=5.0,
+  max_delay=120,
+  exp_base=2.0,
+  http_status_codes=_RETRY_HTTP_STATUS_CODES,
 )
 
 
 def add_default_retry_options_if_not_present(llm_request: LlmRequest):
-    """Adds default HTTP Retry Options, if they are not present on the llm_request.
+  """Adds default HTTP Retry Options, if they are not present on the llm_request.
 
-    NOTE: This implementation is intended for eval systems internal usage. Do not
-    take direct dependency on it.
-    """
-    llm_request.config = llm_request.config or types.GenerateContentConfig()
+  NOTE: This implementation is intended for eval systems internal usage. Do not
+  take direct dependency on it.
+  """
+  llm_request.config = llm_request.config or types.GenerateContentConfig()
 
-    llm_request.config.http_options = llm_request.config.http_options or types.HttpOptions()
-    llm_request.config.http_options.retry_options = llm_request.config.http_options.retry_options or _DEFAULT_HTTP_RETRY_OPTIONS
+  llm_request.config.http_options = (
+    llm_request.config.http_options or types.HttpOptions()
+  )
+  llm_request.config.http_options.retry_options = (
+    llm_request.config.http_options.retry_options or _DEFAULT_HTTP_RETRY_OPTIONS
+  )
 
 
 class EnsureRetryOptionsPlugin(BasePlugin):
-    """This plugin adds retry options to llm_request, if they are not present.
+  """This plugin adds retry options to llm_request, if they are not present.
 
-    This is done to ensure that temporary outages with the model provider don't
-    affect eval runs.
+  This is done to ensure that temporary outages with the model provider don't
+  affect eval runs.
 
-    NOTE: This implementation is intended for eval systems internal usage. Do not
-    take direct dependency on it.
-    """
+  NOTE: This implementation is intended for eval systems internal usage. Do not
+  take direct dependency on it.
+  """
 
-    @override
-    async def before_model_callback(self, *, callback_context: CallbackContext, llm_request: LlmRequest) -> LlmResponse | None:
-        add_default_retry_options_if_not_present(llm_request)
+  @override
+  async def before_model_callback(
+    self, *, callback_context: CallbackContext, llm_request: LlmRequest
+  ) -> LlmResponse | None:
+    add_default_retry_options_if_not_present(llm_request)

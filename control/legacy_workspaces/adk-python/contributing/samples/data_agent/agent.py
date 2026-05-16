@@ -30,54 +30,56 @@ import google.auth.transport.requests
 CREDENTIALS_TYPE = None
 
 if CREDENTIALS_TYPE == AuthCredentialTypes.OAUTH2:
-    # Initiaze the tools to do interactive OAuth
-    # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
-    # must be set
-    credentials_config = DataAgentCredentialsConfig(
-        client_id=os.getenv("OAUTH_CLIENT_ID"),
-        client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
-    )
+  # Initiaze the tools to do interactive OAuth
+  # The environment variables OAUTH_CLIENT_ID and OAUTH_CLIENT_SECRET
+  # must be set
+  credentials_config = DataAgentCredentialsConfig(
+    client_id=os.getenv("OAUTH_CLIENT_ID"),
+    client_secret=os.getenv("OAUTH_CLIENT_SECRET"),
+  )
 elif CREDENTIALS_TYPE == AuthCredentialTypes.SERVICE_ACCOUNT:
-    # Initialize the tools to use the credentials in the service account key.
-    # If this flow is enabled, make sure to replace the file path with your own
-    # service account key file
-    # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
-    creds, _ = google.auth.load_credentials_from_file(
-        "service_account_key.json",
-        scopes=["https://www.googleapis.com/auth/cloud-platform"],
-    )
-    creds.refresh(google.auth.transport.requests.Request())
-    credentials_config = DataAgentCredentialsConfig(credentials=creds)
+  # Initialize the tools to use the credentials in the service account key.
+  # If this flow is enabled, make sure to replace the file path with your own
+  # service account key file
+  # https://cloud.google.com/iam/docs/service-account-creds#user-managed-keys
+  creds, _ = google.auth.load_credentials_from_file(
+    "service_account_key.json",
+    scopes=["https://www.googleapis.com/auth/cloud-platform"],
+  )
+  creds.refresh(google.auth.transport.requests.Request())
+  credentials_config = DataAgentCredentialsConfig(credentials=creds)
 else:
-    # Initialize the tools to use the application default credentials.
-    # https://cloud.google.com/docs/authentication/provide-credentials-adc
-    application_default_credentials, _ = google.auth.default()
-    credentials_config = DataAgentCredentialsConfig(credentials=application_default_credentials)
+  # Initialize the tools to use the application default credentials.
+  # https://cloud.google.com/docs/authentication/provide-credentials-adc
+  application_default_credentials, _ = google.auth.default()
+  credentials_config = DataAgentCredentialsConfig(
+    credentials=application_default_credentials
+  )
 
 tool_config = DataAgentToolConfig(
-    max_query_result_rows=100,
+  max_query_result_rows=100,
 )
 da_toolset = DataAgentToolset(
-    credentials_config=credentials_config,
-    data_agent_tool_config=tool_config,
-    tool_filter=[
-        "list_accessible_data_agents",
-        "get_data_agent_info",
-        "ask_data_agent",
-    ],
+  credentials_config=credentials_config,
+  data_agent_tool_config=tool_config,
+  tool_filter=[
+    "list_accessible_data_agents",
+    "get_data_agent_info",
+    "ask_data_agent",
+  ],
 )
 
 root_agent = Agent(
-    name="data_agent",
-    model="gemini-2.0-flash",
-    description="Agent to answer user questions using Data Agents.",
-    instruction=(
-        "## Persona\nYou are a helpful assistant that uses Data Agents"
-        " to answer user questions about their data.\n\n## Tools\n- You can"
-        " list available data agents using `list_accessible_data_agents`.\n-"
-        " You can get information about a specific data agent using"
-        " `get_data_agent_info`.\n- You can chat with a specific data"
-        " agent using `ask_data_agent`.\n"
-    ),
-    tools=[da_toolset],
+  name="data_agent",
+  model="gemini-2.0-flash",
+  description="Agent to answer user questions using Data Agents.",
+  instruction=(
+    "## Persona\nYou are a helpful assistant that uses Data Agents"
+    " to answer user questions about their data.\n\n## Tools\n- You can"
+    " list available data agents using `list_accessible_data_agents`.\n-"
+    " You can get information about a specific data agent using"
+    " `get_data_agent_info`.\n- You can chat with a specific data"
+    " agent using `ask_data_agent`.\n"
+  ),
+  tools=[da_toolset],
 )

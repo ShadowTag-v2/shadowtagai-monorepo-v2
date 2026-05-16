@@ -30,47 +30,47 @@ EvalStatus: TypeAlias = EvalStatus
 
 
 class PerInvocationResult(BaseModel):
-    """Metric evaluation score per invocation."""
+  """Metric evaluation score per invocation."""
 
-    actual_invocation: Invocation
-    expected_invocation: Invocation | None = None
-    score: float | None = None
-    eval_status: EvalStatus = EvalStatus.NOT_EVALUATED
-    rubric_scores: list[RubricScore] | None = None
+  actual_invocation: Invocation
+  expected_invocation: Invocation | None = None
+  score: float | None = None
+  eval_status: EvalStatus = EvalStatus.NOT_EVALUATED
+  rubric_scores: list[RubricScore] | None = None
 
 
 class EvaluationResult(BaseModel):
-    overall_score: float | None = None
-    """Overall score, based on each invocation."""
+  overall_score: float | None = None
+  """Overall score, based on each invocation."""
 
-    overall_eval_status: EvalStatus = EvalStatus.NOT_EVALUATED
-    """Overall status, based on each invocation."""
+  overall_eval_status: EvalStatus = EvalStatus.NOT_EVALUATED
+  """Overall status, based on each invocation."""
 
-    per_invocation_results: list[PerInvocationResult] = []
-    """Detailed results per invocation."""
+  per_invocation_results: list[PerInvocationResult] = []
+  """Detailed results per invocation."""
 
-    overall_rubric_scores: list[RubricScore] | None = None
-    """Overall rubric, based on each invocation."""
+  overall_rubric_scores: list[RubricScore] | None = None
+  """Overall rubric, based on each invocation."""
 
 
 class Evaluator(ABC):
-    """A metrics evaluator interface."""
+  """A metrics evaluator interface."""
 
-    criterion_type: ClassVar[type[BaseCriterion]] = BaseCriterion
+  criterion_type: ClassVar[type[BaseCriterion]] = BaseCriterion
 
-    def evaluate_invocations(
-        self,
-        actual_invocations: list[Invocation],
-        expected_invocations: list[Invocation] | None,
-    ) -> EvaluationResult:
-        """Returns EvaluationResult after performing evaluations using actual and expected invocations.
+  def evaluate_invocations(
+    self,
+    actual_invocations: list[Invocation],
+    expected_invocations: list[Invocation] | None,
+  ) -> EvaluationResult:
+    """Returns EvaluationResult after performing evaluations using actual and expected invocations.
 
-        Args:
-          actual_invocations: These are the invocations that are obtained from the
-            agent under test.
-          expected_invocations: An optional list of invocations, if specified,
-            usually act as a benchmark/golden response. If these are specified
-            usually the expectation is that the length of this list and actual
-            invocation is the same.
-        """
-        raise NotImplementedError()
+    Args:
+      actual_invocations: These are the invocations that are obtained from the
+        agent under test.
+      expected_invocations: An optional list of invocations, if specified,
+        usually act as a benchmark/golden response. If these are specified
+        usually the expectation is that the length of this list and actual
+        invocation is the same.
+    """
+    raise NotImplementedError()

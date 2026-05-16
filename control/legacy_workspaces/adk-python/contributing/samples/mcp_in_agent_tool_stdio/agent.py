@@ -23,26 +23,26 @@ from mcp import StdioServerParameters
 # This uses the simple-tool MCP server via stdio
 # The server will be launched automatically using uvx from the subdirectory
 mcp_toolset = McpToolset(
-    connection_params=StdioConnectionParams(
-        server_params=StdioServerParameters(
-            command="uvx",
-            args=[
-                "--from",
-                "git+https://github.com/modelcontextprotocol/python-sdk.git#subdirectory=examples/servers/simple-tool",
-                "mcp-simple-tool",
-            ],
-        ),
-        timeout=10.0,
-    )
+  connection_params=StdioConnectionParams(
+    server_params=StdioServerParameters(
+      command="uvx",
+      args=[
+        "--from",
+        "git+https://github.com/modelcontextprotocol/python-sdk.git#subdirectory=examples/servers/simple-tool",
+        "mcp-simple-tool",
+      ],
+    ),
+    timeout=10.0,
+  )
 )
 
 # Create sub-agent with MCP tools
 # This agent has direct access to MCP tools
 sub_agent = Agent(
-    name="mcp_helper",
-    model="gemini-2.5-flash",
-    description=("A helpful assistant with access to MCP tools for fetching websites."),
-    instruction="""You are a helpful assistant with access to MCP tools.
+  name="mcp_helper",
+  model="gemini-2.5-flash",
+  description=("A helpful assistant with access to MCP tools for fetching websites."),
+  instruction="""You are a helpful assistant with access to MCP tools.
 
 When the user asks for help:
 1. Explain what tools you have available (website fetching)
@@ -50,7 +50,7 @@ When the user asks for help:
 3. Provide clear and helpful responses
 
 You have access to a website fetcher tool via MCP. Use it to fetch and return website content.""",
-    tools=[mcp_toolset],
+  tools=[mcp_toolset],
 )
 
 # Wrap sub-agent as an AgentTool
@@ -61,10 +61,10 @@ mcp_agent_tool = AgentTool(agent=sub_agent)
 # Create main agent
 # This agent can delegate to the sub-agent via AgentTool
 root_agent = Agent(
-    name="main_agent",
-    model="gemini-2.5-flash",
-    description="Main agent that can delegate to a sub-agent with MCP tools.",
-    instruction="""You are a helpful assistant. You have access to a sub-agent (mcp_helper)
+  name="main_agent",
+  model="gemini-2.5-flash",
+  description="Main agent that can delegate to a sub-agent with MCP tools.",
+  instruction="""You are a helpful assistant. You have access to a sub-agent (mcp_helper)
 that has MCP tools for fetching websites.
 
 When the user asks for help:
@@ -72,5 +72,5 @@ When the user asks for help:
 - Otherwise, respond directly
 
 Always be helpful and explain what you're doing.""",
-    tools=[mcp_agent_tool],
+  tools=[mcp_agent_tool],
 )

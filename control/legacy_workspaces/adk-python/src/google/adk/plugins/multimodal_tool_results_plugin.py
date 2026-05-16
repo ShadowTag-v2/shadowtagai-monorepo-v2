@@ -30,52 +30,59 @@ PARTS_RETURNED_BY_TOOLS_ID = "temp:PARTS_RETURNED_BY_TOOLS_ID"
 
 
 class MultimodalToolResultsPlugin(BasePlugin):
-    """A plugin that modifies function tool responses to support returning list of parts directly.
+  """A plugin that modifies function tool responses to support returning list of parts directly.
 
-    Should be removed in favor of directly supporting FunctionResponsePart when these
-    are supported outside of computer use tool.
-    For context see: https://github.com/google/adk-python/issues/3064#issuecomment-3463067459
+  Should be removed in favor of directly supporting FunctionResponsePart when these
+  are supported outside of computer use tool.
+  For context see: https://github.com/google/adk-python/issues/3064#issuecomment-3463067459
+  """
+
+  def __init__(self, name: str = "multimodal_tool_results_plugin"):
+    """Initialize the multimodal tool results plugin.
+
+    Args:
+      name: The name of the plugin instance.
+    """
+    super().__init__(name)
+
+  async def after_tool_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+    result: dict,
+  ) -> dict | None:
+    """Saves parts returned by the tool in ToolContext.
+
+    Later these are passed to LLM's context as-is.
+    No-op if tool doesn't return list[google.genai.types.Part] or google.genai.types.Part.
     """
 
-    def __init__(self, name: str = "multimodal_tool_results_plugin"):
-        """Initialize the multimodal tool results plugin.
+    if not (
+      isinstance(result, types.Part)
+      or isinstance(result, list)
+      and result
+      and isinstance(result[0], types.Part)
+    ):
+      return result
 
-        Args:
-          name: The name of the plugin instance.
-        """
-        super().__init__(name)
+    parts = [result] if isinstance(result, types.Part) else result[:]
 
-    async def after_tool_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-        result: dict,
-    ) -> dict | None:
-        """Saves parts returned by the tool in ToolContext.
+    if PARTS_RETURNED_BY_TOOLS_ID in tool_context.state:
+      tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] += parts
+    else:
+      tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] = parts
 
-        Later these are passed to LLM's context as-is.
-        No-op if tool doesn't return list[google.genai.types.Part] or google.genai.types.Part.
-        """
+    return None
 
-        if not (isinstance(result, types.Part) or isinstance(result, list) and result and isinstance(result[0], types.Part)):
-            return result
+  async def before_model_callback(
+    self, *, callback_context: CallbackContext, llm_request: LlmRequest
+  ) -> LlmResponse | None:
+    """Attach saved list[google.genai.types.Part] returned by the tool to llm_request."""
 
-        parts = [result] if isinstance(result, types.Part) else result[:]
+    if saved_parts := callback_context.state.get(PARTS_RETURNED_BY_TOOLS_ID, None):
+      llm_request.contents[-1].parts += saved_parts
+      callback_context.state.update({PARTS_RETURNED_BY_TOOLS_ID: []})
 
-        if PARTS_RETURNED_BY_TOOLS_ID in tool_context.state:
-            tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] += parts
-        else:
-            tool_context.state[PARTS_RETURNED_BY_TOOLS_ID] = parts
-
-        return None
-
-    async def before_model_callback(self, *, callback_context: CallbackContext, llm_request: LlmRequest) -> LlmResponse | None:
-        """Attach saved list[google.genai.types.Part] returned by the tool to llm_request."""
-
-        if saved_parts := callback_context.state.get(PARTS_RETURNED_BY_TOOLS_ID, None):
-            llm_request.contents[-1].parts += saved_parts
-            callback_context.state.update({PARTS_RETURNED_BY_TOOLS_ID: []})
-
-        return None
+    return None

@@ -17,58 +17,58 @@ import json
 
 
 class GameHealthcheck:
-    """
-    message = {
-        "datetime": _datetime,                # Time-stamp denoting the message creation time at VM (ISO 8601)
-        "cpu": cpu,                           # Current CPU utilization rate in the VM
-        "memory": memory,                     # Current memory consumption in the VM
-        "vm": vm,                             # Name of the VM
-        "is_processing": bool(status),        # Status of the VM (0 => not available/ crashed; 1 => available)
-        "uniqueid": uniqueid,                 # A unique id for each player
+  """
+  message = {
+      "datetime": _datetime,                # Time-stamp denoting the message creation time at VM (ISO 8601)
+      "cpu": cpu,                           # Current CPU utilization rate in the VM
+      "memory": memory,                     # Current memory consumption in the VM
+      "vm": vm,                             # Name of the VM
+      "is_processing": bool(status),        # Status of the VM (0 => not available/ crashed; 1 => available)
+      "uniqueid": uniqueid,                 # A unique id for each player
+  }
+  """
+
+  def __init__(
+    self,
+    datetime: str,
+    cpu: float,
+    memory: float,
+    vm: str,
+    is_processing: bool,
+    uniqueid: str,
+  ):
+    self.datetime = datetime
+    self.cpu = cpu
+    self.memory = memory
+    self.vm = vm
+    self.is_processing = is_processing
+    self.uniqueid = uniqueid
+
+  @staticmethod
+  def from_dict(source):
+    game = GameHealthcheck(
+      source["datetime"],
+      source["cpu"],
+      source["memory"],
+      source["vm"],
+      source["is_processing"],
+      source["uniqueid"],
+    )
+    return game
+
+  def to_dict(self) -> dict[str, str | float | bool]:
+    game = {
+      "datetime": self.datetime,
+      "cpu": self.cpu,
+      "memory": self.memory,
+      "vm": self.vm,
+      "is_processing": self.is_processing,
+      "uniqueid": self.uniqueid,
     }
-    """
+    return game
 
-    def __init__(
-        self,
-        datetime: str,
-        cpu: float,
-        memory: float,
-        vm: str,
-        is_processing: bool,
-        uniqueid: str,
-    ):
-        self.datetime = datetime
-        self.cpu = cpu
-        self.memory = memory
-        self.vm = vm
-        self.is_processing = is_processing
-        self.uniqueid = uniqueid
-
-    @staticmethod
-    def from_dict(source):
-        game = GameHealthcheck(
-            source["datetime"],
-            source["cpu"],
-            source["memory"],
-            source["vm"],
-            source["is_processing"],
-            source["uniqueid"],
-        )
-        return game
-
-    def to_dict(self) -> dict[str, str | float | bool]:
-        game = {
-            "datetime": self.datetime,
-            "cpu": self.cpu,
-            "memory": self.memory,
-            "vm": self.vm,
-            "is_processing": self.is_processing,
-            "uniqueid": self.uniqueid,
-        }
-        return game
-
-    def __repr__(self) -> str:
-        return f"GameHealthcheck(\
+  def __repr__(self) -> str:
+    return f"GameHealthcheck(\
                 datetime={self.datetime}, \
                 cpu={self.cpu}, \
                 memory={self.memory}, \
@@ -77,5 +77,5 @@ class GameHealthcheck:
                 uniqueid={self.uniqueid}\
             )"
 
-    def json_dumps(self) -> bytes:
-        return json.dumps(self.to_dict()).encode("utf-8")
+  def json_dumps(self) -> bytes:
+    return json.dumps(self.to_dict()).encode("utf-8")

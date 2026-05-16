@@ -45,58 +45,60 @@ table = instance.table(table_id)
 meta_table = instance.table(table_id_meta)
 
 try:
-    # Initialize Pi connections to read as BCM
-    GPIO.setmode(GPIO.BCM)
+  # Initialize Pi connections to read as BCM
+  GPIO.setmode(GPIO.BCM)
 
-    # Initialize sensors
-    sensors = [BeamBreakSensor(i, pin, table, meta_table) for i, pin in enumerate(PINS, start=1)]
+  # Initialize sensors
+  sensors = [
+    BeamBreakSensor(i, pin, table, meta_table) for i, pin in enumerate(PINS, start=1)
+  ]
 
-    # Initialize RFID sensor
-    reader = SimpleMFRC522()
+  # Initialize RFID sensor
+  reader = SimpleMFRC522()
 
-    # SideController controls if this Pi should
-    side_controller = SideController(meta_table)
+  # SideController controls if this Pi should
+  side_controller = SideController(meta_table)
 
-    # Column mappings of side_controller
-    car_side_map = {
-        side_controller.LEFT_CONST: "car1",
-        side_controller.RIGHT_CONST: "car2",
-    }
+  # Column mappings of side_controller
+  car_side_map = {
+    side_controller.LEFT_CONST: "car1",
+    side_controller.RIGHT_CONST: "car2",
+  }
 
-    # Initialize the "side" of the webapp this Pi streams
-    side = side_controller.get_side()
+  # Initialize the "side" of the webapp this Pi streams
+  side = side_controller.get_side()
 
-    id = None
-    rowkey = None
-    last_scan = 0
-    last_seen = 0
+  id = None
+  rowkey = None
+  last_scan = 0
+  last_seen = 0
 
-    print(side)
-    print(f"STARTING SIDE: {car_side_map[side]}")
-    while True:
-        _time = time.time()
+  print(side)
+  print(f"STARTING SIDE: {car_side_map[side]}")
+  while True:
+    _time = time.time()
 
-        # Only accept RFID reads after a certain period
-        if _time - last_scan > RFID_READ_INTERVAL:
-            id = reader.read_id_no_block()
-            last_scan = _time
+    # Only accept RFID reads after a certain period
+    if _time - last_scan > RFID_READ_INTERVAL:
+      id = reader.read_id_no_block()
+      last_scan = _time
 
-            id_is_car = id and not side_controller.is_side(id)
-            # todo: When does side get reset? – (a: side gets reset in is_side cmd)
-            if id_is_car:
-                side = side_controller.get_side()
-                rowkey = f"track{side + 1}#{MAX_VALUE - _time}"
-                print(f"starting race for {rowkey}")
-                row = table.direct_row(rowkey)
-                row.set_cell("cf", "car_id", str(id))
-                row.commit()
+      id_is_car = id and not side_controller.is_side(id)
+      # todo: When does side get reset? – (a: side gets reset in is_side cmd)
+      if id_is_car:
+        side = side_controller.get_side()
+        rowkey = f"track{side + 1}#{MAX_VALUE - _time}"
+        print(f"starting race for {rowkey}")
+        row = table.direct_row(rowkey)
+        row.set_cell("cf", "car_id", str(id))
+        row.commit()
 
-        # Poll sensors
-        if rowkey:
-            for sensor in sensors:
-                try:
-                    sensor.read(rowkey)
-                except Exception:
-                    print(f"Error reading sensor {sensor.id}")
+    # Poll sensors
+    if rowkey:
+      for sensor in sensors:
+        try:
+          sensor.read(rowkey)
+        except Exception:
+          print(f"Error reading sensor {sensor.id}")
 finally:
-    GPIO.cleanup()
+  GPIO.cleanup()

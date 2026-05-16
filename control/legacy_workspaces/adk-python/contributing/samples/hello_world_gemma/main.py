@@ -32,41 +32,43 @@ logs.log_to_tmp_folder(level=logging.INFO)
 
 
 async def main():
-    app_name = "my_gemma_app"
-    user_id_1 = "user1"
-    session_service = InMemorySessionService()
-    artifact_service = InMemoryArtifactService()
-    runner = Runner(
-        app_name=app_name,
-        agent=agent.root_agent,
-        artifact_service=artifact_service,
-        session_service=session_service,
-    )
-    session_11 = await session_service.create_session(app_name=app_name, user_id=user_id_1)
+  app_name = "my_gemma_app"
+  user_id_1 = "user1"
+  session_service = InMemorySessionService()
+  artifact_service = InMemoryArtifactService()
+  runner = Runner(
+    app_name=app_name,
+    agent=agent.root_agent,
+    artifact_service=artifact_service,
+    session_service=session_service,
+  )
+  session_11 = await session_service.create_session(
+    app_name=app_name, user_id=user_id_1
+  )
 
-    async def run_prompt(session: Session, new_message: str):
-        content = types.Content(role="user", parts=[types.Part.from_text(text=new_message)])
-        print("** User says:", content.model_dump(exclude_none=True))
-        async for event in runner.run_async(
-            user_id=user_id_1,
-            session_id=session.id,
-            new_message=content,
-        ):
-            if event.content.parts and event.content.parts[0].text:
-                print(f"** {event.author}: {event.content.parts[0].text}")
+  async def run_prompt(session: Session, new_message: str):
+    content = types.Content(role="user", parts=[types.Part.from_text(text=new_message)])
+    print("** User says:", content.model_dump(exclude_none=True))
+    async for event in runner.run_async(
+      user_id=user_id_1,
+      session_id=session.id,
+      new_message=content,
+    ):
+      if event.content.parts and event.content.parts[0].text:
+        print(f"** {event.author}: {event.content.parts[0].text}")
 
-    start_time = time.time()
-    print("Start time:", start_time)
-    print("------------------------------------")
-    await run_prompt(session_11, "Hi, introduce yourself.")
-    await run_prompt(session_11, "Roll a die with 100 sides and check if it is prime")
-    await run_prompt(session_11, "Roll it again.")
-    await run_prompt(session_11, "What numbers did I get?")
-    end_time = time.time()
-    print("------------------------------------")
-    print("End time:", end_time)
-    print("Total time:", end_time - start_time)
+  start_time = time.time()
+  print("Start time:", start_time)
+  print("------------------------------------")
+  await run_prompt(session_11, "Hi, introduce yourself.")
+  await run_prompt(session_11, "Roll a die with 100 sides and check if it is prime")
+  await run_prompt(session_11, "Roll it again.")
+  await run_prompt(session_11, "What numbers did I get?")
+  end_time = time.time()
+  print("------------------------------------")
+  print("End time:", end_time)
+  print("Total time:", end_time - start_time)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+  asyncio.run(main())

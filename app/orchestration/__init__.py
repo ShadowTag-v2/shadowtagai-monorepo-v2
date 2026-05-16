@@ -5,9 +5,9 @@ from .chain import KernelChain, ChainExecutor
 from .patterns import SynchronousChain, ParallelMergeChain, ConditionalBranchChain
 
 __all__ = [
-    "KernelChain",
-    "ChainExecutor",
-    "SynchronousChain",
-    "ParallelMergeChain",
-    "ConditionalBranchChain",
+  "KernelChain",
+  "ChainExecutor",
+  "SynchronousChain",
+  "ParallelMergeChain",
+  "ConditionalBranchChain",
 ]

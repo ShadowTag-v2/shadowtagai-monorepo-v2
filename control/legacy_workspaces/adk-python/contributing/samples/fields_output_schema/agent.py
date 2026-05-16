@@ -18,15 +18,15 @@ from pydantic import BaseModel
 
 
 class WeatherData(BaseModel):
-    temperature: str
-    humidity: str
-    wind_speed: str
+  temperature: str
+  humidity: str
+  wind_speed: str
 
 
 root_agent = Agent(
-    name="root_agent",
-    model="gemini-2.0-flash",
-    instruction="""\
+  name="root_agent",
+  model="gemini-2.0-flash",
+  instruction="""\
 Answer user's questions based on the data you have.
 
 If you don't have the data, you can just say you don't know.
@@ -44,6 +44,6 @@ Here are the data you have for Cupertino
 * wind_speed: 13 mph
 
 """,
-    output_schema=WeatherData,
-    output_key="weather_data",
+  output_schema=WeatherData,
+  output_key="weather_data",
 )

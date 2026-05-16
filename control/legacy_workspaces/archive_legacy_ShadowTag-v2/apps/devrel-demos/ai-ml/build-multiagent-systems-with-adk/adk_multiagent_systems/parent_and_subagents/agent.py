@@ -31,22 +31,22 @@ cloud_logging_client.setup_logging()
 # Agents
 
 attractions_planner = Agent(
-    name="attractions_planner",
-    model=os.getenv("MODEL"),
-    description="Build a list of attractions to visit in a country.",
-    instruction="""
+  name="attractions_planner",
+  model=os.getenv("MODEL"),
+  description="Build a list of attractions to visit in a country.",
+  instruction="""
         - Provide the user options for attractions to visit within their selected country.
         """,
-    before_model_callback=log_query_to_model,
-    after_model_callback=log_model_response,
-    # When instructed to do so, paste the tools parameter below this line
+  before_model_callback=log_query_to_model,
+  after_model_callback=log_model_response,
+  # When instructed to do so, paste the tools parameter below this line
 )
 
 travel_brainstormer = Agent(
-    name="travel_brainstormer",
-    model=os.getenv("MODEL"),
-    description="Help a user decide what country to visit.",
-    instruction="""
+  name="travel_brainstormer",
+  model=os.getenv("MODEL"),
+  description="Help a user decide what country to visit.",
+  instruction="""
         Provide a few suggestions of popular countries for travelers.
 
         Help a user identify their primary goals of travel:
@@ -55,20 +55,20 @@ travel_brainstormer = Agent(
         Identify countries that would make great destinations
         based on their priorities.
         """,
-    before_model_callback=log_query_to_model,
-    after_model_callback=log_model_response,
+  before_model_callback=log_query_to_model,
+  after_model_callback=log_model_response,
 )
 
 root_agent = Agent(
-    name="steering",
-    model=os.getenv("MODEL"),
-    description="Start a user on a travel adventure.",
-    instruction="""
+  name="steering",
+  model=os.getenv("MODEL"),
+  description="Start a user on a travel adventure.",
+  instruction="""
         Ask the user if they know where they'd like to travel
         or if they need some help deciding.
         """,
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-    ),
-    # Add the sub_agents parameter when instructed below this line
+  generate_content_config=types.GenerateContentConfig(
+    temperature=0,
+  ),
+  # Add the sub_agents parameter when instructed below this line
 )

@@ -1,0 +1,43 @@
+# Default configuration file for FileSift v0.2.1
+# These values can be overridden via `filesift config set`
+
+# Model settings
+[models]
+# Embedding model for semantic search ("jina" uses jinaai/jina-embeddings-v2-base-code locally)
+EMBEDDING_MODEL = "jina"
+
+# Search settings
+[search]
+# Maximum number of results to return
+MAX_RESULTS = 5
+
+# Similarity threshold for filtering results (0.0 to 1.0)
+# Code embeddings score lower than summary embeddings, so 0.3 is a good default
+SIMILARITY_THRESHOLD = 0.3
+
+# Indexing settings
+[indexing]
+# Directories to exclude from indexing
+EXCLUDED_DIRS = [
+    ".git",
+    "node_modules",
+    "__pycache__",
+    "venv",
+    "env",
+    ".env",
+    "build",
+    "dist",
+    ".filesift"
+]
+
+# Daemon settings
+[daemon]
+# Host to bind daemon server to
+HOST = "127.0.0.1"
+
+# Port for daemon server
+PORT = 8687
+
+# Inactivity timeout in seconds (daemon will auto-terminate after this period)
+# Set to 0 to disable auto-shutdown
+INACTIVITY_TIMEOUT = 300

@@ -5,64 +5,70 @@ from pydantic import BaseModel, Field
 
 
 class FolderContent(BaseModel):
-    """Content structure for a generated folder."""
+  """Content structure for a generated folder."""
 
-    description: str = Field(..., description="Folder description with verification token embedded")
-    purpose: str = Field(..., description="Purpose of the folder")
-    project_info: str = Field(..., description="Project information related to this folder")
+  description: str = Field(
+    ..., description="Folder description with verification token embedded"
+  )
+  purpose: str = Field(..., description="Purpose of the folder")
+  project_info: str = Field(
+    ..., description="Project information related to this folder"
+  )
 
 
 class FolderSpec(BaseModel):
-    """Metadata for folder generation."""
+  """Metadata for folder generation."""
 
-    name: str = Field(..., description="Folder name")
-    token: str = Field(..., description="Verification token to embed")
+  name: str = Field(..., description="Folder name")
+  token: str = Field(..., description="Verification token to embed")
 
 
 class BoxFolder(BaseModel):
-    """Complete folder structure for generation."""
+  """Complete folder structure for generation."""
 
-    spec: FolderSpec
-    content: FolderContent
+  spec: FolderSpec
+  content: FolderContent
 
 
 class FileContent(BaseModel):
-    """Content structure for a generated file."""
+  """Content structure for a generated file."""
 
-    content: str = Field(..., description="File content with verification token embedded")
-    filename: str = Field(..., description="Name of the file")
-    description: str = Field(..., description="File description")
+  content: str = Field(..., description="File content with verification token embedded")
+  filename: str = Field(..., description="Name of the file")
+  description: str = Field(..., description="File description")
 
 
 class FileSpec(BaseModel):
-    """Metadata for file generation."""
+  """Metadata for file generation."""
 
-    token: str = Field(..., description="Verification token to embed")
-    file_extension: str = Field(default=".txt", description="File extension (e.g. .txt, .md)")
+  token: str = Field(..., description="Verification token to embed")
+  file_extension: str = Field(
+    default=".txt", description="File extension (e.g. .txt, .md)"
+  )
 
 
 class BoxFile(BaseModel):
-    """Complete file structure for generation."""
+  """Complete file structure for generation."""
 
-    spec: FileSpec
-    content: FileContent
+  spec: FileSpec
+  content: FileContent
 
 
 class CommentContent(BaseModel):
-    """Content structure for a generated comment."""
+  """Content structure for a generated comment."""
 
-    message: str = Field(..., description="Comment text with verification token embedded")
-    author_name: str = Field(default="Test User", description="Name of comment author")
+  message: str = Field(..., description="Comment text with verification token embedded")
+  author_name: str = Field(default="Test User", description="Name of comment author")
 
 
 class CommentSpec(BaseModel):
-    """Metadata for comment generation."""
+  """Metadata for comment generation."""
 
-    token: str = Field(..., description="Verification token to embed")
+  token: str = Field(..., description="Verification token to embed")
 
 
 class BoxComment(BaseModel):
-    """Complete comment structure for generation."""
+  """Complete comment structure for generation."""
 
-    spec: CommentSpec
-    content: CommentContent
+  spec: CommentSpec
+  content: CommentContent

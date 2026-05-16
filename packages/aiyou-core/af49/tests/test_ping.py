@@ -3,4 +3,4 @@ from aiyou_core import ping
 
 
 def test_ping():
-    assert ping() == "pong"
+  assert ping() == "pong"

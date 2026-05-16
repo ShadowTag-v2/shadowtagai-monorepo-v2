@@ -21,8 +21,8 @@ from google.adk.cli.service_registry import get_service_registry
 
 
 def foo_memory_factory(uri: str, **kwargs) -> FooMemoryService:
-    """Factory for FooMemoryService."""
-    return FooMemoryService(uri=uri, **kwargs)
+  """Factory for FooMemoryService."""
+  return FooMemoryService(uri=uri, **kwargs)
 
 
 # Register the foo memory service with scheme "foo".

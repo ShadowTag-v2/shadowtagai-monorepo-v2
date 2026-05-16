@@ -103,61 +103,63 @@ Instructions:
 """.strip()
 
 
-def is_valid_user_simulator_template(template_str: str, required_params: list[str]) -> bool:
-    """Checks if the given template_str is a valid jinja template."""
-    from jinja2 import exceptions
-    from jinja2 import meta
-    from jinja2 import StrictUndefined
-    from jinja2.sandbox import SandboxedEnvironment
+def is_valid_user_simulator_template(
+  template_str: str, required_params: list[str]
+) -> bool:
+  """Checks if the given template_str is a valid jinja template."""
+  from jinja2 import exceptions
+  from jinja2 import meta
+  from jinja2 import StrictUndefined
+  from jinja2.sandbox import SandboxedEnvironment
 
-    # StrictUndefined allows us to check for all the given params.
-    env = SandboxedEnvironment(undefined=StrictUndefined)
-    try:
-        # Check syntax of template
-        template = env.parse(template_str)
+  # StrictUndefined allows us to check for all the given params.
+  env = SandboxedEnvironment(undefined=StrictUndefined)
+  try:
+    # Check syntax of template
+    template = env.parse(template_str)
 
-        # Find all variables the template expects
-        undeclared_variables = meta.find_undeclared_variables(template)
+    # Find all variables the template expects
+    undeclared_variables = meta.find_undeclared_variables(template)
 
-        # Check parameters in template
-        missing_required = [v for v in required_params if v not in undeclared_variables]
+    # Check parameters in template
+    missing_required = [v for v in required_params if v not in undeclared_variables]
 
-        return not (missing_required)
+    return not (missing_required)
 
-    except (
-        exceptions.TemplateSyntaxError,
-        exceptions.UndefinedError,
-    ) as _:
-        return False
+  except (
+    exceptions.TemplateSyntaxError,
+    exceptions.UndefinedError,
+  ) as _:
+    return False
 
 
 def _get_user_simulator_instructions_template(
-    custom_instructions: str | None = None,
-    user_persona: UserPersona | None = None,
+  custom_instructions: str | None = None,
+  user_persona: UserPersona | None = None,
 ) -> str:
-    """Returns the appropriate instruction template for the user simulator."""
-    if custom_instructions is None and user_persona is None:
-        return _DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE
+  """Returns the appropriate instruction template for the user simulator."""
+  if custom_instructions is None and user_persona is None:
+    return _DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE
 
-    if custom_instructions is None and user_persona is not None:
-        return _USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE
+  if custom_instructions is None and user_persona is not None:
+    return _USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE
 
-    if custom_instructions is not None and user_persona is None:
-        return custom_instructions
+  if custom_instructions is not None and user_persona is None:
+    return custom_instructions
 
-    if custom_instructions is not None and user_persona is not None:
-        if not is_valid_user_simulator_template(
-            custom_instructions,
-            required_params=[
-                "stop_signal",
-                "conversation_plan",
-                "conversation_history",
-                "persona",
-            ],
-        ):
-            raise ValueError(
-                textwrap.dedent(
-                    """Custom instructions using personas must contain the following formatting placeholders following Jinja syntax:
+  if custom_instructions is not None and user_persona is not None:
+    if not is_valid_user_simulator_template(
+      custom_instructions,
+      required_params=[
+        "stop_signal",
+        "conversation_plan",
+        "conversation_history",
+        "persona",
+      ],
+    ):
+      raise ValueError(
+        textwrap.dedent(
+          """Custom instructions using personas must contain the following formatting placeholders following Jinja syntax:
                 * {{ stop_signal }} : text to be generated when the user simulator decides that the
                   conversation is over.
                 * {{ conversation_plan }} : the overall plan for the conversation that the user
@@ -165,47 +167,47 @@ def _get_user_simulator_instructions_template(
                 * {{ conversation_history }} : the conversation between the user and the agent so far.
                 * {{ persona }} : UserPersona for the simulator to use.
               """
-                )
-            )
+        )
+      )
 
-        return custom_instructions
+    return custom_instructions
 
 
 def get_llm_backed_user_simulator_prompt(
-    conversation_plan: str,
-    conversation_history: str,
-    stop_signal: str,
-    custom_instructions: str | None = None,
-    user_persona: UserPersona | None = None,
+  conversation_plan: str,
+  conversation_history: str,
+  stop_signal: str,
+  custom_instructions: str | None = None,
+  user_persona: UserPersona | None = None,
 ):
-    """Formats the prompt for the llm-backed user simulator"""
-    from jinja2 import DictLoader
-    from jinja2 import pass_context
-    from jinja2 import Template
-    from jinja2.sandbox import SandboxedEnvironment
+  """Formats the prompt for the llm-backed user simulator"""
+  from jinja2 import DictLoader
+  from jinja2 import pass_context
+  from jinja2 import Template
+  from jinja2.sandbox import SandboxedEnvironment
 
-    templates = {
-        "user_instructions": _get_user_simulator_instructions_template(
-            custom_instructions=custom_instructions,
-            user_persona=user_persona,
-        ),
-    }
-    template_env = SandboxedEnvironment(loader=DictLoader(templates))
+  templates = {
+    "user_instructions": _get_user_simulator_instructions_template(
+      custom_instructions=custom_instructions,
+      user_persona=user_persona,
+    ),
+  }
+  template_env = SandboxedEnvironment(loader=DictLoader(templates))
 
-    @pass_context
-    def _render_string_filter(context, template_string):
-        if not template_string:
-            return ""
-        return Template(template_string).render(context)
+  @pass_context
+  def _render_string_filter(context, template_string):
+    if not template_string:
+      return ""
+    return Template(template_string).render(context)
 
-    template_env.filters["render_string_filter"] = _render_string_filter
+  template_env.filters["render_string_filter"] = _render_string_filter
 
-    template_parameters = {
-        "stop_signal": stop_signal,
-        "conversation_plan": conversation_plan,
-        "conversation_history": conversation_history,
-    }
-    if user_persona is not None:
-        template_parameters["persona"] = user_persona
+  template_parameters = {
+    "stop_signal": stop_signal,
+    "conversation_plan": conversation_plan,
+    "conversation_history": conversation_history,
+  }
+  if user_persona is not None:
+    template_parameters["persona"] = user_persona
 
-    return template_env.get_template("user_instructions").render(template_parameters)
+  return template_env.get_template("user_instructions").render(template_parameters)

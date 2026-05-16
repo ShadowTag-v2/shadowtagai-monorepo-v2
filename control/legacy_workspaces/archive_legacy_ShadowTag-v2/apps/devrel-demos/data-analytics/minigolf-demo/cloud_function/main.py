@@ -32,43 +32,45 @@ BACKGROUND_IMAGE_BUCKET = ""
 # Cloud Function entry point
 @functions_framework.cloud_event
 def image_recognition(cloud_event):
-    """
-    Cloud Function triggered by a new video upload to Cloud Storage.
+  """
+  Cloud Function triggered by a new video upload to Cloud Storage.
 
-    Processes the video and uploads tracking data to BigQuery.
-    """
-    start_time = datetime.now()
-    data = cloud_event.data
-    bucket_name = data["bucket"]
-    file_name = data["name"]
-    user_id = file_name.split(".")[0]
+  Processes the video and uploads tracking data to BigQuery.
+  """
+  start_time = datetime.now()
+  data = cloud_event.data
+  bucket_name = data["bucket"]
+  file_name = data["name"]
+  user_id = file_name.split(".")[0]
 
-    db = get_firestore_client()
-    update_user_status(db, user_id, "processing")
-    initialize_bq_tables()
+  db = get_firestore_client()
+  update_user_status(db, user_id, "processing")
+  initialize_bq_tables()
 
-    temp_video_file = f"/tmp/{file_name}"
-    download_video(bucket_name, file_name, temp_video_file)
-    process_video(temp_video_file, user_id)
+  temp_video_file = f"/tmp/{file_name}"
+  download_video(bucket_name, file_name, temp_video_file)
+  process_video(temp_video_file, user_id)
 
-    df = query_data_to_dataframe(PROJECT_ID, user_id)
-    generate_visual(df, user_id)
-    upload_image(f"{BACKGROUND_IMAGE_BUCKET}", user_id)
-    commentary = generate_commentary(PROJECT_ID, bucket_name, user_id, df)
-    commentary_data = {
-        "user_id": user_id,
-        "commentary": commentary,
-    }
-    insert_data("commentary", commentary_data)
+  df = query_data_to_dataframe(PROJECT_ID, user_id)
+  generate_visual(df, user_id)
+  upload_image(f"{BACKGROUND_IMAGE_BUCKET}", user_id)
+  commentary = generate_commentary(PROJECT_ID, bucket_name, user_id, df)
+  commentary_data = {
+    "user_id": user_id,
+    "commentary": commentary,
+  }
+  insert_data("commentary", commentary_data)
 
-    # Clean up the temporary file
-    if os.path.isfile(temp_video_file):
-        os.remove(temp_video_file)
-    else:
-        print(f"Downloaded file not found: {temp_video_file}")
+  # Clean up the temporary file
+  if os.path.isfile(temp_video_file):
+    os.remove(temp_video_file)
+  else:
+    print(f"Downloaded file not found: {temp_video_file}")
 
-    update_user_status(db, user_id, "completed")
+  update_user_status(db, user_id, "completed")
 
-    end_time = datetime.now()
-    elapsed_time = (end_time - start_time).total_seconds()
-    print(f"Processing {file_name} is completed. Execution time: {elapsed_time:.2f} seconds.")
+  end_time = datetime.now()
+  elapsed_time = (end_time - start_time).total_seconds()
+  print(
+    f"Processing {file_name} is completed. Execution time: {elapsed_time:.2f} seconds."
+  )

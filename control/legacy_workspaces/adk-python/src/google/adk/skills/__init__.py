@@ -25,27 +25,27 @@ from .models import Script
 from .models import Skill
 
 __all__ = [
-    "DEFAULT_SKILL_SYSTEM_INSTRUCTION",
-    "Frontmatter",
-    "Resources",
-    "Script",
-    "Skill",
-    "load_skill_from_dir",
+  "DEFAULT_SKILL_SYSTEM_INSTRUCTION",
+  "Frontmatter",
+  "Resources",
+  "Script",
+  "Skill",
+  "load_skill_from_dir",
 ]
 
 
 def __getattr__(name: str) -> Any:
-    if name == "DEFAULT_SKILL_SYSTEM_INSTRUCTION":
-        from ..tools import skill_toolset
+  if name == "DEFAULT_SKILL_SYSTEM_INSTRUCTION":
+    from ..tools import skill_toolset
 
-        warnings.warn(
-            (
-                "Importing DEFAULT_SKILL_SYSTEM_INSTRUCTION from"
-                " google.adk.skills is deprecated."
-                " Please import it from google.adk.tools.skill_toolset instead."
-            ),
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return skill_toolset.DEFAULT_SKILL_SYSTEM_INSTRUCTION
-    raise AttributeError(f"module {__name__} has no attribute {name}")
+    warnings.warn(
+      (
+        "Importing DEFAULT_SKILL_SYSTEM_INSTRUCTION from"
+        " google.adk.skills is deprecated."
+        " Please import it from google.adk.tools.skill_toolset instead."
+      ),
+      DeprecationWarning,
+      stacklevel=2,
+    )
+    return skill_toolset.DEFAULT_SKILL_SYSTEM_INSTRUCTION
+  raise AttributeError(f"module {__name__} has no attribute {name}")

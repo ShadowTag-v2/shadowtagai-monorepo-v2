@@ -17,10 +17,10 @@ from __future__ import annotations
 
 
 class SessionNotFoundError(ValueError):
-    """Raised when a session cannot be found.
+  """Raised when a session cannot be found.
 
-    Inherits from ValueError (for backward compatibility).
-    """
+  Inherits from ValueError (for backward compatibility).
+  """
 
-    def __init__(self, message="Session not found."):
-        super().__init__(message)
+  def __init__(self, message="Session not found."):
+    super().__init__(message)

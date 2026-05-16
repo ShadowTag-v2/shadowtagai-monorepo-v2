@@ -64,6 +64,8 @@ M:: {{modality.modes}}
 
 
 def get_ultrathink_prompt(domain_tags: str = "general") -> str:
-    from datetime import datetime
+  from datetime import datetime
 
-    return ANTIGRAVITY_ULTRATHINK_PROMPT.format(date=datetime.now().strftime("%B %d, %Y"), domain_tags=domain_tags)
+  return ANTIGRAVITY_ULTRATHINK_PROMPT.format(
+    date=datetime.now().strftime("%B %d, %Y"), domain_tags=domain_tags
+  )

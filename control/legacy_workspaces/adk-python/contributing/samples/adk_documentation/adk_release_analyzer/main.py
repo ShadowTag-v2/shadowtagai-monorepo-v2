@@ -33,36 +33,36 @@ logs.setup_adk_logger(level=logging.DEBUG)
 
 
 async def main():
-    runner = InMemoryRunner(
-        agent=agent.root_agent,
-        app_name=APP_NAME,
-    )
-    session = await runner.session_service.create_session(
-        app_name=APP_NAME,
-        user_id=USER_ID,
-    )
+  runner = InMemoryRunner(
+    agent=agent.root_agent,
+    app_name=APP_NAME,
+  )
+  session = await runner.session_service.create_session(
+    app_name=APP_NAME,
+    user_id=USER_ID,
+  )
 
-    response = await call_agent_async(
-        runner,
-        USER_ID,
-        session.id,
-        "Please analyze the most recent two releases of ADK Python!",
-    )
-    print(f"<<<< Agent Final Output: {response}\n")
+  response = await call_agent_async(
+    runner,
+    USER_ID,
+    session.id,
+    "Please analyze the most recent two releases of ADK Python!",
+  )
+  print(f"<<<< Agent Final Output: {response}\n")
 
 
 if __name__ == "__main__":
-    start_time = time.time()
-    print(
-        f"Start analyzing {CODE_OWNER}/{CODE_REPO} releases for"
-        f" {DOC_OWNER}/{DOC_REPO} updates at"
-        f" {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(start_time))}"
-    )
-    print("-" * 80)
-    asyncio.run(main())
-    print("-" * 80)
-    end_time = time.time()
-    print(
-        f"Triaging finished at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(end_time))}",
-    )
-    print("Total script execution time:", f"{end_time - start_time:.2f} seconds")
+  start_time = time.time()
+  print(
+    f"Start analyzing {CODE_OWNER}/{CODE_REPO} releases for"
+    f" {DOC_OWNER}/{DOC_REPO} updates at"
+    f" {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(start_time))}"
+  )
+  print("-" * 80)
+  asyncio.run(main())
+  print("-" * 80)
+  end_time = time.time()
+  print(
+    f"Triaging finished at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(end_time))}",
+  )
+  print("Total script execution time:", f"{end_time - start_time:.2f} seconds")

@@ -8,9 +8,9 @@ from kosmos.agents.hypothesis import HypothesisAgent
 from kosmos.agents.synthesis import SynthesisAgent
 
 __all__ = [
-    "BaseAgent",
-    "LiteratureAgent",
-    "DataAnalysisAgent",
-    "HypothesisAgent",
-    "SynthesisAgent",
+  "BaseAgent",
+  "LiteratureAgent",
+  "DataAnalysisAgent",
+  "HypothesisAgent",
+  "SynthesisAgent",
 ]

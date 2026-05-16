@@ -15,4 +15,4 @@ sys.path.append(str(script_dir))
 from update_connector_docs.__main__ import main
 
 if __name__ == "__main__":
-    main()
+  main()

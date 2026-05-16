@@ -7,6 +7,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "green_loop"
 OUT.mkdir(parents=True, exist_ok=True)
-payload = {"status": "ok", "system": "green-loop", "goal": "patch, verify, summarize, preserve only passing artifacts"}
+payload = {
+  "status": "ok",
+  "system": "green-loop",
+  "goal": "patch, verify, summarize, preserve only passing artifacts",
+}
 (OUT / "latest.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
 print(json.dumps(payload))

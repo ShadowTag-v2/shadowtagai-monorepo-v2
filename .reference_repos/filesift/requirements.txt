@@ -1,0 +1,11 @@
+faiss-cpu
+sentence-transformers<5
+transformers<5
+rank-bm25
+numpy
+requests
+click
+tqdm
+platformdirs
+tomli-w
+PyYAML

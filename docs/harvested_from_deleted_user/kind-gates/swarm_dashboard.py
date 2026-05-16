@@ -9,92 +9,93 @@ Real-time monitoring of 200-agent deployment progress
 import json
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List
 from dataclasses import dataclass, asdict
+
 
 @dataclass
 class SwarmStatus:
-    """Real-time swarm operational status"""
-    total_agents: int = 200
-    active_agents: int = 200
-    tasks_total: int = 487
-    tasks_completed: int = 0
-    current_shift: str = "Evening (16:00-24:00 UTC)"
-    deployment_stage: str = "Planning"
-    p99_latency_ms: float = 0.0
-    uptime_percent: float = 0.0
+  """Real-time swarm operational status"""
 
-    # Specialist progress
-    python_progress: int = 0  # 0-100%
-    kubernetes_progress: int = 0
-    react_progress: int = 0
-    go_progress: int = 0
-    terraform_progress: int = 0
-    database_progress: int = 0
-    generalist_progress: int = 0
+  total_agents: int = 200
+  active_agents: int = 200
+  tasks_total: int = 487
+  tasks_completed: int = 0
+  current_shift: str = "Evening (16:00-24:00 UTC)"
+  deployment_stage: str = "Planning"
+  p99_latency_ms: float = 0.0
+  uptime_percent: float = 0.0
 
-    # Critical milestones
-    token_compression_implemented: bool = False
-    Cor_Claude_Code_6_deployed: bool = False
-    monitoring_operational: bool = False
-    status_page_live: bool = False
-    load_testing_complete: bool = False
-    security_audit_passed: bool = False
+  # Specialist progress
+  python_progress: int = 0  # 0-100%
+  kubernetes_progress: int = 0
+  react_progress: int = 0
+  go_progress: int = 0
+  terraform_progress: int = 0
+  database_progress: int = 0
+  generalist_progress: int = 0
 
-    # Deployment readiness
-    soft_launch_ready: bool = False
-    pilot_customers: int = 0
-    mrr_monthly: int = 0  # USD
+  # Critical milestones
+  token_compression_implemented: bool = False
+  Cor_Claude_Code_6_deployed: bool = False
+  monitoring_operational: bool = False
+  status_page_live: bool = False
+  load_testing_complete: bool = False
+  security_audit_passed: bool = False
 
-    timestamp: str = ""
+  # Deployment readiness
+  soft_launch_ready: bool = False
+  pilot_customers: int = 0
+  mrr_monthly: int = 0  # USD
 
-    def __post_init__(self):
-        if not self.timestamp:
-            self.timestamp = datetime.now().isoformat()
+  timestamp: str = ""
 
-    def get_overall_progress(self) -> int:
-        """Calculate overall deployment progress"""
-        return int((self.tasks_completed / self.tasks_total) * 100)
+  def __post_init__(self):
+    if not self.timestamp:
+      self.timestamp = datetime.now().isoformat()
 
-    def get_specialist_avg_progress(self) -> int:
-        """Average progress across all specialist groups"""
-        progress_values = [
-            self.python_progress,
-            self.kubernetes_progress,
-            self.react_progress,
-            self.go_progress,
-            self.terraform_progress,
-            self.database_progress,
-            self.generalist_progress
-        ]
-        return int(sum(progress_values) / len(progress_values))
+  def get_overall_progress(self) -> int:
+    """Calculate overall deployment progress"""
+    return int((self.tasks_completed / self.tasks_total) * 100)
 
-    def get_milestone_count(self) -> str:
-        """Count completed critical milestones"""
-        milestones = [
-            self.token_compression_implemented,
-            self.Cor_Claude_Code_6_deployed,
-            self.monitoring_operational,
-            self.status_page_live,
-            self.load_testing_complete,
-            self.security_audit_passed
-        ]
-        completed = sum(1 for m in milestones if m)
-        return f"{completed}/6"
+  def get_specialist_avg_progress(self) -> int:
+    """Average progress across all specialist groups"""
+    progress_values = [
+      self.python_progress,
+      self.kubernetes_progress,
+      self.react_progress,
+      self.go_progress,
+      self.terraform_progress,
+      self.database_progress,
+      self.generalist_progress,
+    ]
+    return int(sum(progress_values) / len(progress_values))
 
-    def to_dashboard(self) -> str:
-        """Generate ASCII dashboard"""
-        overall_prog = self.get_overall_progress()
-        specialist_prog = self.get_specialist_avg_progress()
-        milestone_count = self.get_milestone_count()
+  def get_milestone_count(self) -> str:
+    """Count completed critical milestones"""
+    milestones = [
+      self.token_compression_implemented,
+      self.Cor_Claude_Code_6_deployed,
+      self.monitoring_operational,
+      self.status_page_live,
+      self.load_testing_complete,
+      self.security_audit_passed,
+    ]
+    completed = sum(1 for m in milestones if m)
+    return f"{completed}/6"
 
-        # Progress bars
-        def progress_bar(percent: int, width: int = 40) -> str:
-            filled = int((percent / 100) * width)
-            bar = "█" * filled + "░" * (width - filled)
-            return f"[{bar}] {percent}%"
+  def to_dashboard(self) -> str:
+    """Generate ASCII dashboard"""
+    overall_prog = self.get_overall_progress()
+    specialist_prog = self.get_specialist_avg_progress()
+    milestone_count = self.get_milestone_count()
 
-        dashboard = f"""
+    # Progress bars
+    def progress_bar(percent: int, width: int = 40) -> str:
+      filled = int((percent / 100) * width)
+      bar = "█" * filled + "░" * (width - filled)
+      return f"[{bar}] {percent}%"
+
+    dashboard = f"""
 ╔══════════════════════════════════════════════════════════════════╗
 ║           🐒 FLYINGMONKEYS SWARM - LAUNCH DASHBOARD 🚀           ║
 ╠══════════════════════════════════════════════════════════════════╣
@@ -138,12 +139,12 @@ class SwarmStatus:
 ║  CRITICAL MILESTONES                           {milestone_count} Complete      ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  {'✅' if self.token_compression_implemented else '⏸️ '} Token Compression Pipeline{'  ' if not self.token_compression_implemented else ''}                         ║
-║  {'✅' if self.Cor_Claude_Code_6_deployed else '⏸️ '} Claude_Code_6 Deployment{'       ' if not self.Cor_Claude_Code_6_deployed else ''}                                   ║
-║  {'✅' if self.monitoring_operational else '⏸️ '} Monitoring Infrastructure{'   ' if not self.monitoring_operational else ''}                            ║
-║  {'✅' if self.status_page_live else '⏸️ '} Public Status Page{'         ' if not self.status_page_live else ''}                                    ║
-║  {'✅' if self.load_testing_complete else '⏸️ '} Load Testing Complete{'     ' if not self.load_testing_complete else ''}                                 ║
-║  {'✅' if self.security_audit_passed else '⏸️ '} Security Audit Passed{'     ' if not self.security_audit_passed else ''}                                 ║
+║  {"✅" if self.token_compression_implemented else "⏸️ "} Token Compression Pipeline{"  " if not self.token_compression_implemented else ""}                         ║
+║  {"✅" if self.Cor_Claude_Code_6_deployed else "⏸️ "} Claude_Code_6 Deployment{"       " if not self.Cor_Claude_Code_6_deployed else ""}                                   ║
+║  {"✅" if self.monitoring_operational else "⏸️ "} Monitoring Infrastructure{"   " if not self.monitoring_operational else ""}                            ║
+║  {"✅" if self.status_page_live else "⏸️ "} Public Status Page{"         " if not self.status_page_live else ""}                                    ║
+║  {"✅" if self.load_testing_complete else "⏸️ "} Load Testing Complete{"     " if not self.load_testing_complete else ""}                                 ║
+║  {"✅" if self.security_audit_passed else "⏸️ "} Security Audit Passed{"     " if not self.security_audit_passed else ""}                                 ║
 ║                                                                  ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  PERFORMANCE METRICS                                             ║
@@ -156,7 +157,7 @@ class SwarmStatus:
 ║  BUSINESS METRICS                                                ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║                                                                  ║
-║  Soft Launch Ready: {'YES ✅' if self.soft_launch_ready else 'NO ⏸️ '}                                     ║
+║  Soft Launch Ready: {"YES ✅" if self.soft_launch_ready else "NO ⏸️ "}                                     ║
 ║  Pilot Customers:   {self.pilot_customers}/3 signed                                   ║
 ║  Monthly Revenue:   ${self.mrr_monthly:,} / $3,000 target                        ║
 ║                                                                  ║
@@ -165,90 +166,91 @@ class SwarmStatus:
 Platform Valuation: $421.5B (2030 target)
 ShadowTagAi - Claude_Code_6 + Token Compression Soft Launch
 """
-        return dashboard
+    return dashboard
 
 
 class SwarmMonitor:
-    """Monitor and persist swarm status"""
+  """Monitor and persist swarm status"""
 
-    def __init__(self, state_file: str = "swarm_status.json"):
-        self.state_file = Path(state_file)
+  def __init__(self, state_file: str = "swarm_status.json"):
+    self.state_file = Path(state_file)
+    self.status = self.load_status()
+
+  def load_status(self) -> SwarmStatus:
+    """Load status from disk or create new"""
+    if self.state_file.exists():
+      try:
+        with open(self.state_file) as f:
+          data = json.load(f)
+        return SwarmStatus(**data)
+      except Exception:
+        pass
+    return SwarmStatus()
+
+  def save_status(self):
+    """Persist status to disk"""
+    with open(self.state_file, "w") as f:
+      json.dump(asdict(self.status), f, indent=2)
+
+  def update_progress(self, **kwargs):
+    """Update status fields"""
+    for key, value in kwargs.items():
+      if hasattr(self.status, key):
+        setattr(self.status, key, value)
+    self.status.timestamp = datetime.now().isoformat()
+    self.save_status()
+
+  def display(self):
+    """Display current dashboard"""
+    print("\033[2J\033[H")  # Clear screen
+    print(self.status.to_dashboard())
+    print(f"\nLast updated: {self.status.timestamp}")
+    print("\nPress Ctrl+C to exit")
+
+  def auto_refresh(self, interval: int = 5):
+    """Auto-refresh dashboard every N seconds"""
+    import time
+
+    try:
+      while True:
         self.status = self.load_status()
-
-    def load_status(self) -> SwarmStatus:
-        """Load status from disk or create new"""
-        if self.state_file.exists():
-            try:
-                with open(self.state_file) as f:
-                    data = json.load(f)
-                return SwarmStatus(**data)
-            except Exception:
-                pass
-        return SwarmStatus()
-
-    def save_status(self):
-        """Persist status to disk"""
-        with open(self.state_file, 'w') as f:
-            json.dump(asdict(self.status), f, indent=2)
-
-    def update_progress(self, **kwargs):
-        """Update status fields"""
-        for key, value in kwargs.items():
-            if hasattr(self.status, key):
-                setattr(self.status, key, value)
-        self.status.timestamp = datetime.now().isoformat()
-        self.save_status()
-
-    def display(self):
-        """Display current dashboard"""
-        print("\033[2J\033[H")  # Clear screen
-        print(self.status.to_dashboard())
-        print(f"\nLast updated: {self.status.timestamp}")
-        print("\nPress Ctrl+C to exit")
-
-    def auto_refresh(self, interval: int = 5):
-        """Auto-refresh dashboard every N seconds"""
-        import time
-        try:
-            while True:
-                self.status = self.load_status()
-                self.display()
-                time.sleep(interval)
-        except KeyboardInterrupt:
-            print("\n\nDashboard stopped.")
+        self.display()
+        time.sleep(interval)
+    except KeyboardInterrupt:
+      print("\n\nDashboard stopped.")
 
 
 if __name__ == "__main__":
-    import sys
+  import sys
 
-    monitor = SwarmMonitor(
-        state_file="/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/swarm_status.json"
-    )
+  monitor = SwarmMonitor(
+    state_file="/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/swarm_status.json"
+  )
 
-    if len(sys.argv) > 1 and sys.argv[1] == "watch":
-        # Auto-refresh mode
-        monitor.auto_refresh(interval=5)
-    elif len(sys.argv) > 1 and sys.argv[1] == "update":
-        # Update mode: python swarm_dashboard.py update python_progress=25
-        for arg in sys.argv[2:]:
-            key, value = arg.split('=')
-            # Auto-convert types
-            if value.lower() in ('true', 'false'):
-                value = value.lower() == 'true'
-            elif value.isdigit():
-                value = int(value)
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    pass
-            monitor.update_progress(**{key: value})
-        print(f"✅ Updated: {sys.argv[2:]}")
-        monitor.display()
-    else:
-        # Single display
-        monitor.display()
-        print("\nUsage:")
-        print("  python swarm_dashboard.py          # Display once")
-        print("  python swarm_dashboard.py watch    # Auto-refresh every 5s")
-        print("  python swarm_dashboard.py update python_progress=25  # Update field")
+  if len(sys.argv) > 1 and sys.argv[1] == "watch":
+    # Auto-refresh mode
+    monitor.auto_refresh(interval=5)
+  elif len(sys.argv) > 1 and sys.argv[1] == "update":
+    # Update mode: python swarm_dashboard.py update python_progress=25
+    for arg in sys.argv[2:]:
+      key, value = arg.split("=")
+      # Auto-convert types
+      if value.lower() in ("true", "false"):
+        value = value.lower() == "true"
+      elif value.isdigit():
+        value = int(value)
+      elif "." in value:
+        try:
+          value = float(value)
+        except ValueError:
+          pass
+      monitor.update_progress(**{key: value})
+    print(f"✅ Updated: {sys.argv[2:]}")
+    monitor.display()
+  else:
+    # Single display
+    monitor.display()
+    print("\nUsage:")
+    print("  python swarm_dashboard.py          # Display once")
+    print("  python swarm_dashboard.py watch    # Auto-refresh every 5s")
+    print("  python swarm_dashboard.py update python_progress=25  # Update field")

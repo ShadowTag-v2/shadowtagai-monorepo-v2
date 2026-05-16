@@ -30,6 +30,6 @@ from .bigtable_credentials import BigtableCredentialsConfig
 from .bigtable_toolset import BigtableToolset
 
 __all__ = [
-    "BigtableToolset",
-    "BigtableCredentialsConfig",
+  "BigtableToolset",
+  "BigtableCredentialsConfig",
 ]

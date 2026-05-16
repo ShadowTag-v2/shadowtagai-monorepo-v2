@@ -9,24 +9,24 @@ from typing import Any
 
 
 def world_model_query(
-    query_type: str,
-    filters: dict[str, Any] | None = None,
+  query_type: str,
+  filters: dict[str, Any] | None = None,
 ) -> str:
-    """
-    Query the world model for current research state.
+  """
+  Query the world model for current research state.
 
-    Args:
-        query_type: Type of query (hypotheses, literature, analysis_results)
-        filters: Optional filters (e.g., min_confidence, tested status)
+  Args:
+      query_type: Type of query (hypotheses, literature, analysis_results)
+      filters: Optional filters (e.g., min_confidence, tested status)
 
-    Returns:
-        Query results as formatted string
-    """
-    # This would access the actual world model in production
-    # For now, returns example data
+  Returns:
+      Query results as formatted string
+  """
+  # This would access the actual world model in production
+  # For now, returns example data
 
-    if query_type == "hypotheses":
-        return """
+  if query_type == "hypotheses":
+    return """
 Current Hypotheses:
 
 1. [hyp_001] Variable X correlates with outcome Y (confidence: 0.85, tested: True)
@@ -41,8 +41,8 @@ Current Hypotheses:
    Evidence: Preliminary visualization shows curved pattern
    Result: Needs statistical validation
 """
-    elif query_type == "literature":
-        return """
+  elif query_type == "literature":
+    return """
 Literature References:
 
 1. [lit_001] "ReAct: Synergizing Reasoning and Acting" - Yao et al. (2022)
@@ -57,38 +57,38 @@ Literature References:
    Relevance: 0.65 - Methods for hypothesis testing
    Key findings: Multiple testing correction needed
 """
-    else:
-        return f"Unknown query type: {query_type}"
+  else:
+    return f"Unknown query type: {query_type}"
 
 
 def literature_query(
-    search_terms: str | None = None,
-    min_relevance: float = 0.5,
+  search_terms: str | None = None,
+  min_relevance: float = 0.5,
 ) -> str:
-    """
-    Query literature references in world model.
+  """
+  Query literature references in world model.
 
-    Args:
-        search_terms: Optional search terms
-        min_relevance: Minimum relevance score
+  Args:
+      search_terms: Optional search terms
+      min_relevance: Minimum relevance score
 
-    Returns:
-        Matching literature references
-    """
-    return world_model_query("literature")
+  Returns:
+      Matching literature references
+  """
+  return world_model_query("literature")
 
 
 def analyze_patterns(data_description: str) -> str:
-    """
-    Analyze patterns in current data/hypotheses.
+  """
+  Analyze patterns in current data/hypotheses.
 
-    Args:
-        data_description: Description of data to analyze
+  Args:
+      data_description: Description of data to analyze
 
-    Returns:
-        Pattern analysis results
-    """
-    return f"""
+  Returns:
+      Pattern analysis results
+  """
+  return f"""
 Pattern Analysis: {data_description}
 
 Detected Patterns:

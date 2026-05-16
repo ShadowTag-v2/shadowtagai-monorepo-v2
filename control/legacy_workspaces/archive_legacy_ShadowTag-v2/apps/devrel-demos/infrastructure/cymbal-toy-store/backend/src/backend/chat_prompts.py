@@ -16,19 +16,19 @@
 import textwrap
 
 from langchain.prompts import (
-    PromptTemplate,
-    SystemMessagePromptTemplate,
+  PromptTemplate,
+  SystemMessagePromptTemplate,
 )
 
 # With RAG
 system_template = SystemMessagePromptTemplate.from_template(
-    textwrap.dedent("""\
+  textwrap.dedent("""\
 		You are a friendly and proactive shopping assistant for children's toys, sport inventories, and other products for fun and sport for parents and kids of any age.
 		Respond to the user by helping them find toys or products for fun and sport in the store. 
 
 		{{ context }}
 """),
-    template_format="jinja2",
+  template_format="jinja2",
 )
 
 # Without RAG
@@ -42,7 +42,7 @@ system_template = SystemMessagePromptTemplate.from_template(
 
 
 intent_template = PromptTemplate.from_template(
-    textwrap.dedent("""\
+  textwrap.dedent("""\
 You are a friendly and proactive shopping assistant for children's toys and other products for fun and sport such as gadgets, accessories and equipment.
 
 	Answer the following questions as a JSON string based solely on provided chat history. Do not assume anything that the user did not expicitly say.
@@ -113,5 +113,5 @@ You are a friendly and proactive shopping assistant for children's toys and othe
 	History: {{ history }}
 	Answer: 
 """),
-    template_format="jinja2",
+  template_format="jinja2",
 )

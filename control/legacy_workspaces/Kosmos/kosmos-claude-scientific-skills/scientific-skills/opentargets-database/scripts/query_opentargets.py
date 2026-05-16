@@ -18,50 +18,54 @@ from typing import Any
 BASE_URL = "https://api.platform.opentargets.org/api/v4/graphql"
 
 
-def execute_query(query: str, variables: dict[str, Any] | None = None) -> dict[str, Any]:
-    """
-    Execute a GraphQL query against the Open Targets Platform API.
+def execute_query(
+  query: str, variables: dict[str, Any] | None = None
+) -> dict[str, Any]:
+  """
+  Execute a GraphQL query against the Open Targets Platform API.
 
-    Args:
-        query: GraphQL query string
-        variables: Optional dictionary of variables for the query
+  Args:
+      query: GraphQL query string
+      variables: Optional dictionary of variables for the query
 
-    Returns:
-        Dictionary containing the API response data
+  Returns:
+      Dictionary containing the API response data
 
-    Raises:
-        Exception if the API request fails or returns errors
-    """
-    payload = {"query": query}
-    if variables:
-        payload["variables"] = variables
+  Raises:
+      Exception if the API request fails or returns errors
+  """
+  payload = {"query": query}
+  if variables:
+    payload["variables"] = variables
 
-    try:
-        response = requests.post(BASE_URL, json=payload, timeout=30)
-        response.raise_for_status()
-        data = response.json()
+  try:
+    response = requests.post(BASE_URL, json=payload, timeout=30)
+    response.raise_for_status()
+    data = response.json()
 
-        if "errors" in data:
-            raise Exception(f"GraphQL errors: {data['errors']}")
+    if "errors" in data:
+      raise Exception(f"GraphQL errors: {data['errors']}")
 
-        return data.get("data", {})
+    return data.get("data", {})
 
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"API request failed: {str(e)}")
+  except requests.exceptions.RequestException as e:
+    raise Exception(f"API request failed: {str(e)}")
 
 
-def search_entities(query_string: str, entity_types: list[str] | None = None) -> list[dict[str, Any]]:
-    """
-    Search for targets, diseases, or drugs by name or identifier.
+def search_entities(
+  query_string: str, entity_types: list[str] | None = None
+) -> list[dict[str, Any]]:
+  """
+  Search for targets, diseases, or drugs by name or identifier.
 
-    Args:
-        query_string: Search term (e.g., "BRCA1", "alzheimer", "aspirin")
-        entity_types: Optional list to filter by entity type ["target", "disease", "drug"]
+  Args:
+      query_string: Search term (e.g., "BRCA1", "alzheimer", "aspirin")
+      entity_types: Optional list to filter by entity type ["target", "disease", "drug"]
 
-    Returns:
-        List of search results with id, name, entity type, and description
-    """
-    query = """
+  Returns:
+      List of search results with id, name, entity type, and description
+  """
+  query = """
       query search($queryString: String!, $entityNames: [String!]) {
         search(queryString: $queryString, entityNames: $entityNames, page: {size: 10}) {
           hits {
@@ -74,27 +78,27 @@ def search_entities(query_string: str, entity_types: list[str] | None = None) ->
       }
     """
 
-    variables = {"queryString": query_string}
-    if entity_types:
-        variables["entityNames"] = entity_types
+  variables = {"queryString": query_string}
+  if entity_types:
+    variables["entityNames"] = entity_types
 
-    result = execute_query(query, variables)
-    return result.get("search", {}).get("hits", [])
+  result = execute_query(query, variables)
+  return result.get("search", {}).get("hits", [])
 
 
 def get_target_info(ensembl_id: str, include_diseases: bool = False) -> dict[str, Any]:
-    """
-    Retrieve comprehensive information about a target gene.
+  """
+  Retrieve comprehensive information about a target gene.
 
-    Args:
-        ensembl_id: Ensembl gene ID (e.g., "ENSG00000157764")
-        include_diseases: Whether to include top associated diseases
+  Args:
+      ensembl_id: Ensembl gene ID (e.g., "ENSG00000157764")
+      include_diseases: Whether to include top associated diseases
 
-    Returns:
-        Dictionary with target information including tractability, safety, expression
+  Returns:
+      Dictionary with target information including tractability, safety, expression
+  """
+  disease_fragment = (
     """
-    disease_fragment = (
-        """
       associatedDiseases(page: {size: 10}) {
         rows {
           disease {
@@ -109,11 +113,11 @@ def get_target_info(ensembl_id: str, include_diseases: bool = False) -> dict[str
         }
       }
     """
-        if include_diseases
-        else ""
-    )
+    if include_diseases
+    else ""
+  )
 
-    query = f"""
+  query = f"""
       query targetInfo($ensemblId: String!) {{
         target(ensemblId: $ensemblId) {{
           id
@@ -153,23 +157,23 @@ def get_target_info(ensembl_id: str, include_diseases: bool = False) -> dict[str
       }}
     """
 
-    result = execute_query(query, {"ensemblId": ensembl_id})
-    return result.get("target", {})
+  result = execute_query(query, {"ensemblId": ensembl_id})
+  return result.get("target", {})
 
 
 def get_disease_info(efo_id: str, include_targets: bool = False) -> dict[str, Any]:
-    """
-    Retrieve information about a disease.
+  """
+  Retrieve information about a disease.
 
-    Args:
-        efo_id: EFO disease identifier (e.g., "EFO_0000249")
-        include_targets: Whether to include top associated targets
+  Args:
+      efo_id: EFO disease identifier (e.g., "EFO_0000249")
+      include_targets: Whether to include top associated targets
 
-    Returns:
-        Dictionary with disease information
+  Returns:
+      Dictionary with disease information
+  """
+  target_fragment = (
     """
-    target_fragment = (
-        """
       associatedTargets(page: {size: 10}) {
         rows {
           target {
@@ -185,11 +189,11 @@ def get_disease_info(efo_id: str, include_targets: bool = False) -> dict[str, An
         }
       }
     """
-        if include_targets
-        else ""
-    )
+    if include_targets
+    else ""
+  )
 
-    query = f"""
+  query = f"""
       query diseaseInfo($efoId: String!) {{
         disease(efoId: $efoId) {{
           id
@@ -207,23 +211,25 @@ def get_disease_info(efo_id: str, include_targets: bool = False) -> dict[str, An
       }}
     """
 
-    result = execute_query(query, {"efoId": efo_id})
-    return result.get("disease", {})
+  result = execute_query(query, {"efoId": efo_id})
+  return result.get("disease", {})
 
 
-def get_target_disease_evidence(ensembl_id: str, efo_id: str, data_types: list[str] | None = None) -> list[dict[str, Any]]:
-    """
-    Retrieve evidence linking a target to a disease.
+def get_target_disease_evidence(
+  ensembl_id: str, efo_id: str, data_types: list[str] | None = None
+) -> list[dict[str, Any]]:
+  """
+  Retrieve evidence linking a target to a disease.
 
-    Args:
-        ensembl_id: Ensembl gene ID
-        efo_id: EFO disease identifier
-        data_types: Optional filter for evidence types (e.g., ["genetic_association", "known_drug"])
+  Args:
+      ensembl_id: Ensembl gene ID
+      efo_id: EFO disease identifier
+      data_types: Optional filter for evidence types (e.g., ["genetic_association", "known_drug"])
 
-    Returns:
-        List of evidence records with scores and sources
-    """
-    query = """
+  Returns:
+      List of evidence records with scores and sources
+  """
+  query = """
       query evidences($ensemblId: String!, $efoId: String!, $dataTypes: [String!]) {
         disease(efoId: $efoId) {
           evidences(ensemblIds: [$ensemblId], datatypes: $dataTypes, size: 100) {
@@ -241,25 +247,25 @@ def get_target_disease_evidence(ensembl_id: str, efo_id: str, data_types: list[s
       }
     """
 
-    variables = {"ensemblId": ensembl_id, "efoId": efo_id}
-    if data_types:
-        variables["dataTypes"] = data_types
+  variables = {"ensemblId": ensembl_id, "efoId": efo_id}
+  if data_types:
+    variables["dataTypes"] = data_types
 
-    result = execute_query(query, variables)
-    return result.get("disease", {}).get("evidences", {}).get("rows", [])
+  result = execute_query(query, variables)
+  return result.get("disease", {}).get("evidences", {}).get("rows", [])
 
 
 def get_known_drugs_for_disease(efo_id: str) -> dict[str, Any]:
-    """
-    Get drugs known to be used for a disease.
+  """
+  Get drugs known to be used for a disease.
 
-    Args:
-        efo_id: EFO disease identifier
+  Args:
+      efo_id: EFO disease identifier
 
-    Returns:
-        Dictionary with drug information including phase, targets, and status
-    """
-    query = """
+  Returns:
+      Dictionary with drug information including phase, targets, and status
+  """
+  query = """
       query knownDrugs($efoId: String!) {
         disease(efoId: $efoId) {
           knownDrugs {
@@ -285,21 +291,21 @@ def get_known_drugs_for_disease(efo_id: str) -> dict[str, Any]:
       }
     """
 
-    result = execute_query(query, {"efoId": efo_id})
-    return result.get("disease", {}).get("knownDrugs", {})
+  result = execute_query(query, {"efoId": efo_id})
+  return result.get("disease", {}).get("knownDrugs", {})
 
 
 def get_drug_info(chembl_id: str) -> dict[str, Any]:
-    """
-    Retrieve information about a drug.
+  """
+  Retrieve information about a drug.
 
-    Args:
-        chembl_id: ChEMBL identifier (e.g., "CHEMBL25")
+  Args:
+      chembl_id: ChEMBL identifier (e.g., "CHEMBL25")
 
-    Returns:
-        Dictionary with drug information
-    """
-    query = """
+  Returns:
+      Dictionary with drug information
+  """
+  query = """
       query drugInfo($chemblId: String!) {
         drug(chemblId: $chemblId) {
           id
@@ -330,22 +336,24 @@ def get_drug_info(chembl_id: str) -> dict[str, Any]:
       }
     """
 
-    result = execute_query(query, {"chemblId": chembl_id})
-    return result.get("drug", {})
+  result = execute_query(query, {"chemblId": chembl_id})
+  return result.get("drug", {})
 
 
-def get_target_associations(ensembl_id: str, min_score: float = 0.0) -> list[dict[str, Any]]:
-    """
-    Get all disease associations for a target, filtered by minimum score.
+def get_target_associations(
+  ensembl_id: str, min_score: float = 0.0
+) -> list[dict[str, Any]]:
+  """
+  Get all disease associations for a target, filtered by minimum score.
 
-    Args:
-        ensembl_id: Ensembl gene ID
-        min_score: Minimum association score (0-1) to include
+  Args:
+      ensembl_id: Ensembl gene ID
+      min_score: Minimum association score (0-1) to include
 
-    Returns:
-        List of disease associations with scores
-    """
-    query = """
+  Returns:
+      List of disease associations with scores
+  """
+  query = """
       query targetAssociations($ensemblId: String!) {
         target(ensemblId: $ensemblId) {
           associatedDiseases(page: {size: 100}) {
@@ -366,45 +374,45 @@ def get_target_associations(ensembl_id: str, min_score: float = 0.0) -> list[dic
       }
     """
 
-    result = execute_query(query, {"ensemblId": ensembl_id})
-    associations = result.get("target", {}).get("associatedDiseases", {}).get("rows", [])
+  result = execute_query(query, {"ensemblId": ensembl_id})
+  associations = result.get("target", {}).get("associatedDiseases", {}).get("rows", [])
 
-    # Filter by minimum score
-    return [assoc for assoc in associations if assoc.get("score", 0) >= min_score]
+  # Filter by minimum score
+  return [assoc for assoc in associations if assoc.get("score", 0) >= min_score]
 
 
 # Example usage
 if __name__ == "__main__":
-    # Example 1: Search for a gene
-    print("Searching for BRCA1...")
-    results = search_entities("BRCA1", entity_types=["target"])
-    for result in results[:3]:
-        print(f"  {result['name']} ({result['id']})")
+  # Example 1: Search for a gene
+  print("Searching for BRCA1...")
+  results = search_entities("BRCA1", entity_types=["target"])
+  for result in results[:3]:
+    print(f"  {result['name']} ({result['id']})")
 
-    # Example 2: Get target information
-    if results:
-        ensembl_id = results[0]["id"]
-        print(f"\nGetting info for {ensembl_id}...")
-        target_info = get_target_info(ensembl_id, include_diseases=True)
-        print(f"  Symbol: {target_info.get('approvedSymbol')}")
-        print(f"  Name: {target_info.get('approvedName')}")
+  # Example 2: Get target information
+  if results:
+    ensembl_id = results[0]["id"]
+    print(f"\nGetting info for {ensembl_id}...")
+    target_info = get_target_info(ensembl_id, include_diseases=True)
+    print(f"  Symbol: {target_info.get('approvedSymbol')}")
+    print(f"  Name: {target_info.get('approvedName')}")
 
-        # Show top diseases
-        diseases = target_info.get("associatedDiseases", {}).get("rows", [])
-        if diseases:
-            print("\n  Top associated diseases:")
-            for disease in diseases[:3]:
-                print(f"    - {disease['disease']['name']} (score: {disease['score']:.2f})")
+    # Show top diseases
+    diseases = target_info.get("associatedDiseases", {}).get("rows", [])
+    if diseases:
+      print("\n  Top associated diseases:")
+      for disease in diseases[:3]:
+        print(f"    - {disease['disease']['name']} (score: {disease['score']:.2f})")
 
-    # Example 3: Search for a disease
-    print("\n\nSearching for Alzheimer's disease...")
-    disease_results = search_entities("alzheimer", entity_types=["disease"])
-    if disease_results:
-        efo_id = disease_results[0]["id"]
-        print(f"  Found: {disease_results[0]['name']} ({efo_id})")
+  # Example 3: Search for a disease
+  print("\n\nSearching for Alzheimer's disease...")
+  disease_results = search_entities("alzheimer", entity_types=["disease"])
+  if disease_results:
+    efo_id = disease_results[0]["id"]
+    print(f"  Found: {disease_results[0]['name']} ({efo_id})")
 
-        # Get known drugs
-        print(f"\n  Known drugs for {disease_results[0]['name']}:")
-        drugs = get_known_drugs_for_disease(efo_id)
-        for drug in drugs.get("rows", [])[:5]:
-            print(f"    - {drug['drug']['name']} (Phase {drug['phase']})")
+    # Get known drugs
+    print(f"\n  Known drugs for {disease_results[0]['name']}:")
+    drugs = get_known_drugs_for_disease(efo_id)
+    for drug in drugs.get("rows", [])[:5]:
+      print(f"    - {drug['drug']['name']} (Phase {drug['phase']})")

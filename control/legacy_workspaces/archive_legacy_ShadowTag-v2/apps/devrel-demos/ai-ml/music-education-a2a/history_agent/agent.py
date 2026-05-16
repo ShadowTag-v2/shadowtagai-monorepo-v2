@@ -39,11 +39,11 @@ Don't provide too much information back to the user, just key info broken into b
 
 print("🔁 Initializing historical context agent...")
 root_agent = Agent(
-    model="gemini-2.5-pro",  # Keep gemini-2.5-pro as requested
-    name="historical_context_agent",
-    description="Agent that performs historical research using Wikipedia and Google Search",
-    instruction=agent_instruction,
-    tools=[LangchainTool(langchain_wikipedia_tool), google_search_tool],
+  model="gemini-2.5-pro",  # Keep gemini-2.5-pro as requested
+  name="historical_context_agent",
+  description="Agent that performs historical research using Wikipedia and Google Search",
+  instruction=agent_instruction,
+  tools=[LangchainTool(langchain_wikipedia_tool), google_search_tool],
 )
 
 a2a_app = to_a2a(root_agent)

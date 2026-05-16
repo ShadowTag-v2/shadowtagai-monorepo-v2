@@ -21,46 +21,48 @@ import subprocess
 
 
 class SideController:
-    STATE_FILE = "state.txt"
+  STATE_FILE = "state.txt"
 
-    LEFT_CONST = 0
-    RIGHT_CONST = 1
+  LEFT_CONST = 0
+  RIGHT_CONST = 1
 
-    LEFT_CARDS = {
-        173448457841,
-    }
-    RIGHT_CARDS = {769013855813, 103979249382}
+  LEFT_CARDS = {
+    173448457841,
+  }
+  RIGHT_CARDS = {769013855813, 103979249382}
 
-    def __init__(self, meta_table):
-        self.meta_table = meta_table
-        if os.path.isfile(self.STATE_FILE):
-            with open("state.txt") as f:
-                self.side = int(f.readline().strip())
-        else:
-            self.side = self.LEFT_CONST
-        self.write_ip()
+  def __init__(self, meta_table):
+    self.meta_table = meta_table
+    if os.path.isfile(self.STATE_FILE):
+      with open("state.txt") as f:
+        self.side = int(f.readline().strip())
+    else:
+      self.side = self.LEFT_CONST
+    self.write_ip()
 
-    def write_ip(self):
-        ip = subprocess.run(["curl", "https://api.ipify.org/"], stdout=subprocess.PIPE).stdout.decode("utf-8")
-        row = self.meta_table.direct_row("ip")
-        row.set_cell("cf", f"track{self.side + 1} ip", str(ip))
-        row.commit()
+  def write_ip(self):
+    ip = subprocess.run(
+      ["curl", "https://api.ipify.org/"], stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
+    row = self.meta_table.direct_row("ip")
+    row.set_cell("cf", f"track{self.side + 1} ip", str(ip))
+    row.commit()
 
-    def set_side(self, id, table):
-        if id in self.LEFT_CARDS:
-            self.side = self.LEFT_CONST
-            print("SIDE SET TO LEFT")
-        else:
-            self.side = self.RIGHT_CONST
-            print("SIDE SET TO RIGHT")
-        with open(self.STATE_FILE, "w") as f:
-            f.writelines([str(self.side)])
-        self.write_ip()
+  def set_side(self, id, table):
+    if id in self.LEFT_CARDS:
+      self.side = self.LEFT_CONST
+      print("SIDE SET TO LEFT")
+    else:
+      self.side = self.RIGHT_CONST
+      print("SIDE SET TO RIGHT")
+    with open(self.STATE_FILE, "w") as f:
+      f.writelines([str(self.side)])
+    self.write_ip()
 
-    def get_side(self):
-        return self.side
+  def get_side(self):
+    return self.side
 
-    def is_side(self, id):
-        if id in self.LEFT_CARDS or id in self.RIGHT_CARDS:
-            self.set_side(id)
-            return True
+  def is_side(self, id):
+    if id in self.LEFT_CARDS or id in self.RIGHT_CARDS:
+      self.set_side(id)
+      return True

@@ -17,12 +17,12 @@ from google.adk.tools.pubsub.config import PubSubToolConfig
 
 
 def test_pubsub_tool_config_init():
-    """Test PubSubToolConfig initialization."""
-    config = PubSubToolConfig(project_id="my-project")
-    assert config.project_id == "my-project"
+  """Test PubSubToolConfig initialization."""
+  config = PubSubToolConfig(project_id="my-project")
+  assert config.project_id == "my-project"
 
 
 def test_pubsub_tool_config_default():
-    """Test PubSubToolConfig default initialization."""
-    config = PubSubToolConfig()
-    assert config.project_id is None
+  """Test PubSubToolConfig default initialization."""
+  config = PubSubToolConfig()
+  assert config.project_id is None

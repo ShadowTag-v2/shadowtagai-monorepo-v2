@@ -32,8 +32,8 @@ from .delegation import DelegationManager
 from .novelty_detector import NoveltyDetector
 
 __all__ = [
-    "PlanCreatorAgent",
-    "PlanReviewerAgent",
-    "DelegationManager",
-    "NoveltyDetector",
+  "PlanCreatorAgent",
+  "PlanReviewerAgent",
+  "DelegationManager",
+  "NoveltyDetector",
 ]

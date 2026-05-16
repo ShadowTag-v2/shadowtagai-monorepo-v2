@@ -16,46 +16,48 @@ model_name = os.getenv("MODEL")
 
 
 # Tools
-def save_attractions_to_state(tool_context: ToolContext, attractions: list[str]) -> dict[str, str]:
-    """Saves the list of attractions to state["attractions"].
+def save_attractions_to_state(
+  tool_context: ToolContext, attractions: list[str]
+) -> dict[str, str]:
+  """Saves the list of attractions to state["attractions"].
 
-    Args:
-        attractions [str]: a list of strings to add to the list of attractions
+  Args:
+      attractions [str]: a list of strings to add to the list of attractions
 
-    Returns:
-        None
-    """
-    # Load existing attractions from state. If none exist, start an empty list
-    existing_attractions = tool_context.state.get("attractions", [])
+  Returns:
+      None
+  """
+  # Load existing attractions from state. If none exist, start an empty list
+  existing_attractions = tool_context.state.get("attractions", [])
 
-    # Update the 'attractions' key with a combo of old and new lists.
-    # When the tool is run, ADK will create an event and make
-    # corresponding updates in the session's state.
-    tool_context.state["attractions"] = existing_attractions + attractions
+  # Update the 'attractions' key with a combo of old and new lists.
+  # When the tool is run, ADK will create an event and make
+  # corresponding updates in the session's state.
+  tool_context.state["attractions"] = existing_attractions + attractions
 
-    # A best practice for tools is to return a status message in a return dict
-    return {"status": "success"}
+  # A best practice for tools is to return a status message in a return dict
+  return {"status": "success"}
 
 
 # Agents
 
 attractions_planner = Agent(
-    name="attractions_planner",
-    model=model_name,
-    description="Build a list of attractions to visit in a country.",
-    instruction="""
+  name="attractions_planner",
+  model=model_name,
+  description="Build a list of attractions to visit in a country.",
+  instruction="""
         - Provide the user options for attractions to visit within their selected country.
         """,
-    before_model_callback=log_query_to_model,
-    after_model_callback=log_model_response,
-    tools=[save_attractions_to_state],
+  before_model_callback=log_query_to_model,
+  after_model_callback=log_model_response,
+  tools=[save_attractions_to_state],
 )
 
 travel_brainstormer = Agent(
-    name="travel_brainstormer",
-    model=model_name,
-    description="Help a user decide what country to visit.",
-    instruction="""
+  name="travel_brainstormer",
+  model=model_name,
+  description="Help a user decide what country to visit.",
+  instruction="""
         Provide a few suggestions of popular countries for travelers.
         
         Help a user identify their primary goals of travel:
@@ -69,15 +71,15 @@ travel_brainstormer = Agent(
         - If they ask to view the list, provide a bulleted list of
         {{ attractions? }} and then suggest some more.
         """,
-    before_model_callback=log_query_to_model,
-    after_model_callback=log_model_response,
+  before_model_callback=log_query_to_model,
+  after_model_callback=log_model_response,
 )
 
 root_agent = Agent(
-    name="steering",
-    model=model_name,
-    description="Start a user on a travel adventure.",
-    instruction="""
+  name="steering",
+  model=model_name,
+  description="Start a user on a travel adventure.",
+  instruction="""
         Ask the user if they know where they'd like to travel
         or if they need some help deciding.
 
@@ -86,8 +88,8 @@ root_agent = Agent(
         If they know what country they'd like to visit,
         send them to the 'attractions_planner'.
         """,
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-    ),
-    sub_agents=[travel_brainstormer, attractions_planner],
+  generate_content_config=types.GenerateContentConfig(
+    temperature=0,
+  ),
+  sub_agents=[travel_brainstormer, attractions_planner],
 )

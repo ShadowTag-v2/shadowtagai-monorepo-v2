@@ -17,16 +17,16 @@
 from fastapi import FastAPI
 
 from train_types import (
-    Service,
-    Pattern,
-    Proposal,
-    ProposalResult,
-    Train,
-    WorldState,
-    SERVICES,
-    PATTERNS,
-    LOCATION,
-    SIGNALS,
+  Service,
+  Pattern,
+  Proposal,
+  ProposalResult,
+  Train,
+  WorldState,
+  SERVICES,
+  PATTERNS,
+  LOCATION,
+  SIGNALS,
 )
 
 app = FastAPI()
@@ -35,39 +35,39 @@ app = FastAPI()
 # handlers
 @app.get("/")
 def read_root():
-    return {"Hello": "World!"}
+  return {"Hello": "World!"}
 
 
 @app.get("/service/")
 def get_services() -> dict[str, Service]:
-    return SERVICES
+  return SERVICES
 
 
 @app.get("/pattern/")
 def get_patterns() -> dict[str, Pattern]:
-    return PATTERNS
+  return PATTERNS
 
 
 @app.post("/proposal/")
 def post_proposal(proposal: Proposal) -> ProposalResult:
-    return ProposalResult(
-        valid=True,
-        reason="placeholder",
-        pattern=PATTERNS["pattern_a"],
-        checkpoints=list(),
-    )
+  return ProposalResult(
+    valid=True,
+    reason="placeholder",
+    pattern=PATTERNS["pattern_a"],
+    checkpoints=list(),
+  )
 
 
 @app.get("/default_world/")
 def get_default_world() -> WorldState:
-    return WorldState(
-        train=Train(
-            actual_location=LOCATION["STATION"],
-            target_location=LOCATION["STATION"],
-            actual_cargo=list(),
-        ),
-        signals={s.slug: s for s in SIGNALS},
-        pattern_slug="pattern_a",
-        proposal=None,
-        proposal_result=None,
-    )
+  return WorldState(
+    train=Train(
+      actual_location=LOCATION["STATION"],
+      target_location=LOCATION["STATION"],
+      actual_cargo=list(),
+    ),
+    signals={s.slug: s for s in SIGNALS},
+    pattern_slug="pattern_a",
+    proposal=None,
+    proposal_result=None,
+  )

@@ -24,8 +24,8 @@ import yaml
 
 
 class MockAPIHubClient(BaseAPIHubClient):
-    def get_spec_content(self, _apihub_resource_name: str) -> str:
-        return """
+  def get_spec_content(self, _apihub_resource_name: str) -> str:
+    return """
 openapi: 3.0.0
 info:
   version: 1.0.0
@@ -45,60 +45,62 @@ paths:
 # Fixture for a basic APIHubToolset
 @pytest.fixture
 def basic_apihub_toolset():
-    apihub_client = MockAPIHubClient()
-    tool = APIHubToolset(apihub_resource_name="test_resource", apihub_client=apihub_client)
-    return tool
+  apihub_client = MockAPIHubClient()
+  tool = APIHubToolset(
+    apihub_resource_name="test_resource", apihub_client=apihub_client
+  )
+  return tool
 
 
 # Fixture for an APIHubToolset with lazy loading
 @pytest.fixture
 def lazy_apihub_toolset():
-    apihub_client = MockAPIHubClient()
-    tool = APIHubToolset(
-        apihub_resource_name="test_resource",
-        apihub_client=apihub_client,
-        lazy_load_spec=True,
-    )
-    return tool
+  apihub_client = MockAPIHubClient()
+  tool = APIHubToolset(
+    apihub_resource_name="test_resource",
+    apihub_client=apihub_client,
+    lazy_load_spec=True,
+  )
+  return tool
 
 
 # Fixture for auth scheme
 @pytest.fixture
 def mock_auth_scheme():
-    return MagicMock(spec=AuthScheme)
+  return MagicMock(spec=AuthScheme)
 
 
 # Fixture for auth credential
 @pytest.fixture
 def mock_auth_credential():
-    return MagicMock(spec=AuthCredential)
+  return MagicMock(spec=AuthCredential)
 
 
 # Test cases
 @pytest.mark.asyncio
 async def test_apihub_toolset_initialization(basic_apihub_toolset):
-    assert basic_apihub_toolset.name == "mock_api"
-    assert basic_apihub_toolset.description == "Mock API Description"
-    assert basic_apihub_toolset._apihub_resource_name == "test_resource"
-    assert not basic_apihub_toolset._lazy_load_spec
-    generated_tools = await basic_apihub_toolset.get_tools()
-    assert len(generated_tools) == 1
-    assert "test_get" == generated_tools[0].name
+  assert basic_apihub_toolset.name == "mock_api"
+  assert basic_apihub_toolset.description == "Mock API Description"
+  assert basic_apihub_toolset._apihub_resource_name == "test_resource"
+  assert not basic_apihub_toolset._lazy_load_spec
+  generated_tools = await basic_apihub_toolset.get_tools()
+  assert len(generated_tools) == 1
+  assert "test_get" == generated_tools[0].name
 
 
 @pytest.mark.asyncio
 async def test_apihub_toolset_lazy_loading(lazy_apihub_toolset):
-    assert lazy_apihub_toolset._lazy_load_spec
-    generated_tools = await lazy_apihub_toolset.get_tools()
-    assert generated_tools
+  assert lazy_apihub_toolset._lazy_load_spec
+  generated_tools = await lazy_apihub_toolset.get_tools()
+  assert generated_tools
 
-    tools = await lazy_apihub_toolset.get_tools()
-    assert len(tools) == 1
-    "test_get" == tools[0].name
+  tools = await lazy_apihub_toolset.get_tools()
+  assert len(tools) == 1
+  "test_get" == tools[0].name
 
 
 def test_apihub_toolset_no_title_in_spec(basic_apihub_toolset):
-    spec = """
+  spec = """
 openapi: 3.0.0
 info:
   version: 1.0.0
@@ -112,21 +114,21 @@ paths:
           description: Successful response
     """
 
-    class MockAPIHubClientEmptySpec(BaseAPIHubClient):
-        def get_spec_content(self, _apihub_resource_name: str) -> str:
-            return spec
+  class MockAPIHubClientEmptySpec(BaseAPIHubClient):
+    def get_spec_content(self, _apihub_resource_name: str) -> str:
+      return spec
 
-    apihub_client = MockAPIHubClientEmptySpec()
-    toolset = APIHubToolset(
-        apihub_resource_name="test_resource",
-        apihub_client=apihub_client,
-    )
+  apihub_client = MockAPIHubClientEmptySpec()
+  toolset = APIHubToolset(
+    apihub_resource_name="test_resource",
+    apihub_client=apihub_client,
+  )
 
-    assert toolset.name == "unnamed"
+  assert toolset.name == "unnamed"
 
 
 def test_apihub_toolset_empty_description_in_spec():
-    spec = """
+  spec = """
 openapi: 3.0.0
 info:
   version: 1.0.0
@@ -141,65 +143,65 @@ paths:
           description: Successful response
     """
 
-    class MockAPIHubClientEmptySpec(BaseAPIHubClient):
-        def get_spec_content(self, _apihub_resource_name: str) -> str:
-            return spec
+  class MockAPIHubClientEmptySpec(BaseAPIHubClient):
+    def get_spec_content(self, _apihub_resource_name: str) -> str:
+      return spec
 
-    apihub_client = MockAPIHubClientEmptySpec()
-    toolset = APIHubToolset(
-        apihub_resource_name="test_resource",
-        apihub_client=apihub_client,
-    )
+  apihub_client = MockAPIHubClientEmptySpec()
+  toolset = APIHubToolset(
+    apihub_resource_name="test_resource",
+    apihub_client=apihub_client,
+  )
 
-    assert toolset.name == "empty_description_api"
-    assert toolset.description == ""
+  assert toolset.name == "empty_description_api"
+  assert toolset.description == ""
 
 
 @pytest.mark.asyncio
 async def test_get_tools_with_auth(mock_auth_scheme, mock_auth_credential):
-    apihub_client = MockAPIHubClient()
-    tool = APIHubToolset(
-        apihub_resource_name="test_resource",
-        apihub_client=apihub_client,
-        auth_scheme=mock_auth_scheme,
-        auth_credential=mock_auth_credential,
-    )
-    tools = await tool.get_tools()
-    assert len(tools) == 1
+  apihub_client = MockAPIHubClient()
+  tool = APIHubToolset(
+    apihub_resource_name="test_resource",
+    apihub_client=apihub_client,
+    auth_scheme=mock_auth_scheme,
+    auth_credential=mock_auth_credential,
+  )
+  tools = await tool.get_tools()
+  assert len(tools) == 1
 
 
 @pytest.mark.asyncio
 async def test_apihub_toolset_get_tools_lazy_load_empty_spec():
 
-    class MockAPIHubClientEmptySpec(BaseAPIHubClient):
-        def get_spec_content(self, _apihub_resource_name: str) -> str:
-            return ""
+  class MockAPIHubClientEmptySpec(BaseAPIHubClient):
+    def get_spec_content(self, _apihub_resource_name: str) -> str:
+      return ""
 
-    apihub_client = MockAPIHubClientEmptySpec()
-    tool = APIHubToolset(
-        apihub_resource_name="test_resource",
-        apihub_client=apihub_client,
-        lazy_load_spec=True,
-    )
-    tools = await tool.get_tools()
-    assert not tools
+  apihub_client = MockAPIHubClientEmptySpec()
+  tool = APIHubToolset(
+    apihub_resource_name="test_resource",
+    apihub_client=apihub_client,
+    lazy_load_spec=True,
+  )
+  tools = await tool.get_tools()
+  assert not tools
 
 
 @pytest.mark.asyncio
 async def test_apihub_toolset_get_tools_invalid_yaml():
 
-    class MockAPIHubClientInvalidYAML(BaseAPIHubClient):
-        def get_spec_content(self, _apihub_resource_name: str) -> str:
-            return "{invalid yaml"  # Return invalid YAML
+  class MockAPIHubClientInvalidYAML(BaseAPIHubClient):
+    def get_spec_content(self, _apihub_resource_name: str) -> str:
+      return "{invalid yaml"  # Return invalid YAML
 
-    with pytest.raises(yaml.YAMLError):
-        apihub_client = MockAPIHubClientInvalidYAML()
-        tool = APIHubToolset(
-            apihub_resource_name="test_resource",
-            apihub_client=apihub_client,
-        )
-        await tool.get_tools()
+  with pytest.raises(yaml.YAMLError):
+    apihub_client = MockAPIHubClientInvalidYAML()
+    tool = APIHubToolset(
+      apihub_resource_name="test_resource",
+      apihub_client=apihub_client,
+    )
+    await tool.get_tools()
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+  pytest.main([__file__])

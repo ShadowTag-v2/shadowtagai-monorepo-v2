@@ -26,39 +26,41 @@ load_dotenv(override=True)
 
 VERTEXAI_DATASTORE_ID = os.getenv("VERTEXAI_DATASTORE_ID")
 if not VERTEXAI_DATASTORE_ID:
-    raise ValueError("VERTEXAI_DATASTORE_ID environment variable not set")
+  raise ValueError("VERTEXAI_DATASTORE_ID environment variable not set")
 
 
 def roll_die(sides: int, tool_context: ToolContext) -> int:
-    """Roll a die and return the rolled result.
+  """Roll a die and return the rolled result.
 
-    Args:
-      sides: The integer number of sides the die has.
+  Args:
+    sides: The integer number of sides the die has.
 
-    Returns:
-      An integer of the result of rolling the die.
-    """
-    result = random.randint(1, sides)
-    if "rolls" not in tool_context.state:
-        tool_context.state["rolls"] = []
+  Returns:
+    An integer of the result of rolling the die.
+  """
+  result = random.randint(1, sides)
+  if "rolls" not in tool_context.state:
+    tool_context.state["rolls"] = []
 
-    tool_context.state["rolls"] = tool_context.state["rolls"] + [result]
-    return result
+  tool_context.state["rolls"] = tool_context.state["rolls"] + [result]
+  return result
 
 
 root_agent = Agent(
-    model="gemini-2.5-pro",
-    name="hello_world_agent",
-    description="A hello world agent with multiple tools.",
-    instruction="""
+  model="gemini-2.5-pro",
+  name="hello_world_agent",
+  description="A hello world agent with multiple tools.",
+  instruction="""
       You are a helpful assistant which can help user to roll dice and search for information.
       - Use `roll_die` tool to roll dice.
       - Use `VertexAISearchTool` to search for Google Agent Development Kit (ADK) information in the datastore.
       - Use `google_search` to search for general information.
     """,
-    tools=[
-        roll_die,
-        VertexAiSearchTool(data_store_id=VERTEXAI_DATASTORE_ID, bypass_multi_tools_limit=True),
-        GoogleSearchTool(bypass_multi_tools_limit=True),
-    ],
+  tools=[
+    roll_die,
+    VertexAiSearchTool(
+      data_store_id=VERTEXAI_DATASTORE_ID, bypass_multi_tools_limit=True
+    ),
+    GoogleSearchTool(bypass_multi_tools_limit=True),
+  ],
 )

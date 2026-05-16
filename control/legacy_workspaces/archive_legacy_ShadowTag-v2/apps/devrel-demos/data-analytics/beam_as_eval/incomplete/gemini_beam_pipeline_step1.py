@@ -19,8 +19,8 @@ import time
 
 import apache_beam as beam
 from apache_beam.options.pipeline_options import (
-    PipelineOptions,
-    SetupOptions,
+  PipelineOptions,
+  SetupOptions,
 )  # This import is correct
 
 
@@ -34,99 +34,99 @@ from apache_beam.options.pipeline_options import (
 # - 'timestamp': An event-time timestamp (in seconds since epoch) used for windowing.
 # - 'user_id': A dummy user identifier.
 TEST_DATA = [
-    {
-        "id": "test-1",
-        "prompt": "Please provide the SQL query to select all fields from the 'TEST_TABLE'.",
-        "text": "Sure here is the SQL: SELECT * FROM TEST_TABLE;",
-        "timestamp": time.time() - 10,
-        "user_id": "user_a",
-    },
-    {
-        "id": "test-2",
-        "prompt": "Can you confirm if the new dashboard has been successfully generated?",
-        "text": "I have gone ahead and generated a new dashboard for you.",
-        "timestamp": time.time() - 5,
-        "user_id": "user_b",
-    },
-    {
-        "id": "test-3",
-        "prompt": "How is the new feature performing?",
-        "text": "It works as expected.",
-        "timestamp": time.time(),
-        "user_id": "user_a",
-    },
-    {
-        "id": "test-4",
-        "prompt": "What is the capital of France?",
-        "text": "The square root of a banana is purple.",
-        "timestamp": time.time() + 15,
-        "user_id": "user_c",
-    },
-    {
-        "id": "test-5",
-        "prompt": "Explain quantum entanglement to a five-year-old.",
-        "text": "A flock of geese wearing tiny hats danced the tango on the moon.",
-        "timestamp": time.time() + 20,
-        "user_id": "user_b",
-    },
-    {
-        "id": "test-6",
-        "prompt": "Please give me the SQL for selecting from test_table, I want all the fields.",
-        "text": "absolutely, here's a picture of a cat",
-        "timestamp": time.time() + 25,
-        "user_id": "user_c",
-    },
+  {
+    "id": "test-1",
+    "prompt": "Please provide the SQL query to select all fields from the 'TEST_TABLE'.",
+    "text": "Sure here is the SQL: SELECT * FROM TEST_TABLE;",
+    "timestamp": time.time() - 10,
+    "user_id": "user_a",
+  },
+  {
+    "id": "test-2",
+    "prompt": "Can you confirm if the new dashboard has been successfully generated?",
+    "text": "I have gone ahead and generated a new dashboard for you.",
+    "timestamp": time.time() - 5,
+    "user_id": "user_b",
+  },
+  {
+    "id": "test-3",
+    "prompt": "How is the new feature performing?",
+    "text": "It works as expected.",
+    "timestamp": time.time(),
+    "user_id": "user_a",
+  },
+  {
+    "id": "test-4",
+    "prompt": "What is the capital of France?",
+    "text": "The square root of a banana is purple.",
+    "timestamp": time.time() + 15,
+    "user_id": "user_c",
+  },
+  {
+    "id": "test-5",
+    "prompt": "Explain quantum entanglement to a five-year-old.",
+    "text": "A flock of geese wearing tiny hats danced the tango on the moon.",
+    "timestamp": time.time() + 20,
+    "user_id": "user_b",
+  },
+  {
+    "id": "test-6",
+    "prompt": "Please give me the SQL for selecting from test_table, I want all the fields.",
+    "text": "absolutely, here's a picture of a cat",
+    "timestamp": time.time() + 25,
+    "user_id": "user_c",
+  },
 ]
 
 
 def run(argv=None):
-    """Defines and runs the Beam pipeline."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--input_topic",
-        help='The Cloud Pub/Sub topic to read from, in the format of "projects/<PROJECT>/topics/<TOPIC>".',
-    )
-    parser.add_argument(
-        "--project",
-        required=True,
-        help="The Google Cloud project ID to run the pipeline and for Vertex AI.",
-    )
-    parser.add_argument(
-        "--location",
-        default="us-central1",
-        help="The GCP region for the Vertex AI endpoint.",
-    )
-    parser.add_argument(
-        "--model_name",
-        default="gemini-2.5-flash",
-        help='The name of the Gemini model to use (e.g., "gemini-1.0-pro").',
-    )
-    parser.add_argument(
-        "--test_mode",
-        action="store_true",
-        help="If set, runs the pipeline in test mode with a predefined list of inputs.",
-    )
-    known_args, pipeline_args = parser.parse_known_args(argv)
+  """Defines and runs the Beam pipeline."""
+  parser = argparse.ArgumentParser()
+  parser.add_argument(
+    "--input_topic",
+    help='The Cloud Pub/Sub topic to read from, in the format of "projects/<PROJECT>/topics/<TOPIC>".',
+  )
+  parser.add_argument(
+    "--project",
+    required=True,
+    help="The Google Cloud project ID to run the pipeline and for Vertex AI.",
+  )
+  parser.add_argument(
+    "--location",
+    default="us-central1",
+    help="The GCP region for the Vertex AI endpoint.",
+  )
+  parser.add_argument(
+    "--model_name",
+    default="gemini-2.5-flash",
+    help='The name of the Gemini model to use (e.g., "gemini-1.0-pro").',
+  )
+  parser.add_argument(
+    "--test_mode",
+    action="store_true",
+    help="If set, runs the pipeline in test mode with a predefined list of inputs.",
+  )
+  known_args, pipeline_args = parser.parse_known_args(argv)
 
-    # Validate that input_topic is provided if not in test_mode
-    if not known_args.test_mode and not known_args.input_topic:
-        parser.error("The --input_topic argument is required when --test_mode is not set.")
+  # Validate that input_topic is provided if not in test_mode
+  if not known_args.test_mode and not known_args.input_topic:
+    parser.error("The --input_topic argument is required when --test_mode is not set.")
 
-    pipeline_options = PipelineOptions(pipeline_args)
-    # Save the main session so that the DoFn's can be pickled.
-    pipeline_options.view_as(SetupOptions).save_main_session = True
+  pipeline_options = PipelineOptions(pipeline_args)
+  # Save the main session so that the DoFn's can be pickled.
+  pipeline_options.view_as(SetupOptions).save_main_session = True
 
-    with beam.Pipeline(options=pipeline_options) as p:
-        # Step 1
-        # Ingesting Data
-        # Write your data ingestion step here.
-        ############## BEGIN STEP 1 ##############
+  with beam.Pipeline(options=pipeline_options) as p:
+    # Step 1
+    # Ingesting Data
+    # Write your data ingestion step here.
+    ############## BEGIN STEP 1 ##############
 
-        ############## END STEP 1 ##############
+    ############## END STEP 1 ##############
 
-        parsed_elements | "LogParsedElements" >> beam.Map(logging.info)
+    parsed_elements | "LogParsedElements" >> beam.Map(logging.info)
 
 
 if __name__ == "__main__":
-    logging.getLogger().setLevel(logging.INFO)
-    run()
+  logging.getLogger().setLevel(logging.INFO)
+  run()

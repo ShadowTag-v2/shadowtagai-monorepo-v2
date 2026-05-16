@@ -19,172 +19,174 @@ from pathlib import Path
 
 
 def check_conda_installed() -> bool:
-    """Check if conda is available in the system."""
-    try:
-        subprocess.run(["conda", "--version"], capture_output=True, check=True)
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return False
+  """Check if conda is available in the system."""
+  try:
+    subprocess.run(["conda", "--version"], capture_output=True, check=True)
+    return True
+  except (subprocess.CalledProcessError, FileNotFoundError):
+    return False
 
 
 def setup_conda_environment():
-    """Guide user through conda environment setup."""
-    print("\n=== Conda Environment Setup ===")
+  """Guide user through conda environment setup."""
+  print("\n=== Conda Environment Setup ===")
 
-    if not check_conda_installed():
-        print("❌ Conda not found. Please install Miniconda or Anaconda:")
-        print("   https://docs.conda.io/en/latest/miniconda.html")
-        return False
+  if not check_conda_installed():
+    print("❌ Conda not found. Please install Miniconda or Anaconda:")
+    print("   https://docs.conda.io/en/latest/miniconda.html")
+    return False
 
-    print("✓ Conda is installed")
+  print("✓ Conda is installed")
 
-    # Check if biomni_e1 environment exists
-    result = subprocess.run(["conda", "env", "list"], capture_output=True, text=True)
+  # Check if biomni_e1 environment exists
+  result = subprocess.run(["conda", "env", "list"], capture_output=True, text=True)
 
-    if "biomni_e1" in result.stdout:
-        print("✓ biomni_e1 environment already exists")
-        return True
+  if "biomni_e1" in result.stdout:
+    print("✓ biomni_e1 environment already exists")
+    return True
 
-    print("\nCreating biomni_e1 conda environment...")
-    print("This will install Python 3.10 and required dependencies.")
+  print("\nCreating biomni_e1 conda environment...")
+  print("This will install Python 3.10 and required dependencies.")
 
-    response = input("Proceed? [y/N]: ").strip().lower()
-    if response != "y":
-        print("Skipping conda environment setup")
-        return False
+  response = input("Proceed? [y/N]: ").strip().lower()
+  if response != "y":
+    print("Skipping conda environment setup")
+    return False
 
-    try:
-        # Create conda environment
-        subprocess.run(["conda", "create", "-n", "biomni_e1", "python=3.10", "-y"], check=True)
+  try:
+    # Create conda environment
+    subprocess.run(
+      ["conda", "create", "-n", "biomni_e1", "python=3.10", "-y"], check=True
+    )
 
-        print("\n✓ Conda environment created successfully")
-        print("\nTo activate: conda activate biomni_e1")
-        print("Then install biomni: pip install biomni --upgrade")
-        return True
+    print("\n✓ Conda environment created successfully")
+    print("\nTo activate: conda activate biomni_e1")
+    print("Then install biomni: pip install biomni --upgrade")
+    return True
 
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Failed to create conda environment: {e}")
-        return False
+  except subprocess.CalledProcessError as e:
+    print(f"❌ Failed to create conda environment: {e}")
+    return False
 
 
 def setup_api_keys() -> dict[str, str]:
-    """Interactive API key configuration."""
-    print("\n=== API Key Configuration ===")
-    print("Biomni supports multiple LLM providers.")
-    print("At minimum, configure one provider.")
+  """Interactive API key configuration."""
+  print("\n=== API Key Configuration ===")
+  print("Biomni supports multiple LLM providers.")
+  print("At minimum, configure one provider.")
 
-    api_keys = {}
+  api_keys = {}
 
-    # Anthropic (recommended)
-    print("\n1. Anthropic Claude (Recommended)")
-    print("   Get your API key from: https://console.anthropic.com/")
-    anthropic_key = input("   Enter ANTHROPIC_API_KEY (or press Enter to skip): ").strip()
-    if anthropic_key:
-        api_keys["ANTHROPIC_API_KEY"] = anthropic_key
+  # Anthropic (recommended)
+  print("\n1. Anthropic Claude (Recommended)")
+  print("   Get your API key from: https://console.anthropic.com/")
+  anthropic_key = input("   Enter ANTHROPIC_API_KEY (or press Enter to skip): ").strip()
+  if anthropic_key:
+    api_keys["ANTHROPIC_API_KEY"] = anthropic_key
 
-    # OpenAI
-    print("\n2. OpenAI")
-    print("   Get your API key from: https://platform.openai.com/api-keys")
-    openai_key = input("   Enter OPENAI_API_KEY (or press Enter to skip): ").strip()
-    if openai_key:
-        api_keys["OPENAI_API_KEY"] = openai_key
+  # OpenAI
+  print("\n2. OpenAI")
+  print("   Get your API key from: https://platform.openai.com/api-keys")
+  openai_key = input("   Enter OPENAI_API_KEY (or press Enter to skip): ").strip()
+  if openai_key:
+    api_keys["OPENAI_API_KEY"] = openai_key
 
-    # Google Gemini
-    print("\n3. Google Gemini")
-    print("   Get your API key from: https://makersuite.google.com/app/apikey")
-    google_key = input("   Enter GOOGLE_API_KEY (or press Enter to skip): ").strip()
-    if google_key:
-        api_keys["GOOGLE_API_KEY"] = google_key
+  # Google Gemini
+  print("\n3. Google Gemini")
+  print("   Get your API key from: https://makersuite.google.com/app/apikey")
+  google_key = input("   Enter GOOGLE_API_KEY (or press Enter to skip): ").strip()
+  if google_key:
+    api_keys["GOOGLE_API_KEY"] = google_key
 
-    # Groq
-    print("\n4. Groq")
-    print("   Get your API key from: https://console.groq.com/keys")
-    groq_key = input("   Enter GROQ_API_KEY (or press Enter to skip): ").strip()
-    if groq_key:
-        api_keys["GROQ_API_KEY"] = groq_key
+  # Groq
+  print("\n4. Groq")
+  print("   Get your API key from: https://console.groq.com/keys")
+  groq_key = input("   Enter GROQ_API_KEY (or press Enter to skip): ").strip()
+  if groq_key:
+    api_keys["GROQ_API_KEY"] = groq_key
 
-    if not api_keys:
-        print("\n⚠️  No API keys configured. You'll need at least one to use biomni.")
-        return {}
+  if not api_keys:
+    print("\n⚠️  No API keys configured. You'll need at least one to use biomni.")
+    return {}
 
-    return api_keys
+  return api_keys
 
 
 def save_api_keys(api_keys: dict[str, str], method: str = "env_file"):
-    """Save API keys using specified method."""
-    if method == "env_file":
-        env_file = Path.cwd() / ".env"
+  """Save API keys using specified method."""
+  if method == "env_file":
+    env_file = Path.cwd() / ".env"
 
-        # Read existing .env if present
-        existing_vars = {}
-        if env_file.exists():
-            with open(env_file) as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#"):
-                        if "=" in line:
-                            key, val = line.split("=", 1)
-                            existing_vars[key.strip()] = val.strip()
+    # Read existing .env if present
+    existing_vars = {}
+    if env_file.exists():
+      with open(env_file) as f:
+        for line in f:
+          line = line.strip()
+          if line and not line.startswith("#"):
+            if "=" in line:
+              key, val = line.split("=", 1)
+              existing_vars[key.strip()] = val.strip()
 
-        # Update with new keys
-        existing_vars.update(api_keys)
+    # Update with new keys
+    existing_vars.update(api_keys)
 
-        # Write to .env
-        with open(env_file, "w") as f:
-            f.write("# Biomni API Keys\n")
-            f.write("# Generated by setup_environment.py\n\n")
-            for key, value in existing_vars.items():
-                f.write(f"{key}={value}\n")
+    # Write to .env
+    with open(env_file, "w") as f:
+      f.write("# Biomni API Keys\n")
+      f.write("# Generated by setup_environment.py\n\n")
+      for key, value in existing_vars.items():
+        f.write(f"{key}={value}\n")
 
-        print(f"\n✓ API keys saved to {env_file}")
-        print("  Keys will be loaded automatically when biomni runs in this directory")
+    print(f"\n✓ API keys saved to {env_file}")
+    print("  Keys will be loaded automatically when biomni runs in this directory")
 
-    elif method == "shell_export":
-        shell_file = Path.home() / ".bashrc"  # or .zshrc for zsh users
+  elif method == "shell_export":
+    shell_file = Path.home() / ".bashrc"  # or .zshrc for zsh users
 
-        print("\n📋 Add these lines to your shell configuration:")
-        for key, value in api_keys.items():
-            print(f'   export {key}="{value}"')
+    print("\n📋 Add these lines to your shell configuration:")
+    for key, value in api_keys.items():
+      print(f'   export {key}="{value}"')
 
-        print(f"\nThen run: source {shell_file}")
+    print(f"\nThen run: source {shell_file}")
 
 
 def setup_data_directory() -> Path | None:
-    """Configure biomni data lake directory."""
-    print("\n=== Data Lake Configuration ===")
-    print("Biomni requires ~11GB for integrated biomedical databases.")
+  """Configure biomni data lake directory."""
+  print("\n=== Data Lake Configuration ===")
+  print("Biomni requires ~11GB for integrated biomedical databases.")
 
-    default_path = Path.cwd() / "biomni_data"
-    print(f"\nDefault location: {default_path}")
+  default_path = Path.cwd() / "biomni_data"
+  print(f"\nDefault location: {default_path}")
 
-    response = input("Use default location? [Y/n]: ").strip().lower()
+  response = input("Use default location? [Y/n]: ").strip().lower()
 
-    if response == "n":
-        custom_path = input("Enter custom path: ").strip()
-        data_path = Path(custom_path).expanduser().resolve()
-    else:
-        data_path = default_path
+  if response == "n":
+    custom_path = input("Enter custom path: ").strip()
+    data_path = Path(custom_path).expanduser().resolve()
+  else:
+    data_path = default_path
 
-    # Create directory if it doesn't exist
-    data_path.mkdir(parents=True, exist_ok=True)
+  # Create directory if it doesn't exist
+  data_path.mkdir(parents=True, exist_ok=True)
 
-    print(f"\n✓ Data directory configured: {data_path}")
-    print("  Data will be downloaded automatically on first use")
+  print(f"\n✓ Data directory configured: {data_path}")
+  print("  Data will be downloaded automatically on first use")
 
-    return data_path
+  return data_path
 
 
 def test_installation(data_path: Path):
-    """Test biomni installation with a simple query."""
-    print("\n=== Installation Test ===")
-    print("Testing biomni installation with a simple query...")
+  """Test biomni installation with a simple query."""
+  print("\n=== Installation Test ===")
+  print("Testing biomni installation with a simple query...")
 
-    response = input("Run test? [Y/n]: ").strip().lower()
-    if response == "n":
-        print("Skipping test")
-        return
+  response = input("Run test? [Y/n]: ").strip().lower()
+  if response == "n":
+    print("Skipping test")
+    return
 
-    test_code = f"""
+  test_code = f"""
 import os
 from biomni.agent import A1
 
@@ -196,25 +198,25 @@ result = agent.go("What is the primary function of the TP53 gene?")
 print("Test result:", result)
 """
 
-    test_file = Path("test_biomni.py")
-    with open(test_file, "w") as f:
-        f.write(test_code)
+  test_file = Path("test_biomni.py")
+  with open(test_file, "w") as f:
+    f.write(test_code)
 
-    print(f"\nTest script created: {test_file}")
-    print("Running test...")
+  print(f"\nTest script created: {test_file}")
+  print("Running test...")
 
-    try:
-        subprocess.run([sys.executable, str(test_file)], check=True)
-        print("\n✓ Test completed successfully!")
-        test_file.unlink()  # Clean up test file
-    except subprocess.CalledProcessError:
-        print("\n❌ Test failed. Check your configuration.")
-        print(f"   Test script saved as {test_file} for debugging")
+  try:
+    subprocess.run([sys.executable, str(test_file)], check=True)
+    print("\n✓ Test completed successfully!")
+    test_file.unlink()  # Clean up test file
+  except subprocess.CalledProcessError:
+    print("\n❌ Test failed. Check your configuration.")
+    print(f"   Test script saved as {test_file} for debugging")
 
 
 def generate_example_script(data_path: Path):
-    """Generate example usage script."""
-    example_code = f'''#!/usr/bin/env python3
+  """Generate example usage script."""
+  example_code = f'''#!/usr/bin/env python3
 """
 Example biomni usage script
 
@@ -257,87 +259,87 @@ agent.save_conversation_history("example_results.pdf")
 print("\\nResults saved to example_results.pdf")
 '''
 
-    example_file = Path("example_biomni_usage.py")
-    with open(example_file, "w") as f:
-        f.write(example_code)
+  example_file = Path("example_biomni_usage.py")
+  with open(example_file, "w") as f:
+    f.write(example_code)
 
-    print(f"\n✓ Example script created: {example_file}")
+  print(f"\n✓ Example script created: {example_file}")
 
 
 def main():
-    """Main setup workflow."""
-    print("=" * 60)
-    print("Biomni Environment Setup")
-    print("=" * 60)
+  """Main setup workflow."""
+  print("=" * 60)
+  print("Biomni Environment Setup")
+  print("=" * 60)
 
-    # Step 1: Conda environment
-    conda_success = setup_conda_environment()
+  # Step 1: Conda environment
+  conda_success = setup_conda_environment()
 
-    if conda_success:
-        print("\n⚠️  Remember to activate the environment:")
-        print("   conda activate biomni_e1")
-        print("   pip install biomni --upgrade")
+  if conda_success:
+    print("\n⚠️  Remember to activate the environment:")
+    print("   conda activate biomni_e1")
+    print("   pip install biomni --upgrade")
 
-    # Step 2: API keys
-    api_keys = setup_api_keys()
+  # Step 2: API keys
+  api_keys = setup_api_keys()
 
-    if api_keys:
-        print("\nHow would you like to store API keys?")
-        print("1. .env file (recommended, local to this directory)")
-        print("2. Shell export (add to .bashrc/.zshrc)")
+  if api_keys:
+    print("\nHow would you like to store API keys?")
+    print("1. .env file (recommended, local to this directory)")
+    print("2. Shell export (add to .bashrc/.zshrc)")
 
-        choice = input("Choose [1/2]: ").strip()
+    choice = input("Choose [1/2]: ").strip()
 
-        if choice == "2":
-            save_api_keys(api_keys, method="shell_export")
-        else:
-            save_api_keys(api_keys, method="env_file")
-
-    # Step 3: Data directory
-    data_path = setup_data_directory()
-
-    # Step 4: Generate example script
-    if data_path:
-        generate_example_script(data_path)
-
-    # Step 5: Test installation (optional)
-    if api_keys and data_path:
-        test_installation(data_path)
-
-    # Summary
-    print("\n" + "=" * 60)
-    print("Setup Complete!")
-    print("=" * 60)
-
-    if conda_success:
-        print("✓ Conda environment: biomni_e1")
-
-    if api_keys:
-        print(f"✓ API keys configured: {', '.join(api_keys.keys())}")
-
-    if data_path:
-        print(f"✓ Data directory: {data_path}")
-
-    print("\nNext steps:")
-    if conda_success:
-        print("1. conda activate biomni_e1")
-        print("2. pip install biomni --upgrade")
-        print("3. Run example_biomni_usage.py to test")
+    if choice == "2":
+      save_api_keys(api_keys, method="shell_export")
     else:
-        print("1. Install conda/miniconda")
-        print("2. Run this script again")
+      save_api_keys(api_keys, method="env_file")
 
-    print("\nFor documentation, see:")
-    print("  - GitHub: https://github.com/snap-stanford/biomni")
-    print("  - Paper: https://www.biorxiv.org/content/10.1101/2025.05.30.656746v1")
+  # Step 3: Data directory
+  data_path = setup_data_directory()
+
+  # Step 4: Generate example script
+  if data_path:
+    generate_example_script(data_path)
+
+  # Step 5: Test installation (optional)
+  if api_keys and data_path:
+    test_installation(data_path)
+
+  # Summary
+  print("\n" + "=" * 60)
+  print("Setup Complete!")
+  print("=" * 60)
+
+  if conda_success:
+    print("✓ Conda environment: biomni_e1")
+
+  if api_keys:
+    print(f"✓ API keys configured: {', '.join(api_keys.keys())}")
+
+  if data_path:
+    print(f"✓ Data directory: {data_path}")
+
+  print("\nNext steps:")
+  if conda_success:
+    print("1. conda activate biomni_e1")
+    print("2. pip install biomni --upgrade")
+    print("3. Run example_biomni_usage.py to test")
+  else:
+    print("1. Install conda/miniconda")
+    print("2. Run this script again")
+
+  print("\nFor documentation, see:")
+  print("  - GitHub: https://github.com/snap-stanford/biomni")
+  print("  - Paper: https://www.biorxiv.org/content/10.1101/2025.05.30.656746v1")
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\n\nSetup interrupted by user")
-        sys.exit(1)
-    except Exception as e:
-        print(f"\n❌ Error during setup: {e}")
-        sys.exit(1)
+  try:
+    main()
+  except KeyboardInterrupt:
+    print("\n\nSetup interrupted by user")
+    sys.exit(1)
+  except Exception as e:
+    print(f"\n❌ Error during setup: {e}")
+    sys.exit(1)

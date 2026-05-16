@@ -17,271 +17,289 @@ import numpy as np
 
 @dataclass
 class AudioEncoderConfig:
-    """Configuration for audio encoding operations"""
+  """Configuration for audio encoding operations"""
 
-    method: str = "lsb"  # lsb, phase, echo, spread_spectrum
-    bits_per_sample: int = 1  # Number of LSBs to use
-    sample_rate: int | None = None  # Target sample rate (None = preserve)
-    channels: int = 1  # Number of audio channels to use
-    use_encryption: bool = True
-    error_correction: bool = True
-    preserve_quality: bool = True  # Maintain audio quality
+  method: str = "lsb"  # lsb, phase, echo, spread_spectrum
+  bits_per_sample: int = 1  # Number of LSBs to use
+  sample_rate: int | None = None  # Target sample rate (None = preserve)
+  channels: int = 1  # Number of audio channels to use
+  use_encryption: bool = True
+  error_correction: bool = True
+  preserve_quality: bool = True  # Maintain audio quality
 
 
 class AudioEncoder:
+  """
+  Encodes hidden data into audio files using steganographic techniques.
+
+  Supports multiple encoding methods with configurable parameters
+  for balancing capacity, imperceptibility, and robustness.
+  """
+
+  def __init__(self, config: AudioEncoderConfig | None = None):
     """
-    Encodes hidden data into audio files using steganographic techniques.
+    Initialize the audio encoder.
 
-    Supports multiple encoding methods with configurable parameters
-    for balancing capacity, imperceptibility, and robustness.
+    Args:
+        config: Encoder configuration. Uses defaults if None.
     """
+    self.config = config or AudioEncoderConfig()
+    self._validate_config()
 
-    def __init__(self, config: AudioEncoderConfig | None = None):
-        """
-        Initialize the audio encoder.
+  def _validate_config(self) -> None:
+    """Validate encoder configuration parameters"""
+    valid_methods = {"lsb", "phase", "echo", "spread_spectrum"}
+    if self.config.method not in valid_methods:
+      raise ValueError(
+        f"Invalid method: {self.config.method}. Must be one of {valid_methods}"
+      )
 
-        Args:
-            config: Encoder configuration. Uses defaults if None.
-        """
-        self.config = config or AudioEncoderConfig()
-        self._validate_config()
+    if not 1 <= self.config.bits_per_sample <= 4:
+      raise ValueError("bits_per_sample must be between 1 and 4")
 
-    def _validate_config(self) -> None:
-        """Validate encoder configuration parameters"""
-        valid_methods = {"lsb", "phase", "echo", "spread_spectrum"}
-        if self.config.method not in valid_methods:
-            raise ValueError(f"Invalid method: {self.config.method}. Must be one of {valid_methods}")
+  def encode(
+    self,
+    audio_path: Path,
+    payload: bytes,
+    output_path: Path,
+    metadata: dict[str, Any] | None = None,
+  ) -> dict[str, Any]:
+    """
+    Encode hidden data into an audio file.
 
-        if not 1 <= self.config.bits_per_sample <= 4:
-            raise ValueError("bits_per_sample must be between 1 and 4")
+    Args:
+        audio_path: Path to input audio file
+        payload: Binary data to embed
+        output_path: Path for output audio with embedded data
+        metadata: Optional metadata to embed alongside payload
 
-    def encode(self, audio_path: Path, payload: bytes, output_path: Path, metadata: dict[str, Any] | None = None) -> dict[str, Any]:
-        """
-        Encode hidden data into an audio file.
+    Returns:
+        Dictionary containing encoding statistics
 
-        Args:
-            audio_path: Path to input audio file
-            payload: Binary data to embed
-            output_path: Path for output audio with embedded data
-            metadata: Optional metadata to embed alongside payload
+    Raises:
+        ValueError: If payload is too large for audio capacity
+        IOError: If audio file cannot be read/written
+    """
+    # Load audio file
+    audio_data, sample_rate = self._load_audio(audio_path)
 
-        Returns:
-            Dictionary containing encoding statistics
+    # Calculate capacity
+    capacity = self._calculate_capacity(audio_data, sample_rate)
 
-        Raises:
-            ValueError: If payload is too large for audio capacity
-            IOError: If audio file cannot be read/written
-        """
-        # Load audio file
-        audio_data, sample_rate = self._load_audio(audio_path)
+    if len(payload) > capacity:
+      raise ValueError(
+        f"Payload size ({len(payload)} bytes) exceeds audio capacity ({capacity} bytes)"
+      )
 
-        # Calculate capacity
-        capacity = self._calculate_capacity(audio_data, sample_rate)
+    # Prepare payload
+    prepared_payload = self._prepare_payload(payload, metadata)
 
-        if len(payload) > capacity:
-            raise ValueError(f"Payload size ({len(payload)} bytes) exceeds audio capacity ({capacity} bytes)")
+    # Encode using selected method
+    encoded_audio = self._encode_by_method(audio_data, prepared_payload, sample_rate)
 
-        # Prepare payload
-        prepared_payload = self._prepare_payload(payload, metadata)
+    # Save encoded audio
+    self._save_audio(encoded_audio, sample_rate, output_path)
 
-        # Encode using selected method
-        encoded_audio = self._encode_by_method(audio_data, prepared_payload, sample_rate)
+    # Calculate quality metrics
+    stats = self._calculate_stats(audio_data, encoded_audio, payload)
 
-        # Save encoded audio
-        self._save_audio(encoded_audio, sample_rate, output_path)
+    return stats
 
-        # Calculate quality metrics
-        stats = self._calculate_stats(audio_data, encoded_audio, payload)
+  def _load_audio(self, audio_path: Path) -> tuple[np.ndarray, int]:
+    """
+    Load audio file and return samples with sample rate.
 
-        return stats
+    Args:
+        audio_path: Path to audio file
 
-    def _load_audio(self, audio_path: Path) -> tuple[np.ndarray, int]:
-        """
-        Load audio file and return samples with sample rate.
+    Returns:
+        Tuple of (audio_samples, sample_rate)
+    """
+    # TODO: Implement actual audio loading (using librosa, soundfile, etc.)
+    # Placeholder implementation
+    sample_rate = 44100
+    duration = 10.0  # seconds
+    samples = np.zeros(int(sample_rate * duration))
+    return samples, sample_rate
 
-        Args:
-            audio_path: Path to audio file
+  def _calculate_capacity(self, audio_data: np.ndarray, sample_rate: int) -> int:
+    """
+    Calculate the maximum payload capacity for audio data.
 
-        Returns:
-            Tuple of (audio_samples, sample_rate)
-        """
-        # TODO: Implement actual audio loading (using librosa, soundfile, etc.)
-        # Placeholder implementation
-        sample_rate = 44100
-        duration = 10.0  # seconds
-        samples = np.zeros(int(sample_rate * duration))
-        return samples, sample_rate
+    Args:
+        audio_data: Audio samples
+        sample_rate: Sample rate in Hz
 
-    def _calculate_capacity(self, audio_data: np.ndarray, sample_rate: int) -> int:
-        """
-        Calculate the maximum payload capacity for audio data.
+    Returns:
+        Maximum capacity in bytes
+    """
+    if self.config.method == "lsb":
+      # For LSB: bits_per_sample per sample
+      total_bits = len(audio_data) * self.config.bits_per_sample
+      return total_bits // 8
+    elif self.config.method == "phase":
+      # Phase encoding capacity depends on frame size
+      frame_size = 2048
+      num_frames = len(audio_data) // frame_size
+      bits_per_frame = frame_size // 2  # Half of FFT bins
+      return (num_frames * bits_per_frame) // 8
+    else:
+      # Conservative estimate for other methods
+      return len(audio_data) // 100
 
-        Args:
-            audio_data: Audio samples
-            sample_rate: Sample rate in Hz
+  def _prepare_payload(self, payload: bytes, metadata: dict[str, Any] | None) -> bytes:
+    """
+    Prepare payload for embedding.
 
-        Returns:
-            Maximum capacity in bytes
-        """
-        if self.config.method == "lsb":
-            # For LSB: bits_per_sample per sample
-            total_bits = len(audio_data) * self.config.bits_per_sample
-            return total_bits // 8
-        elif self.config.method == "phase":
-            # Phase encoding capacity depends on frame size
-            frame_size = 2048
-            num_frames = len(audio_data) // frame_size
-            bits_per_frame = frame_size // 2  # Half of FFT bins
-            return (num_frames * bits_per_frame) // 8
-        else:
-            # Conservative estimate for other methods
-            return len(audio_data) // 100
+    Args:
+        payload: Raw payload bytes
+        metadata: Optional metadata
 
-    def _prepare_payload(self, payload: bytes, metadata: dict[str, Any] | None) -> bytes:
-        """
-        Prepare payload for embedding.
+    Returns:
+        Prepared payload with headers
+    """
+    # TODO: Add compression, encryption, error correction
+    length_header = len(payload).to_bytes(4, byteorder="big")
+    return length_header + payload
 
-        Args:
-            payload: Raw payload bytes
-            metadata: Optional metadata
+  def _encode_by_method(
+    self, audio_data: np.ndarray, payload: bytes, sample_rate: int
+  ) -> np.ndarray:
+    """
+    Encode payload using the configured method.
 
-        Returns:
-            Prepared payload with headers
-        """
-        # TODO: Add compression, encryption, error correction
-        length_header = len(payload).to_bytes(4, byteorder="big")
-        return length_header + payload
+    Args:
+        audio_data: Input audio samples
+        payload: Prepared payload to embed
+        sample_rate: Sample rate
 
-    def _encode_by_method(self, audio_data: np.ndarray, payload: bytes, sample_rate: int) -> np.ndarray:
-        """
-        Encode payload using the configured method.
+    Returns:
+        Encoded audio samples
+    """
+    if self.config.method == "lsb":
+      return self._encode_lsb(audio_data, payload)
+    elif self.config.method == "phase":
+      return self._encode_phase(audio_data, payload)
+    elif self.config.method == "echo":
+      return self._encode_echo(audio_data, payload)
+    elif self.config.method == "spread_spectrum":
+      return self._encode_spread_spectrum(audio_data, payload)
+    else:
+      raise ValueError(f"Unsupported method: {self.config.method}")
 
-        Args:
-            audio_data: Input audio samples
-            payload: Prepared payload to embed
-            sample_rate: Sample rate
+  def _encode_lsb(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
+    """
+    Encode using LSB substitution.
 
-        Returns:
-            Encoded audio samples
-        """
-        if self.config.method == "lsb":
-            return self._encode_lsb(audio_data, payload)
-        elif self.config.method == "phase":
-            return self._encode_phase(audio_data, payload)
-        elif self.config.method == "echo":
-            return self._encode_echo(audio_data, payload)
-        elif self.config.method == "spread_spectrum":
-            return self._encode_spread_spectrum(audio_data, payload)
-        else:
-            raise ValueError(f"Unsupported method: {self.config.method}")
+    Args:
+        audio_data: Input audio samples
+        payload: Payload to embed
 
-    def _encode_lsb(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
-        """
-        Encode using LSB substitution.
+    Returns:
+        Encoded audio samples
+    """
+    # TODO: Implement LSB encoding
+    return audio_data.copy()
 
-        Args:
-            audio_data: Input audio samples
-            payload: Payload to embed
+  def _encode_phase(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
+    """
+    Encode using phase manipulation in frequency domain.
 
-        Returns:
-            Encoded audio samples
-        """
-        # TODO: Implement LSB encoding
-        return audio_data.copy()
+    Args:
+        audio_data: Input audio samples
+        payload: Payload to embed
 
-    def _encode_phase(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
-        """
-        Encode using phase manipulation in frequency domain.
+    Returns:
+        Encoded audio samples
+    """
+    # TODO: Implement phase encoding
+    return audio_data.copy()
 
-        Args:
-            audio_data: Input audio samples
-            payload: Payload to embed
+  def _encode_echo(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
+    """
+    Encode using echo hiding technique.
 
-        Returns:
-            Encoded audio samples
-        """
-        # TODO: Implement phase encoding
-        return audio_data.copy()
+    Args:
+        audio_data: Input audio samples
+        payload: Payload to embed
 
-    def _encode_echo(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
-        """
-        Encode using echo hiding technique.
+    Returns:
+        Encoded audio samples
+    """
+    # TODO: Implement echo hiding
+    return audio_data.copy()
 
-        Args:
-            audio_data: Input audio samples
-            payload: Payload to embed
+  def _encode_spread_spectrum(
+    self, audio_data: np.ndarray, payload: bytes
+  ) -> np.ndarray:
+    """
+    Encode using spread spectrum technique.
 
-        Returns:
-            Encoded audio samples
-        """
-        # TODO: Implement echo hiding
-        return audio_data.copy()
+    Args:
+        audio_data: Input audio samples
+        payload: Payload to embed
 
-    def _encode_spread_spectrum(self, audio_data: np.ndarray, payload: bytes) -> np.ndarray:
-        """
-        Encode using spread spectrum technique.
+    Returns:
+        Encoded audio samples
+    """
+    # TODO: Implement spread spectrum
+    return audio_data.copy()
 
-        Args:
-            audio_data: Input audio samples
-            payload: Payload to embed
+  def _save_audio(
+    self, audio_data: np.ndarray, sample_rate: int, output_path: Path
+  ) -> None:
+    """
+    Save encoded audio to file.
 
-        Returns:
-            Encoded audio samples
-        """
-        # TODO: Implement spread spectrum
-        return audio_data.copy()
+    Args:
+        audio_data: Audio samples to save
+        sample_rate: Sample rate in Hz
+        output_path: Output file path
+    """
+    # TODO: Implement actual audio saving
+    pass
 
-    def _save_audio(self, audio_data: np.ndarray, sample_rate: int, output_path: Path) -> None:
-        """
-        Save encoded audio to file.
+  def _calculate_stats(
+    self, original: np.ndarray, encoded: np.ndarray, payload: bytes
+  ) -> dict[str, Any]:
+    """
+    Calculate encoding statistics and quality metrics.
 
-        Args:
-            audio_data: Audio samples to save
-            sample_rate: Sample rate in Hz
-            output_path: Output file path
-        """
-        # TODO: Implement actual audio saving
-        pass
+    Args:
+        original: Original audio samples
+        encoded: Encoded audio samples
+        payload: Embedded payload
 
-    def _calculate_stats(self, original: np.ndarray, encoded: np.ndarray, payload: bytes) -> dict[str, Any]:
-        """
-        Calculate encoding statistics and quality metrics.
+    Returns:
+        Dictionary with statistics
+    """
+    # Calculate SNR (Signal-to-Noise Ratio)
+    snr = self._calculate_snr(original, encoded)
 
-        Args:
-            original: Original audio samples
-            encoded: Encoded audio samples
-            payload: Embedded payload
+    return {
+      "method": self.config.method,
+      "payload_size": len(payload),
+      "audio_duration_seconds": len(original) / 44100,  # TODO: Use actual rate
+      "snr_db": snr,
+      "bits_per_sample": self.config.bits_per_sample,
+    }
 
-        Returns:
-            Dictionary with statistics
-        """
-        # Calculate SNR (Signal-to-Noise Ratio)
-        snr = self._calculate_snr(original, encoded)
+  def _calculate_snr(self, original: np.ndarray, encoded: np.ndarray) -> float:
+    """
+    Calculate Signal-to-Noise Ratio.
 
-        return {
-            "method": self.config.method,
-            "payload_size": len(payload),
-            "audio_duration_seconds": len(original) / 44100,  # TODO: Use actual rate
-            "snr_db": snr,
-            "bits_per_sample": self.config.bits_per_sample,
-        }
+    Args:
+        original: Original signal
+        encoded: Encoded signal
 
-    def _calculate_snr(self, original: np.ndarray, encoded: np.ndarray) -> float:
-        """
-        Calculate Signal-to-Noise Ratio.
+    Returns:
+        SNR in dB
+    """
+    signal_power = np.mean(original**2)
+    noise_power = np.mean((original - encoded) ** 2)
 
-        Args:
-            original: Original signal
-            encoded: Encoded signal
+    if noise_power == 0:
+      return float("inf")
 
-        Returns:
-            SNR in dB
-        """
-        signal_power = np.mean(original**2)
-        noise_power = np.mean((original - encoded) ** 2)
-
-        if noise_power == 0:
-            return float("inf")
-
-        snr = 10 * np.log10(signal_power / noise_power)
-        return snr
+    snr = 10 * np.log10(signal_power / noise_power)
+    return snr

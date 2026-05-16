@@ -21,36 +21,36 @@ import google.oauth2.credentials
 
 
 class TestSpannerCredentials:
-    """Test suite for Spanner credentials configuration validation.
+  """Test suite for Spanner credentials configuration validation.
 
-    This class tests the credential configuration logic that ensures
-    either existing credentials or client ID/secret pairs are provided.
+  This class tests the credential configuration logic that ensures
+  either existing credentials or client ID/secret pairs are provided.
+  """
+
+  def test_valid_credentials_object_oauth2_credentials(self):
+    """Test that providing valid Credentials object works correctly with google.oauth2.credentials.Credentials.
+
+    When a user already has valid OAuth credentials, they should be able
+    to pass them directly without needing to provide client ID/secret.
     """
+    # Create a mock oauth2 credentials object
+    oauth2_creds = google.oauth2.credentials.Credentials(
+      "test_token",
+      client_id="test_client_id",
+      client_secret="test_client_secret",
+      scopes=[],
+    )
 
-    def test_valid_credentials_object_oauth2_credentials(self):
-        """Test that providing valid Credentials object works correctly with google.oauth2.credentials.Credentials.
+    config = SpannerCredentialsConfig(credentials=oauth2_creds)
 
-        When a user already has valid OAuth credentials, they should be able
-        to pass them directly without needing to provide client ID/secret.
-        """
-        # Create a mock oauth2 credentials object
-        oauth2_creds = google.oauth2.credentials.Credentials(
-            "test_token",
-            client_id="test_client_id",
-            client_secret="test_client_secret",
-            scopes=[],
-        )
+    # Verify that the credentials are properly stored and attributes are
+    # extracted
+    assert config.credentials == oauth2_creds
+    assert config.client_id == "test_client_id"
+    assert config.client_secret == "test_client_secret"
+    assert config.scopes == [
+      "https://www.googleapis.com/auth/spanner.admin",
+      "https://www.googleapis.com/auth/spanner.data",
+    ]
 
-        config = SpannerCredentialsConfig(credentials=oauth2_creds)
-
-        # Verify that the credentials are properly stored and attributes are
-        # extracted
-        assert config.credentials == oauth2_creds
-        assert config.client_id == "test_client_id"
-        assert config.client_secret == "test_client_secret"
-        assert config.scopes == [
-            "https://www.googleapis.com/auth/spanner.admin",
-            "https://www.googleapis.com/auth/spanner.data",
-        ]
-
-        assert config._token_cache_key == "spanner_token_cache"  # pylint: disable=protected-access
+    assert config._token_cache_key == "spanner_token_cache"  # pylint: disable=protected-access

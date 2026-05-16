@@ -17,6 +17,6 @@ from .openapi_spec_parser import OpenAPIToolset
 from .openapi_spec_parser import RestApiTool
 
 __all__ = [
-    "OpenAPIToolset",
-    "RestApiTool",
+  "OpenAPIToolset",
+  "RestApiTool",
 ]

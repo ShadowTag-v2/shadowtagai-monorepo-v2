@@ -36,4 +36,6 @@ Propose 3 ways to improve the blog post, paying special attention to
 Make each suggestion 3-4 sentences long.
 """
 
-critic_agent = Agent(model=MODEL, name="critic_agent", instruction=PROMPT, output_key="blog_post")
+critic_agent = Agent(
+  model=MODEL, name="critic_agent", instruction=PROMPT, output_key="blog_post"
+)

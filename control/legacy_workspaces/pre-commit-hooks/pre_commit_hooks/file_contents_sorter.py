@@ -25,69 +25,69 @@ FAIL = 1
 
 
 def sort_file_contents(
-    f: IO[bytes],
-    key: Callable[[bytes], Any] | None,
-    *,
-    unique: bool = False,
+  f: IO[bytes],
+  key: Callable[[bytes], Any] | None,
+  *,
+  unique: bool = False,
 ) -> int:
-    before = list(f)
-    lines: Iterable[bytes] = (line.rstrip(b"\n\r") for line in before if line.strip())
-    if unique:
-        lines = set(lines)
-    after = sorted(lines, key=key)
+  before = list(f)
+  lines: Iterable[bytes] = (line.rstrip(b"\n\r") for line in before if line.strip())
+  if unique:
+    lines = set(lines)
+  after = sorted(lines, key=key)
 
-    before_string = b"".join(before)
-    after_string = b"\n".join(after)
+  before_string = b"".join(before)
+  after_string = b"\n".join(after)
 
-    if after_string:
-        after_string += b"\n"
+  if after_string:
+    after_string += b"\n"
 
-    if before_string == after_string:
-        return PASS
-    else:
-        f.seek(0)
-        f.write(after_string)
-        f.truncate()
-        return FAIL
+  if before_string == after_string:
+    return PASS
+  else:
+    f.seek(0)
+    f.write(after_string)
+    f.truncate()
+    return FAIL
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("filenames", nargs="+", help="Files to sort")
+  parser = argparse.ArgumentParser()
+  parser.add_argument("filenames", nargs="+", help="Files to sort")
 
-    mutex = parser.add_mutually_exclusive_group(required=False)
-    mutex.add_argument(
-        "--ignore-case",
-        action="store_const",
-        const=bytes.lower,
-        default=None,
-        help="fold lower case to upper case characters",
-    )
-    mutex.add_argument(
-        "--unique",
-        action="store_true",
-        help="ensure each line is unique",
-    )
+  mutex = parser.add_mutually_exclusive_group(required=False)
+  mutex.add_argument(
+    "--ignore-case",
+    action="store_const",
+    const=bytes.lower,
+    default=None,
+    help="fold lower case to upper case characters",
+  )
+  mutex.add_argument(
+    "--unique",
+    action="store_true",
+    help="ensure each line is unique",
+  )
 
-    args = parser.parse_args(argv)
+  args = parser.parse_args(argv)
 
-    retv = PASS
+  retv = PASS
 
-    for arg in args.filenames:
-        with open(arg, "rb+") as file_obj:
-            ret_for_file = sort_file_contents(
-                file_obj,
-                key=args.ignore_case,
-                unique=args.unique,
-            )
+  for arg in args.filenames:
+    with open(arg, "rb+") as file_obj:
+      ret_for_file = sort_file_contents(
+        file_obj,
+        key=args.ignore_case,
+        unique=args.unique,
+      )
 
-            if ret_for_file:
-                print(f"Sorting {arg}")
+      if ret_for_file:
+        print(f"Sorting {arg}")
 
-            retv |= ret_for_file
+      retv |= ret_for_file
 
-    return retv
+  return retv
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+  raise SystemExit(main())

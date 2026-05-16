@@ -1,0 +1,31 @@
+{
+  "name": "mnemos-marketplace",
+  "owner": {
+    "name": "Anthony Maio",
+    "email": "anthony@making-minds.ai"
+  },
+  "metadata": {
+    "description": "Marketplace entry for the mnemos biomimetic memory plugin.",
+    "version": "0.6.0"
+  },
+  "plugins": [
+    {
+      "name": "mnemos-memory",
+      "description": "Biomimetic long-term memory plugin for Claude Code with MCP server integration.",
+      "version": "0.6.0",
+      "source": "./",
+      "author": {
+        "name": "Anthony Maio",
+        "email": "anthony@making-minds.ai"
+      },
+      "keywords": [
+        "memory",
+        "mcp",
+        "claude-code",
+        "biomimetic"
+      ],
+      "category": "productivity",
+      "strict": true
+    }
+  ]
+}

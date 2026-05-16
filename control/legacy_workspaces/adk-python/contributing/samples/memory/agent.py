@@ -23,21 +23,21 @@ from google.adk.tools.preload_memory_tool import preload_memory_tool
 
 
 def update_current_time(callback_context: CallbackContext):
-    callback_context.state["_time"] = datetime.now().isoformat()
+  callback_context.state["_time"] = datetime.now().isoformat()
 
 
 root_agent = Agent(
-    model="gemini-2.0-flash-001",
-    name="memory_agent",
-    description="agent that have access to memory tools.",
-    before_agent_callback=update_current_time,
-    instruction="""\
+  model="gemini-2.0-flash-001",
+  name="memory_agent",
+  description="agent that have access to memory tools.",
+  before_agent_callback=update_current_time,
+  instruction="""\
 You are an agent that help user answer questions.
 
 Current time: {_time}
 """,
-    tools=[
-        load_memory_tool,
-        preload_memory_tool,
-    ],
+  tools=[
+    load_memory_tool,
+    preload_memory_tool,
+  ],
 )

@@ -21,35 +21,35 @@ from lib import config
 
 
 logging.basicConfig(
-    filename="/tmp/flaskapp_game.log",
-    format="%(asctime)s - %(message)s",
-    filemode="w",
-    level=logging.DEBUG,
+  filename="/tmp/flaskapp_game.log",
+  format="%(asctime)s - %(message)s",
+  filemode="w",
+  level=logging.DEBUG,
 )
 
 
 flaskapp = None
 if config.HOSTNAME.startswith("vm-loader"):
-    from loader import app as loader_app
+  from loader import app as loader_app
 
-    flaskapp = loader_app
+  flaskapp = loader_app
 elif config.HOSTNAME.startswith("vm-main"):
-    from player import app as player_app
+  from player import app as player_app
 
-    # PlayerCache().reset()
-    flaskapp = player_app
+  # PlayerCache().reset()
+  flaskapp = player_app
 
 elif config.HOSTNAME.startswith("vm-wh"):
-    from warehouse import app as wh_app
+  from warehouse import app as wh_app
 
-    # WarehouseCache().reset()
-    flaskapp = wh_app
-    logging.debug("Loading warehouse app")
+  # WarehouseCache().reset()
+  flaskapp = wh_app
+  logging.debug("Loading warehouse app")
 
 elif "sampathm" in config.HOSTNAME:
-    from player import app as player_app
+  from player import app as player_app
 
-    flaskapp = player_app
+  flaskapp = player_app
 
 if __name__ == "__main__":
-    flaskapp.run(debug=True, port=8000, host="0.0.0.0")
+  flaskapp.run(debug=True, port=8000, host="0.0.0.0")

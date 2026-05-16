@@ -21,40 +21,40 @@ from typing import Any
 
 
 class _EventBus:
-    def __init__(self) -> None:
-        self._subscribers: set[asyncio.Queue] = set()
+  def __init__(self) -> None:
+    self._subscribers: set[asyncio.Queue] = set()
 
-    def subscribe(self) -> asyncio.Queue:
-        queue: asyncio.Queue = asyncio.Queue(maxsize=1000)
-        self._subscribers.add(queue)
-        return queue
+  def subscribe(self) -> asyncio.Queue:
+    queue: asyncio.Queue = asyncio.Queue(maxsize=1000)
+    self._subscribers.add(queue)
+    return queue
 
-    def unsubscribe(self, queue: asyncio.Queue) -> None:
-        if queue in self._subscribers:
-            self._subscribers.remove(queue)
+  def unsubscribe(self, queue: asyncio.Queue) -> None:
+    if queue in self._subscribers:
+      self._subscribers.remove(queue)
 
-    async def publish(self, event: dict[str, Any]) -> None:
-        # Fan-out non-blocking; drop if queue full
-        dead = []
-        for q in list(self._subscribers):
-            try:
-                q.put_nowait(event)
-            except Exception:
-                dead.append(q)
-        for q in dead:
-            self._subscribers.discard(q)
+  async def publish(self, event: dict[str, Any]) -> None:
+    # Fan-out non-blocking; drop if queue full
+    dead = []
+    for q in list(self._subscribers):
+      try:
+        q.put_nowait(event)
+      except Exception:
+        dead.append(q)
+    for q in dead:
+      self._subscribers.discard(q)
 
 
 bus = _EventBus()
 
 
 def subscribe() -> asyncio.Queue:
-    return bus.subscribe()
+  return bus.subscribe()
 
 
 def unsubscribe(queue: asyncio.Queue) -> None:
-    bus.unsubscribe(queue)
+  bus.unsubscribe(queue)
 
 
 async def publish(event: dict[str, Any]) -> None:
-    await bus.publish(event)
+  await bus.publish(event)

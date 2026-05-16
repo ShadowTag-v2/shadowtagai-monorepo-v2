@@ -25,27 +25,27 @@ load_dotenv()
 
 NOTION_API_KEY = os.getenv("NOTION_API_KEY")
 NOTION_HEADERS = json.dumps(
-    {
-        "Authorization": f"Bearer {NOTION_API_KEY}",
-        "Notion-Version": "2022-06-28",
-    }
+  {
+    "Authorization": f"Bearer {NOTION_API_KEY}",
+    "Notion-Version": "2022-06-28",
+  }
 )
 
 root_agent = LlmAgent(
-    model="gemini-2.0-flash",
-    name="notion_agent",
-    instruction=(
-        "You are my workspace assistant. "
-        "Use the provided tools to read, search, comment on, "
-        "or create Notion pages. Ask clarifying questions when unsure."
-    ),
-    tools=[
-        MCPToolset(
-            connection_params=StdioServerParameters(
-                command="npx",
-                args=["-y", "@notionhq/notion-mcp-server"],
-                env={"OPENAPI_MCP_HEADERS": NOTION_HEADERS},
-            )
-        )
-    ],
+  model="gemini-2.0-flash",
+  name="notion_agent",
+  instruction=(
+    "You are my workspace assistant. "
+    "Use the provided tools to read, search, comment on, "
+    "or create Notion pages. Ask clarifying questions when unsure."
+  ),
+  tools=[
+    MCPToolset(
+      connection_params=StdioServerParameters(
+        command="npx",
+        args=["-y", "@notionhq/notion-mcp-server"],
+        env={"OPENAPI_MCP_HEADERS": NOTION_HEADERS},
+      )
+    )
+  ],
 )

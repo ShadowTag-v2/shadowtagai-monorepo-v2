@@ -27,64 +27,70 @@ from ... import testing_utils
 
 
 async def invoke_tool() -> Event | None:
-    def simple_fn(**kwargs) -> dict[str, Any]:
-        return {"result": "test"}
+  def simple_fn(**kwargs) -> dict[str, Any]:
+    return {"result": "test"}
 
-    tool = FunctionTool(simple_fn)
-    model = testing_utils.MockModel.create(responses=[])
-    agent = Agent(
-        name="agent",
-        model=model,
-        tools=[tool],
-    )
-    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="")
-    function_call = types.FunctionCall(name=tool.name, args={"a": 1, "b": 2})
-    content = types.Content(parts=[types.Part(function_call=function_call)])
-    event = Event(
-        invocation_id=invocation_context.invocation_id,
-        author=agent.name,
-        content=content,
-    )
-    tools_dict = {tool.name: tool}
-    return await handle_function_calls_async(
-        invocation_context,
-        event,
-        tools_dict,
-    )
+  tool = FunctionTool(simple_fn)
+  model = testing_utils.MockModel.create(responses=[])
+  agent = Agent(
+    name="agent",
+    model=model,
+    tools=[tool],
+  )
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent, user_content=""
+  )
+  function_call = types.FunctionCall(name=tool.name, args={"a": 1, "b": 2})
+  content = types.Content(parts=[types.Part(function_call=function_call)])
+  event = Event(
+    invocation_id=invocation_context.invocation_id,
+    author=agent.name,
+    content=content,
+  )
+  tools_dict = {tool.name: tool}
+  return await handle_function_calls_async(
+    invocation_context,
+    event,
+    tools_dict,
+  )
 
 
 async def test_simple_function_with_mocked_tracer(monkeypatch):
-    mock_start_as_current_span_func = mock.Mock()
-    returned_context_manager_mock = mock.MagicMock()
-    returned_context_manager_mock.__enter__.return_value = mock.Mock(name="span_mock")
-    mock_start_as_current_span_func.return_value = returned_context_manager_mock
+  mock_start_as_current_span_func = mock.Mock()
+  returned_context_manager_mock = mock.MagicMock()
+  returned_context_manager_mock.__enter__.return_value = mock.Mock(name="span_mock")
+  mock_start_as_current_span_func.return_value = returned_context_manager_mock
 
-    monkeypatch.setattr(tracing.tracer, "start_as_current_span", mock_start_as_current_span_func)
+  monkeypatch.setattr(
+    tracing.tracer, "start_as_current_span", mock_start_as_current_span_func
+  )
 
-    mock_adk_trace_tool_call = mock.Mock()
-    monkeypatch.setattr(
-        "google.adk.flows.llm_flows.functions.trace_tool_call",
-        mock_adk_trace_tool_call,
-    )
+  mock_adk_trace_tool_call = mock.Mock()
+  monkeypatch.setattr(
+    "google.adk.flows.llm_flows.functions.trace_tool_call",
+    mock_adk_trace_tool_call,
+  )
 
-    event = await invoke_tool()
-    assert event is not None
+  event = await invoke_tool()
+  assert event is not None
 
-    event = await invoke_tool()
-    assert event is not None
+  event = await invoke_tool()
+  assert event is not None
 
-    expected_span_name = "execute_tool simple_fn"
+  expected_span_name = "execute_tool simple_fn"
 
-    assert mock_start_as_current_span_func.call_count == 2
-    mock_start_as_current_span_func.assert_any_call(expected_span_name)
+  assert mock_start_as_current_span_func.call_count == 2
+  mock_start_as_current_span_func.assert_any_call(expected_span_name)
 
-    assert returned_context_manager_mock.__enter__.call_count == 2
-    assert returned_context_manager_mock.__exit__.call_count == 2
+  assert returned_context_manager_mock.__enter__.call_count == 2
+  assert returned_context_manager_mock.__exit__.call_count == 2
 
-    assert mock_adk_trace_tool_call.call_count == 2
-    for call_args_item in mock_adk_trace_tool_call.call_args_list:
-        kwargs = call_args_item.kwargs
-        assert kwargs["tool"].name == "simple_fn"
-        assert kwargs["args"] == {"a": 1, "b": 2}
-        assert "function_response_event" in kwargs
-        assert kwargs["function_response_event"].content.parts[0].function_response.response == {"result": "test"}
+  assert mock_adk_trace_tool_call.call_count == 2
+  for call_args_item in mock_adk_trace_tool_call.call_args_list:
+    kwargs = call_args_item.kwargs
+    assert kwargs["tool"].name == "simple_fn"
+    assert kwargs["args"] == {"a": 1, "b": 2}
+    assert "function_response_event" in kwargs
+    assert kwargs["function_response_event"].content.parts[
+      0
+    ].function_response.response == {"result": "test"}

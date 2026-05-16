@@ -567,45 +567,45 @@ tqdm>=4.65.0
 
 
 def extract_scripts():
-    """Extract all scripts to individual files"""
-    scripts = {
-        "validate_judge6_latency.py": SCRIPT_JUDGE6,
-        "validate_jr_engine_latency.py": SCRIPT_JR_ENGINE,
-        "validate_orchestrator_prb.py": SCRIPT_ORCHESTRATOR,
-        "run_all_validations.py": SCRIPT_RUNNER,
-        "requirements.txt": REQUIREMENTS,
-    }
+  """Extract all scripts to individual files"""
+  scripts = {
+    "validate_judge6_latency.py": SCRIPT_JUDGE6,
+    "validate_jr_engine_latency.py": SCRIPT_JR_ENGINE,
+    "validate_orchestrator_prb.py": SCRIPT_ORCHESTRATOR,
+    "run_all_validations.py": SCRIPT_RUNNER,
+    "requirements.txt": REQUIREMENTS,
+  }
 
-    print("Extracting PNKLN enhanced load testing scripts...")
-    print("")
+  print("Extracting PNKLN enhanced load testing scripts...")
+  print("")
 
-    for filename, content in scripts.items():
-        with open(filename, "w") as f:
-            f.write(content)
+  for filename, content in scripts.items():
+    with open(filename, "w") as f:
+      f.write(content)
 
-        # Make Python scripts executable
-        if filename.endswith(".py"):
-            import os
+    # Make Python scripts executable
+    if filename.endswith(".py"):
+      import os
 
-            os.chmod(filename, 0o755)
+      os.chmod(filename, 0o755)
 
-        print(f"✓ Created: {filename}")
+    print(f"✓ Created: {filename}")
 
-    print("")
-    print("All scripts extracted successfully!")
-    print("")
-    print("Next steps:")
-    print("1. Install dependencies: pip install -r requirements.txt")
-    print("2. Update endpoint URLs in each script")
-    print("3. Run: python3 run_all_validations.py")
+  print("")
+  print("All scripts extracted successfully!")
+  print("")
+  print("Next steps:")
+  print("1. Install dependencies: pip install -r requirements.txt")
+  print("2. Update endpoint URLs in each script")
+  print("3. Run: python3 run_all_validations.py")
 
 
 if __name__ == "__main__":
-    import sys
+  import sys
 
-    if len(sys.argv) > 1 and sys.argv[1] == "--extract":
-        extract_scripts()
-    else:
-        print(__doc__)
-        print("\\nTo extract all scripts, run:")
-        print("  python3 pnkln_load_tests_enhanced.py --extract")
+  if len(sys.argv) > 1 and sys.argv[1] == "--extract":
+    extract_scripts()
+  else:
+    print(__doc__)
+    print("\\nTo extract all scripts, run:")
+    print("  python3 pnkln_load_tests_enhanced.py --extract")

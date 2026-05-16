@@ -1,69 +1,37 @@
-<<<<<<< HEAD
-# IDE & Diagnostic Exclusions (Structural Matrix)
-# Prevents infinite loop exclusions and AST buffer collapse inside Gemini Code Assist / Pylance.
-
-# Core Directories
-.git/
-.venv/
-__pycache__/
-node_modules/
-dist/
-build/
-coverage/
-archive_legacy_*/
-external_sdks/
-
-# Dense Text Blobs & Models (Skipped intelligently to prevent AST collapse)
-drive_knowledge/**/*.pdf
-drive_knowledge/**/*.csv
-logs/**/*.log
-models/**/*.bin
-models/**/*.safetensors
-
-# Credentials & Enclaves
-*.pem
-*.key
-*.cert
-.env*
-credentials.json
-service_account.json
-||||||| empty tree
-=======
-# Keep agents away from generated, heavy, or sensitive areas
+# === GCA RAG Index Reduction (V45) ===
+# Critically important build/env directories
 **/node_modules/**
-**/.next/**
-**/dist/**
-**/build/**
-**/coverage/**
-**/.turbo/**
-**/.cache/**
-**/tmp/**
-**/vendor/**
-**/__pycache__/**
 **/.venv/**
-**/.pytest_cache/**
-**/bazel-*/**
-**/bazel-bin/**
-**/bazel-out/**
-**/bazel-testlogs/**
-**/*.min.js
-**/*.map
-**/*.lock
-**/*.log
-**/*.sqlite
-**/*.db
+**/.next/**
+**/build/**
+**/dist/**
+**/out/**
+**/.cache/**
+**/*.mp4
+**/*.wasm
+**/*.pyc
+**/__pycache__/**
+**/.git/**
+**/vendor/**
+**/*.lance/**
 **/*.parquet
-**/*.feather
-**/*.ipynb
-**/*.onnx
-**/*.pt
-**/*.bin
-**/*.ckpt
-**/*.mlmodelc/**
-**/.env
-**/.env.*
-**/secrets/**
-**/private/**
-**/generated/**
-**/gen/**
->>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419
+**/*.heapsnapshot
+
+# Massive microservices — exclude while working on core
+apps/aiyou_stack/**
+apps/thermal-ride/**
+apps/gitnexus/**
+apps/unusual-machines-clone/**
+apps/cobalt-planck/**
+apps/headfade/**
+control/**
+control/legacy_workspaces/**
+external_repos/**
+ultrathink/**
+vault/**
+
+# Large binary/data dirs
+data/lance_corpus/**
+data/extractions.jsonl
+.beads/spec_cache/**
+ane_cortex_stack_v10/**

@@ -26,23 +26,23 @@ load_dotenv()
 oauth_client_id = os.getenv("OAUTH_CLIENT_ID")
 oauth_client_secret = os.getenv("OAUTH_CLIENT_SECRET")
 tools_to_expose = [
-    "bigquery_datasets_list",
-    "bigquery_datasets_get",
-    "bigquery_datasets_insert",
-    "bigquery_tables_list",
-    "bigquery_tables_get",
-    "bigquery_tables_insert",
+  "bigquery_datasets_list",
+  "bigquery_datasets_get",
+  "bigquery_datasets_insert",
+  "bigquery_tables_list",
+  "bigquery_tables_get",
+  "bigquery_tables_insert",
 ]
 bigquery_toolset = BigQueryToolset(
-    client_id=oauth_client_id,
-    client_secret=oauth_client_secret,
-    tool_filter=tools_to_expose,
+  client_id=oauth_client_id,
+  client_secret=oauth_client_secret,
+  tool_filter=tools_to_expose,
 )
 
 root_agent = Agent(
-    model="gemini-2.0-flash",
-    name="bigquery_agent",
-    instruction="""
+  model="gemini-2.0-flash",
+  name="bigquery_agent",
+  instruction="""
       You are a helpful Google BigQuery agent that help to manage users' data on Google BigQuery.
       Use the provided tools to conduct various operations on users' data in Google BigQuery.
 
@@ -75,5 +75,5 @@ root_agent = Agent(
       {userInfo?}
       </User>
 """,
-    tools=[bigquery_toolset],
+  tools=[bigquery_toolset],
 )

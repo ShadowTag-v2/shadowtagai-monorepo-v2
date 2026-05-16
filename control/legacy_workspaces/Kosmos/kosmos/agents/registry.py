@@ -20,438 +20,486 @@ logger = logging.getLogger(__name__)
 
 
 class AgentRegistry:
+  """
+  Central registry for managing agents.
+
+  Provides:
+  - Agent registration and discovery
+  - Message routing between agents
+  - Lifecycle management of multiple agents
+  - Health monitoring
+
+  Example:
+      ```python
+      registry = AgentRegistry()
+
+      # Register agents
+      hypothesis_gen = HypothesisGeneratorAgent()
+      registry.register(hypothesis_gen)
+
+      # Get agent by ID
+      agent = registry.get_agent(hypothesis_gen.agent_id)
+
+      # Send message between agents
+      registry.send_message(
+          from_agent_id=hypothesis_gen.agent_id,
+          to_agent_id=lit_analyzer.agent_id,
+          content={"query": "dark matter"}
+      )
+
+      # Check system health
+      health = registry.get_system_health()
+      ```
+  """
+
+  def __init__(self):
+    """Initialize agent registry."""
+    self._agents: dict[str, BaseAgent] = {}
+    self._agent_types: dict[str, list[str]] = {}  # type -> [agent_ids]
+    self._message_history: list[AgentMessage] = []
+    self._max_history_size = 1000
+
+    logger.info("Agent registry initialized")
+
+  # ========================================================================
+  # AGENT REGISTRATION
+  # ========================================================================
+
+  def register(self, agent: BaseAgent) -> str:
     """
-    Central registry for managing agents.
+    Register an agent.
 
-    Provides:
-    - Agent registration and discovery
-    - Message routing between agents
-    - Lifecycle management of multiple agents
-    - Health monitoring
+    Args:
+        agent: Agent instance to register
 
-    Example:
-        ```python
-        registry = AgentRegistry()
+    Returns:
+        str: Agent ID
 
-        # Register agents
-        hypothesis_gen = HypothesisGeneratorAgent()
-        registry.register(hypothesis_gen)
-
-        # Get agent by ID
-        agent = registry.get_agent(hypothesis_gen.agent_id)
-
-        # Send message between agents
-        registry.send_message(
-            from_agent_id=hypothesis_gen.agent_id,
-            to_agent_id=lit_analyzer.agent_id,
-            content={"query": "dark matter"}
-        )
-
-        # Check system health
-        health = registry.get_system_health()
-        ```
+    Raises:
+        ValueError: If agent with same ID already registered
     """
+    if agent.agent_id in self._agents:
+      raise ValueError(f"Agent {agent.agent_id} already registered")
 
-    def __init__(self):
-        """Initialize agent registry."""
-        self._agents: dict[str, BaseAgent] = {}
-        self._agent_types: dict[str, list[str]] = {}  # type -> [agent_ids]
-        self._message_history: list[AgentMessage] = []
-        self._max_history_size = 1000
+    self._agents[agent.agent_id] = agent
 
-        logger.info("Agent registry initialized")
+    # Track by type
+    if agent.agent_type not in self._agent_types:
+      self._agent_types[agent.agent_type] = []
+    self._agent_types[agent.agent_type].append(agent.agent_id)
 
-    # ========================================================================
-    # AGENT REGISTRATION
-    # ========================================================================
+    # Set up message routing callback so agent.send_message() delivers messages
+    agent.set_message_router(self._route_message)
 
-    def register(self, agent: BaseAgent) -> str:
-        """
-        Register an agent.
+    logger.info(f"Registered agent {agent.agent_type} ({agent.agent_id})")
+    return agent.agent_id
 
-        Args:
-            agent: Agent instance to register
+  def unregister(self, agent_id: str):
+    """
+    Unregister an agent.
 
-        Returns:
-            str: Agent ID
+    Args:
+        agent_id: ID of agent to unregister
+    """
+    if agent_id not in self._agents:
+      logger.warning(f"Agent {agent_id} not found in registry")
+      return
 
-        Raises:
-            ValueError: If agent with same ID already registered
-        """
-        if agent.agent_id in self._agents:
-            raise ValueError(f"Agent {agent.agent_id} already registered")
+    agent = self._agents[agent_id]
 
-        self._agents[agent.agent_id] = agent
+    # Remove from type tracking
+    if agent.agent_type in self._agent_types:
+      self._agent_types[agent.agent_type].remove(agent_id)
+      if not self._agent_types[agent.agent_type]:
+        del self._agent_types[agent.agent_type]
 
-        # Track by type
-        if agent.agent_type not in self._agent_types:
-            self._agent_types[agent.agent_type] = []
-        self._agent_types[agent.agent_type].append(agent.agent_id)
+    # Stop agent if running
+    if agent.is_running():
+      agent.stop()
 
-        # Set up message routing callback so agent.send_message() delivers messages
-        agent.set_message_router(self._route_message)
+    del self._agents[agent_id]
+    logger.info(f"Unregistered agent {agent_id}")
 
-        logger.info(f"Registered agent {agent.agent_type} ({agent.agent_id})")
-        return agent.agent_id
+  def get_agent(self, agent_id: str) -> BaseAgent | None:
+    """
+    Get agent by ID.
 
-    def unregister(self, agent_id: str):
-        """
-        Unregister an agent.
+    Args:
+        agent_id: Agent ID
 
-        Args:
-            agent_id: ID of agent to unregister
-        """
-        if agent_id not in self._agents:
-            logger.warning(f"Agent {agent_id} not found in registry")
-            return
+    Returns:
+        BaseAgent: Agent instance or None if not found
+    """
+    return self._agents.get(agent_id)
 
-        agent = self._agents[agent_id]
+  def get_agents_by_type(self, agent_type: str) -> list[BaseAgent]:
+    """
+    Get all agents of a specific type.
 
-        # Remove from type tracking
-        if agent.agent_type in self._agent_types:
-            self._agent_types[agent.agent_type].remove(agent_id)
-            if not self._agent_types[agent.agent_type]:
-                del self._agent_types[agent.agent_type]
+    Args:
+        agent_type: Agent type name
 
-        # Stop agent if running
-        if agent.is_running():
-            agent.stop()
+    Returns:
+        List[BaseAgent]: List of agents
+    """
+    agent_ids = self._agent_types.get(agent_type, [])
+    return [self._agents[aid] for aid in agent_ids]
 
-        del self._agents[agent_id]
-        logger.info(f"Unregistered agent {agent_id}")
+  def list_agents(self) -> list[dict[str, Any]]:
+    """
+    List all registered agents.
 
-    def get_agent(self, agent_id: str) -> BaseAgent | None:
-        """
-        Get agent by ID.
+    Returns:
+        List[dict]: Agent information
+    """
+    return [agent.get_status() for agent in self._agents.values()]
 
-        Args:
-            agent_id: Agent ID
+  def list_agent_types(self) -> list[str]:
+    """
+    List all registered agent types.
 
-        Returns:
-            BaseAgent: Agent instance or None if not found
-        """
-        return self._agents.get(agent_id)
+    Returns:
+        List[str]: Agent type names
+    """
+    return list(self._agent_types.keys())
 
-    def get_agents_by_type(self, agent_type: str) -> list[BaseAgent]:
-        """
-        Get all agents of a specific type.
+  # ========================================================================
+  # LIFECYCLE MANAGEMENT
+  # ========================================================================
 
-        Args:
-            agent_type: Agent type name
+  def start_agent(self, agent_id: str):
+    """
+    Start a specific agent.
 
-        Returns:
-            List[BaseAgent]: List of agents
-        """
-        agent_ids = self._agent_types.get(agent_type, [])
-        return [self._agents[aid] for aid in agent_ids]
+    Args:
+        agent_id: Agent ID
+    """
+    agent = self.get_agent(agent_id)
+    if not agent:
+      raise ValueError(f"Agent {agent_id} not found")
 
-    def list_agents(self) -> list[dict[str, Any]]:
-        """
-        List all registered agents.
+    agent.start()
+    logger.info(f"Started agent {agent_id}")
 
-        Returns:
-            List[dict]: Agent information
-        """
-        return [agent.get_status() for agent in self._agents.values()]
+  def stop_agent(self, agent_id: str):
+    """
+    Stop a specific agent.
 
-    def list_agent_types(self) -> list[str]:
-        """
-        List all registered agent types.
+    Args:
+        agent_id: Agent ID
+    """
+    agent = self.get_agent(agent_id)
+    if not agent:
+      raise ValueError(f"Agent {agent_id} not found")
 
-        Returns:
-            List[str]: Agent type names
-        """
-        return list(self._agent_types.keys())
+    agent.stop()
+    logger.info(f"Stopped agent {agent_id}")
 
-    # ========================================================================
-    # LIFECYCLE MANAGEMENT
-    # ========================================================================
-
-    def start_agent(self, agent_id: str):
-        """
-        Start a specific agent.
-
-        Args:
-            agent_id: Agent ID
-        """
-        agent = self.get_agent(agent_id)
-        if not agent:
-            raise ValueError(f"Agent {agent_id} not found")
-
+  def start_all(self):
+    """Start all registered agents."""
+    logger.info("Starting all agents")
+    for agent in self._agents.values():
+      if not agent.is_running():
         agent.start()
-        logger.info(f"Started agent {agent_id}")
 
-    def stop_agent(self, agent_id: str):
-        """
-        Stop a specific agent.
-
-        Args:
-            agent_id: Agent ID
-        """
-        agent = self.get_agent(agent_id)
-        if not agent:
-            raise ValueError(f"Agent {agent_id} not found")
-
+  def stop_all(self):
+    """Stop all registered agents."""
+    logger.info("Stopping all agents")
+    for agent in self._agents.values():
+      if agent.is_running():
         agent.stop()
-        logger.info(f"Stopped agent {agent_id}")
 
-    def start_all(self):
-        """Start all registered agents."""
-        logger.info("Starting all agents")
-        for agent in self._agents.values():
-            if not agent.is_running():
-                agent.start()
+  def pause_agent(self, agent_id: str):
+    """Pause a specific agent."""
+    agent = self.get_agent(agent_id)
+    if agent:
+      agent.pause()
 
-    def stop_all(self):
-        """Stop all registered agents."""
-        logger.info("Stopping all agents")
-        for agent in self._agents.values():
-            if agent.is_running():
-                agent.stop()
+  def resume_agent(self, agent_id: str):
+    """Resume a specific agent."""
+    agent = self.get_agent(agent_id)
+    if agent:
+      agent.resume()
 
-    def pause_agent(self, agent_id: str):
-        """Pause a specific agent."""
-        agent = self.get_agent(agent_id)
-        if agent:
-            agent.pause()
+  # ========================================================================
+  # MESSAGE ROUTING
+  # ========================================================================
 
-    def resume_agent(self, agent_id: str):
-        """Resume a specific agent."""
-        agent = self.get_agent(agent_id)
-        if agent:
-            agent.resume()
+  async def _route_message(self, message: AgentMessage):
+    """
+    Internal async callback for routing messages from agents.
 
-    # ========================================================================
-    # MESSAGE ROUTING
-    # ========================================================================
+    This is set as the message_router on agents when they register,
+    allowing agent.send_message() to automatically deliver messages.
 
-    async def _route_message(self, message: AgentMessage):
-        """
-        Internal async callback for routing messages from agents.
+    Args:
+        message: Message to route to target agent
+    """
+    to_agent = self.get_agent(message.to_agent)
 
-        This is set as the message_router on agents when they register,
-        allowing agent.send_message() to automatically deliver messages.
+    if not to_agent:
+      logger.error(f"Cannot route message: target agent {message.to_agent} not found")
+      return
 
-        Args:
-            message: Message to route to target agent
-        """
-        to_agent = self.get_agent(message.to_agent)
+    # Deliver to recipient asynchronously
+    await to_agent.receive_message(message)
 
-        if not to_agent:
-            logger.error(f"Cannot route message: target agent {message.to_agent} not found")
-            return
+    # Store in history
+    self._message_history.append(message)
+    if len(self._message_history) > self._max_history_size:
+      self._message_history.pop(0)
 
-        # Deliver to recipient asynchronously
-        await to_agent.receive_message(message)
+    logger.debug(f"Routed message from {message.from_agent} to {message.to_agent}")
 
-        # Store in history
-        self._message_history.append(message)
-        if len(self._message_history) > self._max_history_size:
-            self._message_history.pop(0)
+  def _route_message_sync(self, message: AgentMessage):
+    """
+    Synchronous wrapper for _route_message (backwards compatibility).
+    """
+    try:
+      loop = asyncio.get_running_loop()
+      future = asyncio.run_coroutine_threadsafe(self._route_message(message), loop)
+      return future.result(timeout=30)
+    except RuntimeError:
+      return asyncio.run(self._route_message(message))
 
-        logger.debug(f"Routed message from {message.from_agent} to {message.to_agent}")
+  async def send_message(
+    self,
+    from_agent_id: str,
+    to_agent_id: str,
+    content: dict[str, Any],
+    message_type: str = "request",
+    correlation_id: str | None = None,
+  ) -> AgentMessage:
+    """
+    Route message from one agent to another asynchronously.
 
-    def _route_message_sync(self, message: AgentMessage):
-        """
-        Synchronous wrapper for _route_message (backwards compatibility).
-        """
-        try:
-            loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(self._route_message(message), loop)
-            return future.result(timeout=30)
-        except RuntimeError:
-            return asyncio.run(self._route_message(message))
+    Args:
+        from_agent_id: Sender agent ID
+        to_agent_id: Recipient agent ID
+        content: Message content
+        message_type: Type of message
+        correlation_id: Optional correlation ID
 
-    async def send_message(
-        self, from_agent_id: str, to_agent_id: str, content: dict[str, Any], message_type: str = "request", correlation_id: str | None = None
-    ) -> AgentMessage:
-        """
-        Route message from one agent to another asynchronously.
+    Returns:
+        AgentMessage: The sent message
+    """
+    from_agent = self.get_agent(from_agent_id)
+    to_agent = self.get_agent(to_agent_id)
 
-        Args:
-            from_agent_id: Sender agent ID
-            to_agent_id: Recipient agent ID
-            content: Message content
-            message_type: Type of message
-            correlation_id: Optional correlation ID
+    if not from_agent:
+      raise ValueError(f"From agent {from_agent_id} not found")
+    if not to_agent:
+      raise ValueError(f"To agent {to_agent_id} not found")
 
-        Returns:
-            AgentMessage: The sent message
-        """
-        from_agent = self.get_agent(from_agent_id)
-        to_agent = self.get_agent(to_agent_id)
+    # Create and send message asynchronously
+    from kosmos.agents.base import MessageType
 
-        if not from_agent:
-            raise ValueError(f"From agent {from_agent_id} not found")
-        if not to_agent:
-            raise ValueError(f"To agent {to_agent_id} not found")
+    message = await from_agent.send_message(
+      to_agent=to_agent_id,
+      content=content,
+      message_type=MessageType(message_type),
+      correlation_id=correlation_id,
+    )
 
-        # Create and send message asynchronously
-        from kosmos.agents.base import MessageType
+    # Note: message is already delivered via _route_message callback
+    # Store in history (redundant with _route_message, but kept for direct sends)
+    self._message_history.append(message)
+    if len(self._message_history) > self._max_history_size:
+      self._message_history.pop(0)
 
-        message = await from_agent.send_message(
-            to_agent=to_agent_id, content=content, message_type=MessageType(message_type), correlation_id=correlation_id
+    return message
+
+  def send_message_sync(
+    self,
+    from_agent_id: str,
+    to_agent_id: str,
+    content: dict[str, Any],
+    message_type: str = "request",
+    correlation_id: str | None = None,
+  ) -> AgentMessage:
+    """
+    Synchronous wrapper for send_message (backwards compatibility).
+    """
+    try:
+      loop = asyncio.get_running_loop()
+      future = asyncio.run_coroutine_threadsafe(
+        self.send_message(
+          from_agent_id, to_agent_id, content, message_type, correlation_id
+        ),
+        loop,
+      )
+      return future.result(timeout=30)
+    except RuntimeError:
+      return asyncio.run(
+        self.send_message(
+          from_agent_id, to_agent_id, content, message_type, correlation_id
         )
+      )
 
-        # Note: message is already delivered via _route_message callback
-        # Store in history (redundant with _route_message, but kept for direct sends)
-        self._message_history.append(message)
-        if len(self._message_history) > self._max_history_size:
-            self._message_history.pop(0)
+  async def broadcast_message(
+    self,
+    from_agent_id: str,
+    content: dict[str, Any],
+    target_types: list[str] | None = None,
+  ) -> list[AgentMessage]:
+    """
+    Broadcast message to multiple agents asynchronously.
 
-        return message
+    Args:
+        from_agent_id: Sender agent ID
+        content: Message content
+        target_types: Optional list of agent types to target (None = all)
 
-    def send_message_sync(
-        self, from_agent_id: str, to_agent_id: str, content: dict[str, Any], message_type: str = "request", correlation_id: str | None = None
-    ) -> AgentMessage:
-        """
-        Synchronous wrapper for send_message (backwards compatibility).
-        """
-        try:
-            loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(self.send_message(from_agent_id, to_agent_id, content, message_type, correlation_id), loop)
-            return future.result(timeout=30)
-        except RuntimeError:
-            return asyncio.run(self.send_message(from_agent_id, to_agent_id, content, message_type, correlation_id))
+    Returns:
+        List[AgentMessage]: Sent messages
+    """
+    from_agent = self.get_agent(from_agent_id)
+    if not from_agent:
+      raise ValueError(f"From agent {from_agent_id} not found")
 
-    async def broadcast_message(self, from_agent_id: str, content: dict[str, Any], target_types: list[str] | None = None) -> list[AgentMessage]:
-        """
-        Broadcast message to multiple agents asynchronously.
+    messages = []
 
-        Args:
-            from_agent_id: Sender agent ID
-            content: Message content
-            target_types: Optional list of agent types to target (None = all)
+    # Determine target agents
+    if target_types:
+      targets = []
+      for agent_type in target_types:
+        targets.extend(self.get_agents_by_type(agent_type))
+    else:
+      targets = [a for a in self._agents.values() if a.agent_id != from_agent_id]
 
-        Returns:
-            List[AgentMessage]: Sent messages
-        """
-        from_agent = self.get_agent(from_agent_id)
-        if not from_agent:
-            raise ValueError(f"From agent {from_agent_id} not found")
+    # Send to all targets concurrently
+    send_tasks = [
+      self.send_message(
+        from_agent_id=from_agent_id,
+        to_agent_id=target.agent_id,
+        content=content,
+        message_type="notification",
+      )
+      for target in targets
+    ]
+    messages = await asyncio.gather(*send_tasks)
 
-        messages = []
+    logger.info(f"Broadcast message from {from_agent_id} to {len(targets)} agents")
+    return list(messages)
 
-        # Determine target agents
-        if target_types:
-            targets = []
-            for agent_type in target_types:
-                targets.extend(self.get_agents_by_type(agent_type))
-        else:
-            targets = [a for a in self._agents.values() if a.agent_id != from_agent_id]
+  def broadcast_message_sync(
+    self,
+    from_agent_id: str,
+    content: dict[str, Any],
+    target_types: list[str] | None = None,
+  ) -> list[AgentMessage]:
+    """
+    Synchronous wrapper for broadcast_message (backwards compatibility).
+    """
+    try:
+      loop = asyncio.get_running_loop()
+      future = asyncio.run_coroutine_threadsafe(
+        self.broadcast_message(from_agent_id, content, target_types), loop
+      )
+      return future.result(timeout=60)
+    except RuntimeError:
+      return asyncio.run(self.broadcast_message(from_agent_id, content, target_types))
 
-        # Send to all targets concurrently
-        send_tasks = [
-            self.send_message(from_agent_id=from_agent_id, to_agent_id=target.agent_id, content=content, message_type="notification")
-            for target in targets
-        ]
-        messages = await asyncio.gather(*send_tasks)
+  def get_message_history(
+    self, agent_id: str | None = None, limit: int = 100
+  ) -> list[dict[str, Any]]:
+    """
+    Get message history.
 
-        logger.info(f"Broadcast message from {from_agent_id} to {len(targets)} agents")
-        return list(messages)
+    Args:
+        agent_id: Optional agent ID to filter by (None = all)
+        limit: Max number of messages to return
 
-    def broadcast_message_sync(self, from_agent_id: str, content: dict[str, Any], target_types: list[str] | None = None) -> list[AgentMessage]:
-        """
-        Synchronous wrapper for broadcast_message (backwards compatibility).
-        """
-        try:
-            loop = asyncio.get_running_loop()
-            future = asyncio.run_coroutine_threadsafe(self.broadcast_message(from_agent_id, content, target_types), loop)
-            return future.result(timeout=60)
-        except RuntimeError:
-            return asyncio.run(self.broadcast_message(from_agent_id, content, target_types))
+    Returns:
+        List[dict]: Message history
+    """
+    messages = self._message_history
 
-    def get_message_history(self, agent_id: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
-        """
-        Get message history.
+    if agent_id:
+      messages = [
+        m for m in messages if m.from_agent == agent_id or m.to_agent == agent_id
+      ]
 
-        Args:
-            agent_id: Optional agent ID to filter by (None = all)
-            limit: Max number of messages to return
+    # Return most recent messages
+    messages = messages[-limit:]
+    return [m.to_dict() for m in messages]
 
-        Returns:
-            List[dict]: Message history
-        """
-        messages = self._message_history
+  # ========================================================================
+  # HEALTH MONITORING
+  # ========================================================================
 
-        if agent_id:
-            messages = [m for m in messages if m.from_agent == agent_id or m.to_agent == agent_id]
+  def get_system_health(self) -> dict[str, Any]:
+    """
+    Get overall system health.
 
-        # Return most recent messages
-        messages = messages[-limit:]
-        return [m.to_dict() for m in messages]
+    Returns:
+        dict: Health status of all agents
+    """
+    total_agents = len(self._agents)
+    healthy_agents = sum(1 for a in self._agents.values() if a.is_healthy())
+    running_agents = sum(1 for a in self._agents.values() if a.is_running())
 
-    # ========================================================================
-    # HEALTH MONITORING
-    # ========================================================================
+    agent_health = {
+      agent_id: {
+        "status": agent.status,
+        "is_healthy": agent.is_healthy(),
+        "message_queue_length": len(agent.message_queue),
+        "errors": agent.errors_encountered,
+      }
+      for agent_id, agent in self._agents.items()
+    }
 
-    def get_system_health(self) -> dict[str, Any]:
-        """
-        Get overall system health.
+    return {
+      "system_healthy": healthy_agents == total_agents,
+      "total_agents": total_agents,
+      "healthy_agents": healthy_agents,
+      "running_agents": running_agents,
+      "unhealthy_agents": total_agents - healthy_agents,
+      "agent_health": agent_health,
+      "message_history_size": len(self._message_history),
+      "timestamp": datetime.utcnow().isoformat(),
+    }
 
-        Returns:
-            dict: Health status of all agents
-        """
-        total_agents = len(self._agents)
-        healthy_agents = sum(1 for a in self._agents.values() if a.is_healthy())
-        running_agents = sum(1 for a in self._agents.values() if a.is_running())
+  def get_agent_statistics(self) -> dict[str, Any]:
+    """
+    Get statistics for all agents.
 
-        agent_health = {
-            agent_id: {
-                "status": agent.status,
-                "is_healthy": agent.is_healthy(),
-                "message_queue_length": len(agent.message_queue),
-                "errors": agent.errors_encountered,
-            }
-            for agent_id, agent in self._agents.items()
-        }
+    Returns:
+        dict: Agent statistics
+    """
+    return {
+      "total_agents": len(self._agents),
+      "agents_by_type": {
+        agent_type: len(agent_ids)
+        for agent_type, agent_ids in self._agent_types.items()
+      },
+      "total_messages_sent": sum(a.messages_sent for a in self._agents.values()),
+      "total_messages_received": sum(
+        a.messages_received for a in self._agents.values()
+      ),
+      "total_tasks_completed": sum(a.tasks_completed for a in self._agents.values()),
+      "total_errors": sum(a.errors_encountered for a in self._agents.values()),
+    }
 
-        return {
-            "system_healthy": healthy_agents == total_agents,
-            "total_agents": total_agents,
-            "healthy_agents": healthy_agents,
-            "running_agents": running_agents,
-            "unhealthy_agents": total_agents - healthy_agents,
-            "agent_health": agent_health,
-            "message_history_size": len(self._message_history),
-            "timestamp": datetime.utcnow().isoformat(),
-        }
+  # ========================================================================
+  # UTILITY
+  # ========================================================================
 
-    def get_agent_statistics(self) -> dict[str, Any]:
-        """
-        Get statistics for all agents.
+  def clear(self):
+    """Clear all agents from registry."""
+    self.stop_all()
+    self._agents.clear()
+    self._agent_types.clear()
+    self._message_history.clear()
+    logger.info("Cleared agent registry")
 
-        Returns:
-            dict: Agent statistics
-        """
-        return {
-            "total_agents": len(self._agents),
-            "agents_by_type": {agent_type: len(agent_ids) for agent_type, agent_ids in self._agent_types.items()},
-            "total_messages_sent": sum(a.messages_sent for a in self._agents.values()),
-            "total_messages_received": sum(a.messages_received for a in self._agents.values()),
-            "total_tasks_completed": sum(a.tasks_completed for a in self._agents.values()),
-            "total_errors": sum(a.errors_encountered for a in self._agents.values()),
-        }
+  def __len__(self) -> int:
+    """Return number of registered agents."""
+    return len(self._agents)
 
-    # ========================================================================
-    # UTILITY
-    # ========================================================================
-
-    def clear(self):
-        """Clear all agents from registry."""
-        self.stop_all()
-        self._agents.clear()
-        self._agent_types.clear()
-        self._message_history.clear()
-        logger.info("Cleared agent registry")
-
-    def __len__(self) -> int:
-        """Return number of registered agents."""
-        return len(self._agents)
-
-    def __contains__(self, agent_id: str) -> bool:
-        """Check if agent is registered."""
-        return agent_id in self._agents
+  def __contains__(self, agent_id: str) -> bool:
+    """Check if agent is registered."""
+    return agent_id in self._agents
 
 
 # Singleton registry instance
@@ -459,16 +507,16 @@ _registry: AgentRegistry | None = None
 
 
 def get_registry(reset: bool = False) -> AgentRegistry:
-    """
-    Get or create agent registry singleton.
+  """
+  Get or create agent registry singleton.
 
-    Args:
-        reset: If True, create new registry instance
+  Args:
+      reset: If True, create new registry instance
 
-    Returns:
-        AgentRegistry: Registry instance
-    """
-    global _registry
-    if _registry is None or reset:
-        _registry = AgentRegistry()
-    return _registry
+  Returns:
+      AgentRegistry: Registry instance
+  """
+  global _registry
+  if _registry is None or reset:
+    _registry = AgentRegistry()
+  return _registry

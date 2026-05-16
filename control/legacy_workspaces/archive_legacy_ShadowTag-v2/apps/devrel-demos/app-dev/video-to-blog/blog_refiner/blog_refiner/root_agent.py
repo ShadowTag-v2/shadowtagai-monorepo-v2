@@ -41,13 +41,13 @@ user.
 """
 
 root_agent = LlmAgent(
-    name="blog_refiner_coordinator",
-    model=MODEL,
-    description=("helping the user refine their blog posts"),
-    instruction=PROMPT,
-    output_key="blog_post",
-    tools=[
-        AgentTool(agent=updater_agent),
-        AgentTool(agent=critic_agent),
-    ],
+  name="blog_refiner_coordinator",
+  model=MODEL,
+  description=("helping the user refine their blog posts"),
+  instruction=PROMPT,
+  output_key="blog_post",
+  tools=[
+    AgentTool(agent=updater_agent),
+    AgentTool(agent=critic_agent),
+  ],
 )

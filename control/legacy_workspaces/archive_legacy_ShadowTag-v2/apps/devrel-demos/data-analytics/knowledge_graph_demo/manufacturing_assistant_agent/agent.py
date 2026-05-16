@@ -30,7 +30,7 @@ dotenv.load_dotenv()
 
 
 def get_agent_prompt(project_id: str) -> str:
-    return f"""You are an expert BigQuery Data Agent specialized in Graph Analytics.
+  return f"""You are an expert BigQuery Data Agent specialized in Graph Analytics.
                  Your primary capability is answering complex user questions by querying data stored in BigQuery.
                  
                  You differentiate yourself by preferring **GQL (Graph Query Language)** and **SQL/PGQ (Property Graph Query)**
@@ -76,43 +76,43 @@ MAPS_MCP_URL = "https://mapstools.googleapis.com/mcp"
 
 
 def create_graph_agent(model_name: str = "gemini-2.5-flash") -> LlmAgent:
-    """Creates and configures the Graph Agent with necessary tools."""
+  """Creates and configures the Graph Agent with necessary tools."""
 
-    # 1. Setup Maps Toolset
-    maps_api_key = os.getenv("MAPS_API_KEY")
-    if not maps_api_key:
-        logger.warning("MAPS_API_KEY not found in environment.")
+  # 1. Setup Maps Toolset
+  maps_api_key = os.getenv("MAPS_API_KEY")
+  if not maps_api_key:
+    logger.warning("MAPS_API_KEY not found in environment.")
 
-    maps_toolset = MCPToolset(
-        connection_params=StreamableHTTPConnectionParams(
-            url=MAPS_MCP_URL,
-            headers={"X-Goog-Api-Key": maps_api_key},
-        ),
-        errlog=None,
-    )
+  maps_toolset = MCPToolset(
+    connection_params=StreamableHTTPConnectionParams(
+      url=MAPS_MCP_URL,
+      headers={"X-Goog-Api-Key": maps_api_key},
+    ),
+    errlog=None,
+  )
 
-    # 2. Setup BigQuery Toolset
-    credentials, _ = google.auth.default()
-    bq_toolset = BigQueryToolset(
-        credentials_config=BigQueryCredentialsConfig(credentials=credentials),
-        tool_filter=[
-            "list_table_ids",
-            "get_table_info",
-            "execute_sql",
-            "get_dataset_info",
-        ],
-    )
+  # 2. Setup BigQuery Toolset
+  credentials, _ = google.auth.default()
+  bq_toolset = BigQueryToolset(
+    credentials_config=BigQueryCredentialsConfig(credentials=credentials),
+    tool_filter=[
+      "list_table_ids",
+      "get_table_info",
+      "execute_sql",
+      "get_dataset_info",
+    ],
+  )
 
-    # 3. Create Agent
-    project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
-    agent_prompt = get_agent_prompt(project_id)
+  # 3. Create Agent
+  project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
+  agent_prompt = get_agent_prompt(project_id)
 
-    return LlmAgent(
-        name="knowledge_graph_agent",
-        model=model_name,
-        instruction=agent_prompt,
-        tools=[bq_toolset, maps_toolset],
-    )
+  return LlmAgent(
+    name="knowledge_graph_agent",
+    model=model_name,
+    instruction=agent_prompt,
+    tools=[bq_toolset, maps_toolset],
+  )
 
 
 # Required for adk web ui

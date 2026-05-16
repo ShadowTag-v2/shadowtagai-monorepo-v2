@@ -54,7 +54,9 @@ class FilingIngestRequest(BaseModel):
     raw_text: str = Field(..., min_length=10, max_length=500_000)
     source: str = Field(..., description="email_webhook | manual_upload | api")
     jurisdiction: str = Field(default="FRCP")
-    trigger_date: datetime.date = Field(..., description="The date the filing was served / received")
+    trigger_date: datetime.date = Field(
+        ..., description="The date the filing was served / received"
+    )
 
 
 class ExtractionResponse(BaseModel):
@@ -169,7 +171,9 @@ async def ingest_filing(
     complexity = "high" if len(req.raw_text) > 15000 else "moderate"
     agent_path, expected_latency = router_engine.route_task(complexity)
 
-    logger.info(f"[zt/ingest] Glicko-2 router determined optimal path: {agent_path} | Expected Latency: {expected_latency}s")
+    logger.info(
+        f"[zt/ingest] Glicko-2 router determined optimal path: {agent_path} | Expected Latency: {expected_latency}s"
+    )
 
     try:
         deadlines = extract_deadlines_from_filing(

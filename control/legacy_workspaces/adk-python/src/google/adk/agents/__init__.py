@@ -28,26 +28,28 @@ from .run_config import RunConfig
 from .sequential_agent import SequentialAgent
 
 __all__ = [
-    "Agent",
-    "BaseAgent",
-    "LlmAgent",
-    "LoopAgent",
-    "ParallelAgent",
-    "SequentialAgent",
-    "InvocationContext",
-    "LiveRequest",
-    "LiveRequestQueue",
-    "RunConfig",
+  "Agent",
+  "BaseAgent",
+  "LlmAgent",
+  "LoopAgent",
+  "ParallelAgent",
+  "SequentialAgent",
+  "InvocationContext",
+  "LiveRequest",
+  "LiveRequestQueue",
+  "RunConfig",
 ]
 
 if sys.version_info < (3, 10):
-    logger = logging.getLogger("google_adk." + __name__)
-    logger.warning("MCP requires Python 3.10 or above. Please upgrade your Python version in order to use it.")
+  logger = logging.getLogger("google_adk." + __name__)
+  logger.warning(
+    "MCP requires Python 3.10 or above. Please upgrade your Python version in order to use it."
+  )
 else:
-    from .mcp_instruction_provider import McpInstructionProvider
+  from .mcp_instruction_provider import McpInstructionProvider
 
-    __all__.extend(
-        [
-            "McpInstructionProvider",
-        ]
-    )
+  __all__.extend(
+    [
+      "McpInstructionProvider",
+    ]
+  )

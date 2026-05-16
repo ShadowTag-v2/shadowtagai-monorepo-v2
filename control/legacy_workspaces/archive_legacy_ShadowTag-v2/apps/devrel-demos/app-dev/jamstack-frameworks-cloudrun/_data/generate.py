@@ -19,30 +19,30 @@ gcr_framework_list = []
 firebase_framework_list = []
 
 for config in frameworks:
-    framework = config.stem
+  framework = config.stem
 
-    with open(config) as f:
-        data = yaml.safe_load(f.read())
+  with open(config) as f:
+    data = yaml.safe_load(f.read())
 
-    if "skip_cloudrun" not in data.keys():
-        gcr_framework_list.append((data["name"], framework, data["language"]))
-        Path(gcr_path / framework).mkdir(exist_ok=True)
-        with open(gcr_path / framework / readme_md, "w") as f:
-            f.write(template.render(**data, platform="Cloud Run"))
+  if "skip_cloudrun" not in data.keys():
+    gcr_framework_list.append((data["name"], framework, data["language"]))
+    Path(gcr_path / framework).mkdir(exist_ok=True)
+    with open(gcr_path / framework / readme_md, "w") as f:
+      f.write(template.render(**data, platform="Cloud Run"))
 
-    if "skip_firebase" not in data.keys():
-        firebase_framework_list.append((data["name"], framework, data["language"]))
-        Path(firebase_path / framework).mkdir(exist_ok=True)
-        with open(firebase_path / framework / readme_md, "w") as f:
-            f.write(template.render(**data, platform="Firebase"))
+  if "skip_firebase" not in data.keys():
+    firebase_framework_list.append((data["name"], framework, data["language"]))
+    Path(firebase_path / framework).mkdir(exist_ok=True)
+    with open(firebase_path / framework / readme_md, "w") as f:
+      f.write(template.render(**data, platform="Firebase"))
 
 
 with open(gcr_path / readme_md, "w") as f:
-    f.write(gcr_readme.render(frameworks=gcr_framework_list))
+  f.write(gcr_readme.render(frameworks=gcr_framework_list))
 
 with open(firebase_path / readme_md, "w") as f:
-    f.write(firebase_readme.render(frameworks=firebase_framework_list))
+  f.write(firebase_readme.render(frameworks=firebase_framework_list))
 
 print(
-    f"Wrote out {len(gcr_framework_list) + len(firebase_framework_list)} demos. ({len(gcr_framework_list)} for Cloud Run, {len(firebase_framework_list)} for Firebase Hosting)"
+  f"Wrote out {len(gcr_framework_list) + len(firebase_framework_list)} demos. ({len(gcr_framework_list)} for Cloud Run, {len(firebase_framework_list)} for Firebase Hosting)"
 )

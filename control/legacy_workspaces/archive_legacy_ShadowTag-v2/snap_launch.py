@@ -10,31 +10,33 @@ print("⚡️ [1/4] Initializing Environment...")
 # Install basics immediately
 print("   >> Installing dependencies...")
 try:
-    subprocess.check_call(
-        [
-            sys.executable,
-            "-m",
-            "pip",
-            "install",
-            "fastapi",
-            "uvicorn",
-            "transformers",
-            "torch",
-            "requests",
-            "psutil",
-            "-q",
-        ]
-    )
+  subprocess.check_call(
+    [
+      sys.executable,
+      "-m",
+      "pip",
+      "install",
+      "fastapi",
+      "uvicorn",
+      "transformers",
+      "torch",
+      "requests",
+      "psutil",
+      "-q",
+    ]
+  )
 except subprocess.CalledProcessError as e:
-    print(f"Warning: Pip install failed with {e}. Continuing, hoping dependencies exist...")
+  print(
+    f"Warning: Pip install failed with {e}. Continuing, hoping dependencies exist..."
+  )
 
 # --- 2. AUTO-DETECT OR SCAFFOLD ---
 print("⚡️ [2/4] Scanning for Pipeline Components...")
 
 if not os.path.exists("flyingmonkeys.py"):
-    print("   >> 'flyingmonkeys.py' missing. Generating from Commit a54683e specs...")
-    with open("flyingmonkeys.py", "w") as f:
-        f.write("""
+  print("   >> 'flyingmonkeys.py' missing. Generating from Commit a54683e specs...")
+  with open("flyingmonkeys.py", "w") as f:
+    f.write("""
 import time
 import random
 import sys
@@ -53,9 +55,9 @@ def release_monkeys(target_url, instances=10):
 """)
 
 if not os.path.exists("judge6_pipeline.py"):
-    print("   >> 'judge6_pipeline.py' missing. Generating Judge #6 Orchestration...")
-    with open("judge6_pipeline.py", "w") as f:
-        f.write("""
+  print("   >> 'judge6_pipeline.py' missing. Generating Judge #6 Orchestration...")
+  with open("judge6_pipeline.py", "w") as f:
+    f.write("""
 import time
 import torch
 try:

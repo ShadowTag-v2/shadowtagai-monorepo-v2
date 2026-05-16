@@ -18,12 +18,12 @@ from pydantic import BaseModel
 
 
 class Example(BaseModel):
-    """A few-shot example.
+  """A few-shot example.
 
-    Attributes:
-      input: The input content for the example.
-      output: The expected output content for the example.
-    """
+  Attributes:
+    input: The input content for the example.
+    output: The expected output content for the example.
+  """
 
-    input: types.Content
-    output: list[types.Content]
+  input: types.Content
+  output: list[types.Content]

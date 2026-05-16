@@ -12,10 +12,10 @@ from .frame_processor import FrameProcessor
 from .codec import StegoCodec
 
 __all__ = [
-    "VideoEncoder",
-    "VideoDecoder",
-    "FrameProcessor",
-    "StegoCodec",
+  "VideoEncoder",
+  "VideoDecoder",
+  "FrameProcessor",
+  "StegoCodec",
 ]
 
 __version__ = "2.0.0"

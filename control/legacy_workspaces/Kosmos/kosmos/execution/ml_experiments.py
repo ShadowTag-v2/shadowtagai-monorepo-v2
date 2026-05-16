@@ -9,19 +9,26 @@ and hyperparameter tuning.
 
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, KFold, StratifiedKFold, cross_val_score, cross_validate, GridSearchCV
+from sklearn.model_selection import (
+  train_test_split,
+  KFold,
+  StratifiedKFold,
+  cross_val_score,
+  cross_validate,
+  GridSearchCV,
+)
 from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    roc_auc_score,
-    confusion_matrix,
-    classification_report,
-    mean_squared_error,
-    mean_absolute_error,
-    r2_score,
-    explained_variance_score,
+  accuracy_score,
+  precision_score,
+  recall_score,
+  f1_score,
+  roc_auc_score,
+  confusion_matrix,
+  classification_report,
+  mean_squared_error,
+  mean_absolute_error,
+  r2_score,
+  explained_variance_score,
 )
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from sklearn.pipeline import Pipeline
@@ -35,508 +42,549 @@ logger = logging.getLogger(__name__)
 
 
 class MLAnalyzer:
+  """
+  Machine learning experiment analyzer with sklearn support.
+
+  Provides methods for:
+  - Train/test splitting with stratification
+  - Cross-validation (k-fold, stratified k-fold)
+  - Model evaluation metrics
+  - Pipeline construction
+  - Hyperparameter tuning
+  """
+
+  def __init__(self, random_state: int = 42):
     """
-    Machine learning experiment analyzer with sklearn support.
+    Initialize ML analyzer.
 
-    Provides methods for:
-    - Train/test splitting with stratification
-    - Cross-validation (k-fold, stratified k-fold)
-    - Model evaluation metrics
-    - Pipeline construction
-    - Hyperparameter tuning
+    Args:
+        random_state: Random seed for reproducibility
     """
+    self.random_state = random_state
+    self.results_history = []
 
-    def __init__(self, random_state: int = 42):
-        """
-        Initialize ML analyzer.
+  def train_test_split_data(
+    self,
+    X: pd.DataFrame | np.ndarray,
+    y: pd.Series | np.ndarray,
+    test_size: float = 0.2,
+    stratify: bool = False,
+  ) -> tuple[Any, Any, Any, Any]:
+    """
+    Split data into train and test sets.
 
-        Args:
-            random_state: Random seed for reproducibility
-        """
-        self.random_state = random_state
-        self.results_history = []
+    Args:
+        X: Features (DataFrame or array)
+        y: Target variable (Series or array)
+        test_size: Proportion of data for test set (default 0.2)
+        stratify: If True, stratify split by target variable
 
-    def train_test_split_data(
-        self, X: pd.DataFrame | np.ndarray, y: pd.Series | np.ndarray, test_size: float = 0.2, stratify: bool = False
-    ) -> tuple[Any, Any, Any, Any]:
-        """
-        Split data into train and test sets.
+    Returns:
+        Tuple of (X_train, X_test, y_train, y_test)
+    """
+    stratify_param = y if stratify else None
 
-        Args:
-            X: Features (DataFrame or array)
-            y: Target variable (Series or array)
-            test_size: Proportion of data for test set (default 0.2)
-            stratify: If True, stratify split by target variable
+    X_train, X_test, y_train, y_test = train_test_split(
+      X, y, test_size=test_size, random_state=self.random_state, stratify=stratify_param
+    )
 
-        Returns:
-            Tuple of (X_train, X_test, y_train, y_test)
-        """
-        stratify_param = y if stratify else None
+    logger.info(
+      f"Split data: train={len(X_train)}, test={len(X_test)} (test_size={test_size})"
+    )
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=self.random_state, stratify=stratify_param)
+    return X_train, X_test, y_train, y_test
 
-        logger.info(f"Split data: train={len(X_train)}, test={len(X_test)} (test_size={test_size})")
+  def cross_validate_model(
+    self,
+    model: Any,
+    X: pd.DataFrame | np.ndarray,
+    y: pd.Series | np.ndarray,
+    cv: int = 5,
+    stratified: bool = False,
+    scoring: str | list[str] = "accuracy",
+  ) -> dict[str, Any]:
+    """
+    Perform cross-validation on a model.
 
-        return X_train, X_test, y_train, y_test
+    Args:
+        model: sklearn estimator
+        X: Features
+        y: Target variable
+        cv: Number of folds (default 5)
+        stratified: If True, use StratifiedKFold
+        scoring: Metric(s) to compute (string or list of strings)
 
-    def cross_validate_model(
-        self,
-        model: Any,
-        X: pd.DataFrame | np.ndarray,
-        y: pd.Series | np.ndarray,
-        cv: int = 5,
-        stratified: bool = False,
-        scoring: str | list[str] = "accuracy",
-    ) -> dict[str, Any]:
-        """
-        Perform cross-validation on a model.
+    Returns:
+        Dictionary with:
+            - mean_score: Mean cross-validation score
+            - std_score: Standard deviation of scores
+            - fold_scores: Scores for each fold
+            - scoring_metric: Name of scoring metric used
+    """
+    # Create cross-validation splitter
+    if stratified:
+      cv_splitter = StratifiedKFold(
+        n_splits=cv, shuffle=True, random_state=self.random_state
+      )
+    else:
+      cv_splitter = KFold(n_splits=cv, shuffle=True, random_state=self.random_state)
 
-        Args:
-            model: sklearn estimator
-            X: Features
-            y: Target variable
-            cv: Number of folds (default 5)
-            stratified: If True, use StratifiedKFold
-            scoring: Metric(s) to compute (string or list of strings)
+    # Handle multiple scoring metrics
+    if isinstance(scoring, str):
+      # Single metric
+      scores = cross_val_score(model, X, y, cv=cv_splitter, scoring=scoring)
 
-        Returns:
-            Dictionary with:
-                - mean_score: Mean cross-validation score
-                - std_score: Standard deviation of scores
-                - fold_scores: Scores for each fold
-                - scoring_metric: Name of scoring metric used
-        """
-        # Create cross-validation splitter
-        if stratified:
-            cv_splitter = StratifiedKFold(n_splits=cv, shuffle=True, random_state=self.random_state)
+      result = {
+        "mean_score": float(np.mean(scores)),
+        "std_score": float(np.std(scores)),
+        "fold_scores": scores.tolist(),
+        "scoring_metric": scoring,
+        "n_folds": cv,
+      }
+
+    else:
+      # Multiple metrics
+      cv_results = cross_validate(
+        model, X, y, cv=cv_splitter, scoring=scoring, return_train_score=True
+      )
+
+      result = {
+        "scores": {
+          metric: {
+            "mean": float(np.mean(cv_results[f"test_{metric}"])),
+            "std": float(np.std(cv_results[f"test_{metric}"])),
+            "fold_scores": cv_results[f"test_{metric}"].tolist(),
+          }
+          for metric in scoring
+        },
+        "scoring_metrics": scoring,
+        "n_folds": cv,
+      }
+
+    logger.info(f"Cross-validation complete: {cv} folds, stratified={stratified}")
+
+    return result
+
+  def evaluate_classification(
+    self,
+    y_true: pd.Series | np.ndarray,
+    y_pred: pd.Series | np.ndarray,
+    y_prob: np.ndarray | None = None,
+    average: str = "binary",
+  ) -> dict[str, Any]:
+    """
+    Comprehensive classification model evaluation.
+
+    Args:
+        y_true: True labels
+        y_pred: Predicted labels
+        y_prob: Predicted probabilities (optional, for ROC-AUC)
+        average: Averaging method for multi-class ('binary', 'micro', 'macro', 'weighted')
+
+    Returns:
+        Dictionary with:
+            - accuracy: Classification accuracy
+            - precision: Precision score
+            - recall: Recall score
+            - f1_score: F1 score
+            - roc_auc: ROC-AUC score (if y_prob provided)
+            - confusion_matrix: Confusion matrix
+            - classification_report: Detailed report string
+    """
+    # Auto-detect multiclass targets
+    n_classes = len(np.unique(y_true))
+    if average == "binary" and n_classes > 2:
+      average = "weighted"
+      logger.info(f"Auto-switched to average='weighted' for {n_classes}-class target")
+
+    # Calculate metrics
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred, average=average, zero_division=0)
+    recall = recall_score(y_true, y_pred, average=average, zero_division=0)
+    f1 = f1_score(y_true, y_pred, average=average, zero_division=0)
+    conf_matrix = confusion_matrix(y_true, y_pred)
+    class_report = classification_report(y_true, y_pred, zero_division=0)
+
+    result = {
+      "accuracy": float(accuracy),
+      "precision": float(precision),
+      "recall": float(recall),
+      "f1_score": float(f1),
+      "confusion_matrix": conf_matrix.tolist(),
+      "classification_report": class_report,
+      "n_samples": len(y_true),
+    }
+
+    # Add ROC-AUC if probabilities provided
+    if y_prob is not None:
+      try:
+        # Handle binary and multi-class
+        if y_prob.ndim == 1 or y_prob.shape[1] == 2:
+          # Binary classification
+          if y_prob.ndim == 2:
+            y_prob = y_prob[:, 1]
+          roc_auc = roc_auc_score(y_true, y_prob)
         else:
-            cv_splitter = KFold(n_splits=cv, shuffle=True, random_state=self.random_state)
+          # Multi-class
+          roc_auc = roc_auc_score(y_true, y_prob, multi_class="ovr", average=average)
 
-        # Handle multiple scoring metrics
-        if isinstance(scoring, str):
-            # Single metric
-            scores = cross_val_score(model, X, y, cv=cv_splitter, scoring=scoring)
+        result["roc_auc"] = float(roc_auc)
+      except Exception as e:
+        logger.warning(f"Could not calculate ROC-AUC: {e}")
+        result["roc_auc"] = None
 
-            result = {
-                "mean_score": float(np.mean(scores)),
-                "std_score": float(np.std(scores)),
-                "fold_scores": scores.tolist(),
-                "scoring_metric": scoring,
-                "n_folds": cv,
-            }
+    logger.info(f"Classification evaluation: accuracy={accuracy:.4f}, f1={f1:.4f}")
 
-        else:
-            # Multiple metrics
-            cv_results = cross_validate(model, X, y, cv=cv_splitter, scoring=scoring, return_train_score=True)
+    return result
 
-            result = {
-                "scores": {
-                    metric: {
-                        "mean": float(np.mean(cv_results[f"test_{metric}"])),
-                        "std": float(np.std(cv_results[f"test_{metric}"])),
-                        "fold_scores": cv_results[f"test_{metric}"].tolist(),
-                    }
-                    for metric in scoring
-                },
-                "scoring_metrics": scoring,
-                "n_folds": cv,
-            }
+  def evaluate_regression(
+    self, y_true: pd.Series | np.ndarray, y_pred: pd.Series | np.ndarray
+  ) -> dict[str, Any]:
+    """
+    Comprehensive regression model evaluation.
 
-        logger.info(f"Cross-validation complete: {cv} folds, stratified={stratified}")
+    Args:
+        y_true: True values
+        y_pred: Predicted values
 
-        return result
+    Returns:
+        Dictionary with:
+            - mse: Mean squared error
+            - rmse: Root mean squared error
+            - mae: Mean absolute error
+            - r2: R-squared score
+            - explained_variance: Explained variance score
+            - mean_residual: Mean of residuals
+            - std_residual: Standard deviation of residuals
+    """
+    # Calculate metrics
+    mse = mean_squared_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+    explained_var = explained_variance_score(y_true, y_pred)
 
-    def evaluate_classification(
-        self, y_true: pd.Series | np.ndarray, y_pred: pd.Series | np.ndarray, y_prob: np.ndarray | None = None, average: str = "binary"
-    ) -> dict[str, Any]:
-        """
-        Comprehensive classification model evaluation.
+    # Residual analysis
+    residuals = np.array(y_true) - np.array(y_pred)
+    mean_residual = np.mean(residuals)
+    std_residual = np.std(residuals)
 
-        Args:
-            y_true: True labels
-            y_pred: Predicted labels
-            y_prob: Predicted probabilities (optional, for ROC-AUC)
-            average: Averaging method for multi-class ('binary', 'micro', 'macro', 'weighted')
+    result = {
+      "mse": float(mse),
+      "rmse": float(rmse),
+      "mae": float(mae),
+      "r2": float(r2),
+      "explained_variance": float(explained_var),
+      "mean_residual": float(mean_residual),
+      "std_residual": float(std_residual),
+      "n_samples": len(y_true),
+    }
 
-        Returns:
-            Dictionary with:
-                - accuracy: Classification accuracy
-                - precision: Precision score
-                - recall: Recall score
-                - f1_score: F1 score
-                - roc_auc: ROC-AUC score (if y_prob provided)
-                - confusion_matrix: Confusion matrix
-                - classification_report: Detailed report string
-        """
-        # Auto-detect multiclass targets
-        n_classes = len(np.unique(y_true))
-        if average == "binary" and n_classes > 2:
-            average = "weighted"
-            logger.info(f"Auto-switched to average='weighted' for {n_classes}-class target")
+    logger.info(f"Regression evaluation: R²={r2:.4f}, RMSE={rmse:.4f}, MAE={mae:.4f}")
 
-        # Calculate metrics
-        accuracy = accuracy_score(y_true, y_pred)
-        precision = precision_score(y_true, y_pred, average=average, zero_division=0)
-        recall = recall_score(y_true, y_pred, average=average, zero_division=0)
-        f1 = f1_score(y_true, y_pred, average=average, zero_division=0)
-        conf_matrix = confusion_matrix(y_true, y_pred)
-        class_report = classification_report(y_true, y_pred, zero_division=0)
+    return result
 
-        result = {
-            "accuracy": float(accuracy),
-            "precision": float(precision),
-            "recall": float(recall),
-            "f1_score": float(f1),
-            "confusion_matrix": conf_matrix.tolist(),
-            "classification_report": class_report,
-            "n_samples": len(y_true),
-        }
+  def create_pipeline(
+    self, model: Any, scaler: str = "standard", include_scaler: bool = True
+  ) -> Pipeline:
+    """
+    Create sklearn pipeline with preprocessing and model.
 
-        # Add ROC-AUC if probabilities provided
-        if y_prob is not None:
-            try:
-                # Handle binary and multi-class
-                if y_prob.ndim == 1 or y_prob.shape[1] == 2:
-                    # Binary classification
-                    if y_prob.ndim == 2:
-                        y_prob = y_prob[:, 1]
-                    roc_auc = roc_auc_score(y_true, y_prob)
-                else:
-                    # Multi-class
-                    roc_auc = roc_auc_score(y_true, y_prob, multi_class="ovr", average=average)
+    Args:
+        model: sklearn estimator
+        scaler: Type of scaler ('standard', 'minmax', or None)
+        include_scaler: If True, include scaler in pipeline
 
-                result["roc_auc"] = float(roc_auc)
-            except Exception as e:
-                logger.warning(f"Could not calculate ROC-AUC: {e}")
-                result["roc_auc"] = None
+    Returns:
+        sklearn Pipeline object
+    """
+    steps = []
 
-        logger.info(f"Classification evaluation: accuracy={accuracy:.4f}, f1={f1:.4f}")
+    if include_scaler:
+      if scaler == "standard":
+        steps.append(("scaler", StandardScaler()))
+      elif scaler == "minmax":
+        steps.append(("scaler", MinMaxScaler()))
+      elif scaler is not None:
+        raise ValueError(f"Unknown scaler '{scaler}'. Use 'standard' or 'minmax'")
 
-        return result
+    steps.append(("model", model))
 
-    def evaluate_regression(self, y_true: pd.Series | np.ndarray, y_pred: pd.Series | np.ndarray) -> dict[str, Any]:
-        """
-        Comprehensive regression model evaluation.
+    pipeline = Pipeline(steps)
 
-        Args:
-            y_true: True values
-            y_pred: Predicted values
+    logger.info(f"Created pipeline with {len(steps)} steps: {[s[0] for s in steps]}")
 
-        Returns:
-            Dictionary with:
-                - mse: Mean squared error
-                - rmse: Root mean squared error
-                - mae: Mean absolute error
-                - r2: R-squared score
-                - explained_variance: Explained variance score
-                - mean_residual: Mean of residuals
-                - std_residual: Standard deviation of residuals
-        """
-        # Calculate metrics
-        mse = mean_squared_error(y_true, y_pred)
-        rmse = np.sqrt(mse)
-        mae = mean_absolute_error(y_true, y_pred)
-        r2 = r2_score(y_true, y_pred)
-        explained_var = explained_variance_score(y_true, y_pred)
+    return pipeline
 
-        # Residual analysis
-        residuals = np.array(y_true) - np.array(y_pred)
-        mean_residual = np.mean(residuals)
-        std_residual = np.std(residuals)
+  def grid_search(
+    self,
+    model: Any,
+    X: pd.DataFrame | np.ndarray,
+    y: pd.Series | np.ndarray,
+    param_grid: dict[str, list],
+    cv: int = 5,
+    scoring: str = "accuracy",
+    stratified: bool = False,
+  ) -> dict[str, Any]:
+    """
+    Perform grid search for hyperparameter tuning.
 
-        result = {
-            "mse": float(mse),
-            "rmse": float(rmse),
-            "mae": float(mae),
-            "r2": float(r2),
-            "explained_variance": float(explained_var),
-            "mean_residual": float(mean_residual),
-            "std_residual": float(std_residual),
-            "n_samples": len(y_true),
-        }
+    Args:
+        model: sklearn estimator
+        X: Features
+        y: Target variable
+        param_grid: Dictionary of parameter names and values to try
+        cv: Number of cross-validation folds
+        scoring: Metric to optimize
+        stratified: If True, use stratified k-fold
 
-        logger.info(f"Regression evaluation: R²={r2:.4f}, RMSE={rmse:.4f}, MAE={mae:.4f}")
+    Returns:
+        Dictionary with:
+            - best_params: Best parameters found
+            - best_score: Best cross-validation score
+            - best_estimator: Fitted estimator with best parameters
+            - cv_results: Detailed CV results
+    """
+    # Create cross-validation splitter
+    if stratified:
+      cv_splitter = StratifiedKFold(
+        n_splits=cv, shuffle=True, random_state=self.random_state
+      )
+    else:
+      cv_splitter = KFold(n_splits=cv, shuffle=True, random_state=self.random_state)
 
-        return result
+    # Perform grid search
+    grid_search = GridSearchCV(
+      model,
+      param_grid,
+      cv=cv_splitter,
+      scoring=scoring,
+      n_jobs=-1,  # Use all CPU cores
+      verbose=0,
+    )
 
-    def create_pipeline(self, model: Any, scaler: str = "standard", include_scaler: bool = True) -> Pipeline:
-        """
-        Create sklearn pipeline with preprocessing and model.
+    grid_search.fit(X, y)
 
-        Args:
-            model: sklearn estimator
-            scaler: Type of scaler ('standard', 'minmax', or None)
-            include_scaler: If True, include scaler in pipeline
+    result = {
+      "best_params": grid_search.best_params_,
+      "best_score": float(grid_search.best_score_),
+      "best_estimator": grid_search.best_estimator_,
+      "cv_results": {
+        "mean_test_scores": grid_search.cv_results_["mean_test_score"].tolist(),
+        "std_test_scores": grid_search.cv_results_["std_test_score"].tolist(),
+        "params": grid_search.cv_results_["params"],
+      },
+      "n_combinations_tested": len(grid_search.cv_results_["params"]),
+    }
 
-        Returns:
-            sklearn Pipeline object
-        """
-        steps = []
+    logger.info(
+      f"Grid search complete: tested {result['n_combinations_tested']} parameter combinations. Best score: {result['best_score']:.4f}"
+    )
 
-        if include_scaler:
-            if scaler == "standard":
-                steps.append(("scaler", StandardScaler()))
-            elif scaler == "minmax":
-                steps.append(("scaler", MinMaxScaler()))
-            elif scaler is not None:
-                raise ValueError(f"Unknown scaler '{scaler}'. Use 'standard' or 'minmax'")
+    return result
 
-        steps.append(("model", model))
+  def run_experiment(
+    self,
+    model: Any,
+    X: pd.DataFrame | np.ndarray,
+    y: pd.Series | np.ndarray,
+    test_size: float = 0.2,
+    cv: int = 5,
+    stratified: bool = False,
+    task_type: str = "classification",
+    scale_features: bool = True,
+  ) -> dict[str, Any]:
+    """
+    Run complete ML experiment with train/test split and cross-validation.
 
-        pipeline = Pipeline(steps)
+    Args:
+        model: sklearn estimator
+        X: Features
+        y: Target variable
+        test_size: Proportion for test set
+        cv: Number of cross-validation folds
+        stratified: If True, use stratified splits
+        task_type: 'classification' or 'regression'
+        scale_features: If True, scale features before modeling
 
-        logger.info(f"Created pipeline with {len(steps)} steps: {[s[0] for s in steps]}")
+    Returns:
+        Dictionary with:
+            - train_test_results: Evaluation on test set
+            - cv_results: Cross-validation results
+            - model: Fitted model on full training data
+            - feature_importance: Feature importance (if available)
+    """
+    # Split data
+    X_train, X_test, y_train, y_test = self.train_test_split_data(
+      X, y, test_size=test_size, stratify=stratified
+    )
 
-        return pipeline
+    # Create pipeline if scaling requested
+    if scale_features:
+      pipeline = self.create_pipeline(model, scaler="standard")
+    else:
+      pipeline = model
 
-    def grid_search(
-        self,
-        model: Any,
-        X: pd.DataFrame | np.ndarray,
-        y: pd.Series | np.ndarray,
-        param_grid: dict[str, list],
-        cv: int = 5,
-        scoring: str = "accuracy",
-        stratified: bool = False,
-    ) -> dict[str, Any]:
-        """
-        Perform grid search for hyperparameter tuning.
+    # Train model
+    pipeline.fit(X_train, y_train)
 
-        Args:
-            model: sklearn estimator
-            X: Features
-            y: Target variable
-            param_grid: Dictionary of parameter names and values to try
-            cv: Number of cross-validation folds
-            scoring: Metric to optimize
-            stratified: If True, use stratified k-fold
+    # Predictions
+    y_pred = pipeline.predict(X_test)
 
-        Returns:
-            Dictionary with:
-                - best_params: Best parameters found
-                - best_score: Best cross-validation score
-                - best_estimator: Fitted estimator with best parameters
-                - cv_results: Detailed CV results
-        """
-        # Create cross-validation splitter
-        if stratified:
-            cv_splitter = StratifiedKFold(n_splits=cv, shuffle=True, random_state=self.random_state)
-        else:
-            cv_splitter = KFold(n_splits=cv, shuffle=True, random_state=self.random_state)
+    # Get probabilities for classification
+    y_prob = None
+    if task_type == "classification" and hasattr(pipeline, "predict_proba"):
+      y_prob = pipeline.predict_proba(X_test)
 
-        # Perform grid search
-        grid_search = GridSearchCV(
-            model,
-            param_grid,
-            cv=cv_splitter,
-            scoring=scoring,
-            n_jobs=-1,  # Use all CPU cores
-            verbose=0,
-        )
+    # Evaluate on test set
+    if task_type == "classification":
+      test_results = self.evaluate_classification(y_test, y_pred, y_prob)
+    else:
+      test_results = self.evaluate_regression(y_test, y_pred)
 
-        grid_search.fit(X, y)
+    # Cross-validation on training data
+    scoring = "accuracy" if task_type == "classification" else "r2"
+    cv_results = self.cross_validate_model(
+      pipeline, X_train, y_train, cv=cv, stratified=stratified, scoring=scoring
+    )
 
-        result = {
-            "best_params": grid_search.best_params_,
-            "best_score": float(grid_search.best_score_),
-            "best_estimator": grid_search.best_estimator_,
-            "cv_results": {
-                "mean_test_scores": grid_search.cv_results_["mean_test_score"].tolist(),
-                "std_test_scores": grid_search.cv_results_["std_test_score"].tolist(),
-                "params": grid_search.cv_results_["params"],
-            },
-            "n_combinations_tested": len(grid_search.cv_results_["params"]),
-        }
+    # Feature importance (if available)
+    feature_importance = None
+    if hasattr(pipeline, "feature_importances_"):
+      feature_importance = pipeline.feature_importances_.tolist()
+    elif hasattr(pipeline, "coef_"):
+      feature_importance = pipeline.coef_.tolist()
 
-        logger.info(f"Grid search complete: tested {result['n_combinations_tested']} parameter combinations. Best score: {result['best_score']:.4f}")
+    result = {
+      "train_test_results": test_results,
+      "cv_results": cv_results,
+      "model": pipeline,
+      "feature_importance": feature_importance,
+      "train_size": len(X_train),
+      "test_size": len(X_test),
+      "n_features": X.shape[1] if hasattr(X, "shape") else len(X[0]),
+    }
 
-        return result
+    # Add to history
+    self.results_history.append(
+      {
+        "timestamp": pd.Timestamp.now(),
+        "task_type": task_type,
+        "test_score": test_results.get("accuracy") or test_results.get("r2"),
+        "cv_mean_score": cv_results.get("mean_score"),
+      }
+    )
 
-    def run_experiment(
-        self,
-        model: Any,
-        X: pd.DataFrame | np.ndarray,
-        y: pd.Series | np.ndarray,
-        test_size: float = 0.2,
-        cv: int = 5,
-        stratified: bool = False,
-        task_type: str = "classification",
-        scale_features: bool = True,
-    ) -> dict[str, Any]:
-        """
-        Run complete ML experiment with train/test split and cross-validation.
+    logger.info(
+      f"ML experiment complete: task={task_type}, "
+      f"test_score={result['train_test_results'].get('accuracy') or result['train_test_results'].get('r2'):.4f}"
+    )
 
-        Args:
-            model: sklearn estimator
-            X: Features
-            y: Target variable
-            test_size: Proportion for test set
-            cv: Number of cross-validation folds
-            stratified: If True, use stratified splits
-            task_type: 'classification' or 'regression'
-            scale_features: If True, scale features before modeling
-
-        Returns:
-            Dictionary with:
-                - train_test_results: Evaluation on test set
-                - cv_results: Cross-validation results
-                - model: Fitted model on full training data
-                - feature_importance: Feature importance (if available)
-        """
-        # Split data
-        X_train, X_test, y_train, y_test = self.train_test_split_data(X, y, test_size=test_size, stratify=stratified)
-
-        # Create pipeline if scaling requested
-        if scale_features:
-            pipeline = self.create_pipeline(model, scaler="standard")
-        else:
-            pipeline = model
-
-        # Train model
-        pipeline.fit(X_train, y_train)
-
-        # Predictions
-        y_pred = pipeline.predict(X_test)
-
-        # Get probabilities for classification
-        y_prob = None
-        if task_type == "classification" and hasattr(pipeline, "predict_proba"):
-            y_prob = pipeline.predict_proba(X_test)
-
-        # Evaluate on test set
-        if task_type == "classification":
-            test_results = self.evaluate_classification(y_test, y_pred, y_prob)
-        else:
-            test_results = self.evaluate_regression(y_test, y_pred)
-
-        # Cross-validation on training data
-        scoring = "accuracy" if task_type == "classification" else "r2"
-        cv_results = self.cross_validate_model(pipeline, X_train, y_train, cv=cv, stratified=stratified, scoring=scoring)
-
-        # Feature importance (if available)
-        feature_importance = None
-        if hasattr(pipeline, "feature_importances_"):
-            feature_importance = pipeline.feature_importances_.tolist()
-        elif hasattr(pipeline, "coef_"):
-            feature_importance = pipeline.coef_.tolist()
-
-        result = {
-            "train_test_results": test_results,
-            "cv_results": cv_results,
-            "model": pipeline,
-            "feature_importance": feature_importance,
-            "train_size": len(X_train),
-            "test_size": len(X_test),
-            "n_features": X.shape[1] if hasattr(X, "shape") else len(X[0]),
-        }
-
-        # Add to history
-        self.results_history.append(
-            {
-                "timestamp": pd.Timestamp.now(),
-                "task_type": task_type,
-                "test_score": test_results.get("accuracy") or test_results.get("r2"),
-                "cv_mean_score": cv_results.get("mean_score"),
-            }
-        )
-
-        logger.info(
-            f"ML experiment complete: task={task_type}, "
-            f"test_score={result['train_test_results'].get('accuracy') or result['train_test_results'].get('r2'):.4f}"
-        )
-
-        return result
+    return result
 
 
 class FeatureEngineering:
+  """
+  Utility class for feature engineering operations.
+  """
+
+  @staticmethod
+  def encode_categorical(
+    df: pd.DataFrame, columns: list[str], method: str = "label"
+  ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """
-    Utility class for feature engineering operations.
+    Encode categorical variables.
+
+    Args:
+        df: DataFrame with categorical columns
+        columns: List of categorical column names
+        method: 'label' for label encoding, 'onehot' for one-hot encoding
+
+    Returns:
+        Tuple of (encoded DataFrame, encoding_info dict)
     """
+    df_encoded = df.copy()
+    encoding_info = {}
 
-    @staticmethod
-    def encode_categorical(df: pd.DataFrame, columns: list[str], method: str = "label") -> tuple[pd.DataFrame, dict[str, Any]]:
-        """
-        Encode categorical variables.
+    if method == "label":
+      for col in columns:
+        le = LabelEncoder()
+        df_encoded[col] = le.fit_transform(df[col])
+        encoding_info[col] = {"encoder": le, "classes": le.classes_.tolist()}
 
-        Args:
-            df: DataFrame with categorical columns
-            columns: List of categorical column names
-            method: 'label' for label encoding, 'onehot' for one-hot encoding
+    elif method == "onehot":
+      df_encoded = pd.get_dummies(df, columns=columns, drop_first=True)
+      encoding_info["method"] = "onehot"
+      encoding_info["original_columns"] = columns
+      encoding_info["new_columns"] = [
+        c for c in df_encoded.columns if c not in df.columns
+      ]
 
-        Returns:
-            Tuple of (encoded DataFrame, encoding_info dict)
-        """
-        df_encoded = df.copy()
-        encoding_info = {}
+    else:
+      raise ValueError(f"Unknown method '{method}'. Use 'label' or 'onehot'")
 
-        if method == "label":
-            for col in columns:
-                le = LabelEncoder()
-                df_encoded[col] = le.fit_transform(df[col])
-                encoding_info[col] = {"encoder": le, "classes": le.classes_.tolist()}
+    logger.info(f"Encoded {len(columns)} categorical columns using {method} encoding")
 
-        elif method == "onehot":
-            df_encoded = pd.get_dummies(df, columns=columns, drop_first=True)
-            encoding_info["method"] = "onehot"
-            encoding_info["original_columns"] = columns
-            encoding_info["new_columns"] = [c for c in df_encoded.columns if c not in df.columns]
+    return df_encoded, encoding_info
 
-        else:
-            raise ValueError(f"Unknown method '{method}'. Use 'label' or 'onehot'")
+  @staticmethod
+  def create_polynomial_features(
+    X: pd.DataFrame | np.ndarray, degree: int = 2
+  ) -> np.ndarray:
+    """
+    Create polynomial features.
 
-        logger.info(f"Encoded {len(columns)} categorical columns using {method} encoding")
+    Args:
+        X: Features
+        degree: Polynomial degree
 
-        return df_encoded, encoding_info
+    Returns:
+        Array with polynomial features
+    """
+    from sklearn.preprocessing import PolynomialFeatures
 
-    @staticmethod
-    def create_polynomial_features(X: pd.DataFrame | np.ndarray, degree: int = 2) -> np.ndarray:
-        """
-        Create polynomial features.
+    poly = PolynomialFeatures(degree=degree, include_bias=False)
+    X_poly = poly.fit_transform(X)
 
-        Args:
-            X: Features
-            degree: Polynomial degree
+    logger.info(
+      f"Created polynomial features: degree={degree}, features={X.shape[1]}→{X_poly.shape[1]}"
+    )
 
-        Returns:
-            Array with polynomial features
-        """
-        from sklearn.preprocessing import PolynomialFeatures
+    return X_poly
 
-        poly = PolynomialFeatures(degree=degree, include_bias=False)
-        X_poly = poly.fit_transform(X)
+  @staticmethod
+  def select_k_best_features(
+    X: pd.DataFrame | np.ndarray,
+    y: pd.Series | np.ndarray,
+    k: int = 10,
+    score_func: str = "f_classif",
+  ) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Select k best features using univariate statistical tests.
 
-        logger.info(f"Created polynomial features: degree={degree}, features={X.shape[1]}→{X_poly.shape[1]}")
+    Args:
+        X: Features
+        y: Target variable
+        k: Number of features to select
+        score_func: Scoring function ('f_classif', 'f_regression', 'chi2')
 
-        return X_poly
+    Returns:
+        Tuple of (selected features, feature scores)
+    """
+    from sklearn.feature_selection import SelectKBest, f_classif, f_regression, chi2
 
-    @staticmethod
-    def select_k_best_features(
-        X: pd.DataFrame | np.ndarray, y: pd.Series | np.ndarray, k: int = 10, score_func: str = "f_classif"
-    ) -> tuple[np.ndarray, np.ndarray]:
-        """
-        Select k best features using univariate statistical tests.
+    # Map score function name to function
+    score_funcs = {"f_classif": f_classif, "f_regression": f_regression, "chi2": chi2}
 
-        Args:
-            X: Features
-            y: Target variable
-            k: Number of features to select
-            score_func: Scoring function ('f_classif', 'f_regression', 'chi2')
+    if score_func not in score_funcs:
+      raise ValueError(
+        f"Unknown score_func '{score_func}'. Use one of: {list(score_funcs.keys())}"
+      )
 
-        Returns:
-            Tuple of (selected features, feature scores)
-        """
-        from sklearn.feature_selection import SelectKBest, f_classif, f_regression, chi2
+    selector = SelectKBest(score_func=score_funcs[score_func], k=k)
+    X_selected = selector.fit_transform(X, y)
+    scores = selector.scores_
 
-        # Map score function name to function
-        score_funcs = {"f_classif": f_classif, "f_regression": f_regression, "chi2": chi2}
+    logger.info(f"Selected {k} best features using {score_func}")
 
-        if score_func not in score_funcs:
-            raise ValueError(f"Unknown score_func '{score_func}'. Use one of: {list(score_funcs.keys())}")
-
-        selector = SelectKBest(score_func=score_funcs[score_func], k=k)
-        X_selected = selector.fit_transform(X, y)
-        scores = selector.scores_
-
-        logger.info(f"Selected {k} best features using {score_func}")
-
-        return X_selected, scores
+    return X_selected, scores

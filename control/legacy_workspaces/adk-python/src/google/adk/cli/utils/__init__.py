@@ -23,6 +23,6 @@ from .dot_adk_folder import DotAdkFolder
 from .state import create_empty_state
 
 __all__ = [
-    "create_empty_state",
-    "DotAdkFolder",
+  "create_empty_state",
+  "DotAdkFolder",
 ]

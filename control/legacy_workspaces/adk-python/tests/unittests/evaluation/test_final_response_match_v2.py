@@ -31,84 +31,84 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "response_text",
-    [
-        """```json
+  "response_text",
+  [
+    """```json
   {
     "is_the_agent_response_valid_or_invalid": "valid",
     "reasoning": "The response is valid."
   }
   ```""",
-        """```json
+    """```json
   {
     "is_the_agent_response_valid": "undefined label",
   }
   ```""",
-    ],
+  ],
 )
 def test_parse_critique_label_not_found(response_text):
-    label = _parse_critique(response_text)
-    assert label == Label.NOT_FOUND
+  label = _parse_critique(response_text)
+  assert label == Label.NOT_FOUND
 
 
 @pytest.mark.parametrize(
-    "response_text",
-    [
-        """```json
+  "response_text",
+  [
+    """```json
   {
     "is_the_agent_response_valid": "valid",
     "reasoning": "The response is valid."
   }
   ```""",
-        """```json
+    """```json
   {
     "is_the_agent_response_valid": ["valid"],
     "reasoning": "The response is valid."
   }
   ```""",
-        """```json
+    """```json
   {
     "is_the_agent_response_valid":\n    [ "valid\n"],
     "reasoning": "The response is valid."
   }
   ```""",
-    ],
+  ],
 )
 def test_parse_critique(response_text):
-    label = _parse_critique(response_text)
-    assert label == Label.VALID
+  label = _parse_critique(response_text)
+  assert label == Label.VALID
 
 
 @pytest.mark.parametrize(
-    "response_text",
-    [
-        """```json
+  "response_text",
+  [
+    """```json
   {
     "is_the_agent_response_invalid": "invalid",
     "reasoning": "The response is invalid."
   }
   ```""",
-        """```json
+    """```json
   {
     "is_the_agent_response_invalid": ["invalid"],
     "reasoning": "The response is invalid."
   }
   ```""",
-        """```json
+    """```json
   {
     "is_the_agent_response_invalid":\n    [ "invalid\n"],
     "reasoning": "The response is invalid."
   }
   ```""",
-    ],
+  ],
 )
 def test_parse_critique_invalid(response_text):
-    label = _parse_critique(response_text)
-    assert label == Label.INVALID
+  label = _parse_critique(response_text)
+  assert label == Label.INVALID
 
 
 def create_test_template() -> str:
-    return """
+  return """
 This is a test template.
 
 {{
@@ -126,53 +126,57 @@ The answer should be a json alone which follows the json structure below:
 
 
 def _create_test_evaluator_gemini(
-    threshold: float,
+  threshold: float,
 ) -> FinalResponseMatchV2Evaluator:
-    evaluator = FinalResponseMatchV2Evaluator(
-        EvalMetric(
-            metric_name="final_response_match_v2",
-            threshold=threshold,
-            criterion=BaseCriterion(
-                threshold=0.5,
-            ),
-        ),
-    )
-    evaluator._auto_rater_prompt_template = create_test_template()
-    return evaluator
+  evaluator = FinalResponseMatchV2Evaluator(
+    EvalMetric(
+      metric_name="final_response_match_v2",
+      threshold=threshold,
+      criterion=BaseCriterion(
+        threshold=0.5,
+      ),
+    ),
+  )
+  evaluator._auto_rater_prompt_template = create_test_template()
+  return evaluator
 
 
-def _create_test_invocations(candidate: str, reference: str) -> tuple[Invocation, Invocation]:
-    """Returns tuple of (actual_invocation, expected_invocation)."""
-    actual_invocation = Invocation(
-        user_content=genai_types.Content(
-            parts=[genai_types.Part(text="This is a test query.")],
-            role="user",
-        ),
-        final_response=genai_types.Content(
-            parts=[genai_types.Part(text=candidate)],
-            role="model",
-        ),
-    )
-    expected_invocation = Invocation(
-        user_content=genai_types.Content(
-            parts=[genai_types.Part(text="This is a test query.")],
-            role="user",
-        ),
-        final_response=genai_types.Content(
-            parts=[genai_types.Part(text=reference)],
-            role="model",
-        ),
-    )
-    return actual_invocation, expected_invocation
+def _create_test_invocations(
+  candidate: str, reference: str
+) -> tuple[Invocation, Invocation]:
+  """Returns tuple of (actual_invocation, expected_invocation)."""
+  actual_invocation = Invocation(
+    user_content=genai_types.Content(
+      parts=[genai_types.Part(text="This is a test query.")],
+      role="user",
+    ),
+    final_response=genai_types.Content(
+      parts=[genai_types.Part(text=candidate)],
+      role="model",
+    ),
+  )
+  expected_invocation = Invocation(
+    user_content=genai_types.Content(
+      parts=[genai_types.Part(text="This is a test query.")],
+      role="user",
+    ),
+    final_response=genai_types.Content(
+      parts=[genai_types.Part(text=reference)],
+      role="model",
+    ),
+  )
+  return actual_invocation, expected_invocation
 
 
 def test_format_auto_rater_prompt():
-    evaluator = _create_test_evaluator_gemini(threshold=0.8)
-    actual_invocation, expected_invocation = _create_test_invocations("candidate text", "reference text")
-    prompt = evaluator.format_auto_rater_prompt(actual_invocation, expected_invocation)
-    assert (
-        prompt
-        == """
+  evaluator = _create_test_evaluator_gemini(threshold=0.8)
+  actual_invocation, expected_invocation = _create_test_invocations(
+    "candidate text", "reference text"
+  )
+  prompt = evaluator.format_auto_rater_prompt(actual_invocation, expected_invocation)
+  assert (
+    prompt
+    == """
 This is a test template.
 
 {
@@ -187,282 +191,297 @@ The answer should be a json alone which follows the json structure below:
   "reasoning":
 }
 """
-    )
+  )
 
 
 def test_convert_auto_rater_response_to_score_valid():
-    evaluator = _create_test_evaluator_gemini(threshold=0.8)
-    auto_rater_response = """```json
+  evaluator = _create_test_evaluator_gemini(threshold=0.8)
+  auto_rater_response = """```json
 {
   "is_the_agent_response_valid": "valid",
   "reasoning": "The response is valid."
 }
 ```"""
-    llm_response = LlmResponse(
-        content=genai_types.Content(
-            parts=[genai_types.Part(text=auto_rater_response)],
-            role="model",
-        )
+  llm_response = LlmResponse(
+    content=genai_types.Content(
+      parts=[genai_types.Part(text=auto_rater_response)],
+      role="model",
     )
-    auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
-    assert auto_rater_score == AutoRaterScore(score=1.0)
+  )
+  auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
+  assert auto_rater_score == AutoRaterScore(score=1.0)
 
 
 def test_convert_auto_rater_response_to_score_invalid():
-    evaluator = _create_test_evaluator_gemini(threshold=0.8)
-    auto_rater_response = """```json
+  evaluator = _create_test_evaluator_gemini(threshold=0.8)
+  auto_rater_response = """```json
 {
   "is_the_agent_response_valid": "invalid",
   "reasoning": "The response is invalid."
 }
 ```"""
-    llm_response = LlmResponse(
-        content=genai_types.Content(
-            parts=[genai_types.Part(text=auto_rater_response)],
-            role="model",
-        )
+  llm_response = LlmResponse(
+    content=genai_types.Content(
+      parts=[genai_types.Part(text=auto_rater_response)],
+      role="model",
     )
-    auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
-    assert auto_rater_score == AutoRaterScore(score=0.0)
+  )
+  auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
+  assert auto_rater_score == AutoRaterScore(score=0.0)
 
 
 def test_convert_auto_rater_response_to_score_invalid_json():
-    evaluator = _create_test_evaluator_gemini(threshold=0.8)
-    llm_response = LlmResponse(
-        content=genai_types.Content(
-            parts=[genai_types.Part(text="invalid json")],
-            role="model",
-        )
+  evaluator = _create_test_evaluator_gemini(threshold=0.8)
+  llm_response = LlmResponse(
+    content=genai_types.Content(
+      parts=[genai_types.Part(text="invalid json")],
+      role="model",
     )
-    auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
-    assert auto_rater_score == AutoRaterScore()
+  )
+  auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
+  assert auto_rater_score == AutoRaterScore()
 
 
 def test_convert_auto_rater_response_to_score_missing_key():
-    evaluator = _create_test_evaluator_gemini(threshold=0.8)
-    llm_response = LlmResponse(
-        content=genai_types.Content(
-            parts=[genai_types.Part(text="{}")],
-            role="model",
-        )
+  evaluator = _create_test_evaluator_gemini(threshold=0.8)
+  llm_response = LlmResponse(
+    content=genai_types.Content(
+      parts=[genai_types.Part(text="{}")],
+      role="model",
     )
-    auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
-    assert auto_rater_score == AutoRaterScore()
+  )
+  auto_rater_score = evaluator.convert_auto_rater_response_to_score(llm_response)
+  assert auto_rater_score == AutoRaterScore()
 
 
 def test_aggregate_per_invocation_samples_none_evaluated():
-    evaluator = _create_test_evaluator_gemini(threshold=0.5)
+  evaluator = _create_test_evaluator_gemini(threshold=0.5)
 
-    actual_invocation, expected_invocation = _create_test_invocations("candidate text", "reference text")
+  actual_invocation, expected_invocation = _create_test_invocations(
+    "candidate text", "reference text"
+  )
 
-    per_invocation_result_samples = [
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=None,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=None,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-    ]
+  per_invocation_result_samples = [
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=None,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=None,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+  ]
 
-    assert evaluator.aggregate_per_invocation_samples(per_invocation_result_samples) == per_invocation_result_samples[0]
+  assert (
+    evaluator.aggregate_per_invocation_samples(per_invocation_result_samples)
+    == per_invocation_result_samples[0]
+  )
 
 
 def test_aggregate_per_invocation_samples_valid():
-    evaluator = _create_test_evaluator_gemini(threshold=0.5)
+  evaluator = _create_test_evaluator_gemini(threshold=0.5)
 
-    actual_invocation, expected_invocation = _create_test_invocations("candidate text", "reference text")
+  actual_invocation, expected_invocation = _create_test_invocations(
+    "candidate text", "reference text"
+  )
 
-    per_invocation_result_samples = [
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=None,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-    ]
+  per_invocation_result_samples = [
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=None,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+  ]
 
-    per_invocation_result = evaluator.aggregate_per_invocation_samples(per_invocation_result_samples)
+  per_invocation_result = evaluator.aggregate_per_invocation_samples(
+    per_invocation_result_samples
+  )
 
-    assert per_invocation_result.score == 1.0
-    assert per_invocation_result.eval_status == EvalStatus.PASSED
+  assert per_invocation_result.score == 1.0
+  assert per_invocation_result.eval_status == EvalStatus.PASSED
 
 
 def test_aggregate_per_invocation_samples_invalid():
-    evaluator = _create_test_evaluator_gemini(threshold=0.5)
+  evaluator = _create_test_evaluator_gemini(threshold=0.5)
 
-    actual_invocation, expected_invocation = _create_test_invocations("candidate text", "reference text")
+  actual_invocation, expected_invocation = _create_test_invocations(
+    "candidate text", "reference text"
+  )
 
-    per_invocation_result_samples = [
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=None,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-    ]
+  per_invocation_result_samples = [
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=None,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+  ]
 
-    per_invocation_result = evaluator.aggregate_per_invocation_samples(per_invocation_result_samples)
+  per_invocation_result = evaluator.aggregate_per_invocation_samples(
+    per_invocation_result_samples
+  )
 
-    assert per_invocation_result.score == 0.0
-    assert per_invocation_result.eval_status == EvalStatus.FAILED
+  assert per_invocation_result.score == 0.0
+  assert per_invocation_result.eval_status == EvalStatus.FAILED
 
 
 def test_aggregate_invocation_results():
-    evaluator = _create_test_evaluator_gemini(threshold=0.5)
+  evaluator = _create_test_evaluator_gemini(threshold=0.5)
 
-    actual_invocation, expected_invocation = _create_test_invocations("candidate text", "reference text")
+  actual_invocation, expected_invocation = _create_test_invocations(
+    "candidate text", "reference text"
+  )
 
-    per_invocation_results = [
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=1.0,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=0.0,
-            eval_status=EvalStatus.FAILED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=None,
-            eval_status=EvalStatus.PASSED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=100.0,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-        PerInvocationResult(
-            actual_invocation=actual_invocation,
-            expected_invocation=expected_invocation,
-            score=None,
-            eval_status=EvalStatus.NOT_EVALUATED,
-        ),
-    ]
+  per_invocation_results = [
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=1.0,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=0.0,
+      eval_status=EvalStatus.FAILED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=None,
+      eval_status=EvalStatus.PASSED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=100.0,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+    PerInvocationResult(
+      actual_invocation=actual_invocation,
+      expected_invocation=expected_invocation,
+      score=None,
+      eval_status=EvalStatus.NOT_EVALUATED,
+    ),
+  ]
 
-    aggregated_result = evaluator.aggregate_invocation_results(per_invocation_results)
+  aggregated_result = evaluator.aggregate_invocation_results(per_invocation_results)
 
-    # Only 4 / 8 invocations are evaluated, and 2 / 4 are valid.
-    assert aggregated_result.overall_score == 0.5
-    assert aggregated_result.overall_eval_status == EvalStatus.PASSED
+  # Only 4 / 8 invocations are evaluated, and 2 / 4 are valid.
+  assert aggregated_result.overall_score == 0.5
+  assert aggregated_result.overall_eval_status == EvalStatus.PASSED
 
 
 def test_get_metric_info():
-    """Test get_metric_info function for Final Response Match V2 metric."""
-    metric_info = FinalResponseMatchV2Evaluator.get_metric_info()
-    assert metric_info.metric_name == PrebuiltMetrics.FINAL_RESPONSE_MATCH_V2.value
-    assert metric_info.metric_value_info.interval.min_value == 0.0
-    assert metric_info.metric_value_info.interval.max_value == 1.0
+  """Test get_metric_info function for Final Response Match V2 metric."""
+  metric_info = FinalResponseMatchV2Evaluator.get_metric_info()
+  assert metric_info.metric_name == PrebuiltMetrics.FINAL_RESPONSE_MATCH_V2.value
+  assert metric_info.metric_value_info.interval.min_value == 0.0
+  assert metric_info.metric_value_info.interval.max_value == 1.0

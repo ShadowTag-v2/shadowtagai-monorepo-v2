@@ -13,7 +13,7 @@ model = SentenceTransformer("all-mpnet-base-v2")
 
 @F.udf(returnType=T.ArrayType(T.FloatType()))
 def transform(body) -> list:
-    return model.encode(body).tolist()
+  return model.encode(body).tolist()
 
 
 bqpd_df = spark.read.format("bigquery").load("bigquery-public-data.breathe.nature")
@@ -22,6 +22,8 @@ emb_df = spark.read.format("bigquery").load(f"{PROJECT_ID}.rag_data.embeddings")
 new_ids = bqpd_df.select("id").subtract(emb_df.select("id"))
 
 if new_ids.count() > 0:
-    additions = new_ids.join(bqpd_df, on="id")
-    new_embeddings = additions.withColumn("embeddings", transform("body"))
-    new_embeddings.write.format("bigquery").mode("append").save(f"{PROJECT_ID}-hackathon.rag_data.embeddings")
+  additions = new_ids.join(bqpd_df, on="id")
+  new_embeddings = additions.withColumn("embeddings", transform("body"))
+  new_embeddings.write.format("bigquery").mode("append").save(
+    f"{PROJECT_ID}-hackathon.rag_data.embeddings"
+  )

@@ -7,11 +7,11 @@ from celery_task import add
 response_time = []
 
 for i in range(500):
-    start = time.time()
-    t = add.delay(i, 12)
-    diff = time.time() - start
-    print(f"time difference {diff}")
-    response_time.append(diff)
+  start = time.time()
+  t = add.delay(i, 12)
+  diff = time.time() - start
+  print(f"time difference {diff}")
+  response_time.append(diff)
 
 print(f"min {min(response_time)}")
 print(f"max {max(response_time)}")

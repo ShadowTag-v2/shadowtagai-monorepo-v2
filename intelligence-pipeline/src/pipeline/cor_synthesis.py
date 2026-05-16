@@ -25,114 +25,116 @@ logger = logging.getLogger(__name__)
 
 
 class CorBrainEngine:
+  """
+  Cor Brain synthesis engine for Tier 1 items
+  """
+
+  def __init__(self, api_key: str | None = None):
     """
-    Cor Brain synthesis engine for Tier 1 items
+    Initialize Cor Brain engine
+
+    Args:
+        api_key: Anthropic API key (defaults to env var)
     """
+    self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
+    if not self.api_key:
+      raise ValueError("ANTHROPIC_API_KEY not set")
 
-    def __init__(self, api_key: str | None = None):
-        """
-        Initialize Cor Brain engine
+    self.client = anthropic.Anthropic(api_key=self.api_key)
+    logger.info("CorBrainEngine initialized")
 
-        Args:
-            api_key: Anthropic API key (defaults to env var)
-        """
-        self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
-        if not self.api_key:
-            raise ValueError("ANTHROPIC_API_KEY not set")
+  async def synthesize_tier1_items(
+    self, items: list[IntelligenceItem]
+  ) -> list[IntelligenceItem]:
+    """
+    Synthesize Tier 1 items using Cor Brain
 
-        self.client = anthropic.Anthropic(api_key=self.api_key)
-        logger.info("CorBrainEngine initialized")
+    Args:
+        items: List of classified intelligence items
 
-    async def synthesize_tier1_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Synthesize Tier 1 items using Cor Brain
+    Returns:
+        Same list with cor_synthesis populated for Tier 1 items
+    """
+    tier1_items = [item for item in items if item.tier == IntelligenceTier.TIER_1]
 
-        Args:
-            items: List of classified intelligence items
+    logger.info(f"=== Cor Brain Synthesis for {len(tier1_items)} Tier 1 items ===")
+    start_time = datetime.now()
 
-        Returns:
-            Same list with cor_synthesis populated for Tier 1 items
-        """
-        tier1_items = [item for item in items if item.tier == IntelligenceTier.TIER_1]
+    for i, item in enumerate(tier1_items):
+      try:
+        synthesis = await self.synthesize_item(item)
+        item.cor_synthesis = synthesis.executive_summary
+        item.action_items = synthesis.recommended_actions
 
-        logger.info(f"=== Cor Brain Synthesis for {len(tier1_items)} Tier 1 items ===")
-        start_time = datetime.now()
+        logger.info(f"[{i + 1}/{len(tier1_items)}] Synthesized: {item.title[:60]}...")
 
-        for i, item in enumerate(tier1_items):
-            try:
-                synthesis = await self.synthesize_item(item)
-                item.cor_synthesis = synthesis.executive_summary
-                item.action_items = synthesis.recommended_actions
+      except Exception as e:
+        logger.error(f"Error synthesizing item {item.id}: {e}")
+        item.cor_synthesis = f"Synthesis failed: {str(e)}"
+        item.action_items = []
 
-                logger.info(f"[{i + 1}/{len(tier1_items)}] Synthesized: {item.title[:60]}...")
+    duration = (datetime.now() - start_time).total_seconds()
+    logger.info(f"✓ Cor Brain synthesis complete in {duration:.1f}s")
 
-            except Exception as e:
-                logger.error(f"Error synthesizing item {item.id}: {e}")
-                item.cor_synthesis = f"Synthesis failed: {str(e)}"
-                item.action_items = []
+    return items
 
-        duration = (datetime.now() - start_time).total_seconds()
-        logger.info(f"✓ Cor Brain synthesis complete in {duration:.1f}s")
+  async def synthesize_item(self, item: IntelligenceItem) -> CorSynthesis:
+    """
+    Synthesize a single Tier 1 item
 
-        return items
+    Args:
+        item: Tier 1 intelligence item
 
-    async def synthesize_item(self, item: IntelligenceItem) -> CorSynthesis:
-        """
-        Synthesize a single Tier 1 item
+    Returns:
+        CorSynthesis with executive summary and recommendations
+    """
+    prompt = self._build_synthesis_prompt(item)
 
-        Args:
-            item: Tier 1 intelligence item
+    message = self.client.messages.create(
+      model="claude-3-5-sonnet-20241022",  # Premium model for strategic analysis
+      max_tokens=2048,
+      temperature=0.5,  # Slightly higher for creative synthesis
+      messages=[{"role": "user", "content": prompt}],
+    )
 
-        Returns:
-            CorSynthesis with executive summary and recommendations
-        """
-        prompt = self._build_synthesis_prompt(item)
+    response_text = message.content[0].text
 
-        message = self.client.messages.create(
-            model="claude-3-5-sonnet-20241022",  # Premium model for strategic analysis
-            max_tokens=2048,
-            temperature=0.5,  # Slightly higher for creative synthesis
-            messages=[{"role": "user", "content": prompt}],
-        )
+    try:
+      synthesis_data = json.loads(response_text)
 
-        response_text = message.content[0].text
+      return CorSynthesis(
+        executive_summary=synthesis_data["executive_summary"],
+        business_impact=synthesis_data["business_impact"],
+        recommended_actions=synthesis_data["recommended_actions"],
+        risk_assessment=synthesis_data["risk_assessment"],
+        timeline=synthesis_data["timeline"],
+        stakeholders=synthesis_data.get("stakeholders", []),
+        estimated_cost=synthesis_data.get("estimated_cost"),
+        estimated_value=synthesis_data.get("estimated_value"),
+      )
 
-        try:
-            synthesis_data = json.loads(response_text)
+    except json.JSONDecodeError as e:
+      logger.error(f"Failed to parse Cor Brain response: {e}")
+      # Return plain text as executive summary
+      return CorSynthesis(
+        executive_summary=response_text[:500],
+        business_impact="See full analysis",
+        recommended_actions=["Review full synthesis"],
+        risk_assessment="Unknown",
+        timeline="TBD",
+      )
 
-            return CorSynthesis(
-                executive_summary=synthesis_data["executive_summary"],
-                business_impact=synthesis_data["business_impact"],
-                recommended_actions=synthesis_data["recommended_actions"],
-                risk_assessment=synthesis_data["risk_assessment"],
-                timeline=synthesis_data["timeline"],
-                stakeholders=synthesis_data.get("stakeholders", []),
-                estimated_cost=synthesis_data.get("estimated_cost"),
-                estimated_value=synthesis_data.get("estimated_value"),
-            )
+  def _build_synthesis_prompt(self, item: IntelligenceItem) -> str:
+    """
+    Build synthesis prompt for Cor Brain
 
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse Cor Brain response: {e}")
-            # Return plain text as executive summary
-            return CorSynthesis(
-                executive_summary=response_text[:500],
-                business_impact="See full analysis",
-                recommended_actions=["Review full synthesis"],
-                risk_assessment="Unknown",
-                timeline="TBD",
-            )
+    Args:
+        item: Tier 1 intelligence item
 
-    def _build_synthesis_prompt(self, item: IntelligenceItem) -> str:
-        """
-        Build synthesis prompt for Cor Brain
-
-        Args:
-            item: Tier 1 intelligence item
-
-        Returns:
-            Prompt string
-        """
-        return f"""You are Cor, the Chief Intelligence Officer for PNKLN, providing executive briefings.
+    Returns:
+        Prompt string
+    """
+    return f"""You are Cor, the Chief Intelligence Officer for PNKLN, providing executive briefings.
 
 INTELLIGENCE ITEM (TIER 1 - CRITICAL):
 - Title: {item.title}
@@ -182,33 +184,37 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """
-    Main Cor Brain synthesis entry point
-    """
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+  """
+  Main Cor Brain synthesis entry point
+  """
+  logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  )
 
-    # Load classified items
-    input_file = "/tmp/intelligence_items_classified.json"
-    with open(input_file) as f:
-        items_data = json.load(f)
+  # Load classified items
+  input_file = "/tmp/intelligence_items_classified.json"
+  with open(input_file) as f:
+    items_data = json.load(f)
 
-    items = [IntelligenceItem.from_dict(item_data) for item_data in items_data]
+  items = [IntelligenceItem.from_dict(item_data) for item_data in items_data]
 
-    # Synthesize Tier 1 items
-    engine = CorBrainEngine()
-    synthesized_items = await engine.synthesize_tier1_items(items)
+  # Synthesize Tier 1 items
+  engine = CorBrainEngine()
+  synthesized_items = await engine.synthesize_tier1_items(items)
 
-    # Save synthesized items
-    output_file = "/tmp/intelligence_items_synthesized.json"
-    with open(output_file, "w") as f:
-        json.dump([item.to_dict() for item in synthesized_items], f, indent=2, default=str)
+  # Save synthesized items
+  output_file = "/tmp/intelligence_items_synthesized.json"
+  with open(output_file, "w") as f:
+    json.dump([item.to_dict() for item in synthesized_items], f, indent=2, default=str)
 
-    tier1_count = len([item for item in synthesized_items if item.tier == IntelligenceTier.TIER_1])
-    print(f"✓ Synthesized {tier1_count} Tier 1 items")
-    print(f"✓ Saved to {output_file}")
+  tier1_count = len(
+    [item for item in synthesized_items if item.tier == IntelligenceTier.TIER_1]
+  )
+  print(f"✓ Synthesized {tier1_count} Tier 1 items")
+  print(f"✓ Saved to {output_file}")
 
 
 if __name__ == "__main__":
-    import asyncio
+  import asyncio
 
-    asyncio.run(main())
+  asyncio.run(main())

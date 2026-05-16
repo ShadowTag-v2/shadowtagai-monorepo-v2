@@ -10,18 +10,18 @@ from fastapi import APIRouter, HTTPException, status
 
 from app.models.schemas import TierClassification
 from app.services.gemini_agents import (
-    GeminiAgent,
-    GeminiGroupChat,
+  GeminiAgent,
+  GeminiGroupChat,
 )
 
 router = APIRouter(prefix="/agents", tags=["Gemini Agents"])
 
 
 @router.post(
-    "/classify-debate",
-    response_model=TierClassification,
-    summary="Multi-agent debate classification (AutoGen → Gemini)",
-    description="""
+  "/classify-debate",
+  response_model=TierClassification,
+  summary="Multi-agent debate classification (AutoGen → Gemini)",
+  description="""
     Classify intelligence item using Gemini 2.0 Pro multi-agent debate.
 
     **Migration from AutoGen:**
@@ -47,14 +47,14 @@ router = APIRouter(prefix="/agents", tags=["Gemini Agents"])
     """,
 )
 async def classify_with_debate(
-    title: str,
-    content: str,
-    tags: list[str],
-    rounds: int = 2,
-    agents: list[str] | None = None,
-    voting_method: str = "weighted_confidence",
+  title: str,
+  content: str,
+  tags: list[str],
+  rounds: int = 2,
+  agents: list[str] | None = None,
+  voting_method: str = "weighted_confidence",
 ) -> TierClassification:
-    """
+  """
     Run multi-agent debate to classify intelligence item.
 
     **Example Request:**
@@ -86,39 +86,41 @@ async def classify_with_debate(
     }
     ```
     """
-    try:
-        # Initialize group chat
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Gemini API key not configured",
-            )
+  try:
+    # Initialize group chat
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+      raise HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail="Gemini API key not configured",
+      )
 
-        chat = GeminiGroupChat(api_key=api_key, agents=agents or ["skeptic", "optimist", "neutral"])
+    chat = GeminiGroupChat(
+      api_key=api_key, agents=agents or ["skeptic", "optimist", "neutral"]
+    )
 
-        # Run debate
-        result = await chat.classify_with_debate(
-            title=title,
-            content=content,
-            tags=tags,
-            rounds=rounds,
-            voting_method=voting_method,
-        )
+    # Run debate
+    result = await chat.classify_with_debate(
+      title=title,
+      content=content,
+      tags=tags,
+      rounds=rounds,
+      voting_method=voting_method,
+    )
 
-        return result
+    return result
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Debate classification failed: {str(e)}",
-        )
+  except Exception as e:
+    raise HTTPException(
+      status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+      detail=f"Debate classification failed: {str(e)}",
+    )
 
 
 @router.post(
-    "/agent/{agent_name}/propose",
-    summary="Single agent proposal (for testing)",
-    description="""
+  "/agent/{agent_name}/propose",
+  summary="Single agent proposal (for testing)",
+  description="""
     Get tier proposal from a single agent (skeptic, optimist, or neutral).
 
     **Use Cases:**
@@ -142,125 +144,127 @@ async def classify_with_debate(
     """,
 )
 async def single_agent_proposal(
-    agent_name: str,
-    title: str,
-    content: str,
-    tags: list[str],
-    debate_history: list[dict] | None = None,
+  agent_name: str,
+  title: str,
+  content: str,
+  tags: list[str],
+  debate_history: list[dict] | None = None,
 ):
-    """
-    Get tier proposal from single agent.
+  """
+  Get tier proposal from single agent.
 
-    **Args:**
-    - agent_name: "skeptic" | "optimist" | "neutral"
-    - title: Article title
-    - content: Full text
-    - tags: Metadata tags
-    - debate_history: Optional previous round proposals
+  **Args:**
+  - agent_name: "skeptic" | "optimist" | "neutral"
+  - title: Article title
+  - content: Full text
+  - tags: Metadata tags
+  - debate_history: Optional previous round proposals
 
-    **Response:**
-    ```json
-    {
-      "agent": "skeptic",
-      "tier": 2,
-      "confidence": 0.70,
-      "reasoning": "Source reliability C (unverified 'sources'), credibility 3 (possibly true but unconfirmed)...",
-      "rebuttals": []
-    }
-    ```
-    """
-    valid_agents = ["skeptic", "optimist", "neutral"]
-    if agent_name not in valid_agents:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid agent name. Must be one of: {', '.join(valid_agents)}",
-        )
+  **Response:**
+  ```json
+  {
+    "agent": "skeptic",
+    "tier": 2,
+    "confidence": 0.70,
+    "reasoning": "Source reliability C (unverified 'sources'), credibility 3 (possibly true but unconfirmed)...",
+    "rebuttals": []
+  }
+  ```
+  """
+  valid_agents = ["skeptic", "optimist", "neutral"]
+  if agent_name not in valid_agents:
+    raise HTTPException(
+      status_code=status.HTTP_400_BAD_REQUEST,
+      detail=f"Invalid agent name. Must be one of: {', '.join(valid_agents)}",
+    )
 
-    try:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Gemini API key not configured",
-            )
+  try:
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+      raise HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail="Gemini API key not configured",
+      )
 
-        # Get agent persona
-        from app.services.gemini_agents import GeminiGroupChat
-
-        persona_config = GeminiGroupChat.AGENT_PERSONAS[agent_name]
-
-        # Initialize agent
-        agent = GeminiAgent(
-            name=agent_name,
-            persona=persona_config["persona"],
-            temperature=persona_config["temperature"],
-            api_key=api_key,
-        )
-
-        # Get proposal
-        proposal = await agent.propose_tier(title=title, content=content, tags=tags, debate_history=debate_history)
-
-        return proposal
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Agent proposal failed: {str(e)}",
-        )
-
-
-@router.get(
-    "/personas",
-    summary="List agent personas",
-    description="Get descriptions of all available agent personas and their bias patterns",
-)
-async def list_agent_personas():
-    """
-    List all agent personas and their characteristics.
-
-    **Response:**
-    ```json
-    {
-      "skeptic": {
-        "description": "Questions source credibility, defaults to Tier 2/3",
-        "atp_5_19_bias": "Prefer source reliability B-C, credibility 3-4",
-        "temperature": 0.5,
-        "decision_tendency": "Downgrade tier by 1 level (risk-averse)"
-      },
-      "optimist": {
-        "description": "Identifies strategic value, defaults to Tier 1/2",
-        "atp_5_19_bias": "Prefer source reliability A-B, credibility 1-2",
-        "temperature": 0.9,
-        "decision_tendency": "Upgrade tier by 1 level (opportunity-seeking)"
-      },
-      "neutral": {
-        "description": "ATP 5-19 strict arbiter, no bias",
-        "atp_5_19_bias": "Literal interpretation, data-driven",
-        "temperature": 0.3,
-        "decision_tendency": "No bias, evidence-based"
-      }
-    }
-    ```
-    """
+    # Get agent persona
     from app.services.gemini_agents import GeminiGroupChat
 
-    personas = {}
-    for agent_name, config in GeminiGroupChat.AGENT_PERSONAS.items():
-        # Extract key characteristics from persona
-        personas[agent_name] = {
-            "persona": config["persona"],
-            "temperature": config["temperature"],
-            "model": "gemini-3.1-flash-exp",
-            "cost_per_proposal": "$0.00125 (avg 1K tokens)",
-        }
+    persona_config = GeminiGroupChat.AGENT_PERSONAS[agent_name]
 
-    return personas
+    # Initialize agent
+    agent = GeminiAgent(
+      name=agent_name,
+      persona=persona_config["persona"],
+      temperature=persona_config["temperature"],
+      api_key=api_key,
+    )
+
+    # Get proposal
+    proposal = await agent.propose_tier(
+      title=title, content=content, tags=tags, debate_history=debate_history
+    )
+
+    return proposal
+
+  except Exception as e:
+    raise HTTPException(
+      status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+      detail=f"Agent proposal failed: {str(e)}",
+    )
 
 
 @router.get(
-    "/benchmark",
-    summary="Benchmark Gemini agents vs. AutoGen",
-    description="""
+  "/personas",
+  summary="List agent personas",
+  description="Get descriptions of all available agent personas and their bias patterns",
+)
+async def list_agent_personas():
+  """
+  List all agent personas and their characteristics.
+
+  **Response:**
+  ```json
+  {
+    "skeptic": {
+      "description": "Questions source credibility, defaults to Tier 2/3",
+      "atp_5_19_bias": "Prefer source reliability B-C, credibility 3-4",
+      "temperature": 0.5,
+      "decision_tendency": "Downgrade tier by 1 level (risk-averse)"
+    },
+    "optimist": {
+      "description": "Identifies strategic value, defaults to Tier 1/2",
+      "atp_5_19_bias": "Prefer source reliability A-B, credibility 1-2",
+      "temperature": 0.9,
+      "decision_tendency": "Upgrade tier by 1 level (opportunity-seeking)"
+    },
+    "neutral": {
+      "description": "ATP 5-19 strict arbiter, no bias",
+      "atp_5_19_bias": "Literal interpretation, data-driven",
+      "temperature": 0.3,
+      "decision_tendency": "No bias, evidence-based"
+    }
+  }
+  ```
+  """
+  from app.services.gemini_agents import GeminiGroupChat
+
+  personas = {}
+  for agent_name, config in GeminiGroupChat.AGENT_PERSONAS.items():
+    # Extract key characteristics from persona
+    personas[agent_name] = {
+      "persona": config["persona"],
+      "temperature": config["temperature"],
+      "model": "gemini-3.1-flash-exp",
+      "cost_per_proposal": "$0.00125 (avg 1K tokens)",
+    }
+
+  return personas
+
+
+@router.get(
+  "/benchmark",
+  summary="Benchmark Gemini agents vs. AutoGen",
+  description="""
     Compare Gemini multi-agent system to AutoGen baseline.
 
     **Metrics:**
@@ -271,89 +275,89 @@ async def list_agent_personas():
     """,
 )
 async def benchmark_gemini_vs_autogen():
-    """
-    Benchmark results comparing Gemini to AutoGen.
+  """
+  Benchmark results comparing Gemini to AutoGen.
 
-    **Test Dataset:** 1,000 pre-labeled intelligence items
+  **Test Dataset:** 1,000 pre-labeled intelligence items
 
-    **Results:**
-    ```json
-    {
-      "gemini_2_0_flash": {
-        "accuracy": 0.874,
-        "cost_per_classification": "$0.00375",
-        "latency_p99_ms": 1234,
-        "consensus_rate": 0.82
-      },
-      "autogen_gpt4": {
-        "accuracy": 0.837,
-        "cost_per_classification": "$0.03",
-        "latency_p99_ms": 3421,
-        "consensus_rate": 0.79
-      },
-      "improvement": {
-        "accuracy": "+3.7% (DTE-validated)",
-        "cost": "-87.5% (8× cheaper)",
-        "latency": "-64% (2.8× faster)",
-        "consensus": "+3.8%"
-      }
+  **Results:**
+  ```json
+  {
+    "gemini_2_0_flash": {
+      "accuracy": 0.874,
+      "cost_per_classification": "$0.00375",
+      "latency_p99_ms": 1234,
+      "consensus_rate": 0.82
+    },
+    "autogen_gpt4": {
+      "accuracy": 0.837,
+      "cost_per_classification": "$0.03",
+      "latency_p99_ms": 3421,
+      "consensus_rate": 0.79
+    },
+    "improvement": {
+      "accuracy": "+3.7% (DTE-validated)",
+      "cost": "-87.5% (8× cheaper)",
+      "latency": "-64% (2.8× faster)",
+      "consensus": "+3.8%"
     }
-    ```
-    """
-    # Mock benchmark results (in production, run actual tests)
-    return {
-        "test_dataset": {
-            "size": 1000,
-            "distribution": {"tier_1": 180, "tier_2": 520, "tier_3": 300},
-            "human_labeled": True,
-        },
-        "gemini_2_0_flash": {
-            "accuracy": 0.874,
-            "precision_tier_1": 0.91,
-            "precision_tier_2": 0.86,
-            "precision_tier_3": 0.88,
-            "cost_per_classification": "$0.00375",
-            "latency_p50_ms": 487,
-            "latency_p95_ms": 892,
-            "latency_p99_ms": 1234,
-            "consensus_rate": 0.82,
-            "agent_agreement": {
-                "skeptic_neutral": 0.73,
-                "optimist_neutral": 0.76,
-                "skeptic_optimist": 0.65,
-            },
-        },
-        "autogen_gpt4": {
-            "accuracy": 0.837,
-            "precision_tier_1": 0.88,
-            "precision_tier_2": 0.82,
-            "precision_tier_3": 0.85,
-            "cost_per_classification": "$0.03",
-            "latency_p50_ms": 1342,
-            "latency_p95_ms": 2876,
-            "latency_p99_ms": 3421,
-            "consensus_rate": 0.79,
-            "agent_agreement": {
-                "skeptic_neutral": 0.70,
-                "optimist_neutral": 0.72,
-                "skeptic_optimist": 0.62,
-            },
-        },
-        "improvement": {
-            "accuracy": "+3.7% (DTE-validated improvement)",
-            "cost": "-87.5% (Gemini $1.25/M vs GPT-4 $10/M tokens)",
-            "latency_p99": "-64% (1234ms vs 3421ms)",
-            "consensus": "+3.8% (better agent agreement)",
-            "total_value": "8× cheaper, faster, more accurate",
-        },
-        "migration_recommendation": "✅ Migrate to Gemini immediately. No downside vs. AutoGen.",
-    }
+  }
+  ```
+  """
+  # Mock benchmark results (in production, run actual tests)
+  return {
+    "test_dataset": {
+      "size": 1000,
+      "distribution": {"tier_1": 180, "tier_2": 520, "tier_3": 300},
+      "human_labeled": True,
+    },
+    "gemini_2_0_flash": {
+      "accuracy": 0.874,
+      "precision_tier_1": 0.91,
+      "precision_tier_2": 0.86,
+      "precision_tier_3": 0.88,
+      "cost_per_classification": "$0.00375",
+      "latency_p50_ms": 487,
+      "latency_p95_ms": 892,
+      "latency_p99_ms": 1234,
+      "consensus_rate": 0.82,
+      "agent_agreement": {
+        "skeptic_neutral": 0.73,
+        "optimist_neutral": 0.76,
+        "skeptic_optimist": 0.65,
+      },
+    },
+    "autogen_gpt4": {
+      "accuracy": 0.837,
+      "precision_tier_1": 0.88,
+      "precision_tier_2": 0.82,
+      "precision_tier_3": 0.85,
+      "cost_per_classification": "$0.03",
+      "latency_p50_ms": 1342,
+      "latency_p95_ms": 2876,
+      "latency_p99_ms": 3421,
+      "consensus_rate": 0.79,
+      "agent_agreement": {
+        "skeptic_neutral": 0.70,
+        "optimist_neutral": 0.72,
+        "skeptic_optimist": 0.62,
+      },
+    },
+    "improvement": {
+      "accuracy": "+3.7% (DTE-validated improvement)",
+      "cost": "-87.5% (Gemini $1.25/M vs GPT-4 $10/M tokens)",
+      "latency_p99": "-64% (1234ms vs 3421ms)",
+      "consensus": "+3.8% (better agent agreement)",
+      "total_value": "8× cheaper, faster, more accurate",
+    },
+    "migration_recommendation": "✅ Migrate to Gemini immediately. No downside vs. AutoGen.",
+  }
 
 
 @router.post(
-    "/function-calling/atp-519",
-    summary="Test ATP 5-19 function calling",
-    description="""
+  "/function-calling/atp-519",
+  summary="Test ATP 5-19 function calling",
+  description="""
     Test Gemini function calling for ATP 5-19 validation tools.
 
     Replaces AutoGen's code_execution_config with native Gemini function calling:
@@ -363,7 +367,7 @@ async def benchmark_gemini_vs_autogen():
     """,
 )
 async def test_function_calling(domain: str, content: str, source_id: str):
-    """
+  """
     Test Gemini function calling for ATP 5-19 tools.
 
     **Example:**
@@ -395,38 +399,40 @@ async def test_function_calling(domain: str, content: str, source_id: str):
     }
     ```
     """
-    # Mock function calling results (in production, call actual ATP 5-19 engine)
-    return {
-        "source_reliability": {
-            "domain": domain,
-            "rating": "A (Completely Reliable)" if ".gov" in domain or "reuters" in domain else "C (Fairly Reliable)",
-            "confidence": 0.95 if ".gov" in domain else 0.75,
-        },
-        "credibility": {
-            "content_hash": f"blake3:{hash(content) % 10000:04x}",
-            "score": 2,  # Probably True
-            "description": "Probably True (based on source reliability and content analysis)",
-            "cross_references": 3,  # Mock
-        },
-        "glicko_rating": {
-            "source_id": source_id,
-            "rating": 1625 if "reuters" in source_id else 1450,
-            "deviation": 85,
-            "volatility": 0.055,
-            "interpretation": "High trust, low uncertainty",
-        },
-        "note": "Function calling allows agents to invoke ATP 5-19 rules during debate rounds",
-    }
+  # Mock function calling results (in production, call actual ATP 5-19 engine)
+  return {
+    "source_reliability": {
+      "domain": domain,
+      "rating": "A (Completely Reliable)"
+      if ".gov" in domain or "reuters" in domain
+      else "C (Fairly Reliable)",
+      "confidence": 0.95 if ".gov" in domain else 0.75,
+    },
+    "credibility": {
+      "content_hash": f"blake3:{hash(content) % 10000:04x}",
+      "score": 2,  # Probably True
+      "description": "Probably True (based on source reliability and content analysis)",
+      "cross_references": 3,  # Mock
+    },
+    "glicko_rating": {
+      "source_id": source_id,
+      "rating": 1625 if "reuters" in source_id else 1450,
+      "deviation": 85,
+      "volatility": 0.055,
+      "interpretation": "High trust, low uncertainty",
+    },
+    "note": "Function calling allows agents to invoke ATP 5-19 rules during debate rounds",
+  }
 
 
 @router.get("/health")
 async def health_check():
-    """Health check for Gemini agents service"""
-    return {
-        "status": "healthy",
-        "service": "gemini_agents",
-        "autogen_migration": "complete",
-        "available_agents": ["skeptic", "optimist", "neutral"],
-        "cost_vs_autogen": "-87.5% (Gemini $1.25/M vs GPT-4 $10/M)",
-        "accuracy_improvement": "+3.7% (DTE-validated)",
-    }
+  """Health check for Gemini agents service"""
+  return {
+    "status": "healthy",
+    "service": "gemini_agents",
+    "autogen_migration": "complete",
+    "available_agents": ["skeptic", "optimist", "neutral"],
+    "cost_vs_autogen": "-87.5% (Gemini $1.25/M vs GPT-4 $10/M)",
+    "accuracy_improvement": "+3.7% (DTE-validated)",
+  }

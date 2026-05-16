@@ -27,20 +27,20 @@ from google.adk.agents.llm_agent import Agent
 import requests
 
 LABEL_TO_OWNER = {
-    "agent engine": "yeesian",
-    "documentation": "polong-lin",
-    "services": "DeanChensj",
-    "question": "",
-    "mcp": "seanzhou1023",
-    "tools": "seanzhou1023",
-    "eval": "ankursharmas",
-    "live": "hangfei",
-    "models": "genquan9",
-    "tracing": "jawoszek",
-    "core": "Jacksunwei",
-    "web": "wyf7107",
-    "a2a": "seanzhou1023",
-    "bq": "shobsi",
+  "agent engine": "yeesian",
+  "documentation": "polong-lin",
+  "services": "DeanChensj",
+  "question": "",
+  "mcp": "seanzhou1023",
+  "tools": "seanzhou1023",
+  "eval": "ankursharmas",
+  "live": "hangfei",
+  "models": "genquan9",
+  "tracing": "jawoszek",
+  "core": "Jacksunwei",
+  "web": "wyf7107",
+  "a2a": "seanzhou1023",
+  "bq": "shobsi",
 }
 
 LABEL_GUIDELINES = """
@@ -73,119 +73,125 @@ LABEL_GUIDELINES = """
 
 APPROVAL_INSTRUCTION = "Do not ask for user approval for labeling! If you can't find appropriate labels for the issue, do not label it."
 if IS_INTERACTIVE:
-    APPROVAL_INSTRUCTION = "Only label them when the user approves the labeling!"
+  APPROVAL_INSTRUCTION = "Only label them when the user approves the labeling!"
 
 
 def list_planned_untriaged_issues(issue_count: int) -> dict[str, Any]:
-    """List planned issues without component labels (e.g., core, tools, etc.).
+  """List planned issues without component labels (e.g., core, tools, etc.).
 
-    Args:
-      issue_count: number of issues to return
+  Args:
+    issue_count: number of issues to return
 
-    Returns:
-      The status of this request, with a list of issues when successful.
-    """
-    url = f"{GITHUB_BASE_URL}/search/issues"
-    query = f"repo:{OWNER}/{REPO} is:open is:issue label:planned"
-    params = {
-        "q": query,
-        "sort": "created",
-        "order": "desc",
-        "per_page": issue_count,
-        "page": 1,
-    }
+  Returns:
+    The status of this request, with a list of issues when successful.
+  """
+  url = f"{GITHUB_BASE_URL}/search/issues"
+  query = f"repo:{OWNER}/{REPO} is:open is:issue label:planned"
+  params = {
+    "q": query,
+    "sort": "created",
+    "order": "desc",
+    "per_page": issue_count,
+    "page": 1,
+  }
 
-    try:
-        response = get_request(url, params)
-    except requests.exceptions.RequestException as e:
-        return error_response(f"Error: {e}")
-    issues = response.get("items", [])
+  try:
+    response = get_request(url, params)
+  except requests.exceptions.RequestException as e:
+    return error_response(f"Error: {e}")
+  issues = response.get("items", [])
 
-    # Filter out issues that already have component labels
-    component_labels = set(LABEL_TO_OWNER.keys())
-    untriaged_issues = []
-    for issue in issues:
-        issue_labels = {label["name"] for label in issue.get("labels", [])}
-        # If the issue only has "planned" but no component labels, it's untriaged
-        if not (issue_labels & component_labels):
-            untriaged_issues.append(issue)
-    return {"status": "success", "issues": untriaged_issues}
+  # Filter out issues that already have component labels
+  component_labels = set(LABEL_TO_OWNER.keys())
+  untriaged_issues = []
+  for issue in issues:
+    issue_labels = {label["name"] for label in issue.get("labels", [])}
+    # If the issue only has "planned" but no component labels, it's untriaged
+    if not (issue_labels & component_labels):
+      untriaged_issues.append(issue)
+  return {"status": "success", "issues": untriaged_issues}
 
 
 def add_label_and_owner_to_issue(issue_number: int, label: str) -> dict[str, Any]:
-    """Add the specified label and owner to the given issue number.
+  """Add the specified label and owner to the given issue number.
 
-    Args:
-      issue_number: issue number of the GitHub issue.
-      label: label to assign
+  Args:
+    issue_number: issue number of the GitHub issue.
+    label: label to assign
 
-    Returns:
-      The the status of this request, with the applied label and assigned owner
-      when successful.
-    """
-    print(f"Attempting to add label '{label}' to issue #{issue_number}")
-    if label not in LABEL_TO_OWNER:
-        return error_response(f"Error: Label '{label}' is not an allowed label. Will not apply.")
+  Returns:
+    The the status of this request, with the applied label and assigned owner
+    when successful.
+  """
+  print(f"Attempting to add label '{label}' to issue #{issue_number}")
+  if label not in LABEL_TO_OWNER:
+    return error_response(
+      f"Error: Label '{label}' is not an allowed label. Will not apply."
+    )
 
-    label_url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/labels"
-    label_payload = [label]
+  label_url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/labels"
+  label_payload = [label]
 
-    try:
-        response = post_request(label_url, label_payload)
-    except requests.exceptions.RequestException as e:
-        return error_response(f"Error: {e}")
+  try:
+    response = post_request(label_url, label_payload)
+  except requests.exceptions.RequestException as e:
+    return error_response(f"Error: {e}")
 
-    owner = LABEL_TO_OWNER.get(label, None)
-    if not owner:
-        return {
-            "status": "warning",
-            "message": (f"{response}\n\nLabel '{label}' does not have an owner. Will not assign."),
-            "applied_label": label,
-        }
-
-    assignee_url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/assignees"
-    assignee_payload = {"assignees": [owner]}
-
-    try:
-        response = post_request(assignee_url, assignee_payload)
-    except requests.exceptions.RequestException as e:
-        return error_response(f"Error: {e}")
-
+  owner = LABEL_TO_OWNER.get(label, None)
+  if not owner:
     return {
-        "status": "success",
-        "message": response,
-        "applied_label": label,
-        "assigned_owner": owner,
+      "status": "warning",
+      "message": (
+        f"{response}\n\nLabel '{label}' does not have an owner. Will not assign."
+      ),
+      "applied_label": label,
     }
+
+  assignee_url = (
+    f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}/assignees"
+  )
+  assignee_payload = {"assignees": [owner]}
+
+  try:
+    response = post_request(assignee_url, assignee_payload)
+  except requests.exceptions.RequestException as e:
+    return error_response(f"Error: {e}")
+
+  return {
+    "status": "success",
+    "message": response,
+    "applied_label": label,
+    "assigned_owner": owner,
+  }
 
 
 def change_issue_type(issue_number: int, issue_type: str) -> dict[str, Any]:
-    """Change the issue type of the given issue number.
+  """Change the issue type of the given issue number.
 
-    Args:
-      issue_number: issue number of the GitHub issue, in string format.
-      issue_type: issue type to assign
+  Args:
+    issue_number: issue number of the GitHub issue, in string format.
+    issue_type: issue type to assign
 
-    Returns:
-      The the status of this request, with the applied issue type when successful.
-    """
-    print(f"Attempting to change issue type '{issue_type}' to issue #{issue_number}")
-    url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}"
-    payload = {"type": issue_type}
+  Returns:
+    The the status of this request, with the applied issue type when successful.
+  """
+  print(f"Attempting to change issue type '{issue_type}' to issue #{issue_number}")
+  url = f"{GITHUB_BASE_URL}/repos/{OWNER}/{REPO}/issues/{issue_number}"
+  payload = {"type": issue_type}
 
-    try:
-        response = patch_request(url, payload)
-    except requests.exceptions.RequestException as e:
-        return error_response(f"Error: {e}")
+  try:
+    response = patch_request(url, payload)
+  except requests.exceptions.RequestException as e:
+    return error_response(f"Error: {e}")
 
-    return {"status": "success", "message": response, "issue_type": issue_type}
+  return {"status": "success", "message": response, "issue_type": issue_type}
 
 
 root_agent = Agent(
-    model="gemini-2.5-pro",
-    name="adk_triaging_assistant",
-    description="Triage ADK issues.",
-    instruction=f"""
+  model="gemini-2.5-pro",
+  name="adk_triaging_assistant",
+  description="Triage ADK issues.",
+  instruction=f"""
       You are a triaging bot for the GitHub {REPO} repo with the owner {OWNER}. You will help get issues, and recommend a label.
       IMPORTANT: {APPROVAL_INSTRUCTION}
 
@@ -228,9 +234,9 @@ root_agent = Agent(
       - your label recommendation and justification
       - the owner of the label if you assign the issue to an owner
     """,
-    tools=[
-        list_planned_untriaged_issues,
-        add_label_and_owner_to_issue,
-        change_issue_type,
-    ],
+  tools=[
+    list_planned_untriaged_issues,
+    add_label_and_owner_to_issue,
+    change_issue_type,
+  ],
 )

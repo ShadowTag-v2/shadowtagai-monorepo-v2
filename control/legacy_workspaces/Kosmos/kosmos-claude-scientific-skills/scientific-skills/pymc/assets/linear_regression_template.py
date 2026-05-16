@@ -48,17 +48,17 @@ predictor_names = ["predictor1", "predictor2", "predictor3"]
 coords = {"predictors": predictor_names, "obs_id": np.arange(len(y))}
 
 with pm.Model(coords=coords) as linear_model:
-    # Priors
-    # TODO: Adjust prior parameters based on your domain knowledge
-    alpha = pm.Normal("alpha", mu=0, sigma=1)
-    beta = pm.Normal("beta", mu=0, sigma=1, dims="predictors")
-    sigma = pm.HalfNormal("sigma", sigma=1)
+  # Priors
+  # TODO: Adjust prior parameters based on your domain knowledge
+  alpha = pm.Normal("alpha", mu=0, sigma=1)
+  beta = pm.Normal("beta", mu=0, sigma=1, dims="predictors")
+  sigma = pm.HalfNormal("sigma", sigma=1)
 
-    # Linear predictor
-    mu = alpha + pm.math.dot(X_scaled, beta)
+  # Linear predictor
+  mu = alpha + pm.math.dot(X_scaled, beta)
 
-    # Likelihood
-    y_obs = pm.Normal("y_obs", mu=mu, sigma=sigma, observed=y, dims="obs_id")
+  # Likelihood
+  y_obs = pm.Normal("y_obs", mu=mu, sigma=sigma, observed=y, dims="obs_id")
 
 # =============================================================================
 # 3. PRIOR PREDICTIVE CHECK
@@ -66,7 +66,7 @@ with pm.Model(coords=coords) as linear_model:
 
 print("Running prior predictive check...")
 with linear_model:
-    prior_pred = pm.sample_prior_predictive(samples=1000, random_seed=42)
+  prior_pred = pm.sample_prior_predictive(samples=1000, random_seed=42)
 
 # Visualize prior predictions
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -82,11 +82,18 @@ print("Prior predictive check saved to 'prior_predictive_check.png'")
 
 print("\nFitting model...")
 with linear_model:
-    # Optional: Quick ADVI exploration
-    # approx = pm.fit(n=20000, random_seed=42)
+  # Optional: Quick ADVI exploration
+  # approx = pm.fit(n=20000, random_seed=42)
 
-    # MCMC sampling
-    idata = pm.sample(draws=2000, tune=1000, chains=4, target_accept=0.9, random_seed=42, idata_kwargs={"log_likelihood": True})
+  # MCMC sampling
+  idata = pm.sample(
+    draws=2000,
+    tune=1000,
+    chains=4,
+    target_accept=0.9,
+    random_seed=42,
+    idata_kwargs={"log_likelihood": True},
+  )
 
 print("Sampling complete!")
 
@@ -106,26 +113,26 @@ print(summary)
 # Check convergence
 bad_rhat = summary[summary["r_hat"] > 1.01]
 if len(bad_rhat) > 0:
-    print(f"\n⚠️  WARNING: {len(bad_rhat)} parameters with R-hat > 1.01")
-    print(bad_rhat[["r_hat"]])
+  print(f"\n⚠️  WARNING: {len(bad_rhat)} parameters with R-hat > 1.01")
+  print(bad_rhat[["r_hat"]])
 else:
-    print("\n✓ All R-hat values < 1.01 (good convergence)")
+  print("\n✓ All R-hat values < 1.01 (good convergence)")
 
 # Check effective sample size
 low_ess = summary[summary["ess_bulk"] < 400]
 if len(low_ess) > 0:
-    print(f"\n⚠️  WARNING: {len(low_ess)} parameters with ESS < 400")
-    print(low_ess[["ess_bulk", "ess_tail"]])
+  print(f"\n⚠️  WARNING: {len(low_ess)} parameters with ESS < 400")
+  print(low_ess[["ess_bulk", "ess_tail"]])
 else:
-    print("\n✓ All ESS values > 400 (sufficient samples)")
+  print("\n✓ All ESS values > 400 (sufficient samples)")
 
 # Check divergences
 divergences = idata.sample_stats.diverging.sum().item()
 if divergences > 0:
-    print(f"\n⚠️  WARNING: {divergences} divergent transitions")
-    print("   Consider increasing target_accept or reparameterizing")
+  print(f"\n⚠️  WARNING: {divergences} divergent transitions")
+  print("   Consider increasing target_accept or reparameterizing")
 else:
-    print("\n✓ No divergences")
+  print("\n✓ No divergences")
 
 # Trace plots
 fig, axes = plt.subplots(len(["alpha", "beta", "sigma"]), 2, figsize=(12, 8))
@@ -140,7 +147,7 @@ print("\nTrace plots saved to 'trace_plots.png'")
 
 print("\nRunning posterior predictive check...")
 with linear_model:
-    pm.sample_posterior_predictive(idata, extend_inferencedata=True, random_seed=42)
+  pm.sample_posterior_predictive(idata, extend_inferencedata=True, random_seed=42)
 
 # Visualize fit
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -176,9 +183,11 @@ print("COEFFICIENT ESTIMATES")
 print("=" * 60)
 beta_samples = idata.posterior["beta"]
 for i, name in enumerate(predictor_names):
-    mean = beta_samples.sel(predictors=name).mean().item()
-    hdi = az.hdi(beta_samples.sel(predictors=name), hdi_prob=0.95)
-    print(f"{name:20s}: {mean:7.3f}  [95% HDI: {hdi.values[0]:7.3f}, {hdi.values[1]:7.3f}]")
+  mean = beta_samples.sel(predictors=name).mean().item()
+  hdi = az.hdi(beta_samples.sel(predictors=name), hdi_prob=0.95)
+  print(
+    f"{name:20s}: {mean:7.3f}  [95% HDI: {hdi.values[0]:7.3f}, {hdi.values[1]:7.3f}]"
+  )
 
 # =============================================================================
 # 8. PREDICTIONS FOR NEW DATA
@@ -193,9 +202,11 @@ X_new_scaled = (X_new - X_mean) / X_std
 
 # Update model data and predict
 with linear_model:
-    pm.set_data({"X_scaled": X_new_scaled, "obs_id": np.arange(len(X_new))})
+  pm.set_data({"X_scaled": X_new_scaled, "obs_id": np.arange(len(X_new))})
 
-    post_pred = pm.sample_posterior_predictive(idata.posterior, var_names=["y_obs"], random_seed=42)
+  post_pred = pm.sample_posterior_predictive(
+    idata.posterior, var_names=["y_obs"], random_seed=42
+  )
 
 # Extract predictions
 y_pred_samples = post_pred.posterior_predictive["y_obs"]
@@ -208,7 +219,9 @@ print("=" * 60)
 print(f"{'Index':<10} {'Mean':<15} {'95% HDI Lower':<15} {'95% HDI Upper':<15}")
 print("-" * 60)
 for i in range(len(X_new)):
-    print(f"{i:<10} {y_pred_mean[i]:<15.3f} {y_pred_hdi[i, 0]:<15.3f} {y_pred_hdi[i, 1]:<15.3f}")
+  print(
+    f"{i:<10} {y_pred_mean[i]:<15.3f} {y_pred_hdi[i, 0]:<15.3f} {y_pred_hdi[i, 1]:<15.3f}"
+  )
 
 # =============================================================================
 # 9. SAVE RESULTS

@@ -127,15 +127,15 @@ HISTORY:
 """
 
 from kosmos.world_model.interface import (
-    EntityManager,
-    ProvenanceTracker,
-    WorldModelStorage,
+  EntityManager,
+  ProvenanceTracker,
+  WorldModelStorage,
 )
 from kosmos.world_model.models import (
-    EXPORT_FORMAT_VERSION,
-    Annotation,
-    Entity,
-    Relationship,
+  EXPORT_FORMAT_VERSION,
+  Annotation,
+  Entity,
+  Relationship,
 )
 
 # Factory (Day 5 - COMPLETE)
@@ -145,22 +145,22 @@ from kosmos.world_model.factory import get_world_model, reset_world_model
 from kosmos.world_model.artifacts import ArtifactStateManager, Finding, Hypothesis
 
 __all__ = [
-    # Interfaces
-    "WorldModelStorage",
-    "EntityManager",
-    "ProvenanceTracker",
-    # Models
-    "Entity",
-    "Relationship",
-    "Annotation",
-    "EXPORT_FORMAT_VERSION",
-    # Factory
-    "get_world_model",
-    "reset_world_model",
-    # Artifact State Manager (Gap 1)
-    "ArtifactStateManager",
-    "Finding",
-    "Hypothesis",
+  # Interfaces
+  "WorldModelStorage",
+  "EntityManager",
+  "ProvenanceTracker",
+  # Models
+  "Entity",
+  "Relationship",
+  "Annotation",
+  "EXPORT_FORMAT_VERSION",
+  # Factory
+  "get_world_model",
+  "reset_world_model",
+  # Artifact State Manager (Gap 1)
+  "ArtifactStateManager",
+  "Finding",
+  "Hypothesis",
 ]
 
 __version__ = "0.1.0"  # World model module version

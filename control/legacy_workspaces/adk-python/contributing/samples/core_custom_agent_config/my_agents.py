@@ -29,33 +29,37 @@ from typing_extensions import override
 
 
 class MyCustomAgentConfig(BaseAgentConfig):
-    model_config = ConfigDict(
-        extra="forbid",
-    )
-    agent_class: str = "core_custom_agent_config.my_agents.MyCustomAgent"
-    my_field: str = ""
+  model_config = ConfigDict(
+    extra="forbid",
+  )
+  agent_class: str = "core_custom_agent_config.my_agents.MyCustomAgent"
+  my_field: str = ""
 
 
 class MyCustomAgent(BaseAgent):
-    my_field: str = ""
+  my_field: str = ""
 
-    config_type: ClassVar[type[BaseAgentConfig]] = MyCustomAgentConfig
+  config_type: ClassVar[type[BaseAgentConfig]] = MyCustomAgentConfig
 
-    @override
-    @classmethod
-    def _parse_config(
-        cls: type[MyCustomAgent],
-        config: MyCustomAgentConfig,
-        config_abs_path: str,
-        kwargs: dict[str, Any],
-    ) -> dict[str, Any]:
-        if config.my_field:
-            kwargs["my_field"] = config.my_field
-        return kwargs
+  @override
+  @classmethod
+  def _parse_config(
+    cls: type[MyCustomAgent],
+    config: MyCustomAgentConfig,
+    config_abs_path: str,
+    kwargs: dict[str, Any],
+  ) -> dict[str, Any]:
+    if config.my_field:
+      kwargs["my_field"] = config.my_field
+    return kwargs
 
-    async def _run_async_impl(self, ctx: InvocationContext) -> AsyncGenerator[Event, None]:
-        yield Event(
-            invocation_id=ctx.invocation_id,
-            author=self.name,
-            content=types.ModelContent(parts=[types.Part(text=f"I feel good! value in my_field: `{self.my_field}`")]),
-        )
+  async def _run_async_impl(
+    self, ctx: InvocationContext
+  ) -> AsyncGenerator[Event, None]:
+    yield Event(
+      invocation_id=ctx.invocation_id,
+      author=self.name,
+      content=types.ModelContent(
+        parts=[types.Part(text=f"I feel good! value in my_field: `{self.my_field}`")]
+      ),
+    )

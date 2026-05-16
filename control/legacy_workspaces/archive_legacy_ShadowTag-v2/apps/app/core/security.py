@@ -16,195 +16,197 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2
 
 
 class SecretManager:
+  """
+  Manages secrets and sensitive configuration.
+
+  Supports:
+  - Environment variable loading
+  - YAML secrets file
+  - Encrypted storage
+  """
+
+  def __init__(
+    self, secrets_file: Path | None = None, encryption_key: bytes | None = None
+  ):
     """
-    Manages secrets and sensitive configuration.
+    Initialize secret manager.
 
-    Supports:
-    - Environment variable loading
-    - YAML secrets file
-    - Encrypted storage
+    Args:
+        secrets_file: Path to secrets YAML file
+        encryption_key: Optional encryption key for encrypted secrets
     """
+    self.secrets_file = secrets_file or Path("configs/secrets.yml")
+    self.encryption_key = encryption_key
+    self._secrets: dict[str, Any] = {}
+    self._cipher = None
 
-    def __init__(self, secrets_file: Path | None = None, encryption_key: bytes | None = None):
-        """
-        Initialize secret manager.
+    if encryption_key:
+      self._cipher = Fernet(encryption_key)
 
-        Args:
-            secrets_file: Path to secrets YAML file
-            encryption_key: Optional encryption key for encrypted secrets
-        """
-        self.secrets_file = secrets_file or Path("configs/secrets.yml")
-        self.encryption_key = encryption_key
-        self._secrets: dict[str, Any] = {}
-        self._cipher = None
+    self._load_secrets()
 
-        if encryption_key:
-            self._cipher = Fernet(encryption_key)
+  def _load_secrets(self) -> None:
+    """Load secrets from file and environment"""
+    # Load from file if exists
+    if self.secrets_file.exists():
+      with open(self.secrets_file) as f:
+        self._secrets = yaml.safe_load(f) or {}
 
-        self._load_secrets()
+    # Override with environment variables
+    for key, value in os.environ.items():
+      if key.startswith("SHADOWTAG_"):
+        clean_key = key.replace("SHADOWTAG_", "").lower()
+        self._secrets[clean_key] = value
 
-    def _load_secrets(self) -> None:
-        """Load secrets from file and environment"""
-        # Load from file if exists
-        if self.secrets_file.exists():
-            with open(self.secrets_file) as f:
-                self._secrets = yaml.safe_load(f) or {}
+  def get(self, key: str, default: Any = None, decrypt: bool = False) -> Any:
+    """
+    Get a secret value.
 
-        # Override with environment variables
-        for key, value in os.environ.items():
-            if key.startswith("SHADOWTAG_"):
-                clean_key = key.replace("SHADOWTAG_", "").lower()
-                self._secrets[clean_key] = value
+    Args:
+        key: Secret key (supports dot notation, e.g., 'database.password')
+        default: Default value if key not found
+        decrypt: Whether to decrypt the value
 
-    def get(self, key: str, default: Any = None, decrypt: bool = False) -> Any:
-        """
-        Get a secret value.
+    Returns:
+        Secret value
+    """
+    # Navigate nested dict using dot notation
+    parts = key.split(".")
+    value = self._secrets
 
-        Args:
-            key: Secret key (supports dot notation, e.g., 'database.password')
-            default: Default value if key not found
-            decrypt: Whether to decrypt the value
+    for part in parts:
+      if isinstance(value, dict):
+        value = value.get(part)
+      else:
+        return default
 
-        Returns:
-            Secret value
-        """
-        # Navigate nested dict using dot notation
-        parts = key.split(".")
-        value = self._secrets
+      if value is None:
+        return default
 
-        for part in parts:
-            if isinstance(value, dict):
-                value = value.get(part)
-            else:
-                return default
+    # Decrypt if requested and cipher available
+    if decrypt and self._cipher and isinstance(value, str):
+      try:
+        value = self._cipher.decrypt(value.encode()).decode()
+      except Exception:
+        pass  # Return encrypted value if decryption fails
 
-            if value is None:
-                return default
+    return value
 
-        # Decrypt if requested and cipher available
-        if decrypt and self._cipher and isinstance(value, str):
-            try:
-                value = self._cipher.decrypt(value.encode()).decode()
-            except Exception:
-                pass  # Return encrypted value if decryption fails
+  def set(self, key: str, value: Any, encrypt: bool = False) -> None:
+    """
+    Set a secret value (in memory only).
 
-        return value
+    Args:
+        key: Secret key
+        value: Secret value
+        encrypt: Whether to encrypt the value
+    """
+    # Encrypt if requested and cipher available
+    if encrypt and self._cipher:
+      value = self._cipher.encrypt(str(value).encode()).decode()
 
-    def set(self, key: str, value: Any, encrypt: bool = False) -> None:
-        """
-        Set a secret value (in memory only).
+    # Handle nested keys
+    parts = key.split(".")
+    target = self._secrets
 
-        Args:
-            key: Secret key
-            value: Secret value
-            encrypt: Whether to encrypt the value
-        """
-        # Encrypt if requested and cipher available
-        if encrypt and self._cipher:
-            value = self._cipher.encrypt(str(value).encode()).decode()
+    for part in parts[:-1]:
+      if part not in target:
+        target[part] = {}
+      target = target[part]
 
-        # Handle nested keys
-        parts = key.split(".")
-        target = self._secrets
+    target[parts[-1]] = value
 
-        for part in parts[:-1]:
-            if part not in target:
-                target[part] = {}
-            target = target[part]
+  def save(self, filepath: Path | None = None) -> None:
+    """
+    Save secrets to file.
 
-        target[parts[-1]] = value
+    WARNING: Only save to secure locations!
 
-    def save(self, filepath: Path | None = None) -> None:
-        """
-        Save secrets to file.
+    Args:
+        filepath: Path to save to (uses default if None)
+    """
+    path = filepath or self.secrets_file
+    path.parent.mkdir(parents=True, exist_ok=True)
 
-        WARNING: Only save to secure locations!
+    with open(path, "w") as f:
+      yaml.dump(self._secrets, f, default_flow_style=False)
 
-        Args:
-            filepath: Path to save to (uses default if None)
-        """
-        path = filepath or self.secrets_file
-        path.parent.mkdir(parents=True, exist_ok=True)
+  @staticmethod
+  def generate_key(password: str, salt: bytes | None = None) -> bytes:
+    """
+    Generate encryption key from password.
 
-        with open(path, "w") as f:
-            yaml.dump(self._secrets, f, default_flow_style=False)
+    Args:
+        password: Password to derive key from
+        salt: Optional salt (generated if None)
 
-    @staticmethod
-    def generate_key(password: str, salt: bytes | None = None) -> bytes:
-        """
-        Generate encryption key from password.
+    Returns:
+        Encryption key
+    """
+    if salt is None:
+      salt = os.urandom(16)
 
-        Args:
-            password: Password to derive key from
-            salt: Optional salt (generated if None)
+    kdf = PBKDF2(
+      algorithm=hashes.SHA256(),
+      length=32,
+      salt=salt,
+      iterations=100000,
+      backend=default_backend(),
+    )
 
-        Returns:
-            Encryption key
-        """
-        if salt is None:
-            salt = os.urandom(16)
-
-        kdf = PBKDF2(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=salt,
-            iterations=100000,
-            backend=default_backend(),
-        )
-
-        key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
-        return key
+    key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
+    return key
 
 
 class EnvironmentLoader:
-    """Load and validate environment variables"""
+  """Load and validate environment variables"""
 
-    @staticmethod
-    def load_dotenv(env_file: Path = Path(".env")) -> dict[str, str]:
-        """
-        Load environment variables from .env file.
+  @staticmethod
+  def load_dotenv(env_file: Path = Path(".env")) -> dict[str, str]:
+    """
+    Load environment variables from .env file.
 
-        Args:
-            env_file: Path to .env file
+    Args:
+        env_file: Path to .env file
 
-        Returns:
-            Dictionary of environment variables
-        """
-        env_vars = {}
+    Returns:
+        Dictionary of environment variables
+    """
+    env_vars = {}
 
-        if env_file.exists():
-            with open(env_file) as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#"):
-                        key, _, value = line.partition("=")
-                        key = key.strip()
-                        value = value.strip().strip('"').strip("'")
-                        env_vars[key] = value
-                        os.environ[key] = value
+    if env_file.exists():
+      with open(env_file) as f:
+        for line in f:
+          line = line.strip()
+          if line and not line.startswith("#"):
+            key, _, value = line.partition("=")
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            env_vars[key] = value
+            os.environ[key] = value
 
-        return env_vars
+    return env_vars
 
-    @staticmethod
-    def validate_required(required_vars: list) -> bool:
-        """
-        Validate that required environment variables are set.
+  @staticmethod
+  def validate_required(required_vars: list) -> bool:
+    """
+    Validate that required environment variables are set.
 
-        Args:
-            required_vars: List of required variable names
+    Args:
+        required_vars: List of required variable names
 
-        Returns:
-            True if all required vars are set
+    Returns:
+        True if all required vars are set
 
-        Raises:
-            ValueError: If any required var is missing
-        """
-        missing = [var for var in required_vars if var not in os.environ]
+    Raises:
+        ValueError: If any required var is missing
+    """
+    missing = [var for var in required_vars if var not in os.environ]
 
-        if missing:
-            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+    if missing:
+      raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
 
-        return True
+    return True
 
 
 # Global secret manager instance
@@ -212,24 +214,24 @@ _secret_manager: SecretManager | None = None
 
 
 def get_secret_manager() -> SecretManager:
-    """Get global secret manager instance"""
-    global _secret_manager
+  """Get global secret manager instance"""
+  global _secret_manager
 
-    if _secret_manager is None:
-        _secret_manager = SecretManager()
+  if _secret_manager is None:
+    _secret_manager = SecretManager()
 
-    return _secret_manager
+  return _secret_manager
 
 
 def get_secret(key: str, default: Any = None) -> Any:
-    """
-    Convenience function to get a secret.
+  """
+  Convenience function to get a secret.
 
-    Args:
-        key: Secret key
-        default: Default value
+  Args:
+      key: Secret key
+      default: Default value
 
-    Returns:
-        Secret value
-    """
-    return get_secret_manager().get(key, default)
+  Returns:
+      Secret value
+  """
+  return get_secret_manager().get(key, default)

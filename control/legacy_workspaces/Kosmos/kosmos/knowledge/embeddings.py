@@ -16,305 +16,337 @@ logger = logging.getLogger(__name__)
 
 # Optional dependency - sentence_transformers
 try:
-    from sentence_transformers import SentenceTransformer
+  from sentence_transformers import SentenceTransformer
 
-    HAS_SENTENCE_TRANSFORMERS = True
+  HAS_SENTENCE_TRANSFORMERS = True
 except ImportError:
-    logger.warning("sentence_transformers not installed. Install with: pip install sentence-transformers")
-    HAS_SENTENCE_TRANSFORMERS = False
-    SentenceTransformer = None
+  logger.warning(
+    "sentence_transformers not installed. Install with: pip install sentence-transformers"
+  )
+  HAS_SENTENCE_TRANSFORMERS = False
+  SentenceTransformer = None
 
 
 class PaperEmbedder:
+  """
+  Generate embeddings for scientific papers using SPECTER.
+
+  SPECTER (Scientific Paper Embeddings using Citation-informed TransformERs)
+  produces high-quality embeddings for scientific papers that capture semantic
+  similarity better than general-purpose models.
+
+  Model: allenai/specter (768-dim)
+  Paper: https://arxiv.org/abs/2004.07180
+  """
+
+  def __init__(
+    self,
+    model_name: str = "allenai/specter",
+    cache_dir: str | None = None,
+    device: str | None = None,
+  ):
     """
-    Generate embeddings for scientific papers using SPECTER.
+    Initialize the paper embedder.
 
-    SPECTER (Scientific Paper Embeddings using Citation-informed TransformERs)
-    produces high-quality embeddings for scientific papers that capture semantic
-    similarity better than general-purpose models.
+    Args:
+        model_name: Model name or path (default: "allenai/specter")
+        cache_dir: Directory to cache model files (default: ~/.cache/huggingface)
+        device: Device to use ("cuda", "cpu", or None for auto)
 
-    Model: allenai/specter (768-dim)
-    Paper: https://arxiv.org/abs/2004.07180
+    Note:
+        First run will download ~440MB model. Subsequent runs use cached version.
     """
+    if not HAS_SENTENCE_TRANSFORMERS:
+      logger.warning(
+        "SentenceTransformers not available. PaperEmbedder will not function."
+      )
+      self.model = None
+      self.model_name = model_name
+      self.embedding_dim = 768  # Default SPECTER dimension
+      return
 
-    def __init__(self, model_name: str = "allenai/specter", cache_dir: str | None = None, device: str | None = None):
-        """
-        Initialize the paper embedder.
+    self.model_name = model_name
 
-        Args:
-            model_name: Model name or path (default: "allenai/specter")
-            cache_dir: Directory to cache model files (default: ~/.cache/huggingface)
-            device: Device to use ("cuda", "cpu", or None for auto)
+    # Set cache directory if provided
+    if cache_dir:
+      cache_path = Path(cache_dir)
+      cache_path.mkdir(parents=True, exist_ok=True)
 
-        Note:
-            First run will download ~440MB model. Subsequent runs use cached version.
-        """
-        if not HAS_SENTENCE_TRANSFORMERS:
-            logger.warning("SentenceTransformers not available. PaperEmbedder will not function.")
-            self.model = None
-            self.model_name = model_name
-            self.embedding_dim = 768  # Default SPECTER dimension
-            return
+    logger.info(f"Loading SPECTER model: {model_name}")
+    logger.info("First run may take a few minutes to download model (~440MB)")
 
-        self.model_name = model_name
+    try:
+      self.model = SentenceTransformer(
+        model_name, cache_folder=cache_dir, device=device
+      )
+      self.embedding_dim = self.model.get_sentence_embedding_dimension()
 
-        # Set cache directory if provided
-        if cache_dir:
-            cache_path = Path(cache_dir)
-            cache_path.mkdir(parents=True, exist_ok=True)
+      logger.info(
+        f"Loaded SPECTER model (embedding_dim={self.embedding_dim}, device={self.model.device})"
+      )
 
-        logger.info(f"Loading SPECTER model: {model_name}")
-        logger.info("First run may take a few minutes to download model (~440MB)")
+    except Exception as e:
+      logger.error(f"Error loading SPECTER model: {e}")
+      raise
 
-        try:
-            self.model = SentenceTransformer(model_name, cache_folder=cache_dir, device=device)
-            self.embedding_dim = self.model.get_sentence_embedding_dimension()
+  def embed_paper(self, paper: PaperMetadata) -> np.ndarray:
+    """
+    Generate embedding for a single paper.
 
-            logger.info(f"Loaded SPECTER model (embedding_dim={self.embedding_dim}, device={self.model.device})")
+    Uses title + abstract for embedding generation (SPECTER's recommended input).
 
-        except Exception as e:
-            logger.error(f"Error loading SPECTER model: {e}")
-            raise
+    Args:
+        paper: PaperMetadata object
 
-    def embed_paper(self, paper: PaperMetadata) -> np.ndarray:
-        """
-        Generate embedding for a single paper.
+    Returns:
+        768-dimensional embedding vector
 
-        Uses title + abstract for embedding generation (SPECTER's recommended input).
+    Example:
+        ```python
+        embedder = PaperEmbedder()
+        embedding = embedder.embed_paper(paper)
+        print(embedding.shape)  # (768,)
+        ```
+    """
+    text = self._paper_to_text(paper)
 
-        Args:
-            paper: PaperMetadata object
+    # Check if model is available
+    if self.model is None:
+      logger.warning("Embedding model not available. Returning zero vector.")
+      return np.zeros(self.embedding_dim, dtype=np.float32)
 
-        Returns:
-            768-dimensional embedding vector
+    try:
+      embedding = self.model.encode(
+        text, convert_to_numpy=True, show_progress_bar=False
+      )
+      return embedding
 
-        Example:
-            ```python
-            embedder = PaperEmbedder()
-            embedding = embedder.embed_paper(paper)
-            print(embedding.shape)  # (768,)
-            ```
-        """
-        text = self._paper_to_text(paper)
+    except Exception as e:
+      logger.error(f"Error embedding paper {paper.id}: {e}")
+      # Return zero vector on error
+      return np.zeros(self.embedding_dim, dtype=np.float32)
 
-        # Check if model is available
-        if self.model is None:
-            logger.warning("Embedding model not available. Returning zero vector.")
-            return np.zeros(self.embedding_dim, dtype=np.float32)
+  def embed_papers(
+    self, papers: list[PaperMetadata], batch_size: int = 32, show_progress: bool = True
+  ) -> np.ndarray:
+    """
+    Generate embeddings for multiple papers in batches.
 
-        try:
-            embedding = self.model.encode(text, convert_to_numpy=True, show_progress_bar=False)
-            return embedding
+    Args:
+        papers: List of PaperMetadata objects
+        batch_size: Batch size for encoding (default: 32)
+        show_progress: Whether to show progress bar
 
-        except Exception as e:
-            logger.error(f"Error embedding paper {paper.id}: {e}")
-            # Return zero vector on error
-            return np.zeros(self.embedding_dim, dtype=np.float32)
+    Returns:
+        Array of shape (n_papers, 768)
 
-    def embed_papers(self, papers: list[PaperMetadata], batch_size: int = 32, show_progress: bool = True) -> np.ndarray:
-        """
-        Generate embeddings for multiple papers in batches.
+    Example:
+        ```python
+        embeddings = embedder.embed_papers(papers, batch_size=32)
+        print(embeddings.shape)  # (n_papers, 768)
 
-        Args:
-            papers: List of PaperMetadata objects
-            batch_size: Batch size for encoding (default: 32)
-            show_progress: Whether to show progress bar
+        # Calculate similarity between first two papers
+        similarity = np.dot(embeddings[0], embeddings[1])
+        ```
+    """
+    if not papers:
+      return np.array([])
 
-        Returns:
-            Array of shape (n_papers, 768)
+    # Check if model is available
+    if self.model is None:
+      logger.warning("Embedding model not available. Returning zero vectors.")
+      return np.zeros((len(papers), self.embedding_dim), dtype=np.float32)
 
-        Example:
-            ```python
-            embeddings = embedder.embed_papers(papers, batch_size=32)
-            print(embeddings.shape)  # (n_papers, 768)
+    texts = [self._paper_to_text(paper) for paper in papers]
 
-            # Calculate similarity between first two papers
-            similarity = np.dot(embeddings[0], embeddings[1])
-            ```
-        """
-        if not papers:
-            return np.array([])
+    try:
+      embeddings = self.model.encode(
+        texts,
+        batch_size=batch_size,
+        convert_to_numpy=True,
+        show_progress_bar=show_progress,
+      )
 
-        # Check if model is available
-        if self.model is None:
-            logger.warning("Embedding model not available. Returning zero vectors.")
-            return np.zeros((len(papers), self.embedding_dim), dtype=np.float32)
+      logger.info(f"Generated embeddings for {len(papers)} papers")
+      return embeddings
 
-        texts = [self._paper_to_text(paper) for paper in papers]
+    except Exception as e:
+      logger.error(f"Error embedding papers: {e}")
+      # Return zero vectors on error
+      return np.zeros((len(papers), self.embedding_dim), dtype=np.float32)
 
-        try:
-            embeddings = self.model.encode(texts, batch_size=batch_size, convert_to_numpy=True, show_progress_bar=show_progress)
+  def embed_query(self, query: str) -> np.ndarray:
+    """
+    Generate embedding for a search query.
 
-            logger.info(f"Generated embeddings for {len(papers)} papers")
-            return embeddings
+    Args:
+        query: Search query string
 
-        except Exception as e:
-            logger.error(f"Error embedding papers: {e}")
-            # Return zero vectors on error
-            return np.zeros((len(papers), self.embedding_dim), dtype=np.float32)
+    Returns:
+        768-dimensional embedding vector
 
-    def embed_query(self, query: str) -> np.ndarray:
-        """
-        Generate embedding for a search query.
+    Example:
+        ```python
+        query_embedding = embedder.embed_query("machine learning for drug discovery")
 
-        Args:
-            query: Search query string
+        # Find most similar papers
+        similarities = np.dot(paper_embeddings, query_embedding)
+        top_indices = np.argsort(similarities)[::-1][:5]
+        ```
+    """
+    # Check if model is available
+    if self.model is None:
+      logger.warning("Embedding model not available. Returning zero vector.")
+      return np.zeros(self.embedding_dim, dtype=np.float32)
 
-        Returns:
-            768-dimensional embedding vector
+    try:
+      embedding = self.model.encode(
+        query, convert_to_numpy=True, show_progress_bar=False
+      )
+      return embedding
 
-        Example:
-            ```python
-            query_embedding = embedder.embed_query("machine learning for drug discovery")
+    except Exception as e:
+      logger.error(f"Error embedding query: {e}")
+      return np.zeros(self.embedding_dim, dtype=np.float32)
 
-            # Find most similar papers
-            similarities = np.dot(paper_embeddings, query_embedding)
-            top_indices = np.argsort(similarities)[::-1][:5]
-            ```
-        """
-        # Check if model is available
-        if self.model is None:
-            logger.warning("Embedding model not available. Returning zero vector.")
-            return np.zeros(self.embedding_dim, dtype=np.float32)
+  def compute_similarity(self, embedding1: np.ndarray, embedding2: np.ndarray) -> float:
+    """
+    Compute cosine similarity between two embeddings.
 
-        try:
-            embedding = self.model.encode(query, convert_to_numpy=True, show_progress_bar=False)
-            return embedding
+    Args:
+        embedding1: First embedding vector
+        embedding2: Second embedding vector
 
-        except Exception as e:
-            logger.error(f"Error embedding query: {e}")
-            return np.zeros(self.embedding_dim, dtype=np.float32)
+    Returns:
+        Similarity score between -1 and 1 (higher = more similar)
 
-    def compute_similarity(self, embedding1: np.ndarray, embedding2: np.ndarray) -> float:
-        """
-        Compute cosine similarity between two embeddings.
+    Example:
+        ```python
+        similarity = embedder.compute_similarity(emb1, emb2)
+        print(f"Similarity: {similarity:.3f}")
+        ```
+    """
+    # Normalize vectors
+    norm1 = np.linalg.norm(embedding1)
+    norm2 = np.linalg.norm(embedding2)
 
-        Args:
-            embedding1: First embedding vector
-            embedding2: Second embedding vector
+    if norm1 == 0 or norm2 == 0:
+      return 0.0
 
-        Returns:
-            Similarity score between -1 and 1 (higher = more similar)
+    # Cosine similarity
+    similarity = np.dot(embedding1, embedding2) / (norm1 * norm2)
 
-        Example:
-            ```python
-            similarity = embedder.compute_similarity(emb1, emb2)
-            print(f"Similarity: {similarity:.3f}")
-            ```
-        """
-        # Normalize vectors
-        norm1 = np.linalg.norm(embedding1)
-        norm2 = np.linalg.norm(embedding2)
+    return float(similarity)
 
-        if norm1 == 0 or norm2 == 0:
-            return 0.0
+  def find_most_similar(
+    self, query_embedding: np.ndarray, paper_embeddings: np.ndarray, top_k: int = 5
+  ) -> list[tuple]:
+    """
+    Find most similar papers to a query.
 
-        # Cosine similarity
-        similarity = np.dot(embedding1, embedding2) / (norm1 * norm2)
+    Args:
+        query_embedding: Query embedding vector (768,)
+        paper_embeddings: Paper embeddings array (n_papers, 768)
+        top_k: Number of top results to return
 
-        return float(similarity)
+    Returns:
+        List of (index, similarity_score) tuples, sorted by similarity
 
-    def find_most_similar(self, query_embedding: np.ndarray, paper_embeddings: np.ndarray, top_k: int = 5) -> list[tuple]:
-        """
-        Find most similar papers to a query.
+    Example:
+        ```python
+        query_emb = embedder.embed_query("CRISPR gene editing")
+        paper_embs = embedder.embed_papers(papers)
 
-        Args:
-            query_embedding: Query embedding vector (768,)
-            paper_embeddings: Paper embeddings array (n_papers, 768)
-            top_k: Number of top results to return
+        top_papers = embedder.find_most_similar(query_emb, paper_embs, top_k=5)
 
-        Returns:
-            List of (index, similarity_score) tuples, sorted by similarity
+        for idx, score in top_papers:
+            print(f"{papers[idx].title}: {score:.3f}")
+        ```
+    """
+    if len(paper_embeddings) == 0:
+      return []
 
-        Example:
-            ```python
-            query_emb = embedder.embed_query("CRISPR gene editing")
-            paper_embs = embedder.embed_papers(papers)
+    # Normalize query
+    query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
 
-            top_papers = embedder.find_most_similar(query_emb, paper_embs, top_k=5)
+    # Normalize papers
+    paper_norms = paper_embeddings / (
+      np.linalg.norm(paper_embeddings, axis=1, keepdims=True) + 1e-8
+    )
 
-            for idx, score in top_papers:
-                print(f"{papers[idx].title}: {score:.3f}")
-            ```
-        """
-        if len(paper_embeddings) == 0:
-            return []
+    # Compute similarities
+    similarities = np.dot(paper_norms, query_norm)
 
-        # Normalize query
-        query_norm = query_embedding / (np.linalg.norm(query_embedding) + 1e-8)
+    # Get top k indices
+    top_indices = np.argsort(similarities)[::-1][:top_k]
 
-        # Normalize papers
-        paper_norms = paper_embeddings / (np.linalg.norm(paper_embeddings, axis=1, keepdims=True) + 1e-8)
+    # Return (index, score) tuples
+    results = [(int(idx), float(similarities[idx])) for idx in top_indices]
 
-        # Compute similarities
-        similarities = np.dot(paper_norms, query_norm)
+    return results
 
-        # Get top k indices
-        top_indices = np.argsort(similarities)[::-1][:top_k]
+  def _paper_to_text(self, paper: PaperMetadata) -> str:
+    """
+    Convert paper to text for embedding.
 
-        # Return (index, score) tuples
-        results = [(int(idx), float(similarities[idx])) for idx in top_indices]
+    SPECTER is trained on title + abstract, so we use that format.
 
-        return results
+    Args:
+        paper: PaperMetadata object
 
-    def _paper_to_text(self, paper: PaperMetadata) -> str:
-        """
-        Convert paper to text for embedding.
+    Returns:
+        Formatted text string
+    """
+    # SPECTER format: title [SEP] abstract
+    title = paper.title.strip() if paper.title else ""
+    abstract = paper.abstract.strip() if paper.abstract else ""
 
-        SPECTER is trained on title + abstract, so we use that format.
+    if title and abstract:
+      # Truncate abstract if too long (SPECTER has 512 token limit)
+      if len(abstract.split()) > 400:
+        abstract_words = abstract.split()[:400]
+        abstract = " ".join(abstract_words) + "..."
 
-        Args:
-            paper: PaperMetadata object
+      return f"{title} [SEP] {abstract}"
 
-        Returns:
-            Formatted text string
-        """
-        # SPECTER format: title [SEP] abstract
-        title = paper.title.strip() if paper.title else ""
-        abstract = paper.abstract.strip() if paper.abstract else ""
+    elif title:
+      return title
 
-        if title and abstract:
-            # Truncate abstract if too long (SPECTER has 512 token limit)
-            if len(abstract.split()) > 400:
-                abstract_words = abstract.split()[:400]
-                abstract = " ".join(abstract_words) + "..."
+    elif abstract:
+      return abstract
 
-            return f"{title} [SEP] {abstract}"
-
-        elif title:
-            return title
-
-        elif abstract:
-            return abstract
-
-        else:
-            logger.warning(f"Paper {paper.id} has no title or abstract")
-            return ""
+    else:
+      logger.warning(f"Paper {paper.id} has no title or abstract")
+      return ""
 
 
 # Singleton embedder instance
 _embedder: PaperEmbedder | None = None
 
 
-def get_embedder(model_name: str = "allenai/specter", cache_dir: str | None = None, device: str | None = None) -> PaperEmbedder:
-    """
-    Get or create the singleton embedder instance.
+def get_embedder(
+  model_name: str = "allenai/specter",
+  cache_dir: str | None = None,
+  device: str | None = None,
+) -> PaperEmbedder:
+  """
+  Get or create the singleton embedder instance.
 
-    Args:
-        model_name: Model name or path
-        cache_dir: Cache directory for model files
-        device: Device to use
+  Args:
+      model_name: Model name or path
+      cache_dir: Cache directory for model files
+      device: Device to use
 
-    Returns:
-        PaperEmbedder instance
-    """
-    global _embedder
-    if _embedder is None:
-        _embedder = PaperEmbedder(model_name=model_name, cache_dir=cache_dir, device=device)
-    return _embedder
+  Returns:
+      PaperEmbedder instance
+  """
+  global _embedder
+  if _embedder is None:
+    _embedder = PaperEmbedder(model_name=model_name, cache_dir=cache_dir, device=device)
+  return _embedder
 
 
 def reset_embedder():
-    """Reset the singleton embedder (useful for testing)."""
-    global _embedder
-    _embedder = None
+  """Reset the singleton embedder (useful for testing)."""
+  global _embedder
+  _embedder = None

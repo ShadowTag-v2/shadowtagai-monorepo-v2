@@ -15,11 +15,21 @@
 
 import textwrap
 
-from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import _DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE
-from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import _get_user_simulator_instructions_template
-from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import _USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE
-from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import get_llm_backed_user_simulator_prompt
-from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import is_valid_user_simulator_template
+from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import (
+  _DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE,
+)
+from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import (
+  _get_user_simulator_instructions_template,
+)
+from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import (
+  _USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE,
+)
+from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import (
+  get_llm_backed_user_simulator_prompt,
+)
+from google.adk.evaluation.simulation.llm_backed_user_simulator_prompts import (
+  is_valid_user_simulator_template,
+)
 from google.adk.evaluation.simulation.user_simulator_personas import UserBehavior
 from google.adk.evaluation.simulation.user_simulator_personas import UserPersona
 import pytest
@@ -61,58 +71,73 @@ _MOCK_PERSONA_TEMPLATE = textwrap.dedent("""\
 
 
 class TestGetUserSimulatorInstructionsTemplate:
-    """Test cases for _get_user_simulator_instructions_template."""
+  """Test cases for _get_user_simulator_instructions_template."""
 
-    def test_get_user_simulator_instructions_template_default(self):
-        assert _get_user_simulator_instructions_template() == _DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE
+  def test_get_user_simulator_instructions_template_default(self):
+    assert (
+      _get_user_simulator_instructions_template()
+      == _DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE
+    )
 
-    def test_get_user_simulator_instructions_template_with_custom_instructions(
-        self,
-    ):
-        custom_instructions = "custom instructions"
-        assert _get_user_simulator_instructions_template(custom_instructions=custom_instructions) == custom_instructions
+  def test_get_user_simulator_instructions_template_with_custom_instructions(
+    self,
+  ):
+    custom_instructions = "custom instructions"
+    assert (
+      _get_user_simulator_instructions_template(custom_instructions=custom_instructions)
+      == custom_instructions
+    )
 
-    def test_get_user_simulator_instructions_template_with_persona(self):
-        user_persona = UserPersona(id="test_persona", description="Test persona", behaviors=[])
-        assert _get_user_simulator_instructions_template(user_persona=user_persona) == _USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE
+  def test_get_user_simulator_instructions_template_with_persona(self):
+    user_persona = UserPersona(
+      id="test_persona", description="Test persona", behaviors=[]
+    )
+    assert (
+      _get_user_simulator_instructions_template(user_persona=user_persona)
+      == _USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE
+    )
 
-    def test_get_user_simulator_instructions_template_with_bad_custom_instructions_raises_error(
-        self,
-    ):
-        custom_instructions = "custom instructions"
-        user_persona = UserPersona(id="test_persona", description="Test persona", behaviors=[])
-        with pytest.raises(ValueError):
-            _get_user_simulator_instructions_template(custom_instructions=custom_instructions, user_persona=user_persona)
+  def test_get_user_simulator_instructions_template_with_bad_custom_instructions_raises_error(
+    self,
+  ):
+    custom_instructions = "custom instructions"
+    user_persona = UserPersona(
+      id="test_persona", description="Test persona", behaviors=[]
+    )
+    with pytest.raises(ValueError):
+      _get_user_simulator_instructions_template(
+        custom_instructions=custom_instructions, user_persona=user_persona
+      )
 
 
 sample_persona = UserPersona(
-    id="test_persona",
-    description="Test persona description",
-    behaviors=[
-        UserBehavior(
-            name="Test behavior",
-            description="Test behavior description",
-            behavior_instructions=["instruction 1", "instruction 2"],
-            violation_rubrics=["rubric 1"],
-        )
-    ],
+  id="test_persona",
+  description="Test persona description",
+  behaviors=[
+    UserBehavior(
+      name="Test behavior",
+      description="Test behavior description",
+      behavior_instructions=["instruction 1", "instruction 2"],
+      violation_rubrics=["rubric 1"],
+    )
+  ],
 )
 
 
 class TestGetLlmBackedUserSimulatorPrompt:
-    """Test cases for get_llm_backed_user_simulator_prompt."""
+  """Test cases for get_llm_backed_user_simulator_prompt."""
 
-    def test_get_llm_backed_user_simulator_prompt_default(self, mocker):
-        mocker.patch(
-            "google.adk.evaluation.simulation.llm_backed_user_simulator_prompts._DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE",
-            _MOCK_DEFAULT_TEMPLATE,
-        )
-        prompt = get_llm_backed_user_simulator_prompt(
-            conversation_plan="test plan",
-            conversation_history="test history",
-            stop_signal="test stop",
-        )
-        expected_prompt = textwrap.dedent("""\
+  def test_get_llm_backed_user_simulator_prompt_default(self, mocker):
+    mocker.patch(
+      "google.adk.evaluation.simulation.llm_backed_user_simulator_prompts._DEFAULT_USER_SIMULATOR_INSTRUCTIONS_TEMPLATE",
+      _MOCK_DEFAULT_TEMPLATE,
+    )
+    prompt = get_llm_backed_user_simulator_prompt(
+      conversation_plan="test plan",
+      conversation_history="test history",
+      stop_signal="test stop",
+    )
+    expected_prompt = textwrap.dedent("""\
       Default template
 
       # Conversation Plan
@@ -124,10 +149,10 @@ class TestGetLlmBackedUserSimulatorPrompt:
       # Stop signal
       test stop""").strip()
 
-        assert prompt == expected_prompt
+    assert prompt == expected_prompt
 
-    def test_get_llm_backed_user_simulator_prompt_with_custom_instructions(self):
-        custom_instructions = textwrap.dedent("""\
+  def test_get_llm_backed_user_simulator_prompt_with_custom_instructions(self):
+    custom_instructions = textwrap.dedent("""\
       Custom instructions:
 
       # Past history
@@ -138,14 +163,14 @@ class TestGetLlmBackedUserSimulatorPrompt:
 
       # Finished!
       {{stop_signal}}""").strip()
-        prompt = get_llm_backed_user_simulator_prompt(
-            conversation_plan="test plan",
-            conversation_history="test history",
-            stop_signal="test stop",
-            custom_instructions=custom_instructions,
-        )
+    prompt = get_llm_backed_user_simulator_prompt(
+      conversation_plan="test plan",
+      conversation_history="test history",
+      stop_signal="test stop",
+      custom_instructions=custom_instructions,
+    )
 
-        expected_prompt = textwrap.dedent("""\
+    expected_prompt = textwrap.dedent("""\
       Custom instructions:
 
       # Past history
@@ -156,20 +181,20 @@ class TestGetLlmBackedUserSimulatorPrompt:
 
       # Finished!
       test stop""").strip()
-        assert prompt == expected_prompt
+    assert prompt == expected_prompt
 
-    def test_get_llm_backed_user_simulator_prompt_with_persona(self, mocker):
-        mocker.patch(
-            "google.adk.evaluation.simulation.llm_backed_user_simulator_prompts._USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE",
-            _MOCK_PERSONA_TEMPLATE,
-        )
-        prompt = get_llm_backed_user_simulator_prompt(
-            conversation_plan="test plan",
-            conversation_history="test history",
-            stop_signal="test stop",
-            user_persona=sample_persona,
-        )
-        expected_prompt = textwrap.dedent("""\
+  def test_get_llm_backed_user_simulator_prompt_with_persona(self, mocker):
+    mocker.patch(
+      "google.adk.evaluation.simulation.llm_backed_user_simulator_prompts._USER_SIMULATOR_INSTRUCTIONS_WITH_PERSONA_TEMPLATE",
+      _MOCK_PERSONA_TEMPLATE,
+    )
+    prompt = get_llm_backed_user_simulator_prompt(
+      conversation_plan="test plan",
+      conversation_history="test history",
+      stop_signal="test stop",
+      user_persona=sample_persona,
+    )
+    expected_prompt = textwrap.dedent("""\
       Persona template
 
       # Persona Description
@@ -190,23 +215,23 @@ class TestGetLlmBackedUserSimulatorPrompt:
 
       # Stop signal
       test stop""").strip()
-        assert prompt == expected_prompt
+    assert prompt == expected_prompt
 
 
 class TestIsValidUserSimulatorTemplate:
-    """Test cases for is_valid_user_simulator_template."""
+  """Test cases for is_valid_user_simulator_template."""
 
-    def test_valid_template(self):
-        template = "Hello {{ name }}"
-        params = ["name"]
-        assert is_valid_user_simulator_template(template, params) is True
+  def test_valid_template(self):
+    template = "Hello {{ name }}"
+    params = ["name"]
+    assert is_valid_user_simulator_template(template, params) is True
 
-    def test_invalid_syntax(self):
-        template = "Hello {{ name"
-        params = ["name"]
-        assert is_valid_user_simulator_template(template, params) is False
+  def test_invalid_syntax(self):
+    template = "Hello {{ name"
+    params = ["name"]
+    assert is_valid_user_simulator_template(template, params) is False
 
-    def test_missing_parameter(self):
-        template = "Hello"
-        params = ["name"]
-        assert is_valid_user_simulator_template(template, params) is False
+  def test_missing_parameter(self):
+    template = "Hello"
+    params = ["name"]
+    assert is_valid_user_simulator_template(template, params) is False

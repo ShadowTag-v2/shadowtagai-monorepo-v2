@@ -7,9 +7,9 @@ from .judge_six import JudgeSixClassifyKernel
 from .audit_compress import AuditCompressKernel
 
 __all__ = [
-    "Kernel",
-    "KernelChainError",
-    "ATP519ScanKernel",
-    "JudgeSixClassifyKernel",
-    "AuditCompressKernel",
+  "Kernel",
+  "KernelChainError",
+  "ATP519ScanKernel",
+  "JudgeSixClassifyKernel",
+  "AuditCompressKernel",
 ]

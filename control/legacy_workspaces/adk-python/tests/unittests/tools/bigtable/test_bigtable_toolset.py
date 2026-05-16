@@ -24,96 +24,100 @@ import pytest
 
 
 def test_bigtable_toolset_name_prefix():
-    """Test Bigtable toolset name prefix."""
-    credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
-    toolset = BigtableToolset(credentials_config=credentials_config)
-    assert toolset.tool_name_prefix == DEFAULT_BIGTABLE_TOOL_NAME_PREFIX
+  """Test Bigtable toolset name prefix."""
+  credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
+  toolset = BigtableToolset(credentials_config=credentials_config)
+  assert toolset.tool_name_prefix == DEFAULT_BIGTABLE_TOOL_NAME_PREFIX
 
 
 @pytest.mark.asyncio
 async def test_bigtable_toolset_tools_default():
-    """Test default Bigtable toolset."""
-    credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
-    toolset = BigtableToolset(credentials_config=credentials_config)
+  """Test default Bigtable toolset."""
+  credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
+  toolset = BigtableToolset(credentials_config=credentials_config)
 
-    tools = await toolset.get_tools()
-    assert tools is not None
+  tools = await toolset.get_tools()
+  assert tools is not None
 
-    assert len(tools) == 5
-    assert all([isinstance(tool, GoogleTool) for tool in tools])
+  assert len(tools) == 5
+  assert all([isinstance(tool, GoogleTool) for tool in tools])
 
-    expected_tool_names = set(
-        [
-            "list_instances",
-            "get_instance_info",
-            "list_tables",
-            "get_table_info",
-            "execute_sql",
-        ]
-    )
-    actual_tool_names = set([tool.name for tool in tools])
-    assert actual_tool_names == expected_tool_names
+  expected_tool_names = set(
+    [
+      "list_instances",
+      "get_instance_info",
+      "list_tables",
+      "get_table_info",
+      "execute_sql",
+    ]
+  )
+  actual_tool_names = set([tool.name for tool in tools])
+  assert actual_tool_names == expected_tool_names
 
 
 @pytest.mark.parametrize(
-    "selected_tools",
-    [
-        pytest.param([], id="None"),
-        pytest.param(["list_instances", "get_instance_info"], id="instance-metadata"),
-        pytest.param(["list_tables", "get_table_info"], id="table-metadata"),
-        pytest.param(["execute_sql"], id="query"),
-    ],
+  "selected_tools",
+  [
+    pytest.param([], id="None"),
+    pytest.param(["list_instances", "get_instance_info"], id="instance-metadata"),
+    pytest.param(["list_tables", "get_table_info"], id="table-metadata"),
+    pytest.param(["execute_sql"], id="query"),
+  ],
 )
 @pytest.mark.asyncio
 async def test_bigtable_toolset_tools_selective(selected_tools):
-    """Test Bigtable toolset with filter.
+  """Test Bigtable toolset with filter.
 
-    This test verifies the behavior of the Bigtable toolset when filter is
-    specified. A use case for this would be when the agent builder wants to
-    use only a subset of the tools provided by the toolset.
-    """
-    credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
-    toolset = BigtableToolset(credentials_config=credentials_config, tool_filter=selected_tools)
+  This test verifies the behavior of the Bigtable toolset when filter is
+  specified. A use case for this would be when the agent builder wants to
+  use only a subset of the tools provided by the toolset.
+  """
+  credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
+  toolset = BigtableToolset(
+    credentials_config=credentials_config, tool_filter=selected_tools
+  )
 
-    tools = await toolset.get_tools()
-    assert tools is not None
+  tools = await toolset.get_tools()
+  assert tools is not None
 
-    assert len(tools) == len(selected_tools)
-    assert all([isinstance(tool, GoogleTool) for tool in tools])
+  assert len(tools) == len(selected_tools)
+  assert all([isinstance(tool, GoogleTool) for tool in tools])
 
-    expected_tool_names = set(selected_tools)
-    actual_tool_names = set([tool.name for tool in tools])
-    assert actual_tool_names == expected_tool_names
+  expected_tool_names = set(selected_tools)
+  actual_tool_names = set([tool.name for tool in tools])
+  assert actual_tool_names == expected_tool_names
 
 
 @pytest.mark.parametrize(
-    ("selected_tools", "returned_tools"),
-    [
-        pytest.param(["unknown"], [], id="all-unknown"),
-        pytest.param(
-            ["unknown", "execute_sql"],
-            ["execute_sql"],
-            id="mixed-known-unknown",
-        ),
-    ],
+  ("selected_tools", "returned_tools"),
+  [
+    pytest.param(["unknown"], [], id="all-unknown"),
+    pytest.param(
+      ["unknown", "execute_sql"],
+      ["execute_sql"],
+      id="mixed-known-unknown",
+    ),
+  ],
 )
 @pytest.mark.asyncio
 async def test_bigtable_toolset_unknown_tool(selected_tools, returned_tools):
-    """Test Bigtable toolset with filter.
+  """Test Bigtable toolset with filter.
 
-    This test verifies the behavior of the Bigtable toolset when filter is
-    specified with an unknown tool.
-    """
-    credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
+  This test verifies the behavior of the Bigtable toolset when filter is
+  specified with an unknown tool.
+  """
+  credentials_config = BigtableCredentialsConfig(client_id="abc", client_secret="def")
 
-    toolset = BigtableToolset(credentials_config=credentials_config, tool_filter=selected_tools)
+  toolset = BigtableToolset(
+    credentials_config=credentials_config, tool_filter=selected_tools
+  )
 
-    tools = await toolset.get_tools()
-    assert tools is not None
+  tools = await toolset.get_tools()
+  assert tools is not None
 
-    assert len(tools) == len(returned_tools)
-    assert all([isinstance(tool, GoogleTool) for tool in tools])
+  assert len(tools) == len(returned_tools)
+  assert all([isinstance(tool, GoogleTool) for tool in tools])
 
-    expected_tool_names = set(returned_tools)
-    actual_tool_names = set([tool.name for tool in tools])
-    assert actual_tool_names == expected_tool_names
+  expected_tool_names = set(returned_tools)
+  actual_tool_names = set([tool.name for tool in tools])
+  assert actual_tool_names == expected_tool_names

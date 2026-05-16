@@ -1,0 +1,235 @@
+# Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
+
+"""
+tests/test_health.py — Readiness and profile checks for production onboarding.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from mnemos.types import MemoryChunk
+from mnemos.health import detect_profile, run_health_checks
+from mnemos.utils import SQLiteStore
+
+
+def test_detect_profile_default_sqlite(monkeypatch: pytest.MonkeyPatch) -> None:
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  assert detect_profile() == "default"
+
+
+def test_detect_profile_default_memory(monkeypatch: pytest.MonkeyPatch) -> None:
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "memory")
+  assert detect_profile() == "default"
+
+
+def test_health_fails_when_openclaw_missing_api_key(
+  monkeypatch: pytest.MonkeyPatch,
+) -> None:
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.delenv("MNEMOS_OPENCLAW_API_KEY", raising=False)
+  monkeypatch.delenv("MNEMOS_OPENAI_API_KEY", raising=False)
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+
+  report = run_health_checks()
+
+  assert report["status"] == "not_ready"
+  assert report["summary"]["fail"] >= 1
+
+
+def test_health_reports_degraded_when_using_mock_llm(
+  monkeypatch: pytest.MonkeyPatch,
+) -> None:
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "mock")
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+
+  report = run_health_checks()
+
+  assert report["status"] == "degraded"
+  assert report["degraded_mode"] is True
+  assert report["summary"]["warn"] >= 1
+
+
+def test_health_reports_ready_for_openclaw_default_profile(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos.db"
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+
+  report = run_health_checks()
+
+  assert report["profile"] == "default"
+  assert report["status"] == "ready"
+  assert report["summary"]["fail"] == 0
+
+
+def test_health_does_not_recommend_backend_upgrade_when_sqlite_below_threshold(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos_below_threshold.db"
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_DOCTOR_CHUNK_THRESHOLD", "100")
+
+  report = run_health_checks()
+
+  assert report["upgrade_signals"]["threshold_exceeded"] is False
+  assert not any("Upgrade path:" in rec for rec in report["recommendations"])
+  assert not any("qdrant" in rec.lower() for rec in report["recommendations"])
+
+
+def test_health_does_not_recommend_backend_upgrade_when_sqlite_threshold_exceeded(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos_above_threshold.db"
+  store = SQLiteStore(db_path=str(db_path))
+  try:
+    store.store(MemoryChunk(content="example memory", embedding=[0.1, 0.2, 0.3]))
+  finally:
+    store.close()
+
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_DOCTOR_CHUNK_THRESHOLD", "1")
+
+  report = run_health_checks()
+
+  assert report["upgrade_signals"]["threshold_exceeded"] is True
+  assert not any("Upgrade path:" in rec for rec in report["recommendations"])
+  assert not any("qdrant" in rec.lower() for rec in report["recommendations"])
+
+
+def test_health_ignores_legacy_qdrant_threshold_alias(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos_alias_threshold.db"
+  store = SQLiteStore(db_path=str(db_path))
+  try:
+    store.store(MemoryChunk(content="example memory", embedding=[0.1, 0.2, 0.3]))
+  finally:
+    store.close()
+
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+  monkeypatch.delenv("MNEMOS_DOCTOR_CHUNK_THRESHOLD", raising=False)
+  monkeypatch.setenv("MNEMOS_DOCTOR_QDRANT_CHUNK_THRESHOLD", "1")
+
+  report = run_health_checks()
+
+  assert report["upgrade_signals"]["threshold_exceeded"] is False
+
+
+def test_health_reports_legacy_unscoped_sqlite_chunks(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos_legacy_scope.db"
+  store = SQLiteStore(db_path=str(db_path))
+  try:
+    store.store(
+      MemoryChunk(
+        content="legacy chunk without scope",
+        embedding=[0.1, 0.2, 0.3],
+        metadata={},
+      )
+    )
+  finally:
+    store.close()
+
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+
+  report = run_health_checks()
+
+  assert report["status"] == "degraded"
+  assert report["scope_isolation"]["legacy_unscoped_chunks"] == 1
+  assert report["scope_isolation"]["ready"] is False
+  assert any("legacy unscoped" in rec.lower() for rec in report["recommendations"])
+
+
+def test_health_uses_mnemos_config_path(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  config_path = tmp_path / "mnemos.toml"
+  db_path = tmp_path / "health-configured.db"
+  config_path.write_text(
+    f"""
+[llm]
+provider = "openrouter"
+
+[embedding]
+provider = "openrouter"
+
+[storage]
+type = "sqlite"
+sqlite_path = "{db_path.as_posix()}"
+
+[providers.openrouter]
+api_key = "router-key"
+base_url = "https://openrouter.ai/api/v1"
+""".strip(),
+    encoding="utf-8",
+  )
+  monkeypatch.setenv("MNEMOS_CONFIG_PATH", str(config_path))
+  monkeypatch.delenv("MNEMOS_LLM_PROVIDER", raising=False)
+  monkeypatch.delenv("MNEMOS_EMBEDDING_PROVIDER", raising=False)
+  monkeypatch.delenv("MNEMOS_STORE_TYPE", raising=False)
+
+  report = run_health_checks()
+
+  assert report["status"] == "ready"
+  assert report["llm_provider"] == "openrouter"
+  assert report["embedding_provider"] == "openrouter"
+  assert report["store_type"] == "sqlite"
+
+
+def test_health_reports_single_local_backend_story(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos_single_backend.db"
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+
+  report = run_health_checks()
+
+  assert report["profile"] == "default"
+  assert report["store_type"] == "sqlite"
+  assert not any("qdrant" in check["name"] for check in report["checks"])
+  assert not any("neo4j" in check["name"] for check in report["checks"])
+
+
+def test_health_reports_sqlite_vec_acceleration(
+  monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+  db_path = tmp_path / "mnemos_vec_health.db"
+  monkeypatch.setenv("MNEMOS_STORE_TYPE", "sqlite")
+  monkeypatch.setenv("MNEMOS_SQLITE_PATH", str(db_path))
+  monkeypatch.setenv("MNEMOS_LLM_PROVIDER", "openclaw")
+  monkeypatch.setenv("MNEMOS_OPENCLAW_API_KEY", "test-key")
+  monkeypatch.setenv("MNEMOS_EMBEDDING_PROVIDER", "openclaw")
+
+  report = run_health_checks()
+
+  assert report["vector_acceleration"]["enabled"] is True
+  assert report["vector_acceleration"]["provider"] == "sqlite-vec"
+  assert any(check["name"] == "store.sqlite.vec" for check in report["checks"])

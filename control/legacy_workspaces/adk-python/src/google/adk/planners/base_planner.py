@@ -24,42 +24,42 @@ from ..models.llm_request import LlmRequest
 
 
 class BasePlanner(ABC):
-    """Abstract base class for all planners.
+  """Abstract base class for all planners.
 
-    The planner allows the agent to generate plans for the queries to guide its
-    action.
+  The planner allows the agent to generate plans for the queries to guide its
+  action.
+  """
+
+  @abc.abstractmethod
+  def build_planning_instruction(
+    self,
+    readonly_context: ReadonlyContext,
+    llm_request: LlmRequest,
+  ) -> str | None:
+    """Builds the system instruction to be appended to the LLM request for planning.
+
+    Args:
+        readonly_context: The readonly context of the invocation.
+        llm_request: The LLM request. Readonly.
+
+    Returns:
+        The planning system instruction, or None if no instruction is needed.
     """
+    pass
 
-    @abc.abstractmethod
-    def build_planning_instruction(
-        self,
-        readonly_context: ReadonlyContext,
-        llm_request: LlmRequest,
-    ) -> str | None:
-        """Builds the system instruction to be appended to the LLM request for planning.
+  @abc.abstractmethod
+  def process_planning_response(
+    self,
+    callback_context: CallbackContext,
+    response_parts: list[types.Part],
+  ) -> list[types.Part] | None:
+    """Processes the LLM response for planning.
 
-        Args:
-            readonly_context: The readonly context of the invocation.
-            llm_request: The LLM request. Readonly.
+    Args:
+        callback_context: The callback context of the invocation.
+        response_parts: The LLM response parts. Readonly.
 
-        Returns:
-            The planning system instruction, or None if no instruction is needed.
-        """
-        pass
-
-    @abc.abstractmethod
-    def process_planning_response(
-        self,
-        callback_context: CallbackContext,
-        response_parts: list[types.Part],
-    ) -> list[types.Part] | None:
-        """Processes the LLM response for planning.
-
-        Args:
-            callback_context: The callback context of the invocation.
-            response_parts: The LLM response parts. Readonly.
-
-        Returns:
-            The processed response parts, or None if no processing is needed.
-        """
-        pass
+    Returns:
+        The processed response parts, or None if no processing is needed.
+    """
+    pass

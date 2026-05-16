@@ -18,7 +18,7 @@ import sys
 
 SAMPLES_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if SAMPLES_DIR not in sys.path:
-    sys.path.append(SAMPLES_DIR)
+  sys.path.append(SAMPLES_DIR)
 
 from adk_documentation.settings import CODE_OWNER
 from adk_documentation.settings import CODE_REPO
@@ -36,15 +36,19 @@ from adk_documentation.tools import search_local_git_repo
 from google.adk import Agent
 
 if IS_INTERACTIVE:
-    APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for creating or updating the issue."
+  APPROVAL_INSTRUCTION = (
+    "Ask for user approval or confirmation for creating or updating the issue."
+  )
 else:
-    APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for creating or updating the issue."
+  APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for creating or updating the issue."
 
 root_agent = Agent(
-    model="gemini-2.5-pro",
-    name="adk_release_analyzer",
-    description=("Analyze the changes between two ADK releases and generate instructions about how to update the ADK docs."),
-    instruction=f"""
+  model="gemini-2.5-pro",
+  name="adk_release_analyzer",
+  description=(
+    "Analyze the changes between two ADK releases and generate instructions about how to update the ADK docs."
+  ),
+  instruction=f"""
       # 1. Identity
       You are a helper bot that checks if ADK docs in GitHub Repository {DOC_REPO} owned by {DOC_OWNER}
       should be updated based on the changes in the ADK Python codebase in GitHub Repository {CODE_REPO} owned by {CODE_OWNER}.
@@ -116,13 +120,13 @@ root_agent = Agent(
       - The actions you took and the reasoning
       - The summary of the differences found
     """,
-    tools=[
-        list_releases,
-        get_changed_files_between_releases,
-        clone_or_pull_repo,
-        list_directory_contents,
-        search_local_git_repo,
-        read_local_git_repo_file_content,
-        create_issue,
-    ],
+  tools=[
+    list_releases,
+    get_changed_files_between_releases,
+    clone_or_pull_repo,
+    list_directory_contents,
+    search_local_git_repo,
+    read_local_git_repo_file_content,
+    create_issue,
+  ],
 )

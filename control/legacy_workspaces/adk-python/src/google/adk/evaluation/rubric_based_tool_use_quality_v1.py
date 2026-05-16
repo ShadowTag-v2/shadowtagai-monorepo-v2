@@ -131,69 +131,75 @@ IMPORTANT: Make sure for each of the property listed, follow the example steps a
 
 @experimental
 class RubricBasedToolUseV1Evaluator(RubricBasedEvaluator):
-    """An Evaluator for rubric based assessment of the agent's usage of Tools.
+  """An Evaluator for rubric based assessment of the agent's usage of Tools.
 
-    Example: Lets take an example of a Weather Agent that has access to two tools:
-    1: GeoCoding Tool: Coverts a city name, address or zip code into geographic
-    coordinates.
-    2: GetWeather Tool: Gets weather for the next 10 days for the given geographic
-    coordinates.
+  Example: Lets take an example of a Weather Agent that has access to two tools:
+  1: GeoCoding Tool: Coverts a city name, address or zip code into geographic
+  coordinates.
+  2: GetWeather Tool: Gets weather for the next 10 days for the given geographic
+  coordinates.
 
-    For this agent, one can create following Rubrics that could focus on tool use
+  For this agent, one can create following Rubrics that could focus on tool use
 
-    Rubric 1: A call is made to GeoCoding Tool.
-    Rubric 2: A call is made to GetWeather Tool.
-    Rubric 3: The call to GetWeather Tool happens after the GeoCoding Tool.
-    Rubric 4: The input to GeoCoding Tool can be mapped back to user prompt.
-    Rubric 5: The input to GetWeather Tool comes from the output of GeoCoding
-    Tool.)
+  Rubric 1: A call is made to GeoCoding Tool.
+  Rubric 2: A call is made to GetWeather Tool.
+  Rubric 3: The call to GetWeather Tool happens after the GeoCoding Tool.
+  Rubric 4: The input to GeoCoding Tool can be mapped back to user prompt.
+  Rubric 5: The input to GetWeather Tool comes from the output of GeoCoding
+  Tool.)
 
-    For each rubric, this evaluator will generate a confidence score between 0
-    and 1, where 0 means that agent's response did not satisfy the rubric at all
-    and 1 means complete adherence. Value closer to 1 are desirable.
+  For each rubric, this evaluator will generate a confidence score between 0
+  and 1, where 0 means that agent's response did not satisfy the rubric at all
+  and 1 means complete adherence. Value closer to 1 are desirable.
 
-    A combined score using individual rubric confidences will also be generated.
-    Like individual rubric confidence scores, the range for this value will be
-    between 0 and 1, and it will have the same interpretation.
-    """
+  A combined score using individual rubric confidences will also be generated.
+  Like individual rubric confidence scores, the range for this value will be
+  between 0 and 1, and it will have the same interpretation.
+  """
 
-    criterion_type: ClassVar[type[RubricsBasedCriterion]] = RubricsBasedCriterion
+  criterion_type: ClassVar[type[RubricsBasedCriterion]] = RubricsBasedCriterion
 
-    def __init__(self, eval_metric: EvalMetric):
-        super().__init__(
-            eval_metric,
-            criterion_type=RubricBasedToolUseV1Evaluator.criterion_type,
-        )
-        self._auto_rater_prompt_template = _RUBRIC_BASED_TOOL_USE_QUALITY_V1_PROMPT
+  def __init__(self, eval_metric: EvalMetric):
+    super().__init__(
+      eval_metric,
+      criterion_type=RubricBasedToolUseV1Evaluator.criterion_type,
+    )
+    self._auto_rater_prompt_template = _RUBRIC_BASED_TOOL_USE_QUALITY_V1_PROMPT
 
-    @staticmethod
-    def get_metric_info() -> MetricInfo:
-        return MetricInfo(
-            metric_name=PrebuiltMetrics.RUBRIC_BASED_TOOL_USE_QUALITY_V1.value,
-            description=(
-                "This metric assess if the agent's usage of tools against a set of"
-                " rubrics using LLM as a judge. Value range for this metric is"
-                " [0,1], with values closer to 1 more desirable."
-            ),
-            metric_value_info=MetricValueInfo(interval=Interval(min_value=0.0, max_value=1.0)),
-        )
+  @staticmethod
+  def get_metric_info() -> MetricInfo:
+    return MetricInfo(
+      metric_name=PrebuiltMetrics.RUBRIC_BASED_TOOL_USE_QUALITY_V1.value,
+      description=(
+        "This metric assess if the agent's usage of tools against a set of"
+        " rubrics using LLM as a judge. Value range for this metric is"
+        " [0,1], with values closer to 1 more desirable."
+      ),
+      metric_value_info=MetricValueInfo(
+        interval=Interval(min_value=0.0, max_value=1.0)
+      ),
+    )
 
-    @override
-    def format_auto_rater_prompt(self, actual_invocation: Invocation, _: Invocation | None) -> str:
-        """Returns the autorater prompt."""
+  @override
+  def format_auto_rater_prompt(
+    self, actual_invocation: Invocation, _: Invocation | None
+  ) -> str:
+    """Returns the autorater prompt."""
 
-        user_input = get_text_from_content(actual_invocation.user_content)
-        tool_usage = get_tool_calls_and_responses_as_json_str(actual_invocation.intermediate_data)
-        rubrics = "\n*  ".join([r.rubric_content.text_property for r in self._rubrics])
+    user_input = get_text_from_content(actual_invocation.user_content)
+    tool_usage = get_tool_calls_and_responses_as_json_str(
+      actual_invocation.intermediate_data
+    )
+    rubrics = "\n*  ".join([r.rubric_content.text_property for r in self._rubrics])
 
-        app_details = actual_invocation.app_details
-        tool_declarations = "Agent has no tools."
-        if app_details:
-            tool_declarations = get_tool_declarations_as_json_str(app_details)
+    app_details = actual_invocation.app_details
+    tool_declarations = "Agent has no tools."
+    if app_details:
+      tool_declarations = get_tool_declarations_as_json_str(app_details)
 
-        return self._auto_rater_prompt_template.format(
-            tool_declarations=tool_declarations,
-            user_input=user_input,
-            tool_usage=tool_usage,
-            rubrics=rubrics,
-        )
+    return self._auto_rater_prompt_template.format(
+      tool_declarations=tool_declarations,
+      user_input=user_input,
+      tool_usage=tool_usage,
+      rubrics=rubrics,
+    )

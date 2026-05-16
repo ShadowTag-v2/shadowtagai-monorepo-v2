@@ -35,68 +35,68 @@ logs.setup_adk_logger(level=logging.DEBUG)
 
 
 def process_arguments():
-    """Parses command-line arguments."""
-    parser = argparse.ArgumentParser(
-        description="A script that creates pull requests to update ADK docs.",
-        epilog=("Example usage: \n\tpython -m adk_docs_updater.main --issue_number 123\n"),
-        formatter_class=argparse.RawTextHelpFormatter,
-    )
+  """Parses command-line arguments."""
+  parser = argparse.ArgumentParser(
+    description="A script that creates pull requests to update ADK docs.",
+    epilog=("Example usage: \n\tpython -m adk_docs_updater.main --issue_number 123\n"),
+    formatter_class=argparse.RawTextHelpFormatter,
+  )
 
-    group = parser.add_mutually_exclusive_group(required=True)
+  group = parser.add_mutually_exclusive_group(required=True)
 
-    group.add_argument(
-        "--issue_number",
-        type=int,
-        metavar="NUM",
-        help="Answer a specific issue number.",
-    )
+  group.add_argument(
+    "--issue_number",
+    type=int,
+    metavar="NUM",
+    help="Answer a specific issue number.",
+  )
 
-    return parser.parse_args()
+  return parser.parse_args()
 
 
 async def main():
-    args = process_arguments()
-    if not args.issue_number:
-        print("Please specify an issue number using --issue_number flag")
-        return
-    issue_number = args.issue_number
+  args = process_arguments()
+  if not args.issue_number:
+    print("Please specify an issue number using --issue_number flag")
+    return
+  issue_number = args.issue_number
 
-    get_issue_response = get_issue(DOC_OWNER, DOC_REPO, issue_number)
-    if get_issue_response["status"] != "success":
-        print(f"Failed to get issue {issue_number}: {get_issue_response}\n")
-        return
-    issue = get_issue_response["issue"]
+  get_issue_response = get_issue(DOC_OWNER, DOC_REPO, issue_number)
+  if get_issue_response["status"] != "success":
+    print(f"Failed to get issue {issue_number}: {get_issue_response}\n")
+    return
+  issue = get_issue_response["issue"]
 
-    runner = InMemoryRunner(
-        agent=agent.root_agent,
-        app_name=APP_NAME,
-    )
-    session = await runner.session_service.create_session(
-        app_name=APP_NAME,
-        user_id=USER_ID,
-    )
+  runner = InMemoryRunner(
+    agent=agent.root_agent,
+    app_name=APP_NAME,
+  )
+  session = await runner.session_service.create_session(
+    app_name=APP_NAME,
+    user_id=USER_ID,
+  )
 
-    response = await call_agent_async(
-        runner,
-        USER_ID,
-        session.id,
-        f"Please update the ADK docs according to the following issue:\n{issue}",
-    )
-    print(f"<<<< Agent Final Output: {response}\n")
+  response = await call_agent_async(
+    runner,
+    USER_ID,
+    session.id,
+    f"Please update the ADK docs according to the following issue:\n{issue}",
+  )
+  print(f"<<<< Agent Final Output: {response}\n")
 
 
 if __name__ == "__main__":
-    start_time = time.time()
-    print(
-        f"Start creating pull requests to update {DOC_OWNER}/{DOC_REPO} docs"
-        f" according the {CODE_OWNER}/{CODE_REPO} at"
-        f" {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(start_time))}"
-    )
-    print("-" * 80)
-    asyncio.run(main())
-    print("-" * 80)
-    end_time = time.time()
-    print(
-        f"Updating finished at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(end_time))}",
-    )
-    print("Total script execution time:", f"{end_time - start_time:.2f} seconds")
+  start_time = time.time()
+  print(
+    f"Start creating pull requests to update {DOC_OWNER}/{DOC_REPO} docs"
+    f" according the {CODE_OWNER}/{CODE_REPO} at"
+    f" {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(start_time))}"
+  )
+  print("-" * 80)
+  asyncio.run(main())
+  print("-" * 80)
+  end_time = time.time()
+  print(
+    f"Updating finished at {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(end_time))}",
+  )
+  print("Total script execution time:", f"{end_time - start_time:.2f} seconds")

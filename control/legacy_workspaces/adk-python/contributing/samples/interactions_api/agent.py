@@ -33,46 +33,46 @@ from google.adk.tools.google_search_tool import GoogleSearchTool
 
 
 def get_current_weather(city: str) -> dict:
-    """Get the current weather for a city.
+  """Get the current weather for a city.
 
-    This is a mock implementation for testing purposes.
+  This is a mock implementation for testing purposes.
 
-    Args:
-      city: The name of the city to get weather for.
+  Args:
+    city: The name of the city to get weather for.
 
-    Returns:
-      A dictionary containing weather information.
-    """
-    # Mock weather data for testing
-    weather_data = {
-        "new york": {"temperature": 72, "condition": "Sunny", "humidity": 45},
-        "london": {"temperature": 59, "condition": "Cloudy", "humidity": 78},
-        "tokyo": {
-            "temperature": 68,
-            "condition": "Partly Cloudy",
-            "humidity": 60,
-        },
-        "paris": {"temperature": 64, "condition": "Rainy", "humidity": 85},
-        "sydney": {"temperature": 77, "condition": "Clear", "humidity": 55},
+  Returns:
+    A dictionary containing weather information.
+  """
+  # Mock weather data for testing
+  weather_data = {
+    "new york": {"temperature": 72, "condition": "Sunny", "humidity": 45},
+    "london": {"temperature": 59, "condition": "Cloudy", "humidity": 78},
+    "tokyo": {
+      "temperature": 68,
+      "condition": "Partly Cloudy",
+      "humidity": 60,
+    },
+    "paris": {"temperature": 64, "condition": "Rainy", "humidity": 85},
+    "sydney": {"temperature": 77, "condition": "Clear", "humidity": 55},
+  }
+
+  city_lower = city.lower()
+  if city_lower in weather_data:
+    data = weather_data[city_lower]
+    return {
+      "city": city,
+      "temperature_f": data["temperature"],
+      "condition": data["condition"],
+      "humidity": data["humidity"],
     }
-
-    city_lower = city.lower()
-    if city_lower in weather_data:
-        data = weather_data[city_lower]
-        return {
-            "city": city,
-            "temperature_f": data["temperature"],
-            "condition": data["condition"],
-            "humidity": data["humidity"],
-        }
-    else:
-        return {
-            "city": city,
-            "temperature_f": 70,
-            "condition": "Unknown",
-            "humidity": 50,
-            "note": "Weather data not available, using defaults",
-        }
+  else:
+    return {
+      "city": city,
+      "temperature_f": 70,
+      "condition": "Unknown",
+      "humidity": 50,
+      "note": "Weather data not available, using defaults",
+    }
 
 
 # Main agent with google_search (via bypass) and custom function tools
@@ -83,13 +83,13 @@ def get_current_weather(city: str) -> dict:
 # NOTE: code_executor is not compatible with function calling mode because the model
 # tries to call a function (e.g., run_code) instead of outputting code in markdown.
 root_agent = Agent(
-    model=Gemini(
-        model="gemini-2.5-flash",
-        use_interactions_api=True,
-    ),
-    name="interactions_test_agent",
-    description="An agent for testing the Interactions API integration",
-    instruction="""You are a helpful assistant that can:
+  model=Gemini(
+    model="gemini-2.5-flash",
+    use_interactions_api=True,
+  ),
+  name="interactions_test_agent",
+  description="An agent for testing the Interactions API integration",
+  instruction="""You are a helpful assistant that can:
 
 1. Search the web for information using google_search
 2. Get weather information using get_current_weather
@@ -99,8 +99,8 @@ When users ask about weather, use get_current_weather.
 
 Be concise and helpful in your responses. Always confirm what you did.
 """,
-    tools=[
-        GoogleSearchTool(bypass_multi_tools_limit=True),
-        get_current_weather,
-    ],
+  tools=[
+    GoogleSearchTool(bypass_multi_tools_limit=True),
+    get_current_weather,
+  ],
 )

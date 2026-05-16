@@ -24,61 +24,63 @@ from typing import TYPE_CHECKING
 import click
 
 if TYPE_CHECKING:
-    from .cli_test import _ConformanceTestSummary
+  from .cli_test import _ConformanceTestSummary
 
 
 def generate_markdown_report(
-    version_data: dict[str, Any],
-    summary: _ConformanceTestSummary,
-    report_dir: str | None,
+  version_data: dict[str, Any],
+  summary: _ConformanceTestSummary,
+  report_dir: str | None,
 ) -> None:
-    """Generates a Markdown report of the test results."""
-    server_version = version_data.get("version", "Unknown")
-    language = version_data.get("language", "Unknown")
-    language_version = version_data.get("language_version", "Unknown")
+  """Generates a Markdown report of the test results."""
+  server_version = version_data.get("version", "Unknown")
+  language = version_data.get("language", "Unknown")
+  language_version = version_data.get("language_version", "Unknown")
 
-    report_name = f"python_{'_'.join(server_version.split('.'))}_report.md"
-    if not report_dir:
-        report_path = Path(report_name)
-    else:
-        report_path = Path(report_dir) / report_name
-        report_path.parent.mkdir(parents=True, exist_ok=True)
+  report_name = f"python_{'_'.join(server_version.split('.'))}_report.md"
+  if not report_dir:
+    report_path = Path(report_name)
+  else:
+    report_path = Path(report_dir) / report_name
+    report_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(report_path, "w") as f:
-        f.write("# ADK Python Conformance Test Report\n\n")
+  with open(report_path, "w") as f:
+    f.write("# ADK Python Conformance Test Report\n\n")
 
-        # Summary
-        f.write("## Summary\n\n")
-        f.write(f"- **ADK Version**: {server_version}\n")
-        f.write(f"- **Language**: {language} {language_version}\n")
-        f.write(f"- **Total Tests**: {summary.total_tests}\n")
-        f.write(f"- **Passed**: {summary.passed_tests}\n")
-        f.write(f"- **Failed**: {summary.failed_tests}\n")
-        f.write(f"- **Success Rate**: {summary.success_rate:.1f}%\n\n")
+    # Summary
+    f.write("## Summary\n\n")
+    f.write(f"- **ADK Version**: {server_version}\n")
+    f.write(f"- **Language**: {language} {language_version}\n")
+    f.write(f"- **Total Tests**: {summary.total_tests}\n")
+    f.write(f"- **Passed**: {summary.passed_tests}\n")
+    f.write(f"- **Failed**: {summary.failed_tests}\n")
+    f.write(f"- **Success Rate**: {summary.success_rate:.1f}%\n\n")
 
-        # Table
-        f.write("## Test Results\n\n")
-        f.write("| Status | Category | Test Name | Description |\n")
-        f.write("| :--- | :--- | :--- | :--- |\n")
+    # Table
+    f.write("## Test Results\n\n")
+    f.write("| Status | Category | Test Name | Description |\n")
+    f.write("| :--- | :--- | :--- | :--- |\n")
 
-        for result in summary.results:
-            status_icon = "✅ PASS" if result.success else "❌ FAIL"
-            description = result.description.replace("\n", " ") if result.description else ""
-            f.write(f"| {status_icon} | {result.category} | {result.name} | {description} |\n")
+    for result in summary.results:
+      status_icon = "✅ PASS" if result.success else "❌ FAIL"
+      description = result.description.replace("\n", " ") if result.description else ""
+      f.write(
+        f"| {status_icon} | {result.category} | {result.name} | {description} |\n"
+      )
 
-        f.write("\n")
+    f.write("\n")
 
-        # Failed Tests Details
-        if summary.failed_tests > 0:
-            f.write("## Failed Tests Details\n\n")
-            for result in summary.results:
-                if not result.success:
-                    f.write(f"### {result.category}/{result.name}\n\n")
-                    if result.description:
-                        f.write(f"**Description**: {result.description}\n\n")
-                    f.write("**Error**:\n")
-                    f.write("```\n")
-                    f.write(f"{result.error_message}\n")
-                    f.write("```\n\n")
+    # Failed Tests Details
+    if summary.failed_tests > 0:
+      f.write("## Failed Tests Details\n\n")
+      for result in summary.results:
+        if not result.success:
+          f.write(f"### {result.category}/{result.name}\n\n")
+          if result.description:
+            f.write(f"**Description**: {result.description}\n\n")
+          f.write("**Error**:\n")
+          f.write("```\n")
+          f.write(f"{result.error_message}\n")
+          f.write("```\n\n")
 
-    click.secho(f"\nReport generated at: {report_path.resolve()}", fg="blue")
+  click.secho(f"\nReport generated at: {report_path.resolve()}", fg="blue")

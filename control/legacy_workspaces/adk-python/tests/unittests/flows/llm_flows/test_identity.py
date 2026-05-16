@@ -24,43 +24,45 @@ from ... import testing_utils
 
 @pytest.mark.asyncio
 async def test_no_description():
-    request = LlmRequest(
-        model="gemini-1.5-flash",
-        config=types.GenerateContentConfig(system_instruction=""),
-    )
-    agent = Agent(model="gemini-1.5-flash", name="agent")
-    invocation_context = await testing_utils.create_invocation_context(agent=agent)
+  request = LlmRequest(
+    model="gemini-1.5-flash",
+    config=types.GenerateContentConfig(system_instruction=""),
+  )
+  agent = Agent(model="gemini-1.5-flash", name="agent")
+  invocation_context = await testing_utils.create_invocation_context(agent=agent)
 
-    async for _ in identity.request_processor.run_async(
-        invocation_context,
-        request,
-    ):
-        pass
+  async for _ in identity.request_processor.run_async(
+    invocation_context,
+    request,
+  ):
+    pass
 
-    assert request.config.system_instruction == ("""You are an agent. Your internal name is "agent".""")
+  assert request.config.system_instruction == (
+    """You are an agent. Your internal name is "agent"."""
+  )
 
 
 @pytest.mark.asyncio
 async def test_with_description():
-    request = LlmRequest(
-        model="gemini-1.5-flash",
-        config=types.GenerateContentConfig(system_instruction=""),
-    )
-    agent = Agent(
-        model="gemini-1.5-flash",
-        name="agent",
-        description="test description",
-    )
-    invocation_context = await testing_utils.create_invocation_context(agent=agent)
+  request = LlmRequest(
+    model="gemini-1.5-flash",
+    config=types.GenerateContentConfig(system_instruction=""),
+  )
+  agent = Agent(
+    model="gemini-1.5-flash",
+    name="agent",
+    description="test description",
+  )
+  invocation_context = await testing_utils.create_invocation_context(agent=agent)
 
-    async for _ in identity.request_processor.run_async(
-        invocation_context,
-        request,
-    ):
-        pass
+  async for _ in identity.request_processor.run_async(
+    invocation_context,
+    request,
+  ):
+    pass
 
-    assert (
-        request.config.system_instruction
-        == """\
+  assert (
+    request.config.system_instruction
+    == """\
 You are an agent. Your internal name is "agent". The description about you is "test description"."""
-    )
+  )

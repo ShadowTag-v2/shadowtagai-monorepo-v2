@@ -22,16 +22,16 @@ langchain_yt_tool = YouTubeSearchTool()
 
 # Wrap the tool in the LangchainTool class from ADK
 adk_yt_tool = LangchainTool(
-    tool=langchain_yt_tool,
+  tool=langchain_yt_tool,
 )
 
 root_agent = LlmAgent(
-    name="youtube_search_agent",
-    model="gemini-2.0-flash",  # Replace with the actual model name
-    instruction="""
+  name="youtube_search_agent",
+  model="gemini-2.0-flash",  # Replace with the actual model name
+  instruction="""
     Ask customer to provide singer name, and the number of videos to search.
     """,
-    description="Help customer to search for a video on Youtube.",
-    tools=[adk_yt_tool],
-    output_key="youtube_search_output",
+  description="Help customer to search for a video on Youtube.",
+  tools=[adk_yt_tool],
+  output_key="youtube_search_output",
 )

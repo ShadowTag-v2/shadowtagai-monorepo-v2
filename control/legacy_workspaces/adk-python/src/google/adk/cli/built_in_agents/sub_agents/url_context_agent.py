@@ -22,11 +22,13 @@ from google.adk.tools import url_context
 
 
 def create_url_context_agent() -> LlmAgent:
-    """Create a sub-agent that only uses url_context tool."""
-    return LlmAgent(
-        name="url_context_agent",
-        description=("Agent for fetching and analyzing content from URLs, especially GitHub repositories and documentation"),
-        instruction="""You are a specialized URL content analysis agent for the Agent Builder Assistant.
+  """Create a sub-agent that only uses url_context tool."""
+  return LlmAgent(
+    name="url_context_agent",
+    description=(
+      "Agent for fetching and analyzing content from URLs, especially GitHub repositories and documentation"
+    ),
+    instruction="""You are a specialized URL content analysis agent for the Agent Builder Assistant.
 
 Your role is to fetch and analyze complete content from URLs to extract detailed, actionable information.
 
@@ -57,6 +59,6 @@ Return a comprehensive analysis that includes:
 - Any warnings or important considerations mentioned
 
 Focus on extracting complete, detailed information that enables practical application of the patterns and examples found.""",
-        model="gemini-2.5-flash",
-        tools=[url_context],
-    )
+    model="gemini-2.5-flash",
+    tools=[url_context],
+  )

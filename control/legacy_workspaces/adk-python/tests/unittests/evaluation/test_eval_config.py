@@ -24,71 +24,75 @@ from google.adk.evaluation.eval_rubrics import RubricContent
 
 
 def test_get_evaluation_criteria_or_default_returns_default():
-    assert get_evaluation_criteria_or_default("") == _DEFAULT_EVAL_CONFIG
+  assert get_evaluation_criteria_or_default("") == _DEFAULT_EVAL_CONFIG
 
 
 def test_get_evaluation_criteria_or_default_reads_from_file(mocker):
-    mocker.patch("os.path.exists", return_value=True)
-    eval_config = EvalConfig(criteria={"tool_trajectory_avg_score": 0.5, "response_match_score": 0.5})
-    mocker.patch("builtins.open", mocker.mock_open(read_data=eval_config.model_dump_json()))
-    assert get_evaluation_criteria_or_default("dummy_path") == eval_config
+  mocker.patch("os.path.exists", return_value=True)
+  eval_config = EvalConfig(
+    criteria={"tool_trajectory_avg_score": 0.5, "response_match_score": 0.5}
+  )
+  mocker.patch(
+    "builtins.open", mocker.mock_open(read_data=eval_config.model_dump_json())
+  )
+  assert get_evaluation_criteria_or_default("dummy_path") == eval_config
 
 
 def test_get_evaluation_criteria_or_default_returns_default_if_file_not_found(
-    mocker,
+  mocker,
 ):
-    mocker.patch("os.path.exists", return_value=False)
-    assert get_evaluation_criteria_or_default("dummy_path") == _DEFAULT_EVAL_CONFIG
+  mocker.patch("os.path.exists", return_value=False)
+  assert get_evaluation_criteria_or_default("dummy_path") == _DEFAULT_EVAL_CONFIG
 
 
 def test_get_eval_metrics_from_config():
-    rubric_1 = Rubric(
-        rubric_id="test-rubric",
-        rubric_content=RubricContent(text_property="test"),
-    )
-    eval_config = EvalConfig(
-        criteria={
-            "tool_trajectory_avg_score": 1.0,
-            "response_match_score": 0.8,
-            "final_response_match_v2": {
-                "threshold": 0.5,
-                "judge_model_options": {
-                    "judge_model": "gemini-pro",
-                    "num_samples": 1,
-                },
-            },
-            "rubric_based_final_response_quality_v1": {
-                "threshold": 0.9,
-                "judge_model_options": {
-                    "judge_model": "gemini-ultra",
-                    "num_samples": 1,
-                },
-                "rubrics": [rubric_1],
-            },
-        }
-    )
-    eval_metrics = get_eval_metrics_from_config(eval_config)
+  rubric_1 = Rubric(
+    rubric_id="test-rubric",
+    rubric_content=RubricContent(text_property="test"),
+  )
+  eval_config = EvalConfig(
+    criteria={
+      "tool_trajectory_avg_score": 1.0,
+      "response_match_score": 0.8,
+      "final_response_match_v2": {
+        "threshold": 0.5,
+        "judge_model_options": {
+          "judge_model": "gemini-pro",
+          "num_samples": 1,
+        },
+      },
+      "rubric_based_final_response_quality_v1": {
+        "threshold": 0.9,
+        "judge_model_options": {
+          "judge_model": "gemini-ultra",
+          "num_samples": 1,
+        },
+        "rubrics": [rubric_1],
+      },
+    }
+  )
+  eval_metrics = get_eval_metrics_from_config(eval_config)
 
-    assert len(eval_metrics) == 4
-    assert eval_metrics[0].metric_name == "tool_trajectory_avg_score"
-    assert eval_metrics[0].threshold == 1.0
-    assert eval_metrics[0].criterion.threshold == 1.0
-    assert eval_metrics[1].metric_name == "response_match_score"
-    assert eval_metrics[1].threshold == 0.8
-    assert eval_metrics[1].criterion.threshold == 0.8
-    assert eval_metrics[2].metric_name == "final_response_match_v2"
-    assert eval_metrics[2].threshold == 0.5
-    assert eval_metrics[2].criterion.threshold == 0.5
-    assert eval_metrics[2].criterion.judge_model_options["judge_model"] == "gemini-pro"
-    assert eval_metrics[3].metric_name == "rubric_based_final_response_quality_v1"
-    assert eval_metrics[3].threshold == 0.9
-    assert eval_metrics[3].criterion.threshold == 0.9
-    assert eval_metrics[3].criterion.judge_model_options["judge_model"] == "gemini-ultra"
-    assert len(eval_metrics[3].criterion.rubrics) == 1
-    assert eval_metrics[3].criterion.rubrics[0] == rubric_1
+  assert len(eval_metrics) == 4
+  assert eval_metrics[0].metric_name == "tool_trajectory_avg_score"
+  assert eval_metrics[0].threshold == 1.0
+  assert eval_metrics[0].criterion.threshold == 1.0
+  assert eval_metrics[1].metric_name == "response_match_score"
+  assert eval_metrics[1].threshold == 0.8
+  assert eval_metrics[1].criterion.threshold == 0.8
+  assert eval_metrics[2].metric_name == "final_response_match_v2"
+  assert eval_metrics[2].threshold == 0.5
+  assert eval_metrics[2].criterion.threshold == 0.5
+  assert eval_metrics[2].criterion.judge_model_options["judge_model"] == "gemini-pro"
+  assert eval_metrics[3].metric_name == "rubric_based_final_response_quality_v1"
+  assert eval_metrics[3].threshold == 0.9
+  assert eval_metrics[3].criterion.threshold == 0.9
+  assert eval_metrics[3].criterion.judge_model_options["judge_model"] == "gemini-ultra"
+  assert len(eval_metrics[3].criterion.rubrics) == 1
+  assert eval_metrics[3].criterion.rubrics[0] == rubric_1
 
 
 def test_get_eval_metrics_from_config_empty_criteria():
-    eval_config = EvalConfig(criteria={})
-    eval_metrics = get_eval_metrics_from_config(eval_config)
-    assert not eval_metrics
+  eval_config = EvalConfig(criteria={})
+  eval_metrics = get_eval_metrics_from_config(eval_config)
+  assert not eval_metrics

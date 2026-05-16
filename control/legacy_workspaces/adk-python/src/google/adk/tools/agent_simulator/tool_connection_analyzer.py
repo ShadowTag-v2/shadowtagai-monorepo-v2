@@ -72,53 +72,63 @@ _TOOL_CONNECTION_ANALYSIS_PROMPT_TEMPLATE = """
 
 
 class ToolConnectionAnalyzer:
+  """
+  Uses an LLM to analyze stateful connections between tools. For example,
+  get_ticket will consume a ticket_id created by create_ticket, the analyzer
+  will create a list of such connections.
+  """
+
+  def __init__(self, llm_name: str, llm_config: genai_types.GenerateContentConfig):
+    self._llm_name = llm_name
+    self._llm_config = llm_config
+    llm_registry = LLMRegistry()
+    llm_class = llm_registry.resolve(self._llm_name)
+    self._llm = llm_class(model=self._llm_name)
+
+  async def analyze(self, tools: list[BaseTool]) -> ToolConnectionMap:
     """
-    Uses an LLM to analyze stateful connections between tools. For example,
-    get_ticket will consume a ticket_id created by create_ticket, the analyzer
-    will create a list of such connections.
+    Analyzes a list of tools and returns a map of their connections.
     """
+    tool_schemas = [
+      tool._get_declaration().model_dump(exclude_none=True)
+      for tool in tools
+      if tool._get_declaration()
+    ]
+    tool_schemas_json = json.dumps(tool_schemas, indent=2)
+    prompt = _TOOL_CONNECTION_ANALYSIS_PROMPT_TEMPLATE.format(
+      tool_schemas_json=tool_schemas_json
+    )
 
-    def __init__(self, llm_name: str, llm_config: genai_types.GenerateContentConfig):
-        self._llm_name = llm_name
-        self._llm_config = llm_config
-        llm_registry = LLMRegistry()
-        llm_class = llm_registry.resolve(self._llm_name)
-        self._llm = llm_class(model=self._llm_name)
+    request_contents = [
+      genai_types.Content(parts=[genai_types.Part(text=prompt)], role="user")
+    ]
+    request = LlmRequest(
+      contents=request_contents,
+      model=self._llm_name,
+      config=self._llm_config,
+      generation_config=genai_types.GenerateContentConfig(
+        response_mime_type="application/json"
+      ),
+    )
+    response_text = ""
+    async with Aclosing(self._llm.generate_content_async(request)) as agen:
+      async for llm_response in agen:
+        generated_content: genai_types.Content = llm_response.content
+        if not generated_content.parts:
+          continue
+        for part in generated_content.parts:
+          if part.text:
+            response_text += part.text
 
-    async def analyze(self, tools: list[BaseTool]) -> ToolConnectionMap:
-        """
-        Analyzes a list of tools and returns a map of their connections.
-        """
-        tool_schemas = [tool._get_declaration().model_dump(exclude_none=True) for tool in tools if tool._get_declaration()]
-        tool_schemas_json = json.dumps(tool_schemas, indent=2)
-        prompt = _TOOL_CONNECTION_ANALYSIS_PROMPT_TEMPLATE.format(tool_schemas_json=tool_schemas_json)
-
-        request_contents = [genai_types.Content(parts=[genai_types.Part(text=prompt)], role="user")]
-        request = LlmRequest(
-            contents=request_contents,
-            model=self._llm_name,
-            config=self._llm_config,
-            generation_config=genai_types.GenerateContentConfig(response_mime_type="application/json"),
-        )
-        response_text = ""
-        async with Aclosing(self._llm.generate_content_async(request)) as agen:
-            async for llm_response in agen:
-                generated_content: genai_types.Content = llm_response.content
-                if not generated_content.parts:
-                    continue
-                for part in generated_content.parts:
-                    if part.text:
-                        response_text += part.text
-
-        try:
-            clean_json_text = re.sub(r"^```[a-zA-Z]*\n", "", response_text)
-            clean_json_text = re.sub(r"\n```$", "", clean_json_text)
-            response_json = json.loads(clean_json_text.strip())
-        except json.JSONDecodeError:
-            logging.warning(
-                "Failed to parse tool connection analysis from LLM. Proceeding without connection map. Error: %s\nLLM Output:\n%s",
-                e,
-                response_text,
-            )
-            return ToolConnectionMap(stateful_parameters=[])
-        return ToolConnectionMap.model_validate(response_json)
+    try:
+      clean_json_text = re.sub(r"^```[a-zA-Z]*\n", "", response_text)
+      clean_json_text = re.sub(r"\n```$", "", clean_json_text)
+      response_json = json.loads(clean_json_text.strip())
+    except json.JSONDecodeError:
+      logging.warning(
+        "Failed to parse tool connection analysis from LLM. Proceeding without connection map. Error: %s\nLLM Output:\n%s",
+        e,
+        response_text,
+      )
+      return ToolConnectionMap(stateful_parameters=[])
+    return ToolConnectionMap.model_validate(response_json)

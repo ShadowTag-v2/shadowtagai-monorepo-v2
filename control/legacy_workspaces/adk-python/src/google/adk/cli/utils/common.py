@@ -18,7 +18,7 @@ from pydantic import alias_generators
 
 
 class BaseModel(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(
-        alias_generator=alias_generators.to_camel,
-        populate_by_name=True,
-    )
+  model_config = pydantic.ConfigDict(
+    alias_generator=alias_generators.to_camel,
+    populate_by_name=True,
+  )

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.adk.tools.agent_simulator.agent_simulator_factory import AgentSimulatorFactory
+from google.adk.tools.agent_simulator.agent_simulator_factory import (
+  AgentSimulatorFactory,
+)
 
 __all__ = ["AgentSimulator"]

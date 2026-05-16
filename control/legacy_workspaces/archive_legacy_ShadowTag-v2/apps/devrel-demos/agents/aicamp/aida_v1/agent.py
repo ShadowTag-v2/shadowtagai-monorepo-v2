@@ -9,73 +9,75 @@ MODEL = "gemini-2.5-flash-thinking-exp-01-21"
 
 
 def run_osquery(query: str) -> str:
-    """Runs a query using osquery.
+  """Runs a query using osquery.
 
-    Args:
-      query: The osquery query to run. Example: 'select * from battery'
+  Args:
+    query: The osquery query to run. Example: 'select * from battery'
 
-    Returns:
-      The query result as a JSON string.
-    """
+  Returns:
+    The query result as a JSON string.
+  """
+  try:
+    # Run osqueryi as a one-off command with a 60s timeout.
+    # --json forces JSON output format.
+    result = subprocess.run(
+      ["osqueryi", "--json", query], capture_output=True, text=True, timeout=60
+    )
+
+    if result.returncode != 0:
+      error_msg = result.stderr.strip() or f"Exit code {result.returncode}"
+      return json.dumps(
+        {
+          "error": "Query failed",
+          "details": error_msg,
+          "suggestion": "Check table names and syntax.",
+        }
+      )
+
+    output = result.stdout.strip()
+
+    # Sometimes osqueryi outputs nothing if the table is empty
+    if not output:
+      return "[]"
+
+    # Validate that we actually got JSON back
     try:
-        # Run osqueryi as a one-off command with a 60s timeout.
-        # --json forces JSON output format.
-        result = subprocess.run(["osqueryi", "--json", query], capture_output=True, text=True, timeout=60)
+      json.loads(output)
+      return output
+    except json.JSONDecodeError:
+      return json.dumps(
+        {
+          "error": "Invalid output format",
+          "details": "osqueryi did not return valid JSON",
+          "raw_output": output,
+        }
+      )
 
-        if result.returncode != 0:
-            error_msg = result.stderr.strip() or f"Exit code {result.returncode}"
-            return json.dumps(
-                {
-                    "error": "Query failed",
-                    "details": error_msg,
-                    "suggestion": "Check table names and syntax.",
-                }
-            )
-
-        output = result.stdout.strip()
-
-        # Sometimes osqueryi outputs nothing if the table is empty
-        if not output:
-            return "[]"
-
-        # Validate that we actually got JSON back
-        try:
-            json.loads(output)
-            return output
-        except json.JSONDecodeError:
-            return json.dumps(
-                {
-                    "error": "Invalid output format",
-                    "details": "osqueryi did not return valid JSON",
-                    "raw_output": output,
-                }
-            )
-
-    except subprocess.TimeoutExpired:
-        return json.dumps(
-            {
-                "error": "Query timeout",
-                "details": "The query exceeded the 60s time limit. It might be scanning too many files or a slow table.",
-            }
-        )
-    except FileNotFoundError:
-        return json.dumps(
-            {
-                "error": "Dependency missing",
-                "details": "'osqueryi' executable not found in PATH.",
-            }
-        )
-    except Exception as e:
-        return json.dumps({"error": "Unexpected error", "details": str(e)})
+  except subprocess.TimeoutExpired:
+    return json.dumps(
+      {
+        "error": "Query timeout",
+        "details": "The query exceeded the 60s time limit. It might be scanning too many files or a slow table.",
+      }
+    )
+  except FileNotFoundError:
+    return json.dumps(
+      {
+        "error": "Dependency missing",
+        "details": "'osqueryi' executable not found in PATH.",
+      }
+    )
+  except Exception as e:
+    return json.dumps({"error": "Unexpected error", "details": str(e)})
 
 
 current_os = platform.system().lower()
 
 root_agent = Agent(
-    model=MODEL,
-    name="aida",
-    description="The emergency diagnostic agent",
-    instruction=f"""
+  model=MODEL,
+  name="aida",
+  description="The emergency diagnostic agent",
+  instruction=f"""
 [IDENTITY]
 You are AIDA, the Emergency Diagnostic Agent. You are a cute, friendly, and highly capable expert.
 Your mission is to help the user identify and resolve system issues efficiently.
@@ -92,7 +94,7 @@ Your mission is to help the user identify and resolve system issues efficiently.
 [OPERATIONAL WORKFLOW]
 1. EXECUTE: Use `run_osquery` to execute the query.
     """,
-    tools=[
-        run_osquery,
-    ],
+  tools=[
+    run_osquery,
+  ],
 )

@@ -6,61 +6,63 @@ from typing import Literal
 
 
 class ClickUpTaskSpec(BaseModel):
-    """Specification for a ClickUp task."""
+  """Specification for a ClickUp task."""
 
-    name: str = Field(description="The task name - should be clear and actionable")
-    token: str = Field(description="Unique verification token to embed in the content")
-    priority: Literal["low", "normal", "high", "urgent"] = Field(default="normal")
-    tags: list[str] = Field(default_factory=list, description="Task tags/labels")
+  name: str = Field(description="The task name - should be clear and actionable")
+  token: str = Field(description="Unique verification token to embed in the content")
+  priority: Literal["low", "normal", "high", "urgent"] = Field(default="normal")
+  tags: list[str] = Field(default_factory=list, description="Task tags/labels")
 
 
 class ClickUpTaskContent(BaseModel):
-    """Content for a ClickUp task."""
+  """Content for a ClickUp task."""
 
-    description: str = Field(description="Main task description in markdown format")
-    objectives: list[str] = Field(description="List of task objectives/requirements")
-    technical_details: str = Field(description="Technical implementation details")
-    acceptance_criteria: list[str] = Field(description="Definition of done")
+  description: str = Field(description="Main task description in markdown format")
+  objectives: list[str] = Field(description="List of task objectives/requirements")
+  technical_details: str = Field(description="Technical implementation details")
+  acceptance_criteria: list[str] = Field(description="Definition of done")
 
 
 class ClickUpTask(BaseModel):
-    """Schema for generating ClickUp task content."""
+  """Schema for generating ClickUp task content."""
 
-    spec: ClickUpTaskSpec
-    content: ClickUpTaskContent
+  spec: ClickUpTaskSpec
+  content: ClickUpTaskContent
 
 
 class ClickUpSubtaskSpec(BaseModel):
-    """Specification for a ClickUp subtask."""
+  """Specification for a ClickUp subtask."""
 
-    name: str = Field(description="The subtask name - should be clear and specific")
-    token: str = Field(description="Unique verification token to embed in the content")
+  name: str = Field(description="The subtask name - should be clear and specific")
+  token: str = Field(description="Unique verification token to embed in the content")
 
 
 class ClickUpSubtaskContent(BaseModel):
-    """Content for a ClickUp subtask."""
+  """Content for a ClickUp subtask."""
 
-    description: str = Field(description="Subtask description with implementation details")
-    notes: list[str] = Field(description="Additional notes or considerations")
+  description: str = Field(
+    description="Subtask description with implementation details"
+  )
+  notes: list[str] = Field(description="Additional notes or considerations")
 
 
 class ClickUpSubtask(BaseModel):
-    """Schema for generating ClickUp subtask content."""
+  """Schema for generating ClickUp subtask content."""
 
-    spec: ClickUpSubtaskSpec
-    content: ClickUpSubtaskContent
+  spec: ClickUpSubtaskSpec
+  content: ClickUpSubtaskContent
 
 
 class ClickUpCommentContent(BaseModel):
-    """Content for a ClickUp comment."""
+  """Content for a ClickUp comment."""
 
-    text: str = Field(description="Comment text - should be relevant and helpful")
-    token: str = Field(description="Unique verification token to embed in the comment")
+  text: str = Field(description="Comment text - should be relevant and helpful")
+  token: str = Field(description="Unique verification token to embed in the comment")
 
 
 class ClickUpFileContent(BaseModel):
-    """Content for a ClickUp file attachment."""
+  """Content for a ClickUp file attachment."""
 
-    filename: str = Field(description="File name with extension")
-    content: str = Field(description="File content - should be relevant to the task")
-    token: str = Field(description="Unique verification token to embed in the file")
+  filename: str = Field(description="File name with extension")
+  content: str = Field(description="File content - should be relevant to the task")
+  token: str = Field(description="Unique verification token to embed in the file")

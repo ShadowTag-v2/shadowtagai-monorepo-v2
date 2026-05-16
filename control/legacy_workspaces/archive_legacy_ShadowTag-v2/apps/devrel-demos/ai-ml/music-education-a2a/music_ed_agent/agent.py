@@ -19,8 +19,8 @@ from google.adk.agents import Agent
 from google.adk.agents.remote_a2a_agent import RemoteA2aAgent
 
 from music_ed_agent.tools import (
-    adk_youtube_search_tool,
-    adk_wikipedia_tool,
+  adk_youtube_search_tool,
+  adk_wikipedia_tool,
 )
 
 from auth_utils import create_authenticated_client
@@ -29,17 +29,17 @@ from auth_utils import create_authenticated_client
 # Get env var - location of Remote A2A agent
 remote_agent_card = os.getenv("REMOTE_AGENT_CARD")
 if not remote_agent_card:
-    raise RuntimeError("REMOTE_AGENT_CARD environment variable must be set.")
+  raise RuntimeError("REMOTE_AGENT_CARD environment variable must be set.")
 
 # Create an authenticated HTTP client for A2A client.
 httpx_client = create_authenticated_client(remote_agent_card)
 
 # Remote agent (historical context)
 historical_context_agent = RemoteA2aAgent(
-    name="historical_context_agent",
-    description="Agent that researches the historical context of a classical music composition, and its composer.",
-    agent_card=remote_agent_card,
-    httpx_client=httpx_client,
+  name="historical_context_agent",
+  description="Agent that researches the historical context of a classical music composition, and its composer.",
+  agent_card=remote_agent_card,
+  httpx_client=httpx_client,
 )
 
 # Root agent info
@@ -72,9 +72,9 @@ SUB AGENTS:
 
 
 root_agent = Agent(
-    model="gemini-2.5-pro",
-    name="music_ed_agent",
-    instruction=agent_instruction,
-    tools=[adk_youtube_search_tool, adk_wikipedia_tool],
-    sub_agents=[historical_context_agent],
+  model="gemini-2.5-pro",
+  name="music_ed_agent",
+  instruction=agent_instruction,
+  tools=[adk_youtube_search_tool, adk_wikipedia_tool],
+  sub_agents=[historical_context_agent],
 )

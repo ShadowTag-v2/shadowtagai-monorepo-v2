@@ -21,50 +21,56 @@ from google.adk.models.lite_llm import LiteLlm
 
 
 def roll_die(sides: int) -> int:
-    """Roll a die and return the rolled result.
+  """Roll a die and return the rolled result.
 
-    Args:
-      sides: The integer number of sides the die has.
+  Args:
+    sides: The integer number of sides the die has.
 
-    Returns:
-      An integer of the result of rolling the die.
-    """
-    return random.randint(1, sides)
+  Returns:
+    An integer of the result of rolling the die.
+  """
+  return random.randint(1, sides)
 
 
 async def check_prime(nums: list[int]) -> str:
-    """Check if a given list of numbers are prime.
+  """Check if a given list of numbers are prime.
 
-    Args:
-      nums: The list of numbers to check.
+  Args:
+    nums: The list of numbers to check.
 
-    Returns:
-      A str indicating which number is prime.
-    """
-    primes = set()
-    for number in nums:
-        number = int(number)
-        if number <= 1:
-            continue
-        is_prime = True
-        for i in range(2, int(number**0.5) + 1):
-            if number % i == 0:
-                is_prime = False
-                break
-        if is_prime:
-            primes.add(number)
-    return "No prime numbers found." if not primes else f"{', '.join(str(num) for num in primes)} are prime numbers."
+  Returns:
+    A str indicating which number is prime.
+  """
+  primes = set()
+  for number in nums:
+    number = int(number)
+    if number <= 1:
+      continue
+    is_prime = True
+    for i in range(2, int(number**0.5) + 1):
+      if number % i == 0:
+        is_prime = False
+        break
+    if is_prime:
+      primes.add(number)
+  return (
+    "No prime numbers found."
+    if not primes
+    else f"{', '.join(str(num) for num in primes)} are prime numbers."
+  )
 
 
 root_agent = Agent(
-    # model=LiteLlm(model="gemini/gemini-2.5-pro-exp-03-25"),
-    # model=LiteLlm(model="vertex_ai/gemini-2.5-pro-exp-03-25"),
-    # model=LiteLlm(model="vertex_ai/claude-3-5-haiku"),
-    model=LiteLlm(model="openai/gpt-4o"),
-    # model=LiteLlm(model="anthropic/claude-3-sonnet-20240229"),
-    name="data_processing_agent",
-    description=("hello world agent that can roll a dice of 8 sides and check prime numbers."),
-    instruction="""
+  # model=LiteLlm(model="gemini/gemini-2.5-pro-exp-03-25"),
+  # model=LiteLlm(model="vertex_ai/gemini-2.5-pro-exp-03-25"),
+  # model=LiteLlm(model="vertex_ai/claude-3-5-haiku"),
+  model=LiteLlm(model="openai/gpt-4o"),
+  # model=LiteLlm(model="anthropic/claude-3-sonnet-20240229"),
+  name="data_processing_agent",
+  description=(
+    "hello world agent that can roll a dice of 8 sides and check prime numbers."
+  ),
+  instruction="""
       You roll dice and answer questions about the outcome of the dice rolls.
       You can roll dice of different sizes.
       You can use multiple tools in parallel by calling functions in parallel(in one request and in one round).
@@ -81,8 +87,8 @@ root_agent = Agent(
       You should always perform the previous 3 steps when asking for a roll and checking prime numbers.
       You should not rely on the previous history on prime results.
     """,
-    tools=[
-        roll_die,
-        check_prime,
-    ],
+  tools=[
+    roll_die,
+    check_prime,
+  ],
 )

@@ -9,62 +9,64 @@ import requests
 
 def get_id_token(audience: str) -> str:
 
-    creds, _ = google.auth.default()
-    auth_req = Request()
+  creds, _ = google.auth.default()
+  auth_req = Request()
 
-    # Option D: Handle Impersonated Credentials
-    if isinstance(creds, impersonated_credentials.Credentials):
-        creds = impersonated_credentials.IDTokenCredentials(creds, target_audience=audience, include_email=True)
-        creds.refresh(auth_req)
-        return creds.token
-
-    # Option B: Handle User Credentials
-    if hasattr(creds, "id_token") and creds.id_token:
-        return creds.id_token
+  # Option D: Handle Impersonated Credentials
+  if isinstance(creds, impersonated_credentials.Credentials):
+    creds = impersonated_credentials.IDTokenCredentials(
+      creds, target_audience=audience, include_email=True
+    )
     creds.refresh(auth_req)
-    if hasattr(creds, "id_token") and creds.id_token:
-        return creds.id_token
+    return creds.token
 
-    # Option A or C: Fetch from Metadata Server or Handle Service Account Credentials
-    token = id_token.fetch_id_token(auth_req, audience)
-    if token:
-        return token
+  # Option B: Handle User Credentials
+  if hasattr(creds, "id_token") and creds.id_token:
+    return creds.id_token
+  creds.refresh(auth_req)
+  if hasattr(creds, "id_token") and creds.id_token:
+    return creds.id_token
 
-    raise ValueError("Cannot obtain ID token")
+  # Option A or C: Fetch from Metadata Server or Handle Service Account Credentials
+  token = id_token.fetch_id_token(auth_req, audience)
+  if token:
+    return token
+
+  raise ValueError("Cannot obtain ID token")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Cloud Run Auth Demo")
-    parser.add_argument("--url", type=str, required=True, help="Cloud Run service URL")
-    args = parser.parse_args()
+  parser = argparse.ArgumentParser(description="Cloud Run Auth Demo")
+  parser.add_argument("--url", type=str, required=True, help="Cloud Run service URL")
+  args = parser.parse_args()
 
-    try:
-        token = get_id_token(args.url)
-    except Exception as e:
-        print(f"❌ Authentication Failed: {e}")
-        return
+  try:
+    token = get_id_token(args.url)
+  except Exception as e:
+    print(f"❌ Authentication Failed: {e}")
+    return
 
-    print("🎉 ID token is ready for use.")
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    }
+  print("🎉 ID token is ready for use.")
+  headers = {
+    "Authorization": f"Bearer {token}",
+    "Content-Type": "application/json",
+  }
 
-    try:
-        print(f"👉 Calling Cloud Run service endpoint {args.url} ...")
-        response = requests.get(args.url, headers=headers)
+  try:
+    print(f"👉 Calling Cloud Run service endpoint {args.url} ...")
+    response = requests.get(args.url, headers=headers)
 
-        if response.status_code == 200:
-            print("🎉 --- Response Content (First 200 chars) ---\n")
-        else:
-            print(f"❌ HTTP Error: Status Code {response.status_code}")
-            print("❌ --- Response Content (First 200 chars) ---\n")
+    if response.status_code == 200:
+      print("🎉 --- Response Content (First 200 chars) ---\n")
+    else:
+      print(f"❌ HTTP Error: Status Code {response.status_code}")
+      print("❌ --- Response Content (First 200 chars) ---\n")
 
-        print(response.text[:200] + "...")
+    print(response.text[:200] + "...")
 
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Request Failed: {e}")
+  except requests.exceptions.RequestException as e:
+    print(f"❌ Request Failed: {e}")
 
 
 if __name__ == "__main__":
-    main()
+  main()

@@ -32,6 +32,6 @@ from .bigquery_credentials import BigQueryCredentialsConfig
 from .bigquery_toolset import BigQueryToolset
 
 __all__ = [
-    "BigQueryToolset",
-    "BigQueryCredentialsConfig",
+  "BigQueryToolset",
+  "BigQueryCredentialsConfig",
 ]

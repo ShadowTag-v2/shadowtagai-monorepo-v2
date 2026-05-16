@@ -19,42 +19,42 @@ import json
 
 
 class GameRecord:
-    """
-    data = {
-        "datetime": _datetime,              # Time-stamp denoting the message creation time at VM (UTC)
-        "game_event_type": game_event_type, # Identifies one of ["start", "stop", "genai"] events
-        "uniqueid": uniqueid                # A unique id for each player
+  """
+  data = {
+      "datetime": _datetime,              # Time-stamp denoting the message creation time at VM (UTC)
+      "game_event_type": game_event_type, # Identifies one of ["start", "stop", "genai"] events
+      "uniqueid": uniqueid                # A unique id for each player
+  }
+  """
+
+  def __init__(self, datetime: str, game_event_type: str, uniqueid: str):
+    self.datetime = datetime
+    self.game_event_type = game_event_type
+    self.uniqueid = uniqueid
+
+  @staticmethod
+  def from_dict(source):
+    game = GameRecord(
+      source["datetime"],
+      source["game_event_type"],
+      source["uniqueid"],
+    )
+    return game
+
+  def to_dict(self) -> dict[str, str]:
+    game = {
+      "datetime": self.datetime,
+      "game_event_type": self.game_event_type,
+      "uniqueid": self.uniqueid,
     }
-    """
+    return game
 
-    def __init__(self, datetime: str, game_event_type: str, uniqueid: str):
-        self.datetime = datetime
-        self.game_event_type = game_event_type
-        self.uniqueid = uniqueid
-
-    @staticmethod
-    def from_dict(source):
-        game = GameRecord(
-            source["datetime"],
-            source["game_event_type"],
-            source["uniqueid"],
-        )
-        return game
-
-    def to_dict(self) -> dict[str, str]:
-        game = {
-            "datetime": self.datetime,
-            "game_event_type": self.game_event_type,
-            "uniqueid": self.uniqueid,
-        }
-        return game
-
-    def __repr__(self) -> str:
-        return f"GameRecord(\
+  def __repr__(self) -> str:
+    return f"GameRecord(\
                 datetime={self.datetime}, \
                 game_event_type={self.game_event_type}, \
                 uniqueid={self.uniqueid}\
             )"
 
-    def json_dumps(self) -> bytes:
-        return json.dumps(self.to_dict()).encode("utf-8")
+  def json_dumps(self) -> bytes:
+    return json.dumps(self.to_dict()).encode("utf-8")

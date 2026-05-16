@@ -22,27 +22,27 @@ from unittest import mock
 
 
 def test_get_eval_sets_manager_local(monkeypatch):
-    mock_local_manager = mock.MagicMock()
-    monkeypatch.setattr(
-        "google.adk.evaluation.local_eval_sets_manager.LocalEvalSetsManager",
-        lambda *a, **k: mock_local_manager,
-    )
-    from google.adk.cli.cli_eval import get_eval_sets_manager
+  mock_local_manager = mock.MagicMock()
+  monkeypatch.setattr(
+    "google.adk.evaluation.local_eval_sets_manager.LocalEvalSetsManager",
+    lambda *a, **k: mock_local_manager,
+  )
+  from google.adk.cli.cli_eval import get_eval_sets_manager
 
-    manager = get_eval_sets_manager(eval_storage_uri=None, agents_dir="some/dir")
-    assert manager == mock_local_manager
+  manager = get_eval_sets_manager(eval_storage_uri=None, agents_dir="some/dir")
+  assert manager == mock_local_manager
 
 
 def test_get_eval_sets_manager_gcs(monkeypatch):
-    mock_gcs_manager = mock.MagicMock()
-    mock_create_gcs = mock.MagicMock()
-    mock_create_gcs.return_value = SimpleNamespace(eval_sets_manager=mock_gcs_manager)
-    monkeypatch.setattr(
-        "google.adk.cli.utils.evals.create_gcs_eval_managers_from_uri",
-        mock_create_gcs,
-    )
-    from google.adk.cli.cli_eval import get_eval_sets_manager
+  mock_gcs_manager = mock.MagicMock()
+  mock_create_gcs = mock.MagicMock()
+  mock_create_gcs.return_value = SimpleNamespace(eval_sets_manager=mock_gcs_manager)
+  monkeypatch.setattr(
+    "google.adk.cli.utils.evals.create_gcs_eval_managers_from_uri",
+    mock_create_gcs,
+  )
+  from google.adk.cli.cli_eval import get_eval_sets_manager
 
-    manager = get_eval_sets_manager(eval_storage_uri="gs://bucket", agents_dir="some/dir")
-    assert manager == mock_gcs_manager
-    mock_create_gcs.assert_called_once_with("gs://bucket")
+  manager = get_eval_sets_manager(eval_storage_uri="gs://bucket", agents_dir="some/dir")
+  assert manager == mock_gcs_manager
+  mock_create_gcs.assert_called_once_with("gs://bucket")

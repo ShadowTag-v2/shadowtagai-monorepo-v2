@@ -48,78 +48,80 @@ column_family_id = "cf"
 
 
 def get_data(track_id):
-    # get_track_data returns the data for the last race on a track
-    data = {}
-    _r = table.read_rows(
-        filter_=row_filters.RowKeyRegexFilter(bytes(f"^track{track_id}#.*", "utf-8")),
-        limit=1,
-    )
+  # get_track_data returns the data for the last race on a track
+  data = {}
+  _r = table.read_rows(
+    filter_=row_filters.RowKeyRegexFilter(bytes(f"^track{track_id}#.*", "utf-8")),
+    limit=1,
+  )
 
-    # Expand Bigtable read to a reusable object
-    row = None
-    for _ in _r:
-        row = _
+  # Expand Bigtable read to a reusable object
+  row = None
+  for _ in _r:
+    row = _
 
-    data["car_id"] = row.cells["cf"][b"car_id"][0].value.decode("utf-8")
-    data["timestamp"] = datetime.timestamp(row.cells["cf"][b"car_id"][0].timestamp)
+  data["car_id"] = row.cells["cf"][b"car_id"][0].value.decode("utf-8")
+  data["timestamp"] = datetime.timestamp(row.cells["cf"][b"car_id"][0].timestamp)
 
-    col_strf = "t{i}_s"
-    checkpoints = {}
-    for i in range(1, 9):
-        col_name = bytes(col_strf.format(i=i), "utf-8")
-        col = row.cells["cf"].get(col_name)
-        checkpoints[str(i)] = float(col[0].value.decode("utf-8")) if col else None
+  col_strf = "t{i}_s"
+  checkpoints = {}
+  for i in range(1, 9):
+    col_name = bytes(col_strf.format(i=i), "utf-8")
+    col = row.cells["cf"].get(col_name)
+    checkpoints[str(i)] = float(col[0].value.decode("utf-8")) if col else None
 
-    data["checkpoints"] = checkpoints
-    data["status"] = DONE if checkpoints.get("8") else OK
-    return data
+  data["checkpoints"] = checkpoints
+  data["status"] = DONE if checkpoints.get("8") else OK
+  return data
 
 
 def background_thread():
-    while True:
-        socketio.sleep(1)
+  while True:
+    socketio.sleep(1)
 
-        lt = time.time()
-        print("GETTING LEFT DATA")
-        left_data = get_data(1)
-        print(f"RECEIVED LEFT DATA AFTER {time.time() - lt} SECONDS")
+    lt = time.time()
+    print("GETTING LEFT DATA")
+    left_data = get_data(1)
+    print(f"RECEIVED LEFT DATA AFTER {time.time() - lt} SECONDS")
 
-        rt = time.time()
-        print("GETTING RIGHT DATA")
-        right_data = get_data(2)
-        print(f"RECEIVED RIGHT DATA AFTER {time.time() - rt} SECONDS")
+    rt = time.time()
+    print("GETTING RIGHT DATA")
+    right_data = get_data(2)
+    print(f"RECEIVED RIGHT DATA AFTER {time.time() - rt} SECONDS")
 
-        # Determine if there's a winner
-        if left_data["status"] == DONE and right_data["status"] == DONE:
-            if left_data["checkpoints"]["8"] < right_data["checkpoints"]["8"]:
-                left_data["status"] = WIN
-                right_data["status"] = LOSE
-            else:
-                right_data["status"] = WIN
-                left_data["status"] = LOSE
-        elif left_data["status"] == DONE:
-            left_data["status"] = WIN
-            right_data["status"] = LOSE
-        elif right_data["status"] == DONE:
-            right_data["status"] = WIN
-            left_data["status"] = LOSE
+    # Determine if there's a winner
+    if left_data["status"] == DONE and right_data["status"] == DONE:
+      if left_data["checkpoints"]["8"] < right_data["checkpoints"]["8"]:
+        left_data["status"] = WIN
+        right_data["status"] = LOSE
+      else:
+        right_data["status"] = WIN
+        left_data["status"] = LOSE
+    elif left_data["status"] == DONE:
+      left_data["status"] = WIN
+      right_data["status"] = LOSE
+    elif right_data["status"] == DONE:
+      right_data["status"] = WIN
+      left_data["status"] = LOSE
 
-        print("EMITTING DATA")
-        socketio.emit("send_data", {"left": left_data, "right": right_data})
-        print("DATA EMITTED")
+    print("EMITTING DATA")
+    socketio.emit("send_data", {"left": left_data, "right": right_data})
+    print("DATA EMITTED")
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", async_mode=socketio.async_mode)
+  return render_template("index.html", async_mode=socketio.async_mode)
 
 
 @socketio.on("connect")
 def connect():
-    socketio.start_background_task(background_thread)
-    print("connecting")
-    socketio.emit("set_default", {"left_id": f"{DEFAULT_ID}", "right_id": f"{DEFAULT_ID}"})
+  socketio.start_background_task(background_thread)
+  print("connecting")
+  socketio.emit(
+    "set_default", {"left_id": f"{DEFAULT_ID}", "right_id": f"{DEFAULT_ID}"}
+  )
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+  socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

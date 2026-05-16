@@ -1,0 +1,27 @@
+{
+  "nodes": {
+    "92c1731e": {
+      "label": "Streamlit",
+      "status": "preferred"
+    },
+    "f7bf6a4f": {
+      "label": "Gradio for prototypes",
+      "status": "rejected"
+    },
+    "b31d2eb6": {
+      "label": "PATs",
+      "status": "banned"
+    }
+  },
+  "edges": [
+    {
+      "from": "92c1731e",
+      "to": "f7bf6a4f",
+      "rel": "preferred_over"
+    }
+  ],
+  "meta": {
+    "ts": "2026-05-16T17:50:43.609439+00:00",
+    "count": 2
+  }
+}

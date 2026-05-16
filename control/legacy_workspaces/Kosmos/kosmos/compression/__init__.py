@@ -25,7 +25,7 @@ Performance Target: 20:1 overall compression ratio
 from .compressor import ContextCompressor, NotebookCompressor, LiteratureCompressor
 
 __all__ = [
-    "ContextCompressor",
-    "NotebookCompressor",
-    "LiteratureCompressor",
+  "ContextCompressor",
+  "NotebookCompressor",
+  "LiteratureCompressor",
 ]

@@ -13,20 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.adk.tools.application_integration_tool.application_integration_toolset import ApplicationIntegrationToolset
+from google.adk.tools.application_integration_tool.application_integration_toolset import (
+  ApplicationIntegrationToolset,
+)
 
 jira_tool = ApplicationIntegrationToolset(
-    project="your-gcp-project-id",  # replace with your GCP project ID
-    location="your-regions",  # replace your regions
-    connection="your-integration-connection-name",  # replace with your connection name
-    entity_operations={
-        "Issues": ["GET", "LIST"],
-    },
-    actions=[
-        "get_issue_by_key",
-    ],
-    tool_name="jira_conversation_tool",
-    tool_instructions="""
+  project="your-gcp-project-id",  # replace with your GCP project ID
+  location="your-regions",  # replace your regions
+  connection="your-integration-connection-name",  # replace with your connection name
+  entity_operations={
+    "Issues": ["GET", "LIST"],
+  },
+  actions=[
+    "get_issue_by_key",
+  ],
+  tool_name="jira_conversation_tool",
+  tool_instructions="""
     
     This tool is to call an integration to search for issues in Jira
     

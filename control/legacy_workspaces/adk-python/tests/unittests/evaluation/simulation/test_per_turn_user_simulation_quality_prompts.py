@@ -15,12 +15,18 @@
 
 import textwrap
 
-from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import _get_latest_turn_user_simulator_quality_prompt_template
-from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import _LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE
 from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import (
-    _LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE,
+  _get_latest_turn_user_simulator_quality_prompt_template,
 )
-from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import get_per_turn_user_simulator_quality_prompt
+from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import (
+  _LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE,
+)
+from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import (
+  _LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE,
+)
+from google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts import (
+  get_per_turn_user_simulator_quality_prompt,
+)
 from google.adk.evaluation.simulation.user_simulator_personas import UserBehavior
 from google.adk.evaluation.simulation.user_simulator_personas import UserPersona
 
@@ -67,51 +73,53 @@ _MOCK_PERSONA_TEMPLATE = textwrap.dedent("""\
 
 
 class TestGetLatestTurnUserSimulatorQualityPrompt:
-    """Test cases for get_latest_turn_user_simulator_quality_prompt."""
+  """Test cases for get_latest_turn_user_simulator_quality_prompt."""
 
-    def test_get_get_latest_turn_user_simulator_quality_prompt_template_default(
-        self,
-    ):
-        prompt = _get_latest_turn_user_simulator_quality_prompt_template(user_persona=None)
-        assert prompt == _LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE
+  def test_get_get_latest_turn_user_simulator_quality_prompt_template_default(
+    self,
+  ):
+    prompt = _get_latest_turn_user_simulator_quality_prompt_template(user_persona=None)
+    assert prompt == _LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE
 
-    def test_get_latest_turn_user_simulator_quality_prompt_template_with_persona(
-        self,
-    ):
-        """Tests that the correct prompt is returned when a persona is provided."""
-        persona = UserPersona(
-            id="test_persona",
-            description="Test persona description.",
-            behaviors=[
-                UserBehavior(
-                    name="test_behavior",
-                    description="Test behavior description.",
-                    behavior_instructions=["instruction1"],
-                    violation_rubrics=["violation1"],
-                )
-            ],
+  def test_get_latest_turn_user_simulator_quality_prompt_template_with_persona(
+    self,
+  ):
+    """Tests that the correct prompt is returned when a persona is provided."""
+    persona = UserPersona(
+      id="test_persona",
+      description="Test persona description.",
+      behaviors=[
+        UserBehavior(
+          name="test_behavior",
+          description="Test behavior description.",
+          behavior_instructions=["instruction1"],
+          violation_rubrics=["violation1"],
         )
-        prompt = _get_latest_turn_user_simulator_quality_prompt_template(user_persona=persona)
-        assert prompt == _LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE
+      ],
+    )
+    prompt = _get_latest_turn_user_simulator_quality_prompt_template(
+      user_persona=persona
+    )
+    assert prompt == _LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE
 
 
 class TestGetPerTurnUserSimulatorQualityPrompt:
-    """Test cases for get_per_turn_user_simulator_quality_prompt."""
+  """Test cases for get_per_turn_user_simulator_quality_prompt."""
 
-    def test_get_per_turn_user_simulator_quality_prompt_default(self, mocker):
-        """Tests that the correct prompt is returned when no persona is provided."""
-        mocker.patch(
-            "google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts._LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE",
-            _MOCK_DEFAULT_TEMPLATE,
-        )
-        prompt = get_per_turn_user_simulator_quality_prompt(
-            conversation_plan="plan",
-            conversation_history="history",
-            generated_user_response="response",
-            stop_signal="stop",
-            user_persona=None,
-        )
-        expected_prompt = textwrap.dedent("""\
+  def test_get_per_turn_user_simulator_quality_prompt_default(self, mocker):
+    """Tests that the correct prompt is returned when no persona is provided."""
+    mocker.patch(
+      "google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts._LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE",
+      _MOCK_DEFAULT_TEMPLATE,
+    )
+    prompt = get_per_turn_user_simulator_quality_prompt(
+      conversation_plan="plan",
+      conversation_history="history",
+      generated_user_response="response",
+      stop_signal="stop",
+      user_persona=None,
+    )
+    expected_prompt = textwrap.dedent("""\
       Default template
 
       # Conversation Plan
@@ -125,34 +133,34 @@ class TestGetPerTurnUserSimulatorQualityPrompt:
 
       # Stop signal
       stop""").strip()
-        assert prompt == expected_prompt
+    assert prompt == expected_prompt
 
-    def test_get_per_turn_user_simulator_quality_prompt_with_persona(self, mocker):
-        """Tests that the correct prompt is returned when a persona is provided."""
-        mocker.patch(
-            "google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts._LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE",
-            _MOCK_PERSONA_TEMPLATE,
+  def test_get_per_turn_user_simulator_quality_prompt_with_persona(self, mocker):
+    """Tests that the correct prompt is returned when a persona is provided."""
+    mocker.patch(
+      "google.adk.evaluation.simulation.per_turn_user_simulator_quality_prompts._LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE",
+      _MOCK_PERSONA_TEMPLATE,
+    )
+    persona = UserPersona(
+      id="test_persona",
+      description="Test persona description.",
+      behaviors=[
+        UserBehavior(
+          name="test_behavior",
+          description="Test behavior description.",
+          behavior_instructions=["instruction1"],
+          violation_rubrics=["violation1"],
         )
-        persona = UserPersona(
-            id="test_persona",
-            description="Test persona description.",
-            behaviors=[
-                UserBehavior(
-                    name="test_behavior",
-                    description="Test behavior description.",
-                    behavior_instructions=["instruction1"],
-                    violation_rubrics=["violation1"],
-                )
-            ],
-        )
-        prompt = get_per_turn_user_simulator_quality_prompt(
-            conversation_plan="plan",
-            conversation_history="history",
-            generated_user_response="response",
-            stop_signal="stop",
-            user_persona=persona,
-        )
-        expected_prompt = textwrap.dedent("""\
+      ],
+    )
+    prompt = get_per_turn_user_simulator_quality_prompt(
+      conversation_plan="plan",
+      conversation_history="history",
+      generated_user_response="response",
+      stop_signal="stop",
+      user_persona=persona,
+    )
+    expected_prompt = textwrap.dedent("""\
       Persona template
 
       # Persona Description
@@ -175,4 +183,4 @@ class TestGetPerTurnUserSimulatorQualityPrompt:
 
       # Stop signal
       stop""").strip()
-        assert prompt == expected_prompt
+    assert prompt == expected_prompt

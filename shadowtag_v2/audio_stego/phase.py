@@ -10,171 +10,175 @@ from .spectral import SpectralProcessor
 
 
 class PhaseEncoder:
+  """
+  Phase-based audio steganography encoder.
+
+  Embeds data by modifying the phase components of audio in the
+  frequency domain while preserving magnitude information.
+  """
+
+  def __init__(
+    self, frame_size: int = 2048, hop_size: int = 512, phase_range: float = np.pi / 4
+  ):
     """
-    Phase-based audio steganography encoder.
+    Initialize phase encoder.
 
-    Embeds data by modifying the phase components of audio in the
-    frequency domain while preserving magnitude information.
+    Args:
+        frame_size: FFT frame size
+        hop_size: Hop size for STFT
+        phase_range: Maximum phase deviation for encoding (radians)
     """
+    self.spectral = SpectralProcessor(frame_size, hop_size)
+    self.phase_range = phase_range
 
-    def __init__(self, frame_size: int = 2048, hop_size: int = 512, phase_range: float = np.pi / 4):
-        """
-        Initialize phase encoder.
+  def encode(self, audio: np.ndarray, bits: list[int]) -> np.ndarray:
+    """
+    Encode bits into audio using phase manipulation.
 
-        Args:
-            frame_size: FFT frame size
-            hop_size: Hop size for STFT
-            phase_range: Maximum phase deviation for encoding (radians)
-        """
-        self.spectral = SpectralProcessor(frame_size, hop_size)
-        self.phase_range = phase_range
+    Args:
+        audio: Input audio samples
+        bits: List of bits to encode (0 or 1)
 
-    def encode(self, audio: np.ndarray, bits: list[int]) -> np.ndarray:
-        """
-        Encode bits into audio using phase manipulation.
+    Returns:
+        Encoded audio samples
+    """
+    # Compute STFT
+    stft_matrix = self.spectral.stft(audio)
+    magnitude, phase = self.spectral.get_magnitude_phase(stft_matrix)
 
-        Args:
-            audio: Input audio samples
-            bits: List of bits to encode (0 or 1)
+    # Modify phase to encode bits
+    modified_phase = self._embed_bits_in_phase(phase, bits)
 
-        Returns:
-            Encoded audio samples
-        """
-        # Compute STFT
-        stft_matrix = self.spectral.stft(audio)
-        magnitude, phase = self.spectral.get_magnitude_phase(stft_matrix)
+    # Reconstruct STFT
+    modified_stft = self.spectral.reconstruct_from_magnitude_phase(
+      magnitude, modified_phase
+    )
 
-        # Modify phase to encode bits
-        modified_phase = self._embed_bits_in_phase(phase, bits)
+    # Convert back to time domain
+    encoded_audio = self.spectral.istft(modified_stft)
 
-        # Reconstruct STFT
-        modified_stft = self.spectral.reconstruct_from_magnitude_phase(magnitude, modified_phase)
+    return encoded_audio[: len(audio)]  # Trim to original length
 
-        # Convert back to time domain
-        encoded_audio = self.spectral.istft(modified_stft)
+  def decode(self, audio: np.ndarray, num_bits: int) -> list[int]:
+    """
+    Decode bits from phase-encoded audio.
 
-        return encoded_audio[: len(audio)]  # Trim to original length
+    Args:
+        audio: Encoded audio samples
+        num_bits: Number of bits to extract
 
-    def decode(self, audio: np.ndarray, num_bits: int) -> list[int]:
-        """
-        Decode bits from phase-encoded audio.
+    Returns:
+        List of extracted bits
+    """
+    # Compute STFT
+    stft_matrix = self.spectral.stft(audio)
+    _, phase = self.spectral.get_magnitude_phase(stft_matrix)
 
-        Args:
-            audio: Encoded audio samples
-            num_bits: Number of bits to extract
+    # Extract bits from phase
+    bits = self._extract_bits_from_phase(phase, num_bits)
 
-        Returns:
-            List of extracted bits
-        """
-        # Compute STFT
-        stft_matrix = self.spectral.stft(audio)
-        _, phase = self.spectral.get_magnitude_phase(stft_matrix)
+    return bits
 
-        # Extract bits from phase
-        bits = self._extract_bits_from_phase(phase, num_bits)
+  def _embed_bits_in_phase(self, phase: np.ndarray, bits: list[int]) -> np.ndarray:
+    """
+    Embed bits into phase matrix.
 
-        return bits
+    Uses phase deviation to represent binary values:
+    - 0: phase -= phase_range
+    - 1: phase += phase_range
 
-    def _embed_bits_in_phase(self, phase: np.ndarray, bits: list[int]) -> np.ndarray:
-        """
-        Embed bits into phase matrix.
+    Args:
+        phase: Original phase matrix (frames, bins)
+        bits: Bits to embed
 
-        Uses phase deviation to represent binary values:
-        - 0: phase -= phase_range
-        - 1: phase += phase_range
+    Returns:
+        Modified phase matrix
+    """
+    modified_phase = phase.copy()
+    num_frames, num_bins = phase.shape
 
-        Args:
-            phase: Original phase matrix (frames, bins)
-            bits: Bits to embed
+    # Use middle frequency bins (more perceptually masked)
+    bin_start = num_bins // 4
+    bin_end = 3 * num_bins // 4
+    usable_bins = bin_end - bin_start
 
-        Returns:
-            Modified phase matrix
-        """
-        modified_phase = phase.copy()
-        num_frames, num_bins = phase.shape
+    bit_idx = 0
+    for frame_idx in range(num_frames):
+      if bit_idx >= len(bits):
+        break
 
-        # Use middle frequency bins (more perceptually masked)
-        bin_start = num_bins // 4
-        bin_end = 3 * num_bins // 4
-        usable_bins = bin_end - bin_start
+      for bin_idx in range(bin_start, bin_end):
+        if bit_idx >= len(bits):
+          break
 
-        bit_idx = 0
-        for frame_idx in range(num_frames):
-            if bit_idx >= len(bits):
-                break
+        # Encode bit as phase deviation
+        if bits[bit_idx] == 0:
+          modified_phase[frame_idx, bin_idx] -= self.phase_range
+        else:
+          modified_phase[frame_idx, bin_idx] += self.phase_range
 
-            for bin_idx in range(bin_start, bin_end):
-                if bit_idx >= len(bits):
-                    break
+        bit_idx += 1
 
-                # Encode bit as phase deviation
-                if bits[bit_idx] == 0:
-                    modified_phase[frame_idx, bin_idx] -= self.phase_range
-                else:
-                    modified_phase[frame_idx, bin_idx] += self.phase_range
+    # Wrap phase to [-π, π]
+    modified_phase = np.arctan2(np.sin(modified_phase), np.cos(modified_phase))
 
-                bit_idx += 1
+    return modified_phase
 
-        # Wrap phase to [-π, π]
-        modified_phase = np.arctan2(np.sin(modified_phase), np.cos(modified_phase))
+  def _extract_bits_from_phase(self, phase: np.ndarray, num_bits: int) -> list[int]:
+    """
+    Extract bits from phase matrix.
 
-        return modified_phase
+    Args:
+        phase: Phase matrix (frames, bins)
+        num_bits: Number of bits to extract
 
-    def _extract_bits_from_phase(self, phase: np.ndarray, num_bits: int) -> list[int]:
-        """
-        Extract bits from phase matrix.
+    Returns:
+        List of extracted bits
+    """
+    num_frames, num_bins = phase.shape
+    bin_start = num_bins // 4
+    bin_end = 3 * num_bins // 4
 
-        Args:
-            phase: Phase matrix (frames, bins)
-            num_bits: Number of bits to extract
+    bits = []
+    bit_idx = 0
 
-        Returns:
-            List of extracted bits
-        """
-        num_frames, num_bins = phase.shape
-        bin_start = num_bins // 4
-        bin_end = 3 * num_bins // 4
+    for frame_idx in range(num_frames):
+      if bit_idx >= num_bits:
+        break
 
-        bits = []
-        bit_idx = 0
+      for bin_idx in range(bin_start, bin_end):
+        if bit_idx >= num_bits:
+          break
 
-        for frame_idx in range(num_frames):
-            if bit_idx >= num_bits:
-                break
+        # Decode bit from phase value
+        # Positive deviation = 1, negative = 0
+        phase_val = phase[frame_idx, bin_idx]
+        bit = 1 if phase_val > 0 else 0
+        bits.append(bit)
 
-            for bin_idx in range(bin_start, bin_end):
-                if bit_idx >= num_bits:
-                    break
+        bit_idx += 1
 
-                # Decode bit from phase value
-                # Positive deviation = 1, negative = 0
-                phase_val = phase[frame_idx, bin_idx]
-                bit = 1 if phase_val > 0 else 0
-                bits.append(bit)
+    return bits
 
-                bit_idx += 1
+  def calculate_capacity(self, audio_length: int, sample_rate: int) -> int:
+    """
+    Calculate embedding capacity for given audio length.
 
-        return bits
+    Args:
+        audio_length: Number of audio samples
+        sample_rate: Sample rate in Hz
 
-    def calculate_capacity(self, audio_length: int, sample_rate: int) -> int:
-        """
-        Calculate embedding capacity for given audio length.
+    Returns:
+        Capacity in bits
+    """
+    # Calculate number of STFT frames
+    num_frames = 1 + (audio_length - self.spectral.frame_size) // self.spectral.hop_size
 
-        Args:
-            audio_length: Number of audio samples
-            sample_rate: Sample rate in Hz
+    # Usable bins (middle 50% of spectrum)
+    num_bins = self.spectral.frame_size // 2 + 1
+    usable_bins = num_bins // 2
 
-        Returns:
-            Capacity in bits
-        """
-        # Calculate number of STFT frames
-        num_frames = 1 + (audio_length - self.spectral.frame_size) // self.spectral.hop_size
+    # Total capacity
+    capacity_bits = num_frames * usable_bins
 
-        # Usable bins (middle 50% of spectrum)
-        num_bins = self.spectral.frame_size // 2 + 1
-        usable_bins = num_bins // 2
-
-        # Total capacity
-        capacity_bits = num_frames * usable_bins
-
-        return capacity_bits
+    return capacity_bits

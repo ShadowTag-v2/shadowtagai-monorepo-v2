@@ -18,5 +18,5 @@
 from .base_credential_exchanger import BaseCredentialExchanger
 
 __all__ = [
-    "BaseCredentialExchanger",
+  "BaseCredentialExchanger",
 ]

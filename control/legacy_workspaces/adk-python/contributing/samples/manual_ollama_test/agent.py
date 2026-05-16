@@ -22,19 +22,19 @@ from google.adk.models.lite_llm import LiteLlm
 ollama_model = LiteLlm(model="ollama_chat/qwen2.5:7b")
 
 hello_agent = LlmAgent(
-    name="hello_step",
-    instruction="Say hello to the user. Be concise.",
-    model=ollama_model,
+  name="hello_step",
+  instruction="Say hello to the user. Be concise.",
+  model=ollama_model,
 )
 
 summarize_agent = LlmAgent(
-    name="summarize_step",
-    instruction="Summarize the previous assistant message in 5 words.",
-    model=ollama_model,
+  name="summarize_step",
+  instruction="Summarize the previous assistant message in 5 words.",
+  model=ollama_model,
 )
 
 root_agent = SequentialAgent(
-    name="ollama_seq_test",
-    description="Two-step sanity check for Ollama LiteLLM chat.",
-    sub_agents=[hello_agent, summarize_agent],
+  name="ollama_seq_test",
+  description="Two-step sanity check for Ollama LiteLLM chat.",
+  sub_agents=[hello_agent, summarize_agent],
 )

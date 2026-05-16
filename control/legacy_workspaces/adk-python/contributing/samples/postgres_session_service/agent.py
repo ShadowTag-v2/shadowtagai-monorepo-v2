@@ -22,23 +22,23 @@ from google.adk.agents.llm_agent import Agent
 
 
 def get_current_time() -> str:
-    """Get the current time.
+  """Get the current time.
 
-    Returns:
-      A string with the current time in ISO 8601 format.
-    """
-    return datetime.now(UTC).isoformat()
+  Returns:
+    A string with the current time in ISO 8601 format.
+  """
+  return datetime.now(UTC).isoformat()
 
 
 root_agent = Agent(
-    model="gemini-2.0-flash",
-    name="postgres_session_agent",
-    description="A sample agent demonstrating PostgreSQL session persistence.",
-    instruction="""
+  model="gemini-2.0-flash",
+  name="postgres_session_agent",
+  description="A sample agent demonstrating PostgreSQL session persistence.",
+  instruction="""
       You are a helpful assistant that demonstrates session persistence.
       You can remember previous conversations within the same session.
       Use the get_current_time tool when asked about the time.
       When the user asks what you remember, summarize the previous conversation.
     """,
-    tools=[get_current_time],
+  tools=[get_current_time],
 )

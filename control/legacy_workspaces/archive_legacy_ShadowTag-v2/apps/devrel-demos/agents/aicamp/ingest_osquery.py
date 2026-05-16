@@ -14,39 +14,39 @@ SPECS_DIR = os.path.abspath("osquery_data/specs")
 
 
 def ingest(rag: SQLiteRag, file_path: str):
-    with open(file_path, encoding="utf-8") as f:
-        content = f.read()
+  with open(file_path, encoding="utf-8") as f:
+    content = f.read()
 
-    rel_path = os.path.relpath(file_path, SPECS_DIR)
-    rag.add_text(content, uri=rel_path, metadata={"source": "osquery_specs"})
+  rel_path = os.path.relpath(file_path, SPECS_DIR)
+  rag.add_text(content, uri=rel_path, metadata={"source": "osquery_specs"})
 
 
 if __name__ == "__main__":
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
+  if os.path.exists(DB_PATH):
+    os.remove(DB_PATH)
 
-    print(f"Initializing RAG database at {DB_PATH}...")
-    rag = SQLiteRag.create(DB_PATH, settings={"quantize_scan": True})
+  print(f"Initializing RAG database at {DB_PATH}...")
+  rag = SQLiteRag.create(DB_PATH, settings={"quantize_scan": True})
 
-    print(f"Scanning {SPECS_DIR} for .table files...")
-    files_to_ingest = []
-    for root, _, files in os.walk(SPECS_DIR):
-        for file in files:
-            if file.endswith(".table"):
-                files_to_ingest.append(os.path.join(root, file))
+  print(f"Scanning {SPECS_DIR} for .table files...")
+  files_to_ingest = []
+  for root, _, files in os.walk(SPECS_DIR):
+    for file in files:
+      if file.endswith(".table"):
+        files_to_ingest.append(os.path.join(root, file))
 
-    total_files = len(files_to_ingest)
-    print(f"Found {total_files} files to ingest.")
+  total_files = len(files_to_ingest)
+  print(f"Found {total_files} files to ingest.")
 
-    for i, file_path in enumerate(files_to_ingest):
-        ingest(rag, file_path)
+  for i, file_path in enumerate(files_to_ingest):
+    ingest(rag, file_path)
 
-        if (i + 1) % 50 == 0:
-            print(f"Ingested {i + 1}/{total_files}...")
+    if (i + 1) % 50 == 0:
+      print(f"Ingested {i + 1}/{total_files}...")
 
-    print(f"Finished ingesting {total_files} files.")
+  print(f"Finished ingesting {total_files} files.")
 
-    print("Quantizing vectors...")
-    rag.quantize_vectors()
-    print("Quantization complete.")
-    rag.close()
+  print("Quantizing vectors...")
+  rag.quantize_vectors()
+  print("Quantization complete.")
+  rag.close()

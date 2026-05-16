@@ -14,85 +14,85 @@ from string import Template
 
 
 class PromptTemplate:
+  """
+  A template for generating prompts with variable substitution.
+
+  Example:
+      ```python
+      template = PromptTemplate(
+          name="hypothesis_generator",
+          template="Generate a hypothesis about ${topic} in ${domain}",
+          variables=["topic", "domain"]
+      )
+      prompt = template.render(topic="dark matter", domain="astrophysics")
+      ```
+  """
+
+  def __init__(
+    self,
+    name: str,
+    template: str,
+    variables: list[str],
+    system_prompt: str | None = None,
+    description: str | None = None,
+  ):
     """
-    A template for generating prompts with variable substitution.
+    Initialize a prompt template.
 
-    Example:
-        ```python
-        template = PromptTemplate(
-            name="hypothesis_generator",
-            template="Generate a hypothesis about ${topic} in ${domain}",
-            variables=["topic", "domain"]
-        )
-        prompt = template.render(topic="dark matter", domain="astrophysics")
-        ```
+    Args:
+        name: Unique template name
+        template: Template string with ${variable} placeholders
+        variables: List of required variable names
+        system_prompt: Optional system prompt
+        description: Optional description of template purpose
     """
+    self.name = name
+    self.template_str = template
+    self.variables = variables
+    self.system_prompt = system_prompt
+    self.description = description
+    self._template = Template(template)
 
-    def __init__(
-        self,
-        name: str,
-        template: str,
-        variables: list[str],
-        system_prompt: str | None = None,
-        description: str | None = None,
-    ):
-        """
-        Initialize a prompt template.
+  def render(self, **kwargs) -> str:
+    """
+    Render the template with provided variables.
 
-        Args:
-            name: Unique template name
-            template: Template string with ${variable} placeholders
-            variables: List of required variable names
-            system_prompt: Optional system prompt
-            description: Optional description of template purpose
-        """
-        self.name = name
-        self.template_str = template
-        self.variables = variables
-        self.system_prompt = system_prompt
-        self.description = description
-        self._template = Template(template)
+    Args:
+        **kwargs: Variable values
 
-    def render(self, **kwargs) -> str:
-        """
-        Render the template with provided variables.
+    Returns:
+        str: Rendered prompt
 
-        Args:
-            **kwargs: Variable values
+    Raises:
+        KeyError: If required variable is missing
+    """
+    # Check all required variables are provided
+    missing = set(self.variables) - set(kwargs.keys())
+    if missing:
+      raise KeyError(f"Missing required variables: {missing}")
 
-        Returns:
-            str: Rendered prompt
+    return self._template.safe_substitute(**kwargs)
 
-        Raises:
-            KeyError: If required variable is missing
-        """
-        # Check all required variables are provided
-        missing = set(self.variables) - set(kwargs.keys())
-        if missing:
-            raise KeyError(f"Missing required variables: {missing}")
+  def format(self, **kwargs) -> str:
+    """
+    Alias for render() to match common string formatting convention.
 
-        return self._template.safe_substitute(**kwargs)
+    Args:
+        **kwargs: Variable values
 
-    def format(self, **kwargs) -> str:
-        """
-        Alias for render() to match common string formatting convention.
+    Returns:
+        str: Rendered prompt
+    """
+    return self.render(**kwargs)
 
-        Args:
-            **kwargs: Variable values
+  def get_full_prompt(self, **kwargs) -> dict[str, str]:
+    """
+    Get both system and user prompts.
 
-        Returns:
-            str: Rendered prompt
-        """
-        return self.render(**kwargs)
-
-    def get_full_prompt(self, **kwargs) -> dict[str, str]:
-        """
-        Get both system and user prompts.
-
-        Returns:
-            dict: {"system": str, "prompt": str}
-        """
-        return {"system": self.system_prompt or "", "prompt": self.render(**kwargs)}
+    Returns:
+        dict: {"system": str, "prompt": str}
+    """
+    return {"system": self.system_prompt or "", "prompt": self.render(**kwargs)}
 
 
 # ============================================================================
@@ -100,8 +100,8 @@ class PromptTemplate:
 # ============================================================================
 
 HYPOTHESIS_GENERATOR = PromptTemplate(
-    name="hypothesis_generator",
-    system_prompt="""You are a scientific hypothesis generator powered by Claude. Your role is to:
+  name="hypothesis_generator",
+  system_prompt="""You are a scientific hypothesis generator powered by Claude. Your role is to:
 1. Analyze the research question and existing literature
 2. Generate novel, testable hypotheses
 3. Provide clear scientific rationale for each hypothesis
@@ -145,7 +145,7 @@ Example:
     }
   ]
 }""",
-    template="""Research Question: ${research_question}
+  template="""Research Question: ${research_question}
 
 Domain: ${domain}
 
@@ -188,8 +188,8 @@ Diversity:
 Ensure hypotheses explore different aspects or mechanisms related to the research question. Don't generate near-duplicates.
 
 Output the hypotheses as a JSON object with the exact structure specified in the system prompt.""",
-    variables=["research_question", "domain", "num_hypotheses", "literature_context"],
-    description="Generate scientific hypotheses from research questions with structured output",
+  variables=["research_question", "domain", "num_hypotheses", "literature_context"],
+  description="Generate scientific hypotheses from research questions with structured output",
 )
 
 # ============================================================================
@@ -197,8 +197,8 @@ Output the hypotheses as a JSON object with the exact structure specified in the
 # ============================================================================
 
 EXPERIMENT_DESIGNER = PromptTemplate(
-    name="experiment_designer",
-    system_prompt="""You are an experimental design expert powered by Claude. Your role is to:
+  name="experiment_designer",
+  system_prompt="""You are an experimental design expert powered by Claude. Your role is to:
 1. Convert hypotheses into detailed experimental protocols
 2. Define experimental variables (independent, dependent, control)
 3. Specify control groups and experimental conditions
@@ -434,7 +434,7 @@ Example (Machine Learning):
   "random_seed": 42,
   "reproducibility_notes": "Fix all random seeds (Python, NumPy, PyTorch), record exact library versions (requirements.txt), use deterministic algorithms where possible, save training hyperparameters"
 }""",
-    template="""Research Question: ${research_question}
+  template="""Research Question: ${research_question}
 
 Hypothesis Statement: ${hypothesis_statement}
 
@@ -488,8 +488,16 @@ Constraints:
 - Use appropriate statistical methods for the hypothesis type
 
 Output the experiment protocol as a JSON object with the exact structure specified in the system prompt.""",
-    variables=["hypothesis_statement", "hypothesis_rationale", "domain", "experiment_type", "research_question", "max_cost_usd", "max_duration_days"],
-    description="Design detailed experimental protocols from hypotheses with full specifications",
+  variables=[
+    "hypothesis_statement",
+    "hypothesis_rationale",
+    "domain",
+    "experiment_type",
+    "research_question",
+    "max_cost_usd",
+    "max_duration_days",
+  ],
+  description="Design detailed experimental protocols from hypotheses with full specifications",
 )
 
 # ============================================================================
@@ -497,8 +505,8 @@ Output the experiment protocol as a JSON object with the exact structure specifi
 # ============================================================================
 
 DATA_ANALYST = PromptTemplate(
-    name="data_analyst",
-    system_prompt="""You are a data analysis expert. Your role is to:
+  name="data_analyst",
+  system_prompt="""You are a data analysis expert. Your role is to:
 1. Interpret experimental results scientifically
 2. Identify patterns, trends, and anomalies
 3. Assess statistical significance
@@ -506,7 +514,7 @@ DATA_ANALYST = PromptTemplate(
 5. Suggest follow-up analyses if needed
 
 Be rigorous, objective, and transparent about limitations.""",
-    template="""Original Hypothesis: ${hypothesis}
+  template="""Original Hypothesis: ${hypothesis}
 
 Experiment Performed: ${experiment_description}
 
@@ -524,8 +532,14 @@ Please analyze these results:
 6. Suggest follow-up experiments if needed
 
 ${analysis_constraints}""",
-    variables=["hypothesis", "experiment_description", "results_data", "statistical_tests", "analysis_constraints"],
-    description="Analyze and interpret experimental results",
+  variables=[
+    "hypothesis",
+    "experiment_description",
+    "results_data",
+    "statistical_tests",
+    "analysis_constraints",
+  ],
+  description="Analyze and interpret experimental results",
 )
 
 # ============================================================================
@@ -533,8 +547,8 @@ ${analysis_constraints}""",
 # ============================================================================
 
 LITERATURE_ANALYZER = PromptTemplate(
-    name="literature_analyzer",
-    system_prompt="""You are a scientific literature analyst. Your role is to:
+  name="literature_analyzer",
+  system_prompt="""You are a scientific literature analyst. Your role is to:
 1. Extract key findings from papers
 2. Identify methodologies and approaches
 3. Assess relevance to research question
@@ -542,7 +556,7 @@ LITERATURE_ANALYZER = PromptTemplate(
 5. Synthesize information across multiple papers
 
 Be thorough, accurate, and cite sources appropriately.""",
-    template="""Research Question: ${research_question}
+  template="""Research Question: ${research_question}
 
 Papers to Analyze:
 ${papers_list}
@@ -556,13 +570,13 @@ Please analyze this literature:
 6. Suggest promising directions
 
 ${specific_questions}""",
-    variables=["research_question", "papers_list", "specific_questions"],
-    description="Analyze scientific literature",
+  variables=["research_question", "papers_list", "specific_questions"],
+  description="Analyze scientific literature",
 )
 
 PAPER_SUMMARIZER = PromptTemplate(
-    name="paper_summarizer",
-    system_prompt="""You are an expert at summarizing scientific papers. Extract:
+  name="paper_summarizer",
+  system_prompt="""You are an expert at summarizing scientific papers. Extract:
 1. Main research question
 2. Key methods used
 3. Primary findings
@@ -570,7 +584,7 @@ PAPER_SUMMARIZER = PromptTemplate(
 5. Relevance to given domain
 
 Be concise but comprehensive.""",
-    template="""Paper Title: ${title}
+  template="""Paper Title: ${title}
 
 Abstract: ${abstract}
 
@@ -584,8 +598,8 @@ Provide a structured summary:
 3. Key Findings: What were the main results?
 4. Limitations: What are the acknowledged limitations?
 5. Relevance: How relevant is this to ${domain} research (0-1 score)?""",
-    variables=["title", "abstract", "domain", "full_text"],
-    description="Summarize scientific papers",
+  variables=["title", "abstract", "domain", "full_text"],
+  description="Summarize scientific papers",
 )
 
 # ============================================================================
@@ -593,8 +607,8 @@ Provide a structured summary:
 # ============================================================================
 
 RESEARCH_DIRECTOR = PromptTemplate(
-    name="research_director",
-    system_prompt="""You are a research director orchestrating autonomous scientific discovery. Your role is to:
+  name="research_director",
+  system_prompt="""You are a research director orchestrating autonomous scientific discovery. Your role is to:
 1. Assess current research progress
 2. Decide next steps in the research cycle
 3. Determine when to pivot vs. persist
@@ -602,7 +616,7 @@ RESEARCH_DIRECTOR = PromptTemplate(
 5. Coordinate multiple research threads
 
 Be strategic, adaptive, and evidence-based in your decisions.""",
-    template="""Research Question: ${research_question}
+  template="""Research Question: ${research_question}
 
 Current Progress:
 ${progress_summary}
@@ -628,8 +642,13 @@ Output Format (JSON):
   "success_criteria": "How to evaluate success",
   "should_continue": true/false
 }""",
-    variables=["research_question", "progress_summary", "recent_results", "available_actions"],
-    description="Orchestrate research workflow and decide next steps",
+  variables=[
+    "research_question",
+    "progress_summary",
+    "recent_results",
+    "available_actions",
+  ],
+  description="Orchestrate research workflow and decide next steps",
 )
 
 # ============================================================================
@@ -637,8 +656,8 @@ Output Format (JSON):
 # ============================================================================
 
 CODE_GENERATOR = PromptTemplate(
-    name="code_generator",
-    system_prompt="""You are a scientific code generator. Your role is to:
+  name="code_generator",
+  system_prompt="""You are a scientific code generator. Your role is to:
 1. Generate correct, efficient Python code
 2. Use appropriate scientific libraries (numpy, scipy, pandas, sklearn)
 3. Include error handling and validation
@@ -646,7 +665,7 @@ CODE_GENERATOR = PromptTemplate(
 5. Follow best practices for reproducibility
 
 Only generate code that is safe to execute.""",
-    template="""Task: ${task_description}
+  template="""Task: ${task_description}
 
 Required Analysis:
 ${analysis_type}
@@ -668,8 +687,15 @@ Generate Python code that:
 
 Constraints:
 ${constraints}""",
-    variables=["task_description", "analysis_type", "data_format", "expected_output", "libraries", "constraints"],
-    description="Generate scientific analysis code",
+  variables=[
+    "task_description",
+    "analysis_type",
+    "data_format",
+    "expected_output",
+    "libraries",
+    "constraints",
+  ],
+  description="Generate scientific analysis code",
 )
 
 
@@ -678,40 +704,40 @@ ${constraints}""",
 # ============================================================================
 
 TEMPLATE_REGISTRY: dict[str, PromptTemplate] = {
-    "hypothesis_generator": HYPOTHESIS_GENERATOR,
-    "experiment_designer": EXPERIMENT_DESIGNER,
-    "data_analyst": DATA_ANALYST,
-    "literature_analyzer": LITERATURE_ANALYZER,
-    "paper_summarizer": PAPER_SUMMARIZER,
-    "research_director": RESEARCH_DIRECTOR,
-    "code_generator": CODE_GENERATOR,
+  "hypothesis_generator": HYPOTHESIS_GENERATOR,
+  "experiment_designer": EXPERIMENT_DESIGNER,
+  "data_analyst": DATA_ANALYST,
+  "literature_analyzer": LITERATURE_ANALYZER,
+  "paper_summarizer": PAPER_SUMMARIZER,
+  "research_director": RESEARCH_DIRECTOR,
+  "code_generator": CODE_GENERATOR,
 }
 
 
 def get_template(name: str) -> PromptTemplate:
-    """
-    Get a prompt template by name.
+  """
+  Get a prompt template by name.
 
-    Args:
-        name: Template name
+  Args:
+      name: Template name
 
-    Returns:
-        PromptTemplate: The requested template
+  Returns:
+      PromptTemplate: The requested template
 
-    Raises:
-        KeyError: If template not found
-    """
-    if name not in TEMPLATE_REGISTRY:
-        available = ", ".join(TEMPLATE_REGISTRY.keys())
-        raise KeyError(f"Template '{name}' not found. Available: {available}")
-    return TEMPLATE_REGISTRY[name]
+  Raises:
+      KeyError: If template not found
+  """
+  if name not in TEMPLATE_REGISTRY:
+    available = ", ".join(TEMPLATE_REGISTRY.keys())
+    raise KeyError(f"Template '{name}' not found. Available: {available}")
+  return TEMPLATE_REGISTRY[name]
 
 
 def list_templates() -> list[str]:
-    """
-    List all available template names.
+  """
+  List all available template names.
 
-    Returns:
-        List[str]: Template names
-    """
-    return list(TEMPLATE_REGISTRY.keys())
+  Returns:
+      List[str]: Template names
+  """
+  return list(TEMPLATE_REGISTRY.keys())

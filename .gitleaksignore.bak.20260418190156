@@ -1,0 +1,430 @@
+# Gitleaks false positive allowlist
+# These are test fixtures with deliberately fake API keys used to verify
+# that the 17-Layer Gauntlet correctly BLOCKS secrets in agent content.
+# They are NOT real credentials.
+
+# Test gauntlet: fake key used to test Layer 5 (secret detection)
+labs/uphillsnowball/tests/test_gauntlet.py:generic-api-key:41
+
+# Claude_Code_6 Go test: fake key used in test assertions
+apps/counselconduit/Cor.Cor.Claude_Code_6/main_test.go:generic-api-key:165
+
+# Auto-classified IGNORE: Third-party path: \.agent/reports/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/aiyou-rollup_foldin_report.json:google-api-key:76
+
+# Auto-classified IGNORE: Third-party path: \.agent/reports/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/reports/pnkln-rollup_foldin_report.json:google-api-key:76
+
+# Auto-classified IGNORE: Third-party path: \.stitch-sdk/
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.stitch-sdk/scripts/publish-readiness.ts:generic-api-key-inline:208
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:426
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:427
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:428
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:429
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:430
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:478
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:479
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:480
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:481
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:482
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:483
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:531
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:532
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:533
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:534
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:535
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:536
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:584
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:585
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:586
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:587
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:588
+
+# Auto-classified IGNORE: Third-party path: docs/AUDIT_REPORT\.md
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/AUDIT_REPORT.md:google-api-key:589
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1131
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1132
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1135
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1136
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1137
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1138
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1139
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1187
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1188
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1189
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1190
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1191
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1192
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1240
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1241
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1242
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1243
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1244
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1245
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1293
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1294
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1295
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1296
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1297
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1298
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1335
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1336
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1384
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1385
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1387
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1388
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1436
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1437
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1438
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1439
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1440
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1442
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1443
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1491
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1492
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1493
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1494
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1495
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1496
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1544
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1545
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1546
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1547
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1548
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1549
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1597
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1598
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1599
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1600
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1601
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1602
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1650
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1651
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1652
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1653
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1654
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1655
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1694
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1695
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1696
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1706
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1707
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1742
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1745
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1745
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1751
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1752
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1753
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1754
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1755
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1756
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1748
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1804
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1805
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1806
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1807
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1808
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1809
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1857
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1858
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1859
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1860
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1861
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1862
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1910
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1911
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1912
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1913
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1914
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1915
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1952
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1953
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1986
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1988
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1991
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:1992
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1994
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:1994
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:2004
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:2005
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:2006
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:2002
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:2007
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:2008
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:2041
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:google-api-key:2046
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:2047
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:2047
+
+# Auto-classified IGNORE: Third-party path: docs/CANONICALIZATION_REPORT
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md:github-token:2053

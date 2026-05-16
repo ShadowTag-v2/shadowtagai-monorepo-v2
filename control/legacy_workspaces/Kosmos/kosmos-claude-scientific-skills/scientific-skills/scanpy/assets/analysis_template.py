@@ -63,10 +63,18 @@ print("=" * 80)
 adata.var["mt"] = adata.var_names.str.startswith("MT-")
 
 # Calculate QC metrics
-sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], percent_top=None, log1p=False, inplace=True)
+sc.pp.calculate_qc_metrics(
+  adata, qc_vars=["mt"], percent_top=None, log1p=False, inplace=True
+)
 
 # Visualize QC metrics before filtering
-sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"], jitter=0.4, multi_panel=True, save="_qc_before_filtering")
+sc.pl.violin(
+  adata,
+  ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
+  jitter=0.4,
+  multi_panel=True,
+  save="_qc_before_filtering",
+)
 
 sc.pl.scatter(adata, x="total_counts", y="pct_counts_mt", save="_qc_mt")
 sc.pl.scatter(adata, x="total_counts", y="n_genes_by_counts", save="_qc_genes")
@@ -182,9 +190,9 @@ sc.pl.rank_genes_groups_dotplot(adata, n_genes=5, save="_markers_dotplot")
 
 # Get top markers for each cluster
 for cluster in adata.obs["leiden"].unique():
-    print(f"\nCluster {cluster} top markers:")
-    markers = sc.get.rank_genes_groups_df(adata, group=cluster).head(10)
-    print(markers[["names", "scores", "pvals_adj"]].to_string(index=False))
+  print(f"\nCluster {cluster} top markers:")
+  markers = sc.get.rank_genes_groups_df(adata, group=cluster).head(10)
+  print(markers[["names", "scores", "pvals_adj"]].to_string(index=False))
 
 # ============================================================================
 # 9. CELL TYPE ANNOTATION (CUSTOMIZE THIS SECTION)
@@ -196,27 +204,29 @@ print("=" * 80)
 
 # Example marker genes for common cell types (customize for your data)
 marker_genes = {
-    "T cells": ["CD3D", "CD3E", "CD3G"],
-    "B cells": ["MS4A1", "CD79A", "CD79B"],
-    "Monocytes": ["CD14", "LYZ", "S100A8"],
-    "NK cells": ["NKG7", "GNLY", "KLRD1"],
-    "Dendritic cells": ["FCER1A", "CST3"],
+  "T cells": ["CD3D", "CD3E", "CD3G"],
+  "B cells": ["MS4A1", "CD79A", "CD79B"],
+  "Monocytes": ["CD14", "LYZ", "S100A8"],
+  "NK cells": ["NKG7", "GNLY", "KLRD1"],
+  "Dendritic cells": ["FCER1A", "CST3"],
 }
 
 # Visualize marker genes
 for cell_type, genes in marker_genes.items():
-    available_genes = [g for g in genes if g in adata.raw.var_names]
-    if available_genes:
-        sc.pl.umap(adata, color=available_genes, use_raw=True, save=f"_{cell_type.replace(' ', '_')}")
+  available_genes = [g for g in genes if g in adata.raw.var_names]
+  if available_genes:
+    sc.pl.umap(
+      adata, color=available_genes, use_raw=True, save=f"_{cell_type.replace(' ', '_')}"
+    )
 
 # Manual annotation based on marker expression (customize this mapping)
 cluster_to_celltype = {
-    "0": "CD4 T cells",
-    "1": "CD14+ Monocytes",
-    "2": "B cells",
-    "3": "CD8 T cells",
-    "4": "NK cells",
-    # Add more mappings based on your marker analysis
+  "0": "CD4 T cells",
+  "1": "CD14+ Monocytes",
+  "2": "B cells",
+  "3": "CD8 T cells",
+  "4": "NK cells",
+  # Add more mappings based on your marker analysis
 }
 
 # Apply annotations
@@ -266,8 +276,8 @@ print(f"Saved metadata to {OUTPUT_DIR}/")
 
 # Export marker genes
 for cluster in adata.obs["leiden"].unique():
-    markers = sc.get.rank_genes_groups_df(adata, group=cluster)
-    markers.to_csv(f"{OUTPUT_DIR}/markers_cluster_{cluster}.csv", index=False)
+  markers = sc.get.rank_genes_groups_df(adata, group=cluster)
+  markers.to_csv(f"{OUTPUT_DIR}/markers_cluster_{cluster}.csv", index=False)
 print(f"Saved marker genes to {OUTPUT_DIR}/")
 
 # ============================================================================

@@ -43,56 +43,56 @@ mcp = FastMCP("OAuth Protected MCP Server", host="localhost", port=3001)
 
 
 def validate_auth_header(request: Request) -> bool:
-    """Validate the Authorization header contains a valid Bearer token."""
-    auth_header = request.headers.get("authorization", "")
-    if not auth_header.startswith("Bearer "):
-        logger.warning("Missing or invalid Authorization header: %s", auth_header)
-        return False
+  """Validate the Authorization header contains a valid Bearer token."""
+  auth_header = request.headers.get("authorization", "")
+  if not auth_header.startswith("Bearer "):
+    logger.warning("Missing or invalid Authorization header: %s", auth_header)
+    return False
 
-    token = auth_header[7:]  # Remove 'Bearer ' prefix
-    if token != VALID_TOKEN:
-        logger.warning("Invalid token: %s", token)
-        return False
+  token = auth_header[7:]  # Remove 'Bearer ' prefix
+  if token != VALID_TOKEN:
+    logger.warning("Invalid token: %s", token)
+    return False
 
-    logger.info("Valid token received")
-    return True
+  logger.info("Valid token received")
+  return True
 
 
 @mcp.tool(description="Get user profile information. Requires authentication.")
 def get_user_profile(user_id: str, context: Context) -> dict:
-    """Return user profile data for the given user ID."""
-    logger.info("get_user_profile called for user: %s", user_id)
+  """Return user profile data for the given user ID."""
+  logger.info("get_user_profile called for user: %s", user_id)
 
-    if context.request_context and context.request_context.request:
-        if not validate_auth_header(context.request_context.request):
-            return {"error": "Unauthorized - invalid or missing token"}
+  if context.request_context and context.request_context.request:
+    if not validate_auth_header(context.request_context.request):
+      return {"error": "Unauthorized - invalid or missing token"}
 
-    # Mock user data
-    users = {
-        "user1": {"id": "user1", "name": "Alice", "email": "alice@example.com"},
-        "user2": {"id": "user2", "name": "Bob", "email": "bob@example.com"},
-    }
+  # Mock user data
+  users = {
+    "user1": {"id": "user1", "name": "Alice", "email": "alice@example.com"},
+    "user2": {"id": "user2", "name": "Bob", "email": "bob@example.com"},
+  }
 
-    if user_id in users:
-        return users[user_id]
-    return {"error": f"User {user_id} not found"}
+  if user_id in users:
+    return users[user_id]
+  return {"error": f"User {user_id} not found"}
 
 
 @mcp.tool(description="List all available users. Requires authentication.")
 def list_users(context: Context) -> dict:
-    """Return a list of all users."""
-    logger.info("list_users called")
+  """Return a list of all users."""
+  logger.info("list_users called")
 
-    if context.request_context and context.request_context.request:
-        if not validate_auth_header(context.request_context.request):
-            return {"error": "Unauthorized - invalid or missing token"}
+  if context.request_context and context.request_context.request:
+    if not validate_auth_header(context.request_context.request):
+      return {"error": "Unauthorized - invalid or missing token"}
 
-    return {
-        "users": [
-            {"id": "user1", "name": "Alice"},
-            {"id": "user2", "name": "Bob"},
-        ]
-    }
+  return {
+    "users": [
+      {"id": "user1", "name": "Alice"},
+      {"id": "user2", "name": "Bob"},
+    ]
+  }
 
 
 # Create custom FastAPI app to add auth middleware for list_tools
@@ -101,18 +101,18 @@ app = FastAPI()
 
 @app.middleware("http")
 async def auth_middleware(request: Request, call_next):
-    """Middleware to validate auth on all MCP endpoints."""
-    # Check if this is an MCP request
-    if request.url.path.startswith("/mcp"):
-        if not validate_auth_header(request):
-            raise HTTPException(status_code=401, detail="Unauthorized")
-    return await call_next(request)
+  """Middleware to validate auth on all MCP endpoints."""
+  # Check if this is an MCP request
+  if request.url.path.startswith("/mcp"):
+    if not validate_auth_header(request):
+      raise HTTPException(status_code=401, detail="Unauthorized")
+  return await call_next(request)
 
 
 if __name__ == "__main__":
-    print("Starting OAuth Protected MCP server on http://localhost:3001")
-    print(f"Expected token: Bearer {VALID_TOKEN}")
-    print("This server requires authentication for both tool listing and calling.")
+  print("Starting OAuth Protected MCP server on http://localhost:3001")
+  print(f"Expected token: Bearer {VALID_TOKEN}")
+  print("This server requires authentication for both tool listing and calling.")
 
-    # Run with streamable-http transport
-    mcp.run(transport="streamable-http")
+  # Run with streamable-http transport
+  mcp.run(transport="streamable-http")

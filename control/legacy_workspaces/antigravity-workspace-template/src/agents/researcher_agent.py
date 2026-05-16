@@ -9,15 +9,15 @@ from src.agents.base_agent import BaseAgent
 
 
 class ResearcherAgent(BaseAgent):
-    """
-    Researcher agent specialized in information gathering and analysis.
+  """
+  Researcher agent specialized in information gathering and analysis.
 
-    This agent researches topics, gathers information, analyzes data, and
-    synthesizes findings into actionable insights.
-    """
+  This agent researches topics, gathers information, analyzes data, and
+  synthesizes findings into actionable insights.
+  """
 
-    def __init__(self):
-        system_prompt = """You are the Researcher Agent, a specialist in information gathering and analysis.
+  def __init__(self):
+    system_prompt = """You are the Researcher Agent, a specialist in information gathering and analysis.
 
 Your expertise:
 - Finding relevant information on technical topics
@@ -42,4 +42,4 @@ When researching:
 
 Format your findings clearly for easy understanding."""
 
-        super().__init__(role="researcher", system_prompt=system_prompt)
+    super().__init__(role="researcher", system_prompt=system_prompt)

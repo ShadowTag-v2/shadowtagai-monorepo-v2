@@ -7,12 +7,12 @@ sys.path.append(os.getcwd())
 
 print("--- Checking src.aiyou.config ---")
 try:
-    print("src.aiyou.config loaded successfully")
+  print("src.aiyou.config loaded successfully")
 except Exception as e:
-    print(f"Error loading src.aiyou.config: {e}")
+  print(f"Error loading src.aiyou.config: {e}")
 
 print("\n--- Checking app.config ---")
 try:
-    print("app.config loaded successfully")
+  print("app.config loaded successfully")
 except Exception as e:
-    print(f"Error loading app.config: {e}")
+  print(f"Error loading app.config: {e}")

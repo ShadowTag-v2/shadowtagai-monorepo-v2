@@ -19,23 +19,23 @@ from google.adk.tools.tool_context import ToolContext
 
 
 def update_fc(
-    data_one: str,
-    data_two: int | float | str,
-    data_three: list[str],
-    data_four: list[int | float | str],
-    tool_context: ToolContext,
+  data_one: str,
+  data_two: int | float | str,
+  data_three: list[str],
+  data_four: list[int | float | str],
+  tool_context: ToolContext,
 ):
-    """Simply ask to update these variables in the context"""
-    tool_context.actions.update_state("data_one", data_one)
-    tool_context.actions.update_state("data_two", data_two)
-    tool_context.actions.update_state("data_three", data_three)
-    tool_context.actions.update_state("data_four", data_four)
+  """Simply ask to update these variables in the context"""
+  tool_context.actions.update_state("data_one", data_one)
+  tool_context.actions.update_state("data_two", data_two)
+  tool_context.actions.update_state("data_three", data_three)
+  tool_context.actions.update_state("data_four", data_four)
 
 
 root_agent = Agent(
-    model="gemini-1.5-flash",
-    name="root_agent",
-    instruction="Call tools",
-    flow="auto",
-    tools=[update_fc],
+  model="gemini-1.5-flash",
+  name="root_agent",
+  instruction="Call tools",
+  flow="auto",
+  tools=[update_fc],
 )

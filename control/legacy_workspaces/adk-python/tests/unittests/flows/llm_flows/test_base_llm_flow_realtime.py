@@ -27,153 +27,165 @@ from ... import testing_utils
 
 
 class TestBaseLlmFlow(BaseLlmFlow):
-    """Test implementation of BaseLlmFlow for testing purposes."""
+  """Test implementation of BaseLlmFlow for testing purposes."""
 
-    pass
+  pass
 
 
 @pytest.fixture
 def test_blob():
-    """Test blob for audio data."""
-    return types.Blob(data=b"\x00\xff\x00\xff", mime_type="audio/pcm")
+  """Test blob for audio data."""
+  return types.Blob(data=b"\x00\xff\x00\xff", mime_type="audio/pcm")
 
 
 @pytest.fixture
 def mock_llm_connection():
-    """Mock LLM connection for testing."""
-    connection = mock.AsyncMock()
-    connection.send_realtime = mock.AsyncMock()
-    return connection
+  """Mock LLM connection for testing."""
+  connection = mock.AsyncMock()
+  connection.send_realtime = mock.AsyncMock()
+  return connection
 
 
 @pytest.mark.asyncio
 async def test_send_to_model_with_disabled_vad(test_blob, mock_llm_connection):
-    """Test _send_to_model with automatic_activity_detection.disabled=True."""
-    # Create LlmRequest with disabled VAD
-    realtime_input_config = types.RealtimeInputConfig(automatic_activity_detection=types.AutomaticActivityDetection(disabled=True))
+  """Test _send_to_model with automatic_activity_detection.disabled=True."""
+  # Create LlmRequest with disabled VAD
+  realtime_input_config = types.RealtimeInputConfig(
+    automatic_activity_detection=types.AutomaticActivityDetection(disabled=True)
+  )
 
-    # Create invocation context with live request queue
-    agent = Agent(name="test_agent", model="mock")
-    invocation_context = await testing_utils.create_invocation_context(
-        agent=agent,
-        user_content="",
-        run_config=RunConfig(realtime_input_config=realtime_input_config),
-    )
-    invocation_context.live_request_queue = LiveRequestQueue()
+  # Create invocation context with live request queue
+  agent = Agent(name="test_agent", model="mock")
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent,
+    user_content="",
+    run_config=RunConfig(realtime_input_config=realtime_input_config),
+  )
+  invocation_context.live_request_queue = LiveRequestQueue()
 
-    # Create flow and start _send_to_model task
-    flow = TestBaseLlmFlow()
+  # Create flow and start _send_to_model task
+  flow = TestBaseLlmFlow()
 
-    # Send a blob to the queue
-    live_request = LiveRequest(blob=test_blob)
-    invocation_context.live_request_queue.send(live_request)
-    invocation_context.live_request_queue.close()
+  # Send a blob to the queue
+  live_request = LiveRequest(blob=test_blob)
+  invocation_context.live_request_queue.send(live_request)
+  invocation_context.live_request_queue.close()
 
-    # Run _send_to_model
-    await flow._send_to_model(mock_llm_connection, invocation_context)
+  # Run _send_to_model
+  await flow._send_to_model(mock_llm_connection, invocation_context)
 
-    mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
+  mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
 
 
 @pytest.mark.asyncio
 async def test_send_to_model_with_enabled_vad(test_blob, mock_llm_connection):
-    """Test _send_to_model with automatic_activity_detection.disabled=False.
+  """Test _send_to_model with automatic_activity_detection.disabled=False.
 
-    Custom VAD activity signal is not supported so we should still disable it.
-    """
-    # Create LlmRequest with enabled VAD
-    realtime_input_config = types.RealtimeInputConfig(automatic_activity_detection=types.AutomaticActivityDetection(disabled=False))
+  Custom VAD activity signal is not supported so we should still disable it.
+  """
+  # Create LlmRequest with enabled VAD
+  realtime_input_config = types.RealtimeInputConfig(
+    automatic_activity_detection=types.AutomaticActivityDetection(disabled=False)
+  )
 
-    # Create invocation context with live request queue
-    agent = Agent(name="test_agent", model="mock")
-    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="")
-    invocation_context.live_request_queue = LiveRequestQueue()
+  # Create invocation context with live request queue
+  agent = Agent(name="test_agent", model="mock")
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent, user_content=""
+  )
+  invocation_context.live_request_queue = LiveRequestQueue()
 
-    # Create flow and start _send_to_model task
-    flow = TestBaseLlmFlow()
+  # Create flow and start _send_to_model task
+  flow = TestBaseLlmFlow()
 
-    # Send a blob to the queue
-    live_request = LiveRequest(blob=test_blob)
-    invocation_context.live_request_queue.send(live_request)
-    invocation_context.live_request_queue.close()
+  # Send a blob to the queue
+  live_request = LiveRequest(blob=test_blob)
+  invocation_context.live_request_queue.send(live_request)
+  invocation_context.live_request_queue.close()
 
-    # Run _send_to_model
-    await flow._send_to_model(mock_llm_connection, invocation_context)
+  # Run _send_to_model
+  await flow._send_to_model(mock_llm_connection, invocation_context)
 
-    mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
+  mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
 
 
 @pytest.mark.asyncio
 async def test_send_to_model_without_realtime_config(test_blob, mock_llm_connection):
-    """Test _send_to_model without realtime_input_config (default behavior)."""
-    # Create invocation context with live request queue
-    agent = Agent(name="test_agent", model="mock")
-    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="")
-    invocation_context.live_request_queue = LiveRequestQueue()
+  """Test _send_to_model without realtime_input_config (default behavior)."""
+  # Create invocation context with live request queue
+  agent = Agent(name="test_agent", model="mock")
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent, user_content=""
+  )
+  invocation_context.live_request_queue = LiveRequestQueue()
 
-    # Create flow and start _send_to_model task
-    flow = TestBaseLlmFlow()
+  # Create flow and start _send_to_model task
+  flow = TestBaseLlmFlow()
 
-    # Send a blob to the queue
-    live_request = LiveRequest(blob=test_blob)
-    invocation_context.live_request_queue.send(live_request)
-    invocation_context.live_request_queue.close()
+  # Send a blob to the queue
+  live_request = LiveRequest(blob=test_blob)
+  invocation_context.live_request_queue.send(live_request)
+  invocation_context.live_request_queue.close()
 
-    # Run _send_to_model
-    await flow._send_to_model(mock_llm_connection, invocation_context)
+  # Run _send_to_model
+  await flow._send_to_model(mock_llm_connection, invocation_context)
 
-    mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
+  mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
 
 
 @pytest.mark.asyncio
-async def test_send_to_model_with_none_automatic_activity_detection(test_blob, mock_llm_connection):
-    """Test _send_to_model with automatic_activity_detection=None."""
-    # Create LlmRequest with None automatic_activity_detection
-    realtime_input_config = types.RealtimeInputConfig(automatic_activity_detection=None)
+async def test_send_to_model_with_none_automatic_activity_detection(
+  test_blob, mock_llm_connection
+):
+  """Test _send_to_model with automatic_activity_detection=None."""
+  # Create LlmRequest with None automatic_activity_detection
+  realtime_input_config = types.RealtimeInputConfig(automatic_activity_detection=None)
 
-    # Create invocation context with live request queue
-    agent = Agent(name="test_agent", model="mock")
-    invocation_context = await testing_utils.create_invocation_context(
-        agent=agent,
-        user_content="",
-        run_config=RunConfig(realtime_input_config=realtime_input_config),
-    )
-    invocation_context.live_request_queue = LiveRequestQueue()
+  # Create invocation context with live request queue
+  agent = Agent(name="test_agent", model="mock")
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent,
+    user_content="",
+    run_config=RunConfig(realtime_input_config=realtime_input_config),
+  )
+  invocation_context.live_request_queue = LiveRequestQueue()
 
-    # Create flow and start _send_to_model task
-    flow = TestBaseLlmFlow()
+  # Create flow and start _send_to_model task
+  flow = TestBaseLlmFlow()
 
-    # Send a blob to the queue
-    live_request = LiveRequest(blob=test_blob)
-    invocation_context.live_request_queue.send(live_request)
-    invocation_context.live_request_queue.close()
+  # Send a blob to the queue
+  live_request = LiveRequest(blob=test_blob)
+  invocation_context.live_request_queue.send(live_request)
+  invocation_context.live_request_queue.close()
 
-    # Run _send_to_model
-    await flow._send_to_model(mock_llm_connection, invocation_context)
+  # Run _send_to_model
+  await flow._send_to_model(mock_llm_connection, invocation_context)
 
-    mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
+  mock_llm_connection.send_realtime.assert_called_once_with(test_blob)
 
 
 @pytest.mark.asyncio
 async def test_send_to_model_with_text_content(mock_llm_connection):
-    """Test _send_to_model with text content (not blob)."""
-    # Create invocation context with live request queue
-    agent = Agent(name="test_agent", model="mock")
-    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="")
-    invocation_context.live_request_queue = LiveRequestQueue()
+  """Test _send_to_model with text content (not blob)."""
+  # Create invocation context with live request queue
+  agent = Agent(name="test_agent", model="mock")
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent, user_content=""
+  )
+  invocation_context.live_request_queue = LiveRequestQueue()
 
-    # Create flow and start _send_to_model task
-    flow = TestBaseLlmFlow()
+  # Create flow and start _send_to_model task
+  flow = TestBaseLlmFlow()
 
-    # Send text content to the queue
-    content = types.Content(role="user", parts=[types.Part.from_text(text="Hello")])
-    live_request = LiveRequest(content=content)
-    invocation_context.live_request_queue.send(live_request)
-    invocation_context.live_request_queue.close()
+  # Send text content to the queue
+  content = types.Content(role="user", parts=[types.Part.from_text(text="Hello")])
+  live_request = LiveRequest(content=content)
+  invocation_context.live_request_queue.send(live_request)
+  invocation_context.live_request_queue.close()
 
-    # Run _send_to_model
-    await flow._send_to_model(mock_llm_connection, invocation_context)
+  # Run _send_to_model
+  await flow._send_to_model(mock_llm_connection, invocation_context)
 
-    # Verify send_content was called instead of send_realtime
-    mock_llm_connection.send_content.assert_called_once_with(content)
-    mock_llm_connection.send_realtime.assert_not_called()
+  # Verify send_content was called instead of send_realtime
+  mock_llm_connection.send_content.assert_called_once_with(content)
+  mock_llm_connection.send_realtime.assert_not_called()

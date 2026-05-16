@@ -26,33 +26,33 @@ DEFAULT_GEMMA_MODEL = "gemma-3-1b-it"
 
 @pytest.fixture
 def gemma_llm():
-    return Gemma(model=DEFAULT_GEMMA_MODEL)
+  return Gemma(model=DEFAULT_GEMMA_MODEL)
 
 
 @pytest.fixture
 def gemma_request():
-    return LlmRequest(
-        model=DEFAULT_GEMMA_MODEL,
-        contents=[
-            Content(
-                role="user",
-                parts=[
-                    Part.from_text(text="You are a helpful assistant."),
-                    Part.from_text(text="Hello!"),
-                ],
-            )
+  return LlmRequest(
+    model=DEFAULT_GEMMA_MODEL,
+    contents=[
+      Content(
+        role="user",
+        parts=[
+          Part.from_text(text="You are a helpful assistant."),
+          Part.from_text(text="Hello!"),
         ],
-        config=types.GenerateContentConfig(
-            temperature=0.1,
-            response_modalities=[types.Modality.TEXT],
-            system_instruction="Talk like a pirate.",
-        ),
-    )
+      )
+    ],
+    config=types.GenerateContentConfig(
+      temperature=0.1,
+      response_modalities=[types.Modality.TEXT],
+      system_instruction="Talk like a pirate.",
+    ),
+  )
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("llm_backend", ["GOOGLE_AI"])
 async def test_generate_content_async(gemma_llm, gemma_request):
-    async for response in gemma_llm.generate_content_async(gemma_request):
-        assert isinstance(response, LlmResponse)
-        assert response.content.parts[0].text
+  async for response in gemma_llm.generate_content_async(gemma_request):
+    assert isinstance(response, LlmResponse)
+    assert response.content.parts[0].text

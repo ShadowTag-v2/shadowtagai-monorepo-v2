@@ -32,102 +32,116 @@ logger = logging.getLogger("google_adk." + __name__)
 
 
 class LlmAgentConfig(BaseAgentConfig):
-    """The config for the YAML schema of a LlmAgent."""
+  """The config for the YAML schema of a LlmAgent."""
 
-    model_config = ConfigDict(
-        extra="forbid",
-        # Allow arbitrary types to support types.ContentUnion for static_instruction.
-        # ContentUnion includes PIL.Image.Image which doesn't have Pydantic schema
-        # support, but we validate it at runtime using google.genai._transformers.t_content()
-        arbitrary_types_allowed=True,
+  model_config = ConfigDict(
+    extra="forbid",
+    # Allow arbitrary types to support types.ContentUnion for static_instruction.
+    # ContentUnion includes PIL.Image.Image which doesn't have Pydantic schema
+    # support, but we validate it at runtime using google.genai._transformers.t_content()
+    arbitrary_types_allowed=True,
+  )
+
+  agent_class: str = Field(
+    default="LlmAgent",
+    description=(
+      "The value is used to uniquely identify the LlmAgent class. If it is empty, it is by default an LlmAgent."
+    ),
+  )
+
+  model: str | None = Field(
+    default=None,
+    description=(
+      "Optional. LlmAgent.model. Provide a model name string (e.g."
+      ' "gemini-2.0-flash"). If not set, the model will be inherited from'
+      " the ancestor. To construct a model instance from code, use"
+      " model_code."
+    ),
+  )
+
+  model_code: CodeConfig | None = Field(
+    default=None,
+    description=(
+      "Optional. A CodeConfig that instantiates a BaseLlm implementation"
+      " such as LiteLlm with custom arguments (API base, fallbacks,"
+      " etc.). Cannot be set together with `model`."
+    ),
+  )
+
+  @model_validator(mode="before")
+  @classmethod
+  def _normalize_model_code(cls, data: Any) -> dict[str, Any] | Any:
+    if not isinstance(data, dict):
+      return data
+
+    model_value = data.get("model")
+    model_code = data.get("model_code")
+    if isinstance(model_value, dict) and model_code is None:
+      logger.warning(
+        "Detected legacy `model` mapping. Use `model_code` to provide a CodeConfig for custom model construction."
+      )
+      data = dict(data)
+      data["model_code"] = model_value
+      data["model"] = None
+
+    return data
+
+  @model_validator(mode="after")
+  def _validate_model_sources(self) -> LlmAgentConfig:
+    if self.model and self.model_code:
+      raise ValueError("Only one of `model` or `model_code` should be set.")
+
+    return self
+
+  instruction: str = Field(
+    description=(
+      "Required. LlmAgent.instruction. Dynamic instructions with"
+      " placeholder support. Behavior: if static_instruction is None, goes"
+      " to system_instruction; if static_instruction is set, goes to user"
+      " content after static content."
     )
+  )
 
-    agent_class: str = Field(
-        default="LlmAgent",
-        description=("The value is used to uniquely identify the LlmAgent class. If it is empty, it is by default an LlmAgent."),
-    )
+  static_instruction: types.ContentUnion | None = Field(
+    default=None,
+    description=(
+      "Optional. LlmAgent.static_instruction. Static content sent literally"
+      " at position 0 without placeholder processing. When set, changes"
+      " instruction behavior to go to user content instead of"
+      " system_instruction. Supports context caching. Accepts"
+      " types.ContentUnion (str, types.Content, types.Part,"
+      " PIL.Image.Image, types.File, or list[PartUnion])."
+    ),
+  )
 
-    model: str | None = Field(
-        default=None,
-        description=(
-            "Optional. LlmAgent.model. Provide a model name string (e.g."
-            ' "gemini-2.0-flash"). If not set, the model will be inherited from'
-            " the ancestor. To construct a model instance from code, use"
-            " model_code."
-        ),
-    )
+  disallow_transfer_to_parent: bool | None = Field(
+    default=None,
+    description="Optional. LlmAgent.disallow_transfer_to_parent.",
+  )
 
-    model_code: CodeConfig | None = Field(
-        default=None,
-        description=(
-            "Optional. A CodeConfig that instantiates a BaseLlm implementation"
-            " such as LiteLlm with custom arguments (API base, fallbacks,"
-            " etc.). Cannot be set together with `model`."
-        ),
-    )
+  disallow_transfer_to_peers: bool | None = Field(
+    default=None, description="Optional. LlmAgent.disallow_transfer_to_peers."
+  )
 
-    @model_validator(mode="before")
-    @classmethod
-    def _normalize_model_code(cls, data: Any) -> dict[str, Any] | Any:
-        if not isinstance(data, dict):
-            return data
+  input_schema: CodeConfig | None = Field(
+    default=None, description="Optional. LlmAgent.input_schema."
+  )
 
-        model_value = data.get("model")
-        model_code = data.get("model_code")
-        if isinstance(model_value, dict) and model_code is None:
-            logger.warning("Detected legacy `model` mapping. Use `model_code` to provide a CodeConfig for custom model construction.")
-            data = dict(data)
-            data["model_code"] = model_value
-            data["model"] = None
+  output_schema: CodeConfig | None = Field(
+    default=None, description="Optional. LlmAgent.output_schema."
+  )
 
-        return data
+  output_key: str | None = Field(
+    default=None, description="Optional. LlmAgent.output_key."
+  )
 
-    @model_validator(mode="after")
-    def _validate_model_sources(self) -> LlmAgentConfig:
-        if self.model and self.model_code:
-            raise ValueError("Only one of `model` or `model_code` should be set.")
+  include_contents: Literal["default", "none"] = Field(
+    default="default", description="Optional. LlmAgent.include_contents."
+  )
 
-        return self
-
-    instruction: str = Field(
-        description=(
-            "Required. LlmAgent.instruction. Dynamic instructions with"
-            " placeholder support. Behavior: if static_instruction is None, goes"
-            " to system_instruction; if static_instruction is set, goes to user"
-            " content after static content."
-        )
-    )
-
-    static_instruction: types.ContentUnion | None = Field(
-        default=None,
-        description=(
-            "Optional. LlmAgent.static_instruction. Static content sent literally"
-            " at position 0 without placeholder processing. When set, changes"
-            " instruction behavior to go to user content instead of"
-            " system_instruction. Supports context caching. Accepts"
-            " types.ContentUnion (str, types.Content, types.Part,"
-            " PIL.Image.Image, types.File, or list[PartUnion])."
-        ),
-    )
-
-    disallow_transfer_to_parent: bool | None = Field(
-        default=None,
-        description="Optional. LlmAgent.disallow_transfer_to_parent.",
-    )
-
-    disallow_transfer_to_peers: bool | None = Field(default=None, description="Optional. LlmAgent.disallow_transfer_to_peers.")
-
-    input_schema: CodeConfig | None = Field(default=None, description="Optional. LlmAgent.input_schema.")
-
-    output_schema: CodeConfig | None = Field(default=None, description="Optional. LlmAgent.output_schema.")
-
-    output_key: str | None = Field(default=None, description="Optional. LlmAgent.output_key.")
-
-    include_contents: Literal["default", "none"] = Field(default="default", description="Optional. LlmAgent.include_contents.")
-
-    tools: list[ToolConfig] | None = Field(
-        default=None,
-        description="""\
+  tools: list[ToolConfig] | None = Field(
+    default=None,
+    description="""\
 Optional. LlmAgent.tools.
 
 Examples:
@@ -180,11 +194,11 @@ Examples:
   tools:
     - name: tools.my_mcp_toolset
   ```""",
-    )
+  )
 
-    before_model_callbacks: list[CodeConfig] | None = Field(
-        default=None,
-        description="""\
+  before_model_callbacks: list[CodeConfig] | None = Field(
+    default=None,
+    description="""\
 Optional. LlmAgent.before_model_callbacks.
 
 Example:
@@ -193,12 +207,20 @@ Example:
   before_model_callbacks:
     - name: my_library.callbacks.before_model_callback
   ```""",
-    )
+  )
 
-    after_model_callbacks: list[CodeConfig] | None = Field(default=None, description="Optional. LlmAgent.after_model_callbacks.")
+  after_model_callbacks: list[CodeConfig] | None = Field(
+    default=None, description="Optional. LlmAgent.after_model_callbacks."
+  )
 
-    before_tool_callbacks: list[CodeConfig] | None = Field(default=None, description="Optional. LlmAgent.before_tool_callbacks.")
+  before_tool_callbacks: list[CodeConfig] | None = Field(
+    default=None, description="Optional. LlmAgent.before_tool_callbacks."
+  )
 
-    after_tool_callbacks: list[CodeConfig] | None = Field(default=None, description="Optional. LlmAgent.after_tool_callbacks.")
+  after_tool_callbacks: list[CodeConfig] | None = Field(
+    default=None, description="Optional. LlmAgent.after_tool_callbacks."
+  )
 
-    generate_content_config: types.GenerateContentConfig | None = Field(default=None, description="Optional. LlmAgent.generate_content_config.")
+  generate_content_config: types.GenerateContentConfig | None = Field(
+    default=None, description="Optional. LlmAgent.generate_content_config."
+  )

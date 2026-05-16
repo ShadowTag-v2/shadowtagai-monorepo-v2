@@ -22,11 +22,13 @@ from google.adk.tools import google_search
 
 
 def create_google_search_agent() -> LlmAgent:
-    """Create a sub-agent that only uses google_search tool."""
-    return LlmAgent(
-        name="google_search_agent",
-        description=("Agent for performing Google searches to find ADK examples and documentation"),
-        instruction="""You are a specialized search agent for the Agent Builder Assistant.
+  """Create a sub-agent that only uses google_search tool."""
+  return LlmAgent(
+    name="google_search_agent",
+    description=(
+      "Agent for performing Google searches to find ADK examples and documentation"
+    ),
+    instruction="""You are a specialized search agent for the Agent Builder Assistant.
 
 Your role is to search for relevant ADK (Agent Development Kit) examples, patterns, documentation, and solutions.
 
@@ -54,6 +56,6 @@ Return the search results with:
 4. Suggestions for which URLs should be fetched for detailed analysis
 
 Focus on finding practical, actionable examples that can guide ADK development and troubleshooting.""",
-        model="gemini-2.5-flash",
-        tools=[google_search],
-    )
+    model="gemini-2.5-flash",
+    tools=[google_search],
+  )

@@ -24,9 +24,9 @@ USER_AGENT = f"adk-spanner-tool google-adk/{version.__version__}"
 
 
 def get_spanner_client(*, project: str, credentials: Credentials) -> spanner.Client:
-    """Get a Spanner client."""
+  """Get a Spanner client."""
 
-    spanner_client = spanner.Client(project=project, credentials=credentials)
-    spanner_client._client_info.user_agent = USER_AGENT
+  spanner_client = spanner.Client(project=project, credentials=credentials)
+  spanner_client._client_info.user_agent = USER_AGENT
 
-    return spanner_client
+  return spanner_client

@@ -20,13 +20,13 @@ from collections.abc import Callable
 
 internal_thread = None
 try:
-    from .internal import thread as internal_thread
+  from .internal import thread as internal_thread
 except ImportError:
-    internal_thread = None
+  internal_thread = None
 
 
 def create_thread(target: Callable[..., None], *args, **kwargs):
-    """Creates a thread."""
-    if internal_thread:
-        return internal_thread.create_thread(target, *args, **kwargs)
-    return threading.Thread(target=target, args=args, kwargs=kwargs)
+  """Creates a thread."""
+  if internal_thread:
+    return internal_thread.create_thread(target, *args, **kwargs)
+  return threading.Thread(target=target, args=args, kwargs=kwargs)

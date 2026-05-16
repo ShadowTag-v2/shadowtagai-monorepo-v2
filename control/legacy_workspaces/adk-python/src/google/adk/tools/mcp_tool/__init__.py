@@ -16,38 +16,40 @@
 __all__ = []
 
 try:
-    from .conversion_utils import adk_to_mcp_tool_type
-    from .conversion_utils import gemini_to_json_schema
-    from .mcp_session_manager import SseConnectionParams
-    from .mcp_session_manager import StdioConnectionParams
-    from .mcp_session_manager import StreamableHTTPConnectionParams
-    from .mcp_tool import MCPTool
-    from .mcp_tool import McpTool
-    from .mcp_toolset import MCPToolset
-    from .mcp_toolset import McpToolset
+  from .conversion_utils import adk_to_mcp_tool_type
+  from .conversion_utils import gemini_to_json_schema
+  from .mcp_session_manager import SseConnectionParams
+  from .mcp_session_manager import StdioConnectionParams
+  from .mcp_session_manager import StreamableHTTPConnectionParams
+  from .mcp_tool import MCPTool
+  from .mcp_tool import McpTool
+  from .mcp_toolset import MCPToolset
+  from .mcp_toolset import McpToolset
 
-    __all__.extend(
-        [
-            "adk_to_mcp_tool_type",
-            "gemini_to_json_schema",
-            "McpTool",
-            "MCPTool",
-            "McpToolset",
-            "MCPToolset",
-            "SseConnectionParams",
-            "StdioConnectionParams",
-            "StreamableHTTPConnectionParams",
-        ]
-    )
+  __all__.extend(
+    [
+      "adk_to_mcp_tool_type",
+      "gemini_to_json_schema",
+      "McpTool",
+      "MCPTool",
+      "McpToolset",
+      "MCPToolset",
+      "SseConnectionParams",
+      "StdioConnectionParams",
+      "StreamableHTTPConnectionParams",
+    ]
+  )
 
 except ImportError as e:
-    import logging
-    import sys
+  import logging
+  import sys
 
-    logger = logging.getLogger("google_adk." + __name__)
+  logger = logging.getLogger("google_adk." + __name__)
 
-    if sys.version_info < (3, 10):
-        logger.warning("MCP Tool requires Python 3.10 or above. Please upgrade your Python version.")
-    else:
-        logger.debug("MCP Tool is not installed")
-        logger.debug(e)
+  if sys.version_info < (3, 10):
+    logger.warning(
+      "MCP Tool requires Python 3.10 or above. Please upgrade your Python version."
+    )
+  else:
+    logger.debug("MCP Tool is not installed")
+    logger.debug(e)

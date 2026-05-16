@@ -23,19 +23,25 @@ from ...agents.llm_agent import LlmAgent
 
 
 def _create_empty_state(agent: BaseAgent, all_state: dict[str, Any]):
-    for sub_agent in agent.sub_agents:
-        _create_empty_state(sub_agent, all_state)
+  for sub_agent in agent.sub_agents:
+    _create_empty_state(sub_agent, all_state)
 
-    if isinstance(agent, LlmAgent) and agent.instruction and isinstance(agent.instruction, str):
-        for key in re.findall(r"{([\w]+)}", agent.instruction):
-            all_state[key] = ""
+  if (
+    isinstance(agent, LlmAgent)
+    and agent.instruction
+    and isinstance(agent.instruction, str)
+  ):
+    for key in re.findall(r"{([\w]+)}", agent.instruction):
+      all_state[key] = ""
 
 
-def create_empty_state(agent: BaseAgent, initialized_states: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Creates empty str for non-initialized states."""
-    non_initialized_states = {}
-    _create_empty_state(agent, non_initialized_states)
-    for key in initialized_states or {}:
-        if key in non_initialized_states:
-            del non_initialized_states[key]
-    return non_initialized_states
+def create_empty_state(
+  agent: BaseAgent, initialized_states: dict[str, Any] | None = None
+) -> dict[str, Any]:
+  """Creates empty str for non-initialized states."""
+  non_initialized_states = {}
+  _create_empty_state(agent, non_initialized_states)
+  for key in initialized_states or {}:
+    if key in non_initialized_states:
+      del non_initialized_states[key]
+  return non_initialized_states

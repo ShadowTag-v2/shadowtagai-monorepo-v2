@@ -27,42 +27,58 @@ vertexai_types = vertexai.types
 
 
 class TestSafetyEvaluatorV1:
-    """A class to help organize "patch" that are applicable to all tests."""
+  """A class to help organize "patch" that are applicable to all tests."""
 
-    def test_evaluate_invocations_coherence_metric_passed(self, mocker):
-        """Test evaluate_invocations function for Coherence metric."""
-        mock_perform_eval = mocker.patch("google.adk.evaluation.vertex_ai_eval_facade._VertexAiEvalFacade._perform_eval")
-        actual_invocations = [
-            Invocation(
-                user_content=genai_types.Content(parts=[genai_types.Part(text="This is a test query.")]),
-                final_response=genai_types.Content(parts=[genai_types.Part(text="This is a test candidate response.")]),
-            )
-        ]
-        expected_invocations = [
-            Invocation(
-                user_content=genai_types.Content(parts=[genai_types.Part(text="This is a test query.")]),
-                final_response=genai_types.Content(parts=[genai_types.Part(text="This is a test reference.")]),
-            )
-        ]
-        evaluator = SafetyEvaluatorV1(eval_metric=EvalMetric(threshold=0.8, metric_name="safety"))
-        # Mock the return value of _perform_eval
-        mock_perform_eval.return_value = vertexai_types.EvaluationResult(
-            summary_metrics=[vertexai_types.AggregatedMetricResult(mean_score=0.9)],
-            eval_case_results=[],
-        )
+  def test_evaluate_invocations_coherence_metric_passed(self, mocker):
+    """Test evaluate_invocations function for Coherence metric."""
+    mock_perform_eval = mocker.patch(
+      "google.adk.evaluation.vertex_ai_eval_facade._VertexAiEvalFacade._perform_eval"
+    )
+    actual_invocations = [
+      Invocation(
+        user_content=genai_types.Content(
+          parts=[genai_types.Part(text="This is a test query.")]
+        ),
+        final_response=genai_types.Content(
+          parts=[genai_types.Part(text="This is a test candidate response.")]
+        ),
+      )
+    ]
+    expected_invocations = [
+      Invocation(
+        user_content=genai_types.Content(
+          parts=[genai_types.Part(text="This is a test query.")]
+        ),
+        final_response=genai_types.Content(
+          parts=[genai_types.Part(text="This is a test reference.")]
+        ),
+      )
+    ]
+    evaluator = SafetyEvaluatorV1(
+      eval_metric=EvalMetric(threshold=0.8, metric_name="safety")
+    )
+    # Mock the return value of _perform_eval
+    mock_perform_eval.return_value = vertexai_types.EvaluationResult(
+      summary_metrics=[vertexai_types.AggregatedMetricResult(mean_score=0.9)],
+      eval_case_results=[],
+    )
 
-        evaluation_result = evaluator.evaluate_invocations(actual_invocations, expected_invocations)
+    evaluation_result = evaluator.evaluate_invocations(
+      actual_invocations, expected_invocations
+    )
 
-        assert evaluation_result.overall_score == 0.9
-        assert evaluation_result.overall_eval_status == EvalStatus.PASSED
-        mock_perform_eval.assert_called_once()
-        _, mock_kwargs = mock_perform_eval.call_args
-        # Compare the names of the metrics.
-        assert [m.name for m in mock_kwargs["metrics"]] == [vertexai_types.PrebuiltMetric.SAFETY.name]
+    assert evaluation_result.overall_score == 0.9
+    assert evaluation_result.overall_eval_status == EvalStatus.PASSED
+    mock_perform_eval.assert_called_once()
+    _, mock_kwargs = mock_perform_eval.call_args
+    # Compare the names of the metrics.
+    assert [m.name for m in mock_kwargs["metrics"]] == [
+      vertexai_types.PrebuiltMetric.SAFETY.name
+    ]
 
-    def test_get_metric_info(self):
-        """Test get_metric_info function for Safety metric."""
-        metric_info = SafetyEvaluatorV1.get_metric_info()
-        assert metric_info.metric_name == PrebuiltMetrics.SAFETY_V1.value
-        assert metric_info.metric_value_info.interval.min_value == 0.0
-        assert metric_info.metric_value_info.interval.max_value == 1.0
+  def test_get_metric_info(self):
+    """Test get_metric_info function for Safety metric."""
+    metric_info = SafetyEvaluatorV1.get_metric_info()
+    assert metric_info.metric_name == PrebuiltMetrics.SAFETY_V1.value
+    assert metric_info.metric_value_info.interval.min_value == 0.0
+    assert metric_info.metric_value_info.interval.max_value == 1.0

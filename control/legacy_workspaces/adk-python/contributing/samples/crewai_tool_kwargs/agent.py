@@ -27,68 +27,76 @@ from pydantic import Field
 
 
 class SearchInput(BaseModel):
-    """Input schema for the search tool."""
+  """Input schema for the search tool."""
 
-    query: str = Field(..., description="The search query string")
-    category: str | None = Field(None, description="Filter by category (e.g., 'technology', 'science')")
-    date_range: str | None = Field(None, description="Filter by date range (e.g., 'last_week', '2024')")
-    limit: int | None = Field(None, description="Limit the number of results (e.g., 10, 20)")
+  query: str = Field(..., description="The search query string")
+  category: str | None = Field(
+    None, description="Filter by category (e.g., 'technology', 'science')"
+  )
+  date_range: str | None = Field(
+    None, description="Filter by date range (e.g., 'last_week', '2024')"
+  )
+  limit: int | None = Field(
+    None, description="Limit the number of results (e.g., 10, 20)"
+  )
 
 
 class CustomSearchTool(BaseTool):
-    """A custom CrewAI tool that accepts arbitrary search parameters via **kwargs.
+  """A custom CrewAI tool that accepts arbitrary search parameters via **kwargs.
 
-    This demonstrates the key CrewAI tool pattern where tools accept
-    flexible parameters through **kwargs.
+  This demonstrates the key CrewAI tool pattern where tools accept
+  flexible parameters through **kwargs.
+  """
+
+  name: str = "custom_search"
+  description: str = (
+    "Search for information with flexible filtering options. "
+    "Accepts a query and optional filter parameters like category, "
+    "date_range, limit, etc."
+  )
+  args_schema: type[BaseModel] = SearchInput
+
+  def _run(self, query: str, **kwargs) -> str:
+    """Execute search with arbitrary filter parameters.
+
+    Args:
+      query: The search query string.
+      **kwargs: Additional filter parameters like category, date_range, limit.
+
+    Returns:
+      A formatted string showing the query and applied filters.
     """
+    result_parts = [f"Searching for: '{query}'"]
 
-    name: str = "custom_search"
-    description: str = (
-        "Search for information with flexible filtering options. "
-        "Accepts a query and optional filter parameters like category, "
-        "date_range, limit, etc."
-    )
-    args_schema: type[BaseModel] = SearchInput
+    if kwargs:
+      result_parts.append("Applied filters:")
+      for key, value in kwargs.items():
+        result_parts.append(f"  - {key}: {value}")
+    else:
+      result_parts.append("No additional filters applied.")
 
-    def _run(self, query: str, **kwargs) -> str:
-        """Execute search with arbitrary filter parameters.
+    # Simulate search results
+    result_parts.append("\nFound 3 results matching your criteria.")
 
-        Args:
-          query: The search query string.
-          **kwargs: Additional filter parameters like category, date_range, limit.
-
-        Returns:
-          A formatted string showing the query and applied filters.
-        """
-        result_parts = [f"Searching for: '{query}'"]
-
-        if kwargs:
-            result_parts.append("Applied filters:")
-            for key, value in kwargs.items():
-                result_parts.append(f"  - {key}: {value}")
-        else:
-            result_parts.append("No additional filters applied.")
-
-        # Simulate search results
-        result_parts.append("\nFound 3 results matching your criteria.")
-
-        return "\n".join(result_parts)
+    return "\n".join(result_parts)
 
 
 crewai_search_tool = CustomSearchTool()
 
 # Wrap it with ADK's CrewaiTool
 adk_search_tool = CrewaiTool(
-    crewai_search_tool,
-    name="search_with_filters",
-    description=("Search for information with optional filters like category, date_range, or limit"),
+  crewai_search_tool,
+  name="search_with_filters",
+  description=(
+    "Search for information with optional filters like category, date_range, or limit"
+  ),
 )
 
 root_agent = Agent(
-    model="gemini-2.0-flash",
-    name="search_agent",
-    description="An agent that can search with flexible filtering options",
-    instruction="""
+  model="gemini-2.0-flash",
+  name="search_agent",
+  description="An agent that can search with flexible filtering options",
+  instruction="""
       You are a helpful search assistant.
       When users ask you to search, use the search_with_filters tool.
       You can pass additional parameters like:
@@ -98,5 +106,5 @@ root_agent = Agent(
 
       Always acknowledge what filters you're applying.
     """,
-    tools=[adk_search_tool],
+  tools=[adk_search_tool],
 )

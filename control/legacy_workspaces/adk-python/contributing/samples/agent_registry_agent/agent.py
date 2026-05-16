@@ -31,28 +31,32 @@ registry = AgentRegistry(project_id=project_id, location=location)
 print(f"Listing agents in {project_id}/{location}...")
 agents = registry.list_agents()
 for agent in agents.get("agents", []):
-    print(f"- Agent: {agent.get('displayName')} ({agent.get('name')})")
+  print(f"- Agent: {agent.get('displayName')} ({agent.get('name')})")
 
 print(f"\nListing MCP servers in {project_id}/{location}...")
 mcp_servers = registry.list_mcp_servers()
 for server in mcp_servers.get("mcpServers", []):
-    print(f"- MCP Server: {server.get('displayName')} ({server.get('name')})")
+  print(f"- MCP Server: {server.get('displayName')} ({server.get('name')})")
 
 # Example of using a specific agent or MCP server from the registry:
 # (Note: These names should be full resource names as returned by list methods)
 
 # 1. Using a Remote A2A Agent as a sub-agent
 # TODO: Replace AGENT_NAME with your agent name
-remote_agent = registry.get_remote_a2a_agent(f"projects/{project_id}/locations/{location}/agents/AGENT_NAME")
+remote_agent = registry.get_remote_a2a_agent(
+  f"projects/{project_id}/locations/{location}/agents/AGENT_NAME"
+)
 
 # 2. Using an MCP Server in a toolset
 # TODO: Replace MCP_SERVER_NAME with your MCP server name
-mcp_toolset = registry.get_mcp_toolset(f"projects/{project_id}/locations/{location}/mcpServers/MCP_SERVER_NAME")
+mcp_toolset = registry.get_mcp_toolset(
+  f"projects/{project_id}/locations/{location}/mcpServers/MCP_SERVER_NAME"
+)
 
 root_agent = LlmAgent(
-    model="gemini-2.5-flash",
-    name="discovery_agent",
-    instruction=("You have access to tools and sub-agents discovered via Registry."),
-    tools=[mcp_toolset],
-    sub_agents=[remote_agent],
+  model="gemini-2.5-flash",
+  name="discovery_agent",
+  instruction=("You have access to tools and sub-agents discovered via Registry."),
+  tools=[mcp_toolset],
+  sub_agents=[remote_agent],
 )

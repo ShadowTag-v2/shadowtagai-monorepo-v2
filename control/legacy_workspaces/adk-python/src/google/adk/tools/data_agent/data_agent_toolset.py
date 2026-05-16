@@ -32,48 +32,56 @@ from .credentials import DataAgentCredentialsConfig
 
 @experimental(FeatureName.DATA_AGENT_TOOLSET)
 class DataAgentToolset(BaseToolset):
-    """Data Agent Toolset contains tools for interacting with data agents."""
+  """Data Agent Toolset contains tools for interacting with data agents."""
 
-    def __init__(
-        self,
-        *,
-        tool_filter: ToolPredicate | list[str] | None = None,
-        credentials_config: DataAgentCredentialsConfig | None = None,
-        data_agent_tool_config: DataAgentToolConfig | None = None,
-    ):
-        super().__init__(tool_filter=tool_filter)
-        self._credentials_config = credentials_config
-        self._tool_settings = data_agent_tool_config if data_agent_tool_config else DataAgentToolConfig()
+  def __init__(
+    self,
+    *,
+    tool_filter: ToolPredicate | list[str] | None = None,
+    credentials_config: DataAgentCredentialsConfig | None = None,
+    data_agent_tool_config: DataAgentToolConfig | None = None,
+  ):
+    super().__init__(tool_filter=tool_filter)
+    self._credentials_config = credentials_config
+    self._tool_settings = (
+      data_agent_tool_config if data_agent_tool_config else DataAgentToolConfig()
+    )
 
-    def _is_tool_selected(self, tool: BaseTool, readonly_context: ReadonlyContext) -> bool:
-        if self.tool_filter is None:
-            return True
+  def _is_tool_selected(
+    self, tool: BaseTool, readonly_context: ReadonlyContext
+  ) -> bool:
+    if self.tool_filter is None:
+      return True
 
-        if isinstance(self.tool_filter, ToolPredicate):
-            return self.tool_filter(tool, readonly_context)
+    if isinstance(self.tool_filter, ToolPredicate):
+      return self.tool_filter(tool, readonly_context)
 
-        if isinstance(self.tool_filter, list):
-            return tool.name in self.tool_filter
+    if isinstance(self.tool_filter, list):
+      return tool.name in self.tool_filter
 
-        return False
+    return False
 
-    @override
-    async def get_tools(self, readonly_context: ReadonlyContext | None = None) -> list[BaseTool]:
-        all_tools = [
-            GoogleTool(
-                func=func,
-                credentials_config=self._credentials_config,
-                tool_settings=self._tool_settings,
-            )
-            for func in [
-                data_agent_tool.list_accessible_data_agents,
-                data_agent_tool.get_data_agent_info,
-                data_agent_tool.ask_data_agent,
-            ]
-        ]
+  @override
+  async def get_tools(
+    self, readonly_context: ReadonlyContext | None = None
+  ) -> list[BaseTool]:
+    all_tools = [
+      GoogleTool(
+        func=func,
+        credentials_config=self._credentials_config,
+        tool_settings=self._tool_settings,
+      )
+      for func in [
+        data_agent_tool.list_accessible_data_agents,
+        data_agent_tool.get_data_agent_info,
+        data_agent_tool.ask_data_agent,
+      ]
+    ]
 
-        return [tool for tool in all_tools if self._is_tool_selected(tool, readonly_context)]
+    return [
+      tool for tool in all_tools if self._is_tool_selected(tool, readonly_context)
+    ]
 
-    @override
-    async def close(self):
-        pass
+  @override
+  async def close(self):
+    pass

@@ -6,11 +6,15 @@ from pydantic import BaseModel, Field
 
 
 class GoogleDriveArtifact(BaseModel):
-    """Schema for Google Drive file generation."""
+  """Schema for Google Drive file generation."""
 
-    title: str = Field(description="File title")
-    description: str = Field(description="File description or main content")
-    token: str = Field(description="Unique token to embed in content")
-    sections: list[dict[str, str]] | None = Field(default=None, description="Optional sections for documents")
-    rows: list[str] | None = Field(default=None, description="Optional data rows for spreadsheets")
-    created_at: datetime = Field(default_factory=datetime.now)
+  title: str = Field(description="File title")
+  description: str = Field(description="File description or main content")
+  token: str = Field(description="Unique token to embed in content")
+  sections: list[dict[str, str]] | None = Field(
+    default=None, description="Optional sections for documents"
+  )
+  rows: list[str] | None = Field(
+    default=None, description="Optional data rows for spreadsheets"
+  )
+  created_at: datetime = Field(default_factory=datetime.now)

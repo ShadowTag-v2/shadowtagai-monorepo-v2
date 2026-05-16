@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "mnemos": {
+      "command": "mnemos-mcp",
+      "env": {
+        "MNEMOS_CONFIG_PATH": "~/.config/Mnemos/mnemos.toml"
+      }
+    }
+  }
+}

@@ -8,12 +8,12 @@ from vertexai.language_models import TextEmbeddingModel
 
 
 def init(project: str, location: str = "us-central1") -> None:
-    vertexai.init(project=project, location=location)
+  vertexai.init(project=project, location=location)
 
 
 def gemini(model: str = "gemini-1.5-flash") -> GenerativeModel:
-    return GenerativeModel(model)
+  return GenerativeModel(model)
 
 
 def embedding(model: str = "text-embedding-005") -> TextEmbeddingModel:
-    return TextEmbeddingModel.from_pretrained(model)
+  return TextEmbeddingModel.from_pretrained(model)

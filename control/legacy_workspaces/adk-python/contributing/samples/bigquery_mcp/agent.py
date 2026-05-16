@@ -29,21 +29,23 @@ credentials.refresh(google.auth.transport.requests.Request())
 oauth_token = credentials.token
 
 bigquery_mcp_toolset = McpToolset(
-    connection_params=StreamableHTTPConnectionParams(
-        url=BIGQUERY_MCP_ENDPOINT,
-        headers={"Authorization": f"Bearer {oauth_token}"},
-    )
+  connection_params=StreamableHTTPConnectionParams(
+    url=BIGQUERY_MCP_ENDPOINT,
+    headers={"Authorization": f"Bearer {oauth_token}"},
+  )
 )
 
 # The variable name `root_agent` determines what your root agent is for the
 # debug CLI
 root_agent = LlmAgent(
-    model="gemini-2.5-flash",
-    name=BIGQUERY_AGENT_NAME,
-    description=("Agent to answer questions about BigQuery data and models and execute SQL queries using MCP."),
-    instruction="""\
+  model="gemini-2.5-flash",
+  name=BIGQUERY_AGENT_NAME,
+  description=(
+    "Agent to answer questions about BigQuery data and models and execute SQL queries using MCP."
+  ),
+  instruction="""\
         You are a data science agent with access to several BigQuery tools provided via MCP.
         Make use of those tools to answer the user's questions.
     """,
-    tools=[bigquery_mcp_toolset],
+  tools=[bigquery_mcp_toolset],
 )

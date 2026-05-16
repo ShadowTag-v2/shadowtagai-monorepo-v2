@@ -34,62 +34,64 @@ logger = logging.getLogger("judge6_factory")
 
 
 def _str_to_bool(val: str) -> bool:
-    return val.strip().lower() in {"1", "true", "yes"}
+  return val.strip().lower() in {"1", "true", "yes"}
 
 
 def build_engine(
-    dry_run: bool | None = None,
-    audit_callback: Callable[[GovernanceDecision], None] | None = None,
+  dry_run: bool | None = None,
+  audit_callback: Callable[[GovernanceDecision], None] | None = None,
 ) -> Judge6Engine:
-    """Build a Judge6Engine with RKILL auto-lockout wired to ceo_notifier.
+  """Build a Judge6Engine with RKILL auto-lockout wired to ceo_notifier.
 
-    Args:
-        dry_run: Override RKILL_DRY_RUN env var. If None, reads from env
-                 (defaults True so accidental prod runs don't kill infra).
-        audit_callback: Optional audit sink (e.g. write to BigQuery).
+  Args:
+      dry_run: Override RKILL_DRY_RUN env var. If None, reads from env
+               (defaults True so accidental prod runs don't kill infra).
+      audit_callback: Optional audit sink (e.g. write to BigQuery).
 
-    Returns:
-        Configured Judge6Engine ready for production use.
-    """
-    project = os.environ.get("GCP_PROJECT", "")
-    kms_key_name = os.environ.get("RKILL_KMS_KEY_NAME", "")
-    armor_policy = os.environ.get("RKILL_ARMOR_POLICY", "")
-    armor_priority = int(os.environ.get("RKILL_ARMOR_PRIORITY", "1000"))
+  Returns:
+      Configured Judge6Engine ready for production use.
+  """
+  project = os.environ.get("GCP_PROJECT", "")
+  kms_key_name = os.environ.get("RKILL_KMS_KEY_NAME", "")
+  armor_policy = os.environ.get("RKILL_ARMOR_POLICY", "")
+  armor_priority = int(os.environ.get("RKILL_ARMOR_PRIORITY", "1000"))
 
-    env_dry_run = _str_to_bool(os.environ.get("RKILL_DRY_RUN", "true"))
-    effective_dry_run = dry_run if dry_run is not None else env_dry_run
+  env_dry_run = _str_to_bool(os.environ.get("RKILL_DRY_RUN", "true"))
+  effective_dry_run = dry_run if dry_run is not None else env_dry_run
 
-    if not effective_dry_run and not all([project, kms_key_name, armor_policy]):
-        missing = [
-            v
-            for v, val in [
-                ("GCP_PROJECT", project),
-                ("RKILL_KMS_KEY_NAME", kms_key_name),
-                ("RKILL_ARMOR_POLICY", armor_policy),
-            ]
-            if not val
-        ]
-        raise OSError(f"RKILL_DRY_RUN=false but required env vars not set: {missing}. Set them or set RKILL_DRY_RUN=true.")
-
-    cfg = RkillConfig(
-        project=project,
-        kms_key_name=kms_key_name,
-        armor_policy=armor_policy,
-        armor_rule_priority=armor_priority,
-        trigger_reason="Judge6 L5_LOCKOUT auto-triggered",
-        dry_run=effective_dry_run,
+  if not effective_dry_run and not all([project, kms_key_name, armor_policy]):
+    missing = [
+      v
+      for v, val in [
+        ("GCP_PROJECT", project),
+        ("RKILL_KMS_KEY_NAME", kms_key_name),
+        ("RKILL_ARMOR_POLICY", armor_policy),
+      ]
+      if not val
+    ]
+    raise OSError(
+      f"RKILL_DRY_RUN=false but required env vars not set: {missing}. Set them or set RKILL_DRY_RUN=true."
     )
 
-    notifier = RkillNotifier(cfg)
+  cfg = RkillConfig(
+    project=project,
+    kms_key_name=kms_key_name,
+    armor_policy=armor_policy,
+    armor_rule_priority=armor_priority,
+    trigger_reason="Judge6 L5_LOCKOUT auto-triggered",
+    dry_run=effective_dry_run,
+  )
 
-    logger.info(
-        "[judge6_factory] engine built: rkill_dry_run=%s project=%s armor_policy=%s",
-        effective_dry_run,
-        project or "(unset)",
-        armor_policy or "(unset)",
-    )
+  notifier = RkillNotifier(cfg)
 
-    return Judge6Engine(
-        ceo_notifier=notifier,
-        audit_callback=audit_callback,
-    )
+  logger.info(
+    "[judge6_factory] engine built: rkill_dry_run=%s project=%s armor_policy=%s",
+    effective_dry_run,
+    project or "(unset)",
+    armor_policy or "(unset)",
+  )
+
+  return Judge6Engine(
+    ceo_notifier=notifier,
+    audit_callback=audit_callback,
+  )

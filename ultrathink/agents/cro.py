@@ -6,13 +6,19 @@ Orchestrates multiple reasoning pathways to ensure decisions are elegantly robus
 """
 
 from ..core.base_agent import BaseAgent
-from ..core.types import AgentContext, AgentResponse, AgentRole, ReasoningMethod, UltrathinkConfig
+from ..core.types import (
+  AgentContext,
+  AgentResponse,
+  AgentRole,
+  ReasoningMethod,
+  UltrathinkConfig,
+)
 
 
 class ChiefReasoningOfficer(BaseAgent):
-    """Chief Reasoning Officer - Multi-method reasoning specialist."""
+  """Chief Reasoning Officer - Multi-method reasoning specialist."""
 
-    SYSTEM_PROMPT = """You are the Chief Reasoning Officer of pinkln. Your mandate:
+  SYSTEM_PROMPT = """You are the Chief Reasoning Officer of pinkln. Your mandate:
 
 - Complex problems require multiple reasoning lenses.
 - Coordinate CoT (linear), ToT (branching), PanelGPT (debate), and MAD (adversarial).
@@ -25,31 +31,35 @@ Your output is not just the answer, but a reasoning audit trail proving correctn
 
 You are the epistemology lead. Confidence matters."""
 
-    def __init__(self, config: UltrathinkConfig | None = None):
-        super().__init__(role=AgentRole.CRO, system_prompt=self.SYSTEM_PROMPT, config=config)
+  def __init__(self, config: UltrathinkConfig | None = None):
+    super().__init__(
+      role=AgentRole.CRO, system_prompt=self.SYSTEM_PROMPT, config=config
+    )
 
-    async def execute(self, context: AgentContext) -> AgentResponse:
-        """Execute multi-method reasoning."""
-        if not self.validate_security(context):
-            return AgentResponse(role=self.role, content="SECURITY VALIDATION FAILED.", confidence=0.0)
+  async def execute(self, context: AgentContext) -> AgentResponse:
+    """Execute multi-method reasoning."""
+    if not self.validate_security(context):
+      return AgentResponse(
+        role=self.role, content="SECURITY VALIDATION FAILED.", confidence=0.0
+      )
 
-        # Use multiple reasoning methods
-        self._execute_cot(context.task)
-        self._execute_tot(context.task)
+    # Use multiple reasoning methods
+    self._execute_cot(context.task)
+    self._execute_tot(context.task)
 
-        reasoning = self.create_reasoning_path(
-            method=ReasoningMethod.CHAIN_OF_THOUGHT,
-            steps=[
-                "1. Applied Chain-of-Thought (linear reasoning)",
-                "2. Applied Tree-of-Thoughts (branching exploration)",
-                "3. Synthesized both paths for consensus",
-                "4. Assessed confidence level",
-                "5. Identified alternatives not taken",
-            ],
-            confidence=0.92,
-        )
+    reasoning = self.create_reasoning_path(
+      method=ReasoningMethod.CHAIN_OF_THOUGHT,
+      steps=[
+        "1. Applied Chain-of-Thought (linear reasoning)",
+        "2. Applied Tree-of-Thoughts (branching exploration)",
+        "3. Synthesized both paths for consensus",
+        "4. Assessed confidence level",
+        "5. Identified alternatives not taken",
+      ],
+      confidence=0.92,
+    )
 
-        content = f"""# Chief Reasoning Officer Analysis
+    content = f"""# Chief Reasoning Officer Analysis
 
 ## Problem: {context.task}
 
@@ -90,21 +100,25 @@ The elegant solution is: [Synthesized answer based on multi-method convergence]
 *Validated through multi-method reasoning for robust correctness.*
 """
 
-        response = AgentResponse(
-            role=self.role,
-            content=content,
-            reasoning_path=reasoning,
-            confidence=reasoning.confidence,
-            recommendations=["Proceed with synthesized solution", "Monitor identified risks", "Re-evaluate if new information emerges"],
-        )
+    response = AgentResponse(
+      role=self.role,
+      content=content,
+      reasoning_path=reasoning,
+      confidence=reasoning.confidence,
+      recommendations=[
+        "Proceed with synthesized solution",
+        "Monitor identified risks",
+        "Re-evaluate if new information emerges",
+      ],
+    )
 
-        self.record_execution(response)
-        return response
+    self.record_execution(response)
+    return response
 
-    def _execute_cot(self, problem: str) -> dict:
-        """Execute Chain-of-Thought reasoning."""
-        return {"method": "CoT", "confidence": 0.85}
+  def _execute_cot(self, problem: str) -> dict:
+    """Execute Chain-of-Thought reasoning."""
+    return {"method": "CoT", "confidence": 0.85}
 
-    def _execute_tot(self, problem: str) -> dict:
-        """Execute Tree-of-Thoughts reasoning."""
-        return {"method": "ToT", "confidence": 0.90}
+  def _execute_tot(self, problem: str) -> dict:
+    """Execute Tree-of-Thoughts reasoning."""
+    return {"method": "ToT", "confidence": 0.90}

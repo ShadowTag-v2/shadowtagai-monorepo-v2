@@ -7,4 +7,10 @@ from .cwo import ChiefWealthOfficer
 from .cro import ChiefReasoningOfficer
 from .cxo import ChiefExperienceOfficer
 
-__all__ = ["ChiefDesignOfficer", "ChiefArchitect", "ChiefWealthOfficer", "ChiefReasoningOfficer", "ChiefExperienceOfficer"]
+__all__ = [
+  "ChiefDesignOfficer",
+  "ChiefArchitect",
+  "ChiefWealthOfficer",
+  "ChiefReasoningOfficer",
+  "ChiefExperienceOfficer",
+]

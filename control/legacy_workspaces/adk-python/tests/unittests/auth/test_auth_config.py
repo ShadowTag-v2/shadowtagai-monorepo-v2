@@ -24,87 +24,87 @@ import pytest
 
 
 class TestAuthConfig:
-    """Tests for the AuthConfig method."""
+  """Tests for the AuthConfig method."""
 
 
 @pytest.fixture
 def oauth2_auth_scheme():
-    """Create an OAuth2 auth scheme for testing."""
-    # Create the OAuthFlows object first
-    flows = OAuthFlows(
-        authorizationCode=OAuthFlowAuthorizationCode(
-            authorizationUrl="https://example.com/oauth2/authorize",
-            tokenUrl="https://example.com/oauth2/token",
-            scopes={"read": "Read access", "write": "Write access"},
-        )
+  """Create an OAuth2 auth scheme for testing."""
+  # Create the OAuthFlows object first
+  flows = OAuthFlows(
+    authorizationCode=OAuthFlowAuthorizationCode(
+      authorizationUrl="https://example.com/oauth2/authorize",
+      tokenUrl="https://example.com/oauth2/token",
+      scopes={"read": "Read access", "write": "Write access"},
     )
+  )
 
-    # Then create the OAuth2 object with the flows
-    return OAuth2(flows=flows)
+  # Then create the OAuth2 object with the flows
+  return OAuth2(flows=flows)
 
 
 @pytest.fixture
 def oauth2_credentials():
-    """Create OAuth2 credentials for testing."""
-    return AuthCredential(
-        auth_type=AuthCredentialTypes.OAUTH2,
-        oauth2=OAuth2Auth(
-            client_id="mock_client_id",
-            client_secret="mock_client_secret",
-            redirect_uri="https://example.com/callback",
-        ),
-    )
+  """Create OAuth2 credentials for testing."""
+  return AuthCredential(
+    auth_type=AuthCredentialTypes.OAUTH2,
+    oauth2=OAuth2Auth(
+      client_id="mock_client_id",
+      client_secret="mock_client_secret",
+      redirect_uri="https://example.com/callback",
+    ),
+  )
 
 
 @pytest.fixture
 def auth_config(oauth2_auth_scheme, oauth2_credentials):
-    """Create an AuthConfig for testing."""
-    # Create a copy of the credentials for the exchanged_auth_credential
-    exchanged_credential = oauth2_credentials.model_copy(deep=True)
+  """Create an AuthConfig for testing."""
+  # Create a copy of the credentials for the exchanged_auth_credential
+  exchanged_credential = oauth2_credentials.model_copy(deep=True)
 
-    return AuthConfig(
-        auth_scheme=oauth2_auth_scheme,
-        raw_auth_credential=oauth2_credentials,
-        exchanged_auth_credential=exchanged_credential,
-    )
+  return AuthConfig(
+    auth_scheme=oauth2_auth_scheme,
+    raw_auth_credential=oauth2_credentials,
+    exchanged_auth_credential=exchanged_credential,
+  )
 
 
 @pytest.fixture
 def auth_config_with_key(oauth2_auth_scheme, oauth2_credentials):
-    """Create an AuthConfig for testing."""
+  """Create an AuthConfig for testing."""
 
-    return AuthConfig(
-        auth_scheme=oauth2_auth_scheme,
-        raw_auth_credential=oauth2_credentials,
-        credential_key="test_key",
-    )
+  return AuthConfig(
+    auth_scheme=oauth2_auth_scheme,
+    raw_auth_credential=oauth2_credentials,
+    credential_key="test_key",
+  )
 
 
 def test_custom_credential_key(auth_config_with_key):
-    """Test using custom credential key."""
+  """Test using custom credential key."""
 
-    key = auth_config_with_key.credential_key
-    assert key == "test_key"
+  key = auth_config_with_key.credential_key
+  assert key == "test_key"
 
 
 def test_credential_key(auth_config):
-    """Test generating a unique credential key."""
+  """Test generating a unique credential key."""
 
-    key = auth_config.credential_key
-    assert key.startswith("adk_oauth2_")
-    assert "_oauth2_" in key
+  key = auth_config.credential_key
+  assert key.startswith("adk_oauth2_")
+  assert "_oauth2_" in key
 
 
 def test_get_credential_key_with_extras(auth_config):
-    """Test generating a key when model_extra exists."""
-    # Add model_extra to test cleanup
+  """Test generating a key when model_extra exists."""
+  # Add model_extra to test cleanup
 
-    original_key = auth_config.credential_key
-    key = auth_config.credential_key
+  original_key = auth_config.credential_key
+  key = auth_config.credential_key
 
-    auth_config.auth_scheme.model_extra["extra_field"] = "value"
-    auth_config.raw_auth_credential.model_extra["extra_field"] = "value"
+  auth_config.auth_scheme.model_extra["extra_field"] = "value"
+  auth_config.raw_auth_credential.model_extra["extra_field"] = "value"
 
-    assert original_key == key
-    assert "extra_field" in auth_config.auth_scheme.model_extra
-    assert "extra_field" in auth_config.raw_auth_credential.model_extra
+  assert original_key == key
+  assert "extra_field" in auth_config.auth_scheme.model_extra
+  assert "extra_field" in auth_config.raw_auth_credential.model_extra

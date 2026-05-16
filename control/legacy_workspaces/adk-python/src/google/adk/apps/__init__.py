@@ -17,6 +17,6 @@ from .app import App
 from .app import ResumabilityConfig
 
 __all__ = [
-    "App",
-    "ResumabilityConfig",
+  "App",
+  "ResumabilityConfig",
 ]

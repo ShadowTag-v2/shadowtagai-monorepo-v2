@@ -29,180 +29,225 @@ Example usage:
 
 from kosmos.experiments.templates.base import TemplateBase, TemplateCustomizationParams
 from kosmos.models.experiment import (
-    ExperimentProtocol,
-    ExperimentType,
-    ProtocolStep,
-    Variable,
-    ResourceRequirements,
-    ValidationCheck,
+  ExperimentProtocol,
+  ExperimentType,
+  ProtocolStep,
+  Variable,
+  ResourceRequirements,
+  ValidationCheck,
 )
 from kosmos.models.hypothesis import Hypothesis
 
 
 class MultiParameterOptimizationTemplate(TemplateBase):
+  """
+  Template for multi-parameter optimization experiments.
+
+  Workflow:
+  1. Load experimental data
+  2. Train surrogate model (Random Forest or XGBoost)
+  3. Global optimization (differential evolution)
+  4. Report optimal parameters and predicted performance
+  5. Generate recommended experimental conditions
+  """
+
+  def __init__(self):
+    super().__init__(
+      name="multi_parameter_optimization",
+      experiment_type=ExperimentType.DATA_ANALYSIS,
+      domain="materials",
+      title="Multi-Parameter Optimization",
+      description=(
+        "Optimize multiple experimental parameters to maximize/minimize "
+        "a performance metric using surrogate modeling and global optimization."
+      ),
+      suitable_for=[
+        "Materials process optimization",
+        "Multi-parameter tuning",
+        "Efficiency maximization",
+        "Cost/waste minimization",
+      ],
+      requirements=[
+        "Experimental data with multiple parameters",
+        "At least 50 experiments for reliable model",
+        "Numerical parameters and objective",
+      ],
+      complexity_score=0.7,
+      rigor_score=0.8,
+    )
+
+  def is_applicable(self, hypothesis: Hypothesis) -> bool:
     """
-    Template for multi-parameter optimization experiments.
+    Check if hypothesis is suitable for multi-parameter optimization.
 
-    Workflow:
-    1. Load experimental data
-    2. Train surrogate model (Random Forest or XGBoost)
-    3. Global optimization (differential evolution)
-    4. Report optimal parameters and predicted performance
-    5. Generate recommended experimental conditions
+    Args:
+        hypothesis: Hypothesis to check
+
+    Returns:
+        True if hypothesis involves optimization/maximization/minimization
     """
+    statement_lower = hypothesis.statement.lower()
 
-    def __init__(self):
-        super().__init__(
-            name="multi_parameter_optimization",
-            experiment_type=ExperimentType.DATA_ANALYSIS,
-            domain="materials",
-            title="Multi-Parameter Optimization",
-            description=(
-                "Optimize multiple experimental parameters to maximize/minimize "
-                "a performance metric using surrogate modeling and global optimization."
-            ),
-            suitable_for=["Materials process optimization", "Multi-parameter tuning", "Efficiency maximization", "Cost/waste minimization"],
-            requirements=[
-                "Experimental data with multiple parameters",
-                "At least 50 experiments for reliable model",
-                "Numerical parameters and objective",
-            ],
-            complexity_score=0.7,
-            rigor_score=0.8,
-        )
+    # Check for materials/optimization keywords
+    materials_keywords = [
+      "material",
+      "process",
+      "fabrication",
+      "synthesis",
+      "parameter",
+      "condition",
+      "experimental",
+    ]
 
-    def is_applicable(self, hypothesis: Hypothesis) -> bool:
-        """
-        Check if hypothesis is suitable for multi-parameter optimization.
+    # Check for optimization keywords
+    optimization_keywords = [
+      "optimize",
+      "optimization",
+      "maximize",
+      "minimize",
+      "best",
+      "optimal",
+      "improve",
+      "enhance",
+      "reduce",
+      "increase efficiency",
+      "reduce cost",
+    ]
 
-        Args:
-            hypothesis: Hypothesis to check
+    has_materials = any(kw in statement_lower for kw in materials_keywords)
+    has_optimization = any(kw in statement_lower for kw in optimization_keywords)
 
-        Returns:
-            True if hypothesis involves optimization/maximization/minimization
-        """
-        statement_lower = hypothesis.statement.lower()
+    return has_materials and has_optimization
 
-        # Check for materials/optimization keywords
-        materials_keywords = ["material", "process", "fabrication", "synthesis", "parameter", "condition", "experimental"]
+  def generate_protocol(
+    self, params: TemplateCustomizationParams
+  ) -> ExperimentProtocol:
+    """
+    Generate experiment protocol for multi-parameter optimization.
 
-        # Check for optimization keywords
-        optimization_keywords = [
-            "optimize",
-            "optimization",
-            "maximize",
-            "minimize",
-            "best",
-            "optimal",
-            "improve",
-            "enhance",
-            "reduce",
-            "increase efficiency",
-            "reduce cost",
-        ]
+    Args:
+        params: Customization parameters
 
-        has_materials = any(kw in statement_lower for kw in materials_keywords)
-        has_optimization = any(kw in statement_lower for kw in optimization_keywords)
+    Returns:
+        ExperimentProtocol with optimization steps
+    """
+    # Extract custom variables
+    data_path = params.custom_variables.get("data_path", "data.xlsx")
+    parameters = params.custom_variables.get("parameters", ["Parameter1", "Parameter2"])
+    objective = params.custom_variables.get("objective", "Performance")
+    maximize = params.custom_variables.get("maximize", True)
+    model_type = params.custom_variables.get("model_type", "RandomForest")
+    sheet_name = params.custom_variables.get("sheet_name", None)
 
-        return has_materials and has_optimization
+    # Define protocol steps
+    steps = [
+      ProtocolStep(
+        name="load_data",
+        description="Load experimental data",
+        code_template=self._generate_load_data_code(data_path, sheet_name),
+        expected_output="DataFrame with experimental data",
+        validation=["Check parameter columns exist", "Verify data types"],
+      ),
+      ProtocolStep(
+        name="exploratory_analysis",
+        description="Explore parameter space and correlations",
+        code_template=self._generate_exploratory_code(parameters, objective),
+        expected_output="Summary statistics and correlation matrix",
+        validation=["Check for missing values", "Identify outliers"],
+      ),
+      ProtocolStep(
+        name="optimize_parameters",
+        description="Run global optimization",
+        code_template=self._generate_optimization_code(
+          parameters, objective, maximize, model_type
+        ),
+        expected_output="OptimizationResult with optimal parameters",
+        validation=["Optimization converged", "Model R² > 0.5"],
+      ),
+      ProtocolStep(
+        name="validate_recommendations",
+        description="Cross-validate optimal parameters",
+        code_template=self._generate_validation_code(),
+        expected_output="Validation metrics and confidence intervals",
+        validation=["Predictions within reasonable range"],
+      ),
+      ProtocolStep(
+        name="generate_recommendations",
+        description="Generate experimental recommendations",
+        code_template=self._generate_recommendations_code(maximize),
+        expected_output="Recommended experimental conditions",
+        validation=["Parameters within feasible ranges"],
+      ),
+    ]
 
-    def generate_protocol(self, params: TemplateCustomizationParams) -> ExperimentProtocol:
-        """
-        Generate experiment protocol for multi-parameter optimization.
+    # Define variables
+    variables = [
+      Variable(
+        name=param,
+        description=f"Optimization parameter: {param}",
+        type="numerical",
+        values=None,
+      )
+      for param in parameters
+    ]
 
-        Args:
-            params: Customization parameters
+    variables.append(
+      Variable(
+        name=objective,
+        description=f"Objective to {'maximize' if maximize else 'minimize'}: {objective}",
+        type="numerical",
+        values=None,
+      )
+    )
 
-        Returns:
-            ExperimentProtocol with optimization steps
-        """
-        # Extract custom variables
-        data_path = params.custom_variables.get("data_path", "data.xlsx")
-        parameters = params.custom_variables.get("parameters", ["Parameter1", "Parameter2"])
-        objective = params.custom_variables.get("objective", "Performance")
-        maximize = params.custom_variables.get("maximize", True)
-        model_type = params.custom_variables.get("model_type", "RandomForest")
-        sheet_name = params.custom_variables.get("sheet_name", None)
+    # Resource requirements
+    resources = ResourceRequirements(
+      compute_hours=0.5, memory_gb=4.0, storage_gb=0.5, special_equipment=[]
+    )
 
-        # Define protocol steps
-        steps = [
-            ProtocolStep(
-                name="load_data",
-                description="Load experimental data",
-                code_template=self._generate_load_data_code(data_path, sheet_name),
-                expected_output="DataFrame with experimental data",
-                validation=["Check parameter columns exist", "Verify data types"],
-            ),
-            ProtocolStep(
-                name="exploratory_analysis",
-                description="Explore parameter space and correlations",
-                code_template=self._generate_exploratory_code(parameters, objective),
-                expected_output="Summary statistics and correlation matrix",
-                validation=["Check for missing values", "Identify outliers"],
-            ),
-            ProtocolStep(
-                name="optimize_parameters",
-                description="Run global optimization",
-                code_template=self._generate_optimization_code(parameters, objective, maximize, model_type),
-                expected_output="OptimizationResult with optimal parameters",
-                validation=["Optimization converged", "Model R² > 0.5"],
-            ),
-            ProtocolStep(
-                name="validate_recommendations",
-                description="Cross-validate optimal parameters",
-                code_template=self._generate_validation_code(),
-                expected_output="Validation metrics and confidence intervals",
-                validation=["Predictions within reasonable range"],
-            ),
-            ProtocolStep(
-                name="generate_recommendations",
-                description="Generate experimental recommendations",
-                code_template=self._generate_recommendations_code(maximize),
-                expected_output="Recommended experimental conditions",
-                validation=["Parameters within feasible ranges"],
-            ),
-        ]
+    # Validation checks
+    validation_checks = [
+      ValidationCheck(
+        check_type="sample_size",
+        threshold=50,
+        description="At least 50 experiments for reliable optimization",
+      ),
+      ValidationCheck(
+        check_type="model_quality",
+        threshold=0.5,
+        description="Surrogate model R² >= 0.5",
+      ),
+    ]
 
-        # Define variables
-        variables = [Variable(name=param, description=f"Optimization parameter: {param}", type="numerical", values=None) for param in parameters]
+    # Create protocol
+    protocol = ExperimentProtocol(
+      title=f"Optimize {', '.join(parameters)} to {'maximize' if maximize else 'minimize'} {objective}",
+      domain="materials",
+      experiment_type=ExperimentType.DATA_ANALYSIS,
+      hypothesis_id=params.hypothesis.id if params.hypothesis else None,
+      steps=steps,
+      variables=variables,
+      statistical_tests=[],
+      resource_requirements=resources,
+      validation_checks=validation_checks,
+      estimated_duration_hours=1.0,
+      safety_considerations=["None - computational optimization only"],
+      ethical_considerations=["Ensure data provenance documented"],
+      reproducibility_notes=[
+        "Set random seed for reproducibility",
+        "Document model hyperparameters",
+      ],
+    )
 
-        variables.append(
-            Variable(name=objective, description=f"Objective to {'maximize' if maximize else 'minimize'}: {objective}", type="numerical", values=None)
-        )
+    return protocol
 
-        # Resource requirements
-        resources = ResourceRequirements(compute_hours=0.5, memory_gb=4.0, storage_gb=0.5, special_equipment=[])
+  def _generate_load_data_code(
+    self, data_path: str, sheet_name: str | None = None
+  ) -> str:
+    """Generate code for loading data."""
+    sheet_param = f", sheet_name='{sheet_name}'" if sheet_name else ""
 
-        # Validation checks
-        validation_checks = [
-            ValidationCheck(check_type="sample_size", threshold=50, description="At least 50 experiments for reliable optimization"),
-            ValidationCheck(check_type="model_quality", threshold=0.5, description="Surrogate model R² >= 0.5"),
-        ]
-
-        # Create protocol
-        protocol = ExperimentProtocol(
-            title=f"Optimize {', '.join(parameters)} to {'maximize' if maximize else 'minimize'} {objective}",
-            domain="materials",
-            experiment_type=ExperimentType.DATA_ANALYSIS,
-            hypothesis_id=params.hypothesis.id if params.hypothesis else None,
-            steps=steps,
-            variables=variables,
-            statistical_tests=[],
-            resource_requirements=resources,
-            validation_checks=validation_checks,
-            estimated_duration_hours=1.0,
-            safety_considerations=["None - computational optimization only"],
-            ethical_considerations=["Ensure data provenance documented"],
-            reproducibility_notes=["Set random seed for reproducibility", "Document model hyperparameters"],
-        )
-
-        return protocol
-
-    def _generate_load_data_code(self, data_path: str, sheet_name: str | None = None) -> str:
-        """Generate code for loading data."""
-        sheet_param = f", sheet_name='{sheet_name}'" if sheet_name else ""
-
-        return f"""
+    return f"""
 import pandas as pd
 import numpy as np
 
@@ -222,11 +267,11 @@ print(f"\\nData preview:")
 print(df.head())
 """
 
-    def _generate_exploratory_code(self, parameters: list[str], objective: str) -> str:
-        """Generate code for exploratory analysis."""
-        params_str = str(parameters)
+  def _generate_exploratory_code(self, parameters: list[str], objective: str) -> str:
+    """Generate code for exploratory analysis."""
+    params_str = str(parameters)
 
-        return f"""
+    return f"""
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -256,11 +301,13 @@ print("\\nCorrelation heatmap saved: correlation_heatmap.png")
 plt.show()
 """
 
-    def _generate_optimization_code(self, parameters: list[str], objective: str, maximize: bool, model_type: str) -> str:
-        """Generate code for optimization."""
-        params_str = str(parameters)
+  def _generate_optimization_code(
+    self, parameters: list[str], objective: str, maximize: bool, model_type: str
+  ) -> str:
+    """Generate code for optimization."""
+    params_str = str(parameters)
 
-        return f"""
+    return f"""
 from kosmos.domains.materials.optimization import MaterialsOptimizer
 
 # Initialize optimizer
@@ -302,9 +349,9 @@ print(f"Convergence: {{result.convergence_message}}")
 print("="*60)
 """
 
-    def _generate_validation_code(self) -> str:
-        """Generate code for validation."""
-        return """
+  def _generate_validation_code(self) -> str:
+    """Generate code for validation."""
+    return """
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
@@ -333,11 +380,11 @@ else:
     print("  Consider collecting more data or feature engineering")
 """
 
-    def _generate_recommendations_code(self, maximize: bool) -> str:
-        """Generate code for recommendations."""
-        goal = "maximize" if maximize else "minimize"
+  def _generate_recommendations_code(self, maximize: bool) -> str:
+    """Generate code for recommendations."""
+    goal = "maximize" if maximize else "minimize"
 
-        return f'''
+    return f'''
 # Generate experimental recommendations
 print("\\n" + "="*60)
 print("EXPERIMENTAL RECOMMENDATIONS")

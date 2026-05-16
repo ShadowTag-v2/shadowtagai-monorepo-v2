@@ -46,9 +46,9 @@ region_metadata = urlopen(request).read()
 GCP_REGION = region_metadata.decode("utf-8").split("/")[-1]
 
 client = genai.Client(
-    vertexai=True,
-    project=GCP_PROJECT_ID,
-    location=GCP_REGION,
+  vertexai=True,
+  project=GCP_PROJECT_ID,
+  location=GCP_REGION,
 )
 
 storage_client = storage.Client()
@@ -57,65 +57,65 @@ gcs_bucket = storage_client.bucket(GCS_BUCKET_NAME)
 
 # --- Helper Functions for reading to & writing from GCS ---
 def read_from_gcs(gcs_uri: str) -> str:
-    """Helper function to read text content from a GCS URI."""
-    logger.info(f"Reading from GCS: {gcs_uri}")
-    # Parse the GCS URI (e.g., "gs://bucket-name/path/to/file.txt")
-    parsed_uri = urlparse(gcs_uri)
-    bucket_name = parsed_uri.netloc
-    blob_name = parsed_uri.path.lstrip("/")
+  """Helper function to read text content from a GCS URI."""
+  logger.info(f"Reading from GCS: {gcs_uri}")
+  # Parse the GCS URI (e.g., "gs://bucket-name/path/to/file.txt")
+  parsed_uri = urlparse(gcs_uri)
+  bucket_name = parsed_uri.netloc
+  blob_name = parsed_uri.path.lstrip("/")
 
-    # Get the specific bucket and blob
-    # Note: Assumes file is in the *same project*
-    # If not, you may need a more complex client initialization
-    bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(blob_name)
+  # Get the specific bucket and blob
+  # Note: Assumes file is in the *same project*
+  # If not, you may need a more complex client initialization
+  bucket = storage_client.bucket(bucket_name)
+  blob = bucket.blob(blob_name)
 
-    if not blob.exists():
-        raise FileNotFoundError(f"GCS file not found: {gcs_uri}")
+  if not blob.exists():
+    raise FileNotFoundError(f"GCS file not found: {gcs_uri}")
 
-    return blob.download_as_text()
+  return blob.download_as_text()
 
 
 def upload_to_gcs(content: str, destination_blob_name: str) -> str:
-    """Helper function to upload text content to GCS and return its URI."""
-    logger.info(f"Writing to GCS: gs://{GCS_BUCKET_NAME}/{destination_blob_name}")
-    blob = gcs_bucket.blob(destination_blob_name)
-    blob.upload_from_string(content, content_type="text/plain; charset=utf-8")
+  """Helper function to upload text content to GCS and return its URI."""
+  logger.info(f"Writing to GCS: gs://{GCS_BUCKET_NAME}/{destination_blob_name}")
+  blob = gcs_bucket.blob(destination_blob_name)
+  blob.upload_from_string(content, content_type="text/plain; charset=utf-8")
 
-    # Return the GCS URI
-    return f"gs://{GCS_BUCKET_NAME}/{destination_blob_name}"
+  # Return the GCS URI
+  return f"gs://{GCS_BUCKET_NAME}/{destination_blob_name}"
 
 
 # --- Function 1: Generate Transcript ---
 @mcp.tool()
 def generate_transcript(audio_file_uri: str, episode_name: str) -> str:
-    """
-    Generates a transcript from an audio file and saves it to GCS.
+  """
+  Generates a transcript from an audio file and saves it to GCS.
 
-    Args:
-        audio_file_uri: The URI of the audio file (e.g., "gs://bucket-name/audio.mp3").
-        episode_name: The name of the episode, used to create the output filename.
+  Args:
+      audio_file_uri: The URI of the audio file (e.g., "gs://bucket-name/audio.mp3").
+      episode_name: The name of the episode, used to create the output filename.
 
-    Returns:
-        The GCS URI of the generated transcript file.
-    """
+  Returns:
+      The GCS URI of the generated transcript file.
+  """
 
-    logger.info(f">>> 🛠️ Tool: 'generate_transcript' called for '{audio_file_uri}'")
-    if not audio_file_uri:
-        raise ValueError("audio_file_uri cannot be empty.")
-    if not episode_name:
-        raise ValueError("episode_name cannot be empty.")
+  logger.info(f">>> 🛠️ Tool: 'generate_transcript' called for '{audio_file_uri}'")
+  if not audio_file_uri:
+    raise ValueError("audio_file_uri cannot be empty.")
+  if not episode_name:
+    raise ValueError("episode_name cannot be empty.")
 
-    # Determine mime_type based on file extension
-    if audio_file_uri.lower().endswith(".mp3"):
-        file_mime_type = "audio/mpeg"
-    elif audio_file_uri.lower().endswith(".wav"):
-        file_mime_type = "audio/wav"
-    else:
-        raise ValueError("Unsupported audio file type. Only .mp3 and .wav are supported.")
+  # Determine mime_type based on file extension
+  if audio_file_uri.lower().endswith(".mp3"):
+    file_mime_type = "audio/mpeg"
+  elif audio_file_uri.lower().endswith(".wav"):
+    file_mime_type = "audio/wav"
+  else:
+    raise ValueError("Unsupported audio file type. Only .mp3 and .wav are supported.")
 
-    # The text prompt to send to the model
-    prompt = """
+  # The text prompt to send to the model
+  prompt = """
     You are a professional transcriptionist.
     Transcribe the following audio interview into a plain text format.
     Each line should represent a single utterance and follow this structure:
@@ -137,38 +137,42 @@ def generate_transcript(audio_file_uri: str, episode_name: str) -> str:
     Now, transcribe the interview from the audio file.
     """
 
-    audio_file_part = types.Part.from_uri(file_uri=audio_file_uri, mime_type=file_mime_type)
+  audio_file_part = types.Part.from_uri(
+    file_uri=audio_file_uri, mime_type=file_mime_type
+  )
 
-    response = client.models.generate_content(model=MODEL_NAME, contents=[prompt, audio_file_part])
+  response = client.models.generate_content(
+    model=MODEL_NAME, contents=[prompt, audio_file_part]
+  )
 
-    transcript_filename = f"{episode_name}_transcript.txt"
-    gcs_uri = upload_to_gcs(response.text, transcript_filename)
-    print(f"Transcription saved to {gcs_uri}")
-    return gcs_uri
+  transcript_filename = f"{episode_name}_transcript.txt"
+  gcs_uri = upload_to_gcs(response.text, transcript_filename)
+  print(f"Transcription saved to {gcs_uri}")
+  return gcs_uri
 
 
 # --- Function 2: Generate Show Notes ---
 @mcp.tool()
 def generate_shownotes(transcript_gcs_uri: str, episode_name: str) -> str:
-    """
-    Generates show notes from a transcript file in GCS and saves them to GCS.
+  """
+  Generates show notes from a transcript file in GCS and saves them to GCS.
 
-    Args:
-        transcript_gcs_uri: The GCS URI of the transcript file.
-        episode_name: The name of the episode, used to create the output filename.
+  Args:
+      transcript_gcs_uri: The GCS URI of the transcript file.
+      episode_name: The name of the episode, used to create the output filename.
 
-    Returns:
-        The GCS URI of the generated shownotes file.
-    """
-    logger.info(f">>> 🛠️ Tool: 'generate_shownotes' called for '{transcript_gcs_uri}'")
+  Returns:
+      The GCS URI of the generated shownotes file.
+  """
+  logger.info(f">>> 🛠️ Tool: 'generate_shownotes' called for '{transcript_gcs_uri}'")
 
-    try:
-        transcript = read_from_gcs(transcript_gcs_uri)
-    except FileNotFoundError as e:
-        logger.error(str(e))
-        raise e
+  try:
+    transcript = read_from_gcs(transcript_gcs_uri)
+  except FileNotFoundError as e:
+    logger.error(str(e))
+    raise e
 
-    prompt = f"""
+  prompt = f"""
     You are a podcast producer. Based on the following transcript, please generate a set of show notes that includes:
 
     1.  A concise and engaging episode title.
@@ -182,36 +186,36 @@ Here is the transcript:
     ```
     """
 
-    response = client.models.generate_content(model=MODEL_NAME, contents=[prompt])
+  response = client.models.generate_content(model=MODEL_NAME, contents=[prompt])
 
-    shownotes_filename = f"{episode_name}_shownotes.md"
-    gcs_uri = upload_to_gcs(response.text, shownotes_filename)
-    print(f"Shownotes saved to {gcs_uri}")
-    return gcs_uri
+  shownotes_filename = f"{episode_name}_shownotes.md"
+  gcs_uri = upload_to_gcs(response.text, shownotes_filename)
+  print(f"Shownotes saved to {gcs_uri}")
+  return gcs_uri
 
 
 # --- Function 3: Generate Blog Post ---
 @mcp.tool()
 def generate_blog_post(transcript_gcs_uri: str, episode_name: str) -> str:
-    """
-    Generates a blog post summarizing the episode from a transcript file in GCS and saves it to GCS.
+  """
+  Generates a blog post summarizing the episode from a transcript file in GCS and saves it to GCS.
 
-    Args:
-        transcript_gcs_uri: The GCS URI of the transcript file.
-        episode_name: The name of the episode, used to create the output filename.
+  Args:
+      transcript_gcs_uri: The GCS URI of the transcript file.
+      episode_name: The name of the episode, used to create the output filename.
 
-    Returns:
-        The GCS URI of the generated blog post file.
-    """
-    logger.info(f">>> 🛠️ Tool: 'generate_blog_post' called for '{transcript_gcs_uri}'")
+  Returns:
+      The GCS URI of the generated blog post file.
+  """
+  logger.info(f">>> 🛠️ Tool: 'generate_blog_post' called for '{transcript_gcs_uri}'")
 
-    try:
-        transcript = read_from_gcs(transcript_gcs_uri)
-    except FileNotFoundError as e:
-        logger.error(str(e))
-        raise e
+  try:
+    transcript = read_from_gcs(transcript_gcs_uri)
+  except FileNotFoundError as e:
+    logger.error(str(e))
+    raise e
 
-    prompt = f"""
+  prompt = f"""
     Write a detailed blog post summarizing the key topics and takeaways from the following transcript.
     Use Markdown formatting for headings, lists, and any other relevant elements.
     Make it engaging and informative for readers who may not have listened to the episode.
@@ -221,36 +225,38 @@ def generate_blog_post(transcript_gcs_uri: str, episode_name: str) -> str:
     ```
     """
 
-    response = client.models.generate_content(model=MODEL_NAME, contents=[prompt])
+  response = client.models.generate_content(model=MODEL_NAME, contents=[prompt])
 
-    blog_post_filename = f"{episode_name}_blogpost.md"
-    gcs_uri = upload_to_gcs(response.text, blog_post_filename)
-    print(f"Blog post saved to {gcs_uri}")
-    return gcs_uri
+  blog_post_filename = f"{episode_name}_blogpost.md"
+  gcs_uri = upload_to_gcs(response.text, blog_post_filename)
+  print(f"Blog post saved to {gcs_uri}")
+  return gcs_uri
 
 
 # --- Function 4: Generate Social Media Posts ---
 @mcp.tool()
 def generate_social_media_posts(transcript_gcs_uri: str, episode_name: str) -> str:
-    """
-    Generates social media post drafts for X (Twitter) and LinkedIn based on the transcript from GCS.
+  """
+  Generates social media post drafts for X (Twitter) and LinkedIn based on the transcript from GCS.
 
-    Args:
-        transcript_gcs_uri: The GCS URI of the transcript file.
-        episode_name: The name of the episode, used to create the output filename.
+  Args:
+      transcript_gcs_uri: The GCS URI of the transcript file.
+      episode_name: The name of the episode, used to create the output filename.
 
-    Returns:
-        The GCS URI of the generated social media posts file.
-    """
-    logger.info(f">>> 🛠️ Tool: 'generate_social_media_posts' called for '{transcript_gcs_uri}'")
+  Returns:
+      The GCS URI of the generated social media posts file.
+  """
+  logger.info(
+    f">>> 🛠️ Tool: 'generate_social_media_posts' called for '{transcript_gcs_uri}'"
+  )
 
-    try:
-        transcript = read_from_gcs(transcript_gcs_uri)
-    except FileNotFoundError as e:
-        logger.error(str(e))
-        raise e
+  try:
+    transcript = read_from_gcs(transcript_gcs_uri)
+  except FileNotFoundError as e:
+    logger.error(str(e))
+    raise e
 
-    prompt = f"""
+  prompt = f"""
     Based on the following transcript, generate:
     1.  One draft social media posts for X (formerly Twitter), under 280 characters.
     2.  One draft social media posts for LinkedIn, with no character limit.
@@ -270,21 +276,21 @@ def generate_social_media_posts(transcript_gcs_uri: str, episode_name: str) -> s
     ```
     """
 
-    response = client.models.generate_content(model=MODEL_NAME, contents=[prompt])
+  response = client.models.generate_content(model=MODEL_NAME, contents=[prompt])
 
-    social_posts_filename = f"{episode_name}_socialposts.txt"
-    gcs_uri = upload_to_gcs(response.text, social_posts_filename)
-    print(f"Social media posts saved to {gcs_uri}")
-    return gcs_uri
+  social_posts_filename = f"{episode_name}_socialposts.txt"
+  gcs_uri = upload_to_gcs(response.text, social_posts_filename)
+  print(f"Social media posts saved to {gcs_uri}")
+  return gcs_uri
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8080))
-    logger.info(f"🚀Podcast MCP server started on port {port}")
-    asyncio.run(
-        mcp.run_async(
-            transport="http",
-            host="0.0.0.0",
-            port=port,
-        )
+  port = int(os.getenv("PORT", 8080))
+  logger.info(f"🚀Podcast MCP server started on port {port}")
+  asyncio.run(
+    mcp.run_async(
+      transport="http",
+      host="0.0.0.0",
+      port=port,
     )
+  )

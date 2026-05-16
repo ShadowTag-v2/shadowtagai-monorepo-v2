@@ -25,4 +25,6 @@ Objective: Use the blog post and the update instrucitons in '{blog_post}'
 to create a new blog post.
 """
 
-updater_agent = Agent(model=MODEL, name="updater_agent", instruction=PROMPT, output_key="blog_post")
+updater_agent = Agent(
+  model=MODEL, name="updater_agent", instruction=PROMPT, output_key="blog_post"
+)

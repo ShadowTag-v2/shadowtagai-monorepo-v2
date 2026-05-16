@@ -23,31 +23,33 @@ import pytest
 
 
 class TestStaticUserSimulator:
-    """Test cases for StaticUserSimulator."""
+  """Test cases for StaticUserSimulator."""
 
-    @pytest.mark.asyncio
-    async def test_get_next_user_message(self):
-        """Tests that the provided messages are returned in order followed by the stop signal."""
-        conversation = [
-            Invocation(
-                invocation_id="inv1",
-                user_content=types.Content(parts=[types.Part(text="message 1")]),
-            ),
-            Invocation(
-                invocation_id="inv2",
-                user_content=types.Content(parts=[types.Part(text="message 2")]),
-            ),
-        ]
-        simulator = static_user_simulator.StaticUserSimulator(static_conversation=conversation)
+  @pytest.mark.asyncio
+  async def test_get_next_user_message(self):
+    """Tests that the provided messages are returned in order followed by the stop signal."""
+    conversation = [
+      Invocation(
+        invocation_id="inv1",
+        user_content=types.Content(parts=[types.Part(text="message 1")]),
+      ),
+      Invocation(
+        invocation_id="inv2",
+        user_content=types.Content(parts=[types.Part(text="message 2")]),
+      ),
+    ]
+    simulator = static_user_simulator.StaticUserSimulator(
+      static_conversation=conversation
+    )
 
-        next_message_1 = await simulator.get_next_user_message(events=[])
-        assert user_simulator.Status.SUCCESS == next_message_1.status
-        assert "message 1" == next_message_1.user_message.parts[0].text
+    next_message_1 = await simulator.get_next_user_message(events=[])
+    assert user_simulator.Status.SUCCESS == next_message_1.status
+    assert "message 1" == next_message_1.user_message.parts[0].text
 
-        next_message_2 = await simulator.get_next_user_message(events=[])
-        assert user_simulator.Status.SUCCESS == next_message_2.status
-        assert "message 2" == next_message_2.user_message.parts[0].text
+    next_message_2 = await simulator.get_next_user_message(events=[])
+    assert user_simulator.Status.SUCCESS == next_message_2.status
+    assert "message 2" == next_message_2.user_message.parts[0].text
 
-        next_message_3 = await simulator.get_next_user_message(events=[])
-        assert user_simulator.Status.STOP_SIGNAL_DETECTED == next_message_3.status
-        assert next_message_3.user_message is None
+    next_message_3 = await simulator.get_next_user_message(events=[])
+    assert user_simulator.Status.STOP_SIGNAL_DETECTED == next_message_3.status
+    assert next_message_3.user_message is None

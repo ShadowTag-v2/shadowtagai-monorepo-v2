@@ -233,76 +233,85 @@ Verdict: yes
 
 @experimental
 class RubricBasedFinalResponseQualityV1Evaluator(RubricBasedEvaluator):
-    """An Evaluator for rubric based assessment of the agent's final response using a LLM.
+  """An Evaluator for rubric based assessment of the agent's final response using a LLM.
 
-    The evaluator uses a set of rubrics to assess the quality of the agent's
-    final response.
+  The evaluator uses a set of rubrics to assess the quality of the agent's
+  final response.
 
-    Example: For a weather agent that responds to weather related queries of the
-    user, one could specify following rubrics:
+  Example: For a weather agent that responds to weather related queries of the
+  user, one could specify following rubrics:
 
-    Rubric 1: Agent's response is direct and to the point.
-    Rubric 2: Agent's response accurately inferred user's underlying goal from
-    ambiguous queries (e.g. "is it a beach weather?" would mean sun, warmth and
-    low wind)
+  Rubric 1: Agent's response is direct and to the point.
+  Rubric 2: Agent's response accurately inferred user's underlying goal from
+  ambiguous queries (e.g. "is it a beach weather?" would mean sun, warmth and
+  low wind)
 
-    For each rubric, this evaluator will generate a confidence score between 0
-    and 1, where 0 means that agent's response did not satisfy the rubric at all
-    and 1 means complete adherence. Value closer to 1 are desirable.
+  For each rubric, this evaluator will generate a confidence score between 0
+  and 1, where 0 means that agent's response did not satisfy the rubric at all
+  and 1 means complete adherence. Value closer to 1 are desirable.
 
-    A combined score using individual rubric confidences will also be generated.
-    Like individual rubric confidence scores, the range for this value will be
-    between 0 and 1, and it will have the same interpretation.
-    """
+  A combined score using individual rubric confidences will also be generated.
+  Like individual rubric confidence scores, the range for this value will be
+  between 0 and 1, and it will have the same interpretation.
+  """
 
-    criterion_type: ClassVar[type[RubricsBasedCriterion]] = RubricsBasedCriterion
+  criterion_type: ClassVar[type[RubricsBasedCriterion]] = RubricsBasedCriterion
 
-    def __init__(self, eval_metric: EvalMetric):
-        super().__init__(
-            eval_metric,
-            criterion_type=RubricBasedFinalResponseQualityV1Evaluator.criterion_type,
+  def __init__(self, eval_metric: EvalMetric):
+    super().__init__(
+      eval_metric,
+      criterion_type=RubricBasedFinalResponseQualityV1Evaluator.criterion_type,
+    )
+    self._auto_rater_prompt_template = _RUBRIC_BASED_FINAL_RESPONSE_QUALITY_V1_PROMPT
+
+  @staticmethod
+  def get_metric_info() -> MetricInfo:
+    return MetricInfo(
+      metric_name=PrebuiltMetrics.RUBRIC_BASED_FINAL_RESPONSE_QUALITY_V1.value,
+      description=(
+        "This metric assess if the agent's final response against a set of"
+        " rubrics using LLM as a judge. Value range for this metric is"
+        " [0,1], with values closer to 1 more desirable."
+      ),
+      metric_value_info=MetricValueInfo(
+        interval=Interval(min_value=0.0, max_value=1.0)
+      ),
+    )
+
+  @override
+  def format_auto_rater_prompt(
+    self, actual_invocation: Invocation, _: Invocation | None
+  ) -> str:
+    """Returns the autorater prompt."""
+
+    user_input = get_text_from_content(actual_invocation.user_content)
+    final_response = get_text_from_content(actual_invocation.final_response)
+    rubrics = "\n*  ".join([r.rubric_content.text_property for r in self._rubrics])
+
+    developer_instructions = ""
+    tool_declarations = "Agent has no tools."
+    response_steps = get_tool_calls_and_responses_as_json_str(
+      actual_invocation.intermediate_data
+    )
+
+    app_details = actual_invocation.app_details
+    if app_details:
+      if (
+        isinstance(actual_invocation.intermediate_data, InvocationEvents)
+        and actual_invocation.intermediate_data.invocation_events
+      ):
+        developer_instructions = app_details.get_developer_instructions(
+          agent_name=actual_invocation.intermediate_data.invocation_events[0].author
         )
-        self._auto_rater_prompt_template = _RUBRIC_BASED_FINAL_RESPONSE_QUALITY_V1_PROMPT
+      tool_declarations = get_tool_declarations_as_json_str(app_details)
 
-    @staticmethod
-    def get_metric_info() -> MetricInfo:
-        return MetricInfo(
-            metric_name=PrebuiltMetrics.RUBRIC_BASED_FINAL_RESPONSE_QUALITY_V1.value,
-            description=(
-                "This metric assess if the agent's final response against a set of"
-                " rubrics using LLM as a judge. Value range for this metric is"
-                " [0,1], with values closer to 1 more desirable."
-            ),
-            metric_value_info=MetricValueInfo(interval=Interval(min_value=0.0, max_value=1.0)),
-        )
+    auto_rater_prompt = self._auto_rater_prompt_template.format(
+      developer_instructions=developer_instructions,
+      tool_declarations=tool_declarations,
+      user_input=user_input,
+      response_steps=response_steps,
+      final_response=final_response,
+      rubrics=rubrics,
+    )
 
-    @override
-    def format_auto_rater_prompt(self, actual_invocation: Invocation, _: Invocation | None) -> str:
-        """Returns the autorater prompt."""
-
-        user_input = get_text_from_content(actual_invocation.user_content)
-        final_response = get_text_from_content(actual_invocation.final_response)
-        rubrics = "\n*  ".join([r.rubric_content.text_property for r in self._rubrics])
-
-        developer_instructions = ""
-        tool_declarations = "Agent has no tools."
-        response_steps = get_tool_calls_and_responses_as_json_str(actual_invocation.intermediate_data)
-
-        app_details = actual_invocation.app_details
-        if app_details:
-            if isinstance(actual_invocation.intermediate_data, InvocationEvents) and actual_invocation.intermediate_data.invocation_events:
-                developer_instructions = app_details.get_developer_instructions(
-                    agent_name=actual_invocation.intermediate_data.invocation_events[0].author
-                )
-            tool_declarations = get_tool_declarations_as_json_str(app_details)
-
-        auto_rater_prompt = self._auto_rater_prompt_template.format(
-            developer_instructions=developer_instructions,
-            tool_declarations=tool_declarations,
-            user_input=user_input,
-            response_steps=response_steps,
-            final_response=final_response,
-            rubrics=rubrics,
-        )
-
-        return auto_rater_prompt
+    return auto_rater_prompt

@@ -27,7 +27,7 @@ print("   - Code APIs from example repository")
 print()
 
 with open("cli/conflicts.json") as f:
-    conflicts_data = json.load(f)
+  conflicts_data = json.load(f)
 
 conflicts = conflicts_data["conflicts"]
 summary = conflicts_data["summary"]
@@ -46,16 +46,22 @@ print()
 
 print("**By Type:**")
 for conflict_type, count in summary["by_type"].items():
-    if count > 0:
-        emoji = "📖" if conflict_type == "missing_in_docs" else "💻" if conflict_type == "missing_in_code" else "⚠️"
-        print(f"   {emoji} {conflict_type}: {count}")
+  if count > 0:
+    emoji = (
+      "📖"
+      if conflict_type == "missing_in_docs"
+      else "💻"
+      if conflict_type == "missing_in_code"
+      else "⚠️"
+    )
+    print(f"   {emoji} {conflict_type}: {count}")
 print()
 
 print("**By Severity:**")
 for severity, count in summary["by_severity"].items():
-    if count > 0:
-        emoji = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
-        print(f"   {emoji} {severity.upper()}: {count}")
+  if count > 0:
+    emoji = "🔴" if severity == "high" else "🟡" if severity == "medium" else "🟢"
+    print(f"   {emoji} {severity.upper()}: {count}")
 print()
 
 # Display detailed conflicts
@@ -71,44 +77,50 @@ low = [c for c in conflicts if c["severity"] == "low"]
 
 # Show high severity first
 if high:
-    print("🔴 **HIGH SEVERITY CONFLICTS** (Requires immediate attention)")
-    print("-" * 70)
-    for conflict in high:
-        print()
-        print(f"**API**: `{conflict['api_name']}`")
-        print(f"**Type**: {conflict['type']}")
-        print(f"**Issue**: {conflict['difference']}")
-        print(f"**Suggestion**: {conflict['suggestion']}")
-
-        if conflict["docs_info"]:
-            print("\n**Documented as**:")
-            print(f"  Signature: {conflict['docs_info'].get('raw_signature', 'N/A')}")
-
-        if conflict["code_info"]:
-            print("\n**Implemented as**:")
-            params = conflict["code_info"].get("parameters", [])
-            param_str = ", ".join(f"{p['name']}: {p.get('type_hint', 'Any')}" for p in params if p["name"] != "self")
-            print(f"  Signature: {conflict['code_info']['name']}({param_str})")
-            print(f"  Return type: {conflict['code_info'].get('return_type', 'None')}")
-            print(f"  Location: {conflict['code_info'].get('source', 'N/A')}:{conflict['code_info'].get('line', '?')}")
+  print("🔴 **HIGH SEVERITY CONFLICTS** (Requires immediate attention)")
+  print("-" * 70)
+  for conflict in high:
     print()
+    print(f"**API**: `{conflict['api_name']}`")
+    print(f"**Type**: {conflict['type']}")
+    print(f"**Issue**: {conflict['difference']}")
+    print(f"**Suggestion**: {conflict['suggestion']}")
+
+    if conflict["docs_info"]:
+      print("\n**Documented as**:")
+      print(f"  Signature: {conflict['docs_info'].get('raw_signature', 'N/A')}")
+
+    if conflict["code_info"]:
+      print("\n**Implemented as**:")
+      params = conflict["code_info"].get("parameters", [])
+      param_str = ", ".join(
+        f"{p['name']}: {p.get('type_hint', 'Any')}"
+        for p in params
+        if p["name"] != "self"
+      )
+      print(f"  Signature: {conflict['code_info']['name']}({param_str})")
+      print(f"  Return type: {conflict['code_info'].get('return_type', 'None')}")
+      print(
+        f"  Location: {conflict['code_info'].get('source', 'N/A')}:{conflict['code_info'].get('line', '?')}"
+      )
+  print()
 
 # Show medium severity
 if medium:
-    print("🟡 **MEDIUM SEVERITY CONFLICTS** (Review recommended)")
-    print("-" * 70)
-    for conflict in medium[:3]:  # Show first 3
-        print()
-        print(f"**API**: `{conflict['api_name']}`")
-        print(f"**Type**: {conflict['type']}")
-        print(f"**Issue**: {conflict['difference']}")
-
-        if conflict["code_info"]:
-            print(f"**Location**: {conflict['code_info'].get('source', 'N/A')}")
-
-    if len(medium) > 3:
-        print(f"\n   ... and {len(medium) - 3} more medium severity conflicts")
+  print("🟡 **MEDIUM SEVERITY CONFLICTS** (Review recommended)")
+  print("-" * 70)
+  for conflict in medium[:3]:  # Show first 3
     print()
+    print(f"**API**: `{conflict['api_name']}`")
+    print(f"**Type**: {conflict['type']}")
+    print(f"**Issue**: {conflict['difference']}")
+
+    if conflict["code_info"]:
+      print(f"**Location**: {conflict['code_info'].get('source', 'N/A')}")
+
+  if len(medium) > 3:
+    print(f"\n   ... and {len(medium) - 3} more medium severity conflicts")
+  print()
 
 # Example: How conflicts appear in final skill
 print("=" * 70)
@@ -129,33 +141,33 @@ print(f"⚠️ **Conflict**: {example_conflict['difference']}")
 print()
 
 if example_conflict.get("docs_info"):
-    print("**Documentation says:**")
-    print("```")
-    print(example_conflict["docs_info"].get("raw_signature", "N/A"))
-    print("```")
-    print()
+  print("**Documentation says:**")
+  print("```")
+  print(example_conflict["docs_info"].get("raw_signature", "N/A"))
+  print("```")
+  print()
 
 if example_conflict.get("code_info"):
-    print("**Code implementation:**")
-    print("```python")
-    params = example_conflict["code_info"].get("parameters", [])
-    param_strs = []
-    for p in params:
-        if p["name"] == "self":
-            continue
-        param_str = p["name"]
-        if p.get("type_hint"):
-            param_str += f": {p['type_hint']}"
-        if p.get("default"):
-            param_str += f" = {p['default']}"
-        param_strs.append(param_str)
+  print("**Code implementation:**")
+  print("```python")
+  params = example_conflict["code_info"].get("parameters", [])
+  param_strs = []
+  for p in params:
+    if p["name"] == "self":
+      continue
+    param_str = p["name"]
+    if p.get("type_hint"):
+      param_str += f": {p['type_hint']}"
+    if p.get("default"):
+      param_str += f" = {p['default']}"
+    param_strs.append(param_str)
 
-    sig = f"def {example_conflict['code_info']['name']}({', '.join(param_strs)})"
-    if example_conflict["code_info"].get("return_type"):
-        sig += f" -> {example_conflict['code_info']['return_type']}"
+  sig = f"def {example_conflict['code_info']['name']}({', '.join(param_strs)})"
+  if example_conflict["code_info"].get("return_type"):
+    sig += f" -> {example_conflict['code_info']['return_type']}"
 
-    print(sig)
-    print("```")
+  print(sig)
+  print("```")
 print()
 
 print("*Source: both (conflict)*")

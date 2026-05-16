@@ -18,299 +18,324 @@ logger = logging.getLogger(__name__)
 
 
 class LiteratureCacheError(Exception):
-    """Exception raised for cache-related errors."""
+  """Exception raised for cache-related errors."""
 
-    pass
+  pass
 
 
 class LiteratureCache:
+  """
+  Disk-based cache for literature API responses.
+
+  Implements a simple file-based caching system with TTL support.
+  Each cached response is stored as a separate pickle file with metadata.
+  """
+
+  def __init__(
+    self,
+    cache_dir: str = ".literature_cache",
+    ttl_hours: int = 48,
+    max_cache_size_mb: int = 1000,
+  ):
     """
-    Disk-based cache for literature API responses.
+    Initialize the literature cache.
 
-    Implements a simple file-based caching system with TTL support.
-    Each cached response is stored as a separate pickle file with metadata.
+    Args:
+        cache_dir: Directory to store cache files
+        ttl_hours: Time-to-live for cached responses in hours (default: 48)
+        max_cache_size_mb: Maximum cache directory size in MB
     """
+    self.cache_dir = Path(cache_dir)
+    self.ttl_hours = ttl_hours
+    self.max_cache_size_mb = max_cache_size_mb
 
-    def __init__(self, cache_dir: str = ".literature_cache", ttl_hours: int = 48, max_cache_size_mb: int = 1000):
-        """
-        Initialize the literature cache.
+    # Create cache directory if it doesn't exist
+    self.cache_dir.mkdir(parents=True, exist_ok=True)
 
-        Args:
-            cache_dir: Directory to store cache files
-            ttl_hours: Time-to-live for cached responses in hours (default: 48)
-            max_cache_size_mb: Maximum cache directory size in MB
-        """
-        self.cache_dir = Path(cache_dir)
-        self.ttl_hours = ttl_hours
-        self.max_cache_size_mb = max_cache_size_mb
+    logger.info(f"Initialized cache: dir={cache_dir}, ttl={ttl_hours}h")
 
-        # Create cache directory if it doesn't exist
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
+  def _generate_cache_key(
+    self, source: str, endpoint: str, params: dict[str, Any]
+  ) -> str:
+    """
+    Generate a unique cache key for the request.
 
-        logger.info(f"Initialized cache: dir={cache_dir}, ttl={ttl_hours}h")
+    Args:
+        source: API source (e.g., "arxiv", "semantic_scholar")
+        endpoint: API endpoint (e.g., "search", "paper")
+        params: Request parameters
 
-    def _generate_cache_key(self, source: str, endpoint: str, params: dict[str, Any]) -> str:
-        """
-        Generate a unique cache key for the request.
+    Returns:
+        Hexadecimal cache key
+    """
+    # Sort params for consistent key generation
+    param_str = json.dumps(params, sort_keys=True)
 
-        Args:
-            source: API source (e.g., "arxiv", "semantic_scholar")
-            endpoint: API endpoint (e.g., "search", "paper")
-            params: Request parameters
+    # Create hash from source + endpoint + params
+    key_input = f"{source}:{endpoint}:{param_str}"
+    cache_key = hashlib.sha256(key_input.encode()).hexdigest()
 
-        Returns:
-            Hexadecimal cache key
-        """
-        # Sort params for consistent key generation
-        param_str = json.dumps(params, sort_keys=True)
+    return cache_key
 
-        # Create hash from source + endpoint + params
-        key_input = f"{source}:{endpoint}:{param_str}"
-        cache_key = hashlib.sha256(key_input.encode()).hexdigest()
+  def _get_cache_path(self, cache_key: str) -> Path:
+    """
+    Get the file path for a cache key.
 
-        return cache_key
+    Args:
+        cache_key: Cache key
 
-    def _get_cache_path(self, cache_key: str) -> Path:
-        """
-        Get the file path for a cache key.
+    Returns:
+        Path to cache file
+    """
+    # Use first 2 chars of hash for subdirectory (distribute files)
+    subdir = self.cache_dir / cache_key[:2]
+    subdir.mkdir(exist_ok=True)
 
-        Args:
-            cache_key: Cache key
+    return subdir / f"{cache_key}.pkl"
 
-        Returns:
-            Path to cache file
-        """
-        # Use first 2 chars of hash for subdirectory (distribute files)
-        subdir = self.cache_dir / cache_key[:2]
-        subdir.mkdir(exist_ok=True)
+  def _is_expired(self, cached_at: datetime) -> bool:
+    """
+    Check if a cached item has expired.
 
-        return subdir / f"{cache_key}.pkl"
+    Args:
+        cached_at: When the item was cached
 
-    def _is_expired(self, cached_at: datetime) -> bool:
-        """
-        Check if a cached item has expired.
+    Returns:
+        True if expired, False otherwise
+    """
+    expiry = cached_at + timedelta(hours=self.ttl_hours)
+    return datetime.utcnow() > expiry
 
-        Args:
-            cached_at: When the item was cached
+  def get(self, source: str, endpoint: str, params: dict[str, Any]) -> Any | None:
+    """
+    Retrieve a cached response.
 
-        Returns:
-            True if expired, False otherwise
-        """
-        expiry = cached_at + timedelta(hours=self.ttl_hours)
-        return datetime.utcnow() > expiry
+    Args:
+        source: API source
+        endpoint: API endpoint
+        params: Request parameters
 
-    def get(self, source: str, endpoint: str, params: dict[str, Any]) -> Any | None:
-        """
-        Retrieve a cached response.
+    Returns:
+        Cached response or None if not found/expired
+    """
+    cache_key = self._generate_cache_key(source, endpoint, params)
+    cache_path = self._get_cache_path(cache_key)
 
-        Args:
-            source: API source
-            endpoint: API endpoint
-            params: Request parameters
+    if not cache_path.exists():
+      logger.debug(f"Cache miss: {source}/{endpoint}")
+      return None
 
-        Returns:
-            Cached response or None if not found/expired
-        """
-        cache_key = self._generate_cache_key(source, endpoint, params)
-        cache_path = self._get_cache_path(cache_key)
+    try:
+      with open(cache_path, "rb") as f:
+        cached_data = pickle.load(f)
 
-        if not cache_path.exists():
-            logger.debug(f"Cache miss: {source}/{endpoint}")
-            return None
+      # Check if expired
+      if self._is_expired(cached_data["cached_at"]):
+        logger.debug(f"Cache expired: {source}/{endpoint}")
+        cache_path.unlink()  # Delete expired cache
+        return None
 
-        try:
-            with open(cache_path, "rb") as f:
-                cached_data = pickle.load(f)
+      logger.debug(f"Cache hit: {source}/{endpoint}")
+      return cached_data["response"]
 
-            # Check if expired
-            if self._is_expired(cached_data["cached_at"]):
-                logger.debug(f"Cache expired: {source}/{endpoint}")
-                cache_path.unlink()  # Delete expired cache
-                return None
+    except Exception as e:
+      logger.warning(f"Error reading cache: {e}")
+      # Delete corrupted cache file
+      if cache_path.exists():
+        cache_path.unlink()
+      return None
 
-            logger.debug(f"Cache hit: {source}/{endpoint}")
-            return cached_data["response"]
+  def set(self, source: str, endpoint: str, params: dict[str, Any], response: Any):
+    """
+    Store a response in the cache.
 
-        except Exception as e:
-            logger.warning(f"Error reading cache: {e}")
-            # Delete corrupted cache file
-            if cache_path.exists():
-                cache_path.unlink()
-            return None
+    Args:
+        source: API source
+        endpoint: API endpoint
+        params: Request parameters
+        response: Response to cache
+    """
+    cache_key = self._generate_cache_key(source, endpoint, params)
+    cache_path = self._get_cache_path(cache_key)
 
-    def set(self, source: str, endpoint: str, params: dict[str, Any], response: Any):
-        """
-        Store a response in the cache.
+    try:
+      cached_data = {
+        "source": source,
+        "endpoint": endpoint,
+        "params": params,
+        "response": response,
+        "cached_at": datetime.utcnow(),
+      }
 
-        Args:
-            source: API source
-            endpoint: API endpoint
-            params: Request parameters
-            response: Response to cache
-        """
-        cache_key = self._generate_cache_key(source, endpoint, params)
-        cache_path = self._get_cache_path(cache_key)
+      with open(cache_path, "wb") as f:
+        pickle.dump(cached_data, f)
 
-        try:
-            cached_data = {"source": source, "endpoint": endpoint, "params": params, "response": response, "cached_at": datetime.utcnow()}
+      logger.debug(f"Cached: {source}/{endpoint}")
 
-            with open(cache_path, "wb") as f:
-                pickle.dump(cached_data, f)
+      # Check cache size and cleanup if needed
+      self._check_cache_size()
 
-            logger.debug(f"Cached: {source}/{endpoint}")
+    except Exception as e:
+      logger.warning(f"Error writing cache: {e}")
+      # Don't fail the request if caching fails
 
-            # Check cache size and cleanup if needed
-            self._check_cache_size()
+  def invalidate(self, source: str | None = None, endpoint: str | None = None):
+    """
+    Invalidate cache entries.
 
-        except Exception as e:
-            logger.warning(f"Error writing cache: {e}")
-            # Don't fail the request if caching fails
+    Args:
+        source: If provided, only invalidate this source
+        endpoint: If provided, only invalidate this endpoint (requires source)
+    """
+    count = 0
 
-    def invalidate(self, source: str | None = None, endpoint: str | None = None):
-        """
-        Invalidate cache entries.
+    for cache_file in self.cache_dir.rglob("*.pkl"):
+      try:
+        with open(cache_file, "rb") as f:
+          cached_data = pickle.load(f)
 
-        Args:
-            source: If provided, only invalidate this source
-            endpoint: If provided, only invalidate this endpoint (requires source)
-        """
-        count = 0
+        should_delete = True
 
-        for cache_file in self.cache_dir.rglob("*.pkl"):
-            try:
-                with open(cache_file, "rb") as f:
-                    cached_data = pickle.load(f)
+        if source and cached_data["source"] != source:
+          should_delete = False
 
-                should_delete = True
+        if endpoint and cached_data.get("endpoint") != endpoint:
+          should_delete = False
 
-                if source and cached_data["source"] != source:
-                    should_delete = False
+        if should_delete:
+          cache_file.unlink()
+          count += 1
 
-                if endpoint and cached_data.get("endpoint") != endpoint:
-                    should_delete = False
+      except Exception as e:
+        logger.warning(f"Error checking cache file {cache_file}: {e}")
+        # Delete corrupted file
+        cache_file.unlink()
+        count += 1
 
-                if should_delete:
-                    cache_file.unlink()
-                    count += 1
+    logger.info(f"Invalidated {count} cache entries")
 
-            except Exception as e:
-                logger.warning(f"Error checking cache file {cache_file}: {e}")
-                # Delete corrupted file
-                cache_file.unlink()
-                count += 1
+  def clear(self):
+    """Clear all cache entries."""
+    count = 0
+    for cache_file in self.cache_dir.rglob("*.pkl"):
+      cache_file.unlink()
+      count += 1
 
-        logger.info(f"Invalidated {count} cache entries")
+    logger.info(f"Cleared {count} cache entries")
 
-    def clear(self):
-        """Clear all cache entries."""
-        count = 0
-        for cache_file in self.cache_dir.rglob("*.pkl"):
-            cache_file.unlink()
-            count += 1
+  def cleanup_expired(self) -> int:
+    """
+    Remove expired cache entries.
 
-        logger.info(f"Cleared {count} cache entries")
+    Returns:
+        Number of entries removed
+    """
+    count = 0
 
-    def cleanup_expired(self) -> int:
-        """
-        Remove expired cache entries.
+    for cache_file in self.cache_dir.rglob("*.pkl"):
+      try:
+        with open(cache_file, "rb") as f:
+          cached_data = pickle.load(f)
 
-        Returns:
-            Number of entries removed
-        """
-        count = 0
+        if self._is_expired(cached_data["cached_at"]):
+          cache_file.unlink()
+          count += 1
 
-        for cache_file in self.cache_dir.rglob("*.pkl"):
-            try:
-                with open(cache_file, "rb") as f:
-                    cached_data = pickle.load(f)
+      except Exception:
+        # Delete corrupted cache files
+        cache_file.unlink()
+        count += 1
 
-                if self._is_expired(cached_data["cached_at"]):
-                    cache_file.unlink()
-                    count += 1
+    logger.info(f"Cleaned up {count} expired cache entries")
+    return count
 
-            except Exception:
-                # Delete corrupted cache files
-                cache_file.unlink()
-                count += 1
+  def _check_cache_size(self):
+    """Check cache size and cleanup if exceeds limit."""
+    total_size_mb = sum(f.stat().st_size for f in self.cache_dir.rglob("*.pkl")) / (
+      1024 * 1024
+    )
 
-        logger.info(f"Cleaned up {count} expired cache entries")
-        return count
+    if total_size_mb > self.max_cache_size_mb:
+      logger.warning(
+        f"Cache size ({total_size_mb:.1f} MB) exceeds limit ({self.max_cache_size_mb} MB)"
+      )
 
-    def _check_cache_size(self):
-        """Check cache size and cleanup if exceeds limit."""
-        total_size_mb = sum(f.stat().st_size for f in self.cache_dir.rglob("*.pkl")) / (1024 * 1024)
+      # Delete oldest files first
+      cache_files = sorted(
+        self.cache_dir.rglob("*.pkl"), key=lambda f: f.stat().st_mtime
+      )
 
-        if total_size_mb > self.max_cache_size_mb:
-            logger.warning(f"Cache size ({total_size_mb:.1f} MB) exceeds limit ({self.max_cache_size_mb} MB)")
+      deleted_mb = 0
+      target_mb = self.max_cache_size_mb * 0.8  # Clean to 80% of max
 
-            # Delete oldest files first
-            cache_files = sorted(self.cache_dir.rglob("*.pkl"), key=lambda f: f.stat().st_mtime)
+      for cache_file in cache_files:
+        if total_size_mb - deleted_mb <= target_mb:
+          break
 
-            deleted_mb = 0
-            target_mb = self.max_cache_size_mb * 0.8  # Clean to 80% of max
+        file_size_mb = cache_file.stat().st_size / (1024 * 1024)
+        cache_file.unlink()
+        deleted_mb += file_size_mb
 
-            for cache_file in cache_files:
-                if total_size_mb - deleted_mb <= target_mb:
-                    break
+      logger.info(f"Cleaned up {deleted_mb:.1f} MB from cache")
 
-                file_size_mb = cache_file.stat().st_size / (1024 * 1024)
-                cache_file.unlink()
-                deleted_mb += file_size_mb
+  def get_stats(self) -> dict[str, Any]:
+    """
+    Get cache statistics.
 
-            logger.info(f"Cleaned up {deleted_mb:.1f} MB from cache")
+    Returns:
+        Dictionary with cache statistics
+    """
+    cache_files = list(self.cache_dir.rglob("*.pkl"))
+    total_size_mb = sum(f.stat().st_size for f in cache_files) / (1024 * 1024)
 
-    def get_stats(self) -> dict[str, Any]:
-        """
-        Get cache statistics.
+    expired_count = 0
+    for cache_file in cache_files:
+      try:
+        with open(cache_file, "rb") as f:
+          cached_data = pickle.load(f)
+        if self._is_expired(cached_data["cached_at"]):
+          expired_count += 1
+      except Exception:
+        expired_count += 1
 
-        Returns:
-            Dictionary with cache statistics
-        """
-        cache_files = list(self.cache_dir.rglob("*.pkl"))
-        total_size_mb = sum(f.stat().st_size for f in cache_files) / (1024 * 1024)
-
-        expired_count = 0
-        for cache_file in cache_files:
-            try:
-                with open(cache_file, "rb") as f:
-                    cached_data = pickle.load(f)
-                if self._is_expired(cached_data["cached_at"]):
-                    expired_count += 1
-            except Exception:
-                expired_count += 1
-
-        return {
-            "total_entries": len(cache_files),
-            "size_mb": round(total_size_mb, 2),
-            "expired_entries": expired_count,
-            "ttl_hours": self.ttl_hours,
-            "cache_dir": str(self.cache_dir),
-        }
+    return {
+      "total_entries": len(cache_files),
+      "size_mb": round(total_size_mb, 2),
+      "expired_entries": expired_count,
+      "ttl_hours": self.ttl_hours,
+      "cache_dir": str(self.cache_dir),
+    }
 
 
 # Singleton cache instance
 _cache: LiteratureCache | None = None
 
 
-def get_cache(cache_dir: str = ".literature_cache", ttl_hours: int = 48, max_cache_size_mb: int = 1000) -> LiteratureCache:
-    """
-    Get or create the singleton cache instance.
+def get_cache(
+  cache_dir: str = ".literature_cache",
+  ttl_hours: int = 48,
+  max_cache_size_mb: int = 1000,
+) -> LiteratureCache:
+  """
+  Get or create the singleton cache instance.
 
-    Args:
-        cache_dir: Directory to store cache files
-        ttl_hours: Time-to-live for cached responses in hours
-        max_cache_size_mb: Maximum cache directory size in MB
+  Args:
+      cache_dir: Directory to store cache files
+      ttl_hours: Time-to-live for cached responses in hours
+      max_cache_size_mb: Maximum cache directory size in MB
 
-    Returns:
-        LiteratureCache instance
-    """
-    global _cache
-    if _cache is None:
-        _cache = LiteratureCache(cache_dir=cache_dir, ttl_hours=ttl_hours, max_cache_size_mb=max_cache_size_mb)
-    return _cache
+  Returns:
+      LiteratureCache instance
+  """
+  global _cache
+  if _cache is None:
+    _cache = LiteratureCache(
+      cache_dir=cache_dir, ttl_hours=ttl_hours, max_cache_size_mb=max_cache_size_mb
+    )
+  return _cache
 
 
 def reset_cache():
-    """Reset the singleton cache (useful for testing)."""
-    global _cache
-    _cache = None
+  """Reset the singleton cache (useful for testing)."""
+  global _cache
+  _cache = None

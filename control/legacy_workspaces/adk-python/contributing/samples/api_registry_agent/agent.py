@@ -23,17 +23,17 @@ MCP_SERVER_NAME = "your-mcp-server-name"
 
 # Header required for BigQuery MCP server
 header_provider = lambda context: {
-    "x-goog-user-project": PROJECT_ID,
+  "x-goog-user-project": PROJECT_ID,
 }
 api_registry = ApiRegistry(PROJECT_ID, header_provider=header_provider)
 registry_tools = api_registry.get_toolset(
-    mcp_server_name=MCP_SERVER_NAME,
+  mcp_server_name=MCP_SERVER_NAME,
 )
 root_agent = LlmAgent(
-    model="gemini-2.0-flash",
-    name="bigquery_assistant",
-    instruction="""
+  model="gemini-2.0-flash",
+  name="bigquery_assistant",
+  instruction="""
 Help user access their BigQuery data via API Registry tools.
     """,
-    tools=[registry_tools],
+  tools=[registry_tools],
 )

@@ -23,22 +23,22 @@ import pytest
 
 
 def test_paths_are_relative_to_agent_dir(tmp_path: Path):
-    agent_dir = tmp_path / "agent_a"
-    folder = DotAdkFolder(agent_dir)
+  agent_dir = tmp_path / "agent_a"
+  folder = DotAdkFolder(agent_dir)
 
-    assert folder.dot_adk_dir == agent_dir.resolve() / ".adk"
-    assert folder.artifacts_dir == folder.dot_adk_dir / "artifacts"
-    assert folder.session_db_path == folder.dot_adk_dir / "session.db"
+  assert folder.dot_adk_dir == agent_dir.resolve() / ".adk"
+  assert folder.artifacts_dir == folder.dot_adk_dir / "artifacts"
+  assert folder.session_db_path == folder.dot_adk_dir / "session.db"
 
 
 def test_for_agent_validates_app_name(tmp_path: Path):
-    agents_root = tmp_path / "agents"
-    agents_root.mkdir()
+  agents_root = tmp_path / "agents"
+  agents_root.mkdir()
 
-    with pytest.raises(ValueError):
-        dot_adk_folder_for_agent(agents_root=agents_root, app_name="../escape_attempt")
+  with pytest.raises(ValueError):
+    dot_adk_folder_for_agent(agents_root=agents_root, app_name="../escape_attempt")
 
-    folder = dot_adk_folder_for_agent(agents_root=agents_root, app_name="valid_agent")
+  folder = dot_adk_folder_for_agent(agents_root=agents_root, app_name="valid_agent")
 
-    expected_dir = (agents_root / "valid_agent").resolve()
-    assert folder.agent_dir == expected_dir
+  expected_dir = (agents_root / "valid_agent").resolve()
+  assert folder.agent_dir == expected_dir

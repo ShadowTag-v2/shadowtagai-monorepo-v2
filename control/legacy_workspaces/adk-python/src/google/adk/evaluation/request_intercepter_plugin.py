@@ -31,53 +31,62 @@ _LLM_REQUEST_ID_KEY = "__llm_request_key__"
 
 
 class _RequestIntercepterPlugin(BasePlugin):
-    """A plugin that intercepts requests that are made to the model and couples them with the model response.
+  """A plugin that intercepts requests that are made to the model and couples them with the model response.
 
-    NOTE: This implementation is intended for eval systems internal usage. Do not
-    take direct dependency on it.
+  NOTE: This implementation is intended for eval systems internal usage. Do not
+  take direct dependency on it.
 
-    Context behind the creation of this intercepter:
-    Some of the newer AutoRater backed metrics need access the pieces of
-    information that were presented to the model like instructions and the list
-    of available tools.
+  Context behind the creation of this intercepter:
+  Some of the newer AutoRater backed metrics need access the pieces of
+  information that were presented to the model like instructions and the list
+  of available tools.
 
-    We intercept the llm_request using this intercepter and make it available to
-    eval system.
+  We intercept the llm_request using this intercepter and make it available to
+  eval system.
 
-    How is it done?
-    The class maintains a cache of llm_requests that pass through it. Each request
-    is given a unique id. The id is put in custom_metadata field of the response.
-    Eval systems have access to the response and can use the request id to
-    get the llm_request.
-    """
+  How is it done?
+  The class maintains a cache of llm_requests that pass through it. Each request
+  is given a unique id. The id is put in custom_metadata field of the response.
+  Eval systems have access to the response and can use the request id to
+  get the llm_request.
+  """
 
-    def __init__(self, name: str):
-        super().__init__(name=name)
-        self._llm_requests_cache: dict[str, LlmRequest] = {}
+  def __init__(self, name: str):
+    super().__init__(name=name)
+    self._llm_requests_cache: dict[str, LlmRequest] = {}
 
-    @override
-    async def before_model_callback(self, *, callback_context: CallbackContext, llm_request: LlmRequest) -> LlmResponse | None:
-        # We add the llm_request to the call back context so that we can fetch
-        # it later.
-        request_id = str(uuid.uuid4())
-        self._llm_requests_cache[request_id] = llm_request
-        callback_context.state[_LLM_REQUEST_ID_KEY] = request_id
+  @override
+  async def before_model_callback(
+    self, *, callback_context: CallbackContext, llm_request: LlmRequest
+  ) -> LlmResponse | None:
+    # We add the llm_request to the call back context so that we can fetch
+    # it later.
+    request_id = str(uuid.uuid4())
+    self._llm_requests_cache[request_id] = llm_request
+    callback_context.state[_LLM_REQUEST_ID_KEY] = request_id
 
-    @override
-    async def after_model_callback(self, *, callback_context: CallbackContext, llm_response: LlmResponse) -> LlmResponse | None:
-        # Fetch the request_id from the callback_context
-        if callback_context and _LLM_REQUEST_ID_KEY in callback_context.state:
-            if llm_response.custom_metadata is None:
-                llm_response.custom_metadata = {}
+  @override
+  async def after_model_callback(
+    self, *, callback_context: CallbackContext, llm_response: LlmResponse
+  ) -> LlmResponse | None:
+    # Fetch the request_id from the callback_context
+    if callback_context and _LLM_REQUEST_ID_KEY in callback_context.state:
+      if llm_response.custom_metadata is None:
+        llm_response.custom_metadata = {}
 
-            llm_response.custom_metadata[_LLM_REQUEST_ID_KEY] = callback_context.state[_LLM_REQUEST_ID_KEY]
+      llm_response.custom_metadata[_LLM_REQUEST_ID_KEY] = callback_context.state[
+        _LLM_REQUEST_ID_KEY
+      ]
 
-    def get_model_request(self, llm_response: LlmResponse) -> LlmRequest | None:
-        """Fetches the request object, if found."""
-        if llm_response.custom_metadata and _LLM_REQUEST_ID_KEY in llm_response.custom_metadata:
-            request_id = llm_response.custom_metadata[_LLM_REQUEST_ID_KEY]
+  def get_model_request(self, llm_response: LlmResponse) -> LlmRequest | None:
+    """Fetches the request object, if found."""
+    if (
+      llm_response.custom_metadata
+      and _LLM_REQUEST_ID_KEY in llm_response.custom_metadata
+    ):
+      request_id = llm_response.custom_metadata[_LLM_REQUEST_ID_KEY]
 
-            if request_id in self._llm_requests_cache:
-                return self._llm_requests_cache[request_id]
-            else:
-                logger.warning("`%s` not found in llm_request_cache.", request_id)
+      if request_id in self._llm_requests_cache:
+        return self._llm_requests_cache[request_id]
+      else:
+        logger.warning("`%s` not found in llm_request_cache.", request_id)

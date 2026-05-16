@@ -20,9 +20,9 @@ from ._feature_registry import FeatureName
 from ._feature_registry import is_feature_enabled
 
 __all__ = [
-    "experimental",
-    "stable",
-    "working_in_progress",
-    "FeatureName",
-    "is_feature_enabled",
+  "experimental",
+  "stable",
+  "working_in_progress",
+  "FeatureName",
+  "is_feature_enabled",
 ]

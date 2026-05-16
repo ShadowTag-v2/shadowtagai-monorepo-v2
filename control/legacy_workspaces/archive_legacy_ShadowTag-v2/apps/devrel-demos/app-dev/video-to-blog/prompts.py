@@ -15,7 +15,7 @@
 
 
 def get_image_gen_prompt(blog_title):
-    return f"""
+  return f"""
         Create an abstract, high-quality, text-free, visually appealing blog
         post header image for a technical blog post titled "{blog_title}".
         The image should be relevant to the content of the blog post,
@@ -25,7 +25,7 @@ def get_image_gen_prompt(blog_title):
 
 
 def get_blog_gen_prompt():
-    return """
+  return """
     
 You are an expert technical writer specializing in developer advocacy
 content.

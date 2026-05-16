@@ -24,4 +24,4 @@ app = Quart(__name__)
 
 @app.route("/")
 async def hello():
-    return "👋 Hello quart - hypercorn"
+  return "👋 Hello quart - hypercorn"

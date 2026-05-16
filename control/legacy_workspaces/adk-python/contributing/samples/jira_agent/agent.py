@@ -18,10 +18,10 @@ from google.adk.agents.llm_agent import Agent
 from .tools import jira_tool
 
 root_agent = Agent(
-    model="gemini-2.0-flash-001",
-    name="jira_connector_agent",
-    description="This agent helps search issues in Jira",
-    instruction="""
+  model="gemini-2.0-flash-001",
+  name="jira_connector_agent",
+  description="This agent helps search issues in Jira",
+  instruction="""
         To start with, greet the user
         First, you will be given a description of what you can do.
         You the jira agent, who can help the user by fetching the jira issues based on the user query inputs
@@ -50,5 +50,5 @@ root_agent = Agent(
         **Important Notes:**
         - I currently support only **GET** and **LIST** operations.
     """,
-    tools=jira_tool.get_tools(),
+  tools=jira_tool.get_tools(),
 )

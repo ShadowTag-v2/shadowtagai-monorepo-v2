@@ -13,163 +13,167 @@ import numpy as np
 
 @dataclass
 class AudioDecoderConfig:
-    """Configuration for audio decoding operations"""
+  """Configuration for audio decoding operations"""
 
-    verify_integrity: bool = True
-    error_correction: bool = True
-    method: str | None = None  # Auto-detect if None
+  verify_integrity: bool = True
+  error_correction: bool = True
+  method: str | None = None  # Auto-detect if None
 
 
 class AudioDecoder:
+  """
+  Decodes hidden data from steganographically encoded audio files.
+
+  Supports extraction from multiple encoding methods with automatic
+  method detection capabilities.
+  """
+
+  def __init__(self, config: AudioDecoderConfig | None = None):
     """
-    Decodes hidden data from steganographically encoded audio files.
+    Initialize the audio decoder.
 
-    Supports extraction from multiple encoding methods with automatic
-    method detection capabilities.
+    Args:
+        config: Decoder configuration. Uses defaults if None.
     """
+    self.config = config or AudioDecoderConfig()
 
-    def __init__(self, config: AudioDecoderConfig | None = None):
-        """
-        Initialize the audio decoder.
+  def decode(
+    self, audio_path: Path, expected_hash: str | None = None
+  ) -> tuple[bytes, dict[str, Any]]:
+    """
+    Decode hidden data from an audio file.
 
-        Args:
-            config: Decoder configuration. Uses defaults if None.
-        """
-        self.config = config or AudioDecoderConfig()
+    Args:
+        audio_path: Path to audio file with embedded data
+        expected_hash: Optional hash to verify extracted data
 
-    def decode(self, audio_path: Path, expected_hash: str | None = None) -> tuple[bytes, dict[str, Any]]:
-        """
-        Decode hidden data from an audio file.
+    Returns:
+        Tuple of (extracted_payload, extraction_metadata)
 
-        Args:
-            audio_path: Path to audio file with embedded data
-            expected_hash: Optional hash to verify extracted data
+    Raises:
+        ValueError: If no embedded data found or integrity check fails
+        IOError: If audio file cannot be read
+    """
+    # Load audio
+    audio_data, sample_rate = self._load_audio(audio_path)
 
-        Returns:
-            Tuple of (extracted_payload, extraction_metadata)
+    # Auto-detect method if not specified
+    if self.config.method is None:
+      method = self._detect_method(audio_data)
+    else:
+      method = self.config.method
 
-        Raises:
-            ValueError: If no embedded data found or integrity check fails
-            IOError: If audio file cannot be read
-        """
-        # Load audio
-        audio_data, sample_rate = self._load_audio(audio_path)
+    # Extract payload using detected/specified method
+    raw_payload = self._extract_by_method(audio_data, sample_rate, method)
 
-        # Auto-detect method if not specified
-        if self.config.method is None:
-            method = self._detect_method(audio_data)
-        else:
-            method = self.config.method
+    # Process payload
+    payload, metadata = self._process_payload(raw_payload)
 
-        # Extract payload using detected/specified method
-        raw_payload = self._extract_by_method(audio_data, sample_rate, method)
+    extraction_stats = {
+      "payload_size": len(payload),
+      "method": method,
+      "sample_rate": sample_rate,
+      "metadata": metadata,
+    }
 
-        # Process payload
-        payload, metadata = self._process_payload(raw_payload)
+    return payload, extraction_stats
 
-        extraction_stats = {
-            "payload_size": len(payload),
-            "method": method,
-            "sample_rate": sample_rate,
-            "metadata": metadata,
-        }
+  def _load_audio(self, audio_path: Path) -> tuple[np.ndarray, int]:
+    """
+    Load audio file.
 
-        return payload, extraction_stats
+    Args:
+        audio_path: Path to audio file
 
-    def _load_audio(self, audio_path: Path) -> tuple[np.ndarray, int]:
-        """
-        Load audio file.
+    Returns:
+        Tuple of (audio_samples, sample_rate)
+    """
+    # TODO: Implement actual audio loading
+    sample_rate = 44100
+    samples = np.zeros(int(sample_rate * 10))
+    return samples, sample_rate
 
-        Args:
-            audio_path: Path to audio file
+  def _detect_method(self, audio_data: np.ndarray) -> str:
+    """
+    Auto-detect the steganography method used.
 
-        Returns:
-            Tuple of (audio_samples, sample_rate)
-        """
-        # TODO: Implement actual audio loading
-        sample_rate = 44100
-        samples = np.zeros(int(sample_rate * 10))
-        return samples, sample_rate
+    Args:
+        audio_data: Audio samples
 
-    def _detect_method(self, audio_data: np.ndarray) -> str:
-        """
-        Auto-detect the steganography method used.
+    Returns:
+        Detected method name
 
-        Args:
-            audio_data: Audio samples
+    Raises:
+        ValueError: If no method detected
+    """
+    # TODO: Implement statistical analysis for method detection
+    # For now, default to LSB
+    return "lsb"
 
-        Returns:
-            Detected method name
+  def _extract_by_method(
+    self, audio_data: np.ndarray, sample_rate: int, method: str
+  ) -> bytes:
+    """
+    Extract payload using specified method.
 
-        Raises:
-            ValueError: If no method detected
-        """
-        # TODO: Implement statistical analysis for method detection
-        # For now, default to LSB
-        return "lsb"
+    Args:
+        audio_data: Audio samples
+        sample_rate: Sample rate
+        method: Extraction method
 
-    def _extract_by_method(self, audio_data: np.ndarray, sample_rate: int, method: str) -> bytes:
-        """
-        Extract payload using specified method.
+    Returns:
+        Raw extracted payload
+    """
+    if method == "lsb":
+      return self._extract_lsb(audio_data)
+    elif method == "phase":
+      return self._extract_phase(audio_data)
+    elif method == "echo":
+      return self._extract_echo(audio_data)
+    elif method == "spread_spectrum":
+      return self._extract_spread_spectrum(audio_data)
+    else:
+      raise ValueError(f"Unsupported method: {method}")
 
-        Args:
-            audio_data: Audio samples
-            sample_rate: Sample rate
-            method: Extraction method
+  def _extract_lsb(self, audio_data: np.ndarray) -> bytes:
+    """Extract using LSB method"""
+    # TODO: Implement
+    return b""
 
-        Returns:
-            Raw extracted payload
-        """
-        if method == "lsb":
-            return self._extract_lsb(audio_data)
-        elif method == "phase":
-            return self._extract_phase(audio_data)
-        elif method == "echo":
-            return self._extract_echo(audio_data)
-        elif method == "spread_spectrum":
-            return self._extract_spread_spectrum(audio_data)
-        else:
-            raise ValueError(f"Unsupported method: {method}")
+  def _extract_phase(self, audio_data: np.ndarray) -> bytes:
+    """Extract using phase method"""
+    # TODO: Implement
+    return b""
 
-    def _extract_lsb(self, audio_data: np.ndarray) -> bytes:
-        """Extract using LSB method"""
-        # TODO: Implement
-        return b""
+  def _extract_echo(self, audio_data: np.ndarray) -> bytes:
+    """Extract using echo hiding method"""
+    # TODO: Implement
+    return b""
 
-    def _extract_phase(self, audio_data: np.ndarray) -> bytes:
-        """Extract using phase method"""
-        # TODO: Implement
-        return b""
+  def _extract_spread_spectrum(self, audio_data: np.ndarray) -> bytes:
+    """Extract using spread spectrum method"""
+    # TODO: Implement
+    return b""
 
-    def _extract_echo(self, audio_data: np.ndarray) -> bytes:
-        """Extract using echo hiding method"""
-        # TODO: Implement
-        return b""
+  def _process_payload(self, raw_payload: bytes) -> tuple[bytes, dict[str, Any]]:
+    """
+    Process raw payload (error correction, decryption, decompression).
 
-    def _extract_spread_spectrum(self, audio_data: np.ndarray) -> bytes:
-        """Extract using spread spectrum method"""
-        # TODO: Implement
-        return b""
+    Args:
+        raw_payload: Raw extracted bytes
 
-    def _process_payload(self, raw_payload: bytes) -> tuple[bytes, dict[str, Any]]:
-        """
-        Process raw payload (error correction, decryption, decompression).
+    Returns:
+        Tuple of (processed_payload, metadata)
+    """
+    if len(raw_payload) < 4:
+      raise ValueError("Invalid payload: too short")
 
-        Args:
-            raw_payload: Raw extracted bytes
+    payload_length = int.from_bytes(raw_payload[:4], byteorder="big")
+    payload = raw_payload[4 : 4 + payload_length]
 
-        Returns:
-            Tuple of (processed_payload, metadata)
-        """
-        if len(raw_payload) < 4:
-            raise ValueError("Invalid payload: too short")
+    metadata = {
+      "length": payload_length,
+      "raw_size": len(raw_payload),
+    }
 
-        payload_length = int.from_bytes(raw_payload[:4], byteorder="big")
-        payload = raw_payload[4 : 4 + payload_length]
-
-        metadata = {
-            "length": payload_length,
-            "raw_size": len(raw_payload),
-        }
-
-        return payload, metadata
+    return payload, metadata

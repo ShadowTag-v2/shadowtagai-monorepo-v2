@@ -21,49 +21,49 @@ from pathlib import Path
 
 
 def _resolve_agent_dir(*, agents_root: Path | str, app_name: str) -> Path:
-    """Resolves the agent directory with safety checks."""
-    agents_root_path = Path(agents_root).resolve()
-    agent_dir = (agents_root_path / app_name).resolve()
-    if not str(agent_dir).startswith(str(agents_root_path)):
-        raise ValueError(f"Invalid app_name '{app_name}': resolves outside base directory")
+  """Resolves the agent directory with safety checks."""
+  agents_root_path = Path(agents_root).resolve()
+  agent_dir = (agents_root_path / app_name).resolve()
+  if not str(agent_dir).startswith(str(agents_root_path)):
+    raise ValueError(f"Invalid app_name '{app_name}': resolves outside base directory")
 
-    return agent_dir
+  return agent_dir
 
 
 class DotAdkFolder:
-    """Manages the lifecycle of the `.adk` folder for a single agent."""
+  """Manages the lifecycle of the `.adk` folder for a single agent."""
 
-    def __init__(self, agent_dir: Path | str):
-        self._agent_dir = Path(agent_dir).resolve()
+  def __init__(self, agent_dir: Path | str):
+    self._agent_dir = Path(agent_dir).resolve()
 
-    @property
-    def agent_dir(self) -> Path:
-        return self._agent_dir
+  @property
+  def agent_dir(self) -> Path:
+    return self._agent_dir
 
-    @cached_property
-    def dot_adk_dir(self) -> Path:
-        return self._agent_dir / ".adk"
+  @cached_property
+  def dot_adk_dir(self) -> Path:
+    return self._agent_dir / ".adk"
 
-    @cached_property
-    def artifacts_dir(self) -> Path:
-        return self.dot_adk_dir / "artifacts"
+  @cached_property
+  def artifacts_dir(self) -> Path:
+    return self.dot_adk_dir / "artifacts"
 
-    @cached_property
-    def session_db_path(self) -> Path:
-        return self.dot_adk_dir / "session.db"
+  @cached_property
+  def session_db_path(self) -> Path:
+    return self.dot_adk_dir / "session.db"
 
 
 def dot_adk_folder_for_agent(*, agents_root: Path | str, app_name: str) -> DotAdkFolder:
-    """Creates a manager for an agent rooted under `agents_root`.
+  """Creates a manager for an agent rooted under `agents_root`.
 
-    Args:
-      agents_root: Directory that contains all agents.
-      app_name: Name of the agent directory.
+  Args:
+    agents_root: Directory that contains all agents.
+    app_name: Name of the agent directory.
 
-    Returns:
-      A `DotAdkFolder` scoped to the given agent.
+  Returns:
+    A `DotAdkFolder` scoped to the given agent.
 
-    Raises:
-      ValueError: If `app_name` traverses outside of `agents_root`.
-    """
-    return DotAdkFolder(_resolve_agent_dir(agents_root=agents_root, app_name=app_name))
+  Raises:
+    ValueError: If `app_name` traverses outside of `agents_root`.
+  """
+  return DotAdkFolder(_resolve_agent_dir(agents_root=agents_root, app_name=app_name))

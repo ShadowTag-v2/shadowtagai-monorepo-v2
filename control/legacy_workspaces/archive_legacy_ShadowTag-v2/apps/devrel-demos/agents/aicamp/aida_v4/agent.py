@@ -15,73 +15,75 @@ MODEL = "gemini-2.5-flash-thinking-exp-01-21"
 
 
 def run_osquery(query: str) -> str:
-    """Runs a query using osquery.
+  """Runs a query using osquery.
 
-    Args:
-      query: The osquery query to run. Example: 'select * from battery'
+  Args:
+    query: The osquery query to run. Example: 'select * from battery'
 
-    Returns:
-      The query result as a JSON string.
-    """
+  Returns:
+    The query result as a JSON string.
+  """
+  try:
+    # Run osqueryi as a one-off command with a 60s timeout.
+    # --json forces JSON output format.
+    result = subprocess.run(
+      ["osqueryi", "--json", query], capture_output=True, text=True, timeout=60
+    )
+
+    output = result.stdout.strip()
+
+    if result.returncode != 0:
+      error_msg = result.stderr.strip() or f"Exit code {result.returncode}"
+      return json.dumps(
+        {
+          "error": "Query failed",
+          "details": error_msg,
+          "suggestion": "Check table names and syntax using discover_schema.",
+        }
+      )
+
+    if not output:
+      return "[]"
+
+    # Validate that we actually got JSON back
     try:
-        # Run osqueryi as a one-off command with a 60s timeout.
-        # --json forces JSON output format.
-        result = subprocess.run(["osqueryi", "--json", query], capture_output=True, text=True, timeout=60)
+      json.loads(output)
+      return output
+    except json.JSONDecodeError:
+      return json.dumps(
+        {
+          "error": "Invalid output format",
+          "details": "osqueryi did not return valid JSON",
+          "raw_output": output,
+        }
+      )
 
-        output = result.stdout.strip()
-
-        if result.returncode != 0:
-            error_msg = result.stderr.strip() or f"Exit code {result.returncode}"
-            return json.dumps(
-                {
-                    "error": "Query failed",
-                    "details": error_msg,
-                    "suggestion": "Check table names and syntax using discover_schema.",
-                }
-            )
-
-        if not output:
-            return "[]"
-
-        # Validate that we actually got JSON back
-        try:
-            json.loads(output)
-            return output
-        except json.JSONDecodeError:
-            return json.dumps(
-                {
-                    "error": "Invalid output format",
-                    "details": "osqueryi did not return valid JSON",
-                    "raw_output": output,
-                }
-            )
-
-    except subprocess.TimeoutExpired:
-        return json.dumps(
-            {
-                "error": "Query timeout",
-                "details": "The query exceeded the 60s time limit. It might be scanning too many files or a slow table.",
-            }
-        )
-    except FileNotFoundError:
-        return json.dumps(
-            {
-                "error": "Dependency missing",
-                "details": "'osqueryi' executable not found in PATH.",
-            }
-        )
-    except Exception as e:
-        return json.dumps({"error": "Unexpected error", "details": str(e)})
+  except subprocess.TimeoutExpired:
+    return json.dumps(
+      {
+        "error": "Query timeout",
+        "details": "The query exceeded the 60s time limit. It might be scanning too many files or a slow table.",
+      }
+    )
+  except FileNotFoundError:
+    return json.dumps(
+      {
+        "error": "Dependency missing",
+        "details": "'osqueryi' executable not found in PATH.",
+      }
+    )
+  except Exception as e:
+    return json.dumps({"error": "Unexpected error", "details": str(e)})
 
 
 current_os = platform.system().lower()
 
 # Define a dedicated google search agent and tool
 google_search_agent = Agent(
-    name="google_search",
-    instruction="You are a google search agent. Use the available tools to find information on the web.",
-    tools=[google_search],
-    model=MODEL,
+  name="google_search",
+  instruction="You are a google search agent. Use the available tools to find information on the web.",
+  tools=[google_search],
+  model=MODEL,
 )
 
 google_search_tool = AgentTool(agent=google_search_agent)
@@ -89,9 +91,9 @@ google_search_tool = AgentTool(agent=google_search_agent)
 # --- Sub-agents for Sequential Workflow ---
 
 planner = Agent(
-    name="planner",
-    model=MODEL,
-    instruction="""
+  name="planner",
+  model=MODEL,
+  instruction="""
 You are a Senior Site Reliability Engineer (SRE).
 Your goal is to formulate a **Minimal Viable Investigation Plan** for speed.
 
@@ -115,14 +117,14 @@ Your goal is to formulate a **Minimal Viable Investigation Plan** for speed.
 
 [CONTEXT]
 Host OS: """
-    + current_os,
-    output_key="temp:investigation_plan",
+  + current_os,
+  output_key="temp:investigation_plan",
 )
 
 investigator = Agent(
-    name="investigator",
-    model=MODEL,
-    instruction="""
+  name="investigator",
+  model=MODEL,
+  instruction="""
 You are a Lead Digital Forensic Investigator. Your job is to execute the **Investigation Plan** QUICKLY.
 
 [COMMUNICATION PROTOCOL]
@@ -141,15 +143,15 @@ You are a Lead Digital Forensic Investigator. Your job is to execute the **Inves
 Investigation Plan:
 {temp:investigation_plan?}
 Host OS: """
-    + current_os,
-    tools=[search_query_library, discover_schema, run_osquery, google_search_tool],
-    output_key="temp:final_report",
+  + current_os,
+  tools=[search_query_library, discover_schema, run_osquery, google_search_tool],
+  output_key="temp:final_report",
 )
 
 summarizer = Agent(
-    name="summarizer",
-    model=MODEL,
-    instruction="""
+  name="summarizer",
+  model=MODEL,
+  instruction="""
 [IDENTITY]
 You are AIDA, a professional, warm, and highly capable diagnostic assistant.
 
@@ -169,15 +171,17 @@ Investigation Plan: {temp:investigation_plan?}
 
 # --- Pipeline Definition ---
 
-diagnostic_pipeline = SequentialAgent(name="diagnostic_pipeline", sub_agents=[planner, investigator, summarizer])
+diagnostic_pipeline = SequentialAgent(
+  name="diagnostic_pipeline", sub_agents=[planner, investigator, summarizer]
+)
 
 # --- Root Agent ---
 
 root_agent = Agent(
-    model=MODEL,
-    name="aida",
-    description="The emergency diagnostic agent",
-    instruction="""
+  model=MODEL,
+  name="aida",
+  description="The emergency diagnostic agent",
+  instruction="""
 [IDENTITY]
 You are AIDA (Automated Intelligent Diagnostic Assistant). You are professional but warm, friendly, and encouraging. 
 You care about the user's system health and want to make the diagnostic process as smooth as possible.
@@ -209,6 +213,6 @@ Your purpose is to coordinate the `diagnostic_pipeline` and help the user unders
 Last Investigation Plan: {temp:investigation_plan?}
 Last Diagnostic Report: {temp:final_report?}
 Host OS: """
-    + current_os,
-    sub_agents=[diagnostic_pipeline],
+  + current_os,
+  sub_agents=[diagnostic_pipeline],
 )

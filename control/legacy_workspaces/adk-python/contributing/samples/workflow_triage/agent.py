@@ -20,17 +20,19 @@ from google.adk.tools.tool_context import ToolContext
 from . import execution_agent
 
 
-def update_execution_plan(execution_agents: list[str], tool_context: ToolContext) -> str:
-    """Updates the execution plan for the agents to run."""
+def update_execution_plan(
+  execution_agents: list[str], tool_context: ToolContext
+) -> str:
+  """Updates the execution plan for the agents to run."""
 
-    tool_context.state["execution_agents"] = execution_agents
-    return "execution_agents updated."
+  tool_context.state["execution_agents"] = execution_agents
+  return "execution_agents updated."
 
 
 root_agent = Agent(
-    model="gemini-2.5-flash",
-    name="execution_manager_agent",
-    instruction="""\
+  model="gemini-2.5-flash",
+  name="execution_manager_agent",
+  instruction="""\
 You are the Execution Manager Agent, responsible for setting up execution plan and delegate to plan_execution_agent for the actual plan execution.
 
 You ONLY have the following worker agents: `code_agent`, `math_agent`.
@@ -49,8 +51,8 @@ NOTE:
 * If you are not clear about user's intent, you should ask for clarification first;
 * Only after you're clear about user's intent, you can proceed to step #3.
 """,
-    sub_agents=[
-        execution_agent.plan_execution_agent,
-    ],
-    tools=[update_execution_plan],
+  sub_agents=[
+    execution_agent.plan_execution_agent,
+  ],
+  tools=[update_execution_plan],
 )

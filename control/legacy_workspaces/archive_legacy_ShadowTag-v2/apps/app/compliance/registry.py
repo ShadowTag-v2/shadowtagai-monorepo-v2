@@ -18,289 +18,300 @@ from typing import Optional
 
 from app.compliance.modules.base import ComplianceModule
 from app.models.compliance import (
-    Jurisdiction,
-    ModuleMetadata,
-    RegulationId,
+  Jurisdiction,
+  ModuleMetadata,
+  RegulationId,
 )
 
 logger = logging.getLogger(__name__)
 
 
 class RegulationRegistry:
+  """
+  Central registry for compliance regulation modules.
+
+  Provides:
+  - Module registration and discovery
+  - Lazy instantiation of modules
+  - Filtering by jurisdiction
+  - Version management
+  """
+
+  _instance: Optional["RegulationRegistry"] = None
+  _modules: dict[RegulationId, type[ComplianceModule]]
+  _instances: dict[RegulationId, ComplianceModule]
+  _metadata_cache: dict[RegulationId, ModuleMetadata]
+
+  def __new__(cls) -> "RegulationRegistry":
+    """Singleton pattern - ensure only one registry exists."""
+    if cls._instance is None:
+      cls._instance = super().__new__(cls)
+      cls._instance._modules = {}
+      cls._instance._instances = {}
+      cls._instance._metadata_cache = {}
+      logger.info("RegulationRegistry initialized")
+    return cls._instance
+
+  def register(
+    self, regulation_id: RegulationId, module_class: type[ComplianceModule]
+  ) -> None:
     """
-    Central registry for compliance regulation modules.
+    Register a compliance module class.
 
-    Provides:
-    - Module registration and discovery
-    - Lazy instantiation of modules
-    - Filtering by jurisdiction
-    - Version management
+    Args:
+        regulation_id: The regulation identifier
+        module_class: The module class to register
     """
+    if regulation_id in self._modules:
+      logger.warning(f"Overwriting existing module: {regulation_id.value}")
 
-    _instance: Optional["RegulationRegistry"] = None
-    _modules: dict[RegulationId, type[ComplianceModule]]
-    _instances: dict[RegulationId, ComplianceModule]
-    _metadata_cache: dict[RegulationId, ModuleMetadata]
+    self._modules[regulation_id] = module_class
+    # Clear cached instance if re-registering
+    self._instances.pop(regulation_id, None)
+    self._metadata_cache.pop(regulation_id, None)
 
-    def __new__(cls) -> "RegulationRegistry":
-        """Singleton pattern - ensure only one registry exists."""
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._modules = {}
-            cls._instance._instances = {}
-            cls._instance._metadata_cache = {}
-            logger.info("RegulationRegistry initialized")
-        return cls._instance
+    logger.info(f"Registered compliance module: {regulation_id.value}")
 
-    def register(self, regulation_id: RegulationId, module_class: type[ComplianceModule]) -> None:
-        """
-        Register a compliance module class.
+  def unregister(self, regulation_id: RegulationId) -> bool:
+    """
+    Unregister a compliance module.
 
-        Args:
-            regulation_id: The regulation identifier
-            module_class: The module class to register
-        """
-        if regulation_id in self._modules:
-            logger.warning(f"Overwriting existing module: {regulation_id.value}")
+    Args:
+        regulation_id: The regulation to unregister
 
-        self._modules[regulation_id] = module_class
-        # Clear cached instance if re-registering
-        self._instances.pop(regulation_id, None)
-        self._metadata_cache.pop(regulation_id, None)
+    Returns:
+        True if module was unregistered, False if not found
+    """
+    if regulation_id not in self._modules:
+      return False
 
-        logger.info(f"Registered compliance module: {regulation_id.value}")
+    del self._modules[regulation_id]
+    self._instances.pop(regulation_id, None)
+    self._metadata_cache.pop(regulation_id, None)
 
-    def unregister(self, regulation_id: RegulationId) -> bool:
-        """
-        Unregister a compliance module.
+    logger.info(f"Unregistered compliance module: {regulation_id.value}")
+    return True
 
-        Args:
-            regulation_id: The regulation to unregister
+  def get_module(self, regulation_id: RegulationId) -> ComplianceModule | None:
+    """
+    Get a module instance by regulation ID.
 
-        Returns:
-            True if module was unregistered, False if not found
-        """
-        if regulation_id not in self._modules:
-            return False
+    Lazy instantiation - creates instance on first access.
 
-        del self._modules[regulation_id]
-        self._instances.pop(regulation_id, None)
-        self._metadata_cache.pop(regulation_id, None)
+    Args:
+        regulation_id: The regulation to get
 
-        logger.info(f"Unregistered compliance module: {regulation_id.value}")
-        return True
+    Returns:
+        ComplianceModule instance or None if not registered
+    """
+    if regulation_id not in self._modules:
+      logger.warning(f"Module not registered: {regulation_id.value}")
+      return None
 
-    def get_module(self, regulation_id: RegulationId) -> ComplianceModule | None:
-        """
-        Get a module instance by regulation ID.
+    # Lazy instantiation
+    if regulation_id not in self._instances:
+      module_class = self._modules[regulation_id]
+      self._instances[regulation_id] = module_class()
+      logger.debug(f"Instantiated module: {regulation_id.value}")
 
-        Lazy instantiation - creates instance on first access.
+    return self._instances[regulation_id]
 
-        Args:
-            regulation_id: The regulation to get
+  def get_modules(self, regulation_ids: list[RegulationId]) -> list[ComplianceModule]:
+    """
+    Get multiple module instances.
 
-        Returns:
-            ComplianceModule instance or None if not registered
-        """
-        if regulation_id not in self._modules:
-            logger.warning(f"Module not registered: {regulation_id.value}")
-            return None
+    Args:
+        regulation_ids: List of regulations to get
 
-        # Lazy instantiation
-        if regulation_id not in self._instances:
-            module_class = self._modules[regulation_id]
-            self._instances[regulation_id] = module_class()
-            logger.debug(f"Instantiated module: {regulation_id.value}")
+    Returns:
+        List of ComplianceModule instances (excluding not found)
+    """
+    modules = []
+    for reg_id in regulation_ids:
+      module = self.get_module(reg_id)
+      if module:
+        modules.append(module)
+    return modules
 
-        return self._instances[regulation_id]
+  def get_metadata(self, regulation_id: RegulationId) -> ModuleMetadata | None:
+    """
+    Get module metadata without full instantiation.
 
-    def get_modules(self, regulation_ids: list[RegulationId]) -> list[ComplianceModule]:
-        """
-        Get multiple module instances.
+    Args:
+        regulation_id: The regulation to get metadata for
 
-        Args:
-            regulation_ids: List of regulations to get
+    Returns:
+        ModuleMetadata or None if not registered
+    """
+    if regulation_id in self._metadata_cache:
+      return self._metadata_cache[regulation_id]
 
-        Returns:
-            List of ComplianceModule instances (excluding not found)
-        """
-        modules = []
-        for reg_id in regulation_ids:
-            module = self.get_module(reg_id)
-            if module:
-                modules.append(module)
-        return modules
+    module = self.get_module(regulation_id)
+    if module:
+      self._metadata_cache[regulation_id] = module.metadata
+      return module.metadata
 
-    def get_metadata(self, regulation_id: RegulationId) -> ModuleMetadata | None:
-        """
-        Get module metadata without full instantiation.
+    return None
 
-        Args:
-            regulation_id: The regulation to get metadata for
+  def list_registered(self) -> list[RegulationId]:
+    """
+    List all registered regulation IDs.
 
-        Returns:
-            ModuleMetadata or None if not registered
-        """
-        if regulation_id in self._metadata_cache:
-            return self._metadata_cache[regulation_id]
+    Returns:
+        List of registered RegulationId values
+    """
+    return list(self._modules.keys())
 
-        module = self.get_module(regulation_id)
-        if module:
-            self._metadata_cache[regulation_id] = module.metadata
-            return module.metadata
+  def list_metadata(self) -> list[ModuleMetadata]:
+    """
+    Get metadata for all registered modules.
 
-        return None
+    Returns:
+        List of ModuleMetadata for all registered modules
+    """
+    return [
+      self.get_metadata(reg_id)
+      for reg_id in self._modules.keys()
+      if self.get_metadata(reg_id) is not None
+    ]
 
-    def list_registered(self) -> list[RegulationId]:
-        """
-        List all registered regulation IDs.
+  def filter_by_jurisdiction(self, jurisdiction: Jurisdiction) -> list[RegulationId]:
+    """
+    Filter registered modules by jurisdiction.
 
-        Returns:
-            List of registered RegulationId values
-        """
-        return list(self._modules.keys())
+    Args:
+        jurisdiction: The jurisdiction to filter by
 
-    def list_metadata(self) -> list[ModuleMetadata]:
-        """
-        Get metadata for all registered modules.
+    Returns:
+        List of RegulationId values matching the jurisdiction
+    """
+    matching = []
+    for reg_id in self._modules.keys():
+      metadata = self.get_metadata(reg_id)
+      if metadata and (
+        metadata.jurisdiction == jurisdiction
+        or metadata.jurisdiction == Jurisdiction.GLOBAL
+      ):
+        matching.append(reg_id)
+    return matching
 
-        Returns:
-            List of ModuleMetadata for all registered modules
-        """
-        return [self.get_metadata(reg_id) for reg_id in self._modules.keys() if self.get_metadata(reg_id) is not None]
+  def is_registered(self, regulation_id: RegulationId) -> bool:
+    """Check if a regulation module is registered."""
+    return regulation_id in self._modules
 
-    def filter_by_jurisdiction(self, jurisdiction: Jurisdiction) -> list[RegulationId]:
-        """
-        Filter registered modules by jurisdiction.
+  def get_module_count(self) -> int:
+    """Get the number of registered modules."""
+    return len(self._modules)
 
-        Args:
-            jurisdiction: The jurisdiction to filter by
+  def clear(self) -> None:
+    """Clear all registered modules (use carefully)."""
+    self._modules.clear()
+    self._instances.clear()
+    self._metadata_cache.clear()
+    logger.warning("RegulationRegistry cleared")
 
-        Returns:
-            List of RegulationId values matching the jurisdiction
-        """
-        matching = []
-        for reg_id in self._modules.keys():
-            metadata = self.get_metadata(reg_id)
-            if metadata and (metadata.jurisdiction == jurisdiction or metadata.jurisdiction == Jurisdiction.GLOBAL):
-                matching.append(reg_id)
-        return matching
-
-    def is_registered(self, regulation_id: RegulationId) -> bool:
-        """Check if a regulation module is registered."""
-        return regulation_id in self._modules
-
-    def get_module_count(self) -> int:
-        """Get the number of registered modules."""
-        return len(self._modules)
-
-    def clear(self) -> None:
-        """Clear all registered modules (use carefully)."""
-        self._modules.clear()
-        self._instances.clear()
-        self._metadata_cache.clear()
-        logger.warning("RegulationRegistry cleared")
-
-    def health_check(self) -> dict:
-        """Get registry health status."""
-        return {
-            "status": "healthy",
-            "registered_modules": len(self._modules),
-            "instantiated_modules": len(self._instances),
-            "modules": [reg_id.value for reg_id in self._modules.keys()],
-        }
+  def health_check(self) -> dict:
+    """Get registry health status."""
+    return {
+      "status": "healthy",
+      "registered_modules": len(self._modules),
+      "instantiated_modules": len(self._instances),
+      "modules": [reg_id.value for reg_id in self._modules.keys()],
+    }
 
 
 @lru_cache(maxsize=1)
 def get_registry() -> RegulationRegistry:
-    """
-    Get the global RegulationRegistry instance.
+  """
+  Get the global RegulationRegistry instance.
 
-    Returns:
-        The singleton RegulationRegistry
-    """
-    return RegulationRegistry()
+  Returns:
+      The singleton RegulationRegistry
+  """
+  return RegulationRegistry()
 
 
 def register_module(regulation_id: RegulationId):
-    """
-    Decorator to register a compliance module class.
+  """
+  Decorator to register a compliance module class.
 
-    Usage:
-        @register_module(RegulationId.EU_AI_ACT)
-        class EUAIActModule(ComplianceModule):
-            ...
-    """
+  Usage:
+      @register_module(RegulationId.EU_AI_ACT)
+      class EUAIActModule(ComplianceModule):
+          ...
+  """
 
-    def decorator(cls: type[ComplianceModule]) -> type[ComplianceModule]:
-        get_registry().register(regulation_id, cls)
-        return cls
+  def decorator(cls: type[ComplianceModule]) -> type[ComplianceModule]:
+    get_registry().register(regulation_id, cls)
+    return cls
 
-    return decorator
+  return decorator
 
 
 def auto_register_modules() -> None:
-    """
-    Auto-register all built-in compliance modules.
+  """
+  Auto-register all built-in compliance modules.
 
-    Call this during application startup to ensure all modules are available.
-    """
-    # Import modules to trigger registration via decorators
-    try:
-        from app.compliance.modules import eu_ai_act  # noqa: F401
+  Call this during application startup to ensure all modules are available.
+  """
+  # Import modules to trigger registration via decorators
+  try:
+    from app.compliance.modules import eu_ai_act  # noqa: F401
 
-        logger.info("Registered EU AI Act module")
-    except ImportError as e:
-        logger.warning(f"Failed to import EU AI Act module: {e}")
+    logger.info("Registered EU AI Act module")
+  except ImportError as e:
+    logger.warning(f"Failed to import EU AI Act module: {e}")
 
-    try:
-        from app.compliance.modules import gdpr  # noqa: F401
+  try:
+    from app.compliance.modules import gdpr  # noqa: F401
 
-        logger.info("Registered GDPR module")
-    except ImportError as e:
-        logger.warning(f"Failed to import GDPR module: {e}")
+    logger.info("Registered GDPR module")
+  except ImportError as e:
+    logger.warning(f"Failed to import GDPR module: {e}")
 
-    try:
-        from app.compliance.modules import dsa  # noqa: F401
+  try:
+    from app.compliance.modules import dsa  # noqa: F401
 
-        logger.info("Registered DSA module")
-    except ImportError as e:
-        logger.warning(f"Failed to import DSA module: {e}")
+    logger.info("Registered DSA module")
+  except ImportError as e:
+    logger.warning(f"Failed to import DSA module: {e}")
 
-    try:
-        from app.compliance.modules import ca_sb_243  # noqa: F401
+  try:
+    from app.compliance.modules import ca_sb_243  # noqa: F401
 
-        logger.info("Registered CA SB 243 module")
-    except ImportError as e:
-        logger.warning(f"Failed to import CA SB 243 module: {e}")
+    logger.info("Registered CA SB 243 module")
+  except ImportError as e:
+    logger.warning(f"Failed to import CA SB 243 module: {e}")
 
-    try:
-        from app.compliance.modules import hipaa  # noqa: F401
+  try:
+    from app.compliance.modules import hipaa  # noqa: F401
 
-        logger.info("Registered HIPAA module")
-    except ImportError as e:
-        logger.warning(f"Failed to import HIPAA module: {e}")
+    logger.info("Registered HIPAA module")
+  except ImportError as e:
+    logger.warning(f"Failed to import HIPAA module: {e}")
 
-    try:
-        from app.compliance.modules import coppa  # noqa: F401
+  try:
+    from app.compliance.modules import coppa  # noqa: F401
 
-        logger.info("Registered COPPA module")
-    except ImportError as e:
-        logger.warning(f"Failed to import COPPA module: {e}")
+    logger.info("Registered COPPA module")
+  except ImportError as e:
+    logger.warning(f"Failed to import COPPA module: {e}")
 
-    try:
-        from app.compliance.modules import nist_rmf  # noqa: F401
+  try:
+    from app.compliance.modules import nist_rmf  # noqa: F401
 
-        logger.info("Registered NIST RMF module")
-    except ImportError as e:
-        logger.warning(f"Failed to import NIST RMF module: {e}")
+    logger.info("Registered NIST RMF module")
+  except ImportError as e:
+    logger.warning(f"Failed to import NIST RMF module: {e}")
 
-    try:
-        from app.compliance.modules import iso_42001  # noqa: F401
+  try:
+    from app.compliance.modules import iso_42001  # noqa: F401
 
-        logger.info("Registered ISO 42001 module")
-    except ImportError as e:
-        logger.warning(f"Failed to import ISO 42001 module: {e}")
+    logger.info("Registered ISO 42001 module")
+  except ImportError as e:
+    logger.warning(f"Failed to import ISO 42001 module: {e}")
 
-    registry = get_registry()
-    logger.info(f"Auto-registration complete: {registry.get_module_count()} modules registered")
+  registry = get_registry()
+  logger.info(
+    f"Auto-registration complete: {registry.get_module_count()} modules registered"
+  )

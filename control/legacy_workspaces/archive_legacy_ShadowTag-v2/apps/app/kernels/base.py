@@ -11,97 +11,101 @@ from app.models.kernel import KernelInput, KernelMetrics, KernelOutput
 
 
 class KernelChainError(Exception):
-    """Base exception for kernel chain errors."""
+  """Base exception for kernel chain errors."""
 
-    pass
+  pass
 
 
 class Kernel(ABC):
+  """
+  Base class for all kernels in the chain.
+
+  Each kernel follows single responsibility principle:
+  - Receives structured input
+  - Performs one specific transformation
+  - Returns structured output with metrics
+  - Fails fast and isolates errors
+  """
+
+  def __init__(self, name: str, max_latency_ms: float | None = None):
+    self.name = name
+    self.max_latency_ms = max_latency_ms
+
+  @abstractmethod
+  async def execute(self, kernel_input: KernelInput) -> KernelOutput:
     """
-    Base class for all kernels in the chain.
+    Execute the kernel transformation.
 
-    Each kernel follows single responsibility principle:
-    - Receives structured input
-    - Performs one specific transformation
-    - Returns structured output with metrics
-    - Fails fast and isolates errors
+    Args:
+        kernel_input: Structured input data
+
+    Returns:
+        KernelOutput with transformed data and metrics
+
+    Raises:
+        KernelChainError: If execution fails
     """
+    pass
 
-    def __init__(self, name: str, max_latency_ms: float | None = None):
-        self.name = name
-        self.max_latency_ms = max_latency_ms
+  async def __call__(self, kernel_input: KernelInput) -> KernelOutput:
+    """
+    Execute kernel with timing and error handling.
 
-    @abstractmethod
-    async def execute(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Execute the kernel transformation.
+    This wrapper provides:
+    - Latency measurement
+    - Input/output hashing for audit trail
+    - Error isolation
+    - Metrics collection
+    """
+    start_time = time.perf_counter()
 
-        Args:
-            kernel_input: Structured input data
+    try:
+      # Hash input for audit trail
+      input_hash = self._hash_data(kernel_input.data)
 
-        Returns:
-            KernelOutput with transformed data and metrics
+      # Execute the kernel
+      output = await self.execute(kernel_input)
 
-        Raises:
-            KernelChainError: If execution fails
-        """
-        pass
+      # Calculate metrics
+      latency_ms = (time.perf_counter() - start_time) * 1000
+      output_hash = self._hash_data(output.data)
 
-    async def __call__(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Execute kernel with timing and error handling.
+      # Check latency SLA
+      if self.max_latency_ms and latency_ms > self.max_latency_ms:
+        raise KernelChainError(
+          f"{self.name} exceeded max latency: {latency_ms:.2f}ms > {self.max_latency_ms}ms"
+        )
 
-        This wrapper provides:
-        - Latency measurement
-        - Input/output hashing for audit trail
-        - Error isolation
-        - Metrics collection
-        """
-        start_time = time.perf_counter()
+      # Attach metrics
+      if not output.metrics:
+        output.metrics = KernelMetrics(
+          latency_ms=latency_ms,
+          input_hash=input_hash,
+          output_hash=output_hash,
+        )
+      else:
+        output.metrics.latency_ms = latency_ms
+        output.metrics.input_hash = input_hash
+        output.metrics.output_hash = output_hash
 
-        try:
-            # Hash input for audit trail
-            input_hash = self._hash_data(kernel_input.data)
+      output.kernel_name = self.name
+      output.trace_id = kernel_input.trace_id
 
-            # Execute the kernel
-            output = await self.execute(kernel_input)
+      return output
 
-            # Calculate metrics
-            latency_ms = (time.perf_counter() - start_time) * 1000
-            output_hash = self._hash_data(output.data)
+    except KernelChainError:
+      raise
+    except Exception as e:
+      latency_ms = (time.perf_counter() - start_time) * 1000
+      raise KernelChainError(
+        f"{self.name} failed after {latency_ms:.2f}ms: {str(e)}"
+      ) from e
 
-            # Check latency SLA
-            if self.max_latency_ms and latency_ms > self.max_latency_ms:
-                raise KernelChainError(f"{self.name} exceeded max latency: {latency_ms:.2f}ms > {self.max_latency_ms}ms")
-
-            # Attach metrics
-            if not output.metrics:
-                output.metrics = KernelMetrics(
-                    latency_ms=latency_ms,
-                    input_hash=input_hash,
-                    output_hash=output_hash,
-                )
-            else:
-                output.metrics.latency_ms = latency_ms
-                output.metrics.input_hash = input_hash
-                output.metrics.output_hash = output_hash
-
-            output.kernel_name = self.name
-            output.trace_id = kernel_input.trace_id
-
-            return output
-
-        except KernelChainError:
-            raise
-        except Exception as e:
-            latency_ms = (time.perf_counter() - start_time) * 1000
-            raise KernelChainError(f"{self.name} failed after {latency_ms:.2f}ms: {str(e)}") from e
-
-    @staticmethod
-    def _hash_data(data: Any) -> str:
-        """Generate SHA256 hash of data for audit trail."""
-        if isinstance(data, (str, bytes)):
-            content = data if isinstance(data, bytes) else data.encode()
-        else:
-            content = json.dumps(data, sort_keys=True, default=str).encode()
-        return hashlib.sha256(content).hexdigest()[:16]  # First 16 chars for compactness
+  @staticmethod
+  def _hash_data(data: Any) -> str:
+    """Generate SHA256 hash of data for audit trail."""
+    if isinstance(data, (str, bytes)):
+      content = data if isinstance(data, bytes) else data.encode()
+    else:
+      content = json.dumps(data, sort_keys=True, default=str).encode()
+    return hashlib.sha256(content).hexdigest()[:16]  # First 16 chars for compactness

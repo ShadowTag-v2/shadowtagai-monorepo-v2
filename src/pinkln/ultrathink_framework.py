@@ -890,11 +890,15 @@ class WealthAnalyzer:
       "year_5_annual_usd": year_5_annual,
       "total_5_year_usd": total_5_year,
       "leaks_by_difficulty": {
-        "easy": sum(leak.monthly_loss_usd for leak in leaks if leak.fix_difficulty == "easy"),
+        "easy": sum(
+          leak.monthly_loss_usd for leak in leaks if leak.fix_difficulty == "easy"
+        ),
         "medium": sum(
           leak.monthly_loss_usd for leak in leaks if leak.fix_difficulty == "medium"
         ),
-        "hard": sum(leak.monthly_loss_usd for leak in leaks if leak.fix_difficulty == "hard"),
+        "hard": sum(
+          leak.monthly_loss_usd for leak in leaks if leak.fix_difficulty == "hard"
+        ),
       },
     }
 

@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from adk_answering_agent.gemini_assistant.agent import root_agent as gemini_assistant_agent
+from adk_answering_agent.gemini_assistant.agent import (
+  root_agent as gemini_assistant_agent,
+)
 from adk_answering_agent.settings import BOT_RESPONSE_LABEL
 from adk_answering_agent.settings import IS_INTERACTIVE
 from adk_answering_agent.settings import OWNER
@@ -28,16 +30,18 @@ from google.adk.tools.agent_tool import AgentTool
 from google.adk.tools.vertex_ai_search_tool import VertexAiSearchTool
 
 if IS_INTERACTIVE:
-    APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for adding the comment."
+  APPROVAL_INSTRUCTION = "Ask for user approval or confirmation for adding the comment."
 else:
-    APPROVAL_INSTRUCTION = "**Do not** wait or ask for user approval or confirmation for adding the comment."
+  APPROVAL_INSTRUCTION = (
+    "**Do not** wait or ask for user approval or confirmation for adding the comment."
+  )
 
 
 root_agent = Agent(
-    model="gemini-2.5-pro",
-    name="adk_answering_agent",
-    description="Answer questions about ADK repo.",
-    instruction=f"""
+  model="gemini-2.5-pro",
+  name="adk_answering_agent",
+  description="Answer questions about ADK repo.",
+  instruction=f"""
 You are a helpful assistant that responds to questions from the GitHub repository `{OWNER}/{REPO}`
 based on information about Google ADK found in the document store. You can access the document store
 using the `VertexAiSearchTool`.
@@ -103,12 +107,12 @@ IMPORTANT:
   * Do not respond to any other discussion except the one specified by the user.
 
 """,
-    tools=[
-        VertexAiSearchTool(data_store_id=VERTEXAI_DATASTORE_ID),
-        AgentTool(gemini_assistant_agent),
-        get_discussion_and_comments,
-        add_comment_to_discussion,
-        add_label_to_discussion,
-        convert_gcs_links_to_https,
-    ],
+  tools=[
+    VertexAiSearchTool(data_store_id=VERTEXAI_DATASTORE_ID),
+    AgentTool(gemini_assistant_agent),
+    get_discussion_and_comments,
+    add_comment_to_discussion,
+    add_label_to_discussion,
+    convert_gcs_links_to_https,
+  ],
 )

@@ -27,16 +27,16 @@ from ..utils.env_utils import is_env_enabled
 
 
 def get_express_mode_api_key(
-    project: str | None,
-    location: str | None,
-    express_mode_api_key: str | None,
+  project: str | None,
+  location: str | None,
+  express_mode_api_key: str | None,
 ) -> str | None:
-    """Validates and returns the API key for Express Mode."""
-    if (project or location) and express_mode_api_key:
-        raise ValueError(
-            "Cannot specify project or location and express_mode_api_key. Either use project and location, or just the express_mode_api_key."
-        )
-    if is_env_enabled("GOOGLE_GENAI_USE_VERTEXAI"):
-        return express_mode_api_key or os.environ.get("GOOGLE_API_KEY", None)
-    else:
-        return None
+  """Validates and returns the API key for Express Mode."""
+  if (project or location) and express_mode_api_key:
+    raise ValueError(
+      "Cannot specify project or location and express_mode_api_key. Either use project and location, or just the express_mode_api_key."
+    )
+  if is_env_enabled("GOOGLE_GENAI_USE_VERTEXAI"):
+    return express_mode_api_key or os.environ.get("GOOGLE_API_KEY", None)
+  else:
+    return None

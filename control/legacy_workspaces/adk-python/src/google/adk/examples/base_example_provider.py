@@ -20,18 +20,18 @@ from .example import Example
 
 # A class that provides examples for a given query.
 class BaseExampleProvider(abc.ABC):
-    """Base class for example providers.
+  """Base class for example providers.
 
-    This class defines the interface for providing examples for a given query.
+  This class defines the interface for providing examples for a given query.
+  """
+
+  @abc.abstractmethod
+  def get_examples(self, query: str) -> list[Example]:
+    """Returns a list of examples for a given query.
+
+    Args:
+        query: The query to get examples for.
+
+    Returns:
+        A list of Example objects.
     """
-
-    @abc.abstractmethod
-    def get_examples(self, query: str) -> list[Example]:
-        """Returns a list of examples for a given query.
-
-        Args:
-            query: The query to get examples for.
-
-        Returns:
-            A list of Example objects.
-        """

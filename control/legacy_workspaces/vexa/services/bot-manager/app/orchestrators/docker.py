@@ -11,21 +11,21 @@ the chosen backend.
 # create an asyncio task.
 
 from app.orchestrator_utils import (  # noqa: F401
-    get_socket_session,
-    close_docker_client,
-    start_bot_container,
-    stop_bot_container,
-    _record_session_start,
-    get_running_bots_status,
-    verify_container_running,
+  get_socket_session,
+  close_docker_client,
+  start_bot_container,
+  stop_bot_container,
+  _record_session_start,
+  get_running_bots_status,
+  verify_container_running,
 )
 
 __all__ = [
-    "get_socket_session",
-    "close_docker_client",
-    "start_bot_container",
-    "stop_bot_container",
-    "_record_session_start",
-    "get_running_bots_status",
-    "verify_container_running",
+  "get_socket_session",
+  "close_docker_client",
+  "start_bot_container",
+  "stop_bot_container",
+  "_record_session_start",
+  "get_running_bots_status",
+  "verify_container_running",
 ]

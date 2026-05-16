@@ -27,10 +27,10 @@ API_KEY = os.getenv("OPENAI_API_KEY")
 # Set up the server's LLM handler using the OpenAI API.
 # This handler will be used for all sampling requests from tools on this server.
 llm_handler = OpenAISamplingHandler(
-    default_model="gpt-4o",
-    client=OpenAI(
-        api_key=API_KEY,
-    ),
+  default_model="gpt-4o",
+  client=OpenAI(
+    api_key=API_KEY,
+  ),
 )
 
 
@@ -39,44 +39,44 @@ llm_handler = OpenAISamplingHandler(
 # `sampling_handler_behavior="always"` ensures the server never delegates
 # sampling back to the ADK agent.
 mcp = FastMCP(
-    name="SentimentAnalysis",
-    sampling_handler=llm_handler,
-    sampling_handler_behavior="always",
+  name="SentimentAnalysis",
+  sampling_handler=llm_handler,
+  sampling_handler_behavior="always",
 )
 
 
 @mcp.tool
 async def analyze_sentiment(text: str, ctx: Context) -> dict:
-    """Analyzes sentiment by delegating to the server's own LLM."""
-    logging.info("analyze_sentiment tool called with text: %s", text)
-    prompt = f"""Analyze the sentiment of the following text as positive,
+  """Analyzes sentiment by delegating to the server's own LLM."""
+  logging.info("analyze_sentiment tool called with text: %s", text)
+  prompt = f"""Analyze the sentiment of the following text as positive,
                  negative, or neutral. Just output a single word.
                  Text to analyze: {text}"""
 
-    # This delegates the LLM call to the server's own sampling handler,
-    # as configured in the FastMCP instance.
-    logging.info("Attempting to call ctx.sample()")
-    try:
-        response = await ctx.sample(prompt)
-        logging.info("ctx.sample() successful. Response: %s", response)
-    except Exception as e:
-        logging.error("ctx.sample() failed: %s", e, exc_info=True)
-        raise
+  # This delegates the LLM call to the server's own sampling handler,
+  # as configured in the FastMCP instance.
+  logging.info("Attempting to call ctx.sample()")
+  try:
+    response = await ctx.sample(prompt)
+    logging.info("ctx.sample() successful. Response: %s", response)
+  except Exception as e:
+    logging.error("ctx.sample() failed: %s", e, exc_info=True)
+    raise
 
-    sentiment = response.text.strip().lower()
+  sentiment = response.text.strip().lower()
 
-    if "positive" in sentiment:
-        result = "positive"
-    elif "negative" in sentiment:
-        result = "negative"
-    else:
-        result = "neutral"
+  if "positive" in sentiment:
+    result = "positive"
+  elif "negative" in sentiment:
+    result = "negative"
+  else:
+    result = "neutral"
 
-    logging.info("Sentiment analysis result: %s", result)
-    return {"text": text, "sentiment": result}
+  logging.info("Sentiment analysis result: %s", result)
+  return {"text": text, "sentiment": result}
 
 
 if __name__ == "__main__":
-    print("Starting FastMCP server with tool 'analyze_sentiment'...")
-    # This runs the server process, which the ADK agent will connect to.
-    mcp.run()
+  print("Starting FastMCP server with tool 'analyze_sentiment'...")
+  # This runs the server process, which the ADK agent will connect to.
+  mcp.run()

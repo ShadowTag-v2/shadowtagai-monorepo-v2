@@ -25,98 +25,108 @@ from google.cloud.bigtable.data.execute_query import ExecuteQueryIterator
 
 
 def test_execute_sql_basic():
-    """Test execute_sql tool basic functionality."""
-    project = "my_project"
-    instance_id = "my_instance"
-    query = "SELECT * FROM my_table"
-    credentials = mock.create_autospec(Credentials, instance=True)
-    tool_context = mock.create_autospec(ToolContext, instance=True)
+  """Test execute_sql tool basic functionality."""
+  project = "my_project"
+  instance_id = "my_instance"
+  query = "SELECT * FROM my_table"
+  credentials = mock.create_autospec(Credentials, instance=True)
+  tool_context = mock.create_autospec(ToolContext, instance=True)
 
-    with mock.patch("google.adk.tools.bigtable.client.get_bigtable_data_client") as mock_get_client:
-        mock_client = mock.MagicMock()
-        mock_get_client.return_value = mock_client
-        mock_iterator = mock.create_autospec(ExecuteQueryIterator, instance=True)
-        mock_client.execute_query.return_value = mock_iterator
+  with mock.patch(
+    "google.adk.tools.bigtable.client.get_bigtable_data_client"
+  ) as mock_get_client:
+    mock_client = mock.MagicMock()
+    mock_get_client.return_value = mock_client
+    mock_iterator = mock.create_autospec(ExecuteQueryIterator, instance=True)
+    mock_client.execute_query.return_value = mock_iterator
 
-        # Mock row data
-        mock_row = mock.MagicMock()
-        mock_row.fields = {"col1": "val1", "col2": 123}
-        mock_iterator.__iter__.return_value = [mock_row]
+    # Mock row data
+    mock_row = mock.MagicMock()
+    mock_row.fields = {"col1": "val1", "col2": 123}
+    mock_iterator.__iter__.return_value = [mock_row]
 
-        result = execute_sql(
-            project_id=project,
-            instance_id=instance_id,
-            credentials=credentials,
-            query=query,
-            settings=BigtableToolSettings(),
-            tool_context=tool_context,
-        )
+    result = execute_sql(
+      project_id=project,
+      instance_id=instance_id,
+      credentials=credentials,
+      query=query,
+      settings=BigtableToolSettings(),
+      tool_context=tool_context,
+    )
 
-        expected_rows = [{"col1": "val1", "col2": 123}]
-        assert result == {"status": "SUCCESS", "rows": expected_rows}
-        mock_client.execute_query.assert_called_once_with(query=query, instance_id=instance_id)
-        mock_iterator.close.assert_called_once()
+    expected_rows = [{"col1": "val1", "col2": 123}]
+    assert result == {"status": "SUCCESS", "rows": expected_rows}
+    mock_client.execute_query.assert_called_once_with(
+      query=query, instance_id=instance_id
+    )
+    mock_iterator.close.assert_called_once()
 
 
 def test_execute_sql_truncated():
-    """Test execute_sql tool truncation functionality."""
-    project = "my_project"
-    instance_id = "my_instance"
-    query = "SELECT * FROM my_table"
-    credentials = mock.create_autospec(Credentials, instance=True)
-    tool_context = mock.create_autospec(ToolContext, instance=True)
+  """Test execute_sql tool truncation functionality."""
+  project = "my_project"
+  instance_id = "my_instance"
+  query = "SELECT * FROM my_table"
+  credentials = mock.create_autospec(Credentials, instance=True)
+  tool_context = mock.create_autospec(ToolContext, instance=True)
 
-    with mock.patch("google.adk.tools.bigtable.client.get_bigtable_data_client") as mock_get_client:
-        mock_client = mock.MagicMock()
-        mock_get_client.return_value = mock_client
-        mock_iterator = mock.create_autospec(ExecuteQueryIterator, instance=True)
-        mock_client.execute_query.return_value = mock_iterator
+  with mock.patch(
+    "google.adk.tools.bigtable.client.get_bigtable_data_client"
+  ) as mock_get_client:
+    mock_client = mock.MagicMock()
+    mock_get_client.return_value = mock_client
+    mock_iterator = mock.create_autospec(ExecuteQueryIterator, instance=True)
+    mock_client.execute_query.return_value = mock_iterator
 
-        # Mock row data
-        mock_row1 = mock.MagicMock()
-        mock_row1.fields = {"col1": "val1"}
-        mock_row2 = mock.MagicMock()
-        mock_row2.fields = {"col1": "val2"}
-        mock_iterator.__iter__.return_value = [mock_row1, mock_row2]
+    # Mock row data
+    mock_row1 = mock.MagicMock()
+    mock_row1.fields = {"col1": "val1"}
+    mock_row2 = mock.MagicMock()
+    mock_row2.fields = {"col1": "val2"}
+    mock_iterator.__iter__.return_value = [mock_row1, mock_row2]
 
-        result = execute_sql(
-            project_id=project,
-            instance_id=instance_id,
-            credentials=credentials,
-            query=query,
-            settings=BigtableToolSettings(max_query_result_rows=1),
-            tool_context=tool_context,
-        )
+    result = execute_sql(
+      project_id=project,
+      instance_id=instance_id,
+      credentials=credentials,
+      query=query,
+      settings=BigtableToolSettings(max_query_result_rows=1),
+      tool_context=tool_context,
+    )
 
-        expected_rows = [{"col1": "val1"}]
-        assert result == {
-            "status": "SUCCESS",
-            "rows": expected_rows,
-            "result_is_likely_truncated": True,
-        }
-        mock_client.execute_query.assert_called_once_with(query=query, instance_id=instance_id)
-        mock_iterator.close.assert_called_once()
+    expected_rows = [{"col1": "val1"}]
+    assert result == {
+      "status": "SUCCESS",
+      "rows": expected_rows,
+      "result_is_likely_truncated": True,
+    }
+    mock_client.execute_query.assert_called_once_with(
+      query=query, instance_id=instance_id
+    )
+    mock_iterator.close.assert_called_once()
 
 
 def test_execute_sql_error():
-    """Test execute_sql tool error handling."""
-    project = "my_project"
-    instance_id = "my_instance"
-    query = "SELECT * FROM my_table"
-    credentials = mock.create_autospec(Credentials, instance=True)
-    tool_context = mock.create_autospec(ToolContext, instance=True)
+  """Test execute_sql tool error handling."""
+  project = "my_project"
+  instance_id = "my_instance"
+  query = "SELECT * FROM my_table"
+  credentials = mock.create_autospec(Credentials, instance=True)
+  tool_context = mock.create_autospec(ToolContext, instance=True)
 
-    with mock.patch("google.adk.tools.bigtable.client.get_bigtable_data_client") as mock_get_client:
-        mock_client = mock.MagicMock()
-        mock_get_client.return_value = mock_client
-        mock_client.execute_query.side_effect = Exception("Test error")
+  with mock.patch(
+    "google.adk.tools.bigtable.client.get_bigtable_data_client"
+  ) as mock_get_client:
+    mock_client = mock.MagicMock()
+    mock_get_client.return_value = mock_client
+    mock_client.execute_query.side_effect = Exception("Test error")
 
-        result = execute_sql(
-            project_id=project,
-            instance_id=instance_id,
-            credentials=credentials,
-            query=query,
-            settings=BigtableToolSettings(),
-            tool_context=tool_context,
-        )
-        assert result == {"status": "ERROR", "error_details": "Test error"}
+    result = execute_sql(
+      project_id=project,
+      instance_id=instance_id,
+      credentials=credentials,
+      query=query,
+      settings=BigtableToolSettings(),
+      tool_context=tool_context,
+    )
+    assert result == {"status": "ERROR", "error_details": "Test error"}

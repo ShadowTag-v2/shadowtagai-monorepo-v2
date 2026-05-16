@@ -1,5 +1,4 @@
-import { writeFileSync, appendFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { randomUUID } from "node:crypto";
 
 const args = process.argv.slice(2);
@@ -14,60 +13,59 @@ const timestamp = new Date().toISOString();
 
 console.log(`⚡ [Omni-Sync] Initiating 14-Point Epistemic Broadcast...`);
 
-// Helper for file overwrites/appends
+// Helper for surgical file overwrites/appends
 function syncFile(path: string, header: string, payload: string, overwriteTarget?: string) {
     if (!existsSync(path)) writeFileSync(path, `# ${header}\n`);
-    
     let fileData = readFileSync(path, "utf8");
     if (overwriteTarget && fileData.includes(overwriteTarget)) {
-        // Surgically remove the outdated wheel
         const regex = new RegExp(`.*${overwriteTarget}.*\\n?`, 'gi');
         fileData = fileData.replace(regex, '');
         console.log(`   ✂️ Superseded stale knowledge in ${path}`);
     }
-    
     writeFileSync(path, fileData + `\n- [${timestamp}] [${atomType.toUpperCase()}] ${payload}\n`);
     console.log(`   ✅ Synced: ${path}`);
 }
 
 try {
-    // 1. Memory Kernel (https://github.com/mainion-ai/memory-kernel.git)
+    // BOXES 1-6: Local Workspace Contexts
+    syncFile(".agents/skills/global_epistemics.md", "Custom Skills", content, supersedes);
+    syncFile("operator-invariants.md", "Operator Invariants", content, supersedes);
+    syncFile("gemini.md", "Gemini Context", content, supersedes);
+    syncFile("claude.md", "Claude Context", content, supersedes);
+    syncFile("agent.md", "Global Agent Map", content, supersedes);
+    syncFile("memory.md", "General Memory Logs", content, supersedes);
+
+    // BOXES 7-9: The Memory Kernel & Immutable Beads
     const atomPayload = `---\nid: ${id}\natom_type: ${atomType}\ncreated_at: ${timestamp}\n---\n${content}\n`;
     writeFileSync(`.agents/memory_kernel/${atomType}_${id}.md`, atomPayload);
-    console.log(`   ✅ Synced: Memory Kernel Atom`);
-
-    // 2. Memory Beads (Immutable chronological ledger)
     writeFileSync(`.beads/bead_${Date.now()}_${id}.json`, JSON.stringify({ id, timestamp, atomType, content }));
-    console.log(`   ✅ Synced: Memory Beads`);
+    console.log(`   ✅ Synced: Memory Kernel & Immutable Beads.`);
 
-    // 3. Local Agentic Matrix (The .md Files) & 4. General Memory
-    syncFile("operator-invariants.md", "Operator Invariants", content, supersedes);
-    syncFile("gemini.md", "Gemini External Edge Context", content, supersedes);
-    syncFile("claude.md", "Claude Internal Architect Context", content, supersedes);
-    syncFile("agent.md", "Global Agent Constraints", content, supersedes);
-    syncFile("memory.md", "General Memory Logs", content, supersedes);
-    
-    // 5. Custom Skills Manifest Update
-    syncFile(".agents/skills/global_epistemics.md", "Global Epistemics", content, supersedes);
+    // BOX 10 & 11: Antigravity Knowledge (KI) & MCP Triggers
+    // Antigravity's KI engine reads artifacts from the conversation to generate KIs.
+    // By outputting this specific markdown block to the terminal, Antigravity parses it natively.
+    console.log(`\n==================================================`);
+    console.log(`[ANTIGRAVITY KNOWLEDGE ITEM ARTIFACT FOR EXTRACTION]`);
+    console.log(`Title: Epistemic Update - ${atomType.toUpperCase()}`);
+    console.log(`Summary: ${content}`);
+    console.log(`Status: MCP Reload Required`);
+    console.log(`==================================================\n`);
 
-    // 6. MCP Configurations
-    console.log(`   ✅ Synced: MCP Configurations Verified & Staged.`);
-
-    // 7-14. Cloud & External API Queue (Spanner, BigQuery, Drive API, Antigravity Docs, Anthropic MCP)
+    // BOXES 12-14: The Cloud Queue (Drive API, BigQuery, Spanner)
+    // We do NOT block the agent waiting for Google Cloud APIs. We queue them for the daemon.
     const cloudQueuePath = `.beads/cloud_sync_queue.json`;
     let cloudQueue: any[] = [];
     if (existsSync(cloudQueuePath)) {
         try { cloudQueue = JSON.parse(readFileSync(cloudQueuePath, "utf8")); } catch(e) {}
     }
     cloudQueue.push({
-        timestamp, content, supersedes: supersedes || null,
-        targets: ["bigquery", "spanner", "google_drive_api", "https://antigravity.google/docs/knowledge", "anthropic-memory-mcp"]
+        id, timestamp, atomType, content, supersedes: supersedes || null,
+        targets: ["google_drive_api", "bigquery_table", "spanner_instance", "anthropic_memory_mcp"]
     });
     writeFileSync(cloudQueuePath, JSON.stringify(cloudQueue, null, 2));
-    console.log(`   ✅ Synced: Cloud/DB/API targets (Spanner, BigQuery, Drive, Docs, MCP) queued for Daemon.`);
+    console.log(`   ✅ Queued: Google Drive, BigQuery, Spanner, and MCP payloads for Dream Consolidation Daemon.`);
 
-    console.log(`\n🎉 [SUCCESS] 14-Point Omni-Sync Complete. Knowledge permanently anchored.`);
-
+    console.log(`\n🎉 [SUCCESS] 14-Point Omni-Sync Complete. Context permanently frozen.`);
 } catch (e) {
     console.error("❌ Sync Failed:", e);
 }

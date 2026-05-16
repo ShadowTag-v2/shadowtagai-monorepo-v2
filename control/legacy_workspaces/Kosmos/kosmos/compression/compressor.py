@@ -28,174 +28,199 @@ from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 
 @dataclass
 class CompressedContext:
-    """Container for compressed context at different tiers."""
+  """Container for compressed context at different tiers."""
 
-    summary: str
-    statistics: dict[str, Any]
-    full_content_path: str | None = None
-    metadata: dict | None = None
+  summary: str
+  statistics: dict[str, Any]
+  full_content_path: str | None = None
+  metadata: dict | None = None
 
 
 class NotebookCompressor:
+  """
+  Compresses Jupyter notebooks to summary + statistics.
+
+  Achieves 300:1 compression for typical 42K line notebooks.
+
+  Strategy:
+  1. Extract statistics (rule-based, fast)
+  2. Generate 2-line summary (LLM-based, accurate)
+  3. Store full content path for lazy loading
+  """
+
+  def __init__(self, anthropic_client=None):
     """
-    Compresses Jupyter notebooks to summary + statistics.
+    Initialize notebook compressor.
 
-    Achieves 300:1 compression for typical 42K line notebooks.
-
-    Strategy:
-    1. Extract statistics (rule-based, fast)
-    2. Generate 2-line summary (LLM-based, accurate)
-    3. Store full content path for lazy loading
+    Args:
+        anthropic_client: Anthropic client for LLM summarization
+                        If None, uses mock summarization (for testing)
     """
+    self.client = anthropic_client
+    self.model = _DEFAULT_CLAUDE_SONNET_MODEL
 
-    def __init__(self, anthropic_client=None):
-        """
-        Initialize notebook compressor.
+  def compress_notebook(
+    self, notebook_path: str, notebook_content: str | None = None
+  ) -> CompressedContext:
+    """
+    Compress Jupyter notebook to summary + statistics.
 
-        Args:
-            anthropic_client: Anthropic client for LLM summarization
-                            If None, uses mock summarization (for testing)
-        """
-        self.client = anthropic_client
-        self.model = _DEFAULT_CLAUDE_SONNET_MODEL
+    Args:
+        notebook_path: Path to notebook file
+        notebook_content: Optional content if already loaded
 
-    def compress_notebook(self, notebook_path: str, notebook_content: str | None = None) -> CompressedContext:
-        """
-        Compress Jupyter notebook to summary + statistics.
-
-        Args:
-            notebook_path: Path to notebook file
-            notebook_content: Optional content if already loaded
-
-        Returns:
-            CompressedContext with summary, statistics, and full_content_path
-        """
-        # Read notebook if not provided
-        if notebook_content is None:
-            try:
-                with open(notebook_path) as f:
-                    notebook_content = f.read()
-            except Exception as e:
-                logger.error(f"Failed to read notebook {notebook_path}: {e}")
-                return CompressedContext(summary=f"Error reading notebook: {str(e)}", statistics={}, full_content_path=str(notebook_path))
-
-        # Extract statistics (rule-based)
-        statistics = self._extract_statistics(notebook_content)
-
-        # Generate summary (LLM-based or mock)
-        summary = self._generate_summary(notebook_content, statistics)
-
+    Returns:
+        CompressedContext with summary, statistics, and full_content_path
+    """
+    # Read notebook if not provided
+    if notebook_content is None:
+      try:
+        with open(notebook_path) as f:
+          notebook_content = f.read()
+      except Exception as e:
+        logger.error(f"Failed to read notebook {notebook_path}: {e}")
         return CompressedContext(
-            summary=summary,
-            statistics=statistics,
-            full_content_path=str(notebook_path),
-            metadata={"notebook_type": "jupyter", "compression_method": "hierarchical"},
+          summary=f"Error reading notebook: {str(e)}",
+          statistics={},
+          full_content_path=str(notebook_path),
         )
 
-    def _extract_statistics(self, content: str) -> dict[str, Any]:
-        """
-        Extract statistical information using rule-based patterns.
+    # Extract statistics (rule-based)
+    statistics = self._extract_statistics(notebook_content)
 
-        Looks for:
-        - p-values (p < 0.05, p=0.001, etc.)
-        - correlations (r=0.82, correlation: 0.65)
-        - sample sizes (n=150, N=1000)
-        - effect sizes (Cohen's d, odds ratio)
-        - confidence intervals (95% CI)
+    # Generate summary (LLM-based or mock)
+    summary = self._generate_summary(notebook_content, statistics)
 
-        Args:
-            content: Notebook content as string
+    return CompressedContext(
+      summary=summary,
+      statistics=statistics,
+      full_content_path=str(notebook_path),
+      metadata={"notebook_type": "jupyter", "compression_method": "hierarchical"},
+    )
 
-        Returns:
-            Dictionary of extracted statistics
-        """
-        stats = {}
+  def _extract_statistics(self, content: str) -> dict[str, Any]:
+    """
+    Extract statistical information using rule-based patterns.
 
-        # Extract p-values
-        p_value_patterns = [r"p\s*[=<>]\s*([\d.]+(?:e-?\d+)?)", r"p-value\s*[=:]\s*([\d.]+(?:e-?\d+)?)", r"pvalue\s*[=:]\s*([\d.]+(?:e-?\d+)?)"]
-        p_values = []
-        for pattern in p_value_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            p_values.extend([float(m) for m in matches if self._is_valid_p_value(m)])
+    Looks for:
+    - p-values (p < 0.05, p=0.001, etc.)
+    - correlations (r=0.82, correlation: 0.65)
+    - sample sizes (n=150, N=1000)
+    - effect sizes (Cohen's d, odds ratio)
+    - confidence intervals (95% CI)
 
-        if p_values:
-            stats["p_value"] = min(p_values)  # Most significant
-            stats["p_value_count"] = len(p_values)
+    Args:
+        content: Notebook content as string
 
-        # Extract correlations
-        corr_patterns = [r"r\s*=\s*([-]?[\d.]+)", r"correlation\s*[=:]\s*([-]?[\d.]+)", r"pearson\s*[=:]\s*([-]?[\d.]+)"]
-        correlations = []
-        for pattern in corr_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            correlations.extend([float(m) for m in matches if abs(float(m)) <= 1.0])
+    Returns:
+        Dictionary of extracted statistics
+    """
+    stats = {}
 
-        if correlations:
-            stats["correlation"] = max(correlations, key=abs)  # Strongest correlation
+    # Extract p-values
+    p_value_patterns = [
+      r"p\s*[=<>]\s*([\d.]+(?:e-?\d+)?)",
+      r"p-value\s*[=:]\s*([\d.]+(?:e-?\d+)?)",
+      r"pvalue\s*[=:]\s*([\d.]+(?:e-?\d+)?)",
+    ]
+    p_values = []
+    for pattern in p_value_patterns:
+      matches = re.findall(pattern, content, re.IGNORECASE)
+      p_values.extend([float(m) for m in matches if self._is_valid_p_value(m)])
 
-        # Extract sample sizes
-        n_patterns = [r"n\s*=\s*(\d+)", r"N\s*=\s*(\d+)", r"sample\s+size\s*[=:]\s*(\d+)", r"(\d+)\s+samples"]
-        sample_sizes = []
-        for pattern in n_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            sample_sizes.extend([int(m) for m in matches])
+    if p_values:
+      stats["p_value"] = min(p_values)  # Most significant
+      stats["p_value_count"] = len(p_values)
 
-        if sample_sizes:
-            stats["sample_size"] = max(sample_sizes)  # Largest sample
+    # Extract correlations
+    corr_patterns = [
+      r"r\s*=\s*([-]?[\d.]+)",
+      r"correlation\s*[=:]\s*([-]?[\d.]+)",
+      r"pearson\s*[=:]\s*([-]?[\d.]+)",
+    ]
+    correlations = []
+    for pattern in corr_patterns:
+      matches = re.findall(pattern, content, re.IGNORECASE)
+      correlations.extend([float(m) for m in matches if abs(float(m)) <= 1.0])
 
-        # Extract gene/feature counts (common in genomics)
-        gene_patterns = [
-            r"(\d+)\s+(?:\w+\s+)*(?:genes?|features?|DEGs)",  # "42 differentially expressed genes"
-            r"(?:identified|found)\s+(\d+)\s+(?:\w+\s+)*(?:genes?|features?)",  # "found 42 significant genes"
-        ]
-        gene_counts = []
-        for pattern in gene_patterns:
-            matches = re.findall(pattern, content, re.IGNORECASE)
-            gene_counts.extend([int(m) for m in matches])
+    if correlations:
+      stats["correlation"] = max(correlations, key=abs)  # Strongest correlation
 
-        if gene_counts:
-            stats["n_genes"] = max(gene_counts)
+    # Extract sample sizes
+    n_patterns = [
+      r"n\s*=\s*(\d+)",
+      r"N\s*=\s*(\d+)",
+      r"sample\s+size\s*[=:]\s*(\d+)",
+      r"(\d+)\s+samples",
+    ]
+    sample_sizes = []
+    for pattern in n_patterns:
+      matches = re.findall(pattern, content, re.IGNORECASE)
+      sample_sizes.extend([int(m) for m in matches])
 
-        # Extract effect sizes
-        if "cohen" in content.lower():
-            cohen_d = re.findall(r"d\s*=\s*([\d.]+)", content, re.IGNORECASE)
-            if cohen_d:
-                stats["cohens_d"] = float(cohen_d[0])
+    if sample_sizes:
+      stats["sample_size"] = max(sample_sizes)  # Largest sample
 
-        return stats
+    # Extract gene/feature counts (common in genomics)
+    gene_patterns = [
+      r"(\d+)\s+(?:\w+\s+)*(?:genes?|features?|DEGs)",  # "42 differentially expressed genes"
+      r"(?:identified|found)\s+(\d+)\s+(?:\w+\s+)*(?:genes?|features?)",  # "found 42 significant genes"
+    ]
+    gene_counts = []
+    for pattern in gene_patterns:
+      matches = re.findall(pattern, content, re.IGNORECASE)
+      gene_counts.extend([int(m) for m in matches])
 
-    def _is_valid_p_value(self, p_str: str) -> bool:
-        """Check if extracted p-value is valid (0 < p <= 1)."""
-        try:
-            p = float(p_str)
-            return 0 < p <= 1.0
-        except (ValueError, TypeError):
-            return False
+    if gene_counts:
+      stats["n_genes"] = max(gene_counts)
 
-    def _generate_summary(self, content: str, statistics: dict, max_lines: int = 2) -> str:
-        """
-        Generate concise summary using LLM or rule-based fallback.
+    # Extract effect sizes
+    if "cohen" in content.lower():
+      cohen_d = re.findall(r"d\s*=\s*([\d.]+)", content, re.IGNORECASE)
+      if cohen_d:
+        stats["cohens_d"] = float(cohen_d[0])
 
-        Args:
-            content: Full notebook content
-            statistics: Extracted statistics
-            max_lines: Maximum lines for summary (default: 2)
+    return stats
 
-        Returns:
-            Concise summary string
-        """
-        # If no LLM client, use rule-based summary
-        if self.client is None:
-            return self._generate_rule_based_summary(content, statistics)
+  def _is_valid_p_value(self, p_str: str) -> bool:
+    """Check if extracted p-value is valid (0 < p <= 1)."""
+    try:
+      p = float(p_str)
+      return 0 < p <= 1.0
+    except (ValueError, TypeError):
+      return False
 
-        # Use LLM for high-quality summarization
-        try:
-            # Build prompt with statistics context
-            stats_str = ", ".join(f"{k}={v}" for k, v in statistics.items()) if statistics else "no statistics extracted"
+  def _generate_summary(
+    self, content: str, statistics: dict, max_lines: int = 2
+  ) -> str:
+    """
+    Generate concise summary using LLM or rule-based fallback.
 
-            # Truncate content for prompt (keep first/last portions)
-            content_sample = self._get_content_sample(content)
+    Args:
+        content: Full notebook content
+        statistics: Extracted statistics
+        max_lines: Maximum lines for summary (default: 2)
 
-            prompt = f"""Summarize this scientific analysis in exactly {max_lines} lines.
+    Returns:
+        Concise summary string
+    """
+    # If no LLM client, use rule-based summary
+    if self.client is None:
+      return self._generate_rule_based_summary(content, statistics)
+
+    # Use LLM for high-quality summarization
+    try:
+      # Build prompt with statistics context
+      stats_str = (
+        ", ".join(f"{k}={v}" for k, v in statistics.items())
+        if statistics
+        else "no statistics extracted"
+      )
+
+      # Truncate content for prompt (keep first/last portions)
+      content_sample = self._get_content_sample(content)
+
+      prompt = f"""Summarize this scientific analysis in exactly {max_lines} lines.
 Focus on the key finding and its significance.
 
 Extracted statistics: {stats_str}
@@ -205,284 +230,310 @@ Analysis content:
 
 Provide a {max_lines}-line summary that captures the essential discovery."""
 
-            response = self.client.messages.create(model=self.model, max_tokens=200, messages=[{"role": "user", "content": prompt}], temperature=0.3)
+      response = self.client.messages.create(
+        model=self.model,
+        max_tokens=200,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
+      )
 
-            summary = response.content[0].text.strip()
+      summary = response.content[0].text.strip()
 
-            # Ensure it's actually 2 lines (split and rejoin)
-            lines = [l.strip() for l in summary.split("\n") if l.strip()]
-            return "\n".join(lines[:max_lines])
+      # Ensure it's actually 2 lines (split and rejoin)
+      lines = [l.strip() for l in summary.split("\n") if l.strip()]
+      return "\n".join(lines[:max_lines])
 
-        except Exception as e:
-            logger.warning(f"LLM summarization failed: {e}, using rule-based fallback")
-            return self._generate_rule_based_summary(content, statistics)
+    except Exception as e:
+      logger.warning(f"LLM summarization failed: {e}, using rule-based fallback")
+      return self._generate_rule_based_summary(content, statistics)
 
-    def _generate_rule_based_summary(self, content: str, statistics: dict) -> str:
-        """
-        Generate summary using rule-based approach (fallback).
+  def _generate_rule_based_summary(self, content: str, statistics: dict) -> str:
+    """
+    Generate summary using rule-based approach (fallback).
 
-        Looks for common patterns:
-        - "We found/identified/discovered..."
-        - "Results show/indicate..."
-        - Conclusion sections
-        """
-        lines = content.split("\n")
+    Looks for common patterns:
+    - "We found/identified/discovered..."
+    - "Results show/indicate..."
+    - Conclusion sections
+    """
+    lines = content.split("\n")
 
-        # Look for conclusion/summary patterns
-        summary_patterns = [
-            "we found",
-            "we identified",
-            "we discovered",
-            "results show",
-            "results indicate",
-            "analysis reveals",
-            "conclusion:",
-            "summary:",
-            "in summary",
-        ]
+    # Look for conclusion/summary patterns
+    summary_patterns = [
+      "we found",
+      "we identified",
+      "we discovered",
+      "results show",
+      "results indicate",
+      "analysis reveals",
+      "conclusion:",
+      "summary:",
+      "in summary",
+    ]
 
-        summary_lines = []
-        for line in lines:
-            line_lower = line.lower()
-            if any(pattern in line_lower for pattern in summary_patterns):
-                summary_lines.append(line.strip())
-                if len(summary_lines) >= 2:
-                    break
+    summary_lines = []
+    for line in lines:
+      line_lower = line.lower()
+      if any(pattern in line_lower for pattern in summary_patterns):
+        summary_lines.append(line.strip())
+        if len(summary_lines) >= 2:
+          break
 
-        if summary_lines:
-            return "\n".join(summary_lines[:2])
+    if summary_lines:
+      return "\n".join(summary_lines[:2])
 
-        # Fallback: Use statistics to construct summary
-        if statistics:
-            parts = []
-            if "n_genes" in statistics:
-                parts.append(f"Identified {statistics['n_genes']} significant genes")
-            if "p_value" in statistics:
-                parts.append(f"p < {statistics['p_value']:.2e}")
-            if "correlation" in statistics:
-                parts.append(f"correlation: {statistics['correlation']:.2f}")
+    # Fallback: Use statistics to construct summary
+    if statistics:
+      parts = []
+      if "n_genes" in statistics:
+        parts.append(f"Identified {statistics['n_genes']} significant genes")
+      if "p_value" in statistics:
+        parts.append(f"p < {statistics['p_value']:.2e}")
+      if "correlation" in statistics:
+        parts.append(f"correlation: {statistics['correlation']:.2f}")
 
-            if parts:
-                return "Analysis completed. " + ", ".join(parts) + "."
+      if parts:
+        return "Analysis completed. " + ", ".join(parts) + "."
 
-        return "Analysis completed with statistical results."
+    return "Analysis completed with statistical results."
 
-    def _get_content_sample(self, content: str, max_chars: int = 2000) -> str:
-        """Get representative sample of content (beginning + end)."""
-        if len(content) <= max_chars:
-            return content
+  def _get_content_sample(self, content: str, max_chars: int = 2000) -> str:
+    """Get representative sample of content (beginning + end)."""
+    if len(content) <= max_chars:
+      return content
 
-        chunk_size = max_chars // 2
-        beginning = content[:chunk_size]
-        end = content[-chunk_size:]
+    chunk_size = max_chars // 2
+    beginning = content[:chunk_size]
+    end = content[-chunk_size:]
 
-        return f"{beginning}\n\n[... middle content omitted ...]\n\n{end}"
+    return f"{beginning}\n\n[... middle content omitted ...]\n\n{end}"
 
 
 class LiteratureCompressor:
+  """
+  Compresses literature search results.
+
+  Achieves 25:1 compression for typical literature queries.
+
+  Strategy:
+  1. Group papers by relevance
+  2. Extract key findings from each
+  3. Synthesize into structured summary
+  """
+
+  def __init__(self, anthropic_client=None):
+    """Initialize literature compressor."""
+    self.client = anthropic_client
+    self.model = _DEFAULT_CLAUDE_SONNET_MODEL
+
+  def compress_papers(
+    self, papers: list[dict], max_papers: int = 10
+  ) -> list[CompressedContext]:
     """
-    Compresses literature search results.
+    Compress literature search results.
 
-    Achieves 25:1 compression for typical literature queries.
+    Args:
+        papers: List of paper dictionaries with title, abstract, findings
+        max_papers: Maximum papers to include in compressed output
 
-    Strategy:
-    1. Group papers by relevance
-    2. Extract key findings from each
-    3. Synthesize into structured summary
+    Returns:
+        List of CompressedContext objects (one per paper)
     """
+    compressed_papers = []
 
-    def __init__(self, anthropic_client=None):
-        """Initialize literature compressor."""
-        self.client = anthropic_client
-        self.model = _DEFAULT_CLAUDE_SONNET_MODEL
+    # Sort by relevance if available
+    sorted_papers = sorted(
+      papers, key=lambda p: p.get("relevance_score", 0), reverse=True
+    )[:max_papers]
 
-    def compress_papers(self, papers: list[dict], max_papers: int = 10) -> list[CompressedContext]:
-        """
-        Compress literature search results.
+    for paper in sorted_papers:
+      compressed = self._compress_single_paper(paper)
+      compressed_papers.append(compressed)
 
-        Args:
-            papers: List of paper dictionaries with title, abstract, findings
-            max_papers: Maximum papers to include in compressed output
+    return compressed_papers
 
-        Returns:
-            List of CompressedContext objects (one per paper)
-        """
-        compressed_papers = []
+  def _compress_single_paper(self, paper: dict) -> CompressedContext:
+    """Compress a single paper to summary + key findings."""
+    # Extract key information
+    title = paper.get("title", "Unknown title")
+    abstract = paper.get("abstract", "")
+    findings = paper.get("findings", "")
 
-        # Sort by relevance if available
-        sorted_papers = sorted(papers, key=lambda p: p.get("relevance_score", 0), reverse=True)[:max_papers]
+    # Create concise summary
+    summary_parts = []
+    if title:
+      summary_parts.append(title)
 
-        for paper in sorted_papers:
-            compressed = self._compress_single_paper(paper)
-            compressed_papers.append(compressed)
+    # Extract key finding (first sentence or first 200 chars)
+    if findings:
+      first_sentence = findings.split(".")[0] + "."
+      summary_parts.append(first_sentence[:200])
+    elif abstract:
+      first_sentence = abstract.split(".")[0] + "."
+      summary_parts.append(first_sentence[:200])
 
-        return compressed_papers
+    summary = "\n".join(summary_parts)
 
-    def _compress_single_paper(self, paper: dict) -> CompressedContext:
-        """Compress a single paper to summary + key findings."""
-        # Extract key information
-        title = paper.get("title", "Unknown title")
-        abstract = paper.get("abstract", "")
-        findings = paper.get("findings", "")
+    # Extract statistics from findings/abstract
+    text_to_search = findings or abstract
+    statistics = self._extract_paper_statistics(text_to_search)
 
-        # Create concise summary
-        summary_parts = []
-        if title:
-            summary_parts.append(title)
+    # Add metadata
+    statistics["paper_id"] = paper.get("paper_id", "")
+    statistics["relevance_score"] = paper.get("relevance_score", 0)
 
-        # Extract key finding (first sentence or first 200 chars)
-        if findings:
-            first_sentence = findings.split(".")[0] + "."
-            summary_parts.append(first_sentence[:200])
-        elif abstract:
-            first_sentence = abstract.split(".")[0] + "."
-            summary_parts.append(first_sentence[:200])
+    return CompressedContext(
+      summary=summary,
+      statistics=statistics,
+      metadata={
+        "paper_id": paper.get("paper_id"),
+        "citation": f"{paper.get('authors', ['Unknown'])[0]} et al.",
+        "year": paper.get("year"),
+        "journal": paper.get("journal"),
+      },
+    )
 
-        summary = "\n".join(summary_parts)
+  def _extract_paper_statistics(self, text: str) -> dict:
+    """Extract statistics from paper text."""
+    stats = {}
 
-        # Extract statistics from findings/abstract
-        text_to_search = findings or abstract
-        statistics = self._extract_paper_statistics(text_to_search)
+    # Similar to NotebookCompressor extraction
+    # Look for p-values
+    p_values = re.findall(r"p\s*[=<>]\s*([\d.]+(?:e-?\d+)?)", text, re.IGNORECASE)
+    if p_values:
+      try:
+        stats["p_value"] = min(float(p) for p in p_values if float(p) <= 1.0)
+      except (ValueError, TypeError):
+        pass
 
-        # Add metadata
-        statistics["paper_id"] = paper.get("paper_id", "")
-        statistics["relevance_score"] = paper.get("relevance_score", 0)
+    # Look for sample sizes
+    n_matches = re.findall(r"n\s*=\s*(\d+)", text, re.IGNORECASE)
+    if n_matches:
+      stats["sample_size"] = max(int(n) for n in n_matches)
 
-        return CompressedContext(
-            summary=summary,
-            statistics=statistics,
-            metadata={
-                "paper_id": paper.get("paper_id"),
-                "citation": f"{paper.get('authors', ['Unknown'])[0]} et al.",
-                "year": paper.get("year"),
-                "journal": paper.get("journal"),
-            },
-        )
-
-    def _extract_paper_statistics(self, text: str) -> dict:
-        """Extract statistics from paper text."""
-        stats = {}
-
-        # Similar to NotebookCompressor extraction
-        # Look for p-values
-        p_values = re.findall(r"p\s*[=<>]\s*([\d.]+(?:e-?\d+)?)", text, re.IGNORECASE)
-        if p_values:
-            try:
-                stats["p_value"] = min(float(p) for p in p_values if float(p) <= 1.0)
-            except (ValueError, TypeError):
-                pass
-
-        # Look for sample sizes
-        n_matches = re.findall(r"n\s*=\s*(\d+)", text, re.IGNORECASE)
-        if n_matches:
-            stats["sample_size"] = max(int(n) for n in n_matches)
-
-        return stats
+    return stats
 
 
 class ContextCompressor:
+  """
+  Main orchestrator for hierarchical context compression.
+
+  Coordinates compression across multiple tiers:
+  - Task level: Individual notebooks/papers
+  - Cycle level: Groups of tasks
+  - Research level: Full research narrative
+
+  Target: 20:1 overall compression ratio
+  """
+
+  def __init__(self, anthropic_client=None):
     """
-    Main orchestrator for hierarchical context compression.
+    Initialize context compressor.
 
-    Coordinates compression across multiple tiers:
-    - Task level: Individual notebooks/papers
-    - Cycle level: Groups of tasks
-    - Research level: Full research narrative
-
-    Target: 20:1 overall compression ratio
+    Args:
+        anthropic_client: Anthropic client for LLM-based compression
     """
+    self.notebook_compressor = NotebookCompressor(anthropic_client)
+    self.literature_compressor = LiteratureCompressor(anthropic_client)
+    self.client = anthropic_client
+    self.cache: dict[str, CompressedContext] = {}
 
-    def __init__(self, anthropic_client=None):
-        """
-        Initialize context compressor.
+  def compress_cycle_results(
+    self, cycle: int, task_results: list[dict]
+  ) -> CompressedContext:
+    """
+    Compress 10 task results into 1 cycle summary.
 
-        Args:
-            anthropic_client: Anthropic client for LLM-based compression
-        """
-        self.notebook_compressor = NotebookCompressor(anthropic_client)
-        self.literature_compressor = LiteratureCompressor(anthropic_client)
-        self.client = anthropic_client
-        self.cache: dict[str, CompressedContext] = {}
+    Args:
+        cycle: Cycle number
+        task_results: List of task result dictionaries
 
-    def compress_cycle_results(self, cycle: int, task_results: list[dict]) -> CompressedContext:
-        """
-        Compress 10 task results into 1 cycle summary.
+    Returns:
+        CompressedContext for entire cycle
+    """
+    # Compress individual tasks
+    compressed_tasks = []
+    for task_result in task_results:
+      if task_result.get("type") == "data_analysis":
+        if "notebook_path" in task_result:
+          compressed = self.notebook_compressor.compress_notebook(
+            task_result["notebook_path"], task_result.get("notebook_content")
+          )
+          compressed_tasks.append(compressed)
+      elif task_result.get("type") == "literature_review":
+        if "papers" in task_result:
+          compressed_papers = self.literature_compressor.compress_papers(
+            task_result["papers"]
+          )
+          compressed_tasks.extend(compressed_papers)
 
-        Args:
-            cycle: Cycle number
-            task_results: List of task result dictionaries
+    # Synthesize cycle summary
+    cycle_summary = self._synthesize_cycle_summary(cycle, compressed_tasks)
 
-        Returns:
-            CompressedContext for entire cycle
-        """
-        # Compress individual tasks
-        compressed_tasks = []
-        for task_result in task_results:
-            if task_result.get("type") == "data_analysis":
-                if "notebook_path" in task_result:
-                    compressed = self.notebook_compressor.compress_notebook(task_result["notebook_path"], task_result.get("notebook_content"))
-                    compressed_tasks.append(compressed)
-            elif task_result.get("type") == "literature_review":
-                if "papers" in task_result:
-                    compressed_papers = self.literature_compressor.compress_papers(task_result["papers"])
-                    compressed_tasks.extend(compressed_papers)
+    # Aggregate statistics
+    cycle_statistics = self._aggregate_statistics(compressed_tasks)
 
-        # Synthesize cycle summary
-        cycle_summary = self._synthesize_cycle_summary(cycle, compressed_tasks)
+    return CompressedContext(
+      summary=cycle_summary,
+      statistics=cycle_statistics,
+      metadata={
+        "cycle": cycle,
+        "n_tasks": len(task_results),
+        "n_compressed_tasks": len(compressed_tasks),
+      },
+    )
 
-        # Aggregate statistics
-        cycle_statistics = self._aggregate_statistics(compressed_tasks)
+  def _synthesize_cycle_summary(
+    self, cycle: int, compressed_tasks: list[CompressedContext]
+  ) -> str:
+    """Synthesize multiple task summaries into cycle overview."""
+    if not compressed_tasks:
+      return f"Cycle {cycle}: No tasks completed"
 
-        return CompressedContext(
-            summary=cycle_summary,
-            statistics=cycle_statistics,
-            metadata={"cycle": cycle, "n_tasks": len(task_results), "n_compressed_tasks": len(compressed_tasks)},
-        )
+    # Combine task summaries
+    task_summaries = [t.summary for t in compressed_tasks]
 
-    def _synthesize_cycle_summary(self, cycle: int, compressed_tasks: list[CompressedContext]) -> str:
-        """Synthesize multiple task summaries into cycle overview."""
-        if not compressed_tasks:
-            return f"Cycle {cycle}: No tasks completed"
+    # Simple concatenation with bullets
+    summary = f"Cycle {cycle} Summary:\n"
+    for i, task_summary in enumerate(task_summaries[:5], 1):  # Top 5
+      # Take first line only
+      first_line = task_summary.split("\n")[0]
+      summary += f"• {first_line}\n"
 
-        # Combine task summaries
-        task_summaries = [t.summary for t in compressed_tasks]
+    if len(task_summaries) > 5:
+      summary += f"• ... and {len(task_summaries) - 5} more tasks\n"
 
-        # Simple concatenation with bullets
-        summary = f"Cycle {cycle} Summary:\n"
-        for i, task_summary in enumerate(task_summaries[:5], 1):  # Top 5
-            # Take first line only
-            first_line = task_summary.split("\n")[0]
-            summary += f"• {first_line}\n"
+    return summary
 
-        if len(task_summaries) > 5:
-            summary += f"• ... and {len(task_summaries) - 5} more tasks\n"
+  def _aggregate_statistics(self, compressed_tasks: list[CompressedContext]) -> dict:
+    """Aggregate statistics from multiple tasks."""
+    aggregated = {
+      "n_tasks": len(compressed_tasks),
+      "p_values": [],
+      "sample_sizes": [],
+      "gene_counts": [],
+    }
 
-        return summary
+    for task in compressed_tasks:
+      stats = task.statistics
+      if "p_value" in stats:
+        aggregated["p_values"].append(stats["p_value"])
+      if "sample_size" in stats:
+        aggregated["sample_sizes"].append(stats["sample_size"])
+      if "n_genes" in stats:
+        aggregated["gene_counts"].append(stats["n_genes"])
 
-    def _aggregate_statistics(self, compressed_tasks: list[CompressedContext]) -> dict:
-        """Aggregate statistics from multiple tasks."""
-        aggregated = {"n_tasks": len(compressed_tasks), "p_values": [], "sample_sizes": [], "gene_counts": []}
+    # Compute summary statistics
+    result = {"n_tasks": aggregated["n_tasks"]}
 
-        for task in compressed_tasks:
-            stats = task.statistics
-            if "p_value" in stats:
-                aggregated["p_values"].append(stats["p_value"])
-            if "sample_size" in stats:
-                aggregated["sample_sizes"].append(stats["sample_size"])
-            if "n_genes" in stats:
-                aggregated["gene_counts"].append(stats["n_genes"])
+    if aggregated["p_values"]:
+      result["min_p_value"] = min(aggregated["p_values"])
+      result["n_significant"] = sum(1 for p in aggregated["p_values"] if p < 0.05)
 
-        # Compute summary statistics
-        result = {"n_tasks": aggregated["n_tasks"]}
+    if aggregated["sample_sizes"]:
+      result["total_samples"] = sum(aggregated["sample_sizes"])
 
-        if aggregated["p_values"]:
-            result["min_p_value"] = min(aggregated["p_values"])
-            result["n_significant"] = sum(1 for p in aggregated["p_values"] if p < 0.05)
+    if aggregated["gene_counts"]:
+      result["total_genes"] = sum(aggregated["gene_counts"])
 
-        if aggregated["sample_sizes"]:
-            result["total_samples"] = sum(aggregated["sample_sizes"])
-
-        if aggregated["gene_counts"]:
-            result["total_genes"] = sum(aggregated["gene_counts"])
-
-        return result
+    return result

@@ -22,48 +22,48 @@ from .utils import TestRunner
 
 
 @mark.parametrize(
-    "agent_runner",
-    [{"agent": callback_agent.agent.before_agent_callback_agent}],
-    indirect=True,
+  "agent_runner",
+  [{"agent": callback_agent.agent.before_agent_callback_agent}],
+  indirect=True,
 )
 def test_before_agent_call(agent_runner: TestRunner):
-    agent_runner.run("Hi.")
+  agent_runner.run("Hi.")
 
-    # Assert the response content
-    assert_agent_says(
-        "End invocation event before agent call.",
-        agent_name="before_agent_callback_agent",
-        agent_runner=agent_runner,
-    )
+  # Assert the response content
+  assert_agent_says(
+    "End invocation event before agent call.",
+    agent_name="before_agent_callback_agent",
+    agent_runner=agent_runner,
+  )
 
 
 @mark.parametrize(
-    "agent_runner",
-    [{"agent": callback_agent.agent.before_model_callback_agent}],
-    indirect=True,
+  "agent_runner",
+  [{"agent": callback_agent.agent.before_model_callback_agent}],
+  indirect=True,
 )
 def test_before_model_call(agent_runner: TestRunner):
-    agent_runner.run("Hi.")
+  agent_runner.run("Hi.")
 
-    # Assert the response content
-    assert_agent_says(
-        "End invocation event before model call.",
-        agent_name="before_model_callback_agent",
-        agent_runner=agent_runner,
-    )
+  # Assert the response content
+  assert_agent_says(
+    "End invocation event before model call.",
+    agent_name="before_model_callback_agent",
+    agent_runner=agent_runner,
+  )
 
 
 # TODO: re-enable vertex by removing below line after fixing.
 @mark.parametrize("llm_backend", ["GOOGLE_AI"], indirect=True)
 @mark.parametrize(
-    "agent_runner",
-    [{"agent": callback_agent.agent.after_model_callback_agent}],
-    indirect=True,
+  "agent_runner",
+  [{"agent": callback_agent.agent.after_model_callback_agent}],
+  indirect=True,
 )
 def test_after_model_call(agent_runner: TestRunner):
-    events = agent_runner.run("Hi.")
+  events = agent_runner.run("Hi.")
 
-    # Assert the response content
-    simplified_events = simplify_events(events)
-    assert simplified_events[0][0] == "after_model_callback_agent"
-    assert simplified_events[0][1].endswith("Update response event after model call.")
+  # Assert the response content
+  simplified_events = simplify_events(events)
+  assert simplified_events[0][0] == "after_model_callback_agent"
+  assert simplified_events[0][1].endswith("Update response event after model call.")

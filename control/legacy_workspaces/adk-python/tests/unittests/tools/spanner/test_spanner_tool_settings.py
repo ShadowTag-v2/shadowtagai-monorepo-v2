@@ -20,9 +20,9 @@ import pytest
 
 
 def test_spanner_tool_settings_experimental_warning():
-    """Test SpannerToolSettings experimental warning."""
-    with pytest.warns(
-        UserWarning,
-        match="Tool settings defaults may have breaking change in the future.",
-    ):
-        SpannerToolSettings()
+  """Test SpannerToolSettings experimental warning."""
+  with pytest.warns(
+    UserWarning,
+    match="Tool settings defaults may have breaking change in the future.",
+  ):
+    SpannerToolSettings()

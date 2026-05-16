@@ -20,26 +20,28 @@ from google.auth.credentials import Credentials
 
 
 def test_get_bigtable_data_client():
-    """Test get_bigtable_client function."""
-    with mock.patch("google.cloud.bigtable.data.BigtableDataClient") as MockBigtableDataClient:
-        mock_creds = mock.create_autospec(Credentials, instance=True)
-        client.get_bigtable_data_client(project="test-project", credentials=mock_creds)
-        MockBigtableDataClient.assert_called_once_with(
-            project="test-project",
-            credentials=mock_creds,
-            client_info=mock.ANY,
-        )
+  """Test get_bigtable_client function."""
+  with mock.patch(
+    "google.cloud.bigtable.data.BigtableDataClient"
+  ) as MockBigtableDataClient:
+    mock_creds = mock.create_autospec(Credentials, instance=True)
+    client.get_bigtable_data_client(project="test-project", credentials=mock_creds)
+    MockBigtableDataClient.assert_called_once_with(
+      project="test-project",
+      credentials=mock_creds,
+      client_info=mock.ANY,
+    )
 
 
 def test_get_bigtable_admin_client():
-    """Test get_bigtable_admin_client function."""
-    with mock.patch("google.cloud.bigtable.Client") as BigtableDataClient:
-        mock_creds = mock.create_autospec(Credentials, instance=True)
-        client.get_bigtable_admin_client(project="test-project", credentials=mock_creds)
-        # Admin client is a BigtableDataClient created with admin=True.
-        BigtableDataClient.assert_called_once_with(
-            project="test-project",
-            admin=True,
-            credentials=mock_creds,
-            client_info=mock.ANY,
-        )
+  """Test get_bigtable_admin_client function."""
+  with mock.patch("google.cloud.bigtable.Client") as BigtableDataClient:
+    mock_creds = mock.create_autospec(Credentials, instance=True)
+    client.get_bigtable_admin_client(project="test-project", credentials=mock_creds)
+    # Admin client is a BigtableDataClient created with admin=True.
+    BigtableDataClient.assert_called_once_with(
+      project="test-project",
+      admin=True,
+      credentials=mock_creds,
+      client_info=mock.ANY,
+    )

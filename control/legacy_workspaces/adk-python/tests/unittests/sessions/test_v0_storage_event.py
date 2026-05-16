@@ -23,29 +23,29 @@ from google.genai import types
 
 
 def test_storage_event_v0_to_event_rehydrates_compaction_model():
-    compaction = EventCompaction(
-        start_timestamp=1.0,
-        end_timestamp=2.0,
-        compacted_content=types.Content(
-            role="user",
-            parts=[types.Part(text="compacted")],
-        ),
-    )
-    actions = EventActions(compaction=compaction)
-    storage_event = StorageEvent(
-        id="event_id",
-        invocation_id="invocation_id",
-        author="author",
-        actions=actions,
-        session_id="session_id",
-        app_name="app_name",
-        user_id="user_id",
-        timestamp=datetime.fromtimestamp(3.0, tz=UTC),
-    )
+  compaction = EventCompaction(
+    start_timestamp=1.0,
+    end_timestamp=2.0,
+    compacted_content=types.Content(
+      role="user",
+      parts=[types.Part(text="compacted")],
+    ),
+  )
+  actions = EventActions(compaction=compaction)
+  storage_event = StorageEvent(
+    id="event_id",
+    invocation_id="invocation_id",
+    author="author",
+    actions=actions,
+    session_id="session_id",
+    app_name="app_name",
+    user_id="user_id",
+    timestamp=datetime.fromtimestamp(3.0, tz=UTC),
+  )
 
-    event = storage_event.to_event()
+  event = storage_event.to_event()
 
-    assert event.actions is not None
-    assert isinstance(event.actions.compaction, EventCompaction)
-    assert event.actions.compaction.start_timestamp == 1.0
-    assert event.actions.compaction.end_timestamp == 2.0
+  assert event.actions is not None
+  assert isinstance(event.actions.compaction, EventCompaction)
+  assert event.actions.compaction.start_timestamp == 1.0
+  assert event.actions.compaction.end_timestamp == 2.0

@@ -26,148 +26,182 @@ from .. import testing_utils
 
 
 class MockBeforeModelCallback(BaseModel):
-    mock_response: str
+  mock_response: str
 
-    def __call__(
-        self,
-        callback_context: CallbackContext,
-        llm_request: LlmRequest,
-    ) -> LlmResponse:
-        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
+  def __call__(
+    self,
+    callback_context: CallbackContext,
+    llm_request: LlmRequest,
+  ) -> LlmResponse:
+    return LlmResponse(
+      content=testing_utils.ModelContent(
+        [types.Part.from_text(text=self.mock_response)]
+      )
+    )
 
 
 class MockAfterModelCallback(BaseModel):
-    mock_response: str
+  mock_response: str
 
-    def __call__(
-        self,
-        callback_context: CallbackContext,
-        llm_response: LlmResponse,
-    ) -> LlmResponse:
-        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
+  def __call__(
+    self,
+    callback_context: CallbackContext,
+    llm_response: LlmResponse,
+  ) -> LlmResponse:
+    return LlmResponse(
+      content=testing_utils.ModelContent(
+        [types.Part.from_text(text=self.mock_response)]
+      )
+    )
 
 
 class MockAsyncBeforeModelCallback(BaseModel):
-    mock_response: str
+  mock_response: str
 
-    async def __call__(
-        self,
-        callback_context: CallbackContext,
-        llm_request: LlmRequest,
-    ) -> LlmResponse:
-        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
+  async def __call__(
+    self,
+    callback_context: CallbackContext,
+    llm_request: LlmRequest,
+  ) -> LlmResponse:
+    return LlmResponse(
+      content=testing_utils.ModelContent(
+        [types.Part.from_text(text=self.mock_response)]
+      )
+    )
 
 
 class MockAsyncAfterModelCallback(BaseModel):
-    mock_response: str
+  mock_response: str
 
-    async def __call__(
-        self,
-        callback_context: CallbackContext,
-        llm_response: LlmResponse,
-    ) -> LlmResponse:
-        return LlmResponse(content=testing_utils.ModelContent([types.Part.from_text(text=self.mock_response)]))
+  async def __call__(
+    self,
+    callback_context: CallbackContext,
+    llm_response: LlmResponse,
+  ) -> LlmResponse:
+    return LlmResponse(
+      content=testing_utils.ModelContent(
+        [types.Part.from_text(text=self.mock_response)]
+      )
+    )
 
 
 def noop_callback(**kwargs) -> LlmResponse | None:
-    pass
+  pass
 
 
 async def async_noop_callback(**kwargs) -> LlmResponse | None:
-    pass
+  pass
 
 
 @pytest.mark.asyncio
 async def test_before_model_callback():
-    responses = ["model_response"]
-    mock_model = testing_utils.MockModel.create(responses=responses)
-    agent = Agent(
-        name="root_agent",
-        model=mock_model,
-        before_model_callback=MockBeforeModelCallback(mock_response="before_model_callback"),
-    )
+  responses = ["model_response"]
+  mock_model = testing_utils.MockModel.create(responses=responses)
+  agent = Agent(
+    name="root_agent",
+    model=mock_model,
+    before_model_callback=MockBeforeModelCallback(
+      mock_response="before_model_callback"
+    ),
+  )
 
-    runner = testing_utils.TestInMemoryRunner(agent)
-    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [
-        ("root_agent", "before_model_callback"),
-    ]
+  runner = testing_utils.TestInMemoryRunner(agent)
+  assert testing_utils.simplify_events(
+    await runner.run_async_with_new_session("test")
+  ) == [
+    ("root_agent", "before_model_callback"),
+  ]
 
 
 @pytest.mark.asyncio
 async def test_before_model_callback_noop():
-    responses = ["model_response"]
-    mock_model = testing_utils.MockModel.create(responses=responses)
-    agent = Agent(
-        name="root_agent",
-        model=mock_model,
-        before_model_callback=noop_callback,
-    )
+  responses = ["model_response"]
+  mock_model = testing_utils.MockModel.create(responses=responses)
+  agent = Agent(
+    name="root_agent",
+    model=mock_model,
+    before_model_callback=noop_callback,
+  )
 
-    runner = testing_utils.TestInMemoryRunner(agent)
-    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [
-        ("root_agent", "model_response"),
-    ]
+  runner = testing_utils.TestInMemoryRunner(agent)
+  assert testing_utils.simplify_events(
+    await runner.run_async_with_new_session("test")
+  ) == [
+    ("root_agent", "model_response"),
+  ]
 
 
 @pytest.mark.asyncio
 async def test_after_model_callback():
-    responses = ["model_response"]
-    mock_model = testing_utils.MockModel.create(responses=responses)
-    agent = Agent(
-        name="root_agent",
-        model=mock_model,
-        after_model_callback=MockAfterModelCallback(mock_response="after_model_callback"),
-    )
+  responses = ["model_response"]
+  mock_model = testing_utils.MockModel.create(responses=responses)
+  agent = Agent(
+    name="root_agent",
+    model=mock_model,
+    after_model_callback=MockAfterModelCallback(mock_response="after_model_callback"),
+  )
 
-    runner = testing_utils.TestInMemoryRunner(agent)
-    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [
-        ("root_agent", "after_model_callback"),
-    ]
+  runner = testing_utils.TestInMemoryRunner(agent)
+  assert testing_utils.simplify_events(
+    await runner.run_async_with_new_session("test")
+  ) == [
+    ("root_agent", "after_model_callback"),
+  ]
 
 
 @pytest.mark.asyncio
 async def test_async_before_model_callback():
-    responses = ["model_response"]
-    mock_model = testing_utils.MockModel.create(responses=responses)
-    agent = Agent(
-        name="root_agent",
-        model=mock_model,
-        before_model_callback=MockAsyncBeforeModelCallback(mock_response="async_before_model_callback"),
-    )
+  responses = ["model_response"]
+  mock_model = testing_utils.MockModel.create(responses=responses)
+  agent = Agent(
+    name="root_agent",
+    model=mock_model,
+    before_model_callback=MockAsyncBeforeModelCallback(
+      mock_response="async_before_model_callback"
+    ),
+  )
 
-    runner = testing_utils.TestInMemoryRunner(agent)
-    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [
-        ("root_agent", "async_before_model_callback"),
-    ]
+  runner = testing_utils.TestInMemoryRunner(agent)
+  assert testing_utils.simplify_events(
+    await runner.run_async_with_new_session("test")
+  ) == [
+    ("root_agent", "async_before_model_callback"),
+  ]
 
 
 @pytest.mark.asyncio
 async def test_async_before_model_callback_noop():
-    responses = ["model_response"]
-    mock_model = testing_utils.MockModel.create(responses=responses)
-    agent = Agent(
-        name="root_agent",
-        model=mock_model,
-        before_model_callback=async_noop_callback,
-    )
+  responses = ["model_response"]
+  mock_model = testing_utils.MockModel.create(responses=responses)
+  agent = Agent(
+    name="root_agent",
+    model=mock_model,
+    before_model_callback=async_noop_callback,
+  )
 
-    runner = testing_utils.TestInMemoryRunner(agent)
-    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [
-        ("root_agent", "model_response"),
-    ]
+  runner = testing_utils.TestInMemoryRunner(agent)
+  assert testing_utils.simplify_events(
+    await runner.run_async_with_new_session("test")
+  ) == [
+    ("root_agent", "model_response"),
+  ]
 
 
 @pytest.mark.asyncio
 async def test_async_after_model_callback():
-    responses = ["model_response"]
-    mock_model = testing_utils.MockModel.create(responses=responses)
-    agent = Agent(
-        name="root_agent",
-        model=mock_model,
-        after_model_callback=MockAsyncAfterModelCallback(mock_response="async_after_model_callback"),
-    )
+  responses = ["model_response"]
+  mock_model = testing_utils.MockModel.create(responses=responses)
+  agent = Agent(
+    name="root_agent",
+    model=mock_model,
+    after_model_callback=MockAsyncAfterModelCallback(
+      mock_response="async_after_model_callback"
+    ),
+  )
 
-    runner = testing_utils.TestInMemoryRunner(agent)
-    assert testing_utils.simplify_events(await runner.run_async_with_new_session("test")) == [
-        ("root_agent", "async_after_model_callback"),
-    ]
+  runner = testing_utils.TestInMemoryRunner(agent)
+  assert testing_utils.simplify_events(
+    await runner.run_async_with_new_session("test")
+  ) == [
+    ("root_agent", "async_after_model_callback"),
+  ]

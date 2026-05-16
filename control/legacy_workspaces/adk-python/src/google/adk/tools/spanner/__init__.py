@@ -36,6 +36,6 @@ from .spanner_toolset import SpannerToolset
 
 SpannerCredentialsConfig = spanner_credentials.SpannerCredentialsConfig
 __all__ = [
-    "SpannerToolset",
-    "SpannerCredentialsConfig",
+  "SpannerToolset",
+  "SpannerCredentialsConfig",
 ]

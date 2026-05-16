@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.agents import SequentialAgent
 from google.adk.tools.mcp_tool.mcp_toolset import (
-    McpToolset,
-    StreamableHTTPConnectionParams,
+  McpToolset,
+  StreamableHTTPConnectionParams,
 )
 from google.adk.tools.tool_context import ToolContext
 
@@ -25,40 +25,40 @@ load_dotenv()
 model_name = "gemini-2.5-flash"
 mcp_server_url = os.getenv("MCP_SERVER_URL")
 if not mcp_server_url:
-    raise ValueError("The environment variable MCP_SERVER_URL is not set.")
+  raise ValueError("The environment variable MCP_SERVER_URL is not set.")
 
 
 def get_id_token():
-    """Get an ID token to authenticate with the MCP server."""
-    target_url = os.getenv("MCP_SERVER_URL")
-    audience = target_url.split("/mcp/")[0]
-    request = google.auth.transport.requests.Request()
-    id_token = google.oauth2.id_token.fetch_id_token(request, audience)
-    return id_token
+  """Get an ID token to authenticate with the MCP server."""
+  target_url = os.getenv("MCP_SERVER_URL")
+  audience = target_url.split("/mcp/")[0]
+  request = google.auth.transport.requests.Request()
+  id_token = google.oauth2.id_token.fetch_id_token(request, audience)
+  return id_token
 
 
 tools = McpToolset(
-    connection_params=StreamableHTTPConnectionParams(
-        url=mcp_server_url,
-        headers={
-            "Authorization": f"Bearer {get_id_token()}",
-        },
-    ),
+  connection_params=StreamableHTTPConnectionParams(
+    url=mcp_server_url,
+    headers={
+      "Authorization": f"Bearer {get_id_token()}",
+    },
+  ),
 )
 
 
 # Greet user and save their prompt
 def add_prompt_to_state(tool_context: ToolContext, prompt: str) -> dict[str, str]:
-    """Saves the user's initial prompt to the state."""
-    tool_context.state["PROMPT"] = prompt
-    logging.info(f"[State updated] Added to PROMPT: {prompt}")
-    return {"status": "success"}
+  """Saves the user's initial prompt to the state."""
+  tool_context.state["PROMPT"] = prompt
+  logging.info(f"[State updated] Added to PROMPT: {prompt}")
+  return {"status": "success"}
 
 
 # --- Configuration ---
 project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
 if not project_id:
-    raise ValueError("The environment variable GOOGLE_CLOUD_PROJECT is not set.")
+  raise ValueError("The environment variable GOOGLE_CLOUD_PROJECT is not set.")
 
 location = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")
 
@@ -101,21 +101,21 @@ governance_researcher_instruction = f"""
 """
 
 governance_researcher = LlmAgent(
-    name="governance_researcher",
-    model=model_name,
-    description="Dynamically interprets metadata schema (Booleans/Enums) and searches for assets using strict syntax.",
-    instruction=governance_researcher_instruction,
-    tools=[tools],
-    output_key="research_data",
+  name="governance_researcher",
+  model=model_name,
+  description="Dynamically interprets metadata schema (Booleans/Enums) and searches for assets using strict syntax.",
+  instruction=governance_researcher_instruction,
+  tools=[tools],
+  output_key="research_data",
 )
 
 
 # --- 2. Response Formatter Agent ---
 compliance_formatter = LlmAgent(
-    name="compliance_formatter",
-    model=model_name,
-    description="Formats the JSON research data into a helpful response for the user.",
-    instruction="""
+  name="compliance_formatter",
+  model=model_name,
+  description="Formats the JSON research data into a helpful response for the user.",
+  instruction="""
     You are the **Intelligent Data Governance Specialist**.
     You have received technical research data (RESEARCH_DATA) from your internal analysis.
     Your job is to explain the findings clearly to the user.
@@ -141,26 +141,26 @@ compliance_formatter = LlmAgent(
 
 
 governance_workflow = SequentialAgent(
-    name="governance_workflow",
-    description="Workflow to learn metadata rules, search with strict syntax, and recommend assets.",
-    sub_agents=[
-        governance_researcher,
-        compliance_formatter,
-    ],
+  name="governance_workflow",
+  description="Workflow to learn metadata rules, search with strict syntax, and recommend assets.",
+  sub_agents=[
+    governance_researcher,
+    compliance_formatter,
+  ],
 )
 
 
 root_agent = LlmAgent(
-    model=model_name,
-    name="greeter",
-    description="Entry point for the Data Governance Assistant.",
-    instruction="""
+  model=model_name,
+  name="greeter",
+  description="Entry point for the Data Governance Assistant.",
+  instruction="""
         - You are the 'Enterprise Data Governance Assistant'.
         - Greet the user warmly.
         - Save the user's request using 'add_prompt_to_state'.
         - Then, invoke the 'governance_workflow' to find the best data product for them.
         - **IMPORTANT:** Do not output the raw JSON from the workflow. Only show the final natural language explanation.
     """,
-    tools=[add_prompt_to_state],
-    sub_agents=[governance_workflow],
+  tools=[add_prompt_to_state],
+  sub_agents=[governance_workflow],
 )

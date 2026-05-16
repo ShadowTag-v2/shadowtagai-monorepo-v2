@@ -21,8 +21,8 @@ from google.adk import Agent
 from google.adk.models.lite_llm import LiteLlm
 
 root_agent = Agent(
-    name="litellm_streaming_agent",
-    model=LiteLlm(model="gemini/gemini-2.5-flash"),
-    description="A LiteLLM agent used for streaming text responses.",
-    instruction="You are a verbose assistant",
+  name="litellm_streaming_agent",
+  model=LiteLlm(model="gemini/gemini-2.5-flash"),
+  description="A LiteLLM agent used for streaming text responses.",
+  instruction="You are a verbose assistant",
 )

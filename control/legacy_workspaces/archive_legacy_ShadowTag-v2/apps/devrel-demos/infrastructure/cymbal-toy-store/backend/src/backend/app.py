@@ -37,64 +37,70 @@ config = Config(".env")
 
 
 class SPAStaticFiles(StaticFiles):
-    async def get_response(self, path, scope):
-        response = await super().get_response(path, scope)
-        if response.status_code == 404:
-            response = await super().get_response(".", scope)
-        return response
+  async def get_response(self, path, scope):
+    response = await super().get_response(path, scope)
+    if response.status_code == 404:
+      response = await super().get_response(".", scope)
+    return response
 
 
 middleware = [Middleware(CORSMiddleware, allow_origins=["*"])]
 
 
 class State(typing.TypedDict):
-    chat_be: chat_handler.ChatHandler
+  chat_be: chat_handler.ChatHandler
 
 
 def lifespan(app: Starlette) -> typing.AsyncIterator[State]:
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    formatter = logging.Formatter(
-        "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s",
-        "%m-%d %H:%M:%S",
+  logger = logging.getLogger()
+  logger.setLevel(logging.INFO)
+  formatter = logging.Formatter(
+    "[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s",
+    "%m-%d %H:%M:%S",
+  )
+  stdout_handler = logging.StreamHandler(sys.stdout)
+  stdout_handler.setLevel(logging.INFO)
+  stdout_handler.setFormatter(formatter)
+  logger.addHandler(stdout_handler)
+
+  SECRET_ID = config("DB_USER_SECRET_ID")
+  PROJECT_ID = config("GCP_PROJECT")
+
+  if "DB_PASS" in os.environ:
+    db_password = os.environ["DB_PASS"]
+  else:
+    db_password = connector.get_secret(SECRET_ID, PROJECT_ID)
+
+  DB_NAME = config("DB_NAME")
+  DB_USER = config("DB_USER")
+  USE_ALLOYDB = config("USE_ALLOYDB")
+  if USE_ALLOYDB == "True":
+    logging.info("Using Alloydb")
+    INSTANCE_HOST = config("INSTANCE_HOST")
+    DB_PORT = config("DB_PORT")
+    db_connection = connector.connect_with_tcp(
+      INSTANCE_HOST, DB_NAME, DB_USER, db_password, DB_PORT
     )
-    stdout_handler = logging.StreamHandler(sys.stdout)
-    stdout_handler.setLevel(logging.INFO)
-    stdout_handler.setFormatter(formatter)
-    logger.addHandler(stdout_handler)
+  else:
+    INSTANCE_CONNECTION_NAME = config(
+      "INSTANCE_CONNECTION_NAME"
+    )  # e.g. 'project:region:instance'
+    db_connection = connector.connect_with_connector(
+      INSTANCE_CONNECTION_NAME, DB_NAME, DB_USER, db_password
+    )
 
-    SECRET_ID = config("DB_USER_SECRET_ID")
-    PROJECT_ID = config("GCP_PROJECT")
-
-    if "DB_PASS" in os.environ:
-        db_password = os.environ["DB_PASS"]
-    else:
-        db_password = connector.get_secret(SECRET_ID, PROJECT_ID)
-
-    DB_NAME = config("DB_NAME")
-    DB_USER = config("DB_USER")
-    USE_ALLOYDB = config("USE_ALLOYDB")
-    if USE_ALLOYDB == "True":
-        logging.info("Using Alloydb")
-        INSTANCE_HOST = config("INSTANCE_HOST")
-        DB_PORT = config("DB_PORT")
-        db_connection = connector.connect_with_tcp(INSTANCE_HOST, DB_NAME, DB_USER, db_password, DB_PORT)
-    else:
-        INSTANCE_CONNECTION_NAME = config("INSTANCE_CONNECTION_NAME")  # e.g. 'project:region:instance'
-        db_connection = connector.connect_with_connector(INSTANCE_CONNECTION_NAME, DB_NAME, DB_USER, db_password)
-
-    yield {"chat_be": chat_handler.ChatHandler(db_connection)}
+  yield {"chat_be": chat_handler.ChatHandler(db_connection)}
 
 
 app = Starlette(
-    debug=True,
-    middleware=middleware,
-    lifespan=lifespan,
-    routes=[
-        Mount("/api", routes=routes),
-        Mount("/", SPAStaticFiles(directory="../frontend/out", html=True)),
-    ],
+  debug=True,
+  middleware=middleware,
+  lifespan=lifespan,
+  routes=[
+    Mount("/api", routes=routes),
+    Mount("/", SPAStaticFiles(directory="../frontend/out", html=True)),
+  ],
 )
 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=5002, log_level="info", reload=True)
+  uvicorn.run("app:app", host="0.0.0.0", port=5002, log_level="info", reload=True)

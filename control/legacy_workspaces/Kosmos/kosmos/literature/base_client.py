@@ -16,254 +16,263 @@ logger = logging.getLogger(__name__)
 
 
 class PaperSource(str, Enum):
-    """Source of the paper."""
+  """Source of the paper."""
 
-    ARXIV = "arxiv"
-    SEMANTIC_SCHOLAR = "semantic_scholar"
-    PUBMED = "pubmed"
-    UNKNOWN = "unknown"
-    MANUAL = "manual"
+  ARXIV = "arxiv"
+  SEMANTIC_SCHOLAR = "semantic_scholar"
+  PUBMED = "pubmed"
+  UNKNOWN = "unknown"
+  MANUAL = "manual"
 
 
 @dataclass
 class Author:
-    """Author information."""
+  """Author information."""
 
-    name: str
-    affiliation: str | None = None
-    email: str | None = None
-    author_id: str | None = None  # Author ID from source API
+  name: str
+  affiliation: str | None = None
+  email: str | None = None
+  author_id: str | None = None  # Author ID from source API
 
 
 @dataclass
 class PaperMetadata:
-    """
-    Unified paper metadata across all literature sources.
+  """
+  Unified paper metadata across all literature sources.
 
-    This standardized format ensures consistent handling of papers
-    regardless of source API.
-    """
+  This standardized format ensures consistent handling of papers
+  regardless of source API.
+  """
 
-    # Identifiers
-    id: str  # Unique ID from source
-    source: PaperSource
-    doi: str | None = None
-    arxiv_id: str | None = None
-    pubmed_id: str | None = None
+  # Identifiers
+  id: str  # Unique ID from source
+  source: PaperSource
+  doi: str | None = None
+  arxiv_id: str | None = None
+  pubmed_id: str | None = None
 
-    # Core metadata
-    title: str = ""
-    abstract: str = ""
-    authors: list[Author] = None
+  # Core metadata
+  title: str = ""
+  abstract: str = ""
+  authors: list[Author] = None
 
-    # Publication info
-    publication_date: datetime | None = None
-    journal: str | None = None
-    venue: str | None = None
-    year: int | None = None
+  # Publication info
+  publication_date: datetime | None = None
+  journal: str | None = None
+  venue: str | None = None
+  year: int | None = None
 
-    # Links & Resources
-    url: str | None = None
-    pdf_url: str | None = None
+  # Links & Resources
+  url: str | None = None
+  pdf_url: str | None = None
 
-    # Citations & Influence
-    citation_count: int = 0
-    reference_count: int = 0
-    influential_citation_count: int = 0
+  # Citations & Influence
+  citation_count: int = 0
+  reference_count: int = 0
+  influential_citation_count: int = 0
 
-    # Fields & Keywords
-    fields: list[str] = None  # Research fields/domains
-    keywords: list[str] = None
+  # Fields & Keywords
+  fields: list[str] = None  # Research fields/domains
+  keywords: list[str] = None
 
-    # Full text (if downloaded)
-    full_text: str | None = None
+  # Full text (if downloaded)
+  full_text: str | None = None
 
-    # Raw response from API (for debugging)
-    raw_data: dict[str, Any] | None = None
+  # Raw response from API (for debugging)
+  raw_data: dict[str, Any] | None = None
 
-    def __post_init__(self):
-        """Initialize default values for mutable fields."""
-        if self.authors is None:
-            self.authors = []
-        if self.fields is None:
-            self.fields = []
-        if self.keywords is None:
-            self.keywords = []
+  def __post_init__(self):
+    """Initialize default values for mutable fields."""
+    if self.authors is None:
+      self.authors = []
+    if self.fields is None:
+      self.fields = []
+    if self.keywords is None:
+      self.keywords = []
 
-    @property
-    def primary_identifier(self) -> str:
-        """Get the primary identifier (DOI > arXiv > PubMed > source ID)."""
-        return self.doi or self.arxiv_id or self.pubmed_id or self.id
+  @property
+  def primary_identifier(self) -> str:
+    """Get the primary identifier (DOI > arXiv > PubMed > source ID)."""
+    return self.doi or self.arxiv_id or self.pubmed_id or self.id
 
-    @property
-    def author_names(self) -> list[str]:
-        """Get list of author names."""
-        return [author.name for author in self.authors]
+  @property
+  def author_names(self) -> list[str]:
+    """Get list of author names."""
+    return [author.name for author in self.authors]
 
-    def to_dict(self) -> dict[str, Any]:
-        """Convert to dictionary for database storage."""
-        return {
-            "id": self.id,
-            "source": self.source.value,
-            "doi": self.doi,
-            "arxiv_id": self.arxiv_id,
-            "pubmed_id": self.pubmed_id,
-            "title": self.title,
-            "abstract": self.abstract,
-            "authors": [{"name": a.name, "affiliation": a.affiliation} for a in self.authors],
-            "publication_date": self.publication_date.isoformat() if self.publication_date else None,
-            "journal": self.journal,
-            "venue": self.venue,
-            "year": self.year,
-            "url": self.url,
-            "pdf_url": self.pdf_url,
-            "citation_count": self.citation_count,
-            "reference_count": self.reference_count,
-            "influential_citation_count": self.influential_citation_count,
-            "fields": self.fields,
-            "keywords": self.keywords,
-            "full_text": self.full_text,
-        }
+  def to_dict(self) -> dict[str, Any]:
+    """Convert to dictionary for database storage."""
+    return {
+      "id": self.id,
+      "source": self.source.value,
+      "doi": self.doi,
+      "arxiv_id": self.arxiv_id,
+      "pubmed_id": self.pubmed_id,
+      "title": self.title,
+      "abstract": self.abstract,
+      "authors": [{"name": a.name, "affiliation": a.affiliation} for a in self.authors],
+      "publication_date": self.publication_date.isoformat()
+      if self.publication_date
+      else None,
+      "journal": self.journal,
+      "venue": self.venue,
+      "year": self.year,
+      "url": self.url,
+      "pdf_url": self.pdf_url,
+      "citation_count": self.citation_count,
+      "reference_count": self.reference_count,
+      "influential_citation_count": self.influential_citation_count,
+      "fields": self.fields,
+      "keywords": self.keywords,
+      "full_text": self.full_text,
+    }
 
 
 class BaseLiteratureClient(ABC):
+  """
+  Abstract base class for literature API clients.
+
+  All literature clients (arXiv, Semantic Scholar, PubMed) should inherit
+  from this class and implement the required methods.
+  """
+
+  def __init__(self, api_key: str | None = None, cache_enabled: bool = True):
     """
-    Abstract base class for literature API clients.
+    Initialize the literature client.
 
-    All literature clients (arXiv, Semantic Scholar, PubMed) should inherit
-    from this class and implement the required methods.
+    Args:
+        api_key: Optional API key for the service
+        cache_enabled: Whether to enable caching for API responses
     """
+    self.api_key = api_key
+    self.cache_enabled = cache_enabled
+    self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
 
-    def __init__(self, api_key: str | None = None, cache_enabled: bool = True):
-        """
-        Initialize the literature client.
+  @abstractmethod
+  def search(
+    self,
+    query: str,
+    max_results: int = 10,
+    fields: list[str] | None = None,
+    year_from: int | None = None,
+    year_to: int | None = None,
+    **kwargs,
+  ) -> list[PaperMetadata]:
+    """
+    Search for papers matching the query.
 
-        Args:
-            api_key: Optional API key for the service
-            cache_enabled: Whether to enable caching for API responses
-        """
-        self.api_key = api_key
-        self.cache_enabled = cache_enabled
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+    Args:
+        query: Search query string
+        max_results: Maximum number of results to return
+        fields: Optional filter by research fields/domains
+        year_from: Optional start year for publication date filter
+        year_to: Optional end year for publication date filter
+        **kwargs: Additional source-specific parameters
 
-    @abstractmethod
-    def search(
-        self,
-        query: str,
-        max_results: int = 10,
-        fields: list[str] | None = None,
-        year_from: int | None = None,
-        year_to: int | None = None,
-        **kwargs,
-    ) -> list[PaperMetadata]:
-        """
-        Search for papers matching the query.
+    Returns:
+        List of PaperMetadata objects
+    """
+    pass
 
-        Args:
-            query: Search query string
-            max_results: Maximum number of results to return
-            fields: Optional filter by research fields/domains
-            year_from: Optional start year for publication date filter
-            year_to: Optional end year for publication date filter
-            **kwargs: Additional source-specific parameters
+  @abstractmethod
+  def get_paper_by_id(self, paper_id: str) -> PaperMetadata | None:
+    """
+    Retrieve a specific paper by its ID.
 
-        Returns:
-            List of PaperMetadata objects
-        """
-        pass
+    Args:
+        paper_id: Paper identifier (source-specific format)
 
-    @abstractmethod
-    def get_paper_by_id(self, paper_id: str) -> PaperMetadata | None:
-        """
-        Retrieve a specific paper by its ID.
+    Returns:
+        PaperMetadata object or None if not found
+    """
+    pass
 
-        Args:
-            paper_id: Paper identifier (source-specific format)
+  @abstractmethod
+  def get_paper_references(
+    self, paper_id: str, max_refs: int = 50
+  ) -> list[PaperMetadata]:
+    """
+    Get papers cited by the given paper.
 
-        Returns:
-            PaperMetadata object or None if not found
-        """
-        pass
+    Args:
+        paper_id: Paper identifier
+        max_refs: Maximum number of references to return
 
-    @abstractmethod
-    def get_paper_references(self, paper_id: str, max_refs: int = 50) -> list[PaperMetadata]:
-        """
-        Get papers cited by the given paper.
+    Returns:
+        List of PaperMetadata objects for referenced papers
+    """
+    pass
 
-        Args:
-            paper_id: Paper identifier
-            max_refs: Maximum number of references to return
+  @abstractmethod
+  def get_paper_citations(
+    self, paper_id: str, max_cites: int = 50
+  ) -> list[PaperMetadata]:
+    """
+    Get papers that cite the given paper.
 
-        Returns:
-            List of PaperMetadata objects for referenced papers
-        """
-        pass
+    Args:
+        paper_id: Paper identifier
+        max_cites: Maximum number of citations to return
 
-    @abstractmethod
-    def get_paper_citations(self, paper_id: str, max_cites: int = 50) -> list[PaperMetadata]:
-        """
-        Get papers that cite the given paper.
+    Returns:
+        List of PaperMetadata objects for citing papers
+    """
+    pass
 
-        Args:
-            paper_id: Paper identifier
-            max_cites: Maximum number of citations to return
+  def get_source_name(self) -> str:
+    """
+    Get the name of this literature source.
 
-        Returns:
-            List of PaperMetadata objects for citing papers
-        """
-        pass
+    Returns:
+        Source name (e.g., "arXiv", "Semantic Scholar")
+    """
+    return self.__class__.__name__.replace("Client", "")
 
-    def get_source_name(self) -> str:
-        """
-        Get the name of this literature source.
+  def _handle_api_error(self, error: Exception, operation: str):
+    """
+    Handle API errors with consistent logging.
 
-        Returns:
-            Source name (e.g., "arXiv", "Semantic Scholar")
-        """
-        return self.__class__.__name__.replace("Client", "")
+    Args:
+        error: The exception that occurred
+        operation: Description of the operation being performed
+    """
+    self.logger.error(
+      f"Error in {self.get_source_name()} API during {operation}: {str(error)}",
+      exc_info=True,
+    )
+    # Could add retry logic, circuit breaker, etc. here
 
-    def _handle_api_error(self, error: Exception, operation: str):
-        """
-        Handle API errors with consistent logging.
+  def _validate_query(self, query: str) -> bool:
+    """
+    Validate search query.
 
-        Args:
-            error: The exception that occurred
-            operation: Description of the operation being performed
-        """
-        self.logger.error(f"Error in {self.get_source_name()} API during {operation}: {str(error)}", exc_info=True)
-        # Could add retry logic, circuit breaker, etc. here
+    Args:
+        query: Search query string
 
-    def _validate_query(self, query: str) -> bool:
-        """
-        Validate search query.
+    Returns:
+        True if valid, False otherwise
+    """
+    if not query or not query.strip():
+      self.logger.warning("Empty query provided")
+      return False
 
-        Args:
-            query: Search query string
+    if len(query) > 1000:
+      self.logger.warning(f"Query too long ({len(query)} chars), truncating to 1000")
+      return True
 
-        Returns:
-            True if valid, False otherwise
-        """
-        if not query or not query.strip():
-            self.logger.warning("Empty query provided")
-            return False
+    return True
 
-        if len(query) > 1000:
-            self.logger.warning(f"Query too long ({len(query)} chars), truncating to 1000")
-            return True
+  def _normalize_paper_metadata(self, raw_data: dict[str, Any]) -> PaperMetadata:
+    """
+    Convert source-specific response to standardized PaperMetadata.
 
-        return True
+    This method should be overridden by each client to handle their
+    specific response format.
 
-    def _normalize_paper_metadata(self, raw_data: dict[str, Any]) -> PaperMetadata:
-        """
-        Convert source-specific response to standardized PaperMetadata.
+    Args:
+        raw_data: Raw API response data
 
-        This method should be overridden by each client to handle their
-        specific response format.
-
-        Args:
-            raw_data: Raw API response data
-
-        Returns:
-            Standardized PaperMetadata object
-        """
-        raise NotImplementedError("Subclasses must implement _normalize_paper_metadata")
+    Returns:
+        Standardized PaperMetadata object
+    """
+    raise NotImplementedError("Subclasses must implement _normalize_paper_metadata")

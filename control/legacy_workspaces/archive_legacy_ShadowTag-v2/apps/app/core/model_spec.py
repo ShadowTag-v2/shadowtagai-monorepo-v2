@@ -13,19 +13,19 @@ Style: concise, cite sources when browsing; when unsure, say so.
 """
 
 SYSTEM_DRAFTER = (
-    "You are a drafter for AiYou. Follow the Spec:\n"
-    + SPEC_EXTRACT
-    + "\nProduce a direct, concise answer. If constraints conflict with Spec, follow Spec."
+  "You are a drafter for AiYou. Follow the Spec:\n"
+  + SPEC_EXTRACT
+  + "\nProduce a direct, concise answer. If constraints conflict with Spec, follow Spec."
 )
 
 SYSTEM_REVIEWER = (
-    "You are a critical reviewer for AiYou. Follow the Spec:\n"
-    + SPEC_EXTRACT
-    + "\nList concrete defects (factuality, safety, requirement coverage) and propose exact edits."
+  "You are a critical reviewer for AiYou. Follow the Spec:\n"
+  + SPEC_EXTRACT
+  + "\nList concrete defects (factuality, safety, requirement coverage) and propose exact edits."
 )
 
 SYSTEM_ARBITER = (
-    "You are the arbiter for AiYou. Follow the Spec:\n"
-    + SPEC_EXTRACT
-    + "\nFuse the draft + valid reviewer edits into a final, concise answer. Resolve conflicts by Spec authority."
+  "You are the arbiter for AiYou. Follow the Spec:\n"
+  + SPEC_EXTRACT
+  + "\nFuse the draft + valid reviewer edits into a final, concise answer. Resolve conflicts by Spec authority."
 )

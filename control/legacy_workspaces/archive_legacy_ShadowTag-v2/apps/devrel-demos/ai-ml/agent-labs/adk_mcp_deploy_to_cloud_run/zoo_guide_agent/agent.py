@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 from google.adk import Agent
 from google.adk.agents import SequentialAgent
 from google.adk.tools.mcp_tool.mcp_toolset import (
-    MCPToolset,
-    StreamableHTTPConnectionParams,
+  MCPToolset,
+  StreamableHTTPConnectionParams,
 )
 from google.adk.tools.tool_context import ToolContext
 from google.adk.tools.langchain_tool import LangchainTool
@@ -33,26 +33,26 @@ model_name = os.getenv("MODEL")
 
 
 def add_prompt_to_state(tool_context: ToolContext, prompt: str) -> dict[str, str]:
-    """Saves the user's initial prompt to the state."""
-    tool_context.state["PROMPT"] = prompt
-    logging.info(f"[State updated] Added to PROMPT: {prompt}")
-    return {"status": "success"}
+  """Saves the user's initial prompt to the state."""
+  tool_context.state["PROMPT"] = prompt
+  logging.info(f"[State updated] Added to PROMPT: {prompt}")
+  return {"status": "success"}
 
 
 # Configuring the MCP Tool to connect to the Zoo MCP server
 
 mcp_server_url = os.getenv("MCP_SERVER_URL")
 if not mcp_server_url:
-    raise ValueError("The environment variable MCP_SERVER_URL is not set.")
+  raise ValueError("The environment variable MCP_SERVER_URL is not set.")
 
 
 def get_id_token():
-    """Get an ID token to authenticate with the MCP server."""
-    target_url = os.getenv("MCP_SERVER_URL")
-    audience = target_url.split("/mcp/")[0]
-    request = google.auth.transport.requests.Request()
-    id_token = google.oauth2.id_token.fetch_id_token(request, audience)
-    return id_token
+  """Get an ID token to authenticate with the MCP server."""
+  target_url = os.getenv("MCP_SERVER_URL")
+  audience = target_url.split("/mcp/")[0]
+  request = google.auth.transport.requests.Request()
+  id_token = google.oauth2.id_token.fetch_id_token(request, audience)
+  return id_token
 
 
 """
@@ -65,23 +65,25 @@ mcp_tools = MCPToolset(
 """
 
 mcp_tools = MCPToolset(
-    connection_params=StreamableHTTPConnectionParams(
-        url=mcp_server_url,
-        headers={
-            "Authorization": f"Bearer {get_id_token()}",
-        },
-    ),
+  connection_params=StreamableHTTPConnectionParams(
+    url=mcp_server_url,
+    headers={
+      "Authorization": f"Bearer {get_id_token()}",
+    },
+  ),
 )
 
 # Configuring the Wikipedia Tool
-wikipedia_tool = LangchainTool(tool=WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper()))
+wikipedia_tool = LangchainTool(
+  tool=WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+)
 
 # 1. Researcher Agent
 comprehensive_researcher = Agent(
-    name="comprehensive_researcher",
-    model=model_name,
-    description="The primary researcher that can access both internal zoo data and external knowledge from Wikipedia.",
-    instruction="""
+  name="comprehensive_researcher",
+  model=model_name,
+  description="The primary researcher that can access both internal zoo data and external knowledge from Wikipedia.",
+  instruction="""
     You are a helpful research assistant. Your goal is to fully answer the user's PROMPT.
     You have access to two tools:
     1. A tool for getting specific data about animals AT OUR ZOO (names, ages, locations).
@@ -96,16 +98,16 @@ comprehensive_researcher = Agent(
     PROMPT:
     {{ PROMPT }}
     """,
-    tools=[mcp_tools, wikipedia_tool],
-    output_key="research_data",  # A key to store the combined findings
+  tools=[mcp_tools, wikipedia_tool],
+  output_key="research_data",  # A key to store the combined findings
 )
 
 # 2. Response Formatter Agent
 response_formatter = Agent(
-    name="response_formatter",
-    model=model_name,
-    description="Synthesizes all information into a friendly, readable response.",
-    instruction="""
+  name="response_formatter",
+  model=model_name,
+  description="Synthesizes all information into a friendly, readable response.",
+  instruction="""
     You are the friendly voice of the Zoo Tour Guide. Your task is to take the
     RESEARCH_DATA and present it to the user in a complete and helpful answer.
 
@@ -120,23 +122,23 @@ response_formatter = Agent(
 )
 
 tour_guide_workflow = SequentialAgent(
-    name="tour_guide_workflow",
-    description="The main workflow for handling a user's request about an animal.",
-    sub_agents=[
-        comprehensive_researcher,  # Step 1: Gather all data
-        response_formatter,  # Step 2: Format the final response
-    ],
+  name="tour_guide_workflow",
+  description="The main workflow for handling a user's request about an animal.",
+  sub_agents=[
+    comprehensive_researcher,  # Step 1: Gather all data
+    response_formatter,  # Step 2: Format the final response
+  ],
 )
 
 root_agent = Agent(
-    name="greeter",
-    model=model_name,
-    description="The main entry point for the Zoo Tour Guide.",
-    instruction="""
+  name="greeter",
+  model=model_name,
+  description="The main entry point for the Zoo Tour Guide.",
+  instruction="""
     - Let the user know you will help them learn about the animals we have in the zoo.
     - When the user responds, use the 'add_prompt_to_state' tool to save their response.
     After using the tool, transfer control to the 'tour_guide_workflow' agent.
     """,
-    tools=[add_prompt_to_state],
-    sub_agents=[tour_guide_workflow],
+  tools=[add_prompt_to_state],
+  sub_agents=[tour_guide_workflow],
 )

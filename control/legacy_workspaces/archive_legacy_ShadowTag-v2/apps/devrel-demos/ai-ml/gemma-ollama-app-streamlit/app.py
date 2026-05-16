@@ -18,10 +18,10 @@
 from google.oauth2 import service_account
 from google.auth.transport.requests import AuthorizedSession
 from pydantic_settings import (
-    BaseSettings,
-    PydanticBaseSettingsSource,
-    SettingsConfigDict,
-    YamlConfigSettingsSource,
+  BaseSettings,
+  PydanticBaseSettingsSource,
+  SettingsConfigDict,
+  YamlConfigSettingsSource,
 )
 import json
 import streamlit as st
@@ -30,27 +30,31 @@ GEMMA_MODEL = "gemma2:9b"
 
 
 class Settings(BaseSettings):
-    ollama_cloudrun_service_account: str
-    ollama_cloudrun_service_url: str
+  ollama_cloudrun_service_account: str
+  ollama_cloudrun_service_url: str
 
-    model_config = SettingsConfigDict(yaml_file="settings.yaml", yaml_file_encoding="utf-8")
+  model_config = SettingsConfigDict(
+    yaml_file="settings.yaml", yaml_file_encoding="utf-8"
+  )
 
-    @classmethod
-    def settings_customise_sources(
-        cls,
-        settings_cls: type[BaseSettings],
-        init_settings: PydanticBaseSettingsSource,
-        env_settings: PydanticBaseSettingsSource,
-        dotenv_settings: PydanticBaseSettingsSource,
-        file_secret_settings: PydanticBaseSettingsSource,
-    ) -> tuple[PydanticBaseSettingsSource, ...]:
-        return (YamlConfigSettingsSource(settings_cls),)
+  @classmethod
+  def settings_customise_sources(
+    cls,
+    settings_cls: type[BaseSettings],
+    init_settings: PydanticBaseSettingsSource,
+    env_settings: PydanticBaseSettingsSource,
+    dotenv_settings: PydanticBaseSettingsSource,
+    file_secret_settings: PydanticBaseSettingsSource,
+  ) -> tuple[PydanticBaseSettingsSource, ...]:
+    return (YamlConfigSettingsSource(settings_cls),)
 
 
 settings = Settings()
 
 url = f"{settings.ollama_cloudrun_service_url}/api/chat"
-creds = service_account.IDTokenCredentials.from_service_account_file(settings.ollama_cloudrun_service_account, target_audience=url)
+creds = service_account.IDTokenCredentials.from_service_account_file(
+  settings.ollama_cloudrun_service_account, target_audience=url
+)
 
 authed_session = AuthorizedSession(creds)
 
@@ -58,33 +62,33 @@ st.title("Ollama Gemma Bot")
 
 # Initialize chat history
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+  st.session_state.messages = []
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+  with st.chat_message(message["role"]):
+    st.markdown(message["content"])
 
 
 def stream_response(chat_messages: list[dict]):
-    data = {"model": GEMMA_MODEL, "messages": chat_messages}
-    with authed_session.post(url, json=data, stream=True) as response:
-        for line in response.iter_lines():
-            response = json.loads(line.decode("utf-8"))
+  data = {"model": GEMMA_MODEL, "messages": chat_messages}
+  with authed_session.post(url, json=data, stream=True) as response:
+    for line in response.iter_lines():
+      response = json.loads(line.decode("utf-8"))
 
-            yield response["message"]["content"]
+      yield response["message"]["content"]
 
 
 # React to user input
 if prompt := st.chat_input("What is up?"):
-    # Display user message in chat message container
-    with st.chat_message("user"):
-        st.markdown(prompt)
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+  # Display user message in chat message container
+  with st.chat_message("user"):
+    st.markdown(prompt)
+  # Add user message to chat history
+  st.session_state.messages.append({"role": "user", "content": prompt})
 
-    with st.chat_message("assistant"):
-        response = st.write_stream(stream_response(st.session_state.messages))
+  with st.chat_message("assistant"):
+    response = st.write_stream(stream_response(st.session_state.messages))
 
-    # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response})
+  # Add assistant response to chat history
+  st.session_state.messages.append({"role": "assistant", "content": response})

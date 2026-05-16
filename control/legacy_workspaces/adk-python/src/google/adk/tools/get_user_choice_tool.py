@@ -19,9 +19,9 @@ from .tool_context import ToolContext
 
 
 def get_user_choice(options: list[str], tool_context: ToolContext) -> str | None:
-    """Provides the options to the user and asks them to choose one."""
-    tool_context.actions.skip_summarization = True
-    return None
+  """Provides the options to the user and asks them to choose one."""
+  tool_context.actions.skip_summarization = True
+  return None
 
 
 get_user_choice_tool = LongRunningFunctionTool(func=get_user_choice)

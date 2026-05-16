@@ -24,37 +24,37 @@ Role = Literal["user", "model"]
 # Data Model
 @dataclass(kw_only=True)
 class ChatMessage:
-    role: Role = "user"
-    content: str = ""
-    in_progress: bool = False
+  role: Role = "user"
+  content: str = ""
+  in_progress: bool = False
 
 
 class Models(Enum):
-    GEMINI_2_5_FLASH = "Gemini 2.5 Flash"
-    OPENAI = "gpt-4o-mini"
-    GEMMA_3 = "gemma3"
+  GEMINI_2_5_FLASH = "Gemini 2.5 Flash"
+  OPENAI = "gpt-4o-mini"
+  GEMMA_3 = "gemma3"
 
 
 @dataclass
 class Conversation:
-    model: str = ""
-    messages: list[ChatMessage] = field(default_factory=list)
+  model: str = ""
+  messages: list[ChatMessage] = field(default_factory=list)
 
 
 @me.stateclass
 class State:
-    is_model_picker_dialog_open: bool = False
-    input: str = ""
-    conversations: list[Conversation] = field(default_factory=list)
-    models: list[str] = field(default_factory=list)
-    gemini_api_key: str = ""
-    openai_api_key: str = ""
-    gemma_endpoint_id: str = ""
-    tei_embedding_url: str = ""
-    location: str = ""
-    in_progress: bool = False
+  is_model_picker_dialog_open: bool = False
+  input: str = ""
+  conversations: list[Conversation] = field(default_factory=list)
+  models: list[str] = field(default_factory=list)
+  gemini_api_key: str = ""
+  openai_api_key: str = ""
+  gemma_endpoint_id: str = ""
+  tei_embedding_url: str = ""
+  location: str = ""
+  in_progress: bool = False
 
 
 @me.stateclass
 class ModelDialogState:
-    selected_models: list[str] = field(default_factory=list)
+  selected_models: list[str] = field(default_factory=list)

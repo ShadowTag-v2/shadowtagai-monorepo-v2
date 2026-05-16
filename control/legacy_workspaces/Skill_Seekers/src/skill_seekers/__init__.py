@@ -15,9 +15,9 @@ from skill_seekers.cli import __version__ as cli_version
 from skill_seekers.mcp import __version__ as mcp_version
 
 __all__ = [
-    "__version__",
-    "__author__",
-    "__license__",
-    "cli_version",
-    "mcp_version",
+  "__version__",
+  "__author__",
+  "__license__",
+  "cli_version",
+  "mcp_version",
 ]

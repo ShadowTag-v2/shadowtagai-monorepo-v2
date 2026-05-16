@@ -30,8 +30,8 @@ from ..models.llm_response import LlmResponse
 from ..tools.base_tool import BaseTool
 
 if TYPE_CHECKING:
-    from ..agents.invocation_context import InvocationContext
-    from ..tools.tool_context import ToolContext
+  from ..agents.invocation_context import InvocationContext
+  from ..tools.tool_context import ToolContext
 
 
 # Type alias: The value may or may not be awaitable, and value is optional.
@@ -39,320 +39,332 @@ T = TypeVar("T")
 
 
 class BasePlugin(ABC):
-    """Base class for creating plugins.
+  """Base class for creating plugins.
 
-    Plugins provide a structured way to intercept and modify agent, tool, and
-    LLM behaviors at critical execution points in a callback manner. While agent
-    callbacks apply to a particular agent, plugins applies globally to all
-    agents added in the runner. Plugins are best used for adding custom behaviors
-    like logging, monitoring, caching, or modifying requests and responses at key
-    stages.
+  Plugins provide a structured way to intercept and modify agent, tool, and
+  LLM behaviors at critical execution points in a callback manner. While agent
+  callbacks apply to a particular agent, plugins applies globally to all
+  agents added in the runner. Plugins are best used for adding custom behaviors
+  like logging, monitoring, caching, or modifying requests and responses at key
+  stages.
 
-    A plugin can implement one or more methods of callbacks, but should not
-    implement the same method of callback for multiple times.
+  A plugin can implement one or more methods of callbacks, but should not
+  implement the same method of callback for multiple times.
 
-    Relation with [Agent callbacks](https://google.github.io/adk-docs/callbacks/):
+  Relation with [Agent callbacks](https://google.github.io/adk-docs/callbacks/):
 
-    **Execution Order**
-    Similar to Agent callbacks, Plugins are executed in the order they are
-    registered. However, Plugin and Agent Callbacks are executed sequentially,
-    with Plugins takes precedence over agent callbacks. When the callback in a
-    plugin returns a value, it will short circuit all remaining plugins and
-    agent callbacks, causing all remaining plugins and agent callbacks
-    to be skipped.
+  **Execution Order**
+  Similar to Agent callbacks, Plugins are executed in the order they are
+  registered. However, Plugin and Agent Callbacks are executed sequentially,
+  with Plugins takes precedence over agent callbacks. When the callback in a
+  plugin returns a value, it will short circuit all remaining plugins and
+  agent callbacks, causing all remaining plugins and agent callbacks
+  to be skipped.
 
-    **Change Propagation**
-    Plugins and agent callbacks can both modify the value of the input parameters,
-    including agent input, tool input, and LLM request/response, etc. They work in
-    the exactly same way. The modifications will be visible and passed to the next
-    callback in the chain. For example, if a plugin modifies the tool input with
-    before_tool_callback, the modified tool input will be passed to the
-    before_tool_callback of the next plugin, and further passed to the agent
-    callbacks if not short circuited.
+  **Change Propagation**
+  Plugins and agent callbacks can both modify the value of the input parameters,
+  including agent input, tool input, and LLM request/response, etc. They work in
+  the exactly same way. The modifications will be visible and passed to the next
+  callback in the chain. For example, if a plugin modifies the tool input with
+  before_tool_callback, the modified tool input will be passed to the
+  before_tool_callback of the next plugin, and further passed to the agent
+  callbacks if not short circuited.
 
-    To use a plugin, implement the desired callback methods and pass an instance
-    of your custom plugin class to the ADK Runner.
+  To use a plugin, implement the desired callback methods and pass an instance
+  of your custom plugin class to the ADK Runner.
 
-    Examples:
-        A simple plugin that logs every tool call.
+  Examples:
+      A simple plugin that logs every tool call.
 
-        >>> class ToolLoggerPlugin(BasePlugin):
-        ..   def __init__(self):
-        ..     super().__init__(name="tool_logger")
-        ..
-        ..   async def before_tool_callback(
-        ..       self, *, tool: BaseTool, tool_args: dict[str, Any],
-        tool_context:
-        ToolContext
-        ..   ):
-        ..     print(f"[{self.name}] Calling tool '{tool.name}' with args:
-        {tool_args}")
-        ..
-        ..   async def after_tool_callback(
-        ..       self, *, tool: BaseTool, tool_args: dict, tool_context:
-        ToolContext, result: dict
-        ..   ):
-        ..     print(f"[{self.name}] Tool '{tool.name}' finished with result:
-        {result}")
-        ..
-        >>> # Add the plugin to ADK Runner
-        >>> # runner = Runner(
-        >>> #     ...
-        >>> #     plugins=[ToolLoggerPlugin(), AgentPolicyPlugin()],
-        >>> # )
+      >>> class ToolLoggerPlugin(BasePlugin):
+      ..   def __init__(self):
+      ..     super().__init__(name="tool_logger")
+      ..
+      ..   async def before_tool_callback(
+      ..       self, *, tool: BaseTool, tool_args: dict[str, Any],
+      tool_context:
+      ToolContext
+      ..   ):
+      ..     print(f"[{self.name}] Calling tool '{tool.name}' with args:
+      {tool_args}")
+      ..
+      ..   async def after_tool_callback(
+      ..       self, *, tool: BaseTool, tool_args: dict, tool_context:
+      ToolContext, result: dict
+      ..   ):
+      ..     print(f"[{self.name}] Tool '{tool.name}' finished with result:
+      {result}")
+      ..
+      >>> # Add the plugin to ADK Runner
+      >>> # runner = Runner(
+      >>> #     ...
+      >>> #     plugins=[ToolLoggerPlugin(), AgentPolicyPlugin()],
+      >>> # )
+  """
+
+  def __init__(self, name: str):
+    """Initializes the plugin.
+
+    Args:
+      name: A unique identifier for this plugin instance.
     """
+    super().__init__()
+    self.name = name
 
-    def __init__(self, name: str):
-        """Initializes the plugin.
+  async def on_user_message_callback(
+    self,
+    *,
+    invocation_context: InvocationContext,
+    user_message: types.Content,
+  ) -> types.Content | None:
+    """Callback executed when a user message is received before an invocation starts.
 
-        Args:
-          name: A unique identifier for this plugin instance.
-        """
-        super().__init__()
-        self.name = name
+    This callback helps logging and modifying the user message before the
+    runner starts the invocation.
 
-    async def on_user_message_callback(
-        self,
-        *,
-        invocation_context: InvocationContext,
-        user_message: types.Content,
-    ) -> types.Content | None:
-        """Callback executed when a user message is received before an invocation starts.
+    Args:
+      invocation_context: The context for the entire invocation.
+      user_message: The message content input by user.
 
-        This callback helps logging and modifying the user message before the
-        runner starts the invocation.
+    Returns:
+      An optional `types.Content` to be returned to the ADK. Returning a
+      value to replace the user message. Returning `None` to proceed
+      normally.
+    """
+    pass
 
-        Args:
-          invocation_context: The context for the entire invocation.
-          user_message: The message content input by user.
+  async def before_run_callback(
+    self, *, invocation_context: InvocationContext
+  ) -> types.Content | None:
+    """Callback executed before the ADK runner runs.
 
-        Returns:
-          An optional `types.Content` to be returned to the ADK. Returning a
-          value to replace the user message. Returning `None` to proceed
-          normally.
-        """
-        pass
+    This is the first callback to be called in the lifecycle, ideal for global
+    setup or initialization tasks.
 
-    async def before_run_callback(self, *, invocation_context: InvocationContext) -> types.Content | None:
-        """Callback executed before the ADK runner runs.
+    Args:
+      invocation_context: The context for the entire invocation, containing
+        session information, the root agent, etc.
 
-        This is the first callback to be called in the lifecycle, ideal for global
-        setup or initialization tasks.
+    Returns:
+      An optional `Event` to be returned to the ADK. Returning a value to
+      halt execution of the runner and ends the runner with that event. Return
+      `None` to proceed normally.
+    """
+    pass
 
-        Args:
-          invocation_context: The context for the entire invocation, containing
-            session information, the root agent, etc.
+  async def on_event_callback(
+    self, *, invocation_context: InvocationContext, event: Event
+  ) -> Event | None:
+    """Callback executed after an event is yielded from runner.
 
-        Returns:
-          An optional `Event` to be returned to the ADK. Returning a value to
-          halt execution of the runner and ends the runner with that event. Return
-          `None` to proceed normally.
-        """
-        pass
+    This is the ideal place to make modification to the event before the event
+    is handled by the underlying agent app.
 
-    async def on_event_callback(self, *, invocation_context: InvocationContext, event: Event) -> Event | None:
-        """Callback executed after an event is yielded from runner.
+    Args:
+      invocation_context: The context for the entire invocation.
+      event: The event raised by the runner.
 
-        This is the ideal place to make modification to the event before the event
-        is handled by the underlying agent app.
+    Returns:
+      An optional value. A non-`None` return may be used by the framework to
+      modify or replace the response. Returning `None` allows the original
+      response to be used.
+    """
+    pass
 
-        Args:
-          invocation_context: The context for the entire invocation.
-          event: The event raised by the runner.
+  async def after_run_callback(self, *, invocation_context: InvocationContext) -> None:
+    """Callback executed after an ADK runner run has completed.
 
-        Returns:
-          An optional value. A non-`None` return may be used by the framework to
-          modify or replace the response. Returning `None` allows the original
-          response to be used.
-        """
-        pass
+    This is the final callback in the ADK lifecycle, suitable for cleanup, final
+    logging, or reporting tasks.
 
-    async def after_run_callback(self, *, invocation_context: InvocationContext) -> None:
-        """Callback executed after an ADK runner run has completed.
+    Args:
+      invocation_context: The context for the entire invocation.
 
-        This is the final callback in the ADK lifecycle, suitable for cleanup, final
-        logging, or reporting tasks.
+    Returns:
+      None
+    """
+    pass
 
-        Args:
-          invocation_context: The context for the entire invocation.
+  async def close(self) -> None:
+    """Method executed when the runner is closed.
 
-        Returns:
-          None
-        """
-        pass
+    This method is used for cleanup tasks such as closing network connections
+    or releasing resources.
+    """
+    pass
 
-    async def close(self) -> None:
-        """Method executed when the runner is closed.
+  async def before_agent_callback(
+    self, *, agent: BaseAgent, callback_context: CallbackContext
+  ) -> types.Content | None:
+    """Callback executed before an agent's primary logic is invoked.
 
-        This method is used for cleanup tasks such as closing network connections
-        or releasing resources.
-        """
-        pass
+    This callback can be used for logging, setup, or to short-circuit the
+    agent's execution by returning a value.
 
-    async def before_agent_callback(self, *, agent: BaseAgent, callback_context: CallbackContext) -> types.Content | None:
-        """Callback executed before an agent's primary logic is invoked.
+    Args:
+      agent: The agent that is about to run.
+      callback_context: The context for the agent invocation.
 
-        This callback can be used for logging, setup, or to short-circuit the
-        agent's execution by returning a value.
+    Returns:
+      An optional `types.Content` object. If a value is returned, it will bypass
+      the agent's callbacks and its execution, and return this value directly.
+      Returning `None` allows the agent to proceed normally.
+    """
+    pass
 
-        Args:
-          agent: The agent that is about to run.
-          callback_context: The context for the agent invocation.
+  async def after_agent_callback(
+    self, *, agent: BaseAgent, callback_context: CallbackContext
+  ) -> types.Content | None:
+    """Callback executed after an agent's primary logic has completed.
 
-        Returns:
-          An optional `types.Content` object. If a value is returned, it will bypass
-          the agent's callbacks and its execution, and return this value directly.
-          Returning `None` allows the agent to proceed normally.
-        """
-        pass
+    Args:
+      agent: The agent that has just run.
+      callback_context: The context for the agent invocation.
 
-    async def after_agent_callback(self, *, agent: BaseAgent, callback_context: CallbackContext) -> types.Content | None:
-        """Callback executed after an agent's primary logic has completed.
+    Returns:
+      An optional `types.Content` object. The content to return to the user.
+      When the content is present, the provided content will be used as agent
+      response and appended to event history as agent response.
+    """
+    pass
 
-        Args:
-          agent: The agent that has just run.
-          callback_context: The context for the agent invocation.
+  async def before_model_callback(
+    self, *, callback_context: CallbackContext, llm_request: LlmRequest
+  ) -> LlmResponse | None:
+    """Callback executed before a request is sent to the model.
 
-        Returns:
-          An optional `types.Content` object. The content to return to the user.
-          When the content is present, the provided content will be used as agent
-          response and appended to event history as agent response.
-        """
-        pass
+    This provides an opportunity to inspect, log, or modify the `LlmRequest`
+    object. It can also be used to implement caching by returning a cached
+    `LlmResponse`, which would skip the actual model call.
 
-    async def before_model_callback(self, *, callback_context: CallbackContext, llm_request: LlmRequest) -> LlmResponse | None:
-        """Callback executed before a request is sent to the model.
+    Args:
+      callback_context: The context for the current agent call.
+      llm_request: The prepared request object to be sent to the model.
 
-        This provides an opportunity to inspect, log, or modify the `LlmRequest`
-        object. It can also be used to implement caching by returning a cached
-        `LlmResponse`, which would skip the actual model call.
+    Returns:
+      An optional value. The interpretation of a non-`None` trigger an early
+      exit and returns the response immediately. Returning `None` allows the LLM
+      request to proceed normally.
+    """
+    pass
 
-        Args:
-          callback_context: The context for the current agent call.
-          llm_request: The prepared request object to be sent to the model.
+  async def after_model_callback(
+    self, *, callback_context: CallbackContext, llm_response: LlmResponse
+  ) -> LlmResponse | None:
+    """Callback executed after a response is received from the model.
 
-        Returns:
-          An optional value. The interpretation of a non-`None` trigger an early
-          exit and returns the response immediately. Returning `None` allows the LLM
-          request to proceed normally.
-        """
-        pass
+    This is the ideal place to log model responses, collect metrics on token
+    usage, or perform post-processing on the raw `LlmResponse`.
 
-    async def after_model_callback(self, *, callback_context: CallbackContext, llm_response: LlmResponse) -> LlmResponse | None:
-        """Callback executed after a response is received from the model.
+    Args:
+      callback_context: The context for the current agent call.
+      llm_response: The response object received from the model.
 
-        This is the ideal place to log model responses, collect metrics on token
-        usage, or perform post-processing on the raw `LlmResponse`.
+    Returns:
+      An optional value. A non-`None` return may be used by the framework to
+      modify or replace the response. Returning `None` allows the original
+      response to be used.
+    """
+    pass
 
-        Args:
-          callback_context: The context for the current agent call.
-          llm_response: The response object received from the model.
+  async def on_model_error_callback(
+    self,
+    *,
+    callback_context: CallbackContext,
+    llm_request: LlmRequest,
+    error: Exception,
+  ) -> LlmResponse | None:
+    """Callback executed when a model call encounters an error.
 
-        Returns:
-          An optional value. A non-`None` return may be used by the framework to
-          modify or replace the response. Returning `None` allows the original
-          response to be used.
-        """
-        pass
+    This callback provides an opportunity to handle model errors gracefully,
+    potentially providing alternative responses or recovery mechanisms.
 
-    async def on_model_error_callback(
-        self,
-        *,
-        callback_context: CallbackContext,
-        llm_request: LlmRequest,
-        error: Exception,
-    ) -> LlmResponse | None:
-        """Callback executed when a model call encounters an error.
+    Args:
+      callback_context: The context for the current agent call.
+      llm_request: The request that was sent to the model when the error
+        occurred.
+      error: The exception that was raised during model execution.
 
-        This callback provides an opportunity to handle model errors gracefully,
-        potentially providing alternative responses or recovery mechanisms.
+    Returns:
+      An optional LlmResponse. If an LlmResponse is returned, it will be used
+      instead of propagating the error. Returning `None` allows the original
+      error to be raised.
+    """
+    pass
 
-        Args:
-          callback_context: The context for the current agent call.
-          llm_request: The request that was sent to the model when the error
-            occurred.
-          error: The exception that was raised during model execution.
+  async def before_tool_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+  ) -> dict | None:
+    """Callback executed before a tool is called.
 
-        Returns:
-          An optional LlmResponse. If an LlmResponse is returned, it will be used
-          instead of propagating the error. Returning `None` allows the original
-          error to be raised.
-        """
-        pass
+    This callback is useful for logging tool usage, input validation, or
+    modifying the arguments before they are passed to the tool.
 
-    async def before_tool_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-    ) -> dict | None:
-        """Callback executed before a tool is called.
+    Args:
+      tool: The tool instance that is about to be executed.
+      tool_args: The dictionary of arguments to be used for invoking the tool.
+      tool_context: The context specific to the tool execution.
 
-        This callback is useful for logging tool usage, input validation, or
-        modifying the arguments before they are passed to the tool.
+    Returns:
+      An optional dictionary. If a dictionary is returned, it will stop the tool
+      execution and return this response immediately. Returning `None` uses the
+      original, unmodified arguments.
+    """
+    pass
 
-        Args:
-          tool: The tool instance that is about to be executed.
-          tool_args: The dictionary of arguments to be used for invoking the tool.
-          tool_context: The context specific to the tool execution.
+  async def after_tool_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+    result: dict,
+  ) -> dict | None:
+    """Callback executed after a tool has been called.
 
-        Returns:
-          An optional dictionary. If a dictionary is returned, it will stop the tool
-          execution and return this response immediately. Returning `None` uses the
-          original, unmodified arguments.
-        """
-        pass
+    This callback allows for inspecting, logging, or modifying the result
+    returned by a tool.
 
-    async def after_tool_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-        result: dict,
-    ) -> dict | None:
-        """Callback executed after a tool has been called.
+    Args:
+      tool: The tool instance that has just been executed.
+      tool_args: The original arguments that were passed to the tool.
+      tool_context: The context specific to the tool execution.
+      result: The dictionary returned by the tool invocation.
 
-        This callback allows for inspecting, logging, or modifying the result
-        returned by a tool.
+    Returns:
+      An optional dictionary. If a dictionary is returned, it will **replace**
+      the original result from the tool. This allows for post-processing or
+      altering tool outputs. Returning `None` uses the original, unmodified
+      result.
+    """
+    pass
 
-        Args:
-          tool: The tool instance that has just been executed.
-          tool_args: The original arguments that were passed to the tool.
-          tool_context: The context specific to the tool execution.
-          result: The dictionary returned by the tool invocation.
+  async def on_tool_error_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+    error: Exception,
+  ) -> dict | None:
+    """Callback executed when a tool call encounters an error.
 
-        Returns:
-          An optional dictionary. If a dictionary is returned, it will **replace**
-          the original result from the tool. This allows for post-processing or
-          altering tool outputs. Returning `None` uses the original, unmodified
-          result.
-        """
-        pass
+    This callback provides an opportunity to handle tool errors gracefully,
+    potentially providing alternative responses or recovery mechanisms.
 
-    async def on_tool_error_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-        error: Exception,
-    ) -> dict | None:
-        """Callback executed when a tool call encounters an error.
+    Args:
+      tool: The tool instance that encountered an error.
+      tool_args: The arguments that were passed to the tool.
+      tool_context: The context specific to the tool execution.
+      error: The exception that was raised during tool execution.
 
-        This callback provides an opportunity to handle tool errors gracefully,
-        potentially providing alternative responses or recovery mechanisms.
-
-        Args:
-          tool: The tool instance that encountered an error.
-          tool_args: The arguments that were passed to the tool.
-          tool_context: The context specific to the tool execution.
-          error: The exception that was raised during tool execution.
-
-        Returns:
-          An optional dictionary. If a dictionary is returned, it will be used as
-          the tool response instead of propagating the error. Returning `None`
-          allows the original error to be raised.
-        """
-        pass
+    Returns:
+      An optional dictionary. If a dictionary is returned, it will be used as
+      the tool response instead of propagating the error. Returning `None`
+      allows the original error to be raised.
+    """
+    pass

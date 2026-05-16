@@ -20,8 +20,8 @@ from google.adk.code_executors import GkeCodeExecutor
 
 
 def gke_agent_system_instruction():
-    """Returns: The system instruction for the GKE-based coding agent."""
-    return """You are a helpful and capable AI agent that can write and execute Python code to answer questions and perform tasks.
+  """Returns: The system instruction for the GKE-based coding agent."""
+  return """You are a helpful and capable AI agent that can write and execute Python code to answer questions and perform tasks.
 
 When a user asks a question, follow these steps:
 1.  Analyze the request.
@@ -31,17 +31,19 @@ When a user asks a question, follow these steps:
 
 
 gke_executor = GkeCodeExecutor(
-    # This must match the namespace in your deployment_rbac.yaml where the
-    # agent's ServiceAccount and Role have permissions.
-    namespace="agent-sandbox",
-    # Setting an explicit timeout prevents a stuck job from running forever.
-    timeout_seconds=600,
+  # This must match the namespace in your deployment_rbac.yaml where the
+  # agent's ServiceAccount and Role have permissions.
+  namespace="agent-sandbox",
+  # Setting an explicit timeout prevents a stuck job from running forever.
+  timeout_seconds=600,
 )
 
 root_agent = LlmAgent(
-    name="gke_coding_agent",
-    model="gemini-2.0-flash",
-    description=("A general-purpose agent that executes Python code in a secure GKE Sandbox."),
-    instruction=gke_agent_system_instruction(),
-    code_executor=gke_executor,
+  name="gke_coding_agent",
+  model="gemini-2.0-flash",
+  description=(
+    "A general-purpose agent that executes Python code in a secure GKE Sandbox."
+  ),
+  instruction=gke_agent_system_instruction(),
+  code_executor=gke_executor,
 )

@@ -16,114 +16,121 @@ import re
 
 
 class FlowchartNode:
-    """Represents a node in the flowchart."""
+  """Represents a node in the flowchart."""
 
-    def __init__(self, index: int, text: str, node_type: str = "process", children: list[int] | None = None, metadata: str | None = None):
-        self.index = index
-        self.text = text
-        self.node_type = node_type  # 'process', 'decision', 'data', 'terminal'
-        self.children = children or []
-        self.metadata = metadata or ""  # e.g., "(n=500)" for participant counts
+  def __init__(
+    self,
+    index: int,
+    text: str,
+    node_type: str = "process",
+    children: list[int] | None = None,
+    metadata: str | None = None,
+  ):
+    self.index = index
+    self.text = text
+    self.node_type = node_type  # 'process', 'decision', 'data', 'terminal'
+    self.children = children or []
+    self.metadata = metadata or ""  # e.g., "(n=500)" for participant counts
 
-    def __repr__(self):
-        return f"Node({self.index}: {self.text}, type={self.node_type})"
+  def __repr__(self):
+    return f"Node({self.index}: {self.text}, type={self.node_type})"
 
 
 class FlowchartGenerator:
-    """Generate TikZ flowchart code from text descriptions."""
+  """Generate TikZ flowchart code from text descriptions."""
 
-    def __init__(self):
-        self.nodes = []
-        self.vertical_spacing = 1.5  # cm between nodes
+  def __init__(self):
+    self.nodes = []
+    self.vertical_spacing = 1.5  # cm between nodes
 
-    def parse_text(self, text: str) -> list[FlowchartNode]:
-        """Parse numbered list into flowchart nodes."""
-        lines = text.strip().split("\n")
-        nodes = []
+  def parse_text(self, text: str) -> list[FlowchartNode]:
+    """Parse numbered list into flowchart nodes."""
+    lines = text.strip().split("\n")
+    nodes = []
 
-        for i, line in enumerate(lines):
-            line = line.strip()
-            if not line:
-                continue
+    for i, line in enumerate(lines):
+      line = line.strip()
+      if not line:
+        continue
 
-            # Try to extract number and content
-            match = re.match(r"^(\d+)\.?\s+(.+)$", line)
-            if match:
-                num_str, content = match.groups()
-                num = int(num_str)
-            else:
-                # No number, just use line order
-                num = i + 1
-                content = line
+      # Try to extract number and content
+      match = re.match(r"^(\d+)\.?\s+(.+)$", line)
+      if match:
+        num_str, content = match.groups()
+        num = int(num_str)
+      else:
+        # No number, just use line order
+        num = i + 1
+        content = line
 
-            # Detect node type
-            node_type = self._detect_node_type(content)
+      # Detect node type
+      node_type = self._detect_node_type(content)
 
-            # Extract metadata (participant counts, etc.)
-            metadata = self._extract_metadata(content)
+      # Extract metadata (participant counts, etc.)
+      metadata = self._extract_metadata(content)
 
-            # Clean content
-            clean_content = self._clean_content(content)
+      # Clean content
+      clean_content = self._clean_content(content)
 
-            # Determine parent-child relationships
-            children = [num + 1] if num < len(lines) else []
+      # Determine parent-child relationships
+      children = [num + 1] if num < len(lines) else []
 
-            node = FlowchartNode(num, clean_content, node_type, children, metadata)
-            nodes.append(node)
+      node = FlowchartNode(num, clean_content, node_type, children, metadata)
+      nodes.append(node)
 
-        self.nodes = nodes
-        return nodes
+    self.nodes = nodes
+    return nodes
 
-    def _detect_node_type(self, text: str) -> str:
-        """Detect node type from content."""
-        text_lower = text.lower()
+  def _detect_node_type(self, text: str) -> str:
+    """Detect node type from content."""
+    text_lower = text.lower()
 
-        if any(word in text_lower for word in ["start", "begin", "initialize"]):
-            return "terminal"
-        elif any(word in text_lower for word in ["end", "finish", "complete"]):
-            return "terminal"
-        elif "?" in text or any(word in text_lower for word in ["decide", "check", "if"]):
-            return "decision"
-        elif any(word in text_lower for word in ["screen", "assess", "recruit"]):
-            return "process"
-        elif any(word in text_lower for word in ["exclude", "randomize", "allocate"]):
-            return "process"
-        elif any(word in text_lower for word in ["data", "input", "output", "results"]):
-            return "data"
-        else:
-            return "process"
+    if any(word in text_lower for word in ["start", "begin", "initialize"]):
+      return "terminal"
+    elif any(word in text_lower for word in ["end", "finish", "complete"]):
+      return "terminal"
+    elif "?" in text or any(word in text_lower for word in ["decide", "check", "if"]):
+      return "decision"
+    elif any(word in text_lower for word in ["screen", "assess", "recruit"]):
+      return "process"
+    elif any(word in text_lower for word in ["exclude", "randomize", "allocate"]):
+      return "process"
+    elif any(word in text_lower for word in ["data", "input", "output", "results"]):
+      return "data"
+    else:
+      return "process"
 
-    def _extract_metadata(self, text: str) -> str:
-        """Extract metadata like (n=500) from text."""
-        # Pattern for (n=XXX) or n=XXX
-        match = re.search(r"\(?(n\s*=\s*\d+)\)?", text, re.IGNORECASE)
-        if match:
-            return f"({match.group(1)})"
-        return ""
+  def _extract_metadata(self, text: str) -> str:
+    """Extract metadata like (n=500) from text."""
+    # Pattern for (n=XXX) or n=XXX
+    match = re.search(r"\(?(n\s*=\s*\d+)\)?", text, re.IGNORECASE)
+    if match:
+      return f"({match.group(1)})"
+    return ""
 
-    def _clean_content(self, text: str) -> str:
-        """Clean content by removing metadata."""
-        # Remove (n=XXX)
-        text = re.sub(r"\(n\s*=\s*\d+\)", "", text, flags=re.IGNORECASE)
-        # Remove standalone n=XXX
-        text = re.sub(r"\bn\s*=\s*\d+\b", "", text, flags=re.IGNORECASE)
-        return text.strip()
+  def _clean_content(self, text: str) -> str:
+    """Clean content by removing metadata."""
+    # Remove (n=XXX)
+    text = re.sub(r"\(n\s*=\s*\d+\)", "", text, flags=re.IGNORECASE)
+    # Remove standalone n=XXX
+    text = re.sub(r"\bn\s*=\s*\d+\b", "", text, flags=re.IGNORECASE)
+    return text.strip()
 
-    def generate_tikz(self, style: str = "consort") -> str:
-        """Generate TikZ code for flowchart."""
-        if not self.nodes:
-            raise ValueError("No nodes to generate. Call parse_text() first.")
+  def generate_tikz(self, style: str = "consort") -> str:
+    """Generate TikZ code for flowchart."""
+    if not self.nodes:
+      raise ValueError("No nodes to generate. Call parse_text() first.")
 
-        tikz_code = self._generate_header(style)
-        tikz_code += self._generate_nodes()
-        tikz_code += self._generate_connections()
-        tikz_code += self._generate_footer()
+    tikz_code = self._generate_header(style)
+    tikz_code += self._generate_nodes()
+    tikz_code += self._generate_connections()
+    tikz_code += self._generate_footer()
 
-        return tikz_code
+    return tikz_code
 
-    def _generate_header(self, style: str) -> str:
-        """Generate TikZ header with style definitions."""
-        return f"""% Flowchart generated by generate_flowchart.py
+  def _generate_header(self, style: str) -> str:
+    """Generate TikZ header with style definitions."""
+    return f"""% Flowchart generated by generate_flowchart.py
 \\documentclass[tikz, border=2mm]{{standalone}}
 \\usepackage{{tikz}}
 \\usetikzlibrary{{shapes.geometric, arrows.meta, positioning}}
@@ -154,87 +161,87 @@ class FlowchartGenerator:
 
 """
 
-    def _generate_nodes(self) -> str:
-        """Generate node definitions."""
-        code = "% Nodes\n"
+  def _generate_nodes(self) -> str:
+    """Generate node definitions."""
+    code = "% Nodes\n"
 
-        for i, node in enumerate(self.nodes):
-            node_name = f"node{node.index}"
-            style = node.node_type
+    for i, node in enumerate(self.nodes):
+      node_name = f"node{node.index}"
+      style = node.node_type
 
-            # Combine text and metadata
-            full_text = node.text
-            if node.metadata:
-                full_text += f"\\\\{node.metadata}"
+      # Combine text and metadata
+      full_text = node.text
+      if node.metadata:
+        full_text += f"\\\\{node.metadata}"
 
-            # Positioning
-            if i == 0:
-                position = ""
-            else:
-                prev_node = f"node{self.nodes[i - 1].index}"
-                position = f"[{style}, below of={prev_node}]"
+      # Positioning
+      if i == 0:
+        position = ""
+      else:
+        prev_node = f"node{self.nodes[i - 1].index}"
+        position = f"[{style}, below of={prev_node}]"
 
-            code += f"\\node[{style}] ({node_name}) {position} {{{full_text}}};\n"
+      code += f"\\node[{style}] ({node_name}) {position} {{{full_text}}};\n"
 
-        code += "\n"
-        return code
+    code += "\n"
+    return code
 
-    def _generate_connections(self) -> str:
-        """Generate arrow connections between nodes."""
-        code = "% Connections\n"
+  def _generate_connections(self) -> str:
+    """Generate arrow connections between nodes."""
+    code = "% Connections\n"
 
-        for i, node in enumerate(self.nodes[:-1]):
-            current = f"node{node.index}"
-            next_node = f"node{self.nodes[i + 1].index}"
-            code += f"\\draw[arrow] ({current}) -- ({next_node});\n"
+    for i, node in enumerate(self.nodes[:-1]):
+      current = f"node{node.index}"
+      next_node = f"node{self.nodes[i + 1].index}"
+      code += f"\\draw[arrow] ({current}) -- ({next_node});\n"
 
-        code += "\n"
-        return code
+    code += "\n"
+    return code
 
-    def _generate_footer(self) -> str:
-        """Generate TikZ footer."""
-        return """\\end{tikzpicture}
+  def _generate_footer(self) -> str:
+    """Generate TikZ footer."""
+    return """\\end{tikzpicture}
 
 \\end{document}
 """
 
-    def save(self, filename: str):
-        """Generate and save TikZ code to file."""
-        code = self.generate_tikz()
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(code)
-        print(f"Flowchart saved to {filename}")
+  def save(self, filename: str):
+    """Generate and save TikZ code to file."""
+    code = self.generate_tikz()
+    with open(filename, "w", encoding="utf-8") as f:
+      f.write(code)
+    print(f"Flowchart saved to {filename}")
 
 
 def text_to_flowchart(text: str, output_file: str | None = None) -> str:
-    """
-    Convert text description to TikZ flowchart code.
+  """
+  Convert text description to TikZ flowchart code.
 
-    Args:
-        text: Numbered list or sequential text description
-        output_file: Optional filename to save output
+  Args:
+      text: Numbered list or sequential text description
+      output_file: Optional filename to save output
 
-    Returns:
-        TikZ code as string
-    """
-    generator = FlowchartGenerator()
-    generator.parse_text(text)
-    code = generator.generate_tikz()
+  Returns:
+      TikZ code as string
+  """
+  generator = FlowchartGenerator()
+  generator.parse_text(text)
+  code = generator.generate_tikz()
 
-    if output_file:
-        with open(output_file, "w", encoding="utf-8") as f:
-            f.write(code)
-        print(f"Flowchart saved to {output_file}")
+  if output_file:
+    with open(output_file, "w", encoding="utf-8") as f:
+      f.write(code)
+    print(f"Flowchart saved to {output_file}")
 
-    return code
+  return code
 
 
 def main():
-    """Command-line interface."""
-    parser = argparse.ArgumentParser(
-        description="Generate TikZ flowcharts from text descriptions",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+  """Command-line interface."""
+  parser = argparse.ArgumentParser(
+    description="Generate TikZ flowcharts from text descriptions",
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    epilog="""
 Examples:
   # From file
   python generate_flowchart.py -i steps.txt -o flowchart.tex
@@ -247,31 +254,36 @@ Examples:
   # Print to stdout
   python generate_flowchart.py -i steps.txt
         """,
-    )
+  )
 
-    input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument("-i", "--input", help="Input text file")
-    input_group.add_argument("-t", "--text", help="Direct text input")
+  input_group = parser.add_mutually_exclusive_group(required=True)
+  input_group.add_argument("-i", "--input", help="Input text file")
+  input_group.add_argument("-t", "--text", help="Direct text input")
 
-    parser.add_argument("-o", "--output", help="Output TikZ file")
-    parser.add_argument("--style", default="consort", choices=["consort", "simple"], help="Flowchart style (default: consort)")
+  parser.add_argument("-o", "--output", help="Output TikZ file")
+  parser.add_argument(
+    "--style",
+    default="consort",
+    choices=["consort", "simple"],
+    help="Flowchart style (default: consort)",
+  )
 
-    args = parser.parse_args()
+  args = parser.parse_args()
 
-    # Get input text
-    if args.input:
-        with open(args.input, encoding="utf-8") as f:
-            text = f.read()
-    else:
-        text = args.text
+  # Get input text
+  if args.input:
+    with open(args.input, encoding="utf-8") as f:
+      text = f.read()
+  else:
+    text = args.text
 
-    # Generate flowchart
-    code = text_to_flowchart(text, args.output)
+  # Generate flowchart
+  code = text_to_flowchart(text, args.output)
 
-    # Print to stdout if no output file
-    if not args.output:
-        print(code)
+  # Print to stdout if no output file
+  if not args.output:
+    print(code)
 
 
 if __name__ == "__main__":
-    main()
+  main()

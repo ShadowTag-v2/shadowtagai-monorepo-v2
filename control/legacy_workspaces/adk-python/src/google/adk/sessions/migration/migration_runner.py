@@ -32,10 +32,10 @@ logger = logging.getLogger("google_adk." + __name__)
 # The migration function should accept (source_db_url, dest_db_url) as
 # arguments.
 MIGRATIONS = {
-    _schema_check.SCHEMA_VERSION_0_1_PICKLE: (
-        _schema_check.SCHEMA_VERSION_1_0_JSON,
-        migrate_from_sqlalchemy_pickle.migrate,
-    ),
+  _schema_check.SCHEMA_VERSION_0_1_PICKLE: (
+    _schema_check.SCHEMA_VERSION_1_0_JSON,
+    migrate_from_sqlalchemy_pickle.migrate,
+  ),
 }
 # The most recent schema version. The migration process stops once this version
 # is reached.
@@ -43,76 +43,82 @@ LATEST_VERSION = _schema_check.CURRENT_SCHEMA_VERSION
 
 
 def upgrade(source_db_url: str, dest_db_url: str):
-    """Migrates a database from its current version to the latest version.
+  """Migrates a database from its current version to the latest version.
 
-    If the source database schema is older than the latest version, this
-    function applies migration scripts sequentially until the schema reaches the
-    LATEST_VERSION.
+  If the source database schema is older than the latest version, this
+  function applies migration scripts sequentially until the schema reaches the
+  LATEST_VERSION.
 
-    If multiple migration steps are required, intermediate results are stored in
-    temporary SQLite database files. This means a multi-step migration
-    between other database types (e.g. PostgreSQL to PostgreSQL) will use
-    SQLite for intermediate steps.
+  If multiple migration steps are required, intermediate results are stored in
+  temporary SQLite database files. This means a multi-step migration
+  between other database types (e.g. PostgreSQL to PostgreSQL) will use
+  SQLite for intermediate steps.
 
-    In-place migration (source_db_url == dest_db_url) is not supported,
-    as migrations always read from a source and write to a destination.
+  In-place migration (source_db_url == dest_db_url) is not supported,
+  as migrations always read from a source and write to a destination.
 
-    Args:
-      source_db_url: The SQLAlchemy URL of the database to migrate from.
-      dest_db_url: The SQLAlchemy URL of the database to migrate to. This must be
-        different from source_db_url.
+  Args:
+    source_db_url: The SQLAlchemy URL of the database to migrate from.
+    dest_db_url: The SQLAlchemy URL of the database to migrate to. This must be
+      different from source_db_url.
 
-    Raises:
-      RuntimeError: If source_db_url and dest_db_url are the same, or if no
-        migration path is found.
-    """
-    current_version = _schema_check.get_db_schema_version(source_db_url)
+  Raises:
+    RuntimeError: If source_db_url and dest_db_url are the same, or if no
+      migration path is found.
+  """
+  current_version = _schema_check.get_db_schema_version(source_db_url)
 
-    if current_version == LATEST_VERSION:
-        logger.info(f"Database {source_db_url} is already at latest version {LATEST_VERSION}. No migration needed.")
-        return
+  if current_version == LATEST_VERSION:
+    logger.info(
+      f"Database {source_db_url} is already at latest version {LATEST_VERSION}. No migration needed."
+    )
+    return
 
-    if source_db_url == dest_db_url:
-        raise RuntimeError("In-place migration is not supported. Please provide a different file for dest_db_url.")
+  if source_db_url == dest_db_url:
+    raise RuntimeError(
+      "In-place migration is not supported. Please provide a different file for dest_db_url."
+    )
 
-    # Build the list of migration steps required to reach LATEST_VERSION.
-    migrations_to_run = []
-    ver = current_version
-    while ver in MIGRATIONS and ver != LATEST_VERSION:
-        migrations_to_run.append(MIGRATIONS[ver])
-        ver = MIGRATIONS[ver][0]
+  # Build the list of migration steps required to reach LATEST_VERSION.
+  migrations_to_run = []
+  ver = current_version
+  while ver in MIGRATIONS and ver != LATEST_VERSION:
+    migrations_to_run.append(MIGRATIONS[ver])
+    ver = MIGRATIONS[ver][0]
 
-    if not migrations_to_run:
-        raise RuntimeError(f"Could not find migration path for schema version {current_version} to {LATEST_VERSION}.")
+  if not migrations_to_run:
+    raise RuntimeError(
+      f"Could not find migration path for schema version {current_version} to {LATEST_VERSION}."
+    )
 
-    temp_files = []
-    in_url = source_db_url
-    try:
-        for i, (end_version, migrate_func) in enumerate(migrations_to_run):
-            is_last_step = i == len(migrations_to_run) - 1
+  temp_files = []
+  in_url = source_db_url
+  try:
+    for i, (end_version, migrate_func) in enumerate(migrations_to_run):
+      is_last_step = i == len(migrations_to_run) - 1
 
-            if is_last_step:
-                out_url = dest_db_url
-            else:
-                # For intermediate steps, create a temporary SQLite DB to store the
-                # result.
-                fd, temp_path = tempfile.mkstemp(suffix=".db")
-                os.close(fd)
-                out_url = f"sqlite:///{temp_path}"
-                temp_files.append(temp_path)
-                logger.debug(f"Created temp db {out_url} for step {i + 1}")
+      if is_last_step:
+        out_url = dest_db_url
+      else:
+        # For intermediate steps, create a temporary SQLite DB to store the
+        # result.
+        fd, temp_path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+        out_url = f"sqlite:///{temp_path}"
+        temp_files.append(temp_path)
+        logger.debug(f"Created temp db {out_url} for step {i + 1}")
 
-            logger.info(f"Migrating from {in_url} to {out_url} (schema {end_version})...")
-            migrate_func(in_url, out_url)
-            logger.info(f"Finished migration step to schema {end_version}.")
-            # The output of this step becomes the input for the next step.
-            in_url = out_url
-    finally:
-        # Ensure temporary files are cleaned up even if migration fails.
-        # Cleanup temp files
-        for path in temp_files:
-            try:
-                os.remove(path)
-                logger.debug(f"Removed temp db {path}")
-            except OSError as e:
-                logger.warning(f"Failed to remove temp db file {path}: {e}")
+      logger.info(f"Migrating from {in_url} to {out_url} (schema {end_version})...")
+      migrate_func(in_url, out_url)
+      logger.info(f"Finished migration step to schema {end_version}.")
+      # The output of this step becomes the input for the next step.
+      in_url = out_url
+  finally:
+    # Ensure temporary files are cleaned up even if migration fails.
+    # Cleanup temp files
+    for path in temp_files:
+      try:
+        os.remove(path)
+        logger.debug(f"Removed temp db {path}")
+      except OSError as e:
+        logger.warning(f"Failed to remove temp db file {path}: {e}")

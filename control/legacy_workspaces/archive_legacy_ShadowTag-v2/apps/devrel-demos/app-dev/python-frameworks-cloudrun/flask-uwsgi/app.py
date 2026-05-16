@@ -22,8 +22,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "👋 Hello flask - uwsgi"
+  return "👋 Hello flask - uwsgi"
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=8080, debug=True)
+  app.run(host="localhost", port=8080, debug=True)

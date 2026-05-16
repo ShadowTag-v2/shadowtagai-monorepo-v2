@@ -38,8 +38,8 @@ from . import cli
 __version__ = "2.0.0"
 __author__ = "ShadowTag Development Team"
 __all__ = [
-    "video_stego",
-    "audio_stego",
-    "receipt_chain",
-    "cli",
+  "video_stego",
+  "audio_stego",
+  "receipt_chain",
+  "cli",
 ]

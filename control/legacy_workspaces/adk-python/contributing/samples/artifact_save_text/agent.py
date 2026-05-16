@@ -20,25 +20,27 @@ from google.genai import types
 
 
 async def log_query(tool_context: ToolContext, query: str):
-    """Saves the provided query string as a 'text/plain' artifact named 'query'."""
-    query_bytes = query.encode("utf-8")
-    artifact_part = types.Part(inline_data=types.Blob(mime_type="text/plain", data=query_bytes))
-    await tool_context.save_artifact("query", artifact_part)
+  """Saves the provided query string as a 'text/plain' artifact named 'query'."""
+  query_bytes = query.encode("utf-8")
+  artifact_part = types.Part(
+    inline_data=types.Blob(mime_type="text/plain", data=query_bytes)
+  )
+  await tool_context.save_artifact("query", artifact_part)
 
 
 root_agent = Agent(
-    model="gemini-2.0-flash",
-    name="log_agent",
-    description="Log user query.",
-    instruction="""Always log the user query and reply "kk, I've logged."
+  model="gemini-2.0-flash",
+  name="log_agent",
+  description="Log user query.",
+  instruction="""Always log the user query and reply "kk, I've logged."
     """,
-    tools=[log_query],
-    generate_content_config=types.GenerateContentConfig(
-        safety_settings=[
-            types.SafetySetting(  # avoid false alarm about rolling dice.
-                category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                threshold=types.HarmBlockThreshold.OFF,
-            ),
-        ]
-    ),
+  tools=[log_query],
+  generate_content_config=types.GenerateContentConfig(
+    safety_settings=[
+      types.SafetySetting(  # avoid false alarm about rolling dice.
+        category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold=types.HarmBlockThreshold.OFF,
+      ),
+    ]
+  ),
 )

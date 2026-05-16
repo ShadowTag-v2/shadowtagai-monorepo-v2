@@ -59,72 +59,72 @@ Commentator (Analyst):
 **IMPORTANT - Prioritize the image provided**
 """
 GENERATION_CONFIG = {
-    "max_output_tokens": 8192,
-    "temperature": 0,
-    "top_p": 1,
+  "max_output_tokens": 8192,
+  "temperature": 0,
+  "top_p": 1,
 }
 SAFETY_SETTINGS = {
-    generative_models.HarmCategory.HARM_CATEGORY_HATE_SPEECH: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    generative_models.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    generative_models.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  generative_models.HarmCategory.HARM_CATEGORY_HATE_SPEECH: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  generative_models.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  generative_models.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  generative_models.HarmCategory.HARM_CATEGORY_HARASSMENT: generative_models.HarmBlockThreshold.BLOCK_ONLY_HIGH,
 }
 
 
 def helper_shot_information(df):
-    SHOT_DICT = {
-        1: "Hole-in-one!",
-        2: "birdie!",
-        3: "par!",
-        4: "bogey.",
-        5: "double bogey.",
-        6: "triple bogey.",
-        7: "quadruple bogey.",
-        8: "double par.",
-    }
-    SHOT_NUM_DICT = {1: "1st", 2: "2nd", 3: "3rd"}
-    filtered_df = df[df["shot_number"] > 0].sort_values(by="frame_number")
-    is_last_shot_hole_in = filtered_df["distance"].iloc[-1] < 30
-    total_shot_num = filtered_df["shot_number"].iloc[-1]
-    grade = SHOT_DICT[total_shot_num] if total_shot_num <= 8 else SHOT_DICT[8]
+  SHOT_DICT = {
+    1: "Hole-in-one!",
+    2: "birdie!",
+    3: "par!",
+    4: "bogey.",
+    5: "double bogey.",
+    6: "triple bogey.",
+    7: "quadruple bogey.",
+    8: "double par.",
+  }
+  SHOT_NUM_DICT = {1: "1st", 2: "2nd", 3: "3rd"}
+  filtered_df = df[df["shot_number"] > 0].sort_values(by="frame_number")
+  is_last_shot_hole_in = filtered_df["distance"].iloc[-1] < 30
+  total_shot_num = filtered_df["shot_number"].iloc[-1]
+  grade = SHOT_DICT[total_shot_num] if total_shot_num <= 8 else SHOT_DICT[8]
 
-    shot_details = []
-    for i in range(1, total_shot_num + 1):
-        shot = SHOT_NUM_DICT.get(i, f"{i}th")
-        shot_details.append(f"The {shot} shot was ")
-        if i < total_shot_num or (i == total_shot_num and not is_last_shot_hole_in):
-            shot_details.append("not ")
-        shot_details.append("hole-in.\n")
-    shot_details = "".join(shot_details)
+  shot_details = []
+  for i in range(1, total_shot_num + 1):
+    shot = SHOT_NUM_DICT.get(i, f"{i}th")
+    shot_details.append(f"The {shot} shot was ")
+    if i < total_shot_num or (i == total_shot_num and not is_last_shot_hole_in):
+      shot_details.append("not ")
+    shot_details.append("hole-in.\n")
+  shot_details = "".join(shot_details)
 
-    result = "didn't make" if is_last_shot_hole_in else "made"
+  result = "didn't make" if is_last_shot_hole_in else "made"
 
-    if is_last_shot_hole_in:
-        result = f"made with {total_shot_num} shot/shots! {grade}"
-        if total_shot_num > 3:
-            result += " The player loses."
-        else:
-            result += " The player wins!"
+  if is_last_shot_hole_in:
+    result = f"made with {total_shot_num} shot/shots! {grade}"
+    if total_shot_num > 3:
+      result += " The player loses."
+    else:
+      result += " The player wins!"
 
-    commentary = f"""
+  commentary = f"""
     {shot_details}
     The ball {result}
     """
-    return commentary
+  return commentary
 
 
 def generate_commentary(project_id, bucket_name, user_id, df):
-    vertexai.init(project=project_id, location="us-central1")
-    model = GenerativeModel(
-        GEMINI_MODEL,
-        system_instruction=SYSTEM_INSTRUCTION,
-    )
-    VIDEO = Part.from_uri(uri=f"gs://{bucket_name}/{user_id}.mp4", mime_type="video/mp4")
-    IMAGE = Part.from_image(Image.load_from_file("/tmp/trajectory.png"))
+  vertexai.init(project=project_id, location="us-central1")
+  model = GenerativeModel(
+    GEMINI_MODEL,
+    system_instruction=SYSTEM_INSTRUCTION,
+  )
+  VIDEO = Part.from_uri(uri=f"gs://{bucket_name}/{user_id}.mp4", mime_type="video/mp4")
+  IMAGE = Part.from_image(Image.load_from_file("/tmp/trajectory.png"))
 
-    responses = model.generate_content(
-        [VIDEO, IMAGE, helper_shot_information(df)],
-        generation_config=GENERATION_CONFIG,
-        safety_settings=SAFETY_SETTINGS,
-    )
-    return responses.text
+  responses = model.generate_content(
+    [VIDEO, IMAGE, helper_shot_information(df)],
+    generation_config=GENERATION_CONFIG,
+    safety_settings=SAFETY_SETTINGS,
+  )
+  return responses.text

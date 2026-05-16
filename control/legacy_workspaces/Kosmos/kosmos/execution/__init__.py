@@ -41,95 +41,95 @@ Legacy Usage (existing sandbox):
 
 # Production executor components (new)
 from .docker_manager import (
-    DockerManager,
-    ContainerConfig,
-    ContainerInstance,
-    ContainerStatus,
+  DockerManager,
+  ContainerConfig,
+  ContainerInstance,
+  ContainerStatus,
 )
 
 from .jupyter_client import (
-    JupyterClient,
-    ExecutionResult,
-    ExecutionStatus,
-    CellOutput,
+  JupyterClient,
+  ExecutionResult,
+  ExecutionStatus,
+  CellOutput,
 )
 
 from .package_resolver import (
-    PackageResolver,
-    PackageRequirement,
-    extract_imports_from_code,
-    resolve_package_name,
-    is_stdlib_module,
-    IMPORT_TO_PIP,
-    STDLIB_MODULES,
+  PackageResolver,
+  PackageRequirement,
+  extract_imports_from_code,
+  resolve_package_name,
+  is_stdlib_module,
+  IMPORT_TO_PIP,
+  STDLIB_MODULES,
 )
 
 from .production_executor import (
-    ProductionExecutor,
-    ProductionConfig,
-    execute_code_safely,
+  ProductionExecutor,
+  ProductionConfig,
+  execute_code_safely,
 )
 
 # Legacy components (existing)
 from .sandbox import (
-    DockerSandbox,
-    SandboxExecutionResult,
-    execute_in_sandbox,
+  DockerSandbox,
+  SandboxExecutionResult,
+  execute_in_sandbox,
 )
 
 from .executor import (
-    CodeExecutor,
-    ExecutionResult as LegacyExecutionResult,
-    CodeValidator,
-    RetryStrategy,
-    execute_protocol_code,
+  CodeExecutor,
+  ExecutionResult as LegacyExecutionResult,
+  CodeValidator,
+  RetryStrategy,
+  execute_protocol_code,
 )
 
 # Issue #62: Code line provenance
 from .provenance import (
-    CodeProvenance,
-    CellLineMapping,
-    create_provenance_from_notebook,
-    build_cell_line_mappings,
-    get_cell_for_line,
+  CodeProvenance,
+  CellLineMapping,
+  create_provenance_from_notebook,
+  build_cell_line_mappings,
+  get_cell_for_line,
 )
 
 # Re-export commonly used items at package level
 __all__ = [
-    # Production executor (recommended)
-    "ProductionExecutor",
-    "ProductionConfig",
-    "execute_code_safely",
-    # Docker management
-    "DockerManager",
-    "ContainerConfig",
-    "ContainerInstance",
-    "ContainerStatus",
-    # Jupyter client
-    "JupyterClient",
-    "ExecutionResult",
-    "ExecutionStatus",
-    "CellOutput",
-    # Package resolution
-    "PackageResolver",
-    "PackageRequirement",
-    "extract_imports_from_code",
-    "resolve_package_name",
-    "is_stdlib_module",
-    "IMPORT_TO_PIP",
-    "STDLIB_MODULES",
-    # Legacy (existing)
-    "DockerSandbox",
-    "SandboxExecutionResult",
-    "execute_in_sandbox",
-    "CodeExecutor",
-    "CodeValidator",
-    "RetryStrategy",
-    "execute_protocol_code",
-    # Issue #62: Code line provenance
-    "CodeProvenance",
-    "CellLineMapping",
-    "create_provenance_from_notebook",
-    "build_cell_line_mappings",
-    "get_cell_for_line",
+  # Production executor (recommended)
+  "ProductionExecutor",
+  "ProductionConfig",
+  "execute_code_safely",
+  # Docker management
+  "DockerManager",
+  "ContainerConfig",
+  "ContainerInstance",
+  "ContainerStatus",
+  # Jupyter client
+  "JupyterClient",
+  "ExecutionResult",
+  "ExecutionStatus",
+  "CellOutput",
+  # Package resolution
+  "PackageResolver",
+  "PackageRequirement",
+  "extract_imports_from_code",
+  "resolve_package_name",
+  "is_stdlib_module",
+  "IMPORT_TO_PIP",
+  "STDLIB_MODULES",
+  # Legacy (existing)
+  "DockerSandbox",
+  "SandboxExecutionResult",
+  "execute_in_sandbox",
+  "CodeExecutor",
+  "CodeValidator",
+  "RetryStrategy",
+  "execute_protocol_code",
+  # Issue #62: Code line provenance
+  "CodeProvenance",
+  "CellLineMapping",
+  "create_provenance_from_notebook",
+  "build_cell_line_mappings",
+  "get_cell_for_line",
 ]

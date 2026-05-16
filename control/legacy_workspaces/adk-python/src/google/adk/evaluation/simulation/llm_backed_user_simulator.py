@@ -99,175 +99,179 @@ Step 3: Formulate a response based on the chosen action and the below Action Pro
 
 
 class LlmBackedUserSimulatorConfig(BaseUserSimulatorConfig):
-    """Contains configurations required by an LLM backed user simulator."""
+  """Contains configurations required by an LLM backed user simulator."""
 
-    model: str = Field(
-        default="gemini-2.5-flash",
-        description="The model to use for user simulation.",
-    )
+  model: str = Field(
+    default="gemini-2.5-flash",
+    description="The model to use for user simulation.",
+  )
 
-    model_configuration: genai_types.GenerateContentConfig = Field(
-        default_factory=lambda: genai_types.GenerateContentConfig(
-            thinking_config=genai_types.ThinkingConfig(
-                include_thoughts=True,
-                thinking_budget=10240,
-            )
-        ),
-        description="The configuration for the model.",
-    )
+  model_configuration: genai_types.GenerateContentConfig = Field(
+    default_factory=lambda: genai_types.GenerateContentConfig(
+      thinking_config=genai_types.ThinkingConfig(
+        include_thoughts=True,
+        thinking_budget=10240,
+      )
+    ),
+    description="The configuration for the model.",
+  )
 
-    max_allowed_invocations: int = Field(
-        default=20,
-        description="""Maximum number of invocations allowed by the simulated
+  max_allowed_invocations: int = Field(
+    default=20,
+    description="""Maximum number of invocations allowed by the simulated
 interaction. This property allows us to stop a run-off conversation, where the
 agent and the user simulator get into a never ending loop. The initial fixed
 prompt is also counted as an invocation.
 
 (Not recommended) If you don't want a limit, you can set the value to -1.""",
-    )
+  )
 
 
 @experimental
 class LlmBackedUserSimulator(UserSimulator):
-    """A UserSimulator that uses an LLM to generate messages on behalf of the user."""
+  """A UserSimulator that uses an LLM to generate messages on behalf of the user."""
 
-    config_type: ClassVar[type[LlmBackedUserSimulatorConfig]] = LlmBackedUserSimulatorConfig
+  config_type: ClassVar[type[LlmBackedUserSimulatorConfig]] = (
+    LlmBackedUserSimulatorConfig
+  )
 
-    def __init__(
-        self,
-        *,
-        config: BaseUserSimulatorConfig,
-        conversation_scenario: ConversationScenario,
-    ):
-        super().__init__(config, config_type=LlmBackedUserSimulator.config_type)
-        self._conversation_scenario = conversation_scenario
-        self._invocation_count = 0
-        llm_registry = LLMRegistry()
-        llm_class = llm_registry.resolve(self._config.model)
-        self._llm = llm_class(model=self._config.model)
+  def __init__(
+    self,
+    *,
+    config: BaseUserSimulatorConfig,
+    conversation_scenario: ConversationScenario,
+  ):
+    super().__init__(config, config_type=LlmBackedUserSimulator.config_type)
+    self._conversation_scenario = conversation_scenario
+    self._invocation_count = 0
+    llm_registry = LLMRegistry()
+    llm_class = llm_registry.resolve(self._config.model)
+    self._llm = llm_class(model=self._config.model)
 
-    @classmethod
-    def _summarize_conversation(
-        cls,
-        events: list[Event],
-    ) -> str:
-        """Summarize the conversation to add to the prompt.
+  @classmethod
+  def _summarize_conversation(
+    cls,
+    events: list[Event],
+  ) -> str:
+    """Summarize the conversation to add to the prompt.
 
-        Removes tool calls, responses, and thoughts.
+    Removes tool calls, responses, and thoughts.
 
-        Args:
-          events: The conversation history to rewrite.
+    Args:
+      events: The conversation history to rewrite.
 
-        Returns:
-          The summarized conversation history as a string.
-        """
-        rewritten_dialogue = []
-        for e in events:
-            if not e.content or not e.content.parts:
-                continue
-            author = e.author
-            for part in e.content.parts:
-                if part.text and not part.thought:
-                    rewritten_dialogue.append(f"{author}: {part.text}")
+    Returns:
+      The summarized conversation history as a string.
+    """
+    rewritten_dialogue = []
+    for e in events:
+      if not e.content or not e.content.parts:
+        continue
+      author = e.author
+      for part in e.content.parts:
+        if part.text and not part.thought:
+          rewritten_dialogue.append(f"{author}: {part.text}")
 
-        return "\n\n".join(rewritten_dialogue)
+    return "\n\n".join(rewritten_dialogue)
 
-    async def _get_llm_response(
-        self,
-        rewritten_dialogue: str,
-    ) -> str:
-        """Sends a user message generation request to the LLM and returns the full response."""
-        if self._invocation_count == 0:
-            # first invocation - send the static starting prompt
-            return self._conversation_scenario.starting_prompt
+  async def _get_llm_response(
+    self,
+    rewritten_dialogue: str,
+  ) -> str:
+    """Sends a user message generation request to the LLM and returns the full response."""
+    if self._invocation_count == 0:
+      # first invocation - send the static starting prompt
+      return self._conversation_scenario.starting_prompt
 
-        user_agent_instructions = _USER_AGENT_INSTRUCTIONS_TEMPLATE.format(
-            stop_signal=_STOP_SIGNAL,
-            conversation_plan=self._conversation_scenario.conversation_plan,
-            conversation_history=rewritten_dialogue,
-        )
+    user_agent_instructions = _USER_AGENT_INSTRUCTIONS_TEMPLATE.format(
+      stop_signal=_STOP_SIGNAL,
+      conversation_plan=self._conversation_scenario.conversation_plan,
+      conversation_history=rewritten_dialogue,
+    )
 
-        llm_request = LlmRequest(
-            model=self._config.model,
-            config=self._config.model_configuration,
-            contents=[
-                genai_types.Content(
-                    parts=[
-                        genai_types.Part(text=user_agent_instructions),
-                    ],
-                    role=_AUTHOR_USER,
-                ),
-            ],
-        )
-        add_default_retry_options_if_not_present(llm_request)
+    llm_request = LlmRequest(
+      model=self._config.model,
+      config=self._config.model_configuration,
+      contents=[
+        genai_types.Content(
+          parts=[
+            genai_types.Part(text=user_agent_instructions),
+          ],
+          role=_AUTHOR_USER,
+        ),
+      ],
+    )
+    add_default_retry_options_if_not_present(llm_request)
 
-        response = ""
-        async with Aclosing(self._llm.generate_content_async(llm_request)) as agen:
-            async for llm_response in agen:
-                generated_content: genai_types.Content = llm_response.content
-                if not generated_content.parts:
-                    continue
-                for part in generated_content.parts:
-                    if part.text and not part.thought:
-                        response += part.text
-        return response
+    response = ""
+    async with Aclosing(self._llm.generate_content_async(llm_request)) as agen:
+      async for llm_response in agen:
+        generated_content: genai_types.Content = llm_response.content
+        if not generated_content.parts:
+          continue
+        for part in generated_content.parts:
+          if part.text and not part.thought:
+            response += part.text
+    return response
 
-    @override
-    async def get_next_user_message(
-        self,
-        events: list[Event],
-    ) -> NextUserMessage:
-        """Returns the next user message to send to the agent with help from a LLM.
+  @override
+  async def get_next_user_message(
+    self,
+    events: list[Event],
+  ) -> NextUserMessage:
+    """Returns the next user message to send to the agent with help from a LLM.
 
-        Args:
-          events: The unaltered conversation history between the user and the
-            agent(s) under evaluation.
+    Args:
+      events: The unaltered conversation history between the user and the
+        agent(s) under evaluation.
 
-        Returns:
-          A NextUserMessage object containing the next user message to send to the
-          agent, or a status indicating why no message was generated.
+    Returns:
+      A NextUserMessage object containing the next user message to send to the
+      agent, or a status indicating why no message was generated.
 
-        Raises:
-          RuntimeError: If the user agent fails to generate a message. This is not a
-          valid result for the LLM backed user simulator and is different from the
-          NO_MESSAGE_GENERATED status.
-        """
-        # check invocation limit
-        invocation_limit = self._config.max_allowed_invocations
-        if invocation_limit >= 0 and self._invocation_count >= invocation_limit:
-            logger.warning(
-                "LlmBackedUserSimulator invocation limit (%d) reached!",
-                invocation_limit,
-            )
-            return NextUserMessage(status=Status.TURN_LIMIT_REACHED)
+    Raises:
+      RuntimeError: If the user agent fails to generate a message. This is not a
+      valid result for the LLM backed user simulator and is different from the
+      NO_MESSAGE_GENERATED status.
+    """
+    # check invocation limit
+    invocation_limit = self._config.max_allowed_invocations
+    if invocation_limit >= 0 and self._invocation_count >= invocation_limit:
+      logger.warning(
+        "LlmBackedUserSimulator invocation limit (%d) reached!",
+        invocation_limit,
+      )
+      return NextUserMessage(status=Status.TURN_LIMIT_REACHED)
 
-        # rewrite events for the user simulator
-        rewritten_dialogue = self._summarize_conversation(events)
+    # rewrite events for the user simulator
+    rewritten_dialogue = self._summarize_conversation(events)
 
-        # query the LLM for the next user message
-        response = await self._get_llm_response(rewritten_dialogue)
-        self._invocation_count += 1
+    # query the LLM for the next user message
+    response = await self._get_llm_response(rewritten_dialogue)
+    self._invocation_count += 1
 
-        # is the conversation over? (Has the user simulator output the stop signal?)
-        if _STOP_SIGNAL.lower() in response.lower():
-            logger.info("Stopping user message generation as the stop signal was detected.")
-            return NextUserMessage(status=Status.STOP_SIGNAL_DETECTED)
+    # is the conversation over? (Has the user simulator output the stop signal?)
+    if _STOP_SIGNAL.lower() in response.lower():
+      logger.info("Stopping user message generation as the stop signal was detected.")
+      return NextUserMessage(status=Status.STOP_SIGNAL_DETECTED)
 
-        # is the response non-empty?
-        if response:
-            return NextUserMessage(
-                status=Status.SUCCESS,
-                # return message as user content
-                user_message=genai_types.Content(parts=[genai_types.Part(text=response)], role=_AUTHOR_USER),
-            )
+    # is the response non-empty?
+    if response:
+      return NextUserMessage(
+        status=Status.SUCCESS,
+        # return message as user content
+        user_message=genai_types.Content(
+          parts=[genai_types.Part(text=response)], role=_AUTHOR_USER
+        ),
+      )
 
-        # if we are here, the user agent failed to generate a message, which is not
-        # a valid result for the LLM backed user simulator.
-        raise RuntimeError("Failed to generate a user message")
+    # if we are here, the user agent failed to generate a message, which is not
+    # a valid result for the LLM backed user simulator.
+    raise RuntimeError("Failed to generate a user message")
 
-    @override
-    def get_simulation_evaluator(
-        self,
-    ) -> Evaluator | None:
-        """Returns an Evaluator that evaluates if the simulation was successful or not."""
-        raise NotImplementedError()
+  @override
+  def get_simulation_evaluator(
+    self,
+  ) -> Evaluator | None:
+    """Returns an Evaluator that evaluates if the simulation was successful or not."""
+    raise NotImplementedError()

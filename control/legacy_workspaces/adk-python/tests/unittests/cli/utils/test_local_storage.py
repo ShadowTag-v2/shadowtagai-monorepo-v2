@@ -25,33 +25,33 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_per_agent_session_service_creates_scoped_dot_adk(
-    tmp_path: Path,
+  tmp_path: Path,
 ) -> None:
-    agent_a = tmp_path / "agent_a"
-    agent_b = tmp_path / "agent_b"
-    agent_a.mkdir()
-    agent_b.mkdir()
+  agent_a = tmp_path / "agent_a"
+  agent_b = tmp_path / "agent_b"
+  agent_a.mkdir()
+  agent_b.mkdir()
 
-    service = PerAgentDatabaseSessionService(agents_root=tmp_path)
+  service = PerAgentDatabaseSessionService(agents_root=tmp_path)
 
-    await service.create_session(app_name="agent_a", user_id="user_a")
-    await service.create_session(app_name="agent_b", user_id="user_b")
+  await service.create_session(app_name="agent_a", user_id="user_a")
+  await service.create_session(app_name="agent_b", user_id="user_b")
 
-    assert (agent_a / ".adk" / "session.db").exists()
-    assert (agent_b / ".adk" / "session.db").exists()
+  assert (agent_a / ".adk" / "session.db").exists()
+  assert (agent_b / ".adk" / "session.db").exists()
 
-    agent_a_sessions = await service.list_sessions(app_name="agent_a")
-    agent_b_sessions = await service.list_sessions(app_name="agent_b")
+  agent_a_sessions = await service.list_sessions(app_name="agent_a")
+  agent_b_sessions = await service.list_sessions(app_name="agent_b")
 
-    assert len(agent_a_sessions.sessions) == 1
-    assert agent_a_sessions.sessions[0].app_name == "agent_a"
-    assert len(agent_b_sessions.sessions) == 1
-    assert agent_b_sessions.sessions[0].app_name == "agent_b"
+  assert len(agent_a_sessions.sessions) == 1
+  assert agent_a_sessions.sessions[0].app_name == "agent_a"
+  assert len(agent_b_sessions.sessions) == 1
+  assert agent_b_sessions.sessions[0].app_name == "agent_b"
 
 
 def test_create_local_database_session_service_returns_sqlite(
-    tmp_path: Path,
+  tmp_path: Path,
 ) -> None:
-    service = create_local_database_session_service(base_dir=tmp_path)
+  service = create_local_database_session_service(base_dir=tmp_path)
 
-    assert isinstance(service, SqliteSessionService)
+  assert isinstance(service, SqliteSessionService)

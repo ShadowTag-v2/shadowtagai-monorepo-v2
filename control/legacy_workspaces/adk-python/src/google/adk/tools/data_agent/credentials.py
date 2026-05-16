@@ -22,16 +22,16 @@ DATA_AGENT_DEFAULT_SCOPE = ["https://www.googleapis.com/auth/bigquery"]
 
 
 class DataAgentCredentialsConfig(BaseGoogleCredentialsConfig):
-    """Data Agent Credentials Configuration for Google API tools."""
+  """Data Agent Credentials Configuration for Google API tools."""
 
-    def __post_init__(self) -> DataAgentCredentialsConfig:
-        """Populate default scope if scopes is None."""
-        super().__post_init__()
+  def __post_init__(self) -> DataAgentCredentialsConfig:
+    """Populate default scope if scopes is None."""
+    super().__post_init__()
 
-        if not self.scopes:
-            self.scopes = DATA_AGENT_DEFAULT_SCOPE
+    if not self.scopes:
+      self.scopes = DATA_AGENT_DEFAULT_SCOPE
 
-        # Set the token cache key
-        self._token_cache_key = DATA_AGENT_TOKEN_CACHE_KEY
+    # Set the token cache key
+    self._token_cache_key = DATA_AGENT_TOKEN_CACHE_KEY
 
-        return self
+    return self

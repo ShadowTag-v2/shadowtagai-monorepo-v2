@@ -26,155 +26,157 @@ from sqlalchemy.dialects import mysql
 
 @pytest.fixture
 def pickle_type():
-    """Fixture for DynamicPickleType instance."""
-    return DynamicPickleType()
+  """Fixture for DynamicPickleType instance."""
+  return DynamicPickleType()
 
 
 def test_load_dialect_impl_mysql(pickle_type):
-    """Test that MySQL dialect uses LONGBLOB."""
-    # Mock the MySQL dialect
-    mock_dialect = mock.Mock()
-    mock_dialect.name = "mysql"
+  """Test that MySQL dialect uses LONGBLOB."""
+  # Mock the MySQL dialect
+  mock_dialect = mock.Mock()
+  mock_dialect.name = "mysql"
 
-    # Mock the return value of type_descriptor
-    mock_longblob_type = mock.Mock()
-    mock_dialect.type_descriptor.return_value = mock_longblob_type
+  # Mock the return value of type_descriptor
+  mock_longblob_type = mock.Mock()
+  mock_dialect.type_descriptor.return_value = mock_longblob_type
 
-    impl = pickle_type.load_dialect_impl(mock_dialect)
+  impl = pickle_type.load_dialect_impl(mock_dialect)
 
-    # Verify type_descriptor was called once with mysql.LONGBLOB
-    mock_dialect.type_descriptor.assert_called_once_with(mysql.LONGBLOB)
-    # Verify the return value is what we expect
-    assert impl == mock_longblob_type
+  # Verify type_descriptor was called once with mysql.LONGBLOB
+  mock_dialect.type_descriptor.assert_called_once_with(mysql.LONGBLOB)
+  # Verify the return value is what we expect
+  assert impl == mock_longblob_type
 
 
 def test_load_dialect_impl_spanner(pickle_type):
-    """Test that Spanner dialect uses SpannerPickleType."""
-    # Mock the spanner dialect
-    mock_dialect = mock.Mock()
-    mock_dialect.name = "spanner+spanner"
+  """Test that Spanner dialect uses SpannerPickleType."""
+  # Mock the spanner dialect
+  mock_dialect = mock.Mock()
+  mock_dialect.name = "spanner+spanner"
 
-    with mock.patch("google.cloud.sqlalchemy_spanner.sqlalchemy_spanner.SpannerPickleType") as mock_spanner_type:
-        pickle_type.load_dialect_impl(mock_dialect)
-        mock_dialect.type_descriptor.assert_called_once_with(mock_spanner_type)
+  with mock.patch(
+    "google.cloud.sqlalchemy_spanner.sqlalchemy_spanner.SpannerPickleType"
+  ) as mock_spanner_type:
+    pickle_type.load_dialect_impl(mock_dialect)
+    mock_dialect.type_descriptor.assert_called_once_with(mock_spanner_type)
 
 
 def test_load_dialect_impl_default(pickle_type):
-    """Test that other dialects use default PickleType."""
-    engine = create_engine("sqlite:///:memory:")
-    dialect = engine.dialect
-    impl = pickle_type.load_dialect_impl(dialect)
-    # Should return the default impl (PickleType)
-    assert impl == pickle_type.impl
+  """Test that other dialects use default PickleType."""
+  engine = create_engine("sqlite:///:memory:")
+  dialect = engine.dialect
+  impl = pickle_type.load_dialect_impl(dialect)
+  # Should return the default impl (PickleType)
+  assert impl == pickle_type.impl
 
 
 @pytest.mark.parametrize(
-    "dialect_name",
-    [
-        pytest.param("mysql", id="mysql"),
-        pytest.param("spanner+spanner", id="spanner"),
-    ],
+  "dialect_name",
+  [
+    pytest.param("mysql", id="mysql"),
+    pytest.param("spanner+spanner", id="spanner"),
+  ],
 )
 def test_process_bind_param_pickle_dialects(pickle_type, dialect_name):
-    """Test that MySQL and Spanner dialects pickle the value."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = dialect_name
+  """Test that MySQL and Spanner dialects pickle the value."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = dialect_name
 
-    test_data = {"key": "value", "nested": [1, 2, 3]}
-    result = pickle_type.process_bind_param(test_data, mock_dialect)
+  test_data = {"key": "value", "nested": [1, 2, 3]}
+  result = pickle_type.process_bind_param(test_data, mock_dialect)
 
-    # Should be pickled bytes
-    assert isinstance(result, bytes)
-    # Should be able to unpickle back to original
-    assert pickle.loads(result) == test_data
+  # Should be pickled bytes
+  assert isinstance(result, bytes)
+  # Should be able to unpickle back to original
+  assert pickle.loads(result) == test_data
 
 
 def test_process_bind_param_default(pickle_type):
-    """Test that other dialects return value as-is."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = "sqlite"
+  """Test that other dialects return value as-is."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = "sqlite"
 
-    test_data = {"key": "value"}
-    result = pickle_type.process_bind_param(test_data, mock_dialect)
+  test_data = {"key": "value"}
+  result = pickle_type.process_bind_param(test_data, mock_dialect)
 
-    # Should return value unchanged (SQLAlchemy's PickleType handles it)
-    assert result == test_data
+  # Should return value unchanged (SQLAlchemy's PickleType handles it)
+  assert result == test_data
 
 
 def test_process_bind_param_none(pickle_type):
-    """Test that None values are handled correctly."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = "mysql"
+  """Test that None values are handled correctly."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = "mysql"
 
-    result = pickle_type.process_bind_param(None, mock_dialect)
-    assert result is None
+  result = pickle_type.process_bind_param(None, mock_dialect)
+  assert result is None
 
 
 @pytest.mark.parametrize(
-    "dialect_name",
-    [
-        pytest.param("mysql", id="mysql"),
-        pytest.param("spanner+spanner", id="spanner"),
-    ],
+  "dialect_name",
+  [
+    pytest.param("mysql", id="mysql"),
+    pytest.param("spanner+spanner", id="spanner"),
+  ],
 )
 def test_process_result_value_pickle_dialects(pickle_type, dialect_name):
-    """Test that MySQL and Spanner dialects unpickle the value."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = dialect_name
+  """Test that MySQL and Spanner dialects unpickle the value."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = dialect_name
 
-    test_data = {"key": "value", "nested": [1, 2, 3]}
-    pickled_data = pickle.dumps(test_data)
+  test_data = {"key": "value", "nested": [1, 2, 3]}
+  pickled_data = pickle.dumps(test_data)
 
-    result = pickle_type.process_result_value(pickled_data, mock_dialect)
+  result = pickle_type.process_result_value(pickled_data, mock_dialect)
 
-    # Should be unpickled back to original
-    assert result == test_data
+  # Should be unpickled back to original
+  assert result == test_data
 
 
 def test_process_result_value_default(pickle_type):
-    """Test that other dialects return value as-is."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = "sqlite"
+  """Test that other dialects return value as-is."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = "sqlite"
 
-    test_data = {"key": "value"}
-    result = pickle_type.process_result_value(test_data, mock_dialect)
+  test_data = {"key": "value"}
+  result = pickle_type.process_result_value(test_data, mock_dialect)
 
-    # Should return value unchanged (SQLAlchemy's PickleType handles it)
-    assert result == test_data
+  # Should return value unchanged (SQLAlchemy's PickleType handles it)
+  assert result == test_data
 
 
 def test_process_result_value_none(pickle_type):
-    """Test that None values are handled correctly."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = "mysql"
+  """Test that None values are handled correctly."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = "mysql"
 
-    result = pickle_type.process_result_value(None, mock_dialect)
-    assert result is None
+  result = pickle_type.process_result_value(None, mock_dialect)
+  assert result is None
 
 
 @pytest.mark.parametrize(
-    "dialect_name",
-    [
-        pytest.param("mysql", id="mysql"),
-        pytest.param("spanner+spanner", id="spanner"),
-    ],
+  "dialect_name",
+  [
+    pytest.param("mysql", id="mysql"),
+    pytest.param("spanner+spanner", id="spanner"),
+  ],
 )
 def test_roundtrip_pickle_dialects(pickle_type, dialect_name):
-    """Test full roundtrip for MySQL and Spanner: bind -> result."""
-    mock_dialect = mock.Mock()
-    mock_dialect.name = dialect_name
+  """Test full roundtrip for MySQL and Spanner: bind -> result."""
+  mock_dialect = mock.Mock()
+  mock_dialect.name = dialect_name
 
-    original_data = {
-        "string": "test",
-        "number": 42,
-        "list": [1, 2, 3],
-        "nested": {"a": 1, "b": 2},
-    }
+  original_data = {
+    "string": "test",
+    "number": 42,
+    "list": [1, 2, 3],
+    "nested": {"a": 1, "b": 2},
+  }
 
-    # Simulate bind (Python -> DB)
-    bound_value = pickle_type.process_bind_param(original_data, mock_dialect)
-    assert isinstance(bound_value, bytes)
+  # Simulate bind (Python -> DB)
+  bound_value = pickle_type.process_bind_param(original_data, mock_dialect)
+  assert isinstance(bound_value, bytes)
 
-    # Simulate result (DB -> Python)
-    result_value = pickle_type.process_result_value(bound_value, mock_dialect)
-    assert result_value == original_data
+  # Simulate result (DB -> Python)
+  result_value = pickle_type.process_result_value(bound_value, mock_dialect)
+  assert result_value == original_data

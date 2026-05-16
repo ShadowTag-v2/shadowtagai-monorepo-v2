@@ -24,60 +24,62 @@ import mesop as me
 
 
 def classify_intent(input: str) -> str:
-    state = me.state(State)
-    print(state.gemma_endpoint_id)
-    client = OpenAI(api_key="EMPTY", base_url=state.gemma_endpoint_id)
-    completion = client.chat.completions.create(
-        model="google/gemma-3-4b-it",
-        messages=[
-            {"role": "system", "content": intent_prompt},
-            {"role": "user", "content": input},
-        ],
-    )
-    json_resp = completion.choices[0].message.content
-    logging.info(f"INTENT: {json_resp}")
-    return json_resp.replace("```", "").replace("json", "").strip()
+  state = me.state(State)
+  print(state.gemma_endpoint_id)
+  client = OpenAI(api_key="EMPTY", base_url=state.gemma_endpoint_id)
+  completion = client.chat.completions.create(
+    model="google/gemma-3-4b-it",
+    messages=[
+      {"role": "system", "content": intent_prompt},
+      {"role": "user", "content": input},
+    ],
+  )
+  json_resp = completion.choices[0].message.content
+  logging.info(f"INTENT: {json_resp}")
+  return json_resp.replace("```", "").replace("json", "").strip()
 
 
 def generate_embedding(input: str) -> list[float]:
-    state = me.state(State)
-    tei_url = state.tei_embedding_url
-    HEADERS = {"Content-Type": "application/json"}
-    payload = {"inputs": input, "truncate": True}
-    print(payload)
-    resp = requests.post(tei_url, json=payload, headers=HEADERS)
-    if resp.status_code != 200:
-        raise RuntimeError(resp.text)
-    result = resp.json()[0]
-    # print(result)
-    return result
+  state = me.state(State)
+  tei_url = state.tei_embedding_url
+  HEADERS = {"Content-Type": "application/json"}
+  payload = {"inputs": input, "truncate": True}
+  print(payload)
+  resp = requests.post(tei_url, json=payload, headers=HEADERS)
+  if resp.status_code != 200:
+    raise RuntimeError(resp.text)
+  result = resp.json()[0]
+  # print(result)
+  return result
 
 
-def call_gemma(input: str, history: list[ChatMessage], sys_instruction: str) -> Iterable[str]:
-    state = me.state(State)
-    client = OpenAI(api_key="EMPTY", base_url=state.gemma_endpoint_id)
-    models = client.models.list()
-    model = models.data[0].id
-    print(model)
-    chat_messages = [
-        {
-            "role": "assistant" if message.role == "model" else message.role,
-            "content": message.content,
-        }
-        for message in history
-    ] + [
-        {"role": "user", "content": input},
-        {"role": "system", "content": sys_instruction},
-    ]
+def call_gemma(
+  input: str, history: list[ChatMessage], sys_instruction: str
+) -> Iterable[str]:
+  state = me.state(State)
+  client = OpenAI(api_key="EMPTY", base_url=state.gemma_endpoint_id)
+  models = client.models.list()
+  model = models.data[0].id
+  print(model)
+  chat_messages = [
+    {
+      "role": "assistant" if message.role == "model" else message.role,
+      "content": message.content,
+    }
+    for message in history
+  ] + [
+    {"role": "user", "content": input},
+    {"role": "system", "content": sys_instruction},
+  ]
 
-    with client.chat.completions.create(
-        model=model,
-        messages=chat_messages,
-        temperature=0,
-        stream=True,  # again, we set stream=True
-    ) as stream:
-        for part in stream:
-            yield part.choices[0].delta.content
+  with client.chat.completions.create(
+    model=model,
+    messages=chat_messages,
+    temperature=0,
+    stream=True,  # again, we set stream=True
+  ) as stream:
+    for part in stream:
+      yield part.choices[0].delta.content
 
 
 intent_prompt = """

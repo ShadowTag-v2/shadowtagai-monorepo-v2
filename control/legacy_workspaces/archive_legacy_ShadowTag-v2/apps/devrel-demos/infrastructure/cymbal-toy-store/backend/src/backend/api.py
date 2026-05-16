@@ -19,12 +19,12 @@ from starlette.routing import Route
 
 
 class Chat(HTTPEndpoint):
-    async def post(self, request):
-        body = await request.json()
-        response = request.state.chat_be.respond(body)
-        return JSONResponse(response)
+  async def post(self, request):
+    body = await request.json()
+    response = request.state.chat_be.respond(body)
+    return JSONResponse(response)
 
 
 routes = [
-    Route("/chat", Chat),
+  Route("/chat", Chat),
 ]

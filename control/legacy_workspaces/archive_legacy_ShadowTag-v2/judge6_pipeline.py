@@ -4,16 +4,16 @@ import time
 import torch
 
 try:
-    from flyingmonkeys import release_monkeys
+  from flyingmonkeys import release_monkeys
 except ImportError:
-    pass
+  pass
 
 print("\n⚖️ [Judge #6] Initializing Jura Protocol...")
 print("   - Hardware: Checking for A100...")
 if torch.cuda.is_available():
-    print(f"   - GPU Found: {torch.cuda.get_device_name(0)}")
+  print(f"   - GPU Found: {torch.cuda.get_device_name(0)}")
 else:
-    print("   - GPU Missing (Running in CPU Simulation Mode)")
+  print("   - GPU Missing (Running in CPU Simulation Mode)")
 
 print("   - Model: jura/judge6 (Loading weights...)")
 time.sleep(1)  # Simulating load

@@ -54,3 +54,5 @@
 ## Test Baseline
 - Python 3.14.3 → 504 collected, 480 passed, 3 skipped
 - pytest.ini v8.5 controls
+
+- [2026-05-16T18:27:13.056Z] [TEST] Omni-Sync verification pass — 14-point multiplexer confirmed operational

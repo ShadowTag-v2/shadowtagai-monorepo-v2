@@ -18,5 +18,5 @@
 from .base_credential_refresher import BaseCredentialRefresher
 
 __all__ = [
-    "BaseCredentialRefresher",
+  "BaseCredentialRefresher",
 ]

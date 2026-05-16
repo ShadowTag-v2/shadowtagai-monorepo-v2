@@ -9,15 +9,15 @@ from src.agents.base_agent import BaseAgent
 
 
 class CoderAgent(BaseAgent):
-    """
-    Coder agent specialized in code generation and implementation.
+  """
+  Coder agent specialized in code generation and implementation.
 
-    This agent writes code, creates files, implements features, and ensures
-    proper documentation and type hints.
-    """
+  This agent writes code, creates files, implements features, and ensures
+  proper documentation and type hints.
+  """
 
-    def __init__(self):
-        system_prompt = """You are the Coder Agent, a specialist in software development.
+  def __init__(self):
+    system_prompt = """You are the Coder Agent, a specialist in software development.
 
 Your expertise:
 - Writing clean, well-documented code
@@ -35,4 +35,4 @@ Your responses should:
 
 When given a coding task, implement it thoroughly and explain your approach."""
 
-        super().__init__(role="coder", system_prompt=system_prompt)
+    super().__init__(role="coder", system_prompt=system_prompt)

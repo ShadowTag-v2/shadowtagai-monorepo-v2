@@ -15,10 +15,10 @@ MODEL = os.getenv("AGENT_MODEL")
 
 # Main agent
 main_agent = LlmAgent(
-    name="MainAgent",
-    model=LiteLlm(model=MODEL),
-    description="The main agent that makes sure the user's machine learning requests are successfully fulfilled",
-    instruction=load_instructions("main_agent"),
-    tools=[delegate_task],
-    output_key="final_output",
+  name="MainAgent",
+  model=LiteLlm(model=MODEL),
+  description="The main agent that makes sure the user's machine learning requests are successfully fulfilled",
+  instruction=load_instructions("main_agent"),
+  tools=[delegate_task],
+  output_key="final_output",
 )

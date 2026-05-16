@@ -19,35 +19,35 @@ from adk_issue_formatting_agent.settings import GITHUB_TOKEN
 import requests
 
 headers = {
-    "Authorization": f"token {GITHUB_TOKEN}",
-    "Accept": "application/vnd.github.v3+json",
-    "X-GitHub-Api-Version": "2022-11-28",
+  "Authorization": f"token {GITHUB_TOKEN}",
+  "Accept": "application/vnd.github.v3+json",
+  "X-GitHub-Api-Version": "2022-11-28",
 }
 
 
 def get_request(url: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
-    if params is None:
-        params = {}
-    response = requests.get(url, headers=headers, params=params, timeout=60)
-    response.raise_for_status()
-    return response.json()
+  if params is None:
+    params = {}
+  response = requests.get(url, headers=headers, params=params, timeout=60)
+  response.raise_for_status()
+  return response.json()
 
 
 def post_request(url: str, payload: Any) -> dict[str, Any]:
-    response = requests.post(url, headers=headers, json=payload, timeout=60)
-    response.raise_for_status()
-    return response.json()
+  response = requests.post(url, headers=headers, json=payload, timeout=60)
+  response.raise_for_status()
+  return response.json()
 
 
 def error_response(error_message: str) -> dict[str, Any]:
-    return {"status": "error", "message": error_message}
+  return {"status": "error", "message": error_message}
 
 
 def read_file(file_path: str) -> str:
-    """Read the content of the given file."""
-    try:
-        with open(file_path) as f:
-            return f.read()
-    except FileNotFoundError:
-        print(f"Error: File not found: {file_path}.")
-        return ""
+  """Read the content of the given file."""
+  try:
+    with open(file_path) as f:
+      return f.read()
+  except FileNotFoundError:
+    print(f"Error: File not found: {file_path}.")
+    return ""

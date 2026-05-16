@@ -18,462 +18,493 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Message:
-    """
-    Unified message format for all providers.
+  """
+  Unified message format for all providers.
 
-    Attributes:
-        role: Message role (system, user, assistant)
-        content: Message content text
-        name: Optional name for the message sender
-        metadata: Optional provider-specific metadata
-    """
+  Attributes:
+      role: Message role (system, user, assistant)
+      content: Message content text
+      name: Optional name for the message sender
+      metadata: Optional provider-specific metadata
+  """
 
-    role: str  # "system", "user", "assistant"
-    content: str
-    name: str | None = None
-    metadata: dict[str, Any] | None = None
+  role: str  # "system", "user", "assistant"
+  content: str
+  name: str | None = None
+  metadata: dict[str, Any] | None = None
 
 
 @dataclass
 class UsageStats:
-    """
-    Token usage statistics across providers.
+  """
+  Token usage statistics across providers.
 
-    Attributes:
-        input_tokens: Number of tokens in the prompt
-        output_tokens: Number of tokens in the response
-        total_tokens: Total tokens used
-        cost_usd: Estimated cost in USD (if available)
-        model: Model name used
-        provider: Provider name
-        timestamp: When the request was made
-    """
+  Attributes:
+      input_tokens: Number of tokens in the prompt
+      output_tokens: Number of tokens in the response
+      total_tokens: Total tokens used
+      cost_usd: Estimated cost in USD (if available)
+      model: Model name used
+      provider: Provider name
+      timestamp: When the request was made
+  """
 
-    input_tokens: int
-    output_tokens: int
-    total_tokens: int
-    cost_usd: float | None = None
-    model: str | None = None
-    provider: str | None = None
-    timestamp: datetime | None = None
+  input_tokens: int
+  output_tokens: int
+  total_tokens: int
+  cost_usd: float | None = None
+  model: str | None = None
+  provider: str | None = None
+  timestamp: datetime | None = None
 
 
 @dataclass
 class LLMResponse:
-    """
-    Unified response format from all providers.
+  """
+  Unified response format from all providers.
 
-    Supports string-like operations (strip, lower, etc.) by delegating to
-    self.content, so callers that expect str from generate() work seamlessly.
+  Supports string-like operations (strip, lower, etc.) by delegating to
+  self.content, so callers that expect str from generate() work seamlessly.
 
-    Attributes:
-        content: The generated text content
-        usage: Token usage statistics
-        model: Model used for generation
-        finish_reason: Reason the generation stopped
-        raw_response: Original provider-specific response object
-        metadata: Additional provider-specific metadata
-    """
+  Attributes:
+      content: The generated text content
+      usage: Token usage statistics
+      model: Model used for generation
+      finish_reason: Reason the generation stopped
+      raw_response: Original provider-specific response object
+      metadata: Additional provider-specific metadata
+  """
 
-    content: str
-    usage: UsageStats
-    model: str
-    finish_reason: str | None = None
-    raw_response: Any | None = None
-    metadata: dict[str, Any] | None = None
+  content: str
+  usage: UsageStats
+  model: str
+  finish_reason: str | None = None
+  raw_response: Any | None = None
+  metadata: dict[str, Any] | None = None
 
-    # -- String compatibility methods --
-    # These allow LLMResponse to be used where str is expected (e.g. response.strip())
+  # -- String compatibility methods --
+  # These allow LLMResponse to be used where str is expected (e.g. response.strip())
 
-    def __str__(self) -> str:
-        return self.content
+  def __str__(self) -> str:
+    return self.content
 
-    def __contains__(self, item: str) -> bool:
-        return item in self.content
+  def __contains__(self, item: str) -> bool:
+    return item in self.content
 
-    def __len__(self) -> int:
-        return len(self.content)
+  def __len__(self) -> int:
+    return len(self.content)
 
-    def __add__(self, other: str) -> str:
-        return self.content + other
+  def __add__(self, other: str) -> str:
+    return self.content + other
 
-    def __radd__(self, other: str) -> str:
-        return other + self.content
+  def __radd__(self, other: str) -> str:
+    return other + self.content
 
-    def __bool__(self) -> bool:
-        return bool(self.content)
+  def __bool__(self) -> bool:
+    return bool(self.content)
 
-    def __iter__(self):
-        return iter(self.content)
+  def __iter__(self):
+    return iter(self.content)
 
-    def __getitem__(self, key):
-        return self.content[key]
+  def __getitem__(self, key):
+    return self.content[key]
 
-    def strip(self, chars: str | None = None) -> str:
-        return self.content.strip(chars) if chars else self.content.strip()
+  def strip(self, chars: str | None = None) -> str:
+    return self.content.strip(chars) if chars else self.content.strip()
 
-    def lstrip(self, chars: str | None = None) -> str:
-        return self.content.lstrip(chars) if chars else self.content.lstrip()
+  def lstrip(self, chars: str | None = None) -> str:
+    return self.content.lstrip(chars) if chars else self.content.lstrip()
 
-    def rstrip(self, chars: str | None = None) -> str:
-        return self.content.rstrip(chars) if chars else self.content.rstrip()
+  def rstrip(self, chars: str | None = None) -> str:
+    return self.content.rstrip(chars) if chars else self.content.rstrip()
 
-    def lower(self) -> str:
-        return self.content.lower()
+  def lower(self) -> str:
+    return self.content.lower()
 
-    def upper(self) -> str:
-        return self.content.upper()
+  def upper(self) -> str:
+    return self.content.upper()
 
-    def startswith(self, prefix, *args) -> bool:
-        return self.content.startswith(prefix, *args)
+  def startswith(self, prefix, *args) -> bool:
+    return self.content.startswith(prefix, *args)
 
-    def endswith(self, suffix, *args) -> bool:
-        return self.content.endswith(suffix, *args)
+  def endswith(self, suffix, *args) -> bool:
+    return self.content.endswith(suffix, *args)
 
-    def split(self, *args, **kwargs):
-        return self.content.split(*args, **kwargs)
+  def split(self, *args, **kwargs):
+    return self.content.split(*args, **kwargs)
 
-    def rsplit(self, *args, **kwargs):
-        return self.content.rsplit(*args, **kwargs)
+  def rsplit(self, *args, **kwargs):
+    return self.content.rsplit(*args, **kwargs)
 
-    def replace(self, old: str, new: str, count: int = -1) -> str:
-        return self.content.replace(old, new, count)
+  def replace(self, old: str, new: str, count: int = -1) -> str:
+    return self.content.replace(old, new, count)
 
-    def find(self, sub: str, *args) -> int:
-        return self.content.find(sub, *args)
+  def find(self, sub: str, *args) -> int:
+    return self.content.find(sub, *args)
 
-    def rfind(self, sub: str, *args) -> int:
-        return self.content.rfind(sub, *args)
+  def rfind(self, sub: str, *args) -> int:
+    return self.content.rfind(sub, *args)
 
-    def count(self, sub: str, *args) -> int:
-        return self.content.count(sub, *args)
+  def count(self, sub: str, *args) -> int:
+    return self.content.count(sub, *args)
 
-    def encode(self, *args, **kwargs) -> bytes:
-        return self.content.encode(*args, **kwargs)
+  def encode(self, *args, **kwargs) -> bytes:
+    return self.content.encode(*args, **kwargs)
 
-    def format(self, *args, **kwargs) -> str:
-        return self.content.format(*args, **kwargs)
+  def format(self, *args, **kwargs) -> str:
+    return self.content.format(*args, **kwargs)
 
-    def join(self, iterable) -> str:
-        return self.content.join(iterable)
+  def join(self, iterable) -> str:
+    return self.content.join(iterable)
 
 
 class LLMProvider(ABC):
+  """
+  Abstract base class for all LLM providers.
+
+  Provides a unified interface for:
+  - Text generation (sync and async)
+  - Structured JSON output
+  - Multi-turn conversations
+  - Streaming responses
+  - Usage tracking and cost estimation
+
+  All provider implementations (Anthropic, OpenAI, etc.) must inherit
+  from this class and implement all abstract methods.
+
+  Example:
+      ```python
+      class MyProvider(LLMProvider):
+          def generate(self, prompt: str, **kwargs) -> LLMResponse:
+              # Implementation here
+              pass
+      ```
+  """
+
+  def __init__(self, config: dict[str, Any]):
     """
-    Abstract base class for all LLM providers.
+    Initialize provider with configuration.
 
-    Provides a unified interface for:
-    - Text generation (sync and async)
-    - Structured JSON output
-    - Multi-turn conversations
-    - Streaming responses
-    - Usage tracking and cost estimation
-
-    All provider implementations (Anthropic, OpenAI, etc.) must inherit
-    from this class and implement all abstract methods.
-
-    Example:
-        ```python
-        class MyProvider(LLMProvider):
-            def generate(self, prompt: str, **kwargs) -> LLMResponse:
-                # Implementation here
-                pass
-        ```
+    Args:
+        config: Provider-specific configuration dictionary
     """
+    self.config = config
+    self.provider_name = self.__class__.__name__.replace("Provider", "").lower()
 
-    def __init__(self, config: dict[str, Any]):
-        """
-        Initialize provider with configuration.
+    # Usage tracking
+    self.total_input_tokens = 0
+    self.total_output_tokens = 0
+    self.total_cost_usd = 0.0
+    self.request_count = 0
 
-        Args:
-            config: Provider-specific configuration dictionary
-        """
-        self.config = config
-        self.provider_name = self.__class__.__name__.replace("Provider", "").lower()
+    logger.info(f"Initialized {self.provider_name} provider")
 
-        # Usage tracking
-        self.total_input_tokens = 0
-        self.total_output_tokens = 0
-        self.total_cost_usd = 0.0
-        self.request_count = 0
+  @abstractmethod
+  def generate(
+    self,
+    prompt: str,
+    system: str | None = None,
+    max_tokens: int = 4096,
+    temperature: float = 0.7,
+    stop_sequences: list[str] | None = None,
+    **kwargs,
+  ) -> LLMResponse:
+    """
+    Generate text from a prompt (synchronous).
 
-        logger.info(f"Initialized {self.provider_name} provider")
+    Args:
+        prompt: The user prompt/query
+        system: Optional system prompt
+        max_tokens: Maximum tokens to generate
+        temperature: Sampling temperature (0.0-1.0)
+        stop_sequences: Optional list of stop sequences
+        **kwargs: Provider-specific parameters
 
-    @abstractmethod
-    def generate(
-        self,
-        prompt: str,
-        system: str | None = None,
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        stop_sequences: list[str] | None = None,
-        **kwargs,
-    ) -> LLMResponse:
-        """
-        Generate text from a prompt (synchronous).
+    Returns:
+        LLMResponse: Unified response object
 
-        Args:
-            prompt: The user prompt/query
-            system: Optional system prompt
-            max_tokens: Maximum tokens to generate
-            temperature: Sampling temperature (0.0-1.0)
-            stop_sequences: Optional list of stop sequences
-            **kwargs: Provider-specific parameters
+    Raises:
+        ProviderAPIError: If the API call fails
+    """
+    pass
 
-        Returns:
-            LLMResponse: Unified response object
+  @abstractmethod
+  async def generate_async(
+    self,
+    prompt: str,
+    system: str | None = None,
+    max_tokens: int = 4096,
+    temperature: float = 0.7,
+    stop_sequences: list[str] | None = None,
+    **kwargs,
+  ) -> LLMResponse:
+    """
+    Generate text from a prompt (asynchronous).
 
-        Raises:
-            ProviderAPIError: If the API call fails
-        """
-        pass
+    Args:
+        prompt: The user prompt/query
+        system: Optional system prompt
+        max_tokens: Maximum tokens to generate
+        temperature: Sampling temperature (0.0-1.0)
+        stop_sequences: Optional list of stop sequences
+        **kwargs: Provider-specific parameters
 
-    @abstractmethod
-    async def generate_async(
-        self,
-        prompt: str,
-        system: str | None = None,
-        max_tokens: int = 4096,
-        temperature: float = 0.7,
-        stop_sequences: list[str] | None = None,
-        **kwargs,
-    ) -> LLMResponse:
-        """
-        Generate text from a prompt (asynchronous).
+    Returns:
+        LLMResponse: Unified response object
 
-        Args:
-            prompt: The user prompt/query
-            system: Optional system prompt
-            max_tokens: Maximum tokens to generate
-            temperature: Sampling temperature (0.0-1.0)
-            stop_sequences: Optional list of stop sequences
-            **kwargs: Provider-specific parameters
+    Raises:
+        ProviderAPIError: If the API call fails
+    """
+    pass
 
-        Returns:
-            LLMResponse: Unified response object
+  @abstractmethod
+  def generate_with_messages(
+    self,
+    messages: list[Message],
+    max_tokens: int = 4096,
+    temperature: float = 0.7,
+    **kwargs,
+  ) -> LLMResponse:
+    """
+    Generate text from a conversation history.
 
-        Raises:
-            ProviderAPIError: If the API call fails
-        """
-        pass
+    Args:
+        messages: List of Message objects (conversation history)
+        max_tokens: Maximum tokens to generate
+        temperature: Sampling temperature (0.0-1.0)
+        **kwargs: Provider-specific parameters
 
-    @abstractmethod
-    def generate_with_messages(self, messages: list[Message], max_tokens: int = 4096, temperature: float = 0.7, **kwargs) -> LLMResponse:
-        """
-        Generate text from a conversation history.
+    Returns:
+        LLMResponse: Unified response object
 
-        Args:
-            messages: List of Message objects (conversation history)
-            max_tokens: Maximum tokens to generate
-            temperature: Sampling temperature (0.0-1.0)
-            **kwargs: Provider-specific parameters
+    Raises:
+        ProviderAPIError: If the API call fails
+    """
+    pass
 
-        Returns:
-            LLMResponse: Unified response object
+  @abstractmethod
+  def generate_structured(
+    self,
+    prompt: str,
+    schema: dict[str, Any],
+    system: str | None = None,
+    max_tokens: int = 4096,
+    temperature: float = 0.7,
+    **kwargs,
+  ) -> dict[str, Any]:
+    """
+    Generate structured JSON output matching a schema.
 
-        Raises:
-            ProviderAPIError: If the API call fails
-        """
-        pass
+    Args:
+        prompt: The user prompt/query
+        schema: JSON schema or example structure
+        system: Optional system prompt
+        max_tokens: Maximum tokens to generate
+        temperature: Sampling temperature (0.0-1.0)
+        **kwargs: Provider-specific parameters
 
-    @abstractmethod
-    def generate_structured(
-        self, prompt: str, schema: dict[str, Any], system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs
-    ) -> dict[str, Any]:
-        """
-        Generate structured JSON output matching a schema.
+    Returns:
+        Dict[str, Any]: Parsed JSON object matching schema
 
-        Args:
-            prompt: The user prompt/query
-            schema: JSON schema or example structure
-            system: Optional system prompt
-            max_tokens: Maximum tokens to generate
-            temperature: Sampling temperature (0.0-1.0)
-            **kwargs: Provider-specific parameters
+    Raises:
+        ProviderAPIError: If the API call fails
+        JSONDecodeError: If response is not valid JSON
+    """
+    pass
 
-        Returns:
-            Dict[str, Any]: Parsed JSON object matching schema
+  def generate_stream(
+    self,
+    prompt: str,
+    system: str | None = None,
+    max_tokens: int = 4096,
+    temperature: float = 0.7,
+    **kwargs,
+  ) -> Iterator[str]:
+    """
+    Generate text with streaming (optional, not all providers support).
 
-        Raises:
-            ProviderAPIError: If the API call fails
-            JSONDecodeError: If response is not valid JSON
-        """
-        pass
+    Args:
+        prompt: The user prompt/query
+        system: Optional system prompt
+        max_tokens: Maximum tokens to generate
+        temperature: Sampling temperature (0.0-1.0)
+        **kwargs: Provider-specific parameters
 
-    def generate_stream(self, prompt: str, system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs) -> Iterator[str]:
-        """
-        Generate text with streaming (optional, not all providers support).
+    Yields:
+        str: Chunks of generated text
 
-        Args:
-            prompt: The user prompt/query
-            system: Optional system prompt
-            max_tokens: Maximum tokens to generate
-            temperature: Sampling temperature (0.0-1.0)
-            **kwargs: Provider-specific parameters
+    Raises:
+        NotImplementedError: If provider doesn't support streaming
+    """
+    raise NotImplementedError(f"{self.provider_name} does not support streaming")
 
-        Yields:
-            str: Chunks of generated text
+  async def generate_stream_async(
+    self,
+    prompt: str,
+    system: str | None = None,
+    max_tokens: int = 4096,
+    temperature: float = 0.7,
+    **kwargs,
+  ) -> AsyncIterator[str]:
+    """
+    Generate text with async streaming (optional).
 
-        Raises:
-            NotImplementedError: If provider doesn't support streaming
-        """
-        raise NotImplementedError(f"{self.provider_name} does not support streaming")
+    Args:
+        prompt: The user prompt/query
+        system: Optional system prompt
+        max_tokens: Maximum tokens to generate
+        temperature: Sampling temperature (0.0-1.0)
+        **kwargs: Provider-specific parameters
 
-    async def generate_stream_async(
-        self, prompt: str, system: str | None = None, max_tokens: int = 4096, temperature: float = 0.7, **kwargs
-    ) -> AsyncIterator[str]:
-        """
-        Generate text with async streaming (optional).
+    Yields:
+        str: Chunks of generated text
 
-        Args:
-            prompt: The user prompt/query
-            system: Optional system prompt
-            max_tokens: Maximum tokens to generate
-            temperature: Sampling temperature (0.0-1.0)
-            **kwargs: Provider-specific parameters
+    Raises:
+        NotImplementedError: If provider doesn't support async streaming
+    """
+    raise NotImplementedError(f"{self.provider_name} does not support async streaming")
+    # Make this a proper async generator
+    if False:
+      yield
 
-        Yields:
-            str: Chunks of generated text
+  @abstractmethod
+  def get_model_info(self) -> dict[str, Any]:
+    """
+    Get information about the current model.
 
-        Raises:
-            NotImplementedError: If provider doesn't support async streaming
-        """
-        raise NotImplementedError(f"{self.provider_name} does not support async streaming")
-        # Make this a proper async generator
-        if False:
-            yield
+    Returns:
+        Dict with keys: name, max_tokens, cost_per_input_token, cost_per_output_token
+    """
+    pass
 
-    @abstractmethod
-    def get_model_info(self) -> dict[str, Any]:
-        """
-        Get information about the current model.
+  def get_usage_stats(self) -> dict[str, Any]:
+    """
+    Get cumulative usage statistics for this provider instance.
 
-        Returns:
-            Dict with keys: name, max_tokens, cost_per_input_token, cost_per_output_token
-        """
-        pass
+    Returns:
+        Dict with usage metrics and cost estimates
+    """
+    return {
+      "provider": self.provider_name,
+      "total_requests": self.request_count,
+      "total_input_tokens": self.total_input_tokens,
+      "total_output_tokens": self.total_output_tokens,
+      "total_tokens": self.total_input_tokens + self.total_output_tokens,
+      "total_cost_usd": self.total_cost_usd,
+    }
 
-    def get_usage_stats(self) -> dict[str, Any]:
-        """
-        Get cumulative usage statistics for this provider instance.
+  def _update_usage_stats(self, usage: UsageStats):
+    """
+    Update cumulative usage statistics.
 
-        Returns:
-            Dict with usage metrics and cost estimates
-        """
-        return {
-            "provider": self.provider_name,
-            "total_requests": self.request_count,
-            "total_input_tokens": self.total_input_tokens,
-            "total_output_tokens": self.total_output_tokens,
-            "total_tokens": self.total_input_tokens + self.total_output_tokens,
-            "total_cost_usd": self.total_cost_usd,
-        }
+    Args:
+        usage: UsageStats object from a request
+    """
+    self.request_count += 1
+    self.total_input_tokens += usage.input_tokens
+    self.total_output_tokens += usage.output_tokens
+    if usage.cost_usd:
+      self.total_cost_usd += usage.cost_usd
 
-    def _update_usage_stats(self, usage: UsageStats):
-        """
-        Update cumulative usage statistics.
+  def reset_usage_stats(self):
+    """Reset usage statistics to zero."""
+    self.total_input_tokens = 0
+    self.total_output_tokens = 0
+    self.total_cost_usd = 0.0
+    self.request_count = 0
+    logger.info(f"Reset usage stats for {self.provider_name}")
 
-        Args:
-            usage: UsageStats object from a request
-        """
-        self.request_count += 1
-        self.total_input_tokens += usage.input_tokens
-        self.total_output_tokens += usage.output_tokens
-        if usage.cost_usd:
-            self.total_cost_usd += usage.cost_usd
-
-    def reset_usage_stats(self):
-        """Reset usage statistics to zero."""
-        self.total_input_tokens = 0
-        self.total_output_tokens = 0
-        self.total_cost_usd = 0.0
-        self.request_count = 0
-        logger.info(f"Reset usage stats for {self.provider_name}")
-
-    def __repr__(self) -> str:
-        """String representation of the provider."""
-        return f"{self.__class__.__name__}(provider={self.provider_name})"
+  def __repr__(self) -> str:
+    """String representation of the provider."""
+    return f"{self.__class__.__name__}(provider={self.provider_name})"
 
 
 class ProviderAPIError(Exception):
+  """
+  Exception raised when a provider API call fails.
+
+  Attributes:
+      provider: Name of the provider
+      message: Error message
+      status_code: HTTP status code (if applicable)
+      raw_error: Original error object
+      recoverable: Whether this error can be retried
+  """
+
+  def __init__(
+    self,
+    provider: str,
+    message: str,
+    status_code: int | None = None,
+    raw_error: Exception | None = None,
+    recoverable: bool = True,
+  ):
+    self.provider = provider
+    self.message = message
+    self.status_code = status_code
+    self.raw_error = raw_error
+    self.recoverable = recoverable
+
+    super().__init__(f"[{provider}] {message}")
+
+  def is_recoverable(self) -> bool:
     """
-    Exception raised when a provider API call fails.
+    Check if this error is recoverable through retry.
 
-    Attributes:
-        provider: Name of the provider
-        message: Error message
-        status_code: HTTP status code (if applicable)
-        raw_error: Original error object
-        recoverable: Whether this error can be retried
+    Returns:
+        True if the error might succeed on retry (network issues, rate limits),
+        False if retry is pointless (auth failures, JSON parse errors).
     """
+    # If explicitly marked as non-recoverable, respect that
+    if not self.recoverable:
+      return False
 
-    def __init__(self, provider: str, message: str, status_code: int | None = None, raw_error: Exception | None = None, recoverable: bool = True):
-        self.provider = provider
-        self.message = message
-        self.status_code = status_code
-        self.raw_error = raw_error
-        self.recoverable = recoverable
+    # Check status code for known non-recoverable errors
+    if self.status_code is not None:
+      # 4xx client errors (except 429 rate limit) are not recoverable
+      if 400 <= self.status_code < 500 and self.status_code != 429:
+        return False
 
-        super().__init__(f"[{provider}] {message}")
+    # Check message patterns for recoverable errors
+    message_lower = self.message.lower()
+    recoverable_patterns = (
+      "timeout",
+      "connection",
+      "network",
+      "rate_limit",
+      "rate limit",
+      "overloaded",
+      "service_unavailable",
+      "service unavailable",
+      "temporarily",
+      "retry",
+      "429",
+      "503",
+      "502",
+      "504",
+    )
+    non_recoverable_patterns = (
+      "json",
+      "parse",
+      "invalid",
+      "authentication",
+      "unauthorized",
+      "forbidden",
+      "not found",
+      "bad request",
+      "401",
+      "403",
+      "404",
+      "400",
+    )
 
-    def is_recoverable(self) -> bool:
-        """
-        Check if this error is recoverable through retry.
+    # If explicitly mentions recoverable error type
+    if any(pattern in message_lower for pattern in recoverable_patterns):
+      return True
 
-        Returns:
-            True if the error might succeed on retry (network issues, rate limits),
-            False if retry is pointless (auth failures, JSON parse errors).
-        """
-        # If explicitly marked as non-recoverable, respect that
-        if not self.recoverable:
-            return False
+    # If explicitly mentions non-recoverable error type
+    if any(pattern in message_lower for pattern in non_recoverable_patterns):
+      return False
 
-        # Check status code for known non-recoverable errors
-        if self.status_code is not None:
-            # 4xx client errors (except 429 rate limit) are not recoverable
-            if 400 <= self.status_code < 500 and self.status_code != 429:
-                return False
-
-        # Check message patterns for recoverable errors
-        message_lower = self.message.lower()
-        recoverable_patterns = (
-            "timeout",
-            "connection",
-            "network",
-            "rate_limit",
-            "rate limit",
-            "overloaded",
-            "service_unavailable",
-            "service unavailable",
-            "temporarily",
-            "retry",
-            "429",
-            "503",
-            "502",
-            "504",
-        )
-        non_recoverable_patterns = (
-            "json",
-            "parse",
-            "invalid",
-            "authentication",
-            "unauthorized",
-            "forbidden",
-            "not found",
-            "bad request",
-            "401",
-            "403",
-            "404",
-            "400",
-        )
-
-        # If explicitly mentions recoverable error type
-        if any(pattern in message_lower for pattern in recoverable_patterns):
-            return True
-
-        # If explicitly mentions non-recoverable error type
-        if any(pattern in message_lower for pattern in non_recoverable_patterns):
-            return False
-
-        # Default to recoverable for unknown errors
-        return True
+    # Default to recoverable for unknown errors
+    return True

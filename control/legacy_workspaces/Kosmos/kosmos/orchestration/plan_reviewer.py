@@ -31,123 +31,137 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class PlanReview:
-    """Container for plan review results."""
+  """Container for plan review results."""
 
-    approved: bool
-    scores: dict[str, float]  # dimension → score (0-10)
-    average_score: float
-    min_score: float
-    feedback: str
-    required_changes: list[str]
-    suggestions: list[str]
+  approved: bool
+  scores: dict[str, float]  # dimension → score (0-10)
+  average_score: float
+  min_score: float
+  feedback: str
+  required_changes: list[str]
+  suggestions: list[str]
 
-    def to_dict(self) -> dict:
-        """Convert to dictionary."""
-        return {
-            "approved": self.approved,
-            "scores": self.scores,
-            "average_score": self.average_score,
-            "min_score": self.min_score,
-            "feedback": self.feedback,
-            "required_changes": self.required_changes,
-            "suggestions": self.suggestions,
-        }
+  def to_dict(self) -> dict:
+    """Convert to dictionary."""
+    return {
+      "approved": self.approved,
+      "scores": self.scores,
+      "average_score": self.average_score,
+      "min_score": self.min_score,
+      "feedback": self.feedback,
+      "required_changes": self.required_changes,
+      "suggestions": self.suggestions,
+    }
 
 
 class PlanReviewerAgent:
+  """
+  Plan quality validation agent.
+
+  Evaluates research plans on multiple dimensions before execution
+  to prevent low-quality or unfocused research.
+
+  Design Philosophy:
+  - Multi-dimensional scoring catches different failure modes
+  - Minimum thresholds prevent catastrophic failures
+  - Actionable feedback enables plan revision
+  """
+
+  # Review dimension weights (not currently used, but available for future)
+  DIMENSION_WEIGHTS = {
+    "specificity": 0.25,
+    "relevance": 0.25,
+    "novelty": 0.20,
+    "coverage": 0.15,
+    "feasibility": 0.15,
+  }
+
+  def __init__(
+    self,
+    anthropic_client=None,
+    model: str = _DEFAULT_CLAUDE_SONNET_MODEL,
+    min_average_score: float = 7.0,
+    min_dimension_score: float = 5.0,
+  ):
     """
-    Plan quality validation agent.
+    Initialize Plan Reviewer Agent.
 
-    Evaluates research plans on multiple dimensions before execution
-    to prevent low-quality or unfocused research.
-
-    Design Philosophy:
-    - Multi-dimensional scoring catches different failure modes
-    - Minimum thresholds prevent catastrophic failures
-    - Actionable feedback enables plan revision
+    Args:
+        anthropic_client: Anthropic client for LLM-based review
+        model: Model to use for review
+        min_average_score: Minimum average score for approval
+        min_dimension_score: Minimum score on any single dimension
     """
+    self.client = anthropic_client
+    self.model = model
+    self.min_average_score = min_average_score
+    self.min_dimension_score = min_dimension_score
 
-    # Review dimension weights (not currently used, but available for future)
-    DIMENSION_WEIGHTS = {"specificity": 0.25, "relevance": 0.25, "novelty": 0.20, "coverage": 0.15, "feasibility": 0.15}
+  def review_plan(self, plan: dict, context: dict) -> PlanReview:
+    """
+    Review research plan on 5 dimensions.
 
-    def __init__(
-        self, anthropic_client=None, model: str = _DEFAULT_CLAUDE_SONNET_MODEL, min_average_score: float = 7.0, min_dimension_score: float = 5.0
-    ):
-        """
-        Initialize Plan Reviewer Agent.
+    Args:
+        plan: ResearchPlan as dictionary
+        context: Context from State Manager
 
-        Args:
-            anthropic_client: Anthropic client for LLM-based review
-            model: Model to use for review
-            min_average_score: Minimum average score for approval
-            min_dimension_score: Minimum score on any single dimension
-        """
-        self.client = anthropic_client
-        self.model = model
-        self.min_average_score = min_average_score
-        self.min_dimension_score = min_dimension_score
+    Returns:
+        PlanReview with scores, approval status, and feedback
+    """
+    # If no LLM client, use mock review
+    if self.client is None:
+      return self._mock_review(plan, context)
 
-    def review_plan(self, plan: dict, context: dict) -> PlanReview:
-        """
-        Review research plan on 5 dimensions.
+    # Build review prompt
+    prompt = self._build_review_prompt(plan, context)
 
-        Args:
-            plan: ResearchPlan as dictionary
-            context: Context from State Manager
+    try:
+      # Query LLM
+      response = self.client.messages.create(
+        model=self.model,
+        max_tokens=2000,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,  # More consistent for evaluation
+      )
 
-        Returns:
-            PlanReview with scores, approval status, and feedback
-        """
-        # If no LLM client, use mock review
-        if self.client is None:
-            return self._mock_review(plan, context)
+      # Parse review
+      review_data = self._parse_review_response(response.content[0].text)
 
-        # Build review prompt
-        prompt = self._build_review_prompt(plan, context)
+      # Extract scores
+      scores = review_data.get("scores", {})
+      avg_score = sum(scores.values()) / len(scores) if scores else 0
+      min_score = min(scores.values()) if scores else 0
 
-        try:
-            # Query LLM
-            response = self.client.messages.create(
-                model=self.model,
-                max_tokens=2000,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,  # More consistent for evaluation
-            )
+      # Check structural requirements
+      structural_ok = self._meets_structural_requirements(plan)
 
-            # Parse review
-            review_data = self._parse_review_response(response.content[0].text)
+      # Determine approval
+      approved = (
+        avg_score >= self.min_average_score
+        and min_score >= self.min_dimension_score
+        and structural_ok
+      )
 
-            # Extract scores
-            scores = review_data.get("scores", {})
-            avg_score = sum(scores.values()) / len(scores) if scores else 0
-            min_score = min(scores.values()) if scores else 0
+      return PlanReview(
+        approved=approved,
+        scores=scores,
+        average_score=avg_score,
+        min_score=min_score,
+        feedback=review_data.get("feedback", ""),
+        required_changes=review_data.get("required_changes", []),
+        suggestions=review_data.get("suggestions", []),
+      )
 
-            # Check structural requirements
-            structural_ok = self._meets_structural_requirements(plan)
+    except Exception as e:
+      logger.error(f"Plan review failed: {e}, using mock review")
+      return self._mock_review(plan, context)
 
-            # Determine approval
-            approved = avg_score >= self.min_average_score and min_score >= self.min_dimension_score and structural_ok
+  def _build_review_prompt(self, plan: dict, context: dict) -> str:
+    """Build prompt for plan review."""
+    research_objective = context.get("research_objective", "Not specified")
+    plan_json = json.dumps(plan, indent=2)
 
-            return PlanReview(
-                approved=approved,
-                scores=scores,
-                average_score=avg_score,
-                min_score=min_score,
-                feedback=review_data.get("feedback", ""),
-                required_changes=review_data.get("required_changes", []),
-                suggestions=review_data.get("suggestions", []),
-            )
-
-        except Exception as e:
-            logger.error(f"Plan review failed: {e}, using mock review")
-            return self._mock_review(plan, context)
-
-    def _build_review_prompt(self, plan: dict, context: dict) -> str:
-        """Build prompt for plan review."""
-        research_objective = context.get("research_objective", "Not specified")
-        plan_json = json.dumps(plan, indent=2)
-
-        return f"""Review this research plan for quality.
+    return f"""Review this research plan for quality.
 
 **Research Objective**: {research_objective}
 
@@ -207,140 +221,158 @@ class PlanReviewerAgent:
 
 Provide review as JSON only, no additional text."""
 
-    def _parse_review_response(self, response_text: str) -> dict:
-        """Parse LLM response to extract review."""
-        try:
-            # Extract JSON from response
-            start_idx = response_text.find("{")
-            end_idx = response_text.rfind("}") + 1
+  def _parse_review_response(self, response_text: str) -> dict:
+    """Parse LLM response to extract review."""
+    try:
+      # Extract JSON from response
+      start_idx = response_text.find("{")
+      end_idx = response_text.rfind("}") + 1
 
-            if start_idx != -1 and end_idx > start_idx:
-                json_str = response_text[start_idx:end_idx]
-                review_data = json.loads(json_str)
+      if start_idx != -1 and end_idx > start_idx:
+        json_str = response_text[start_idx:end_idx]
+        review_data = json.loads(json_str)
 
-                # Validate scores present
-                if "scores" not in review_data:
-                    review_data["scores"] = {"specificity": 5.0, "relevance": 5.0, "novelty": 5.0, "coverage": 5.0, "feasibility": 5.0}
+        # Validate scores present
+        if "scores" not in review_data:
+          review_data["scores"] = {
+            "specificity": 5.0,
+            "relevance": 5.0,
+            "novelty": 5.0,
+            "coverage": 5.0,
+            "feasibility": 5.0,
+          }
 
-                # Clamp scores to [0, 10]
-                for dim, score in review_data["scores"].items():
-                    review_data["scores"][dim] = max(0.0, min(10.0, float(score)))
+        # Clamp scores to [0, 10]
+        for dim, score in review_data["scores"].items():
+          review_data["scores"][dim] = max(0.0, min(10.0, float(score)))
 
-                return review_data
+        return review_data
 
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse review JSON: {e}")
+    except json.JSONDecodeError as e:
+      logger.error(f"Failed to parse review JSON: {e}")
 
-        return {
-            "scores": {"specificity": 5.0, "relevance": 5.0, "novelty": 5.0, "coverage": 5.0, "feasibility": 5.0},
-            "feedback": "Failed to parse review",
-            "required_changes": [],
-            "suggestions": [],
-        }
+    return {
+      "scores": {
+        "specificity": 5.0,
+        "relevance": 5.0,
+        "novelty": 5.0,
+        "coverage": 5.0,
+        "feasibility": 5.0,
+      },
+      "feedback": "Failed to parse review",
+      "required_changes": [],
+      "suggestions": [],
+    }
 
-    def _meets_structural_requirements(self, plan: dict) -> bool:
-        """
-        Check if plan meets basic structural requirements.
+  def _meets_structural_requirements(self, plan: dict) -> bool:
+    """
+    Check if plan meets basic structural requirements.
 
-        Args:
-            plan: Plan dictionary
+    Args:
+        plan: Plan dictionary
 
-        Returns:
-            True if structural requirements met
-        """
-        tasks = plan.get("tasks", [])
+    Returns:
+        True if structural requirements met
+    """
+    tasks = plan.get("tasks", [])
 
-        if not tasks:
-            return False
+    if not tasks:
+      return False
 
-        # Requirement 1: At least 3 data_analysis tasks
-        data_analysis_count = sum(1 for t in tasks if t.get("type") == "data_analysis")
-        if data_analysis_count < 3:
-            logger.warning(f"Only {data_analysis_count} data_analysis tasks, need >= 3")
-            return False
+    # Requirement 1: At least 3 data_analysis tasks
+    data_analysis_count = sum(1 for t in tasks if t.get("type") == "data_analysis")
+    if data_analysis_count < 3:
+      logger.warning(f"Only {data_analysis_count} data_analysis tasks, need >= 3")
+      return False
 
-        # Requirement 2: At least 2 different task types
-        task_types = set(t.get("type") for t in tasks)
-        if len(task_types) < 2:
-            logger.warning(f"Only {len(task_types)} task types, need >= 2")
-            return False
+    # Requirement 2: At least 2 different task types
+    task_types = set(t.get("type") for t in tasks)
+    if len(task_types) < 2:
+      logger.warning(f"Only {len(task_types)} task types, need >= 2")
+      return False
 
-        # Requirement 3: Each task has required fields
-        for task in tasks:
-            if not task.get("description"):
-                logger.warning(f"Task {task.get('id')} missing description")
-                return False
-            if not task.get("expected_output"):
-                logger.warning(f"Task {task.get('id')} missing expected_output")
-                return False
+    # Requirement 3: Each task has required fields
+    for task in tasks:
+      if not task.get("description"):
+        logger.warning(f"Task {task.get('id')} missing description")
+        return False
+      if not task.get("expected_output"):
+        logger.warning(f"Task {task.get('id')} missing expected_output")
+        return False
 
-        return True
+    return True
 
-    def _mock_review(self, plan: dict, context: dict) -> PlanReview:
-        """
-        Mock review for testing (when no LLM available).
+  def _mock_review(self, plan: dict, context: dict) -> PlanReview:
+    """
+    Mock review for testing (when no LLM available).
 
-        Provides optimistic scores that usually pass.
-        """
-        # Check structural requirements
-        structural_ok = self._meets_structural_requirements(plan)
+    Provides optimistic scores that usually pass.
+    """
+    # Check structural requirements
+    structural_ok = self._meets_structural_requirements(plan)
 
-        # Base scores (slightly above minimum)
-        base_score = 7.5 if structural_ok else 6.0
+    # Base scores (slightly above minimum)
+    base_score = 7.5 if structural_ok else 6.0
 
-        scores = {
-            "specificity": base_score,
-            "relevance": base_score,
-            "novelty": base_score - 0.5,
-            "coverage": base_score,
-            "feasibility": base_score + 0.5,
-        }
+    scores = {
+      "specificity": base_score,
+      "relevance": base_score,
+      "novelty": base_score - 0.5,
+      "coverage": base_score,
+      "feasibility": base_score + 0.5,
+    }
 
-        avg_score = sum(scores.values()) / len(scores)
-        min_score = min(scores.values())
+    avg_score = sum(scores.values()) / len(scores)
+    min_score = min(scores.values())
 
-        approved = avg_score >= self.min_average_score and min_score >= self.min_dimension_score and structural_ok
+    approved = (
+      avg_score >= self.min_average_score
+      and min_score >= self.min_dimension_score
+      and structural_ok
+    )
 
-        required_changes = []
-        if not structural_ok:
-            required_changes.append("Fix structural requirements (3+ data_analysis, 2+ task types)")
+    required_changes = []
+    if not structural_ok:
+      required_changes.append(
+        "Fix structural requirements (3+ data_analysis, 2+ task types)"
+      )
 
-        return PlanReview(
-            approved=approved,
-            scores=scores,
-            average_score=avg_score,
-            min_score=min_score,
-            feedback=f"Mock review: {'APPROVED' if approved else 'NEEDS REVISION'} (avg: {avg_score:.1f})",
-            required_changes=required_changes,
-            suggestions=["This is a mock review (no LLM client provided)"],
-        )
+    return PlanReview(
+      approved=approved,
+      scores=scores,
+      average_score=avg_score,
+      min_score=min_score,
+      feedback=f"Mock review: {'APPROVED' if approved else 'NEEDS REVISION'} (avg: {avg_score:.1f})",
+      required_changes=required_changes,
+      suggestions=["This is a mock review (no LLM client provided)"],
+    )
 
-    def get_approval_statistics(self, reviews: list[PlanReview]) -> dict:
-        """
-        Compute statistics over batch of reviews.
+  def get_approval_statistics(self, reviews: list[PlanReview]) -> dict:
+    """
+    Compute statistics over batch of reviews.
 
-        Args:
-            reviews: List of PlanReview objects
+    Args:
+        reviews: List of PlanReview objects
 
-        Returns:
-            Dictionary with approval statistics
-        """
-        if not reviews:
-            return {}
+    Returns:
+        Dictionary with approval statistics
+    """
+    if not reviews:
+      return {}
 
-        approved_count = sum(1 for r in reviews if r.approved)
-        total = len(reviews)
+    approved_count = sum(1 for r in reviews if r.approved)
+    total = len(reviews)
 
-        # Average scores per dimension
-        avg_scores = {}
-        for dim in ["specificity", "relevance", "novelty", "coverage", "feasibility"]:
-            avg_scores[f"avg_{dim}"] = sum(r.scores.get(dim, 0) for r in reviews) / total
+    # Average scores per dimension
+    avg_scores = {}
+    for dim in ["specificity", "relevance", "novelty", "coverage", "feasibility"]:
+      avg_scores[f"avg_{dim}"] = sum(r.scores.get(dim, 0) for r in reviews) / total
 
-        return {
-            "total_reviewed": total,
-            "approved": approved_count,
-            "rejected": total - approved_count,
-            "approval_rate": approved_count / total,
-            "avg_overall_score": sum(r.average_score for r in reviews) / total,
-            **avg_scores,
-        }
+    return {
+      "total_reviewed": total,
+      "approved": approved_count,
+      "rejected": total - approved_count,
+      "approval_rate": approved_count / total,
+      "avg_overall_score": sum(r.average_score for r in reviews) / total,
+      **avg_scores,
+    }

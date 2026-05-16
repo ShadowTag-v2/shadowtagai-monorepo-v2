@@ -15,7 +15,9 @@ from typing import Dict, List, Optional, Set, Tuple, Type, Union
 
 # Adds the scripts directory to the PATH as a workaround for enabling shell for test execution.
 path_var_name = "PATH" if "PATH" in os.environ else "Path"
-os.environ[path_var_name] = sysconfig.get_paths()["scripts"] + os.pathsep + os.environ[path_var_name]
+os.environ[path_var_name] = (
+    sysconfig.get_paths()["scripts"] + os.pathsep + os.environ[path_var_name]
+)
 
 script_dir = pathlib.Path(__file__).parent
 sys.path.append(os.fspath(script_dir))
@@ -138,10 +140,13 @@ class UnittestTestResult(unittest.TextTestResult):
         test_run_pipe = os.getenv("TEST_RUN_PIPE")
         if not test_run_pipe:
             print(
-                "UNITTEST ERROR: TEST_RUN_PIPE is not set at the time of unittest trying to send data. " f"TEST_RUN_PIPE = {test_run_pipe}\n",
+                "UNITTEST ERROR: TEST_RUN_PIPE is not set at the time of unittest trying to send data. "
+                f"TEST_RUN_PIPE = {test_run_pipe}\n",
                 file=sys.stderr,
             )
-            raise VSCodeUnittestError("UNITTEST ERROR: TEST_RUN_PIPE is not set at the time of unittest trying to send data. ")
+            raise VSCodeUnittestError(
+                "UNITTEST ERROR: TEST_RUN_PIPE is not set at the time of unittest trying to send data. "
+            )
         send_run_data(result, test_run_pipe)
 
 
@@ -339,7 +344,9 @@ if __name__ == "__main__":
             source_ar.append(top_level_dir)
         if start_dir:
             source_ar.append(os.path.abspath(start_dir))  # noqa: PTH100
-        cov = coverage.Coverage(branch=include_branches, source=source_ar)  # is at least 1 of these required??
+        cov = coverage.Coverage(
+            branch=include_branches, source=source_ar
+        )  # is at least 1 of these required??
         cov.start()
 
     # If no error occurred, we will have test ids to run.

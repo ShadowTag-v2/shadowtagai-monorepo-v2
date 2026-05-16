@@ -14,283 +14,287 @@ from pathlib import Path
 import logging
 
 try:
-    from google.cloud import storage
+  from google.cloud import storage
 
-    STORAGE_AVAILABLE = True
+  STORAGE_AVAILABLE = True
 except ImportError:
-    STORAGE_AVAILABLE = False
-    logging.warning("Cloud Storage SDK not installed. Install with: pip install google-cloud-storage")
+  STORAGE_AVAILABLE = False
+  logging.warning(
+    "Cloud Storage SDK not installed. Install with: pip install google-cloud-storage"
+  )
 
 logger = logging.getLogger(__name__)
 
 
 class CloudStorageBackend:
+  """
+  Cloud Storage persistence backend for large artifacts.
+
+  Bucket structure:
+      {bucket_name}/
+          sessions/
+              {session_id}/
+                  datasets/
+                      input_data.csv
+                  plots/
+                      analysis_001.png
+                  reports/
+                      final_report.pdf
+                  code/
+                      analysis_script.py
+  """
+
+  def __init__(
+    self,
+    project_id: str,
+    bucket_name: str,
+    create_bucket: bool = False,
+  ):
     """
-    Cloud Storage persistence backend for large artifacts.
+    Initialize Cloud Storage backend.
 
-    Bucket structure:
-        {bucket_name}/
-            sessions/
-                {session_id}/
-                    datasets/
-                        input_data.csv
-                    plots/
-                        analysis_001.png
-                    reports/
-                        final_report.pdf
-                    code/
-                        analysis_script.py
+    Args:
+        project_id: GCP project ID
+        bucket_name: Storage bucket name
+        create_bucket: Whether to create bucket if it doesn't exist
     """
+    if not STORAGE_AVAILABLE:
+      raise RuntimeError("Cloud Storage SDK not installed")
 
-    def __init__(
-        self,
-        project_id: str,
-        bucket_name: str,
-        create_bucket: bool = False,
-    ):
-        """
-        Initialize Cloud Storage backend.
+    self.project_id = project_id
+    self.bucket_name = bucket_name
 
-        Args:
-            project_id: GCP project ID
-            bucket_name: Storage bucket name
-            create_bucket: Whether to create bucket if it doesn't exist
-        """
-        if not STORAGE_AVAILABLE:
-            raise RuntimeError("Cloud Storage SDK not installed")
+    self.client = storage.Client(project=project_id)
 
-        self.project_id = project_id
-        self.bucket_name = bucket_name
+    # Get or create bucket
+    try:
+      self.bucket = self.client.bucket(bucket_name)
+      if not self.bucket.exists():
+        if create_bucket:
+          self.bucket.create(location="US")
+          logger.info(f"Created bucket {bucket_name}")
+        else:
+          raise ValueError(f"Bucket {bucket_name} does not exist")
+      else:
+        logger.info(f"Using existing bucket {bucket_name}")
+    except Exception as e:
+      logger.error(f"Failed to initialize bucket: {e}")
+      raise
 
-        self.client = storage.Client(project=project_id)
+  def upload_file(
+    self,
+    session_id: str,
+    file_path: str,
+    artifact_type: str = "datasets",
+    filename: str | None = None,
+  ) -> str:
+    """
+    Upload a file to Cloud Storage.
 
-        # Get or create bucket
-        try:
-            self.bucket = self.client.bucket(bucket_name)
-            if not self.bucket.exists():
-                if create_bucket:
-                    self.bucket.create(location="US")
-                    logger.info(f"Created bucket {bucket_name}")
-                else:
-                    raise ValueError(f"Bucket {bucket_name} does not exist")
-            else:
-                logger.info(f"Using existing bucket {bucket_name}")
-        except Exception as e:
-            logger.error(f"Failed to initialize bucket: {e}")
-            raise
+    Args:
+        session_id: Session ID
+        file_path: Local file path
+        artifact_type: Type of artifact (datasets, plots, reports, code)
+        filename: Optional custom filename (uses original name if None)
 
-    def upload_file(
-        self,
-        session_id: str,
-        file_path: str,
-        artifact_type: str = "datasets",
-        filename: str | None = None,
-    ) -> str:
-        """
-        Upload a file to Cloud Storage.
+    Returns:
+        Public URL of uploaded file
+    """
+    if filename is None:
+      filename = Path(file_path).name
 
-        Args:
-            session_id: Session ID
-            file_path: Local file path
-            artifact_type: Type of artifact (datasets, plots, reports, code)
-            filename: Optional custom filename (uses original name if None)
+    blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
+    blob = self.bucket.blob(blob_path)
 
-        Returns:
-            Public URL of uploaded file
-        """
-        if filename is None:
-            filename = Path(file_path).name
+    blob.upload_from_filename(file_path)
 
-        blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
-        blob = self.bucket.blob(blob_path)
+    logger.info(f"Uploaded {file_path} to gs://{self.bucket_name}/{blob_path}")
 
-        blob.upload_from_filename(file_path)
+    return f"gs://{self.bucket_name}/{blob_path}"
 
-        logger.info(f"Uploaded {file_path} to gs://{self.bucket_name}/{blob_path}")
+  def upload_bytes(
+    self,
+    session_id: str,
+    data: bytes,
+    filename: str,
+    artifact_type: str = "datasets",
+    content_type: str | None = None,
+  ) -> str:
+    """
+    Upload bytes to Cloud Storage.
 
-        return f"gs://{self.bucket_name}/{blob_path}"
+    Args:
+        session_id: Session ID
+        data: Byte data to upload
+        filename: Filename
+        artifact_type: Type of artifact
+        content_type: Optional content type (e.g., "image/png")
 
-    def upload_bytes(
-        self,
-        session_id: str,
-        data: bytes,
-        filename: str,
-        artifact_type: str = "datasets",
-        content_type: str | None = None,
-    ) -> str:
-        """
-        Upload bytes to Cloud Storage.
+    Returns:
+        Public URL of uploaded file
+    """
+    blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
+    blob = self.bucket.blob(blob_path)
 
-        Args:
-            session_id: Session ID
-            data: Byte data to upload
-            filename: Filename
-            artifact_type: Type of artifact
-            content_type: Optional content type (e.g., "image/png")
+    if content_type:
+      blob.content_type = content_type
 
-        Returns:
-            Public URL of uploaded file
-        """
-        blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
-        blob = self.bucket.blob(blob_path)
+    blob.upload_from_string(data)
 
-        if content_type:
-            blob.content_type = content_type
+    logger.info(f"Uploaded {len(data)} bytes to gs://{self.bucket_name}/{blob_path}")
 
-        blob.upload_from_string(data)
+    return f"gs://{self.bucket_name}/{blob_path}"
 
-        logger.info(f"Uploaded {len(data)} bytes to gs://{self.bucket_name}/{blob_path}")
+  def download_file(
+    self,
+    session_id: str,
+    filename: str,
+    artifact_type: str = "datasets",
+    local_path: str | None = None,
+  ) -> str:
+    """
+    Download a file from Cloud Storage.
 
-        return f"gs://{self.bucket_name}/{blob_path}"
+    Args:
+        session_id: Session ID
+        filename: Filename
+        artifact_type: Type of artifact
+        local_path: Optional local save path (uses filename if None)
 
-    def download_file(
-        self,
-        session_id: str,
-        filename: str,
-        artifact_type: str = "datasets",
-        local_path: str | None = None,
-    ) -> str:
-        """
-        Download a file from Cloud Storage.
+    Returns:
+        Local file path
+    """
+    blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
+    blob = self.bucket.blob(blob_path)
 
-        Args:
-            session_id: Session ID
-            filename: Filename
-            artifact_type: Type of artifact
-            local_path: Optional local save path (uses filename if None)
+    if local_path is None:
+      local_path = filename
 
-        Returns:
-            Local file path
-        """
-        blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
-        blob = self.bucket.blob(blob_path)
+    blob.download_to_filename(local_path)
 
-        if local_path is None:
-            local_path = filename
+    logger.info(f"Downloaded gs://{self.bucket_name}/{blob_path} to {local_path}")
 
-        blob.download_to_filename(local_path)
+    return local_path
 
-        logger.info(f"Downloaded gs://{self.bucket_name}/{blob_path} to {local_path}")
+  def download_bytes(
+    self,
+    session_id: str,
+    filename: str,
+    artifact_type: str = "datasets",
+  ) -> bytes:
+    """
+    Download file as bytes.
 
-        return local_path
+    Args:
+        session_id: Session ID
+        filename: Filename
+        artifact_type: Type of artifact
 
-    def download_bytes(
-        self,
-        session_id: str,
-        filename: str,
-        artifact_type: str = "datasets",
-    ) -> bytes:
-        """
-        Download file as bytes.
+    Returns:
+        File contents as bytes
+    """
+    blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
+    blob = self.bucket.blob(blob_path)
 
-        Args:
-            session_id: Session ID
-            filename: Filename
-            artifact_type: Type of artifact
+    data = blob.download_as_bytes()
 
-        Returns:
-            File contents as bytes
-        """
-        blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
-        blob = self.bucket.blob(blob_path)
+    logger.info(
+      f"Downloaded {len(data)} bytes from gs://{self.bucket_name}/{blob_path}"
+    )
 
-        data = blob.download_as_bytes()
+    return data
 
-        logger.info(f"Downloaded {len(data)} bytes from gs://{self.bucket_name}/{blob_path}")
+  def list_artifacts(
+    self,
+    session_id: str,
+    artifact_type: str | None = None,
+  ) -> list[str]:
+    """
+    List artifacts for a session.
 
-        return data
+    Args:
+        session_id: Session ID
+        artifact_type: Optional artifact type filter
 
-    def list_artifacts(
-        self,
-        session_id: str,
-        artifact_type: str | None = None,
-    ) -> list[str]:
-        """
-        List artifacts for a session.
+    Returns:
+        List of blob paths
+    """
+    prefix = f"sessions/{session_id}/"
+    if artifact_type:
+      prefix += f"{artifact_type}/"
 
-        Args:
-            session_id: Session ID
-            artifact_type: Optional artifact type filter
+    blobs = self.bucket.list_blobs(prefix=prefix)
 
-        Returns:
-            List of blob paths
-        """
-        prefix = f"sessions/{session_id}/"
-        if artifact_type:
-            prefix += f"{artifact_type}/"
+    return [blob.name for blob in blobs]
 
-        blobs = self.bucket.list_blobs(prefix=prefix)
+  def get_public_url(
+    self,
+    session_id: str,
+    filename: str,
+    artifact_type: str = "datasets",
+    expiration_hours: int = 24,
+  ) -> str:
+    """
+    Get a signed public URL for sharing.
 
-        return [blob.name for blob in blobs]
+    Args:
+        session_id: Session ID
+        filename: Filename
+        artifact_type: Type of artifact
+        expiration_hours: URL expiration in hours
 
-    def get_public_url(
-        self,
-        session_id: str,
-        filename: str,
-        artifact_type: str = "datasets",
-        expiration_hours: int = 24,
-    ) -> str:
-        """
-        Get a signed public URL for sharing.
+    Returns:
+        Signed public URL
+    """
+    blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
+    blob = self.bucket.blob(blob_path)
 
-        Args:
-            session_id: Session ID
-            filename: Filename
-            artifact_type: Type of artifact
-            expiration_hours: URL expiration in hours
+    from datetime import timedelta
 
-        Returns:
-            Signed public URL
-        """
-        blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
-        blob = self.bucket.blob(blob_path)
+    url = blob.generate_signed_url(
+      version="v4",
+      expiration=timedelta(hours=expiration_hours),
+      method="GET",
+    )
 
-        from datetime import timedelta
+    return url
 
-        url = blob.generate_signed_url(
-            version="v4",
-            expiration=timedelta(hours=expiration_hours),
-            method="GET",
-        )
+  def delete_artifact(
+    self,
+    session_id: str,
+    filename: str,
+    artifact_type: str = "datasets",
+  ):
+    """
+    Delete an artifact.
 
-        return url
+    Args:
+        session_id: Session ID
+        filename: Filename
+        artifact_type: Type of artifact
+    """
+    blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
+    blob = self.bucket.blob(blob_path)
+    blob.delete()
 
-    def delete_artifact(
-        self,
-        session_id: str,
-        filename: str,
-        artifact_type: str = "datasets",
-    ):
-        """
-        Delete an artifact.
+    logger.info(f"Deleted gs://{self.bucket_name}/{blob_path}")
 
-        Args:
-            session_id: Session ID
-            filename: Filename
-            artifact_type: Type of artifact
-        """
-        blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
-        blob = self.bucket.blob(blob_path)
-        blob.delete()
+  def delete_session_artifacts(self, session_id: str):
+    """
+    Delete all artifacts for a session.
 
-        logger.info(f"Deleted gs://{self.bucket_name}/{blob_path}")
+    Args:
+        session_id: Session ID
+    """
+    prefix = f"sessions/{session_id}/"
+    blobs = self.bucket.list_blobs(prefix=prefix)
 
-    def delete_session_artifacts(self, session_id: str):
-        """
-        Delete all artifacts for a session.
+    deleted_count = 0
+    for blob in blobs:
+      blob.delete()
+      deleted_count += 1
 
-        Args:
-            session_id: Session ID
-        """
-        prefix = f"sessions/{session_id}/"
-        blobs = self.bucket.list_blobs(prefix=prefix)
+    logger.info(f"Deleted {deleted_count} artifacts for session {session_id}")
 
-        deleted_count = 0
-        for blob in blobs:
-            blob.delete()
-            deleted_count += 1
-
-        logger.info(f"Deleted {deleted_count} artifacts for session {session_id}")
-
-    def __repr__(self) -> str:
-        return f"CloudStorageBackend(bucket={self.bucket_name})"
+  def __repr__(self) -> str:
+    return f"CloudStorageBackend(bucket={self.bucket_name})"

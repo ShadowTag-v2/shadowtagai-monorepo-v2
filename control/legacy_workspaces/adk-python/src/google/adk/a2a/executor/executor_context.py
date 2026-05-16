@@ -19,32 +19,32 @@ from google.adk.runners import Runner
 
 
 class ExecutorContext:
-    """Context for the executor."""
+  """Context for the executor."""
 
-    def __init__(
-        self,
-        app_name: str,
-        user_id: str,
-        session_id: str,
-        runner: Runner,
-    ):
-        self._app_name = app_name
-        self._user_id = user_id
-        self._session_id = session_id
-        self._runner = runner
+  def __init__(
+    self,
+    app_name: str,
+    user_id: str,
+    session_id: str,
+    runner: Runner,
+  ):
+    self._app_name = app_name
+    self._user_id = user_id
+    self._session_id = session_id
+    self._runner = runner
 
-    @property
-    def app_name(self) -> str:
-        return self._app_name
+  @property
+  def app_name(self) -> str:
+    return self._app_name
 
-    @property
-    def user_id(self) -> str:
-        return self._user_id
+  @property
+  def user_id(self) -> str:
+    return self._user_id
 
-    @property
-    def session_id(self) -> str:
-        return self._session_id
+  @property
+  def session_id(self) -> str:
+    return self._session_id
 
-    @property
-    def runner(self) -> Runner:
-        return self._runner
+  @property
+  def runner(self) -> Runner:
+    return self._runner

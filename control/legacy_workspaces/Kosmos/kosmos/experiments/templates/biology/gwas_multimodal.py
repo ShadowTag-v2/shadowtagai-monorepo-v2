@@ -31,209 +31,273 @@ Example usage:
 
 from kosmos.experiments.templates.base import TemplateBase, TemplateCustomizationParams
 from kosmos.models.experiment import (
-    ExperimentProtocol,
-    ExperimentType,
-    ProtocolStep,
-    Variable,
-    ResourceRequirements,
-    StatisticalTestSpec,
-    ValidationCheck,
+  ExperimentProtocol,
+  ExperimentType,
+  ProtocolStep,
+  Variable,
+  ResourceRequirements,
+  StatisticalTestSpec,
+  ValidationCheck,
 )
 from kosmos.models.hypothesis import Hypothesis
 
 
 class GWASMultiModalTemplate(TemplateBase):
+  """
+  Template for GWAS multi-modal integration experiments.
+
+  Implements the Figure 5 analysis pattern:
+  1. Load GWAS, eQTL, pQTL, ATAC-seq data
+  2. Integrate data for SNP-gene pairs
+  3. Calculate composite scores (0-55 points)
+  4. Validate effect concordance
+  5. Rank mechanisms by evidence strength
+  """
+
+  def __init__(self):
+    super().__init__(
+      name="gwas_multimodal",
+      experiment_type=ExperimentType.DATA_ANALYSIS,
+      domain="biology",
+      title="GWAS Multi-Modal Integration",
+      description=(
+        "Integrate GWAS, eQTL, pQTL, and ATAC-seq data to identify "
+        "and rank genetic mechanisms. Based on SSR1-T2D protective "
+        "mechanism analysis pattern (Figure 5)."
+      ),
+      suitable_for=[
+        "GWAS follow-up analysis",
+        "Genetic variant interpretation",
+        "Multi-modal genomic integration",
+        "Disease mechanism discovery",
+      ],
+      requirements=[
+        "GWAS summary statistics (SNP, p-value, beta)",
+        "eQTL data (optional but recommended)",
+        "pQTL data (optional)",
+        "ATAC-seq peaks (optional)",
+        "SNP-gene pairs to analyze",
+      ],
+      complexity_score=0.7,
+      rigor_score=0.9,
+    )
+
+  def is_applicable(self, hypothesis: Hypothesis) -> bool:
     """
-    Template for GWAS multi-modal integration experiments.
+    Check if hypothesis is suitable for GWAS multi-modal integration.
 
-    Implements the Figure 5 analysis pattern:
-    1. Load GWAS, eQTL, pQTL, ATAC-seq data
-    2. Integrate data for SNP-gene pairs
-    3. Calculate composite scores (0-55 points)
-    4. Validate effect concordance
-    5. Rank mechanisms by evidence strength
+    Args:
+        hypothesis: Hypothesis to check
+
+    Returns:
+        True if hypothesis involves genetic variants and gene function
     """
+    statement_lower = hypothesis.statement.lower()
 
-    def __init__(self):
-        super().__init__(
-            name="gwas_multimodal",
-            experiment_type=ExperimentType.DATA_ANALYSIS,
-            domain="biology",
-            title="GWAS Multi-Modal Integration",
-            description=(
-                "Integrate GWAS, eQTL, pQTL, and ATAC-seq data to identify "
-                "and rank genetic mechanisms. Based on SSR1-T2D protective "
-                "mechanism analysis pattern (Figure 5)."
-            ),
-            suitable_for=[
-                "GWAS follow-up analysis",
-                "Genetic variant interpretation",
-                "Multi-modal genomic integration",
-                "Disease mechanism discovery",
-            ],
-            requirements=[
-                "GWAS summary statistics (SNP, p-value, beta)",
-                "eQTL data (optional but recommended)",
-                "pQTL data (optional)",
-                "ATAC-seq peaks (optional)",
-                "SNP-gene pairs to analyze",
-            ],
-            complexity_score=0.7,
-            rigor_score=0.9,
-        )
+    # Check for genomics keywords
+    genomics_keywords = [
+      "gwas",
+      "snp",
+      "variant",
+      "genetic",
+      "gene",
+      "eqtl",
+      "pqtl",
+      "qtl",
+      "association",
+      "polymorphism",
+      "allele",
+      "locus",
+    ]
 
-    def is_applicable(self, hypothesis: Hypothesis) -> bool:
-        """
-        Check if hypothesis is suitable for GWAS multi-modal integration.
+    # Check for mechanism keywords
+    mechanism_keywords = [
+      "mechanism",
+      "regulation",
+      "expression",
+      "protective",
+      "risk",
+      "effect",
+      "influence",
+      "modulate",
+      "control",
+      "affect",
+    ]
 
-        Args:
-            hypothesis: Hypothesis to check
+    has_genomics = any(kw in statement_lower for kw in genomics_keywords)
+    has_mechanism = any(kw in statement_lower for kw in mechanism_keywords)
 
-        Returns:
-            True if hypothesis involves genetic variants and gene function
-        """
-        statement_lower = hypothesis.statement.lower()
+    return has_genomics and has_mechanism
 
-        # Check for genomics keywords
-        genomics_keywords = ["gwas", "snp", "variant", "genetic", "gene", "eqtl", "pqtl", "qtl", "association", "polymorphism", "allele", "locus"]
+  def generate_protocol(
+    self, params: TemplateCustomizationParams
+  ) -> ExperimentProtocol:
+    """
+    Generate GWAS multi-modal integration protocol.
 
-        # Check for mechanism keywords
-        mechanism_keywords = ["mechanism", "regulation", "expression", "protective", "risk", "effect", "influence", "modulate", "control", "affect"]
+    Args:
+        params: Customization parameters with hypothesis and variables
 
-        has_genomics = any(kw in statement_lower for kw in genomics_keywords)
-        has_mechanism = any(kw in statement_lower for kw in mechanism_keywords)
+    Returns:
+        Complete experiment protocol
 
-        return has_genomics and has_mechanism
+    Raises:
+        ValueError: If required variables are missing
+    """
+    hypothesis = params.hypothesis
+    custom_vars = params.custom_variables or {}
 
-    def generate_protocol(self, params: TemplateCustomizationParams) -> ExperimentProtocol:
-        """
-        Generate GWAS multi-modal integration protocol.
+    # Extract required parameters
+    snp_ids = custom_vars.get("snp_ids", [])
+    gene = custom_vars.get("gene", "")
+    gwas_path = custom_vars.get("gwas_path", "gwas_data.csv")
+    eqtl_path = custom_vars.get("eqtl_path", None)
+    pqtl_path = custom_vars.get("pqtl_path", None)
+    atac_path = custom_vars.get("atac_path", None)
+    min_score = custom_vars.get("min_composite_score", 10.0)
+    top_n = custom_vars.get("top_n_mechanisms", 10)
 
-        Args:
-            params: Customization parameters with hypothesis and variables
+    # Validate
+    if not snp_ids:
+      raise ValueError("Must specify snp_ids list")
+    if not gene:
+      raise ValueError("Must specify gene symbol")
 
-        Returns:
-            Complete experiment protocol
+    # Define variables
+    variables = [
+      Variable(
+        name="snp_ids", description="List of SNP identifiers to analyze", value=snp_ids
+      ),
+      Variable(
+        name="gene", description="Gene symbol for mechanism analysis", value=gene
+      ),
+      Variable(
+        name="gwas_path",
+        description="Path to GWAS summary statistics CSV",
+        value=gwas_path,
+      ),
+      Variable(
+        name="eqtl_path",
+        description="Path to eQTL data CSV (optional)",
+        value=eqtl_path,
+      ),
+      Variable(
+        name="pqtl_path",
+        description="Path to pQTL data CSV (optional)",
+        value=pqtl_path,
+      ),
+      Variable(
+        name="atac_path",
+        description="Path to ATAC-seq peaks CSV (optional)",
+        value=atac_path,
+      ),
+      Variable(
+        name="min_composite_score",
+        description="Minimum composite score for filtering",
+        value=min_score,
+      ),
+      Variable(
+        name="top_n_mechanisms",
+        description="Number of top mechanisms to report",
+        value=top_n,
+      ),
+    ]
 
-        Raises:
-            ValueError: If required variables are missing
-        """
-        hypothesis = params.hypothesis
-        custom_vars = params.custom_variables or {}
+    # Define protocol steps
+    steps = [
+      ProtocolStep(
+        name="load_data",
+        description="Load all genomic data modalities",
+        code_template=self._generate_load_data_code(
+          gwas_path, eqtl_path, pqtl_path, atac_path
+        ),
+        expected_duration_minutes=3,
+        required_resources=ResourceRequirements(cpu_cores=1, memory_gb=4.0),
+      ),
+      ProtocolStep(
+        name="multimodal_integration",
+        description="Integrate GWAS + eQTL + pQTL + ATAC data",
+        code_template=self._generate_integration_code(snp_ids, gene),
+        expected_duration_minutes=10,
+        required_resources=ResourceRequirements(cpu_cores=2, memory_gb=4.0),
+      ),
+      ProtocolStep(
+        name="rank_mechanisms",
+        description="Rank SNP-gene mechanisms by composite score",
+        code_template=self._generate_ranking_code(min_score, top_n),
+        expected_duration_minutes=2,
+        required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
+      ),
+      ProtocolStep(
+        name="visualize_results",
+        description="Create evidence plots and mechanism summaries",
+        code_template=self._generate_visualization_code(),
+        expected_duration_minutes=5,
+        required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
+      ),
+    ]
 
-        # Extract required parameters
-        snp_ids = custom_vars.get("snp_ids", [])
-        gene = custom_vars.get("gene", "")
-        gwas_path = custom_vars.get("gwas_path", "gwas_data.csv")
-        eqtl_path = custom_vars.get("eqtl_path", None)
-        pqtl_path = custom_vars.get("pqtl_path", None)
-        atac_path = custom_vars.get("atac_path", None)
-        min_score = custom_vars.get("min_composite_score", 10.0)
-        top_n = custom_vars.get("top_n_mechanisms", 10)
+    # Define statistical tests
+    statistical_tests = [
+      StatisticalTestSpec(
+        test_name="Concordance Analysis",
+        test_type="non-parametric",
+        description="Check effect direction concordance across modalities",
+        alpha=0.05,
+        two_tailed=False,
+      )
+    ]
 
-        # Validate
-        if not snp_ids:
-            raise ValueError("Must specify snp_ids list")
-        if not gene:
-            raise ValueError("Must specify gene symbol")
-
-        # Define variables
-        variables = [
-            Variable(name="snp_ids", description="List of SNP identifiers to analyze", value=snp_ids),
-            Variable(name="gene", description="Gene symbol for mechanism analysis", value=gene),
-            Variable(name="gwas_path", description="Path to GWAS summary statistics CSV", value=gwas_path),
-            Variable(name="eqtl_path", description="Path to eQTL data CSV (optional)", value=eqtl_path),
-            Variable(name="pqtl_path", description="Path to pQTL data CSV (optional)", value=pqtl_path),
-            Variable(name="atac_path", description="Path to ATAC-seq peaks CSV (optional)", value=atac_path),
-            Variable(name="min_composite_score", description="Minimum composite score for filtering", value=min_score),
-            Variable(name="top_n_mechanisms", description="Number of top mechanisms to report", value=top_n),
-        ]
-
-        # Define protocol steps
-        steps = [
-            ProtocolStep(
-                name="load_data",
-                description="Load all genomic data modalities",
-                code_template=self._generate_load_data_code(gwas_path, eqtl_path, pqtl_path, atac_path),
-                expected_duration_minutes=3,
-                required_resources=ResourceRequirements(cpu_cores=1, memory_gb=4.0),
-            ),
-            ProtocolStep(
-                name="multimodal_integration",
-                description="Integrate GWAS + eQTL + pQTL + ATAC data",
-                code_template=self._generate_integration_code(snp_ids, gene),
-                expected_duration_minutes=10,
-                required_resources=ResourceRequirements(cpu_cores=2, memory_gb=4.0),
-            ),
-            ProtocolStep(
-                name="rank_mechanisms",
-                description="Rank SNP-gene mechanisms by composite score",
-                code_template=self._generate_ranking_code(min_score, top_n),
-                expected_duration_minutes=2,
-                required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
-            ),
-            ProtocolStep(
-                name="visualize_results",
-                description="Create evidence plots and mechanism summaries",
-                code_template=self._generate_visualization_code(),
-                expected_duration_minutes=5,
-                required_resources=ResourceRequirements(cpu_cores=1, memory_gb=2.0),
-            ),
-        ]
-
-        # Define statistical tests
-        statistical_tests = [
-            StatisticalTestSpec(
-                test_name="Concordance Analysis",
-                test_type="non-parametric",
-                description="Check effect direction concordance across modalities",
-                alpha=0.05,
-                two_tailed=False,
-            )
-        ]
-
-        # Define validation checks
-        validation_checks = [
-            ValidationCheck(
-                check_name="data_availability",
-                description="Ensure GWAS data is available",
-                validation_code="""
+    # Define validation checks
+    validation_checks = [
+      ValidationCheck(
+        check_name="data_availability",
+        description="Ensure GWAS data is available",
+        validation_code="""
 assert gwas_df is not None, "GWAS data is required"
 assert len(gwas_df) > 0, "GWAS data is empty"
 """,
-            ),
-            ValidationCheck(
-                check_name="snp_coverage",
-                description="Check SNP coverage in data",
-                validation_code=f"""
+      ),
+      ValidationCheck(
+        check_name="snp_coverage",
+        description="Check SNP coverage in data",
+        validation_code=f"""
 n_snps_in_gwas = sum(1 for snp in {snp_ids} if snp in gwas_df.index)
 coverage = n_snps_in_gwas / len({snp_ids})
 print(f"SNP coverage in GWAS data: {{coverage:.1%}}")
 assert coverage > 0.5, f"Low SNP coverage: {{coverage:.1%}}"
 """,
-            ),
-        ]
+      ),
+    ]
 
-        # Create protocol
-        protocol = ExperimentProtocol(
-            title=f"GWAS Multi-Modal: {gene} mechanisms",
-            description=f"Multi-modal genomic integration to test: {hypothesis.statement}",
-            hypothesis_id=str(hypothesis.id) if hasattr(hypothesis, "id") else None,
-            experiment_type=ExperimentType.DATA_ANALYSIS,
-            domain="biology",
-            variables=variables,
-            steps=steps,
-            control_groups=[],  # No control groups for this analysis type
-            statistical_tests=statistical_tests,
-            validation_checks=validation_checks,
-            required_resources=ResourceRequirements(cpu_cores=2, memory_gb=4.0, storage_gb=2.0, estimated_duration_minutes=20),
-        )
+    # Create protocol
+    protocol = ExperimentProtocol(
+      title=f"GWAS Multi-Modal: {gene} mechanisms",
+      description=f"Multi-modal genomic integration to test: {hypothesis.statement}",
+      hypothesis_id=str(hypothesis.id) if hasattr(hypothesis, "id") else None,
+      experiment_type=ExperimentType.DATA_ANALYSIS,
+      domain="biology",
+      variables=variables,
+      steps=steps,
+      control_groups=[],  # No control groups for this analysis type
+      statistical_tests=statistical_tests,
+      validation_checks=validation_checks,
+      required_resources=ResourceRequirements(
+        cpu_cores=2, memory_gb=4.0, storage_gb=2.0, estimated_duration_minutes=20
+      ),
+    )
 
-        return protocol
+    return protocol
 
-    def _generate_load_data_code(self, gwas_path: str, eqtl_path: str | None, pqtl_path: str | None, atac_path: str | None) -> str:
-        """Generate code for loading genomic data"""
-        return f"""
+  def _generate_load_data_code(
+    self,
+    gwas_path: str,
+    eqtl_path: str | None,
+    pqtl_path: str | None,
+    atac_path: str | None,
+  ) -> str:
+    """Generate code for loading genomic data"""
+    return f"""
 import pandas as pd
 import numpy as np
 
@@ -269,9 +333,9 @@ if '{atac_path}' and '{atac_path}' != 'None':
         print(f"Could not load ATAC data: {{e}}")
 """
 
-    def _generate_integration_code(self, snp_ids: list[str], gene: str) -> str:
-        """Generate code for multi-modal integration"""
-        return f"""
+  def _generate_integration_code(self, snp_ids: list[str], gene: str) -> str:
+    """Generate code for multi-modal integration"""
+    return f"""
 from kosmos.domains.biology.genomics import GenomicsAnalyzer
 
 # Initialize analyzer
@@ -323,9 +387,9 @@ print(f"  ATAC: {{results_df['has_atac'].sum()}}/{{len(results)}} ({{results_df[
 print(f"  Concordant: {{results_df['concordant'].sum()}}/{{len(results)}} ({{results_df['concordant'].mean()*100:.0f}}%)")
 """
 
-    def _generate_ranking_code(self, min_score: float, top_n: int) -> str:
-        """Generate code for mechanism ranking"""
-        return f"""
+  def _generate_ranking_code(self, min_score: float, top_n: int) -> str:
+    """Generate code for mechanism ranking"""
+    return f"""
 # Rank mechanisms by composite score
 rankings = analyzer.rank_mechanisms(
     results=results,
@@ -356,9 +420,9 @@ rankings_df = pd.DataFrame([
 ])
 """
 
-    def _generate_visualization_code(self) -> str:
-        """Generate code for visualizations"""
-        return """
+  def _generate_visualization_code(self) -> str:
+    """Generate code for visualizations"""
+    return """
 import matplotlib.pyplot as plt
 import seaborn as sns
 

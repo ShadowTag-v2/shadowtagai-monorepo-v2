@@ -24,11 +24,11 @@ GITHUB_GRAPHQL_URL = GITHUB_BASE_URL + "/graphql"
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 if not GITHUB_TOKEN:
-    raise ValueError("GITHUB_TOKEN environment variable not set")
+  raise ValueError("GITHUB_TOKEN environment variable not set")
 
 VERTEXAI_DATASTORE_ID = os.getenv("VERTEXAI_DATASTORE_ID")
 if not VERTEXAI_DATASTORE_ID:
-    raise ValueError("VERTEXAI_DATASTORE_ID environment variable not set")
+  raise ValueError("VERTEXAI_DATASTORE_ID environment variable not set")
 
 GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 GCS_BUCKET_NAME = os.getenv("GCS_BUCKET_NAME")

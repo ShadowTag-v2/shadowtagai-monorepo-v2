@@ -9,10 +9,10 @@ from app.services.autonomous.flight_controller import FlightControllerService
 from app.services.autonomous.simulation import SimulationService
 
 __all__ = [
-    "ROSBridge",
-    "PathPlannerService",
-    "LocalizationService",
-    "ObstacleDetectionService",
-    "FlightControllerService",
-    "SimulationService",
+  "ROSBridge",
+  "PathPlannerService",
+  "LocalizationService",
+  "ObstacleDetectionService",
+  "FlightControllerService",
+  "SimulationService",
 ]

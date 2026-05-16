@@ -19,18 +19,20 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_with_single_test_file():
-    """Test the agent's basic ability via session file."""
-    await AgentEvaluator.evaluate(
-        agent_module="tests.integration.fixture.home_automation_agent",
-        eval_dataset_file_path_or_dir="tests/integration/fixture/home_automation_agent/simple_test.test.json",
-    )
+  """Test the agent's basic ability via session file."""
+  await AgentEvaluator.evaluate(
+    agent_module="tests.integration.fixture.home_automation_agent",
+    eval_dataset_file_path_or_dir="tests/integration/fixture/home_automation_agent/simple_test.test.json",
+  )
 
 
 @pytest.mark.asyncio
 async def test_with_folder_of_test_files_long_running():
-    """Test the agent's basic ability via a folder of session files."""
-    await AgentEvaluator.evaluate(
-        agent_module="tests.integration.fixture.home_automation_agent",
-        eval_dataset_file_path_or_dir=("tests/integration/fixture/home_automation_agent/test_files"),
-        num_runs=4,
-    )
+  """Test the agent's basic ability via a folder of session files."""
+  await AgentEvaluator.evaluate(
+    agent_module="tests.integration.fixture.home_automation_agent",
+    eval_dataset_file_path_or_dir=(
+      "tests/integration/fixture/home_automation_agent/test_files"
+    ),
+    num_runs=4,
+  )

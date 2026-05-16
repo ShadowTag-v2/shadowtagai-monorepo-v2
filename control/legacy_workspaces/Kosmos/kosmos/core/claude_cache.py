@@ -18,343 +18,368 @@ logger = logging.getLogger(__name__)
 
 
 class ClaudePromptNormalizer:
+  """
+  Normalize Claude prompts for better cache hit rates.
+
+  Handles whitespace normalization, placeholder replacement,
+  and other transformations to make similar prompts cacheable.
+  """
+
+  @staticmethod
+  def normalize(prompt: str, aggressive: bool = False) -> str:
     """
-    Normalize Claude prompts for better cache hit rates.
+    Normalize a Claude prompt.
 
-    Handles whitespace normalization, placeholder replacement,
-    and other transformations to make similar prompts cacheable.
+    Args:
+        prompt: Original prompt text
+        aggressive: If True, perform more aggressive normalization
+                   (may affect response quality)
+
+    Returns:
+        Normalized prompt
     """
+    # Basic normalization
+    normalized = prompt.strip()
 
-    @staticmethod
-    def normalize(prompt: str, aggressive: bool = False) -> str:
-        """
-        Normalize a Claude prompt.
+    # Normalize whitespace
+    normalized = re.sub(r"\s+", " ", normalized)
 
-        Args:
-            prompt: Original prompt text
-            aggressive: If True, perform more aggressive normalization
-                       (may affect response quality)
+    # Normalize line endings
+    normalized = normalized.replace("\r\n", "\n")
+    normalized = re.sub(r"\n\s*\n", "\n\n", normalized)
 
-        Returns:
-            Normalized prompt
-        """
-        # Basic normalization
-        normalized = prompt.strip()
+    if aggressive:
+      # Remove inline comments (be careful, might affect code)
+      normalized = re.sub(r"#.*?$", "", normalized, flags=re.MULTILINE)
 
-        # Normalize whitespace
-        normalized = re.sub(r"\s+", " ", normalized)
+      # Normalize case for certain keywords (risky)
+      # This is disabled by default as it can change semantics
+      pass
 
-        # Normalize line endings
-        normalized = normalized.replace("\r\n", "\n")
-        normalized = re.sub(r"\n\s*\n", "\n\n", normalized)
+    return normalized
 
-        if aggressive:
-            # Remove inline comments (be careful, might affect code)
-            normalized = re.sub(r"#.*?$", "", normalized, flags=re.MULTILINE)
+  @staticmethod
+  def extract_template(prompt: str) -> tuple[str, dict[str, str]]:
+    """
+    Extract template and variables from a prompt.
 
-            # Normalize case for certain keywords (risky)
-            # This is disabled by default as it can change semantics
-            pass
+    Useful for detecting similar prompts with different values.
 
-        return normalized
+    Args:
+        prompt: Original prompt
 
-    @staticmethod
-    def extract_template(prompt: str) -> tuple[str, dict[str, str]]:
-        """
-        Extract template and variables from a prompt.
+    Returns:
+        Tuple of (template, variables dict)
+    """
+    variables = {}
 
-        Useful for detecting similar prompts with different values.
+    # Detect common patterns (numbers, dates, IDs, etc.)
+    template = prompt
 
-        Args:
-            prompt: Original prompt
+    # Replace numbers with placeholders
+    number_pattern = r"\b\d+\.?\d*\b"
+    numbers = re.findall(number_pattern, template)
+    for i, num in enumerate(numbers):
+      var_name = f"__NUM_{i}__"
+      variables[var_name] = num
+      template = template.replace(num, var_name, 1)
 
-        Returns:
-            Tuple of (template, variables dict)
-        """
-        variables = {}
+    # Replace quoted strings
+    string_pattern = r'"([^"]+)"'
+    strings = re.findall(string_pattern, template)
+    for i, s in enumerate(strings):
+      var_name = f"__STR_{i}__"
+      variables[var_name] = s
+      template = re.sub(string_pattern, f'"{var_name}"', template, count=1)
 
-        # Detect common patterns (numbers, dates, IDs, etc.)
-        template = prompt
+    return template, variables
 
-        # Replace numbers with placeholders
-        number_pattern = r"\b\d+\.?\d*\b"
-        numbers = re.findall(number_pattern, template)
-        for i, num in enumerate(numbers):
-            var_name = f"__NUM_{i}__"
-            variables[var_name] = num
-            template = template.replace(num, var_name, 1)
+  @staticmethod
+  def compute_similarity_simple(prompt1: str, prompt2: str) -> float:
+    """
+    Compute simple similarity between two prompts.
 
-        # Replace quoted strings
-        string_pattern = r'"([^"]+)"'
-        strings = re.findall(string_pattern, template)
-        for i, s in enumerate(strings):
-            var_name = f"__STR_{i}__"
-            variables[var_name] = s
-            template = re.sub(string_pattern, f'"{var_name}"', template, count=1)
+    Uses character-level similarity (not semantic).
 
-        return template, variables
+    Args:
+        prompt1: First prompt
+        prompt2: Second prompt
 
-    @staticmethod
-    def compute_similarity_simple(prompt1: str, prompt2: str) -> float:
-        """
-        Compute simple similarity between two prompts.
+    Returns:
+        Similarity score between 0 and 1
+    """
+    # Normalize both prompts
+    norm1 = ClaudePromptNormalizer.normalize(prompt1)
+    norm2 = ClaudePromptNormalizer.normalize(prompt2)
 
-        Uses character-level similarity (not semantic).
+    # Compute character-level overlap
+    set1 = set(norm1.lower().split())
+    set2 = set(norm2.lower().split())
 
-        Args:
-            prompt1: First prompt
-            prompt2: Second prompt
+    if not set1 or not set2:
+      return 0.0
 
-        Returns:
-            Similarity score between 0 and 1
-        """
-        # Normalize both prompts
-        norm1 = ClaudePromptNormalizer.normalize(prompt1)
-        norm2 = ClaudePromptNormalizer.normalize(prompt2)
+    intersection = set1 & set2
+    union = set1 | set2
 
-        # Compute character-level overlap
-        set1 = set(norm1.lower().split())
-        set2 = set(norm2.lower().split())
-
-        if not set1 or not set2:
-            return 0.0
-
-        intersection = set1 & set2
-        union = set1 | set2
-
-        # Jaccard similarity
-        return len(intersection) / len(union)
+    # Jaccard similarity
+    return len(intersection) / len(union)
 
 
 class ClaudeCache:
+  """
+  Intelligent cache for Claude API responses.
+
+  Features:
+  - Content-based caching with normalization
+  - Semantic similarity detection (simple version)
+  - Separate caching for API and CLI modes
+  - Response metadata tracking
+  - Cache bypass for specific prompts
+  """
+
+  def __init__(
+    self,
+    enable_normalization: bool = True,
+    enable_similarity: bool = False,  # Disabled by default (no embeddings)
+    similarity_threshold: float = 0.95,
+    cache_bypass_patterns: list[str] | None = None,
+  ):
     """
-    Intelligent cache for Claude API responses.
+    Initialize Claude cache.
 
-    Features:
-    - Content-based caching with normalization
-    - Semantic similarity detection (simple version)
-    - Separate caching for API and CLI modes
-    - Response metadata tracking
-    - Cache bypass for specific prompts
+    Args:
+        enable_normalization: Enable prompt normalization
+        enable_similarity: Enable similarity-based caching
+        similarity_threshold: Minimum similarity for cache hit (0-1)
+        cache_bypass_patterns: Regex patterns that bypass cache
     """
+    self.enable_normalization = enable_normalization
+    self.enable_similarity = enable_similarity
+    self.similarity_threshold = similarity_threshold
+    self.cache_bypass_patterns = cache_bypass_patterns or [
+      r"current\s+(time|date)",  # Time-sensitive queries
+      r"random|generate\s+random",  # Random generation
+      r"latest|newest|most\s+recent",  # Latest information
+    ]
 
-    def __init__(
-        self,
-        enable_normalization: bool = True,
-        enable_similarity: bool = False,  # Disabled by default (no embeddings)
-        similarity_threshold: float = 0.95,
-        cache_bypass_patterns: list[str] | None = None,
-    ):
-        """
-        Initialize Claude cache.
+    # Get the underlying cache from cache manager
+    self.cache_manager = get_cache_manager()
+    self.cache = self.cache_manager.get_cache(CacheType.CLAUDE)
 
-        Args:
-            enable_normalization: Enable prompt normalization
-            enable_similarity: Enable similarity-based caching
-            similarity_threshold: Minimum similarity for cache hit (0-1)
-            cache_bypass_patterns: Regex patterns that bypass cache
-        """
-        self.enable_normalization = enable_normalization
-        self.enable_similarity = enable_similarity
-        self.similarity_threshold = similarity_threshold
-        self.cache_bypass_patterns = cache_bypass_patterns or [
-            r"current\s+(time|date)",  # Time-sensitive queries
-            r"random|generate\s+random",  # Random generation
-            r"latest|newest|most\s+recent",  # Latest information
-        ]
+    # Normalizer
+    self.normalizer = ClaudePromptNormalizer()
 
-        # Get the underlying cache from cache manager
-        self.cache_manager = get_cache_manager()
-        self.cache = self.cache_manager.get_cache(CacheType.CLAUDE)
+    logger.info(
+      f"ClaudeCache initialized: normalization={enable_normalization}, similarity={enable_similarity}"
+    )
 
-        # Normalizer
-        self.normalizer = ClaudePromptNormalizer()
+  def _should_bypass_cache(self, prompt: str) -> bool:
+    """Check if prompt should bypass cache."""
+    for pattern in self.cache_bypass_patterns:
+      if re.search(pattern, prompt, re.IGNORECASE):
+        logger.debug(f"Cache bypass: prompt matches pattern '{pattern}'")
+        return True
+    return False
 
-        logger.info(f"ClaudeCache initialized: normalization={enable_normalization}, similarity={enable_similarity}")
+  def _generate_cache_key(self, prompt: str, model: str, **kwargs) -> str:
+    """
+    Generate cache key for a Claude API call.
 
-    def _should_bypass_cache(self, prompt: str) -> bool:
-        """Check if prompt should bypass cache."""
-        for pattern in self.cache_bypass_patterns:
-            if re.search(pattern, prompt, re.IGNORECASE):
-                logger.debug(f"Cache bypass: prompt matches pattern '{pattern}'")
-                return True
-        return False
+    Args:
+        prompt: Prompt text
+        model: Model name
+        **kwargs: Additional parameters (temperature, max_tokens, etc.)
 
-    def _generate_cache_key(self, prompt: str, model: str, **kwargs) -> str:
-        """
-        Generate cache key for a Claude API call.
+    Returns:
+        Cache key
+    """
+    # Normalize prompt if enabled
+    if self.enable_normalization:
+      prompt = self.normalizer.normalize(prompt)
 
-        Args:
-            prompt: Prompt text
-            model: Model name
-            **kwargs: Additional parameters (temperature, max_tokens, etc.)
+    # Create key from prompt + model + params
+    key_data = {"prompt": prompt, "model": model, "params": sorted(kwargs.items())}
 
-        Returns:
-            Cache key
-        """
-        # Normalize prompt if enabled
-        if self.enable_normalization:
-            prompt = self.normalizer.normalize(prompt)
+    key_str = json.dumps(key_data, sort_keys=True, default=str)
+    return hashlib.sha256(key_str.encode()).hexdigest()
 
-        # Create key from prompt + model + params
-        key_data = {"prompt": prompt, "model": model, "params": sorted(kwargs.items())}
+  def get(
+    self, prompt: str, model: str, bypass: bool = False, **kwargs
+  ) -> dict[str, Any] | None:
+    """
+    Retrieve a cached Claude response.
 
-        key_str = json.dumps(key_data, sort_keys=True, default=str)
-        return hashlib.sha256(key_str.encode()).hexdigest()
+    Args:
+        prompt: Prompt text
+        model: Model name
+        bypass: Force bypass cache
+        **kwargs: Additional Claude parameters
 
-    def get(self, prompt: str, model: str, bypass: bool = False, **kwargs) -> dict[str, Any] | None:
-        """
-        Retrieve a cached Claude response.
+    Returns:
+        Cached response dict with 'content', 'metadata', or None
+    """
+    # Check bypass
+    if bypass or self._should_bypass_cache(prompt):
+      logger.debug("Cache bypassed for prompt")
+      return None
 
-        Args:
-            prompt: Prompt text
-            model: Model name
-            bypass: Force bypass cache
-            **kwargs: Additional Claude parameters
+    # Generate cache key
+    cache_key = self._generate_cache_key(prompt, model, **kwargs)
 
-        Returns:
-            Cached response dict with 'content', 'metadata', or None
-        """
-        # Check bypass
-        if bypass or self._should_bypass_cache(prompt):
-            logger.debug("Cache bypassed for prompt")
-            return None
+    # Try exact match first
+    cached = self.cache.get(cache_key)
+    if cached is not None:
+      logger.debug(f"Exact cache hit: {cache_key[:8]}...")
+      cached["cache_hit_type"] = "exact"
+      return cached
 
-        # Generate cache key
-        cache_key = self._generate_cache_key(prompt, model, **kwargs)
+    # Try similarity-based matching if enabled
+    if self.enable_similarity:
+      similar_response = self._find_similar_cached(prompt, model, **kwargs)
+      if similar_response is not None:
+        logger.info("Similarity-based cache hit")
+        similar_response["cache_hit_type"] = "similar"
+        return similar_response
 
-        # Try exact match first
-        cached = self.cache.get(cache_key)
-        if cached is not None:
-            logger.debug(f"Exact cache hit: {cache_key[:8]}...")
-            cached["cache_hit_type"] = "exact"
-            return cached
+    logger.debug("Cache miss")
+    return None
 
-        # Try similarity-based matching if enabled
-        if self.enable_similarity:
-            similar_response = self._find_similar_cached(prompt, model, **kwargs)
-            if similar_response is not None:
-                logger.info("Similarity-based cache hit")
-                similar_response["cache_hit_type"] = "similar"
-                return similar_response
+  def set(
+    self,
+    prompt: str,
+    model: str,
+    response: str,
+    metadata: dict[str, Any] | None = None,
+    **kwargs,
+  ) -> bool:
+    """
+    Store a Claude response in cache.
 
-        logger.debug("Cache miss")
-        return None
+    Args:
+        prompt: Prompt text
+        model: Model name
+        response: Claude response text
+        metadata: Optional metadata (tokens, latency, etc.)
+        **kwargs: Additional Claude parameters
 
-    def set(self, prompt: str, model: str, response: str, metadata: dict[str, Any] | None = None, **kwargs) -> bool:
-        """
-        Store a Claude response in cache.
+    Returns:
+        True if cached successfully
+    """
+    # Don't cache if should bypass
+    if self._should_bypass_cache(prompt):
+      return False
 
-        Args:
-            prompt: Prompt text
-            model: Model name
-            response: Claude response text
-            metadata: Optional metadata (tokens, latency, etc.)
-            **kwargs: Additional Claude parameters
+    # Generate cache key
+    cache_key = self._generate_cache_key(prompt, model, **kwargs)
 
-        Returns:
-            True if cached successfully
-        """
-        # Don't cache if should bypass
-        if self._should_bypass_cache(prompt):
-            return False
+    # Prepare cache data
+    cache_data = {
+      "prompt": prompt,
+      "model": model,
+      "response": response,
+      "metadata": metadata or {},
+      "params": kwargs,
+    }
 
-        # Generate cache key
-        cache_key = self._generate_cache_key(prompt, model, **kwargs)
+    # Store in cache
+    success = self.cache.set(cache_key, cache_data)
 
-        # Prepare cache data
-        cache_data = {"prompt": prompt, "model": model, "response": response, "metadata": metadata or {}, "params": kwargs}
+    if success:
+      logger.debug(f"Cached Claude response: {cache_key[:8]}...")
 
-        # Store in cache
-        success = self.cache.set(cache_key, cache_data)
+    return success
 
-        if success:
-            logger.debug(f"Cached Claude response: {cache_key[:8]}...")
+  def _find_similar_cached(
+    self, prompt: str, model: str, **kwargs
+  ) -> dict[str, Any] | None:
+    """
+    Find a similar cached response using simple similarity.
 
-        return success
+    This is a basic implementation that doesn't use embeddings.
+    For production, consider using sentence transformers.
 
-    def _find_similar_cached(self, prompt: str, model: str, **kwargs) -> dict[str, Any] | None:
-        """
-        Find a similar cached response using simple similarity.
+    Args:
+        prompt: Prompt text
+        model: Model name
+        **kwargs: Additional parameters
 
-        This is a basic implementation that doesn't use embeddings.
-        For production, consider using sentence transformers.
+    Returns:
+        Similar cached response or None
+    """
+    # Note: This is inefficient as it checks all cached items
+    # For production, maintain a separate similarity index
 
-        Args:
-            prompt: Prompt text
-            model: Model name
-            **kwargs: Additional parameters
+    # Disabled for now (requires iterating all cache entries)
+    # In production, you'd maintain a separate index or use embeddings
 
-        Returns:
-            Similar cached response or None
-        """
-        # Note: This is inefficient as it checks all cached items
-        # For production, maintain a separate similarity index
+    return None
 
-        # Disabled for now (requires iterating all cache entries)
-        # In production, you'd maintain a separate index or use embeddings
+  def invalidate_by_pattern(self, pattern: str) -> int:
+    """
+    Invalidate cache entries matching a pattern.
 
-        return None
+    Args:
+        pattern: Regex pattern to match prompts
 
-    def invalidate_by_pattern(self, pattern: str) -> int:
-        """
-        Invalidate cache entries matching a pattern.
+    Returns:
+        Number of entries invalidated
+    """
+    # This requires iterating the cache, which is expensive
+    # For now, just log the request
+    logger.warning(
+      f"Pattern-based invalidation requested: {pattern}. This operation is not yet implemented efficiently."
+    )
+    return 0
 
-        Args:
-            pattern: Regex pattern to match prompts
+  def get_stats(self) -> dict[str, Any]:
+    """Get Claude cache statistics."""
+    base_stats = self.cache.get_stats()
 
-        Returns:
-            Number of entries invalidated
-        """
-        # This requires iterating the cache, which is expensive
-        # For now, just log the request
-        logger.warning(f"Pattern-based invalidation requested: {pattern}. This operation is not yet implemented efficiently.")
-        return 0
+    # Add Claude-specific stats
+    base_stats.update(
+      {
+        "normalization_enabled": self.enable_normalization,
+        "similarity_enabled": self.enable_similarity,
+        "similarity_threshold": self.similarity_threshold,
+      }
+    )
 
-    def get_stats(self) -> dict[str, Any]:
-        """Get Claude cache statistics."""
-        base_stats = self.cache.get_stats()
+    return base_stats
 
-        # Add Claude-specific stats
-        base_stats.update(
-            {
-                "normalization_enabled": self.enable_normalization,
-                "similarity_enabled": self.enable_similarity,
-                "similarity_threshold": self.similarity_threshold,
-            }
-        )
-
-        return base_stats
-
-    def clear(self) -> int:
-        """Clear all Claude cache entries."""
-        return self.cache.clear()
+  def clear(self) -> int:
+    """Clear all Claude cache entries."""
+    return self.cache.clear()
 
 
 # Global Claude cache instance
 _claude_cache: ClaudeCache | None = None
 
 
-def get_claude_cache(enable_normalization: bool = True, enable_similarity: bool = False) -> ClaudeCache:
-    """
-    Get or create the global Claude cache instance.
+def get_claude_cache(
+  enable_normalization: bool = True, enable_similarity: bool = False
+) -> ClaudeCache:
+  """
+  Get or create the global Claude cache instance.
 
-    Args:
-        enable_normalization: Enable prompt normalization
-        enable_similarity: Enable similarity-based caching
+  Args:
+      enable_normalization: Enable prompt normalization
+      enable_similarity: Enable similarity-based caching
 
-    Returns:
-        ClaudeCache instance
-    """
-    global _claude_cache
+  Returns:
+      ClaudeCache instance
+  """
+  global _claude_cache
 
-    if _claude_cache is None:
-        _claude_cache = ClaudeCache(enable_normalization=enable_normalization, enable_similarity=enable_similarity)
+  if _claude_cache is None:
+    _claude_cache = ClaudeCache(
+      enable_normalization=enable_normalization, enable_similarity=enable_similarity
+    )
 
-    return _claude_cache
+  return _claude_cache
 
 
 def reset_claude_cache():
-    """Reset the global Claude cache (useful for testing)."""
-    global _claude_cache
-    _claude_cache = None
+  """Reset the global Claude cache (useful for testing)."""
+  global _claude_cache
+  _claude_cache = None

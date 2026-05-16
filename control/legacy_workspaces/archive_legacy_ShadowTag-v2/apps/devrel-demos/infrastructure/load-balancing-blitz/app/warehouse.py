@@ -68,152 +68,152 @@ JOB_REPORTER = JobReporter()
 
 @app.route("/")
 def warehouse_index_page():
-    return create_index_page(HOSTNAME, FILE, APP_URLS)
+  return create_index_page(HOSTNAME, FILE, APP_URLS)
 
 
 def crash_checker(function):
-    def inner_function(*args, **kwargs):
-        if CRASH_TIME < time.perf_counter():
-            return function(*args, **kwargs)
-        else:
-            # return f"System Crashed, Wait {CRASH_TIME - time.perf_counter()}"
-            #  https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
-            #  429: Too many requests
-            # return abort(429)
-            return {
-                "status": "not ok!",
-                "message": "request blocker is enabled! please wait",
-            }
+  def inner_function(*args, **kwargs):
+    if CRASH_TIME < time.perf_counter():
+      return function(*args, **kwargs)
+    else:
+      # return f"System Crashed, Wait {CRASH_TIME - time.perf_counter()}"
+      #  https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+      #  429: Too many requests
+      # return abort(429)
+      return {
+        "status": "not ok!",
+        "message": "request blocker is enabled! please wait",
+      }
 
-    return inner_function
+  return inner_function
 
 
 @app.route("/process")
 @crash_checker
 def send_message() -> dict:
-    # WH_APP_CACHE.incr_score_counter()
-    # time.sleep(MESSAGE_PROCESS_DURATION)
-    #
-    # send run the job request to background queue
-    response = delayed_generate_controlled_load.delay(
-        duration_ms=800,
-        cpu_percent=2,
-        memory_percent=2,
-        start_time_lag_ms=0,
-        end_time_lag_ms=0,
-    )
-    # report a job
-    queue_size = JOB_REPORTER.get_job_queue_size()
+  # WH_APP_CACHE.incr_score_counter()
+  # time.sleep(MESSAGE_PROCESS_DURATION)
+  #
+  # send run the job request to background queue
+  response = delayed_generate_controlled_load.delay(
+    duration_ms=800,
+    cpu_percent=2,
+    memory_percent=2,
+    start_time_lag_ms=0,
+    end_time_lag_ms=0,
+  )
+  # report a job
+  queue_size = JOB_REPORTER.get_job_queue_size()
 
-    if queue_size > config.GAME_WH_JOB_LIMIT:
-        return {
-            "status": "not ok",
-            "hostname": HOSTNAME,
-            "description": f"Queue size limit reached {queue_size}, limit is {config.GAME_WH_JOB_LIMIT}",
-        }
-
-    # register a new task
-    JOB_REPORTER.register_new_task()
-    #
-    logging.debug(f"delayed job response {response}")
+  if queue_size > config.GAME_WH_JOB_LIMIT:
     return {
-        "status": "ok",
-        "total-score": WH_APP_CACHE.get_score_counter(),
-        "hostname": HOSTNAME,
+      "status": "not ok",
+      "hostname": HOSTNAME,
+      "description": f"Queue size limit reached {queue_size}, limit is {config.GAME_WH_JOB_LIMIT}",
     }
+
+  # register a new task
+  JOB_REPORTER.register_new_task()
+  #
+  logging.debug(f"delayed job response {response}")
+  return {
+    "status": "ok",
+    "total-score": WH_APP_CACHE.get_score_counter(),
+    "hostname": HOSTNAME,
+  }
 
 
 @app.route("/score")
 def process_score() -> dict:
-    return {"score": WH_APP_CACHE.get_score_counter(), "hostname": HOSTNAME}
+  return {"score": WH_APP_CACHE.get_score_counter(), "hostname": HOSTNAME}
 
 
 @app.route("/reset")
 def reset_warehouse_stats() -> dict:
-    logging.warning("Reset JobReporter")
-    response1 = JobReporter().reset()
-    logging.warning("Reset Warehouse App Cache")
-    response2 = WH_APP_CACHE.reset()
-    response = {**response1, **response2}
-    response["hostname"] = HOSTNAME
-    response["status"] = "ok"
-    return response
+  logging.warning("Reset JobReporter")
+  response1 = JobReporter().reset()
+  logging.warning("Reset Warehouse App Cache")
+  response2 = WH_APP_CACHE.reset()
+  response = {**response1, **response2}
+  response["hostname"] = HOSTNAME
+  response["status"] = "ok"
+  return response
 
 
 @app.route("/crash/now")
 def crash_scene_simulator() -> dict:
-    global CRASH_TIME
-    global CRASH_TIME_DURATION
-    if CRASH_TIME < time.perf_counter():
-        CRASH_TIME = time.perf_counter() + CRASH_TIME_DURATION
-        logging.warning(f"updates CRASH_TIME to {CRASH_TIME}")
-        message = {
-            "start-crash-simulation": "ok",
-            "time-now": datetime.datetime.now(),
-            "crash-recovery-duration(sec)": CRASH_TIME_DURATION,
-        }
-    else:
-        message = {
-            "start-crash-simulation": "not ok!",
-            "crash-recover-start-time(local)": CRASH_TIME,
-            "crash-recover-duration(secs)": CRASH_TIME_DURATION,
-            "crash-recover-wait-time(secs)": CRASH_TIME - time.perf_counter(),
-            "time-now": datetime.datetime.now(),
-        }
-    return message
+  global CRASH_TIME
+  global CRASH_TIME_DURATION
+  if CRASH_TIME < time.perf_counter():
+    CRASH_TIME = time.perf_counter() + CRASH_TIME_DURATION
+    logging.warning(f"updates CRASH_TIME to {CRASH_TIME}")
+    message = {
+      "start-crash-simulation": "ok",
+      "time-now": datetime.datetime.now(),
+      "crash-recovery-duration(sec)": CRASH_TIME_DURATION,
+    }
+  else:
+    message = {
+      "start-crash-simulation": "not ok!",
+      "crash-recover-start-time(local)": CRASH_TIME,
+      "crash-recover-duration(secs)": CRASH_TIME_DURATION,
+      "crash-recover-wait-time(secs)": CRASH_TIME - time.perf_counter(),
+      "time-now": datetime.datetime.now(),
+    }
+  return message
 
 
 @app.route("/crash")
 @app.route("/crash/status")
 def crash_scene_test() -> dict:
-    global CRASH_TIME
-    if CRASH_TIME < time.perf_counter():
-        message = {"status": "ok!"}
-    else:
-        message = {
-            "status": "ok!",
-            "recovery-wait(seconds)": CRASH_TIME - time.perf_counter(),
-        }
-    # return make_response(jsonify(message), 200)
-    return message
+  global CRASH_TIME
+  if CRASH_TIME < time.perf_counter():
+    message = {"status": "ok!"}
+  else:
+    message = {
+      "status": "ok!",
+      "recovery-wait(seconds)": CRASH_TIME - time.perf_counter(),
+    }
+  # return make_response(jsonify(message), 200)
+  return message
 
 
 def is_port_free(port) -> bool:
-    """Checks if a port is available for use.
-    Args: port (int): The port number to check.
-    Returns: bool: True if the port is free, False otherwise.
+  """Checks if a port is available for use.
+  Args: port (int): The port number to check.
+  Returns: bool: True if the port is free, False otherwise.
 
-    Note: Written by Gemini
-    """
-    import socket
+  Note: Written by Gemini
+  """
+  import socket
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        try:
-            s.bind(("localhost", int(port)))
-            return True
-        except OSError:
-            return False
+  with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    try:
+      s.bind(("localhost", int(port)))
+      return True
+    except OSError:
+      return False
 
 
 def get_free_port() -> int:
-    """To find an unused port to dev port to run"""
-    logging.info("Check free ports")
-    all_port = "8000 8080 8081 8082 8083 8084 8085".split()
+  """To find an unused port to dev port to run"""
+  logging.info("Check free ports")
+  all_port = "8000 8080 8081 8082 8083 8084 8085".split()
 
-    for app_port in all_port:
-        if is_port_free(app_port):
-            logging.warning(f"using port {app_port}")
-            print(f"using port {app_port}")
-            return app_port
-        else:
-            logging.info(f"Failing  with port: {app_port}")
-    raise Exception("Failed to find a valid port!")
+  for app_port in all_port:
+    if is_port_free(app_port):
+      logging.warning(f"using port {app_port}")
+      print(f"using port {app_port}")
+      return app_port
+    else:
+      logging.info(f"Failing  with port: {app_port}")
+  raise Exception("Failed to find a valid port!")
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        format="%(asctime)s - %(message)s",
-        filemode="w",
-        level=logging.DEBUG,
-    )
-    app.run(debug=True, port=get_free_port())
+  logging.basicConfig(
+    format="%(asctime)s - %(message)s",
+    filemode="w",
+    level=logging.DEBUG,
+  )
+  app.run(debug=True, port=get_free_port())

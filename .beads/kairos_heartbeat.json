@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-16T06:57:01.198635+00:00",
-  "pid": 80822,
+  "timestamp": "2026-05-16T19:03:10.530666+00:00",
+  "pid": 61470,
   "status": {
     "cycle": "1",
-    "health": "{\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"missing\", \"git_dirty\": {\"total\": -1, \"status\": \"unknown\"}, \"git_fetch\": \"ok\"}",
+    "health": "{\"gcp_adc\": \"missing\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": {\"total\": -1, \"status\": \"unknown\"}, \"git_fetch\": \"ok\"}",
     "steward": "ran",
     "vault_ingest": "ran",
     "quarantine_purge": "ran",
     "oob_check": "ran",
     "prompt_assembly": "ok",
-    "token_budget": "{\"AGENTS.md\": 6071, \"GEMINI.md\": 6055, \"manifest\": 566}",
+    "token_budget": "{\"AGENTS.md\": 32, \"GEMINI.md\": 6082, \"manifest\": 89}",
     "webhook_events": "ran",
     "proactive_suggestion": "empty",
     "gca_bloat": "healthy",
@@ -49,7 +49,7 @@
       "open_services": [],
       "health_status": "healthy"
     },
-    "timestamp": 1778914619.70327
+    "timestamp": 1778958188.9545028
   },
   "egress_proxy": {},
   "vcr_cassettes": {
@@ -59,5 +59,5 @@
     "max_age_s": 604800,
     "oldest_age_s": 0.0
   },
-  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 80822\n  \u251c Cycle: 1\n  \u251c health: {\"gcp_adc\": \"ok\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"missing\", \"git_dirty\": {\"total\": -1, \"status\": \"unknown\"}, \"git_fetch\": \"ok\"}\n  \u251c steward: ran\n  \u251c vault_ingest: ran\n  \u251c quarantine_purge: ran\n  \u251c oob_check: ran\n  \u251c prompt_assembly: ok\n  \u251c token_budget: {\"AGENTS.md\": 6071, \"GEMINI.md\": 6055, \"manifest\": 566}\n  \u251c webhook_events: ran\n  \u251c proactive_suggestion: empty\n  \u251c gca_bloat: healthy\n  \u251c vcr_cassettes: 0_fresh\n  \u251c egress: all_closed\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: consumed\n  \u2502 \u251c suggestion: None\n  \u2502 \u251c age_s: None\n  \u2502 \u2514 quality: None\n  \u251c circuit_breakers\n  \u2502 \u251c total_breakers: 2\n  \u2502 \u251c closed: 2\n  \u2502 \u251c open: 0\n  \u2502 \u251c half_open: 0\n  \u2502 \u251c open_services: [Array(0)]\n  \u2502 \u2514 health_status: healthy\n  \u2514 egress_proxy\n    \u251c state: healthy\n    \u2514 hosts: 0"
+  "tree_diagnostic": "\u2514 KAIROS Heartbeat\n  \u251c PID: 61470\n  \u251c Cycle: 1\n  \u251c health: {\"gcp_adc\": \"missing\", \"ane_dylib\": \"ok\", \"lancedb\": \"ok\", \"vault\": \"ok\", \"git_dirty\": {\"total\": -1, \"status\": \"unknown\"}, \"git_fetch\": \"ok\"}\n  \u251c steward: ran\n  \u251c vault_ingest: ran\n  \u251c quarantine_purge: ran\n  \u251c oob_check: ran\n  \u251c prompt_assembly: ok\n  \u251c token_budget: {\"AGENTS.md\": 32, \"GEMINI.md\": 6082, \"manifest\": 89}\n  \u251c webhook_events: ran\n  \u251c proactive_suggestion: empty\n  \u251c gca_bloat: healthy\n  \u251c vcr_cassettes: 0_fresh\n  \u251c egress: all_closed\n  \u251c suggestion_pipeline\n  \u2502 \u251c state: consumed\n  \u2502 \u251c suggestion: None\n  \u2502 \u251c age_s: None\n  \u2502 \u251c quality: None\n  \u2502 \u2514 mode: file\n  \u251c circuit_breakers\n  \u2502 \u251c total_breakers: 2\n  \u2502 \u251c closed: 2\n  \u2502 \u251c open: 0\n  \u2502 \u251c half_open: 0\n  \u2502 \u251c open_services: [Array(0)]\n  \u2502 \u2514 health_status: healthy\n  \u2514 egress_proxy\n    \u251c state: healthy\n    \u2514 hosts: 0"
 }

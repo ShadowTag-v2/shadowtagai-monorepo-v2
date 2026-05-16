@@ -14,432 +14,496 @@ logger = logging.getLogger(__name__)
 
 
 class PowerAnalyzer:
+  """
+  Statistical power analysis for experiment design.
+
+  Calculates sample sizes needed for adequate statistical power.
+
+  Example:
+      ```python
+      analyzer = PowerAnalyzer()
+
+      # T-test power analysis
+      n = analyzer.ttest_sample_size(
+          effect_size=0.5,  # Cohen's d
+          power=0.8,
+          alpha=0.05
+      )
+      print(f"Need {n} samples per group")
+
+      # Check power for existing sample size
+      power = analyzer.ttest_power(
+          effect_size=0.5,
+          n_per_group=30,
+          alpha=0.05
+      )
+      print(f"Power: {power:.2f}")
+      ```
+  """
+
+  def __init__(self):
+    """Initialize power analyzer."""
+    self.default_power = 0.8
+    self.default_alpha = 0.05
+
+  def ttest_sample_size(
+    self,
+    effect_size: float,
+    power: float = 0.8,
+    alpha: float = 0.05,
+    alternative: str = "two-sided",
+  ) -> int:
     """
-    Statistical power analysis for experiment design.
+    Calculate sample size for independent samples t-test.
 
-    Calculates sample sizes needed for adequate statistical power.
+    Args:
+        effect_size: Cohen's d (small=0.2, medium=0.5, large=0.8)
+        power: Desired statistical power (typically 0.8)
+        alpha: Significance level (typically 0.05)
+        alternative: "two-sided" or "one-sided"
 
-    Example:
-        ```python
-        analyzer = PowerAnalyzer()
-
-        # T-test power analysis
-        n = analyzer.ttest_sample_size(
-            effect_size=0.5,  # Cohen's d
-            power=0.8,
-            alpha=0.05
-        )
-        print(f"Need {n} samples per group")
-
-        # Check power for existing sample size
-        power = analyzer.ttest_power(
-            effect_size=0.5,
-            n_per_group=30,
-            alpha=0.05
-        )
-        print(f"Power: {power:.2f}")
-        ```
+    Returns:
+        Required sample size per group
     """
+    try:
+      from statsmodels.stats.power import TTestIndPower
 
-    def __init__(self):
-        """Initialize power analyzer."""
-        self.default_power = 0.8
-        self.default_alpha = 0.05
+      power_analysis = TTestIndPower()
 
-    def ttest_sample_size(self, effect_size: float, power: float = 0.8, alpha: float = 0.05, alternative: str = "two-sided") -> int:
-        """
-        Calculate sample size for independent samples t-test.
+      # Calculate required sample size
+      n = power_analysis.solve_power(
+        effect_size=effect_size,
+        power=power,
+        alpha=alpha,
+        ratio=1.0,  # Equal group sizes
+        alternative=alternative,
+      )
 
-        Args:
-            effect_size: Cohen's d (small=0.2, medium=0.5, large=0.8)
-            power: Desired statistical power (typically 0.8)
-            alpha: Significance level (typically 0.05)
-            alternative: "two-sided" or "one-sided"
+      # Round up to nearest integer
+      n_required = math.ceil(n)
 
-        Returns:
-            Required sample size per group
-        """
-        try:
-            from statsmodels.stats.power import TTestIndPower
+      logger.info(
+        f"T-test power analysis: d={effect_size}, power={power}, alpha={alpha} → n={n_required} per group"
+      )
 
-            power_analysis = TTestIndPower()
+      return n_required
 
-            # Calculate required sample size
-            n = power_analysis.solve_power(
-                effect_size=effect_size,
-                power=power,
-                alpha=alpha,
-                ratio=1.0,  # Equal group sizes
-                alternative=alternative,
-            )
+    except ImportError:
+      logger.warning("statsmodels not available, using approximation")
+      return self._ttest_sample_size_approx(effect_size, power, alpha)
 
-            # Round up to nearest integer
-            n_required = math.ceil(n)
+  def _ttest_sample_size_approx(
+    self, effect_size: float, power: float = 0.8, alpha: float = 0.05
+  ) -> int:
+    """Approximate t-test sample size without statsmodels."""
+    # Simplified formula (assumes two-sided, equal variance)
+    # n ≈ 2 * [(z_alpha/2 + z_beta) / d]^2
 
-            logger.info(f"T-test power analysis: d={effect_size}, power={power}, alpha={alpha} → n={n_required} per group")
+    from scipy import stats
 
-            return n_required
+    z_alpha = stats.norm.ppf(1 - alpha / 2)  # two-sided
+    z_beta = stats.norm.ppf(power)
 
-        except ImportError:
-            logger.warning("statsmodels not available, using approximation")
-            return self._ttest_sample_size_approx(effect_size, power, alpha)
+    n = 2 * ((z_alpha + z_beta) / effect_size) ** 2
 
-    def _ttest_sample_size_approx(self, effect_size: float, power: float = 0.8, alpha: float = 0.05) -> int:
-        """Approximate t-test sample size without statsmodels."""
-        # Simplified formula (assumes two-sided, equal variance)
-        # n ≈ 2 * [(z_alpha/2 + z_beta) / d]^2
+    return math.ceil(n)
 
-        from scipy import stats
+  def ttest_power(
+    self,
+    effect_size: float,
+    n_per_group: int,
+    alpha: float = 0.05,
+    alternative: str = "two-sided",
+  ) -> float:
+    """
+    Calculate statistical power for t-test given sample size.
 
-        z_alpha = stats.norm.ppf(1 - alpha / 2)  # two-sided
-        z_beta = stats.norm.ppf(power)
+    Args:
+        effect_size: Cohen's d
+        n_per_group: Sample size per group
+        alpha: Significance level
+        alternative: "two-sided" or "one-sided"
 
-        n = 2 * ((z_alpha + z_beta) / effect_size) ** 2
+    Returns:
+        Statistical power (0.0-1.0)
+    """
+    try:
+      from statsmodels.stats.power import TTestIndPower
 
-        return math.ceil(n)
+      power_analysis = TTestIndPower()
 
-    def ttest_power(self, effect_size: float, n_per_group: int, alpha: float = 0.05, alternative: str = "two-sided") -> float:
-        """
-        Calculate statistical power for t-test given sample size.
+      power = power_analysis.solve_power(
+        effect_size=effect_size,
+        nobs1=n_per_group,
+        alpha=alpha,
+        ratio=1.0,
+        alternative=alternative,
+      )
 
-        Args:
-            effect_size: Cohen's d
-            n_per_group: Sample size per group
-            alpha: Significance level
-            alternative: "two-sided" or "one-sided"
+      logger.info(
+        f"T-test power: d={effect_size}, n={n_per_group}, alpha={alpha} → power={power:.3f}"
+      )
 
-        Returns:
-            Statistical power (0.0-1.0)
-        """
-        try:
-            from statsmodels.stats.power import TTestIndPower
+      return float(power)
 
-            power_analysis = TTestIndPower()
+    except ImportError:
+      logger.warning("statsmodels not available for power calculation")
+      return 0.8  # Fallback assumption
 
-            power = power_analysis.solve_power(effect_size=effect_size, nobs1=n_per_group, alpha=alpha, ratio=1.0, alternative=alternative)
+  def anova_sample_size(
+    self, effect_size: float, num_groups: int, power: float = 0.8, alpha: float = 0.05
+  ) -> int:
+    """
+    Calculate sample size for one-way ANOVA.
 
-            logger.info(f"T-test power: d={effect_size}, n={n_per_group}, alpha={alpha} → power={power:.3f}")
+    Args:
+        effect_size: Cohen's f (small=0.1, medium=0.25, large=0.4)
+        num_groups: Number of groups to compare
+        power: Desired statistical power
+        alpha: Significance level
 
-            return float(power)
+    Returns:
+        Required sample size per group
+    """
+    try:
+      from statsmodels.stats.power import FTestAnovaPower
 
-        except ImportError:
-            logger.warning("statsmodels not available for power calculation")
-            return 0.8  # Fallback assumption
+      power_analysis = FTestAnovaPower()
 
-    def anova_sample_size(self, effect_size: float, num_groups: int, power: float = 0.8, alpha: float = 0.05) -> int:
-        """
-        Calculate sample size for one-way ANOVA.
+      # Calculate required sample size
+      n = power_analysis.solve_power(
+        effect_size=effect_size,
+        nobs=None,  # Solve for this
+        alpha=alpha,
+        power=power,
+        k_groups=num_groups,
+      )
 
-        Args:
-            effect_size: Cohen's f (small=0.1, medium=0.25, large=0.4)
-            num_groups: Number of groups to compare
-            power: Desired statistical power
-            alpha: Significance level
+      # n is total sample size, divide by number of groups
+      n_per_group = math.ceil(n / num_groups)
 
-        Returns:
-            Required sample size per group
-        """
-        try:
-            from statsmodels.stats.power import FTestAnovaPower
+      logger.info(
+        f"ANOVA power analysis: f={effect_size}, k={num_groups}, power={power}, alpha={alpha} → n={n_per_group} per group"
+      )
 
-            power_analysis = FTestAnovaPower()
+      return n_per_group
 
-            # Calculate required sample size
-            n = power_analysis.solve_power(
-                effect_size=effect_size,
-                nobs=None,  # Solve for this
-                alpha=alpha,
-                power=power,
-                k_groups=num_groups,
-            )
+    except ImportError:
+      logger.warning("statsmodels not available, using approximation")
+      return self._anova_sample_size_approx(effect_size, num_groups, power, alpha)
 
-            # n is total sample size, divide by number of groups
-            n_per_group = math.ceil(n / num_groups)
+  def _anova_sample_size_approx(
+    self, effect_size: float, num_groups: int, power: float = 0.8, alpha: float = 0.05
+  ) -> int:
+    """Approximate ANOVA sample size without statsmodels."""
+    from scipy import stats
 
-            logger.info(f"ANOVA power analysis: f={effect_size}, k={num_groups}, power={power}, alpha={alpha} → n={n_per_group} per group")
+    # Convert f to f²
+    f_squared = effect_size**2
 
-            return n_per_group
+    # Degrees of freedom
+    df1 = num_groups - 1
 
-        except ImportError:
-            logger.warning("statsmodels not available, using approximation")
-            return self._anova_sample_size_approx(effect_size, num_groups, power, alpha)
+    # Critical F value
+    f_crit = stats.f.ppf(1 - alpha, df1, 1000)  # Assume large df2
 
-    def _anova_sample_size_approx(self, effect_size: float, num_groups: int, power: float = 0.8, alpha: float = 0.05) -> int:
-        """Approximate ANOVA sample size without statsmodels."""
-        from scipy import stats
+    # Approximate using t-test formula with adjusted effect size
+    # This is a rough approximation
+    adjusted_d = effect_size * math.sqrt(2)
+    n_approx = self._ttest_sample_size_approx(adjusted_d, power, alpha)
 
-        # Convert f to f²
-        f_squared = effect_size**2
+    return n_approx
 
-        # Degrees of freedom
-        df1 = num_groups - 1
+  def correlation_sample_size(
+    self, effect_size: float, power: float = 0.8, alpha: float = 0.05
+  ) -> int:
+    """
+    Calculate sample size for correlation test.
 
-        # Critical F value
-        f_crit = stats.f.ppf(1 - alpha, df1, 1000)  # Assume large df2
+    Args:
+        effect_size: Expected correlation r (small=0.1, medium=0.3, large=0.5)
+        power: Desired statistical power
+        alpha: Significance level
 
-        # Approximate using t-test formula with adjusted effect size
-        # This is a rough approximation
-        adjusted_d = effect_size * math.sqrt(2)
-        n_approx = self._ttest_sample_size_approx(adjusted_d, power, alpha)
+    Returns:
+        Required total sample size
+    """
+    # Formula: n ≈ [(z_alpha + z_beta) / (0.5 * ln((1+r)/(1-r)))]^2 + 3
+    from scipy import stats
 
-        return n_approx
+    z_alpha = stats.norm.ppf(1 - alpha / 2)  # two-sided
+    z_beta = stats.norm.ppf(power)
 
-    def correlation_sample_size(self, effect_size: float, power: float = 0.8, alpha: float = 0.05) -> int:
-        """
-        Calculate sample size for correlation test.
+    # Fisher's z transformation
+    if abs(effect_size) >= 1.0:
+      effect_size = 0.99 if effect_size > 0 else -0.99
 
-        Args:
-            effect_size: Expected correlation r (small=0.1, medium=0.3, large=0.5)
-            power: Desired statistical power
-            alpha: Significance level
+    fisher_z = 0.5 * math.log((1 + effect_size) / (1 - effect_size))
 
-        Returns:
-            Required total sample size
-        """
-        # Formula: n ≈ [(z_alpha + z_beta) / (0.5 * ln((1+r)/(1-r)))]^2 + 3
-        from scipy import stats
+    n = ((z_alpha + z_beta) / fisher_z) ** 2 + 3
 
-        z_alpha = stats.norm.ppf(1 - alpha / 2)  # two-sided
-        z_beta = stats.norm.ppf(power)
+    n_required = math.ceil(n)
 
-        # Fisher's z transformation
-        if abs(effect_size) >= 1.0:
-            effect_size = 0.99 if effect_size > 0 else -0.99
+    logger.info(
+      f"Correlation power analysis: r={effect_size}, power={power}, alpha={alpha} → n={n_required}"
+    )
 
-        fisher_z = 0.5 * math.log((1 + effect_size) / (1 - effect_size))
+    return n_required
 
-        n = ((z_alpha + z_beta) / fisher_z) ** 2 + 3
+  def regression_sample_size(
+    self,
+    effect_size: float,
+    num_predictors: int,
+    power: float = 0.8,
+    alpha: float = 0.05,
+  ) -> int:
+    """
+    Calculate sample size for multiple regression.
 
-        n_required = math.ceil(n)
+    Args:
+        effect_size: Cohen's f² (small=0.02, medium=0.15, large=0.35)
+        num_predictors: Number of predictor variables
+        power: Desired statistical power
+        alpha: Significance level
 
-        logger.info(f"Correlation power analysis: r={effect_size}, power={power}, alpha={alpha} → n={n_required}")
+    Returns:
+        Required total sample size
+    """
+    try:
+      from statsmodels.stats.power import FTestPower
 
-        return n_required
+      power_analysis = FTestPower()
 
-    def regression_sample_size(self, effect_size: float, num_predictors: int, power: float = 0.8, alpha: float = 0.05) -> int:
-        """
-        Calculate sample size for multiple regression.
+      # Calculate required sample size
+      # df1 = num_predictors, df2 = n - num_predictors - 1
+      # We need to solve for n such that df2 = n - num_predictors - 1
 
-        Args:
-            effect_size: Cohen's f² (small=0.02, medium=0.15, large=0.35)
-            num_predictors: Number of predictor variables
-            power: Desired statistical power
-            alpha: Significance level
+      # Use iterative approach
+      n_min = num_predictors + 10
+      n_max = 10000
 
-        Returns:
-            Required total sample size
-        """
-        try:
-            from statsmodels.stats.power import FTestPower
+      for n in range(n_min, n_max):
+        df2 = n - num_predictors - 1
+        if df2 <= 0:
+          continue
 
-            power_analysis = FTestPower()
-
-            # Calculate required sample size
-            # df1 = num_predictors, df2 = n - num_predictors - 1
-            # We need to solve for n such that df2 = n - num_predictors - 1
-
-            # Use iterative approach
-            n_min = num_predictors + 10
-            n_max = 10000
-
-            for n in range(n_min, n_max):
-                df2 = n - num_predictors - 1
-                if df2 <= 0:
-                    continue
-
-                test_power = power_analysis.solve_power(
-                    effect_size=effect_size,
-                    df_num=num_predictors,
-                    df_denom=df2,
-                    alpha=alpha,
-                    ncc=1,  # non-centrality parameter calculation
-                )
-
-                if test_power >= power:
-                    logger.info(f"Regression power analysis: f²={effect_size}, p={num_predictors}, power={power}, alpha={alpha} → n={n}")
-                    return n
-
-            return n_max
-
-        except ImportError:
-            logger.warning("statsmodels not available, using approximation")
-            return self._regression_sample_size_approx(effect_size, num_predictors, power, alpha)
-
-    def _regression_sample_size_approx(self, effect_size: float, num_predictors: int, power: float = 0.8, alpha: float = 0.05) -> int:
-        """Approximate regression sample size using rule of thumb."""
-        # Common rule: N >= 50 + 8*p (for R² testing)
-        # Or N >= 104 + p (for individual predictors)
-
-        # Use conservative estimate
-        n_approx = max(
-            50 + 8 * num_predictors,
-            104 + num_predictors,
-            int(num_predictors / effect_size + 10),  # Very rough
+        test_power = power_analysis.solve_power(
+          effect_size=effect_size,
+          df_num=num_predictors,
+          df_denom=df2,
+          alpha=alpha,
+          ncc=1,  # non-centrality parameter calculation
         )
 
-        return n_approx
+        if test_power >= power:
+          logger.info(
+            f"Regression power analysis: f²={effect_size}, p={num_predictors}, power={power}, alpha={alpha} → n={n}"
+          )
+          return n
 
-    def chi_square_sample_size(self, effect_size: float, df: int, power: float = 0.8, alpha: float = 0.05) -> int:
-        """
-        Calculate sample size for chi-square test.
+      return n_max
 
-        Args:
-            effect_size: Cohen's w (small=0.1, medium=0.3, large=0.5)
-            df: Degrees of freedom (rows-1)*(cols-1)
-            power: Desired statistical power
-            alpha: Significance level
+    except ImportError:
+      logger.warning("statsmodels not available, using approximation")
+      return self._regression_sample_size_approx(
+        effect_size, num_predictors, power, alpha
+      )
 
-        Returns:
-            Required total sample size
-        """
-        try:
-            from statsmodels.stats.power import GofChisquarePower
+  def _regression_sample_size_approx(
+    self,
+    effect_size: float,
+    num_predictors: int,
+    power: float = 0.8,
+    alpha: float = 0.05,
+  ) -> int:
+    """Approximate regression sample size using rule of thumb."""
+    # Common rule: N >= 50 + 8*p (for R² testing)
+    # Or N >= 104 + p (for individual predictors)
 
-            power_analysis = GofChisquarePower()
+    # Use conservative estimate
+    n_approx = max(
+      50 + 8 * num_predictors,
+      104 + num_predictors,
+      int(num_predictors / effect_size + 10),  # Very rough
+    )
 
-            n = power_analysis.solve_power(
-                effect_size=effect_size,
-                nobs=None,  # Solve for this
-                alpha=alpha,
-                power=power,
-                n_bins=df + 1,
-            )
+    return n_approx
 
-            n_required = math.ceil(n)
+  def chi_square_sample_size(
+    self, effect_size: float, df: int, power: float = 0.8, alpha: float = 0.05
+  ) -> int:
+    """
+    Calculate sample size for chi-square test.
 
-            logger.info(f"Chi-square power analysis: w={effect_size}, df={df}, power={power}, alpha={alpha} → n={n_required}")
+    Args:
+        effect_size: Cohen's w (small=0.1, medium=0.3, large=0.5)
+        df: Degrees of freedom (rows-1)*(cols-1)
+        power: Desired statistical power
+        alpha: Significance level
 
-            return n_required
+    Returns:
+        Required total sample size
+    """
+    try:
+      from statsmodels.stats.power import GofChisquarePower
 
-        except ImportError:
-            logger.warning("statsmodels not available for chi-square power analysis")
-            # Rough approximation
-            n_approx = int((df + 1) / (effect_size**2) * 10)
-            return max(n_approx, 30)
+      power_analysis = GofChisquarePower()
 
-    def interpret_effect_size(self, effect_size: float, test_type: str) -> str:
-        """
-        Interpret effect size magnitude.
+      n = power_analysis.solve_power(
+        effect_size=effect_size,
+        nobs=None,  # Solve for this
+        alpha=alpha,
+        power=power,
+        n_bins=df + 1,
+      )
 
-        Args:
-            effect_size: Effect size value
-            test_type: Type of test (t_test, anova, correlation, regression)
+      n_required = math.ceil(n)
 
-        Returns:
-            Interpretation string (small/medium/large)
-        """
-        if test_type == "t_test":
-            # Cohen's d
-            if abs(effect_size) < 0.3:
-                return "small"
-            elif abs(effect_size) < 0.8:
-                return "medium"
-            else:
-                return "large"
+      logger.info(
+        f"Chi-square power analysis: w={effect_size}, df={df}, power={power}, alpha={alpha} → n={n_required}"
+      )
 
-        elif test_type == "anova":
-            # Cohen's f
-            if abs(effect_size) < 0.25:
-                return "small"
-            elif abs(effect_size) < 0.4:
-                return "medium"
-            else:
-                return "large"
+      return n_required
 
-        elif test_type == "correlation":
-            # Pearson's r
-            if abs(effect_size) < 0.3:
-                return "small"
-            elif abs(effect_size) < 0.5:
-                return "medium"
-            else:
-                return "large"
+    except ImportError:
+      logger.warning("statsmodels not available for chi-square power analysis")
+      # Rough approximation
+      n_approx = int((df + 1) / (effect_size**2) * 10)
+      return max(n_approx, 30)
 
-        elif test_type == "regression":
-            # Cohen's f²
-            if abs(effect_size) < 0.15:
-                return "small"
-            elif abs(effect_size) < 0.35:
-                return "medium"
-            else:
-                return "large"
+  def interpret_effect_size(self, effect_size: float, test_type: str) -> str:
+    """
+    Interpret effect size magnitude.
 
-        return "unknown"
+    Args:
+        effect_size: Effect size value
+        test_type: Type of test (t_test, anova, correlation, regression)
 
-    def generate_power_report(
-        self,
-        test_type: str,
-        effect_size: float,
-        sample_size: int | None = None,
-        num_groups: int = 2,
-        num_predictors: int = 1,
-        power: float = 0.8,
-        alpha: float = 0.05,
-    ) -> dict[str, Any]:
-        """
-        Generate comprehensive power analysis report.
+    Returns:
+        Interpretation string (small/medium/large)
+    """
+    if test_type == "t_test":
+      # Cohen's d
+      if abs(effect_size) < 0.3:
+        return "small"
+      elif abs(effect_size) < 0.8:
+        return "medium"
+      else:
+        return "large"
 
-        Args:
-            test_type: "t_test", "anova", "correlation", or "regression"
-            effect_size: Expected effect size
-            sample_size: If provided, calculate power; otherwise calculate required n
-            num_groups: For ANOVA
-            num_predictors: For regression
-            power: Desired power if calculating sample size
-            alpha: Significance level
+    elif test_type == "anova":
+      # Cohen's f
+      if abs(effect_size) < 0.25:
+        return "small"
+      elif abs(effect_size) < 0.4:
+        return "medium"
+      else:
+        return "large"
 
-        Returns:
-            Dict with power analysis results and interpretation
-        """
-        report = {
-            "test_type": test_type,
-            "effect_size": effect_size,
-            "effect_size_interpretation": self.interpret_effect_size(effect_size, test_type),
-            "alpha": alpha,
-            "power": power,
-        }
+    elif test_type == "correlation":
+      # Pearson's r
+      if abs(effect_size) < 0.3:
+        return "small"
+      elif abs(effect_size) < 0.5:
+        return "medium"
+      else:
+        return "large"
 
-        try:
-            if test_type == "t_test":
-                if sample_size:
-                    achieved_power = self.ttest_power(effect_size, sample_size, alpha)
-                    report["sample_size_per_group"] = sample_size
-                    report["achieved_power"] = achieved_power
-                    report["adequate"] = achieved_power >= power
-                else:
-                    required_n = self.ttest_sample_size(effect_size, power, alpha)
-                    report["required_sample_size_per_group"] = required_n
-                    report["total_sample_size"] = required_n * 2
+    elif test_type == "regression":
+      # Cohen's f²
+      if abs(effect_size) < 0.15:
+        return "small"
+      elif abs(effect_size) < 0.35:
+        return "medium"
+      else:
+        return "large"
 
-            elif test_type == "anova":
-                required_n = self.anova_sample_size(effect_size, num_groups, power, alpha)
-                report["required_sample_size_per_group"] = required_n
-                report["total_sample_size"] = required_n * num_groups
-                report["num_groups"] = num_groups
+    return "unknown"
 
-            elif test_type == "correlation":
-                required_n = self.correlation_sample_size(effect_size, power, alpha)
-                report["required_total_sample_size"] = required_n
+  def generate_power_report(
+    self,
+    test_type: str,
+    effect_size: float,
+    sample_size: int | None = None,
+    num_groups: int = 2,
+    num_predictors: int = 1,
+    power: float = 0.8,
+    alpha: float = 0.05,
+  ) -> dict[str, Any]:
+    """
+    Generate comprehensive power analysis report.
 
-            elif test_type == "regression":
-                required_n = self.regression_sample_size(effect_size, num_predictors, power, alpha)
-                report["required_total_sample_size"] = required_n
-                report["num_predictors"] = num_predictors
+    Args:
+        test_type: "t_test", "anova", "correlation", or "regression"
+        effect_size: Expected effect size
+        sample_size: If provided, calculate power; otherwise calculate required n
+        num_groups: For ANOVA
+        num_predictors: For regression
+        power: Desired power if calculating sample size
+        alpha: Significance level
 
-            # Add recommendation
-            if sample_size and "adequate" in report:
-                if report["adequate"]:
-                    report["recommendation"] = f"Sample size of {sample_size} per group is adequate (power={report['achieved_power']:.2f})"
-                else:
-                    needed = self.ttest_sample_size(effect_size, power, alpha)
-                    report["recommendation"] = f"Increase sample size to {needed} per group for {power:.0%} power"
-            elif "required_sample_size_per_group" in report:
-                report["recommendation"] = f"Use {report['required_sample_size_per_group']} samples per group for {power:.0%} power"
-            elif "required_total_sample_size" in report:
-                report["recommendation"] = f"Use {report['required_total_sample_size']} total samples for {power:.0%} power"
+    Returns:
+        Dict with power analysis results and interpretation
+    """
+    report = {
+      "test_type": test_type,
+      "effect_size": effect_size,
+      "effect_size_interpretation": self.interpret_effect_size(effect_size, test_type),
+      "alpha": alpha,
+      "power": power,
+    }
 
-        except Exception as e:
-            logger.error(f"Error generating power report: {e}")
-            report["error"] = str(e)
+    try:
+      if test_type == "t_test":
+        if sample_size:
+          achieved_power = self.ttest_power(effect_size, sample_size, alpha)
+          report["sample_size_per_group"] = sample_size
+          report["achieved_power"] = achieved_power
+          report["adequate"] = achieved_power >= power
+        else:
+          required_n = self.ttest_sample_size(effect_size, power, alpha)
+          report["required_sample_size_per_group"] = required_n
+          report["total_sample_size"] = required_n * 2
 
-        return report
+      elif test_type == "anova":
+        required_n = self.anova_sample_size(effect_size, num_groups, power, alpha)
+        report["required_sample_size_per_group"] = required_n
+        report["total_sample_size"] = required_n * num_groups
+        report["num_groups"] = num_groups
+
+      elif test_type == "correlation":
+        required_n = self.correlation_sample_size(effect_size, power, alpha)
+        report["required_total_sample_size"] = required_n
+
+      elif test_type == "regression":
+        required_n = self.regression_sample_size(
+          effect_size, num_predictors, power, alpha
+        )
+        report["required_total_sample_size"] = required_n
+        report["num_predictors"] = num_predictors
+
+      # Add recommendation
+      if sample_size and "adequate" in report:
+        if report["adequate"]:
+          report["recommendation"] = (
+            f"Sample size of {sample_size} per group is adequate (power={report['achieved_power']:.2f})"
+          )
+        else:
+          needed = self.ttest_sample_size(effect_size, power, alpha)
+          report["recommendation"] = (
+            f"Increase sample size to {needed} per group for {power:.0%} power"
+          )
+      elif "required_sample_size_per_group" in report:
+        report["recommendation"] = (
+          f"Use {report['required_sample_size_per_group']} samples per group for {power:.0%} power"
+        )
+      elif "required_total_sample_size" in report:
+        report["recommendation"] = (
+          f"Use {report['required_total_sample_size']} total samples for {power:.0%} power"
+        )
+
+    except Exception as e:
+      logger.error(f"Error generating power report: {e}")
+      report["error"] = str(e)
+
+    return report

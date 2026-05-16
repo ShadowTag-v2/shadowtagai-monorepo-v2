@@ -13,135 +13,139 @@ from dataclasses import dataclass
 
 @dataclass
 class DecoderConfig:
-    """Configuration for video decoding operations"""
+  """Configuration for video decoding operations"""
 
-    verify_integrity: bool = True  # Verify extracted data integrity
-    error_correction: bool = True  # Apply error correction
-    max_extraction_frames: int | None = None  # Limit frames to process
+  verify_integrity: bool = True  # Verify extracted data integrity
+  error_correction: bool = True  # Apply error correction
+  max_extraction_frames: int | None = None  # Limit frames to process
 
 
 class VideoDecoder:
+  """
+  Decodes hidden data from steganographically encoded video frames.
+
+  Supports extraction from:
+  - LSB (Least Significant Bit) encoded videos
+  - DCT coefficient modified videos
+  - Spatial domain embedded videos
+  """
+
+  def __init__(self, config: DecoderConfig | None = None):
     """
-    Decodes hidden data from steganographically encoded video frames.
+    Initialize the video decoder.
 
-    Supports extraction from:
-    - LSB (Least Significant Bit) encoded videos
-    - DCT coefficient modified videos
-    - Spatial domain embedded videos
+    Args:
+        config: Decoder configuration. Uses defaults if None.
     """
+    self.config = config or DecoderConfig()
 
-    def __init__(self, config: DecoderConfig | None = None):
-        """
-        Initialize the video decoder.
+  def decode(
+    self, video_path: Path, expected_hash: str | None = None
+  ) -> tuple[bytes, dict[str, Any]]:
+    """
+    Decode hidden data from a video file.
 
-        Args:
-            config: Decoder configuration. Uses defaults if None.
-        """
-        self.config = config or DecoderConfig()
+    Args:
+        video_path: Path to video file with embedded data
+        expected_hash: Optional hash to verify extracted data
 
-    def decode(self, video_path: Path, expected_hash: str | None = None) -> tuple[bytes, dict[str, Any]]:
-        """
-        Decode hidden data from a video file.
+    Returns:
+        Tuple of (extracted_payload, extraction_metadata)
 
-        Args:
-            video_path: Path to video file with embedded data
-            expected_hash: Optional hash to verify extracted data
+    Raises:
+        ValueError: If no embedded data found or integrity check fails
+        IOError: If video file cannot be read
+    """
+    # Extract raw payload from video frames
+    raw_payload = self._extract_payload(video_path)
 
-        Returns:
-            Tuple of (extracted_payload, extraction_metadata)
+    # Reverse preparation (decrypt, decompress, error correction)
+    payload, metadata = self._process_payload(raw_payload)
 
-        Raises:
-            ValueError: If no embedded data found or integrity check fails
-            IOError: If video file cannot be read
-        """
-        # Extract raw payload from video frames
-        raw_payload = self._extract_payload(video_path)
+    # Verify integrity if hash provided
+    if expected_hash and self.config.verify_integrity:
+      self._verify_integrity(payload, expected_hash)
 
-        # Reverse preparation (decrypt, decompress, error correction)
-        payload, metadata = self._process_payload(raw_payload)
+    extraction_stats = {
+      "payload_size": len(payload),
+      "extraction_time_ms": 0,  # TODO: Implement timing
+      "integrity_verified": expected_hash is not None,
+      "metadata": metadata,
+    }
 
-        # Verify integrity if hash provided
-        if expected_hash and self.config.verify_integrity:
-            self._verify_integrity(payload, expected_hash)
+    return payload, extraction_stats
 
-        extraction_stats = {
-            "payload_size": len(payload),
-            "extraction_time_ms": 0,  # TODO: Implement timing
-            "integrity_verified": expected_hash is not None,
-            "metadata": metadata,
-        }
+  def _extract_payload(self, video_path: Path) -> bytes:
+    """
+    Extract raw payload bytes from video frames.
 
-        return payload, extraction_stats
+    Args:
+        video_path: Path to encoded video
 
-    def _extract_payload(self, video_path: Path) -> bytes:
-        """
-        Extract raw payload bytes from video frames.
+    Returns:
+        Raw extracted payload bytes
+    """
+    # TODO: Implement actual frame extraction
+    # Placeholder implementation
+    return b""
 
-        Args:
-            video_path: Path to encoded video
+  def _process_payload(self, raw_payload: bytes) -> tuple[bytes, dict[str, Any]]:
+    """
+    Process raw payload (error correction, decryption, decompression).
 
-        Returns:
-            Raw extracted payload bytes
-        """
-        # TODO: Implement actual frame extraction
-        # Placeholder implementation
-        return b""
+    Args:
+        raw_payload: Raw extracted bytes
 
-    def _process_payload(self, raw_payload: bytes) -> tuple[bytes, dict[str, Any]]:
-        """
-        Process raw payload (error correction, decryption, decompression).
+    Returns:
+        Tuple of (processed_payload, metadata)
+    """
+    # TODO: Implement actual payload processing
+    # For now, extract length header
+    if len(raw_payload) < 4:
+      raise ValueError("Invalid payload: too short")
 
-        Args:
-            raw_payload: Raw extracted bytes
+    payload_length = int.from_bytes(raw_payload[:4], byteorder="big")
+    payload = raw_payload[4 : 4 + payload_length]
 
-        Returns:
-            Tuple of (processed_payload, metadata)
-        """
-        # TODO: Implement actual payload processing
-        # For now, extract length header
-        if len(raw_payload) < 4:
-            raise ValueError("Invalid payload: too short")
+    metadata = {
+      "length": payload_length,
+      "raw_size": len(raw_payload),
+    }
 
-        payload_length = int.from_bytes(raw_payload[:4], byteorder="big")
-        payload = raw_payload[4 : 4 + payload_length]
+    return payload, metadata
 
-        metadata = {
-            "length": payload_length,
-            "raw_size": len(raw_payload),
-        }
+  def _verify_integrity(self, payload: bytes, expected_hash: str) -> None:
+    """
+    Verify payload integrity using hash comparison.
 
-        return payload, metadata
+    Args:
+        payload: Extracted payload
+        expected_hash: Expected SHA-256 hash
 
-    def _verify_integrity(self, payload: bytes, expected_hash: str) -> None:
-        """
-        Verify payload integrity using hash comparison.
+    Raises:
+        ValueError: If hash doesn't match
+    """
+    actual_hash = hashlib.sha256(payload).hexdigest()
 
-        Args:
-            payload: Extracted payload
-            expected_hash: Expected SHA-256 hash
+    if actual_hash != expected_hash:
+      raise ValueError(
+        f"Integrity check failed: expected {expected_hash}, got {actual_hash}"
+      )
 
-        Raises:
-            ValueError: If hash doesn't match
-        """
-        actual_hash = hashlib.sha256(payload).hexdigest()
+  def detect_embedded_data(self, video_path: Path) -> dict[str, Any]:
+    """
+    Detect if a video contains embedded steganographic data.
 
-        if actual_hash != expected_hash:
-            raise ValueError(f"Integrity check failed: expected {expected_hash}, got {actual_hash}")
+    Args:
+        video_path: Path to video file
 
-    def detect_embedded_data(self, video_path: Path) -> dict[str, Any]:
-        """
-        Detect if a video contains embedded steganographic data.
-
-        Args:
-            video_path: Path to video file
-
-        Returns:
-            Dictionary with detection results and confidence scores
-        """
-        # TODO: Implement statistical analysis for stego detection
-        return {
-            "has_embedded_data": False,
-            "confidence": 0.0,
-            "suspected_method": None,
-            "estimated_payload_size": 0,
-        }
+    Returns:
+        Dictionary with detection results and confidence scores
+    """
+    # TODO: Implement statistical analysis for stego detection
+    return {
+      "has_embedded_data": False,
+      "confidence": 0.0,
+      "suspected_method": None,
+      "estimated_payload_size": 0,
+    }

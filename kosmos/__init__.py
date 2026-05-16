@@ -15,8 +15,8 @@ from kosmos.core.orchestrator import ReActOrchestrator
 from kosmos.agents.base import BaseAgent
 
 __all__ = [
-    "KosmosWorldModel",
-    "WorkflowPhase",
-    "ReActOrchestrator",
-    "BaseAgent",
+  "KosmosWorldModel",
+  "WorkflowPhase",
+  "ReActOrchestrator",
+  "BaseAgent",
 ]

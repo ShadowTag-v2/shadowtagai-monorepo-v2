@@ -32,43 +32,45 @@ EVAL_CLIENT_LABEL = f"google-adk-eval/{version.__version__}"
 """Label used to denote calls emerging to external system as a part of Evals."""
 
 # The ContextVar holds client label collected for the current request.
-_LABEL_CONTEXT: contextvars.ContextVar[str] = contextvars.ContextVar("_LABEL_CONTEXT", default=None)
+_LABEL_CONTEXT: contextvars.ContextVar[str] = contextvars.ContextVar(
+  "_LABEL_CONTEXT", default=None
+)
 
 
 def _get_default_labels() -> list[str]:
-    """Returns a list of labels that are always added."""
-    framework_label = f"{_ADK_LABEL}/{version.__version__}"
+  """Returns a list of labels that are always added."""
+  framework_label = f"{_ADK_LABEL}/{version.__version__}"
 
-    if os.environ.get(_AGENT_ENGINE_TELEMETRY_ENV_VARIABLE_NAME):
-        framework_label = f"{framework_label}+{_AGENT_ENGINE_TELEMETRY_TAG}"
+  if os.environ.get(_AGENT_ENGINE_TELEMETRY_ENV_VARIABLE_NAME):
+    framework_label = f"{framework_label}+{_AGENT_ENGINE_TELEMETRY_TAG}"
 
-    language_label = f"{_LANGUAGE_LABEL}/" + sys.version.split()[0]
-    return [framework_label, language_label]
+  language_label = f"{_LANGUAGE_LABEL}/" + sys.version.split()[0]
+  return [framework_label, language_label]
 
 
 @contextmanager
 def client_label_context(client_label: str):
-    """Runs the operation within the context of the given client label."""
-    current_client_label = _LABEL_CONTEXT.get()
+  """Runs the operation within the context of the given client label."""
+  current_client_label = _LABEL_CONTEXT.get()
 
-    if current_client_label is not None:
-        raise ValueError("Client label already exists. You can only add one client label.")
+  if current_client_label is not None:
+    raise ValueError("Client label already exists. You can only add one client label.")
 
-    token = _LABEL_CONTEXT.set(client_label)
+  token = _LABEL_CONTEXT.set(client_label)
 
-    try:
-        yield
-    finally:
-        # Restore the previous state of the context variable
-        _LABEL_CONTEXT.reset(token)
+  try:
+    yield
+  finally:
+    # Restore the previous state of the context variable
+    _LABEL_CONTEXT.reset(token)
 
 
 def get_client_labels() -> list[str]:
-    """Returns the current list of client labels that can be added to HTTP Headers."""
-    labels = _get_default_labels()
-    current_client_label = _LABEL_CONTEXT.get()
+  """Returns the current list of client labels that can be added to HTTP Headers."""
+  labels = _get_default_labels()
+  current_client_label = _LABEL_CONTEXT.get()
 
-    if current_client_label:
-        labels.append(current_client_label)
+  if current_client_label:
+    labels.append(current_client_label)
 
-    return labels
+  return labels

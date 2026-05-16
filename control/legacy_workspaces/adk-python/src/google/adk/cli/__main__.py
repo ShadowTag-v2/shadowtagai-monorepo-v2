@@ -16,4 +16,4 @@
 from .cli_tools_click import main
 
 if __name__ == "__main__":
-    main()
+  main()

@@ -30,58 +30,64 @@ import mesop as me
 
 
 def classify_intent(input: str, history: list[ChatMessage]) -> str:
-    state = me.state(State)
-    client = genai.Client(api_key=state.gemini_api_key)
+  state = me.state(State)
+  client = genai.Client(api_key=state.gemini_api_key)
 
-    # Combine history and current input to provide full context
-    full_history_msgs = history + [ChatMessage(role="user", content=input)]
+  # Combine history and current input to provide full context
+  full_history_msgs = history + [ChatMessage(role="user", content=input)]
 
-    # Format for the prompt as seen in the intent_prompt examples
-    history_list_of_dicts = [{"role": msg.role, "content": msg.content} for msg in full_history_msgs]
-    prompt_for_model = f"History: {history_list_of_dicts}"
+  # Format for the prompt as seen in the intent_prompt examples
+  history_list_of_dicts = [
+    {"role": msg.role, "content": msg.content} for msg in full_history_msgs
+  ]
+  prompt_for_model = f"History: {history_list_of_dicts}"
 
-    json_resp = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt_for_model,
-        config=types.GenerateContentConfig(
-            temperature=1,
-            system_instruction=[intent_prompt],
-        ),
-    )
-    logging.info(f"INTENT: {json_resp}")
-    return json_resp.text.replace("```", "").replace("json", "").strip()
+  json_resp = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt_for_model,
+    config=types.GenerateContentConfig(
+      temperature=1,
+      system_instruction=[intent_prompt],
+    ),
+  )
+  logging.info(f"INTENT: {json_resp}")
+  return json_resp.text.replace("```", "").replace("json", "").strip()
 
 
 def generate_embedding(input: str) -> list:
-    state = me.state(State)
-    client = genai.Client(api_key=state.gemini_api_key)
-    result = client.models.embed_content(
-        model="models/text-embedding-004",
-        contents=[input],
-        config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
-    )
-    return result.embeddings[0].values
+  state = me.state(State)
+  client = genai.Client(api_key=state.gemini_api_key)
+  result = client.models.embed_content(
+    model="models/text-embedding-004",
+    contents=[input],
+    config=types.EmbedContentConfig(task_type="SEMANTIC_SIMILARITY"),
+  )
+  return result.embeddings[0].values
 
 
-def send_prompt_flash(input: str, history: list[ChatMessage], sys_instruction: list[str]) -> Iterable[str]:
-    state = me.state(State)
-    client = genai.Client(api_key=state.gemini_api_key)
+def send_prompt_flash(
+  input: str, history: list[ChatMessage], sys_instruction: list[str]
+) -> Iterable[str]:
+  state = me.state(State)
+  client = genai.Client(api_key=state.gemini_api_key)
 
-    # Convert history to the format the API expects and add the new user input
-    chat_history = [{"role": msg.role, "parts": [{"text": msg.content}]} for msg in history]
-    chat_history.append({"role": "user", "parts": [{"text": input}]})
+  # Convert history to the format the API expects and add the new user input
+  chat_history = [
+    {"role": msg.role, "parts": [{"text": msg.content}]} for msg in history
+  ]
+  chat_history.append({"role": "user", "parts": [{"text": input}]})
 
-    # # Use generate_content with streaming to have a consistent API call style
-    response = client.models.generate_content_stream(
-        model="gemini-2.5-flash",
-        contents=chat_history,
-        config=types.GenerateContentConfig(
-            system_instruction=sys_instruction,
-        ),
-    )
+  # # Use generate_content with streaming to have a consistent API call style
+  response = client.models.generate_content_stream(
+    model="gemini-2.5-flash",
+    contents=chat_history,
+    config=types.GenerateContentConfig(
+      system_instruction=sys_instruction,
+    ),
+  )
 
-    for chunk in response:
-        yield chunk.text
+  for chunk in response:
+    yield chunk.text
 
 
 intent_prompt = """

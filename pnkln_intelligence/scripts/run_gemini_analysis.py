@@ -28,90 +28,106 @@ from pathlib import Path
 
 # Try to import Vertex AI (graceful degradation if not available)
 try:
-    from google.cloud import aiplatform
-    from vertexai.generative_models import GenerativeModel, Part
+  from google.cloud import aiplatform
+  from vertexai.generative_models import GenerativeModel, Part
 
-    VERTEX_AI_AVAILABLE = True
+  VERTEX_AI_AVAILABLE = True
 except ImportError:
-    VERTEX_AI_AVAILABLE = False
-    logging.warning("Vertex AI SDK not available. Install with: pip install google-cloud-aiplatform")
+  VERTEX_AI_AVAILABLE = False
+  logging.warning(
+    "Vertex AI SDK not available. Install with: pip install google-cloud-aiplatform"
+  )
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+  level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 
 class GeminiAnalysisRunner:
-    """Orchestrates Gemini Ingestion Layer analysis"""
+  """Orchestrates Gemini Ingestion Layer analysis"""
 
-    def __init__(self, project_id: str, location: str = "us-central1", model_name: str = "gemini-2.0-pro", output_path: Path | None = None):
-        self.project_id = project_id
-        self.location = location
-        self.model_name = model_name
-        self.output_path = output_path or self._default_output_path()
+  def __init__(
+    self,
+    project_id: str,
+    location: str = "us-central1",
+    model_name: str = "gemini-2.0-pro",
+    output_path: Path | None = None,
+  ):
+    self.project_id = project_id
+    self.location = location
+    self.model_name = model_name
+    self.output_path = output_path or self._default_output_path()
 
-        if VERTEX_AI_AVAILABLE:
-            aiplatform.init(project=project_id, location=location)
-            self.model = GenerativeModel(model_name)
-        else:
-            self.model = None
-            logger.warning("Vertex AI not initialized - using mock mode")
+    if VERTEX_AI_AVAILABLE:
+      aiplatform.init(project=project_id, location=location)
+      self.model = GenerativeModel(model_name)
+    else:
+      self.model = None
+      logger.warning("Vertex AI not initialized - using mock mode")
 
-    def _default_output_path(self) -> Path:
-        """Generate default output path with timestamp"""
-        timestamp = datetime.now().strftime("%Y-%m-%d")
-        return Path(f"docs/analysis/gemini_ingestion_analysis_{timestamp}.md")
+  def _default_output_path(self) -> Path:
+    """Generate default output path with timestamp"""
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    return Path(f"docs/analysis/gemini_ingestion_analysis_{timestamp}.md")
 
-    def generate_input_bundle(self) -> str:
-        """Run prepare_analysis_input.sh to generate input"""
-        logger.info("Generating analysis input bundle...")
+  def generate_input_bundle(self) -> str:
+    """Run prepare_analysis_input.sh to generate input"""
+    logger.info("Generating analysis input bundle...")
 
-        script_path = Path(__file__).parent / "prepare_analysis_input.sh"
+    script_path = Path(__file__).parent / "prepare_analysis_input.sh"
 
-        if not script_path.exists():
-            raise FileNotFoundError(f"Input script not found: {script_path}")
+    if not script_path.exists():
+      raise FileNotFoundError(f"Input script not found: {script_path}")
 
-        try:
-            result = subprocess.run(["bash", str(script_path)], capture_output=True, text=True, check=True, timeout=60)
+    try:
+      result = subprocess.run(
+        ["bash", str(script_path)],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=60,
+      )
 
-            input_bundle = result.stdout
-            logger.info(f"Generated input bundle: {len(input_bundle)} characters")
+      input_bundle = result.stdout
+      logger.info(f"Generated input bundle: {len(input_bundle)} characters")
 
-            # Save to temp file
-            temp_input = self.output_path.parent / "analysis_input_bundle.txt"
-            temp_input.parent.mkdir(parents=True, exist_ok=True)
-            temp_input.write_text(input_bundle, encoding="utf-8")
+      # Save to temp file
+      temp_input = self.output_path.parent / "analysis_input_bundle.txt"
+      temp_input.parent.mkdir(parents=True, exist_ok=True)
+      temp_input.write_text(input_bundle, encoding="utf-8")
 
-            logger.info(f"Input bundle saved to: {temp_input}")
-            return input_bundle
+      logger.info(f"Input bundle saved to: {temp_input}")
+      return input_bundle
 
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Failed to generate input bundle: {e.stderr}")
-            raise
-        except subprocess.TimeoutExpired:
-            logger.error("Input generation timed out after 60 seconds")
-            raise
+    except subprocess.CalledProcessError as e:
+      logger.error(f"Failed to generate input bundle: {e.stderr}")
+      raise
+    except subprocess.TimeoutExpired:
+      logger.error("Input generation timed out after 60 seconds")
+      raise
 
-    def load_analysis_prompt(self) -> str:
-        """Load Gemini Ingestion Analysis prompt template"""
-        prompt_path = Path(__file__).parent.parent.parent / "GEMINI_INGESTION_ANALYSIS.md"
+  def load_analysis_prompt(self) -> str:
+    """Load Gemini Ingestion Analysis prompt template"""
+    prompt_path = Path(__file__).parent.parent.parent / "GEMINI_INGESTION_ANALYSIS.md"
 
-        if not prompt_path.exists():
-            raise FileNotFoundError(f"Analysis prompt not found: {prompt_path}")
+    if not prompt_path.exists():
+      raise FileNotFoundError(f"Analysis prompt not found: {prompt_path}")
 
-        with open(prompt_path, encoding="utf-8") as f:
-            return f.read()
+    with open(prompt_path, encoding="utf-8") as f:
+      return f.read()
 
-    async def run_gemini_analysis(self, input_bundle: str, prompt_template: str) -> str:
-        """Submit to Gemini 2.0 Pro and get analysis"""
-        logger.info("Submitting to Gemini 2.0 Pro...")
+  async def run_gemini_analysis(self, input_bundle: str, prompt_template: str) -> str:
+    """Submit to Gemini 2.0 Pro and get analysis"""
+    logger.info("Submitting to Gemini 2.0 Pro...")
 
-        if not VERTEX_AI_AVAILABLE or self.model is None:
-            logger.warning("Vertex AI not available - returning mock analysis")
-            return self._generate_mock_analysis()
+    if not VERTEX_AI_AVAILABLE or self.model is None:
+      logger.warning("Vertex AI not available - returning mock analysis")
+      return self._generate_mock_analysis()
 
-        try:
-            # Construct full prompt
-            full_prompt = f"""{prompt_template}
+    try:
+      # Construct full prompt
+      full_prompt = f"""{prompt_template}
 
 ---
 
@@ -139,27 +155,27 @@ Focus on:
 Ensure overall confidence score is calculated and displayed prominently.
 """
 
-            # Generate content
-            response = self.model.generate_content(
-                full_prompt,
-                generation_config={
-                    "temperature": 0.2,  # Lower temperature for analytical tasks
-                    "max_output_tokens": 8192,
-                },
-            )
+      # Generate content
+      response = self.model.generate_content(
+        full_prompt,
+        generation_config={
+          "temperature": 0.2,  # Lower temperature for analytical tasks
+          "max_output_tokens": 8192,
+        },
+      )
 
-            analysis_text = response.text
-            logger.info(f"Received analysis: {len(analysis_text)} characters")
+      analysis_text = response.text
+      logger.info(f"Received analysis: {len(analysis_text)} characters")
 
-            return analysis_text
+      return analysis_text
 
-        except Exception as e:
-            logger.error(f"Gemini API error: {e}", exc_info=True)
-            raise
+    except Exception as e:
+      logger.error(f"Gemini API error: {e}", exc_info=True)
+      raise
 
-    def _generate_mock_analysis(self) -> str:
-        """Generate mock analysis for testing without Vertex AI"""
-        return f"""# Gemini Ingestion Layer Analysis Report (MOCK)
+  def _generate_mock_analysis(self) -> str:
+    """Generate mock analysis for testing without Vertex AI"""
+    return f"""# Gemini Ingestion Layer Analysis Report (MOCK)
 **Date**: {datetime.now().strftime("%Y-%m-%d")}
 **Analyst**: Mock Mode (Vertex AI not available)
 **Overall Confidence**: 65%
@@ -224,100 +240,116 @@ Clean integration points with clear boundaries.
 - Expand source coverage
 """
 
-    def save_analysis_report(self, analysis_text: str) -> Path:
-        """Save analysis to markdown file"""
-        self.output_path.parent.mkdir(parents=True, exist_ok=True)
-        self.output_path.write_text(analysis_text, encoding="utf-8")
+  def save_analysis_report(self, analysis_text: str) -> Path:
+    """Save analysis to markdown file"""
+    self.output_path.parent.mkdir(parents=True, exist_ok=True)
+    self.output_path.write_text(analysis_text, encoding="utf-8")
 
-        logger.info(f"Analysis report saved to: {self.output_path}")
-        return self.output_path
+    logger.info(f"Analysis report saved to: {self.output_path}")
+    return self.output_path
 
-    def run_confidence_aggregation(self) -> dict:
-        """Run aggregate_confidence.py on the generated report"""
-        logger.info("Computing confidence scores...")
+  def run_confidence_aggregation(self) -> dict:
+    """Run aggregate_confidence.py on the generated report"""
+    logger.info("Computing confidence scores...")
 
-        script_path = Path(__file__).parent / "aggregate_confidence.py"
+    script_path = Path(__file__).parent / "aggregate_confidence.py"
 
-        try:
-            result = subprocess.run(["python3", str(script_path), str(self.output_path)], capture_output=True, text=True, timeout=30)
+    try:
+      result = subprocess.run(
+        ["python3", str(script_path), str(self.output_path)],
+        capture_output=True,
+        text=True,
+        timeout=30,
+      )
 
-            # Print output (includes summary)
-            print(result.stdout)
+      # Print output (includes summary)
+      print(result.stdout)
 
-            if result.returncode != 0:
-                logger.warning(f"Confidence aggregation returned non-zero: {result.returncode}")
-                logger.warning(result.stderr)
+      if result.returncode != 0:
+        logger.warning(f"Confidence aggregation returned non-zero: {result.returncode}")
+        logger.warning(result.stderr)
 
-            # Load JSON metrics
-            json_path = self.output_path.with_suffix(".confidence.json")
-            if json_path.exists():
-                with open(json_path) as f:
-                    return json.load(f)
+      # Load JSON metrics
+      json_path = self.output_path.with_suffix(".confidence.json")
+      if json_path.exists():
+        with open(json_path) as f:
+          return json.load(f)
 
-            return {}
+      return {}
 
-        except subprocess.TimeoutExpired:
-            logger.error("Confidence aggregation timed out")
-            raise
-        except Exception as e:
-            logger.error(f"Error running confidence aggregation: {e}")
-            raise
+    except subprocess.TimeoutExpired:
+      logger.error("Confidence aggregation timed out")
+      raise
+    except Exception as e:
+      logger.error(f"Error running confidence aggregation: {e}")
+      raise
 
-    async def run_full_analysis(self) -> dict:
-        """Execute complete analysis workflow"""
-        logger.info("=" * 70)
-        logger.info("GEMINI INGESTION LAYER ANALYSIS - FULL WORKFLOW")
-        logger.info("=" * 70)
+  async def run_full_analysis(self) -> dict:
+    """Execute complete analysis workflow"""
+    logger.info("=" * 70)
+    logger.info("GEMINI INGESTION LAYER ANALYSIS - FULL WORKFLOW")
+    logger.info("=" * 70)
 
-        # Step 1: Generate input
-        input_bundle = self.generate_input_bundle()
+    # Step 1: Generate input
+    input_bundle = self.generate_input_bundle()
 
-        # Step 2: Load prompt template
-        prompt_template = self.load_analysis_prompt()
+    # Step 2: Load prompt template
+    prompt_template = self.load_analysis_prompt()
 
-        # Step 3: Run Gemini analysis
-        analysis_text = await self.run_gemini_analysis(input_bundle, prompt_template)
+    # Step 3: Run Gemini analysis
+    analysis_text = await self.run_gemini_analysis(input_bundle, prompt_template)
 
-        # Step 4: Save report
-        report_path = self.save_analysis_report(analysis_text)
+    # Step 4: Save report
+    report_path = self.save_analysis_report(analysis_text)
 
-        # Step 5: Aggregate confidence scores
-        metrics = self.run_confidence_aggregation()
+    # Step 5: Aggregate confidence scores
+    metrics = self.run_confidence_aggregation()
 
-        logger.info("=" * 70)
-        logger.info("ANALYSIS COMPLETE")
-        logger.info(f"Report: {report_path}")
-        logger.info(f"Overall Confidence: {metrics.get('overall_confidence', 'N/A')}%")
-        logger.info(f"Status: {'✅ APPROVED' if metrics.get('approved') else '❌ NEEDS WORK'}")
-        logger.info("=" * 70)
+    logger.info("=" * 70)
+    logger.info("ANALYSIS COMPLETE")
+    logger.info(f"Report: {report_path}")
+    logger.info(f"Overall Confidence: {metrics.get('overall_confidence', 'N/A')}%")
+    logger.info(
+      f"Status: {'✅ APPROVED' if metrics.get('approved') else '❌ NEEDS WORK'}"
+    )
+    logger.info("=" * 70)
 
-        return metrics
+    return metrics
 
 
 async def main():
-    """CLI entry point"""
-    parser = argparse.ArgumentParser(description="Run Gemini Ingestion Layer Analysis")
-    parser.add_argument("--project-id", default="your-gcp-project-id", help="GCP project ID for Vertex AI")
-    parser.add_argument("--location", default="us-central1", help="GCP location for Vertex AI")
-    parser.add_argument("--output", type=Path, help="Output path for analysis report")
-    parser.add_argument("--model", default="gemini-2.0-pro", help="Gemini model name")
+  """CLI entry point"""
+  parser = argparse.ArgumentParser(description="Run Gemini Ingestion Layer Analysis")
+  parser.add_argument(
+    "--project-id", default="your-gcp-project-id", help="GCP project ID for Vertex AI"
+  )
+  parser.add_argument(
+    "--location", default="us-central1", help="GCP location for Vertex AI"
+  )
+  parser.add_argument("--output", type=Path, help="Output path for analysis report")
+  parser.add_argument("--model", default="gemini-2.0-pro", help="Gemini model name")
 
-    args = parser.parse_args()
+  args = parser.parse_args()
 
-    try:
-        runner = GeminiAnalysisRunner(project_id=args.project_id, location=args.location, model_name=args.model, output_path=args.output)
+  try:
+    runner = GeminiAnalysisRunner(
+      project_id=args.project_id,
+      location=args.location,
+      model_name=args.model,
+      output_path=args.output,
+    )
 
-        metrics = await runner.run_full_analysis()
+    metrics = await runner.run_full_analysis()
 
-        # Exit with appropriate code
-        sys.exit(0 if metrics.get("approved") else 1)
+    # Exit with appropriate code
+    sys.exit(0 if metrics.get("approved") else 1)
 
-    except Exception as e:
-        logger.error(f"Analysis failed: {e}", exc_info=True)
-        sys.exit(2)
+  except Exception as e:
+    logger.error(f"Analysis failed: {e}", exc_info=True)
+    sys.exit(2)
 
 
 if __name__ == "__main__":
-    import sys
+  import sys
 
-    asyncio.run(main())
+  asyncio.run(main())

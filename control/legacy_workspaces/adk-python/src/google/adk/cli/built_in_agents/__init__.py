@@ -26,6 +26,6 @@ from . import agent  # Import to make agent.root_agent available
 from .adk_agent_builder_assistant import AgentBuilderAssistant
 
 __all__ = [
-    "AgentBuilderAssistant",
-    "agent",  # Make agent module available for adk web discovery
+  "AgentBuilderAssistant",
+  "agent",  # Make agent module available for adk web discovery
 ]

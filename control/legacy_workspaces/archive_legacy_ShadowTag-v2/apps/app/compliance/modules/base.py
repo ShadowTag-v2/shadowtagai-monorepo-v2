@@ -18,360 +18,388 @@ from datetime import datetime
 from typing import Any
 
 from app.models.compliance import (
-    AssessmentInput,
-    ComplianceStatus,
-    ControlDefinition,
-    ControlResult,
-    ModuleMetadata,
-    ModuleResult,
-    RegulationId,
-    RiskTier,
-    ValidationRule,
-    ValidationViolation,
+  AssessmentInput,
+  ComplianceStatus,
+  ControlDefinition,
+  ControlResult,
+  ModuleMetadata,
+  ModuleResult,
+  RegulationId,
+  RiskTier,
+  ValidationRule,
+  ValidationViolation,
 )
 
 logger = logging.getLogger(__name__)
 
 
 class ComplianceModule(ABC):
+  """
+  Abstract base class for compliance regulation modules.
+
+  Each module represents a single regulation (EU AI Act, GDPR, etc.)
+  and provides:
+  - Regulation metadata and version info
+  - Control definitions and validation rules
+  - Assessment logic
+  - Report generation capabilities
+  - Evidence collection templates
+  """
+
+  def __init__(self):
+    """Initialize the module with its metadata."""
+    self._metadata = self._define_metadata()
+    self._controls = self._define_controls()
+    self._validation_rules = self._define_validation_rules()
+    logger.info(f"Initialized compliance module: {self._metadata.id.value}")
+
+  # =========================================================================
+  # ABSTRACT METHODS - Must be implemented by each regulation module
+  # =========================================================================
+
+  @abstractmethod
+  def _define_metadata(self) -> ModuleMetadata:
     """
-    Abstract base class for compliance regulation modules.
+    Define the module's metadata.
 
-    Each module represents a single regulation (EU AI Act, GDPR, etc.)
-    and provides:
-    - Regulation metadata and version info
-    - Control definitions and validation rules
-    - Assessment logic
-    - Report generation capabilities
-    - Evidence collection templates
+    Returns:
+        ModuleMetadata containing regulation info, jurisdiction, etc.
     """
+    pass
 
-    def __init__(self):
-        """Initialize the module with its metadata."""
-        self._metadata = self._define_metadata()
-        self._controls = self._define_controls()
-        self._validation_rules = self._define_validation_rules()
-        logger.info(f"Initialized compliance module: {self._metadata.id.value}")
+  @abstractmethod
+  def _define_controls(self) -> list[ControlDefinition]:
+    """
+    Define the compliance controls/requirements for this regulation.
 
-    # =========================================================================
-    # ABSTRACT METHODS - Must be implemented by each regulation module
-    # =========================================================================
+    Returns:
+        List of control definitions with validation rules
+    """
+    pass
 
-    @abstractmethod
-    def _define_metadata(self) -> ModuleMetadata:
-        """
-        Define the module's metadata.
+  @abstractmethod
+  def _define_validation_rules(self) -> list[ValidationRule]:
+    """
+    Define validation rules for post-generation content checking.
 
-        Returns:
-            ModuleMetadata containing regulation info, jurisdiction, etc.
-        """
-        pass
+    Returns:
+        List of validation rules for content validation
+    """
+    pass
 
-    @abstractmethod
-    def _define_controls(self) -> list[ControlDefinition]:
-        """
-        Define the compliance controls/requirements for this regulation.
+  @abstractmethod
+  async def assess_control(
+    self, control: ControlDefinition, input_data: AssessmentInput
+  ) -> ControlResult:
+    """
+    Assess a single control against the input data.
 
-        Returns:
-            List of control definitions with validation rules
-        """
-        pass
+    Args:
+        control: The control definition to assess
+        input_data: Assessment input containing content and metadata
 
-    @abstractmethod
-    def _define_validation_rules(self) -> list[ValidationRule]:
-        """
-        Define validation rules for post-generation content checking.
+    Returns:
+        ControlResult with compliance status and findings
+    """
+    pass
 
-        Returns:
-            List of validation rules for content validation
-        """
-        pass
+  @abstractmethod
+  def determine_risk_tier(self, input_data: AssessmentInput) -> RiskTier | None:
+    """
+    Determine the risk tier for the input (if applicable to this regulation).
 
-    @abstractmethod
-    async def assess_control(self, control: ControlDefinition, input_data: AssessmentInput) -> ControlResult:
-        """
-        Assess a single control against the input data.
+    Args:
+        input_data: Assessment input
 
-        Args:
-            control: The control definition to assess
-            input_data: Assessment input containing content and metadata
+    Returns:
+        RiskTier classification or None if not applicable
+    """
+    pass
 
-        Returns:
-            ControlResult with compliance status and findings
-        """
-        pass
+  # =========================================================================
+  # PUBLIC PROPERTIES
+  # =========================================================================
 
-    @abstractmethod
-    def determine_risk_tier(self, input_data: AssessmentInput) -> RiskTier | None:
-        """
-        Determine the risk tier for the input (if applicable to this regulation).
+  @property
+  def metadata(self) -> ModuleMetadata:
+    """Get module metadata."""
+    return self._metadata
 
-        Args:
-            input_data: Assessment input
+  @property
+  def module_id(self) -> RegulationId:
+    """Get the module's regulation ID."""
+    return self._metadata.id
 
-        Returns:
-            RiskTier classification or None if not applicable
-        """
-        pass
+  @property
+  def controls(self) -> list[ControlDefinition]:
+    """Get the list of control definitions."""
+    return self._controls
 
-    # =========================================================================
-    # PUBLIC PROPERTIES
-    # =========================================================================
+  @property
+  def validation_rules(self) -> list[ValidationRule]:
+    """Get the list of validation rules for content checking."""
+    return self._validation_rules
 
-    @property
-    def metadata(self) -> ModuleMetadata:
-        """Get module metadata."""
-        return self._metadata
+  # =========================================================================
+  # ASSESSMENT METHODS
+  # =========================================================================
 
-    @property
-    def module_id(self) -> RegulationId:
-        """Get the module's regulation ID."""
-        return self._metadata.id
+  async def assess(self, input_data: AssessmentInput) -> ModuleResult:
+    """
+    Run full assessment against all controls in this module.
 
-    @property
-    def controls(self) -> list[ControlDefinition]:
-        """Get the list of control definitions."""
-        return self._controls
+    Args:
+        input_data: Assessment input containing content and metadata
 
-    @property
-    def validation_rules(self) -> list[ValidationRule]:
-        """Get the list of validation rules for content checking."""
-        return self._validation_rules
+    Returns:
+        ModuleResult with all control assessments and recommendations
+    """
+    logger.info(f"Running {self.module_id.value} assessment")
 
-    # =========================================================================
-    # ASSESSMENT METHODS
-    # =========================================================================
-
-    async def assess(self, input_data: AssessmentInput) -> ModuleResult:
-        """
-        Run full assessment against all controls in this module.
-
-        Args:
-            input_data: Assessment input containing content and metadata
-
-        Returns:
-            ModuleResult with all control assessments and recommendations
-        """
-        logger.info(f"Running {self.module_id.value} assessment")
-
-        control_results = []
-        for control in self._controls:
-            try:
-                result = await self.assess_control(control, input_data)
-                control_results.append(result)
-            except Exception as e:
-                logger.error(f"Error assessing control {control.control_id}: {e}")
-                control_results.append(
-                    ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.PENDING_REVIEW,
-                        score=0.0,
-                        findings=[f"Assessment error: {str(e)}"],
-                        remediation="Manual review required",
-                    )
-                )
-
-        # Calculate aggregate stats
-        compliant = sum(1 for r in control_results if r.status == ComplianceStatus.COMPLIANT)
-        non_compliant = sum(1 for r in control_results if r.status == ComplianceStatus.NON_COMPLIANT)
-        partial = sum(1 for r in control_results if r.status == ComplianceStatus.PARTIAL)
-
-        total_assessed = len(control_results)
-        avg_score = sum(r.score for r in control_results) / total_assessed if total_assessed > 0 else 0.0
-
-        # Determine overall status
-        if non_compliant > 0:
-            overall_status = ComplianceStatus.NON_COMPLIANT
-        elif partial > 0:
-            overall_status = ComplianceStatus.PARTIAL
-        elif compliant == total_assessed:
-            overall_status = ComplianceStatus.COMPLIANT
-        else:
-            overall_status = ComplianceStatus.PENDING_REVIEW
-
-        # Generate recommendations
-        recommendations = await self._generate_recommendations(control_results, input_data)
-
-        # Determine if human review is required
-        requires_human_review = self._requires_human_review(control_results, input_data)
-
-        # Get risk tier
-        risk_tier = self.determine_risk_tier(input_data)
-
-        return ModuleResult(
+    control_results = []
+    for control in self._controls:
+      try:
+        result = await self.assess_control(control, input_data)
+        control_results.append(result)
+      except Exception as e:
+        logger.error(f"Error assessing control {control.control_id}: {e}")
+        control_results.append(
+          ControlResult(
+            control_id=control.control_id,
+            control_name=control.name,
             module_id=self.module_id,
-            module_name=self._metadata.name,
-            status=overall_status,
-            compliance_score=avg_score,
-            controls_assessed=total_assessed,
-            controls_compliant=compliant,
-            controls_non_compliant=non_compliant,
-            controls_partial=partial,
-            control_results=control_results,
-            risk_tier=risk_tier,
-            recommendations=recommendations,
-            requires_human_review=requires_human_review,
+            status=ComplianceStatus.PENDING_REVIEW,
+            score=0.0,
+            findings=[f"Assessment error: {str(e)}"],
+            remediation="Manual review required",
+          )
         )
 
-    async def validate_content(self, content: str, context: str | None = None) -> list[ValidationViolation]:
-        """
-        Validate generated content against this module's rules.
+    # Calculate aggregate stats
+    compliant = sum(
+      1 for r in control_results if r.status == ComplianceStatus.COMPLIANT
+    )
+    non_compliant = sum(
+      1 for r in control_results if r.status == ComplianceStatus.NON_COMPLIANT
+    )
+    partial = sum(1 for r in control_results if r.status == ComplianceStatus.PARTIAL)
 
-        Used for post-generation validation (GPT Store pattern).
+    total_assessed = len(control_results)
+    avg_score = (
+      sum(r.score for r in control_results) / total_assessed
+      if total_assessed > 0
+      else 0.0
+    )
 
-        Args:
-            content: The generated content to validate
-            context: Optional context about the original prompt
+    # Determine overall status
+    if non_compliant > 0:
+      overall_status = ComplianceStatus.NON_COMPLIANT
+    elif partial > 0:
+      overall_status = ComplianceStatus.PARTIAL
+    elif compliant == total_assessed:
+      overall_status = ComplianceStatus.COMPLIANT
+    else:
+      overall_status = ComplianceStatus.PENDING_REVIEW
 
-        Returns:
-            List of violations found in the content
-        """
-        violations = []
+    # Generate recommendations
+    recommendations = await self._generate_recommendations(control_results, input_data)
 
-        for rule in self._validation_rules:
-            if not rule.auto_check:
-                continue
+    # Determine if human review is required
+    requires_human_review = self._requires_human_review(control_results, input_data)
 
-            violation = await self._check_validation_rule(rule, content, context)
-            if violation:
-                violations.append(violation)
+    # Get risk tier
+    risk_tier = self.determine_risk_tier(input_data)
 
-        return violations
+    return ModuleResult(
+      module_id=self.module_id,
+      module_name=self._metadata.name,
+      status=overall_status,
+      compliance_score=avg_score,
+      controls_assessed=total_assessed,
+      controls_compliant=compliant,
+      controls_non_compliant=non_compliant,
+      controls_partial=partial,
+      control_results=control_results,
+      risk_tier=risk_tier,
+      recommendations=recommendations,
+      requires_human_review=requires_human_review,
+    )
 
-    # =========================================================================
-    # DOCUMENTATION GENERATION
-    # =========================================================================
+  async def validate_content(
+    self, content: str, context: str | None = None
+  ) -> list[ValidationViolation]:
+    """
+    Validate generated content against this module's rules.
 
-    def generate_checklist(self) -> list[dict[str, Any]]:
-        """
-        Generate a compliance checklist for this regulation.
+    Used for post-generation validation (GPT Store pattern).
 
-        Returns:
-            List of checklist items with control info and status placeholders
-        """
-        checklist = []
-        for control in self._controls:
-            checklist.append(
-                {
-                    "control_id": control.control_id,
-                    "control_name": control.name,
-                    "description": control.description,
-                    "article_ref": control.article_ref,
-                    "required_evidence": control.required_evidence,
-                    "status": "pending",
-                    "evidence_provided": False,
-                    "notes": "",
-                }
-            )
-        return checklist
+    Args:
+        content: The generated content to validate
+        context: Optional context about the original prompt
 
-    def generate_report_template(self) -> dict[str, Any]:
-        """
-        Generate an audit report template for this regulation.
+    Returns:
+        List of violations found in the content
+    """
+    violations = []
 
-        Returns:
-            Report template structure with placeholders
-        """
-        return {
-            "report_type": f"{self._metadata.short_name} Compliance Report",
-            "regulation": self._metadata.name,
-            "version": self._metadata.version,
-            "jurisdiction": self._metadata.jurisdiction.value,
-            "generated_at": datetime.utcnow().isoformat(),
-            "sections": [
-                {"title": "Executive Summary", "content": ""},
-                {"title": "Scope and Methodology", "content": ""},
-                {
-                    "title": "Control Assessment Results",
-                    "controls": self.generate_checklist(),
-                },
-                {"title": "Findings and Recommendations", "content": ""},
-                {"title": "Evidence Summary", "artifacts": []},
-                {
-                    "title": "Attestation",
-                    "signatory": "",
-                    "date": "",
-                    "signature_hash": "",
-                },
-            ],
+    for rule in self._validation_rules:
+      if not rule.auto_check:
+        continue
+
+      violation = await self._check_validation_rule(rule, content, context)
+      if violation:
+        violations.append(violation)
+
+    return violations
+
+  # =========================================================================
+  # DOCUMENTATION GENERATION
+  # =========================================================================
+
+  def generate_checklist(self) -> list[dict[str, Any]]:
+    """
+    Generate a compliance checklist for this regulation.
+
+    Returns:
+        List of checklist items with control info and status placeholders
+    """
+    checklist = []
+    for control in self._controls:
+      checklist.append(
+        {
+          "control_id": control.control_id,
+          "control_name": control.name,
+          "description": control.description,
+          "article_ref": control.article_ref,
+          "required_evidence": control.required_evidence,
+          "status": "pending",
+          "evidence_provided": False,
+          "notes": "",
         }
+      )
+    return checklist
 
-    def get_required_evidence(self) -> list[dict[str, Any]]:
-        """
-        Get list of all required evidence artifacts for compliance.
+  def generate_report_template(self) -> dict[str, Any]:
+    """
+    Generate an audit report template for this regulation.
 
-        Returns:
-            List of evidence requirements with descriptions
-        """
-        evidence_list = []
-        for control in self._controls:
-            for evidence_item in control.required_evidence:
-                evidence_list.append(
-                    {
-                        "control_id": control.control_id,
-                        "evidence_type": evidence_item,
-                        "description": f"Evidence for {control.name}",
-                    }
-                )
-        return evidence_list
+    Returns:
+        Report template structure with placeholders
+    """
+    return {
+      "report_type": f"{self._metadata.short_name} Compliance Report",
+      "regulation": self._metadata.name,
+      "version": self._metadata.version,
+      "jurisdiction": self._metadata.jurisdiction.value,
+      "generated_at": datetime.utcnow().isoformat(),
+      "sections": [
+        {"title": "Executive Summary", "content": ""},
+        {"title": "Scope and Methodology", "content": ""},
+        {
+          "title": "Control Assessment Results",
+          "controls": self.generate_checklist(),
+        },
+        {"title": "Findings and Recommendations", "content": ""},
+        {"title": "Evidence Summary", "artifacts": []},
+        {
+          "title": "Attestation",
+          "signatory": "",
+          "date": "",
+          "signature_hash": "",
+        },
+      ],
+    }
 
-    # =========================================================================
-    # HELPER METHODS
-    # =========================================================================
+  def get_required_evidence(self) -> list[dict[str, Any]]:
+    """
+    Get list of all required evidence artifacts for compliance.
 
-    async def _generate_recommendations(self, control_results: list[ControlResult], input_data: AssessmentInput) -> list[str]:
-        """Generate recommendations based on assessment results."""
-        recommendations = []
+    Returns:
+        List of evidence requirements with descriptions
+    """
+    evidence_list = []
+    for control in self._controls:
+      for evidence_item in control.required_evidence:
+        evidence_list.append(
+          {
+            "control_id": control.control_id,
+            "evidence_type": evidence_item,
+            "description": f"Evidence for {control.name}",
+          }
+        )
+    return evidence_list
 
-        # Add recommendations for non-compliant controls
-        for result in control_results:
-            if result.status == ComplianceStatus.NON_COMPLIANT and result.remediation:
-                recommendations.append(result.remediation)
+  # =========================================================================
+  # HELPER METHODS
+  # =========================================================================
 
-        # Add recommendations for partial compliance
-        partial_count = sum(1 for r in control_results if r.status == ComplianceStatus.PARTIAL)
-        if partial_count > 0:
-            recommendations.append(f"Complete implementation of {partial_count} partially compliant controls")
+  async def _generate_recommendations(
+    self, control_results: list[ControlResult], input_data: AssessmentInput
+  ) -> list[str]:
+    """Generate recommendations based on assessment results."""
+    recommendations = []
 
-        return recommendations
+    # Add recommendations for non-compliant controls
+    for result in control_results:
+      if result.status == ComplianceStatus.NON_COMPLIANT and result.remediation:
+        recommendations.append(result.remediation)
 
-    def _requires_human_review(self, control_results: list[ControlResult], input_data: AssessmentInput) -> bool:
-        """Determine if human review is required."""
-        # High-risk content always requires review
-        if input_data.is_high_risk_decision:
-            return True
+    # Add recommendations for partial compliance
+    partial_count = sum(
+      1 for r in control_results if r.status == ComplianceStatus.PARTIAL
+    )
+    if partial_count > 0:
+      recommendations.append(
+        f"Complete implementation of {partial_count} partially compliant controls"
+      )
 
-        # Multiple non-compliant controls require review
-        non_compliant = sum(1 for r in control_results if r.status == ComplianceStatus.NON_COMPLIANT)
-        if non_compliant >= 3:
-            return True
+    return recommendations
 
-        # Low overall score requires review
-        avg_score = sum(r.score for r in control_results) / len(control_results) if control_results else 0
-        if avg_score < 0.5:
-            return True
+  def _requires_human_review(
+    self, control_results: list[ControlResult], input_data: AssessmentInput
+  ) -> bool:
+    """Determine if human review is required."""
+    # High-risk content always requires review
+    if input_data.is_high_risk_decision:
+      return True
 
-        return False
+    # Multiple non-compliant controls require review
+    non_compliant = sum(
+      1 for r in control_results if r.status == ComplianceStatus.NON_COMPLIANT
+    )
+    if non_compliant >= 3:
+      return True
 
-    async def _check_validation_rule(self, rule: ValidationRule, content: str, context: str | None) -> ValidationViolation | None:
-        """
-        Check a single validation rule against content.
+    # Low overall score requires review
+    avg_score = (
+      sum(r.score for r in control_results) / len(control_results)
+      if control_results
+      else 0
+    )
+    if avg_score < 0.5:
+      return True
 
-        Override in specific modules for custom validation logic.
-        """
-        # Default implementation - specific modules should override
-        return None
+    return False
 
-    @staticmethod
-    def hash_content(content: Any) -> str:
-        """Generate SHA256 hash of content for audit trail."""
-        if isinstance(content, (str, bytes)):
-            data = content if isinstance(content, bytes) else content.encode()
-        else:
-            data = json.dumps(content, sort_keys=True, default=str).encode()
-        return hashlib.sha256(data).hexdigest()
+  async def _check_validation_rule(
+    self, rule: ValidationRule, content: str, context: str | None
+  ) -> ValidationViolation | None:
+    """
+    Check a single validation rule against content.
 
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} id={self.module_id.value} version={self._metadata.version}>"
+    Override in specific modules for custom validation logic.
+    """
+    # Default implementation - specific modules should override
+    return None
+
+  @staticmethod
+  def hash_content(content: Any) -> str:
+    """Generate SHA256 hash of content for audit trail."""
+    if isinstance(content, (str, bytes)):
+      data = content if isinstance(content, bytes) else content.encode()
+    else:
+      data = json.dumps(content, sort_keys=True, default=str).encode()
+    return hashlib.sha256(data).hexdigest()
+
+  def __repr__(self) -> str:
+    return f"<{self.__class__.__name__} id={self.module_id.value} version={self._metadata.version}>"

@@ -252,3 +252,4 @@ src.zip
 **/dev/cache/turbopack/
 # .sst files (turbopack cache blobs)
 *.sst
+_archive_redundant_venvs_2026-05-04/

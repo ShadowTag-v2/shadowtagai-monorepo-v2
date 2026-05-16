@@ -8,38 +8,40 @@ from rich.logging import RichHandler
 
 
 def get_logger(name: str, level: str | None = None) -> logging.Logger:
-    """Get a logger with rich formatting.
+  """Get a logger with rich formatting.
 
-    Args:
-        name: Logger name
-        level: Log level (default: INFO)
+  Args:
+      name: Logger name
+      level: Log level (default: INFO)
 
-    Returns:
-        Configured logger
-    """
-    logger = logging.getLogger(name)
+  Returns:
+      Configured logger
+  """
+  logger = logging.getLogger(name)
 
-    # Avoid adding handlers multiple times
-    if logger.handlers:
-        return logger
-
-    # Set log level
-    log_level = getattr(logging, level.upper()) if level else logging.INFO
-    logger.setLevel(log_level)
-
-    # Create rich handler with full terminal width
-    # Use explicit large width for CI environments (GitHub Actions defaults to 80 otherwise)
-    console = Console(width=200, force_terminal=True)
-    rich_handler = RichHandler(console=console, show_time=True, show_path=False, markup=True, rich_tracebacks=True)
-
-    # Set formatter
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    rich_handler.setFormatter(formatter)
-
-    # Add handler
-    logger.addHandler(rich_handler)
-
-    # Allow propagation so server-side collectors (e.g., per-run handler) can capture logs
-    logger.propagate = True
-
+  # Avoid adding handlers multiple times
+  if logger.handlers:
     return logger
+
+  # Set log level
+  log_level = getattr(logging, level.upper()) if level else logging.INFO
+  logger.setLevel(log_level)
+
+  # Create rich handler with full terminal width
+  # Use explicit large width for CI environments (GitHub Actions defaults to 80 otherwise)
+  console = Console(width=200, force_terminal=True)
+  rich_handler = RichHandler(
+    console=console, show_time=True, show_path=False, markup=True, rich_tracebacks=True
+  )
+
+  # Set formatter
+  formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+  rich_handler.setFormatter(formatter)
+
+  # Add handler
+  logger.addHandler(rich_handler)
+
+  # Allow propagation so server-side collectors (e.g., per-run handler) can capture logs
+  logger.propagate = True
+
+  return logger

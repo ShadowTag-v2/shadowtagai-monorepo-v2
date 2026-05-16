@@ -21,53 +21,53 @@ from google.adk.models import LlmResponse
 from google.adk.tools.vertex_ai_search_tool import VertexAiSearchTool
 from google.genai import types
 
-VERTEXAI_DATASTORE_ID = (
-    "projects/adk-agent-builder-assistant/locations/global/collections/default_collection/dataStores/adk-agent-builder-sample-datastore_1758230446136"
-)
+VERTEXAI_DATASTORE_ID = "projects/adk-agent-builder-assistant/locations/global/collections/default_collection/dataStores/adk-agent-builder-sample-datastore_1758230446136"
 
 
 def citation_retrieval_after_model_callback(
-    callback_context: CallbackContext,
-    llm_response: LlmResponse,
+  callback_context: CallbackContext,
+  llm_response: LlmResponse,
 ) -> LlmResponse | None:
-    """Callback function to retrieve citations after model response is generated."""
-    grounding_metadata = llm_response.grounding_metadata
-    if not grounding_metadata:
-        return None
+  """Callback function to retrieve citations after model response is generated."""
+  grounding_metadata = llm_response.grounding_metadata
+  if not grounding_metadata:
+    return None
 
-    content = llm_response.content
-    if not llm_response.content:
-        return None
+  content = llm_response.content
+  if not llm_response.content:
+    return None
 
-    parts = content.parts
-    if not parts:
-        return None
+  parts = content.parts
+  if not parts:
+    return None
 
-    # Add citations to the response as JSON objects.
-    parts.append(types.Part(text="References:\n"))
-    for grounding_chunk in grounding_metadata.grounding_chunks:
-        retrieved_context = grounding_chunk.retrieved_context
-        if not retrieved_context:
-            continue
+  # Add citations to the response as JSON objects.
+  parts.append(types.Part(text="References:\n"))
+  for grounding_chunk in grounding_metadata.grounding_chunks:
+    retrieved_context = grounding_chunk.retrieved_context
+    if not retrieved_context:
+      continue
 
-        citation = {
-            "title": retrieved_context.title,
-            "uri": retrieved_context.uri,
-            "snippet": retrieved_context.text,
-        }
-        parts.append(types.Part(text=json.dumps(citation)))
+    citation = {
+      "title": retrieved_context.title,
+      "uri": retrieved_context.uri,
+      "snippet": retrieved_context.text,
+    }
+    parts.append(types.Part(text=json.dumps(citation)))
 
-    return LlmResponse(content=types.Content(parts=parts))
+  return LlmResponse(content=types.Content(parts=parts))
 
 
 root_agent = LlmAgent(
-    name="adk_knowledge_agent",
-    description=("Agent for performing Vertex AI Search to find ADK knowledge and documentation"),
-    instruction="""You are a specialized search agent for an ADK knowledge base.
+  name="adk_knowledge_agent",
+  description=(
+    "Agent for performing Vertex AI Search to find ADK knowledge and documentation"
+  ),
+  instruction="""You are a specialized search agent for an ADK knowledge base.
 
       You can use the VertexAiSearchTool to search for ADK examples and documentation in the document store.
       """,
-    model="gemini-2.5-flash",
-    tools=[VertexAiSearchTool(data_store_id=VERTEXAI_DATASTORE_ID)],
-    after_model_callback=citation_retrieval_after_model_callback,
+  model="gemini-2.5-flash",
+  tools=[VertexAiSearchTool(data_store_id=VERTEXAI_DATASTORE_ID)],
+  after_model_callback=citation_retrieval_after_model_callback,
 )

@@ -22,19 +22,19 @@ import pytest
 
 
 def test_next_user_message_validation():
-    """Tests post-init validation of NextUserMessage."""
-    with pytest.raises(
-        ValueError,
-        match=("A user_message should be provided if and only if the status is SUCCESS"),
-    ):
-        NextUserMessage(status=Status.SUCCESS)
+  """Tests post-init validation of NextUserMessage."""
+  with pytest.raises(
+    ValueError,
+    match=("A user_message should be provided if and only if the status is SUCCESS"),
+  ):
+    NextUserMessage(status=Status.SUCCESS)
 
-    with pytest.raises(
-        ValueError,
-        match=("A user_message should be provided if and only if the status is SUCCESS"),
-    ):
-        NextUserMessage(status=Status.TURN_LIMIT_REACHED, user_message=Content())
+  with pytest.raises(
+    ValueError,
+    match=("A user_message should be provided if and only if the status is SUCCESS"),
+  ):
+    NextUserMessage(status=Status.TURN_LIMIT_REACHED, user_message=Content())
 
-    # these two should not cause exceptions
-    NextUserMessage(status=Status.SUCCESS, user_message=Content())
-    NextUserMessage(status=Status.TURN_LIMIT_REACHED)
+  # these two should not cause exceptions
+  NextUserMessage(status=Status.SUCCESS, user_message=Content())
+  NextUserMessage(status=Status.TURN_LIMIT_REACHED)

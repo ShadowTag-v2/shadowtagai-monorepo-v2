@@ -29,194 +29,227 @@ Example usage:
 
 from kosmos.experiments.templates.base import TemplateBase, TemplateCustomizationParams
 from kosmos.models.experiment import (
-    ExperimentProtocol,
-    ExperimentType,
-    ProtocolStep,
-    Variable,
-    ResourceRequirements,
-    ValidationCheck,
+  ExperimentProtocol,
+  ExperimentType,
+  ProtocolStep,
+  Variable,
+  ResourceRequirements,
+  ValidationCheck,
 )
 from kosmos.models.hypothesis import Hypothesis
 
 
 class SHAPAnalysisTemplate(TemplateBase):
+  """
+  Template for SHAP feature importance analysis.
+
+  Workflow:
+  1. Load experimental data
+  2. Train surrogate ML model
+  3. Apply SHAP analysis
+  4. Rank features by importance
+  5. Visualize SHAP values (summary plot, waterfall plot)
+  6. Interpret results for experimental design
+  """
+
+  def __init__(self):
+    super().__init__(
+      name="shap_analysis",
+      experiment_type=ExperimentType.DATA_ANALYSIS,
+      domain="materials",
+      title="SHAP Feature Importance Analysis",
+      description=(
+        "Identify which experimental parameters most influence "
+        "performance using SHAP (SHapley Additive exPlanations), "
+        "a game-theory based approach to explain ML models."
+      ),
+      suitable_for=[
+        "Feature importance ranking",
+        "Experimental parameter prioritization",
+        "Model interpretation and explainability",
+        "Design of Experiments guidance",
+      ],
+      requirements=[
+        "Experimental data with multiple features",
+        "At least 50 experiments for reliable analysis",
+        "SHAP and scikit-learn packages installed",
+      ],
+      complexity_score=0.6,
+      rigor_score=0.9,
+    )
+
+  def is_applicable(self, hypothesis: Hypothesis) -> bool:
     """
-    Template for SHAP feature importance analysis.
+    Check if hypothesis is suitable for SHAP analysis.
 
-    Workflow:
-    1. Load experimental data
-    2. Train surrogate ML model
-    3. Apply SHAP analysis
-    4. Rank features by importance
-    5. Visualize SHAP values (summary plot, waterfall plot)
-    6. Interpret results for experimental design
+    Args:
+        hypothesis: Hypothesis to check
+
+    Returns:
+        True if hypothesis involves feature importance or parameter ranking
     """
+    statement_lower = hypothesis.statement.lower()
 
-    def __init__(self):
-        super().__init__(
-            name="shap_analysis",
-            experiment_type=ExperimentType.DATA_ANALYSIS,
-            domain="materials",
-            title="SHAP Feature Importance Analysis",
-            description=(
-                "Identify which experimental parameters most influence "
-                "performance using SHAP (SHapley Additive exPlanations), "
-                "a game-theory based approach to explain ML models."
-            ),
-            suitable_for=[
-                "Feature importance ranking",
-                "Experimental parameter prioritization",
-                "Model interpretation and explainability",
-                "Design of Experiments guidance",
-            ],
-            requirements=[
-                "Experimental data with multiple features",
-                "At least 50 experiments for reliable analysis",
-                "SHAP and scikit-learn packages installed",
-            ],
-            complexity_score=0.6,
-            rigor_score=0.9,
-        )
+    # Check for materials/experimental keywords
+    materials_keywords = [
+      "material",
+      "parameter",
+      "feature",
+      "factor",
+      "condition",
+      "variable",
+      "experimental",
+    ]
 
-    def is_applicable(self, hypothesis: Hypothesis) -> bool:
-        """
-        Check if hypothesis is suitable for SHAP analysis.
+    # Check for importance/ranking keywords
+    importance_keywords = [
+      "important",
+      "importance",
+      "significant",
+      "key",
+      "critical",
+      "influence",
+      "affect",
+      "impact",
+      "rank",
+      "prioritize",
+      "identify",
+      "determine",
+      "which",
+      "what factors",
+    ]
 
-        Args:
-            hypothesis: Hypothesis to check
+    has_materials = any(kw in statement_lower for kw in materials_keywords)
+    has_importance = any(kw in statement_lower for kw in importance_keywords)
 
-        Returns:
-            True if hypothesis involves feature importance or parameter ranking
-        """
-        statement_lower = hypothesis.statement.lower()
+    return has_materials and has_importance
 
-        # Check for materials/experimental keywords
-        materials_keywords = ["material", "parameter", "feature", "factor", "condition", "variable", "experimental"]
+  def generate_protocol(
+    self, params: TemplateCustomizationParams
+  ) -> ExperimentProtocol:
+    """
+    Generate experiment protocol for SHAP analysis.
 
-        # Check for importance/ranking keywords
-        importance_keywords = [
-            "important",
-            "importance",
-            "significant",
-            "key",
-            "critical",
-            "influence",
-            "affect",
-            "impact",
-            "rank",
-            "prioritize",
-            "identify",
-            "determine",
-            "which",
-            "what factors",
-        ]
+    Args:
+        params: Customization parameters
 
-        has_materials = any(kw in statement_lower for kw in materials_keywords)
-        has_importance = any(kw in statement_lower for kw in importance_keywords)
+    Returns:
+        ExperimentProtocol with SHAP analysis steps
+    """
+    # Extract custom variables
+    data_path = params.custom_variables.get("data_path", "data.xlsx")
+    features = params.custom_variables.get("features", ["Feature1", "Feature2"])
+    target = params.custom_variables.get("target", "Target")
+    model_type = params.custom_variables.get("model_type", "RandomForest")
+    sheet_name = params.custom_variables.get("sheet_name", None)
 
-        return has_materials and has_importance
+    # Define protocol steps
+    steps = [
+      ProtocolStep(
+        name="load_data",
+        description="Load experimental data",
+        code_template=self._generate_load_data_code(data_path, sheet_name),
+        expected_output="DataFrame with features and target",
+        validation=["Check feature columns exist", "Verify target column"],
+      ),
+      ProtocolStep(
+        name="data_preprocessing",
+        description="Clean and prepare data for modeling",
+        code_template=self._generate_preprocessing_code(features, target),
+        expected_output="Clean dataset without missing values",
+        validation=["No NaN values", "Sufficient sample size"],
+      ),
+      ProtocolStep(
+        name="train_model",
+        description="Train machine learning model",
+        code_template=self._generate_training_code(features, target, model_type),
+        expected_output="Trained model with performance metrics",
+        validation=["Model R² > 0.5", "No overfitting"],
+      ),
+      ProtocolStep(
+        name="shap_analysis",
+        description="Compute SHAP values for feature importance",
+        code_template=self._generate_shap_code(),
+        expected_output="SHAP values and feature importance rankings",
+        validation=["SHAP values computed for all samples"],
+      ),
+      ProtocolStep(
+        name="visualize_importance",
+        description="Create SHAP visualizations",
+        code_template=self._generate_visualization_code(),
+        expected_output="SHAP summary plot and waterfall plot",
+        validation=["Figures saved successfully"],
+      ),
+      ProtocolStep(
+        name="interpret_results",
+        description="Interpret SHAP results for experimental design",
+        code_template=self._generate_interpretation_code(target),
+        expected_output="Feature ranking and recommendations",
+        validation=["Top features identified"],
+      ),
+    ]
 
-    def generate_protocol(self, params: TemplateCustomizationParams) -> ExperimentProtocol:
-        """
-        Generate experiment protocol for SHAP analysis.
+    # Define variables
+    variables = [
+      Variable(name=feat, description=f"Feature: {feat}", type="numerical", values=None)
+      for feat in features
+    ]
 
-        Args:
-            params: Customization parameters
+    variables.append(
+      Variable(
+        name=target,
+        description=f"Target variable: {target}",
+        type="numerical",
+        values=None,
+      )
+    )
 
-        Returns:
-            ExperimentProtocol with SHAP analysis steps
-        """
-        # Extract custom variables
-        data_path = params.custom_variables.get("data_path", "data.xlsx")
-        features = params.custom_variables.get("features", ["Feature1", "Feature2"])
-        target = params.custom_variables.get("target", "Target")
-        model_type = params.custom_variables.get("model_type", "RandomForest")
-        sheet_name = params.custom_variables.get("sheet_name", None)
+    # Resource requirements
+    resources = ResourceRequirements(
+      compute_hours=0.5, memory_gb=4.0, storage_gb=0.5, special_equipment=[]
+    )
 
-        # Define protocol steps
-        steps = [
-            ProtocolStep(
-                name="load_data",
-                description="Load experimental data",
-                code_template=self._generate_load_data_code(data_path, sheet_name),
-                expected_output="DataFrame with features and target",
-                validation=["Check feature columns exist", "Verify target column"],
-            ),
-            ProtocolStep(
-                name="data_preprocessing",
-                description="Clean and prepare data for modeling",
-                code_template=self._generate_preprocessing_code(features, target),
-                expected_output="Clean dataset without missing values",
-                validation=["No NaN values", "Sufficient sample size"],
-            ),
-            ProtocolStep(
-                name="train_model",
-                description="Train machine learning model",
-                code_template=self._generate_training_code(features, target, model_type),
-                expected_output="Trained model with performance metrics",
-                validation=["Model R² > 0.5", "No overfitting"],
-            ),
-            ProtocolStep(
-                name="shap_analysis",
-                description="Compute SHAP values for feature importance",
-                code_template=self._generate_shap_code(),
-                expected_output="SHAP values and feature importance rankings",
-                validation=["SHAP values computed for all samples"],
-            ),
-            ProtocolStep(
-                name="visualize_importance",
-                description="Create SHAP visualizations",
-                code_template=self._generate_visualization_code(),
-                expected_output="SHAP summary plot and waterfall plot",
-                validation=["Figures saved successfully"],
-            ),
-            ProtocolStep(
-                name="interpret_results",
-                description="Interpret SHAP results for experimental design",
-                code_template=self._generate_interpretation_code(target),
-                expected_output="Feature ranking and recommendations",
-                validation=["Top features identified"],
-            ),
-        ]
+    # Validation checks
+    validation_checks = [
+      ValidationCheck(
+        check_type="sample_size",
+        threshold=50,
+        description="At least 50 experiments for reliable SHAP",
+      ),
+      ValidationCheck(
+        check_type="model_quality", threshold=0.5, description="Model R² >= 0.5"
+      ),
+    ]
 
-        # Define variables
-        variables = [Variable(name=feat, description=f"Feature: {feat}", type="numerical", values=None) for feat in features]
+    # Create protocol
+    protocol = ExperimentProtocol(
+      title=f"SHAP Analysis: Feature Importance for {target}",
+      domain="materials",
+      experiment_type=ExperimentType.DATA_ANALYSIS,
+      hypothesis_id=params.hypothesis.id if params.hypothesis else None,
+      steps=steps,
+      variables=variables,
+      statistical_tests=[],
+      resource_requirements=resources,
+      validation_checks=validation_checks,
+      estimated_duration_hours=1.0,
+      safety_considerations=["None - computational analysis only"],
+      ethical_considerations=["Ensure model transparency and interpretability"],
+      reproducibility_notes=[
+        "Set random seed for reproducibility",
+        "Document model hyperparameters and SHAP parameters",
+      ],
+    )
 
-        variables.append(Variable(name=target, description=f"Target variable: {target}", type="numerical", values=None))
+    return protocol
 
-        # Resource requirements
-        resources = ResourceRequirements(compute_hours=0.5, memory_gb=4.0, storage_gb=0.5, special_equipment=[])
+  def _generate_load_data_code(
+    self, data_path: str, sheet_name: str | None = None
+  ) -> str:
+    """Generate code for loading data."""
+    sheet_param = f", sheet_name='{sheet_name}'" if sheet_name else ""
 
-        # Validation checks
-        validation_checks = [
-            ValidationCheck(check_type="sample_size", threshold=50, description="At least 50 experiments for reliable SHAP"),
-            ValidationCheck(check_type="model_quality", threshold=0.5, description="Model R² >= 0.5"),
-        ]
-
-        # Create protocol
-        protocol = ExperimentProtocol(
-            title=f"SHAP Analysis: Feature Importance for {target}",
-            domain="materials",
-            experiment_type=ExperimentType.DATA_ANALYSIS,
-            hypothesis_id=params.hypothesis.id if params.hypothesis else None,
-            steps=steps,
-            variables=variables,
-            statistical_tests=[],
-            resource_requirements=resources,
-            validation_checks=validation_checks,
-            estimated_duration_hours=1.0,
-            safety_considerations=["None - computational analysis only"],
-            ethical_considerations=["Ensure model transparency and interpretability"],
-            reproducibility_notes=["Set random seed for reproducibility", "Document model hyperparameters and SHAP parameters"],
-        )
-
-        return protocol
-
-    def _generate_load_data_code(self, data_path: str, sheet_name: str | None = None) -> str:
-        """Generate code for loading data."""
-        sheet_param = f", sheet_name='{sheet_name}'" if sheet_name else ""
-
-        return f"""
+    return f"""
 import pandas as pd
 import numpy as np
 
@@ -236,12 +269,12 @@ print(f"\\nData preview:")
 print(df.head())
 """
 
-    def _generate_preprocessing_code(self, features: list[str], target: str) -> str:
-        """Generate code for data preprocessing."""
-        all_cols = features + [target]
-        all_cols_str = str(all_cols)
+  def _generate_preprocessing_code(self, features: list[str], target: str) -> str:
+    """Generate code for data preprocessing."""
+    all_cols = features + [target]
+    all_cols_str = str(all_cols)
 
-        return f"""
+    return f"""
 # Data preprocessing
 print("\\n" + "="*60)
 print("DATA PREPROCESSING")
@@ -270,11 +303,13 @@ print("\\nClean data summary:")
 print(df_clean.describe())
 """
 
-    def _generate_training_code(self, features: list[str], target: str, model_type: str) -> str:
-        """Generate code for model training."""
-        features_str = str(features)
+  def _generate_training_code(
+    self, features: list[str], target: str, model_type: str
+  ) -> str:
+    """Generate code for model training."""
+    features_str = str(features)
 
-        return f"""
+    return f"""
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_squared_error
@@ -342,9 +377,9 @@ else:
     print("  SHAP analysis may be unreliable")
 """
 
-    def _generate_shap_code(self) -> str:
-        """Generate code for SHAP analysis."""
-        return """
+  def _generate_shap_code(self) -> str:
+    """Generate code for SHAP analysis."""
+    return """
 import shap
 
 # SHAP analysis
@@ -378,9 +413,9 @@ print(importance_df.to_string(index=False))
 print("="*60)
 """
 
-    def _generate_visualization_code(self) -> str:
-        """Generate code for SHAP visualizations."""
-        return """
+  def _generate_visualization_code(self) -> str:
+    """Generate code for SHAP visualizations."""
+    return """
 import matplotlib.pyplot as plt
 
 # SHAP summary plot
@@ -419,9 +454,9 @@ print("SHAP waterfall plot saved: shap_waterfall_plot.png")
 plt.show()
 """
 
-    def _generate_interpretation_code(self, target: str) -> str:
-        """Generate code for interpreting results."""
-        return f'''
+  def _generate_interpretation_code(self, target: str) -> str:
+    """Generate code for interpreting results."""
+    return f'''
 # Interpret results
 print("\\n" + "="*60)
 print("INTERPRETATION & RECOMMENDATIONS")

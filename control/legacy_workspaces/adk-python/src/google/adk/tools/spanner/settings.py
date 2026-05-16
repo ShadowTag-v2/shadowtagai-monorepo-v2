@@ -23,24 +23,24 @@ from ...utils.feature_decorator import experimental
 
 
 class Capabilities(Enum):
-    """Capabilities indicating what type of operation tools are allowed to be performed on Spanner."""
+  """Capabilities indicating what type of operation tools are allowed to be performed on Spanner."""
 
-    DATA_READ = "data_read"
-    """Read only data operations tools are allowed."""
+  DATA_READ = "data_read"
+  """Read only data operations tools are allowed."""
 
 
 @experimental("Tool settings defaults may have breaking change in the future.")
 class SpannerToolSettings(BaseModel):
-    """Settings for Spanner tools."""
+  """Settings for Spanner tools."""
 
-    capabilities: list[Capabilities] = [
-        Capabilities.DATA_READ,
-    ]
-    """Allowed capabilities for Spanner tools.
+  capabilities: list[Capabilities] = [
+    Capabilities.DATA_READ,
+  ]
+  """Allowed capabilities for Spanner tools.
 
   By default, the tool will allow only read operations. This behaviour may
   change in future versions.
   """
 
-    max_executed_query_result_rows: int = 50
-    """Maximum number of rows to return from a query result."""
+  max_executed_query_result_rows: int = 50
+  """Maximum number of rows to return from a query result."""

@@ -3,5 +3,5 @@ from pydantic import BaseModel
 
 
 class MediaAsset(BaseModel):
-    uri: str
-    error: str | None = None
+  uri: str
+  error: str | None = None

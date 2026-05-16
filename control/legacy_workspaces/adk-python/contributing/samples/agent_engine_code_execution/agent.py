@@ -16,13 +16,15 @@
 """Data science agent."""
 
 from google.adk.agents.llm_agent import Agent
-from google.adk.code_executors.agent_engine_sandbox_code_executor import AgentEngineSandboxCodeExecutor
+from google.adk.code_executors.agent_engine_sandbox_code_executor import (
+  AgentEngineSandboxCodeExecutor,
+)
 
 
 def base_system_instruction():
-    """Returns: data science agent system instruction."""
+  """Returns: data science agent system instruction."""
 
-    return """
+  return """
   # Guidelines
 
   **Objective:** Assist the user in achieving their data analysis goals within the context of a Python Colab notebook, **with emphasis on avoiding assumptions and ensuring accuracy.** Reaching that goal can involve multiple steps. When you need to generate code, you **don't** need to solve the goal in one go. Only generate the next step at a time.
@@ -67,10 +69,10 @@ def base_system_instruction():
 
 
 root_agent = Agent(
-    model="gemini-2.0-flash-001",
-    name="agent_engine_code_execution_agent",
-    instruction=base_system_instruction()
-    + """
+  model="gemini-2.0-flash-001",
+  name="agent_engine_code_execution_agent",
+  instruction=base_system_instruction()
+  + """
 
 
 You need to assist the user with their queries by looking at the data and the context in the conversation.
@@ -86,12 +88,12 @@ When plotting trends, you should make sure to sort and order the data by the x-a
 
 
 """,
-    code_executor=AgentEngineSandboxCodeExecutor(
-        # Replace with your sandbox resource name if you already have one.
-        sandbox_resource_name="SANDBOX_RESOURCE_NAME",
-        # "projects/vertex-agent-loadtest/locations/us-central1/reasoningEngines/6842889780301135872/sandboxEnvironments/6545148628569161728",
-        # Replace with agent engine resource name used for creating sandbox if
-        # sandbox_resource_name is not set.
-        agent_engine_resource_name="AGENT_ENGINE_RESOURCE_NAME",
-    ),
+  code_executor=AgentEngineSandboxCodeExecutor(
+    # Replace with your sandbox resource name if you already have one.
+    sandbox_resource_name="SANDBOX_RESOURCE_NAME",
+    # "projects/vertex-agent-loadtest/locations/us-central1/reasoningEngines/6842889780301135872/sandboxEnvironments/6545148628569161728",
+    # Replace with agent engine resource name used for creating sandbox if
+    # sandbox_resource_name is not set.
+    agent_engine_resource_name="AGENT_ENGINE_RESOURCE_NAME",
+  ),
 )

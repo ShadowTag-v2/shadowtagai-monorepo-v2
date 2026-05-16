@@ -20,20 +20,20 @@ from pydantic import BaseModel
 
 
 class StatefulParameter(BaseModel):
-    """Represents a stateful parameter and its connections."""
+  """Represents a stateful parameter and its connections."""
 
-    parameter_name: str
-    """The name of the shared parameter (e.g., "ticket_id")."""
+  parameter_name: str
+  """The name of the shared parameter (e.g., "ticket_id")."""
 
-    creating_tools: list[str]
-    """A list of tools that generate this parameter."""
+  creating_tools: list[str]
+  """A list of tools that generate this parameter."""
 
-    consuming_tools: list[str]
-    """A list of tools that use this parameter as input."""
+  consuming_tools: list[str]
+  """A list of tools that use this parameter as input."""
 
 
 class ToolConnectionMap(BaseModel):
-    """Represents the map of tool connections."""
+  """Represents the map of tool connections."""
 
-    stateful_parameters: list[StatefulParameter]
-    """A list of stateful parameters and their connections."""
+  stateful_parameters: list[StatefulParameter]
+  """A list of stateful parameters and their connections."""

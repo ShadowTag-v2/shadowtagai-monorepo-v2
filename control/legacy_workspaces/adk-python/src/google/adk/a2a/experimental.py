@@ -20,14 +20,14 @@ from __future__ import annotations
 from google.adk.utils.feature_decorator import _make_feature_decorator
 
 a2a_experimental = _make_feature_decorator(
-    label="EXPERIMENTAL",
-    default_message=(
-        "ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent "
-        "and corresponding supporting components etc.) is in experimental mode "
-        "and is subjected to breaking changes. A2A protocol and SDK are"
-        "themselves not experimental. Once it's stable enough the experimental "
-        "mode will be removed. Your feedback is welcome."
-    ),
+  label="EXPERIMENTAL",
+  default_message=(
+    "ADK Implementation for A2A support (A2aAgentExecutor, RemoteA2aAgent "
+    "and corresponding supporting components etc.) is in experimental mode "
+    "and is subjected to breaking changes. A2A protocol and SDK are"
+    "themselves not experimental. Once it's stable enough the experimental "
+    "mode will be removed. Your feedback is welcome."
+  ),
 )
 """Mark a class or function as experimental A2A feature.
 

@@ -17,29 +17,31 @@ USE_IN_MEMORY = os.environ.get("USE_IN_MEMORY_SESSION", "").lower() in ("true", 
 
 # --- MEMORY BANK CONNECTION ---
 def _get_memory_bank_uri():
-    if USE_IN_MEMORY:
-        return None, None
-    name = os.environ.get("AGENT_ENGINE_MEMORY_BANK_NAME", "dev_signal_agent")
-    existing = list(agent_engines.list(filter=f"display_name={name}"))
-    ae = existing[0] if existing else agent_engines.create(display_name=name)
-    uri = f"agentengine://{ae.resource_name}"
-    print(f"DEBUG: Connecting to Memory Bank: {uri} (display_name={name})")
-    return uri, uri
+  if USE_IN_MEMORY:
+    return None, None
+  name = os.environ.get("AGENT_ENGINE_MEMORY_BANK_NAME", "dev_signal_agent")
+  existing = list(agent_engines.list(filter=f"display_name={name}"))
+  ae = existing[0] if existing else agent_engines.create(display_name=name)
+  uri = f"agentengine://{ae.resource_name}"
+  print(f"DEBUG: Connecting to Memory Bank: {uri} (display_name={name})")
+  return uri, uri
 
 
 SESSION_URI, MEMORY_URI = _get_memory_bank_uri()
 
 app: FastAPI = get_fast_api_app(
-    agents_dir=AGENT_DIR,
-    web=True,
-    artifact_service_uri=f"gs://{BUCKET}" if BUCKET else None,
-    allow_origins=os.getenv("ALLOW_ORIGINS", "").split(",") if os.getenv("ALLOW_ORIGINS") else None,
-    session_service_uri=SESSION_URI,
-    memory_service_uri=MEMORY_URI,  # <--- Connects the Memory Bank
-    otel_to_cloud=True,
+  agents_dir=AGENT_DIR,
+  web=True,
+  artifact_service_uri=f"gs://{BUCKET}" if BUCKET else None,
+  allow_origins=os.getenv("ALLOW_ORIGINS", "").split(",")
+  if os.getenv("ALLOW_ORIGINS")
+  else None,
+  session_service_uri=SESSION_URI,
+  memory_service_uri=MEMORY_URI,  # <--- Connects the Memory Bank
+  otel_to_cloud=True,
 )
 
 if __name__ == "__main__":
-    import uvicorn
+  import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+  uvicorn.run(app, host="0.0.0.0", port=8000)

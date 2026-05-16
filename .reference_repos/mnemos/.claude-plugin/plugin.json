@@ -1,0 +1,36 @@
+{
+  "name": "mnemos-memory",
+  "version": "0.6.0",
+  "description": "Biomimetic long-term memory for Claude Code with surprisal gating, mutable reconsolidation, affective routing, and sleep consolidation.",
+  "author": {
+    "name": "Anthony Maio",
+    "email": "anthony@making-minds.ai",
+    "url": "https://github.com/anthony-maio/mnemos"
+  },
+  "homepage": "https://github.com/anthony-maio/mnemos",
+  "repository": "https://github.com/anthony-maio/mnemos",
+  "license": "MIT",
+  "keywords": [
+    "memory",
+    "mcp",
+    "claude-code",
+    "biomimetic",
+    "rag",
+    "surprisal",
+    "reconsolidation"
+  ],
+  "commands": "./commands",
+  "agents": [
+    "./agents/memory-orchestrator.md",
+    "./agents/mnemos-recall.md",
+    "./agents/mnemos-curator.md"
+  ],
+  "mcpServers": {
+    "mnemos": {
+      "command": "python",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/.claude-plugin/run_mnemos_mcp.py"
+      ]
+    }
+  }
+}

@@ -58,20 +58,20 @@ HEARTBEAT_FILE = BEADS_DIR / "kairos_heartbeat.json"
 VAULT_DIR = REPO_ROOT / "vault"
 
 # Task intervals (seconds)
-HEALTH_CHECK_INTERVAL = 300  # 5 minutes
+HEALTH_CHECK_INTERVAL = 900  # 15 minutes (tuned from 5min to reduce CPU)
 DREAM_INTERVAL = 86400  # 24 hours
 DISK_SKILL_DREAM_INTERVAL = 604800  # 7 days (weekly deep scan)
 DEAD_CODE_INTERVAL = 86400  # 24 hours
-LOOP_STEWARD_INTERVAL = 300  # 5 minutes
+LOOP_STEWARD_INTERVAL = 900  # 15 minutes (tuned from 5min to reduce CPU)
 STANDUP_INTERVAL = 86400  # 24 hours
-VAULT_INGEST_INTERVAL = 300  # 5 minutes
+VAULT_INGEST_INTERVAL = 900  # 15 minutes (tuned from 5min to reduce CPU)
 QUARANTINE_PURGE_INTERVAL = 3600  # 1 hour
 AUTOLINT_INTERVAL = 86400  # 24 hours
 OOB_REPORT_CHECK_INTERVAL = 600  # 10 minutes
 PROMPT_VALIDATION_INTERVAL = 3600  # 1 hour — periodic prompt assembly check
 PROACTIVE_SUGGESTION_INTERVAL = 900  # 15 min — speculation prefetch cycle
-GCA_BLOAT_CHECK_INTERVAL = 600  # 10 min — IDE database bloat watchdog
-EGRESS_HEALTH_INTERVAL = 600  # 10 min — EgressProxy circuit breaker audit
+GCA_BLOAT_CHECK_INTERVAL = 1800  # 30 min — IDE database bloat watchdog (tuned from 10min)
+EGRESS_HEALTH_INTERVAL = 1800  # 30 min — EgressProxy circuit breaker audit (tuned from 10min)
 VCR_CASSETTE_CHECK_INTERVAL = 1800  # 30 min — stale cassette rotation audit
 
 # Disk-Skill Dream resource limits

@@ -26,37 +26,41 @@ print(model_name)
 # Tools
 
 
-def append_to_state(tool_context: ToolContext, field: str, response: str) -> dict[str, str]:
-    """Append new output to an existing state key.
+def append_to_state(
+  tool_context: ToolContext, field: str, response: str
+) -> dict[str, str]:
+  """Append new output to an existing state key.
 
-    Args:
-        field (str): a field name to append to
-        response (str): a string to append to the field
+  Args:
+      field (str): a field name to append to
+      response (str): a string to append to the field
 
-    Returns:
-        dict[str, str]: {"status": "success"}
-    """
-    existing_state = tool_context.state.get(field, [])
-    tool_context.state[field] = existing_state + [response]
-    logging.info(f"[Added to {field}] {response}")
-    return {"status": "success"}
+  Returns:
+      dict[str, str]: {"status": "success"}
+  """
+  existing_state = tool_context.state.get(field, [])
+  tool_context.state[field] = existing_state + [response]
+  logging.info(f"[Added to {field}] {response}")
+  return {"status": "success"}
 
 
-def write_file(tool_context: ToolContext, directory: str, filename: str, content: str) -> dict[str, str]:
-    target_path = os.path.join(directory, filename)
-    os.makedirs(os.path.dirname(target_path), exist_ok=True)
-    with open(target_path, "w") as f:
-        f.write(content)
-    return {"status": "success"}
+def write_file(
+  tool_context: ToolContext, directory: str, filename: str, content: str
+) -> dict[str, str]:
+  target_path = os.path.join(directory, filename)
+  os.makedirs(os.path.dirname(target_path), exist_ok=True)
+  with open(target_path, "w") as f:
+    f.write(content)
+  return {"status": "success"}
 
 
 # Agents
 
 file_writer = Agent(
-    name="file_writer",
-    model=model_name,
-    description="Creates marketing details and saves a pitch document.",
-    instruction="""
+  name="file_writer",
+  model=model_name,
+  description="Creates marketing details and saves a pitch document.",
+  instruction="""
     PLOT_OUTLINE:
     {{ PLOT_OUTLINE? }}
 
@@ -69,17 +73,17 @@ file_writer = Agent(
             - A logline
             - Synopsis or plot outline
     """,
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-    ),
-    tools=[write_file],
+  generate_content_config=types.GenerateContentConfig(
+    temperature=0,
+  ),
+  tools=[write_file],
 )
 
 screenwriter = Agent(
-    name="screenwriter",
-    model=model_name,
-    description="As a screenwriter, write a logline and plot outline for a biopic about a historical character.",
-    instruction="""
+  name="screenwriter",
+  model=model_name,
+  description="As a screenwriter, write a logline and plot outline for a biopic about a historical character.",
+  instruction="""
     INSTRUCTIONS:
     Your goal is to write a logline and three-act plot outline for an inspiring movie about the historical character(s) described by the PROMPT: {{ PROMPT? }}
     
@@ -98,17 +102,17 @@ screenwriter = Agent(
     CRITICAL_FEEDBACK:
     {{ CRITICAL_FEEDBACK? }}
     """,
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-    ),
-    tools=[append_to_state],
+  generate_content_config=types.GenerateContentConfig(
+    temperature=0,
+  ),
+  tools=[append_to_state],
 )
 
 researcher = Agent(
-    name="researcher",
-    model=model_name,
-    description="Answer research questions using Wikipedia.",
-    instruction="""
+  name="researcher",
+  model=model_name,
+  description="Answer research questions using Wikipedia.",
+  instruction="""
     PROMPT:
     {{ PROMPT? }}
     
@@ -126,34 +130,34 @@ researcher = Agent(
     - Summarize what you have learned.
     Now, use your Wikipedia tool to do research.
     """,
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-    ),
-    tools=[
-        LangchainTool(tool=WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())),
-        append_to_state,
-    ],
+  generate_content_config=types.GenerateContentConfig(
+    temperature=0,
+  ),
+  tools=[
+    LangchainTool(tool=WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())),
+    append_to_state,
+  ],
 )
 
 film_concept_team = SequentialAgent(
-    name="film_concept_team",
-    description="Write a film plot outline and save it as a text file.",
-    sub_agents=[researcher, screenwriter, file_writer],
+  name="film_concept_team",
+  description="Write a film plot outline and save it as a text file.",
+  sub_agents=[researcher, screenwriter, file_writer],
 )
 
 root_agent = Agent(
-    name="greeter",
-    model=model_name,
-    description="Guides the user in crafting a movie plot.",
-    instruction="""
+  name="greeter",
+  model=model_name,
+  description="Guides the user in crafting a movie plot.",
+  instruction="""
     - Let the user know you will help them write a pitch for a hit movie. Ask them for   
       a historical figure to create a movie about.
     - When they respond, use the 'append_to_state' tool to store the user's response
       in the 'PROMPT' state key and transfer to the 'film_concept_team' agent
     """,
-    generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-    ),
-    tools=[append_to_state],
-    sub_agents=[film_concept_team],
+  generate_content_config=types.GenerateContentConfig(
+    temperature=0,
+  ),
+  tools=[append_to_state],
+  sub_agents=[film_concept_team],
 )

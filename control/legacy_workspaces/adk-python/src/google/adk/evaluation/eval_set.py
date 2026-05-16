@@ -20,20 +20,20 @@ from .eval_case import EvalCase
 
 
 class EvalSet(BaseModel):
-    """A set of eval cases."""
+  """A set of eval cases."""
 
-    eval_set_id: str
-    """Unique identifier for the eval set."""
+  eval_set_id: str
+  """Unique identifier for the eval set."""
 
-    name: str | None = None
-    """Name of the dataset."""
+  name: str | None = None
+  """Name of the dataset."""
 
-    description: str | None = None
-    """Description of the dataset."""
+  description: str | None = None
+  """Description of the dataset."""
 
-    eval_cases: list[EvalCase]
-    """List of eval cases in the dataset. Each case represents a single
+  eval_cases: list[EvalCase]
+  """List of eval cases in the dataset. Each case represents a single
   interaction to be evaluated."""
 
-    creation_timestamp: float = 0.0
-    """The time at which this eval set was created."""
+  creation_timestamp: float = 0.0
+  """The time at which this eval set was created."""

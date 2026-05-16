@@ -204,47 +204,49 @@ The Evaluation Criteria above already specify how to evaluate whether the Genera
 
 
 def _get_latest_turn_user_simulator_quality_prompt_template(
-    user_persona: UserPersona | None = None,
+  user_persona: UserPersona | None = None,
 ) -> str:
-    """Returns the appropriate prompt for user simulator quality"""
-    if user_persona is None:
-        return _LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE
-    return _LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE
+  """Returns the appropriate prompt for user simulator quality"""
+  if user_persona is None:
+    return _LATEST_TURN_USER_SIMULATOR_EVALUATOR_PROMPT_TEMPLATE
+  return _LATEST_TURN_USER_SIMULATOR_WITH_PERSONA_EVALUATOR_PROMPT_TEMPLATE
 
 
 def get_per_turn_user_simulator_quality_prompt(
-    conversation_plan: str,
-    conversation_history: str,
-    generated_user_response: str,
-    stop_signal: str,
-    user_persona: UserPersona | None = None,
+  conversation_plan: str,
+  conversation_history: str,
+  generated_user_response: str,
+  stop_signal: str,
+  user_persona: UserPersona | None = None,
 ):
-    """Formats the prompt for the per turn user simulator evaluator"""
-    from jinja2 import DictLoader
-    from jinja2 import Environment
-    from jinja2 import pass_context
-    from jinja2 import Template
+  """Formats the prompt for the per turn user simulator evaluator"""
+  from jinja2 import DictLoader
+  from jinja2 import Environment
+  from jinja2 import pass_context
+  from jinja2 import Template
 
-    templates = {
-        "verifier_instructions": (_get_latest_turn_user_simulator_quality_prompt_template(user_persona=user_persona)),
-    }
-    template_env = Environment(loader=DictLoader(templates))
+  templates = {
+    "verifier_instructions": (
+      _get_latest_turn_user_simulator_quality_prompt_template(user_persona=user_persona)
+    ),
+  }
+  template_env = Environment(loader=DictLoader(templates))
 
-    @pass_context
-    def _render_string_filter(context, template_string):
-        if not template_string:
-            return ""
-        return Template(template_string).render(context)
+  @pass_context
+  def _render_string_filter(context, template_string):
+    if not template_string:
+      return ""
+    return Template(template_string).render(context)
 
-    template_env.filters["render_string_filter"] = _render_string_filter
+  template_env.filters["render_string_filter"] = _render_string_filter
 
-    template_parameters = {
-        "conversation_plan": conversation_plan,
-        "conversation_history": conversation_history,
-        "generated_user_response": generated_user_response,
-        "stop_signal": stop_signal,
-    }
-    if user_persona is not None:
-        template_parameters["persona"] = user_persona
+  template_parameters = {
+    "conversation_plan": conversation_plan,
+    "conversation_history": conversation_history,
+    "generated_user_response": generated_user_response,
+    "stop_signal": stop_signal,
+  }
+  if user_persona is not None:
+    template_parameters["persona"] = user_persona
 
-    return template_env.get_template("verifier_instructions").render(template_parameters)
+  return template_env.get_template("verifier_instructions").render(template_parameters)

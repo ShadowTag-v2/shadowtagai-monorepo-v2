@@ -29,46 +29,48 @@ from .evaluator import Evaluator
 
 
 def _get_metric_function(
-    custom_function_path: str,
+  custom_function_path: str,
 ) -> Callable[..., EvaluationResult]:
-    """Returns the custom metric function from the given path."""
-    try:
-        module_name, function_name = custom_function_path.rsplit(".", 1)
-        module = importlib.import_module(module_name)
-        metric_function = getattr(module, function_name)
-        return metric_function
-    except (ImportError, AttributeError, ValueError) as e:
-        raise ImportError(f"Could not import custom metric function from {custom_function_path}") from e
+  """Returns the custom metric function from the given path."""
+  try:
+    module_name, function_name = custom_function_path.rsplit(".", 1)
+    module = importlib.import_module(module_name)
+    metric_function = getattr(module, function_name)
+    return metric_function
+  except (ImportError, AttributeError, ValueError) as e:
+    raise ImportError(
+      f"Could not import custom metric function from {custom_function_path}"
+    ) from e
 
 
 class _CustomMetricEvaluator(Evaluator):
-    """Evaluator for custom metrics."""
+  """Evaluator for custom metrics."""
 
-    def __init__(self, eval_metric: EvalMetric, custom_function_path: str):
-        self._eval_metric = eval_metric
-        self._metric_function = _get_metric_function(custom_function_path)
+  def __init__(self, eval_metric: EvalMetric, custom_function_path: str):
+    self._eval_metric = eval_metric
+    self._metric_function = _get_metric_function(custom_function_path)
 
-    @override
-    async def evaluate_invocations(
-        self,
-        actual_invocations: list[Invocation],
-        expected_invocations: list[Invocation] | None,
-        conversation_scenario: ConversationScenario | None = None,
-    ) -> EvaluationResult:
-        eval_metric = self._eval_metric.model_copy(deep=True)
-        eval_metric.threshold = None
-        if inspect.iscoroutinefunction(self._metric_function):
-            eval_result = await self._metric_function(
-                eval_metric,
-                actual_invocations,
-                expected_invocations,
-                conversation_scenario,
-            )
-        else:
-            eval_result = self._metric_function(
-                eval_metric,
-                actual_invocations,
-                expected_invocations,
-                conversation_scenario,
-            )
-        return eval_result
+  @override
+  async def evaluate_invocations(
+    self,
+    actual_invocations: list[Invocation],
+    expected_invocations: list[Invocation] | None,
+    conversation_scenario: ConversationScenario | None = None,
+  ) -> EvaluationResult:
+    eval_metric = self._eval_metric.model_copy(deep=True)
+    eval_metric.threshold = None
+    if inspect.iscoroutinefunction(self._metric_function):
+      eval_result = await self._metric_function(
+        eval_metric,
+        actual_invocations,
+        expected_invocations,
+        conversation_scenario,
+      )
+    else:
+      eval_result = self._metric_function(
+        eval_metric,
+        actual_invocations,
+        expected_invocations,
+        conversation_scenario,
+      )
+    return eval_result

@@ -6,9 +6,9 @@ from kosmos.tools.analysis_tools import execute_python, statistical_test
 from kosmos.tools.world_model_tools import world_model_query
 
 __all__ = [
-    "google_search",
-    "arxiv_search",
-    "execute_python",
-    "statistical_test",
-    "world_model_query",
+  "google_search",
+  "arxiv_search",
+  "execute_python",
+  "statistical_test",
+  "world_model_query",
 ]

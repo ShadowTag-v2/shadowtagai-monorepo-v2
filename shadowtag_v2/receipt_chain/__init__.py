@@ -12,12 +12,12 @@ from .verifier import ChainVerifier
 from .storage import ChainStorage
 
 __all__ = [
-    "ReceiptChain",
-    "Receipt",
-    "Block",
-    "BlockHeader",
-    "ChainVerifier",
-    "ChainStorage",
+  "ReceiptChain",
+  "Receipt",
+  "Block",
+  "BlockHeader",
+  "ChainVerifier",
+  "ChainStorage",
 ]
 
 __version__ = "2.0.0"

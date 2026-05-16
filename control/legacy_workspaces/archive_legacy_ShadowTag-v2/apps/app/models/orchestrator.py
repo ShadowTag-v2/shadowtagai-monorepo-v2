@@ -5,12 +5,12 @@ from pydantic import BaseModel
 
 
 class DraftSpec(BaseModel):
-    task: str
-    constraints: dict[str, Any] | None = None
-    style: str | None = None
+  task: str
+  constraints: dict[str, Any] | None = None
+  style: str | None = None
 
 
 class GenerateRequest(BaseModel):
-    task: str
-    constraints: dict[str, Any] | None = None
-    style: str | None = None
+  task: str
+  constraints: dict[str, Any] | None = None
+  style: str | None = None

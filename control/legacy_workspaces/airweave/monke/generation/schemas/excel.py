@@ -5,15 +5,19 @@ from pydantic import BaseModel, Field
 
 
 class ExcelWorksheetData(BaseModel):
-    """Schema for Excel worksheet content generation."""
+  """Schema for Excel worksheet content generation."""
 
-    name: str = Field(description="Worksheet name/title")
-    headers: list[str] = Field(description="Column headers for the worksheet")
-    rows: list[list[str]] = Field(description="Row data (each row is a list of cell values)")
+  name: str = Field(description="Worksheet name/title")
+  headers: list[str] = Field(description="Column headers for the worksheet")
+  rows: list[list[str]] = Field(
+    description="Row data (each row is a list of cell values)"
+  )
 
 
 class ExcelWorkbookSpec(BaseModel):
-    """Schema for Excel workbook metadata."""
+  """Schema for Excel workbook metadata."""
 
-    filename: str = Field(description="Name of the Excel workbook file")
-    worksheets: list[ExcelWorksheetData] = Field(description="List of worksheets to create in the workbook")
+  filename: str = Field(description="Name of the Excel workbook file")
+  worksheets: list[ExcelWorksheetData] = Field(
+    description="List of worksheets to create in the workbook"
+  )

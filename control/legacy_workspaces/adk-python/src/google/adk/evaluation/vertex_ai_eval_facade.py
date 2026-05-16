@@ -30,7 +30,7 @@ from .evaluator import Evaluator
 from .evaluator import PerInvocationResult
 
 if TYPE_CHECKING:
-    from vertexai import types as vertexai_types
+  from vertexai import types as vertexai_types
 
 _ERROR_MESSAGE_SUFFIX = """
 You should specify both project id and location. This metric uses Vertex Gen AI
@@ -45,119 +45,125 @@ os.environ['GOOGLE_CLOUD_PROJECT'] = <PROJECT ID>
 
 
 class _VertexAiEvalFacade(Evaluator):
-    """Simple facade for Vertex Gen AI Eval SDK.
+  """Simple facade for Vertex Gen AI Eval SDK.
 
-    Vertex Gen AI Eval SDK exposes quite a few metrics that are valuable for
-    agentic evals. This class helps us to access those metrics.
+  Vertex Gen AI Eval SDK exposes quite a few metrics that are valuable for
+  agentic evals. This class helps us to access those metrics.
 
-    Using this class requires a GCP project. Please set GOOGLE_CLOUD_PROJECT and
-    GOOGLE_CLOUD_LOCATION in your .env file.
-    """
+  Using this class requires a GCP project. Please set GOOGLE_CLOUD_PROJECT and
+  GOOGLE_CLOUD_LOCATION in your .env file.
+  """
 
-    def __init__(
-        self,
-        threshold: float,
-        metric_name: vertexai_types.PrebuiltMetric,
-        expected_invocations_required=False,
-    ):
-        self._threshold = threshold
-        self._metric_name = metric_name
-        self._expected_invocations_required = expected_invocations_required
+  def __init__(
+    self,
+    threshold: float,
+    metric_name: vertexai_types.PrebuiltMetric,
+    expected_invocations_required=False,
+  ):
+    self._threshold = threshold
+    self._metric_name = metric_name
+    self._expected_invocations_required = expected_invocations_required
 
-    @override
-    def evaluate_invocations(
-        self,
-        actual_invocations: list[Invocation],
-        expected_invocations: list[Invocation] | None,
-    ) -> EvaluationResult:
-        if self._expected_invocations_required and expected_invocations is None:
-            raise ValueError("expected_invocations is needed by this metric.")
+  @override
+  def evaluate_invocations(
+    self,
+    actual_invocations: list[Invocation],
+    expected_invocations: list[Invocation] | None,
+  ) -> EvaluationResult:
+    if self._expected_invocations_required and expected_invocations is None:
+      raise ValueError("expected_invocations is needed by this metric.")
 
-        # If expected_invocation are not required by the metric and if they are not
-        # supplied, we provide a list of None.
-        expected_invocations = [None] * len(actual_invocations) if expected_invocations is None else expected_invocations
+    # If expected_invocation are not required by the metric and if they are not
+    # supplied, we provide a list of None.
+    expected_invocations = (
+      [None] * len(actual_invocations)
+      if expected_invocations is None
+      else expected_invocations
+    )
 
-        total_score = 0.0
-        num_invocations = 0
-        per_invocation_results = []
-        for actual, expected in zip(actual_invocations, expected_invocations):
-            prompt = self._get_text(actual.user_content)
-            reference = self._get_text(expected.final_response) if expected else None
-            response = self._get_text(actual.final_response)
-            eval_case = {
-                "prompt": prompt,
-                "reference": reference,
-                "response": response,
-            }
+    total_score = 0.0
+    num_invocations = 0
+    per_invocation_results = []
+    for actual, expected in zip(actual_invocations, expected_invocations):
+      prompt = self._get_text(actual.user_content)
+      reference = self._get_text(expected.final_response) if expected else None
+      response = self._get_text(actual.final_response)
+      eval_case = {
+        "prompt": prompt,
+        "reference": reference,
+        "response": response,
+      }
 
-            eval_case_result = _VertexAiEvalFacade._perform_eval(dataset=pd.DataFrame([eval_case]), metrics=[self._metric_name])
-            score = self._get_score(eval_case_result)
-            per_invocation_results.append(
-                PerInvocationResult(
-                    actual_invocation=actual,
-                    expected_invocation=expected,
-                    score=score,
-                    eval_status=self._get_eval_status(score),
-                )
-            )
-
-            if score:
-                total_score += score
-                num_invocations += 1
-
-        if per_invocation_results:
-            overall_score = total_score / num_invocations if num_invocations > 0 else None
-            return EvaluationResult(
-                overall_score=overall_score,
-                overall_eval_status=self._get_eval_status(overall_score),
-                per_invocation_results=per_invocation_results,
-            )
-
-        return EvaluationResult()
-
-    def _get_text(self, content: genai_types.Content | None) -> str:
-        if content and content.parts:
-            return "\n".join([p.text for p in content.parts if p.text])
-
-        return ""
-
-    def _get_score(self, eval_result) -> float | None:
-        if (
-            eval_result
-            and eval_result.summary_metrics
-            and isinstance(eval_result.summary_metrics[0].mean_score, float)
-            and not math.isnan(eval_result.summary_metrics[0].mean_score)
-        ):
-            return eval_result.summary_metrics[0].mean_score
-
-        return None
-
-    def _get_eval_status(self, score: float | None):
-        if score:
-            return EvalStatus.PASSED if score >= self._threshold else EvalStatus.FAILED
-
-        return EvalStatus.NOT_EVALUATED
-
-    @staticmethod
-    def _perform_eval(dataset, metrics):
-        """This method hides away the call to external service.
-
-        Primarily helps with unit testing.
-        """
-        project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", None)
-        location = os.environ.get("GOOGLE_CLOUD_LOCATION", None)
-
-        if not project_id:
-            raise ValueError("Missing project id." + _ERROR_MESSAGE_SUFFIX)
-        if not location:
-            raise ValueError("Missing location." + _ERROR_MESSAGE_SUFFIX)
-
-        from vertexai import Client
-        from vertexai import types as vertexai_types
-
-        client = Client(project=project_id, location=location)
-
-        return client.evals.evaluate(
-            dataset=vertexai_types.EvaluationDataset(eval_dataset_df=dataset),
-            metrics=metrics,
+      eval_case_result = _VertexAiEvalFacade._perform_eval(
+        dataset=pd.DataFrame([eval_case]), metrics=[self._metric_name]
+      )
+      score = self._get_score(eval_case_result)
+      per_invocation_results.append(
+        PerInvocationResult(
+          actual_invocation=actual,
+          expected_invocation=expected,
+          score=score,
+          eval_status=self._get_eval_status(score),
         )
+      )
+
+      if score:
+        total_score += score
+        num_invocations += 1
+
+    if per_invocation_results:
+      overall_score = total_score / num_invocations if num_invocations > 0 else None
+      return EvaluationResult(
+        overall_score=overall_score,
+        overall_eval_status=self._get_eval_status(overall_score),
+        per_invocation_results=per_invocation_results,
+      )
+
+    return EvaluationResult()
+
+  def _get_text(self, content: genai_types.Content | None) -> str:
+    if content and content.parts:
+      return "\n".join([p.text for p in content.parts if p.text])
+
+    return ""
+
+  def _get_score(self, eval_result) -> float | None:
+    if (
+      eval_result
+      and eval_result.summary_metrics
+      and isinstance(eval_result.summary_metrics[0].mean_score, float)
+      and not math.isnan(eval_result.summary_metrics[0].mean_score)
+    ):
+      return eval_result.summary_metrics[0].mean_score
+
+    return None
+
+  def _get_eval_status(self, score: float | None):
+    if score:
+      return EvalStatus.PASSED if score >= self._threshold else EvalStatus.FAILED
+
+    return EvalStatus.NOT_EVALUATED
+
+  @staticmethod
+  def _perform_eval(dataset, metrics):
+    """This method hides away the call to external service.
+
+    Primarily helps with unit testing.
+    """
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", None)
+    location = os.environ.get("GOOGLE_CLOUD_LOCATION", None)
+
+    if not project_id:
+      raise ValueError("Missing project id." + _ERROR_MESSAGE_SUFFIX)
+    if not location:
+      raise ValueError("Missing location." + _ERROR_MESSAGE_SUFFIX)
+
+    from vertexai import Client
+    from vertexai import types as vertexai_types
+
+    client = Client(project=project_id, location=location)
+
+    return client.evals.evaluate(
+      dataset=vertexai_types.EvaluationDataset(eval_dataset_df=dataset),
+      metrics=metrics,
+    )

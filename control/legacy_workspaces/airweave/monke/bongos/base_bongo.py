@@ -6,60 +6,60 @@ from typing import Any
 
 
 class BaseBongo(ABC):
-    """Base class for all connector bongos.
+  """Base class for all connector bongos.
 
-    The bongo plays the real API to create, update, and delete test data.
+  The bongo plays the real API to create, update, and delete test data.
+  """
+
+  def __init__(self, credentials: dict[str, Any]):
+    """Initialize the bongo.
+
+    Args:
+        credentials: Credentials for the connector API
     """
+    self.credentials = credentials
+    self.created_entities = []  # Track what we create for cleanup
 
-    def __init__(self, credentials: dict[str, Any]):
-        """Initialize the bongo.
+  @abstractmethod
+  async def create_entities(self) -> list[dict[str, Any]]:
+    """Create test entities via real API.
 
-        Args:
-            credentials: Credentials for the connector API
-        """
-        self.credentials = credentials
-        self.created_entities = []  # Track what we create for cleanup
+    Returns:
+        List of created entity data for verification
+    """
+    pass
 
-    @abstractmethod
-    async def create_entities(self) -> list[dict[str, Any]]:
-        """Create test entities via real API.
+  @abstractmethod
+  async def update_entities(self) -> list[dict[str, Any]]:
+    """Update test entities via real API.
 
-        Returns:
-            List of created entity data for verification
-        """
-        pass
+    Returns:
+        List of updated entity data for verification
+    """
+    pass
 
-    @abstractmethod
-    async def update_entities(self) -> list[dict[str, Any]]:
-        """Update test entities via real API.
+  @abstractmethod
+  async def delete_entities(self) -> list[str]:
+    """Delete all test entities via real API.
 
-        Returns:
-            List of updated entity data for verification
-        """
-        pass
+    Returns:
+        List of deleted entity IDs for verification
+    """
+    pass
 
-    @abstractmethod
-    async def delete_entities(self) -> list[str]:
-        """Delete all test entities via real API.
+  @abstractmethod
+  async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
+    """Delete specific entities via real API.
 
-        Returns:
-            List of deleted entity IDs for verification
-        """
-        pass
+    Args:
+        entities: List of entities to delete
 
-    @abstractmethod
-    async def delete_specific_entities(self, entities: list[dict[str, Any]]) -> list[str]:
-        """Delete specific entities via real API.
+    Returns:
+        List of deleted entity IDs for verification
+    """
+    pass
 
-        Args:
-            entities: List of entities to delete
-
-        Returns:
-            List of deleted entity IDs for verification
-        """
-        pass
-
-    @abstractmethod
-    async def cleanup(self):
-        """Clean up any remaining test data via real API."""
-        pass
+  @abstractmethod
+  async def cleanup(self):
+    """Clean up any remaining test data via real API."""
+    pass

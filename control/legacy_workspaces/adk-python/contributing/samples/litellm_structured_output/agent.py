@@ -24,25 +24,25 @@ from pydantic import Field
 
 
 class CitySummary(BaseModel):
-    """Simple structure used to verify LiteLLM JSON schema handling."""
+  """Simple structure used to verify LiteLLM JSON schema handling."""
 
-    city: str = Field(description="Name of the city being described.")
-    highlights: list[str] = Field(
-        description="Bullet points summarising the city's key highlights.",
-    )
-    recommended_visit_length_days: int = Field(
-        description="Recommended number of days for a typical visit.",
-    )
+  city: str = Field(description="Name of the city being described.")
+  highlights: list[str] = Field(
+    description="Bullet points summarising the city's key highlights.",
+  )
+  recommended_visit_length_days: int = Field(
+    description="Recommended number of days for a typical visit.",
+  )
 
 
 root_agent = Agent(
-    name="litellm_structured_output_agent",
-    model=LiteLlm(model="gemini-2.5-flash"),
-    description="Generates structured travel recommendations for a given city.",
-    instruction="""
+  name="litellm_structured_output_agent",
+  model=LiteLlm(model="gemini-2.5-flash"),
+  description="Generates structured travel recommendations for a given city.",
+  instruction="""
 Produce a JSON object that follows the CitySummary schema.
 Only include fields that appear in the schema and ensure highlights
 contains short bullet points.
 """.strip(),
-    output_schema=CitySummary,
+  output_schema=CitySummary,
 )

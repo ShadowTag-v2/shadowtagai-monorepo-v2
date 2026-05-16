@@ -3,15 +3,19 @@
 from netmiko import ConnectHandler
 
 SW2 = {
-    "device_type": "cisco_ios",
-    "host": "192.168.169.193",
-    "username": "admin",
-    "password": "access123",
-    "secret": "access123",
+  "device_type": "cisco_ios",
+  "host": "192.168.169.193",
+  "username": "admin",
+  "password": "access123",
+  "secret": "access123",
 }
 
-core_sw_config = ["int range gig0/1 - 2", "switchport trunk encapsulation dot1q",
-                  "switchport mode trunk", "switchport trunk allowed vlan 1,2"]
+core_sw_config = [
+  "int range gig0/1 - 2",
+  "switchport trunk encapsulation dot1q",
+  "switchport mode trunk",
+  "switchport trunk allowed vlan 1,2",
+]
 
 print(f"########## Connecting to Device {SW2} ############")
 net_connect = ConnectHandler(**SW2)

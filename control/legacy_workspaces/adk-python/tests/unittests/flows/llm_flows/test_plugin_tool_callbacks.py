@@ -29,152 +29,154 @@ import pytest
 from ... import testing_utils
 
 mock_error = ClientError(
-    code=429,
-    response_json={
-        "error": {
-            "code": 429,
-            "message": "Quota exceeded.",
-            "status": "RESOURCE_EXHAUSTED",
-        }
-    },
+  code=429,
+  response_json={
+    "error": {
+      "code": 429,
+      "message": "Quota exceeded.",
+      "status": "RESOURCE_EXHAUSTED",
+    }
+  },
 )
 
 
 class MockPlugin(BasePlugin):
-    before_tool_response = {"MockPlugin": "before_tool_response from MockPlugin"}
-    after_tool_response = {"MockPlugin": "after_tool_response from MockPlugin"}
-    on_tool_error_response = {"MockPlugin": "on_tool_error_response from MockPlugin"}
+  before_tool_response = {"MockPlugin": "before_tool_response from MockPlugin"}
+  after_tool_response = {"MockPlugin": "after_tool_response from MockPlugin"}
+  on_tool_error_response = {"MockPlugin": "on_tool_error_response from MockPlugin"}
 
-    def __init__(self, name="mock_plugin"):
-        self.name = name
-        self.enable_before_tool_callback = False
-        self.enable_after_tool_callback = False
-        self.enable_on_tool_error_callback = False
+  def __init__(self, name="mock_plugin"):
+    self.name = name
+    self.enable_before_tool_callback = False
+    self.enable_after_tool_callback = False
+    self.enable_on_tool_error_callback = False
 
-    async def before_tool_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-    ) -> dict | None:
-        if not self.enable_before_tool_callback:
-            return None
-        return self.before_tool_response
+  async def before_tool_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+  ) -> dict | None:
+    if not self.enable_before_tool_callback:
+      return None
+    return self.before_tool_response
 
-    async def after_tool_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-        result: dict,
-    ) -> dict | None:
-        if not self.enable_after_tool_callback:
-            return None
-        return self.after_tool_response
+  async def after_tool_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+    result: dict,
+  ) -> dict | None:
+    if not self.enable_after_tool_callback:
+      return None
+    return self.after_tool_response
 
-    async def on_tool_error_callback(
-        self,
-        *,
-        tool: BaseTool,
-        tool_args: dict[str, Any],
-        tool_context: ToolContext,
-        error: Exception,
-    ) -> dict | None:
-        if not self.enable_on_tool_error_callback:
-            return None
-        return self.on_tool_error_response
+  async def on_tool_error_callback(
+    self,
+    *,
+    tool: BaseTool,
+    tool_args: dict[str, Any],
+    tool_context: ToolContext,
+    error: Exception,
+  ) -> dict | None:
+    if not self.enable_on_tool_error_callback:
+      return None
+    return self.on_tool_error_response
 
 
 @pytest.fixture
 def mock_tool():
-    def simple_fn(**kwargs) -> dict[str, Any]:
-        return {"initial": "response"}
+  def simple_fn(**kwargs) -> dict[str, Any]:
+    return {"initial": "response"}
 
-    return FunctionTool(simple_fn)
+  return FunctionTool(simple_fn)
 
 
 @pytest.fixture
 def mock_error_tool():
-    def raise_error_fn(**kwargs) -> dict[str, Any]:
-        raise mock_error
+  def raise_error_fn(**kwargs) -> dict[str, Any]:
+    raise mock_error
 
-    return FunctionTool(raise_error_fn)
+  return FunctionTool(raise_error_fn)
 
 
 @pytest.fixture
 def mock_plugin():
-    return MockPlugin()
+  return MockPlugin()
 
 
 async def invoke_tool_with_plugin(mock_tool, mock_plugin) -> Event | None:
-    """Invokes a tool with a plugin."""
-    model = testing_utils.MockModel.create(responses=[])
-    agent = Agent(
-        name="agent",
-        model=model,
-        tools=[mock_tool],
-    )
-    invocation_context = await testing_utils.create_invocation_context(agent=agent, user_content="", plugins=[mock_plugin])
-    # Build function call event
-    function_call = types.FunctionCall(name=mock_tool.name, args={})
-    content = types.Content(parts=[types.Part(function_call=function_call)])
-    event = Event(
-        invocation_id=invocation_context.invocation_id,
-        author=agent.name,
-        content=content,
-    )
-    tools_dict = {mock_tool.name: mock_tool}
-    return await handle_function_calls_async(
-        invocation_context,
-        event,
-        tools_dict,
-    )
+  """Invokes a tool with a plugin."""
+  model = testing_utils.MockModel.create(responses=[])
+  agent = Agent(
+    name="agent",
+    model=model,
+    tools=[mock_tool],
+  )
+  invocation_context = await testing_utils.create_invocation_context(
+    agent=agent, user_content="", plugins=[mock_plugin]
+  )
+  # Build function call event
+  function_call = types.FunctionCall(name=mock_tool.name, args={})
+  content = types.Content(parts=[types.Part(function_call=function_call)])
+  event = Event(
+    invocation_id=invocation_context.invocation_id,
+    author=agent.name,
+    content=content,
+  )
+  tools_dict = {mock_tool.name: mock_tool}
+  return await handle_function_calls_async(
+    invocation_context,
+    event,
+    tools_dict,
+  )
 
 
 @pytest.mark.asyncio
 async def test_async_before_tool_callback(mock_tool, mock_plugin):
-    mock_plugin.enable_before_tool_callback = True
+  mock_plugin.enable_before_tool_callback = True
 
-    result_event = await invoke_tool_with_plugin(mock_tool, mock_plugin)
+  result_event = await invoke_tool_with_plugin(mock_tool, mock_plugin)
 
-    assert result_event is not None
-    part = result_event.content.parts[0]
-    assert part.function_response.response == mock_plugin.before_tool_response
+  assert result_event is not None
+  part = result_event.content.parts[0]
+  assert part.function_response.response == mock_plugin.before_tool_response
 
 
 @pytest.mark.asyncio
 async def test_async_after_tool_callback(mock_tool, mock_plugin):
-    mock_plugin.enable_after_tool_callback = True
+  mock_plugin.enable_after_tool_callback = True
 
-    result_event = await invoke_tool_with_plugin(mock_tool, mock_plugin)
+  result_event = await invoke_tool_with_plugin(mock_tool, mock_plugin)
 
-    assert result_event is not None
-    part = result_event.content.parts[0]
-    assert part.function_response.response == mock_plugin.after_tool_response
+  assert result_event is not None
+  part = result_event.content.parts[0]
+  assert part.function_response.response == mock_plugin.after_tool_response
 
 
 @pytest.mark.asyncio
 async def test_async_on_tool_error_use_plugin_response(mock_error_tool, mock_plugin):
-    mock_plugin.enable_on_tool_error_callback = True
+  mock_plugin.enable_on_tool_error_callback = True
 
-    result_event = await invoke_tool_with_plugin(mock_error_tool, mock_plugin)
+  result_event = await invoke_tool_with_plugin(mock_error_tool, mock_plugin)
 
-    assert result_event is not None
-    part = result_event.content.parts[0]
-    assert part.function_response.response == mock_plugin.on_tool_error_response
+  assert result_event is not None
+  part = result_event.content.parts[0]
+  assert part.function_response.response == mock_plugin.on_tool_error_response
 
 
 @pytest.mark.asyncio
 async def test_async_on_tool_error_fallback_to_runner(mock_error_tool, mock_plugin):
-    mock_plugin.enable_on_tool_error_callback = False
+  mock_plugin.enable_on_tool_error_callback = False
 
-    try:
-        await invoke_tool_with_plugin(mock_error_tool, mock_plugin)
-    except Exception as e:
-        assert e == mock_error
+  try:
+    await invoke_tool_with_plugin(mock_error_tool, mock_plugin)
+  except Exception as e:
+    assert e == mock_error
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+  pytest.main([__file__])

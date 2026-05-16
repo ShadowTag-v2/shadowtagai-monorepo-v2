@@ -29,58 +29,58 @@ from .evaluator import EvalStatus
 
 
 class EvalCaseResult(BaseModel):
-    """Case level evaluation results."""
+  """Case level evaluation results."""
 
-    model_config = ConfigDict(
-        alias_generator=alias_generators.to_camel,
-        populate_by_name=True,
-    )
+  model_config = ConfigDict(
+    alias_generator=alias_generators.to_camel,
+    populate_by_name=True,
+  )
 
-    eval_set_file: str | None = Field(
-        deprecated=True,
-        default=None,
-        description="This field is deprecated, use eval_set_id instead.",
-    )
-    eval_set_id: str = ""
-    """The eval set id."""
+  eval_set_file: str | None = Field(
+    deprecated=True,
+    default=None,
+    description="This field is deprecated, use eval_set_id instead.",
+  )
+  eval_set_id: str = ""
+  """The eval set id."""
 
-    eval_id: str = ""
-    """The eval case id."""
+  eval_id: str = ""
+  """The eval case id."""
 
-    final_eval_status: EvalStatus
-    """Final eval status for this eval case."""
+  final_eval_status: EvalStatus
+  """Final eval status for this eval case."""
 
-    eval_metric_results: list[tuple[EvalMetric, EvalMetricResult]] | None = Field(
-        deprecated=True,
-        default=None,
-        description=("This field is deprecated, use overall_eval_metric_results instead."),
-    )
+  eval_metric_results: list[tuple[EvalMetric, EvalMetricResult]] | None = Field(
+    deprecated=True,
+    default=None,
+    description=("This field is deprecated, use overall_eval_metric_results instead."),
+  )
 
-    overall_eval_metric_results: list[EvalMetricResult]
-    """Overall result for each metric for the entire eval case."""
+  overall_eval_metric_results: list[EvalMetricResult]
+  """Overall result for each metric for the entire eval case."""
 
-    eval_metric_result_per_invocation: list[EvalMetricResultPerInvocation]
-    """Result for each metric on a per invocation basis."""
+  eval_metric_result_per_invocation: list[EvalMetricResultPerInvocation]
+  """Result for each metric on a per invocation basis."""
 
-    session_id: str
-    """Session id of the session generated as result of inferencing/scraping stage of the eval."""
+  session_id: str
+  """Session id of the session generated as result of inferencing/scraping stage of the eval."""
 
-    session_details: Session | None = None
-    """Session generated as result of inferencing/scraping stage of the eval."""
+  session_details: Session | None = None
+  """Session generated as result of inferencing/scraping stage of the eval."""
 
-    user_id: str | None = None
-    """User id used during inferencing/scraping stage of the eval."""
+  user_id: str | None = None
+  """User id used during inferencing/scraping stage of the eval."""
 
 
 class EvalSetResult(BaseModel):
-    """Eval set level evaluation results."""
+  """Eval set level evaluation results."""
 
-    model_config = ConfigDict(
-        alias_generator=alias_generators.to_camel,
-        populate_by_name=True,
-    )
-    eval_set_result_id: str
-    eval_set_result_name: str | None = None
-    eval_set_id: str
-    eval_case_results: list[EvalCaseResult] = Field(default_factory=list)
-    creation_timestamp: float = 0.0
+  model_config = ConfigDict(
+    alias_generator=alias_generators.to_camel,
+    populate_by_name=True,
+  )
+  eval_set_result_id: str
+  eval_set_result_name: str | None = None
+  eval_set_id: str
+  eval_case_results: list[EvalCaseResult] = Field(default_factory=list)
+  creation_timestamp: float = 0.0

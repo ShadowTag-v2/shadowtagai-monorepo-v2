@@ -6,11 +6,11 @@ EXP_ID = 49
 
 
 def extract_raw_data():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
+  conn = sqlite3.connect(DB_PATH)
+  conn.row_factory = sqlite3.Row
+  cursor = conn.cursor()
 
-    query = """
+  query = """
         SELECT 
             r.alternative,
             json_extract(payload, '$.name') as tool_name,
@@ -30,21 +30,21 @@ def extract_raw_data():
         ORDER BY tool_name
     """
 
-    cursor.execute(query, (EXP_ID,))
-    rows = cursor.fetchall()
+  cursor.execute(query, (EXP_ID,))
+  rows = cursor.fetchall()
 
-    for row in rows:
-        print(f"TOOL: {row['tool_name']}")
-        print(f"ALT:  {row['alternative']}")
-        print(f"ARGS: {row['args']}")
-        if row["error"]:
-            print(f"ERR:  {row['error']}")
-        if row["output"]:
-            print(f"OUT:  {row['output']}")
-        print("-" * 40)
+  for row in rows:
+    print(f"TOOL: {row['tool_name']}")
+    print(f"ALT:  {row['alternative']}")
+    print(f"ARGS: {row['args']}")
+    if row["error"]:
+      print(f"ERR:  {row['error']}")
+    if row["output"]:
+      print(f"OUT:  {row['output']}")
+    print("-" * 40)
 
-    conn.close()
+  conn.close()
 
 
 if __name__ == "__main__":
-    extract_raw_data()
+  extract_raw_data()

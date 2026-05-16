@@ -17,20 +17,20 @@ import subprocess
 
 
 def copy_image(image_tag, source_repository_name, target_repository_name):
-    command = f"gcrane cp {source_repository_name}/{image_tag} {target_repository_name}/{image_tag}"
-    # command = command_format.format(image_tag, ar_repository_name)
-    print(f"command: {command}", flush=True)
-    try:
-        completedProcess = subprocess.run(
-            command,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=600,
-            text=True,
-        )
-        print(f"completedProcess: {completedProcess}", flush=True)
-        return completedProcess
-    except subprocess.TimeoutExpired as e:
-        print(f"Subprocess error: {e}", flush=True)
-        raise e
+  command = f"gcrane cp {source_repository_name}/{image_tag} {target_repository_name}/{image_tag}"
+  # command = command_format.format(image_tag, ar_repository_name)
+  print(f"command: {command}", flush=True)
+  try:
+    completedProcess = subprocess.run(
+      command,
+      shell=True,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.STDOUT,
+      timeout=600,
+      text=True,
+    )
+    print(f"completedProcess: {completedProcess}", flush=True)
+    return completedProcess
+  except subprocess.TimeoutExpired as e:
+    print(f"Subprocess error: {e}", flush=True)
+    raise e

@@ -17,13 +17,13 @@ from .base_example_provider import BaseExampleProvider
 from .example import Example
 
 __all__ = [
-    "BaseExampleProvider",
-    "Example",
+  "BaseExampleProvider",
+  "Example",
 ]
 
 try:
-    from .vertex_ai_example_store import VertexAiExampleStore
+  from .vertex_ai_example_store import VertexAiExampleStore
 
-    __all__.append("VertexAiExampleStore")
+  __all__.append("VertexAiExampleStore")
 except ImportError:
-    pass
+  pass

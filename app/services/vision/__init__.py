@@ -8,9 +8,9 @@ from app.services.vision.object_detection import ObjectDetectionService
 from app.services.vision.license_plate import LicensePlateService
 
 __all__ = [
-    "TeguClient",
-    "VideoClassifierService",
-    "FaceRecognitionService",
-    "ObjectDetectionService",
-    "LicensePlateService",
+  "TeguClient",
+  "VideoClassifierService",
+  "FaceRecognitionService",
+  "ObjectDetectionService",
+  "LicensePlateService",
 ]

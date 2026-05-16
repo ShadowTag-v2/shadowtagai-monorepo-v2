@@ -19,58 +19,58 @@ import json
 
 
 class GameScore:
-    """
-    message = {
-        "datetime": _datetime,          # Time-stamp denoting the message creation time at VM (UTC)
-        "player_type": ["human", "load_balancer"] # Identifies the player type for this score message
-        "score": str(score),            # Score to be awarded for message processing
-        "vm": vm,                       # Name of the VM. Indicates where the message was processed
-        "difficulty": str(difficulty),  # Current game difficulty level
-        "uniqueid": uniqueid,           # A unique id for each player
+  """
+  message = {
+      "datetime": _datetime,          # Time-stamp denoting the message creation time at VM (UTC)
+      "player_type": ["human", "load_balancer"] # Identifies the player type for this score message
+      "score": str(score),            # Score to be awarded for message processing
+      "vm": vm,                       # Name of the VM. Indicates where the message was processed
+      "difficulty": str(difficulty),  # Current game difficulty level
+      "uniqueid": uniqueid,           # A unique id for each player
+  }
+  """
+
+  def __init__(
+    self,
+    datetime: str,
+    player_type: str,
+    score: int,
+    vm: str,
+    difficulty: int,
+    uniqueid: str,
+  ):
+    self.datetime = datetime
+    self.player_type = player_type
+    self.score = score
+    self.vm = vm
+    self.difficulty = difficulty
+    self.uniqueid = uniqueid
+
+  @staticmethod
+  def from_dict(source):
+    game = GameScore(
+      source["datetime"],
+      source["player_type"],
+      source["score"],
+      source["vm"],
+      source["difficulty"],
+      source["uniqueid"],
+    )
+    return game
+
+  def to_dict(self) -> dict[str, str | int]:
+    game = {
+      "datetime": self.datetime,
+      "player_type": self.player_type,
+      "score": self.score,
+      "vm": self.vm,
+      "difficulty": self.difficulty,
+      "uniqueid": self.uniqueid,
     }
-    """
+    return game
 
-    def __init__(
-        self,
-        datetime: str,
-        player_type: str,
-        score: int,
-        vm: str,
-        difficulty: int,
-        uniqueid: str,
-    ):
-        self.datetime = datetime
-        self.player_type = player_type
-        self.score = score
-        self.vm = vm
-        self.difficulty = difficulty
-        self.uniqueid = uniqueid
-
-    @staticmethod
-    def from_dict(source):
-        game = GameScore(
-            source["datetime"],
-            source["player_type"],
-            source["score"],
-            source["vm"],
-            source["difficulty"],
-            source["uniqueid"],
-        )
-        return game
-
-    def to_dict(self) -> dict[str, str | int]:
-        game = {
-            "datetime": self.datetime,
-            "player_type": self.player_type,
-            "score": self.score,
-            "vm": self.vm,
-            "difficulty": self.difficulty,
-            "uniqueid": self.uniqueid,
-        }
-        return game
-
-    def __repr__(self) -> str:
-        return f"GameScore(\
+  def __repr__(self) -> str:
+    return f"GameScore(\
                 datetime={self.datetime}, \
                 player_type={self.player_type}, \
                 score={self.score}, \
@@ -79,5 +79,5 @@ class GameScore:
                 uniqueid={self.uniqueid}\
             )"
 
-    def json_dumps(self) -> bytes:
-        return json.dumps(self.to_dict()).encode("utf-8")
+  def json_dumps(self) -> bytes:
+    return json.dumps(self.to_dict()).encode("utf-8")

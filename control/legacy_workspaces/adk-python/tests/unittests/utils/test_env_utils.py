@@ -18,33 +18,33 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "env_value,expected",
-    [
-        ("true", True),
-        ("TRUE", True),
-        ("TrUe", True),
-        ("1", True),
-        ("false", False),
-        ("FALSE", False),
-        ("0", False),
-        ("", False),
-    ],
+  "env_value,expected",
+  [
+    ("true", True),
+    ("TRUE", True),
+    ("TrUe", True),
+    ("1", True),
+    ("false", False),
+    ("FALSE", False),
+    ("0", False),
+    ("", False),
+  ],
 )
 def test_is_env_enabled(monkeypatch, env_value, expected):
-    """Test is_env_enabled with various environment variable values."""
-    monkeypatch.setenv("TEST_FLAG", env_value)
-    assert is_env_enabled("TEST_FLAG") is expected
+  """Test is_env_enabled with various environment variable values."""
+  monkeypatch.setenv("TEST_FLAG", env_value)
+  assert is_env_enabled("TEST_FLAG") is expected
 
 
 @pytest.mark.parametrize(
-    "default,expected",
-    [
-        ("0", False),
-        ("1", True),
-        ("true", True),
-    ],
+  "default,expected",
+  [
+    ("0", False),
+    ("1", True),
+    ("true", True),
+  ],
 )
 def test_is_env_enabled_with_defaults(monkeypatch, default, expected):
-    """Test is_env_enabled when env var is not set with different defaults."""
-    monkeypatch.delenv("TEST_FLAG", raising=False)
-    assert is_env_enabled("TEST_FLAG", default=default) is expected
+  """Test is_env_enabled when env var is not set with different defaults."""
+  monkeypatch.delenv("TEST_FLAG", raising=False)
+  assert is_env_enabled("TEST_FLAG", default=default) is expected

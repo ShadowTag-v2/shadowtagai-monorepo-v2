@@ -12,10 +12,10 @@ from .spectral import SpectralProcessor
 from .phase import PhaseEncoder
 
 __all__ = [
-    "AudioEncoder",
-    "AudioDecoder",
-    "SpectralProcessor",
-    "PhaseEncoder",
+  "AudioEncoder",
+  "AudioDecoder",
+  "SpectralProcessor",
+  "PhaseEncoder",
 ]
 
 __version__ = "2.0.0"

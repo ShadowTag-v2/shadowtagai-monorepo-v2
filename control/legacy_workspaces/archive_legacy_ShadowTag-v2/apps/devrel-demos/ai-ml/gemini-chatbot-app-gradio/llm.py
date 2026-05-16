@@ -28,21 +28,21 @@ LOCATION = "us-central1"
 
 
 def get_chat_client(project_id, location):
-    # Initialize vertexai
-    vertexai.init(project=project_id, location=location)
+  # Initialize vertexai
+  vertexai.init(project=project_id, location=location)
 
-    # Programmatically get an access token
-    credentials, _ = default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
-    auth_request = transport.requests.Request()
-    credentials.refresh(auth_request)
+  # Programmatically get an access token
+  credentials, _ = default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+  auth_request = transport.requests.Request()
+  credentials.refresh(auth_request)
 
-    # OpenAI client for Gemini-Flash-1.5
-    client = openai.OpenAI(
-        base_url=f"https://{location}-aiplatform.googleapis.com/v1beta1/projects/{project_id}/locations/{location}/endpoints/openapi",
-        api_key=credentials.token,
-    )
-    return client
+  # OpenAI client for Gemini-Flash-1.5
+  client = openai.OpenAI(
+    base_url=f"https://{location}-aiplatform.googleapis.com/v1beta1/projects/{project_id}/locations/{location}/endpoints/openapi",
+    api_key=credentials.token,
+  )
+  return client
 
 
 def main():
-    return get_chat_client(PROJECT_ID, LOCATION)
+  return get_chat_client(PROJECT_ID, LOCATION)

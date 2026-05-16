@@ -18,21 +18,21 @@ from google.adk.agents.llm_agent import Agent
 from google.adk.agents.sequential_agent import SequentialAgent
 
 sub_agent_1 = Agent(
-    name="sub_agent_1",
-    description="No.1 sub agent.",
-    model="gemini-2.0-flash-001",
-    instruction="JUST SAY 1.",
+  name="sub_agent_1",
+  description="No.1 sub agent.",
+  model="gemini-2.0-flash-001",
+  instruction="JUST SAY 1.",
 )
 
 sub_agent_2 = Agent(
-    name="sub_agent_2",
-    description="No.2 sub agent.",
-    model="gemini-2.0-flash-001",
-    instruction="JUST SAY 2.",
+  name="sub_agent_2",
+  description="No.2 sub agent.",
+  model="gemini-2.0-flash-001",
+  instruction="JUST SAY 2.",
 )
 sequential_agent = SequentialAgent(
-    name="sequential_agent",
-    sub_agents=[sub_agent_1, sub_agent_2],
+  name="sequential_agent",
+  sub_agents=[sub_agent_1, sub_agent_2],
 )
 
 root_agent = sequential_agent

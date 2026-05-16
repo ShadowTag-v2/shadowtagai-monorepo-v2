@@ -22,70 +22,74 @@ from google.genai import types
 import requests
 
 HEADERS = {
-    "Authorization": f"token {GITHUB_TOKEN}",
-    "Accept": "application/vnd.github.v3+json",
+  "Authorization": f"token {GITHUB_TOKEN}",
+  "Accept": "application/vnd.github.v3+json",
 }
 
 
 def error_response(error_message: str) -> dict[str, Any]:
-    return {"status": "error", "error_message": error_message}
+  return {"status": "error", "error_message": error_message}
 
 
 def get_request(
-    url: str,
-    headers: dict[str, Any] | None = None,
-    params: dict[str, Any] | None = None,
+  url: str,
+  headers: dict[str, Any] | None = None,
+  params: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Executes a GET request."""
-    if headers is None:
-        headers = HEADERS
-    if params is None:
-        params = {}
-    response = requests.get(url, headers=headers, params=params, timeout=60)
+  """Executes a GET request."""
+  if headers is None:
+    headers = HEADERS
+  if params is None:
+    params = {}
+  response = requests.get(url, headers=headers, params=params, timeout=60)
+  response.raise_for_status()
+  return response.json()
+
+
+def get_paginated_request(
+  url: str, headers: dict[str, Any] | None = None
+) -> list[dict[str, Any]]:
+  """Executes GET requests and follows 'next' pagination links to fetch all results."""
+  if headers is None:
+    headers = HEADERS
+
+  results = []
+  while url:
+    response = requests.get(url, headers=headers, timeout=60)
     response.raise_for_status()
-    return response.json()
-
-
-def get_paginated_request(url: str, headers: dict[str, Any] | None = None) -> list[dict[str, Any]]:
-    """Executes GET requests and follows 'next' pagination links to fetch all results."""
-    if headers is None:
-        headers = HEADERS
-
-    results = []
-    while url:
-        response = requests.get(url, headers=headers, timeout=60)
-        response.raise_for_status()
-        results.extend(response.json())
-        url = response.links.get("next", {}).get("url")
-    return results
+    results.extend(response.json())
+    url = response.links.get("next", {}).get("url")
+  return results
 
 
 def post_request(url: str, payload: Any) -> dict[str, Any]:
-    response = requests.post(url, headers=HEADERS, json=payload, timeout=60)
-    response.raise_for_status()
-    return response.json()
+  response = requests.post(url, headers=HEADERS, json=payload, timeout=60)
+  response.raise_for_status()
+  return response.json()
 
 
 def patch_request(url: str, payload: Any) -> dict[str, Any]:
-    response = requests.patch(url, headers=HEADERS, json=payload, timeout=60)
-    response.raise_for_status()
-    return response.json()
+  response = requests.patch(url, headers=HEADERS, json=payload, timeout=60)
+  response.raise_for_status()
+  return response.json()
 
 
-async def call_agent_async(runner: Runner, user_id: str, session_id: str, prompt: str) -> str:
-    """Call the agent asynchronously with the user's prompt."""
-    content = types.Content(role="user", parts=[types.Part.from_text(text=prompt)])
+async def call_agent_async(
+  runner: Runner, user_id: str, session_id: str, prompt: str
+) -> str:
+  """Call the agent asynchronously with the user's prompt."""
+  content = types.Content(role="user", parts=[types.Part.from_text(text=prompt)])
 
-    final_response_text = ""
-    async for event in runner.run_async(
-        user_id=user_id,
-        session_id=session_id,
-        new_message=content,
-        run_config=RunConfig(save_input_blobs_as_artifacts=False),
-    ):
-        if event.content and event.content.parts:
-            if text := "".join(part.text or "" for part in event.content.parts):
-                if event.author != "user":
-                    final_response_text += text
+  final_response_text = ""
+  async for event in runner.run_async(
+    user_id=user_id,
+    session_id=session_id,
+    new_message=content,
+    run_config=RunConfig(save_input_blobs_as_artifacts=False),
+  ):
+    if event.content and event.content.parts:
+      if text := "".join(part.text or "" for part in event.content.parts):
+        if event.author != "user":
+          final_response_text += text
 
-    return final_response_text
+  return final_response_text

@@ -84,161 +84,169 @@ Answer with assertiveness:
 
 
 def _parse_critique(response: str) -> Label:
-    """Parses the judge model critique and extracts the final label.
+  """Parses the judge model critique and extracts the final label.
 
-    Args:
-      response: model response
+  Args:
+    response: model response
 
-    Returns:
-      The extracted label, either VALID, INVALID, or NOT_FOUND.
-    """
-    # Regex matching the label field in the response. The end of the field is
-    # identified by either a comma, new line, or an end-bracket.
-    label_match_is_response_valid = re.search(
-        r'"is_the_agent_response_valid":\s*\[*[\n\s]*"*([^"^\]^\s]*)"*[\n\s]*\]*\s*[,\n\}]',
-        response,
-    )
-    # In case the model names the label field as "is_the_agent_response_*invalid*"
-    # instead of "..._*valid*"
-    label_match_is_response_invalid = re.search(
-        r'"is_the_agent_response_invalid":\s*\[*[\n\s]*"*([^"^\]^\s]*)"*[\n\s]*\]*\s*[,\n\}]',
-        response,
-    )
-    # Remove any trailing whitespace, commas, or end-brackets from the label.
-    if label_match_is_response_valid:
-        label = label_match_is_response_valid.group(1).strip(r"\s,\}")
-        if label in [
-            Label.INVALID.value,
-            Label.ALMOST.value,
-            Label.FALSE.value,
-            *Label.PARTIALLY_VALID.value,
-        ]:
-            label = Label.INVALID
-        elif label in [Label.VALID.value, Label.TRUE.value]:
-            label = Label.VALID
-        else:
-            label = Label.NOT_FOUND
-    elif label_match_is_response_invalid:
-        label = label_match_is_response_invalid.group(1).strip(r"\s,\}")
-        label = Label.INVALID if label in [Label.TRUE.value, Label.INVALID.value] else Label.VALID
+  Returns:
+    The extracted label, either VALID, INVALID, or NOT_FOUND.
+  """
+  # Regex matching the label field in the response. The end of the field is
+  # identified by either a comma, new line, or an end-bracket.
+  label_match_is_response_valid = re.search(
+    r'"is_the_agent_response_valid":\s*\[*[\n\s]*"*([^"^\]^\s]*)"*[\n\s]*\]*\s*[,\n\}]',
+    response,
+  )
+  # In case the model names the label field as "is_the_agent_response_*invalid*"
+  # instead of "..._*valid*"
+  label_match_is_response_invalid = re.search(
+    r'"is_the_agent_response_invalid":\s*\[*[\n\s]*"*([^"^\]^\s]*)"*[\n\s]*\]*\s*[,\n\}]',
+    response,
+  )
+  # Remove any trailing whitespace, commas, or end-brackets from the label.
+  if label_match_is_response_valid:
+    label = label_match_is_response_valid.group(1).strip(r"\s,\}")
+    if label in [
+      Label.INVALID.value,
+      Label.ALMOST.value,
+      Label.FALSE.value,
+      *Label.PARTIALLY_VALID.value,
+    ]:
+      label = Label.INVALID
+    elif label in [Label.VALID.value, Label.TRUE.value]:
+      label = Label.VALID
     else:
-        label = Label.NOT_FOUND
-    return label
+      label = Label.NOT_FOUND
+  elif label_match_is_response_invalid:
+    label = label_match_is_response_invalid.group(1).strip(r"\s,\}")
+    label = (
+      Label.INVALID if label in [Label.TRUE.value, Label.INVALID.value] else Label.VALID
+    )
+  else:
+    label = Label.NOT_FOUND
+  return label
 
 
 @experimental
 class FinalResponseMatchV2Evaluator(LlmAsJudge):
-    """V2 final response match evaluator which uses an LLM to judge responses.
+  """V2 final response match evaluator which uses an LLM to judge responses.
 
-    The evaluator prompts the LLM to output whether the agent final response is
-    valid or invalid, hence outputs a score of 0 or 1. Repeated invocation samples
-    are aggregated by taking majority vote, and then the overall score is the
-    fraction, ranging from 0 to 1, of valid samples. Higher values of overall
-    score indicate better final response performance of the agent.
+  The evaluator prompts the LLM to output whether the agent final response is
+  valid or invalid, hence outputs a score of 0 or 1. Repeated invocation samples
+  are aggregated by taking majority vote, and then the overall score is the
+  fraction, ranging from 0 to 1, of valid samples. Higher values of overall
+  score indicate better final response performance of the agent.
+  """
+
+  criterion_type: ClassVar[type[LlmAsAJudgeCriterion]] = LlmAsAJudgeCriterion
+
+  def __init__(
+    self,
+    eval_metric: EvalMetric,
+  ):
+    super().__init__(
+      eval_metric,
+      FinalResponseMatchV2Evaluator.criterion_type,
+      expected_invocations_required=True,
+    )
+    self._auto_rater_prompt_template = _FINAL_RESPONSE_MATCH_V2_PROMPT
+
+  @staticmethod
+  def get_metric_info() -> MetricInfo:
+    return MetricInfo(
+      metric_name=PrebuiltMetrics.FINAL_RESPONSE_MATCH_V2.value,
+      description=(
+        "This metric evaluates if the agent's final response matches a"
+        " golden/expected final response using LLM as a judge. Value range"
+        " for this metric is [0,1], with values closer to 1 more desirable."
+      ),
+      metric_value_info=MetricValueInfo(
+        interval=Interval(min_value=0.0, max_value=1.0)
+      ),
+    )
+
+  @override
+  def format_auto_rater_prompt(
+    self,
+    actual_invocation: Invocation,
+    expected_invocation: Invocation | None,
+  ) -> str:
+    if expected_invocation is None:
+      raise ValueError("expected_invocation is required for this metric.")
+
+    reference = get_text_from_content(expected_invocation.final_response)
+    response = get_text_from_content(actual_invocation.final_response)
+    user_prompt = get_text_from_content(expected_invocation.user_content)
+    return self._auto_rater_prompt_template.format(
+      prompt=user_prompt,
+      response=response,
+      golden_response=reference,
+    )
+
+  @override
+  def convert_auto_rater_response_to_score(
+    self, llm_response: LlmResponse
+  ) -> AutoRaterScore:
+    response_text = get_text_from_content(llm_response.content)
+    if response_text is None:
+      return AutoRaterScore()
+    label = _parse_critique(response_text)
+    if label == Label.VALID:
+      return AutoRaterScore(score=1.0)
+    elif label == Label.INVALID:
+      return AutoRaterScore(score=0.0)
+    else:
+      return AutoRaterScore()
+
+  @override
+  def aggregate_per_invocation_samples(
+    self,
+    per_invocation_samples: list[PerInvocationResult],
+  ) -> PerInvocationResult:
+    """Aggregates samples of per-invocation results by taking majority vote.
+
+    Only consider results that were successfully evaluated. In the case of a
+    tie, consider the result to be invalid.
+
+    Args:
+      per_invocation_samples: Samples of per-invocation results to aggregate.
+
+    Returns:
+      If there is a majority of valid results, return the first valid result.
+      Otherwise, return the first invalid result. If no results were
+      successfully evaluated, return the first sample.
     """
+    positive_results = []
+    negative_results = []
+    for result in per_invocation_samples:
+      if result.score == 1.0:
+        positive_results.append(result)
+      elif result.score == 0.0:
+        negative_results.append(result)
+    # If no results were successfully evaluated, just return the first sample.
+    if not positive_results and not negative_results:
+      return per_invocation_samples[0]
+    elif len(positive_results) > len(negative_results):
+      return positive_results[0]
+    else:
+      return negative_results[0]
 
-    criterion_type: ClassVar[type[LlmAsAJudgeCriterion]] = LlmAsAJudgeCriterion
-
-    def __init__(
-        self,
-        eval_metric: EvalMetric,
-    ):
-        super().__init__(
-            eval_metric,
-            FinalResponseMatchV2Evaluator.criterion_type,
-            expected_invocations_required=True,
-        )
-        self._auto_rater_prompt_template = _FINAL_RESPONSE_MATCH_V2_PROMPT
-
-    @staticmethod
-    def get_metric_info() -> MetricInfo:
-        return MetricInfo(
-            metric_name=PrebuiltMetrics.FINAL_RESPONSE_MATCH_V2.value,
-            description=(
-                "This metric evaluates if the agent's final response matches a"
-                " golden/expected final response using LLM as a judge. Value range"
-                " for this metric is [0,1], with values closer to 1 more desirable."
-            ),
-            metric_value_info=MetricValueInfo(interval=Interval(min_value=0.0, max_value=1.0)),
-        )
-
-    @override
-    def format_auto_rater_prompt(
-        self,
-        actual_invocation: Invocation,
-        expected_invocation: Invocation | None,
-    ) -> str:
-        if expected_invocation is None:
-            raise ValueError("expected_invocation is required for this metric.")
-
-        reference = get_text_from_content(expected_invocation.final_response)
-        response = get_text_from_content(actual_invocation.final_response)
-        user_prompt = get_text_from_content(expected_invocation.user_content)
-        return self._auto_rater_prompt_template.format(
-            prompt=user_prompt,
-            response=response,
-            golden_response=reference,
-        )
-
-    @override
-    def convert_auto_rater_response_to_score(self, llm_response: LlmResponse) -> AutoRaterScore:
-        response_text = get_text_from_content(llm_response.content)
-        if response_text is None:
-            return AutoRaterScore()
-        label = _parse_critique(response_text)
-        if label == Label.VALID:
-            return AutoRaterScore(score=1.0)
-        elif label == Label.INVALID:
-            return AutoRaterScore(score=0.0)
-        else:
-            return AutoRaterScore()
-
-    @override
-    def aggregate_per_invocation_samples(
-        self,
-        per_invocation_samples: list[PerInvocationResult],
-    ) -> PerInvocationResult:
-        """Aggregates samples of per-invocation results by taking majority vote.
-
-        Only consider results that were successfully evaluated. In the case of a
-        tie, consider the result to be invalid.
-
-        Args:
-          per_invocation_samples: Samples of per-invocation results to aggregate.
-
-        Returns:
-          If there is a majority of valid results, return the first valid result.
-          Otherwise, return the first invalid result. If no results were
-          successfully evaluated, return the first sample.
-        """
-        positive_results = []
-        negative_results = []
-        for result in per_invocation_samples:
-            if result.score == 1.0:
-                positive_results.append(result)
-            elif result.score == 0.0:
-                negative_results.append(result)
-        # If no results were successfully evaluated, just return the first sample.
-        if not positive_results and not negative_results:
-            return per_invocation_samples[0]
-        elif len(positive_results) > len(negative_results):
-            return positive_results[0]
-        else:
-            return negative_results[0]
-
-    @override
-    def aggregate_invocation_results(self, per_invocation_results: list[PerInvocationResult]) -> EvaluationResult:
-        """Computes the fraction of invocation results that are valid."""
-        num_valid = 0
-        num_evaluated = 0
-        for result in per_invocation_results:
-            if result.score is None or result.eval_status == EvalStatus.NOT_EVALUATED:
-                continue
-            num_evaluated += 1
-            num_valid += result.score
-        overall_score = num_valid / num_evaluated
-        return EvaluationResult(
-            overall_score=overall_score,
-            overall_eval_status=get_eval_status(overall_score, self._criterion.threshold),
-            per_invocation_results=per_invocation_results,
-        )
+  @override
+  def aggregate_invocation_results(
+    self, per_invocation_results: list[PerInvocationResult]
+  ) -> EvaluationResult:
+    """Computes the fraction of invocation results that are valid."""
+    num_valid = 0
+    num_evaluated = 0
+    for result in per_invocation_results:
+      if result.score is None or result.eval_status == EvalStatus.NOT_EVALUATED:
+        continue
+      num_evaluated += 1
+      num_valid += result.score
+    overall_score = num_valid / num_evaluated
+    return EvaluationResult(
+      overall_score=overall_score,
+      overall_eval_status=get_eval_status(overall_score, self._criterion.threshold),
+      per_invocation_results=per_invocation_results,
+    )

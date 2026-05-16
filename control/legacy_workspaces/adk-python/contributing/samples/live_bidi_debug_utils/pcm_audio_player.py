@@ -26,15 +26,15 @@ DTYPE = np.int16  # Common types: int16, float32
 
 # Read and play
 with open(FILE_PATH, "rb") as f:
-    # Load raw data into numpy array
-    raw_data = f.read()
-    audio_array = np.frombuffer(raw_data, dtype=DTYPE)
+  # Load raw data into numpy array
+  raw_data = f.read()
+  audio_array = np.frombuffer(raw_data, dtype=DTYPE)
 
-    # Reshape if stereo (interleaved)
-    if CHANNELS > 1:
-        audio_array = audio_array.reshape((-1, CHANNELS))
+  # Reshape if stereo (interleaved)
+  if CHANNELS > 1:
+    audio_array = audio_array.reshape((-1, CHANNELS))
 
-    # Play
-    print("Playing...")
-    sd.play(audio_array, SAMPLE_RATE)
-    sd.wait()
+  # Play
+  print("Playing...")
+  sd.play(audio_array, SAMPLE_RATE)
+  sd.wait()

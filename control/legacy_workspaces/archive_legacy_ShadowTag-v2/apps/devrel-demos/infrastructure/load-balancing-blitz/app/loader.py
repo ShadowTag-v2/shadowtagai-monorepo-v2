@@ -32,57 +32,57 @@ APP_URLS += """
 
 @app.route("/")
 def warehouse_index_page():
-    return create_index_page(HOSTNAME, __file__, APP_URLS)
+  return create_index_page(HOSTNAME, __file__, APP_URLS)
 
 
 @app.route("/reset")
 def reset_loader():
-    return {"status": "ok", "message": "nothing to reset"}
+  return {"status": "ok", "message": "nothing to reset"}
 
 
 def is_locust_running(flag_file) -> bool:
-    """Runs locust load generator while ensuring that, it runs at most once
-    every 60 seconds. Uses a flag tile to store that time of the last execution.
-    """
-    try:
-        logging.debug("- checking temporary file!")
-        with open(flag_file) as f:
-            timestamp = float(f.read())
-            return time.time() - timestamp <= 60
-    except FileNotFoundError:
-        logging.debug("- found no temporary file!")
-        return False
+  """Runs locust load generator while ensuring that, it runs at most once
+  every 60 seconds. Uses a flag tile to store that time of the last execution.
+  """
+  try:
+    logging.debug("- checking temporary file!")
+    with open(flag_file) as f:
+      timestamp = float(f.read())
+      return time.time() - timestamp <= 60
+  except FileNotFoundError:
+    logging.debug("- found no temporary file!")
+    return False
 
 
 def get_locust_command():
-    unique_id = "".join(random.sample("abcdefghijklmnopqrstuvwxyz", 4))
-    log_file = f"/tmp/flask-loader-logs-{unique_id}.log"
-    command = [
-        "/home/sampathm/load-balancing-blitz/venv/bin/locust",
-        "--headless",
-        "-t 60s",
-        "-f",
-        "/home/sampathm/load-balancing-blitz/app/lib/locustfile.py",
-        # "--logfile",
-        # str(locust_run_report),
-    ]
-    command = " ".join(command)
-    logging.debug(f"- command for Locust! {command}")
-    return command
+  unique_id = "".join(random.sample("abcdefghijklmnopqrstuvwxyz", 4))
+  log_file = f"/tmp/flask-loader-logs-{unique_id}.log"
+  command = [
+    "/home/sampathm/load-balancing-blitz/venv/bin/locust",
+    "--headless",
+    "-t 60s",
+    "-f",
+    "/home/sampathm/load-balancing-blitz/app/lib/locustfile.py",
+    # "--logfile",
+    # str(locust_run_report),
+  ]
+  command = " ".join(command)
+  logging.debug(f"- command for Locust! {command}")
+  return command
 
 
 @app.route("/load/start")
 @app.route("/send-messages")
 def main():
-    os_command = get_locust_command()
-    logging.debug(f"Trigger Running Locust! {run_os_command.delay(os_command)}")
-    return {"start-messages": "ok"}
+  os_command = get_locust_command()
+  logging.debug(f"Trigger Running Locust! {run_os_command.delay(os_command)}")
+  return {"start-messages": "ok"}
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        format="%(asctime)s - %(message)s",
-        filemode="w",
-        level=logging.DEBUG,
-    )
-    app.run(debug=True, port="8000")
+  logging.basicConfig(
+    format="%(asctime)s - %(message)s",
+    filemode="w",
+    level=logging.DEBUG,
+  )
+  app.run(debug=True, port="8000")

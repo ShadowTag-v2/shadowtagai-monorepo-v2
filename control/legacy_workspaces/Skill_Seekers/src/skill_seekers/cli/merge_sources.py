@@ -23,274 +23,282 @@ logger = logging.getLogger(__name__)
 
 
 class RuleBasedMerger:
+  """
+  Rule-based API merger using deterministic rules.
+
+  Rules:
+  1. If API only in docs → Include with [DOCS_ONLY] tag
+  2. If API only in code → Include with [UNDOCUMENTED] tag
+  3. If both match perfectly → Include normally
+  4. If conflict → Include both versions with [CONFLICT] tag, prefer code signature
+  """
+
+  def __init__(self, docs_data: dict, github_data: dict, conflicts: list[Conflict]):
     """
-    Rule-based API merger using deterministic rules.
+    Initialize rule-based merger.
 
-    Rules:
-    1. If API only in docs → Include with [DOCS_ONLY] tag
-    2. If API only in code → Include with [UNDOCUMENTED] tag
-    3. If both match perfectly → Include normally
-    4. If conflict → Include both versions with [CONFLICT] tag, prefer code signature
+    Args:
+        docs_data: Documentation scraper data
+        github_data: GitHub scraper data
+        conflicts: List of detected conflicts
     """
+    self.docs_data = docs_data
+    self.github_data = github_data
+    self.conflicts = conflicts
 
-    def __init__(self, docs_data: dict, github_data: dict, conflicts: list[Conflict]):
-        """
-        Initialize rule-based merger.
+    # Build conflict index for fast lookup
+    self.conflict_index = {c.api_name: c for c in conflicts}
 
-        Args:
-            docs_data: Documentation scraper data
-            github_data: GitHub scraper data
-            conflicts: List of detected conflicts
-        """
-        self.docs_data = docs_data
-        self.github_data = github_data
-        self.conflicts = conflicts
+    # Extract APIs from both sources
+    detector = ConflictDetector(docs_data, github_data)
+    self.docs_apis = detector.docs_apis
+    self.code_apis = detector.code_apis
 
-        # Build conflict index for fast lookup
-        self.conflict_index = {c.api_name: c for c in conflicts}
+  def merge_all(self) -> dict[str, Any]:
+    """
+    Merge all APIs using rule-based logic.
 
-        # Extract APIs from both sources
-        detector = ConflictDetector(docs_data, github_data)
-        self.docs_apis = detector.docs_apis
-        self.code_apis = detector.code_apis
+    Returns:
+        Dict containing merged API data
+    """
+    logger.info("Starting rule-based merge...")
 
-    def merge_all(self) -> dict[str, Any]:
-        """
-        Merge all APIs using rule-based logic.
+    merged_apis = {}
 
-        Returns:
-            Dict containing merged API data
-        """
-        logger.info("Starting rule-based merge...")
+    # Get all unique API names
+    all_api_names = set(self.docs_apis.keys()) | set(self.code_apis.keys())
 
-        merged_apis = {}
+    for api_name in sorted(all_api_names):
+      merged_api = self._merge_single_api(api_name)
+      merged_apis[api_name] = merged_api
 
-        # Get all unique API names
-        all_api_names = set(self.docs_apis.keys()) | set(self.code_apis.keys())
+    logger.info(f"Merged {len(merged_apis)} APIs")
 
-        for api_name in sorted(all_api_names):
-            merged_api = self._merge_single_api(api_name)
-            merged_apis[api_name] = merged_api
+    return {
+      "merge_mode": "rule-based",
+      "apis": merged_apis,
+      "summary": {
+        "total_apis": len(merged_apis),
+        "docs_only": sum(
+          1 for api in merged_apis.values() if api["status"] == "docs_only"
+        ),
+        "code_only": sum(
+          1 for api in merged_apis.values() if api["status"] == "code_only"
+        ),
+        "matched": sum(1 for api in merged_apis.values() if api["status"] == "matched"),
+        "conflict": sum(
+          1 for api in merged_apis.values() if api["status"] == "conflict"
+        ),
+      },
+    }
 
-        logger.info(f"Merged {len(merged_apis)} APIs")
+  def _merge_single_api(self, api_name: str) -> dict[str, Any]:
+    """
+    Merge a single API using rules.
 
-        return {
-            "merge_mode": "rule-based",
-            "apis": merged_apis,
-            "summary": {
-                "total_apis": len(merged_apis),
-                "docs_only": sum(1 for api in merged_apis.values() if api["status"] == "docs_only"),
-                "code_only": sum(1 for api in merged_apis.values() if api["status"] == "code_only"),
-                "matched": sum(1 for api in merged_apis.values() if api["status"] == "matched"),
-                "conflict": sum(1 for api in merged_apis.values() if api["status"] == "conflict"),
-            },
-        }
+    Args:
+        api_name: Name of the API to merge
 
-    def _merge_single_api(self, api_name: str) -> dict[str, Any]:
-        """
-        Merge a single API using rules.
+    Returns:
+        Merged API dict
+    """
+    in_docs = api_name in self.docs_apis
+    in_code = api_name in self.code_apis
+    has_conflict = api_name in self.conflict_index
 
-        Args:
-            api_name: Name of the API to merge
+    # Rule 1: Only in docs
+    if in_docs and not in_code:
+      conflict = self.conflict_index.get(api_name)
+      return {
+        "name": api_name,
+        "status": "docs_only",
+        "source": "documentation",
+        "data": self.docs_apis[api_name],
+        "warning": "This API is documented but not found in codebase",
+        "conflict": conflict.__dict__ if conflict else None,
+      }
 
-        Returns:
-            Merged API dict
-        """
-        in_docs = api_name in self.docs_apis
-        in_code = api_name in self.code_apis
-        has_conflict = api_name in self.conflict_index
+    # Rule 2: Only in code
+    if in_code and not in_docs:
+      is_private = api_name.startswith("_")
+      conflict = self.conflict_index.get(api_name)
+      return {
+        "name": api_name,
+        "status": "code_only",
+        "source": "code",
+        "data": self.code_apis[api_name],
+        "warning": "This API exists in code but is not documented"
+        if not is_private
+        else "Internal/private API",
+        "conflict": conflict.__dict__ if conflict else None,
+      }
 
-        # Rule 1: Only in docs
-        if in_docs and not in_code:
-            conflict = self.conflict_index.get(api_name)
-            return {
-                "name": api_name,
-                "status": "docs_only",
-                "source": "documentation",
-                "data": self.docs_apis[api_name],
-                "warning": "This API is documented but not found in codebase",
-                "conflict": conflict.__dict__ if conflict else None,
-            }
+    # Both exist - check for conflicts
+    docs_info = self.docs_apis[api_name]
+    code_info = self.code_apis[api_name]
 
-        # Rule 2: Only in code
-        if in_code and not in_docs:
-            is_private = api_name.startswith("_")
-            conflict = self.conflict_index.get(api_name)
-            return {
-                "name": api_name,
-                "status": "code_only",
-                "source": "code",
-                "data": self.code_apis[api_name],
-                "warning": "This API exists in code but is not documented" if not is_private else "Internal/private API",
-                "conflict": conflict.__dict__ if conflict else None,
-            }
+    # Rule 3: Both match perfectly (no conflict)
+    if not has_conflict:
+      return {
+        "name": api_name,
+        "status": "matched",
+        "source": "both",
+        "docs_data": docs_info,
+        "code_data": code_info,
+        "merged_signature": self._create_merged_signature(code_info, docs_info),
+        "merged_description": docs_info.get("docstring") or code_info.get("docstring"),
+      }
 
-        # Both exist - check for conflicts
-        docs_info = self.docs_apis[api_name]
-        code_info = self.code_apis[api_name]
+    # Rule 4: Conflict exists - prefer code signature, keep docs description
+    conflict = self.conflict_index[api_name]
 
-        # Rule 3: Both match perfectly (no conflict)
-        if not has_conflict:
-            return {
-                "name": api_name,
-                "status": "matched",
-                "source": "both",
-                "docs_data": docs_info,
-                "code_data": code_info,
-                "merged_signature": self._create_merged_signature(code_info, docs_info),
-                "merged_description": docs_info.get("docstring") or code_info.get("docstring"),
-            }
+    return {
+      "name": api_name,
+      "status": "conflict",
+      "source": "both",
+      "docs_data": docs_info,
+      "code_data": code_info,
+      "conflict": conflict.__dict__,
+      "resolution": "prefer_code_signature",
+      "merged_signature": self._create_merged_signature(code_info, docs_info),
+      "merged_description": docs_info.get("docstring") or code_info.get("docstring"),
+      "warning": conflict.difference,
+    }
 
-        # Rule 4: Conflict exists - prefer code signature, keep docs description
-        conflict = self.conflict_index[api_name]
+  def _create_merged_signature(self, code_info: dict, docs_info: dict) -> str:
+    """
+    Create merged signature preferring code data.
 
-        return {
-            "name": api_name,
-            "status": "conflict",
-            "source": "both",
-            "docs_data": docs_info,
-            "code_data": code_info,
-            "conflict": conflict.__dict__,
-            "resolution": "prefer_code_signature",
-            "merged_signature": self._create_merged_signature(code_info, docs_info),
-            "merged_description": docs_info.get("docstring") or code_info.get("docstring"),
-            "warning": conflict.difference,
-        }
+    Args:
+        code_info: API info from code
+        docs_info: API info from docs
 
-    def _create_merged_signature(self, code_info: dict, docs_info: dict) -> str:
-        """
-        Create merged signature preferring code data.
+    Returns:
+        Merged signature string
+    """
+    name = code_info.get("name", docs_info.get("name"))
+    params = code_info.get("parameters", docs_info.get("parameters", []))
+    return_type = code_info.get("return_type", docs_info.get("return_type"))
 
-        Args:
-            code_info: API info from code
-            docs_info: API info from docs
+    # Build parameter string
+    param_strs = []
+    for param in params:
+      param_str = param["name"]
+      if param.get("type_hint"):
+        param_str += f": {param['type_hint']}"
+      if param.get("default"):
+        param_str += f" = {param['default']}"
+      param_strs.append(param_str)
 
-        Returns:
-            Merged signature string
-        """
-        name = code_info.get("name", docs_info.get("name"))
-        params = code_info.get("parameters", docs_info.get("parameters", []))
-        return_type = code_info.get("return_type", docs_info.get("return_type"))
+    signature = f"{name}({', '.join(param_strs)})"
 
-        # Build parameter string
-        param_strs = []
-        for param in params:
-            param_str = param["name"]
-            if param.get("type_hint"):
-                param_str += f": {param['type_hint']}"
-            if param.get("default"):
-                param_str += f" = {param['default']}"
-            param_strs.append(param_str)
+    if return_type:
+      signature += f" -> {return_type}"
 
-        signature = f"{name}({', '.join(param_strs)})"
-
-        if return_type:
-            signature += f" -> {return_type}"
-
-        return signature
+    return signature
 
 
 class ClaudeEnhancedMerger:
+  """
+  Claude-enhanced API merger using local Claude Code.
+
+  Opens Claude Code in a new terminal to intelligently reconcile conflicts.
+  Uses the same approach as enhance_skill_local.py.
+  """
+
+  def __init__(self, docs_data: dict, github_data: dict, conflicts: list[Conflict]):
     """
-    Claude-enhanced API merger using local Claude Code.
+    Initialize Claude-enhanced merger.
 
-    Opens Claude Code in a new terminal to intelligently reconcile conflicts.
-    Uses the same approach as enhance_skill_local.py.
+    Args:
+        docs_data: Documentation scraper data
+        github_data: GitHub scraper data
+        conflicts: List of detected conflicts
     """
+    self.docs_data = docs_data
+    self.github_data = github_data
+    self.conflicts = conflicts
 
-    def __init__(self, docs_data: dict, github_data: dict, conflicts: list[Conflict]):
-        """
-        Initialize Claude-enhanced merger.
+    # First do rule-based merge as baseline
+    self.rule_merger = RuleBasedMerger(docs_data, github_data, conflicts)
 
-        Args:
-            docs_data: Documentation scraper data
-            github_data: GitHub scraper data
-            conflicts: List of detected conflicts
-        """
-        self.docs_data = docs_data
-        self.github_data = github_data
-        self.conflicts = conflicts
+  def merge_all(self) -> dict[str, Any]:
+    """
+    Merge all APIs using Claude enhancement.
 
-        # First do rule-based merge as baseline
-        self.rule_merger = RuleBasedMerger(docs_data, github_data, conflicts)
+    Returns:
+        Dict containing merged API data
+    """
+    logger.info("Starting Claude-enhanced merge...")
 
-    def merge_all(self) -> dict[str, Any]:
-        """
-        Merge all APIs using Claude enhancement.
+    # Create temporary workspace
+    workspace_dir = self._create_workspace()
 
-        Returns:
-            Dict containing merged API data
-        """
-        logger.info("Starting Claude-enhanced merge...")
+    # Launch Claude Code for enhancement
+    logger.info("Launching Claude Code for intelligent merging...")
+    logger.info("Claude will analyze conflicts and create reconciled API reference")
 
-        # Create temporary workspace
-        workspace_dir = self._create_workspace()
+    try:
+      self._launch_claude_merge(workspace_dir)
 
-        # Launch Claude Code for enhancement
-        logger.info("Launching Claude Code for intelligent merging...")
-        logger.info("Claude will analyze conflicts and create reconciled API reference")
+      # Read enhanced results
+      merged_data = self._read_merged_results(workspace_dir)
 
-        try:
-            self._launch_claude_merge(workspace_dir)
+      logger.info("Claude-enhanced merge complete")
+      return merged_data
 
-            # Read enhanced results
-            merged_data = self._read_merged_results(workspace_dir)
+    except Exception as e:
+      logger.error(f"Claude enhancement failed: {e}")
+      logger.info("Falling back to rule-based merge")
+      return self.rule_merger.merge_all()
 
-            logger.info("Claude-enhanced merge complete")
-            return merged_data
+  def _create_workspace(self) -> str:
+    """
+    Create temporary workspace with merge context.
 
-        except Exception as e:
-            logger.error(f"Claude enhancement failed: {e}")
-            logger.info("Falling back to rule-based merge")
-            return self.rule_merger.merge_all()
+    Returns:
+        Path to workspace directory
+    """
+    workspace = tempfile.mkdtemp(prefix="skill_merge_")
+    logger.info(f"Created merge workspace: {workspace}")
 
-    def _create_workspace(self) -> str:
-        """
-        Create temporary workspace with merge context.
+    # Write context files for Claude
+    self._write_context_files(workspace)
 
-        Returns:
-            Path to workspace directory
-        """
-        workspace = tempfile.mkdtemp(prefix="skill_merge_")
-        logger.info(f"Created merge workspace: {workspace}")
+    return workspace
 
-        # Write context files for Claude
-        self._write_context_files(workspace)
+  def _write_context_files(self, workspace: str):
+    """Write context files for Claude to analyze."""
 
-        return workspace
+    # 1. Write conflicts summary
+    conflicts_file = os.path.join(workspace, "conflicts.json")
+    with open(conflicts_file, "w") as f:
+      json.dump(
+        {
+          "conflicts": [c.__dict__ for c in self.conflicts],
+          "summary": {
+            "total": len(self.conflicts),
+            "by_type": self._count_by_field("type"),
+            "by_severity": self._count_by_field("severity"),
+          },
+        },
+        f,
+        indent=2,
+      )
 
-    def _write_context_files(self, workspace: str):
-        """Write context files for Claude to analyze."""
+    # 2. Write documentation APIs
+    docs_apis_file = os.path.join(workspace, "docs_apis.json")
+    detector = ConflictDetector(self.docs_data, self.github_data)
+    with open(docs_apis_file, "w") as f:
+      json.dump(detector.docs_apis, f, indent=2)
 
-        # 1. Write conflicts summary
-        conflicts_file = os.path.join(workspace, "conflicts.json")
-        with open(conflicts_file, "w") as f:
-            json.dump(
-                {
-                    "conflicts": [c.__dict__ for c in self.conflicts],
-                    "summary": {
-                        "total": len(self.conflicts),
-                        "by_type": self._count_by_field("type"),
-                        "by_severity": self._count_by_field("severity"),
-                    },
-                },
-                f,
-                indent=2,
-            )
+    # 3. Write code APIs
+    code_apis_file = os.path.join(workspace, "code_apis.json")
+    with open(code_apis_file, "w") as f:
+      json.dump(detector.code_apis, f, indent=2)
 
-        # 2. Write documentation APIs
-        docs_apis_file = os.path.join(workspace, "docs_apis.json")
-        detector = ConflictDetector(self.docs_data, self.github_data)
-        with open(docs_apis_file, "w") as f:
-            json.dump(detector.docs_apis, f, indent=2)
-
-        # 3. Write code APIs
-        code_apis_file = os.path.join(workspace, "code_apis.json")
-        with open(code_apis_file, "w") as f:
-            json.dump(detector.code_apis, f, indent=2)
-
-        # 4. Write merge instructions for Claude
-        instructions = """# API Merge Task
+    # 4. Write merge instructions for Claude
+    instructions = """# API Merge Task
 
 You are merging API documentation from two sources:
 1. Official documentation (user-facing)
@@ -347,30 +355,30 @@ Create `merged_apis.json` with this structure:
 Take your time to analyze each conflict carefully. The goal is to create the most accurate and helpful API reference possible.
 """
 
-        instructions_file = os.path.join(workspace, "MERGE_INSTRUCTIONS.md")
-        with open(instructions_file, "w") as f:
-            f.write(instructions)
+    instructions_file = os.path.join(workspace, "MERGE_INSTRUCTIONS.md")
+    with open(instructions_file, "w") as f:
+      f.write(instructions)
 
-        logger.info(f"Wrote context files to {workspace}")
+    logger.info(f"Wrote context files to {workspace}")
 
-    def _count_by_field(self, field: str) -> dict[str, int]:
-        """Count conflicts by a specific field."""
-        counts = {}
-        for conflict in self.conflicts:
-            value = getattr(conflict, field)
-            counts[value] = counts.get(value, 0) + 1
-        return counts
+  def _count_by_field(self, field: str) -> dict[str, int]:
+    """Count conflicts by a specific field."""
+    counts = {}
+    for conflict in self.conflicts:
+      value = getattr(conflict, field)
+      counts[value] = counts.get(value, 0) + 1
+    return counts
 
-    def _launch_claude_merge(self, workspace: str):
-        """
-        Launch Claude Code to perform merge.
+  def _launch_claude_merge(self, workspace: str):
+    """
+    Launch Claude Code to perform merge.
 
-        Similar to enhance_skill_local.py approach.
-        """
-        # Create a script that Claude will execute
-        script_path = os.path.join(workspace, "merge_script.sh")
+    Similar to enhance_skill_local.py approach.
+    """
+    # Create a script that Claude will execute
+    script_path = os.path.join(workspace, "merge_script.sh")
 
-        script_content = f"""#!/bin/bash
+    script_content = f"""#!/bin/bash
 # Automatic merge script for Claude Code
 
 cd "{workspace}"
@@ -391,116 +399,131 @@ echo "When done, save merged_apis.json and close this terminal."
 read -p "Press Enter when merge is complete..."
 """
 
-        with open(script_path, "w") as f:
-            f.write(script_content)
+    with open(script_path, "w") as f:
+      f.write(script_content)
 
-        os.chmod(script_path, 0o755)
+    os.chmod(script_path, 0o755)
 
-        # Open new terminal with Claude Code
-        # Try different terminal emulators
-        terminals = [["x-terminal-emulator", "-e"], ["gnome-terminal", "--"], ["xterm", "-e"], ["konsole", "-e"]]
+    # Open new terminal with Claude Code
+    # Try different terminal emulators
+    terminals = [
+      ["x-terminal-emulator", "-e"],
+      ["gnome-terminal", "--"],
+      ["xterm", "-e"],
+      ["konsole", "-e"],
+    ]
 
-        for terminal_cmd in terminals:
-            try:
-                cmd = terminal_cmd + ["bash", script_path]
-                subprocess.Popen(cmd)
-                logger.info(f"Opened terminal with {terminal_cmd[0]}")
-                break
-            except FileNotFoundError:
-                continue
+    for terminal_cmd in terminals:
+      try:
+        cmd = terminal_cmd + ["bash", script_path]
+        subprocess.Popen(cmd)
+        logger.info(f"Opened terminal with {terminal_cmd[0]}")
+        break
+      except FileNotFoundError:
+        continue
 
-        # Wait for merge to complete
-        merged_file = os.path.join(workspace, "merged_apis.json")
-        logger.info(f"Waiting for merged results at: {merged_file}")
-        logger.info("Close the terminal when done to continue...")
+    # Wait for merge to complete
+    merged_file = os.path.join(workspace, "merged_apis.json")
+    logger.info(f"Waiting for merged results at: {merged_file}")
+    logger.info("Close the terminal when done to continue...")
 
-        # Poll for file existence
-        import time
+    # Poll for file existence
+    import time
 
-        timeout = 3600  # 1 hour max
-        elapsed = 0
-        while not os.path.exists(merged_file) and elapsed < timeout:
-            time.sleep(5)
-            elapsed += 5
+    timeout = 3600  # 1 hour max
+    elapsed = 0
+    while not os.path.exists(merged_file) and elapsed < timeout:
+      time.sleep(5)
+      elapsed += 5
 
-        if not os.path.exists(merged_file):
-            raise TimeoutError("Claude merge timed out after 1 hour")
+    if not os.path.exists(merged_file):
+      raise TimeoutError("Claude merge timed out after 1 hour")
 
-    def _read_merged_results(self, workspace: str) -> dict[str, Any]:
-        """Read merged results from workspace."""
-        merged_file = os.path.join(workspace, "merged_apis.json")
+  def _read_merged_results(self, workspace: str) -> dict[str, Any]:
+    """Read merged results from workspace."""
+    merged_file = os.path.join(workspace, "merged_apis.json")
 
-        if not os.path.exists(merged_file):
-            raise FileNotFoundError(f"Merged results not found: {merged_file}")
+    if not os.path.exists(merged_file):
+      raise FileNotFoundError(f"Merged results not found: {merged_file}")
 
-        with open(merged_file) as f:
-            merged_data = json.load(f)
+    with open(merged_file) as f:
+      merged_data = json.load(f)
 
-        return {"merge_mode": "claude-enhanced", **merged_data}
+    return {"merge_mode": "claude-enhanced", **merged_data}
 
 
-def merge_sources(docs_data_path: str, github_data_path: str, output_path: str, mode: str = "rule-based") -> dict[str, Any]:
-    """
-    Merge documentation and GitHub data.
+def merge_sources(
+  docs_data_path: str, github_data_path: str, output_path: str, mode: str = "rule-based"
+) -> dict[str, Any]:
+  """
+  Merge documentation and GitHub data.
 
-    Args:
-        docs_data_path: Path to documentation data JSON
-        github_data_path: Path to GitHub data JSON
-        output_path: Path to save merged output
-        mode: 'rule-based' or 'claude-enhanced'
+  Args:
+      docs_data_path: Path to documentation data JSON
+      github_data_path: Path to GitHub data JSON
+      output_path: Path to save merged output
+      mode: 'rule-based' or 'claude-enhanced'
 
-    Returns:
-        Merged data dict
-    """
-    # Load data
-    with open(docs_data_path) as f:
-        docs_data = json.load(f)
+  Returns:
+      Merged data dict
+  """
+  # Load data
+  with open(docs_data_path) as f:
+    docs_data = json.load(f)
 
-    with open(github_data_path) as f:
-        github_data = json.load(f)
+  with open(github_data_path) as f:
+    github_data = json.load(f)
 
-    # Detect conflicts
-    detector = ConflictDetector(docs_data, github_data)
-    conflicts = detector.detect_all_conflicts()
+  # Detect conflicts
+  detector = ConflictDetector(docs_data, github_data)
+  conflicts = detector.detect_all_conflicts()
 
-    logger.info(f"Detected {len(conflicts)} conflicts")
+  logger.info(f"Detected {len(conflicts)} conflicts")
 
-    # Merge based on mode
-    if mode == "claude-enhanced":
-        merger = ClaudeEnhancedMerger(docs_data, github_data, conflicts)
-    else:
-        merger = RuleBasedMerger(docs_data, github_data, conflicts)
+  # Merge based on mode
+  if mode == "claude-enhanced":
+    merger = ClaudeEnhancedMerger(docs_data, github_data, conflicts)
+  else:
+    merger = RuleBasedMerger(docs_data, github_data, conflicts)
 
-    merged_data = merger.merge_all()
+  merged_data = merger.merge_all()
 
-    # Save merged data
-    with open(output_path, "w") as f:
-        json.dump(merged_data, f, indent=2, ensure_ascii=False)
+  # Save merged data
+  with open(output_path, "w") as f:
+    json.dump(merged_data, f, indent=2, ensure_ascii=False)
 
-    logger.info(f"Merged data saved to: {output_path}")
+  logger.info(f"Merged data saved to: {output_path}")
 
-    return merged_data
+  return merged_data
 
 
 if __name__ == "__main__":
-    import argparse
+  import argparse
 
-    parser = argparse.ArgumentParser(description="Merge documentation and code sources")
-    parser.add_argument("docs_data", help="Path to documentation data JSON")
-    parser.add_argument("github_data", help="Path to GitHub data JSON")
-    parser.add_argument("--output", "-o", default="merged_data.json", help="Output file path")
-    parser.add_argument("--mode", "-m", choices=["rule-based", "claude-enhanced"], default="rule-based", help="Merge mode")
+  parser = argparse.ArgumentParser(description="Merge documentation and code sources")
+  parser.add_argument("docs_data", help="Path to documentation data JSON")
+  parser.add_argument("github_data", help="Path to GitHub data JSON")
+  parser.add_argument(
+    "--output", "-o", default="merged_data.json", help="Output file path"
+  )
+  parser.add_argument(
+    "--mode",
+    "-m",
+    choices=["rule-based", "claude-enhanced"],
+    default="rule-based",
+    help="Merge mode",
+  )
 
-    args = parser.parse_args()
+  args = parser.parse_args()
 
-    merged = merge_sources(args.docs_data, args.github_data, args.output, args.mode)
+  merged = merge_sources(args.docs_data, args.github_data, args.output, args.mode)
 
-    # Print summary
-    summary = merged.get("summary", {})
-    print(f"\n✅ Merge complete ({merged.get('merge_mode')})")
-    print(f"   Total APIs: {summary.get('total_apis', 0)}")
-    print(f"   Matched: {summary.get('matched', 0)}")
-    print(f"   Docs only: {summary.get('docs_only', 0)}")
-    print(f"   Code only: {summary.get('code_only', 0)}")
-    print(f"   Conflicts: {summary.get('conflict', 0)}")
-    print(f"\n📄 Saved to: {args.output}")
+  # Print summary
+  summary = merged.get("summary", {})
+  print(f"\n✅ Merge complete ({merged.get('merge_mode')})")
+  print(f"   Total APIs: {summary.get('total_apis', 0)}")
+  print(f"   Matched: {summary.get('matched', 0)}")
+  print(f"   Docs only: {summary.get('docs_only', 0)}")
+  print(f"   Code only: {summary.get('code_only', 0)}")
+  print(f"   Conflicts: {summary.get('conflict', 0)}")
+  print(f"\n📄 Saved to: {args.output}")

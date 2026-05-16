@@ -28,71 +28,73 @@ import requests
 
 
 class PersonInfo(BaseModel):
-    """Structured information about a person."""
+  """Structured information about a person."""
 
-    name: str = Field(description="The person's full name")
-    age: int = Field(description="The person's age in years")
-    occupation: str = Field(description="The person's job or profession")
-    location: str = Field(description="The city and country where they live")
-    biography: str = Field(description="A brief biography of the person")
+  name: str = Field(description="The person's full name")
+  age: int = Field(description="The person's age in years")
+  occupation: str = Field(description="The person's job or profession")
+  location: str = Field(description="The city and country where they live")
+  biography: str = Field(description="A brief biography of the person")
 
 
 def search_wikipedia(query: str) -> str:
-    """Search Wikipedia for information about a topic.
+  """Search Wikipedia for information about a topic.
 
-    Args:
-      query: The search query to look up on Wikipedia
+  Args:
+    query: The search query to look up on Wikipedia
 
-    Returns:
-      Summary of the Wikipedia article if found, or error message if not found
-    """
-    try:
-        # Use Wikipedia API to search for the article
-        search_url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + query.replace(" ", "_")
-        response = requests.get(search_url, timeout=10)
+  Returns:
+    Summary of the Wikipedia article if found, or error message if not found
+  """
+  try:
+    # Use Wikipedia API to search for the article
+    search_url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + query.replace(
+      " ", "_"
+    )
+    response = requests.get(search_url, timeout=10)
 
-        if response.status_code == 200:
-            data = response.json()
-            return f"Title: {data.get('title', 'N/A')}\n\nSummary: {data.get('extract', 'No summary available')}"
-        else:
-            return f"Wikipedia article not found for '{query}'. Status code: {response.status_code}"
+    if response.status_code == 200:
+      data = response.json()
+      return f"Title: {data.get('title', 'N/A')}\n\nSummary: {data.get('extract', 'No summary available')}"
+    else:
+      return f"Wikipedia article not found for '{query}'. Status code: {response.status_code}"
 
-    except Exception as e:
-        return f"Error searching Wikipedia: {str(e)}"
+  except Exception as e:
+    return f"Error searching Wikipedia: {str(e)}"
 
 
 def get_current_year() -> str:
-    """Get the current year.
+  """Get the current year.
 
-    Returns:
-      The current year as a string
-    """
-    from datetime import datetime
+  Returns:
+    The current year as a string
+  """
+  from datetime import datetime
 
-    return str(datetime.now().year)
+  return str(datetime.now().year)
 
 
 # Create the knowledge agent that uses google_search tool.
 knowledge_agent = LlmAgent(
-    name="knowledge_agent",
-    model="gemini-2.5-flash",
-    instruction="""
+  name="knowledge_agent",
+  model="gemini-2.5-flash",
+  instruction="""
 You are a helpful assistant that gathers information about famous people.
 Use google_search tool to find information about them.
 Provide the output into a structured response using the PersonInfo format.
 """,
-    description="""
+  description="""
 A knowledge agent that gathers information about famous people.
 """,
-    tools=[google_search],
-    output_schema=PersonInfo,
+  tools=[google_search],
+  output_schema=PersonInfo,
 )
 
 # Create the agent with both output_schema and tools
 root_agent = LlmAgent(
-    name="person_info_agent",
-    model="gemini-2.5-pro",
-    instruction="""
+  name="person_info_agent",
+  model="gemini-2.5-pro",
+  instruction="""
 You are a helpful assistant that gathers information about famous people.
 
 When asked about a person, you should:
@@ -101,10 +103,10 @@ When asked about a person, you should:
 3. Use the get_current_year tool if you need to calculate ages
 4. Compile the information into a structured response using the PersonInfo format
     """.strip(),
-    output_schema=PersonInfo,
-    tools=[
-        search_wikipedia,
-        get_current_year,
-    ],
-    sub_agents=[knowledge_agent],
+  output_schema=PersonInfo,
+  tools=[
+    search_wikipedia,
+    get_current_year,
+  ],
+  sub_agents=[knowledge_agent],
 )

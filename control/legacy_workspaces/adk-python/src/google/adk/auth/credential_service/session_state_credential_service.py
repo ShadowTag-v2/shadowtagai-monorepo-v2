@@ -27,55 +27,57 @@ from .base_credential_service import BaseCredentialService
 
 @experimental
 class SessionStateCredentialService(BaseCredentialService):
-    """Class for implementation of credential service using session state as the
+  """Class for implementation of credential service using session state as the
+  store.
+  Note: store credential in session may not be secure, use at your own risk.
+  """
+
+  @override
+  async def load_credential(
+    self,
+    auth_config: AuthConfig,
+    callback_context: CallbackContext,
+  ) -> AuthCredential | None:
+    """
+    Loads the credential by auth config and current callback context from the
+    backend credential store.
+
+    Args:
+        auth_config: The auth config which contains the auth scheme and auth
+        credential information. auth_config.get_credential_key will be used to
+        build the key to load the credential.
+
+        callback_context: The context of the current invocation when the tool is
+        trying to load the credential.
+
+    Returns:
+        Optional[AuthCredential]: the credential saved in the store.
+
+    """
+    return callback_context.state.get(auth_config.credential_key)
+
+  @override
+  async def save_credential(
+    self,
+    auth_config: AuthConfig,
+    callback_context: CallbackContext,
+  ) -> None:
+    """
+    Saves the exchanged_auth_credential in auth config to the backend credential
     store.
-    Note: store credential in session may not be secure, use at your own risk.
+
+    Args:
+        auth_config: The auth config which contains the auth scheme and auth
+        credential information. auth_config.get_credential_key will be used to
+        build the key to save the credential.
+
+        callback_context: The context of the current invocation when the tool is
+        trying to save the credential.
+
+    Returns:
+        None
     """
 
-    @override
-    async def load_credential(
-        self,
-        auth_config: AuthConfig,
-        callback_context: CallbackContext,
-    ) -> AuthCredential | None:
-        """
-        Loads the credential by auth config and current callback context from the
-        backend credential store.
-
-        Args:
-            auth_config: The auth config which contains the auth scheme and auth
-            credential information. auth_config.get_credential_key will be used to
-            build the key to load the credential.
-
-            callback_context: The context of the current invocation when the tool is
-            trying to load the credential.
-
-        Returns:
-            Optional[AuthCredential]: the credential saved in the store.
-
-        """
-        return callback_context.state.get(auth_config.credential_key)
-
-    @override
-    async def save_credential(
-        self,
-        auth_config: AuthConfig,
-        callback_context: CallbackContext,
-    ) -> None:
-        """
-        Saves the exchanged_auth_credential in auth config to the backend credential
-        store.
-
-        Args:
-            auth_config: The auth config which contains the auth scheme and auth
-            credential information. auth_config.get_credential_key will be used to
-            build the key to save the credential.
-
-            callback_context: The context of the current invocation when the tool is
-            trying to save the credential.
-
-        Returns:
-            None
-        """
-
-        callback_context.state[auth_config.credential_key] = auth_config.exchanged_auth_credential
+    callback_context.state[auth_config.credential_key] = (
+      auth_config.exchanged_auth_credential
+    )

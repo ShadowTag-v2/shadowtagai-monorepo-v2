@@ -24,35 +24,37 @@ from google.adk.skills import models
 from google.adk.tools.skill_toolset import SkillToolset
 
 greeting_skill = models.Skill(
-    frontmatter=models.Frontmatter(
-        name="greeting-skill",
-        description=("A friendly greeting skill that can say hello to a specific person."),
-    ),
-    instructions=(
-        "Step 1: Read the 'references/hello_world.txt' file to understand how to greet the user. Step 2: Return a greeting based on the reference."
-    ),
-    resources=models.Resources(
-        references={
-            "hello_world.txt": "Hello! 👋👋👋 So glad to have you here! ✨✨✨",
-            "example.md": "This is an example reference.",
-        },
-    ),
+  frontmatter=models.Frontmatter(
+    name="greeting-skill",
+    description=("A friendly greeting skill that can say hello to a specific person."),
+  ),
+  instructions=(
+    "Step 1: Read the 'references/hello_world.txt' file to understand how to greet the user. Step 2: Return a greeting based on the reference."
+  ),
+  resources=models.Resources(
+    references={
+      "hello_world.txt": "Hello! 👋👋👋 So glad to have you here! ✨✨✨",
+      "example.md": "This is an example reference.",
+    },
+  ),
 )
 
-weather_skill = load_skill_from_dir(pathlib.Path(__file__).parent / "skills" / "weather-skill")
+weather_skill = load_skill_from_dir(
+  pathlib.Path(__file__).parent / "skills" / "weather-skill"
+)
 
 # WARNING: UnsafeLocalCodeExecutor has security concerns and should NOT
 # be used in production environments.
 my_skill_toolset = SkillToolset(
-    skills=[greeting_skill, weather_skill],
-    code_executor=UnsafeLocalCodeExecutor(),
+  skills=[greeting_skill, weather_skill],
+  code_executor=UnsafeLocalCodeExecutor(),
 )
 
 root_agent = Agent(
-    model="gemini-2.5-flash",
-    name="skill_user_agent",
-    description="An agent that can use specialized skills.",
-    tools=[
-        my_skill_toolset,
-    ],
+  model="gemini-2.5-flash",
+  name="skill_user_agent",
+  description="An agent that can use specialized skills.",
+  tools=[
+    my_skill_toolset,
+  ],
 )

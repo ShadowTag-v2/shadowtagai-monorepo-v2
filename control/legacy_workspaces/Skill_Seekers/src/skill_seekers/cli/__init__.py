@@ -23,18 +23,18 @@ from .llms_txt_downloader import LlmsTxtDownloader
 from .llms_txt_parser import LlmsTxtParser
 
 try:
-    from .utils import open_folder, read_reference_files
+  from .utils import open_folder, read_reference_files
 except ImportError:
-    # utils.py might not exist in all configurations
-    open_folder = None
-    read_reference_files = None
+  # utils.py might not exist in all configurations
+  open_folder = None
+  read_reference_files = None
 
 __version__ = "2.0.0"
 
 __all__ = [
-    "LlmsTxtDetector",
-    "LlmsTxtDownloader",
-    "LlmsTxtParser",
-    "open_folder",
-    "read_reference_files",
+  "LlmsTxtDetector",
+  "LlmsTxtDownloader",
+  "LlmsTxtParser",
+  "open_folder",
+  "read_reference_files",
 ]

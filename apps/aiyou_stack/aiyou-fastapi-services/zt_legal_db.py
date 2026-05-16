@@ -213,6 +213,8 @@ def row_to_response_dict(row: dict) -> dict:
         "confidence": float(row.get("confidence_score", row.get("confidence", 0.92))),
         "status": row["status"],
         "created_at": (
-            row["created_at"] if isinstance(row["created_at"], datetime.datetime) else datetime.datetime.fromisoformat(str(row["created_at"]))
+            row["created_at"]
+            if isinstance(row["created_at"], datetime.datetime)
+            else datetime.datetime.fromisoformat(str(row["created_at"]))
         ),
     }

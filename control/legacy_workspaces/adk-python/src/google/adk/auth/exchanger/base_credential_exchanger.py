@@ -25,33 +25,33 @@ from ..auth_schemes import AuthScheme
 
 
 class CredentialExchangeError(Exception):
-    """Base exception for credential exchange errors."""
+  """Base exception for credential exchange errors."""
 
 
 @experimental
 class BaseCredentialExchanger(abc.ABC):
-    """Base interface for credential exchangers.
+  """Base interface for credential exchangers.
 
-    Credential exchangers are responsible for exchanging credentials from
-    one format or scheme to another.
+  Credential exchangers are responsible for exchanging credentials from
+  one format or scheme to another.
+  """
+
+  @abc.abstractmethod
+  async def exchange(
+    self,
+    auth_credential: AuthCredential,
+    auth_scheme: AuthScheme | None = None,
+  ) -> AuthCredential:
+    """Exchange credential if needed.
+
+    Args:
+        auth_credential: The credential to exchange.
+        auth_scheme: The authentication scheme (optional, some exchangers don't need it).
+
+    Returns:
+        The exchanged credential.
+
+    Raises:
+        CredentialExchangeError: If credential exchange fails.
     """
-
-    @abc.abstractmethod
-    async def exchange(
-        self,
-        auth_credential: AuthCredential,
-        auth_scheme: AuthScheme | None = None,
-    ) -> AuthCredential:
-        """Exchange credential if needed.
-
-        Args:
-            auth_credential: The credential to exchange.
-            auth_scheme: The authentication scheme (optional, some exchangers don't need it).
-
-        Returns:
-            The exchanged credential.
-
-        Raises:
-            CredentialExchangeError: If credential exchange fails.
-        """
-        pass
+    pass

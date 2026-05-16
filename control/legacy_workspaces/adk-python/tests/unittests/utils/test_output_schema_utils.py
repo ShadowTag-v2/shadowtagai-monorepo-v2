@@ -21,29 +21,29 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "model, env_value, expected",
-    [
-        ("gemini-2.5-pro", "1", True),
-        ("gemini-2.5-pro", "0", False),
-        ("gemini-2.5-pro", None, False),
-        (Gemini(model="gemini-2.5-pro"), "1", True),
-        (Gemini(model="gemini-2.5-pro"), "0", False),
-        (Gemini(model="gemini-2.5-pro"), None, False),
-        ("gemini-2.0-flash", "1", True),
-        ("gemini-2.0-flash", "0", False),
-        ("gemini-2.0-flash", None, False),
-        ("gemini-1.5-pro", "1", False),
-        ("gemini-1.5-pro", "0", False),
-        ("gemini-1.5-pro", None, False),
-        (Claude(model="claude-3.7-sonnet"), "1", False),
-        (Claude(model="claude-3.7-sonnet"), "0", False),
-        (Claude(model="claude-3.7-sonnet"), None, False),
-    ],
+  "model, env_value, expected",
+  [
+    ("gemini-2.5-pro", "1", True),
+    ("gemini-2.5-pro", "0", False),
+    ("gemini-2.5-pro", None, False),
+    (Gemini(model="gemini-2.5-pro"), "1", True),
+    (Gemini(model="gemini-2.5-pro"), "0", False),
+    (Gemini(model="gemini-2.5-pro"), None, False),
+    ("gemini-2.0-flash", "1", True),
+    ("gemini-2.0-flash", "0", False),
+    ("gemini-2.0-flash", None, False),
+    ("gemini-1.5-pro", "1", False),
+    ("gemini-1.5-pro", "0", False),
+    ("gemini-1.5-pro", None, False),
+    (Claude(model="claude-3.7-sonnet"), "1", False),
+    (Claude(model="claude-3.7-sonnet"), "0", False),
+    (Claude(model="claude-3.7-sonnet"), None, False),
+  ],
 )
 def test_can_use_output_schema_with_tools(monkeypatch, model, env_value, expected):
-    """Test can_use_output_schema_with_tools."""
-    if env_value is not None:
-        monkeypatch.setenv("GOOGLE_GENAI_USE_VERTEXAI", env_value)
-    else:
-        monkeypatch.delenv("GOOGLE_GENAI_USE_VERTEXAI", raising=False)
-    assert can_use_output_schema_with_tools(model) == expected
+  """Test can_use_output_schema_with_tools."""
+  if env_value is not None:
+    monkeypatch.setenv("GOOGLE_GENAI_USE_VERTEXAI", env_value)
+  else:
+    monkeypatch.delenv("GOOGLE_GENAI_USE_VERTEXAI", raising=False)
+  assert can_use_output_schema_with_tools(model) == expected

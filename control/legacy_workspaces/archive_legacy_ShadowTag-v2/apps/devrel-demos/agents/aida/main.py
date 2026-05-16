@@ -27,10 +27,10 @@ runner = Runner(app_name=APP_NAME, agent=root_agent, session_service=session_ser
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Handles startup and shutdown events."""
-    print("AIDA AGENT READY.")
-    yield
-    print("--- AIDA SHUTDOWN SEQUENCE ---")
+  """Handles startup and shutdown events."""
+  print("AIDA AGENT READY.")
+  yield
+  print("--- AIDA SHUTDOWN SEQUENCE ---")
 
 
 app = FastAPI(lifespan=lifespan)
@@ -42,202 +42,210 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # --- Static assets ---
 @app.get("/idle")
 async def idle():
-    return FileResponse("assets/idle.png")
+  return FileResponse("assets/idle.png")
 
 
 @app.get("/blink")
 async def blink():
-    return FileResponse("assets/blink.png")
+  return FileResponse("assets/blink.png")
 
 
 @app.get("/talk")
 async def talk():
-    return FileResponse("assets/talk.png")
+  return FileResponse("assets/talk.png")
 
 
 @app.get("/think")
 async def think():
-    return FileResponse("assets/think.png")
+  return FileResponse("assets/think.png")
 
 
 @app.get("/think_blink")
 async def think_blink():
-    return FileResponse("assets/think_blink.png")
+  return FileResponse("assets/think_blink.png")
 
 
 @app.get("/teehee")
 async def teehee():
-    return FileResponse("assets/teehee.png")
+  return FileResponse("assets/teehee.png")
 
 
 @app.get("/error")
 async def error():
-    return FileResponse("assets/error.png")
+  return FileResponse("assets/error.png")
 
 
 @app.get("/random_image")
 async def random_image():
-    images = os.listdir("assets")
-    random_image = random.choice(images)
-    return FileResponse(f"assets/{random_image}")
+  images = os.listdir("assets")
+  random_image = random.choice(images)
+  return FileResponse(f"assets/{random_image}")
 
 
 # --- Web Interface (HTML) ---
 @app.get("/", response_class=HTMLResponse)
 async def get_chat_ui():
-    """Serves the simple HTML chat interface."""
-    return FileResponse("templates/index.html")
+  """Serves the simple HTML chat interface."""
+  return FileResponse("templates/index.html")
 
 
 # --- API Endpoint for Chat Logic ---
 @app.get("/config/model")
 async def get_model():
-    current_model = root_agent.model
-    model_id = "gemini"  # Default
+  current_model = root_agent.model
+  model_id = "gemini"  # Default
 
-    from aida.agent import MODELS
+  from aida.agent import MODELS
 
-    for mid, m_obj in MODELS.items():
-        if m_obj == current_model:
-            model_id = mid
-            break
-        # Handle cases where current_model might be a string but stored as string in MODELS
-        if isinstance(current_model, str) and current_model == m_obj:
-            model_id = mid
-            break
-        # Handle LiteLlm objects
-        if hasattr(m_obj, "model_name") and hasattr(current_model, "model_name"):
-            if m_obj.model_name == current_model.model_name:
-                model_id = mid
-                break
+  for mid, m_obj in MODELS.items():
+    if m_obj == current_model:
+      model_id = mid
+      break
+    # Handle cases where current_model might be a string but stored as string in MODELS
+    if isinstance(current_model, str) and current_model == m_obj:
+      model_id = mid
+      break
+    # Handle LiteLlm objects
+    if hasattr(m_obj, "model_name") and hasattr(current_model, "model_name"):
+      if m_obj.model_name == current_model.model_name:
+        model_id = mid
+        break
 
-    return {"model_id": model_id}
+  return {"model_id": model_id}
 
 
 @app.post("/config/model")
 async def set_model(request: Request):
-    body = await request.json()
-    model_id = body.get("model_id")
+  body = await request.json()
+  model_id = body.get("model_id")
 
-    from aida.agent import MODELS
+  from aida.agent import MODELS
 
-    if model_id in MODELS:
-        root_agent.model = MODELS[model_id]
-    else:
-        return {"error": f"Invalid model ID. Available: {', '.join(MODELS.keys())}"}
+  if model_id in MODELS:
+    root_agent.model = MODELS[model_id]
+  else:
+    return {"error": f"Invalid model ID. Available: {', '.join(MODELS.keys())}"}
 
-    return {"status": "ok", "current_model": str(root_agent.model)}
+  return {"status": "ok", "current_model": str(root_agent.model)}
 
 
 @app.get("/session/usage")
 async def get_session_usage():
-    user_id = "web_user"
-    session_id = "web_session"
-    session = await session_service.get_session(app_name=APP_NAME, user_id=user_id, session_id=session_id)
+  user_id = "web_user"
+  session_id = "web_session"
+  session = await session_service.get_session(
+    app_name=APP_NAME, user_id=user_id, session_id=session_id
+  )
 
-    usage = {
-        "prompt_tokens": 0,
-        "completion_tokens": 0,
-        "total_tokens": 0,
-        "max_tokens": 1000000,
-    }
+  usage = {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "max_tokens": 1000000,
+  }
 
-    # Determine max tokens based on current model
-    current_model = root_agent.model
+  # Determine max tokens based on current model
+  current_model = root_agent.model
 
-    is_gemini = False
-    if isinstance(current_model, str) and "gemini" in current_model:
-        is_gemini = True
-    elif hasattr(current_model, "model_name") and "gemini" in current_model.model_name:
-        is_gemini = True
+  is_gemini = False
+  if isinstance(current_model, str) and "gemini" in current_model:
+    is_gemini = True
+  elif hasattr(current_model, "model_name") and "gemini" in current_model.model_name:
+    is_gemini = True
 
-    if is_gemini:
-        usage["max_tokens"] = 1000000
-    else:
-        # Assume it's LiteLlm/Ollama Qwen 2.5 or GPT-OSS
-        usage["max_tokens"] = 32768
+  if is_gemini:
+    usage["max_tokens"] = 1000000
+  else:
+    # Assume it's LiteLlm/Ollama Qwen 2.5 or GPT-OSS
+    usage["max_tokens"] = 32768
 
-    if session and session.events:
-        # Find the last event with usage metadata
-        for event in reversed(session.events):
-            if event.usage_metadata:
-                meta = event.usage_metadata
-                try:
-                    usage["prompt_tokens"] = getattr(meta, "prompt_token_count", 0)
-                    usage["completion_tokens"] = getattr(meta, "candidates_token_count", 0)
-                    usage["total_tokens"] = getattr(meta, "total_token_count", 0)
-                    break
-                except Exception as e:
-                    print(f"Error accessing usage metadata: {e}")
+  if session and session.events:
+    # Find the last event with usage metadata
+    for event in reversed(session.events):
+      if event.usage_metadata:
+        meta = event.usage_metadata
+        try:
+          usage["prompt_tokens"] = getattr(meta, "prompt_token_count", 0)
+          usage["completion_tokens"] = getattr(meta, "candidates_token_count", 0)
+          usage["total_tokens"] = getattr(meta, "total_token_count", 0)
+          break
+        except Exception as e:
+          print(f"Error accessing usage metadata: {e}")
 
-    return usage
+  return usage
 
 
 @app.post("/session/clear")
 async def clear_session():
-    user_id = "web_user"
-    session_id = "web_session"
-    await session_service.delete_session(app_name=APP_NAME, user_id=user_id, session_id=session_id)
-    print(f"--- SESSION CLEARED: {session_id} ---")
-    return {"status": "ok", "message": "Session history cleared."}
+  user_id = "web_user"
+  session_id = "web_session"
+  await session_service.delete_session(
+    app_name=APP_NAME, user_id=user_id, session_id=session_id
+  )
+  print(f"--- SESSION CLEARED: {session_id} ---")
+  return {"status": "ok", "message": "Session history cleared."}
 
 
 @app.post("/chat")
 async def chat_handler(request: Request):
-    """Handles the chat logic, streaming the agent's response."""
-    body = await request.json()
-    query = body.get("query")
-    user_id = "web_user"
-    session_id = "web_session"
+  """Handles the chat logic, streaming the agent's response."""
+  body = await request.json()
+  query = body.get("query")
+  user_id = "web_user"
+  session_id = "web_session"
 
-    print(f"Processing request with model: {root_agent.model}")
+  print(f"Processing request with model: {root_agent.model}")
 
-    # Ensure a session exists
-    session = await session_service.get_session(app_name=APP_NAME, user_id=user_id, session_id=session_id)
-    if not session:
-        session = await session_service.create_session(app_name=APP_NAME, user_id=user_id, session_id=session_id)
+  # Ensure a session exists
+  session = await session_service.get_session(
+    app_name=APP_NAME, user_id=user_id, session_id=session_id
+  )
+  if not session:
+    session = await session_service.create_session(
+      app_name=APP_NAME, user_id=user_id, session_id=session_id
+    )
 
-    async def stream_generator():
-        """Streams JSON-formatted events for logs and text."""
-        full_response = ""
-        async for event in runner.run_async(
-            user_id=user_id,
-            session_id=session_id,
-            new_message=Content(role="user", parts=[Part.from_text(text=query)]),
-        ):
-            # Try to capture tool calls from the event
-            if event.content and event.content.parts:
-                for part in event.content.parts:
-                    # Check for function calls (standard Gemini/Gemma structure)
-                    if hasattr(part, "function_call") and part.function_call:
-                        fc = part.function_call
-                        # Format args nicely
-                        args_str = ", ".join(f"{k}='{v}'" for k, v in fc.args.items())
-                        log_msg = f"EXECUTING: {fc.name}({args_str})"
-                        yield json.dumps({"type": "log", "content": log_msg}) + "\n"
+  async def stream_generator():
+    """Streams JSON-formatted events for logs and text."""
+    full_response = ""
+    async for event in runner.run_async(
+      user_id=user_id,
+      session_id=session_id,
+      new_message=Content(role="user", parts=[Part.from_text(text=query)]),
+    ):
+      # Try to capture tool calls from the event
+      if event.content and event.content.parts:
+        for part in event.content.parts:
+          # Check for function calls (standard Gemini/Gemma structure)
+          if hasattr(part, "function_call") and part.function_call:
+            fc = part.function_call
+            # Format args nicely
+            args_str = ", ".join(f"{k}='{v}'" for k, v in fc.args.items())
+            log_msg = f"EXECUTING: {fc.name}({args_str})"
+            yield json.dumps({"type": "log", "content": log_msg}) + "\n"
 
-                    # Check for function responses (tool output)
-                    if hasattr(part, "function_response") and part.function_response:
-                        fr = part.function_response
-                        # Extract result if possible, otherwise use whole response
-                        if isinstance(fr.response, dict) and "result" in fr.response:
-                            output_str = str(fr.response["result"])
-                        else:
-                            output_str = str(fr.response)
+          # Check for function responses (tool output)
+          if hasattr(part, "function_response") and part.function_response:
+            fr = part.function_response
+            # Extract result if possible, otherwise use whole response
+            if isinstance(fr.response, dict) and "result" in fr.response:
+              output_str = str(fr.response["result"])
+            else:
+              output_str = str(fr.response)
 
-                        yield (json.dumps({"type": "tool_output", "content": output_str}) + "\n")
+            yield (json.dumps({"type": "tool_output", "content": output_str}) + "\n")
 
-            # Capture final text response
-            if event.is_final_response() and event.content and event.content.parts:
-                for part in event.content.parts:
-                    if hasattr(part, "text") and part.text:
-                        new_text = part.text
-                        chunk = new_text[len(full_response) :]
-                        if chunk:
-                            yield json.dumps({"type": "text", "content": chunk}) + "\n"
-                            full_response = new_text
+      # Capture final text response
+      if event.is_final_response() and event.content and event.content.parts:
+        for part in event.content.parts:
+          if hasattr(part, "text") and part.text:
+            new_text = part.text
+            chunk = new_text[len(full_response) :]
+            if chunk:
+              yield json.dumps({"type": "text", "content": chunk}) + "\n"
+              full_response = new_text
 
-    return StreamingResponse(stream_generator(), media_type="application/x-ndjson")
+  return StreamingResponse(stream_generator(), media_type="application/x-ndjson")
 
 
 # To run this file:

@@ -14,284 +14,291 @@ from typing import Any
 import logging
 
 try:
-    from google.cloud import firestore
+  from google.cloud import firestore
 
-    FIRESTORE_AVAILABLE = True
+  FIRESTORE_AVAILABLE = True
 except ImportError:
-    FIRESTORE_AVAILABLE = False
-    logging.warning("Firestore SDK not installed. Install with: pip install google-cloud-firestore")
+  FIRESTORE_AVAILABLE = False
+  logging.warning(
+    "Firestore SDK not installed. Install with: pip install google-cloud-firestore"
+  )
 
 from kosmos.core.world_model import (
-    KosmosWorldModel,
-    Hypothesis,
-    AnalysisResult,
-    LiteratureRef,
+  KosmosWorldModel,
+  Hypothesis,
+  AnalysisResult,
+  LiteratureRef,
 )
 
 logger = logging.getLogger(__name__)
 
 
 class FirestoreBackend:
+  """
+  Firestore persistence backend for world model state.
+
+  Schema:
+      /sessions/{session_id}
+          - metadata (goal, status, phase, timestamps, costs)
+      /sessions/{session_id}/hypotheses/{hypothesis_id}
+          - hypothesis data
+      /sessions/{session_id}/analysis_results/{result_id}
+          - analysis result data
+      /sessions/{session_id}/literature/{lit_id}
+          - literature reference data
+  """
+
+  def __init__(
+    self,
+    project_id: str,
+    database: str = "(default)",
+  ):
     """
-    Firestore persistence backend for world model state.
+    Initialize Firestore backend.
 
-    Schema:
-        /sessions/{session_id}
-            - metadata (goal, status, phase, timestamps, costs)
-        /sessions/{session_id}/hypotheses/{hypothesis_id}
-            - hypothesis data
-        /sessions/{session_id}/analysis_results/{result_id}
-            - analysis result data
-        /sessions/{session_id}/literature/{lit_id}
-            - literature reference data
+    Args:
+        project_id: GCP project ID
+        database: Firestore database name
     """
+    if not FIRESTORE_AVAILABLE:
+      raise RuntimeError("Firestore SDK not installed")
 
-    def __init__(
-        self,
-        project_id: str,
-        database: str = "(default)",
-    ):
-        """
-        Initialize Firestore backend.
+    self.project_id = project_id
+    self.db = firestore.Client(project=project_id, database=database)
 
-        Args:
-            project_id: GCP project ID
-            database: Firestore database name
-        """
-        if not FIRESTORE_AVAILABLE:
-            raise RuntimeError("Firestore SDK not installed")
+    logger.info(f"Firestore backend initialized for project {project_id}")
 
-        self.project_id = project_id
-        self.db = firestore.Client(project=project_id, database=database)
+  def save_world_model(self, world_model: KosmosWorldModel):
+    """
+    Save complete world model state to Firestore.
 
-        logger.info(f"Firestore backend initialized for project {project_id}")
+    Args:
+        world_model: KosmosWorldModel instance to save
+    """
+    session_id = world_model.session_id
 
-    def save_world_model(self, world_model: KosmosWorldModel):
-        """
-        Save complete world model state to Firestore.
+    # Save session metadata
+    session_ref = self.db.collection("sessions").document(session_id)
+    session_data = {
+      "session_id": session_id,
+      "goal": world_model.goal,
+      "status": world_model.status,
+      "phase": world_model.phase.value,
+      "phase_history": world_model.phase_history,
+      "created_at": world_model.created_at,
+      "total_cost": world_model.total_cost,
+      "total_tokens": world_model.total_tokens,
+      "num_hypotheses": len(world_model.hypotheses),
+      "num_analysis_results": len(world_model.analysis_results),
+      "num_literature_refs": len(world_model.literature_refs),
+    }
+    session_ref.set(session_data, merge=True)
 
-        Args:
-            world_model: KosmosWorldModel instance to save
-        """
-        session_id = world_model.session_id
+    # Save hypotheses
+    for hyp in world_model.hypotheses:
+      hyp_ref = session_ref.collection("hypotheses").document(hyp.id)
+      hyp_ref.set(hyp.to_dict(), merge=True)
 
-        # Save session metadata
-        session_ref = self.db.collection("sessions").document(session_id)
-        session_data = {
-            "session_id": session_id,
-            "goal": world_model.goal,
-            "status": world_model.status,
-            "phase": world_model.phase.value,
-            "phase_history": world_model.phase_history,
-            "created_at": world_model.created_at,
-            "total_cost": world_model.total_cost,
-            "total_tokens": world_model.total_tokens,
-            "num_hypotheses": len(world_model.hypotheses),
-            "num_analysis_results": len(world_model.analysis_results),
-            "num_literature_refs": len(world_model.literature_refs),
-        }
-        session_ref.set(session_data, merge=True)
+    # Save analysis results
+    for result in world_model.analysis_results:
+      result_ref = session_ref.collection("analysis_results").document(result.id)
+      result_ref.set(result.to_dict(), merge=True)
 
-        # Save hypotheses
-        for hyp in world_model.hypotheses:
-            hyp_ref = session_ref.collection("hypotheses").document(hyp.id)
-            hyp_ref.set(hyp.to_dict(), merge=True)
+    # Save literature refs
+    for lit in world_model.literature_refs:
+      lit_ref = session_ref.collection("literature").document(lit.id)
+      lit_ref.set(lit.to_dict(), merge=True)
 
-        # Save analysis results
-        for result in world_model.analysis_results:
-            result_ref = session_ref.collection("analysis_results").document(result.id)
-            result_ref.set(result.to_dict(), merge=True)
+    logger.info(
+      f"Saved world model for session {session_id}: "
+      f"{len(world_model.hypotheses)} hypotheses, "
+      f"{len(world_model.analysis_results)} results, "
+      f"{len(world_model.literature_refs)} literature"
+    )
 
-        # Save literature refs
-        for lit in world_model.literature_refs:
-            lit_ref = session_ref.collection("literature").document(lit.id)
-            lit_ref.set(lit.to_dict(), merge=True)
+  def load_world_model(self, session_id: str) -> KosmosWorldModel | None:
+    """
+    Load world model state from Firestore.
 
-        logger.info(
-            f"Saved world model for session {session_id}: "
-            f"{len(world_model.hypotheses)} hypotheses, "
-            f"{len(world_model.analysis_results)} results, "
-            f"{len(world_model.literature_refs)} literature"
-        )
+    Args:
+        session_id: Session ID to load
 
-    def load_world_model(self, session_id: str) -> KosmosWorldModel | None:
-        """
-        Load world model state from Firestore.
+    Returns:
+        KosmosWorldModel instance or None if not found
+    """
+    session_ref = self.db.collection("sessions").document(session_id)
+    session_doc = session_ref.get()
 
-        Args:
-            session_id: Session ID to load
+    if not session_doc.exists:
+      logger.warning(f"Session {session_id} not found in Firestore")
+      return None
 
-        Returns:
-            KosmosWorldModel instance or None if not found
-        """
-        session_ref = self.db.collection("sessions").document(session_id)
-        session_doc = session_ref.get()
+    session_data = session_doc.to_dict()
 
-        if not session_doc.exists:
-            logger.warning(f"Session {session_id} not found in Firestore")
-            return None
+    # Create world model instance
+    world_model = KosmosWorldModel(
+      session_id=session_id,
+      goal=session_data["goal"],
+    )
+    world_model.status = session_data.get("status", "initialized")
+    world_model.created_at = session_data.get("created_at")
+    world_model.total_cost = session_data.get("total_cost", 0.0)
+    world_model.total_tokens = session_data.get("total_tokens", 0)
+    world_model.phase_history = session_data.get("phase_history", [])
 
-        session_data = session_doc.to_dict()
+    # Load hypotheses
+    hyp_docs = session_ref.collection("hypotheses").stream()
+    for hyp_doc in hyp_docs:
+      hyp_data = hyp_doc.to_dict()
+      hypothesis = Hypothesis.from_dict(hyp_data)
+      world_model.hypotheses.append(hypothesis)
 
-        # Create world model instance
-        world_model = KosmosWorldModel(
-            session_id=session_id,
-            goal=session_data["goal"],
-        )
-        world_model.status = session_data.get("status", "initialized")
-        world_model.created_at = session_data.get("created_at")
-        world_model.total_cost = session_data.get("total_cost", 0.0)
-        world_model.total_tokens = session_data.get("total_tokens", 0)
-        world_model.phase_history = session_data.get("phase_history", [])
+    # Load analysis results
+    result_docs = session_ref.collection("analysis_results").stream()
+    for result_doc in result_docs:
+      result_data = result_doc.to_dict()
+      analysis_result = AnalysisResult.from_dict(result_data)
+      world_model.analysis_results.append(analysis_result)
 
-        # Load hypotheses
-        hyp_docs = session_ref.collection("hypotheses").stream()
-        for hyp_doc in hyp_docs:
-            hyp_data = hyp_doc.to_dict()
-            hypothesis = Hypothesis.from_dict(hyp_data)
-            world_model.hypotheses.append(hypothesis)
+    # Load literature refs
+    lit_docs = session_ref.collection("literature").stream()
+    for lit_doc in lit_docs:
+      lit_data = lit_doc.to_dict()
+      lit_ref = LiteratureRef.from_dict(lit_data)
+      world_model.literature_refs.append(lit_ref)
 
-        # Load analysis results
-        result_docs = session_ref.collection("analysis_results").stream()
-        for result_doc in result_docs:
-            result_data = result_doc.to_dict()
-            analysis_result = AnalysisResult.from_dict(result_data)
-            world_model.analysis_results.append(analysis_result)
+    logger.info(
+      f"Loaded world model for session {session_id}: "
+      f"{len(world_model.hypotheses)} hypotheses, "
+      f"{len(world_model.analysis_results)} results, "
+      f"{len(world_model.literature_refs)} literature"
+    )
 
-        # Load literature refs
-        lit_docs = session_ref.collection("literature").stream()
-        for lit_doc in lit_docs:
-            lit_data = lit_doc.to_dict()
-            lit_ref = LiteratureRef.from_dict(lit_data)
-            world_model.literature_refs.append(lit_ref)
+    return world_model
 
-        logger.info(
-            f"Loaded world model for session {session_id}: "
-            f"{len(world_model.hypotheses)} hypotheses, "
-            f"{len(world_model.analysis_results)} results, "
-            f"{len(world_model.literature_refs)} literature"
-        )
+  def list_sessions(
+    self,
+    limit: int = 100,
+    status: str | None = None,
+  ) -> list[dict[str, Any]]:
+    """
+    List available sessions.
 
-        return world_model
+    Args:
+        limit: Maximum number of sessions to return
+        status: Optional status filter (e.g., "running", "completed")
 
-    def list_sessions(
-        self,
-        limit: int = 100,
-        status: str | None = None,
-    ) -> list[dict[str, Any]]:
-        """
-        List available sessions.
+    Returns:
+        List of session metadata dictionaries
+    """
+    query = self.db.collection("sessions").limit(limit)
 
-        Args:
-            limit: Maximum number of sessions to return
-            status: Optional status filter (e.g., "running", "completed")
+    if status:
+      query = query.where("status", "==", status)
 
-        Returns:
-            List of session metadata dictionaries
-        """
-        query = self.db.collection("sessions").limit(limit)
+    sessions = []
+    for doc in query.stream():
+      sessions.append(doc.to_dict())
 
-        if status:
-            query = query.where("status", "==", status)
+    return sessions
 
-        sessions = []
-        for doc in query.stream():
-            sessions.append(doc.to_dict())
+  def delete_session(self, session_id: str):
+    """
+    Delete a session and all its subcollections.
 
-        return sessions
+    Args:
+        session_id: Session ID to delete
+    """
+    session_ref = self.db.collection("sessions").document(session_id)
 
-    def delete_session(self, session_id: str):
-        """
-        Delete a session and all its subcollections.
+    # Delete subcollections
+    self._delete_collection(session_ref.collection("hypotheses"))
+    self._delete_collection(session_ref.collection("analysis_results"))
+    self._delete_collection(session_ref.collection("literature"))
 
-        Args:
-            session_id: Session ID to delete
-        """
-        session_ref = self.db.collection("sessions").document(session_id)
+    # Delete session document
+    session_ref.delete()
 
-        # Delete subcollections
-        self._delete_collection(session_ref.collection("hypotheses"))
-        self._delete_collection(session_ref.collection("analysis_results"))
-        self._delete_collection(session_ref.collection("literature"))
+    logger.info(f"Deleted session {session_id}")
 
-        # Delete session document
-        session_ref.delete()
+  def _delete_collection(self, collection_ref, batch_size: int = 100):
+    """Delete all documents in a collection."""
+    docs = collection_ref.limit(batch_size).stream()
+    deleted = 0
 
-        logger.info(f"Deleted session {session_id}")
+    for doc in docs:
+      doc.reference.delete()
+      deleted += 1
 
-    def _delete_collection(self, collection_ref, batch_size: int = 100):
-        """Delete all documents in a collection."""
-        docs = collection_ref.limit(batch_size).stream()
-        deleted = 0
+    if deleted >= batch_size:
+      # Recursively delete remaining documents
+      return self._delete_collection(collection_ref, batch_size)
 
-        for doc in docs:
-            doc.reference.delete()
-            deleted += 1
+  def update_session_status(self, session_id: str, status: str):
+    """
+    Update session status.
 
-        if deleted >= batch_size:
-            # Recursively delete remaining documents
-            return self._delete_collection(collection_ref, batch_size)
+    Args:
+        session_id: Session ID
+        status: New status
+    """
+    session_ref = self.db.collection("sessions").document(session_id)
+    session_ref.update({"status": status})
 
-    def update_session_status(self, session_id: str, status: str):
-        """
-        Update session status.
+  def get_hypothesis(self, session_id: str, hypothesis_id: str) -> Hypothesis | None:
+    """
+    Get a specific hypothesis.
 
-        Args:
-            session_id: Session ID
-            status: New status
-        """
-        session_ref = self.db.collection("sessions").document(session_id)
-        session_ref.update({"status": status})
+    Args:
+        session_id: Session ID
+        hypothesis_id: Hypothesis ID
 
-    def get_hypothesis(self, session_id: str, hypothesis_id: str) -> Hypothesis | None:
-        """
-        Get a specific hypothesis.
+    Returns:
+        Hypothesis instance or None
+    """
+    hyp_ref = (
+      self.db.collection("sessions")
+      .document(session_id)
+      .collection("hypotheses")
+      .document(hypothesis_id)
+    )
 
-        Args:
-            session_id: Session ID
-            hypothesis_id: Hypothesis ID
+    hyp_doc = hyp_ref.get()
+    if not hyp_doc.exists:
+      return None
 
-        Returns:
-            Hypothesis instance or None
-        """
-        hyp_ref = self.db.collection("sessions").document(session_id).collection("hypotheses").document(hypothesis_id)
+    return Hypothesis.from_dict(hyp_doc.to_dict())
 
-        hyp_doc = hyp_ref.get()
-        if not hyp_doc.exists:
-            return None
+  def query_hypotheses(
+    self,
+    session_id: str,
+    min_confidence: float | None = None,
+    tested: bool | None = None,
+  ) -> list[Hypothesis]:
+    """
+    Query hypotheses with filters.
 
-        return Hypothesis.from_dict(hyp_doc.to_dict())
+    Args:
+        session_id: Session ID
+        min_confidence: Minimum confidence score
+        tested: Filter by tested status
 
-    def query_hypotheses(
-        self,
-        session_id: str,
-        min_confidence: float | None = None,
-        tested: bool | None = None,
-    ) -> list[Hypothesis]:
-        """
-        Query hypotheses with filters.
+    Returns:
+        List of matching Hypothesis instances
+    """
+    query = self.db.collection("sessions").document(session_id).collection("hypotheses")
 
-        Args:
-            session_id: Session ID
-            min_confidence: Minimum confidence score
-            tested: Filter by tested status
+    if min_confidence is not None:
+      query = query.where("confidence", ">=", min_confidence)
 
-        Returns:
-            List of matching Hypothesis instances
-        """
-        query = self.db.collection("sessions").document(session_id).collection("hypotheses")
+    if tested is not None:
+      query = query.where("tested", "==", tested)
 
-        if min_confidence is not None:
-            query = query.where("confidence", ">=", min_confidence)
+    hypotheses = []
+    for doc in query.stream():
+      hypotheses.append(Hypothesis.from_dict(doc.to_dict()))
 
-        if tested is not None:
-            query = query.where("tested", "==", tested)
+    return hypotheses
 
-        hypotheses = []
-        for doc in query.stream():
-            hypotheses.append(Hypothesis.from_dict(doc.to_dict()))
-
-        return hypotheses
-
-    def __repr__(self) -> str:
-        return f"FirestoreBackend(project={self.project_id})"
+  def __repr__(self) -> str:
+    return f"FirestoreBackend(project={self.project_id})"

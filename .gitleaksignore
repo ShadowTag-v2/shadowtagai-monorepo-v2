@@ -23,3 +23,13 @@ terraform/gke-file-search/**:kubernetes-secret-yaml
 
 # Generic API key patterns in configuration files that use env var references
 *.toml:generic-api-key
+# False positives: reference repos with test API key patterns
+.reference_repos/stitch-mcp/src/commands/doctor/steps/ApiKeyConnectionStep.ts
+.reference_repos/stitch-mcp/src/commands/doctor/steps/ApiKeyDetectedStep.ts
+.reference_repos/stitch-mcp/src/commands/init/handler_apikey_proxy.test.ts
+.reference_repos/stitch-mcp/src/services/mcp-config/handler_apikey.test.ts
+# False positives: google-cloud-sdk bootstrapping
+Installation directory*
+# Legacy workspaces with test credentials
+control/legacy_workspaces/**
+_archive_redundant_venvs_2026-05-04/**

@@ -8,10 +8,10 @@ from app.models.memory import Memory
 from app.models.embedding import VectorEmbedding
 
 __all__ = [
-    "User",
-    "Project",
-    "Conversation",
-    "Message",
-    "Memory",
-    "VectorEmbedding",
+  "User",
+  "Project",
+  "Conversation",
+  "Message",
+  "Memory",
+  "VectorEmbedding",
 ]

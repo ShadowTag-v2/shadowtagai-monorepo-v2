@@ -20,49 +20,49 @@ from google.genai import types
 
 
 class _TestRetrievalTool(BaseRetrievalTool):
-    """Concrete implementation of BaseRetrievalTool for testing."""
+  """Concrete implementation of BaseRetrievalTool for testing."""
 
-    def __init__(self):
-        super().__init__(
-            name="test_retrieval",
-            description="A test retrieval tool.",
-        )
+  def __init__(self):
+    super().__init__(
+      name="test_retrieval",
+      description="A test retrieval tool.",
+    )
 
-    async def run_async(self, *, args, tool_context):
-        return {"result": "test"}
+  async def run_async(self, *, args, tool_context):
+    return {"result": "test"}
 
 
 def test_get_declaration_with_json_schema_feature_disabled():
-    """Test that _get_declaration uses parameters when feature is disabled."""
-    tool = _TestRetrievalTool()
+  """Test that _get_declaration uses parameters when feature is disabled."""
+  tool = _TestRetrievalTool()
 
-    with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, False):
-        declaration = tool._get_declaration()
+  with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, False):
+    declaration = tool._get_declaration()
 
-    assert declaration.name == "test_retrieval"
-    assert declaration.description == "A test retrieval tool."
-    assert declaration.parameters_json_schema is None
-    assert isinstance(declaration.parameters, types.Schema)
-    assert declaration.parameters.type == types.Type.OBJECT
-    assert "query" in declaration.parameters.properties
+  assert declaration.name == "test_retrieval"
+  assert declaration.description == "A test retrieval tool."
+  assert declaration.parameters_json_schema is None
+  assert isinstance(declaration.parameters, types.Schema)
+  assert declaration.parameters.type == types.Type.OBJECT
+  assert "query" in declaration.parameters.properties
 
 
 def test_get_declaration_with_json_schema_feature_enabled():
-    """Test that _get_declaration uses parameters_json_schema when feature is enabled."""
-    tool = _TestRetrievalTool()
+  """Test that _get_declaration uses parameters_json_schema when feature is enabled."""
+  tool = _TestRetrievalTool()
 
-    with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, True):
-        declaration = tool._get_declaration()
+  with temporary_feature_override(FeatureName.JSON_SCHEMA_FOR_FUNC_DECL, True):
+    declaration = tool._get_declaration()
 
-    assert declaration.name == "test_retrieval"
-    assert declaration.description == "A test retrieval tool."
-    assert declaration.parameters is None
-    assert declaration.parameters_json_schema == {
-        "type": "object",
-        "properties": {
-            "query": {
-                "type": "string",
-                "description": "The query to retrieve.",
-            },
-        },
-    }
+  assert declaration.name == "test_retrieval"
+  assert declaration.description == "A test retrieval tool."
+  assert declaration.parameters is None
+  assert declaration.parameters_json_schema == {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The query to retrieve.",
+      },
+    },
+  }

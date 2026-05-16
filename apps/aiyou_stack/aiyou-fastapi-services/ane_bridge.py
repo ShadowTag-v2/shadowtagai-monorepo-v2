@@ -3,10 +3,18 @@ import ctypes
 from pathlib import Path
 
 # Locate the dylib compiled from third_party/ANE/bridge/
-DYLIB_PATH = Path(__file__).resolve().parent.parent.parent.parent / "third_party" / "ANE" / "bridge" / "libane_bridge.dylib"
+DYLIB_PATH = (
+    Path(__file__).resolve().parent.parent.parent.parent
+    / "third_party"
+    / "ANE"
+    / "bridge"
+    / "libane_bridge.dylib"
+)
 
 if not DYLIB_PATH.exists():
-    raise RuntimeError(f"ANE bridge library not found at: {DYLIB_PATH}. Run 'make' in third_party/ANE/bridge.")
+    raise RuntimeError(
+        f"ANE bridge library not found at: {DYLIB_PATH}. Run 'make' in third_party/ANE/bridge."
+    )
 
 # Load the library
 _lib = ctypes.CDLL(str(DYLIB_PATH))
@@ -39,11 +47,21 @@ _lib.ane_bridge_eval.argtypes = [ctypes.POINTER(ANEKernelHandle)]
 _lib.ane_bridge_eval.restype = ctypes.c_bool
 
 # void ane_bridge_write_input(ANEKernelHandle *kernel, int idx, const void *data, size_t bytes);
-_lib.ane_bridge_write_input.argtypes = [ctypes.POINTER(ANEKernelHandle), ctypes.c_int, ctypes.c_void_p, ctypes.c_size_t]
+_lib.ane_bridge_write_input.argtypes = [
+    ctypes.POINTER(ANEKernelHandle),
+    ctypes.c_int,
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+]
 _lib.ane_bridge_write_input.restype = None
 
 # void ane_bridge_read_output(ANEKernelHandle *kernel, int idx, void *data, size_t bytes);
-_lib.ane_bridge_read_output.argtypes = [ctypes.POINTER(ANEKernelHandle), ctypes.c_int, ctypes.c_void_p, ctypes.c_size_t]
+_lib.ane_bridge_read_output.argtypes = [
+    ctypes.POINTER(ANEKernelHandle),
+    ctypes.c_int,
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+]
 _lib.ane_bridge_read_output.restype = None
 
 # void ane_bridge_free(ANEKernelHandle *kernel);

@@ -11,55 +11,70 @@ from urllib3.util.retry import Retry
 
 
 def run(cmd):
-    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-    return res
+  res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+  return res
 
 
 def get_session():
-    session = requests.Session()
-    retry = Retry(connect=5, read=5, backoff_factor=1.0, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount("https://", adapter)
-    return session
+  session = requests.Session()
+  retry = Retry(
+    connect=5, read=5, backoff_factor=1.0, status_forcelist=[500, 502, 503, 504]
+  )
+  adapter = HTTPAdapter(max_retries=retry)
+  session.mount("https://", adapter)
+  return session
 
 
 def get_token(app_id, pem_path, owner_name):
-    with open(pem_path, "rb") as f:
-        pem_data = f.read()
+  with open(pem_path, "rb") as f:
+    pem_data = f.read()
 
-    iat = int(time.time()) - 60
-    exp = iat + (10 * 60)
-    payload = {"iat": iat, "exp": exp, "iss": str(app_id)}
-    encoded_jwt = jwt.encode(payload, pem_data, algorithm="RS256")
+  iat = int(time.time()) - 60
+  exp = iat + (10 * 60)
+  payload = {"iat": iat, "exp": exp, "iss": str(app_id)}
+  encoded_jwt = jwt.encode(payload, pem_data, algorithm="RS256")
 
-    headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
-    session = get_session()
+  headers = {
+    "Authorization": f"Bearer {encoded_jwt}",
+    "Accept": "application/vnd.github.v3+json",
+  }
+  session = get_session()
 
-    resp = session.get("https://api.github.com/app/installations", headers=headers, timeout=30)
-    if resp.status_code != 200:
-        return None
-    installations = resp.json()
+  resp = session.get(
+    "https://api.github.com/app/installations", headers=headers, timeout=30
+  )
+  if resp.status_code != 200:
+    return None
+  installations = resp.json()
 
-    target_installation_id = None
-    for inst in installations:
-        if inst["account"]["login"].lower() == owner_name.lower():
-            target_installation_id = inst["id"]
-            break
-    if not target_installation_id and installations:
-        target_installation_id = installations[0]["id"]
-    if not target_installation_id:
-        return None
-
-    resp = session.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers, timeout=30)
-    if resp.status_code == 201:
-        return resp.json()["token"]
+  target_installation_id = None
+  for inst in installations:
+    if inst["account"]["login"].lower() == owner_name.lower():
+      target_installation_id = inst["id"]
+      break
+  if not target_installation_id and installations:
+    target_installation_id = installations[0]["id"]
+  if not target_installation_id:
     return None
 
+  resp = session.post(
+    f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
+    headers=headers,
+    timeout=30,
+  )
+  if resp.status_code == 201:
+    return resp.json()["token"]
+  return None
 
-token_s = get_token("3018200", "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem", "ShadowTag-v2")
+
+token_s = get_token(
+  "3018200",
+  "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+  "ShadowTag-v2",
+)
 if not token_s:
-    print("Failed to acquire token")
-    sys.exit(1)
+  print("Failed to acquire token")
+  sys.exit(1)
 
 os.environ["GIT_TERMINAL_PROMPT"] = "0"
 os.environ["GIT_ASKPASS"] = "/usr/bin/false"
@@ -76,7 +91,7 @@ print("3. Executing Monolith Push of scrubbed main history...")
 push_res = run("git push -f --set-upstream origin main")
 
 if push_res.returncode != 0:
-    print(f"Push failed. Error: {push_res.stderr}")
-    sys.exit(1)
+  print(f"Push failed. Error: {push_res.stderr}")
+  sys.exit(1)
 
 print("SUCCESS: Deep synced 56 canonical repositories to GitHub App target.")

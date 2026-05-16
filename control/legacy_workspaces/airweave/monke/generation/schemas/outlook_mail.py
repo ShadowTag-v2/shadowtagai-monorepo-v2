@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class OutlookMessage(BaseModel):
-    """Schema for Outlook email generation."""
+  """Schema for Outlook email generation."""
 
-    subject: str = Field(description="Email subject line")
-    body: str = Field(description="Email body content")
+  subject: str = Field(description="Email subject line")
+  body: str = Field(description="Email body content")
