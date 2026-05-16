@@ -355,7 +355,7 @@ class CheatSheetFusion:
                 # Add more specific keywords
                 keywords = new_essentials[Essential.KEYWORDS]
                 if isinstance(keywords, list):
-                    keywords.append(f"high_quality_tier_1")
+                    keywords.append("high_quality_tier_1")
                 new_essentials[Essential.KEYWORDS] = keywords
 
         elif direction == "explore":

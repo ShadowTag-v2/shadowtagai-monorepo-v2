@@ -9,7 +9,6 @@ Real-time monitoring of 200-agent deployment progress
 import json
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List
 from dataclasses import dataclass, asdict
 
 @dataclass

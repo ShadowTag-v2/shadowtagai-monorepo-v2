@@ -17,7 +17,6 @@ import os
 import sys
 import json
 import time
-import asyncio
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -759,7 +758,7 @@ Analyze and provide actionable output. Respond in JSON:
         )
 
         print("="*60)
-        print(f"📊 Swarm Complete")
+        print("📊 Swarm Complete")
         print(f"   Completed: {result.completed}/{result.total}")
         print(f"   Approved:  {result.approved} | Blocked: {result.blocked}")
         print(f"   Avg Latency: {result.avg_latency_ms:.0f}ms")
@@ -813,7 +812,7 @@ Return as JSON array of task strings:
             - Multi-model: $0.04 (Gemini) + $0.50 (Claude synthesis) = $0.54
             - Savings: 93%
         """
-        print(f"\n🔀 Multi-Model Bulk Analysis")
+        print("\n🔀 Multi-Model Bulk Analysis")
         print(f"   Documents: {len(documents)}")
         print(f"   Question: {question[:50]}...")
         print("="*60)
@@ -859,7 +858,7 @@ Provide a comprehensive synthesis with citations to document numbers."""
         }
 
         print("="*60)
-        print(f"📊 Multi-Model Analysis Complete")
+        print("📊 Multi-Model Analysis Complete")
         print(f"   Gemini cost: {cost_stats['gemini_cost']}")
         print(f"   Claude cost: {cost_stats['claude_cost']}")
         print(f"   Total: {cost_stats['total_cost']} (saved {cost_stats['savings_pct']})")
@@ -1003,7 +1002,7 @@ def main():
     if choice == "1":
         task = input("Task: ").strip() or "Find the fastest path to $10k MRR"
         result = fm.release_single(task)
-        print(f"\n📋 Result:")
+        print("\n📋 Result:")
         print(json.dumps(result, indent=2, default=str))
         print(f"\n📊 {fm.tokens.display()}")
 

@@ -9,6 +9,7 @@ into gate-compatible checks and returns a GateCheckResult.
 
 from __future__ import annotations
 
+import re
 import time
 from dataclasses import dataclass, field
 from typing import Any
@@ -16,6 +17,165 @@ from typing import Any
 import structlog
 
 logger = structlog.get_logger(__name__)
+
+# ---------------------------------------------------------------------------
+# Module-level security constants (frozenset for O(1) keyword lookup)
+# ---------------------------------------------------------------------------
+
+_DANGEROUS_KEYWORDS: frozenset[str] = frozenset(
+    {
+        # Shell destruction
+        "rm -rf",
+        "rm -f /",
+        "mkfs.",
+        "dd if=/dev/zero",
+        "shred",
+        "> /dev/sda",
+        # Privilege escalation
+        "sudo",
+        "su -",
+        "doas",
+        "chmod 777",
+        "chmod +s",
+        # Network exfiltration
+        "| sh",
+        "| bash",
+        "nc -e",
+        "ncat -e",
+        "mkfifo",
+        # Code injection
+        "eval(",
+        "exec(",
+        "os.system(",
+        "child_process",
+        "__import__(",
+        # SQL injection
+        "drop table",
+        "delete from",
+        "truncate table",
+        "alter table drop",
+        "union select",
+        "xp_cmdshell",
+        # Environment variable exfiltration
+        "printenv",
+        "/proc/self/environ",
+        "$secret",
+        "$api_key",
+        "$aws_secret",
+        "$stripe_secret",
+        "env | curl",
+        "env | wget",
+        "env | nc",
+        # Credential file harvesting
+        ".aws/credentials",
+        ".ssh/id_rsa",
+        ".ssh/id_ed25519",
+        ".config/gcloud/",
+        ".docker/config.json",
+        ".npmrc",
+        "firebase-tools.json",
+        # Process manipulation
+        "kill -9",
+        "killall",
+        "nohup",
+        "disown",
+        # Encoding evasion
+        "base64 -d | sh",
+        "base64 -d | bash",
+        "xxd -r | sh",
+        "python3 -c 'import os",
+        # Cloud metadata endpoint exfiltration (AWS/GCP/Azure)
+        "169.254.169.254",
+        "metadata.google.internal",
+        "metadata.google",
+        "computemetadata",
+        "100.100.100.200",
+        "fd00:ec2::254",
+        # Container escape patterns
+        "nsenter",
+        "unshare --mount",
+        "mount /dev",
+        "/var/run/docker.sock",
+        "docker.sock",
+        "cgroup escape",
+        "/proc/1/root",
+        # Cloud credential harvesting
+        ".kube/config",
+        "serviceaccount/token",
+        "/run/secrets",
+        "google_application_credentials",
+        "azure_client_secret",
+        "aws_session_token",
+        # Reverse shell patterns
+        "/dev/tcp/",
+        "/dev/udp/",
+        "python -c 'import socket",
+        "php -r '$sock=fsockopen",
+        # DNS exfiltration (static patterns)
+        "nslookup $(cat",
+        "dig $(cat",
+        "host $(cat",
+        # SSRF / internal network probing
+        "127.0.0.1",
+        "0.0.0.0",
+        "[::]:",
+        "0x7f000001",
+        # Kubernetes API server
+        "kubernetes.default.svc",
+        "kube-apiserver",
+        "kubectl exec",
+        "kubectl cp",
+        # Crontab manipulation
+        "crontab -e",
+        "crontab -l",
+        "/etc/cron",
+        "at -f",
+        # SUID / capability exploitation
+        "find / -perm -4000",
+        "find / -perm -u=s",
+        "getcap",
+        "setcap",
+        # Pickle deserialization (RCE vector)
+        "pickle.loads(",
+        "pickle.load(",
+        "yaml.unsafe_load(",
+        "yaml.full_load(",
+    }
+)
+
+# Pre-compiled regex patterns for advanced DNS tunnel detection.
+# These catch command substitution + hex-encoded subdomain exfil.
+_DNS_TUNNEL_PATTERNS: tuple[re.Pattern[str], ...] = (
+    # nslookup / dig / host with command substitution
+    re.compile(r"(?:nslookup|dig|host)\s+.*\$\(", re.IGNORECASE),
+    # Hex-encoded subdomain exfiltration: xxd piped to dig/nslookup
+    re.compile(r"xxd\s+-p.*\|.*(?:dig|nslookup|host)", re.IGNORECASE),
+    # DNS over HTTPS exfil via curl to cloudflare/google DNS
+    re.compile(
+        r"curl.*(?:1\.1\.1\.1|8\.8\.8\.8|dns\.google)/dns-query",
+        re.IGNORECASE,
+    ),
+    # Base64 piped into DNS query
+    re.compile(r"base64.*\|.*(?:dig|nslookup|host)", re.IGNORECASE),
+)
+
+# Advanced exploit detection patterns (compiled once at module load).
+_EXPLOIT_PATTERNS: tuple[re.Pattern[str], ...] = (
+    # Python pty reverse shell
+    re.compile(r"python3?\s+-c.*import\s+pty.*spawn", re.IGNORECASE),
+    # PowerShell download cradle (IEX + download)
+    re.compile(
+        r"(?:powershell|pwsh).*(?:iex|invoke-expression).*(?:downloadstring|downloadfile|webclient)",
+        re.IGNORECASE,
+    ),
+    # Kubernetes secrets exfiltration via kubectl
+    re.compile(r"kubectl\s+(?:get|describe)\s+secrets?", re.IGNORECASE),
+    # SSRF via curl/wget to internal RFC1918 ranges
+    re.compile(
+        r"(?:curl|wget).*(?:10\.\d+\.\d+\.\d+|172\.(?:1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+)",
+        re.IGNORECASE,
+    ),
+)
 
 
 @dataclass
@@ -195,117 +355,43 @@ class GateAdapter:
     @staticmethod
     def _security_gate(ctx: Any) -> dict[str, Any]:
         """
-        Basic security classification gate.
+        Security classification gate with O(1) keyword matching.
 
-        Blocks operations with dangerous payload markers.
+        Uses a module-level frozenset (_DANGEROUS_KEYWORDS) for constant-time
+        substring detection plus compiled regex patterns for advanced DNS
+        tunnel detection.
         """
         payload = getattr(ctx, "payload", {}) or {}
-
-        # Check for destructive markers.
-        # Categories: shell destruction, privilege escalation, network exfil,
-        # file manipulation, code injection, SQL injection.
-        dangerous_keywords = {
-            # Shell destruction
-            "rm -rf",
-            "rm -f /",
-            "mkfs.",
-            "dd if=/dev/zero",
-            "shred",
-            "> /dev/sda",
-            # Privilege escalation
-            "sudo",
-            "su -",
-            "doas",
-            "chmod 777",
-            "chmod +s",
-            # Network exfiltration
-            "| sh",
-            "| bash",
-            "nc -e",
-            "ncat -e",
-            "mkfifo",
-            # Code injection
-            "eval(",
-            "exec(",
-            "os.system(",
-            "child_process",
-            "__import__(",
-            # SQL injection
-            "DROP TABLE",
-            "DELETE FROM",
-            "TRUNCATE TABLE",
-            "ALTER TABLE DROP",
-            "UNION SELECT",
-            "xp_cmdshell",
-            # Environment variable exfiltration
-            "printenv",
-            "/proc/self/environ",
-            "$SECRET",
-            "$API_KEY",
-            "$AWS_SECRET",
-            "$STRIPE_SECRET",
-            "env | curl",
-            "env | wget",
-            "env | nc",
-            # Credential file harvesting
-            ".aws/credentials",
-            ".ssh/id_rsa",
-            ".ssh/id_ed25519",
-            ".config/gcloud/",
-            ".docker/config.json",
-            ".npmrc",
-            "firebase-tools.json",
-            # Process manipulation
-            "kill -9",
-            "killall",
-            "nohup",
-            "disown",
-            # Encoding evasion
-            "base64 -d | sh",
-            "base64 -d | bash",
-            "xxd -r | sh",
-            "python3 -c 'import os",
-            # Cloud metadata endpoint exfiltration (AWS/GCP/Azure)
-            "169.254.169.254",
-            "metadata.google.internal",
-            "metadata.google",
-            "computeMetadata",
-            "100.100.100.200",  # Alibaba Cloud IMDS
-            "fd00:ec2::254",  # AWS IPv6 IMDS
-            # Container escape patterns
-            "nsenter",
-            "unshare --mount",
-            "mount /dev",
-            "/var/run/docker.sock",
-            "docker.sock",
-            "cgroup escape",
-            "/proc/1/root",
-            # Cloud credential harvesting
-            ".kube/config",
-            "serviceaccount/token",
-            "/run/secrets",
-            "GOOGLE_APPLICATION_CREDENTIALS",
-            "AZURE_CLIENT_SECRET",
-            "AWS_SESSION_TOKEN",
-            # Reverse shell patterns
-            "/dev/tcp/",
-            "/dev/udp/",
-            "python -c 'import socket",
-            "php -r '$sock=fsockopen",
-            # DNS exfiltration
-            "nslookup $(cat",
-            "dig $(cat",
-            "host $(cat",
-        }
         payload_str = str(payload).lower()
 
-        for keyword in dangerous_keywords:
-            if keyword.lower() in payload_str:
+        # O(1) keyword membership check via frozenset
+        for keyword in _DANGEROUS_KEYWORDS:
+            if keyword in payload_str:
                 return {
                     "gate": "security",
                     "passed": False,
                     "severity": "critical",
                     "message": f"Dangerous keyword detected: {keyword}",
+                }
+
+        # Regex-based DNS tunnel detection
+        for pattern in _DNS_TUNNEL_PATTERNS:
+            if pattern.search(payload_str):
+                return {
+                    "gate": "security",
+                    "passed": False,
+                    "severity": "critical",
+                    "message": f"DNS tunnel pattern detected: {pattern.pattern}",
+                }
+
+        # Advanced exploit pattern detection
+        for pattern in _EXPLOIT_PATTERNS:
+            if pattern.search(payload_str):
+                return {
+                    "gate": "security",
+                    "passed": False,
+                    "severity": "critical",
+                    "message": f"Exploit pattern detected: {pattern.pattern}",
                 }
 
         return {

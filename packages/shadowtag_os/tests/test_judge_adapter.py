@@ -6,9 +6,7 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-
 from packages.shadowtag_os.judges.judge_adapter import JudgeAdapter
-
 
 # ─── Fixtures ────────────────────────────────────────────────────────────────
 

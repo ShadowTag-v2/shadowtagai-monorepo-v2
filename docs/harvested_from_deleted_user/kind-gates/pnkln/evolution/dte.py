@@ -15,7 +15,7 @@ Based on Agent0 paper (arXiv:2511.16043v1):
 Part of PNKLN evolution stack.
 """
 import math
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum

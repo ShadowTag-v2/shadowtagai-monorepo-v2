@@ -3,11 +3,8 @@
 
 from __future__ import annotations
 
-
 import pytest
-
 from packages.shadowtag_os.skills_bridge.bridge import SkillManifest, SkillsBridge
-
 
 # ─── Fixtures ────────────────────────────────────────────────────────────────
 

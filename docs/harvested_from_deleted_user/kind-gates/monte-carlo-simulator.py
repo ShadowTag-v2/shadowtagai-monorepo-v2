@@ -114,7 +114,7 @@ def generate_report(results, projections):
     prob_20b = (results['distribution'] >= 20e9).sum() / SIMULATIONS * 100
     prob_30b = (results['distribution'] >= 30e9).sum() / SIMULATIONS * 100
 
-    print(f"\nProbability of Exit >= $XB:")
+    print("\nProbability of Exit >= $XB:")
     print(f"  >= $10B: {prob_10b:.1f}%")
     print(f"  >= $20B: {prob_20b:.1f}%")
     print(f"  >= $30B: {prob_30b:.1f}%")

@@ -1,7 +1,6 @@
 import urllib.request
 import google.auth
 from google.auth.transport.requests import Request
-import json
 
 creds, project = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
 creds.refresh(Request())

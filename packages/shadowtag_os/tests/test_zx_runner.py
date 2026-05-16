@@ -6,9 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from packages.shadowtag_os.zx_runner.runner import ShellResult, ZxRunner
-
 
 # ─── Tests: ShellResult ─────────────────────────────────────────────────────
 
