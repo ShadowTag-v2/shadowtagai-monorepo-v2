@@ -21,6 +21,7 @@ app.include_router(arbiter.router)
 
 
 @app.get("/health")
+@app.get("/healthz")
 def health_check():
     return {"status": "operational", "service": "headfade-api"}
 

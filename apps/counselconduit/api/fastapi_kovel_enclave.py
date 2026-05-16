@@ -326,6 +326,12 @@ async def health():
   return health_data
 
 
+@app.get("/healthz")
+async def healthz():
+    """Kubernetes/Cloud Run standard health probe alias."""
+    return await health()
+
+
 @app.post("/heartbeat")
 async def heartbeat(request: Request):
   """Client session heartbeat — keeps session alive, resets dead-man's switch."""
