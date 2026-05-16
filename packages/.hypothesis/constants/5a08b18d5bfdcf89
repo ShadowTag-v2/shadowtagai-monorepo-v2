@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/counselconduit/api/sandbox/firestore_session_store.py
+# hypothesis_version: 6.151.5
+
+[1800, '==', '_immutable', '_source', '_updated_at', 'action', 'attorney_uid', 'committed_files', 'content', 'content_hash', 'create_session', 'created', 'created_at', 'decisions', 'diff_summary', 'expire_at', 'expire_session', 'file_path', 'firm_id', 'get_decisions', 'get_session', 'id', 'list_active_sessions', 'matter_id', 'max_overlay_files', 'none', 'not-in', 'overlay_file_count', 'overlay_files', 'record_decision', 'rejection_reason', 'result_summary', 'sandbox_sessions', 'selected_files', 'session_exists', 'session_id', 'state', 'timestamp', 'trust_level', 'ttl_seconds', 'update_overlay', 'update_state', 'utf-8']

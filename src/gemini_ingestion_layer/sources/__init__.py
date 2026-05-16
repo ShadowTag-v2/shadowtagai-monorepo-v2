@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-Multi-Source Ingestion Module
+Multi-Source Ingestion Module.
 
 Supports ingestion from multiple platforms:
 - YouTube: Video metadata and transcripts
@@ -13,8 +13,14 @@ All sources implement ethical crawling with rate limiting.
 """
 
 from .base import BaseSource, IngestionItem
-from .youtube import YouTubeSource
-from .twitter import TwitterSource
 from .news import NewsSource
+from .twitter import TwitterSource
+from .youtube import YouTubeSource
 
-__all__ = ["BaseSource", "IngestionItem", "YouTubeSource", "TwitterSource", "NewsSource"]
+__all__ = [
+  "BaseSource",
+  "IngestionItem",
+  "YouTubeSource",
+  "TwitterSource",
+  "NewsSource",
+]

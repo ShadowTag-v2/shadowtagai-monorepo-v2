@@ -1,5 +1,5 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-"""OPA Integration - Fast Path Policy Engine"""
+"""OPA Integration - Fast Path Policy Engine."""
 
 from .client import OPAClient, OPAException
 

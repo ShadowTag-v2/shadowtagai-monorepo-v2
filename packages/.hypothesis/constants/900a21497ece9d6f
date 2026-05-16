@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_vcr/async_vcr.py
+# hypothesis_version: 6.151.5
+
+[0.0, 86400, '.cassettes', '_index', '_index.json', '_index_path', '_lock', '_max_age_s', 'fresh_cassettes', 'kwargs', 'max_age_s', 'method', 'oldest_age_s', 'recorded_at', 'request', 'response', 'stale_cassettes', 'total_cassettes', 'utf-8', 'w']

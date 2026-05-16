@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_bash_classifier/telemetry.py
+# hypothesis_version: 6.151.5
+
+['a', 'command', 'cwd', 'data', 'duration_sec', 'event_type', 'exit_code', 'stderr_len', 'stdout_len', 'timestamp']

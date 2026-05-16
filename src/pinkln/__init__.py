@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-PINKLN ULTRATHINK CORE STACK v2.0
+PINKLN ULTRATHINK CORE STACK v2.0.
 
 Unified infrastructure integrating:
 - Kernel Chaining (98.5% token reduction)
@@ -17,45 +17,41 @@ __version__ = "2.0.0"
 __author__ = "Pinkln Team"
 
 from .core import (
-    GeminiFunctionCaller,
-    KernelChain,
-    JREngine,
-    ShadowTag,
+  GeminiFunctionCaller,
+  JREngine,
+  KernelChain,
+  ShadowTag,
 )
-
-from .kernels import (
-    ATP519ScanKernel,
-    JudgeSixKernel,
-    AuditCompressKernel,
-)
-
-from .ratings import (
-    Glicko2Player,
-    Glicko2System,
-)
-
 from .evolution import (
-    DTESystem,
-    CheatSheetFusion,
+  CheatSheetFusion,
+  DTESystem,
 )
-
+from .kernels import (
+  ATP519ScanKernel,
+  AuditCompressKernel,
+  JudgeSixKernel,
+)
 from .memory import (
-    MemoryPersistence,
-    ConversationExtractor,
+  ConversationExtractor,
+  MemoryPersistence,
+)
+from .ratings import (
+  Glicko2Player,
+  Glicko2System,
 )
 
 __all__ = [
-    "GeminiFunctionCaller",
-    "KernelChain",
-    "JREngine",
-    "ShadowTag",
-    "ATP519ScanKernel",
-    "JudgeSixKernel",
-    "AuditCompressKernel",
-    "Glicko2Player",
-    "Glicko2System",
-    "DTESystem",
-    "CheatSheetFusion",
-    "MemoryPersistence",
-    "ConversationExtractor",
+  "GeminiFunctionCaller",
+  "KernelChain",
+  "JREngine",
+  "ShadowTag",
+  "ATP519ScanKernel",
+  "JudgeSixKernel",
+  "AuditCompressKernel",
+  "Glicko2Player",
+  "Glicko2System",
+  "DTESystem",
+  "CheatSheetFusion",
+  "MemoryPersistence",
+  "ConversationExtractor",
 ]

@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-Pnkln Agents: Collection → Enforcement Pipeline
+Pnkln Agents: Collection → Enforcement Pipeline.
 
 Provides:
 - Gemini Ingestion Layer (Intelligence collection with ethical compliance)
@@ -12,88 +12,113 @@ Provides:
 """
 
 # Collection (upstream)
+# Agents
+from .agents.compliance_sdr import (
+  ComplianceSDRAgent,
+  Lead,
+  LeadGenerationResult,
+  LeadStatus,
+)
+from .agents.intelligence_agent import (
+  IntelligenceAgent,
+  IntelligenceResult,
+  IntelligenceTask,
+)
+
+# Config
+from .config.constraints import DEFAULT_CONSTRAINTS, BootstrapConstraints
+from .config.ingestion_config import (
+  DEFAULT_INGESTION_CONFIG,
+  DEFAULT_SOURCES,
+  SOURCE_TYPE_REQUIREMENTS,
+  IngestionConfig,
+)
+from .config.revenue_model import (
+  DEFAULT_REVENUE_MODEL,
+  PricingTier,
+  RevenueModel,
+  TierPricing,
+)
+from .core.agent_pattern import (
+  AgentResult,
+  AgentStatus,
+  AgentTask,
+  PnklnAgent,
+  SimpleAgent,
+)
 from .core.gemini_ingestion import (
-    GeminiIngestionLayer,
-    Source,
-    SourceType,
-    SourceTier,
-    IngestedItem,
-    IngestionResult,
-    IngestionMetrics,
-    EthicalComplianceValidator,
-    EthicalViolation,
-    EthicalViolationType,
-    TierClassifier,
+  EthicalComplianceValidator,
+  EthicalViolation,
+  EthicalViolationType,
+  GeminiIngestionLayer,
+  IngestedItem,
+  IngestionMetrics,
+  IngestionResult,
+  Source,
+  SourceTier,
+  SourceType,
+  TierClassifier,
 )
 
 # Enforcement (downstream)
-from .core.jr_engine import JREngine, Purpose, Reason, JRDecision, BrakeType, RiskLevel
-from .core.judge_six_lite import JudgeSixLite, VerificationResult, Violation, ViolationType, ViolationSeverity
-from .core.agent_pattern import PnklnAgent, AgentTask, AgentResult, AgentStatus, SimpleAgent
-
-# Agents
-from .agents.compliance_sdr import ComplianceSDRAgent, Lead, LeadStatus, LeadGenerationResult
-from .agents.intelligence_agent import IntelligenceAgent, IntelligenceTask, IntelligenceResult
-
-# Config
-from .config.constraints import BootstrapConstraints, DEFAULT_CONSTRAINTS
-from .config.revenue_model import RevenueModel, PricingTier, TierPricing, DEFAULT_REVENUE_MODEL
-from .config.ingestion_config import (
-    IngestionConfig,
-    DEFAULT_INGESTION_CONFIG,
-    DEFAULT_SOURCES,
-    SOURCE_TYPE_REQUIREMENTS,
+from .core.jr_engine import BrakeType, JRDecision, JREngine, Purpose, Reason, RiskLevel
+from .core.judge_six_lite import (
+  JudgeSixLite,
+  VerificationResult,
+  Violation,
+  ViolationSeverity,
+  ViolationType,
 )
 
 __version__ = "0.2.0"  # Updated for dual-layer architecture
 
 __all__ = [
-    # Collection (upstream)
-    "GeminiIngestionLayer",
-    "Source",
-    "SourceType",
-    "SourceTier",
-    "IngestedItem",
-    "IngestionResult",
-    "IngestionMetrics",
-    "EthicalComplianceValidator",
-    "EthicalViolation",
-    "EthicalViolationType",
-    "TierClassifier",
-    # Enforcement (downstream)
-    "JREngine",
-    "Purpose",
-    "Reason",
-    "JRDecision",
-    "BrakeType",
-    "RiskLevel",
-    "JudgeSixLite",
-    "VerificationResult",
-    "Violation",
-    "ViolationType",
-    "ViolationSeverity",
-    "PnklnAgent",
-    "AgentTask",
-    "AgentResult",
-    "AgentStatus",
-    "SimpleAgent",
-    # Agents
-    "ComplianceSDRAgent",
-    "Lead",
-    "LeadStatus",
-    "LeadGenerationResult",
-    "IntelligenceAgent",
-    "IntelligenceTask",
-    "IntelligenceResult",
-    # Config
-    "BootstrapConstraints",
-    "DEFAULT_CONSTRAINTS",
-    "RevenueModel",
-    "PricingTier",
-    "TierPricing",
-    "DEFAULT_REVENUE_MODEL",
-    "IngestionConfig",
-    "DEFAULT_INGESTION_CONFIG",
-    "DEFAULT_SOURCES",
-    "SOURCE_TYPE_REQUIREMENTS",
+  # Collection (upstream)
+  "GeminiIngestionLayer",
+  "Source",
+  "SourceType",
+  "SourceTier",
+  "IngestedItem",
+  "IngestionResult",
+  "IngestionMetrics",
+  "EthicalComplianceValidator",
+  "EthicalViolation",
+  "EthicalViolationType",
+  "TierClassifier",
+  # Enforcement (downstream)
+  "JREngine",
+  "Purpose",
+  "Reason",
+  "JRDecision",
+  "BrakeType",
+  "RiskLevel",
+  "JudgeSixLite",
+  "VerificationResult",
+  "Violation",
+  "ViolationType",
+  "ViolationSeverity",
+  "PnklnAgent",
+  "AgentTask",
+  "AgentResult",
+  "AgentStatus",
+  "SimpleAgent",
+  # Agents
+  "ComplianceSDRAgent",
+  "Lead",
+  "LeadStatus",
+  "LeadGenerationResult",
+  "IntelligenceAgent",
+  "IntelligenceTask",
+  "IntelligenceResult",
+  # Config
+  "BootstrapConstraints",
+  "DEFAULT_CONSTRAINTS",
+  "RevenueModel",
+  "PricingTier",
+  "TierPricing",
+  "DEFAULT_REVENUE_MODEL",
+  "IngestionConfig",
+  "DEFAULT_INGESTION_CONFIG",
+  "DEFAULT_SOURCES",
+  "SOURCE_TYPE_REQUIREMENTS",
 ]

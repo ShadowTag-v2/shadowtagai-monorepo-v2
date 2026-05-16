@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-Wealth Acceleration Service - FastAPI Integration
+Wealth Acceleration Service - FastAPI Integration.
 
 This service provides FastAPI endpoints for the wealth acceleration strategist agent,
 enabling RESTful API access to monetization analysis and strategic recommendations.
@@ -10,124 +10,147 @@ Last Updated: 2025-11-08
 """
 
 from collections.abc import AsyncIterator
-from pydantic import BaseModel, Field
 from enum import Enum
-from claude_agent_sdk import query, ClaudeAgentOptions
+
+from claude_agent_sdk import ClaudeAgentOptions, query
+from pydantic import BaseModel, Field
 
 
 class EngagementLevel(str, Enum):
-    """Audience engagement level"""
+  """Audience engagement level."""
 
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
+  LOW = "low"
+  MEDIUM = "medium"
+  HIGH = "high"
 
 
 class MarketPosition(str, Enum):
-    """Market positioning strategy"""
+  """Market positioning strategy."""
 
-    BUDGET = "budget"
-    MID_MARKET = "mid-market"
-    PREMIUM = "premium"
-    LUXURY = "luxury"
+  BUDGET = "budget"
+  MID_MARKET = "mid-market"
+  PREMIUM = "premium"
+  LUXURY = "luxury"
 
 
 class BusinessContext(BaseModel):
-    """Business context for analysis"""
+  """Business context for analysis."""
 
-    niche: str | None = Field(None, description="Primary niche or industry")
-    current_monthly_revenue: float | None = Field(None, description="Current monthly revenue in dollars")
-    audience_size: int | None = Field(None, description="Total audience size across all platforms")
-    engagement_level: EngagementLevel | None = Field(None, description="Audience engagement level")
-    revenue_streams: list[str] | None = Field(None, description="Existing revenue streams")
-    platforms: list[str] | None = Field(None, description="Content platforms being used")
-    additional_context: str | None = Field(None, description="Any additional relevant context")
+  niche: str | None = Field(None, description="Primary niche or industry")
+  current_monthly_revenue: float | None = Field(
+    None, description="Current monthly revenue in dollars"
+  )
+  audience_size: int | None = Field(
+    None, description="Total audience size across all platforms"
+  )
+  engagement_level: EngagementLevel | None = Field(
+    None, description="Audience engagement level"
+  )
+  revenue_streams: list[str] | None = Field(
+    None, description="Existing revenue streams"
+  )
+  platforms: list[str] | None = Field(None, description="Content platforms being used")
+  additional_context: str | None = Field(
+    None, description="Any additional relevant context"
+  )
 
 
 class OfferInfo(BaseModel):
-    """Information about a specific offer"""
+  """Information about a specific offer."""
 
-    name: str = Field(..., description="Name of the offer")
-    price: float = Field(..., description="Price of the offer")
-    monthly_sales: int | None = Field(None, description="Average monthly sales")
+  name: str = Field(..., description="Name of the offer")
+  price: float = Field(..., description="Price of the offer")
+  monthly_sales: int | None = Field(None, description="Average monthly sales")
 
 
 class FunnelStage(BaseModel):
-    """Funnel stage data"""
+  """Funnel stage data."""
 
-    name: str = Field(..., description="Stage name")
-    visitors: int = Field(..., description="Number of visitors")
-    conversions: int | None = Field(None, description="Number of conversions to next stage")
-    revenue: float | None = Field(None, description="Revenue generated at this stage")
+  name: str = Field(..., description="Stage name")
+  visitors: int = Field(..., description="Number of visitors")
+  conversions: int | None = Field(
+    None, description="Number of conversions to next stage"
+  )
+  revenue: float | None = Field(None, description="Revenue generated at this stage")
 
 
 class AnalysisRequest(BaseModel):
-    """Base request for analysis"""
+  """Base request for analysis."""
 
-    business_context: BusinessContext | None = Field(None, description="Business context for the analysis")
-    prompt: str = Field(..., description="Specific query or request")
+  business_context: BusinessContext | None = Field(
+    None, description="Business context for the analysis"
+  )
+  prompt: str = Field(..., description="Specific query or request")
 
 
 class MonetizationStrategyRequest(BaseModel):
-    """Request for complete monetization strategy analysis"""
+  """Request for complete monetization strategy analysis."""
 
-    business_context: BusinessContext
-    focus_areas: list[str] | None = Field(
-        None,
-        description="Specific focus areas (e.g., 'pricing', 'conversion', 'LTV')",
-    )
+  business_context: BusinessContext
+  focus_areas: list[str] | None = Field(
+    None,
+    description="Specific focus areas (e.g., 'pricing', 'conversion', 'LTV')",
+  )
 
 
 class FunnelAnalysisRequest(BaseModel):
-    """Request for funnel analysis"""
+  """Request for funnel analysis."""
 
-    business_context: BusinessContext | None = None
-    funnel_stages: list[FunnelStage] = Field(..., description="List of funnel stages with metrics")
+  business_context: BusinessContext | None = None
+  funnel_stages: list[FunnelStage] = Field(
+    ..., description="List of funnel stages with metrics"
+  )
 
 
 class PricingEvaluationRequest(BaseModel):
-    """Request for pricing strategy evaluation"""
+  """Request for pricing strategy evaluation."""
 
-    business_context: BusinessContext | None = None
-    product_type: str = Field(..., description="Type of product or service")
-    current_price: float = Field(..., description="Current price")
-    cost_to_deliver: float = Field(..., description="Cost to deliver")
-    monthly_customers: int = Field(..., description="Monthly customer volume")
-    market_position: MarketPosition = Field(..., description="Target market positioning")
+  business_context: BusinessContext | None = None
+  product_type: str = Field(..., description="Type of product or service")
+  current_price: float = Field(..., description="Current price")
+  cost_to_deliver: float = Field(..., description="Cost to deliver")
+  monthly_customers: int = Field(..., description="Monthly customer volume")
+  market_position: MarketPosition = Field(..., description="Target market positioning")
 
 
 class RevenueProjectionRequest(BaseModel):
-    """Request for revenue projections"""
+  """Request for revenue projections."""
 
-    business_context: BusinessContext | None = None
-    current_monthly_revenue: float
-    current_audience_size: int
-    monthly_audience_growth: float = Field(..., description="Monthly audience growth rate as percentage")
-    current_conversion_rate: float = Field(..., description="Current conversion rate as percentage")
-    projection_months: int = Field(12, description="Number of months to project")
+  business_context: BusinessContext | None = None
+  current_monthly_revenue: float
+  current_audience_size: int
+  monthly_audience_growth: float = Field(
+    ..., description="Monthly audience growth rate as percentage"
+  )
+  current_conversion_rate: float = Field(
+    ..., description="Current conversion rate as percentage"
+  )
+  projection_months: int = Field(12, description="Number of months to project")
 
 
 class LTVCalculationRequest(BaseModel):
-    """Request for LTV calculation"""
+  """Request for LTV calculation."""
 
-    business_context: BusinessContext | None = None
-    average_order_value: float
-    purchase_frequency: float = Field(..., description="Average purchases per year")
-    customer_lifespan: float = Field(..., description="Average customer lifespan in years")
-    gross_margin: float = Field(..., description="Gross margin percentage (0-100)")
+  business_context: BusinessContext | None = None
+  average_order_value: float
+  purchase_frequency: float = Field(..., description="Average purchases per year")
+  customer_lifespan: float = Field(
+    ..., description="Average customer lifespan in years"
+  )
+  gross_margin: float = Field(..., description="Gross margin percentage (0-100)")
 
 
 class OpportunityAssessmentRequest(BaseModel):
-    """Request for market opportunity assessment"""
+  """Request for market opportunity assessment."""
 
-    niche: str
-    audience_size: int
-    engagement: EngagementLevel
-    current_revenue: float
-    potential_revenue_streams: list[str] = Field(
-        ...,
-        description="List of potential revenue streams to evaluate",
-    )
+  niche: str
+  audience_size: int
+  engagement: EngagementLevel
+  current_revenue: float
+  potential_revenue_streams: list[str] = Field(
+    ...,
+    description="List of potential revenue streams to evaluate",
+  )
 
 
 # Wealth Acceleration Agent Prompt
@@ -188,108 +211,110 @@ The goal: turn attention into a self-scaling income engine where revenue grows f
 
 
 class WealthAccelerationService:
+  """
+  Service class for wealth acceleration analysis using Claude Agent SDK.
+  """
+
+  def __init__(self, api_key: str | None = None):
     """
-    Service class for wealth acceleration analysis using Claude Agent SDK
+    Initialize the wealth acceleration service.
+
+    Args:
+        api_key: Optional Anthropic API key (can also use environment variable)
     """
+    self.api_key = api_key
+    self.model = "claude-sonnet-4.5-20250514"
 
-    def __init__(self, api_key: str | None = None):
-        """
-        Initialize the wealth acceleration service
+  def _format_business_context(self, context: BusinessContext | None) -> str:
+    """Format business context as a prompt addition."""
+    if not context:
+      return ""
 
-        Args:
-            api_key: Optional Anthropic API key (can also use environment variable)
-        """
-        self.api_key = api_key
-        self.model = "claude-sonnet-4.5-20250514"
+    parts = ["<business_context>"]
 
-    def _format_business_context(self, context: BusinessContext | None) -> str:
-        """Format business context as a prompt addition"""
-        if not context:
-            return ""
+    if context.niche:
+      parts.append(f"Niche: {context.niche}")
 
-        parts = ["<business_context>"]
+    if context.current_monthly_revenue is not None:
+      parts.append(f"Current Monthly Revenue: ${context.current_monthly_revenue:,.2f}")
 
-        if context.niche:
-            parts.append(f"Niche: {context.niche}")
+    if context.audience_size:
+      parts.append(f"Total Audience Size: {context.audience_size:,}")
 
-        if context.current_monthly_revenue is not None:
-            parts.append(f"Current Monthly Revenue: ${context.current_monthly_revenue:,.2f}")
+    if context.engagement_level:
+      parts.append(f"Engagement Level: {context.engagement_level}")
 
-        if context.audience_size:
-            parts.append(f"Total Audience Size: {context.audience_size:,}")
+    if context.revenue_streams:
+      parts.append(f"Current Revenue Streams: {', '.join(context.revenue_streams)}")
 
-        if context.engagement_level:
-            parts.append(f"Engagement Level: {context.engagement_level}")
+    if context.platforms:
+      parts.append(f"Platforms: {', '.join(context.platforms)}")
 
-        if context.revenue_streams:
-            parts.append(f"Current Revenue Streams: {', '.join(context.revenue_streams)}")
+    if context.additional_context:
+      parts.append(f"\nAdditional Context:\n{context.additional_context}")
 
-        if context.platforms:
-            parts.append(f"Platforms: {', '.join(context.platforms)}")
+    parts.append("</business_context>")
 
-        if context.additional_context:
-            parts.append(f"\nAdditional Context:\n{context.additional_context}")
+    return "\n".join(parts)
 
-        parts.append("</business_context>")
+  async def analyze(
+    self,
+    user_prompt: str,
+    business_context: BusinessContext | None = None,
+    stream: bool = True,
+  ) -> AsyncIterator[str]:
+    """
+    Run analysis with the wealth acceleration agent.
 
-        return "\n".join(parts)
+    Args:
+        user_prompt: The user's query or request
+        business_context: Optional business context
+        stream: Whether to stream the response
 
-    async def analyze(
-        self,
-        user_prompt: str,
-        business_context: BusinessContext | None = None,
-        stream: bool = True,
-    ) -> AsyncIterator[str]:
-        """
-        Run analysis with the wealth acceleration agent
+    Yields:
+        Response chunks from the agent
+    """
+    contextual_prompt = user_prompt
+    if business_context:
+      context_str = self._format_business_context(business_context)
+      contextual_prompt = f"{context_str}\n\n{user_prompt}"
 
-        Args:
-            user_prompt: The user's query or request
-            business_context: Optional business context
-            stream: Whether to stream the response
+    options = ClaudeAgentOptions(
+      system_prompt=WEALTH_ACCELERATION_PROMPT,
+      model=self.model,
+      max_tokens=8000,
+      temperature=1.0,
+    )
 
-        Yields:
-            Response chunks from the agent
-        """
-        contextual_prompt = user_prompt
-        if business_context:
-            context_str = self._format_business_context(business_context)
-            contextual_prompt = f"{context_str}\n\n{user_prompt}"
+    if self.api_key:
+      options.api_key = self.api_key
 
-        options = ClaudeAgentOptions(
-            system_prompt=WEALTH_ACCELERATION_PROMPT,
-            model=self.model,
-            max_tokens=8000,
-            temperature=1.0,
-        )
+    async for message in query(prompt=contextual_prompt, options=options):
+      # Handle different message types
+      if isinstance(message, str):
+        yield message
+      elif hasattr(message, "text"):
+        yield message.text
+      elif hasattr(message, "content"):
+        yield str(message.content)
 
-        if self.api_key:
-            options.api_key = self.api_key
+  async def analyze_monetization_strategy(
+    self, request: MonetizationStrategyRequest
+  ) -> AsyncIterator[str]:
+    """
+    Analyze complete monetization strategy.
 
-        async for message in query(prompt=contextual_prompt, options=options):
-            # Handle different message types
-            if isinstance(message, str):
-                yield message
-            elif hasattr(message, "text"):
-                yield message.text
-            elif hasattr(message, "content"):
-                yield str(message.content)
+    Args:
+        request: Monetization strategy analysis request
 
-    async def analyze_monetization_strategy(self, request: MonetizationStrategyRequest) -> AsyncIterator[str]:
-        """
-        Analyze complete monetization strategy
+    Yields:
+        Analysis results
+    """
+    focus = ""
+    if request.focus_areas:
+      focus = f"\nFocus specifically on: {', '.join(request.focus_areas)}"
 
-        Args:
-            request: Monetization strategy analysis request
-
-        Yields:
-            Analysis results
-        """
-        focus = ""
-        if request.focus_areas:
-            focus = f"\nFocus specifically on: {', '.join(request.focus_areas)}"
-
-        prompt = f"""
+    prompt = f"""
 Analyze my complete monetization strategy. I need you to:
 
 1. Identify ALL revenue leaks in my current operation
@@ -302,30 +327,30 @@ Analyze my complete monetization strategy. I need you to:
 Give me the full strategic analysis with brutal honesty about what's missing.
 """
 
-        async for chunk in self.analyze(prompt, request.business_context):
-            yield chunk
+    async for chunk in self.analyze(prompt, request.business_context):
+      yield chunk
 
-    async def analyze_funnel(self, request: FunnelAnalysisRequest) -> AsyncIterator[str]:
-        """
-        Analyze conversion funnel
+  async def analyze_funnel(self, request: FunnelAnalysisRequest) -> AsyncIterator[str]:
+    """
+    Analyze conversion funnel.
 
-        Args:
-            request: Funnel analysis request
+    Args:
+        request: Funnel analysis request
 
-        Yields:
-            Analysis results
-        """
-        stages_data = [
-            {
-                "name": stage.name,
-                "visitors": stage.visitors,
-                "conversions": stage.conversions,
-                "revenue": stage.revenue,
-            }
-            for stage in request.funnel_stages
-        ]
+    Yields:
+        Analysis results
+    """
+    stages_data = [
+      {
+        "name": stage.name,
+        "visitors": stage.visitors,
+        "conversions": stage.conversions,
+        "revenue": stage.revenue,
+      }
+      for stage in request.funnel_stages
+    ]
 
-        prompt = f"""
+    prompt = f"""
 Analyze my conversion funnel and identify exactly where I'm losing money.
 
 Funnel Data:
@@ -338,20 +363,22 @@ Provide:
 4. A challenge for me to implement the highest-impact fix TODAY
 """
 
-        async for chunk in self.analyze(prompt, request.business_context):
-            yield chunk
+    async for chunk in self.analyze(prompt, request.business_context):
+      yield chunk
 
-    async def evaluate_pricing(self, request: PricingEvaluationRequest) -> AsyncIterator[str]:
-        """
-        Evaluate pricing strategy
+  async def evaluate_pricing(
+    self, request: PricingEvaluationRequest
+  ) -> AsyncIterator[str]:
+    """
+    Evaluate pricing strategy.
 
-        Args:
-            request: Pricing evaluation request
+    Args:
+        request: Pricing evaluation request
 
-        Yields:
-            Analysis results
-        """
-        prompt = f"""
+    Yields:
+        Analysis results
+    """
+    prompt = f"""
 Evaluate my pricing strategy:
 
 Product Type: {request.product_type}
@@ -369,20 +396,22 @@ Tell me:
 Be brutally honest about whether I'm underpricing.
 """
 
-        async for chunk in self.analyze(prompt, request.business_context):
-            yield chunk
+    async for chunk in self.analyze(prompt, request.business_context):
+      yield chunk
 
-    async def project_revenue(self, request: RevenueProjectionRequest) -> AsyncIterator[str]:
-        """
-        Project revenue growth
+  async def project_revenue(
+    self, request: RevenueProjectionRequest
+  ) -> AsyncIterator[str]:
+    """
+    Project revenue growth.
 
-        Args:
-            request: Revenue projection request
+    Args:
+        request: Revenue projection request
 
-        Yields:
-            Projection results
-        """
-        prompt = f"""
+    Yields:
+        Projection results
+    """
+    prompt = f"""
 Calculate revenue projections:
 
 Current Monthly Revenue: ${request.current_monthly_revenue:,.2f}
@@ -401,20 +430,20 @@ Show me:
 Make it real. Show me the dollar difference between mediocre execution and excellence.
 """
 
-        async for chunk in self.analyze(prompt, request.business_context):
-            yield chunk
+    async for chunk in self.analyze(prompt, request.business_context):
+      yield chunk
 
-    async def calculate_ltv(self, request: LTVCalculationRequest) -> AsyncIterator[str]:
-        """
-        Calculate customer lifetime value
+  async def calculate_ltv(self, request: LTVCalculationRequest) -> AsyncIterator[str]:
+    """
+    Calculate customer lifetime value.
 
-        Args:
-            request: LTV calculation request
+    Args:
+        request: LTV calculation request
 
-        Yields:
-            LTV analysis
-        """
-        prompt = f"""
+    Yields:
+        LTV analysis
+    """
+    prompt = f"""
 Calculate customer lifetime value:
 
 Average Order Value: ${request.average_order_value:.2f}
@@ -432,20 +461,22 @@ Then tell me:
 Don't just give me numbers—tell me exactly how to engineer higher customer value.
 """
 
-        async for chunk in self.analyze(prompt, request.business_context):
-            yield chunk
+    async for chunk in self.analyze(prompt, request.business_context):
+      yield chunk
 
-    async def assess_opportunities(self, request: OpportunityAssessmentRequest) -> AsyncIterator[str]:
-        """
-        Assess market opportunities
+  async def assess_opportunities(
+    self, request: OpportunityAssessmentRequest
+  ) -> AsyncIterator[str]:
+    """
+    Assess market opportunities.
 
-        Args:
-            request: Opportunity assessment request
+    Args:
+        request: Opportunity assessment request
 
-        Yields:
-            Opportunity analysis
-        """
-        prompt = f"""
+    Yields:
+        Opportunity analysis
+    """
+    prompt = f"""
 Assess market opportunities:
 
 Niche: {request.niche}
@@ -464,8 +495,8 @@ Analyze:
 Give me a clear prioritization with specific reasoning—not generic advice.
 """
 
-        async for chunk in self.analyze(prompt):
-            yield chunk
+    async for chunk in self.analyze(prompt):
+      yield chunk
 
 
 # Global service instance
@@ -473,18 +504,18 @@ _service_instance: WealthAccelerationService | None = None
 
 
 def get_wealth_acceleration_service(
-    api_key: str | None = None,
+  api_key: str | None = None,
 ) -> WealthAccelerationService:
-    """
-    Get or create the global wealth acceleration service instance
+  """
+  Get or create the global wealth acceleration service instance.
 
-    Args:
-        api_key: Optional Anthropic API key
+  Args:
+      api_key: Optional Anthropic API key
 
-    Returns:
-        WealthAccelerationService instance
-    """
-    global _service_instance
-    if _service_instance is None:
-        _service_instance = WealthAccelerationService(api_key=api_key)
-    return _service_instance
+  Returns:
+      WealthAccelerationService instance
+  """
+  global _service_instance
+  if _service_instance is None:
+    _service_instance = WealthAccelerationService(api_key=api_key)
+  return _service_instance

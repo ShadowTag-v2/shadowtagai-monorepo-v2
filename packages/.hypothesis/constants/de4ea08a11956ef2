@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/vcr/__init__.py
+# hypothesis_version: 6.151.5
+
+['Cassette', 'CassetteEntry', 'DiffMismatch', 'ReplayMiss', 'VCRMode', 'VCRRecorder', 'compute_request_hash']

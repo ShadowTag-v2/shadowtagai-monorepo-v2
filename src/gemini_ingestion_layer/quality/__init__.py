@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-Quality Gates Module
+Quality Gates Module.
 
 Implements multi-faceted quality checks:
 - Items ingested per day (target: 10,000)
@@ -11,6 +11,6 @@ Implements multi-faceted quality checks:
 - Completeness (85% field completion)
 """
 
-from .gates import QualityGates, QualityGateResult, GateStatus, GateResult
+from .gates import GateResult, GateStatus, QualityGateResult, QualityGates
 
 __all__ = ["QualityGates", "QualityGateResult", "GateStatus", "GateResult"]

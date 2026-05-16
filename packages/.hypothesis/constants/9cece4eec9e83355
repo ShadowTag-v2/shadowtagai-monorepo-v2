@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/undercover/repo_classification.py
+# hypothesis_version: 6.151.5
+
+['--show-toplevel', 'RepoClass', 'classify_remote_url', 'external', 'get-url', 'get_repo_class', 'git', 'internal', 'is_internal_repo', 'none', 'origin', 'remote', 'rev-parse']

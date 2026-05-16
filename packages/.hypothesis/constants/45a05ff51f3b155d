@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/speculation_engine/telemetry.py
+# hypothesis_version: 6.151.5
+
+[100, '%Y-%m-%dT%H:%M:%SZ', '.beads', '1.0.0', 'BEADS_DIR', 'a', 'duration_ms', 'error', 'error.message', 'event_type', 'iso', 'session_id', 'speculation_engine', 'success', 'timestamp']

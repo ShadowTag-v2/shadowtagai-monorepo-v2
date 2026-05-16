@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/collapse_read_search/__init__.py
+# hypothesis_version: 6.151.5
+
+['BranchInfo', 'CommitInfo', 'ContentBlock', 'GitOperationResult', 'NormalizedMessage', 'PrInfo', 'PushInfo', 'SearchOrReadResult', 'StopHookInfo', 'detect_git_operation', 'is_memory_directory']

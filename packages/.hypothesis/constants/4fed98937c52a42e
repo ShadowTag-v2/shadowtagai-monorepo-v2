@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/tool_gateway/policy_limits.py
+# hypothesis_version: 6.151.5
+
+[0.25, 384, 3600, '.config', 'allowed', 'denied', 'metadata', 'org_policies.json', 'policy-limits.json', 'reason', 'restrictions', 'tool_gateway', 'unknown', 'utf-8']

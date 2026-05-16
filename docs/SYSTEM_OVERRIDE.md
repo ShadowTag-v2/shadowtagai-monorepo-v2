@@ -1,8 +1,8 @@
-# SYSTEM OVERRIDE: V26.2 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
+# SYSTEM OVERRIDE: V26.3 SYMBIOTIC ALIGNMENT — DUAL-PLANE FLEET SEPARATION
 
 > **To:** Antigravity Core Engine
 > **Project:** `shadowtag-omega-v4`
-> **Version:** V26.2 | **Status:** LOCKED
+> **Version:** V26.3 | **Status:** LOCKED
 > **Last Updated:** 2026-05-15
 
 ---
@@ -30,7 +30,8 @@
 | Server | Tools | Reason | Alternative |
 |--------|-------|--------|-------------|
 | `gemini-graph-memory` | 9 | Freed for headroom | Cline Plane 2: `gemini-memory` |
-| `gemini-web-fetcher` | ~4 | Python server misconfigured as Node.js | Ready-to-add via `uvx` (see below) |
+| `gemini-web-fetcher` | ~4 | Python server misconfigured as Node.js | Moved to Cline Plane 2 via `uvx` |
+| `gemini-github-mcp` | — | Phantom: binary never existed at path | Removed entirely (no replacement needed) |
 | `notebooklm-mcp` | 39 | Would bust 100-tool limit | Cline Plane 2: `notebooklm-mcp` |
 
 ### Ready-to-Add: `gemini-web-fetcher` (via uvx)
@@ -98,7 +99,7 @@ The Dual-Plane separation eliminates all three failure modes.
 
 ---
 
-## PLANE 2: CLINE TACTICAL LOCAL CONFIG (12 Servers)
+## PLANE 2: CLINE TACTICAL LOCAL CONFIG (13 Servers)
 
 **Executed purely via local `cline_mcp_settings.json` via Bun/npx/uvx physics.**
 Antigravity does NOT probe, start, or manage these servers.
@@ -117,6 +118,7 @@ Antigravity does NOT probe, start, or manage these servers.
 | 16 | `maps-grounding-lite-mcp` | HTTP | Maps grounding context (Google hosted) |
 | 17 | `container-mcp-server` | HTTP | GKE container management (Google hosted) |
 | 18 | `compute-mcp-server` | HTTP | GCE compute management (Google hosted) |
+| 19 | `gemini-web-fetcher` | uvx | Web page fetching via mcp-server-fetch |
 
 ---
 
@@ -251,3 +253,4 @@ The canonical `cline_mcp_settings.json` for Plane 2:
 > - V26 (2026-05-15): Initial dual-plane separation. 7 redundant servers purged.
 > - V26.1 (2026-05-15): Added cognitive cost rationale, drift detection protocol, server addition decision tree.
 > - V26.2 (2026-05-15): **100-tool platform constraint documented.** Plane 1 reduced from 7→6 servers (91 tools, 9 headroom). Removed `gemini-graph-memory` (Cline has equivalent), `gemini-web-fetcher` (module mismatch, now ready-to-add via `uvx`), `notebooklm-mcp` (budget overflow, lives on Cline Plane 2). Config source corrected to `~/.gemini/antigravity/mcp_config.json`. Decision tree updated with budget check step.
+> - V26.3 (2026-05-15): **Cline config hardened.** Hardcoded Maps API key replaced with `${GOOGLE_DESIGN_API_KEY}`. Phantom `gemini-github-mcp` removed (binary never existed). `gemini-web-fetcher` migrated from broken Bun→uvx and moved to Plane 2. 3 path drifts fixed (`mono-fresh` → `Monorepo-Uphillsnowball`). Stale `pyproject.toml` ruff config removed (line-length 100 vs 150 conflict). 2,836 lint violations fixed (142 I001, 754 T201, 1896 D400/D415, 44 F401/F841).

@@ -1,143 +1,152 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-Open Policy Agent (OPA) Client
+Open Policy Agent (OPA) Client.
 
 Fast-path enforcement: deterministic, sub-millisecond decisions.
 When speed matters and rules are clear, OPA is the answer.
 """
 
-import httpx
 import logging
+from datetime import UTC, datetime
 from typing import Any
-from datetime import datetime, UTC
+
+import httpx
 
 logger = logging.getLogger(__name__)
 
 
 class OPAClient:
+  """
+  OPA Policy Engine Client.
+
+  Connects to OPA server for deterministic policy decisions.
+  <10ms latency for critical path enforcement.
+  """
+
+  def __init__(
+    self,
+    opa_url: str = "http://opa:8181",
+    timeout: float = 0.1,  # 100ms timeout (generous for <10ms target)
+  ):
     """
-    OPA Policy Engine Client.
+    Initialize OPA client.
 
-    Connects to OPA server for deterministic policy decisions.
-    <10ms latency for critical path enforcement.
+    Args:
+        opa_url: OPA server base URL
+        timeout: Request timeout in seconds
     """
+    self.opa_url = opa_url.rstrip("/")
+    self.timeout = timeout
+    self.client = httpx.AsyncClient(timeout=timeout)
 
-    def __init__(
-        self,
-        opa_url: str = "http://opa:8181",
-        timeout: float = 0.1,  # 100ms timeout (generous for <10ms target)
-    ):
-        """
-        Initialize OPA client.
+  async def evaluate_policy(
+    self, policy_path: str, input_data: dict[str, Any]
+  ) -> dict[str, Any]:
+    """
+    Evaluate OPA policy with input data.
 
-        Args:
-            opa_url: OPA server base URL
-            timeout: Request timeout in seconds
-        """
-        self.opa_url = opa_url.rstrip("/")
-        self.timeout = timeout
-        self.client = httpx.AsyncClient(timeout=timeout)
+    Args:
+        policy_path: OPA policy path (e.g., "governance/approve")
+        input_data: Input data for policy evaluation
 
-    async def evaluate_policy(self, policy_path: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Evaluate OPA policy with input data.
+    Returns:
+        OPA decision result with allow/deny and metadata
 
-        Args:
-            policy_path: OPA policy path (e.g., "governance/approve")
-            input_data: Input data for policy evaluation
+    Raises:
+        OPAException: If OPA evaluation fails
+    """
+    start_time = datetime.now(UTC)
 
-        Returns:
-            OPA decision result with allow/deny and metadata
+    try:
+      url = f"{self.opa_url}/v1/data/{policy_path}"
 
-        Raises:
-            OPAException: If OPA evaluation fails
-        """
-        start_time = datetime.now(UTC)
+      response = await self.client.post(
+        url, json={"input": input_data}, headers={"Content-Type": "application/json"}
+      )
 
-        try:
-            url = f"{self.opa_url}/v1/data/{policy_path}"
+      response.raise_for_status()
+      result = response.json()
 
-            response = await self.client.post(url, json={"input": input_data}, headers={"Content-Type": "application/json"})
+      latency_ms = (datetime.now(UTC) - start_time).total_seconds() * 1000
 
-            response.raise_for_status()
-            result = response.json()
+      logger.info(
+        f"OPA policy evaluated: {policy_path} | Allow: {result.get('result', {}).get('allow', False)} | Latency: {latency_ms:.2f}ms"
+      )
 
-            latency_ms = (datetime.now(UTC) - start_time).total_seconds() * 1000
+      if latency_ms > 10:
+        logger.warning(
+          f"OPA latency exceeded 10ms target: {latency_ms:.2f}ms for {policy_path}"
+        )
 
-            logger.info(f"OPA policy evaluated: {policy_path} | Allow: {result.get('result', {}).get('allow', False)} | Latency: {latency_ms:.2f}ms")
+      return result.get("result", {})
 
-            if latency_ms > 10:
-                logger.warning(f"OPA latency exceeded 10ms target: {latency_ms:.2f}ms for {policy_path}")
+    except httpx.TimeoutException:
+      logger.error(f"OPA timeout after {self.timeout}s for policy {policy_path}")
+      raise OPAException(f"OPA request timeout: {policy_path}")
 
-            return result.get("result", {})
+    except httpx.HTTPStatusError as e:
+      logger.error(f"OPA HTTP error {e.response.status_code} for policy {policy_path}")
+      raise OPAException(f"OPA HTTP error: {e.response.status_code}")
 
-        except httpx.TimeoutException:
-            logger.error(f"OPA timeout after {self.timeout}s for policy {policy_path}")
-            raise OPAException(f"OPA request timeout: {policy_path}")
+    except Exception as e:
+      logger.error(f"OPA evaluation error for policy {policy_path}: {str(e)}")
+      raise OPAException(f"OPA evaluation failed: {str(e)}")
 
-        except httpx.HTTPStatusError as e:
-            logger.error(f"OPA HTTP error {e.response.status_code} for policy {policy_path}")
-            raise OPAException(f"OPA HTTP error: {e.response.status_code}")
+  async def evaluate_governance(self, request_data: dict[str, Any]) -> dict[str, Any]:
+    """
+    Evaluate governance policy (convenience method).
 
-        except Exception as e:
-            logger.error(f"OPA evaluation error for policy {policy_path}: {str(e)}")
-            raise OPAException(f"OPA evaluation failed: {str(e)}")
+    Args:
+        request_data: Governance request data
 
-    async def evaluate_governance(self, request_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Evaluate governance policy (convenience method).
-
-        Args:
-            request_data: Governance request data
-
-        Returns:
-            {
-                "allow": bool,
-                "reasons": List[str],
-                "policies": List[str],
-                "controls": List[str]
-            }
-        """
-        result = await self.evaluate_policy("governance/decision", request_data)
-
-        # Normalize OPA response
-        return {
-            "allow": result.get("allow", False),
-            "reasons": result.get("reasons", []),
-            "policies": result.get("applied_policies", []),
-            "controls": result.get("required_controls", []),
+    Returns:
+        {
+            "allow": bool,
+            "reasons": List[str],
+            "policies": List[str],
+            "controls": List[str]
         }
+    """
+    result = await self.evaluate_policy("governance/decision", request_data)
 
-    async def check_health(self) -> bool:
-        """
-        Check if OPA server is healthy.
+    # Normalize OPA response
+    return {
+      "allow": result.get("allow", False),
+      "reasons": result.get("reasons", []),
+      "policies": result.get("applied_policies", []),
+      "controls": result.get("required_controls", []),
+    }
 
-        Returns:
-            True if healthy, False otherwise
-        """
-        try:
-            response = await self.client.get(f"{self.opa_url}/health")
-            return response.status_code == 200
-        except Exception:
-            return False
+  async def check_health(self) -> bool:
+    """
+    Check if OPA server is healthy.
 
-    async def close(self):
-        """Close HTTP client"""
-        await self.client.aclose()
+    Returns:
+        True if healthy, False otherwise
+    """
+    try:
+      response = await self.client.get(f"{self.opa_url}/health")
+      return response.status_code == 200
+    except Exception:
+      return False
 
-    async def __aenter__(self):
-        """Async context manager entry"""
-        return self
+  async def close(self):
+    """Close HTTP client."""
+    await self.client.aclose()
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """Async context manager exit"""
-        await self.close()
+  async def __aenter__(self):
+    """Async context manager entry."""
+    return self
+
+  async def __aexit__(self, exc_type, exc_val, exc_tb):
+    """Async context manager exit."""
+    await self.close()
 
 
 class OPAException(Exception):
-    """OPA-specific exceptions"""
+  """OPA-specific exceptions."""
 
-    pass
+  pass
 
 
 # ============================================================================
@@ -226,13 +235,13 @@ required_controls contains "Manager approval" if {
 
 
 def generate_opa_policy_file(output_path: str = "policies/governance.rego") -> None:
-    """
-    Generate OPA policy file.
+  """
+  Generate OPA policy file.
 
-    Usage:
-        generate_opa_policy_file("policies/governance.rego")
-    """
-    with open(output_path, "w") as f:
-        f.write(GOVERNANCE_POLICY_TEMPLATE.strip())
+  Usage:
+      generate_opa_policy_file("policies/governance.rego")
+  """
+  with open(output_path, "w") as f:
+    f.write(GOVERNANCE_POLICY_TEMPLATE.strip())
 
-    logger.info(f"Generated OPA policy: {output_path}")
+  logger.info(f"Generated OPA policy: {output_path}")

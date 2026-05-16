@@ -7,8 +7,8 @@ Maps the 8-Agent Swarm into a formal J-Staff organization per JP 3-33.
 Each agent maps to a Command function with doctrinal authority.
 """
 
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
 
 logger = logging.getLogger("JTF-Headquarters-JP3-33")
 

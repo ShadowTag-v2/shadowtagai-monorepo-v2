@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_services/lsp_client.py
+# hypothesis_version: 6.151.5
+
+['2.0', 'ascii', 'definitionProvider', 'exit', 'hoverProvider', 'id', 'jsonrpc', 'method', 'params', 'referencesProvider', 'shutdown', 'utf-8']

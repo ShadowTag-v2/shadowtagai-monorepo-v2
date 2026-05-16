@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/firebase_tool_bridge/remote_config.py
+# hypothesis_version: 6.151.5
+
+[0.0, 0.95, 1.0, 2.0, 100, 8192, 65536, 'defaultValue', 'gemini-2.5-flash', 'maxOutputTokens', 'max_output_tokens', 'model_name', 'parameters', 'temperature', 'topK', 'topP', 'top_k', 'top_p', 'value']

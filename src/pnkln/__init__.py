@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-PNKLN Core Stack Integration
+PNKLN Core Stack Integration.
 
 The four pillars:
 1. JR Engine - Purpose/Reasons/Brakes validation
@@ -9,15 +9,15 @@ The four pillars:
 4. NS - Semantic memory retrieval
 """
 
-from .judge_six import JudgeSix, JRValidation
 from .cor import CorOrchestrator
-from .shadowtag import ShadowTag
+from .judge_six import JRValidation, JudgeSix
 from .ns import SemanticMemory
+from .shadowtag import ShadowTag
 
 __all__ = [
-    "JudgeSix",
-    "JRValidation",
-    "CorOrchestrator",
-    "ShadowTag",
-    "SemanticMemory",
+  "JudgeSix",
+  "JRValidation",
+  "CorOrchestrator",
+  "ShadowTag",
+  "SemanticMemory",
 ]

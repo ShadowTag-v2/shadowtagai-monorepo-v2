@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/speculation_engine/exit_plan_mode.py
+# hypothesis_version: 6.151.5
+
+[300.0, 'ABANDONED', 'CONFIRMING', 'EXECUTING', 'IDLE', 'PLANNING', 'SPECULATING', 'none', 'pending', 'speculated']

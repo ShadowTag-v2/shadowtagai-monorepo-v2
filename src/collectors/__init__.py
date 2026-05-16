@@ -8,9 +8,9 @@ from src.collectors.twitter import TwitterCollector
 from src.collectors.youtube import YouTubeCollector
 
 __all__ = [
-    "NewsAPICollector",
-    "RSSCollector",
-    "SourceCollector",
-    "TwitterCollector",
-    "YouTubeCollector",
+  "NewsAPICollector",
+  "RSSCollector",
+  "SourceCollector",
+  "TwitterCollector",
+  "YouTubeCollector",
 ]

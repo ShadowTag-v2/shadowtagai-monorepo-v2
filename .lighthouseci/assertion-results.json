@@ -1,0 +1,18 @@
+[
+  {
+    "name": "minScore",
+    "expected": 1,
+    "actual": 0.96,
+    "values": [
+      0.96,
+      0.96,
+      0.96
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "best-practices",
+    "auditId": "categories",
+    "level": "error",
+    "url": "https://shadowtagai.web.app/"
+  }
+]

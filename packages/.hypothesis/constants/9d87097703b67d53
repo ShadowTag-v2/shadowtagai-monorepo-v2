@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/packages/agnt_utils/format_utils.py
+# hypothesis_version: 6.151.5
+
+[1000, 1024, 3600, 60000, 86400, 604800, 1000000, 2592000, 3600000, 31536000, 86400000, 1000000000, '.', '.0', '0', '0s', '0s ago', 'd', 'h', 'in 0s', 'm', 'mo', 's', 'w', 'y']

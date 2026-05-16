@@ -21,7 +21,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from src.headquarters.jtf_staff_topology import JTFHeadquarters, JStaffDesignation
+from src.headquarters.jtf_staff_topology import JStaffDesignation, JTFHeadquarters
 
 logger = logging.getLogger("J6-Cor_Claude_Code_6-Bridge")
 

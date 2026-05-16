@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-AutoGen → Native Gemini Function Calling Migration
+AutoGen → Native Gemini Function Calling Migration.
 
 Complete implementation of native Gemini function calling with PNKLN stack:
 - JR Engine (Judge #6)

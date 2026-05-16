@@ -1,24 +1,24 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
-"""Configuration modules"""
+"""Configuration modules."""
 
-from .constraints import BootstrapConstraints, DEFAULT_CONSTRAINTS
-from .revenue_model import RevenueModel, PricingTier, TierPricing, DEFAULT_REVENUE_MODEL
+from .constraints import DEFAULT_CONSTRAINTS, BootstrapConstraints
 from .ingestion_config import (
-    IngestionConfig,
-    DEFAULT_INGESTION_CONFIG,
-    DEFAULT_SOURCES,
-    SOURCE_TYPE_REQUIREMENTS,
+  DEFAULT_INGESTION_CONFIG,
+  DEFAULT_SOURCES,
+  SOURCE_TYPE_REQUIREMENTS,
+  IngestionConfig,
 )
+from .revenue_model import DEFAULT_REVENUE_MODEL, PricingTier, RevenueModel, TierPricing
 
 __all__ = [
-    "BootstrapConstraints",
-    "DEFAULT_CONSTRAINTS",
-    "RevenueModel",
-    "PricingTier",
-    "TierPricing",
-    "DEFAULT_REVENUE_MODEL",
-    "IngestionConfig",
-    "DEFAULT_INGESTION_CONFIG",
-    "DEFAULT_SOURCES",
-    "SOURCE_TYPE_REQUIREMENTS",
+  "BootstrapConstraints",
+  "DEFAULT_CONSTRAINTS",
+  "RevenueModel",
+  "PricingTier",
+  "TierPricing",
+  "DEFAULT_REVENUE_MODEL",
+  "IngestionConfig",
+  "DEFAULT_INGESTION_CONFIG",
+  "DEFAULT_SOURCES",
+  "SOURCE_TYPE_REQUIREMENTS",
 ]

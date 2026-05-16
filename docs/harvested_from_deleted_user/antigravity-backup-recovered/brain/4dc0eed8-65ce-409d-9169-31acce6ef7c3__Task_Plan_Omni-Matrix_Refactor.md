@@ -1,0 +1,21 @@
+# Task Plan (Omni-Matrix Refactor)
+
+- [x] Block 1: Write Workspaces & Constitution
+- [x] Block 2: Write Sovereign Infrastructure ([omniverse.tf](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/infrastructure/omniverse.tf))
+- [x] Block 3: Write Deep Cortex (`hippocampus`, `titans_miras`, `chrono_synapse`)
+- [x] Block 4: Write Senses (`omni_grounding`, `jetski_unchained`, `gemini_oracle`)
+- [x] Block 5: Write Governance ([judge_and_jury.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/src/governance/judge_and_jury.py) with Kosmos instead of CavMTOE)
+- [x] Block 5.1: Write hardware guillotine ([rkill_daemon.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/src/temporal/rkill_daemon.py))
+- [x] Block 6: Write Infinite Engine ([activities.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/src/temporal/activities.py), [workflows.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/src/temporal/workflows.py))
+- [x] Block 7: Write Liquid Interface (`otlp_nexus`, react frontend)
+- [x] Block 8: Write Polyglot Support & Deploy scripts
+- [x] Sweep: Refactor [src/antigravity/pipeline.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/src/antigravity/pipeline.py) to strip out `FlyingMonkeys`
+- [x] Cleanup: Eliminate existing `CavMTOE` residues if any
+- [x] Finalize Terraform duplication removals and fix single-line syntax issues
+- [x] Started Python Nexus API backend on port 8600
+- [x] Migrate database architecture from AlloyDB to standard Postgres (Cost optimization as per user request over Master Payload).
+- [ ] Reconcile Master Payload Blocks (1-8) into codebase.
+- [ ] Launch Frontend correctly (`npm run dev -- -p 3005`) and run Browser Verification.
+- [x] Complete [ingest_drive_docs.py](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/shadowtag-omega-v4/scripts/ingest_drive_docs.py) parameters and iteration workflow.
+- [x] Deploy `shadowtag-web` to Cloud Run successfully.
+- [x] Fix compilation errors and deploy `trinity-os` Cockpit to Cloud Run.

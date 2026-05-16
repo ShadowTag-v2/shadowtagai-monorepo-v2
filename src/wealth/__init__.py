@@ -2,19 +2,19 @@
 """Wealth planning and revenue optimization."""
 
 from .model import (
-    LeakType,
-    RevenueLeak,
-    FunnelRedesign,
-    LeverageStrategy,
-    WealthPlan,
-    WealthAccelerator,
+  FunnelRedesign,
+  LeakType,
+  LeverageStrategy,
+  RevenueLeak,
+  WealthAccelerator,
+  WealthPlan,
 )
 
 __all__ = [
-    "LeakType",
-    "RevenueLeak",
-    "FunnelRedesign",
-    "LeverageStrategy",
-    "WealthPlan",
-    "WealthAccelerator",
+  "LeakType",
+  "RevenueLeak",
+  "FunnelRedesign",
+  "LeverageStrategy",
+  "WealthPlan",
+  "WealthAccelerator",
 ]

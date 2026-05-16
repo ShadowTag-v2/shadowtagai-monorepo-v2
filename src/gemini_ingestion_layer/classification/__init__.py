@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-Tier Classification Module
+Tier Classification Module.
 
 Implements 3-tier data classification system:
 - Tier 1: High-value, verified sources (30% target)
@@ -10,6 +10,6 @@ Implements 3-tier data classification system:
 Uses Gemini 2.5 Flash-Lite for cost-effective classification.
 """
 
-from .tier_classifier import TierClassifier, ClassificationResult, TierLevel
+from .tier_classifier import ClassificationResult, TierClassifier, TierLevel
 
 __all__ = ["TierClassifier", "ClassificationResult", "TierLevel"]

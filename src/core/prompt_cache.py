@@ -42,7 +42,6 @@ class CacheManager:
       prev_hash = self._prev_hashes.get(f"tool:{tool_name}")
 
       if prev_hash is not None and current_hash != prev_hash:
-        print(f"CACHE BUST DETECTED: {tool_name} changed.")
         changes.append(tool_name)
 
       self._prev_hashes[f"tool:{tool_name}"] = current_hash
@@ -52,7 +51,6 @@ class CacheManager:
     prev_system = self._prev_hashes.get("system")
 
     if prev_system is not None and system_hash != prev_system:
-      print("CACHE BUST DETECTED: system prompt changed.")
       changes.append("system")
 
     self._prev_hashes["system"] = system_hash

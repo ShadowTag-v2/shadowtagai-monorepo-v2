@@ -6,83 +6,88 @@ Provides a centralized registry for all tool functions that can be called
 by the Gemini model.
 """
 
-from typing import Any
 from collections.abc import Callable
+from typing import Any
+
 from .gemini_function_calling import FunctionTool
 
 
 class FunctionRegistry:
+  """
+  Centralized registry for managing function tools.
+
+  Example:
+      ```python
+      registry = FunctionRegistry()
+
+      @registry.register(
+          description="Research a topic",
+          parameters={"query": {"type": "string"}}
+      )
+      def research(query: str) -> dict:
+          return {"findings": f"Results for {query}"}
+
+      tools = registry.get_all_tools()
+      ```
+  """
+
+  def __init__(self):
+    self.functions: dict[str, Callable] = {}
+    self.tools: list[FunctionTool] = []
+
+  def register(
+    self, description: str, parameters: dict[str, Any], name: str = None
+  ) -> Callable:
     """
-    Centralized registry for managing function tools.
+    Decorator to register a function as a tool.
 
-    Example:
-        ```python
-        registry = FunctionRegistry()
+    Args:
+        description: Human-readable description of what the function does
+        parameters: Parameter schema (e.g., {"query": {"type": "string"}})
+        name: Optional custom name (defaults to function name)
 
-        @registry.register(
-            description="Research a topic",
-            parameters={"query": {"type": "string"}}
-        )
-        def research(query: str) -> dict:
-            return {"findings": f"Results for {query}"}
-
-        tools = registry.get_all_tools()
-        ```
+    Returns:
+        Decorator function
     """
 
-    def __init__(self):
-        self.functions: dict[str, Callable] = {}
-        self.tools: list[FunctionTool] = []
+    def decorator(func: Callable) -> Callable:
+      func_name = name or func.__name__
 
-    def register(self, description: str, parameters: dict[str, Any], name: str = None) -> Callable:
-        """
-        Decorator to register a function as a tool.
+      # Create FunctionTool
+      tool = FunctionTool(
+        name=func_name, description=description, function=func, parameters=parameters
+      )
 
-        Args:
-            description: Human-readable description of what the function does
-            parameters: Parameter schema (e.g., {"query": {"type": "string"}})
-            name: Optional custom name (defaults to function name)
+      # Register
+      self.functions[func_name] = func
+      self.tools.append(tool)
 
-        Returns:
-            Decorator function
-        """
+      return func
 
-        def decorator(func: Callable) -> Callable:
-            func_name = name or func.__name__
+    return decorator
 
-            # Create FunctionTool
-            tool = FunctionTool(name=func_name, description=description, function=func, parameters=parameters)
+  def get_function(self, name: str) -> Callable:
+    """Get a registered function by name."""
+    if name not in self.functions:
+      raise KeyError(f"Function '{name}' not registered")
+    return self.functions[name]
 
-            # Register
-            self.functions[func_name] = func
-            self.tools.append(tool)
+  def get_tool(self, name: str) -> FunctionTool:
+    """Get a registered tool by name."""
+    for tool in self.tools:
+      if tool.name == name:
+        return tool
+    raise KeyError(f"Tool '{name}' not registered")
 
-            return func
+  def get_all_tools(self) -> list[FunctionTool]:
+    """Get all registered tools."""
+    return self.tools.copy()
 
-        return decorator
+  def get_all_functions(self) -> dict[str, Callable]:
+    """Get all registered functions."""
+    return self.functions.copy()
 
-    def get_function(self, name: str) -> Callable:
-        """Get a registered function by name."""
-        if name not in self.functions:
-            raise KeyError(f"Function '{name}' not registered")
-        return self.functions[name]
-
-    def get_tool(self, name: str) -> FunctionTool:
-        """Get a registered tool by name."""
-        for tool in self.tools:
-            if tool.name == name:
-                return tool
-        raise KeyError(f"Tool '{name}' not registered")
-
-    def get_all_tools(self) -> list[FunctionTool]:
-        """Get all registered tools."""
-        return self.tools.copy()
-
-    def get_all_functions(self) -> dict[str, Callable]:
-        """Get all registered functions."""
-        return self.functions.copy()
-
-    def clear(self):
-        """Clear all registered functions and tools."""
-        self.functions.clear()
-        self.tools.clear()
+  def clear(self):
+    """Clear all registered functions and tools."""
+    self.functions.clear()
+    self.tools.clear()

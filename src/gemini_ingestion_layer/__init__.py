@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-PNKLN Core Stack - Gemini Ingestion Layer
+PNKLN Core Stack - Gemini Ingestion Layer.
 
 An intelligence collection pipeline designed for nightly batch processing
 on GKE CronJob infrastructure. This layer is called by services across 4

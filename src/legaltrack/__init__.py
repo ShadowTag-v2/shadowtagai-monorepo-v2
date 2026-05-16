@@ -1,6 +1,6 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """
-LEGALTRACK: AI-Powered Legal Calendar
+LEGALTRACK: AI-Powered Legal Calendar.
 
 Email ingestion → Deadline extraction → Auto-sync calendars
 
@@ -13,30 +13,28 @@ LTV:CAC: 12:1
 
 __version__ = "1.0.0"
 
-from .email_ingestion import (
-    EmailConnector,
-    GmailConnector,
-    OutlookConnector,
-)
-
-from .deadline_extraction import (
-    DeadlineExtractor,
-    CourtEmailParser,
-)
-
 from .calendar_sync import (
-    CalendarSyncEngine,
-    GoogleCalendarSync,
-    OutlookCalendarSync,
+  CalendarSyncEngine,
+  GoogleCalendarSync,
+  OutlookCalendarSync,
+)
+from .deadline_extraction import (
+  CourtEmailParser,
+  DeadlineExtractor,
+)
+from .email_ingestion import (
+  EmailConnector,
+  GmailConnector,
+  OutlookConnector,
 )
 
 __all__ = [
-    "EmailConnector",
-    "GmailConnector",
-    "OutlookConnector",
-    "DeadlineExtractor",
-    "CourtEmailParser",
-    "CalendarSyncEngine",
-    "GoogleCalendarSync",
-    "OutlookCalendarSync",
+  "EmailConnector",
+  "GmailConnector",
+  "OutlookConnector",
+  "DeadlineExtractor",
+  "CourtEmailParser",
+  "CalendarSyncEngine",
+  "GoogleCalendarSync",
+  "OutlookCalendarSync",
 ]
