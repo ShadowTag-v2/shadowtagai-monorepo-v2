@@ -20,6 +20,7 @@ import json
 import time
 
 import pytest
+from unittest.mock import AsyncMock, MagicMock, patch
 
 # ── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -165,56 +166,94 @@ class TestVerifyStripeSignature:
 class TestEventHandlers:
     """Test individual event type handlers."""
 
-    def test_checkout_completed(self):
+    @patch("apps.counselconduit.api.firestore_client._get_client")
+    async def test_checkout_completed(self, mock_get_client):
+        mock_db = MagicMock()
+        mock_doc_ref = AsyncMock()
+        mock_db.collection.return_value.document.return_value = mock_doc_ref
+        mock_get_client.return_value = mock_db
+
         handler = _import_handler()
         event = _make_event(
             "checkout.session.completed",
             customer_email="attorney@firm.com",
             subscription="sub_123",
         )
-        result = handler["checkout"](event)
+        result = await handler["checkout"](event)
         assert result["action"] == "provisioned"
         assert result["email"] == "attorney@firm.com"
 
-    def test_subscription_updated(self):
+    @patch("apps.counselconduit.api.firestore_client._get_client")
+    async def test_subscription_updated(self, mock_get_client):
+        mock_db = MagicMock()
+        mock_doc_ref = AsyncMock()
+        mock_db.collection.return_value.document.return_value = mock_doc_ref
+        mock_get_client.return_value = mock_db
+
         handler = _import_handler()
         event = _make_event(
             "customer.subscription.updated",
             id="sub_456",
             status="active",
         )
-        result = handler["sub_updated"](event)
+        result = await handler["sub_updated"](event)
         assert result["action"] == "tier_updated"
         assert result["subscription_id"] == "sub_456"
 
-    def test_subscription_deleted(self):
+    @patch("apps.counselconduit.api.firestore_client._get_client")
+    async def test_subscription_deleted(self, mock_get_client):
+        mock_db = MagicMock()
+        mock_doc_ref = AsyncMock()
+        mock_db.collection.return_value.document.return_value = mock_doc_ref
+        mock_get_client.return_value = mock_db
+
         handler = _import_handler()
         event = _make_event(
             "customer.subscription.deleted",
             id="sub_789",
         )
-        result = handler["sub_deleted"](event)
+        result = await handler["sub_deleted"](event)
         assert result["action"] == "access_revoked"
 
-    def test_invoice_payment_succeeded(self):
+    @patch("apps.counselconduit.api.firestore_client._get_client")
+    async def test_invoice_payment_succeeded(self, mock_get_client):
+        mock_db = MagicMock()
+        mock_doc_ref = MagicMock()
+        mock_doc_ref.set = AsyncMock()
+        mock_billing_ref = MagicMock()
+        mock_billing_ref.set = AsyncMock()
+        mock_db.collection.return_value.document.return_value = mock_doc_ref
+        mock_doc_ref.collection.return_value.document.return_value = mock_billing_ref
+        mock_get_client.return_value = mock_db
+
         handler = _import_handler()
         event = _make_event(
             "invoice.payment_succeeded",
             amount_paid=14900,
             customer="cus_abc",
         )
-        result = handler["payment_ok"](event)
+        result = await handler["payment_ok"](event)
         assert result["action"] == "payment_recorded"
         assert result["amount_cents"] == 14900
 
-    def test_invoice_payment_failed(self):
+    @patch("apps.counselconduit.api.firestore_client._get_client")
+    async def test_invoice_payment_failed(self, mock_get_client):
+        mock_db = MagicMock()
+        mock_doc_ref = MagicMock()
+        mock_doc_ref.set = AsyncMock()
+        mock_billing_ref = MagicMock()
+        mock_billing_ref.set = AsyncMock()
+        mock_db.collection.return_value.document.return_value = mock_doc_ref
+        mock_doc_ref.collection.return_value.document.return_value = mock_billing_ref
+        mock_get_client.return_value = mock_db
+
         handler = _import_handler()
         event = _make_event(
             "invoice.payment_failed",
             customer="cus_def",
             attempt_count=3,
         )
-        result = handler["payment_fail"](event)
+        result = await handler["payment_fail"](event)
         assert result["action"] == "payment_failed"
         assert result["attempt"] == 3
 
