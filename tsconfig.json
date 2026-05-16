@@ -14,6 +14,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "types": ["node"],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
@@ -33,6 +34,6 @@
       "@skills/*": ["src/skills/*"]
     }
   },
-  "include": ["src/**/*", "examples/**/*", "tests/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]
 }
