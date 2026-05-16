@@ -86,7 +86,7 @@ def test_audit_log_records_all_validations(judge_six):
   """Test that all validations are recorded in audit log."""
   try:
     judge_six.enforce("Process the text 'test'")
-  except:
+  except Exception:
     pass
 
   assert len(judge_six.audit_log) > 0

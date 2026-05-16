@@ -161,7 +161,7 @@ class DeadlineExtractor:
           date_obj = self._parse_date(date_str)
           if date_obj:
             dates.append((date_str, date_obj))
-        except:
+        except ValueError:
           continue
 
     return dates
@@ -177,7 +177,7 @@ class DeadlineExtractor:
     for fmt in formats:
       try:
         return datetime.strptime(date_str, fmt)
-      except:
+      except ValueError:
         continue
 
     return None

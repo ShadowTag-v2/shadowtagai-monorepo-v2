@@ -14,6 +14,7 @@ integrity verification.
 
 import hashlib
 import json
+import os
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -57,7 +58,7 @@ class Watermark:
       verifier = eddsa.new(public_key, "rfc8032")
       verifier.verify(h, sig_bytes)
       return True
-    except:
+    except Exception:
       return False
 
   def _construct_message(self) -> str:
@@ -224,7 +225,7 @@ class ShadowTag:
         return wm
     return None
 
-  def export_audit_trail(self) -> List[dict[str, Any]]:
+  def export_audit_trail(self) -> list[dict[str, Any]]:
     """
     Export full audit trail.
 
@@ -233,6 +234,3 @@ class ShadowTag:
     """
     return [wm.to_dict() for wm in self.watermarks]
 
-
-# Import os for key path handling
-import os

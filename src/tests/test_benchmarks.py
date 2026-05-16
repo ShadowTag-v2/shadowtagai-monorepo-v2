@@ -21,14 +21,20 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 
-from src.integration.unified_orchestrator import create_unified_orchestrator
+try:
+  from src.integration.unified_orchestrator import create_unified_orchestrator
+except Exception:
+  create_unified_orchestrator = None
 
 
 @pytest.fixture
 def orchestrator():
   """Create unified orchestrator for testing."""
   if not os.environ.get("GOOGLE_API_KEY"):
-    pytest.skip("GOOGLE_API_KEY not set")
+    pytest.skip("GOOGLE_API_KEY not set — benchmark tests require live API")
+
+  if create_unified_orchestrator is None:
+    pytest.skip("unified_orchestrator unavailable — missing dependencies")
 
   return create_unified_orchestrator(
     api_key=os.environ["GOOGLE_API_KEY"],

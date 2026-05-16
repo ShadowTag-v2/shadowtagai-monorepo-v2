@@ -13,7 +13,10 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+  from .deadline_extraction import Deadline
 
 
 class SyncStatus(Enum):
@@ -319,7 +322,7 @@ class CalendarSyncEngine:
       try:
         time_obj = datetime.strptime(deadline.time, "%I:%M %p").time()
         start_time = datetime.combine(deadline.date.date(), time_obj)
-      except:
+      except ValueError:
         pass
 
     end_time = start_time + timedelta(hours=duration_hours)
