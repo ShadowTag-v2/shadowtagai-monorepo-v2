@@ -18,7 +18,7 @@ import asyncio
 
 # Import existing pnkln modules
 try:
-    from pnkln.core.grpo import GRPOTrainer, GRPOConfig, GRPOBatch, generate_synthetic_batch
+    from pnkln.core.grpo import GRPOTrainer, GRPOConfig, GRPOBatch
 except ImportError:
     # For testing when running as script
     import sys
