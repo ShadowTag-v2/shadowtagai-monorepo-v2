@@ -132,6 +132,11 @@ def _update_remote_url(token: str) -> None:
                 ["git", "-C", str(REPO_ROOT), "remote", "set-url", "origin", new_url],
                 capture_output=True,
             )
+            # Also update the push URL to prevent SSH deploy key conflicts
+            subprocess.run(
+                ["git", "-C", str(REPO_ROOT), "remote", "set-url", "--push", "origin", new_url],
+                capture_output=True,
+            )
     except Exception:
         pass
 
