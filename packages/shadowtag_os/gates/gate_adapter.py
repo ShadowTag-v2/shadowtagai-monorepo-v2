@@ -265,6 +265,37 @@ class GateAdapter:
             "base64 -d | bash",
             "xxd -r | sh",
             "python3 -c 'import os",
+            # Cloud metadata endpoint exfiltration (AWS/GCP/Azure)
+            "169.254.169.254",
+            "metadata.google.internal",
+            "metadata.google",
+            "computeMetadata",
+            "100.100.100.200",  # Alibaba Cloud IMDS
+            "fd00:ec2::254",  # AWS IPv6 IMDS
+            # Container escape patterns
+            "nsenter",
+            "unshare --mount",
+            "mount /dev",
+            "/var/run/docker.sock",
+            "docker.sock",
+            "cgroup escape",
+            "/proc/1/root",
+            # Cloud credential harvesting
+            ".kube/config",
+            "serviceaccount/token",
+            "/run/secrets",
+            "GOOGLE_APPLICATION_CREDENTIALS",
+            "AZURE_CLIENT_SECRET",
+            "AWS_SESSION_TOKEN",
+            # Reverse shell patterns
+            "/dev/tcp/",
+            "/dev/udp/",
+            "python -c 'import socket",
+            "php -r '$sock=fsockopen",
+            # DNS exfiltration
+            "nslookup $(cat",
+            "dig $(cat",
+            "host $(cat",
         }
         payload_str = str(payload).lower()
 

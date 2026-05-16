@@ -83,7 +83,10 @@ class ZxRunner:
 
     async def _run_command(self, command: str, timeout: int) -> dict[str, Any]:
         """Execute a simple shell command directly."""
+        import time
+
         logger.info("zx_runner.command", command=command[:100])
+        start = time.perf_counter()
 
         try:
             proc = await asyncio.create_subprocess_shell(
@@ -92,26 +95,38 @@ class ZxRunner:
                 stderr=asyncio.subprocess.PIPE,
             )
             stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+            duration_ms = (time.perf_counter() - start) * 1000
 
             result = ShellResult(
                 stdout=stdout.decode("utf-8", errors="replace"),
                 stderr=stderr.decode("utf-8", errors="replace"),
                 exit_code=proc.returncode or 0,
-                duration_ms=0,  # Simplified — full timing in production
+                duration_ms=duration_ms,
+            )
+
+            logger.info(
+                "zx_runner.command.complete",
+                exit_code=result.exit_code,
+                duration_ms=round(duration_ms, 2),
             )
 
             return {
                 "stdout": result.stdout,
                 "stderr": result.stderr,
                 "exit_code": result.exit_code,
+                "duration_ms": round(duration_ms, 2),
             }
 
         except asyncio.TimeoutError:
-            return {"error": f"Command timed out after {timeout}s", "exit_code": -1}
+            duration_ms = (time.perf_counter() - start) * 1000
+            return {"error": f"Command timed out after {timeout}s", "exit_code": -1, "duration_ms": round(duration_ms, 2)}
 
     async def _run_script(self, script: str, timeout: int) -> dict[str, Any]:
         """Execute a zx script through the zx runtime."""
+        import time
+
         logger.info("zx_runner.script", length=len(script))
+        start = time.perf_counter()
 
         # Write script to temp file
         with tempfile.NamedTemporaryFile(mode="w", suffix=".mjs", delete=False) as f:
@@ -132,15 +147,24 @@ class ZxRunner:
                 stderr=asyncio.subprocess.PIPE,
             )
             stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+            duration_ms = (time.perf_counter() - start) * 1000
+
+            logger.info(
+                "zx_runner.script.complete",
+                exit_code=proc.returncode,
+                duration_ms=round(duration_ms, 2),
+            )
 
             return {
                 "stdout": stdout.decode("utf-8", errors="replace"),
                 "stderr": stderr.decode("utf-8", errors="replace"),
                 "exit_code": proc.returncode or 0,
+                "duration_ms": round(duration_ms, 2),
             }
 
         except asyncio.TimeoutError:
-            return {"error": f"Script timed out after {timeout}s", "exit_code": -1}
+            duration_ms = (time.perf_counter() - start) * 1000
+            return {"error": f"Script timed out after {timeout}s", "exit_code": -1, "duration_ms": round(duration_ms, 2)}
         finally:
             Path(script_path).unlink(missing_ok=True)
 
