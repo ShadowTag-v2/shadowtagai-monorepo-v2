@@ -15,3 +15,4 @@
 12. **GitHub Auth**: App PEM exclusive (ID 3018200). SSH primary transport. No PATs, no `gh auth login`.
 13. **Credential Hygiene**: Maps API key migrated to `${GOOGLE_DESIGN_API_KEY}` env ref. Phantom `gemini-github-mcp` removed from Cline. `gemini-web-fetcher` migrated to uvx (Plane 2). Chrome CrUX key is upstream vendor code (allowlisted).
 14. **Lint V26.3 Pass**: 2,836 violations fixed (142 I001, 754 T201, 1896 D400/D415, 44 F401/F841). Stale `pyproject.toml` [tool.ruff] removed (line-length 100→150 conflict).
+15. **ShadowTag OS**: Architecture documented in `packages/shadowtag_os/DESIGN.md`. 6 subsystems: CoreOrchestrator, KernelChainAdapter, GateAdapter (45 keyword blocklist), JudgeAdapter, ZxRunner, SkillsBridge. 33/33 tests green. 64% coverage (core 96%, gates 90%, kernels 95%).

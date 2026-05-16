@@ -37,7 +37,7 @@ class ATP519ScanAdapter(KernelAdapter):
       from src.kernels.atp_519_scan import ATP519ScanKernel
 
       self.kernel = ATP519ScanKernel()
-    except ImportError:
+    except Exception:
       self.kernel = None
 
   def execute(self, context: str) -> dict:
@@ -78,10 +78,10 @@ class JudgeSixAdapter(KernelAdapter):
 
   def __init__(self):
     try:
-      from src.kernels.judge_six import JudgeSixKernel
+      from src.kernels.judge_six import JudgeSixClassifyKernel
 
-      self.kernel = JudgeSixKernel()
-    except ImportError:
+      self.kernel = JudgeSixClassifyKernel()
+    except Exception:
       self.kernel = None
 
   def execute(self, violations: dict) -> dict:
@@ -171,12 +171,11 @@ class DebateAdapter(KernelAdapter):
 
   def __init__(self):
     try:
-      from src.agents.debate import DebateAgent, DebateConfig, DebateOrchestrator
+      from src.agents.debate import DebateAgent, DebateOrchestrator
 
       self.DebateOrchestrator = DebateOrchestrator
       self.DebateAgent = DebateAgent
-      self.DebateConfig = DebateConfig
-    except ImportError:
+    except Exception:
       self.DebateOrchestrator = None
 
   def execute(self, question: str, num_agents: int = 3) -> dict:
@@ -192,7 +191,7 @@ class DebateAdapter(KernelAdapter):
       }
 
     try:
-      config = self.DebateConfig(max_rounds=3, consensus_threshold=0.8)
+      config = {"max_rounds": 3, "consensus_threshold": 0.8}
       agents = [
         self.DebateAgent(config, persona=f"Expert {i + 1}") for i in range(num_agents)
       ]

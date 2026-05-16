@@ -12,12 +12,13 @@ This is the bridge between:
 
 import asyncio
 
-from src.agents.debate import DebateAgent, DebateConfig, DebateOrchestrator
+from src.agents.debate import DebateAgent, DebateOrchestrator
+from src.agents.debate import DebateResult as DebateResult
 from src.core import FunctionRegistry, FunctionTool
 from src.evolution.dte import DTESystem, EvolutionStrategy
 from src.kernels.atp_519_scan import ATP519ScanKernel
 from src.kernels.audit_compress import AuditCompressKernel
-from src.kernels.judge_six import JudgeSixKernel
+from src.kernels.judge_six import JudgeSixClassifyKernel as JudgeSixKernel
 from src.ratings.glicko2 import Glicko2Player, Glicko2System
 from src.training.grpo import GRPOConfig as GRPOConfig
 from src.training.grpo import GRPOSimulator as GRPOSimulator
@@ -164,7 +165,7 @@ class KernelFunctionRegistry:
       """
       try:
         # Create debate agents
-        config = DebateConfig(max_rounds=3, consensus_threshold=0.8)
+        config = {"max_rounds": 3, "consensus_threshold": 0.8}
         agents = [
           DebateAgent(config, persona=f"Expert {i + 1}") for i in range(num_agents)
         ]

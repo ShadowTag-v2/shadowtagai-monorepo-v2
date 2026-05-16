@@ -237,6 +237,34 @@ class GateAdapter:
             "ALTER TABLE DROP",
             "UNION SELECT",
             "xp_cmdshell",
+            # Environment variable exfiltration
+            "printenv",
+            "/proc/self/environ",
+            "$SECRET",
+            "$API_KEY",
+            "$AWS_SECRET",
+            "$STRIPE_SECRET",
+            "env | curl",
+            "env | wget",
+            "env | nc",
+            # Credential file harvesting
+            ".aws/credentials",
+            ".ssh/id_rsa",
+            ".ssh/id_ed25519",
+            ".config/gcloud/",
+            ".docker/config.json",
+            ".npmrc",
+            "firebase-tools.json",
+            # Process manipulation
+            "kill -9",
+            "killall",
+            "nohup",
+            "disown",
+            # Encoding evasion
+            "base64 -d | sh",
+            "base64 -d | bash",
+            "xxd -r | sh",
+            "python3 -c 'import os",
         }
         payload_str = str(payload).lower()
 
