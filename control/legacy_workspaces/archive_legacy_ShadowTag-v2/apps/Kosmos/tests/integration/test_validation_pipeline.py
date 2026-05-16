@@ -224,7 +224,7 @@ class TestValidationFeedback:
 
         # Feedback should mention weaknesses or suggestions
         feedback_lower = score.feedback.lower()
-        has_actionable = any(
+        any(
             word in feedback_lower
             for word in ["weakness", "improve", "suggest", "concern", "rigor"]
         )

@@ -2,7 +2,7 @@
 """Billing period schemas."""
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Optional
 from uuid import UUID
 
@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 from airweave.schemas.organization_billing import BillingPlan
 
 
-class BillingPeriodStatus(str, Enum):
+class BillingPeriodStatus(StrEnum):
     """Status of a billing period."""
 
     ACTIVE = "active"  # Currently active period
@@ -21,7 +21,7 @@ class BillingPeriodStatus(str, Enum):
     GRACE = "grace"  # Grace period after failed payment
 
 
-class BillingTransition(str, Enum):
+class BillingTransition(StrEnum):
     """How this billing period was created."""
 
     INITIAL_SIGNUP = "initial_signup"  # First subscription

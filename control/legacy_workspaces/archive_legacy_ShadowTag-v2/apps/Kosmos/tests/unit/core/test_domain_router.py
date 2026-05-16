@@ -394,7 +394,7 @@ class TestDomainClassification:
         question = "Analyze this data"
         context = {"previous_findings": "Gene expression analysis"}
 
-        classification = domain_router.classify_research_question(question, context=context)
+        domain_router.classify_research_question(question, context=context)
 
         # Verify context was used in prompt
         call_args = domain_router.claude.generate_structured.call_args

@@ -107,7 +107,7 @@ class DockerClient:
 
         # Create container
         try:
-            container = self.client.containers.run(
+            self.client.containers.run(
                 image=self.bot_image,
                 name=container_name,
                 detach=True,

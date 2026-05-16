@@ -27,7 +27,7 @@ Example workflow:
     patterns = analyzer.analyze_pathway_pattern(results)
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 import numpy as np
@@ -40,7 +40,7 @@ from kosmos.utils.compat import model_to_dict
 
 
 # Enums for metabolite classification
-class MetaboliteCategory(str, Enum):
+class MetaboliteCategory(StrEnum):
     """Biochemical pathway category"""
 
     PURINE = "purine"
@@ -51,7 +51,7 @@ class MetaboliteCategory(str, Enum):
     OTHER = "other"
 
 
-class MetaboliteType(str, Enum):
+class MetaboliteType(StrEnum):
     """Type of metabolite in pathway"""
 
     SALVAGE_PRECURSOR = "salvage_precursor"

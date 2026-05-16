@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/services/litellm_proxy.py
+# hypothesis_version: 6.151.5
+
+[900, 100000, 'Token expired', 'Token not found', 'Valid', 'chatgpt', 'claude', 'gemini', 'gpt-4.1-mini', 'grok', 'grok-3-mini-fast', 'perplexity', 'sonar-pro']

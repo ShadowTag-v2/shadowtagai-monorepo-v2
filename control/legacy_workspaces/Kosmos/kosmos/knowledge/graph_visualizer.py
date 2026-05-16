@@ -225,7 +225,6 @@ class GraphVisualizer:
         for edge_type, color in self.edge_colors.items():
             edge_x = []
             edge_y = []
-            edge_text = []
 
             for u, v, data in G.edges(data=True):
                 if data.get("type") == edge_type:
@@ -502,11 +501,6 @@ class GraphVisualizer:
                 G.add_node(node_id, type=node_type, label=node.get("title") or node.get("name", "Unknown"), **dict(node))
 
             # Get edges
-            edge_query = """
-            MATCH (a)-[r]->(b)
-            WHERE id(a) IN $node_ids AND id(b) IN $node_ids
-            RETURN a, b, type(r) as rel_type, r
-            """
 
             # This is a simplified version - full implementation would
             # properly query relationships between loaded nodes

@@ -93,7 +93,7 @@ class Tier2AutoActions:
         # In production, use GitHub API
         # For now, log the intent
         issue_title = f"[Intelligence] {item.title[:100]}"
-        issue_body = f"""## Intelligence Item
+        f"""## Intelligence Item
 
 **Source:** {item.source.value}
 **Published:** {item.published_date.strftime("%Y-%m-%d")}
@@ -130,7 +130,7 @@ class Tier2AutoActions:
 
         # In production, use Slack webhook
         # For now, log the intent
-        message = f"""🔔 *Tier 2 Intelligence Alert*
+        f"""🔔 *Tier 2 Intelligence Alert*
 
 *{item.title}*
 

@@ -15,12 +15,12 @@ import logging
 import logging.handlers
 import sys
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from pathlib import Path
 from typing import Any
 
 
-class LogFormat(str, Enum):
+class LogFormat(StrEnum):
     """Log format options."""
 
     JSON = "json"

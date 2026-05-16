@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/agui_stream.py
+# hypothesis_version: 6.151.5
+
+[3600, 'Cache-Control', 'Connection', 'Content-Type', 'X-Accel-Buffering', '_encrypted', 'custom', 'data', 'id', 'keep-alive', 'no', 'nosniff', 'run_error', 'run_finished', 'run_started', 'session_id', 'state_delta', 'state_snapshot', 'text/event-stream', 'text_message_content', 'text_message_end', 'text_message_start', 'timestamp', 'tool_call_args', 'tool_call_end', 'tool_call_start', 'type']

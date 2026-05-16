@@ -21,7 +21,7 @@ from sqlalchemy.orm import relationship
 Base = declarative_base()
 
 
-class ExperimentStatus(str, enum.Enum):
+class ExperimentStatus(enum.StrEnum):
     """Experiment status."""
 
     CREATED = "created"
@@ -31,7 +31,7 @@ class ExperimentStatus(str, enum.Enum):
     CANCELLED = "cancelled"
 
 
-class HypothesisStatus(str, enum.Enum):
+class HypothesisStatus(enum.StrEnum):
     """Hypothesis status."""
 
     GENERATED = "generated"

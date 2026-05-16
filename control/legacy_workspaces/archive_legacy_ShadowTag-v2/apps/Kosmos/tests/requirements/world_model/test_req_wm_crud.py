@@ -140,7 +140,7 @@ class TestREQ_WM_CRUD_001_CreateEntity:
 
         # Invalid confidence should fail at model level
         with pytest.raises(ValueError):
-            invalid_entity = Entity(
+            Entity(
                 type="Paper",
                 properties={"title": "Invalid Paper"},
                 confidence=1.5,  # Invalid
@@ -200,7 +200,7 @@ class TestREQ_WM_CRUD_002_ReadEntity:
         entity2 = Entity(type="Paper", properties={"title": "Project B Paper"}, project="project_b")
 
         id1 = world_model.add_entity(entity1)
-        id2 = world_model.add_entity(entity2)
+        world_model.add_entity(entity2)
 
         # Retrieve with correct project filter
         retrieved1 = world_model.get_entity(id1, project="project_a")
@@ -290,8 +290,7 @@ class TestREQ_WM_CRUD_003_UpdateEntity:
     def test_update_modifies_updated_at_timestamp(self, world_model, sample_entity):
         """Verify updated_at timestamp is modified on update."""
         entity_id = world_model.add_entity(sample_entity)
-        original = world_model.get_entity(entity_id)
-        original_updated_at = original.updated_at if original else None
+        world_model.get_entity(entity_id)
 
         # Wait briefly and update
         import time

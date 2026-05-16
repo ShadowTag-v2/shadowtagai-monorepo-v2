@@ -349,7 +349,7 @@ class TestPipelinePerformance:
 
         generator = ExperimentCodeGenerator(use_templates=True, use_llm=False)
         code = generator.generate(ttest_protocol)
-        result = execute_protocol_code(code, sample_data_file, validate_safety=True)
+        execute_protocol_code(code, sample_data_file, validate_safety=True)
 
         duration = time.time() - start
 
@@ -384,7 +384,7 @@ class TestSandboxPipeline:
         generator = ExperimentCodeGenerator(use_templates=True, use_llm=False)
         code = generator.generate(ttest_protocol)
 
-        result = execute_protocol_code(
+        execute_protocol_code(
             code, data_path=sample_data_file, use_sandbox=True, validate_safety=True
         )
 

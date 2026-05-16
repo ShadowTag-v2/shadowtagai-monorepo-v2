@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/human_gate.py
+# hypothesis_version: 6.151.5
+
+[401, 404, 409, 500, 2000, '/api/v1/process', '/gate/decide', '/gate/{process_id}', '/gates/pending', 'Firm tenant ID', 'UserApproved', 'UserRejected', '^(approve|reject)$', 'approve', 'firm_id', 'gates', 'human_gate_api', 'metadata', 'pending', 'pending_count', 'process-gate', 'process_id', 'registered_at', 'resolved_at', 'status']

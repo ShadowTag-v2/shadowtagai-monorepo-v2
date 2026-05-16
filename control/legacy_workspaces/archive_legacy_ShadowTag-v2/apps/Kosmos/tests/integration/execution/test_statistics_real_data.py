@@ -97,8 +97,8 @@ class TestRealDataHypothesisTesting:
         np.random.seed(42)
         # Same distribution
         all_data = np.random.normal(100, 10, 100)
-        group1 = all_data[:50]
-        group2 = all_data[50:]  # Random split - should be similar
+        all_data[:50]
+        all_data[50:]  # Random split - should be similar
 
         # Run multiple times and check false positive rate
         false_positives = 0

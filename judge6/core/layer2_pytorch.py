@@ -114,7 +114,7 @@ class PyTorchEnforcementLayer:
 
             # Run through PyTorch model
             with torch.no_grad():
-                embedding_tensor = torch.tensor(embedding).unsqueeze(0).to(self.device)
+                torch.tensor(embedding).unsqueeze(0).to(self.device)
                 # Note: Need to handle dimension mismatch (384 vs 768)
                 # For now, pad or use a different embedder
                 # TODO: Retrain model with correct embedding dimension

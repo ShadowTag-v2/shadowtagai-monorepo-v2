@@ -173,7 +173,7 @@ async def test_global_system_instruction():
         name="sub_agent",
         instruction="This is the sub agent instruction.",
     )
-    root_agent = Agent(
+    Agent(
         model="gemini-1.5-flash",
         name="root_agent",
         global_instruction="This is the global instruction.",
@@ -213,7 +213,7 @@ async def test_function_global_system_instruction():
         name="sub_agent",
         instruction=sub_agent_si,
     )
-    root_agent = Agent(
+    Agent(
         model="gemini-1.5-flash",
         name="root_agent",
         global_instruction=root_agent_gi,
@@ -253,7 +253,7 @@ async def test_async_function_global_system_instruction():
         name="sub_agent",
         instruction=sub_agent_si,
     )
-    root_agent = Agent(
+    Agent(
         model="gemini-1.5-flash",
         name="root_agent",
         global_instruction=root_agent_gi,

@@ -10,7 +10,7 @@ def hello():
     with connect("ws://localhost:8765") as websocket:
         _start_time = time.time()
         websocket.send("Hello world!")
-        message = websocket.recv()
+        websocket.recv()
         _time_diff = round((time.time() - _start_time) * 1000, 3)
         print(f"Web Socket Roundtrip(ms): {_time_diff}")
         return _time_diff
@@ -20,9 +20,9 @@ def call_hc():
     _start_time = time.time()
     response = requests.get("http://localhost:8009/hc")
     if response.status_code == 200:
-        message = "success"
+        pass
     else:
-        message = "failure"
+        pass
 
     _time_diff = round((time.time() - _start_time) * 1000, 3)
     print(f"Flask App Get Roundtrip(ms): {_time_diff}")

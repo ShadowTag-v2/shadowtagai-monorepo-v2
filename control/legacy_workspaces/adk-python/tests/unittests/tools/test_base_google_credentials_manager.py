@@ -389,9 +389,9 @@ class TestGoogleCredentialsManager:
         with patch(
             "google.adk.tools._google_credentials.google.oauth2.credentials.Credentials",
             return_value=mock_creds,
-        ) as mock_credentials_class:
+        ):
             # Complete OAuth flow with first manager
-            result1 = await manager1.get_valid_credentials(mock_tool_context)
+            await manager1.get_valid_credentials(mock_tool_context)
 
             # Verify credentials were cached in tool context
             assert BIGQUERY_TOKEN_CACHE_KEY in mock_tool_context.state

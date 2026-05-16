@@ -680,7 +680,7 @@ class TestREQ_LOG_005_NoSensitiveInfo:
                 "DATABASE_URL": "postgresql://user:password@localhost/db",
             },
         ):
-            config = get_config(reload=True)
+            get_config(reload=True)
 
             with caplog.at_level(logging.INFO):
                 logger.info("Database configuration loaded")
@@ -963,7 +963,7 @@ class TestLoggingIntegration:
                     "LOG_FILE": log_file,
                 },
             ):
-                config = get_config(reload=True)
+                get_config(reload=True)
 
                 # Configure logging from config
                 configure_from_config()
@@ -998,10 +998,10 @@ class TestLoggingIntegration:
         from kosmos.core.logging import LogFormat, get_logger, setup_logging
 
         # Setup with invalid log file path (read-only directory)
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory():
             # This should handle errors gracefully
             try:
-                logger = setup_logging(
+                setup_logging(
                     level="INFO",
                     log_format=LogFormat.TEXT,
                     log_file="/dev/null/invalid.log",  # Invalid path

@@ -20,7 +20,7 @@ storage_client = storage.Client()
 
 def download_video(bucket, file_name, temp_file):
     # Download the video to a temporary file
-    with open(temp_file, "wb") as temp_file_handle:
+    with open(temp_file, "wb"):
         bucket = storage_client.get_bucket(bucket)
         blob = bucket.blob(file_name)
         blob.download_to_filename(temp_file)

@@ -136,11 +136,11 @@ class TestKnowledgeGraphConcepts:
     def test_create_discusses_relationship(self, knowledge_graph, unique_paper):
         """Test linking concept to paper via DISCUSSES relationship."""
         # Create paper first
-        paper_node = knowledge_graph.create_paper(unique_paper)
+        knowledge_graph.create_paper(unique_paper)
 
         # Create concept
         concept_name = f"Deep Learning_{unique_id()}"
-        concept_node = knowledge_graph.create_concept(concept_name, domain="computer_science")
+        knowledge_graph.create_concept(concept_name, domain="computer_science")
 
         # Link them with DISCUSSES relationship
         relationship = knowledge_graph.create_discusses(

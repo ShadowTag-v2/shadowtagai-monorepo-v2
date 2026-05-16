@@ -497,7 +497,7 @@ class TranscriptionTeeClient:
         output_container = None
         if save_file:
             output_container = av.open(save_file, mode="w")
-            output_audio_stream = output_container.add_stream(codec_name="pcm_s16le", rate=self.rate)
+            output_container.add_stream(codec_name="pcm_s16le", rate=self.rate)
 
         try:
             for packet in container.demux(audio_stream):

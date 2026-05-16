@@ -124,7 +124,6 @@ def test_live_streaming_function_call_single():
 
     # Check that we got a function call event
     function_call_found = False
-    function_response_found = False
 
     for event in res_events:
         if event.content and event.content.parts:
@@ -134,7 +133,6 @@ def test_live_streaming_function_call_single():
                     assert part.function_call.args["location"] == "San Francisco"
                     assert part.function_call.args["unit"] == "celsius"
                 elif part.function_response and part.function_response.name == "get_weather":
-                    function_response_found = True
                     assert part.function_response.response["temperature"] == 22
                     assert part.function_response.response["condition"] == "sunny"
 

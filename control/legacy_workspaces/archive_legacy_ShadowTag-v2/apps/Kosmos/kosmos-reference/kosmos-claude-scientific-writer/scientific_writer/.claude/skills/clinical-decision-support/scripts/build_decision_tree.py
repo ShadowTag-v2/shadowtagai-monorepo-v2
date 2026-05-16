@@ -268,15 +268,13 @@ def json_to_tikz(json_file, output_file="algorithm.tex"):
     tikz_code = tikz_code.replace("[TITLE TO BE SPECIFIED]", title)
 
     nodes = spec["nodes"]
-    start_node = spec.get("start_node", "start")
+    spec.get("start_node", "start")
 
     # Generate nodes (simplified layout - vertical)
     node_defs = []
     arrow_defs = []
 
     # Track positioning
-    previous_node = None
-    level = 0
 
     def add_node(node_id, position_rel=None):
         """Recursively add nodes."""

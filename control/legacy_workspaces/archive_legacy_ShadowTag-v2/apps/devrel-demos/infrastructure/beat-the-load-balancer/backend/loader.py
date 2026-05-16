@@ -55,8 +55,7 @@ def is_locust_running(flag_file) -> bool:
 
 
 def get_locust_command():
-    unique_id = "".join(random.sample("abcdefghijklmnopqrstuvwxyz", 4))
-    log_file = f"/tmp/flask-loader-logs-{unique_id}.log"
+    "".join(random.sample("abcdefghijklmnopqrstuvwxyz", 4))
     command = [
         "/home/sampathm/load-balancing-blitz/venv/bin/locust",
         "--headless",

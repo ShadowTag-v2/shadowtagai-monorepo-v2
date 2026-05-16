@@ -71,7 +71,7 @@ class LoadTestRunner:
 
         try:
             # Run locust
-            result = subprocess.run(cmd, check=True)
+            subprocess.run(cmd, check=True)
 
             print("\n✅ Load test completed successfully!")
 

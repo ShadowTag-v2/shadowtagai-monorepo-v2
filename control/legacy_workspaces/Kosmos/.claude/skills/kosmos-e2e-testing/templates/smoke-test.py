@@ -37,7 +37,7 @@ def test_workflow_initialization():
     try:
         from kosmos.workflow.research_loop import ResearchWorkflow
 
-        workflow = ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
+        ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
         print("  [OK] Workflow created")
         return True
     except Exception as e:

@@ -50,14 +50,6 @@ def analyze_experiment():
             print(f"  {row['tool_name']:<20} {row['status']:<10}: {row['count']}")
 
     # 3. Deep Dive into Failures for Key Tools
-    target_tools = [
-        "file_edit",
-        "file_create",
-        "go_mod",
-        "go_build",
-        "go_get",
-        "cmd.run",
-    ]
 
     print("\n\n--- Deep Dive: Failed Tool Calls ---")
 

@@ -112,13 +112,6 @@ def ask_data_insights(
     try:
         location = "global"
         if not credentials.token:
-            error_message = (
-                "Error: The provided credentials object does not have a valid access"
-                " token.\n\nThis is often because the credentials need to be"
-                " refreshed or require specific API scopes. Please ensure the"
-                " credentials are prepared correctly before calling this"
-                " function.\n\nThere may be other underlying causes as well."
-            )
             return {
                 "status": "ERROR",
                 "error_details": "ask_data_insights requires a valid access token.",
@@ -237,7 +230,6 @@ def _format_schema_as_dict(
     if not fields:
         return {"columns": []}
 
-    column_details = []
     headers = ["Column", "Type", "Description", "Mode"]
     rows: list[list[str, str, str, str]] = []
     for field in fields:

@@ -52,7 +52,6 @@ def run(project_id, gaming_model_location, movie_model_location, pipeline_args):
     # Pub/Sub IO will automatically create a subscription for us
     input_topic = f"projects/{project_id}/topics/tox-input"
     output_topic = f"projects/{project_id}/topics/tox-output"
-    output_bigquery = f"{project_id}:demo.tox"
 
     with beam.Pipeline(options=pipeline_options) as p:
         # Step 3: Create the pipeline to read from the input topic

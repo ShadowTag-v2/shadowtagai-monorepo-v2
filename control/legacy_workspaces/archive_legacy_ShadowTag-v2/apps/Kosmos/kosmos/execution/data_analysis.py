@@ -669,7 +669,6 @@ class DataAnalyzer:
 
         # Get slopes and intercepts for each segment
         slopes = model.calc_slopes()
-        intercepts = []
 
         # Calculate R²
         y_pred = model.predict(x)

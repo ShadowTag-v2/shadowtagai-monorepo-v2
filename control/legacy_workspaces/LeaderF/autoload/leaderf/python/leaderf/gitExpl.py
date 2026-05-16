@@ -5009,7 +5009,6 @@ class GitBlameExplManager(GitExplManager):
     def getLineNumber(self, commit_id, file_name, line_num, text, project_root):
         cmd = f"git log -1 -p --pretty= -U0 --follow {commit_id} -- {file_name}"
         outputs = ParallelExecutor.run(cmd, directory=project_root)
-        found = False
         for i, line in enumerate(outputs[0]):
             # @@ -2,11 +2,21 @@
             if line.startswith("@@"):
@@ -5024,7 +5023,6 @@ class GitBlameExplManager(GitExplManager):
                     count = 1
 
                 if start + count > line_num:
-                    found = True
                     orig_line_numbers = line.split(None, 2)[1].lstrip("-")
                     if "," in orig_line_numbers:
                         orig_start, orig_count = orig_line_numbers.split(",")

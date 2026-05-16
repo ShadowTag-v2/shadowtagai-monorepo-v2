@@ -518,7 +518,6 @@ class TestBatchEvaluation:
 
     def test_batch_evaluate(self, scholar_validator, high_quality_finding, low_quality_finding):
         """Test batch evaluation of multiple findings."""
-        findings = [high_quality_finding, low_quality_finding]
 
         # Note: batch_evaluate is sync, so we need to handle this differently
         # The actual implementation may need to be async

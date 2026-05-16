@@ -334,7 +334,7 @@ class TestREQ_WM_PERSIST_002_ImportGraph:
 
         # Export
         world_model.export_graph(str(export_path), project="test_persistence")
-        original_stats = world_model.get_statistics(project="test_persistence")
+        world_model.get_statistics(project="test_persistence")
 
         # Clear and import
         world_model.reset(project="test_persistence")
@@ -488,8 +488,7 @@ class TestREQ_WM_PERSIST_003_DataIntegrity:
             type="Paper", properties={"title": "Timestamp Test"}, project="test_persistence"
         )
         entity_id = world_model.add_entity(entity)
-        original = world_model.get_entity(entity_id)
-        original_created_at = original.created_at if original else None
+        world_model.get_entity(entity_id)
 
         export_path = temp_export_dir / "timestamps.json"
         world_model.export_graph(str(export_path), project="test_persistence")
@@ -744,8 +743,7 @@ class TestREQ_WM_PERSIST_006_DataVersioning:
         )
         entity_id = world_model.add_entity(entity)
 
-        original = world_model.get_entity(entity_id)
-        original_updated_at = original.updated_at if original else None
+        world_model.get_entity(entity_id)
 
         # Wait briefly and update
         import time
@@ -754,7 +752,7 @@ class TestREQ_WM_PERSIST_006_DataVersioning:
 
         world_model.update_entity(entity_id, {"verified": True})
 
-        updated = world_model.get_entity(entity_id)
+        world_model.get_entity(entity_id)
         # Note: Timestamp update behavior depends on implementation
 
     def test_export_includes_version_metadata(

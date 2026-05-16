@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/context_collapse.py
+# hypothesis_version: 6.151.5
+
+[100, '#', '# ', '(', ':', '?', 'AbsolutePath', 'DirectoryPath', 'EndLine', 'Query', 'StartLine', 'Url', 'grep_search', 'list_dir', 'read_url_content', 'semantic_search', 'unknown', 'view_file']

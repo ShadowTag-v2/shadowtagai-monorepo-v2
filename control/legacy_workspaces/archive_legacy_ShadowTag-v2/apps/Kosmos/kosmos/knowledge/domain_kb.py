@@ -19,7 +19,7 @@ Example usage:
     bio_ontology = kb.get_domain_ontology("biology")
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -29,7 +29,7 @@ from kosmos.domains.materials.ontology import MaterialsOntology
 from kosmos.domains.neuroscience.ontology import NeuroscienceOntology
 
 
-class Domain(str, Enum):
+class Domain(StrEnum):
     """Scientific domains"""
 
     BIOLOGY = "biology"

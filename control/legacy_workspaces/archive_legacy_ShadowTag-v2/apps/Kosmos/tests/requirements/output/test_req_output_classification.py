@@ -6,7 +6,7 @@ These tests validate the classification of claims into data analysis, literature
 and interpretation categories as specified in REQUIREMENTS.md Section 7.5.
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 
 import pytest
 
@@ -18,7 +18,7 @@ pytestmark = [
 
 
 # Statement type enumeration
-class StatementType(str, Enum):
+class StatementType(StrEnum):
     DATA_ANALYSIS = "data_analysis"
     LITERATURE = "literature"
     INTERPRETATION = "interpretation"

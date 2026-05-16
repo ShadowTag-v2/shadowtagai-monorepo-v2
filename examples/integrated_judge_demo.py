@@ -216,7 +216,7 @@ def demo_dte_trainer():
     print("Running 3 DTE evolution iterations...")
     print("(Each iteration: benchmark → evolve → retrain → validate)\n")
 
-    evolved_model = trainer.evolve_continuously(max_iterations=3)
+    trainer.evolve_continuously(max_iterations=3)
 
     summary = trainer.get_training_summary()
 

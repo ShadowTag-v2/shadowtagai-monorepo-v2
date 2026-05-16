@@ -95,7 +95,7 @@ class TestAutonomousResearchE2E:
     async def test_component_integration(self, e2e_workflow):
         """Test all components integrate correctly."""
         # Run minimal workflow
-        result = await e2e_workflow.run(num_cycles=2, tasks_per_cycle=5)
+        await e2e_workflow.run(num_cycles=2, tasks_per_cycle=5)
 
         # Verify plan creation worked
         assert len(e2e_workflow.cycle_results) == 2

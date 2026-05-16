@@ -135,7 +135,6 @@ async def main_async() -> None:
     logger.info("Starting Claude Skills MCP Frontend (Proxy)")
 
     # Global references for cleanup
-    proxy_instance = None
     backend_port = 8765  # Default port
 
     def emergency_cleanup():
@@ -189,7 +188,6 @@ async def main_async() -> None:
 
         # Create and start proxy with backend args
         proxy = MCPProxy(backend_args=backend_args)
-        proxy_instance = proxy
         backend_port = proxy.backend_manager.backend_port
         await proxy.start()
 

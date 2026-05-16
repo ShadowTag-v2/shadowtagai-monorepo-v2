@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import TYPE_CHECKING, Any, Dict, Optional
 from uuid import UUID
 
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from airweave.schemas.billing_period import BillingPeriod
 
 
-class BillingPlan(str, Enum):
+class BillingPlan(StrEnum):
     """Billing plan tiers."""
 
     TRIAL = "trial"
@@ -46,7 +46,7 @@ class BillingPlan(str, Enum):
         return mapping.get(value_lower, cls.TRIAL)
 
 
-class BillingStatus(str, Enum):
+class BillingStatus(StrEnum):
     """Billing subscription status."""
 
     ACTIVE = "active"
@@ -81,7 +81,7 @@ class BillingStatus(str, Enum):
         return mapping.get(value_lower, cls.ACTIVE)
 
 
-class PaymentStatus(str, Enum):
+class PaymentStatus(StrEnum):
     """Payment status."""
 
     SUCCEEDED = "succeeded"

@@ -281,8 +281,8 @@ class TestConcurrentOperationsIntegration:
     def fully_mocked_director(self):
         """Create director with all dependencies mocked."""
         with (
-            patch("kosmos.core.async_llm.AsyncClaudeClient") as mock_async,
-            patch("kosmos.execution.parallel.ParallelExperimentExecutor") as mock_parallel,
+            patch("kosmos.core.async_llm.AsyncClaudeClient"),
+            patch("kosmos.execution.parallel.ParallelExperimentExecutor"),
         ):
             config = {
                 "enable_concurrent_operations": True,
@@ -416,7 +416,7 @@ class TestPerformanceMetrics:
         hypothesis_ids = [f"hyp_{i}" for i in range(10)]
 
         start = time.time()
-        results = await director.evaluate_hypotheses_concurrently(hypothesis_ids)
+        await director.evaluate_hypotheses_concurrently(hypothesis_ids)
         duration = time.time() - start
 
         # Should complete in ~1s (concurrent) vs 10s (sequential)

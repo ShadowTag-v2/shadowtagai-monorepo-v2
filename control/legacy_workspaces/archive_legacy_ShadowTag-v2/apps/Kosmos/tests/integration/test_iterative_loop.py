@@ -168,7 +168,6 @@ class TestSingleIteration:
         director.start()
 
         # Record states visited
-        states_visited = [director.workflow.current_state]
 
         # Simulate state transitions
         expected_states = [
@@ -487,7 +486,7 @@ class TestStateTransitions:
         workflow.current_state = states_sequence[0]
 
         for i in range(len(states_sequence) - 1):
-            current = states_sequence[i]
+            states_sequence[i]
             next_state = states_sequence[i + 1]
 
             assert workflow.can_transition_to(next_state) is True

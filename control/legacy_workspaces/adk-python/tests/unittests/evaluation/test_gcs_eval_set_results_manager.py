@@ -119,7 +119,7 @@ class TestGcsEvalSetResultsManager:
     def test_get_eval_set_result_not_found(self, gcs_eval_set_results_manager, mocker):
         mocker.patch("time.time", return_value=12345678)
         app_name = "test_app"
-        with pytest.raises(NotFoundError) as e:
+        with pytest.raises(NotFoundError):
             gcs_eval_set_results_manager.get_eval_set_result(app_name, "non_existent_id")
 
     def test_get_eval_set_result(self, gcs_eval_set_results_manager, mocker):

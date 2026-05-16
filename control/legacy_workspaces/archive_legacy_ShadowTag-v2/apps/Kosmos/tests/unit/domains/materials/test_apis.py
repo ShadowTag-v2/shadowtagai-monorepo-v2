@@ -161,7 +161,7 @@ class TestMaterialsProjectClient:
     def test_api_key_authentication(self, mock_httpx_client):
         """Test API key is properly set in headers"""
         with patch("httpx.Client", return_value=mock_httpx_client) as mock_constructor:
-            client = MaterialsProjectClient(api_key="my_api_key")
+            MaterialsProjectClient(api_key="my_api_key")
 
             # Verify Client was created with API key header
             mock_constructor.assert_called_once()
@@ -271,7 +271,7 @@ class TestNOMADClient:
 
         with patch("httpx.Client", return_value=mock_httpx_client):
             client = NOMADClient()
-            results = client.search_materials(
+            client.search_materials(
                 elements=["Ti", "O"], data_type="experiment", limit=50
             )
 
@@ -394,7 +394,7 @@ class TestAflowClient:
 
         with patch("httpx.Client", return_value=mock_httpx_client):
             client = AflowClient()
-            results = client.search_materials(elements=["Fe", "O"])
+            client.search_materials(elements=["Fe", "O"])
 
             # Verify AFLUX query was constructed
             assert mock_httpx_client.get.called
@@ -412,7 +412,7 @@ class TestAflowClient:
 
         with patch("httpx.Client", return_value=mock_httpx_client):
             client = AflowClient()
-            results = client.search_materials(compound="Si", limit=50)
+            client.search_materials(compound="Si", limit=50)
 
             # Verify paging parameter
             call_url = mock_httpx_client.get.call_args[0][0]
@@ -532,7 +532,7 @@ class TestCitrinationClient:
     def test_api_key_authentication(self, mock_httpx_client):
         """Test API key authentication header"""
         with patch("httpx.Client", return_value=mock_httpx_client) as mock_constructor:
-            client = CitrinationClient(api_key="my_citrination_key")
+            CitrinationClient(api_key="my_citrination_key")
 
             # Verify Client was created with API key header
             mock_constructor.assert_called_once()

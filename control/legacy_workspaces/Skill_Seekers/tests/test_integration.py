@@ -35,7 +35,7 @@ class TestDryRunMode(unittest.TestCase):
 
     def test_dry_run_no_directories_created(self):
         """Test that dry-run mode doesn't create directories"""
-        converter = DocToSkillConverter(self.config, dry_run=True)
+        DocToSkillConverter(self.config, dry_run=True)
 
         # Check directories were NOT created
         data_dir = Path(f"output/{self.config['name']}_data")
@@ -58,7 +58,7 @@ class TestDryRunMode(unittest.TestCase):
 
     def test_normal_mode_creates_directories(self):
         """Test that normal mode creates directories"""
-        converter = DocToSkillConverter(self.config, dry_run=False)
+        DocToSkillConverter(self.config, dry_run=False)
 
         # Check directories WERE created
         data_dir = Path(f"output/{self.config['name']}_data")
@@ -521,7 +521,7 @@ app.use('*', cors())
             from skill_seekers.cli.doc_scraper import DocToSkillConverter as DocumentationScraper
 
             scraper = DocumentationScraper(config, dry_run=False)
-            result = scraper._try_llms_txt()
+            scraper._try_llms_txt()
 
             # Verify all 3 files created
             refs_dir = Path(f"output/{config['name']}/references")

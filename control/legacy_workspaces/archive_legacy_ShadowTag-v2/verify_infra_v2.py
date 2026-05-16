@@ -9,7 +9,7 @@ async def verify_infrastructure():
     print("///▞ VERIFYING PHASE 1: INFRASTRUCTURE & HEALTH CHECKS")
 
     # 1. Test /health
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient():
         try:
             print("\n1. Testing /health...")
             # We assume the server is NOT running, so we'll test the logic by mocking the app and calling it

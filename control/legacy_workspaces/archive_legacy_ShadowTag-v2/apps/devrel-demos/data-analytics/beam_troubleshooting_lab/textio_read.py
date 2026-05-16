@@ -8,7 +8,7 @@ import logging
 
 def run(input_file, pipeline_args):
     pipeline_options = PipelineOptions(pipeline_args, save_main_session=True)
-    my_options = pipeline_options.view_as(GoogleCloudOptions)
+    pipeline_options.view_as(GoogleCloudOptions)
     # input_file = "gs://troubleshooting-in-beam/data/troubleshooting_data.csv"
 
     with beam.Pipeline(options=pipeline_options) as p:

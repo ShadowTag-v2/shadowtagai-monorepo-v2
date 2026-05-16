@@ -226,7 +226,7 @@ class JupyterClient:
             Wrapped code string
         """
         # Escape code for embedding
-        escaped_code = code.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n")
+        code.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n")
 
         wrapper = f'''
 import sys

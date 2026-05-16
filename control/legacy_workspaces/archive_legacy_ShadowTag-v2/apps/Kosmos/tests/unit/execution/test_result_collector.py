@@ -472,7 +472,7 @@ class TestDatabaseStorage:
         mock_db_ops.create_result.return_value = Mock(id="result-123")
 
         collector = ResultCollector(store_in_db=True)
-        result = collector.collect(sample_protocol, successful_execution_output)
+        collector.collect(sample_protocol, successful_execution_output)
 
         # Should have called database
         assert mock_db_ops.create_result.called

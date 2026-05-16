@@ -31,7 +31,7 @@ def test_imports():
     for module_name, class_name in modules:
         try:
             module = __import__(module_name, fromlist=[class_name])
-            cls = getattr(module, class_name)
+            getattr(module, class_name)
             print(f"  [OK] {module_name}.{class_name}")
         except ImportError as e:
             print(f"  [FAIL] {module_name}.{class_name}: {e}")

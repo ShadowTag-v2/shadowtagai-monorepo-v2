@@ -345,7 +345,7 @@ class TestEnvironmentExport:
         manager.capture_environment_snapshot("exp_123")
 
         output_path = tmp_path / "requirements.txt"
-        result_path = manager.export_environment("exp_123", output_path=str(output_path))
+        manager.export_environment("exp_123", output_path=str(output_path))
 
         assert output_path.exists()
         content = output_path.read_text()

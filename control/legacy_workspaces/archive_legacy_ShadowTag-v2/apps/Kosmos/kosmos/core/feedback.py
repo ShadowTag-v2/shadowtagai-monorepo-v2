@@ -11,7 +11,7 @@ Processes results and generates feedback signals to:
 
 import logging
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -23,7 +23,7 @@ from kosmos.utils.compat import model_to_dict
 logger = logging.getLogger(__name__)
 
 
-class FeedbackSignalType(str, Enum):
+class FeedbackSignalType(StrEnum):
     """Types of feedback signals."""
 
     SUCCESS_PATTERN = "success_pattern"
@@ -428,7 +428,7 @@ class FeedbackLoop:
 
         elif signal.signal_type == FeedbackSignalType.SUCCESS_PATTERN:
             # Apply success pattern learning
-            pattern_data = signal.data.get("pattern", {})
+            signal.data.get("pattern", {})
             # Would increase priority of hypotheses matching pattern characteristics
             changes["strategies_adjusted"].append("success_pattern_applied")
 

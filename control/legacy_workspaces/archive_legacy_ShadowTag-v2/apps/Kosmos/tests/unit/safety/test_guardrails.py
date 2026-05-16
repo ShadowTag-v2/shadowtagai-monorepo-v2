@@ -62,7 +62,7 @@ class TestSafetyGuardrailsInitialization:
         mock_config.safety.max_execution_time = 300
         mock_get_config.return_value = mock_config
 
-        guardrails = SafetyGuardrails(enable_signal_handlers=True)
+        SafetyGuardrails(enable_signal_handlers=True)
 
         # Should register SIGTERM and SIGINT
         assert mock_signal.call_count >= 2
@@ -133,7 +133,7 @@ class TestCodeValidation:
         )
         code = "import os"
 
-        report = guardrails.validate_code(code)
+        guardrails.validate_code(code)
 
         # Should log incident
         assert len(guardrails.incidents) > 0

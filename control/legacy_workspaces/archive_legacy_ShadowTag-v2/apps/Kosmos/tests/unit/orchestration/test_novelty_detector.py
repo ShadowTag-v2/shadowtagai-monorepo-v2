@@ -86,7 +86,7 @@ class TestNoveltyDetectorInit:
     def test_sentence_transformers_mode_fallback(self):
         """Test fallback when sentence-transformers not available."""
         with patch.dict("sys.modules", {"sentence_transformers": None}):
-            detector = NoveltyDetector(use_sentence_transformers=True)
+            NoveltyDetector(use_sentence_transformers=True)
 
             # Should fall back to token-based
             # (depends on import availability)
@@ -457,7 +457,7 @@ class TestSemanticSimilarity:
         detector.task_texts = ["test"]
         detector.task_metadata = [{"id": 1}]
 
-        similarities = detector._compute_semantic_similarities("test task")
+        detector._compute_semantic_similarities("test task")
 
         mock_model.encode.assert_called_once()
 

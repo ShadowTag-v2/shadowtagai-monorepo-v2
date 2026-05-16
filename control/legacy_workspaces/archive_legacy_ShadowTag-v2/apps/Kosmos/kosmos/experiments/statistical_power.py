@@ -201,13 +201,13 @@ class PowerAnalyzer:
         from scipy import stats
 
         # Convert f to f²
-        f_squared = effect_size**2
+        effect_size**2
 
         # Degrees of freedom
         df1 = num_groups - 1
 
         # Critical F value
-        f_crit = stats.f.ppf(1 - alpha, df1, 1000)  # Assume large df2
+        stats.f.ppf(1 - alpha, df1, 1000)  # Assume large df2
 
         # Approximate using t-test formula with adjusted effect size
         # This is a rough approximation

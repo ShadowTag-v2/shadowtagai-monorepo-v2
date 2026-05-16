@@ -9,11 +9,11 @@ Events are published via EventBus and consumed by CLI, API endpoints, and logger
 import json
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any, Literal, Union
 
 
-class EventType(str, Enum):
+class EventType(StrEnum):
     """All event types in the streaming system."""
 
     # Workflow lifecycle events

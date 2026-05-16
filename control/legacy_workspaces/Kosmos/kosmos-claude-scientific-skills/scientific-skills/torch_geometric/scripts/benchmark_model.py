@@ -156,7 +156,7 @@ def benchmark_node_classification(model_name, dataset_name, epochs, lr, weight_d
     best_test_acc = 0
 
     for epoch in range(1, epochs + 1):
-        loss = train_node_classification(model, data, optimizer)
+        train_node_classification(model, data, optimizer)
         train_acc, val_acc, test_acc = test_node_classification(model, data)
 
         if val_acc > best_val_acc:
@@ -196,7 +196,7 @@ def benchmark_graph_classification(model_name, dataset_name, epochs, lr, device)
     start_time = time.time()
 
     for epoch in range(1, epochs + 1):
-        loss = train_graph_classification(model, train_loader, optimizer, device)
+        train_graph_classification(model, train_loader, optimizer, device)
 
     # Final evaluation
     train_acc = test_graph_classification(model, train_loader, device)

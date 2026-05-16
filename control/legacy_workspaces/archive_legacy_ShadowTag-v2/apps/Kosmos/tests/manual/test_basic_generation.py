@@ -150,7 +150,7 @@ def test_multi_turn_conversation(provider):
         print(f"✓ Total tokens: {response.usage.total_tokens}")
 
         # Check if response mentions 16
-        content_lower = response.content.lower()
+        response.content.lower()
         has_answer = "16" in response.content
 
         if has_answer:

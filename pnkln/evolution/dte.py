@@ -236,7 +236,7 @@ Evolved prompt based on multi-agent debate:
         )
 
         # Train
-        metrics = self.grpo_trainer.train_step(batch)
+        self.grpo_trainer.train_step(batch)
 
         # Select best variation (highest reward)
         best_idx = np.argmax(rewards)

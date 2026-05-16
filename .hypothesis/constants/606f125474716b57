@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/tool_limits/__init__.py
+# hypothesis_version: 6.151.5
+
+['API_PDF_MAX_PAGES', 'BYTES_PER_TOKEN', 'IMAGE_MAX_HEIGHT', 'IMAGE_MAX_WIDTH', 'PDF_MAX_EXTRACT_SIZE', 'PDF_TARGET_RAW_SIZE', 'is_result_over_limit']

@@ -262,7 +262,6 @@ def test_req_sci_metric_002_track_cumulative_expert_time():
                 }
 
             # Update cumulative time
-            previous_cumulative = self.cumulative_hours
             self.cumulative_hours += iteration_hours
 
             # Record iteration

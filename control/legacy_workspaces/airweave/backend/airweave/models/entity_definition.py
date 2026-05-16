@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Models for entity definitions."""
 
-from enum import Enum
+from enum import Enum, StrEnum
 
 from sqlalchemy import JSON, Column, ForeignKey, String, UniqueConstraint
 from sqlalchemy import Enum as SQLEnum
@@ -9,7 +9,7 @@ from sqlalchemy import Enum as SQLEnum
 from airweave.models._base import Base
 
 
-class EntityType(str, Enum):
+class EntityType(StrEnum):
     """Type of entity."""
 
     FILE = "file"

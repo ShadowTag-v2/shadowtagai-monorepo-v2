@@ -358,7 +358,7 @@ class ReleaseManagerService:
 
         config = deployment.configuration or {}
         green_url = config.get("green_url")
-        blue_url = config.get("blue_url")
+        config.get("blue_url")
 
         if not green_url:
             deployment.error_message = "Green environment URL not configured"

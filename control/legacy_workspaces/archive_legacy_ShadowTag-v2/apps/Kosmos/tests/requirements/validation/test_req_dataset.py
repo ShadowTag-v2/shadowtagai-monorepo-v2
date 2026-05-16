@@ -485,7 +485,7 @@ def test_req_data_005_malformed_file_handling(temp_dir):
 
         # Should handle gracefully - either load with warnings or fail gracefully
         try:
-            data = loader.load(str(csv_file))
+            loader.load(str(csv_file))
             # If it loads, it should handle the malformed rows
             print("✓ Loader handled malformed file")
         except Exception as e:
@@ -499,7 +499,7 @@ def test_req_data_005_malformed_file_handling(temp_dir):
     except ImportError:
         # Fallback: Test pandas error handling
         try:
-            data = pd.read_csv(csv_file, on_bad_lines="warn")
+            pd.read_csv(csv_file, on_bad_lines="warn")
             print("✓ Pandas handled malformed file")
         except Exception as e:
             assert "parse" in str(e).lower() or "line" in str(e).lower()
@@ -532,7 +532,7 @@ def test_req_data_006_original_dataset_not_modified(temp_dir):
         loader = DataLoader()
 
         # Load data
-        data = loader.load(str(original_file))
+        loader.load(str(original_file))
 
         # Verify original file unchanged
         with open(original_file, "rb") as f:

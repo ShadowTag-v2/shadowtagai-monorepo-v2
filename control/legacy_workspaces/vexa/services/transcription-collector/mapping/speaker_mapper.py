@@ -97,9 +97,6 @@ def map_speaker_to_segment(
     # This logic can be complex for overlaps. Simplified: take the one whose START was latest but before/at segment start.
     # More robust: find speaker whose active interval [speaker_start, speaker_end_or_session_end] maximally overlaps segment.
 
-    best_candidate_name: str | None = None
-    best_candidate_id: str | None = None
-    latest_start_time_before_segment_end = -1
 
     active_speakers_in_segment = []
 

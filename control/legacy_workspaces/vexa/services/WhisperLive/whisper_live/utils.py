@@ -53,7 +53,7 @@ def resample(file: str, sr: int = 16000):
         resampled_file (str): The resampled audio file
     """
     container = av.open(file)
-    stream = next(s for s in container.streams if s.type == "audio")
+    next(s for s in container.streams if s.type == "audio")
 
     resampler = av.AudioResampler(
         format="s16",

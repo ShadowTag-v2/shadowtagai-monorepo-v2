@@ -1191,7 +1191,6 @@ async def bot_joining_callback(
     logger.info(f"Received bot joining callback: connection_id={payload.connection_id}, container_id={payload.container_id}")
 
     session_uid = payload.connection_id
-    container_id = payload.container_id
 
     try:
         # Find the meeting session to get the meeting_id
@@ -1257,7 +1256,6 @@ async def bot_awaiting_admission_callback(
     logger.info(f"Received bot awaiting admission callback: connection_id={payload.connection_id}, container_id={payload.container_id}")
 
     session_uid = payload.connection_id
-    container_id = payload.container_id
 
     try:
         # Find the meeting session to get the meeting_id

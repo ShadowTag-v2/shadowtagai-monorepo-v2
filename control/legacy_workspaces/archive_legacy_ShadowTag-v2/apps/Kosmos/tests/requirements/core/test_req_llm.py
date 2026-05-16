@@ -76,7 +76,7 @@ class TestREQ_LLM_001_AuthenticatedConnections:
         test_key = "sk-ant-test-key-auth"
 
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": test_key}):
-            client = ClaudeClient()
+            ClaudeClient()
 
             # Verify Anthropic client was initialized with API key
             mock_anthropic.assert_called_once_with(api_key=test_key)
@@ -181,7 +181,7 @@ class TestREQ_LLM_003_RetryLogicExponentialBackoff:
         mock_anthropic.return_value = mock_client
 
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-ant-test"}):
-            client = ClaudeClient()
+            ClaudeClient()
 
             # Note: ClaudeClient doesn't implement retry logic itself
             # This would be tested in a wrapper that adds retry logic
@@ -623,7 +623,7 @@ class TestREQ_LLM_007_PromptCaching:
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-ant-test"}):
             client = ClaudeClient()
 
-            response = client.generate("new prompt")
+            client.generate("new prompt")
 
             # Should call API
             mock_client.messages.create.assert_called_once()
@@ -665,7 +665,7 @@ class TestREQ_LLM_008_NoAPIKeyExposure:
 
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": test_key}):
             with caplog.at_level(logging.DEBUG):
-                client = ClaudeClient()
+                ClaudeClient()
 
                 # Check all log messages
                 for record in caplog.records:
@@ -682,7 +682,7 @@ class TestREQ_LLM_008_NoAPIKeyExposure:
             client = ClaudeClient()
 
             # String representation should not contain full API key
-            repr_str = str(client.__dict__)
+            str(client.__dict__)
             # Note: API key might be stored internally, but should be masked in any output
 
     @patch("kosmos.core.llm.Anthropic")

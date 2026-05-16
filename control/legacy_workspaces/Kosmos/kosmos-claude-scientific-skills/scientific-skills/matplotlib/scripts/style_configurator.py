@@ -380,7 +380,7 @@ Examples:
 
     if args.preview or args.interactive:
         print("Creating style preview...")
-        fig = create_style_preview(style_dict if style_dict else None)
+        create_style_preview(style_dict if style_dict else None)
 
         if args.output:
             preview_filename = args.output.replace(".mplstyle", "_preview.png")

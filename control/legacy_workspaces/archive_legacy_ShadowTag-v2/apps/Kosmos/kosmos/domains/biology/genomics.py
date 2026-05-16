@@ -31,7 +31,7 @@ Example workflow:
     top_mechanisms = analyzer.rank_mechanisms(results, top_n=10)
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 import numpy as np
@@ -48,7 +48,7 @@ from kosmos.domains.biology.apis import (
 
 
 # Enums for genomic evidence
-class EvidenceLevel(str, Enum):
+class EvidenceLevel(StrEnum):
     """Level of evidence for genetic variant"""
 
     VERY_HIGH = "very_high"  # >40 points
@@ -58,7 +58,7 @@ class EvidenceLevel(str, Enum):
     VERY_LOW = "very_low"  # <10 points
 
 
-class EffectDirection(str, Enum):
+class EffectDirection(StrEnum):
     """Direction of genetic effect"""
 
     PROTECTIVE = "protective"

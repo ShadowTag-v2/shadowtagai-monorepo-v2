@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/firebase_tool_bridge/declarations.py
+# hypothesis_version: 6.151.5
+
+['(', '-', '- ', ':', '__origin__', 'args:', 'array', 'boolean', 'cls', 'description', 'enum', 'example:', 'integer', 'items', 'name', 'note:', 'number', 'object', 'parameters', 'properties', 'raises:', 'required', 'returns:', 'self', 'string', 'type', 'typing.Literal', 'yields:']

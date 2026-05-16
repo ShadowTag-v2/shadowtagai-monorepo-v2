@@ -178,7 +178,7 @@ class TestAsyncClaudeClient:
             BatchRequest(id="2", prompt=unique_prompt("Hello"), temperature=0.0, max_tokens=10),
         ]
 
-        responses = await asyncio.wait_for(real_async_client.batch_generate(requests), timeout=60.0)
+        await asyncio.wait_for(real_async_client.batch_generate(requests), timeout=60.0)
 
         # Token counts are tracked at client level, not in BatchResponse
         stats = real_async_client.get_usage_stats()
@@ -228,7 +228,7 @@ class TestErrorHandling:
         """Test handling of empty prompt."""
         # Empty prompts should still work (API handles gracefully)
         try:
-            response = await asyncio.wait_for(
+            await asyncio.wait_for(
                 real_async_client.async_generate(prompt=""), timeout=30.0
             )
             # Either succeeds with some response or raises gracefully

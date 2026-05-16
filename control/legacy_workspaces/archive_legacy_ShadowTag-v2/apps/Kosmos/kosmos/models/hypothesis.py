@@ -7,7 +7,7 @@ Complements the SQLAlchemy Hypothesis model in kosmos.db.models.
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -15,7 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 
 
-class ExperimentType(str, Enum):
+class ExperimentType(StrEnum):
     """Types of experiments that can test a hypothesis."""
 
     COMPUTATIONAL = "computational"  # Simulations, algorithms, mathematical proofs
@@ -23,7 +23,7 @@ class ExperimentType(str, Enum):
     LITERATURE_SYNTHESIS = "literature_synthesis"  # Systematic review, meta-analysis
 
 
-class HypothesisStatus(str, Enum):
+class HypothesisStatus(StrEnum):
     """Hypothesis lifecycle status."""
 
     GENERATED = "generated"

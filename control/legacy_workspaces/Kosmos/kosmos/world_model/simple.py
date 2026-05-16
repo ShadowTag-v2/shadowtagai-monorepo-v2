@@ -149,7 +149,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         )
 
         # Use existing create_paper method (handles merge logic)
-        node = self.graph.create_paper(paper=paper, merge=merge)
+        self.graph.create_paper(paper=paper, merge=merge)
 
         return entity.id
 
@@ -160,7 +160,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
         domain = entity.properties.get("domain")
 
         # Use existing create_concept method (no metadata parameter)
-        node = self.graph.create_concept(name=name, description=description, domain=domain, merge=merge)
+        self.graph.create_concept(name=name, description=description, domain=domain, merge=merge)
 
         return entity.id
 
@@ -177,7 +177,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             "entity_id": entity.id,
         }
 
-        node = self.graph.create_author(name=name, affiliation=affiliation, email=email, metadata=metadata, merge=merge)
+        self.graph.create_author(name=name, affiliation=affiliation, email=email, metadata=metadata, merge=merge)
 
         return entity.id
 
@@ -194,7 +194,7 @@ class Neo4jWorldModel(WorldModelStorage, EntityManager):
             "entity_id": entity.id,
         }
 
-        node = self.graph.create_method(name=name, description=description, category=category, metadata=metadata, merge=merge)
+        self.graph.create_method(name=name, description=description, category=category, metadata=metadata, merge=merge)
 
         return entity.id
 

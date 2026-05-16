@@ -84,7 +84,7 @@ class SwarmStatus:
     def to_dashboard(self) -> str:
         """Generate ASCII dashboard"""
         overall_prog = self.get_overall_progress()
-        specialist_prog = self.get_specialist_avg_progress()
+        self.get_specialist_avg_progress()
         milestone_count = self.get_milestone_count()
 
         # Progress bars

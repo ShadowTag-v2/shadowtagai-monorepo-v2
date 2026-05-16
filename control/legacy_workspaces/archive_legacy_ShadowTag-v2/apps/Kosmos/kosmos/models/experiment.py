@@ -7,7 +7,7 @@ Complements the SQLAlchemy Experiment model in kosmos.db.models.
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -16,7 +16,7 @@ from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 from kosmos.models.hypothesis import ExperimentType
 
 
-class VariableType(str, Enum):
+class VariableType(StrEnum):
     """Types of variables in an experiment."""
 
     INDEPENDENT = "independent"  # Manipulated variable
@@ -25,7 +25,7 @@ class VariableType(str, Enum):
     CONFOUNDING = "confounding"  # Potential confound to track
 
 
-class StatisticalTest(str, Enum):
+class StatisticalTest(StrEnum):
     """Common statistical tests."""
 
     T_TEST = "t_test"

@@ -82,7 +82,7 @@ async def test_send_to_model_with_enabled_vad(test_blob, mock_llm_connection):
     Custom VAD activity signal is not supported so we should still disable it.
     """
     # Create LlmRequest with enabled VAD
-    realtime_input_config = types.RealtimeInputConfig(automatic_activity_detection=types.AutomaticActivityDetection(disabled=False))
+    types.RealtimeInputConfig(automatic_activity_detection=types.AutomaticActivityDetection(disabled=False))
 
     # Create invocation context with live request queue
     agent = Agent(name="test_agent", model="mock")

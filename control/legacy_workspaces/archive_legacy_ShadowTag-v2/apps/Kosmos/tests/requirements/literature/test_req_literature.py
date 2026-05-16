@@ -219,7 +219,7 @@ def test_req_lsa_004_document_parsing_accuracy():
     from kosmos.literature.pdf_extractor import get_pdf_extractor
 
     try:
-        pdf_extractor = get_pdf_extractor()
+        get_pdf_extractor()
 
         # Arrange: Sample text with known content
         # In production, this would use real PDFs and compare against known ground truth

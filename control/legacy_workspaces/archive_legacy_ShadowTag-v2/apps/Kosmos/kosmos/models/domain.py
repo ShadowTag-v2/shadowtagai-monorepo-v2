@@ -7,7 +7,7 @@ and cross-domain synthesis.
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from kosmos.config import _DEFAULT_CLAUDE_SONNET_MODEL
 
 
-class ScientificDomain(str, Enum):
+class ScientificDomain(StrEnum):
     """Scientific research domains supported by Kosmos."""
 
     BIOLOGY = "biology"
@@ -28,7 +28,7 @@ class ScientificDomain(str, Enum):
     GENERAL = "general"  # For domain-agnostic research
 
 
-class DomainConfidence(str, Enum):
+class DomainConfidence(StrEnum):
     """Confidence levels for domain classification."""
 
     VERY_HIGH = "very_high"  # > 0.9

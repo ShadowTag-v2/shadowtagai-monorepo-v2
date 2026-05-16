@@ -276,7 +276,7 @@ class ConsensusManager:
         if topic_id not in self.votes:
             raise ValueError(f"Unknown topic: {topic_id}")
 
-        vote_record = {"agent": agent_id, "selection": selection, "confidence": confidence, "timestamp": time.time()}
+        {"agent": agent_id, "selection": selection, "confidence": confidence, "timestamp": time.time()}
 
         for vote in self.votes[topic_id]:
             if vote["agent"] == agent_id:

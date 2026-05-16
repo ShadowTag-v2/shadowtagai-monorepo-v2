@@ -440,7 +440,7 @@ async def main():
     session = AgentSession(sandbox)
 
     # Agent can read immediately
-    readme = await session.read_file("/workspace/README.md")
+    await session.read_file("/workspace/README.md")
 
     # Agent work happens here...
 

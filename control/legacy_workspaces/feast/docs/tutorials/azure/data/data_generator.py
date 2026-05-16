@@ -209,9 +209,9 @@ def create_customer_daily_profile_df(customers, start_date, end_date) -> pd.Data
 
 def generate_entities(date, n_customers, n_drivers, order_count):
     end_date = date
-    before_start_date = end_date - timedelta(days=365)
+    end_date - timedelta(days=365)
     start_date = end_date - timedelta(days=7)
-    after_end_date = end_date + timedelta(days=365)
+    end_date + timedelta(days=365)
     customer_entities = [20000 + c_id for c_id in range(n_customers)]
     driver_entities = [50000 + d_id for d_id in range(n_drivers)]
     orders_df = create_orders_df(

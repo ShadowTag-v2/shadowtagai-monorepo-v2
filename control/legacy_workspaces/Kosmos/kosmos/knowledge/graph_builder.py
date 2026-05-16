@@ -203,7 +203,7 @@ class GraphBuilder:
         for i, author in enumerate(paper.authors):
             try:
                 # Create Author node
-                author_node = self.graph.create_author(
+                self.graph.create_author(
                     name=author.name, affiliation=author.affiliation if hasattr(author, "affiliation") else None, merge=True
                 )
 
@@ -235,7 +235,7 @@ class GraphBuilder:
             for concept in extraction_result.concepts:
                 try:
                     # Create Concept node
-                    concept_node = self.graph.create_concept(name=concept.name, description=concept.description, domain=concept.domain, merge=True)
+                    self.graph.create_concept(name=concept.name, description=concept.description, domain=concept.domain, merge=True)
 
                     # Check if new
                     if not self.graph.get_concept(concept.name):
@@ -255,7 +255,7 @@ class GraphBuilder:
             for method in extraction_result.methods:
                 try:
                     # Create Method node
-                    method_node = self.graph.create_method(name=method.name, description=method.description, category=method.category, merge=True)
+                    self.graph.create_method(name=method.name, description=method.description, category=method.category, merge=True)
 
                     # Check if new
                     if not self.graph.get_method(method.name):

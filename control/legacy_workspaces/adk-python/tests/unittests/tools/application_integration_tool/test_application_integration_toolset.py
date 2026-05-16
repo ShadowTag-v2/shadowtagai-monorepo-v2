@@ -356,7 +356,7 @@ def test_initialization_with_service_account_credentials(project, location, mock
     )
     integration_name = "test-integration"
     triggers = ["test-trigger"]
-    toolset = ApplicationIntegrationToolset(
+    ApplicationIntegrationToolset(
         project,
         location,
         integration=integration_name,
@@ -382,7 +382,7 @@ def test_initialization_with_service_account_credentials(project, location, mock
 def test_initialization_without_explicit_service_account_credentials(project, location, mock_integration_client, mock_openapi_toolset):
     integration_name = "test-integration"
     triggers = "test-trigger"
-    toolset = ApplicationIntegrationToolset(project, location, integration=integration_name, triggers=triggers)
+    ApplicationIntegrationToolset(project, location, integration=integration_name, triggers=triggers)
     mock_integration_client.assert_called_once_with(project, location, integration_name, triggers, None, None, None, None)
     mock_openapi_toolset.assert_called_once()
     _, kwargs = mock_openapi_toolset.call_args
@@ -416,7 +416,7 @@ def test_initialization_with_connection_details(
         "serviceName": "custom-service",
         "host": "custom.host",
     }
-    toolset = ApplicationIntegrationToolset(
+    ApplicationIntegrationToolset(
         project,
         location,
         connection=connection_name,

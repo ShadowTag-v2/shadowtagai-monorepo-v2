@@ -24,7 +24,7 @@ class TestPubMedInit:
 
     def test_init_with_email(self):
         """Test initialization with email."""
-        client = PubMedClient(email="test@example.com")
+        PubMedClient(email="test@example.com")
         # Email is stored in Entrez.email, not on the client
         assert Entrez.email == "test@example.com"
 

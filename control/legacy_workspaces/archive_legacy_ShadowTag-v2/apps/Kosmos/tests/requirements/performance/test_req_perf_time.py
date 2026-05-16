@@ -90,7 +90,7 @@ class TestREQ_PERF_TIME_001_HypothesisGenerationTime:
         for batch in range(5):
             start_time = time.time()
 
-            hypotheses = generator.generate_hypotheses(
+            generator.generate_hypotheses(
                 research_question=f"Research question {batch}",
                 literature_context="Context",
                 num_hypotheses=5,
@@ -148,7 +148,7 @@ class TestREQ_PERF_TIME_001_HypothesisGenerationTime:
         # Simulate hypothesis generation with timing
         start_time = time.time()
         time.sleep(0.1)  # Simulate work
-        duration = time.time() - start_time
+        time.time() - start_time
 
         metrics.track_hypothesis_generated(domain="test", strategy="literature")
 
@@ -359,7 +359,7 @@ class TestREQ_PERF_TIME_003_DatabaseQueryPerformance:
             start_time = time.time()
 
             # Perform read query
-            hypotheses = wm.get_all_hypotheses()
+            wm.get_all_hypotheses()
 
             duration = time.time() - start_time
 
@@ -433,7 +433,7 @@ class TestREQ_PERF_TIME_003_DatabaseQueryPerformance:
             start_time = time.time()
 
             for hyp_id in hypothesis_ids:
-                hyp = wm.get_hypothesis(hyp_id)
+                wm.get_hypothesis(hyp_id)
 
             read_duration = time.time() - start_time
 
@@ -462,11 +462,11 @@ class TestREQ_PERF_TIME_003_DatabaseQueryPerformance:
 
             # Perform complex query (e.g., get all supported hypotheses)
             try:
-                supported_hyps = wm.get_hypotheses_by_status("supported")
+                wm.get_hypotheses_by_status("supported")
             except AttributeError:
                 # Fallback if method doesn't exist
                 all_hyps = wm.get_all_hypotheses()
-                supported_hyps = [h for h in all_hyps if getattr(h, "status", "") == "supported"]
+                [h for h in all_hyps if getattr(h, "status", "") == "supported"]
 
             duration = time.time() - start_time
 

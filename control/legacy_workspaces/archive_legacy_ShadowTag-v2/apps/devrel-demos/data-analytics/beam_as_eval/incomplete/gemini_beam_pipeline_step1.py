@@ -116,7 +116,7 @@ def run(argv=None):
     # Save the main session so that the DoFn's can be pickled.
     pipeline_options.view_as(SetupOptions).save_main_session = True
 
-    with beam.Pipeline(options=pipeline_options) as p:
+    with beam.Pipeline(options=pipeline_options):
         # Step 1
         # Ingesting Data
         # Write your data ingestion step here.

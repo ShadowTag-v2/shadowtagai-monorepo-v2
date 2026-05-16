@@ -159,7 +159,6 @@ async def process_stream_message(message_id: str, message_data: dict[str, Any], 
         stream_data = json.loads(payload_json)
         message_type = stream_data.get("type", "transcription")
 
-        user: User | None = None
         meeting: Meeting | None = None
         internal_meeting_id: int | None = None
 
@@ -173,8 +172,8 @@ async def process_stream_message(message_id: str, message_data: dict[str, Any], 
                     return True
 
                 internal_meeting_id = int(claims.get("meeting_id"))
-                platform_val = claims.get("platform") or stream_data.get("platform")
-                native_meeting_id = claims.get("native_meeting_id") or stream_data.get("meeting_id")
+                claims.get("platform") or stream_data.get("platform")
+                claims.get("native_meeting_id") or stream_data.get("meeting_id")
 
                 # Process different message types
                 if message_type == "session_start":
@@ -480,7 +479,7 @@ async def process_speaker_event_message(message_id: str, event_data: dict[str, A
         async with redis_c.pipeline(transaction=True) as pipe:
             pipe.zadd(sorted_set_key, {event_payload_json: relative_timestamp_ms})
             pipe.expire(sorted_set_key, REDIS_SPEAKER_EVENT_TTL)
-            results = await pipe.execute()
+            await pipe.execute()
 
         # Check pipeline results (optional, zadd returns num added, expire returns 1 or 0)
         # For simplicity, we assume success if no exception

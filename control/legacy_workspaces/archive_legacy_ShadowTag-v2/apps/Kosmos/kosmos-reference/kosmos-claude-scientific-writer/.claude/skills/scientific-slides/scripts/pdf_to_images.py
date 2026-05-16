@@ -117,7 +117,7 @@ class PDFToImagesConverter:
 
         # Run command
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            subprocess.run(cmd, capture_output=True, text=True, check=True)
 
             # Find generated files
             output_dir = Path(self.output_prefix).parent
@@ -156,7 +156,7 @@ class PDFToImagesConverter:
 
         # Run command
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            subprocess.run(cmd, capture_output=True, text=True, check=True)
 
             # Find generated files
             output_dir = Path(self.output_prefix).parent

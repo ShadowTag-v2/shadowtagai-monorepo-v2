@@ -98,7 +98,7 @@ def test_req_test_cov_001_core_coverage_exceeds_80_percent():
             py_files = [f for f in py_files if "__pycache__" not in str(f)]
 
             # Count corresponding test files
-            module_name = module.replace("/", ".")
+            module.replace("/", ".")
             test_files = list(test_dir.glob(f"**/*{module.split('/')[-1]}*.py"))
 
             test_coverage[module] = {"source_files": len(py_files), "test_files": len(test_files)}
@@ -165,7 +165,6 @@ def test_req_test_cov_002_critical_requirements_have_tests():
 
     # Extract all MUST/SHALL requirements
     # Pattern: **REQ-XXX-###:**
-    req_pattern = r"\*\*REQ-([A-Z]+)-([A-Z0-9-]+):\*\*.*?MUST|SHALL"
     critical_reqs = set()
 
     for line in req_content.split("\n"):

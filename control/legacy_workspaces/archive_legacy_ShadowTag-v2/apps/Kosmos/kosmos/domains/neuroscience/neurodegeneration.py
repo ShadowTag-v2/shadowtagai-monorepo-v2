@@ -28,7 +28,7 @@ Example usage:
 """
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 import numpy as np
@@ -38,7 +38,7 @@ from scipy.stats import fisher_exact
 # Data models for neurodegeneration analysis
 
 
-class TemporalStage(str, Enum):
+class TemporalStage(StrEnum):
     """Temporal stages of disease progression"""
 
     EARLY_DOWN = "early_downregulated"

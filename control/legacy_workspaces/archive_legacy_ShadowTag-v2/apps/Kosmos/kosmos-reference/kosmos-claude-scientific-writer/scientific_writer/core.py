@@ -240,7 +240,7 @@ def process_data_files(
 
     image_extensions = get_image_extensions()
     manuscript_extensions = get_manuscript_extensions()
-    source_extensions = get_source_extensions()
+    get_source_extensions()
     data_extensions = get_data_extensions()
 
     processed_info = {

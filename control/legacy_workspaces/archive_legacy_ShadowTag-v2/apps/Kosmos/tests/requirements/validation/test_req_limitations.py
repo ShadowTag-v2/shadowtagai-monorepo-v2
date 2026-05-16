@@ -386,7 +386,6 @@ def test_req_limit_004_human_validation_required():
         project_root / "kosmos" / "agents" / "data_analysis_agent.py",
     ]
 
-    validation_messages_found = False
 
     for report_file in report_files:
         if report_file.exists():
@@ -398,7 +397,6 @@ def test_req_limit_004_human_validation_required():
                 or "verify" in content.lower()
                 or "confirm" in content.lower()
             ):
-                validation_messages_found = True
                 print(f"✓ Validation messaging in {report_file.name}")
 
     # Documentation should also mention this
@@ -435,7 +433,6 @@ def test_req_limit_005_no_conflating_significance():
         project_root / "kosmos" / "execution" / "result_collector.py",
     ]
 
-    proper_handling = False
 
     for analysis_file in analysis_files:
         if analysis_file.exists():
@@ -443,7 +440,7 @@ def test_req_limit_005_no_conflating_significance():
 
             # Check for proper significance handling
             # Should not claim "important" based solely on p-value
-            no_auto_importance = (
+            (
                 "important" not in content.lower() or "significant" in content.lower()
             )
 
@@ -455,7 +452,6 @@ def test_req_limit_005_no_conflating_significance():
             )
 
             if has_disclaimers:
-                proper_handling = True
                 print(f"✓ Proper significance handling in {analysis_file.name}")
 
     # Check documentation
@@ -481,7 +477,6 @@ def test_req_limit_005_findings_marked_for_validation():
         # Check if agent output includes validation flags
         if hasattr(agent, "generate_summary"):
             # Summary should indicate validation needed
-            sample_results = {"p_value": 0.001, "correlation": 0.85, "significance": "high"}
 
             # The point is that system shouldn't claim scientific importance
             # just because p < 0.05
@@ -519,10 +514,9 @@ def test_req_limit_005_no_automatic_importance_claims():
     from kosmos.execution.result_collector import ResultCollector
 
     try:
-        collector = ResultCollector()
+        ResultCollector()
 
         # Verify result structure includes metadata about validation
-        sample_result = {"statistic": 2.5, "p_value": 0.01, "effect_size": 0.3}
 
         # System should not add 'importance' field automatically
         # Only report statistics
@@ -609,7 +603,7 @@ class TestSystemLimitationsIntegration:
         # Without explicit configuration, external access should be limited
         with patch.dict(os.environ, {}, clear=True):
             try:
-                config = get_config(reload=True)
+                get_config(reload=True)
 
                 # Should require explicit API keys
                 print("✓ External access requires explicit configuration")

@@ -48,7 +48,7 @@ def get_breeds(stream):
 
         response = client.label_detection(image=image)
 
-        labels = [label.description for label in response.label_annotations]
+        [label.description for label in response.label_annotations]
         descs = [label.description for label in response.label_annotations]
         mids = [label.mid for label in response.label_annotations]
 

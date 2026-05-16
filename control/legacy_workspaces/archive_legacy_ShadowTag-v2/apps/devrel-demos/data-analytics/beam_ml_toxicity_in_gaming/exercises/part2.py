@@ -57,7 +57,6 @@ def run(project_id, gaming_model_location, movie_model_location, pipeline_args):
     # Pub/Sub IO will automatically create a subscription for us
     input_topic = f"projects/{project_id}/topics/tox-input"
     output_topic = f"projects/{project_id}/topics/tox-output"
-    output_bigquery = f"{project_id}:demo.tox"
 
     with beam.Pipeline(options=pipeline_options) as p:
         # We first read from Pub/Sub
@@ -114,7 +113,6 @@ def run(project_id, gaming_model_location, movie_model_location, pipeline_args):
 
         # Simple string schema - normally not recommended
         # For brevity sake, we convert to a single string
-        schema = {"fields": [{"name": "data_col", "type": "STRING", "mode": "NULLABLE"}]}
 
         # Write to BigQuery
         # We're converting to the simple string to insert

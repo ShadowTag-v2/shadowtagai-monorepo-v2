@@ -67,7 +67,7 @@ class TestArxivClientInit:
         """Test initialization with cache disabled."""
         with patch("kosmos.literature.arxiv_client.get_config", return_value=mock_config):
             with patch("kosmos.literature.arxiv_client.get_cache") as mock_cache:
-                client = ArxivClient(cache_enabled=False)
+                ArxivClient(cache_enabled=False)
                 mock_cache.assert_not_called()
 
 

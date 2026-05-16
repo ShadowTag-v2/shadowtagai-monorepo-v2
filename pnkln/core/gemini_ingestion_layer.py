@@ -448,7 +448,7 @@ class GeminiIngestionLayer:
             """Classify items into Tier 1/2/3 based on quality."""
             start_time = time.perf_counter()
 
-            source_metrics = data["source_metrics"]
+            data["source_metrics"]
 
             # Mock tier classification (real implementation would use ML model)
             # Already done in collectors for demo, but would re-score here
@@ -467,9 +467,9 @@ class GeminiIngestionLayer:
 
             # Build mock IngestionResult for gate checking
             source_metrics = data["source_metrics"]
-            total_items = sum(m.items_ingested for m in source_metrics.values())
+            sum(m.items_ingested for m in source_metrics.values())
             total_cost = sum(m.total_cost_usd for m in source_metrics.values())
-            tier_1_items = sum(m.items_tier_1 for m in source_metrics.values())
+            sum(m.items_tier_1 for m in source_metrics.values())
 
             mock_result = IngestionResult(
                 job_id=ctx.request_id,

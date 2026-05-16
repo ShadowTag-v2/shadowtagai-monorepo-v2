@@ -71,7 +71,7 @@ def categorize_messages(messages: list) -> dict:
 
     for msg in messages:
         role = msg.get("role", "user")
-        content = msg.get("content", "")
+        msg.get("content", "")
 
         if role == "system":
             categories["system_prompt"].append({**msg, "category": "system_prompt"})

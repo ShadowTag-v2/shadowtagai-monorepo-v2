@@ -11,7 +11,7 @@ Implements:
 
 import logging
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ except ImportError:
     _console = None
 
 
-class NotificationLevel(str, Enum):
+class NotificationLevel(StrEnum):
     """Notification importance level."""
 
     DEBUG = "debug"
@@ -38,7 +38,7 @@ class NotificationLevel(str, Enum):
     CRITICAL = "critical"
 
 
-class NotificationChannel(str, Enum):
+class NotificationChannel(StrEnum):
     """Notification delivery channel."""
 
     CONSOLE = "console"

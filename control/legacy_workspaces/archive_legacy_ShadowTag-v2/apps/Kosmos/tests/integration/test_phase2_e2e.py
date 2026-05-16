@@ -88,7 +88,7 @@ class TestVectorSearchWorkflow:
     def test_embed_and_search_workflow(self, sample_papers_list):
         """Test: Embed Papers → Store → Search (infrastructure mocked)."""
         # Mock ChromaDB and SentenceTransformer to avoid loading heavy models
-        with patch("chromadb.Client") as mock_chroma:
+        with patch("chromadb.Client"):
             with patch("sentence_transformers.SentenceTransformer"):
                 with patch("kosmos.knowledge.embeddings.PaperEmbedder") as mock_embedder:
                     # Mock embedder methods

@@ -75,7 +75,7 @@ class TestH5adRealWorld:
         h5ad_path, _ = pbmc3k_dataset
 
         # Load as AnnData for preprocessing
-        adata = DataLoader.load_h5ad(h5ad_path, to_dataframe=False)
+        DataLoader.load_h5ad(h5ad_path, to_dataframe=False)
 
         # Convert to DataFrame for statistical analysis
         df = DataLoader.load_h5ad(h5ad_path, to_dataframe=True)
@@ -336,7 +336,6 @@ class TestRealScanpyWorkflow:
         # Simulate 500 cells, 200 genes with cluster structure
         n_cells = 500
         n_genes = 200
-        n_clusters = 3
 
         # Assign cells to clusters
         cluster_labels = np.repeat(["cluster_0", "cluster_1", "cluster_2"], [200, 150, 150])

@@ -24,13 +24,13 @@ Example usage:
     related = ontology.find_related_concepts('diabetes', relation_type='associated_gene')
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class BiologicalRelationType(str, Enum):
+class BiologicalRelationType(StrEnum):
     """Types of relationships between biological concepts"""
 
     IS_A = "is_a"  # Parent-child hierarchy

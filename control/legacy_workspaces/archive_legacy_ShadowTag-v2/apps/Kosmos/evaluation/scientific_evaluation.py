@@ -490,7 +490,7 @@ async def run_phase3_multi_iteration(
         registry.register(director)
 
         # Start
-        plan = director.generate_research_plan()
+        director.generate_research_plan()
         director.start()
 
         # Run loop - scale safety limit with max_iterations

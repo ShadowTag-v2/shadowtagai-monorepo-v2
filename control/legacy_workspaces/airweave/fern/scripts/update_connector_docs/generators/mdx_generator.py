@@ -66,7 +66,6 @@ def generate_mdx_content(connector_name, entity_info, source_info, auth_configs,
             # Determine authentication type from auth_methods and oauth_type
             has_oauth = any(method in ["OAUTH_BROWSER", "OAUTH_TOKEN"] for method in auth_methods)
             has_direct = "DIRECT" in auth_methods
-            has_auth_provider = "AUTH_PROVIDER" in auth_methods
 
             # Handle OAuth authentication
             if has_oauth and oauth_type:

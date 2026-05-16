@@ -197,7 +197,7 @@ class TestREQ_ORCH_RES_002_ParallelExperimentExecution:
         )
         director.parallel_executor = mock_parallel_executor
 
-        results = director.execute_experiments_batch(["exp1", "exp2"])
+        director.execute_experiments_batch(["exp1", "exp2"])
 
         # Verify research plan updated
         assert "res1" in director.research_plan.results
@@ -443,7 +443,7 @@ class TestREQ_ORCH_RES_004_ResourceLimits:
             director.research_plan.add_experiment(f"exp{i}")
 
         # Execute batch - should be limited to max_concurrent_experiments
-        experiment_queue = list(director.research_plan.experiment_queue)[:10]
+        list(director.research_plan.experiment_queue)[:10]
 
         # In implementation, batch size is limited
         assert director.max_concurrent_experiments == 4

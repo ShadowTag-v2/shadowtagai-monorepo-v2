@@ -286,7 +286,7 @@ class TestREQ_ORCH_SYN_001_WorkflowStateSynchronization:
     def test_experiment_queue_sync_with_execution(self):
         """Verify experiment queue syncs with EXECUTING state."""
         plan = ResearchPlan(research_question="Test")
-        workflow = ResearchWorkflow(research_plan=plan)
+        ResearchWorkflow(research_plan=plan)
 
         # Add experiments
         plan.add_experiment("exp1")

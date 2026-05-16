@@ -320,7 +320,7 @@ def doctor():
         from kosmos.utils.setup import validate_database_schema
 
         # Test connection
-        with get_session() as session:
+        with get_session():
             pass
 
         # Validate schema completeness

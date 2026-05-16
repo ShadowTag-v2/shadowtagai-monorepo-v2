@@ -16,7 +16,7 @@ from collections.abc import Callable
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from pathlib import Path
 from typing import Any
 
@@ -25,7 +25,7 @@ from pydantic import BaseModel, Field, field_serializer
 logger = logging.getLogger(__name__)
 
 
-class ProfilingMode(str, Enum):
+class ProfilingMode(StrEnum):
     """Profiling mode enumeration."""
 
     LIGHT = "light"  # Basic timing + memory (~1% overhead)

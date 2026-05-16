@@ -58,7 +58,7 @@ def create_invoice(
     styles = getSampleStyleSheet()
 
     # Create custom styles
-    title_style = ParagraphStyle(
+    ParagraphStyle(
         "InvoiceTitle",
         parent=styles["Heading1"],
         fontSize=24,

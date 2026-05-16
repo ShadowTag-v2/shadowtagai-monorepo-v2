@@ -111,7 +111,7 @@ def run(project_id, gaming_model_location, movie_model_location, pipeline_args):
 
         # Write to BigQuery
         # We're converting to the simple string to insert
-        output_to_bq = (
+        (
             joined
             | "Convert to string" >> beam.Map(lambda element: {"data_col": str(element)})
             | beam.io.gcp.bigquery.WriteToBigQuery(

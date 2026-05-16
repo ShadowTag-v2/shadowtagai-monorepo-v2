@@ -421,7 +421,7 @@ class TestSandboxIntegration:
     def test_executor_raises_error_if_sandbox_unavailable(self):
         """Test executor raises error if sandbox requested but unavailable."""
         with pytest.raises(RuntimeError):
-            executor = CodeExecutor(use_sandbox=True)
+            CodeExecutor(use_sandbox=True)
 
 
 if __name__ == "__main__":

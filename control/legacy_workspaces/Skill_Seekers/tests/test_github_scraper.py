@@ -66,7 +66,7 @@ class TestGitHubScraperInitialization(unittest.TestCase):
         config = {"repo": "facebook/react", "name": "react", "github_token": "test_token_123"}
 
         with patch("skill_seekers.cli.github_scraper.Github") as mock_github:
-            scraper = self.GitHubScraper(config)
+            self.GitHubScraper(config)
             mock_github.assert_called_once_with("test_token_123")
 
     def test_init_with_token_from_env(self):
@@ -75,14 +75,14 @@ class TestGitHubScraperInitialization(unittest.TestCase):
 
         with patch.dict(os.environ, {"GITHUB_TOKEN": "env_token_456"}):
             with patch("skill_seekers.cli.github_scraper.Github") as mock_github:
-                scraper = self.GitHubScraper(config)
+                self.GitHubScraper(config)
                 mock_github.assert_called_once_with("env_token_456")
 
     def test_init_without_token(self):
         """Test initialization without authentication"""
         config = {"repo": "facebook/react", "name": "react", "github_token": None}
 
-        with patch("skill_seekers.cli.github_scraper.Github") as mock_github:
+        with patch("skill_seekers.cli.github_scraper.Github"):
             with patch.dict(os.environ, {}, clear=True):
                 scraper = self.GitHubScraper(config)
                 # Should create unauthenticated client

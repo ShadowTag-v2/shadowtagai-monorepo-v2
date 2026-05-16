@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/src/gateway/risk_classifier.py
+# hypothesis_version: 6.151.5
+
+[1000, 2400, 5000, 10000, 100000, 'A', 'B', 'Budget overrun risk', 'C', 'D', 'E', 'I', 'II', 'III', 'IV', 'PHI', 'PII', 'admin', 'approve_expense', 'approver_id', 'budget_allocation', 'budget_approved', 'confidential', 'create_resource', 'delete', 'delete_resource', 'grant', 'grant_admin_access', 'inf', 'internal', 'list_resources', 'manager_approval', 'process_payment', 'read_data', 'revoke_all_access', 'shutdown', 'shutdown_service', 'transfer_funds', 'update_resource', 'view_dashboard']

@@ -92,7 +92,6 @@ class TTestComparisonTemplate(TemplateBase):
         hypothesis = params.hypothesis
 
         # Extract variable names from hypothesis (simplified)
-        statement = hypothesis.statement
         outcome_var = "outcome_variable"
         group_var = "group"
 

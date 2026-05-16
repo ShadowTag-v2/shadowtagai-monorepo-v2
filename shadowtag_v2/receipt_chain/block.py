@@ -85,7 +85,7 @@ class Block:
             True if block is valid, False otherwise
         """
         # Verify header hash matches
-        header_hash = self.header.hash()
+        self.header.hash()
 
         # Verify merkle root (simplified: just hash receipt)
         receipt_hash = self.receipt.hash()

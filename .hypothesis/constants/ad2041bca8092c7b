@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/firebase_tool_bridge/workspace_confirmation.py
+# hypothesis_version: 6.151.5
+
+[b'\n', 5.0, 300.0, 200, 1024, '--space', '--text', '--thread', '/tmp/agnt.sock', 'APPROVE', 'DENY', 'chat', 'confirmation_request', 'create', 'function', 'gws', 'list', 'messages', 'name', 'risk_tier', 'spaces/default', 'tags', 'text', 'thread', 'type', 'utf-8']

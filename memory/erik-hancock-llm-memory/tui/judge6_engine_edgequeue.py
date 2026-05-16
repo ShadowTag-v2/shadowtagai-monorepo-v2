@@ -38,8 +38,8 @@ class EdgeQueueEngine:
         # Build EdgeQueue
         queue = EdgeQueue()
 
-        start_sig = EdgeSignal(f"start-{self.decision_count}")
-        end_sig = EdgeSignal(f"end-{self.decision_count}")
+        EdgeSignal(f"start-{self.decision_count}")
+        EdgeSignal(f"end-{self.decision_count}")
 
         # IMPORTANT: timestamp() creates timestamp commands
         # but for local testing we'll just measure client-side latency

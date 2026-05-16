@@ -8,7 +8,7 @@ This module provides a clean schema hierarchy for source connections:
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any, Dict, Optional, Union
 from uuid import UUID
 
@@ -17,7 +17,7 @@ from pydantic import BaseModel, Field, computed_field, model_validator
 from airweave.core.shared_models import SourceConnectionStatus, SyncJobStatus
 
 
-class AuthenticationMethod(str, Enum):
+class AuthenticationMethod(StrEnum):
     """Authentication methods for source connections."""
 
     DIRECT = "direct"
@@ -27,7 +27,7 @@ class AuthenticationMethod(str, Enum):
     AUTH_PROVIDER = "auth_provider"
 
 
-class OAuthType(str, Enum):
+class OAuthType(StrEnum):
     """OAuth token types for sources."""
 
     OAUTH1 = "oauth1"  # OAuth 1.0a flow (consumer key/secret)

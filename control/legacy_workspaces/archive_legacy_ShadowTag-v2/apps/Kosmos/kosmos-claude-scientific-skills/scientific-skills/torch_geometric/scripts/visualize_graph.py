@@ -147,7 +147,7 @@ def visualize_data(
 def is_undirected(edge_index):
     """Check if graph is undirected."""
     row, col = edge_index
-    num_edges = edge_index.size(1)
+    edge_index.size(1)
 
     # Create a set of edges and reverse edges
     edges = set(zip(row.tolist(), col.tolist()))

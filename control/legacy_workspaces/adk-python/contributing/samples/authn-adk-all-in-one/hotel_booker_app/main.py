@@ -122,7 +122,7 @@ def is_token_valid(token: str):
         # but should not cover localhost:8000/admin
         # so this middleware (decorator - is_token_valid, can check the request url and do that check, but we are
         # skipping that as the audience will always be localhost:8081)
-        decoded_token = jwt.decode(
+        jwt.decode(
             token,
             key=public_key,
             issuer="http://localhost:5000",
@@ -230,7 +230,7 @@ def book_room():
 @app.route("/booking_details", methods=["GET"])
 @token_required
 def get_details():
-    conn = get_db()
+    get_db()
     booking_id = request.args.get("booking_id")
     guest_name = request.args.get("guest_name")
 

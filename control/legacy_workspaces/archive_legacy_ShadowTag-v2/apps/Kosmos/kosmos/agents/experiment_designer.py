@@ -723,7 +723,7 @@ Return ONLY a JSON object with suggested enhancements (keep it concise).
 """
 
         try:
-            response = self.llm_client.generate(prompt, max_tokens=1000)
+            self.llm_client.generate(prompt, max_tokens=1000)
             # Parse and apply enhancements (simplified for now)
             # In production, would parse JSON and selectively apply
             logger.info("LLM enhancements applied")

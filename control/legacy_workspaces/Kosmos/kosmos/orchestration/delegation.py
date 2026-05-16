@@ -269,7 +269,6 @@ class DelegationManager:
 
         # Try execution with retries
         last_error = None
-        last_exception = None
         start_time = datetime.now()
 
         for attempt in range(self.max_retries + 1):
@@ -285,12 +284,10 @@ class DelegationManager:
 
             except TimeoutError:
                 last_error = f"Task timeout after {self.task_timeout}s"
-                last_exception = None
                 logger.warning(f"Task {task_id} timeout (attempt {attempt + 1})")
 
             except Exception as e:
                 last_error = str(e)
-                last_exception = e
                 logger.warning(f"Task {task_id} failed (attempt {attempt + 1}): {e}")
 
                 # Check if error is non-recoverable (don't retry)

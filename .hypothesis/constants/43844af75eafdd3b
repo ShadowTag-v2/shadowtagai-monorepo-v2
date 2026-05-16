@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/teammate_mailbox.py
+# hypothesis_version: 6.151.5
+
+['*.json', '.beads', 'REPO_ROOT', 'body', 'created_at', 'inbox', 'mailbox', 'msg_id', 'outbox', 'priority', 'read', 'recipient', 'sender', 'subject']

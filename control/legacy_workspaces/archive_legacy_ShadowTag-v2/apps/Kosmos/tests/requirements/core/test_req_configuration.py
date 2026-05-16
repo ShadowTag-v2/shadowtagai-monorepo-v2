@@ -142,8 +142,7 @@ class TestREQ_CFG_001_LoadConfiguration:
             },
             clear=True,
         ):
-            config1 = get_config(reload=True)
-            default_level = config1.logging.level  # Default is INFO
+            get_config(reload=True)
 
         reset_config()
 
@@ -177,7 +176,7 @@ class TestREQ_CFG_002_ValidateRequiredParameters:
 
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ValidationError):
-                config = KosmosConfig()
+                KosmosConfig()
 
     def test_required_fields_documented(self):
         """Verify required fields are properly defined."""
@@ -199,14 +198,14 @@ class TestREQ_CFG_002_ValidateRequiredParameters:
         # Anthropic provider requires ANTHROPIC_API_KEY
         with patch.dict(os.environ, {"LLM_PROVIDER": "anthropic"}, clear=True):
             with pytest.raises((ValidationError, ValueError)):
-                config = get_config(reload=True)
+                get_config(reload=True)
 
         reset_config()
 
         # OpenAI provider requires OPENAI_API_KEY
         with patch.dict(os.environ, {"LLM_PROVIDER": "openai"}, clear=True):
             with pytest.raises((ValidationError, ValueError)):
-                config = get_config(reload=True)
+                get_config(reload=True)
 
         reset_config()
 
@@ -287,7 +286,7 @@ class TestREQ_CFG_002_ValidateRequiredParameters:
             },
         ):
             with pytest.raises(ValidationError):
-                config = ClaudeConfig()
+                ClaudeConfig()
 
         # Max tokens out of range should fail
         with patch.dict(
@@ -298,7 +297,7 @@ class TestREQ_CFG_002_ValidateRequiredParameters:
             },
         ):
             with pytest.raises(ValidationError):
-                config = ClaudeConfig()
+                ClaudeConfig()
 
     def test_enum_validation(self):
         """Verify enum fields are validated."""
@@ -327,7 +326,7 @@ class TestREQ_CFG_002_ValidateRequiredParameters:
             },
         ):
             with pytest.raises(ValidationError):
-                config = VectorDBConfig()
+                VectorDBConfig()
 
 
 # ============================================================================
@@ -550,7 +549,7 @@ class TestREQ_CFG_004_ParameterDocumentation:
                     "CLAUDE_TEMPERATURE": "5.0",  # Invalid
                 },
             ):
-                config = ClaudeConfig()
+                ClaudeConfig()
             pytest.fail("Should have raised ValidationError")
 
         except ValidationError as e:
@@ -574,7 +573,7 @@ class TestREQ_CFG_005_NoExecutionWithInvalidConfig:
         # Missing required API key
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ValidationError):
-                config = KosmosConfig()
+                KosmosConfig()
 
     def test_llm_client_requires_valid_config(self):
         """Verify LLM client requires valid configuration."""
@@ -583,7 +582,7 @@ class TestREQ_CFG_005_NoExecutionWithInvalidConfig:
         # Should fail without API key
         with patch.dict(os.environ, {}, clear=True):
             with pytest.raises(ValueError, match="ANTHROPIC_API_KEY"):
-                client = ClaudeClient()
+                ClaudeClient()
 
     def test_validate_dependencies_method(self):
         """Verify config provides dependency validation."""
@@ -611,7 +610,7 @@ class TestREQ_CFG_005_NoExecutionWithInvalidConfig:
             os.environ, {"LLM_PROVIDER": "invalid_provider", "ANTHROPIC_API_KEY": "sk-ant-test"}
         ):
             with pytest.raises(ValidationError):
-                config = KosmosConfig()
+                KosmosConfig()
 
     def test_pinecone_without_credentials_fails(self):
         """Verify Pinecone config fails without required credentials."""
@@ -625,7 +624,7 @@ class TestREQ_CFG_005_NoExecutionWithInvalidConfig:
             },
         ):
             with pytest.raises(ValidationError):
-                config = VectorDBConfig()
+                VectorDBConfig()
 
     def test_incompatible_config_combinations_fail(self):
         """Verify incompatible configuration combinations are rejected."""
@@ -643,7 +642,7 @@ class TestREQ_CFG_005_NoExecutionWithInvalidConfig:
             clear=True,
         ):
             with pytest.raises((ValidationError, ValueError)):
-                config = get_config(reload=True)
+                get_config(reload=True)
 
         reset_config()
 
@@ -677,7 +676,7 @@ class TestREQ_CFG_005_NoExecutionWithInvalidConfig:
 
         try:
             with patch.dict(os.environ, {}, clear=True):
-                config = KosmosConfig()  # Should fail here
+                KosmosConfig()  # Should fail here
         except ValidationError:
             validation_happened = True
 
@@ -841,7 +840,7 @@ class TestConfigurationEdgeCases:
                 "LOG_FILE": ""  # Empty string
             },
         ):
-            config = LoggingConfig()
+            LoggingConfig()
             # Empty string should be treated as None or use default
 
     def test_whitespace_values(self):
@@ -849,7 +848,7 @@ class TestConfigurationEdgeCases:
         from kosmos.config import ClaudeConfig
 
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "  sk-ant-whitespace  "}):
-            config = ClaudeConfig()
+            ClaudeConfig()
             # Should handle whitespace appropriately
 
     def test_case_sensitivity(self):
@@ -865,7 +864,7 @@ class TestConfigurationEdgeCases:
             },
         ):
             try:
-                config = KosmosConfig()
+                KosmosConfig()
                 # Should handle case variations
             except ValidationError:
                 # Some systems may be case-sensitive

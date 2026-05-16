@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/agents/orchestrator.py
+# hypothesis_version: 6.151.5
+
+['canceled', 'completed', 'failed', 'input-required', 'mode', 'model_router', 'oracle', 'orchestrator', 'submitted', 'vent', 'working']

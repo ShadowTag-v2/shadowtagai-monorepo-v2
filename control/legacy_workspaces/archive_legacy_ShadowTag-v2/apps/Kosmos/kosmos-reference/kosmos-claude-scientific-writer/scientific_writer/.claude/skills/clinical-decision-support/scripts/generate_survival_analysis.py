@@ -138,7 +138,6 @@ def generate_kaplan_meier_plot(
         )
 
         p_value = results.p_value
-        test_statistic = results.test_statistic
 
         # Add log-rank test result to plot
         ax.text(
@@ -154,7 +153,6 @@ def generate_kaplan_meier_plot(
         # Multivariate log-rank for >2 groups
         results = multivariate_logrank_test(data[time_col], data[group_col], data[event_col])
         p_value = results.p_value
-        test_statistic = results.test_statistic
 
         ax.text(
             0.02,

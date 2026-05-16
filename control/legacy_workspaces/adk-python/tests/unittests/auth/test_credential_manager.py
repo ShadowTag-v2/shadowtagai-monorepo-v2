@@ -248,7 +248,7 @@ class TestCredentialManager:
     @pytest.mark.asyncio
     async def test_refresh_credential_oauth2(self):
         """Test _refresh_credential with OAuth2 credential."""
-        mock_oauth2_auth = Mock(spec=OAuth2Auth)
+        Mock(spec=OAuth2Auth)
 
         mock_credential = Mock(spec=AuthCredential)
         mock_credential.auth_type = AuthCredentialTypes.OAUTH2

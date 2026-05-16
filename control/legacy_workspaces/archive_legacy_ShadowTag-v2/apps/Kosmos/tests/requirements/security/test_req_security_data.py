@@ -39,7 +39,7 @@ def test_req_sec_data_001_no_api_keys_in_logs():
 
     # Arrange: Create logger and capture output
     logger = logging.getLogger("test_security")
-    handler = logging.StreamHandler()
+    logging.StreamHandler()
     log_capture = []
 
     class LogCapture(logging.Handler):
@@ -432,7 +432,7 @@ def test_req_sec_data_003_secure_storage():
     try:
         # Act: Check file permissions
         file_stat = os.stat(temp_path)
-        file_mode = stat.filemode(file_stat.st_mode)
+        stat.filemode(file_stat.st_mode)
 
         # Assert: File should exist
         assert os.path.exists(temp_path), "Temporary file should exist"

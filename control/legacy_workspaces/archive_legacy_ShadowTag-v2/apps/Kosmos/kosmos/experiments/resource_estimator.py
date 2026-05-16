@@ -6,7 +6,7 @@ Estimates compute, time, and cost requirements for experimental protocols.
 """
 
 import logging
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from kosmos.models.experiment import (
@@ -18,7 +18,7 @@ from kosmos.models.hypothesis import ExperimentType, Hypothesis
 logger = logging.getLogger(__name__)
 
 
-class ComplexityLevel(str, Enum):
+class ComplexityLevel(StrEnum):
     """Complexity level for resource estimation."""
 
     SIMPLE = "simple"

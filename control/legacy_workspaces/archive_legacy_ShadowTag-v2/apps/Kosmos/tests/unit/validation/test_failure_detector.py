@@ -857,7 +857,7 @@ class TestThresholds:
 
     def test_custom_over_interpretation_threshold(self, custom_threshold_detector, clean_finding):
         """Test custom over-interpretation threshold."""
-        result = custom_threshold_detector.detect_over_interpretation(clean_finding)
+        custom_threshold_detector.detect_over_interpretation(clean_finding)
         # With lower threshold, more likely to detect
         assert custom_threshold_detector.over_interpretation_threshold == 0.5
 

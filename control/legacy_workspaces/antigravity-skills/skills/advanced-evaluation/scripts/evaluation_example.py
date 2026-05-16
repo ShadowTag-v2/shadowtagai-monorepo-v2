@@ -18,12 +18,6 @@ def direct_scoring_example():
     """
 
     # Input
-    prompt = "Explain quantum entanglement to a high school student"
-    response = """
-    Quantum entanglement is like having two magical coins that are connected. 
-    When you flip one and it lands on heads, the other instantly shows tails, 
-    no matter how far apart they are. Scientists call this "spooky action at a distance."
-    """
 
     criteria = [
         {"name": "Accuracy", "description": "Scientific correctness", "weight": 0.4},
@@ -32,46 +26,8 @@ def direct_scoring_example():
     ]
 
     # System prompt for the evaluator
-    system_prompt = """You are an expert evaluator. Assess the response against each criterion.
-
-For each criterion:
-1. Find specific evidence in the response
-2. Score according to the rubric (1-5 scale)
-3. Justify your score with evidence
-4. Suggest one specific improvement
-
-Be objective and consistent. Base scores on explicit evidence."""
 
     # User prompt structure
-    user_prompt = f"""## Original Prompt
-{prompt}
-
-## Response to Evaluate
-{response}
-
-## Criteria
-1. **Accuracy** (weight: 0.4): Scientific correctness
-2. **Clarity** (weight: 0.3): Understandable for audience  
-3. **Engagement** (weight: 0.3): Interesting and memorable
-
-## Output Format
-Respond with valid JSON:
-{{
-  "scores": [
-    {{
-      "criterion": "Accuracy",
-      "score": 4,
-      "evidence": ["quote or observation"],
-      "justification": "why this score",
-      "improvement": "specific suggestion"
-    }}
-  ],
-  "summary": {{
-    "assessment": "overall quality summary",
-    "strengths": ["strength 1"],
-    "weaknesses": ["weakness 1"]
-  }}
-}}"""
 
     # Expected output structure
     expected_output = {
@@ -129,30 +85,11 @@ def pairwise_comparison_example():
 
     prompt = "Explain machine learning to a beginner"
 
-    response_a = """
-    Machine learning is a subset of artificial intelligence that enables 
-    systems to learn and improve from experience without being explicitly 
-    programmed. It uses statistical techniques to give computers the ability 
-    to identify patterns in data.
-    """
 
-    response_b = """
-    Imagine teaching a dog a new trick. You show the dog what to do, give 
-    treats when it's right, and eventually it learns. Machine learning works 
-    similarly - we show computers lots of examples, tell them when they're 
-    right, and they learn to recognize patterns on their own.
-    """
 
     criteria = ["clarity", "accessibility", "accuracy"]
 
     # System prompt emphasizing bias awareness
-    system_prompt = """You are an expert evaluator comparing two AI responses.
-
-CRITICAL INSTRUCTIONS:
-- Do NOT prefer responses because they are longer
-- Do NOT prefer responses based on position (first vs second)
-- Focus ONLY on quality according to the specified criteria
-- Ties are acceptable when responses are genuinely equivalent"""
 
     # First pass: A first, B second
     def evaluate_pass(first_response, second_response, first_label, second_label):
@@ -223,32 +160,8 @@ def rubric_generation_example():
     """
 
     criterion_name = "Code Readability"
-    criterion_description = "How easy the code is to understand and maintain"
-    domain = "software engineering"
-    scale = "1-5"
-    strictness = "balanced"
 
-    system_prompt = f"""You are an expert in creating evaluation rubrics.
-Create clear, actionable rubrics with distinct boundaries between levels.
 
-Strictness: {strictness}
-- lenient: Lower bar for passing scores
-- balanced: Fair, typical expectations
-- strict: High standards, critical evaluation"""
-
-    user_prompt = f"""Create a scoring rubric for:
-
-**Criterion**: {criterion_name}
-**Description**: {criterion_description}
-**Scale**: {scale}
-**Domain**: {domain}
-
-Generate:
-1. Clear descriptions for each score level
-2. Specific characteristics that define each level
-3. Brief example text for each level
-4. General scoring guidelines
-5. Edge cases with guidance"""
 
     # Expected rubric structure
     rubric = {

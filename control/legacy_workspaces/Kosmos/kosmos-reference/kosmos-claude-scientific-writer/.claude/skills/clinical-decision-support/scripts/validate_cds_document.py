@@ -295,7 +295,7 @@ def main():
 
     # Validate
     validator = CDSValidator(args.input_file)
-    passed = validator.validate_all()
+    validator.validate_all()
 
     # Save report if requested
     if args.output:

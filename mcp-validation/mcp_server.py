@@ -370,7 +370,7 @@ class SandboxManager:
             }
 
             # Execute with timeout
-            result = await asyncio.wait_for(asyncio.to_thread(exec, code, restricted_globals), timeout=timeout_seconds)
+            await asyncio.wait_for(asyncio.to_thread(exec, code, restricted_globals), timeout=timeout_seconds)
 
             # Extract result (if code set a 'result' variable)
             execution_result = restricted_globals.get("result", None)

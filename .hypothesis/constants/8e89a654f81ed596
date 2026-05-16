@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_tools/worktree_isolation.py
+# hypothesis_version: 6.151.5
+
+[200, '--force', '--no-ff', '--porcelain', '-m', '.worktrees', '/', 'REPO_ROOT', '_', 'add', 'branch', 'checkout', 'git', 'list', 'main', 'merge', 'remove', 'worktree', 'worktree ']

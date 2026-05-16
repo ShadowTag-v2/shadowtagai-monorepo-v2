@@ -74,7 +74,7 @@ result = {"data": [1, 2, 3]}
 
         if result.success:
             stdout_content = str(result.stdout or result.output or "")
-            stderr_content = str(result.stderr or result.error or "")
+            str(result.stderr or result.error or "")
             assert "stdout" in stdout_content.lower() or len(stdout_content) > 0
     except ImportError:
         pytest.skip("Sandbox not fully implemented")
@@ -119,7 +119,7 @@ result = "Should timeout"
     # Act & Assert
     try:
         # Memory test
-        result_mem = sandbox.execute(memory_hog_code, timeout=5)
+        sandbox.execute(memory_hog_code, timeout=5)
         # Should either fail or handle gracefully
 
         # CPU test
@@ -185,7 +185,6 @@ result = divide_by_zero()
 """
 
     # Test: Import error
-    import_error_code = "import nonexistent_module_xyz"
 
     # Act & Assert: Syntax error
     try:
@@ -272,7 +271,7 @@ except:
 """
 
         # Act
-        result = sandbox.execute(modify_code)
+        sandbox.execute(modify_code)
 
         # Assert: Original file should be unchanged
         with open(temp_file) as f:
@@ -354,7 +353,7 @@ result = "modified"
 
     # Act
     try:
-        result = sandbox.execute(env_modify_code)
+        sandbox.execute(env_modify_code)
 
         # Assert: Parent process environment unchanged
         assert os.environ.get("PATH", "") == original_path, "Parent PATH should not be modified"

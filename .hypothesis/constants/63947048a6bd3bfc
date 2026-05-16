@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_services/mock_rate_limits.py
+# hypothesis_version: 6.151.5
+
+[0.0, 60.0, 100, 16000, 32000, 40000, 60000, 80000, 100000, 500000, 1000000, 5000000, 'default']

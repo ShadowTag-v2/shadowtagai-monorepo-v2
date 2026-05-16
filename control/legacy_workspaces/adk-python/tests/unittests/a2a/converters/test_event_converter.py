@@ -797,7 +797,7 @@ class TestA2AToEventConverters:
         mock_convert_part.return_value = None
 
         # Patch the long-running tool detection since the main logic is in the actual conversion
-        with patch("google.adk.a2a.converters.event_converter.logger") as mock_logger:
+        with patch("google.adk.a2a.converters.event_converter.logger"):
             result = convert_a2a_message_to_event(
                 mock_message,
                 "test-author",

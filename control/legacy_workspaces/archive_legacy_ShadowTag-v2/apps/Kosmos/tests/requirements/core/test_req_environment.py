@@ -78,12 +78,12 @@ class TestREQ_ENV_001_StableReproducibleEnvironment:
     def test_environment_isolation(self):
         """Verify environment is isolated (virtual env or container)."""
         # Check for virtual environment indicators
-        has_venv = hasattr(sys, "real_prefix") or (
+        hasattr(sys, "real_prefix") or (
             hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
         )
 
         # Check for container indicators
-        in_container = os.path.exists("/.dockerenv") or os.path.exists("/run/.containerenv")
+        os.path.exists("/.dockerenv") or os.path.exists("/run/.containerenv")
 
         # At minimum, should have clear python path
         python_path = sys.executable
@@ -459,30 +459,25 @@ class TestREQ_ENV_006_MetabolomicsLibraries:
         # xcms is an R/Bioconductor package
         # Test graceful handling when not available
 
-        xcms_available = False
         try:
             from rpy2.robjects.packages import importr
 
             # Try to import xcms
-            xcms = importr("xcms")
-            xcms_available = True
+            importr("xcms")
             print("✓ xcms R package available")
 
         except Exception as e:
             print(f"xcms not available (expected): {type(e).__name__}")
-            xcms_available = False
 
         # System should handle either case gracefully
         assert True, "System handles xcms availability gracefully"
 
     def test_pyopenms_handling(self):
         """Test handling of pyOpenMS (Python metabolomics library)."""
-        pyopenms_available = False
 
         try:
             import pyopenms
 
-            pyopenms_available = True
             print(f"✓ pyOpenMS available: {pyopenms.__version__}")
 
             # If available, test basic functionality
@@ -490,7 +485,6 @@ class TestREQ_ENV_006_MetabolomicsLibraries:
 
         except ImportError:
             print("pyOpenMS not available (optional)")
-            pyopenms_available = False
 
         # System should work with or without it
         assert True, "System handles pyOpenMS availability gracefully"
@@ -531,12 +525,10 @@ class TestREQ_ENV_007_MaterialsScienceLibraries:
 
     def test_pymatgen_handling(self):
         """Test handling of pymatgen (materials science library)."""
-        pymatgen_available = False
 
         try:
             import pymatgen
 
-            pymatgen_available = True
             print(f"✓ pymatgen available: {pymatgen.__version__}")
 
             # If available, test basic functionality
@@ -548,19 +540,16 @@ class TestREQ_ENV_007_MaterialsScienceLibraries:
 
         except ImportError:
             print("pymatgen not available (optional)")
-            pymatgen_available = False
 
         # System should work with or without it
         assert True, "System handles pymatgen availability gracefully"
 
     def test_ase_handling(self):
         """Test handling of ASE (Atomic Simulation Environment)."""
-        ase_available = False
 
         try:
             import ase
 
-            ase_available = True
             print(f"✓ ASE available: {ase.__version__}")
 
             # If available, test basic functionality
@@ -572,7 +561,6 @@ class TestREQ_ENV_007_MaterialsScienceLibraries:
 
         except ImportError:
             print("ASE not available (optional)")
-            ase_available = False
 
         # System should work with or without it
         assert True, "System handles ASE availability gracefully"

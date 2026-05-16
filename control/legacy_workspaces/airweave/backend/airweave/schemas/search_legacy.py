@@ -5,7 +5,7 @@ These schemas maintain backwards compatibility with the old search API
 while internally converting to the new search implementation.
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Literal, Optional
 
 import tiktoken
@@ -13,14 +13,14 @@ from pydantic import BaseModel, Field, field_validator
 from qdrant_client.http.models import Filter as QdrantFilter
 
 
-class ResponseType(str, Enum):
+class ResponseType(StrEnum):
     """Response format options for search results."""
 
     RAW = "raw"
     COMPLETION = "completion"
 
 
-class QueryExpansionStrategy(str, Enum):
+class QueryExpansionStrategy(StrEnum):
     """Query expansion strategies for search."""
 
     AUTO = "auto"
@@ -28,7 +28,7 @@ class QueryExpansionStrategy(str, Enum):
     NO_EXPANSION = "no_expansion"
 
 
-class SearchStatus(str, Enum):
+class SearchStatus(StrEnum):
     """Status indicators for search operation outcomes."""
 
     SUCCESS = "success"

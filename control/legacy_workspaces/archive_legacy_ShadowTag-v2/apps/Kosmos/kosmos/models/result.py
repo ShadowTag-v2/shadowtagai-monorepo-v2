@@ -7,7 +7,7 @@ with validation and structured data handling.
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field, field_validator
 from kosmos.utils.compat import model_to_dict
 
 
-class ResultStatus(str, Enum):
+class ResultStatus(StrEnum):
     """Status of experiment result."""
 
     SUCCESS = "success"

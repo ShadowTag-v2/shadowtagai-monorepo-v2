@@ -16,7 +16,7 @@ import logging
 import uuid
 from collections.abc import Awaitable, Callable
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -24,7 +24,7 @@ from pydantic import BaseModel, Field
 logger = logging.getLogger(__name__)
 
 
-class AgentStatus(str, Enum):
+class AgentStatus(StrEnum):
     """Agent lifecycle status."""
 
     CREATED = "created"
@@ -37,7 +37,7 @@ class AgentStatus(str, Enum):
     ERROR = "error"
 
 
-class MessageType(str, Enum):
+class MessageType(StrEnum):
     """Types of inter-agent messages."""
 
     REQUEST = "request"

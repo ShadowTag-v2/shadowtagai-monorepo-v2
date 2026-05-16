@@ -131,7 +131,7 @@ async def judge_request(
 
     This is the main endpoint - runs all 3 layers and returns judgment.
     """
-    start_time = time.perf_counter()
+    time.perf_counter()
     request_id = str(uuid.uuid4())
 
     try:

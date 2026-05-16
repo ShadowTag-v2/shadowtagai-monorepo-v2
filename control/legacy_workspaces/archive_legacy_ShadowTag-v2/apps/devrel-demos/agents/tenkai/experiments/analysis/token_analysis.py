@@ -42,7 +42,7 @@ def analyze():
         totals = [row[0] for row in data if row[0]]
         inputs = [row[1] for row in data if row[1]]
         outputs = [row[2] for row in data if row[2]]
-        count = len(totals)
+        len(totals)
 
         avg_total = statistics.mean(totals) if totals else 0
         avg_input = statistics.mean(inputs) if inputs else 0

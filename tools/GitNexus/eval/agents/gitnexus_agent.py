@@ -21,7 +21,7 @@ Template structure (matches mini-swe-agent's expectations):
 import logging
 import re
 import time
-from enum import Enum
+from enum import Enum, StrEnum
 from pathlib import Path
 
 from constants import AUGMENT_TIMEOUT_SECONDS
@@ -34,7 +34,7 @@ logger = logging.getLogger("gitnexus_agent")
 PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
 
 
-class GitNexusMode(str, Enum):
+class GitNexusMode(StrEnum):
     """Evaluation modes for GitNexus integration."""
 
     BASELINE = "baseline"  # No GitNexus — pure mini-swe-agent

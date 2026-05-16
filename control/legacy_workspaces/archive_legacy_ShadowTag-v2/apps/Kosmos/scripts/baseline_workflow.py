@@ -51,7 +51,7 @@ def run_baseline(num_cycles: int = 3, use_literature: bool = False):
     artifacts_dir = Path("./artifacts/baseline_run")
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
-    metrics = get_metrics()
+    get_metrics()
     start_time = time.time()
 
     print("=" * 60)

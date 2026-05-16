@@ -414,7 +414,7 @@ class TestLLMFallback:
             ],
         )
 
-        code = generator.generate(protocol)
+        generator.generate(protocol)
 
         # LLM should have been called for enhancement
         assert mock_llm.generate.called
@@ -467,7 +467,7 @@ class TestVariableExtraction:
 
     def test_extract_dependent_variable(self, ttest_protocol):
         """Test extraction of dependent variable."""
-        template = TTestComparisonCodeTemplate()
+        TTestComparisonCodeTemplate()
 
         dependent_vars = [
             var for var in ttest_protocol.variables.values() if var.type == VariableType.DEPENDENT
@@ -478,7 +478,7 @@ class TestVariableExtraction:
 
     def test_extract_independent_variable(self, ttest_protocol):
         """Test extraction of independent variable."""
-        template = TTestComparisonCodeTemplate()
+        TTestComparisonCodeTemplate()
 
         independent_vars = [
             var for var in ttest_protocol.variables.values() if var.type == VariableType.INDEPENDENT

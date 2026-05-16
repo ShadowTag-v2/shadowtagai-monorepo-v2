@@ -79,7 +79,7 @@ class VectorSearchManager:
         logger.info(f"Creating Vertex AI index: {display_name}")
 
         # Create TreeAH index configuration
-        tree_ah_config = aiplatform.matching_engine.matching_engine_index_config.MatchingEngineIndexConfig(
+        aiplatform.matching_engine.matching_engine_index_config.MatchingEngineIndexConfig(
             dimensions=dimensions,
             approximate_neighbors_count=approximate_neighbors_count,
             distance_measure_type=distance_measure_type,

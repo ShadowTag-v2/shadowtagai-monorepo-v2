@@ -515,7 +515,7 @@ async def delete_meeting(
             async with redis_c.pipeline(transaction=True) as pipe:
                 pipe.delete(hash_key)
                 pipe.srem("active_meetings", str(internal_meeting_id))
-                results = await pipe.execute()
+                await pipe.execute()
             logger.debug(f"[API] Deleted Redis hash {hash_key} and removed from active_meetings")
         except Exception as e:
             logger.error(f"[API] Failed to delete Redis data for meeting {internal_meeting_id}: {e}")

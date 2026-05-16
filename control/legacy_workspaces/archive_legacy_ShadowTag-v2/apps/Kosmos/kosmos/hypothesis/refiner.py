@@ -12,7 +12,7 @@ import json
 import logging
 import uuid
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -26,7 +26,7 @@ from kosmos.models.result import ExperimentResult, ResultStatus
 logger = logging.getLogger(__name__)
 
 
-class RetirementDecision(str, Enum):
+class RetirementDecision(StrEnum):
     """Decision on hypothesis status."""
 
     CONTINUE_TESTING = "continue_testing"
@@ -35,7 +35,7 @@ class RetirementDecision(str, Enum):
     SPAWN_VARIANT = "spawn_variant"
 
 
-class RefinerAction(str, Enum):
+class RefinerAction(StrEnum):
     """Actions taken by the refiner."""
 
     NO_ACTION = "no_action"

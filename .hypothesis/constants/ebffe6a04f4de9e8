@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/workspace_alerts.py
+# hypothesis_version: 6.151.5
+
+[200, '--json', '--params', 'Chat alert sent: %s', 'GMAIL_SENDER', 'GOOGLE_CHAT_SPACE', 'GWS_BIN', 'Gmail CLI failed: %s', 'Gmail sent to %s: %s', 'chat', 'create', 'from', 'gdpr-deletions', 'gmail', 'gws', 'gws CLI failed: %s', 'html', 'id', 'me', 'messages', 'name', 'ops@shadowtagai.com', 'parent', 'payment-failures', 'raw', 'reply-to', 'security-events', 'send', 'spaces', 'subject', 'text', 'thread', 'threadKey', 'to', 'unknown', 'userId', 'users', 'v1']

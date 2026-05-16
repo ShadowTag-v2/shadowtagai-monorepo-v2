@@ -27,12 +27,12 @@ from __future__ import annotations
 import logging
 import uuid
 from datetime import UTC, datetime
-from enum import Enum
+from enum import Enum, StrEnum
 
 log = logging.getLogger(__name__)
 
 
-class AssetStatus(str, Enum):
+class AssetStatus(StrEnum):
     """Valid asset lifecycle states."""
 
     ACTIVE = "active"
@@ -42,7 +42,7 @@ class AssetStatus(str, Enum):
     IN_TRANSIT = "in_transit"
 
 
-class AssetCategory(str, Enum):
+class AssetCategory(StrEnum):
     """Hardware asset categories."""
 
     LAPTOP = "laptop"

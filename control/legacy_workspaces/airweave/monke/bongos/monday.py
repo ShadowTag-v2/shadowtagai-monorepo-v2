@@ -106,7 +106,7 @@ class MondayBongo(BaseBongo):
             for ent in entities:
                 try:
                     await self._pace()
-                    r = await self._gql(
+                    await self._gql(
                         client,
                         "mutation($id: ID!){ delete_item(item_id:$id){ id }}",
                         {"id": int(ent["id"])},

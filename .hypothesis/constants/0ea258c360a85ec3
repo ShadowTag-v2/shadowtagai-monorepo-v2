@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/agnt_bridge/transport.py
+# hypothesis_version: 6.151.5
+
+[1024, ',', ':', '>I', 'Connected to UDS: %s', '_connected', '_reader', '_running', '_server', '_socket_path', '_writer', 'payload', 'session_id', 'type', 'unknown', 'utf-8', 'uuid']

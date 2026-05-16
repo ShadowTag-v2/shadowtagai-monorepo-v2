@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/plugin_manager/manager.py
+# hypothesis_version: 6.151.5
+
+[0.0, 120, 500, 1000, '--depth=1', '--ff-only', '.git', 'clone', 'failed', 'git', 'git not found', 'google-skills', 'installed', 'installing', 'name', 'path', 'pending', 'plugin_manager', 'pull', 'source', 'up_to_date', 'vercel-skills']

@@ -76,7 +76,7 @@ class LocalVectorIngester:
 
                 chunk_id = f"chunk_{i}"
                 s_hash = hashlib.md5(chunk.encode()).hexdigest()
-                vector = self.mock_embed(chunk)
+                self.mock_embed(chunk)
 
                 cursor.execute(
                     "INSERT OR REPLACE INTO local_intelligence_feed (id, source_file, chunk_text, semantic_hash, metadata) VALUES (?, ?, ?, ?, ?)",

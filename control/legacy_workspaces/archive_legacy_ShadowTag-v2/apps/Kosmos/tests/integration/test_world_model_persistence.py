@@ -75,7 +75,7 @@ class TestResearchQuestionPersistence:
         director = ResearchDirectorAgent(research_question=question_text, domain="machine_learning")
 
         # Get the entity from graph
-        wm = get_world_model()
+        get_world_model()
         # Note: We can't directly query entity by ID in the simple interface,
         # but we verify it was created (tested above)
 
@@ -149,7 +149,7 @@ class TestRefinedHypothesisPersistence:
     def test_refined_hypothesis_has_parent_relationship(self, mock_get_hyp, reset_graph):
         """Test that refined hypothesis has REFINED_FROM relationship to parent."""
         # Create parent hypothesis
-        parent_hyp = Hypothesis(
+        Hypothesis(
             id="hyp_parent_001",
             research_question="Test question",
             statement="Parent hypothesis",

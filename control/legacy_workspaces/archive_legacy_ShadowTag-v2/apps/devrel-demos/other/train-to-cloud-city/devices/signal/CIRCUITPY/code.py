@@ -148,7 +148,6 @@ async def button():
 
 
 async def counter():
-    i = 0
     while True:
         usb_cdc.data.write(ID)
         usb_cdc.data.write(b":HEARTBEAT\n")

@@ -88,7 +88,6 @@ IMPORTANT - CONVERSATION CONTINUITY:
 
     # Track conversation state
     current_paper_path = None
-    conversation_history = []
 
     # Print welcome message
     print("=" * 70)

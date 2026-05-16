@@ -94,7 +94,7 @@ class TestLocalEvalSetResultsManager:
         mock_time = mocker.patch("time.time")
         mock_time.return_value = self.timestamp
 
-        with pytest.raises(NotFoundError) as e:
+        with pytest.raises(NotFoundError):
             self.manager.get_eval_set_result(self.app_name, "non_existent_id")
 
     def test_list_eval_set_results(self, mocker):

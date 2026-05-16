@@ -412,16 +412,6 @@ def analyze_security_vulnerabilities(
         }
     """
     # Simulate security vulnerability analysis
-    vulnerability_types = [
-        "SQL Injection",
-        "Cross-Site Scripting (XSS)",
-        "Authentication Bypass",
-        "Insecure Direct Object References",
-        "Security Misconfiguration",
-        "Sensitive Data Exposure",
-        "Insufficient Logging",
-        "CSRF",
-    ]
 
     return {
         "components_analyzed": len(system_components),

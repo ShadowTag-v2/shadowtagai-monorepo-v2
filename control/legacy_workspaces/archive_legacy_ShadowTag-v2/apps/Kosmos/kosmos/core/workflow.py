@@ -9,7 +9,7 @@ INITIALIZING → GENERATING_HYPOTHESES → DESIGNING_EXPERIMENTS → EXECUTING
 
 import logging
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -17,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field
 logger = logging.getLogger(__name__)
 
 
-class WorkflowState(str, Enum):
+class WorkflowState(StrEnum):
     """States in the autonomous research workflow."""
 
     INITIALIZING = "initializing"
@@ -31,7 +31,7 @@ class WorkflowState(str, Enum):
     ERROR = "error"
 
 
-class NextAction(str, Enum):
+class NextAction(StrEnum):
     """Possible next actions for the research director."""
 
     GENERATE_HYPOTHESIS = "generate_hypothesis"

@@ -45,7 +45,7 @@ def test_vertex_rag_retrieval_for_gemini_1_x():
         ],
     )
     runner = testing_utils.InMemoryRunner(agent)
-    events = runner.run("test1")
+    runner.run("test1")
 
     # Asserts the requests.
     assert len(mockModel.requests) == 1
@@ -78,7 +78,7 @@ def test_vertex_rag_retrieval_for_gemini_1_x_with_another_function_tool():
         ],
     )
     runner = testing_utils.InMemoryRunner(agent)
-    events = runner.run("test1")
+    runner.run("test1")
 
     # Asserts the requests.
     assert len(mockModel.requests) == 1
@@ -111,7 +111,7 @@ def test_vertex_rag_retrieval_for_gemini_2_x():
         ],
     )
     runner = testing_utils.InMemoryRunner(agent)
-    events = runner.run("test1")
+    runner.run("test1")
 
     # Asserts the requests.
     assert len(mockModel.requests) == 1

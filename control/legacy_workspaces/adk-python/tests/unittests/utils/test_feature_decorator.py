@@ -58,7 +58,7 @@ def test_working_in_progress_class_raises_error():
         del os.environ["ADK_ALLOW_WIP_FEATURES"]
 
     try:
-        feature = IncompleteFeature()
+        IncompleteFeature()
         assert False, "Expected RuntimeError to be raised"
     except RuntimeError as e:
         assert "[WIP] IncompleteFeature:" in str(e)
@@ -72,7 +72,7 @@ def test_working_in_progress_function_raises_error():
         del os.environ["ADK_ALLOW_WIP_FEATURES"]
 
     try:
-        result = wip_function()
+        wip_function()
         assert False, "Expected RuntimeError to be raised"
     except RuntimeError as e:
         assert "[WIP] wip_function:" in str(e)
@@ -148,7 +148,7 @@ def test_working_in_progress_env_var_false_values():
         os.environ["ADK_ALLOW_WIP_FEATURES"] = false_val
 
         try:
-            result = wip_function()
+            wip_function()
             assert False, f"Expected RuntimeError with env var '{false_val}'"
         except RuntimeError as e:
             assert "[WIP] wip_function:" in str(e)

@@ -82,7 +82,7 @@ class TestSecretManagerClient:
         # Mock the entire credentials creation process
         with (
             patch("google.auth.credentials.Credentials") as mock_credentials_class,
-            patch("google.auth.transport.requests.Request") as mock_request,
+            patch("google.auth.transport.requests.Request"),
         ):
             # Configure the mock to return our mock_credentials when instantiated
             mock_credentials_class.return_value = mock_credentials

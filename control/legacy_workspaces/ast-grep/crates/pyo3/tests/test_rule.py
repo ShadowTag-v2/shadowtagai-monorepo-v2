@@ -181,7 +181,7 @@ def test_range_rule():
 
 
 def test_strictness():
-    node = root.find(
+    root.find(
         pattern={
             "context": "let b = 456",
             "strictness": "signature",

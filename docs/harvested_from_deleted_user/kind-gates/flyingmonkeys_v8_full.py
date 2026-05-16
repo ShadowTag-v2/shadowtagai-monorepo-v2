@@ -531,7 +531,7 @@ def run_in_claude_code():
     print("\n" + "="*60)
     print("🎯 DEMO 2: Hunt Mode")
     print("="*60)
-    hunt_result = fm.hunt("$50k MRR in 30 days", strategies=4)
+    fm.hunt("$50k MRR in 30 days", strategies=4)
 
     # Demo 3: Code Execution
     print("\n" + "="*60)

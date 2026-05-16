@@ -9,7 +9,7 @@ Implements mandatory and optional stopping criteria:
 
 import logging
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -22,7 +22,7 @@ from kosmos.utils.compat import model_to_dict
 logger = logging.getLogger(__name__)
 
 
-class StoppingReason(str, Enum):
+class StoppingReason(StrEnum):
     """Reasons for stopping research."""
 
     ITERATION_LIMIT = "iteration_limit"

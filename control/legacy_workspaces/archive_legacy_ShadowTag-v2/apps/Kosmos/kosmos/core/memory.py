@@ -12,7 +12,7 @@ Categories:
 import hashlib
 import logging
 from datetime import datetime, timedelta
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -25,7 +25,7 @@ from kosmos.utils.compat import model_to_dict
 logger = logging.getLogger(__name__)
 
 
-class MemoryCategory(str, Enum):
+class MemoryCategory(StrEnum):
     """Categories of memories."""
 
     SUCCESS_PATTERNS = "success_patterns"

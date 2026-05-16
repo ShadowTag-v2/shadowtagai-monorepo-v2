@@ -330,10 +330,10 @@ class TestMLAnalyzer:
 
         # Run multiple experiments
         model1 = LogisticRegression(random_state=42)
-        result1 = analyzer.run_experiment(model1, X, y, task_type="classification")
+        analyzer.run_experiment(model1, X, y, task_type="classification")
 
         model2 = RandomForestClassifier(n_estimators=5, random_state=42)
-        result2 = analyzer.run_experiment(model2, X, y, task_type="classification")
+        analyzer.run_experiment(model2, X, y, task_type="classification")
 
         # Check history
         assert len(analyzer.results_history) == 2

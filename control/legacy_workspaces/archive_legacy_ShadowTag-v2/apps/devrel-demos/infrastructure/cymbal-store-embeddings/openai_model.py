@@ -22,7 +22,7 @@ import mesop as me
 
 
 def call_openai_gpt4o_mini(input: str, history: list[ChatMessage]) -> Iterable[str]:
-    state = me.state(State)
+    me.state(State)
     client = OpenAI()
     # client = anthropic.Anthropic(api_key=state.claude_api_key)
     messages = [

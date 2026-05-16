@@ -99,7 +99,7 @@ def test_req_domain_001_domain_modules_importable():
 
     for module_name in domain_modules:
         try:
-            module = __import__(module_name, fromlist=[""])
+            __import__(module_name, fromlist=[""])
             imported_count += 1
             imported_domains.append(module_name.split(".")[-1])
         except ImportError as e:
@@ -408,7 +408,7 @@ def test_req_domain_003_domain_knowledge_bases():
                     print(f"✓ {domain} knowledge base: {len(concepts) if concepts else 0} concepts")
 
                 if hasattr(kb, "get_ontology"):
-                    ontology = kb.get_ontology()
+                    kb.get_ontology()
                     print(f"✓ {domain} ontology available")
 
             except Exception as e:

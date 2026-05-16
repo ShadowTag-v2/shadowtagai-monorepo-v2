@@ -1106,7 +1106,6 @@ class ResearchDirectorAgent(BaseAgent):
         from kosmos.execution.statistics import StatisticalValidator
         from kosmos.db.operations import get_results_for_experiment
 
-        current_iteration = self.research_plan.iteration_count
 
         # Collect p-values from recent results in DB
         results_with_pvalues = []

@@ -163,7 +163,6 @@ def create_app():
 
         tracer = trace.get_tracer(__name__)
         with TracedThreadPoolExecutor(tracer, max_workers=3) as executor:
-            futures = []
 
             future_to_api_call = {executor.submit(api_call.make_call): api_call for api_call in api_calls}
 

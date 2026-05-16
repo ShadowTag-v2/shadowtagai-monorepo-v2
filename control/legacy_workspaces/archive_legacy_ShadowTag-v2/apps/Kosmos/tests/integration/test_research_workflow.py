@@ -270,7 +270,7 @@ class TestWorkflowStatePersistence:
         await research_workflow.run(num_cycles=1, tasks_per_cycle=5)
 
         # Check for artifact files
-        cycle_dir = workflow_dir / "cycle_1"
+        workflow_dir / "cycle_1"
 
         # Should have some files if findings were saved
         # (depends on mock behavior)
@@ -281,7 +281,7 @@ class TestWorkflowStatePersistence:
         await research_workflow.run(num_cycles=1, tasks_per_cycle=5)
 
         # Summary should be generated for each cycle
-        cycle_dir = workflow_dir / "cycle_1"
+        workflow_dir / "cycle_1"
 
         # Check if summary was generated
         # (state_manager.generate_cycle_summary is called)

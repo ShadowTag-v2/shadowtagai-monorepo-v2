@@ -229,7 +229,6 @@ class TestParallelExecutionWithRealExperiments:
         # Execute many experiments
         def mock_execute_task(protocol_id):
             # Allocate and release memory
-            data = [0] * 100000
             time.sleep(0.01)
             return ParallelExecutionResult(
                 protocol_id=protocol_id,
@@ -241,7 +240,7 @@ class TestParallelExecutionWithRealExperiments:
         protocol_ids = [f"protocol_{i}" for i in range(50)]
 
         with patch.object(executor, "_execute_experiment_task", side_effect=mock_execute_task):
-            results = executor.execute_batch(protocol_ids)
+            executor.execute_batch(protocol_ids)
 
         final_memory = process.memory_info().rss / 1024 / 1024  # MB
         memory_increase = final_memory - initial_memory
@@ -353,7 +352,6 @@ class TestResourceLimits:
         def memory_intensive_task(protocol_id):
             try:
                 # Try to allocate large amount of memory
-                data = [0] * 100000000  # ~400MB
                 return ParallelExecutionResult(
                     protocol_id=protocol_id,
                     success=True,

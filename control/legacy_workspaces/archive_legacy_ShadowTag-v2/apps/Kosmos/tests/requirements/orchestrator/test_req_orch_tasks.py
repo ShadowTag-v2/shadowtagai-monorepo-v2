@@ -726,7 +726,7 @@ class TestREQ_ORCH_TASK_007_ResearchPlanGeneration:
 
         director = ResearchDirectorAgent(research_question="Test question", domain="biology")
 
-        plan = director.generate_research_plan()
+        director.generate_research_plan()
 
         # Verify LLM was called
         mock_client.generate.assert_called_once()

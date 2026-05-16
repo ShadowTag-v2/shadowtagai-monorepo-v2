@@ -585,7 +585,7 @@ class TestREQ_ORCH_ERR_008_ErrorMetrics:
         )
         director._handle_hypothesis_generator_response(error_message)
 
-        status = director.get_research_status()
+        director.get_research_status()
 
         # Error count should be trackable
         assert director.errors_encountered > 0

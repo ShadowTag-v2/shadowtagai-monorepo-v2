@@ -67,7 +67,7 @@ def import_files(project_id: str, region: str, vertical: str, gcs_path: str, chu
             # Directory pattern - will import all files
             paths = [gcs_path]
 
-        response = rag.import_files(
+        rag.import_files(
             corpus_name=target_corpus.name,
             paths=paths,
             chunk_size=chunk_size,

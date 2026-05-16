@@ -131,7 +131,7 @@ class TestTee(BaseTestCase):
         super().tearDown()
 
     def test_invalid_constructor(self):
-        with self.assertRaises(Exception) as context:
+        with self.assertRaises(Exception):
             TranscriptionTeeClient([])
 
     def test_multicast_unconditional(self):

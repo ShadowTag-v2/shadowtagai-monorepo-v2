@@ -105,7 +105,7 @@ class TestImageVerification:
         mock_client.images.get.return_value = Mock()  # Image found
         mock_docker.from_env.return_value = mock_client
 
-        sandbox = DockerSandbox()
+        DockerSandbox()
 
         # Should not build
         assert mock_client.images.build.called is False
@@ -121,7 +121,7 @@ class TestImageVerification:
         mock_docker.from_env.return_value = mock_client
         mock_docker.errors.ImageNotFound = docker.errors.ImageNotFound
 
-        sandbox = DockerSandbox()
+        DockerSandbox()
 
         # Should build image
         assert mock_client.images.build.called
@@ -158,7 +158,7 @@ class TestSandboxExecution:
         mock_docker_client.containers.create.return_value = mock_container
 
         sandbox = DockerSandbox()
-        result = sandbox.execute("import pandas as pd", data_files={"data.csv": str(data_file)})
+        sandbox.execute("import pandas as pd", data_files={"data.csv": str(data_file)})
 
         # Verify container created with volume mounts
         create_call = mock_docker_client.containers.create.call_args
@@ -295,7 +295,7 @@ class TestOutputCapture:
         mock_container.logs = Mock(side_effect=mock_logs)
 
         sandbox = DockerSandbox()
-        result = sandbox.execute("import sys; print('error', file=sys.stderr)")
+        sandbox.execute("import sys; print('error', file=sys.stderr)")
 
         # Note: Mock will capture based on parameters
 
@@ -367,7 +367,7 @@ class TestExecutionMonitoring:
         )
 
         sandbox = DockerSandbox(enable_monitoring=True)
-        result = sandbox.execute("print('test')")
+        sandbox.execute("print('test')")
 
         # Resource stats should be populated
         # Note: Monitoring runs in background thread, may not complete immediately
@@ -388,7 +388,7 @@ class TestCleanup:
         mock_docker_client.containers.create.return_value = mock_container
 
         sandbox = DockerSandbox()
-        result = sandbox.execute("print('test')")
+        sandbox.execute("print('test')")
 
         # Container should be removed
         assert mock_container.remove.called
@@ -441,7 +441,7 @@ class TestReturnValueExtraction:
         mock_container.logs.return_value = b'RESULT:{"value": 42}'
 
         sandbox = DockerSandbox()
-        result = sandbox.execute("print('RESULT:{\"value\": 42}')")
+        sandbox.execute("print('RESULT:{\"value\": 42}')")
 
         # Note: Actual extraction would parse the JSON
 

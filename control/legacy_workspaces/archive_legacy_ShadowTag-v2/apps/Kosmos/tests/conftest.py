@@ -432,7 +432,7 @@ def pytest_collection_modifyitems(config, items):
     """Automatically skip tests based on markers if dependencies not available."""
     skip_api_key = pytest.mark.skip(reason="API keys not configured")
     skip_neo4j = pytest.mark.skip(reason="Neo4j not available")
-    skip_chromadb = pytest.mark.skip(reason="ChromaDB not available")
+    pytest.mark.skip(reason="ChromaDB not available")
     skip_claude = pytest.mark.skip(reason="Claude API not configured")
     skip_execution = pytest.mark.skip(reason="Execution environment not available")
 

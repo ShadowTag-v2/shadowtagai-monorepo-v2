@@ -38,7 +38,6 @@ class TestREQ_PERF_RES_001_PromptCaching:
         metrics = get_metrics(reset=True)
 
         # Simulate cache hits and misses
-        total_requests = 100
         cache_hits = 60
         cache_misses = 40
 
@@ -225,7 +224,7 @@ class TestREQ_PERF_RES_003_CodeLineTracking:
         mock_llm.return_value = Mock()
         mock_wm.return_value = None
 
-        director = ResearchDirectorAgent(
+        ResearchDirectorAgent(
             research_question="Test code tracking", config={"max_iterations": 10}
         )
 
@@ -501,7 +500,7 @@ class TestREQ_PERF_RES_007_NetworkBandwidth:
 
     def test_api_call_rate_limiting(self):
         """Verify API call rate limiting is enforced."""
-        metrics = get_metrics(reset=True)
+        get_metrics(reset=True)
 
         # Configure rate limit
         max_calls_per_minute = 60
@@ -596,7 +595,7 @@ class TestREQ_PERF_RES_008_ResourceCleanup:
                 f.write("test data")
 
         # Files should be closed
-        current_fds = process.num_fds()
+        process.num_fds()
 
         # Cleanup temp files
         for temp_file in temp_files:
@@ -779,7 +778,7 @@ class TestREQ_PERF_RES_009_MemoryLeakPrevention:
         process = psutil.Process(os.getpid())
         gc.collect()
 
-        initial_memory = process.memory_info().rss / 1024 / 1024
+        process.memory_info().rss / 1024 / 1024
         memory_samples = []
 
         # Perform many operations

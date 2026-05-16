@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/firebase_tool_bridge/registry.py
+# hypothesis_version: 6.151.5
+
+[128, 'critical', 'data_delete', 'data_write_sensitive', 'deployment', 'github_push', 'high', 'low', 'medium', 'money_movement', 'purchase']

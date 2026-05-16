@@ -290,7 +290,7 @@ def compare_players(player1: Glicko2Player, player2: Glicko2Player) -> dict:
     mu2 = player2.mu
     phi2 = player2.phi
 
-    g = player1._g(phi2)
+    player1._g(phi2)
     expected_score = player1._E(mu1, mu2, phi2)
 
     # Rating difference

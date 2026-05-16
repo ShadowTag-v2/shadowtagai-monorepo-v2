@@ -217,7 +217,7 @@ class SemanticLiteratureSearch:
 
         # Compute centroid embedding
         embeddings = self.embedder.embed_papers(based_on_papers)
-        centroid = embeddings.mean(axis=0)
+        embeddings.mean(axis=0)
 
         # Search by centroid
         # Note: This would require extending vector_db to support direct embedding queries
@@ -317,7 +317,7 @@ class SemanticLiteratureSearch:
             filters["domain"] = {"$in": [f.lower() for f in fields]}
 
         # Search
-        results = self.vector_db.search(query, top_k=max_results, filters=filters if filters else None)
+        self.vector_db.search(query, top_k=max_results, filters=filters if filters else None)
 
         # Convert to PaperMetadata (simplified - would need full reconstruction)
         # For now, return empty as placeholder

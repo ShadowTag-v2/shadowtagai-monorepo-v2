@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/control/pnkln/pnkln_core/agents/legal.py
+# hypothesis_version: 6.151.5
+
+[8000, '1', '30 days', 'LegalAgent', 'alert_stakeholders', 'business_days_only', 'calculate_deadlines', 'case_details', 'completed', 'days_to_respond', 'default deadline', 'exhibit_citation_id', 'filing', 'input_facts', 'jurisdiction', 'jurisdiction_rule', 'pleading_standards', 'prepare_forms', 'processing_steps', 'raw_date_text', 'reasoning_mode', 'receive_filing', 'service_of_process', 'status', 't', 'text', 'thirty days', 'trigger_event', 'true', 'yes', '{filing_text}']

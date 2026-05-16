@@ -44,7 +44,7 @@ google_project = ""
 
 
 def generate():
-    client = genai.Client(
+    genai.Client(
         vertexai=True,
         project=google_project,
         location="us-central1",
@@ -145,7 +145,7 @@ class DecodePubsubMessageFn(beam.DoFn):
             # logging.debug(f"Decoded Pub/Sub message: {decoded_message}")
             yield decoded_message
         except Exception as e:
-            error_message = f"Error decoding message: {e}, message: {element.decode('utf-8')}"
+            f"Error decoding message: {e}, message: {element.decode('utf-8')}"
             # logging.error(error_message)
             yield beam.pvalue.TaggedOutput("errors", element)
 
@@ -211,7 +211,7 @@ def run(argv=None, save_main_session=True):
 
         # embedding_pcoll | "printMLTransformResults" >> beam.Map(lambda x: print(x))
 
-        inference_pcoll = (
+        (
             pubsub_pcoll
             | "getText" >> beam.Map(lambda data: data["contextual_text"])
             | "performGeminiInf" >> RunInference(GeminiModelHandler())

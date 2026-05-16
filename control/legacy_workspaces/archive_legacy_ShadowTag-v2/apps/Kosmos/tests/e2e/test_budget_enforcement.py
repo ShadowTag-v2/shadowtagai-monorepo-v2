@@ -199,7 +199,7 @@ class TestBudgetPeriodReset:
         metrics_collector.check_budget()
 
         # Verify alert was triggered
-        initial_status = metrics_collector.check_budget()
+        metrics_collector.check_budget()
 
         # Simulate time passing (more than 1 day)
         metrics_collector.budget_period_start = datetime.utcnow() - timedelta(days=2)

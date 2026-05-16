@@ -675,7 +675,7 @@ class Manager:
             # row and col start from 0
             float_win_row = int(float(lfEval("nvim_win_get_config(%d).row" % float_window.id)))
             float_win_col = int(float(lfEval("nvim_win_get_config(%d).col" % float_window.id)))
-            float_win_height = int(float(lfEval("nvim_win_get_config(%d).height" % float_window.id)))
+            int(float(lfEval("nvim_win_get_config(%d).height" % float_window.id)))
             float_win_width = int(float(lfEval("nvim_win_get_config(%d).width" % float_window.id)))
             popup_borders = lfEval("g:Lf_PopupBorders")
             borderchars = [

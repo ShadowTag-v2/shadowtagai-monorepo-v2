@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/packages/xml_tags/tags.py
+# hypothesis_version: 6.151.5
+
+['--help', '-h', '?', 'Your directive: ', 'about', 'bash-input', 'bash-stderr', 'bash-stdout', 'channel', 'channel-message', 'check', 'command-args', 'command-message', 'command-name', 'current', 'describe', 'display', 'fork-boilerplate', 'get', 'help', 'list', 'local-command-caveat', 'local-command-stderr', 'local-command-stdout', 'output-file', 'print', 'reason', 'remote-review', 'show', 'status', 'summary', 'task-id', 'task-notification', 'task-type', 'teammate-message', 'tick', 'tool-use-id', 'ultraplan', 'version', 'view', 'worktree', 'worktreeBranch', 'worktreePath']

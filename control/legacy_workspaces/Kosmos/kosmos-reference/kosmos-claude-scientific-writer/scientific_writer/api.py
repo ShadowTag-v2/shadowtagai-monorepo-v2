@@ -81,7 +81,7 @@ async def generate_paper(
 
     # Get API key
     try:
-        api_key_value = get_api_key(api_key)
+        get_api_key(api_key)
     except ValueError as e:
         yield _create_error_result(str(e))
         return
@@ -123,8 +123,6 @@ IMPORTANT - CONVERSATION CONTINUITY:
     )
 
     # Process data files if provided
-    data_context = ""
-    temp_paper_path = None
 
     if data_files:
         data_file_paths = get_data_files(work_dir, data_files)

@@ -21,7 +21,7 @@ def detect_file_type(filepath):
     """
     file_path = Path(filepath)
     extension = file_path.suffix.lower()
-    name = file_path.name.lower()
+    file_path.name.lower()
 
     # Map extensions to categories and reference files
     extension_map = {

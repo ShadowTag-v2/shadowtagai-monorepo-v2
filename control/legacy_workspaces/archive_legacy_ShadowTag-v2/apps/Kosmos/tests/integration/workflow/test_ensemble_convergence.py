@@ -170,7 +170,7 @@ class TestEnsembleFullPipeline:
         matched, metrics = analyzer_with_embeddings_disabled.analyze(realistic_multi_run_findings)
 
         # Should have at least one strongly convergent finding (KRAS appears in all 5 runs)
-        strong_findings = [m for m in matched if m.convergence_strength == "strong"]
+        [m for m in matched if m.convergence_strength == "strong"]
 
         # KRAS should be strongly convergent (in 5 runs)
         # Check that we have at least one finding with high replication

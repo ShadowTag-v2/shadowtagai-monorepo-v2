@@ -42,7 +42,7 @@ def test_req_int_awm_001_agent_results_ingestion():
     # Arrange: Create world model and agent
     try:
         world_model = get_world_model()
-        agent = DataAnalyst()
+        DataAnalyst()
 
         # Sample agent result
         agent_result = {
@@ -278,7 +278,7 @@ def test_req_int_awm_003_schema_mismatch_handling():
 
         # Invalid data - graceful handling
         try:
-            invalid = AgentOutput(
+            AgentOutput(
                 agent_id="agent_002",
                 findings="Not a list",  # Type error
                 confidence=0.80,
@@ -313,8 +313,8 @@ def test_req_int_cross_001_cross_agent_data_access():
     # Arrange: Create agents and world model
     try:
         world_model = get_world_model()
-        lit_agent = LiteratureAnalyzer()
-        data_agent = DataAnalyst()
+        LiteratureAnalyzer()
+        DataAnalyst()
 
         # Act: Literature agent discovers information
         lit_finding = {
@@ -487,20 +487,20 @@ def test_req_int_cross_003_prevent_circular_dependencies():
         scheduler = TaskScheduler()
 
         # Create tasks with dependencies
-        task_a = scheduler.create_task(task_id="task_a", agent_type="data_analyst", dependencies=[])
+        scheduler.create_task(task_id="task_a", agent_type="data_analyst", dependencies=[])
 
-        task_b = scheduler.create_task(
+        scheduler.create_task(
             task_id="task_b", agent_type="literature_analyzer", dependencies=["task_a"]
         )
 
-        task_c = scheduler.create_task(
+        scheduler.create_task(
             task_id="task_c", agent_type="hypothesis_generator", dependencies=["task_b"]
         )
 
         # Act: Attempt to create circular dependency
         # task_a depends on task_c (would create cycle: a -> b -> c -> a)
         with pytest.raises((ValueError, Exception)) as exc_info:
-            task_a_circular = scheduler.create_task(
+            scheduler.create_task(
                 task_id="task_a",
                 agent_type="data_analyst",
                 dependencies=["task_c"],  # This creates a cycle

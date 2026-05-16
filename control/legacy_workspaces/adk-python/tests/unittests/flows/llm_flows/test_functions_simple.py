@@ -809,7 +809,7 @@ async def test_sync_function_blocks_async_functions():
         tools=[blocking_sync_function, yielding_async_function],
     )
     runner = testing_utils.TestInMemoryRunner(agent)
-    events = await runner.run_async_with_new_session("test")
+    await runner.run_async_with_new_session("test")
 
     # With blocking sync function, execution should be sequential: A, B, C, D
     # The sync function blocks, preventing the async function from yielding properly
@@ -851,7 +851,7 @@ async def test_async_function_without_yield_blocks_others():
         tools=[non_yielding_async_function, yielding_async_function],
     )
     runner = testing_utils.TestInMemoryRunner(agent)
-    events = await runner.run_async_with_new_session("test")
+    await runner.run_async_with_new_session("test")
 
     # Non-yielding async function blocks, so execution is sequential: A, B, C, D
     assert execution_order == ["non_yield_A", "non_yield_B", "yield_C", "yield_D"]
@@ -982,7 +982,7 @@ async def test_yielding_async_functions_run_concurrently():
         tools=[yielding_async_function_1, yielding_async_function_2],
     )
     runner = testing_utils.TestInMemoryRunner(agent)
-    events = await runner.run_async_with_new_session("test")
+    await runner.run_async_with_new_session("test")
 
     # With proper yielding, execution should interleave: A, C, B, D
     # Both functions start, yield, then complete
@@ -997,14 +997,14 @@ async def test_mixed_function_types_execution_order():
     def sync_function() -> dict:
         execution_order.append("sync_A")
         # Small amount of blocking work
-        result = sum(range(100000))
+        sum(range(100000))
         execution_order.append("sync_B")
         return {"result": "sync_done"}
 
     async def non_yielding_async() -> dict:
         execution_order.append("non_yield_C")
         # CPU work without yield
-        result = sum(range(100000))
+        sum(range(100000))
         execution_order.append("non_yield_D")
         return {"result": "non_yield_done"}
 
@@ -1030,7 +1030,7 @@ async def test_mixed_function_types_execution_order():
         tools=[sync_function, non_yielding_async, yielding_async],
     )
     runner = testing_utils.TestInMemoryRunner(agent)
-    events = await runner.run_async_with_new_session("test")
+    await runner.run_async_with_new_session("test")
 
     # All blocking functions run sequentially, then the yielding one
     # Expected order: sync_A, sync_B, non_yield_C, non_yield_D, yield_E, yield_F

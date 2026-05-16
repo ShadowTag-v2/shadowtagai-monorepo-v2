@@ -140,13 +140,8 @@ class IntelligenceIngestion:
         logger.info("🏛️  Ingesting State Regulations...")
 
         # Example: California Legislative Information
-        ca_search_url = "https://leginfo.legislature.ca.gov/faces/billSearchClient.xhtml"
 
         # State regulatory RSS feeds (examples)
-        state_feeds = [
-            "https://leginfo.legislature.ca.gov/faces/billSearchClient.xhtml",  # California
-            # Add more state feeds as needed
-        ]
 
         try:
             # For now, log that this would connect to state APIs

@@ -6,13 +6,13 @@ Pydantic models for safety reports, incidents, approvals, and ethical guidelines
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     """Risk level for experiments and operations."""
 
     LOW = "low"
@@ -21,7 +21,7 @@ class RiskLevel(str, Enum):
     CRITICAL = "critical"
 
 
-class ViolationType(str, Enum):
+class ViolationType(StrEnum):
     """Types of safety violations."""
 
     DANGEROUS_CODE = "dangerous_code"
@@ -33,7 +33,7 @@ class ViolationType(str, Enum):
     SUSPICIOUS_PATTERN = "suspicious_pattern"
 
 
-class ApprovalStatus(str, Enum):
+class ApprovalStatus(StrEnum):
     """Status of approval requests."""
 
     PENDING = "pending"

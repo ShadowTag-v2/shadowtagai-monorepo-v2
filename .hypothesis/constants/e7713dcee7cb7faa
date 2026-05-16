@@ -1,0 +1,4 @@
+# file: /Users/pikeymickey/.gemini/mono-fresh/apps/counselconduit/api/stripe_handler.py
+# hypothesis_version: 6.151.5
+
+[60.0, 300, ',', '/stripe', '/webhooks', '=', 'Stripe-Signature', '_created_at', '_updated_at', 'access_revoked', 'action', 'active', 'amount_cents', 'amount_due', 'amount_paid', 'attempt', 'attempt_count', 'attorneys', 'billing_events', 'canceled', 'customer', 'customer_email', 'data', 'email', 'event_type', 'failed', 'grace_period', 'id', 'no_handler', 'object', 'payment_failed', 'payment_recorded', 'provisioned', 'received', 'result', 'status', 'stripe', 'subscription', 'subscription_id', 'succeeded', 't', 'tier_updated', 'type', 'unknown', 'utf-8', 'v1', 'webhooks']

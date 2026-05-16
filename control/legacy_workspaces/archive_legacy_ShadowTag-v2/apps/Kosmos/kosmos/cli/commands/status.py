@@ -179,7 +179,7 @@ def display_progress_bar(research_data: dict):
 
     # Create progress bar
     progress = Progress(BarColumn(), console=console, expand=True)
-    task = progress.add_task("Research Progress", total=max_iterations, completed=iteration)
+    progress.add_task("Research Progress", total=max_iterations, completed=iteration)
 
     console.print(
         Panel(

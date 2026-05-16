@@ -371,7 +371,7 @@ class TestCodeExecutorRIntegration:
                 mock_exec.return_value = RExecutionResult(success=True, stdout="[1] 42\n")
 
                 r_code = "library(dplyr)\nx <- c(1, 2, 3)"
-                result = executor.execute(r_code)
+                executor.execute(r_code)
 
                 # Should have called R executor
                 mock_exec.assert_called_once()
@@ -402,7 +402,7 @@ class TestCodeExecutorRIntegration:
 
                 # Force R even though code looks like Python
                 code = "x = 42"  # Could be either language
-                result = executor.execute(code, language="r")
+                executor.execute(code, language="r")
 
                 # Should have called R executor
                 mock_exec.assert_called_once()

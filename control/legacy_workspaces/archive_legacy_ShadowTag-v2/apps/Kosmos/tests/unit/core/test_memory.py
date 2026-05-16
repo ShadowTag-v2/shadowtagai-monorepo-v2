@@ -329,7 +329,7 @@ class TestMemoryQuerying:
 
     def test_query_updates_access_count(self, memory_store):
         """Test querying updates memory access count."""
-        memory_id = memory_store.add_memory(
+        memory_store.add_memory(
             category=MemoryCategory.GENERAL,
             content="Test memory",
         )
@@ -610,12 +610,12 @@ class TestMemoryStatistics:
     def test_get_most_accessed_memory(self, memory_store):
         """Test identifying most accessed memory."""
         # Add memories with different access counts
-        mem1_id = memory_store.add_memory(
+        memory_store.add_memory(
             category=MemoryCategory.GENERAL,
             content="Memory 1",
         )
 
-        mem2_id = memory_store.add_memory(
+        memory_store.add_memory(
             category=MemoryCategory.GENERAL,
             content="Memory 2",
         )
@@ -683,7 +683,7 @@ class TestMemoryStatistics:
 
     def test_memory_access_method(self, memory_store):
         """Test memory access method updates correctly."""
-        memory_id = memory_store.add_memory(
+        memory_store.add_memory(
             category=MemoryCategory.GENERAL,
             content="Test memory",
         )

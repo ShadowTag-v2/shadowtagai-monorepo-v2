@@ -25,13 +25,13 @@ Example usage:
     methods = ontology.get_processing_methods()
 """
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class MaterialsRelationType(str, Enum):
+class MaterialsRelationType(StrEnum):
     """Types of relationships between materials concepts"""
 
     IS_A = "is_a"  # Parent-child hierarchy

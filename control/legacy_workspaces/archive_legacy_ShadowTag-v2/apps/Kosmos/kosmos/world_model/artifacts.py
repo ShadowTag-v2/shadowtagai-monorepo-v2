@@ -28,14 +28,14 @@ import json
 import logging
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class UpdateType(str, Enum):
+class UpdateType(StrEnum):
     """
     World Model update categories (Issue #55).
 

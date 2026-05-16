@@ -331,7 +331,7 @@ class TestREQ_PERF_STAB_003_TwoHundredRolloutStability:
         process = psutil.Process(os.getpid())
         initial_memory = process.memory_info().rss / 1024 / 1024
 
-        metrics = get_metrics(reset=True)
+        get_metrics(reset=True)
 
         with patch("kosmos.agents.research_director.get_client") as mock_llm:
             with patch("kosmos.world_model.get_world_model") as mock_wm:
@@ -573,7 +573,7 @@ class TestREQ_PERF_STAB_004_MemoryStability:
         assert memory_growth < 10, f"Metrics collection leaked {memory_growth:.1f}MB"
 
         # Verify history is capped
-        stats = metrics.get_statistics()
+        metrics.get_statistics()
         # History should be limited to ~1000 entries
         assert len(metrics.api_call_history) <= 1000
         assert len(metrics.experiment_history) <= 1000

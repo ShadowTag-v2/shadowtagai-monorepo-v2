@@ -64,7 +64,7 @@ class TestGetWorldModel:
         """Test that reset=True forces new instance."""
         reset_world_model()
 
-        wm1 = get_world_model()
+        get_world_model()
         wm2 = get_world_model(reset=True)
 
         # Note: These might be the same object if Neo4j singleton isn't reset
@@ -137,7 +137,7 @@ class TestResetWorldModel:
         """Test that reset clears singleton."""
         reset_world_model()
 
-        wm1 = get_world_model()
+        get_world_model()
         reset_world_model()
         wm2 = get_world_model()
 
@@ -212,11 +212,11 @@ class TestConfigIntegration:
         mock_get_config.return_value = mock_config
 
         # First call reads config
-        wm1 = get_world_model()
+        get_world_model()
         assert mock_get_config.call_count == 1
 
         # Subsequent calls don't read config (singleton)
-        wm2 = get_world_model()
+        get_world_model()
         assert mock_get_config.call_count == 1
 
     @patch("kosmos.config.get_config")
@@ -334,7 +334,7 @@ class TestRealConfiguration:
         wm = get_world_model()
 
         # Should be able to create an entity
-        entity = Entity(type="Paper", properties={"title": "Test"})
+        Entity(type="Paper", properties={"title": "Test"})
 
         # Should have add_entity method
         assert hasattr(wm, "add_entity")

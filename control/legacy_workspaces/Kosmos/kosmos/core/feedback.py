@@ -397,7 +397,7 @@ class FeedbackLoop:
 
         elif signal.signal_type == FeedbackSignalType.SUCCESS_PATTERN:
             # Apply success pattern learning
-            pattern_data = signal.data.get("pattern", {})
+            signal.data.get("pattern", {})
             # Would increase priority of hypotheses matching pattern characteristics
             changes["strategies_adjusted"].append("success_pattern_applied")
 

@@ -409,7 +409,7 @@ class CacheManager:
                 test_value = {"timestamp": "test"}
 
                 cache.set(test_key, test_value)
-                retrieved = cache.get(test_key)
+                cache.get(test_key)
                 cache.delete(test_key)
 
                 cache_health = {

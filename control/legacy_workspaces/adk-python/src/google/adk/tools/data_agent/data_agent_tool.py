@@ -387,7 +387,6 @@ def _format_schema_as_dict(
     if not fields:
         return {"columns": []}
 
-    column_details = []
     headers = ["Column", "Type", "Description", "Mode"]
     rows: list[list[str, str, str, str]] = []
     for field in fields:

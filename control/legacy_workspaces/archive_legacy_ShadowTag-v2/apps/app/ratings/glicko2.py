@@ -149,7 +149,7 @@ class Glicko2System:
             """Function to find root of."""
             ex = math.exp(x)
             phi2 = phi**2
-            v_inv = 1.0 / v if v > 0 else 0
+            1.0 / v if v > 0 else 0
 
             num1 = ex * (delta**2 - phi2 - v - ex)
             den1 = 2 * (phi2 + v + ex) ** 2

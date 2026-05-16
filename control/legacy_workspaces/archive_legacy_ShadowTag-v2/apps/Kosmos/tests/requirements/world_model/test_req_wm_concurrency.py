@@ -473,7 +473,6 @@ class TestREQ_WM_CONC_003_RaceConditionPrevention:
         def add_tag(thread_id):
             try:
                 # Each thread adds a unique tag
-                tag = f"tag_{thread_id}"
                 # Note: This is a simplified test
                 # Real implementation would need atomic list append
                 world_model.update_entity(entity_id, {f"properties.tag_{thread_id}": True})
@@ -569,7 +568,7 @@ class TestREQ_WM_CONC_004_DeadlockPrevention:
             entity = Entity(
                 type="Paper", properties={"title": f"Paper {op_id}"}, project="test_concurrency"
             )
-            entity_id = world_model.add_entity(entity)
+            world_model.add_entity(entity)
             with lock:
                 completed_operations.append(op_id)
 

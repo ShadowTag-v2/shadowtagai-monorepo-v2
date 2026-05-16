@@ -277,7 +277,7 @@ class TestComputerUseTool:
         tool = ComputerUseTool(func=specific_mock_func, screen_size=(1920, 1080))
 
         args = {"x": 100, "y": 200, "destination_x": 800, "destination_y": 600}
-        result = await tool.run_async(args=args, tool_context=tool_context)
+        await tool.run_async(args=args, tool_context=tool_context)
 
         # Check that all coordinates were normalized
         specific_mock_func.assert_called_once_with(
@@ -337,7 +337,7 @@ class TestComputerUseTool:
         tool = ComputerUseTool(func=specific_mock_func, screen_size=(1920, 1080))
 
         args = {"direction": "down"}
-        result = await tool.run_async(args=args, tool_context=tool_context)
+        await tool.run_async(args=args, tool_context=tool_context)
 
         # Should call function with original args
         specific_mock_func.assert_called_once_with(direction="down")

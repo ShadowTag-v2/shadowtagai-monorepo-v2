@@ -1,10 +1,10 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Shared models for the backend."""
 
-from enum import Enum
+from enum import Enum, StrEnum
 
 
-class ConnectionStatus(str, Enum):
+class ConnectionStatus(StrEnum):
     """Connection status enum."""
 
     ACTIVE = "active"
@@ -12,7 +12,7 @@ class ConnectionStatus(str, Enum):
     ERROR = "error"
 
 
-class SyncJobStatus(str, Enum):
+class SyncJobStatus(StrEnum):
     """Sync job status enum."""
 
     CREATED = "created"
@@ -24,7 +24,7 @@ class SyncJobStatus(str, Enum):
     CANCELLED = "cancelled"
 
 
-class IntegrationType(str, Enum):
+class IntegrationType(StrEnum):
     """Integration type enum."""
 
     SOURCE = "source"
@@ -32,7 +32,7 @@ class IntegrationType(str, Enum):
     AUTH_PROVIDER = "auth_provider"
 
 
-class AirweaveFieldFlag(str, Enum):
+class AirweaveFieldFlag(StrEnum):
     """Flags for AirweaveField metadata (composition over inheritance).
 
     These flags mark fields with semantic meaning that the entity pipeline
@@ -47,7 +47,7 @@ class AirweaveFieldFlag(str, Enum):
     UNHASHABLE = "unhashable"
 
 
-class SyncStatus(str, Enum):
+class SyncStatus(StrEnum):
     """Sync status enum."""
 
     ACTIVE = "active"
@@ -55,7 +55,7 @@ class SyncStatus(str, Enum):
     ERROR = "error"
 
 
-class SourceConnectionStatus(str, Enum):
+class SourceConnectionStatus(StrEnum):
     """Source connection status enum - represents overall connection state."""
 
     ACTIVE = "active"  # Authenticated and ready to sync
@@ -66,7 +66,7 @@ class SourceConnectionStatus(str, Enum):
     PENDING_SYNC = "pending_sync"  # Awaiting a sync job to start
 
 
-class CollectionStatus(str, Enum):
+class CollectionStatus(StrEnum):
     """Collection status enum."""
 
     ACTIVE = "ACTIVE"
@@ -74,7 +74,7 @@ class CollectionStatus(str, Enum):
     ERROR = "ERROR"
 
 
-class ActionType(str, Enum):
+class ActionType(StrEnum):
     """Action type enum."""
 
     ENTITIES = "entities"
@@ -83,7 +83,7 @@ class ActionType(str, Enum):
     TEAM_MEMBERS = "team_members"
 
 
-class RateLimitLevel(str, Enum):
+class RateLimitLevel(StrEnum):
     """Rate limiting level for sources.
 
     Determines how rate limits are tracked and enforced.
@@ -93,7 +93,7 @@ class RateLimitLevel(str, Enum):
     CONNECTION = "connection"  # Per-connection (each user has independent limit)
 
 
-class FeatureFlag(str, Enum):
+class FeatureFlag(StrEnum):
     """Available feature flags in Airweave.
 
     Add new flags here to enable feature gating at the organization level.
@@ -104,7 +104,7 @@ class FeatureFlag(str, Enum):
     SOURCE_RATE_LIMITING = "source_rate_limiting"
 
 
-class AuthMethod(str, Enum):
+class AuthMethod(StrEnum):
     """Authentication methods used in API requests.
 
     Defines the valid authentication methods for API context.

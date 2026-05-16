@@ -255,7 +255,7 @@ class TestExcludedDirsLogging(unittest.TestCase):
         """Test that extend mode logs INFO level message."""
         config = {"repo": "owner/repo", "exclude_dirs_additional": ["custom1", "custom2"]}
 
-        scraper = GitHubScraper(config)
+        GitHubScraper(config)
 
         # Should have logged INFO message
         # Check that info was called with a message about adding custom exclusions
@@ -268,7 +268,7 @@ class TestExcludedDirsLogging(unittest.TestCase):
         """Test that replace mode logs WARNING level message."""
         config = {"repo": "owner/repo", "exclude_dirs": ["only", "these"]}
 
-        scraper = GitHubScraper(config)
+        GitHubScraper(config)
 
         # Should have logged WARNING message
         warning_calls = [str(call) for call in mock_logger.warning.call_args_list]
@@ -280,7 +280,7 @@ class TestExcludedDirsLogging(unittest.TestCase):
         """Test that default mode doesn't log exclude_dirs messages."""
         config = {"repo": "owner/repo"}
 
-        scraper = GitHubScraper(config)
+        GitHubScraper(config)
 
         # Should NOT have logged any exclude_dirs messages
         info_calls = [str(call) for call in mock_logger.info.call_args_list]

@@ -136,7 +136,7 @@ class DifferentialExpressionTemplate(TemplateBase):
 
         has_expression = any(kw in statement_lower for kw in expression_keywords)
         has_comparison = any(kw in statement_lower for kw in comparison_keywords)
-        has_neuro = any(kw in statement_lower for kw in neuro_keywords)
+        any(kw in statement_lower for kw in neuro_keywords)
 
         # Require expression + comparison, neuroscience context is helpful but not required
         return has_expression and has_comparison

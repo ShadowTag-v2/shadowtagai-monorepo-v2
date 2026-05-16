@@ -39,7 +39,7 @@ def test_req_daa_cap_001_exploratory_analysis():
     # Act: Perform summary statistics
     summary = df.describe()
     missing_analysis = df.isnull().sum()
-    distributions = df["numeric_col"].hist(bins=10)
+    df["numeric_col"].hist(bins=10)
 
     # Assert: Verify exploratory analysis capabilities
     assert "numeric_col" in summary.columns
@@ -369,7 +369,6 @@ def test_req_daa_cap_008_pathway_enrichment():
     import gseapy as gp
 
     # Arrange: Mock gene list (would be real genes in production)
-    gene_list = ["TP53", "BRCA1", "EGFR", "KRAS", "MYC", "PIK3CA", "PTEN", "RB1", "VEGFA", "ERBB2"]
 
     # Act: Verify gseapy is available and can be called
     # In real usage, this would call gp.enrichr() with actual database

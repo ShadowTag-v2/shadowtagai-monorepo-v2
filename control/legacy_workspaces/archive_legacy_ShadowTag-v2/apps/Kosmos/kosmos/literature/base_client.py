@@ -9,13 +9,13 @@ import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-class PaperSource(str, Enum):
+class PaperSource(StrEnum):
     """Source of the paper."""
 
     ARXIV = "arxiv"

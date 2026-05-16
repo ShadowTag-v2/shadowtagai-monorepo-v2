@@ -90,7 +90,7 @@ class LinearBongo(BaseBongo):
                 mutation IssueUpdate($id: String!, $input: IssueUpdateInput!) {
                   issueUpdate(id: $id, input: $input) { success issue { id title } }
                 }"""
-                resp = await self._gql(
+                await self._gql(
                     client,
                     q,
                     {"id": ent["id"], "input": {"title": ent["name"] + " [updated]"}},
@@ -109,7 +109,7 @@ class LinearBongo(BaseBongo):
                 try:
                     await self._pace()
                     q = """mutation IssueArchive($id: String!) { issueArchive(id: $id) { success } }"""
-                    r = await self._gql(client, q, {"id": ent["id"]})
+                    await self._gql(client, q, {"id": ent["id"]})
                     deleted.append(ent["id"])
                 except Exception as e:
                     self.logger.warning(f"archive failed for {ent['id']}: {e}")

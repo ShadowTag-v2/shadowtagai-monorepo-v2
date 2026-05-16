@@ -338,7 +338,7 @@ class IngestionService:
                 return
 
             # Scrub PII
-            clean_text = self.ethics_checker.scrub_pii(request.content.full_text)
+            self.ethics_checker.scrub_pii(request.content.full_text)
             clean_summary = self.ethics_checker.scrub_pii(request.content.summary or "")
 
             # Classify tier

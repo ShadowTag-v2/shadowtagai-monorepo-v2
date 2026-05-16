@@ -14,7 +14,7 @@ import json
 import logging
 from collections.abc import Callable
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from kosmos.models.safety import ApprovalRequest, ApprovalStatus, RiskLevel
@@ -22,7 +22,7 @@ from kosmos.models.safety import ApprovalRequest, ApprovalStatus, RiskLevel
 logger = logging.getLogger(__name__)
 
 
-class ApprovalMode(str, Enum):
+class ApprovalMode(StrEnum):
     """Approval workflow mode."""
 
     BLOCKING = "blocking"  # Pause and wait for approval

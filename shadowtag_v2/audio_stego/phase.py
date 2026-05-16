@@ -96,7 +96,7 @@ class PhaseEncoder:
         # Use middle frequency bins (more perceptually masked)
         bin_start = num_bins // 4
         bin_end = 3 * num_bins // 4
-        usable_bins = bin_end - bin_start
+        bin_end - bin_start
 
         bit_idx = 0
         for frame_idx in range(num_frames):

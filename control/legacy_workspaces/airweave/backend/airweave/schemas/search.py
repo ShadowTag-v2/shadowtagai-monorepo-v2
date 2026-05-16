@@ -1,7 +1,7 @@
 # Copyright (c) 2026 ShadowTag, Inc. All rights reserved.
 """Search schemas for Airweave's search API."""
 
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Optional
 
 import tiktoken
@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field, field_validator
 from qdrant_client.http.models import Filter as QdrantFilter
 
 
-class RetrievalStrategy(str, Enum):
+class RetrievalStrategy(StrEnum):
     """Retrieval strategies for search."""
 
     HYBRID = "hybrid"

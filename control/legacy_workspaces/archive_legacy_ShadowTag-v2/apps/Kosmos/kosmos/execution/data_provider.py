@@ -12,7 +12,7 @@ Supports:
 """
 
 import logging
-from enum import Enum
+from enum import Enum, StrEnum
 from pathlib import Path
 
 import numpy as np
@@ -21,7 +21,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-class DataSourceType(str, Enum):
+class DataSourceType(StrEnum):
     """Types of data sources for experiments."""
 
     FILE = "file"  # Load from file path

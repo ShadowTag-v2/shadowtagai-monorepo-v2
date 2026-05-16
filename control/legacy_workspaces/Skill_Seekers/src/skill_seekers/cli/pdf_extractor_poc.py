@@ -230,7 +230,7 @@ class PDFExtractor:
 
         Returns (language, confidence) tuple
         """
-        code_lower = code.lower()
+        code.lower()
 
         # Language detection patterns with weights
         patterns = {

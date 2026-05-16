@@ -52,8 +52,8 @@ def analyze():
 
     for row in rows:
         run_id = row["run_id"]
-        args_raw = row["args"]
-        tool_status = row["status"]
+        row["args"]
+        row["status"]
         tool_error = row["error"]
         tool_output = row["output"] if row["output"] else ""
 

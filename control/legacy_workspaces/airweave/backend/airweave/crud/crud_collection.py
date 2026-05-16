@@ -121,9 +121,9 @@ class CRUDCollection(CRUDBaseOrganization[Collection, CollectionCreate, Collecti
             return collections
 
         # 2. Bulk fetch all related data using existing optimized methods (4 queries)
-        auth_methods = await crud.source_connection._fetch_auth_methods(db, all_connections)
+        await crud.source_connection._fetch_auth_methods(db, all_connections)
         last_jobs = await crud.source_connection._fetch_last_jobs(db, all_connections)
-        entity_counts = await crud.source_connection._fetch_entity_counts(db, all_connections)
+        await crud.source_connection._fetch_entity_counts(db, all_connections)
         federated_flags = await crud.source_connection._fetch_federated_search_flags(
             db, all_connections
         )

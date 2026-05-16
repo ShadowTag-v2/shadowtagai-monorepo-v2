@@ -247,8 +247,8 @@ class TestREQ_WM_QUERY_002_FilterByProperties:
             type="Paper", properties={"title": "Project B Paper"}, project="project_b"
         )
 
-        id_a = world_model.add_entity(entity_a)
-        id_b = world_model.add_entity(entity_b)
+        world_model.add_entity(entity_a)
+        world_model.add_entity(entity_b)
 
         # Get statistics by project
         stats_a = world_model.get_statistics(project="project_a")

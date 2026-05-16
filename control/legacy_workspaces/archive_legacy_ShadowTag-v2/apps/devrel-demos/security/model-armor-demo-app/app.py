@@ -847,7 +847,6 @@ def analyze_prompt():
 @app.route("/chat", methods=["POST"])
 def chat():
     file_data = None
-    is_file_upload = False
 
     if "file" in request.files:
         file = request.files["file"]
@@ -898,7 +897,6 @@ def chat():
             "filename": file.filename,
         }
         prompt = prompt_text if prompt_text else f"Please analyze this document: {file.filename}"
-        is_file_upload = True
 
     else:
         data = request.get_json()
