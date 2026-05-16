@@ -40,7 +40,7 @@ class Probability(Enum):
 class Severity(Enum):
   """ATP 5-19 Severity Scale."""
 
-  I = "Catastrophic"  # Mission failure, legal liability
+  I = "Catastrophic"  # Mission failure, legal liability  # noqa: E741
   II = "Critical"  # Significant degradation
   III = "Moderate"  # Degraded mission
   IV = "Negligible"  # Minimal impact
